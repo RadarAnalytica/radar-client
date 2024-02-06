@@ -33,7 +33,6 @@ const SignInForm = () => {
                     placeholder={'Указанный при регистрации'}
                     label={'ФИО'}
                     callback={emailHandler}
-                    defautlValue={'test'}
                     required={true}
                 />
                 <InputField

@@ -9,13 +9,20 @@ const SignUpForm = () => {
 
     const navigate = useNavigate()
 
+    const options = [
+        'Хочу продавать на маркетплейсах',
+        'Хочу стать менеджером маркетплейсов',
+        'Действующий менеджер маркетплейсов',
+        'Предприниматель. Уже продаю на маркетплейсах'
+    ]
+
     const [name, setName] = useState()
     const [regData, setRegData] = useState({
         firstName: null,
         lastName: null,
         patronym: null,
         phone: null,
-        stage: '',
+        stage: options[0],
         email: null,
         password: null,
         promoCode: null
@@ -34,7 +41,7 @@ const SignUpForm = () => {
     }
 
     const getStage = (e) => {
-        setRegData({ ...regData, stage: 'test' })
+        setRegData({ ...regData, stage: e.target.value })
     }
 
     const getPass = (e) => {
@@ -70,6 +77,8 @@ const SignUpForm = () => {
         }
     }
 
+    console.log(regData);
+
     return (
         <div className='signup-form'>
             <div className='d-flex flex-column align-items-center'>
@@ -82,11 +91,10 @@ const SignUpForm = () => {
                     placeholder={'Фамилия Имя Отчество'}
                     label={'ФИО'}
                     callback={nameHandler}
-                    defautlValue={'test'}
                     required={true}
                 />
                 <SelectField
-                    options={[]}
+                    options={options}
                     label={'На каком этапе вы находитесь?'}
                     defautlValue={'На каком этапе вы находитесь?'}
                     callback={getStage}
@@ -96,7 +104,6 @@ const SignUpForm = () => {
                     placeholder={'+7'}
                     label={'Номер телефона'}
                     callback={getPhone}
-                    defautlValue={'test'}
                     required={true}
                 />
                 <InputField
@@ -104,7 +111,6 @@ const SignUpForm = () => {
                     placeholder={'На него придет подтвеждение'}
                     label={'Email'}
                     callback={getEmail}
-                    defautlValue={'test'}
                     required={true}
                 />
                 <InputField
