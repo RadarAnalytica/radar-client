@@ -12,15 +12,19 @@ const ConfirmationPage = () => {
     const email = searchParams.get('email');
     const code = searchParams.get('code');
 
+    const [error, setError] = useState()
+
     useEffect(() => {
         if (email && code) {
             const postData = { email, code };
             axios.post('/api/confirm', postData)
                 .then(response => {
                     console.log('Успешно подтверждено', response.data);
+                    navigate('/signin')
                 })
                 .catch(error => {
                     console.error('Ошибка при подтверждении', error);
+                    setError('Ошибка при подтверждении')
                 });
         }
     }, [email, code]);
