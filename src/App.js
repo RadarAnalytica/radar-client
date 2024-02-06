@@ -23,7 +23,7 @@ function App() {
           <Route path='/signin' element={<SignInPage />} />
           <Route path='/onboarding' element={<Onboarding />} />
           <Route path='/dashboard' element={<DashboardPage />} />
-          <Route path='/confirmation*' element={<ConfirmationPage />} />
+          <Route path='/confirmation/:email/:code' element={<ConfirmationPage />} />
         </Routes>
       </AuthProvider>
       {/* </Router> */}
