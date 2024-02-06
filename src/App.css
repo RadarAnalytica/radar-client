@@ -1,38 +1,292 @@
+:root {
+  --main-bg: #F7F6FE;
+  --primary-color: #5329FF;
+  --secondary-color: #DDD4FF;
+  --tet-color: #1A1A1A;
+  --clue-color: #8C8C8C;
+  --outline-color: #E8E8E8;
+}
+
+
+* {
+  font-family: 'Mulish', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
+  background-color: var(--main-bg);
+}
+
+
+.signup-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 20px;
+  min-height: 100vh;
+}
+
+.signin-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding-top: 20px;
+  min-height: 100vh;
+}
+
+.signup-form {
+  background-color: white;
+  min-height: 80vh;
+  width: 544px;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+}
+
+.signin-form {
+  background-color: white;
+  min-height: 50vh;
+  width: 544px;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+}
+
+.fields-container {
+  width: 480px;
+}
+
+label {
+  font-weight: 500;
+}
+
+a.link {
+  text-decoration: none;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.input-field {
+  width: 100%;
+}
+
+input,
+select {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.prime-btn {
+  border: none;
+  background-color: var(--primary-color);
   color: white;
+  border-radius: 8px;
+  width: 100%;
+  padding: 20px 24px;
+  margin: 10px 0;
+  font-weight: 700;
 }
 
-.App-link {
-  color: #61dafb;
+/* Onboarding page */
+.onboarding-page {
+  min-height: 100vh;
+  display: flex;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.clue-text {
+  color: var(--clue-color);
+}
+
+.onboard-form-block {
+  min-height: 440px;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+}
+
+.onboard-description {
+  min-height: 440px;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.logo {
+  max-width: 220px;
+  object-fit: contain;
+}
+
+.side-nav {
+  width: 300px;
+  padding: 28px 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+}
+
+.sidenav-el {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.sidenav-title {
+  color: var(--clue-color);
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.side-nav-icon {
+  width: 20px;
+}
+
+.support-block {
+  border-radius: 1rem;
+  background-color: rgb(238, 238, 239);
+  padding: 1rem;
+  min-width: 256px;
+}
+
+.support-icon {
+  width: 60px;
+  cursor: pointer;
+}
+
+.top-nav {
+  padding: 20px;
+}
+
+.top-nav>div .col,
+.top-nav>div .col-2 {
+  background-color: white;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  padding: 24px 32px;
+}
+
+
+
+/* DASHBOARD */
+.dashboard-page {
+  min-height: 100vh;
+  display: flex;
+}
+
+.dashboard-content {
+  width: 100%;
+}
+
+
+
+/* COnfirmation */
+.confirmation-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: silver;
+}
+
+.loader {
+  transform: rotateZ(45deg);
+  perspective: 1000px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  color: #fff;
+}
+
+.loader:before,
+.loader:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+  transform: rotateX(70deg);
+  animation: 1s spin linear infinite;
+}
+
+.loader:after {
+  color: var(--primary-color);
+  transform: rotateY(70deg);
+  animation-delay: .4s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotateZ(0deg);
   }
-  to {
-    transform: rotate(360deg);
+
+  100% {
+    transform: translate(-50%, -50%) rotateZ(360deg);
+  }
+}
+
+@keyframes rotateccw {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+@keyframes spin {
+
+  0%,
+  100% {
+    box-shadow: .2em 0px 0 0px currentcolor;
+  }
+
+  12% {
+    box-shadow: .2em .2em 0 0 currentcolor;
+  }
+
+  25% {
+    box-shadow: 0 .2em 0 0px currentcolor;
+  }
+
+  37% {
+    box-shadow: -.2em .2em 0 0 currentcolor;
+  }
+
+  50% {
+    box-shadow: -.2em 0 0 0 currentcolor;
+  }
+
+  62% {
+    box-shadow: -.2em -.2em 0 0 currentcolor;
+  }
+
+  75% {
+    box-shadow: 0px -.2em 0 0 currentcolor;
+  }
+
+  87% {
+    box-shadow: .2em -.2em 0 0 currentcolor;
   }
 }

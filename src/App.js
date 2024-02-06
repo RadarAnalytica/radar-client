@@ -1,23 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import SignUpPage from './pages/SignUpPage';
+import SignInPage from './pages/SignInPage';
+import Onboarding from './pages/Onboarding';
+import AuthContext, { AuthProvider } from './service/AuthContext';
+import ConfirmationPage from './pages/ConfirmationPage';
+import DashboardPage from './pages/DashboardPage';
+import { useContext } from 'react';
 
 function App() {
+
+  // const { accessToken } = useContext(AuthContext)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <Router> */}
+      <AuthProvider >
+
+        <Routes>
+          {/* <Route path='/' element={<Navigate to={<SignUpPage />} replace />} /> */}
+          <Route path='/signup' element={<SignUpPage />} />
+          <Route path='/signin' element={<SignInPage />} />
+          <Route path='/onboarding' element={<Onboarding />} />
+          <Route path='/dashboard' element={<DashboardPage />} />
+          <Route path='/confirmation*' element={<ConfirmationPage />} />
+        </Routes>
+      </AuthProvider>
+      {/* </Router> */}
     </div>
   );
 }
