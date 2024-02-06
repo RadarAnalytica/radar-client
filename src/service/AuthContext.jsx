@@ -10,13 +10,13 @@ export default AuthContext
 
 export const AuthProvider = ({ children }) => {
 
-    const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken') ? JSON.parse(localStorage.getItem('authToken')) : null)
-    const [user, setUser] = useState(() => localStorage.getItem('authToken') ? jwtDecode(localStorage.getItem('authToken')) : null)
+    const [authToken, setAuthToken] = useState()
+    const [user, setUser] = useState(null)
 
     const navigate = useNavigate()
 
     const login = async (email, password) => {
-        const response = await fetch(URL + '/user/login', {
+        const response = await fetch(URL + '/api/user/signin', {
             method: "POST",
             headers: {
                 'content-type': 'application/json'
@@ -27,18 +27,24 @@ export const AuthProvider = ({ children }) => {
         if (response.status === 200) {
             setAuthToken(data)
             setUser(jwtDecode(data.token))
-            localStorage.setItem('authToken', JSON.stringify(data))
+            localStorage.setItem('authToken', data)
             if (data.isOnboarded) {
                 navigate('/dashboard')
             } else if (!data.isOnboarded) {
                 navigate('/onboarding')
             }
-            // navigate("/dashboard")
-            // document.location.reload()
         } else {
             alert('Something went wrong')
         }
     }
+
+    const target = localStorage.getItem('accessToken')
+    useEffect(() => {
+        if (target) {
+            setAuthToken(target)
+            setUser(jwtDecode(target.token))
+        }
+    }, [target])
 
     const register = async (object) => {
         const res = await fetch(`${URL}/api/user/signup`, {

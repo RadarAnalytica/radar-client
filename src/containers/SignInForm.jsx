@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import logo from '../assets/logo.png'
 import InputField from '../components/InputField'
 import { Link } from 'react-router-dom'
@@ -7,8 +7,15 @@ import AuthContext from '../service/AuthContext'
 
 const SignInForm = () => {
 
-    const handler = (e) => {
-        console.log(e.target.value);
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
+
+    const emailHandler = (e) => {
+        setEmail(e.target.value);
+    }
+
+    const passHandler = (e) => {
+        setPassword(e.target.value);
     }
 
     const { login } = useContext(AuthContext)
@@ -25,7 +32,7 @@ const SignInForm = () => {
                     type={'text'}
                     placeholder={'Указанный при регистрации'}
                     label={'ФИО'}
-                    callback={handler}
+                    callback={emailHandler}
                     defautlValue={'test'}
                     required={true}
                 />
@@ -33,11 +40,11 @@ const SignInForm = () => {
                     type={'password'}
                     placeholder={'Введите пароль'}
                     label={'Пароль'}
-                    callback={handler}
+                    callback={passHandler}
                     required={true}
                 />
             </div>
-            <button className='prime-btn' onClick={login}>Войти</button>
+            <button className='prime-btn' onClick={() => login(email, password)}>Войти</button>
             <div>
                 <p className='clue-text'>Еще нет аккаунта? <Link className='link' to={'/signin'}>Регистрация</Link></p>
             </div>
