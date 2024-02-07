@@ -363,5 +363,6 @@ select {
 
   .mockup-end img {
     max-height: 50vh;
+    padding-bottom: 60px;
   }
 }
