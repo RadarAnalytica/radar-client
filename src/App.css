@@ -324,13 +324,13 @@ select {
 
 @media screen and (max-width: 978px) {
   .mockup-page {
-    overflow: auto;
+    overflow: hidden;
   }
 
   .mockup-wrapper {
     display: flex !important;
     flex-direction: column !important;
-    width: 100vw;
+    width: 80vw;
     padding: 0 !important;
   }
 
@@ -360,6 +360,6 @@ select {
   }
 
   .mockup-end img {
-    height: 35vh;
+    height: 50vh;
   }
 }
