@@ -300,7 +300,7 @@ select {
 }
 
 .mockup-start {
-  height: 60vh;
+  min-height: 60vh;
   width: 40vw;
   display: flex;
   flex-direction: column;
@@ -336,9 +336,11 @@ select {
 
   .mockup-start {
     width: 100vw;
+    min-height: 40vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
   }
 
   .mockup-start p {
