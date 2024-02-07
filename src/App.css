@@ -292,7 +292,7 @@ select {
 }
 
 .mockup-page {
-  min-height: 100vh;
+  min-height: 70vh;
   padding-top: 45px;
   display: flex;
   background-color: white;
@@ -362,6 +362,6 @@ select {
   }
 
   .mockup-end img {
-    height: 50vh;
+    max-height: 50vh;
   }
 }
