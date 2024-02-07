@@ -7,6 +7,7 @@ import AuthContext, { AuthProvider } from './service/AuthContext';
 import ConfirmationPage from './pages/ConfirmationPage';
 import DashboardPage from './pages/DashboardPage';
 import { useContext } from 'react';
+import MockUpPage from './pages/MockUpPage';
 
 function App() {
 
@@ -14,19 +15,16 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Router> */}
       <AuthProvider >
-
         <Routes>
-          {/* <Route path='/' element={<Navigate to={<SignUpPage />} replace />} /> */}
-          <Route path='/signup' element={<SignUpPage />} />
-          <Route path='/signin' element={<SignInPage />} />
-          <Route path='/onboarding' element={<Onboarding />} />
-          <Route path='/dashboard' element={<DashboardPage />} />
-          <Route path='/confirmation/:email/:code' element={<ConfirmationPage />} />
+          <Route path='/' element={<MockUpPage />} />
+          <Route path='/development/signup' element={<SignUpPage />} />
+          <Route path='/development/signin' element={<SignInPage />} />
+          <Route path='/development/onboarding' element={<Onboarding />} />
+          <Route path='/development/dashboard' element={<DashboardPage />} />
+          <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
         </Routes>
       </AuthProvider>
-      {/* </Router> */}
     </div>
   );
 }
