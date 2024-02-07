@@ -1,6 +1,6 @@
 import React from 'react'
 
-const InputField = ({ options, callback, label, required, placeholder, defautlValue, type }) => {
+const InputField = ({ options, callback, label, required, placeholder, defautlValue, type, minLength, maxLength }) => {
 
     return (
         <div className='input-field mb-2'>
@@ -11,6 +11,8 @@ const InputField = ({ options, callback, label, required, placeholder, defautlVa
                 placeholder={placeholder}
                 defaultValue={defautlValue ? defautlValue : null}
                 onChange={e => callback(e)}
+                minLength={minLength}
+                maxLength={minLength}
             />
         </div>
     )

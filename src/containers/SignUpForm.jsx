@@ -33,7 +33,15 @@ const SignUpForm = () => {
     }
 
     const getPhone = (e) => {
-        setRegData({ ...regData, phone: e.target.value })
+        const phoneNumber = e.target.value.replace(/\D/g, '');
+        // Проверяем, не превышает ли длина номера 10 символов
+        if (phoneNumber.length <= 10) {
+            // Форматируем номер, добавляя "+7" в начале и разделяя группы цифр
+            const formattedPhoneNumber = `+7${phoneNumber.slice(-10, -7)}-${phoneNumber.slice(-7, -4)}-${phoneNumber.slice(-4)}`;
+
+            // Устанавливаем отформатированное значение в поле
+            setRegData({ ...regData, phone: formattedPhoneNumber });
+        }
     }
 
     const getEmail = (e) => {
@@ -61,8 +69,9 @@ const SignUpForm = () => {
 
     const sumbitHandler = (e, obj) => {
         const nullable = Object.values(obj)?.filter(item => item === null)
-        if (!obj || nullable?.length > 1) {
+        if (!obj || nullable?.length > 1 || !isValidEmail(obj.email)) {
             e.preventDefault()
+            alert('Пожалуйста, заполните все поля правильно.');
         }
         else {
             ServiceFunctions.register(obj).then(data => {
@@ -76,6 +85,11 @@ const SignUpForm = () => {
             })
         }
     }
+
+
+    const isValidEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
 
     console.log(regData);
 
@@ -100,7 +114,7 @@ const SignUpForm = () => {
                     callback={getStage}
                 />
                 <InputField
-                    type={'text'}
+                    type={'tel'}
                     placeholder={'+7'}
                     label={'Номер телефона'}
                     callback={getPhone}
