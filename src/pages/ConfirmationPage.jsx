@@ -19,12 +19,12 @@ const ConfirmationPage = () => {
 
     const [error, setError] = useState()
 
-    console.log(code);
 
     useEffect(() => {
         if (email && code) {
             const postData = { email, code };
-            axios.post(`${URL}/api/confirm`, postData)
+
+            axios.post(`${URL}/api/user/confirm`, postData)
                 .then(response => {
                     console.log('Успешно подтверждено', response.data);
                     navigate('/signin')
