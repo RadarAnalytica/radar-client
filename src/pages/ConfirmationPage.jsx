@@ -24,7 +24,7 @@ const ConfirmationPage = () => {
         if (email && code) {
             const postData = { email, code };
 
-            axios.post(`${URL}/api/user/confirm`, postData)
+            axios.patch(`${URL}/api/user/confirm`, postData)
                 .then(response => {
                     console.log('Успешно подтверждено', response.data);
                     navigate('/signin')
