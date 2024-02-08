@@ -36,7 +36,7 @@ const DashboardPage = () => {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
-                'authorization': 'Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwMjMxMjI1djEiLCJ0eXAiOiJKV1QifQ.eyJlbnQiOjEsImV4cCI6MTcyMjY2NzIxNSwiaWQiOiIxZTI3Mzg5My1lZTJjLTRlNTUtYTA1My0yNmNhMzdlNTIyZGEiLCJpaWQiOjIxMjY3MzU2LCJvaWQiOjgyMTcwLCJzIjo1MTAsInNpZCI6Ijc1ZGE5MDY2LTRhOGItNWE2Yy1hMmYyLTE5ZDQwNjdkMDQxOSIsInQiOmZhbHNlLCJ1aWQiOjIxMjY3MzU2fQ.2n8RnH8ZDP-BH-3qiETpoGqLJin3V15IUDSieBkxnM6UB0OGrZV9i_65Hi3USMLybdPPKy2cZkhPiQTkr86Q-A'
+                'authorization': 'Bearer '
             }
         })
         const data = await res.json()
