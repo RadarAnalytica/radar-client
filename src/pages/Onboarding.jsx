@@ -31,7 +31,7 @@ const Onboarding = () => {
         } else {
             ServiceFunctions.updateToken(brandName, token, user.id).then(data => {
                 if (data) {
-                    // navigate('/development/dashboard')
+                    navigate('/development/dashboard')
                 }
             })
         }
