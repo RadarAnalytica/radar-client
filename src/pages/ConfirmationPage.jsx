@@ -13,7 +13,6 @@ const ConfirmationPage = () => {
 
     const reverseArr = array.reverse()
 
-
     const email = reverseArr && reverseArr.length ? reverseArr[1] : null
     const code = reverseArr && reverseArr.length ? reverseArr[0] : null
 
