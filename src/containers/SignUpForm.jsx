@@ -76,7 +76,8 @@ const SignUpForm = () => {
         else {
             ServiceFunctions.register(obj).then(data => {
                 if (!data) {
-                    navigate('/development/confirmation')
+                    alert('Подтвердите регистрацию по ссылке, высланной Вам на почте')
+                    navigate('/development/signin')
                 }
                 else {
                     navigate('/development/dashboard')
