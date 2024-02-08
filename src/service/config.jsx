@@ -1,1 +1,1 @@
-export const URL = 'http://89.104.71.86:5000'
+export const URL = 'https://radar-analytica.ru'
