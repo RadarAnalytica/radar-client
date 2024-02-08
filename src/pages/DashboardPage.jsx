@@ -20,13 +20,13 @@ const DashboardPage = () => {
     const { user } = useContext(AuthContext)
 
     const navigate = useNavigate()
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         if (!user) {
-    //             navigate('/development/signin')
-    //         }
-    //     }, 1000);
-    // }, [user])
+    useEffect(() => {
+        setTimeout(() => {
+            if (user && !user.isOnboarded) {
+                navigate('/development/signin')
+            }
+        }, 1000);
+    }, [user])
 
     const getWBSales = async (user) => {
         const res = await fetch(`${URL}/api/user/sales/${user.id}?dateFrom=2024-01-10`, {
