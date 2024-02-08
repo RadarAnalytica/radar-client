@@ -7,17 +7,24 @@ const ConfirmationPage = () => {
 
     const navigate = useNavigate()
 
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const email = searchParams.get('email');
-    const code = searchParams.get('code');
+
+    const loca = document.location.href
+    const array = loca ? loca.split('/') : []
+
+    const reverseArr = array.reverse()
+
+
+    const email = reverseArr && reverseArr.length ? reverseArr[1] : null
+    const code = reverseArr && reverseArr.length ? reverseArr[0] : null
 
     const [error, setError] = useState()
+
+    console.log(code);
 
     useEffect(() => {
         if (email && code) {
             const postData = { email, code };
-            axios.post('/api/confirm', postData)
+            axios.post(`${URL}/api/confirm`, postData)
                 .then(response => {
                     console.log('Успешно подтверждено', response.data);
                     navigate('/signin')
