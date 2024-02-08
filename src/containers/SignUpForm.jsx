@@ -75,7 +75,6 @@ const SignUpForm = () => {
         }
         else {
             ServiceFunctions.register(obj).then(data => {
-                localStorage.setItem('authToken', JSON.stringify(data))
                 if (!data) {
                     navigate('/development/confirmation')
                 }
