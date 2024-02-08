@@ -14,7 +14,7 @@ const Onboarding = () => {
     useEffect(() => {
         setTimeout(() => {
             if (!user) {
-                navigate('/signin')
+                navigate('/development/signin')
             }
         }, 200);
     }, [user])
@@ -26,10 +26,14 @@ const Onboarding = () => {
     const getToken = (e) => setToken(e.target.value)
 
     const submitHandler = (e) => {
-        if (!brandName && !token && user) {
+        if (!brandName && !token && !user) {
             e.preventDefault()
         } else {
-            ServiceFunctions.updateToken(brandName, token, user.id)
+            ServiceFunctions.updateToken(brandName, token, user.id).then(data => {
+                if (data) {
+                    // navigate('/development/dashboard')
+                }
+            })
         }
     }
 

@@ -10,14 +10,10 @@ const ConfirmationPage = () => {
 
     const loca = document.location.href
     const array = loca ? loca.split('/') : []
-
     const reverseArr = array.reverse()
 
     const email = reverseArr && reverseArr.length ? reverseArr[1] : null
     const code = reverseArr && reverseArr.length ? reverseArr[0] : null
-
-    const [error, setError] = useState()
-
 
     useEffect(() => {
         if (email && code) {
@@ -26,41 +22,13 @@ const ConfirmationPage = () => {
             axios.patch(`${URL}/api/user/confirm`, postData)
                 .then(response => {
                     console.log('Успешно подтверждено', response.data);
-                    navigate('/signin')
+                    navigate('/development/signin')
                 })
                 .catch(error => {
                     console.error('Ошибка при подтверждении', error);
-                    setError('Ошибка при подтверждении')
                 });
         }
     }, [email, code]);
-
-    // const [errorMsg, setErrorMsg] = useState(null)
-
-    // const confirmRegistration = async (state) => {
-    //     const res = await fetch(`${URL}/api/user/confirm`, {
-    //         method: 'PATCH',
-    //         headers: {
-    //             'content-type': 'application/json'
-    //         },
-    //         body: JSON.stringify(state)
-    //     })
-    //     const data = res.json()
-    //     return data
-    // }
-
-    // useEffect(() => {
-    //     const hasKeys = Object.keys(state)?.length > 0
-    //     if (hasKeys) {
-    //         confirmRegistration(state).then(data => {
-    //             if (data) {
-    //                 navigate('/signin')
-    //             } else {
-    //                 setErrorMsg('Ошибка подтвержения регистрации. Повторите попытку.')
-    //             }
-    //         })
-    //     }
-    // }, [state])
 
     return (
         <div className='confirmation-page'>

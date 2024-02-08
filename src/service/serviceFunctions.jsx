@@ -17,7 +17,7 @@ export const ServiceFunctions = {
     },
 
     updateToken: async (brandName, token, id) => {
-        const res = await fetch(`${URL}/api/user/update${id}`, {
+        const res = await fetch(`${URL}/api/user/update/${id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json'

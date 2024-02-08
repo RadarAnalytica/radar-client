@@ -17,26 +17,22 @@ const DashboardPage = () => {
 
     const [wbData, setWbData] = useState()
 
+    const { user } = useContext(AuthContext)
 
-
-
-    // const { user } = useContext(AuthContext)
-
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     // useEffect(() => {
     //     setTimeout(() => {
     //         if (!user) {
-    //             navigate('/signin')
+    //             navigate('/development/signin')
     //         }
-    //     }, 200);
+    //     }, 1000);
     // }, [user])
 
-    const getWBSales = async () => {
-        const res = await fetch(`https://statistics-api.wildberries.ru/api/v1/supplier/sales?dateFrom=2024-01-10`, {
+    const getWBSales = async (user) => {
+        const res = await fetch(`${URL}/api/user/sales/${user.id}?dateFrom=2024-01-10`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
-                'authorization': 'Bearer '
             }
         })
         const data = await res.json()
@@ -44,10 +40,8 @@ const DashboardPage = () => {
     }
 
     useEffect(() => {
-        getWBSales().then(data => setWbData(data))
-    }, [])
-
-    console.log(wbData);
+        user && getWBSales(user).then(data => setWbData(data))
+    }, [user])
 
     const data = [
         {

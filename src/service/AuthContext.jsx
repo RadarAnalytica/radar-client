@@ -27,24 +27,26 @@ export const AuthProvider = ({ children }) => {
         if (response.status === 200) {
             setAuthToken(data)
             setUser(jwtDecode(data.token))
-            localStorage.setItem('authToken', data)
+            localStorage.setItem('authToken', data.token)
             if (data.isOnboarded) {
-                navigate('/dashboard')
+                navigate('/development/dashboard')
             } else if (!data.isOnboarded) {
-                navigate('/onboarding')
+                navigate('/development/onboarding')
             }
         } else {
             alert('Something went wrong')
         }
     }
 
-    const target = localStorage.getItem('accessToken')
+    const target = localStorage.getItem('authToken')
     useEffect(() => {
         if (target) {
             setAuthToken(target)
-            setUser(jwtDecode(target.token))
+            setUser(jwtDecode(target))
         }
     }, [target])
+
+    console.log(user);
 
     const register = async (object) => {
         const res = await fetch(`${URL}/api/user/signup`, {

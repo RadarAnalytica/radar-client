@@ -11,7 +11,28 @@ import MockUpPage from './pages/MockUpPage';
 
 function App() {
 
-  // const { accessToken } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
+
+  console.log(user);
+
+  if (user) {
+    return (
+      <div className="App">
+
+        <AuthProvider >
+          <Routes>
+            <Route path='/' element={<MockUpPage />} />
+            {/* <Route path='/development/signup' element={<SignUpPage />} />
+            <Route path='/development/signin' element={<SignInPage />} /> */}
+            <Route path='/development/onboarding' element={<Onboarding />} />
+            <Route path='/development/dashboard' element={<DashboardPage />} />
+            <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
+          </Routes>
+        </AuthProvider>
+      </div>
+    );
+
+  }
 
   return (
     <div className="App">
@@ -21,9 +42,9 @@ function App() {
           <Route path='/' element={<MockUpPage />} />
           <Route path='/development/signup' element={<SignUpPage />} />
           <Route path='/development/signin' element={<SignInPage />} />
-          <Route path='/development/onboarding' element={<Onboarding />} />
+          {/* <Route path='/development/onboarding' element={<Onboarding />} />
           <Route path='/development/dashboard' element={<DashboardPage />} />
-          <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
+          <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} /> */}
         </Routes>
       </AuthProvider>
     </div>
