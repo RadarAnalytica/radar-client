@@ -1,9 +1,10 @@
 import React from 'react'
+import Form from 'react-bootstrap/Form';
 import { Bar } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart, BarController, BarElement } from 'chart.js';
 Chart.register(CategoryScale, LinearScale, BarController, BarElement);
 
-const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, setSalesOn }) => {
+const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, setSalesOn, setChartUnitRub, chartUnitRub }) => {
 
     return (
         <div className='big-chart'>
@@ -18,6 +19,17 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, setSalesOn }) => {
                         <input type="checkbox" defaultChecked={salesOn} onClick={() => setSalesOn(!salesOn)} className='me-2' name="" id="" />
                         <label htmlFor="">Продажи</label>
                     </div>
+                    <Form className='d-flex ms-4'>
+                        <label htmlFor="" className='fw-bold me-2'>₽</label>
+                        <Form.Check // prettier-ignore
+                            type="switch"
+                            id="custom-switch"
+                            label="ШТ."
+                            className='fw-bold'
+                            style={{ fontWeight: 'bold' }}
+                            onChange={() => setChartUnitRub(!chartUnitRub)}
+                        />
+                    </Form>
                 </div>
             </div>
             <Bar

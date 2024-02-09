@@ -220,6 +220,8 @@ const DashboardPage = () => {
                                         salesOn={salesOn}
                                         setOrderOn={setOrderOn}
                                         setSalesOn={setSalesOn}
+                                        setChartUnitRub={setChartUnitRub}
+                                        chartUnitRub={chartUnitRub}
                                     />
                                 </div>
                             </div>

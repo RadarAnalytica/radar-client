@@ -281,6 +281,10 @@ select {
   background-color: silver;
 }
 
+.form-check-label {
+  font-weight: bold !important;
+}
+
 .loader {
   color: var(--primary-color);
   font-size: 10px;
