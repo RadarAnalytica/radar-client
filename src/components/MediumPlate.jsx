@@ -25,11 +25,11 @@ const MediumPlate = ({ name, value, quantity }) => {
                     <div className='mb-3'>
                         <p className='p-0 m-0 mb-1 clue-text'>{name}</p>
                         <p className='p-0 m-0 mb-1 fw-bold'>{formatPrice(value) || '0,00'} ₽</p>
-                        <p className='p-0 m-0 mb-1 clue-text'>График и показатели</p>
+                        {/* <p className='p-0 m-0 mb-1 clue-text'>График и показатели</p> */}
                     </div>
                     <div>
                         <p className='p-0 m-0 mb-1 fw-bold'>{quantity} шт.</p>
-                        <p className='p-0 m-0 mb-1 clue-text'>График и показатели</p>
+                        {/* <p className='p-0 m-0 mb-1 clue-text'>График и показатели</p> */}
                     </div>
                 </div>
                 <img src={getIcon(name)} alt="" style={{ maxWidth: '48px' }} />

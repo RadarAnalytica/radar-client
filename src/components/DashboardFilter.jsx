@@ -6,8 +6,6 @@ const DashboardFilter = ({ warehouses, changePeriod, defaultValue }) => {
     const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const monthAgo = new Date(new Date().setDate(new Date().getDate() - 31)).toLocaleDateString('ru')?.split('.').reverse().join('-')
 
-    console.log(defaultValue);
-
     return (
         <div className="filter container p-4 pt-0 d-flex">
             <div className="filter-item col-2 me-2">
