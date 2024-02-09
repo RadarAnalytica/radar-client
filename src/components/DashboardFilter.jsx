@@ -18,13 +18,13 @@ const DashboardFilter = ({ warehouses, changePeriod }) => {
             </div>
             <div className="filter-item col-2 me-2">
                 <label htmlFor="marketplace">Маркетплейс:</label>
-                <select className='form-control' id="marketplace">
+                <select className='form-control' id="marketplace" disabled>
                     <option value="amazon">Wildeberries</option>
                 </select>
             </div>
             <div className="filter-item col-2 me-2">
                 <label htmlFor="store">Магазин:</label>
-                <select className='form-control' id="store">
+                <select className='form-control' id="store" disabled>
                     <option value={null}>Все</option>
                     {
                         warehouses && warehouses.map((w, i) => (
@@ -36,14 +36,14 @@ const DashboardFilter = ({ warehouses, changePeriod }) => {
                     <option value="store3">Магазин 3</option> */}
                 </select>
             </div>
-            <div className="filter-item col-2 me-2">
+            {/* <div className="filter-item col-2 me-2">
                 <label htmlFor="brand">Бренд:</label>
                 <select className='form-control' id="brand">
                     <option value="brand1">Бренд 1</option>
                     <option value="brand2">Бренд 2</option>
                     <option value="brand3">Бренд 3</option>
                 </select>
-            </div>
+            </div> */}
         </div>
     )
 }
