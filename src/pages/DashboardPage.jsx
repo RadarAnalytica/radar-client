@@ -183,6 +183,10 @@ const DashboardPage = () => {
         ],
     };
 
+    const mockData = [117, 782, 100, 101, 701, 100, 14, 104]
+    const mockData2 = ['В день ~ 9 329,01 ₽', 'В день ~ 4 560,01 ₽', 'В день ~ 4 шт', 'В день ~ 3 шт']
+
+
     return (
         <div className='dashboard-page'>
             <SideNav />
@@ -203,14 +207,20 @@ const DashboardPage = () => {
                             />
 
                             <div className="container p-4 pt-0 d-flex gap-3">
-                                <MediumPlate name={'Заказы'} value={sumOrders} quantity={orders?.length || 0} />
-                                <MediumPlate name={'Продажи'} value={sumSales} quantity={sales?.length || 0} />
-                                <MediumPlate name={'Возвраты'} value={sumCanceled || 4} quantity={canceled?.length || 0} />
+                                <MediumPlate name={'Заказы'} value={sumOrders} quantity={orders?.length || 0} percent={mockData[0]} percent2={mockData[3]}
+                                    text={mockData2[0]} text2={mockData2[1]}
+                                />
+                                <MediumPlate name={'Продажи'} value={sumSales} quantity={sales?.length || 0} percent={80} percent2={90}
+                                    text={mockData2[3]} text2={mockData2[2]}
+                                />
+                                <MediumPlate name={'Возвраты'} value={sumCanceled || 4} quantity={canceled?.length || 0} percent={mockData[0]} percent2={20}
+                                    text={''} text2={''}
+                                />
                                 <div className="col d-flex flex-column">
                                     <div className='mb-3'>
-                                        <SmallPlate name={'Процент выкупа'} value={buyOutPrice || 0} type={'percent'} />
+                                        <SmallPlate name={'Процент выкупа'} value={buyOutPrice || 0} type={'percent'} percent={mockData[6]} />
                                     </div>
-                                    <SmallPlate name={'Средний чек'} value={averageCheck || 0} type={'price'} />
+                                    <SmallPlate name={'Средний чек'} value={averageCheck || 0} type={'price'} percent={mockData[7]} />
                                 </div>
                             </div>
                             <div className="container p-4 pt-0 pb-3 d-flex gap-3">
