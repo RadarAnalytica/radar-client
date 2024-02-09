@@ -14,7 +14,7 @@ const Onboarding = () => {
     useEffect(() => {
         setTimeout(() => {
             if (!user) {
-                navigate('/development/signin')
+                // navigate('/development/signin')
             }
         }, 200);
     }, [user])
@@ -41,7 +41,7 @@ const Onboarding = () => {
         <div className='onboarding-page'>
             <SideNav />
             <div className="boarding-content w-100">
-                <TopNav />
+                <TopNav title={'Подключение API'} />
 
                 <div className="container d-flex" style={{ padding: '24px', gap: '20px' }}>
                     <div className="onboard-form-block col">
