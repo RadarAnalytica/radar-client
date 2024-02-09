@@ -30,7 +30,7 @@ const DashboardPage = () => {
     }, [user])
 
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
-    const [period, setPeriod] = useState()
+    const [period, setPeriod] = useState({ period: weekAgo, days: 7 })
     useEffect(() => {
         setPeriod({ period: weekAgo, days: 7 })
     }, [])
@@ -95,7 +95,7 @@ const DashboardPage = () => {
     const [days, setDays] = useState(7)
 
     const changePeriod = (e) => {
-        setPeriod(e.target.value)
+        setPeriod(JSON.parse(e.target.value))
         setWbData(null)
         setLoading(true)
     }
@@ -199,6 +199,7 @@ const DashboardPage = () => {
                             <DashboardFilter
                                 warehouses={warehouses}
                                 changePeriod={changePeriod}
+                                defaultValue={period?.days}
                             />
 
                             <div className="container p-4 pt-0 d-flex gap-3">

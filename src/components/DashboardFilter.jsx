@@ -1,19 +1,28 @@
 import React from 'react'
 
-const DashboardFilter = ({ warehouses, changePeriod }) => {
+const DashboardFilter = ({ warehouses, changePeriod, defaultValue }) => {
 
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const monthAgo = new Date(new Date().setDate(new Date().getDate() - 31)).toLocaleDateString('ru')?.split('.').reverse().join('-')
 
+    console.log(defaultValue);
+
     return (
         <div className="filter container p-4 pt-0 d-flex">
             <div className="filter-item col-2 me-2">
                 <label htmlFor="period">Период:</label>
-                <select className='form-control' id="period" onChange={e => { changePeriod(e) }}>
-                    <option value={{ period: weekAgo, days: 7 }}>Неделя</option>
-                    <option value={{ period: twoWeeksAgo, days: 14 }}>14 дней</option>
-                    <option value={{ period: monthAgo, days: 31 }}>Месяц</option>
+                <select className='form-control' id="period"
+                    defaultValue={
+                        defaultValue === 7 ? { period: weekAgo, days: 7 }
+                            : defaultValue === 14 ? { period: twoWeeksAgo, days: 14 }
+                                : { period: monthAgo, days: 31 }
+                    }
+                    onChange={e => { changePeriod(e) }}
+                >
+                    <option selected={defaultValue === 7 ? true : false} value={JSON.stringify({ period: weekAgo, days: 7 })}>Неделя</option>
+                    <option selected={defaultValue === 14 ? true : false} value={JSON.stringify({ period: twoWeeksAgo, days: 14 })}>14 дней</option>
+                    <option selected={defaultValue === 31 ? true : false} value={JSON.stringify({ period: monthAgo, days: 31 })}>Месяц</option>
                 </select>
             </div>
             <div className="filter-item col-2 me-2">
