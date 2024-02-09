@@ -36,7 +36,7 @@ const ChartTable = ({ data, title }) => {
                     <ChartTableRow object={obj} key={i} />
                 ))
             }
-            <p>lorem12</p>
+            <p></p>
         </div>
     )
 }

@@ -46,8 +46,6 @@ export const AuthProvider = ({ children }) => {
         }
     }, [target])
 
-    console.log(user);
-
     const register = async (object) => {
         const res = await fetch(`${URL}/api/user/signup`, {
             method: 'POST',

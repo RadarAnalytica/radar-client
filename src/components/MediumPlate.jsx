@@ -2,8 +2,9 @@ import React from 'react'
 import sales from '../assets/sales.png'
 import returnicon from '../assets/return.png'
 import order from '../assets/order.png'
+import { formatPrice } from '../service/utils'
 
-const MediumPlate = ({ name, array }) => {
+const MediumPlate = ({ name, value, quantity }) => {
 
     const getIcon = (name) => {
         switch (name) {
@@ -23,11 +24,11 @@ const MediumPlate = ({ name, array }) => {
                 <div>
                     <div className='mb-3'>
                         <p className='p-0 m-0 mb-1 clue-text'>{name}</p>
-                        <p className='p-0 m-0 mb-1 fw-bold'>Price</p>
+                        <p className='p-0 m-0 mb-1 fw-bold'>{formatPrice(value) || '0,00'} ₽</p>
                         <p className='p-0 m-0 mb-1 clue-text'>График и показатели</p>
                     </div>
                     <div>
-                        <p className='p-0 m-0 mb-1 fw-bold'>Количество</p>
+                        <p className='p-0 m-0 mb-1 fw-bold'>{quantity} шт.</p>
                         <p className='p-0 m-0 mb-1 clue-text'>График и показатели</p>
                     </div>
                 </div>

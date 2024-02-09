@@ -12,6 +12,7 @@ import StorageTable from '../components/StorageTable'
 import ChartTable from '../components/ChartTable'
 import WidePlate from '../components/WidePlate'
 import { URL } from '../service/config'
+import { generateDateList } from '../service/utils'
 
 const DashboardPage = () => {
 
@@ -28,8 +29,14 @@ const DashboardPage = () => {
         }, 1000);
     }, [user])
 
-    const getWBSales = async (user) => {
-        const res = await fetch(`${URL}/api/user/sales/${user.id}?dateFrom=2024-01-10`, {
+    const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
+    const [period, setPeriod] = useState()
+    useEffect(() => {
+        setPeriod({ period: weekAgo, days: 7 })
+    }, [])
+
+    const getWBSales = async (user, period) => {
+        const res = await fetch(`${URL}/api/user/sales/${user.id}?dateFrom=${period?.period}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -40,162 +47,225 @@ const DashboardPage = () => {
     }
 
     useEffect(() => {
-        user && getWBSales(user).then(data => setWbData(data))
-    }, [user])
+        if (user && period) {
+            getWBSales(user, period).then(data => setWbData(data))
+        }
+    }, [user, period])
 
-    const data = [
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-    ]
 
-    const data2 = [
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15
-        },
-    ]
+    // Поставки
+    const incomes = wbData ? wbData.incomes : []
+    // Цены
+    const info = wbData ? wbData.info : []
+    // Заказы
+    const orders = wbData ? wbData.orders : []
+    // список новых сборочных заданий
+    const newOrders = wbData ? wbData.newOrders : []
+    // отчеты о продажах и реализации
+    const reportDetailByPeriod = wbData ? wbData.reportDetailByPeriod : []
+    // список сборочных заданий на повторную отгрузку
+    const reshipmentOrders = wbData && wbData.reshipmentOrders ? wbData.reshipmentOrders.orders : [] //reshipmentOrders.orders
+    // продажи
+    const sales = wbData ? wbData.sales : []
+    // склад
+    const stocks = wbData ? wbData.stocks : []
+    // список поставок
+    const supplies = wbData ? wbData.supplies : []
+    // склады
+    const warehouses = wbData ? wbData.warehouses : []
 
-    const storeData = [
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15,
-            quant: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15,
-            quant: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15,
-            quant: 0.15
-        },
-        {
-            name: 'adad',
-            price: 123,
-            rate: 0.15,
-            quant: 0.15
-        },
-    ]
+    // К перечислению продавцу
+    const sumSales = sales && sales.length ? sales.map(i => i.forPay)?.reduce((a, b) => a + b, 0)?.toFixed(2) : 0
+    const sumOrders = orders && orders.length ? orders.map(i => i.finishedPrice)?.reduce((a, b) => a + b, 0)?.toFixed(2) : 0
+    const canceled = orders && orders.length ? orders.filter(i => i.isCancel === true) : []
+    const sumCanceled = canceled && canceled.length ? canceled.map(i => i.finishedPrice)?.reduce((a, b) => a + b, 0) : 0
+
+    const buyOutPrice = sumOrders && sumCanceled ? (sumCanceled / (sumOrders / 100))?.toFixed(2) : 0
+    const averageCheck = sumOrders && orders ? (Number(sumOrders) / orders.length)?.toFixed(2) : 0
+
+    const inWayToClient = stocks && stocks.length ? stocks.filter(i => i.inWayToClient) : []
+    const inWayFromClient = stocks && stocks.length ? stocks.filter(i => i.inWayFromClient) : []
+
+
+    const [loading, setLoading] = useState(true)
+    setTimeout(() => {
+        setLoading(false)
+    }, 5000);
+
+    const [days, setDays] = useState(7)
+
+    const changePeriod = (e) => {
+        setPeriod(e.target.value)
+        setWbData(null)
+        setLoading(true)
+    }
+
+    const [chartUnitRub, setChartUnitRub] = useState(true)
+
+    const dateList = period ? generateDateList(period.days) : generateDateList(7)
+
+    // const orderValuesRub = orders && orders.length ? orders.map(i => i.finishedPrice) : []
+    // const salesValuesRub = sales && sales.length ? sales.map(i => i.finishedPrice) : []
+
+    const orderValuesRub = orders && orders.length ? orders.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
+    const salesValuesRub = sales && sales.length ? sales.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
+
+    const summedOrderRub = orderValuesRub.reduce((acc, curr) => {
+        if (acc[curr.date]) {
+            acc[curr.date] += curr.price;
+        } else {
+            acc[curr.date] = curr.price;
+        }
+        return acc;
+    }, {});
+
+    const summedSalesRub = salesValuesRub.reduce((acc, curr) => {
+        if (acc[curr.date]) {
+            acc[curr.date] += curr.price;
+        } else {
+            acc[curr.date] = curr.price;
+        }
+        return acc;
+    }, {});
+
+    const summedOrderArray = Object.keys(summedOrderRub).map(date => (summedOrderRub[date].toFixed(2))).slice(0, period?.days);
+    const summedSalesArray = Object.keys(summedSalesRub).map(date => (summedSalesRub[date].toFixed(2))).slice(0, period?.days);
+
+
+    const ordersByDate = orderValuesRub.reduce((acc, item) => {
+        const { date } = item;
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+    }, {});
+
+    const salesByDate = salesValuesRub.reduce((acc, item) => {
+        const { date } = item;
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+    }, {});
+
+    const totalOrByDate = Object.entries(ordersByDate).map(([date, count]) => count).slice(0, period?.days);
+    const totalsalesByDate = Object.entries(salesByDate).map(([date, count]) => count).slice(0, period?.days);
+
+    const [orderOn, setOrderOn] = useState(true)
+    const [salesOn, setSalesOn] = useState(true)
+
+
+    const data = {
+        labels: dateList || [],
+        datasets: [
+            orderOn ? {
+                label: 'Заказы',
+                backgroundColor: 'rgba(240, 173, 0, 1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                data: chartUnitRub ? summedOrderArray : totalOrByDate,
+            } : {
+                label: 'Заказы',
+                backgroundColor: 'rgba(240, 173, 0, 1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                data: []
+            },
+            salesOn ? {
+                label: 'Продажи',
+                backgroundColor: 'rgba(83, 41, 255, 1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                data: chartUnitRub ? summedSalesArray : totalsalesByDate,
+            } : {
+                label: 'Продажи',
+                backgroundColor: 'rgba(83, 41, 255, 1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                data: []
+            },
+        ],
+    };
 
     return (
         <div className='dashboard-page'>
             <SideNav />
             <div className="dashboard-content pb-5">
                 <TopNav title={'Сводка продаж'} />
-                <DashboardFilter />
 
-                <div className="container p-4 pt-0 d-flex gap-3">
-                    <MediumPlate name={'Заказы'} />
-                    <MediumPlate name={'Продажи'} />
-                    <MediumPlate name={'Возвраты'} />
-                    <div className="col d-flex flex-column">
-                        <div className='mb-3'>
-                            <SmallPlate name={'Процент выкупа'} />
+                {
+                    loading ?
+                        <div className='d-flex flex-column align-items-center justify-content-center' style={{ minHeight: '70vh' }}>
+                            <span className="loader"></span>
                         </div>
-                        <SmallPlate name={'Средний чек'} />
-                    </div>
-                </div>
-                <div className="container p-4 pt-0 pb-3 d-flex gap-3">
-                    <div className="col">
-                        <BigChart name={'Заказы и продажи'} />
-                    </div>
-                </div>
-                <div className="container p-4 pt-0 pb-3 d-flex gap-3">
-                    <div className="col">
-                        <SmallPlate name={'Себестоимость проданных товаров'} />
-                    </div>
-                    <div className="col">
-                        <SmallPlate name={'Возвраты'} />
-                    </div>
-                    <div className="col">
-                        <SmallPlate name={'Штрафы WB'} />
-                    </div>
-                    <div className="col">
-                        <SmallPlate name={'Доплаты WB'} />
-                    </div>
-                </div>
-                <div className="container p-4 pt-0 d-flex gap-3">
-                    <div className="col">
-                        <SmallPlate name={'Комиссия WB'} />
-                    </div>
-                    <div className="col">
-                        <SmallPlate name={'Расходы на логистику'} />
-                    </div>
-                    <div className="col">
-                        <SmallPlate name={'Маржинальная прибыль'} />
-                    </div>
-                    <div className="col">
-                        <SmallPlate name={'Упущенные продажи'} />
-                    </div>
-                </div>
+                        :
+                        <div>
+                            <DashboardFilter
+                                warehouses={warehouses}
+                                changePeriod={changePeriod}
+                            />
 
-                <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
-                    <div className="wrapper">
-                        <FinanceTable title={'Финансы'} data={data} />
-                        <StorageTable title={'Склад'} data={storeData} titles={storeData?.map(item => item.name)} subtitles={storeData?.map(item => item.rate)} />
-                    </div>
-                    <div className="wrapper">
-                        <FinanceTable title={'Прибыльность'} data={data2} />
-                        <ChartTable />
-                    </div>
-                </div>
-                <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
-                    <WidePlate title={'ABC-анализ'} />
-                </div>
+                            <div className="container p-4 pt-0 d-flex gap-3">
+                                <MediumPlate name={'Заказы'} value={sumOrders} quantity={orders?.length || 0} />
+                                <MediumPlate name={'Продажи'} value={sumSales} quantity={sales?.length || 0} />
+                                <MediumPlate name={'Возвраты'} value={sumCanceled || 4} quantity={canceled?.length || 0} />
+                                <div className="col d-flex flex-column">
+                                    <div className='mb-3'>
+                                        <SmallPlate name={'Процент выкупа'} value={buyOutPrice || 0} type={'percent'} />
+                                    </div>
+                                    <SmallPlate name={'Средний чек'} value={averageCheck || 0} type={'price'} />
+                                </div>
+                            </div>
+                            <div className="container p-4 pt-0 pb-3 d-flex gap-3">
+                                <div className="col">
+                                    <BigChart name={'Заказы и продажи'} data={data}
+                                        orderOn={orderOn}
+                                        salesOn={salesOn}
+                                        setOrderOn={setOrderOn}
+                                        setSalesOn={setSalesOn}
+                                    />
+                                </div>
+                            </div>
+                            {/* <div className="container p-4 pt-0 pb-3 d-flex gap-3">
+                                <div className="col">
+                                    <SmallPlate name={'Себестоимость проданных товаров'} />
+                                </div>
+                                <div className="col">
+                                    <SmallPlate name={'Возвраты'} />
+                                </div>
+                                <div className="col">
+                                    <SmallPlate name={'Штрафы WB'} />
+                                </div>
+                                <div className="col">
+                                    <SmallPlate name={'Доплаты WB'} />
+                                </div>
+                            </div>
+                            <div className="container p-4 pt-0 d-flex gap-3">
+                                <div className="col">
+                                    <SmallPlate name={'Комиссия WB'} />
+                                </div>
+                                <div className="col">
+                                    <SmallPlate name={'Расходы на логистику'} />
+                                </div>
+                                <div className="col">
+                                    <SmallPlate name={'Маржинальная прибыль'} />
+                                </div>
+                                <div className="col">
+                                    <SmallPlate name={'Упущенные продажи'} />
+                                </div>
+                            </div>
+
+                            <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
+                                <div className="wrapper">
+                                    <FinanceTable title={'Финансы'} data={[]} />
+                                    <StorageTable title={'Склад'} data={[]} titles={[]} subtitles={[]} />
+                                </div>
+                                <div className="wrapper">
+                                    <FinanceTable title={'Прибыльность'} data={[]} />
+                                    <ChartTable title={'Расходы'} />
+                                </div>
+                            </div>
+                            <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
+                                <WidePlate title={'ABC-анализ'} />
+                            </div> */}
+                        </div>
+                }
 
             </div>
         </div>
