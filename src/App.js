@@ -41,7 +41,7 @@ function App() {
           {/* <Route path='/development/*' element={<Navigate to={'/development/signin'} replace />} /> */}
           <Route path='/development/signup' element={<SignUpPage />} />
           <Route path='/development/signin' element={<SignInPage />} />
-          <Route path='/development/onboarding' element={<Onboarding />} />
+          {/* <Route path='/development/onboarding' element={<Onboarding />} /> */}
           {/* <Route path='/development/dashboard' element={<DashboardPage />} /> */}
 
           <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
