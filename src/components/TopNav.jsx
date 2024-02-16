@@ -52,7 +52,7 @@ const TopNav = ({ title }) => {
                                 <p className='mb-2'>Экспорт отчетов</p>
                                 <p className='mb-2'>Тарифы</p>
                                 <hr style={{ minWidth: '220px', height: '1px', border: '1px solid silver', marginBottom: '4px' }} />
-                                <a href="#" className='link'
+                                <span className='link mt-2'
                                     style={{
                                         paddingTop: '4px',
                                         width: '240px'
@@ -63,7 +63,7 @@ const TopNav = ({ title }) => {
                                     }}
                                 >
                                     Выход
-                                </a>
+                                </span>
                             </div> :
                             null
                     }
