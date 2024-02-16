@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import logo from '../assets/logo.png'
 import InputField from '../components/InputField'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AuthContext from '../service/AuthContext'
 
 
@@ -13,6 +13,8 @@ const SignInForm = () => {
     const emailHandler = (e) => {
         setEmail(e.target.value);
     }
+
+    const navigate = useNavigate()
 
     const passHandler = (e) => {
         setPassword(e.target.value);
@@ -46,6 +48,7 @@ const SignInForm = () => {
             <div className="mb-2 mt-2" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <p className="clue-text"
                     style={{ cursor: 'pointer' }}
+                    onClick={() => { navigate('/development/reset') }}
                 >
                     Забыли пароль?
                 </p>
