@@ -55,7 +55,7 @@ const SignInForm = () => {
             </div>
             <button className='prime-btn' onClick={() => login(email, password)}>Войти</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <p className='clue-text'>Еще нет аккаунта? <Link className='link' to={'/development/signin'}>Регистрация</Link></p>
+                <p className='clue-text'>Еще нет аккаунта? <Link className='link' to={'/development/signup'}>Регистрация</Link></p>
             </div>
         </div>
     )
