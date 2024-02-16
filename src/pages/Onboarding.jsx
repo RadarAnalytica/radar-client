@@ -31,6 +31,7 @@ const Onboarding = () => {
         } else {
             ServiceFunctions.updateToken(brandName, token, user.id).then(data => {
                 if (data) {
+                    localStorage.setItem('authToken', data.token)
                     navigate('/development/dashboard')
                 }
             })
