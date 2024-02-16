@@ -3,6 +3,7 @@ import AuthContext from '../service/AuthContext'
 import noticon from '../assets/notification.png'
 import question from '../assets/question.png'
 import settings from '../assets/settings.png'
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -11,6 +12,8 @@ const TopNav = ({ title }) => {
     const { user, logout } = useContext(AuthContext)
 
     const [menuShown, setMenuShown] = useState(false)
+
+    const navigate = useNavigate()
 
     return (
         <div className='top-nav'>
@@ -54,7 +57,10 @@ const TopNav = ({ title }) => {
                                         paddingTop: '4px',
                                         width: '240px'
                                     }}
-                                    onClick={logout}
+                                    onClick={() => {
+                                        logout();
+                                        navigate('/development/signin')
+                                    }}
                                 >
                                     Выход
                                 </a>
