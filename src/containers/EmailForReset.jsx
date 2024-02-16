@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import logo from '../assets/logo.png'
 import InputField from '../components/InputField'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { URL } from '../service/config'
 
 const EmailForReset = () => {
@@ -22,7 +22,11 @@ const EmailForReset = () => {
                 email
             })
         })
+        const data = await res.json()
+        return data
     }
+
+    const navigate = useNavigate()
 
     return (
         <div className='signin-form'>
@@ -39,7 +43,7 @@ const EmailForReset = () => {
                     required={true}
                 />
             </div>
-            <button className='prime-btn' onClick={() => { email ? requestLink(email) : console.log(); }}>Получить ссылку</button>
+            <button className='prime-btn' onClick={() => { email ? requestLink(email).then(data => navigate('/development/signin')) : console.log(); }}>Получить ссылку</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text'>
                     <Link className='link' style={{ marginRight: '20px' }} to={'/development/signup'}>Регистрация</Link>

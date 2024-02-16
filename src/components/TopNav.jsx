@@ -52,7 +52,7 @@ const TopNav = ({ title }) => {
                                 <p className='mb-2'>Экспорт отчетов</p>
                                 <p className='mb-2'>Тарифы</p>
                                 <hr style={{ minWidth: '220px', height: '1px', border: '1px solid silver', marginBottom: '4px' }} />
-                                <span className='link mt-2'
+                                <span href="/development/signin" className='link'
                                     style={{
                                         paddingTop: '4px',
                                         width: '240px'

@@ -32,7 +32,7 @@ const RestorePass = ({ email }) => {
     const handler = (e) => {
         if (pass && confPass && (pass === confPass)) {
             updatePass(email, pass).then(data => {
-                if (data.success) {
+                if (data) {
                     alert('Пароль успешно обновлен!')
                     navigate('/development/signin')
                 } else {
