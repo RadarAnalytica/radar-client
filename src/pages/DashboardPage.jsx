@@ -23,7 +23,7 @@ const DashboardPage = () => {
     const navigate = useNavigate()
     useEffect(() => {
         setTimeout(() => {
-            if (user) {
+            if (!user) {
                 navigate('/development/onboarding')
             }
         }, 1000);
