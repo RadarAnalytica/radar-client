@@ -29,11 +29,11 @@ const DashboardPage = () => {
         }, 1000);
     }, [user])
 
-    const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
+    const weekAgo = new Date(new Date().setDate(new Date().getDate() - 31)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const dateTo = new Date(new Date().setDate(new Date().getDate())).toLocaleDateString('ru')?.split('.').reverse().join('-')
-    const [period, setPeriod] = useState({ period: weekAgo, days: 7 })
+    const [period, setPeriod] = useState({ period: weekAgo, days: 31 })
     useEffect(() => {
-        setPeriod({ period: weekAgo, days: 7 })
+        setPeriod({ period: weekAgo, days: 31 })
     }, [])
 
     const getWBSales = async (user, period, dateTo) => {
@@ -48,13 +48,12 @@ const DashboardPage = () => {
     }
 
     useEffect(() => {
-        if (user && period) {
+        let found = localStorage.getItem('dashboard')
+        if (user && period && !found) {
             getWBSales(user, period, dateTo).then(data => {
-                let found = localStorage.getItem('dashboard')
-                if (data && data.sales?.length && !found) {
-                    setTimeout(() => {
-                        localStorage.setItem('dashboard', JSON.stringify(data))
-                    }, 5000);
+                if (data && (data.incomes?.length || data.orders?.length || data.sales?.length) && !found) {
+                    localStorage.setItem('dashboard', JSON.stringify(data))
+                    setWbData(data)
                 }
             })
         }
@@ -64,9 +63,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         setWbData(JSON.parse(dashData))
-    }, [dashData])
-
-    // console.log(dashData);
+    }, [])
 
 
     // Поставки
@@ -90,30 +87,46 @@ const DashboardPage = () => {
     // склады
     const warehouses = wbData ? wbData.warehouses : []
 
-    // К перечислению продавцу
-    const sumSales = sales && sales.length ? sales.map(i => i.forPay)?.reduce((a, b) => a + b, 0)?.toFixed(2) : 0
-    const sumOrders = orders && orders.length ? orders.map(i => i.finishedPrice)?.reduce((a, b) => a + b, 0)?.toFixed(2) : 0
-    const canceled = orders && orders.length ? orders.filter(i => i.isCancel === true) : []
-    const sumCanceled = canceled && canceled.length ? canceled.map(i => i.finishedPrice)?.reduce((a, b) => a + b, 0) : 0
 
-    const buyOutPrice = sumOrders && sumCanceled ? (sumCanceled / (sumOrders / 100))?.toFixed(2) : 0
-    const averageCheck = sumOrders && orders ? (Number(sumOrders) / orders.length)?.toFixed(2) : 0
+    const [sumSales, setSumSales] = useState()
+    const [sumOrders, setSUmOrders] = useState()
+    const [canceled, setCanceled] = useState()
+    const [sumCanceled, setSumCanceled] = useState()
+    const [buyOutPrice, setBuyoutPrice] = useState()
+    const [averageCheck, setAverageCheck] = useState()
+
+    useEffect(() => {
+        const sumSales = sales && sales.length ? sales.map(i => i.forPay)?.reduce((a, b) => a + b, 0)?.toFixed(2) : 0
+        setSumSales(sumSales)
+        const sumOrders = orders && orders.length ? orders.map(i => i.finishedPrice)?.reduce((a, b) => a + b, 0)?.toFixed(2) : 0
+        setSUmOrders(sumOrders)
+        const canceled = orders && orders.length ? orders.filter(i => i.isCancel === true) : []
+        setCanceled(canceled)
+        const sumCanceled = canceled && canceled.length ? canceled.map(i => i.finishedPrice)?.reduce((a, b) => a + b, 0) : 0
+        setSumCanceled(sumCanceled)
+
+        const buyOutPrice = sumOrders && sumCanceled ? (sumCanceled / (sumOrders / 100))?.toFixed(2) : 0
+        setBuyoutPrice(buyOutPrice)
+        const averageCheck = sumOrders && orders ? (Number(sumOrders) / orders.length)?.toFixed(2) : 0
+        setAverageCheck(averageCheck)
+
+    }, [wbData])
+
+
+    // К перечислению продавцу
 
     const inWayToClient = stocks && stocks.length ? stocks.filter(i => i.inWayToClient) : []
     const inWayFromClient = stocks && stocks.length ? stocks.filter(i => i.inWayFromClient) : []
 
-    // console.log(sales);
-    // console.log(wbData);
-
 
     const [loading, setLoading] = useState(true)
-    setTimeout(() => {
-        setLoading(false)
-    }, 5000);
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 5000);
+    }, [loading])
 
-    const [days, setDays] = useState(7)
-
-
+    const [days, setDays] = useState(31)
 
     function isValidDate(date) {
         return date instanceof Date && !isNaN(date) && date.getTime() >= (new Date().getTime() - period?.days * 24 * 60 * 60 * 1000);
@@ -148,24 +161,24 @@ const DashboardPage = () => {
         return obj
     }
 
-    console.log(days);
 
-
-
-
-    const changePeriod = (e) => {
-        setPeriod(JSON.parse(e.target.value))
-        setDays(JSON.parse(e.target.value).days)
-        const filteredObj = filterArrays(wbData, days);
-        console.log(filteredObj);
-        // setWbData(filteredObj)
-        console.log(wbData);
-        // setLoading(true)
+    const changePeriod = () => {
+        console.log(days);
+        let data = localStorage.getItem('dashboard')
+        if (data) {
+            setLoading(true)
+            const filteredObj = filterArrays(JSON.parse(data), days);
+            filteredObj ? setWbData(filteredObj) : setWbData(wbData)
+        }
     }
+
+    useEffect(() => {
+        changePeriod()
+    }, [days])
 
     const [chartUnitRub, setChartUnitRub] = useState(true)
 
-    const dateList = period ? generateDateList(period.days) : generateDateList(7)
+    const dateList = period ? generateDateList(Number(days)) : generateDateList(7)
 
     // const orderValuesRub = orders && orders.length ? orders.map(i => i.finishedPrice) : []
     // const salesValuesRub = sales && sales.length ? sales.map(i => i.finishedPrice) : []
@@ -256,18 +269,19 @@ const DashboardPage = () => {
             <div className="dashboard-content pb-5">
                 <TopNav title={'Сводка продаж'} />
 
+                <DashboardFilter
+                    warehouses={warehouses}
+                    changePeriod={changePeriod}
+                    defaultValue={period?.days}
+                    setDays={setDays}
+                />
                 {
                     loading ?
                         <div className='d-flex flex-column align-items-center justify-content-center' style={{ minHeight: '70vh' }}>
                             <span className="loader"></span>
                         </div>
                         :
-                        <div>
-                            <DashboardFilter
-                                warehouses={warehouses}
-                                changePeriod={changePeriod}
-                                defaultValue={period?.days}
-                            />
+                        data && (sumOrders || sumSales) && <div>
 
                             <div className="container p-4 pt-0 d-flex gap-3">
                                 <MediumPlate name={'Заказы'} value={sumOrders} quantity={orders?.length || 0} percent={mockData[0]} percent2={mockData[3]}

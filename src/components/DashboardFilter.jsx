@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DashboardFilter = ({ warehouses, changePeriod, defaultValue }) => {
+const DashboardFilter = ({ warehouses, changePeriod, defaultValue, setDays }) => {
 
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14)).toLocaleDateString('ru')?.split('.').reverse().join('-')
@@ -11,16 +11,12 @@ const DashboardFilter = ({ warehouses, changePeriod, defaultValue }) => {
             <div className="filter-item col-2 me-2">
                 <label htmlFor="period">Период:</label>
                 <select className='form-control' id="period"
-                    defaultValue={
-                        defaultValue === 7 ? { period: weekAgo, days: 7 }
-                            : defaultValue === 14 ? { period: twoWeeksAgo, days: 14 }
-                                : { period: monthAgo, days: 31 }
-                    }
-                    onChange={e => { changePeriod(e) }}
+                    defaultValue={'31'}
+                    onChange={e => { setDays(e.target.value) }}
                 >
-                    <option selected={defaultValue === 7 ? true : false} value={JSON.stringify({ period: weekAgo, days: 7 })}>Неделя</option>
-                    <option selected={defaultValue === 14 ? true : false} value={JSON.stringify({ period: twoWeeksAgo, days: 14 })}>14 дней</option>
-                    <option selected={defaultValue === 31 ? true : false} value={JSON.stringify({ period: monthAgo, days: 31 })}>Месяц</option>
+                    <option selected={defaultValue === 7 ? true : false} value={'7'}>Неделя</option>
+                    <option selected={defaultValue === 14 ? true : false} value={'14'}>14 дней</option>
+                    <option selected={defaultValue === 31 ? true : false} value={'31'}>Месяц</option>
                 </select>
             </div>
             <div className="filter-item col-2 me-2">
