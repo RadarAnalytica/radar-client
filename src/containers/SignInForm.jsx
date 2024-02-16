@@ -27,13 +27,13 @@ const SignInForm = () => {
         <div className='signin-form'>
             <div className='d-flex flex-column align-items-center'>
                 <img src={logo} alt="" className='logo' />
-                <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Регистрация</h1>
+                <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Вход</h1>
             </div>
             <div className='fields-container'>
                 <InputField
-                    type={'text'}
+                    type={'email'}
                     placeholder={'Указанный при регистрации'}
-                    label={'ФИО'}
+                    label={'Email'}
                     callback={emailHandler}
                     required={true}
                 />

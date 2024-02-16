@@ -49,7 +49,7 @@ const RestorePass = ({ email }) => {
         <div className='signin-form'>
             <div className='d-flex flex-column align-items-center'>
                 <img src={logo} alt="" className='logo' />
-                <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Обновление пароля</h1>
+                <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Восстановление пароля</h1>
             </div>
             <div className='fields-container'>
                 <InputField
