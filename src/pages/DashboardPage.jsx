@@ -280,7 +280,7 @@ const DashboardPage = () => {
                             <span className="loader"></span>
                         </div>
                         :
-                        data && (sumOrders || sumSales) && <div>
+                        data && <div>
 
                             <div className="container p-4 pt-0 d-flex gap-3">
                                 <MediumPlate name={'Заказы'} value={sumOrders} quantity={orders?.length || 0} percent={mockData[0]} percent2={mockData[3]}
