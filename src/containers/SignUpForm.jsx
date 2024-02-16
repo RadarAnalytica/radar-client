@@ -4,6 +4,7 @@ import InputField from '../components/InputField'
 import SelectField from '../components/SelectField'
 import { Link, useNavigate } from 'react-router-dom'
 import { ServiceFunctions } from '../service/serviceFunctions'
+import InfoForm from './InfoForm'
 
 const SignUpForm = () => {
 
@@ -62,6 +63,8 @@ const SignUpForm = () => {
         setRegData({ ...regData, promoCode: e.target.value })
     }
 
+    const [sent, setSent] = useState(false)
+
     useEffect(() => {
         let firstName = name?.split(' ')[0]
         let lastName = name?.split(' ')[1]
@@ -79,7 +82,8 @@ const SignUpForm = () => {
             ServiceFunctions.register(obj).then(data => {
                 if (!data) {
                     alert('Подтвердите регистрацию по ссылке, высланной Вам на почте')
-                    navigate('/development/signin')
+                    // navigate('/development/signin')
+                    setSent(!sent)
                 }
                 else {
                     navigate('/development/dashboard')
@@ -96,64 +100,67 @@ const SignUpForm = () => {
     console.log(regData);
 
     return (
-        <div className='signup-form'>
-            <div className='d-flex flex-column align-items-center'>
-                <img src={logo} alt="" className='logo' />
-                <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Регистрация</h1>
+        sent ?
+            <InfoForm />
+            :
+            <div className='signup-form'>
+                <div className='d-flex flex-column align-items-center'>
+                    <img src={logo} alt="" className='logo' />
+                    <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Регистрация</h1>
+                </div>
+                <div className='fields-container'>
+                    <InputField
+                        type={'text'}
+                        placeholder={'Фамилия Имя Отчество'}
+                        label={'ФИО'}
+                        callback={nameHandler}
+                        required={true}
+                    />
+                    <SelectField
+                        options={options}
+                        label={'На каком этапе вы находитесь?'}
+                        defautlValue={'На каком этапе вы находитесь?'}
+                        callback={getStage}
+                    />
+                    <InputField
+                        type={'tel'}
+                        placeholder={'+7'}
+                        label={'Номер телефона'}
+                        callback={getPhone}
+                        required={true}
+                    />
+                    <InputField
+                        type={'text'}
+                        placeholder={'На него придет подтвеждение'}
+                        label={'Email'}
+                        callback={getEmail}
+                        required={true}
+                    />
+                    <InputField
+                        type={'password'}
+                        placeholder={'Минимум 6 символов'}
+                        label={'Пароль'}
+                        callback={getPass}
+                        required={true}
+                    />
+                    <InputField
+                        type={'text'}
+                        placeholder={'Промокод'}
+                        label={'Промокод'}
+                        callback={getPromo}
+                    />
+                </div>
+                <button className='prime-btn' onClick={e => sumbitHandler(e, regData)}>Зарегистрироваться</button>
+                <div>
+                    <p className='clue-text'>Уже есть аккаунт? <Link className='link' to={'/development/signin'}>Войти</Link></p>
+                </div>
+                <div className="text-center">
+                    <p className='m-0 p-0 clue-text'>
+                        Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с Пользовательским соглашением и Политикой
+                        конфиденциальности
+                    </p>
+                </div>
             </div>
-            <div className='fields-container'>
-                <InputField
-                    type={'text'}
-                    placeholder={'Фамилия Имя Отчество'}
-                    label={'ФИО'}
-                    callback={nameHandler}
-                    required={true}
-                />
-                <SelectField
-                    options={options}
-                    label={'На каком этапе вы находитесь?'}
-                    defautlValue={'На каком этапе вы находитесь?'}
-                    callback={getStage}
-                />
-                <InputField
-                    type={'tel'}
-                    placeholder={'+7'}
-                    label={'Номер телефона'}
-                    callback={getPhone}
-                    required={true}
-                />
-                <InputField
-                    type={'text'}
-                    placeholder={'На него придет подтвеждение'}
-                    label={'Email'}
-                    callback={getEmail}
-                    required={true}
-                />
-                <InputField
-                    type={'password'}
-                    placeholder={'Минимум 6 символов'}
-                    label={'Пароль'}
-                    callback={getPass}
-                    required={true}
-                />
-                <InputField
-                    type={'text'}
-                    placeholder={'Промокод'}
-                    label={'Промокод'}
-                    callback={getPromo}
-                />
-            </div>
-            <button className='prime-btn' onClick={e => sumbitHandler(e, regData)}>Зарегистрироваться</button>
-            <div>
-                <p className='clue-text'>Уже есть аккаунт? <Link className='link' to={'/signin'}>Войти</Link></p>
-            </div>
-            <div className="text-center">
-                <p className='m-0 p-0 clue-text'>
-                    Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с Пользовательским соглашением и Политикой
-                    конфиденциальности
-                </p>
-            </div>
-        </div>
     )
 }
 

@@ -43,8 +43,15 @@ const SignInForm = () => {
                     required={true}
                 />
             </div>
+            <div className="mb-2 mt-2" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <p className="clue-text"
+                    style={{ cursor: 'pointer' }}
+                >
+                    Забыли пароль?
+                </p>
+            </div>
             <button className='prime-btn' onClick={() => login(email, password)}>Войти</button>
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text'>Еще нет аккаунта? <Link className='link' to={'/signin'}>Регистрация</Link></p>
             </div>
         </div>

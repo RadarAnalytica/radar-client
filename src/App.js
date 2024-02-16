@@ -8,6 +8,7 @@ import ConfirmationPage from './pages/ConfirmationPage';
 import DashboardPage from './pages/DashboardPage';
 import { useContext } from 'react';
 import MockUpPage from './pages/MockUpPage';
+import ResetPage from './pages/ResetPage';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
           {/* <Route path='/development/dashboard' element={<DashboardPage />} /> */}
 
           <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
+          <Route path='/development/restore/:email/:code' element={<ResetPage />} />
         </Routes>
       </AuthProvider>
     </div>
