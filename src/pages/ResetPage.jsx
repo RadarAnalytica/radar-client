@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import RestorePass from '../containers/RestorePass'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { URL } from '../service/config'
 
 const ResetPage = () => {
 
