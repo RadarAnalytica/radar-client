@@ -67,7 +67,7 @@ const RestorePass = ({ email }) => {
             <button className='prime-btn' onClick={(e) => handler(e)}>Обновить</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text'>
-                    <Link className='link' to={'/development/signup'}>Регистрация</Link>
+                    <Link className='link' to={'/development/signup'} style={{ marginRight: '20px' }}>Регистрация</Link>
                     <Link className='link' to={'/development/signin'}>Вход</Link></p>
             </div>
         </div>

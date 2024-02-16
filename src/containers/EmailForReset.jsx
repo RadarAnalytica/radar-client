@@ -42,7 +42,7 @@ const EmailForReset = () => {
             <button className='prime-btn' onClick={() => { email ? requestLink(email) : console.log(); }}>Получить ссылку</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text'>
-                    <Link className='link' to={'/development/signup'}>Регистрация</Link>
+                    <Link className='link' style={{ marginRight: '20px' }} to={'/development/signup'}>Регистрация</Link>
                     <Link className='link' to={'/development/signin'}>Вход</Link>
                 </p>
             </div>
