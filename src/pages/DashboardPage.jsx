@@ -51,7 +51,7 @@ const DashboardPage = () => {
         let found = localStorage.getItem('dashboard')
         if (user && period && !found) {
             getWBSales(user, period, dateTo).then(data => {
-                if (data && (data.incomes?.length || data.orders?.length || data.sales?.length) && !found) {
+                if (data && (data.orders?.length || data.sales?.length)) {
                     localStorage.setItem('dashboard', JSON.stringify(data))
                     setWbData(data)
                 }
