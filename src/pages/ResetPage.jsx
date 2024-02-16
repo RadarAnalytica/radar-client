@@ -21,7 +21,7 @@ const ResetPage = () => {
         if (email && code) {
             const postData = { email, code };
 
-            axios.patch(`${URL}/api/user/reset`, postData)
+            axios.patch(`${URL}/api/user/confirm-reset`, postData)
                 .then(response => {
                     console.log('Успешно подтверждено', response.data);
                     setConfirmed(true)

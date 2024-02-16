@@ -9,6 +9,7 @@ import DashboardPage from './pages/DashboardPage';
 import { useContext } from 'react';
 import MockUpPage from './pages/MockUpPage';
 import ResetPage from './pages/ResetPage';
+import RequestResetLink from './pages/RequestResetLink';
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
 
           <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
           <Route path='/development/restore/:email/:code' element={<ResetPage />} />
+          <Route path='/development/reset' element={<RequestResetLink />} />
         </Routes>
       </AuthProvider>
     </div>
