@@ -38,6 +38,7 @@ function App() {
       <AuthProvider >
         <Routes>
           <Route path='/' element={<MockUpPage />} />
+          {/* <Route path='/development/*' element={<Navigate to={'/development/signin'} replace />} /> */}
           <Route path='/development/signup' element={<SignUpPage />} />
           <Route path='/development/signin' element={<SignInPage />} />
           <Route path='/development/onboarding' element={<Onboarding />} />

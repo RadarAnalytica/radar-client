@@ -24,10 +24,12 @@ const DashboardPage = () => {
     useEffect(() => {
         setTimeout(() => {
             if (user && !user.isOnboarded) {
-                navigate('/development/signin')
+                // navigate('/development/signin')
             }
         }, 1000);
     }, [user])
+
+    console.log(user);
 
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const [period, setPeriod] = useState({ period: weekAgo, days: 7 })

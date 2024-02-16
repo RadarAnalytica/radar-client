@@ -25,7 +25,9 @@ const SignUpForm = () => {
         stage: options[0],
         email: null,
         password: null,
-        promoCode: null
+        promoCode: null,
+        confirmed: false,
+        isOnboarded: false
     })
 
     const nameHandler = (e) => {

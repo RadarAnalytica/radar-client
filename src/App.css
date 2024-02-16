@@ -21,6 +21,22 @@
   background-color: var(--main-bg);
 }
 
+.top-menu {
+  position: relative;
+}
+
+.settings-modal {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: white;
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 160px;
+  min-width: 240px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
 
 .signup-page {
   display: flex;
