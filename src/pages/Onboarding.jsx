@@ -14,7 +14,7 @@ const Onboarding = () => {
     useEffect(() => {
         setTimeout(() => {
             if (!user) {
-                // navigate('/development/signin')
+                navigate('/development/signin')
             }
         }, 200);
     }, [user])

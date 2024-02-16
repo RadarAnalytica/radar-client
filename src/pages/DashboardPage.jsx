@@ -24,21 +24,20 @@ const DashboardPage = () => {
     useEffect(() => {
         setTimeout(() => {
             if (user && !user.isOnboarded) {
-                // navigate('/development/signin')
+                navigate('/development/onboarding')
             }
         }, 1000);
     }, [user])
 
-    console.log(user);
-
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
+    const dateTo = new Date(new Date().setDate(new Date().getDate())).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const [period, setPeriod] = useState({ period: weekAgo, days: 7 })
     useEffect(() => {
         setPeriod({ period: weekAgo, days: 7 })
     }, [])
 
-    const getWBSales = async (user, period) => {
-        const res = await fetch(`${URL}/api/user/sales/${user.id}?dateFrom=${period?.period}`, {
+    const getWBSales = async (user, period, dateTo) => {
+        const res = await fetch(`${URL}/api/user/sales/${user.id}?dateFrom=${period?.period}&dateTo=${dateTo}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -50,9 +49,24 @@ const DashboardPage = () => {
 
     useEffect(() => {
         if (user && period) {
-            getWBSales(user, period).then(data => setWbData(data))
+            getWBSales(user, period, dateTo).then(data => {
+                let found = localStorage.getItem('dashboard')
+                if (data && data.sales?.length && !found) {
+                    setTimeout(() => {
+                        localStorage.setItem('dashboard', JSON.stringify(data))
+                    }, 5000);
+                }
+            })
         }
     }, [user, period])
+
+    const dashData = localStorage.getItem('dashboard')
+
+    useEffect(() => {
+        setWbData(JSON.parse(dashData))
+    }, [dashData])
+
+    // console.log(dashData);
 
 
     // Поставки
@@ -88,6 +102,9 @@ const DashboardPage = () => {
     const inWayToClient = stocks && stocks.length ? stocks.filter(i => i.inWayToClient) : []
     const inWayFromClient = stocks && stocks.length ? stocks.filter(i => i.inWayFromClient) : []
 
+    // console.log(sales);
+    // console.log(wbData);
+
 
     const [loading, setLoading] = useState(true)
     setTimeout(() => {
@@ -96,10 +113,54 @@ const DashboardPage = () => {
 
     const [days, setDays] = useState(7)
 
+
+
+    function isValidDate(date) {
+        return date instanceof Date && !isNaN(date) && date.getTime() >= (new Date().getTime() - period?.days * 24 * 60 * 60 * 1000);
+    }
+
+    // Рекурсивная функция для обхода всех значений объекта и его подобъектов
+    function filterObjects(obj) {
+        if (Array.isArray(obj)) {
+            return obj.map(item => Array.isArray(item) || typeof item === 'object' ? filterObjects(item) : item);
+        } else if (typeof obj === 'object' && obj !== null) {
+            return Object.fromEntries(
+                Object.entries(obj).map(([key, value]) => [key, filterObjects(value)])
+            );
+        } else if (isValidDate(new Date(obj))) {
+            // Преобразуем объекты Date в строки
+            return new Date(obj).toISOString();
+        } else {
+            return obj;
+        }
+    }
+
+    function filterArrays(obj, days) {
+        for (let key in obj) {
+            if (Array.isArray(obj[key])) {
+                obj[key] = obj[key].filter(item => {
+                    const date = new Date(item.date);
+                    const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+                    return date >= weekAgo;
+                });
+            }
+        }
+        return obj
+    }
+
+    console.log(days);
+
+
+
+
     const changePeriod = (e) => {
         setPeriod(JSON.parse(e.target.value))
-        setWbData(null)
-        setLoading(true)
+        setDays(JSON.parse(e.target.value).days)
+        const filteredObj = filterArrays(wbData, days);
+        console.log(filteredObj);
+        // setWbData(filteredObj)
+        console.log(wbData);
+        // setLoading(true)
     }
 
     const [chartUnitRub, setChartUnitRub] = useState(true)

@@ -5,8 +5,11 @@ import purplegrow from '../assets/purple-grow.png'
 import goods from '../assets/mygoods.png'
 import magic from '../assets/magic.png'
 import support from '../assets/support.png'
+import { useNavigate } from 'react-router-dom'
 
 const SideNav = () => {
+
+    const navigate = useNavigate()
 
     const url = document.location.href
     const chunkArray = url ? url.split('/').reverse() : null
@@ -23,7 +26,7 @@ const SideNav = () => {
                 <img src={logo} alt="" style={{ maxWidth: '160px' }} />
 
                 <div className='mt-4'>
-                    <div className='sidenav-el'>
+                    <div className='sidenav-el' onClick={() => navigate('/development/dashboard')}>
                         <img src={active === 'dashboard' ? purplegrow : greygrow} alt="" className='side-nav-icon' />
                         <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', color: 'black' } : {}}>Сводка продаж</span>
                     </div>
