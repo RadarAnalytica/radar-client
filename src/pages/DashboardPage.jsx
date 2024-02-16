@@ -163,7 +163,6 @@ const DashboardPage = () => {
 
 
     const changePeriod = () => {
-        console.log(days);
         let data = localStorage.getItem('dashboard')
         if (data) {
             setLoading(true)
