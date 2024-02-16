@@ -71,7 +71,6 @@ export const AuthProvider = ({ children }) => {
         setAuthToken(null)
         setUser(null)
         localStorage.removeItem('authToken')
-        navigate('/development/signin')
     }
 
     // Offcanvas functions
