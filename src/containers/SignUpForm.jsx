@@ -97,8 +97,6 @@ const SignUpForm = () => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
 
-    console.log(regData);
-
     return (
         sent ?
             <InfoForm />

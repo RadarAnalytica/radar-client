@@ -34,7 +34,7 @@ const EmailForReset = () => {
                 <InputField
                     type={'text'}
                     placeholder={'Указанный при регистрации'}
-                    label={'ФИО'}
+                    label={'Email'}
                     callback={emailHandler}
                     required={true}
                 />

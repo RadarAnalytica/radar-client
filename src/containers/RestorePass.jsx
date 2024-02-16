@@ -25,12 +25,15 @@ const RestorePass = ({ email }) => {
                 pass
             })
         })
+        const data = await res.json()
+        return data
     }
 
     const handler = (e) => {
         if (pass && confPass && (pass === confPass)) {
             updatePass(email, pass).then(data => {
                 if (data) {
+                    alert('Пароль успешно обновлен!')
                     navigate('/development/signin')
                 } else {
                     alert('Возникла ошибка. Поторите попытку')
@@ -50,14 +53,14 @@ const RestorePass = ({ email }) => {
             </div>
             <div className='fields-container'>
                 <InputField
-                    type={'text'}
+                    type={'password'}
                     placeholder={'Новый пароль'}
                     label={'Новый пароль'}
                     callback={handlePass}
                     required={true}
                 />
                 <InputField
-                    type={'text'}
+                    type={'password'}
                     placeholder={'Подтвердите пароль'}
                     label={'Подтвердите пароль'}
                     callback={handleConfPass}
