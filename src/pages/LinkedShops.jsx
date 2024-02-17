@@ -27,7 +27,7 @@ const LinkedShops = () => {
                         <div className="d-flex justify-content-between">
                             <div>
                                 <p className='p-0 m-0' style={{ fontWeight: 700, fontSize: 24 }}>
-                                    {user && status && `${status} ${user.firstName} ${user.lastName} ${user.patronym ? user.patronym : ''}`}
+                                    {user && `${status} ${user.firstName} ${user.lastName} ${user.patronym ? user.patronym : ''}`}
                                 </p>
                                 <p className="clue-text p-0 m-0">Последнее обновление {new Date(user?.updatedAt).toLocaleDateString() || null}</p>
                             </div>
