@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 export const formatPrice = (price) => {
     if (price) {
         price = price.toString()

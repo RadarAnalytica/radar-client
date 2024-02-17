@@ -29,15 +29,16 @@ const DashboardPage = () => {
         }, 1000);
     }, [user])
 
-    const weekAgo = new Date(new Date().setDate(new Date().getDate() - 31)).toLocaleDateString('ru')?.split('.').reverse().join('-')
+    const twoMonthAgo = new Date(new Date().setDate(new Date().getDate() - 61)).toLocaleDateString('ru')?.split('.').reverse().join('-')
+    const monthAgo = new Date(new Date().setDate(new Date().getDate() - 31)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const dateTo = new Date(new Date().setDate(new Date().getDate())).toLocaleDateString('ru')?.split('.').reverse().join('-')
-    const [period, setPeriod] = useState({ period: weekAgo, days: 31 })
+    const [period, setPeriod] = useState({ period: monthAgo, days: 31 })
     useEffect(() => {
-        setPeriod({ period: weekAgo, days: 31 })
+        setPeriod({ period: monthAgo, days: 31 })
     }, [])
 
     const getWBSales = async (user, period, dateTo) => {
-        const res = await fetch(`${URL}/api/user/sales/${user.id}?dateFrom=${period?.period}&dateTo=${dateTo}`, {
+        const res = await fetch(`${URL}/api/user/sales/${user.id}?dateFrom=${twoMonthAgo}&dateTo=${dateTo}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -47,13 +48,33 @@ const DashboardPage = () => {
         return data
     }
 
+    function filterArrays(obj, days) {
+        for (let key in obj) {
+            if (Array.isArray(obj[key])) {
+                obj[key] = obj[key].filter(item => {
+                    const date = new Date(item.date);
+                    const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+                    return date >= weekAgo;
+                });
+            }
+        }
+        return obj
+    }
+
+    const hash = {}
+
     useEffect(() => {
         let found = localStorage.getItem('dashboard')
         if (user && period && !found) {
             getWBSales(user, period, dateTo).then(data => {
                 if (data && (data.orders?.length || data.sales?.length)) {
-                    localStorage.setItem('dashboard', JSON.stringify(data))
-                    setWbData(data)
+                    for (let key in data) {
+                        if (data[key]) {
+                            hash[key] = data[key]
+                        }
+                    }
+                    localStorage.setItem('dashboard', JSON.stringify(hash))
+                    setWbData(filterArrays(hash, 31))
                 }
             })
         }
@@ -148,19 +169,6 @@ const DashboardPage = () => {
         }
     }
 
-    function filterArrays(obj, days) {
-        for (let key in obj) {
-            if (Array.isArray(obj[key])) {
-                obj[key] = obj[key].filter(item => {
-                    const date = new Date(item.date);
-                    const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-                    return date >= weekAgo;
-                });
-            }
-        }
-        return obj
-    }
-
 
     const changePeriod = () => {
         let data = localStorage.getItem('dashboard')
@@ -174,6 +182,11 @@ const DashboardPage = () => {
     useEffect(() => {
         changePeriod()
     }, [days])
+
+    const dates = orders ? [...new Set(orders.map(i => new Date(i.date).toLocaleDateString()))] :
+        sales ? [...new Set(sales.map(i => new Date(i.date).toLocaleDateString()))] : generateDateList(Number(days))
+
+    // console.log(dates);
 
     const [chartUnitRub, setChartUnitRub] = useState(true)
 
