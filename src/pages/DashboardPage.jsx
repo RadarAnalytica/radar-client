@@ -61,21 +61,30 @@ const DashboardPage = () => {
         return obj
     }
 
-    const hash = {}
+
 
     useEffect(() => {
         let found = localStorage.getItem('dashboard')
         if (user && period && !found) {
             getWBSales(user, period, dateTo).then(data => {
+
                 if (data && (data.orders?.length || data.sales?.length)) {
+                    const hash = {}
                     for (let key in data) {
-                        if (data[key]) {
+                        if (data[key] && data[key].length) {
+                            hash[key] = data[key]
+                        } else if (data[key] && data[key].hasOwnProperty()) {
+                            hash[key] = data[key]
+                        } else if (!Object.keys(hash).find(k => k === key) && data[key] === null) {
+                            hash[key] = null
+                        } else {
                             hash[key] = data[key]
                         }
                     }
                     localStorage.setItem('dashboard', JSON.stringify(hash))
                     setWbData(filterArrays(hash, 31))
                 }
+
             })
         }
     }, [user, period])
@@ -185,8 +194,6 @@ const DashboardPage = () => {
 
     const dates = orders ? [...new Set(orders.map(i => new Date(i.date).toLocaleDateString()))] :
         sales ? [...new Set(sales.map(i => new Date(i.date).toLocaleDateString()))] : generateDateList(Number(days))
-
-    // console.log(dates);
 
     const [chartUnitRub, setChartUnitRub] = useState(true)
 
