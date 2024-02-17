@@ -73,13 +73,15 @@ const DashboardPage = () => {
                 if (data && (data.orders?.length || data.sales?.length)) {
                     const hash = {}
                     for (let key in data) {
+                        let props = Object.keys(data[key])
                         if (data[key] && data[key].length) {
                             hash[key] = data[key]
-                        } else if (data[key] && data[key].hasOwnProperty()) {
+                        } else if (data[key] && props && props.length) {
                             hash[key] = data[key]
-                        } else if (!Object.keys(hash).find(k => k === key) && data[key] === null) {
-                            hash[key] = null
                         }
+                        // else if (!Object.keys(hash).find(k => k === key) && data[key] === null) {
+                        //     hash[key] = null
+                        // }
                     }
                     localStorage.setItem('dashboard', JSON.stringify(hash))
                     setWbData(filterArrays(hash, 31))
