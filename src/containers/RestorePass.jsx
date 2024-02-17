@@ -39,6 +39,9 @@ const RestorePass = ({ email }) => {
                 } else {
                     alert('Возникла ошибка. Поторите попытку')
                 }
+            }).then(data => {
+                alert('Пароль успешно обновлен')
+                navigate('/development/signin')
             })
         }
         else {

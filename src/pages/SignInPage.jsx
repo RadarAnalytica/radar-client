@@ -11,7 +11,7 @@ const SignInPage = () => {
     useEffect(() => {
         setTimeout(() => {
             if (user) {
-                navigate('/development/dashboard')
+                // navigate('/development/dashboard')
             }
         }, 1000);
     }, [user])

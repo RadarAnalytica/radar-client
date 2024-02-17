@@ -38,6 +38,14 @@
   z-index: 999999;
 }
 
+.settings-modal p {
+  cursor: pointer;
+}
+
+.settings-modal p:hover {
+  color: var(--primary-color);
+}
+
 
 .signup-page {
   display: flex;
@@ -116,6 +124,17 @@ select {
   font-weight: 700;
 }
 
+.secondary-btn {
+  border: 2px solid var(--clue-color);
+  background-color: white;
+  color: var(--primary-color);
+  border-radius: 8px;
+  width: 100%;
+  padding: 20px 24px;
+  margin: 10px 0;
+  font-weight: 700;
+}
+
 /* Onboarding page */
 .onboarding-page {
   min-height: 100vh;
@@ -124,6 +143,61 @@ select {
 
 .clue-text {
   color: var(--clue-color);
+}
+
+.prime-text {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.user-tokens {
+  margin-top: 2rem;
+}
+
+.user-token-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.token-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.token-inactive {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  padding: 8px 16px;
+  background-color: rgba(249, 60, 101, 0.1);
+  justify-content: flex-end;
+  border-radius: 8px;
+}
+
+.token-active {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: rgba(0, 182, 155, 0.1);
+  justify-content: flex-end;
+  border-radius: 8px;
+}
+
+.token-active img,
+.token-inactive img {
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+}
+
+.refresh-token-btn {
+  font-weight: 700;
+  color: var(--primary-color);
+  cursor: pointer;
 }
 
 .onboard-form-block {
@@ -187,7 +261,8 @@ select {
 }
 
 .top-nav {
-  padding: 20px;
+  padding: 12px;
+  margin-top: 10px;
 }
 
 .top-nav>div .col,
@@ -287,6 +362,25 @@ select {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
+/* Linked shops */
+.linked-shops-page {
+  min-height: 100vh;
+  display: flex;
+}
+
+.linked-shops-content {
+  width: 100%;
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
+.linked-shop-block {
+  min-height: 200px;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+}
 
 
 /* Confirmation */
