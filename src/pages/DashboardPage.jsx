@@ -79,9 +79,9 @@ const DashboardPage = () => {
                         } else if (data[key] && props && props.length) {
                             hash[key] = data[key]
                         }
-                        // else if (!Object.keys(hash).find(k => k === key) && data[key] === null) {
-                        //     hash[key] = null
-                        // }
+                        else if (!Object.keys(hash).find(k => k === key) && data[key] === null) {
+                            hash[key] = null
+                        }
                     }
                     localStorage.setItem('dashboard', JSON.stringify(hash))
                     setWbData(filterArrays(hash, 31))
