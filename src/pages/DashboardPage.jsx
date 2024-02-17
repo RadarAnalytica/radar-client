@@ -67,7 +67,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         let found = localStorage.getItem('dashboard')
-        if (user && period && !found) {
+        if (user && period && found === null) {
             getWBSales(user, period, dateTo).then(data => {
 
                 if (data && (data.orders?.length || data.sales?.length)) {
@@ -90,7 +90,7 @@ const DashboardPage = () => {
 
             })
         }
-    }, [user, period])
+    }, [])
 
     // const dashData = localStorage.getItem('dashboard')
 
