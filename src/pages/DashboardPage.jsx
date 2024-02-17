@@ -73,7 +73,7 @@ const DashboardPage = () => {
                 if (data && (data.orders?.length || data.sales?.length)) {
                     const hash = {}
                     for (let key in data) {
-                        let props = Object.keys(data[key])
+                        let props = data[key] && typeof data[key] === 'object' ? Object.keys(data[key]) : []
                         if (data[key] && data[key].length) {
                             hash[key] = data[key]
                         } else if (data[key] && props && props.length) {
