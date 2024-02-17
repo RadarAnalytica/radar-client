@@ -51,11 +51,13 @@ const DashboardPage = () => {
     function filterArrays(obj, days) {
         for (let key in obj) {
             if (Array.isArray(obj[key])) {
-                obj[key] = obj[key].filter(item => {
-                    const date = new Date(item.date);
-                    const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-                    return date >= weekAgo;
-                });
+                if (obj[key].length && obj[key].find(el => el.date)) {
+                    obj[key] = obj[key].filter(item => {
+                        const date = new Date(item.date);
+                        const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+                        return date >= weekAgo;
+                    });
+                }
             }
         }
         return obj
@@ -87,11 +89,13 @@ const DashboardPage = () => {
         }
     }, [user, period])
 
-    const dashData = localStorage.getItem('dashboard')
+    // const dashData = localStorage.getItem('dashboard')
 
-    useEffect(() => {
-        setWbData(JSON.parse(dashData))
-    }, [])
+    // useEffect(() => {
+    //     if (dashData) {
+    //         setWbData(JSON.parse(dashData))
+    //     }
+    // }, [dashData])
 
 
     // Поставки
@@ -146,6 +150,7 @@ const DashboardPage = () => {
     const inWayToClient = stocks && stocks.length ? stocks.filter(i => i.inWayToClient) : []
     const inWayFromClient = stocks && stocks.length ? stocks.filter(i => i.inWayFromClient) : []
 
+    // console.log(inWayFromClient);
 
     const [loading, setLoading] = useState(true)
     useEffect(() => {
