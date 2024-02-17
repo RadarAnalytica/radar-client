@@ -151,7 +151,7 @@ const DashboardPage = () => {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 5000);
+        }, 7000);
     }, [loading])
 
     const [days, setDays] = useState(31)
