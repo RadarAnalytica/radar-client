@@ -64,6 +64,7 @@ const DashboardPage = () => {
     }
 
 
+    const hash = {}
 
     useEffect(() => {
         let found = localStorage.getItem('dashboard')
@@ -71,7 +72,6 @@ const DashboardPage = () => {
             getWBSales(user, period, dateTo).then(data => {
 
                 if (data && (data.orders?.length || data.sales?.length)) {
-                    const hash = {}
                     for (let key in data) {
                         let props = data[key] && !Array.isArray(data[key]) ? Object.keys(data[key]) : []
                         if (data[key] && data[key].length) {
