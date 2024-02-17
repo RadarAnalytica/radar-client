@@ -13,7 +13,8 @@ const LinkedShops = () => {
 
     console.log(user);
 
-    const status = user && user.stage && user.stage?.indexOf('Предприниматель') >= 0 ? "ИП" : user && user.stage?.indexOf('Менеджер') >= 0 ?
+    const status = user && user.stage && user.stage?.indexOf('Предприниматель') >= 0 ? "ИП" : user && user.stage?.indexOf('Менеджер') >= 0 ||
+        user && user.stage?.indexOf('менеджер') >= 0 ?
         'Менеджер' : null
 
     return (
