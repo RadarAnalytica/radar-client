@@ -77,8 +77,6 @@ const DashboardPage = () => {
                             hash[key] = data[key]
                         } else if (!Object.keys(hash).find(k => k === key) && data[key] === null) {
                             hash[key] = null
-                        } else {
-                            hash[key] = data[key]
                         }
                     }
                     localStorage.setItem('dashboard', JSON.stringify(hash))
