@@ -57,11 +57,10 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, setSalesOn, setCha
                         position: 'bottom'
                     },
                     scales: {
-                        // x: {
-                        //     type: 'category',
-                        // },
-                        // xAxes: [{ stacked: true }],
-                        // yAxes: [{ stacked: true }],
+                        y:
+                        {
+                            position: 'right'
+                        },
                     },
                 }}
             />
