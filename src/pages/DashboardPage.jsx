@@ -445,7 +445,7 @@ const DashboardPage = () => {
                                 <MediumPlate name={'Заказы'}
                                     value={sumOrders}
                                     quantity={orders?.length || 0}
-                                    percent={getDifference(filterArrays(dashData.orders), 'finishedPrice', days)?.percent}
+                                    percent={getDifference(filterArrays(dashData?.orders), 'finishedPrice', days)?.percent}
                                     percent2={mockData[3]}
                                     text={mockData2[0]}
                                     text2={mockData2[1]}
@@ -454,7 +454,7 @@ const DashboardPage = () => {
                                     name={'Продажи'}
                                     value={sumSales}
                                     quantity={sales?.length || 0}
-                                    percent={getDifference(filterArrays(dashData.sales), 'finishedPrice', days)?.percent}
+                                    percent={getDifference(filterArrays(dashData?.sales), 'finishedPrice', days)?.percent}
                                     percent2={90}
                                     text={mockData2[3]}
                                     text2={mockData2[2]}
@@ -463,7 +463,7 @@ const DashboardPage = () => {
                                     name={'Возвраты'}
                                     value={sumCanceled || 0}
                                     quantity={canceled?.length || 0}
-                                    percent={getDifference(filterArrays(dashData.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
+                                    percent={getDifference(filterArrays(dashData?.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
                                     percent2={20}
                                     text={''}
                                     text2={''}
@@ -474,14 +474,14 @@ const DashboardPage = () => {
                                             name={'Процент выкупа'}
                                             value={buyOutPrice || 0}
                                             type={'percent'}
-                                            percent={getDifference(filterArrays(dashData.orders), 'finishedPrice', days)?.percent}
+                                            percent={getDifference(filterArrays(dashData?.orders), 'finishedPrice', days)?.percent}
                                         />
                                     </div>
                                     <SmallPlate
                                         name={'Средний чек'}
                                         value={averageCheck || 0}
                                         type={'price'}
-                                        percent={getDifference(filterArrays(dashData.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
+                                        percent={getDifference(filterArrays(dashData?.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
                                     />
                                 </div>
                             </div>
