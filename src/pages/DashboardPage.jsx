@@ -437,7 +437,7 @@ const DashboardPage = () => {
                             <span className="loader"></span>
                         </div>
                         :
-                        data && user && user.isOnboadred &&
+                        data && user && user.isOnboarded &&
 
                         <div>
 
