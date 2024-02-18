@@ -294,7 +294,7 @@ select {
 .medium-plate {
   background-color: white;
   border-radius: 16px;
-  min-height: 196px;
+  min-height: 156px;
   padding: 16px;
   min-width: 200px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -341,14 +341,37 @@ select {
 }
 
 .fin-row {
-  border-bottom: 1px solid silver;
-  padding: 6px 0;
+  border-top: 1px solid silver;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.storage-table span {
+  font-size: 14px !important;
+}
+
+.chart-table-row {
+  margin-top: 1rem;
+}
+
+.chart-row-data {
+  display: flex;
+  gap: 2rem;
+}
+
+.row-chart {
+  display: flex;
+  gap: 2rem;
+  /* margin-left: ; */
 }
 
 .small-plate {
   background-color: white;
   border-radius: 16px;
-  min-height: 90px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 16px;
   min-width: 200px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);

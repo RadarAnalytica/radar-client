@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AuthContext from '../service/AuthContext'
 import wblogo from '../assets/wblogo.png'
 import redcircle from '../assets/redcircle.png'
@@ -11,7 +11,7 @@ const LinkedShops = () => {
 
     const { user } = useContext(AuthContext)
 
-    console.log(user);
+    const navigate = useNavigate()
 
     const status = user && user.stage && user.stage?.indexOf('Предприниматель') >= 0 ? "ИП" : user && user.stage?.indexOf('Менеджер') >= 0 ||
         user && user.stage?.indexOf('менеджер') >= 0 ?
@@ -55,7 +55,7 @@ const LinkedShops = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="user-token-item">
+                            {/* <div className="user-token-item">
                                 <span>Токен реклама</span>
                                 <div className='d-flex token-status'>
                                     <div className='token-inactive'>
@@ -64,7 +64,7 @@ const LinkedShops = () => {
                                     </div>
                                     <span className="refresh-token-btn prime-text">Обновить</span>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="linked-shop-block col">
@@ -73,7 +73,9 @@ const LinkedShops = () => {
                         </h3>
                         <p>Добавьте новые данные, чтобы отслеживать статистику по всем магазинам вашим в одном месте</p>
                         <div>
-                            <button className="mt-2 secondary-btn" style={{ maxWidth: '200px' }}>
+                            <button className="mt-2 secondary-btn" style={{ maxWidth: '200px' }}
+                                onClick={() => navigate('/development/onboarding')}
+                            >
                                 Подключить
                             </button>
                         </div>

@@ -1,13 +1,17 @@
 import React from 'react'
+import { formatPrice } from '../service/utils'
 
-export const TableRow = ({ values }) => {
+export const TableRow = ({ values, percent, sign }) => {
+
+    const green = require('../assets/greenarrow.png')
+    const red = require('../assets/redarrow.png')
 
     return (
         <div className='d-flex'>
             {
                 values ? values.map((val, i) => (
                     <span
-                        className='col fin-row'
+                        className={i < 2 ? 'col fin-row' : 'col-2 fin-row'}
                         key={i}
                         style={
                             i === 0 ?
@@ -17,7 +21,16 @@ export const TableRow = ({ values }) => {
                                     :
                                     { fontWeight: 700, textAlign: 'right' }
                         }
-                    >{val}</span>
+                    >
+                        {
+                            percent && i === 2 ?
+                                <img src={percent > 30 && i > 1 ? green : red} alt="" className='me-2' />
+                                : null
+                        }
+                        <span style={percent < 30 && i > 1 ? { color: 'red' } : percent > 30 && i > 1 ? { color: 'rgba(0, 182, 155, 1)' } : {}}>
+                            {i === 1 ? formatPrice(val) + (sign ? sign : ' ₽') : i > 1 ? (val + ' %') : val}
+                        </span>
+                    </span>
                 ))
                     : null
             }
@@ -25,7 +38,7 @@ export const TableRow = ({ values }) => {
     )
 }
 
-const FinanceTable = ({ title, data }) => {
+const FinanceTable = ({ title, data, sign }) => {
 
     return (
         <div className='finance-table'>
@@ -33,8 +46,9 @@ const FinanceTable = ({ title, data }) => {
             {
                 data && data.map((item, i) => {
                     let values = item ? Object.values(item) : []
-
-                    return <TableRow key={i} values={values} />
+                    let keys = item ? Object.keys(item) : []
+                    let rate = keys ? keys.find(el => el === 'rate') : null
+                    return <TableRow key={i} values={values} sign={sign} percent={rate ? item['rate'] : null} />
 
                 })
             }

@@ -1,5 +1,30 @@
 import React from 'react'
-import { TableRow } from './FinanceTable'
+import { formatPrice } from '../service/utils'
+
+const TableRow = ({ values }) => {
+
+    return (
+        <div className='d-flex'>
+            {
+                values ? values.map((val, i) => (
+                    <span
+                        className='col fin-row'
+                        key={i}
+                        style={
+                            i === 0 ?
+                                { textAlign: 'left', fontWeight: 'bold' } :
+                                i > 1 ?
+                                    { textAlign: 'right', fontWeight: 700 }
+                                    :
+                                    { fontWeight: 700, textAlign: 'right' }
+                        }
+                    >{(i === 1 || i === 2) && val !== '-' ? val + ' ₽' : i === 3 ? val + ' шт.' : i === 1 && val === '-' ? formatPrice(values[3] * 1000) + ' ₽' : val}</span>
+                ))
+                    : null
+            }
+        </div >
+    )
+}
 
 const StorageTable = ({ title, data, titles, subtitles }) => {
 
@@ -12,7 +37,7 @@ const StorageTable = ({ title, data, titles, subtitles }) => {
                         i === 0 ?
                             { textAlign: 'left', fontWeight: 'bold' } :
                             i > 1 ?
-                                { textAlign: 'right', fontWeight: 400 }
+                                { textAlign: 'right', fontWeight: 700 }
                                 :
                                 { fontWeight: 700, textAlign: 'right' }
                     } key={i}>{t}</span>)

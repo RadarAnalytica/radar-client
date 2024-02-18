@@ -28,8 +28,9 @@ function App() {
             <Route path='/development/onboarding' element={<Onboarding />} />
             <Route path='/development/dashboard' element={<DashboardPage />} />
             <Route path='/development/linked-shops' element={<LinkedShops />} />
-            {/* <Route path='/development/reset' element={<RequestResetLink />} /> */}
-            {/* <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} /> */}
+            <Route path='/development/reset' element={<RequestResetLink />} />
+            <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
+            {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
           </Routes>
         </AuthProvider>
       </div>
@@ -46,12 +47,13 @@ function App() {
           {/* <Route path='/development/*' element={<Navigate to={'/development/signin'} replace />} /> */}
           <Route path='/development/signup' element={<SignUpPage />} />
           <Route path='/development/signin' element={<SignInPage />} />
-          {/* <Route path='/development/onboarding' element={<Onboarding />} /> */}
+          <Route path='/development/onboarding' element={<Onboarding />} />
           {/* <Route path='/development/dashboard' element={<DashboardPage />} /> */}
 
           <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
           <Route path='/development/restore/:email/:code' element={<ResetPage />} />
           <Route path='/development/reset' element={<RequestResetLink />} />
+          {/* <Route path='*' element={<Navigate to={'/development/signin'} replace />} /> */}
         </Routes>
       </AuthProvider>
     </div>

@@ -13,7 +13,7 @@ const SignUpPage = () => {
             if (user) {
                 navigate('/development/dashboard')
             }
-        }, 1000);
+        }, 200);
     }, [user])
 
     return (

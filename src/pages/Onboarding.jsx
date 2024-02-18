@@ -39,7 +39,7 @@ const Onboarding = () => {
     }
 
     return (
-        <div className='onboarding-page'>
+        user && <div className='onboarding-page'>
             <SideNav />
             <div className="boarding-content w-100">
                 <TopNav title={'Подключение API'} />

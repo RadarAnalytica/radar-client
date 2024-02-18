@@ -48,7 +48,7 @@ const TopNav = ({ title }) => {
                                 </a>
                                 <p className='mt-3 mb-2'>Сотрудники</p>
                                 <p className='mb-2'>Настройки аккаунта</p>
-                                <p className='mb-2'>Подключенный магазины</p>
+                                <p className='mb-2' onClick={() => navigate('/development/linked-shops')}>Подключенный магазины</p>
                                 <p className='mb-2'>Экспорт отчетов</p>
                                 <p className='mb-2'>Тарифы</p>
                                 <hr style={{ minWidth: '220px', height: '1px', border: '1px solid silver', marginBottom: '4px' }} />
