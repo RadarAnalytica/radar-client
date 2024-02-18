@@ -61,8 +61,8 @@ export const calculateInitialCosts = (products) => {
     let totalCost = 0;
 
     products.forEach(product => {
-        totalCost += 1000 * product.quantityFull;
-        quantity += product.quantityFull
+        totalCost += 1000 * product?.quantityFull;
+        quantity += product?.quantityFull
     });
 
     return { totalCost, quantity }
