@@ -288,7 +288,7 @@ const DashboardPage = () => {
 
     const profitabilityData = [
         {
-            name: 'Выкупаемость',
+            name: 'Процент выкупа',
             value: calculatePurchasePercentage(sales, reportDetailByPeriod)
         },
         {
