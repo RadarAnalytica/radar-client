@@ -332,7 +332,7 @@ select {
 .medium-plate {
   background-color: white;
   border-radius: 16px;
-  min-height: 156px;
+  height: 27vh;
   padding: 16px;
   min-width: 200px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -345,7 +345,7 @@ select {
 .storage-table {
   background-color: white;
   border-radius: 16px;
-  min-height: 196px;
+  min-height: 360px;
   padding: 16px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -354,7 +354,7 @@ select {
 .chart-table {
   background-color: white;
   border-radius: 16px;
-  min-height: 196px;
+  min-height: 360px;
   padding: 16px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -372,7 +372,7 @@ select {
 .finance-table {
   background-color: white;
   border-radius: 16px;
-  min-height: 196px;
+  min-height: 360px;
   padding: 16px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -406,7 +406,7 @@ select {
 .small-plate {
   background-color: white;
   border-radius: 16px;
-  min-height: 100px;
+  height: 12.5vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -418,9 +418,10 @@ select {
 .big-chart {
   background-color: white;
   border-radius: 16px;
-  min-height: 500px;
+  height: 500px;
   padding: 16px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
 }
 
 /* Linked shops */
@@ -704,6 +705,15 @@ select {
   object-position: contain;
   object-fit: contain;
   object-position: center;
+}
+
+.numbers {
+  font-weight: 700;
+  font-size: 2.75vh;
+}
+
+.small-numbers {
+  font-size: 1.75vh;
 }
 
 @media screen and (max-width: 768px) {

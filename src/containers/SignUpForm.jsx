@@ -59,10 +59,6 @@ const SignUpForm = () => {
         setRegData({ ...regData, password: e.target.value })
     }
 
-    const getPromo = (e) => {
-        setRegData({ ...regData, promoCode: e.target.value })
-    }
-
     const [sent, setSent] = useState(false)
 
     useEffect(() => {
@@ -81,8 +77,6 @@ const SignUpForm = () => {
         else {
             ServiceFunctions.register(obj).then(data => {
                 if (!data) {
-                    alert('Подтвердите регистрацию по ссылке, высланной Вам на почте')
-                    // navigate('/development/signin')
                     setSent(!sent)
                 }
                 else {
@@ -140,12 +134,6 @@ const SignUpForm = () => {
                         label={'Пароль'}
                         callback={getPass}
                         required={true}
-                    />
-                    <InputField
-                        type={'text'}
-                        placeholder={'Промокод'}
-                        label={'Промокод'}
-                        callback={getPromo}
                     />
                 </div>
                 <button className='prime-btn' onClick={e => sumbitHandler(e, regData)}>Зарегистрироваться</button>

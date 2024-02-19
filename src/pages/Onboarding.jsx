@@ -11,13 +11,13 @@ const Onboarding = () => {
     const { user } = useContext(AuthContext)
 
     const navigate = useNavigate()
-    useEffect(() => {
-        setTimeout(() => {
-            if (!user) {
-                navigate('/development/signin')
-            }
-        }, 200);
-    }, [user])
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         if (!user) {
+    //             navigate('/development/signin')
+    //         }
+    //     }, 800);
+    // }, [user])
 
     const [brandName, setBrandName] = useState()
     const [token, setToken] = useState()
