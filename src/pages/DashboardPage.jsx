@@ -163,7 +163,7 @@ const DashboardPage = () => {
         setAddPayment(addPayment)
         const commissionPrice = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.commission_percent * (item.retail_price * item.quantity))?.reduce((a, b) => a + b, 0) : 0
         setCommissionPrice(commissionPrice)
-        const delivery = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.delivery_rub)?.reduce((a, b) => a + b, 0) : 0
+        const delivery = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.delivery_rub)?.filter(el => el > 0)?.reduce((a, b) => a + b, 0) : 0
         setDelivery(delivery)
         const lostProfit = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.return_amount * item.retail_price)?.reduce((a, b) => a + b, 0) : 0
         setLostProfit(lostProfit)
@@ -304,7 +304,9 @@ const DashboardPage = () => {
             value: calculateGrossProfitMargin(tax, totalProfit)
         },
     ]
-    // console.log(reportDetailByPeriod);
+
+
+    console.log();
 
     const [loading, setLoading] = useState(true)
     useEffect(() => {
@@ -391,7 +393,7 @@ const DashboardPage = () => {
                 backgroundColor: 'rgba(240, 173, 0, 1)',
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-                data: chartUnitRub ? summedOrderArray : totalOrByDate,
+                data: chartUnitRub ? summedOrderArray : totalOrByDate ? totalOrByDate : [],
             } : {
                 label: 'Заказы',
                 backgroundColor: 'rgba(240, 173, 0, 1)',
@@ -404,7 +406,7 @@ const DashboardPage = () => {
                 backgroundColor: 'rgba(83, 41, 255, 1)',
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-                data: chartUnitRub ? summedSalesArray : totalsalesByDate,
+                data: chartUnitRub ? summedSalesArray : totalsalesByDate ? totalsalesByDate : [],
             } : {
                 label: 'Продажи',
                 backgroundColor: 'rgba(83, 41, 255, 1)',
@@ -414,6 +416,9 @@ const DashboardPage = () => {
             },
         ],
     };
+
+    const sortedValuesArray = data?.datasets?.map(arr => arr?.data).flat(1)?.sort((a, b) => b - a)
+    const maxValue = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0
 
     const mockData = [117, 782, 100, 101, 701, 100, 14, 104]
     const mockData2 = ['В день ~ 9 329,01 ₽', 'В день ~ 4 560,01 ₽', 'В день ~ 4 шт', 'В день ~ 3 шт']
@@ -432,141 +437,142 @@ const DashboardPage = () => {
                     setDays={setDays}
                 />
                 {
-                    loading ?
-                        <div className='d-flex flex-column align-items-center justify-content-center' style={{ minHeight: '70vh' }}>
-                            <span className="loader"></span>
-                        </div>
-                        :
-                        data && user && user.isOnboarded &&
+                    // loading ?
+                    //     <div className='d-flex flex-column align-items-center justify-content-center' style={{ minHeight: '70vh' }}>
+                    //         <span className="loader"></span>
+                    //     </div>
+                    //     :
+                    data && user &&
 
-                        <div>
+                    <div>
 
-                            <div className="container p-4 pt-0 d-flex gap-3">
-                                <MediumPlate name={'Заказы'}
-                                    value={sumOrders}
-                                    quantity={orders?.length || 0}
-                                    percent={getDifference(filterArrays(dashData?.orders), 'finishedPrice', days)?.percent}
-                                    percent2={mockData[3]}
-                                    text={mockData2[0]}
-                                    text2={mockData2[1]}
-                                />
-                                <MediumPlate
-                                    name={'Продажи'}
-                                    value={sumSales}
-                                    quantity={sales?.length || 0}
-                                    percent={getDifference(filterArrays(dashData?.sales), 'finishedPrice', days)?.percent}
-                                    percent2={90}
-                                    text={mockData2[3]}
-                                    text2={mockData2[2]}
-                                />
-                                <MediumPlate
-                                    name={'Возвраты'}
-                                    value={sumCanceled || 0}
-                                    quantity={canceled?.length || 0}
-                                    percent={getDifference(filterArrays(dashData?.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
-                                    percent2={20}
-                                    text={''}
-                                    text2={''}
-                                />
-                                <div className="col d-flex flex-column">
-                                    <div className='mb-3'>
-                                        <SmallPlate
-                                            name={'Процент выкупа'}
-                                            value={buyOutPrice || 0}
-                                            type={'percent'}
-                                            percent={getDifference(filterArrays(dashData?.orders), 'finishedPrice', days)?.percent}
-                                        />
-                                    </div>
+                        <div className="container p-4 pt-0 d-flex gap-3">
+                            <MediumPlate name={'Заказы'}
+                                value={sumOrders}
+                                quantity={orders?.length || 0}
+                                percent={getDifference(filterArrays(dashData?.orders), 'finishedPrice', days)?.percent}
+                                percent2={mockData[3]}
+                                text={mockData2[0]}
+                                text2={mockData2[1]}
+                            />
+                            <MediumPlate
+                                name={'Продажи'}
+                                value={sumSales}
+                                quantity={sales?.length || 0}
+                                percent={getDifference(filterArrays(dashData?.sales), 'finishedPrice', days)?.percent}
+                                percent2={90}
+                                text={mockData2[3]}
+                                text2={mockData2[2]}
+                            />
+                            <MediumPlate
+                                name={'Возвраты'}
+                                value={sumCanceled || 0}
+                                quantity={canceled?.length || 0}
+                                percent={getDifference(filterArrays(dashData?.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
+                                percent2={20}
+                                text={''}
+                                text2={''}
+                            />
+                            <div className="col d-flex flex-column">
+                                <div className='mb-3'>
                                     <SmallPlate
-                                        name={'Средний чек'}
-                                        value={averageCheck || 0}
-                                        type={'price'}
-                                        percent={getDifference(filterArrays(dashData?.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
+                                        name={'Процент выкупа'}
+                                        value={buyOutPrice || 0}
+                                        type={'percent'}
+                                        percent={getDifference(filterArrays(dashData?.orders), 'finishedPrice', days)?.percent}
                                     />
                                 </div>
-                            </div>
-                            <div className="container p-4 pt-0 pb-3 d-flex gap-3">
-                                <div className="col">
-                                    <BigChart name={'Заказы и продажи'} data={data}
-                                        orderOn={orderOn}
-                                        salesOn={salesOn}
-                                        setOrderOn={setOrderOn}
-                                        setSalesOn={setSalesOn}
-                                        setChartUnitRub={setChartUnitRub}
-                                        chartUnitRub={chartUnitRub}
-                                    />
-                                </div>
-                            </div>
-
-
-                            <div className="container p-4 pt-0 pb-3 d-flex gap-3">
-                                <div className="col">
-                                    <SmallPlate smallText={true}
-                                        name={'Себестоимость проданных товаров'}
-                                        nochart={true}
-                                        type={'price'}
-                                        quantity={initialCosts?.quantity || 0}
-                                        value={initialCosts?.totalCost || 0}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Возвраты'} value={sumCanceled || 0} type={'price'} quantity={canceled?.length || '0'} />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Штрафы WB'} value={penalty || 0} type={'price'} nochart={true} />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Доплаты WB'} value={addPayment || 0} type={'price'} nochart={true} />
-                                </div>
-                            </div>
-                            <div className="container p-4 pt-0 d-flex gap-3">
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Комиссия WB'} value={commissionPrice || 0} type={'price'}
-                                        percent={days === 31 ? 19 : days === 14 ? 21 : 9}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Расходы на логистику'} value={delivery || 0} type={'price'}
-                                        percent={days === 31 ? 25 : days === 14 ? 13 : 20}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Маржинальная прибыль'}
-                                        value={days === 31 ? 127056 : days === 14 ? 18000 : 2120}
-                                        percent={days === 31 ? 26 : days === 14 ? 18 : 20}
-                                        type={'price'}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Упущенные продажи'} value={sumCanceled || 0} type={'price'}
-                                        quantity={canceled?.length || 0}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
-                                <div className="wrapper">
-                                    <FinanceTable title={'Финансы'} data={financeData} />
-                                    <StorageTable
-                                        title={'Склад'}
-                                        data={storeData}
-                                        titles={['Где товар', "Капитализация", "", "Остатки"]}
-                                        subtitles={['', 'Себестоимость', 'Розница', '']}
-                                    />
-                                </div>
-                                <div className="wrapper">
-                                    <FinanceTable title={'Прибыльность'} data={profitabilityData} sign={' %'} />
-                                    <ChartTable title={'Расходы'} data={costsData} />
-                                </div>
-                            </div>
-                            <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
-                                <WidePlate
-                                    title={'ABC-анализ'}
-                                    titles={['Группа А', "Группа В", "Группа С"]}
-                                    data={abcAnalysis(sales)}
+                                <SmallPlate
+                                    name={'Средний чек'}
+                                    value={averageCheck || 0}
+                                    type={'price'}
+                                    percent={getDifference(filterArrays(dashData?.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
                                 />
                             </div>
                         </div>
+                        <div className="container p-4 pt-0 pb-3 d-flex gap-3">
+                            <div className="col">
+                                <BigChart name={'Заказы и продажи'} data={data}
+                                    orderOn={orderOn}
+                                    salesOn={salesOn}
+                                    setOrderOn={setOrderOn}
+                                    setSalesOn={setSalesOn}
+                                    setChartUnitRub={setChartUnitRub}
+                                    chartUnitRub={chartUnitRub}
+                                    maxValue={maxValue}
+                                />
+                            </div>
+                        </div>
+
+
+                        <div className="container p-4 pt-0 pb-3 d-flex gap-3">
+                            <div className="col">
+                                <SmallPlate smallText={true}
+                                    name={'Себестоимость проданных товаров'}
+                                    nochart={true}
+                                    type={'price'}
+                                    quantity={initialCosts?.quantity || 0}
+                                    value={initialCosts?.totalCost || 0}
+                                />
+                            </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Возвраты'} value={sumCanceled || 0} type={'price'} quantity={canceled?.length || '0'} />
+                            </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Штрафы WB'} value={penalty || 0} type={'price'} nochart={true} />
+                            </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Доплаты WB'} value={addPayment || 0} type={'price'} nochart={true} />
+                            </div>
+                        </div>
+                        <div className="container p-4 pt-0 d-flex gap-3">
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Комиссия WB'} value={commissionPrice || 0} type={'price'}
+                                    percent={days === 31 ? 19 : days === 14 ? 21 : 9}
+                                />
+                            </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Расходы на логистику'} value={delivery || 0} type={'price'}
+                                    percent={days === 31 ? 25 : days === 14 ? 13 : 20}
+                                />
+                            </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Маржинальная прибыль'}
+                                    value={days === 31 ? 127056 : days === 14 ? 18000 : 2120}
+                                    percent={days === 31 ? 26 : days === 14 ? 18 : 20}
+                                    type={'price'}
+                                />
+                            </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Упущенные продажи'} value={sumCanceled || 0} type={'price'}
+                                    quantity={canceled?.length || 0}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
+                            <div className="wrapper">
+                                <FinanceTable title={'Финансы'} data={financeData} />
+                                <StorageTable
+                                    title={'Склад'}
+                                    data={storeData}
+                                    titles={['Где товар', "Капитализация", "", "Остатки"]}
+                                    subtitles={['', 'Себестоимость', 'Розница', '']}
+                                />
+                            </div>
+                            <div className="wrapper">
+                                <FinanceTable title={'Прибыльность'} data={profitabilityData} sign={' %'} />
+                                <ChartTable title={'Расходы'} data={costsData} />
+                            </div>
+                        </div>
+                        <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
+                            <WidePlate
+                                title={'ABC-анализ'}
+                                titles={['Группа А', "Группа В", "Группа С"]}
+                                data={abcAnalysis(sales)}
+                            />
+                        </div>
+                    </div>
                 }
 
             </div>

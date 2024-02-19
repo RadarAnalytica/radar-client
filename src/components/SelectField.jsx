@@ -5,7 +5,7 @@ const SelectField = ({ options, callback, label, required, placeholder, defautlV
     return (
         <div className='select-field mb-2'>
             <label htmlFor="">{label}</label>
-            <select name="" id="" className='form-control' defaultValue={defautlValue ? defautlValue : null}
+            <select name="" id="" className='form-control mt-2' defaultValue={defautlValue ? defautlValue : null}
                 onChange={callback}
             >
                 {

@@ -104,7 +104,7 @@ const SignUpForm = () => {
             <div className='signup-form'>
                 <div className='d-flex flex-column align-items-center'>
                     <img src={logo} alt="" className='logo' />
-                    <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Регистрация</h1>
+                    <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-2 mb-1'>Регистрация</h1>
                 </div>
                 <div className='fields-container'>
                     <InputField
@@ -150,12 +150,11 @@ const SignUpForm = () => {
                 </div>
                 <button className='prime-btn' onClick={e => sumbitHandler(e, regData)}>Зарегистрироваться</button>
                 <div>
-                    <p className='clue-text'>Уже есть аккаунт? <Link className='link' to={'/development/signin'}>Войти</Link></p>
+                    <p className='clue-text mb-1'>Уже есть аккаунт? <Link className='link' to={'/development/signin'}>Войти</Link></p>
                 </div>
                 <div className="text-center">
-                    <p className='m-0 p-0 clue-text'>
-                        Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с Пользовательским соглашением и Политикой
-                        конфиденциальности
+                    <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh' }}>
+                        Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с <span className="fw-bold" style={{ textDecoration: 'underline', }}>Пользовательским соглашением</span> и <span className="fw-bold" style={{ textDecoration: 'underline', }}>Политикой конфиденциальности</span>
                     </p>
                 </div>
             </div>

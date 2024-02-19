@@ -67,30 +67,68 @@
 
 .signup-form {
   background-color: white;
-  min-height: 80vh;
-  width: 544px;
+  /* min-height: 80vh; */
+  width: 64vh;
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
+  font-size: 2vh;
+}
+
+.signup-form input,
+.signup-form select,
+.signin-form input {
+  font-size: 2vh;
+  margin: 0.25vh 0;
+}
+
+.signup-form h1 {
+  font-size: 3vh !important;
+}
+
+.signup-form button {
+  padding: 1vw;
+  width: 55vh;
+}
+
+.select-field {
+  position: relative;
+}
+
+.select-field::after {
+  content: '';
+  position: absolute;
+  top: 75%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 12px;
+  /* Ширина стрелки */
+  height: 8px;
+  /* Высота стрелки */
+  background-image: url('/src/assets/arrow.png');
+  /* Путь к изображению со стрелкой */
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .signin-form {
   background-color: white;
   min-height: 50vh;
-  width: 544px;
+  width: 64vh;
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
+  font-size: 2vh;
 }
 
 .fields-container {
-  width: 480px;
+  width: 55vh;
 }
 
 label {
@@ -215,7 +253,7 @@ select {
 }
 
 .logo {
-  max-width: 220px;
+  max-width: 10vw;
   object-fit: contain;
 }
 

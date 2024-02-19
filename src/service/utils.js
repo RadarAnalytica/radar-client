@@ -61,7 +61,7 @@ export const calculateInitialCosts = (products) => {
     let totalCost = 0;
 
     products.forEach(product => {
-        totalCost += 1000 * product?.quantityFull;
+        totalCost += 1500 * product?.quantityFull;
         quantity += product?.quantityFull
     });
 
@@ -70,8 +70,6 @@ export const calculateInitialCosts = (products) => {
 
 export const calculateTotalProfit = (data) => {
     let totalRevenue = 0;
-
-    console.log(data);
 
     // Проходимся по каждой продаже в массиве и суммируем их выручку, учитывая цену и количество
     data.forEach(sale => {

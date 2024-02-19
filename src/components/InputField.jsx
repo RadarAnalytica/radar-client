@@ -4,7 +4,7 @@ const InputField = ({ options, callback, label, required, placeholder, defautlVa
 
     return (
         <div className='input-field mb-2'>
-            <label htmlFor="" className='mb-2'>{label} <span style={{ color: 'silver' }}>{required ? '*' : null}</span></label>
+            <label htmlFor="" className='mb-1'><span style={{ color: 'silver', marginRight: '8px' }}>{required ? '*' : null}</span>{label}</label>
             <input
                 className='form-control'
                 type={type}
