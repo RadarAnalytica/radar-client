@@ -26,7 +26,7 @@ const DashboardPage = () => {
             if (!user || (user && !user.isOnboarded)) {
                 navigate('/development/onboarding')
             }
-        }, 500);
+        }, 1500);
     }, [user])
 
     const twoMonthAgo = new Date(new Date().setDate(new Date().getDate() - 61)).toLocaleDateString('ru')?.split('.').reverse().join('-')
@@ -101,6 +101,8 @@ const DashboardPage = () => {
     //         setWbData(JSON.parse(dashData))
     //     }
     // }, [dashData])
+
+
 
 
     // Поставки
