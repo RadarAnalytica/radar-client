@@ -418,7 +418,7 @@ select {
 .big-chart {
   background-color: white;
   border-radius: 16px;
-  height: 500px;
+  min-height: 500px;
   padding: 16px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   margin-bottom: 16px;
