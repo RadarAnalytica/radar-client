@@ -166,26 +166,31 @@ export const abcAnalysis = (products) => {
 }
 
 export const getDifference = (data, key, days) => {
-    data.sort((a, b) => a.date - b.date);
+    if (data) {
+        data.sort((a, b) => a.date - b.date);
 
-    // Определение временных границ для каждого периода (в данном случае - на две недели)
-    const firstPeriodEndDate = new Date(new Date(data[0].date).getTime() + (days * 24 * 60 * 60 * 1000)); // +7 дней
-    const secondPeriodStartDate = new Date(firstPeriodEndDate.getTime() + (1 * 24 * 60 * 60 * 1000)); // +1 день
+        // Определение временных границ для каждого периода (в данном случае - на две недели)
+        const firstPeriodEndDate = new Date(new Date(data[0].date).getTime() + (days * 24 * 60 * 60 * 1000)); // +7 дней
+        const secondPeriodStartDate = new Date(firstPeriodEndDate.getTime() + (1 * 24 * 60 * 60 * 1000)); // +1 день
 
-    // Фильтрация данных для каждого периода
-    const firstPeriodSales = data.filter(sale => new Date(sale.date).toLocaleDateString() < new Date(firstPeriodEndDate).toLocaleDateString());
-    const secondPeriodSales = data.filter(sale => new Date(sale.date).toLocaleDateString() >= new Date(secondPeriodStartDate).toLocaleDateString());
+        // Фильтрация данных для каждого периода
+        const firstPeriodSales = data.filter(sale => new Date(sale.date).toLocaleDateString() < new Date(firstPeriodEndDate).toLocaleDateString());
+        const secondPeriodSales = data.filter(sale => new Date(sale.date).toLocaleDateString() >= new Date(secondPeriodStartDate).toLocaleDateString());
 
-    const oldSalesSum = firstPeriodSales.reduce((total, sale) => total + sale[key], 0);
-    const newSalesSum = secondPeriodSales.reduce((total, sale) => total + sale[key], 0);
-    const percentChange = ((newSalesSum - oldSalesSum) / oldSalesSum) * 100;
-    // console.log(percentChange);
+        const oldSalesSum = firstPeriodSales.reduce((total, sale) => total + sale[key], 0);
+        const newSalesSum = secondPeriodSales.reduce((total, sale) => total + sale[key], 0);
+        const percentChange = ((newSalesSum - oldSalesSum) / oldSalesSum) * 100;
+        // console.log(percentChange);
 
-    return {
-        firstPeriodSales,
-        secondPeriodSales,
-        rate: secondPeriodSales - firstPeriodSales > 0 ? 'up' : 'down',
-        percent: percentChange
+        return {
+            firstPeriodSales,
+            secondPeriodSales,
+            rate: secondPeriodSales - firstPeriodSales > 0 ? 'up' : 'down',
+            percent: percentChange
+        }
+    }
+    else {
+        return {}
     }
 
 }

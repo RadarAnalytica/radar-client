@@ -26,7 +26,7 @@ const Onboarding = () => {
     const getToken = (e) => setToken(e.target.value)
 
     const submitHandler = (e) => {
-        if (!brandName && !token && !user) {
+        if (!token && !user) {
             e.preventDefault()
         } else {
             ServiceFunctions.updateToken(brandName, token, user.id).then(data => {

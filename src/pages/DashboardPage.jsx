@@ -23,10 +23,10 @@ const DashboardPage = () => {
     const navigate = useNavigate()
     useEffect(() => {
         setTimeout(() => {
-            if (!user) {
-                // navigate('/development/onboarding')
+            if (!user || (user && !user.isOnboarded)) {
+                navigate('/development/onboarding')
             }
-        }, 2000);
+        }, 500);
     }, [user])
 
     const twoMonthAgo = new Date(new Date().setDate(new Date().getDate() - 61)).toLocaleDateString('ru')?.split('.').reverse().join('-')
