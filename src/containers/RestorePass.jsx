@@ -22,7 +22,7 @@ const RestorePass = ({ email }) => {
             },
             body: JSON.stringify({
                 email,
-                pass
+                password: pass
             })
         })
         const data = await res.json()
