@@ -70,7 +70,6 @@ export const calculateInitialCosts = (products) => {
 
 export const calculateTotalProfit = (data) => {
     let totalRevenue = 0;
-
     // Проходимся по каждой продаже в массиве и суммируем их выручку, учитывая цену и количество
     data.forEach(sale => {
         if (sale.retail_price && sale.quantity) {
