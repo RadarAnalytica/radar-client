@@ -150,9 +150,9 @@ const SignUpForm = () => {
                 </div>
                 <button className='prime-btn' onClick={e => sumbitHandler(e, regData)}>Зарегистрироваться</button>
                 <div>
-                    <p className='clue-text mb-1'>Уже есть аккаунт? <Link className='link' to={'/development/signin'}>Войти</Link></p>
+                    <p className='clue-text mb-2 mt-2'>Уже есть аккаунт? <Link className='link' to={'/development/signin'}>Войти</Link></p>
                 </div>
-                <div className="text-center">
+                <div className="text-center mb-0 pb-0">
                     <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh' }}>
                         Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с <span className="fw-bold" style={{ textDecoration: 'underline', }}>Пользовательским соглашением</span> и <span className="fw-bold" style={{ textDecoration: 'underline', }}>Политикой конфиденциальности</span>
                     </p>

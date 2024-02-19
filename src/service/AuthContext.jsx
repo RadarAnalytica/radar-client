@@ -33,8 +33,9 @@ export const AuthProvider = ({ children }) => {
             } else if (!data.isOnboarded) {
                 navigate('/development/onboarding')
             }
-        } else if (response.status !== 200) {
-            alert(response.message)
+        } else if (!data.success) {
+
+            alert(data.message)
         } else {
             alert('Something went wrong')
         }

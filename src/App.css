@@ -52,7 +52,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 20px;
+  /* padding-top: 20px; */
   min-height: 100vh;
 }
 
@@ -61,27 +61,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 20px;
+  /* padding-top: 20px; */
   min-height: 100vh;
 }
 
 .signup-form {
   background-color: white;
   /* min-height: 80vh; */
-  width: 64vh;
+  width: 61vh;
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  font-size: 2vh;
+  font-size: 1.75vh;
 }
 
 .signup-form input,
 .signup-form select,
 .signin-form input {
-  font-size: 2vh;
+  font-size: 1.75vh;
   margin: 0.25vh 0;
 }
 
@@ -753,4 +753,42 @@ select {
     height: 50vh;
     padding-bottom: 100px;
   }
+
+  .signup-page {
+    padding: 0;
+  }
+
+  .signup-form {
+    width: 90vw;
+    font-size: 10px;
+  }
+
+  .logo {
+    max-width: 150px !important;
+  }
+
+  .fields-container {
+    width: 84vw;
+  }
+
+  .signup-form button {
+    width: 84vw;
+    padding: 16px 24px;
+    font-size: 16px;
+  }
+
+  .signup-form input,
+  .signup-form select {
+    font-size: 10px;
+  }
+
+  .signup-form div:last-child {
+    width: 84vw;
+  }
+
+  .signup-form h1 {
+    font-size: 18px !important;
+  }
+
+  /* .signup-form  */
 }
