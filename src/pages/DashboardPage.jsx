@@ -50,8 +50,8 @@ const DashboardPage = () => {
 
     function filterArrays(obj, days) {
         for (let key in obj) {
-            if (Array.isArray(obj[key]) && days) {
-                if (obj[key].length && obj[key].find(el => el.date)) {
+            if (Array.isArray(obj[key])) {
+                if (obj[key].length) {
                     obj[key] = obj[key].filter(item => {
                         const date = item.date ? new Date(item.date) : item.lastChangeDate ? new Date(item.lastChangeDate) : new Date(item.create_dt);
                         const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -201,6 +201,8 @@ const DashboardPage = () => {
         setMargin(margin)
     }, [wbData])
 
+
+
     // const fbo = []
     // const fbs = incomes && incomes.length ? incomes.filter(i => i.quantity) : []
 
@@ -318,7 +320,7 @@ const DashboardPage = () => {
     const [days, setDays] = useState(31)
 
 
-    const changePeriod = (days) => {
+    const changePeriod = () => {
         let data = localStorage.getItem('dashboard')
         if (data) {
             setLoading(true)
@@ -328,7 +330,7 @@ const DashboardPage = () => {
     }
 
     useEffect(() => {
-        changePeriod(days)
+        changePeriod()
     }, [days])
 
     const dates = orders ? [...new Set(orders.map(i => new Date(i.date).toLocaleDateString()))] :
@@ -569,7 +571,7 @@ const DashboardPage = () => {
                                 <WidePlate
                                     title={'ABC-анализ'}
                                     titles={['Группа А', "Группа В", "Группа С"]}
-                                    data={abcAnalysis(sales)}
+                                    data={sales ? abcAnalysis(sales) : []}
                                 />
                             </div>
                         </div>
