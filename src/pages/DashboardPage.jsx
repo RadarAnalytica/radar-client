@@ -327,7 +327,7 @@ const DashboardPage = () => {
         let data = dataobject
         if (data) {
             setLoading(true)
-            const filteredObj = filterArrays(JSON.parse(data), days);
+            const filteredObj = filterArrays(data, days);
             filteredObj ? setWbData(filteredObj) : setWbData(wbData)
         }
     }
