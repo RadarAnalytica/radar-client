@@ -324,7 +324,7 @@ const DashboardPage = () => {
 
 
     const changePeriod = () => {
-        let data = localStorage.getItem('dashboard')
+        let data = dataobject
         if (data) {
             setLoading(true)
             const filteredObj = filterArrays(JSON.parse(data), days);
