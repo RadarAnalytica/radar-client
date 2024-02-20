@@ -18,7 +18,7 @@ const DashboardPage = () => {
 
     const [wbData, setWbData] = useState()
 
-    const { user } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
 
     const navigate = useNavigate()
     useEffect(() => {
@@ -42,6 +42,7 @@ const DashboardPage = () => {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
+                'authorization': 'Bearer ' + authToken
             }
         })
         const data = await res.json()

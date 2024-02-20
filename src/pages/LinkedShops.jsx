@@ -10,7 +10,7 @@ import { URL } from '../service/config'
 
 const LinkedShops = () => {
 
-    const { user } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
 
     const navigate = useNavigate()
 
@@ -23,6 +23,7 @@ const LinkedShops = () => {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
+                'authorization': 'Bearer ' + authToken
             }
         })
         const data = await res.json()

@@ -56,7 +56,7 @@ const SignUpForm = () => {
     }
 
     const getPass = (e) => {
-        setRegData({ ...regData, password: e.target.value })
+        setRegData({ ...regData, password: `${e.target.value}` })
     }
 
     const [sent, setSent] = useState(false)
