@@ -69,7 +69,15 @@ const DashboardPage = () => {
 
     useEffect(() => {
         let found = localStorage.getItem('dashboard')
-        if (user && period && found === null) {
+        let token = localStorage.getItem('authToken')
+        if (found) {
+            localStorage.clear()
+            localStorage.setItem('dashboard', found)
+            localStorage.setItem('authToken', token)
+        }
+        else if (user && period && found === null) {
+            localStorage.clear()
+            localStorage.setItem('authToken', token)
             getWBSales(user, period, dateTo).then(data => {
                 if (data && (data.orders?.length || data.sales?.length)) {
                     for (let key in data) {
