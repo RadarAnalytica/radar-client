@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
 import { Link, useNavigate } from 'react-router-dom'
@@ -6,6 +6,7 @@ import AuthContext from '../service/AuthContext'
 import wblogo from '../assets/wblogo.png'
 import redcircle from '../assets/redcircle.png'
 import greencircle from '../assets/greencircle.png'
+import { URL } from '../service/config'
 
 const LinkedShops = () => {
 
@@ -16,6 +17,33 @@ const LinkedShops = () => {
     const status = user && user.stage && user.stage?.indexOf('Предприниматель') >= 0 ? "ИП" : user && user.stage?.indexOf('Менеджер') >= 0 ||
         user && user.stage?.indexOf('менеджер') >= 0 ?
         'Менеджер' : null
+
+    const getTokenExp = async (user) => {
+        const res = await fetch(`${URL}/api/user/exp/${user.id}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+            }
+        })
+        const data = await res.json()
+        return data
+    }
+
+    const [data, setData] = useState()
+    useEffect(() => {
+        if (user) {
+            getTokenExp(user).then(data => setData(data))
+        }
+    }, [])
+
+    const [expDate, setExpDate] = useState()
+    useEffect(() => {
+        if (data) setExpDate(new Date(data.exp * 1000).toLocaleDateString())
+    }, [data])
+
+    const active = expDate && new Date(expDate).getTime() > new Date().getTime()
+
+    console.log(active);
 
     return (
         <div className='linked-shops-page'>
@@ -37,21 +65,33 @@ const LinkedShops = () => {
                             </div>
                         </div>
                         <div className='user-tokens'>
-                            <div className="user-token-item">
+                            {/* <div className="user-token-item">
                                 <span>Токен статистика</span>
                                 <div className='d-flex token-status'>
                                     <div className='token-active'>
-                                        <img src={greencircle} alt="" />
+                                        <img src={active ? greencircle : redcircle} alt="" />
                                         <span>Активен до 3 авг. 2024</span>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="user-token-item">
-                                <span>Токен контент</span>
+                                <span>Токен статистика</span>
                                 <div className='d-flex token-status'>
-                                    <div className='token-active'>
-                                        <img src={greencircle} alt="" />
-                                        <span>Активен до 3 авг. 2024</span>
+                                    <div className={active ? 'token-active' : 'token-inactive'}>
+                                        <img src={active ? greencircle : redcircle} alt="" />
+                                        <span>
+                                            {expDate ? 'Активен до ' + expDate : 'Неактивен'}
+                                            {
+                                                !active ?
+                                                    <span
+                                                        className="refresh-token-btn prime-text ms-2"
+                                                        onClick={() => navigate('/development/onboarding')}
+                                                    >
+                                                        Обновить
+                                                    </span>
+                                                    : null
+                                            }
+                                        </span>
                                     </div>
                                 </div>
                             </div>
