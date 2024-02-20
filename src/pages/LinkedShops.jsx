@@ -43,8 +43,6 @@ const LinkedShops = () => {
 
     const active = expDate && new Date(expDate).getTime() > new Date().getTime()
 
-    console.log(active);
-
     return (
         <div className='linked-shops-page'>
             <SideNav />
