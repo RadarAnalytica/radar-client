@@ -70,7 +70,6 @@ const DashboardPage = () => {
         let found = localStorage.getItem('dashboard')
         if (user && period && found === null) {
             getWBSales(user, period, dateTo).then(data => {
-                localStorage.clear()
                 if (data && (data.orders?.length || data.sales?.length)) {
                     for (let key in data) {
                         let props = data[key] && !Array.isArray(data[key]) ? Object.keys(data[key]) : []
