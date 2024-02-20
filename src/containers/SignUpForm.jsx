@@ -134,6 +134,7 @@ const SignUpForm = () => {
                         label={'Пароль'}
                         callback={getPass}
                         required={true}
+                        maxLength={40}
                     />
                 </div>
                 <button className='prime-btn' onClick={e => sumbitHandler(e, regData)}>Зарегистрироваться</button>
