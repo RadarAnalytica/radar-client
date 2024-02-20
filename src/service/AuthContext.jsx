@@ -57,9 +57,6 @@ export const AuthProvider = ({ children }) => {
             body: JSON.stringify(object)
         })
         const data = res.json()
-        setAuthToken(data)
-        setUser(jwtDecode(data.token))
-        localStorage.setItem('authToken', JSON.stringify(data))
         return data
     }
 
