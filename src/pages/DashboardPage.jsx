@@ -18,7 +18,7 @@ const DashboardPage = () => {
 
     const [wbData, setWbData] = useState()
 
-    const { user, authToken } = useContext(AuthContext)
+    const { user, authToken, dataobject, setDataobject } = useContext(AuthContext)
 
     const navigate = useNavigate()
     useEffect(() => {
@@ -69,7 +69,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         let found = localStorage.getItem('dashboard')
-        if (user && period && found === null) {
+        if (user && period && !dataobject) {
             getWBSales(user, period, dateTo).then(data => {
                 if (data && (data.orders?.length || data.sales?.length)) {
                     for (let key in data) {
@@ -84,7 +84,8 @@ const DashboardPage = () => {
                             hash[key] = null
                         }
                     }
-                    localStorage.setItem('dashboard', JSON.stringify(hash))
+                    setDataobject(hash)
+                    // localStorage.setItem('dashboard', JSON.stringify(hash))
                     setWbData(filterArrays(hash, 31))
                 }
 
@@ -92,7 +93,9 @@ const DashboardPage = () => {
         }
     }, [])
 
-    const dashData = localStorage.getItem('dashboard') ? JSON.parse(localStorage.getItem('dashboard')) : null
+    // const dashData = localStorage.getItem('dashboard') ? JSON.parse(localStorage.getItem('dashboard')) : null
+
+    const dashData = dataobject
 
     // console.log(dashData);
 
