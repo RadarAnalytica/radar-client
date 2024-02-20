@@ -12,7 +12,7 @@ const InputField = ({ options, callback, label, required, placeholder, defautlVa
                 defaultValue={defautlValue ? defautlValue : null}
                 onChange={e => callback(e)}
                 minLength={minLength}
-                maxLength={minLength}
+                maxLength={maxLength}
             />
         </div>
     )
