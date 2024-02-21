@@ -4,6 +4,7 @@ import noticon from '../assets/notification.png'
 import question from '../assets/question.png'
 import settings from '../assets/settings.png'
 import { useNavigate } from 'react-router-dom'
+import { MdOutlineSettings } from 'react-icons/md'
 
 
 
@@ -32,9 +33,10 @@ const TopNav = ({ title }) => {
                 <div className="col-2 d-flex justify-content-around top-menu">
                     {/* <img src={noticon} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} />
                     <img src={question} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} /> */}
-                    <img src={settings} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }}
+                    <MdOutlineSettings onClick={() => setMenuShown(!menuShown)} style={{ maxWidth: '24px', cursor: 'pointer', fontSize: '28px' }} />
+                    {/* <img src={settings} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }}
                         onClick={() => setMenuShown(!menuShown)}
-                    />
+                    /> */}
                     {
                         menuShown ?
                             <div className='settings-modal'>

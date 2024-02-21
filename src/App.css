@@ -143,6 +143,7 @@ a.link {
 
 .input-field {
   width: 100%;
+  position: relative;
 }
 
 input,

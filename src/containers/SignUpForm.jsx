@@ -22,7 +22,7 @@ const SignUpForm = () => {
         firstName: null,
         lastName: null,
         patronym: null,
-        phone: null,
+        phone: '',
         stage: options[0],
         email: null,
         password: null,
@@ -36,15 +36,15 @@ const SignUpForm = () => {
     }
 
     const getPhone = (e) => {
-        const phoneNumber = e.target.value.replace(/\D/g, '');
-        // Проверяем, не превышает ли длина номера 10 символов
-        if (phoneNumber.length <= 10) {
-            // Форматируем номер, добавляя "+7" в начале и разделяя группы цифр
-            const formattedPhoneNumber = `+7${phoneNumber.slice(-10, -7)}-${phoneNumber.slice(-7, -4)}-${phoneNumber.slice(-4)}`;
-
-            // Устанавливаем отформатированное значение в поле
-            setRegData({ ...regData, phone: formattedPhoneNumber });
+        let value = e.target.value;
+        value = value.replace(/\D/g, '');
+        // Форматируем номер, добавляя "+7" в начале и разделяя группы цифр
+        if (value.length > 1) {
+            value = value.replace(/^(\+7|\+8)/, '+7'); // Убираем 8 в начале и заменяем его на +7
+            value = '+7-' + value.slice(1, 2) + value.slice(2, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 9) + '-' + value.slice(9, 11); // Форматируем номер
         }
+        // Устанавливаем отформатированное значение в поле
+        setRegData({ ...regData, phone: value });
     }
 
     const getEmail = (e) => {
@@ -119,6 +119,7 @@ const SignUpForm = () => {
                         placeholder={'+7'}
                         label={'Номер телефона'}
                         callback={getPhone}
+                        value={regData.phone}
                         required={true}
                     />
                     <InputField
@@ -133,6 +134,7 @@ const SignUpForm = () => {
                         placeholder={'Минимум 6 символов'}
                         label={'Пароль'}
                         callback={getPass}
+                        hide={true}
                         required={true}
                         maxLength={40}
                     />
