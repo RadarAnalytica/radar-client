@@ -308,7 +308,7 @@ const DashboardPage = () => {
     const sortedValuesArray = data?.datasets?.map(arr => arr?.data).flat(1)?.sort((a, b) => b - a)
     const maxValue = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0
 
-    console.log(wbData);
+    // console.log(wbData);
 
     return (
         user && <div className='dashboard-page'>
