@@ -19,7 +19,7 @@ const DashboardFilter = ({ brandNames, changePeriod, changeBrand, defaultValue, 
                         <option selected={defaultValue === 7 ? true : false} value={'7'}>Неделя</option>
                         <option selected={defaultValue === 14 ? true : false} value={'14'}>14 дней</option>
                         <option selected={defaultValue === 31 ? true : false} value={'31'}>Месяц</option>
-                        <option selected={defaultValue === 92 ? true : false} value={'92'}>Месяц</option>
+                        <option selected={defaultValue === 92 ? true : false} value={'92'}>3 месяца</option>
                     </select>
                 </div>
                 <div className="filter-item col me-2">
