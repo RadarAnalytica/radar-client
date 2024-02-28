@@ -43,6 +43,9 @@ const LinkedShops = () => {
     const [expDate, setExpDate] = useState()
     useEffect(() => {
         if (data) setExpDate(data.map(token => ({ date: new Date(token?.token?.exp * 1000), brandName: token.brandName })))
+    }, [data])
+
+    useEffect(() => {
         if (expDate) {
             for (let i in expDate) {
                 if (new Date(expDate[i]?.date).getTime() > new Date().getTime()) {
@@ -52,9 +55,9 @@ const LinkedShops = () => {
                 }
             }
         }
-    }, [data])
+    }, [expDate])
 
-    console.log(data);
+    // console.log(activeTokens);
 
     return (
         <div className='linked-shops-page'>
@@ -81,13 +84,14 @@ const LinkedShops = () => {
                                     <div className="user-token-item" key={i}>
                                         <div>
                                             <span className="fw-bold">{item.brandName}</span>
+                                            <br />
                                             <span>Токен статистика</span>
                                         </div>
                                         <div className='d-flex token-status'>
                                             <div className='token-active'>
                                                 <img src={greencircle} alt="" />
                                                 <span>
-                                                    {item.date ? 'Активен до ' + new Date(item.date).toLocaleDateString() : ''}
+                                                    {item.date ? 'Активен до ' + new Date(item.date.date).toLocaleDateString() : ''}
                                                 </span>
                                             </div>
                                         </div>
