@@ -18,7 +18,7 @@ const TableRow = ({ values }) => {
                                     :
                                     { fontWeight: 700, textAlign: 'right' }
                         }
-                    >{(i === 1 || i === 2) && val !== '-' ? val + ' ₽' : i === 3 ? val + ' шт.' : i === 1 && val === '-' ? formatPrice(values[3] * 1000) + ' ₽' : val}</span>
+                    >{(i === 1 || i === 2) && val !== '-' ? val + ' ₽' : i === 3 ? val + ' шт.' : i === 1 && val === '-' ? 0 + ' ₽' : val}</span>
                 ))
                     : null
             }
@@ -30,10 +30,10 @@ const StorageTable = ({ title, data, titles, subtitles }) => {
 
     return (
         <div className='storage-table mt-3'>
-            <p className="fw-bold fs-4 mb-2">{title}</p>
+            <p className="fw-bold numbers mb-2">{title}</p>
             <div className='d-flex'>
                 {
-                    titles && titles.map((t, i) => <span className='col' style={
+                    titles && titles.map((t, i) => <span className='col fin-row' style={
                         i === 0 ?
                             { textAlign: 'left', fontWeight: 'bold' } :
                             i > 1 ?
@@ -45,7 +45,7 @@ const StorageTable = ({ title, data, titles, subtitles }) => {
             </div>
             <div className='d-flex mt-2 mb-2 clue-text'>
                 {
-                    subtitles && subtitles.map((t, i) => <span className='col' style={
+                    subtitles && subtitles.map((t, i) => <span className='col fin-row' style={
                         i === 0 ?
                             { textAlign: 'left', fontWeight: 'bold' } :
                             i > 1 ?

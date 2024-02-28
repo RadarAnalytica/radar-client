@@ -193,3 +193,81 @@ export const getDifference = (data, key, days) => {
     }
 
 }
+
+export const calculateReturns = (data, days) => {
+
+    const currentDate = new Date();
+    const previousDate = new Date(currentDate);
+    previousDate.setDate(previousDate.getDate() - days);
+
+    // Фильтруем данные по текущему и предыдущему периодам
+    const currentPeriodData = data.filter(item => new Date(item.date) >= previousDate && new Date(item.date) <= currentDate);
+    const previousPeriodData = data.filter(item => new Date(item.date) < previousDate);
+
+    // Подсчет суммы возвратов и их количества для текущего периода
+    const currentReturnsSum = currentPeriodData.reduce((total, item) => total + (item.isCancel ? item.finishedPrice : 0), 0);
+    const currentReturnsCount = currentPeriodData.filter(item => item.isCancel).length;
+
+    // Подсчет суммы возвратов и их количества для предыдущего периода
+    const previousReturnsSum = previousPeriodData.reduce((total, item) => total + (item.isCancel ? item.finishedPrice : 0), 0);
+    const previousReturnsCount = previousPeriodData.filter(item => item.isCancel).length;
+
+    // Подсчет доли роста суммы возвратов и количества возвратов
+    const returnsSumGrowth = ((currentReturnsSum - previousReturnsSum) / previousReturnsSum) * 100;
+    const returnsCountGrowth = ((currentReturnsCount - previousReturnsCount) / previousReturnsCount) * 100;
+
+    // Возвращаем результаты
+    return {
+        currentReturnsSum,
+        currentReturnsCount,
+        returnsSumGrowth,
+        returnsCountGrowth
+    };
+}
+
+function getDatesInInterval(startDate, endDate) {
+    const dates = [];
+    const currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
+}
+
+function dateMatches(date1, date2) {
+    return date1.toISOString().split('T')[0] === date2.toISOString().split('T')[0];
+}
+
+export function calculateAverageReceipt(data, days) {
+    const currentDate = new Date();
+    const lastDaysDate = new Date(currentDate);
+    lastDaysDate.setDate(lastDaysDate.getDate() - days);
+    const previousDaysDate = new Date(lastDaysDate);
+    previousDaysDate.setDate(previousDaysDate.getDate() - days);
+
+    const lastDays = getDatesInInterval(lastDaysDate, currentDate);
+    const previousDays = getDatesInInterval(previousDaysDate, lastDaysDate);
+
+    const dataInLastDays = data.filter(item => {
+        const itemDate = new Date(item.date);
+        return lastDays.some(date => dateMatches(itemDate, date));
+    });
+
+    const dataInPreviousDays = data.filter(item => {
+        const itemDate = new Date(item.date);
+        return previousDays.some(date => dateMatches(itemDate, date));
+    });
+
+    const sumLastDays = dataInLastDays.reduce((sum, item) => sum + item.forPay, 0);
+    const sumPreviousDays = dataInPreviousDays.reduce((sum, item) => sum + item.forPay, 0);
+    const averageReceiptLastDays = sumLastDays / dataInLastDays.length;
+    const averageReceiptPreviousDays = sumPreviousDays / dataInPreviousDays.length;
+
+    const growthRate = ((averageReceiptLastDays - averageReceiptPreviousDays) / averageReceiptPreviousDays) * 100;
+
+    return {
+        averageReceiptLastDays,
+        growthRate
+    };
+}

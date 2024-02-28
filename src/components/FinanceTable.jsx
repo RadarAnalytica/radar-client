@@ -24,10 +24,10 @@ export const TableRow = ({ values, percent, sign }) => {
                     >
                         {
                             percent && i === 2 ?
-                                <img src={percent > 30 && i > 1 ? green : red} alt="" className='me-2' />
+                                <img src={percent > 0 ? green : red} alt="" className='me-2' style={{ width: '1.5vh' }} />
                                 : null
                         }
-                        <span style={percent < 30 && i > 1 ? { color: 'red' } : percent > 30 && i > 1 ? { color: 'rgba(0, 182, 155, 1)' } : {}}>
+                        <span style={percent <= 0 && i > 1 ? { fontWeight: 700, fontSize: '1.75vh', color: 'red' } : percent > 30 && i > 1 ? { fontWeight: 700, fontSize: '1.75vh', color: 'rgba(0, 182, 155, 1)' } : {}}>
                             {i === 1 ? formatPrice(val) + (sign ? sign : ' ₽') : i > 1 ? (val + ' %') : val}
                         </span>
                     </span>
@@ -42,7 +42,7 @@ const FinanceTable = ({ title, data, sign }) => {
 
     return (
         <div className='finance-table'>
-            <p className="fw-bold fs-4 mb-2">{title}</p>
+            <p className="fw-bold numbers mb-2">{title}</p>
             {
                 data && data.map((item, i) => {
                     let values = item ? Object.values(item) : []

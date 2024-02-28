@@ -26,6 +26,42 @@ export const ServiceFunctions = {
         })
         const data = res.json()
         return data
+    },
+
+    getDataCollection: async (id, days, brandName) => {
+        const res = await fetch(`${URL}/api/data-collection/${id}?days=${days}&brandName=${brandName}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            },
+        })
+
+        const data = await res.json()
+        return data
+    },
+
+    getFilteredCollection: async (id, days, brandName) => {
+        const res = await fetch(`${URL}/api/data-collection/filtered/${id}?days=${days}&brandName=${brandName}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            },
+        })
+
+        const data = await res.json()
+        return data
+    },
+
+    getBrandNames: async (id) => {
+        const res = await fetch(`${URL}/api/data-collection/names/${id}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            },
+        })
+
+        const data = await res.json()
+        return data
     }
 
 }

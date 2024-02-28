@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ServiceFunctions } from '../service/serviceFunctions'
 import AuthContext from '../service/AuthContext'
 
+import Modal from 'react-bootstrap/Modal';
+
 const Onboarding = () => {
 
     const { user } = useContext(AuthContext)
@@ -25,6 +27,11 @@ const Onboarding = () => {
     const getBrand = (e) => setBrandName(e.target.value)
     const getToken = (e) => setToken(e.target.value)
 
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const submitHandler = (e) => {
         if (!token && !user) {
             e.preventDefault()
@@ -32,9 +39,9 @@ const Onboarding = () => {
             ServiceFunctions.updateToken(brandName, token, user.id).then(data => {
                 if (data) {
                     localStorage.setItem('authToken', data.token)
-                    navigate('/development/dashboard')
                 }
             })
+            handleShow()
         }
     }
 
@@ -44,7 +51,7 @@ const Onboarding = () => {
             <div className="boarding-content w-100">
                 <TopNav title={'Подключение API'} />
 
-                <div className="container d-flex" style={{ padding: '24px', gap: '20px' }}>
+                <div className="container dash-container d-flex" style={{ gap: '20px' }}>
                     <div className="onboard-form-block col">
                         <p style={{ fontWeight: 700, fontSize: 24, width: '90%' }}>
                             Укажите токен нового образца, чтобы продолжить пользоваться всеми возможностями нашего сервиса
@@ -91,6 +98,28 @@ const Onboarding = () => {
                     </div>
                 </div>
             </div>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Токен успешно добавлен</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div>
+                        <p className='fs-6 fw-bold'>
+                            Ваш токен успешно подключен к сервису. Вся необходимая информация для анализа будет собрана в ближайшее время и отображена в разделе "Сводка продаж".
+                            <br /> <br />
+                            Обычно это занимает от 5 до 30 секунд.
+                        </p>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className="d-flex justify-content-between w-100">
+                        <button className='secondary-btn' style={{ padding: '16px 20px' }}
+                            onClick={handleClose}>
+                            Закрыть
+                        </button>
+                    </div>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

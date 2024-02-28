@@ -37,12 +37,24 @@ const LinkedShops = () => {
         }
     }, [])
 
+    let [activeTokens, setActiveTokens] = useState([])
+    let [inactiveTokens, setInactiveTokens] = useState([])
+
     const [expDate, setExpDate] = useState()
     useEffect(() => {
-        if (data) setExpDate(new Date(data.exp * 1000).toLocaleDateString())
+        if (data) setExpDate(data.map(token => ({ date: new Date(token?.token?.exp * 1000), brandName: token.brandName })))
+        if (expDate) {
+            for (let i in expDate) {
+                if (new Date(expDate[i]?.date).getTime() > new Date().getTime()) {
+                    setActiveTokens([...activeTokens, { date: expDate[i], brandName: expDate[i]?.brandName }])
+                } else {
+                    setInactiveTokens([...activeTokens, { date: expDate[i], brandName: expDate[i]?.brandName }])
+                }
+            }
+        }
     }, [data])
 
-    const active = expDate && new Date(expDate).getTime() > new Date().getTime()
+    console.log(data);
 
     return (
         <div className='linked-shops-page'>
@@ -50,7 +62,7 @@ const LinkedShops = () => {
             <div className="linked-shops-content">
                 <TopNav title={'Подключенные магазины'} />
 
-                <div className="container d-flex" style={{ padding: '24px', gap: '20px' }}>
+                <div className="container linked-shops-container d-flex" style={{ padding: '24px', gap: '20px' }}>
                     <div className="linked-shop-block col">
                         <div className="d-flex justify-content-between">
                             <div>
@@ -64,36 +76,48 @@ const LinkedShops = () => {
                             </div>
                         </div>
                         <div className='user-tokens'>
-                            {/* <div className="user-token-item">
-                                <span>Токен статистика</span>
-                                <div className='d-flex token-status'>
-                                    <div className='token-active'>
-                                        <img src={active ? greencircle : redcircle} alt="" />
-                                        <span>Активен до 3 авг. 2024</span>
+                            {
+                                activeTokens?.length ? activeTokens?.map((item, i) => (
+                                    <div className="user-token-item" key={i}>
+                                        <div>
+                                            <span className="fw-bold">{item.brandName}</span>
+                                            <span>Токен статистика</span>
+                                        </div>
+                                        <div className='d-flex token-status'>
+                                            <div className='token-active'>
+                                                <img src={greencircle} alt="" />
+                                                <span>
+                                                    {item.date ? 'Активен до ' + new Date(item.date).toLocaleDateString() : ''}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div> */}
-                            <div className="user-token-item">
-                                <span>Токен статистика</span>
-                                <div className='d-flex token-status'>
-                                    <div className={active ? 'token-active' : 'token-inactive'}>
-                                        <img src={active ? greencircle : redcircle} alt="" />
-                                        <span>
-                                            {expDate ? 'Активен до ' + expDate : 'Неактивен'}
-                                            {
-                                                !active ?
+                                )) : null
+                            }
+                            {
+                                inactiveTokens?.length ? inactiveTokens?.map((item, i) => (
+                                    <div className="user-token-item" key={i}>
+                                        <div>
+                                            <span className="fw-bold">{item.brandName}</span>
+                                            <span>Токен статистика</span>
+                                        </div>
+                                        <div className='d-flex token-status'>
+                                            <div className='token-active'>
+                                                <img src={redcircle} alt="" />
+                                                <span>
+                                                    {'Неактивен'}
                                                     <span
                                                         className="refresh-token-btn prime-text ms-2"
                                                         onClick={() => navigate('/development/onboarding')}
                                                     >
                                                         Обновить
                                                     </span>
-                                                    : null
-                                            }
-                                        </span>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                )) : null
+                            }
                             {/* <div className="user-token-item">
                                 <span>Токен реклама</span>
                                 <div className='d-flex token-status'>

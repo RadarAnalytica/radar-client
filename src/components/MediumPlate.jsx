@@ -26,14 +26,14 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) 
             <div className="d-flex align-items-start justify-content-between" style={{ position: 'relative' }}>
                 <div className='w-100'>
                     <div className='mb-3'>
-                        <p className='p-0 m-0 mb-2 clue-text'>{name}</p>
+                        <p className='p-0 m-0 mb-2 clue-text' style={{ fontSize: '1.75vh' }}>{name}</p>
                         <p className='p-0 m-0 mb-1 fw-bold numbers'>{formatPrice(value) || '0,00'} ₽</p>
                         <div className="d-flex align-items-center justify-content-between">
                             <div className="d-flex align-items-center">
                                 <img src={percent > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} />
-                                <p className='m-0 p-0 small-numbers' style={percent > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{formatPrice(percent)}%</p>
+                                <p className='m-0 p-0 tiny-numbers' style={percent > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{formatPrice(percent)}%</p>
                             </div>
-                            {/* <p className='m-0 p-0 clue-text'>{text}</p> */}
+                            <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh' }}>{formatPrice(text)}</p>
                         </div>
                     </div>
                     <div>
@@ -41,9 +41,9 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) 
                         <div className="d-flex align-items-center justify-content-between">
                             <div className="d-flex align-items-center">
                                 <img src={percent2 > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} />
-                                <p className='m-0 p-0 small-numbers' style={percent2 > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{percent2}%</p>
+                                <p className='m-0 p-0 tiny-numbers' style={percent2 > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{formatPrice(percent2)}%</p>
                             </div>
-                            {/* {text2 ? <p className='m-0 p-0 clue-text'>{text2}</p> : <p className='m-0 p-0'>&nbsp;</p>} */}
+                            {text2 && <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh' }}>{formatPrice(text2)}</p> || <p className='m-0 p-0'>&nbsp;</p>}
                         </div>
                     </div>
                 </div>

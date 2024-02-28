@@ -62,6 +62,8 @@ export const AuthProvider = ({ children }) => {
 
     const [dataobject, setDataobject] = useState()
 
+    const [showMobile, setShowMobile] = useState(false)
+
     // const [userImage, setUserImage] = useState()
     // useEffect(() => {
     //     user && user.id ? ServiceFunctions.getOneUser(user.id, authToken.token).then(data => setUserImage(data.image)) : setUserImage()
@@ -91,7 +93,9 @@ export const AuthProvider = ({ children }) => {
         handleOpenMenu: handleOpenMenu,
         register,
         dataobject,
-        setDataobject
+        setDataobject,
+        showMobile,
+        setShowMobile
     }
 
     useEffect(() => {

@@ -18,26 +18,26 @@ const ChartTableRow = ({ object }) => {
                 <div className="container d-flex justify-content-between">
                     <div className="chart-row-data col">
                         <div>
-                            <p className='m-0 p-0 fw-bold'>{formatPrice(object.amount) || 0} ₽</p>
+                            <p className='m-0 p-0 fw-bold' style={{ fontSize: '1.25vw !important' }}>{formatPrice(object.amount) || 0} ₽</p>
                             <div className="d-flex align-items-center mt-2">
-                                <img src={object.percentRate < 19 ? green : red} alt="" className='me-2' />
-                                <p className="m-0 p-0" style={object.percentRate >= 19 ? { color: 'red' } : { color: 'green' }}>{formatPrice(object.percentRate) + '%'}</p>
+                                <img src={object.percentRate >= 0 ? green : red} alt="" className='me-2' />
+                                <p className="m-0 p-0 tiny-numbers" style={object.percentRate <= 0 ? { color: 'red' } : { color: 'rgb(0, 182, 155)' }}>{formatPrice(object.percentRate) + '%'}</p>
                             </div>
                         </div>
                         <div className='mt-2'>
-                            <img src={object.percentRate <= 22 ? redchart1 : redchart3} alt="" />
+                            <img src={object.percentRate <= 0 ? redchart1 : greenchart1} alt="" />
                         </div>
                     </div>
                     <div className="row-chart col">
                         <div>
-                            <p className='m-0 p-0 fw-bold'>{formatPrice(object.percent) || 0} %</p>
+                            <p className='m-0 p-0 fw-bold' style={{ fontSize: '1.25vw !important' }}>{formatPrice(object.percent) || 0} %</p>
                             <div className="d-flex align-items-center mt-2">
-                                <img src={object.percentRate2 < 19 ? green : red} alt="" className='me-2' />
-                                <p className="m-0 p-0" style={object.percentRate2 >= 19 ? { color: 'red' } : { color: 'green' }}>{formatPrice(object.percentRate2) + '%'}</p>
+                                <img src={object.percentRate2 >= 2 ? green : red} alt="" className='me-2' />
+                                <p className="m-0 p-0 tiny-numbers" style={object.percentRate2 <= 0 ? { color: 'red' } : { color: 'rgb(0, 182, 155)' }}>{formatPrice(object.percentRate2) + '%'}</p>
                             </div>
                         </div>
                         <div className='mt-2'>
-                            <img src={object.percentRate <= 19 ? greenchart1 : redchart2} alt="" />
+                            <img src={object.percentRate2 > 0 ? greenchart1 : redchart2} alt="" />
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@ const ChartTable = ({ data, title }) => {
 
     return (
         <div className='chart-table mt-3'>
-            <p className="fw-bold fs-4 mb-2">{title}</p>
+            <p className="fw-bold numbers mb-2">{title}</p>
             {
                 data && data.map((obj, i) => (
                     <ChartTableRow object={obj} key={i} />

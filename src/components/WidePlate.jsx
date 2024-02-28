@@ -10,34 +10,34 @@ const WidePlate = ({ title, titles, income, products, data }) => {
 
     return (
         <div className='wide-plate w-100'>
-            <p className="fw-bold fs-4 mb-2">{title}</p>
+            <p className="fw-bold mb-2 numbers">{title}</p>
             <div className='d-flex mb-2' >
                 <span className="col-2 fw-bold">&nbsp;</span>
                 {
                     titles && titles.map((t, i) =>
-                        <div className={'col fw-bold'} key={i}>
+                        <div className={'col medium-numbers'} key={i}>
                             <span className='mr-2'>{t}</span>
                             <span></span>
                         </div>)
                 }
             </div>
             <div className='d-flex mb-2' style={{ borderTop: '1px solid silver', paddingTop: '8px' }}>
-                <span className="col-2 fw-bold">Выручка</span>
+                <span className="col-2 medium-numbers">Выручка</span>
                 {
                     sales && sales.map((t, i) =>
                         <div className={'col '} key={i}>
-                            <span className='me-2 fw-bold'>{formatPrice(t) + ' ₽' || 0}</span>
-                            <span style={true ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{salesPerc ? formatPrice(salesPerc[i]) + ' %' : 0}</span>
+                            <span className='me-2 medium-numbers'>{formatPrice(t) + ' ₽' || 0}</span>
+                            <span className='tiny-numbers' style={true ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{salesPerc ? formatPrice(salesPerc[i]) + ' %' : 0}</span>
                         </div>)
                 }
             </div>
             <div className='d-flex mb-2' style={{ borderTop: '1px solid silver', paddingTop: '8px' }}>
-                <span className="col-2 fw-bold">Товар</span>
+                <span className="col-2 medium-numbers">Товар</span>
                 {
                     amount && amount.map((t, i) =>
                         <div className={'col'} key={i}>
-                            <span className='me-2 fw-bold'>{t + ' шт'}</span>
-                            <span style={true ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{amountPerc ? formatPrice(amountPerc[i]) + ' %' : 0}</span>
+                            <span className='me-2 medium-numbers'>{t + ' шт'}</span>
+                            <span className='tiny-numbers' style={true ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{amountPerc ? formatPrice(amountPerc[i]) + ' %' : 0}</span>
                         </div>)
                 }
             </div>

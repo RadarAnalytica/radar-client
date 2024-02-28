@@ -11,6 +11,7 @@ import MockUpPage from './pages/MockUpPage';
 import ResetPage from './pages/ResetPage';
 import RequestResetLink from './pages/RequestResetLink';
 import LinkedShops from './pages/LinkedShops';
+import MobileMenu from './components/MobileMenu';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
       <div className="App">
 
         <AuthProvider >
+          <MobileMenu />
           <Routes>
             <Route path='/' element={<MockUpPage />} />
             <Route path='/development/signup' element={<SignUpPage />} />
@@ -48,7 +50,7 @@ function App() {
           <Route path='/development/signup' element={<SignUpPage />} />
           <Route path='/development/signin' element={<SignInPage />} />
           <Route path='/development/onboarding' element={<Onboarding />} />
-          {/* <Route path='/development/dashboard' element={<DashboardPage />} /> */}
+          <Route path='/development/dashboard' element={<DashboardPage />} />
 
           <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
           <Route path='/development/restore/:email/:code' element={<ResetPage />} />

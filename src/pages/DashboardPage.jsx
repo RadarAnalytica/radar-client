@@ -12,47 +12,62 @@ import StorageTable from '../components/StorageTable'
 import ChartTable from '../components/ChartTable'
 import WidePlate from '../components/WidePlate'
 import { URL } from '../service/config'
-import { abcAnalysis, calcTax, calculateGrossProfit, calculateGrossProfitMargin, calculateInitialCosts, calculateMargin, calculateNetProfit, calculateProfit, calculatePurchasePercentage, calculateROI, calculateTotalProfit, generateDateList, getDifference } from '../service/utils'
+import { abcAnalysis, calcTax, calculateGrossProfit, calculateGrossProfitMargin, calculateInitialCosts, calculateMargin, calculateNetProfit, calculateProfit, calculatePurchasePercentage, calculateROI, calculateTotalProfit, formatDate, generateDateList, getDifference } from '../service/utils'
+import { ServiceFunctions } from '../service/serviceFunctions'
+import MobileMenu from '../components/MobileMenu'
 
 const DashboardPage = () => {
 
-    const [wbData, setWbData] = useState()
+    const { user, authToken, showMobile } = useContext(AuthContext)
 
-    const { user, authToken } = useContext(AuthContext)
+
+    const [wbData, setWbData] = useState()
+    const [days, setDays] = useState(31)
 
     const navigate = useNavigate()
+
     useEffect(() => {
         setTimeout(() => {
             if (!user || (user && !user.isOnboarded)) {
-                navigate('/development/onboarding')
+                // navigate('/development/onboarding')
             }
         }, 1500);
     }, [user])
 
-    const twoMonthAgo = new Date(new Date().setDate(new Date().getDate() - 61)).toLocaleDateString('ru')?.split('.').reverse().join('-')
-    const monthAgo = new Date(new Date().setDate(new Date().getDate() - 31)).toLocaleDateString('ru')?.split('.').reverse().join('-')
-    const dateTo = new Date(new Date().setDate(new Date().getDate())).toLocaleDateString('ru')?.split('.').reverse().join('-')
-    const [period, setPeriod] = useState({ period: monthAgo, days: 31 })
-    useEffect(() => {
-        setPeriod({ period: monthAgo, days: 31 })
-    }, [])
+    const [content, setContent] = useState()
+    const [state, setState] = useState()
 
-    const getWBSales = async (user, period, dateTo) => {
-        const res = await fetch(`${URL}/api/user/sales/${user.id}?dateFrom=${twoMonthAgo}&dateTo=${dateTo}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': 'Bearer ' + authToken
-            }
-        })
-        const data = await res.json()
-        return data
-    }
+    const [brandNames, setBrandNames] = useState()
+    const [activeBrand, setActiveBrand] = useState()
+    useEffect(() => {
+        if (user) {
+            ServiceFunctions.getBrandNames(user.id).then(data => setBrandNames(data))
+        }
+    }, [user])
+    useEffect(() => {
+        if (brandNames && brandNames.length) {
+            setActiveBrand(brandNames[0])
+        }
+    }, [brandNames])
+
+
+    useEffect(() => {
+        if (user && activeBrand) {
+            ServiceFunctions.getDataCollection(user.id, days, activeBrand).then(data => setWbData(filterArrays(data, days)))
+            ServiceFunctions.getDataCollection(user.id, days, activeBrand).then(data => setState(data))
+        }
+    }, [user, activeBrand])
+
+    useEffect(() => {
+        if (wbData) {
+            setContent(wbData.content)
+        }
+    }, [wbData])
 
     function filterArrays(obj, days) {
         for (let key in obj) {
-            if (Array.isArray(obj[key])) {
-                if (obj[key].length) {
+            if (Array.isArray(obj[key]) && (key !== 'warehouses' && key !== 'info')) {
+                if (typeof obj[key] === 'object' && obj[key].length) {
                     obj[key] = obj[key].filter(item => {
                         const date = item.date ? new Date(item.date) : item.lastChangeDate ? new Date(item.lastChangeDate) : new Date(item.create_dt);
                         const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -64,292 +79,151 @@ const DashboardPage = () => {
         return obj
     }
 
-
-    const hash = {}
-
-    useEffect(() => {
-        let found = localStorage.getItem('dashboard')
-        let token = localStorage.getItem('authToken')
-        if (found) {
-            localStorage.clear()
-            localStorage.setItem('dashboard', found)
-            localStorage.setItem('authToken', token)
-        }
-        else if (user && period && found === null) {
-            localStorage.clear()
-            localStorage.setItem('authToken', token)
-            getWBSales(user, period, dateTo).then(data => {
-                if (data && (data.orders?.length || data.sales?.length)) {
-                    for (let key in data) {
-                        let props = data[key] && !Array.isArray(data[key]) ? Object.keys(data[key]) : []
-                        if (data[key] && data[key].length) {
-                            hash[key] = data[key]
-                        }
-                        if (data[key] && props && props.length) {
-                            hash[key] = data[key]
-                        }
-                        if (!Object.keys(hash).find(k => k === key) && data[key] === null) {
-                            hash[key] = null
-                        }
-                    }
-                    localStorage.setItem('dashboard', JSON.stringify(hash))
-                    setWbData(filterArrays(hash, 31))
-                }
-
-            })
-        }
-    }, [])
-
-    const dashData = localStorage.getItem('dashboard') ? JSON.parse(localStorage.getItem('dashboard')) : null
-
-    // console.log(dashData);
-
-    // useEffect(() => {
-    //     if (dashData) {
-    //         setWbData(JSON.parse(dashData))
-    //     }
-    // }, [dashData])
-
-
-
-
-    // Поставки
-    const incomes = wbData ? wbData.incomes : []
-    // Цены
-    const info = wbData ? wbData.info : []
     // Заказы
     const orders = wbData ? wbData.orders : []
-    // список новых сборочных заданий
-    const newOrders = wbData ? wbData.newOrders : []
-    // отчеты о продажах и реализации
-    const reportDetailByPeriod = wbData ? wbData.reportDetailByPeriod : []
-    // список сборочных заданий на повторную отгрузку
-    const reshipmentOrders = wbData && wbData.reshipmentOrders ? wbData.reshipmentOrders.orders : [] //reshipmentOrders.orders
     // продажи
     const sales = wbData ? wbData.sales : []
-    // склад
-    const stocks = wbData ? wbData.stocks : []
-    // список поставок
-    const supplies = wbData ? wbData.supplies : []
     // склады
     const warehouses = wbData ? wbData.warehouses : []
 
 
-    const [sumSales, setSumSales] = useState()
-    const [sumOrders, setSUmOrders] = useState()
-    const [canceled, setCanceled] = useState()
-    const [sumCanceled, setSumCanceled] = useState()
-    const [buyOutPrice, setBuyoutPrice] = useState()
-    const [averageCheck, setAverageCheck] = useState()
-    const [penalty, setPenalty] = useState()
-    const [addPayment, setAddPayment] = useState()
-    const [commissionPrice, setCommissionPrice] = useState()
-    const [delivery, setDelivery] = useState()
-    const [inWayToClient, setInWayToClient] = useState()
-    const [inWayFromClient, setInWayFromClient] = useState()
-    const [available, setAvailable] = useState()
-    const [commCosts, setComCosts] = useState()
-    const [lostProfit, setLostProfit] = useState()
-    const [averageProfit, setAverageProfit] = useState()
-    const [netProfit, setNetProfit] = useState()
-    const [initialCosts, setInitialCosts] = useState()
-    const [totalProfit, setTotalProfit] = useState()
-    const [tax, setTax] = useState()
-    const [margin, setMargin] = useState()
-
-    useEffect(() => {
-        const sumSales = sales && sales.length ? sales.map(i => i.forPay)?.reduce((a, b) => a + b, 0)?.toFixed(2) : 0
-        setSumSales(sumSales)
-        const sumOrders = orders && orders.length ? orders.map(i => i.finishedPrice)?.reduce((a, b) => a + b, 0)?.toFixed(2) : 0
-        setSUmOrders(sumOrders)
-        const canceled = orders && orders.length ? orders.filter(i => i.isCancel === true) : []
-        setCanceled(canceled)
-        const sumCanceled = canceled && canceled.length ? canceled.map(i => i.finishedPrice)?.reduce((a, b) => a + b, 0) : 0
-        setSumCanceled(sumCanceled)
-
-        const penalty = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.penalty)?.reduce((a, b) => a + b, 0) : 0
-        setPenalty(penalty)
-        const addPayment = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.additional_payment)?.reduce((a, b) => a + b, 0) : 0
-        setAddPayment(addPayment)
-        const commissionPrice = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.commission_percent * (item.retail_price * item.quantity))?.reduce((a, b) => a + b, 0) : 0
-        setCommissionPrice(commissionPrice)
-        const delivery = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.delivery_rub)?.filter(el => el > 0)?.reduce((a, b) => a + b, 0) : 0
-        setDelivery(delivery)
-        const lostProfit = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.return_amount * item.retail_price)?.reduce((a, b) => a + b, 0) : 0
-        setLostProfit(lostProfit)
-
-        const buyOutPrice = sumOrders && sumCanceled ? (sumCanceled / (sumOrders / 100))?.toFixed(2) : 0
-        setBuyoutPrice(buyOutPrice)
-        const averageCheck = sumOrders && orders ? (Number(sumOrders) / orders.length)?.toFixed(2) : 0
-        setAverageCheck(averageCheck)
-
-        const inWayToClient = stocks && stocks.length ? stocks.filter(i => i.inWayToClient) : []
-        setInWayToClient(inWayToClient)
-        const inWayFromClient = stocks && stocks.length ? stocks.filter(i => i.inWayFromClient) : []
-        setInWayFromClient(inWayFromClient)
-        const available = stocks && stocks.length ? stocks.filter(i => i.quantity) : []
-        setAvailable(available)
-
-        const commCosts = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => item.commission_percent * (item.retail_price * item.quantity))?.reduce((a, b) => a + b, 0) : 0
-        setComCosts(commCosts)
-
-        const averageProfit = reportDetailByPeriod && reportDetailByPeriod.length ? calculateProfit(reportDetailByPeriod) : 0
-        setAverageProfit(averageProfit)
-        const netProfit = reportDetailByPeriod && reportDetailByPeriod.length ? calculateNetProfit(reportDetailByPeriod) : 0
-        setNetProfit(netProfit)
-
-        const initialCosts = stocks && stocks.length ? calculateInitialCosts(stocks) : 0
-        setInitialCosts(initialCosts)
-        const totalProfit = reportDetailByPeriod && reportDetailByPeriod.length ? calculateTotalProfit(reportDetailByPeriod) : 0
-        setTotalProfit(totalProfit)
-        const tax = reportDetailByPeriod && reportDetailByPeriod.length ? calcTax(reportDetailByPeriod) : 0
-        setTax(tax)
-
-        const margin = revenue && initialCosts ? calculateMargin(revenue, initialCosts.totalCost) : 0
-        setMargin(margin)
-    }, [wbData])
-
-
-
-    // const fbo = []
-    // const fbs = incomes && incomes.length ? incomes.filter(i => i.quantity) : []
-
-    const revenue = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => (item.retail_price * item.quantity))?.reduce((a, b) => a + b, 0) : 0
-    const revComPercentage = reportDetailByPeriod && reportDetailByPeriod.length ? reportDetailByPeriod.map(item => (item.commission_percent))?.reduce((a, b) => a + b, 0) : 0
-
-
     const storeData = [
+        {
+            name: "FBO",
+            initialPrice: '-',
+            salesPrice: content?.fbo?.fbo?.toFixed(0) || 0,
+            quantity: content?.fbo?.fboAmount || 0,
+        },
+        {
+            name: "FBS",
+            initialPrice: '-',
+            salesPrice: content?.fbo?.fbs,
+            quantity: content?.fbo?.fbsAmount || 0,
+        },
         {
             name: "Едет к клиенту",
             initialPrice: '-',
-            salesPrice: inWayToClient ? inWayToClient?.map(i => i.Price * i.inWayToClient)?.reduce((a, b) => a + b, 0) : 0,
-            quantity: inWayToClient ? inWayToClient?.map(i => i.inWayToClient)?.reduce((a, b) => a + b, 0) : 0,
+            salesPrice: content?.toClient?.reduce((acc, el) => acc + (el.inWayToClient * el.Price), 0) || 0,
+            quantity: content?.toClient?.reduce((acc, el) => acc + (el.inWayToClient), 0) || 0,
         },
         {
             name: "Едет от клиента",
             initialPrice: '-',
-            salesPrice: inWayFromClient ? inWayFromClient?.map(i => i.Price * i.inWayFromClient)?.reduce((a, b) => a + b, 0) : 0,
-            quantity: inWayFromClient ? inWayFromClient?.map(i => i.inWayFromClient)?.reduce((a, b) => a + b, 0) : 0,
+            salesPrice: content?.fromClient?.reduce((acc, el) => acc + (el.inWayFromClient * el.Price), 0) || 0,
+            quantity: content?.fromClient?.reduce((acc, el) => acc + (el.inWayFromClient), 0) || 0,
         },
         {
             name: "Не распределено",
             initialPrice: '-',
-            salesPrice: available ? available?.map(i => i.Price * i.quantity)?.reduce((a, b) => a + b, 0) : 0,
-            quantity: available ? available?.map(i => i.quantity)?.reduce((a, b) => a + b, 0) : 0,
+            salesPrice: content?.notSorted,
+            quantity: content?.notSorted,
         },
     ]
 
     const costsData = [
         {
+            name: 'Реклама (ДРР (общий))',
+            amount: content?.advertisment?.expensesCurrentPeriod || '0',
+            percent: content?.advertisment?.expensesPercentageCurrentPeriod || '0',
+            percentRate: content?.advertisment?.growthPercentageExpenses || '0',
+            percentRate2: content?.advertisment?.growthPercentageExpensesPercentage || '0'
+        },
+        {
             name: 'Комиссия (от выручки)',
-            amount: commissionPrice || 0,
-            amountRate: 17,
-            percent: revComPercentage,
-            percentRate: 32,
-            percentRate2: 19
+            amount: content?.commissionFromProfit?.commissionSum || '0',
+            percent: content?.commissionFromProfit?.commissionPercent || '0',
+            percentRate: content?.commissionFromProfit?.commissionSumGrowth || '0',
+            percentRate2: content?.commissionFromProfit?.commissionPercentGrowth || '0'
         },
         {
             name: 'Логистика (от выручки)',
-            amount: delivery || 0,
-            amountRate: 28,
-            percent: delivery / revenue * 100,
-            percentRate: 19,
-            percentRate2: 14
+            amount: content?.logisticsFromProfit?.deliverySum || '0',
+            percent: content?.logisticsFromProfit?.percent || '0',
+            percentRate: content?.logisticsFromProfit?.deliveryGrowth || '0',
+            percentRate2: content?.logisticsFromProfit?.percentGrowth || '0'
         },
     ]
 
     const financeData = [
         {
             name: 'Выручка',
-            amount: totalProfit ? totalProfit : 0,
-            rate: 28,
+            amount: content?.profit?.sum || '0',
+            rate: content?.profit?.sumPercent || '0',
         },
         {
             name: 'Себестоимость продаж',
-            amount: initialCosts?.totalCost || 0,
-            rate: 25,
+            amount: content?.initialPrice || '0',
+            rate: 0,
         },
         {
             name: 'Маржинальная стоимость',
-            amount: margin || 0,
-            rate: 47,
+            amount: content?.marginCosts?.currentGrossMargin || '0',
+            rate: content?.marginCosts?.marginGrowth?.toFixed(2) || '0',
         },
         {
             name: 'Валовая прибыль',
-            amount: calculateGrossProfit(totalProfit, initialCosts?.totalCost) || 0,
-            rate: 39,
+            amount: content?.grossProfit?.sum?.sum || '0',
+            rate: content?.grossProfit?.sum?.sumPercent,
         },
         {
             name: 'Налог',
-            amount: tax,
-            rate: 13,
+            amount: content?.tax.sum || '0',
+            rate: content?.tax?.percent || '0',
         },
         {
             name: 'Чистая прибыль',
-            amount: netProfit,
-            rate: 19,
+            amount: content?.netProfit?.sum || '0',
+            rate: content?.netProfit?.marginGrowth?.toFixed(2),
         },
         {
             name: 'Средняя прибыль',
-            amount: averageProfit,
-            rate: 22,
+            amount: content?.averageProfit?.averageReceiptLastDays || '0',
+            rate: content?.averageProfit?.growthRate?.toFixed(2) || '0',
         },
     ]
 
     const profitabilityData = [
         {
             name: 'Процент выкупа',
-            value: calculatePurchasePercentage(sales, reportDetailByPeriod)
+            value: content?.buyoutPercentage
         },
         {
             name: 'ROI',
-            value: calculateROI(totalProfit, initialCosts?.totalCost)
+            value: content?.roi
         },
         {
             name: 'Рентабельность ВП',
-            value: calculateGrossProfitMargin(calculateGrossProfit(totalProfit, initialCosts?.totalCost) || 0, totalProfit)
+            value: content?.vpProfitMargin?.percent
         },
         {
             name: 'Рентабельность ОП',
-            value: calculateGrossProfitMargin(tax, totalProfit)
+            value: content?.opProfitMargin?.percent
         },
     ]
 
-
-    console.log();
 
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 7000);
+        }, 5000);
     }, [loading])
-
-    const [days, setDays] = useState(31)
 
 
     const changePeriod = () => {
-        let data = localStorage.getItem('dashboard')
-        if (data) {
-            setLoading(true)
-            const filteredObj = filterArrays(JSON.parse(data), days);
-            filteredObj ? setWbData(filteredObj) : setWbData(wbData)
+        setLoading(true)
+        if (user && days && activeBrand) {
+            ServiceFunctions.getFilteredCollection(user.id, days, activeBrand).then(data => setWbData(filterArrays(data, days)))
         }
     }
 
     useEffect(() => {
         changePeriod()
-    }, [days])
-
-    const dates = orders ? [...new Set(orders.map(i => new Date(i.date).toLocaleDateString()))] :
-        sales ? [...new Set(sales.map(i => new Date(i.date).toLocaleDateString()))] : generateDateList(Number(days))
+    }, [days, activeBrand])
 
     const [chartUnitRub, setChartUnitRub] = useState(true)
 
-    const dateList = period ? generateDateList(Number(days)) : generateDateList(7)
-
-    // const orderValuesRub = orders && orders.length ? orders.map(i => i.finishedPrice) : []
-    // const salesValuesRub = sales && sales.length ? sales.map(i => i.finishedPrice) : []
+    const dateList = days ? generateDateList(Number(days)) : generateDateList(7)
 
     const orderValuesRub = orders && orders.length ? orders.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
     const salesValuesRub = sales && sales.length ? sales.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
@@ -372,8 +246,8 @@ const DashboardPage = () => {
         return acc;
     }, {});
 
-    const summedOrderArray = Object.keys(summedOrderRub).map(date => (summedOrderRub[date].toFixed(2))).slice(0, period?.days);
-    const summedSalesArray = Object.keys(summedSalesRub).map(date => (summedSalesRub[date].toFixed(2))).slice(0, period?.days);
+    const summedOrderArray = Object.keys(summedOrderRub).map(date => (summedOrderRub[date].toFixed(2))).slice(0, days);
+    const summedSalesArray = Object.keys(summedSalesRub).map(date => (summedSalesRub[date].toFixed(2))).slice(0, days);
 
 
     const ordersByDate = orderValuesRub.reduce((acc, item) => {
@@ -388,15 +262,19 @@ const DashboardPage = () => {
         return acc;
     }, {});
 
-    const totalOrByDate = Object.entries(ordersByDate).map(([date, count]) => count).slice(0, period?.days);
-    const totalsalesByDate = Object.entries(salesByDate).map(([date, count]) => count).slice(0, period?.days);
+    const totalOrByDate = Object.entries(ordersByDate).map(([date, count]) => count).slice(0, days);
+    const totalsalesByDate = Object.entries(salesByDate).map(([date, count]) => count).slice(0, days);
 
     const [orderOn, setOrderOn] = useState(true)
     const [salesOn, setSalesOn] = useState(true)
 
 
+    const uniquSalesDate = [...new Set(sales.map(i => formatDate(new Date(i.date))))]
+    const uniquOrdersDate = [...new Set(orders.map(i => formatDate(new Date(i.date))))]
+    const labels = [...new Set(uniquOrdersDate.concat(uniquSalesDate))]
+
     const data = {
-        labels: dateList?.map(item => item.split(' ')) || [],
+        labels: labels?.map(item => item.split(' ')) || [],
         datasets: [
             orderOn ? {
                 label: 'Заказы',
@@ -430,21 +308,18 @@ const DashboardPage = () => {
     const sortedValuesArray = data?.datasets?.map(arr => arr?.data).flat(1)?.sort((a, b) => b - a)
     const maxValue = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0
 
-    const mockData = [117, 782, 100, 101, 701, 100, 14, 104]
-    const mockData2 = ['В день ~ 9 329,01 ₽', 'В день ~ 4 560,01 ₽', 'В день ~ 4 шт', 'В день ~ 3 шт']
-
-
     return (
         user && <div className='dashboard-page'>
             <SideNav />
-            <div className="dashboard-content pb-5">
+            <div className="dashboard-content pb-3">
                 <TopNav title={'Сводка продаж'} />
 
                 <DashboardFilter
-                    warehouses={warehouses}
+                    brandNames={brandNames}
                     changePeriod={changePeriod}
-                    defaultValue={period?.days}
+                    defaultValue={days}
                     setDays={setDays}
+                    changeBrand={setActiveBrand}
                 />
                 {
                     loading ?
@@ -452,56 +327,56 @@ const DashboardPage = () => {
                             <span className="loader"></span>
                         </div>
                         :
-                        data && user &&
+                        wbData && user &&
 
                         <div>
 
-                            <div className="container p-4 pt-0 d-flex gap-3">
+                            <div className="container dash-container p-4 pt-0 d-flex gap-3">
                                 <MediumPlate name={'Заказы'}
-                                    value={sumOrders}
-                                    quantity={orders?.length || 0}
-                                    percent={getDifference(filterArrays(dashData?.orders), 'finishedPrice', days)?.percent}
-                                    percent2={mockData[3]}
-                                    text={mockData2[0]}
-                                    text2={mockData2[1]}
+                                    value={content?.orderStat?.sum}
+                                    quantity={content?.orderStat?.amount || 0}
+                                    percent={content?.orderStat?.amountPercent || 0}
+                                    percent2={content?.orderStat?.sumPercent || 0}
+                                    text={content?.orderStat?.revenueIncrese || 0}
+                                    text2={content?.orderStat?.amountIncrese || 0}
                                 />
                                 <MediumPlate
                                     name={'Продажи'}
-                                    value={sumSales}
-                                    quantity={sales?.length || 0}
-                                    percent={getDifference(filterArrays(dashData?.sales), 'finishedPrice', days)?.percent}
-                                    percent2={90}
-                                    text={mockData2[3]}
-                                    text2={mockData2[2]}
+                                    value={content?.salesStat?.sum}
+                                    quantity={content?.salesStat?.amount || 0}
+                                    percent={content?.salesStat?.amountPercent || 0}
+                                    percent2={content?.salesStat?.sumPercent || 0}
+                                    text={content?.salesStat?.revenueIncrese || 0}
+                                    text2={content?.salesStat?.amountIncrese || 0}
                                 />
                                 <MediumPlate
                                     name={'Возвраты'}
-                                    value={sumCanceled || 0}
-                                    quantity={canceled?.length || 0}
-                                    percent={getDifference(filterArrays(dashData?.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
-                                    percent2={20}
-                                    text={''}
-                                    text2={''}
+                                    value={content?.returned?.currentReturnsSum}
+                                    quantity={content?.returned?.currentReturnsCount || 0}
+                                    percent={content?.returned?.returnsSumGrowth || 0}
+                                    percent2={content?.returned?.returnsCountGrowth || 0}
+                                // text={content?.returned?.currentReturnsCount || 0}
+                                // text2={content?.returned?.currentReturnsCount || 0}
                                 />
                                 <div className="col d-flex flex-column">
                                     <div className='mb-3'>
                                         <SmallPlate
                                             name={'Процент выкупа'}
-                                            value={buyOutPrice || 0}
+                                            value={content?.buyout?.purchaseRate || 0}
                                             type={'percent'}
-                                            percent={getDifference(filterArrays(dashData?.orders), 'finishedPrice', days)?.percent}
+                                            percent={content?.buyout?.percentGrowth || 0}
                                         />
                                     </div>
                                     <SmallPlate
                                         name={'Средний чек'}
-                                        value={averageCheck || 0}
+                                        value={content?.averageCheck?.averageReceiptLastDays || 0}
                                         type={'price'}
-                                        percent={getDifference(filterArrays(dashData?.orders?.filter(i => i.isCancel)), 'finishedPrice', days)?.percent}
+                                        percent={content?.averageCheck?.growthRate || 0}
                                     />
                                 </div>
                             </div>
-                            <div className="container p-4 pt-0 pb-3 d-flex gap-3">
-                                <div className="col">
+                            <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3">
+                                <div className="col chart-wrapper">
                                     <BigChart name={'Заказы и продажи'} data={data}
                                         orderOn={orderOn}
                                         salesOn={salesOn}
@@ -515,52 +390,52 @@ const DashboardPage = () => {
                             </div>
 
 
-                            <div className="container p-4 pt-0 pb-3 d-flex gap-3">
+                            <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3">
                                 <div className="col">
                                     <SmallPlate smallText={true}
                                         name={'Себестоимость проданных товаров'}
                                         nochart={true}
                                         type={'price'}
-                                        quantity={initialCosts?.quantity || 0}
-                                        value={initialCosts?.totalCost || 0}
+                                        quantity={content?.orderStat?.amount || 0}
+                                        value={content?.initialPrice || 0}
                                     />
                                 </div>
                                 <div className="col">
-                                    <SmallPlate smallText={true} name={'Возвраты'} value={sumCanceled || 0} type={'price'} quantity={canceled?.length || '0'} />
+                                    <SmallPlate smallText={true} name={'Возвраты'} value={content?.returned?.currentReturnsSum} type={'price'} quantity={content?.returned?.currentReturnsCount || '0'} />
                                 </div>
                                 <div className="col">
-                                    <SmallPlate smallText={true} name={'Штрафы WB'} value={penalty || 0} type={'price'} nochart={true} />
+                                    <SmallPlate smallText={true} name={'Штрафы WB'} value={content?.penalty || 0} type={'price'} nochart={true} />
                                 </div>
                                 <div className="col">
-                                    <SmallPlate smallText={true} name={'Доплаты WB'} value={addPayment || 0} type={'price'} nochart={true} />
+                                    <SmallPlate smallText={true} name={'Доплаты WB'} value={content?.additionalPayment || 0} type={'price'} nochart={true} />
                                 </div>
                             </div>
-                            <div className="container p-4 pt-0 d-flex gap-3">
+                            <div className="container dash-container p-4 pt-0 d-flex gap-3">
                                 <div className="col">
-                                    <SmallPlate smallText={true} name={'Комиссия WB'} value={commissionPrice || 0} type={'price'}
-                                        percent={days === 31 ? 19 : days === 14 ? 21 : 9}
+                                    <SmallPlate smallText={true} name={'Комиссия WB'} value={content?.wbComission?.currentPeriodCommission || 0} type={'price'}
+                                        percent={content?.wbComission?.growthPercentage || 0}
                                     />
                                 </div>
                                 <div className="col">
-                                    <SmallPlate smallText={true} name={'Расходы на логистику'} value={delivery || 0} type={'price'}
-                                        percent={days === 31 ? 25 : days === 14 ? 13 : 20}
+                                    <SmallPlate smallText={true} name={'Расходы на логистику'} value={content?.logistics?.totalDeliveryCostCurrentPeriod || 0} type={'price'}
+                                        percent={content?.logistics?.percentageGrowth || 0}
                                     />
                                 </div>
                                 <div className="col">
                                     <SmallPlate smallText={true} name={'Маржинальная прибыль'}
-                                        value={days === 31 ? 127056 : days === 14 ? 18000 : 2120}
-                                        percent={days === 31 ? 26 : days === 14 ? 18 : 20}
+                                        value={content?.marginRevenue?.currentMarginalProfit * -1 || 0}
+                                        percent={content?.marginRevenue?.profitGrowth || 0}
                                         type={'price'}
                                     />
                                 </div>
                                 <div className="col">
-                                    <SmallPlate smallText={true} name={'Упущенные продажи'} value={sumCanceled || 0} type={'price'}
-                                        quantity={canceled?.length || 0}
+                                    <SmallPlate smallText={true} name={'Упущенные продажи'} value={content?.returned?.currentReturnsSum || 0} type={'price'}
+                                        quantity={content?.returned?.currentReturnsCount || '0'}
                                     />
                                 </div>
                             </div>
 
-                            <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
+                            <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
                                 <div className="wrapper">
                                     <FinanceTable title={'Финансы'} data={financeData} />
                                     <StorageTable
@@ -575,11 +450,11 @@ const DashboardPage = () => {
                                     <ChartTable title={'Расходы'} data={costsData} />
                                 </div>
                             </div>
-                            <div className="container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
+                            <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
                                 <WidePlate
                                     title={'ABC-анализ'}
                                     titles={['Группа А', "Группа В", "Группа С"]}
-                                    data={sales ? abcAnalysis(sales) : []}
+                                    data={wbData && wbData.sales ? abcAnalysis(wbData.sales) : []}
                                 />
                             </div>
                         </div>
