@@ -46,18 +46,20 @@ const LinkedShops = () => {
     }, [data])
 
     useEffect(() => {
+        let active = []
+        let inactive = []
         if (expDate) {
             for (let i in expDate) {
                 if (new Date(expDate[i]?.date).getTime() > new Date().getTime()) {
-                    setActiveTokens([...activeTokens, { date: expDate[i], brandName: expDate[i]?.brandName }])
+                    active.push({ date: expDate[i], brandName: expDate[i]?.brandName })
+                    setActiveTokens(active)
                 } else {
-                    setInactiveTokens([...activeTokens, { date: expDate[i], brandName: expDate[i]?.brandName }])
+                    inactive.push({ date: expDate[i], brandName: expDate[i]?.brandName })
+                    setInactiveTokens(inactive)
                 }
             }
         }
     }, [expDate])
-
-    // console.log(activeTokens);
 
     return (
         <div className='linked-shops-page'>
