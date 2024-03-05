@@ -263,7 +263,7 @@ const OrdersMap = () => {
                     {
                         byRegions && !loading && data ?
                             <div className="map-data-content">
-                                <div className=" pl-3 d-flex">
+                                <div className=" pl-3 d-flex map-data-row">
                                     <div className="col">
                                         <OrderMapPieChart
                                             sub={'Всего заказов'}
@@ -283,7 +283,7 @@ const OrdersMap = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className=" pl-3">
+                                <div className=" pl-3 map-data-row">
                                     <div className="col">
                                         <OrderMapTable title={'Заказы в других регионах'} data={data?.ordersTableData} />
                                     </div>
@@ -295,7 +295,7 @@ const OrdersMap = () => {
                             :
                             !byRegions && !loading && data ?
                                 <div className="map-data-content">
-                                    <div className=" pl-3 d-flex">
+                                    <div className=" pl-3 d-flex map-data-row">
                                         <div className="col">
                                             <OrderMapPieChart
                                                 info={data?.ordersWarehouseTable}
@@ -320,7 +320,7 @@ const OrdersMap = () => {
                                                 let orders = modifiedOrders?.find(el => el.name === w)
                                                 let sales = modifiedSales?.find(el => el.name === w)
                                                 return (
-                                                    <div className=" pl-3" key={i}>
+                                                    <div className=" pl-3 map-data-row" key={i}>
                                                         <div className="col">
                                                             <OrderTableExtended title={`Заказы из ${orders?.name}`} data={orders} />
                                                         </div>

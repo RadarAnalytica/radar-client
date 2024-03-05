@@ -50,7 +50,7 @@ g:hover * {
 
 .map-data-content>div {
     display: flex !important;
-    flex-direction: row !important;
+    flex-direction: row;
     gap: 1.5vw;
 }
 
@@ -105,7 +105,35 @@ g:hover * {
     height: 100%; */
 }
 
+.map-data-row {
+    display: flex;
+}
+
 @media screen and (max-width: 1048px) {
+
+    .order-map-doughnut,
+    .order-table-extended,
+    .order-map-table {
+        min-width: 90vw;
+
+    }
+
+    .doughnut-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .doughnut-content canvas {
+        max-width: 400px !important;
+        max-height: 400px !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .map-data-row {
+        display: flex !;
+        flex-direction: column !important;
+    }
 
     .calculate-container {
         display: flex;
