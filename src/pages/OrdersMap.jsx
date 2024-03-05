@@ -322,7 +322,7 @@ const OrdersMap = () => {
                                                 return (
                                                     <div className=" pl-3" key={i}>
                                                         <div className="col">
-                                                            <OrderTableExtended title={`Заказа из ${orders?.name}`} data={orders} />
+                                                            <OrderTableExtended title={`Заказы из ${orders?.name}`} data={orders} />
                                                         </div>
                                                         <div className="col">
                                                             <OrderTableExtended title={`Продажи из ${sales?.name}`} data={sales} />
