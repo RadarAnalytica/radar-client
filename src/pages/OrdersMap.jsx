@@ -144,11 +144,17 @@ const OrdersMap = () => {
     function findGTagName(evt) {
         // Получаем элемент, на который было наведение курсора
         const target = evt.target.closest('g');
+        const pathName = evt.target.closest('path')
 
         // Если элемент найден
         if (target) {
             // Получаем значение атрибута name и выводим его в консоль
             const nameAttribute = target.getAttribute('name');
+            setFoName(nameAttribute);
+            setFoFirst(nameAttribute?.split(' ')[0]?.toLowerCase())
+        }
+        if (pathName) {
+            const nameAttribute = pathName.getAttribute('name');
             setFoName(nameAttribute);
             setFoFirst(nameAttribute?.split(' ')[0]?.toLowerCase())
         }
@@ -161,10 +167,10 @@ const OrdersMap = () => {
     useEffect(() => {
         if (foFirst && data) {
             const info = {
-                ordersSum: data.orders?.filter(el => el.oblastOkrugName.toLowerCase()?.indexOf(foFirst) >= 0)?.reduce((acc, item) => acc + item.finishedPrice, 0),
-                salesSum: data.sales?.filter(el => el.oblastOkrugName?.toLowerCase()?.indexOf(foFirst) >= 0)?.reduce((acc, item) => acc + item.finishedPrice, 0),
-                ordersAmount: data.orders?.filter(el => el.oblastOkrugName.toLowerCase()?.indexOf(foFirst) >= 0)?.length,
-                salesAmount: data.sales?.filter(el => el.oblastOkrugName?.toLowerCase()?.indexOf(foFirst) >= 0)?.length,
+                ordersSum: data.orders?.filter(el => el.oblastOkrugName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.reduce((acc, item) => acc + item.finishedPrice, 0),
+                salesSum: data.sales?.filter(el => el.oblastOkrugName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.reduce((acc, item) => acc + item.finishedPrice, 0),
+                ordersAmount: data.orders?.filter(el => el.oblastOkrugName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.length,
+                salesAmount: data.sales?.filter(el => el.oblastOkrugName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.length,
             }
             setTooltipData(info)
         }
