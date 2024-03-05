@@ -41,7 +41,10 @@ const DashboardPage = () => {
     const [activeBrand, setActiveBrand] = useState()
     useEffect(() => {
         if (user) {
-            ServiceFunctions.getBrandNames(user.id).then(data => setBrandNames(data))
+            ServiceFunctions.getBrandNames(user.id).then(data => {
+                let names = [...new Set(data)]
+                setBrandNames(names)
+            })
         }
     }, [user])
     useEffect(() => {

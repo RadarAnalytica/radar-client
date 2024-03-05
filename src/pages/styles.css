@@ -65,6 +65,12 @@ g:hover * {
     max-width: 35.5vw;
 }
 
+.filter-item select,
+.filter-item input {
+    max-height: 4vh !important;
+    min-height: 4vh !important;
+}
+
 .order-table-extended {
     min-height: 75vh;
 }
