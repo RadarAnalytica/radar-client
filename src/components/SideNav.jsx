@@ -6,6 +6,8 @@ import goods from '../assets/mygoods.png'
 import magic from '../assets/magic.png'
 import support from '../assets/support.png'
 import { useNavigate } from 'react-router-dom'
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+
 
 const SideNav = () => {
 
@@ -20,6 +22,9 @@ const SideNav = () => {
         setActive(location)
     }, [location])
 
+    const [goodsShown, setGoodsShown] = useState(true)
+    const [promotionShown, setPromotionShown] = useState(true)
+
     return (
         <div className='side-nav'>
             <div>
@@ -27,17 +32,53 @@ const SideNav = () => {
 
                 <div className='mt-4'>
                     <div className='sidenav-el' onClick={() => navigate('/development/dashboard')}>
-                        <img src={active === 'dashboard' ? purplegrow : greygrow} alt="" className='side-nav-icon' />
-                        <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', color: 'black' } : {}}>Сводка продаж</span>
+                        <div className='d-flex align-items-center'>
+                            <img src={active === 'dashboard' ? purplegrow : greygrow} alt="" className='side-nav-icon' />
+                            <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', color: 'black' } : {}}>Сводка продаж</span>
+                        </div>
                     </div>
-                    {/* <div className='sidenav-el'>
-                        <img src={goods} alt="" className='side-nav-icon' />
-                        <span className='sidenav-title'>Мои товары</span>
+                    <div className='sidenav-el' onClick={() => setGoodsShown(!goodsShown)}>
+                        <div className="d-flex align-items-center">
+                            <img src={goods} alt="" className='side-nav-icon' />
+                            <span className='sidenav-title'>Мои товары</span>
+                        </div>
+                        <span>
+                            {goodsShown ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                        </span>
                     </div>
-                    <div className='sidenav-el'>
-                        <img src={magic} alt="" className='side-nav-icon' />
-                        <span className='sidenav-title'>Продвижение</span>
-                    </div> */}
+                    {
+                        goodsShown ?
+                            <div>
+                                <p
+                                    className='sidenav-title ps-4 submenu-item'
+                                    onClick={() => navigate('/development/orders-map')}
+                                >
+                                    География заказов
+                                </p>
+                            </div>
+                            : null
+                    }
+                    <div className='sidenav-el' onClick={() => setPromotionShown(!promotionShown)}>
+                        <div className="d-flex align-items-center">
+                            <img src={magic} alt="" className='side-nav-icon' />
+                            <span className='sidenav-title'>Продвижение</span>
+                        </div>
+                        <span>
+                            {promotionShown ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                        </span>
+                    </div>
+                    {
+                        promotionShown ?
+                            <div>
+                                <p
+                                    className='sidenav-title ps-4 submenu-item'
+                                    onClick={() => navigate('/development/calculate')}
+                                >
+                                    Калькулятор unit-экономики товаров
+                                </p>
+                            </div>
+                            : null
+                    }
                 </div>
             </div>
             <div className='support-block'>

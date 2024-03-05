@@ -1,0 +1,128 @@
+.map-container {
+    padding: 16px 30px;
+}
+
+.map-radio {
+    display: flex;
+    align-items: center;
+    gap: 2vh;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 1vh;
+}
+
+
+/* MAP */
+#map svg {
+    min-height: 65vh !important;
+    max-width: 75vw !important;
+}
+
+g:hover * {
+    stroke: rgba(254, 197, 61, 1);
+    stroke-width: 2px !important;
+    fill: rgba(255, 249, 236, 1);
+    transition: all 0.25s ease-in-out;
+    stroke-opacity: 1 !important;
+}
+
+/* Calc */
+.calc-form {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px 32px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+}
+
+.calc-results {
+    padding: 24px 32px;
+}
+
+.calc-results p,
+.calc-results span {
+    font-size: 1.75vh;
+    font-weight: 600;
+    margin-bottom: 1vh;
+}
+
+.map-data-content>div {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1.5vw;
+}
+
+.order-map-doughnut,
+.order-table-extended,
+.order-map-table {
+    background-color: white;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    padding: 24px 32px;
+    margin-bottom: 3vh;
+    max-width: 35.5vw;
+}
+
+.order-table-extended {
+    min-height: 75vh;
+}
+
+.order-map-table {
+    min-height: 45vh;
+}
+
+.order-map-doughnut {
+    min-height: 45vh;
+}
+
+.order-map-doughnut p,
+.order-map-table p {
+    font-size: 2vh;
+}
+
+.order-table-extended p {
+    font-size: 1.75vh;
+}
+
+.doughnut-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-map-doughnut canvas {
+    max-width: 18vw;
+    max-height: 18vw;
+
+    /* width: 100%;
+    height: 100%; */
+}
+
+@media screen and (max-width: 1048px) {
+
+    .calculate-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .calculate-container>div>div {
+        min-width: 90vw;
+    }
+
+    .calc-inputs {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .calc-inputs>div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .calc-inputs input {
+        margin-bottom: 1vh;
+    }
+
+}

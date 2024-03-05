@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DashboardFilter = ({ brandNames, changePeriod, changeBrand, defaultValue, setDays }) => {
+const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => {
 
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14)).toLocaleDateString('ru')?.split('.').reverse().join('-')

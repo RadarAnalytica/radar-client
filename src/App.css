@@ -300,6 +300,7 @@ select {
 .sidenav-el {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
   cursor: pointer;
 }
@@ -308,11 +309,17 @@ select {
   color: var(--clue-color);
   font-weight: 500;
   margin-left: 10px;
-  font-size: 2.25vh !important;
+  font-size: 2vh !important;
 }
 
-.sidenav-el img {
+.sidenav-el>div>img {
   width: 2vh;
+  height: 2vh;
+}
+
+.submenu-item {
+  cursor: pointer;
+  color: #1A1A1A;
 }
 
 .side-nav-icon {
@@ -357,13 +364,17 @@ select {
 
 
 /* DASHBOARD */
-.dashboard-page {
+.dashboard-page,
+.orders-map,
+.calculate-page {
   min-height: 100vh;
   display: flex;
   position: relative;
 }
 
-.dashboard-content {
+.dashboard-content,
+.orders-map-content,
+.calculate-content {
   width: 100%;
   max-height: 100vh;
   overflow-y: scroll;

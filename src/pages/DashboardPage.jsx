@@ -12,7 +12,7 @@ import StorageTable from '../components/StorageTable'
 import ChartTable from '../components/ChartTable'
 import WidePlate from '../components/WidePlate'
 import { URL } from '../service/config'
-import { abcAnalysis, calcTax, calculateGrossProfit, calculateGrossProfitMargin, calculateInitialCosts, calculateMargin, calculateNetProfit, calculateProfit, calculatePurchasePercentage, calculateROI, calculateTotalProfit, formatDate, generateDateList, getDifference } from '../service/utils'
+import { abcAnalysis, filterArrays, formatDate, generateDateList } from '../service/utils'
 import { ServiceFunctions } from '../service/serviceFunctions'
 import MobileMenu from '../components/MobileMenu'
 
@@ -64,27 +64,12 @@ const DashboardPage = () => {
         }
     }, [wbData])
 
-    function filterArrays(obj, days) {
-        for (let key in obj) {
-            if (Array.isArray(obj[key]) && (key !== 'warehouses' && key !== 'info')) {
-                if (typeof obj[key] === 'object' && obj[key].length) {
-                    obj[key] = obj[key].filter(item => {
-                        const date = item.date ? new Date(item.date) : item.lastChangeDate ? new Date(item.lastChangeDate) : new Date(item.create_dt);
-                        const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-                        return date >= weekAgo;
-                    });
-                }
-            }
-        }
-        return obj
-    }
-
     // Заказы
-    const orders = wbData ? wbData.orders : []
+    const orders = wbData && wbData.orders ? wbData.orders.data : []
     // продажи
-    const sales = wbData ? wbData.sales : []
+    const sales = wbData && wbData.sales ? wbData.sales.data : []
     // склады
-    const warehouses = wbData ? wbData.warehouses : []
+    const warehouses = wbData && wbData.warehouses ? wbData.warehouses.data : []
 
 
     const storeData = [
@@ -162,8 +147,8 @@ const DashboardPage = () => {
         },
         {
             name: 'Валовая прибыль',
-            amount: content?.grossProfit?.sum?.sum || '0',
-            rate: content?.grossProfit?.sum?.sumPercent,
+            amount: content?.grossProfit?.sum || '0',
+            rate: content?.grossProfit?.percent,
         },
         {
             name: 'Налог',
@@ -185,19 +170,19 @@ const DashboardPage = () => {
     const profitabilityData = [
         {
             name: 'Процент выкупа',
-            value: content?.buyoutPercentage
+            value: content?.buyoutPercentage || '0'
         },
         {
             name: 'ROI',
-            value: content?.roi
+            value: content?.roi || '0'
         },
         {
             name: 'Рентабельность ВП',
-            value: content?.vpProfitMargin?.percent
+            value: content?.vpProfitMargin?.percent || '0'
         },
         {
             name: 'Рентабельность ОП',
-            value: content?.opProfitMargin?.percent
+            value: content?.opProfitMargin?.percent || '0'
         },
     ]
 
@@ -206,7 +191,7 @@ const DashboardPage = () => {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 5000);
+        }, 8000);
     }, [loading])
 
 
@@ -225,8 +210,8 @@ const DashboardPage = () => {
 
     const dateList = days ? generateDateList(Number(days)) : generateDateList(7)
 
-    const orderValuesRub = orders && orders.length ? orders.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
-    const salesValuesRub = sales && sales.length ? sales.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
+    const orderValuesRub = orders && orders.length ? orders?.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
+    const salesValuesRub = sales && sales.length ? sales?.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
 
     const summedOrderRub = orderValuesRub.reduce((acc, curr) => {
         if (acc[curr.date]) {
@@ -318,7 +303,6 @@ const DashboardPage = () => {
 
                 <DashboardFilter
                     brandNames={brandNames}
-                    changePeriod={changePeriod}
                     defaultValue={days}
                     setDays={setDays}
                     changeBrand={setActiveBrand}
@@ -456,7 +440,7 @@ const DashboardPage = () => {
                                 <WidePlate
                                     title={'ABC-анализ'}
                                     titles={['Группа А', "Группа В", "Группа С"]}
-                                    data={wbData && wbData.sales ? abcAnalysis(wbData.sales) : []}
+                                    data={wbData && wbData.sales ? abcAnalysis(wbData.sales.data) : []}
                                 />
                             </div>
                         </div>

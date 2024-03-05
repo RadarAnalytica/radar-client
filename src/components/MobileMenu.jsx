@@ -32,8 +32,10 @@ const MobileMenu = () => {
             </div>
             <div className='mt-4 mb-4'>
                 <div className='sidenav-el' onClick={() => { setShowMobile(false); navigate('/development/dashboard') }}>
-                    <img src={active === 'dashboard' ? purplegrow : greygrow} alt="" className='side-nav-icon' />
-                    <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', color: 'black' } : {}}>Сводка продаж</span>
+                    <div className="d-flex align-items-center">
+                        <img src={active === 'dashboard' ? purplegrow : greygrow} alt="" className='side-nav-icon' />
+                        <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', color: 'black' } : {}}>Сводка продаж</span>
+                    </div>
                 </div>
             </div>
             <hr style={{ border: '1px solid black' }} />

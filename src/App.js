@@ -12,6 +12,8 @@ import ResetPage from './pages/ResetPage';
 import RequestResetLink from './pages/RequestResetLink';
 import LinkedShops from './pages/LinkedShops';
 import MobileMenu from './components/MobileMenu';
+import Calculate from './pages/Calculate';
+import OrdersMap from './pages/OrdersMap';
 
 function App() {
 
@@ -29,6 +31,8 @@ function App() {
             <Route path='/development/signin' element={<SignInPage />} />
             <Route path='/development/onboarding' element={<Onboarding />} />
             <Route path='/development/dashboard' element={<DashboardPage />} />
+            <Route path='/development/calculate' element={<Calculate />} />
+            <Route path='/development/orders-map' element={<OrdersMap />} />
             <Route path='/development/linked-shops' element={<LinkedShops />} />
             <Route path='/development/reset' element={<RequestResetLink />} />
             <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
@@ -51,6 +55,8 @@ function App() {
           <Route path='/development/signin' element={<SignInPage />} />
           <Route path='/development/onboarding' element={<Onboarding />} />
           <Route path='/development/dashboard' element={<DashboardPage />} />
+          <Route path='/development/calculate' element={<Calculate />} />
+          <Route path='/development/orders-map' element={<OrdersMap />} />
 
           <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
           <Route path='/development/restore/:email/:code' element={<ResetPage />} />

@@ -1,5 +1,35 @@
 const moment = require('moment');
 
+export function filterArrays(obj, days) {
+    for (let key in obj) {
+        if (obj[key].data && Array.isArray(obj[key].data) && (key !== 'warehouses' && key !== 'info')) {
+            if (typeof obj[key].data === 'object' && obj[key].data.length) {
+                obj[key].data = obj[key].data.filter(item => {
+                    const date = item.date ? new Date(item.date) : item.lastChangeDate ? new Date(item.lastChangeDate) : item.sale_dt ? new Date(item.sale_dt) : new Date(item.create_dt);
+                    const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+                    return date >= weekAgo;
+                });
+            }
+        }
+    }
+    return obj
+}
+
+export function filterArraysNoData(obj, days) {
+    for (let key in obj) {
+        if (obj[key] && Array.isArray(obj[key]) && (key !== 'warehouses' && key !== 'info')) {
+            if (typeof obj[key] === 'object' && obj[key].length) {
+                obj[key] = obj[key].filter(item => {
+                    const date = item.date ? new Date(item.date) : item.lastChangeDate ? new Date(item.lastChangeDate) : item.sale_dt ? new Date(item.sale_dt) : new Date(item.create_dt);
+                    const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+                    return date >= weekAgo;
+                });
+            }
+        }
+    }
+    return obj
+}
+
 export const formatPrice = (price) => {
     if (price) {
         price = price.toString()
@@ -270,4 +300,36 @@ export function calculateAverageReceipt(data, days) {
         averageReceiptLastDays,
         growthRate
     };
+}
+
+export function calculateGrowthPercentageGeo(data, days) {
+    // Получаем текущую дату
+    const currentDate = new Date();
+
+    // Вычисляем дату days дней назад
+    const pastDate = new Date(currentDate.getTime() - days * 24 * 60 * 60 * 1000);
+
+    // Вычисляем сумму товаров за текущий период и предыдущий период
+    let currentPeriodSum = 0;
+    let pastPeriodSum = 0;
+
+    data.forEach(item => {
+        // Преобразуем дату из строки в объект Date
+        const itemDate = new Date(item.date);
+
+        // Если дата товара попадает в текущий период
+        if (itemDate >= pastDate && itemDate <= currentDate) {
+            currentPeriodSum += item.finishedPrice;
+        }
+
+        // Если дата товара попадает в прошлый период
+        if (itemDate < pastDate) {
+            pastPeriodSum += item.finishedPrice;
+        }
+    });
+
+    // Вычисляем процентный рост
+    const growthPercentage = ((currentPeriodSum - pastPeriodSum) / pastPeriodSum) * 100;
+
+    return growthPercentage;
 }

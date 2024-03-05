@@ -62,6 +62,42 @@ export const ServiceFunctions = {
 
         const data = await res.json()
         return data
-    }
+    },
+
+    getOrders: async (id, brandName) => {
+        const res = await fetch(`${URL}/api/orders/${id}?brandName=${brandName}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            },
+        })
+
+        const data = await res.json()
+        return data
+    },
+
+    getSales: async (id, brandName) => {
+        const res = await fetch(`${URL}/api/sales/${id}?brandName=${brandName}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            },
+        })
+
+        const data = await res.json()
+        return data
+    },
+
+    getGeoData: async (id, brandName, days) => {
+        const res = await fetch(`${URL}/api/data-collection/geo/${id}?brandName=${brandName}&days=${days}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            },
+        })
+
+        const data = await res.json()
+        return data
+    },
 
 }
