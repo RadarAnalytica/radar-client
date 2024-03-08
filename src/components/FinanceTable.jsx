@@ -27,7 +27,7 @@ export const TableRow = ({ values, percent, sign }) => {
                                 <img src={percent > 0 ? green : red} alt="" className='me-2' style={{ width: '1.5vh' }} />
                                 : null
                         }
-                        <span style={percent <= 0 && i > 1 ? { fontWeight: 700, fontSize: '1.75vh', color: 'red' } : percent > 30 && i > 1 ? { fontWeight: 700, fontSize: '1.75vh', color: 'rgba(0, 182, 155, 1)' } : {}}>
+                        <span style={percent <= 0 && i > 1 ? { fontWeight: 700, fontSize: '1.75vh', color: 'red' } : percent > 0 && i > 1 ? { fontWeight: 700, fontSize: '1.75vh', color: 'rgba(0, 182, 155, 1)' } : {}}>
                             {i === 1 ? formatPrice(val) + (sign ? sign : ' ₽') : i > 1 ? (val + ' %') : val}
                         </span>
                     </span>
