@@ -12,13 +12,13 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                 <div className="filter-item col me-2">
                     <label htmlFor="period">Период:</label>
                     <select className='form-control' id="period"
-                        defaultValue={'31'}
+                        defaultValue={'30'}
                         onChange={e => { setDays(e.target.value) }}
                     >
                         <option selected={defaultValue === 1 ? true : false} value={'1'}>1 день</option>
                         <option selected={defaultValue === 7 ? true : false} value={'7'}>Неделя</option>
                         <option selected={defaultValue === 14 ? true : false} value={'14'}>14 дней</option>
-                        <option selected={defaultValue === 31 ? true : false} value={'31'}>Месяц</option>
+                        <option selected={defaultValue === 30 ? true : false} value={'30'}>Месяц</option>
                         <option selected={defaultValue === 92 ? true : false} value={'92'}>3 месяца</option>
                     </select>
                 </div>

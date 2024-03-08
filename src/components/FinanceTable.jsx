@@ -23,7 +23,7 @@ export const TableRow = ({ values, percent, sign }) => {
                         }
                     >
                         {
-                            percent && i === 2 ?
+                            (percent || percent === 0) && i === 2 ?
                                 <img src={percent > 0 ? green : red} alt="" className='me-2' style={{ width: '1.5vh' }} />
                                 : null
                         }

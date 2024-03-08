@@ -22,7 +22,7 @@ const DashboardPage = () => {
 
 
     const [wbData, setWbData] = useState()
-    const [days, setDays] = useState(31)
+    const [days, setDays] = useState(30)
 
     const navigate = useNavigate()
 
@@ -73,6 +73,33 @@ const DashboardPage = () => {
     const sales = wbData && wbData.sales ? wbData.sales.data : []
     // склады
     const warehouses = wbData && wbData.warehouses ? wbData.warehouses.data : []
+
+    const [reportDaily, setReportDaily] = useState()
+    const [reportWeekly, setReportWeekly] = useState()
+    const [reportMonthly, setReportMonthly] = useState()
+    const [reportThreeMonths, setReportThreeMonths] = useState()
+
+    useEffect(() => {
+        if (wbData) {
+            setReportDaily(wbData.reportDaily?.data?.data?.groups[0]?.statistics)
+            setReportWeekly(wbData.reportWeekly?.data?.data?.groups[0]?.statistics)
+            setReportMonthly(wbData.reportMonthly?.data?.data?.groups[0]?.statistics)
+            setReportThreeMonths(wbData.reportThreeMonths?.data?.data?.groups[0]?.statistics)
+        }
+    }, [wbData])
+
+    const [curOrders, setCurOrders] = useState()
+    useEffect(() => {
+        if (days == 1) {
+            setCurOrders(reportDaily)
+        } else if (days == 7) {
+            setCurOrders(reportWeekly)
+        } else if (days == 30) {
+            setCurOrders(reportMonthly)
+        } else if (days == 92) {
+            setCurOrders(reportThreeMonths)
+        }
+    }, [days, wbData])
 
 
     const storeData = [
@@ -173,7 +200,7 @@ const DashboardPage = () => {
     const profitabilityData = [
         {
             name: 'Процент выкупа',
-            value: content?.buyoutPercentage || '0'
+            value: curOrders?.selectedPeriod?.conversions?.buyoutsPercent || '0'
         },
         {
             name: 'ROI',
@@ -296,6 +323,7 @@ const DashboardPage = () => {
     const sortedValuesArray = data?.datasets?.map(arr => arr?.data).flat(1)?.sort((a, b) => b - a)
     const maxValue = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0
 
+    // console.log(curOrders);
     // console.log(wbData);
 
     return (
@@ -316,34 +344,34 @@ const DashboardPage = () => {
                             <span className="loader"></span>
                         </div>
                         :
-                        wbData && user &&
+                        wbData && user && curOrders &&
 
                         <div>
 
                             <div className="container dash-container p-4 pt-0 d-flex gap-3">
                                 <MediumPlate name={'Заказы'}
-                                    value={content?.orderStat?.sum}
-                                    quantity={content?.orderStat?.amount || 0}
-                                    percent={content?.orderStat?.amountPercent || 0}
-                                    percent2={content?.orderStat?.sumPercent || 0}
-                                    text={content?.orderStat?.revenueIncrese || 0}
-                                    text2={content?.orderStat?.amountIncrese || 0}
+                                    value={curOrders?.selectedPeriod?.ordersSumRub || 0}
+                                    quantity={curOrders?.selectedPeriod?.ordersCount || 0}
+                                    percent={curOrders?.periodComparison?.avgPriceRubDynamics || 0}
+                                    percent2={curOrders?.periodComparison?.avgOrdersCountPerDayDynamics || 0}
+                                    text={curOrders?.selectedPeriod?.avgPriceRub * curOrders?.selectedPeriod?.avgOrdersCountPerDay || 0}
+                                    text2={curOrders?.selectedPeriod?.avgOrdersCountPerDay || 0}
                                 />
                                 <MediumPlate
                                     name={'Продажи'}
-                                    value={content?.salesStat?.sum}
-                                    quantity={content?.salesStat?.amount || 0}
-                                    percent={content?.salesStat?.amountPercent || 0}
-                                    percent2={content?.salesStat?.sumPercent || 0}
-                                    text={content?.salesStat?.revenueIncrese || 0}
-                                    text2={content?.salesStat?.amountIncrese || 0}
+                                    value={curOrders?.selectedPeriod?.buyoutsSumRub || 0}
+                                    quantity={curOrders?.selectedPeriod?.buyoutsCount || 0}
+                                    percent={curOrders?.periodComparison?.buyoutsSumRubDynamics || 0}
+                                    percent2={curOrders?.periodComparison?.buyoutsCountDynamics || 0}
+                                    text={content?.salesStat?.sum / days || 0}
+                                    text2={content?.salesStat?.amount / days || 0}
                                 />
                                 <MediumPlate
                                     name={'Возвраты'}
-                                    value={content?.returned?.currentReturnsSum}
-                                    quantity={content?.returned?.currentReturnsCount || 0}
-                                    percent={content?.returned?.returnsSumGrowth || 0}
-                                    percent2={content?.returned?.returnsCountGrowth || 0}
+                                    value={curOrders?.selectedPeriod?.cancelSumRub || 0}
+                                    quantity={curOrders?.selectedPeriod?.cancelCount || 0}
+                                    percent={curOrders?.periodComparison?.cancelSumRubDynamics || 0}
+                                    percent2={curOrders?.periodComparison?.cancelCountDynamics || 0}
                                 // text={content?.returned?.currentReturnsCount || 0}
                                 // text2={content?.returned?.currentReturnsCount || 0}
                                 />
@@ -351,16 +379,16 @@ const DashboardPage = () => {
                                     <div className='mb-3'>
                                         <SmallPlate
                                             name={'Процент выкупа'}
-                                            value={content?.buyout?.purchaseRate || 0}
+                                            value={curOrders?.selectedPeriod?.conversions?.buyoutsPercent || 0}
                                             type={'percent'}
-                                            percent={content?.buyout?.percentGrowth || 0}
+                                            percent={curOrders?.periodComparison?.conversions?.buyoutsPercent || '0'}
                                         />
                                     </div>
                                     <SmallPlate
                                         name={'Средний чек'}
-                                        value={content?.averageCheck?.averageReceiptLastDays || 0}
+                                        value={curOrders?.selectedPeriod?.avgPriceRub || 0}
                                         type={'price'}
-                                        percent={content?.averageCheck?.growthRate || 0}
+                                        percent={curOrders?.periodComparison?.avgPriceRubDynamics || 0}
                                     />
                                 </div>
                             </div>
@@ -390,7 +418,13 @@ const DashboardPage = () => {
                                     />
                                 </div>
                                 <div className="col">
-                                    <SmallPlate smallText={true} name={'Возвраты'} value={content?.returned?.currentReturnsSum} type={'price'} quantity={content?.returned?.currentReturnsCount || '0'} />
+                                    <SmallPlate
+                                        smallText={true}
+                                        name={'Возвраты'}
+                                        value={curOrders?.selectedPeriod?.cancelSumRub || 0}
+                                        type={'price'}
+                                        quantity={curOrders?.selectedPeriod?.cancelCount || 0 || '0'}
+                                    />
                                 </div>
                                 <div className="col">
                                     <SmallPlate smallText={true} name={'Штрафы WB'} value={content?.penalty || 0} type={'price'} nochart={true} />
@@ -412,7 +446,7 @@ const DashboardPage = () => {
                                 </div>
                                 <div className="col">
                                     <SmallPlate smallText={true} name={'Маржинальная прибыль'}
-                                        value={content?.marginRevenue?.currentMarginalProfit * -1 || 0}
+                                        value={(curOrders?.selectedPeriod?.buyoutsSumRub || 0) - content?.initialPrice || 0}
                                         percent={content?.marginRevenue?.profitGrowth || 0}
                                         type={'price'}
                                     />
