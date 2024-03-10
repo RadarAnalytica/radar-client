@@ -76,6 +76,7 @@ const DashboardPage = () => {
 
     const [reportDaily, setReportDaily] = useState()
     const [reportWeekly, setReportWeekly] = useState()
+    const [reportTwoWeeks, setReportTwoWeeks] = useState()
     const [reportMonthly, setReportMonthly] = useState()
     const [reportThreeMonths, setReportThreeMonths] = useState()
 
@@ -83,6 +84,7 @@ const DashboardPage = () => {
         if (wbData) {
             setReportDaily(wbData.reportDaily?.data?.data?.groups[0]?.statistics)
             setReportWeekly(wbData.reportWeekly?.data?.data?.groups[0]?.statistics)
+            setReportTwoWeeks(wbData.reportTwoWeeks?.data?.data?.groups[0]?.statistics)
             setReportMonthly(wbData.reportMonthly?.data?.data?.groups[0]?.statistics)
             setReportThreeMonths(wbData.reportThreeMonths?.data?.data?.groups[0]?.statistics)
         }
@@ -94,6 +96,8 @@ const DashboardPage = () => {
             setCurOrders(reportDaily)
         } else if (days == 7) {
             setCurOrders(reportWeekly)
+        } else if (days == 14) {
+            setCurOrders(reportTwoWeeks)
         } else if (days == 30) {
             setCurOrders(reportMonthly)
         } else if (days == 92) {
@@ -105,19 +109,19 @@ const DashboardPage = () => {
     const storeData = [
         {
             name: "FBO",
-            initialPrice: '-',
+            initialPrice: content?.fbo?.fboAmount * 1000,
             salesPrice: content?.fbo?.fbo?.toFixed(0) || 0,
             quantity: content?.fbo?.fboAmount || 0,
         },
         {
             name: "FBS",
-            initialPrice: '-',
+            initialPrice: content?.fbo?.fbsAmount * 1000,
             salesPrice: content?.fbo?.fbs,
             quantity: content?.fbo?.fbsAmount || 0,
         },
         {
             name: "Едет к клиенту",
-            initialPrice: '-',
+            initialPrice: content?.toClient?.reduce((acc, el) => acc + (el.inWayToClient), 0) * 1000,
             salesPrice: content?.toClient?.reduce((acc, el) => acc + (el.inWayToClient * el.Price), 0) || 0,
             quantity: content?.toClient?.reduce((acc, el) => acc + (el.inWayToClient), 0) || 0,
         },
@@ -129,9 +133,9 @@ const DashboardPage = () => {
         },
         {
             name: "Не распределено",
-            initialPrice: '-',
-            salesPrice: content?.notSorted,
-            quantity: content?.notSorted,
+            initialPrice: content?.notSorted?.amount * 1000,
+            salesPrice: content?.notSorted?.sum,
+            quantity: content?.notSorted?.amount,
         },
     ]
 
@@ -167,7 +171,7 @@ const DashboardPage = () => {
         },
         {
             name: 'Себестоимость продаж',
-            amount: content?.initialPrice || '0',
+            amount: curOrders?.selectedPeriod?.buyoutsCount * 1000 || '0',
             rate: 0,
         },
         {
@@ -177,7 +181,7 @@ const DashboardPage = () => {
         },
         {
             name: 'Валовая прибыль',
-            amount: content?.grossProfit?.sum || '0',
+            amount: content?.grossProfit?.sum - (curOrders?.selectedPeriod?.buyoutsCount * 1000) || '0',
             rate: content?.grossProfit?.percent,
         },
         {
@@ -197,6 +201,11 @@ const DashboardPage = () => {
         },
     ]
 
+    const calcRoi = (stock) => {
+        const sum = stock?.reduce((acc, item) => acc + (item.quantity + item.quantityFull) * 1000, 0)
+        return sum || 0
+    }
+
     const profitabilityData = [
         {
             name: 'Процент выкупа',
@@ -204,7 +213,7 @@ const DashboardPage = () => {
         },
         {
             name: 'ROI',
-            value: content?.roi || '0'
+            value: curOrders?.selectedPeriod?.buyoutsSumRub / calcRoi(wbData?.stocks?.data) * 100 || '0'
         },
         {
             name: 'Рентабельность ВП',
@@ -363,8 +372,8 @@ const DashboardPage = () => {
                                     quantity={curOrders?.selectedPeriod?.buyoutsCount || 0}
                                     percent={curOrders?.periodComparison?.buyoutsSumRubDynamics || 0}
                                     percent2={curOrders?.periodComparison?.buyoutsCountDynamics || 0}
-                                    text={content?.salesStat?.sum / days || 0}
-                                    text2={content?.salesStat?.amount / days || 0}
+                                    text={curOrders?.selectedPeriod?.buyoutsSumRub / days || 0}
+                                    text2={curOrders?.selectedPeriod?.buyoutsCount / days || 0}
                                 />
                                 <MediumPlate
                                     name={'Возвраты'}
@@ -413,8 +422,8 @@ const DashboardPage = () => {
                                         name={'Себестоимость проданных товаров'}
                                         nochart={true}
                                         type={'price'}
-                                        quantity={content?.orderStat?.amount || 0}
-                                        value={content?.initialPrice || 0}
+                                        quantity={curOrders?.selectedPeriod?.buyoutsCount || 0}
+                                        value={1000 * curOrders?.selectedPeriod?.buyoutsCount || 0}
                                     />
                                 </div>
                                 <div className="col">
@@ -422,8 +431,8 @@ const DashboardPage = () => {
                                         smallText={true}
                                         name={'Возвраты'}
                                         value={curOrders?.selectedPeriod?.cancelSumRub || 0}
-                                        type={'price'}
                                         quantity={curOrders?.selectedPeriod?.cancelCount || 0 || '0'}
+                                        type={'price'}
                                     />
                                 </div>
                                 <div className="col">
@@ -452,8 +461,10 @@ const DashboardPage = () => {
                                     />
                                 </div>
                                 <div className="col">
-                                    <SmallPlate smallText={true} name={'Упущенные продажи'} value={content?.returned?.currentReturnsSum || 0} type={'price'}
-                                        quantity={content?.returned?.currentReturnsCount || '0'}
+                                    <SmallPlate smallText={true} name={'Упущенные продажи'}
+                                        type={'price'}
+                                        value={curOrders?.selectedPeriod?.cancelSumRub || 0}
+                                        quantity={curOrders?.selectedPeriod?.cancelCount || 0 || '0'}
                                     />
                                 </div>
                             </div>
