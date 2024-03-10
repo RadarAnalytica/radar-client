@@ -353,7 +353,7 @@ const DashboardPage = () => {
                             <span className="loader"></span>
                         </div>
                         :
-                        wbData && user && curOrders &&
+                        wbData && user &&
 
                         <div>
 
