@@ -43,7 +43,7 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) 
                                 <img src={percent2 > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} />
                                 <p className='m-0 p-0 tiny-numbers' style={percent2 > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{formatPrice(percent2)}%</p>
                             </div>
-                            {text2 && <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh', fontWeight: 600 }}>{'В день ' + formatPrice(text2) + ' шт'}</p> || <p className='m-0 p-0'>&nbsp;</p>}
+                            {text2 && <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh', fontWeight: 600 }}>{'В день ~ ' + formatPrice(text2) + ' шт'}</p> || <p className='m-0 p-0'>&nbsp;</p>}
                         </div>
                     </div>
                 </div>
