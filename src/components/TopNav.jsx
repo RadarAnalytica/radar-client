@@ -20,7 +20,7 @@ const TopNav = ({ title }) => {
     return (
         <div className='top-nav'>
             <div className="container dash-container d-flex align-items-center justify-content-between"     >
-                <div className='d-flex col me-2'>
+                <div className='d-flex col me-2 top-wrapper'>
                     {
                         !title ?
                             <>
@@ -31,7 +31,7 @@ const TopNav = ({ title }) => {
                             <p style={{ fontSize: '2.75vh', fontWeight: 700 }} className='m-0 p-0 fw-bold'>{title}</p>
                     }
                 </div>
-                <div className="col-2 d-flex justify-content-around top-menu">
+                <div className="col-2 d-flex justify-content-around top-menu top-wrapper">
                     {/* <img src={noticon} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} />
                     <img src={question} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} /> */}
                     <MdOutlineSettings onClick={() => setMenuShown(!menuShown)} style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px' }} />
@@ -47,8 +47,8 @@ const TopNav = ({ title }) => {
                                     Получить полный доступ
                                 </a>
                                 <div className='pt-2'>
-                                    {/* <p className='mt-3 mb-2'>Сотрудники</p>
-                                    <p className='mb-2'>Настройки аккаунта</p> */}
+                                    {/* <p className='mt-3 mb-2'>Сотрудники</p> */}
+                                    <p className='mb-1 mt-2' onClick={() => navigate('/development/settings')}>Настройки аккаунта</p>
                                     <p className='mb-1 mt-2' onClick={() => navigate('/development/linked-shops')}>Подключенный магазины</p>
                                     {/* <p className='mb-2'>Экспорт отчетов</p>
                                     <p className='mb-2'>Тарифы</p> */}

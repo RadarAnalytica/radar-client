@@ -14,6 +14,7 @@ import LinkedShops from './pages/LinkedShops';
 import MobileMenu from './components/MobileMenu';
 import Calculate from './pages/Calculate';
 import OrdersMap from './pages/OrdersMap';
+import Settings from './pages/Settings';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
             <Route path='/development/onboarding' element={<Onboarding />} />
             <Route path='/development/dashboard' element={<DashboardPage />} />
             <Route path='/development/calculate' element={<Calculate />} />
+            <Route path='/development/settings' element={<Settings />} />
             <Route path='/development/orders-map' element={<OrdersMap />} />
             <Route path='/development/linked-shops' element={<LinkedShops />} />
             <Route path='/development/reset' element={<RequestResetLink />} />
@@ -56,6 +58,7 @@ function App() {
           <Route path='/development/onboarding' element={<Onboarding />} />
           <Route path='/development/dashboard' element={<DashboardPage />} />
           <Route path='/development/calculate' element={<Calculate />} />
+          <Route path='/development/settings' element={<Settings />} />
           <Route path='/development/orders-map' element={<OrdersMap />} />
 
           <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />

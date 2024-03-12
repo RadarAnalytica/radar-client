@@ -74,6 +74,11 @@ const DashboardPage = () => {
     // склады
     const warehouses = wbData && wbData.warehouses ? wbData.warehouses.data : []
 
+    const selfCostArray = sales && state && state.initialCostsAndTax && state.initialCostsAndTax.data ?
+        sales.map(item => state.initialCostsAndTax.data.find(el => el.nmID === item.nmId)?.initialCosts) : []
+
+    const selfCost = selfCostArray && selfCostArray.length ? selfCostArray.reduce((acc, item) => acc + item, 0) : 0
+
     const [reportDaily, setReportDaily] = useState()
     const [reportWeekly, setReportWeekly] = useState()
     const [reportTwoWeeks, setReportTwoWeeks] = useState()
@@ -105,13 +110,24 @@ const DashboardPage = () => {
         }
     }, [days, wbData])
 
+    const tax = state && state.initialCostsAndTax ? state.initialCostsAndTax.tax : 0
+
+    const stockAndCostsMatch = wbData && wbData.stocks && state && state.initialCostsAndTax && state.initialCostsAndTax.data ?
+        wbData.stocks.data?.map(item => state.initialCostsAndTax.data.find(el => el.nmID === item.nmId)) : []
+
+    const fbo = stockAndCostsMatch?.length && wbData && wbData.stocks ? wbData.stocks.data?.reduce((obj, item) => {
+        obj['sum'] = wbData.stocks.data?.reduce((acc, i) => acc + (i.Price * i.quantityFull), 0) || 0
+        obj['quantity'] = wbData.stocks.data?.reduce((acc, el) => acc + el.quantityFull, 0) || 0
+        obj['initialCosts'] = wbData.stocks.data?.reduce((acc, item) => acc + (stockAndCostsMatch.find(el => el.nmID === item.nmId)?.initialCosts || 0), 0) || 0
+        return obj
+    }, {}) : null
 
     const storeData = [
         {
             name: "FBO",
-            initialPrice: content?.fbo?.fboAmount * 1000,
-            salesPrice: content?.fbo?.fbo?.toFixed(0) || 0,
-            quantity: content?.fbo?.fboAmount || 0,
+            initialPrice: fbo ? fbo.initialCosts : '0',
+            salesPrice: fbo ? fbo.sum : '0',
+            quantity: fbo ? fbo.quantity : '0',
         },
         {
             name: "FBS",
@@ -121,19 +137,19 @@ const DashboardPage = () => {
         },
         {
             name: "Едет к клиенту",
-            initialPrice: content?.toClient?.reduce((acc, el) => acc + (el.inWayToClient), 0) * 1000,
+            initialPrice: content?.toClient?.reduce((acc, el) => acc + (el.inWayToClient * stockAndCostsMatch?.find(item => item.nmID === el.nmId)?.initialCosts), 0),
             salesPrice: content?.toClient?.reduce((acc, el) => acc + (el.inWayToClient * el.Price), 0) || 0,
             quantity: content?.toClient?.reduce((acc, el) => acc + (el.inWayToClient), 0) || 0,
         },
         {
             name: "Едет от клиента",
-            initialPrice: '-',
+            initialPrice: content?.fromClient?.reduce((acc, el) => acc + (el.inWayToClient * stockAndCostsMatch?.find(item => item.nmID === el.nmId)?.initialCosts), 0),
             salesPrice: content?.fromClient?.reduce((acc, el) => acc + (el.inWayFromClient * el.Price), 0) || 0,
             quantity: content?.fromClient?.reduce((acc, el) => acc + (el.inWayFromClient), 0) || 0,
         },
         {
             name: "Не распределено",
-            initialPrice: content?.notSorted?.amount * 1000,
+            initialPrice: wbData?.stocks?.data?.reduce((acc, el) => acc + (el.quantity * stockAndCostsMatch?.find(item => item.nmID === el.nmId)?.initialCosts), 0),
             salesPrice: content?.notSorted?.sum,
             quantity: content?.notSorted?.amount,
         },
@@ -163,15 +179,21 @@ const DashboardPage = () => {
         },
     ]
 
+    const vp = sales ? sales.reduce((obj, item) => {
+        obj['amount'] = sales.reduce((acc, el) => acc + (el.finishedPrice - state?.initialCostsAndTax?.data?.find(item => item.nmID === el.nmId)?.initialCosts), 0) || 0
+        obj['rate'] = content?.grossProfit?.percent || '0'
+        return obj
+    }, {}) : null
+
     const financeData = [
         {
             name: 'Выручка',
-            amount: content?.profit?.sum || '0',
-            rate: content?.profit?.sumPercent || '0',
+            amount: curOrders?.selectedPeriod?.buyoutsSumRub || '0',
+            rate: curOrders?.periodComparison?.buyoutsSumRubDynamics || '0',
         },
         {
             name: 'Себестоимость продаж',
-            amount: curOrders?.selectedPeriod?.buyoutsCount * 1000 || '0',
+            amount: selfCost || '0',
             rate: 0,
         },
         {
@@ -181,18 +203,18 @@ const DashboardPage = () => {
         },
         {
             name: 'Валовая прибыль',
-            amount: content?.grossProfit?.sum - (curOrders?.selectedPeriod?.buyoutsCount * 1000) || '0',
+            amount: vp?.amount || '0',
             rate: content?.grossProfit?.percent,
         },
         {
             name: 'Налог',
-            amount: content?.tax.sum || '0',
+            amount: tax ? curOrders?.selectedPeriod?.buyoutsSumRub / 100 * tax.value : '0',
             rate: content?.tax?.percent || '0',
         },
         {
             name: 'Чистая прибыль',
-            amount: content?.netProfit?.sum || '0',
-            rate: content?.netProfit?.marginGrowth?.toFixed(2),
+            amount: content?.netProfit?.sum ? content?.netProfit?.sum : tax ? curOrders?.selectedPeriod?.buyoutsSumRub - selfCost - curOrders?.selectedPeriod?.buyoutsSumRub / 100 * tax.value : '0' || '0',
+            rate: content?.netProfit?.marginGrowth,
         },
         {
             name: 'Средняя прибыль',
@@ -206,6 +228,8 @@ const DashboardPage = () => {
         return sum || 0
     }
 
+    const salesSelfCost = sales && sales ? sales.reduce((acc, el) => acc + (state?.initialCostsAndTax?.data?.find(item => item.nmID === el.nmId)?.initialCosts || 0), 0) : 0
+
     const profitabilityData = [
         {
             name: 'Процент выкупа',
@@ -213,15 +237,15 @@ const DashboardPage = () => {
         },
         {
             name: 'ROI',
-            value: curOrders?.selectedPeriod?.buyoutsSumRub / calcRoi(wbData?.stocks?.data) * 100 || '0'
+            value: ((curOrders?.selectedPeriod?.buyoutsSumRub - salesSelfCost) / salesSelfCost) * 100 || '0'
         },
         {
             name: 'Рентабельность ВП',
-            value: content?.vpProfitMargin?.percent || '0'
+            value: 100 * vp?.amount / curOrders?.selectedPeriod?.buyoutsSumRub || '0'
         },
         {
             name: 'Рентабельность ОП',
-            value: content?.opProfitMargin?.percent || '0'
+            value: (curOrders?.selectedPeriod?.buyoutsSumRub - (curOrders?.selectedPeriod?.buyoutsSumRub / 100 * tax?.value) || 0) / sales?.reduce((acc, item) => acc + item.forPay, 0) * 100 || '0'
         },
     ]
 
@@ -332,7 +356,7 @@ const DashboardPage = () => {
     const sortedValuesArray = data?.datasets?.map(arr => arr?.data).flat(1)?.sort((a, b) => b - a)
     const maxValue = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0
 
-    // console.log(curOrders);
+
     // console.log(wbData);
 
     return (
@@ -384,8 +408,8 @@ const DashboardPage = () => {
                                 // text={content?.returned?.currentReturnsCount || 0}
                                 // text2={content?.returned?.currentReturnsCount || 0}
                                 />
-                                <div className="col d-flex flex-column">
-                                    <div className='mb-3'>
+                                <div className="col d-flex flex-column" style={{ gap: '2vh' }}>
+                                    <div className=''>
                                         <SmallPlate
                                             name={'Процент выкупа'}
                                             value={curOrders?.selectedPeriod?.conversions?.buyoutsPercent || 0}
@@ -423,7 +447,7 @@ const DashboardPage = () => {
                                         nochart={true}
                                         type={'price'}
                                         quantity={curOrders?.selectedPeriod?.buyoutsCount || 0}
-                                        value={1000 * curOrders?.selectedPeriod?.buyoutsCount || 0}
+                                        value={selfCost || 0}
                                     />
                                 </div>
                                 <div className="col">
@@ -445,7 +469,7 @@ const DashboardPage = () => {
                             <div className="container dash-container p-4 pt-0 d-flex gap-3">
                                 <div className="col">
                                     <SmallPlate smallText={true} name={'Комиссия WB'} value={content?.wbComission?.currentPeriodCommission || 0} type={'price'}
-                                        percent={content?.wbComission?.growthPercentage || 0}
+                                        percent={content?.wbComission?.growthPercentage * -1 || 0}
                                     />
                                 </div>
                                 <div className="col">
@@ -455,7 +479,7 @@ const DashboardPage = () => {
                                 </div>
                                 <div className="col">
                                     <SmallPlate smallText={true} name={'Маржинальная прибыль'}
-                                        value={(curOrders?.selectedPeriod?.buyoutsSumRub || 0) - content?.initialPrice || 0}
+                                        value={(curOrders?.selectedPeriod?.buyoutsSumRub || 0) - selfCost || 0}
                                         percent={content?.marginRevenue?.profitGrowth || 0}
                                         type={'price'}
                                     />
@@ -469,7 +493,7 @@ const DashboardPage = () => {
                                 </div>
                             </div>
 
-                            <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
+                            <div className="container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3" style={{ width: '100%' }}>
                                 <div className="wrapper">
                                     <FinanceTable title={'Финансы'} data={financeData} />
                                     <StorageTable

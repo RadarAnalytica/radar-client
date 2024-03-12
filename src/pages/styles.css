@@ -67,7 +67,7 @@ g:hover * {
 
 .filter-item select,
 .filter-item input {
-    max-height: 4vh !important;
+    max-height: 7vh !important;
     min-height: 4vh !important;
 }
 

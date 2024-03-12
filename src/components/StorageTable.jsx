@@ -51,7 +51,7 @@ const StorageTable = ({ title, data, titles, subtitles }) => {
                             i > 1 ?
                                 { textAlign: 'right', fontWeight: 400 }
                                 :
-                                { fontWeight: 700, textAlign: 'right' }
+                                { fontWeight: 400, textAlign: 'right' }
                     } key={i}>{t}</span>)
                 }
             </div>

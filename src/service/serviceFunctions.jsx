@@ -100,4 +100,18 @@ export const ServiceFunctions = {
         return data
     },
 
+    updateTax: async (id, brandName, obj) => {
+        const res = await fetch(`${URL}/api/data-collection/tax/${id}?brandName=${brandName}`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(obj),
+        });
+
+        console.log(obj);
+        const data = await res.json()
+        return data
+    }
+
 }

@@ -22,22 +22,22 @@ const WidePlate = ({ title, titles, income, products, data }) => {
                 }
             </div>
             <div className='d-flex mb-2' style={{ borderTop: '1px solid silver', paddingTop: '8px' }}>
-                <span className="col-2 medium-numbers">Выручка</span>
+                <span className="col-2 medium-numbers" style={{ fontWeight: 600 }}>Выручка</span>
                 {
                     sales && sales.map((t, i) =>
                         <div className={'col '} key={i}>
                             <span className='me-2 medium-numbers'>{formatPrice(t) + ' ₽' || 0}</span>
-                            <span className='tiny-numbers' style={true ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{salesPerc ? formatPrice(salesPerc[i]) + ' %' : 0}</span>
+                            <span className='tiny-numbers' style={salesPerc[i] >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : salesPerc[i] > 25 && salesPerc[i] < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{salesPerc ? formatPrice(salesPerc[i]) + ' %' : 0}</span>
                         </div>)
                 }
             </div>
             <div className='d-flex mb-2' style={{ borderTop: '1px solid silver', paddingTop: '8px' }}>
-                <span className="col-2 medium-numbers">Товар</span>
+                <span className="col-2 medium-numbers" style={{ fontWeight: 600 }}>Товар</span>
                 {
                     amount && amount.map((t, i) =>
                         <div className={'col'} key={i}>
                             <span className='me-2 medium-numbers'>{t + ' шт'}</span>
-                            <span className='tiny-numbers' style={true ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{amountPerc ? formatPrice(amountPerc[i]) + ' %' : 0}</span>
+                            <span className='tiny-numbers' style={amountPerc[i] >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : amountPerc[i] > 25 && amountPerc[i] < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{amountPerc ? formatPrice(amountPerc[i]) + ' %' : 0}</span>
                         </div>)
                 }
             </div>

@@ -28,6 +28,7 @@ const SignInForm = () => {
             <div className='d-flex flex-column align-items-center'>
                 <img src={logo} alt="" className='logo' />
                 <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Вход</h1>
+                <p className="clue-text" style={{ fontSize: '2vh' }}>Проще не бывает</p>
             </div>
             <div className='fields-container'>
                 <InputField
@@ -35,14 +36,16 @@ const SignInForm = () => {
                     placeholder={'Указанный при регистрации'}
                     label={'Email'}
                     callback={emailHandler}
-                    required={true}
+                    subtext={'Обещаем не слать рекламу и звонить только по делу'}
+                // required={true}
                 />
                 <InputField
                     type={'password'}
                     placeholder={'Введите пароль'}
                     label={'Пароль'}
                     callback={passHandler}
-                    required={true}
+                    hide={true}
+                // required={true}
                 />
             </div>
             <div className="mb-0 mt-2" style={{ display: 'flex', justifyContent: 'flex-end' }}>

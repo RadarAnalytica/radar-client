@@ -8,9 +8,9 @@ const SmallPlate = ({ name, value, type, percent, quantity, nochart, smallText }
 
     return (
         <div className='small-plate'>
-            <p className='p-0 m-0 mb-1 clue-text small-title' >{name}</p>
-            <div className='d-flex justify-content-between align-items-center'>
-                <p className='p-0 m-0 mb-1 fw-bold numbers'>{value ? formatPrice(value) : 0}{type === 'price' ? ' ₽' : ' %'}</p>
+            <p className='p-0 m-0 mb-1 clue-text small-title' style={{ fontSize: '1.75vh' }} >{name}</p>
+            <div className='d-flex justify-content-between align-items-end'>
+                <p className='p-0 m-0 fw-bold numbers'>{value ? formatPrice(value) : 0}{type === 'price' ? ' ₽' : ' %'}</p>
                 {
                     !quantity ?
                         <div>

@@ -20,7 +20,7 @@ const ChartTableRow = ({ object }) => {
                         <div>
                             <p className='m-0 p-0 fw-bold' style={{ fontSize: '1.25vw !important' }}>{formatPrice(object.amount) || 0} ₽</p>
                             <div className="d-flex align-items-center mt-2">
-                                <img src={object.percentRate >= 0 ? green : red} alt="" className='me-2' />
+                                <img src={object.percentRate > 0 ? green : red} alt="" className='me-2' />
                                 <p className="m-0 p-0 tiny-numbers" style={object.percentRate <= 0 ? { color: 'red' } : { color: 'rgb(0, 182, 155)' }}>{formatPrice(object.percentRate) + '%'}</p>
                             </div>
                         </div>
@@ -32,7 +32,7 @@ const ChartTableRow = ({ object }) => {
                         <div>
                             <p className='m-0 p-0 fw-bold' style={{ fontSize: '1.25vw !important' }}>{formatPrice(object.percent) || 0} %</p>
                             <div className="d-flex align-items-center mt-2">
-                                <img src={object.percentRate2 >= 2 ? green : red} alt="" className='me-2' />
+                                <img src={object.percentRate2 > 0 ? green : red} alt="" className='me-2' />
                                 <p className="m-0 p-0 tiny-numbers" style={object.percentRate2 <= 0 ? { color: 'red' } : { color: 'rgb(0, 182, 155)' }}>{formatPrice(object.percentRate2) + '%'}</p>
                             </div>
                         </div>

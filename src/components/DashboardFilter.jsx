@@ -9,7 +9,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
     return (
         <div className="filter container dash-container p-4 pt-0 d-flex">
             <div className="row">
-                <div className="filter-item col me-2">
+                <div className="filter-item col">
                     <label htmlFor="period">Период:</label>
                     <select className='form-control' id="period"
                         defaultValue={'30'}
@@ -22,13 +22,13 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                         <option selected={defaultValue === 92 ? true : false} value={'92'}>3 месяца</option>
                     </select>
                 </div>
-                <div className="filter-item col me-2">
+                <div className="filter-item col">
                     <label htmlFor="marketplace">Маркетплейс:</label>
                     <select className='form-control' id="marketplace" disabled>
                         <option value="amazon">Wildeberries</option>
                     </select>
                 </div>
-                <div className="filter-item col me-2">
+                <div className="filter-item col">
                     <label htmlFor="store">Магазин:</label>
                     <select className='form-control' id="store" defaultValue={brandNames ? brandNames[0] : null} onChange={e => changeBrand(e.target.value)}>
                         {

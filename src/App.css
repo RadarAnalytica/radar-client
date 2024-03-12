@@ -127,6 +127,14 @@
   font-size: 2vh;
 }
 
+.filter-item {
+  min-width: 12vw !important;
+}
+
+.top-wrapper {
+  height: 8vh !important;
+}
+
 .filter-item label {
   font-size: 1.75vh;
 }
@@ -136,7 +144,7 @@
 }
 
 .medium-plate>div>img {
-  max-width: 5vh !important;
+  width: 7vh !important;
 }
 
 .fields-container {
@@ -388,7 +396,7 @@ select {
 .medium-plate {
   background-color: white;
   border-radius: 16px;
-  min-height: 25vh;
+  height: 24vh;
   padding: 16px;
   min-width: 10vw;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -426,6 +434,7 @@ select {
   min-height: 196px;
   padding: 16px;
   width: 100%;
+  font-weight: 600;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -437,6 +446,10 @@ select {
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   overflow-x: scroll;
+}
+
+.finance-table::-webkit-scrollbar {
+  opacity: 0;
 }
 
 .fin-row {
@@ -524,10 +537,10 @@ select {
 .small-plate {
   background-color: white;
   border-radius: 16px;
-  height: 12.5vh;
+  height: 11vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   padding: 16px;
   min-width: 15vw;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -539,7 +552,7 @@ select {
   min-height: 500px;
   padding: 16px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
-  margin-bottom: 16px;
+  /* margin-bottom: 16px; */
 }
 
 /* Linked shops */
@@ -849,7 +862,7 @@ select {
 }
 
 .small-numbers {
-  font-size: 1.55vh;
+  font-size: 2vh;
 }
 
 .medium-numbers {
@@ -918,6 +931,10 @@ select {
 
   .side-nav {
     display: none;
+  }
+
+  .finance-table::-webkit-scrollbar {
+    opacity: 1;
   }
 
   .top-menu {

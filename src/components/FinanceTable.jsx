@@ -41,7 +41,7 @@ export const TableRow = ({ values, percent, sign }) => {
 const FinanceTable = ({ title, data, sign }) => {
 
     return (
-        <div className='finance-table'>
+        <div className='finance-table mb-0'>
             <p className="fw-bold numbers mb-2">{title}</p>
             {
                 data && data.map((item, i) => {
