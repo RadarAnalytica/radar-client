@@ -86,7 +86,7 @@ const Settings = () => {
                 <div className="container dash-container">
                     <div className="mt-3 wide-plate">
                         <h5 className='mb-1 fw-bold' style={{ fontSize: '2.5vh' }}>Внести себестоимость товаров</h5>
-                        <div className="filter-item col me-2 mb-3">
+                        <div className="filter-item w-50 col me-2 mb-3">
                             <label style={{ fontSize: '2vh', margin: '1vh 0' }} htmlFor="store">Магазин:</label>
                             <select style={{ fontSize: '2vh' }} className='form-control w-75' id="store" defaultValue={brandNames ? brandNames[0] : null}
                                 onChange={e => setActiveBrand(e.target.value)}
@@ -135,9 +135,9 @@ const Settings = () => {
                         <br />
 
                         <h5 className='mb-1 fw-bold' style={{ fontSize: '2.5vh' }}>Настройка системы налогообложения</h5>
-                        <div className="filter-item col me-2 mb-3">
+                        <div className="filter-item col me-2 mb-3 w-50">
                             <label style={{ fontSize: '2vh', margin: '1vh 0' }} htmlFor="store">Магазин:</label>
-                            <select style={{ fontSize: '2vh' }} className='form-control' id="store" defaultValue={brandNames ? brandNames[0] : null}
+                            <select style={{ fontSize: '2vh' }} className='form-control w-75' id="store" defaultValue={brandNames ? brandNames[0] : null}
                                 onChange={e => setActiveBrand(e.target.value)}
                             >
                                 {
@@ -147,10 +147,10 @@ const Settings = () => {
                                 }
                             </select>
                         </div>
-                        <div className='d-flex justify-content-between align-items-center w-75'>
+                        <div className='d-flex justify-content-between align-items-center w-50'>
                             <div className=''>
                                 <label htmlFor="" className='mt-0 mb-0 fw-bold'>Вариант расчёта</label>
-                                <select className='form-control mt-2' name="" id="" style={{ fontSize: '2vh' }}
+                                <select className='form-control mt-2 w-75' name="" id="" style={{ fontSize: '2vh' }}
                                     onChange={e => setTax({ ...tax, type: e.target.value })}
                                 >
                                     <option value="От выручки" selected="">От выручки (от общей суммы продажи за вычетом возвратов)</option>
@@ -159,9 +159,11 @@ const Settings = () => {
                                 </select>
                             </div>
                         </div>
-                        <div>
-                            <label htmlFor="" className='mt-2 mb-0 fw-bold'>Процентная ставка</label>
-                            <input type="number" className="form-control mt-2 w-75" onChange={e => setTax({ ...tax, value: Number(e.target.value) })} />
+                        <div className='w-75'>
+                            <div>
+                                <label htmlFor="" className='mt-2 mb-0 fw-bold'>Процентная ставка</label>
+                                <input type="number" className="form-control mt-2 w-50" onChange={e => setTax({ ...tax, value: Number(e.target.value) })} />
+                            </div>
                         </div>
                         <button className='prime-btn' style={{ padding: '1.25vh 2vh', maxWidth: '12vw' }}
                             onClick={e => handleTaxSubmit(e, tax)}
