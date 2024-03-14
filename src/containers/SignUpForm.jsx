@@ -7,6 +7,8 @@ import { ServiceFunctions } from '../service/serviceFunctions'
 import InfoForm from './InfoForm'
 import CustomSelect from '../components/CustomSelect'
 
+import Modal from 'react-bootstrap/Modal';
+
 const SignUpForm = () => {
 
     const navigate = useNavigate()
@@ -85,16 +87,27 @@ const SignUpForm = () => {
         setRegData({ ...regData, firstName, lastName, patronym })
     }, [name])
 
+    const [show, setShow] = useState(false);
+    const [error, setError] = useState('')
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const sumbitHandler = (e, obj) => {
         const nullable = Object.values(obj)?.filter(item => item === null)
         if (!obj || nullable?.length > 1 || !isValidEmail(obj.email)) {
             e.preventDefault()
-            alert('Пожалуйста, заполните все поля правильно.');
+            setError('Введите корректное значение для всех полей')
+            setShow(true)
         }
         else {
             ServiceFunctions.register(obj).then(data => {
                 if (!data) {
                     setSent(!sent)
+                }
+                else if (data && data.success === false) {
+                    setError(data.message)
+                    setShow(true)
                 }
                 else {
                     navigate('/development/dashboard')
@@ -107,6 +120,8 @@ const SignUpForm = () => {
     const isValidEmail = (email) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
+
+    const warningIcon = require('../assets/warning.png')
 
     return (
         sent ?
@@ -162,6 +177,21 @@ const SignUpForm = () => {
                         Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с <span className="fw-bold" style={{ textDecoration: 'underline', }}>Пользовательским соглашением</span> и <span className="fw-bold" style={{ textDecoration: 'underline', }}>Политикой конфиденциальности</span>
                     </p>
                 </div>
+
+
+                <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <div>
+                            <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
+                                <img src={warningIcon} alt="" style={{ height: '3vh' }} />
+                                <p className="fw-bold mb-0">Ошибка!</p>
+                            </div>
+                            <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>
+                                {error}
+                            </p>
+                        </div>
+                    </Modal.Header>
+                </Modal>
             </div>
     )
 }

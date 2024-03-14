@@ -4,6 +4,8 @@ import InputField from '../components/InputField'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthContext from '../service/AuthContext'
 
+import Modal from 'react-bootstrap/Modal';
+
 
 const SignInForm = () => {
 
@@ -22,6 +24,24 @@ const SignInForm = () => {
 
     const { login } = useContext(AuthContext)
 
+    const [show, setShow] = useState(false);
+    const [error, setError] = useState('')
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const handleSubmit = (e) => {
+        if (!email || !password) {
+            e.preventDefault()
+            setError('Введите корректное значение для всех полей')
+            setShow(true)
+        }
+        else {
+            login(email, password, setError, setShow)
+        }
+    }
+
+    const warningIcon = require('../assets/warning.png')
 
     return (
         <div className='signin-form'>
@@ -56,10 +76,24 @@ const SignInForm = () => {
                     Забыли пароль?
                 </p>
             </div>
-            <button className='prime-btn mt-0 mb-3' onClick={() => login(email, password)} style={{ height: '7vh' }}>Войти</button>
+            <button className='prime-btn mt-0 mb-3' onClick={handleSubmit} style={{ height: '7vh' }}>Войти</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text mb-0'>Еще нет аккаунта? <Link className='link' to={'/development/signup'}>Регистрация</Link></p>
             </div>
+
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <div>
+                        <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
+                            <img src={warningIcon} alt="" style={{ height: '3vh' }} />
+                            <p className="fw-bold mb-0">Ошибка!</p>
+                        </div>
+                        <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>
+                            {error}
+                        </p>
+                    </div>
+                </Modal.Header>
+            </Modal>
         </div>
     )
 }

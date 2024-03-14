@@ -15,7 +15,10 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate()
 
-    const login = async (email, password) => {
+    const login = async (email, password, setError, setShow) => {
+        if (!password || !email) {
+            setError('Введите корректное значение для всех полей')
+        }
         const response = await fetch(URL + '/api/user/signin', {
             method: "POST",
             headers: {
@@ -24,6 +27,10 @@ export const AuthProvider = ({ children }) => {
             body: JSON.stringify({ email: email, password: password })
         })
         const data = await response.json()
+        if (response.status !== 200) {
+            setError(data.message)
+            setShow(true)
+        }
         if (response.status === 200) {
             setAuthToken(data)
             setUser(jwtDecode(data.token))
@@ -33,10 +40,6 @@ export const AuthProvider = ({ children }) => {
             } else if (!data.isOnboarded) {
                 navigate('/development/onboarding')
             }
-        } else if (!data.success) {
-            alert(data.message)
-        } else {
-            alert('Something went wrong')
         }
     }
 
