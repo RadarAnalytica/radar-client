@@ -27,8 +27,8 @@ const SignInForm = () => {
         <div className='signin-form'>
             <div className='d-flex flex-column align-items-center'>
                 <img src={logo} alt="" className='logo' />
-                <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Вход</h1>
-                <p className="clue-text" style={{ fontSize: '2vh' }}>Проще не бывает</p>
+                <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Вход в аккаунт</h1>
+                <p className="clue-text mb-0" style={{ fontSize: '2vh' }}>Проще не бывает</p>
             </div>
             <div className='fields-container'>
                 <InputField
@@ -48,7 +48,7 @@ const SignInForm = () => {
                 // required={true}
                 />
             </div>
-            <div className="mb-0 mt-2" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div className="mb-0 mt-1" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <p className="clue-text"
                     style={{ cursor: 'pointer' }}
                     onClick={() => { navigate('/development/reset') }}
@@ -56,9 +56,9 @@ const SignInForm = () => {
                     Забыли пароль?
                 </p>
             </div>
-            <button className='prime-btn mt-0' onClick={() => login(email, password)}>Войти</button>
+            <button className='prime-btn mt-0 mb-3' onClick={() => login(email, password)} style={{ height: '7vh' }}>Войти</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <p className='clue-text'>Еще нет аккаунта? <Link className='link' to={'/development/signup'}>Регистрация</Link></p>
+                <p className='clue-text mb-0'>Еще нет аккаунта? <Link className='link' to={'/development/signup'}>Регистрация</Link></p>
             </div>
         </div>
     )

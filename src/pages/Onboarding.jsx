@@ -68,7 +68,7 @@ const Onboarding = () => {
                             callback={getToken}
                             placeholder={'Пример: GJys67G7sbNw178F'}
                         />
-                        <button className='prime-btn' onClick={submitHandler}>Получить 3 дня бесплатно</button>
+                        <button className='prime-btn' style={{ height: '7vh' }} onClick={submitHandler}>Получить 3 дня бесплатно</button>
                         <div className='text-center'>
                             <p className='clue-text'>Тяжело разобраться? <Link className='link' to={'/instruction'}>Полная инструкция</Link></p>
                         </div>
@@ -107,7 +107,7 @@ const Onboarding = () => {
                         <p className='fs-6 fw-bold'>
                             Ваш токен успешно подключен к сервису. Вся необходимая информация для анализа будет собрана в ближайшее время и отображена в разделе "Сводка продаж".
                             <br /> <br />
-                            Обычно это занимает от 15 до 18 минут.
+                            Обычно это занимает от 15 минут до 1 часа.
                         </p>
                     </div>
                 </Modal.Body>

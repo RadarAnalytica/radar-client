@@ -27,7 +27,7 @@
 
 .settings-modal {
   position: absolute;
-  top: 60px;
+  top: 44px;
   right: 0;
   background-color: white;
   border-radius: 8px;
@@ -68,8 +68,8 @@
 .signup-form {
   background-color: white;
   /* min-height: 80vh; */
-  width: 61vh;
-  padding: 24px 32px;
+  width: 58vh;
+  padding: 16px 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,7 +82,7 @@
 .signup-form select,
 .signin-form input {
   font-size: 1.95vh;
-  margin: 0.25vh 0;
+  margin: 0.25vh auto;
 }
 
 .signup-form h1 {
@@ -91,7 +91,7 @@
 
 .signup-form button {
   padding: 1vw;
-  width: 55vh;
+  width: auto;
 }
 
 .select-field {
@@ -101,7 +101,7 @@
 .select-field::after {
   content: '';
   position: absolute;
-  top: 75%;
+  top: 20%;
   right: 10px;
   transform: translateY(-50%);
   width: 12px;
@@ -117,8 +117,8 @@
 .signin-form {
   background-color: white;
   min-height: 50vh;
-  width: 64vh;
-  padding: 24px 32px;
+  width: 58vh;
+  padding: 24px 28px;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -148,7 +148,7 @@
 }
 
 .fields-container {
-  width: 55vh;
+  width: 100%;
 }
 
 label {
@@ -161,8 +161,14 @@ a.link {
   color: var(--primary-color);
 }
 
+.select-element:hover {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
 .input-field {
   width: 100%;
+  min-width: 100%;
   position: relative;
 }
 
@@ -170,6 +176,7 @@ input,
 select {
   outline: none !important;
   box-shadow: none !important;
+  border: 1px solid rgba(232, 232, 232, 1) !important;
 }
 
 .prime-btn {
@@ -178,7 +185,7 @@ select {
   color: white;
   border-radius: 8px;
   width: 100%;
-  padding: 20px 24px;
+  /* padding: 20px 24px; */
   margin: 10px 0;
   font-weight: 700;
   font-size: 1.95vh;
@@ -289,7 +296,7 @@ select {
 }
 
 .logo {
-  max-width: 10vw;
+  max-width: 15vw;
   object-fit: contain;
 }
 

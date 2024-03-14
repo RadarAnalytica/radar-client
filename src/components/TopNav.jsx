@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AuthContext from '../service/AuthContext'
 import noticon from '../assets/notification.png'
 import question from '../assets/question.png'
@@ -17,6 +17,33 @@ const TopNav = ({ title }) => {
 
     const navigate = useNavigate()
 
+    useEffect(() => {
+        // Получаем элемент иконки по ID
+        const icon = document.getElementById('settings-icon');
+        const block = document.getElementById('settings-modal');
+
+        // Функция, которая будет вызываться при клике вне блока
+        const handleOutsideClick = (e) => {
+            // Проверяем, кликнули ли мы вне блока
+            if (!icon.contains(e.target)) {
+                // Скрываем блок
+                setMenuShown(false)
+            }
+        };
+
+        // Добавляем слушатель события на наведение на иконку
+        icon.addEventListener('mouseenter', setMenuShown(true));
+
+        // Добавляем слушатель события на клик на странице
+        document.addEventListener('click', handleOutsideClick);
+
+        // Очистка при размонтировании компонента
+        return () => {
+            icon.removeEventListener('mouseenter', setMenuShown(true));
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    }, []);
+
     return (
         <div className='top-nav'>
             <div className="container dash-container d-flex align-items-center justify-content-between"     >
@@ -34,10 +61,14 @@ const TopNav = ({ title }) => {
                 <div className="col-2 d-flex justify-content-around top-menu top-wrapper">
                     {/* <img src={noticon} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} />
                     <img src={question} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} /> */}
-                    <MdOutlineSettings onClick={() => setMenuShown(!menuShown)} style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px' }} />
+                    <MdOutlineSettings
+                        id='settings-icon'
+                        onMouseEnter={() => setMenuShown(true)}
+                        style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px' }}
+                    />
                     {
                         menuShown ?
-                            <div className='settings-modal'>
+                            <div className='settings-modal' id='settings-modal'>
                                 <a href="#" className='link'
                                     style={{
                                         borderBottom: '1px  solid silver',

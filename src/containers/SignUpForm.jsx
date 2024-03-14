@@ -5,6 +5,7 @@ import SelectField from '../components/SelectField'
 import { Link, useNavigate } from 'react-router-dom'
 import { ServiceFunctions } from '../service/serviceFunctions'
 import InfoForm from './InfoForm'
+import CustomSelect from '../components/CustomSelect'
 
 const SignUpForm = () => {
 
@@ -41,7 +42,23 @@ const SignUpForm = () => {
         // Форматируем номер, добавляя "+7" в начале и разделяя группы цифр
         if (value.length > 1) {
             value = value.replace(/^(\+7|\+8)/, '+7'); // Убираем 8 в начале и заменяем его на +7
-            value = '+7-' + value.slice(1, 2) + value.slice(2, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 9) + '-' + value.slice(9, 11); // Форматируем номер
+            let formattedValue = '+7';
+            if (value.length > 1) {
+                formattedValue += '-' + value.slice(1, 2);
+            }
+            if (value.length > 2) {
+                formattedValue += value.slice(2, 4);
+            }
+            if (value.length > 4) {
+                formattedValue += '-' + value.slice(4, 7);
+            }
+            if (value.length > 7) {
+                formattedValue += '-' + value.slice(7, 9);
+            }
+            if (value.length > 9) {
+                formattedValue += '-' + value.slice(9);
+            }
+            value = formattedValue;
         }
         // Устанавливаем отформатированное значение в поле
         setRegData({ ...regData, phone: value });
@@ -106,9 +123,8 @@ const SignUpForm = () => {
                         placeholder={'Фамилия Имя Отчество'}
                         label={'ФИО'}
                         callback={nameHandler}
-                        required={true}
                     />
-                    <SelectField
+                    <CustomSelect
                         options={options}
                         label={'На каком этапе вы находитесь?'}
                         defautlValue={'На каком этапе вы находитесь?'}
@@ -120,7 +136,6 @@ const SignUpForm = () => {
                         label={'Номер телефона'}
                         callback={getPhone}
                         value={regData.phone}
-                        required={true}
                     />
                     <InputField
                         type={'text'}
@@ -135,11 +150,10 @@ const SignUpForm = () => {
                         label={'Пароль'}
                         callback={getPass}
                         hide={true}
-                        required={true}
                         maxLength={40}
                     />
                 </div>
-                <button className='prime-btn' onClick={e => sumbitHandler(e, regData)}>Зарегистрироваться</button>
+                <button className='prime-btn' onClick={e => sumbitHandler(e, regData)} style={{ width: '100%', height: '7vh' }}>Зарегистрироваться</button>
                 <div>
                     <p className='clue-text mb-2 mt-2'>Уже есть аккаунт? <Link className='link' to={'/development/signin'}>Войти</Link></p>
                 </div>
