@@ -20,26 +20,25 @@ const TopNav = ({ title }) => {
     useEffect(() => {
         // Получаем элемент иконки по ID
         const icon = document.getElementById('settings-icon');
-        const block = document.getElementById('settings-modal');
 
         // Функция, которая будет вызываться при клике вне блока
         const handleOutsideClick = (e) => {
             // Проверяем, кликнули ли мы вне блока
-            if (!icon.contains(e.target)) {
+            if (icon && !icon.contains(e.target)) {
                 // Скрываем блок
                 setMenuShown(false)
             }
         };
 
         // Добавляем слушатель события на наведение на иконку
-        icon.addEventListener('mouseenter', setMenuShown(true));
+        // icon.addEventListener('mouseenter', setMenuShown(true));
 
         // Добавляем слушатель события на клик на странице
         document.addEventListener('click', handleOutsideClick);
 
         // Очистка при размонтировании компонента
         return () => {
-            icon.removeEventListener('mouseenter', setMenuShown(true));
+            // icon.removeEventListener('mouseenter', setMenuShown(true));
             document.removeEventListener('click', handleOutsideClick);
         };
     }, []);
