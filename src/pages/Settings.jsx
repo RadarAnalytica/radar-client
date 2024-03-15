@@ -63,7 +63,7 @@ const Settings = () => {
 
     const [tax, setTax] = useState({ type: null, value: null })
     useEffect(() => {
-        setTax({ ...tax, type: 'От выручки' })
+        setTax({ ...tax, type: null })
     }, [])
 
     const handleTaxSubmit = (e, obj) => {
@@ -135,7 +135,7 @@ const Settings = () => {
                         <br />
 
                         <h5 className='mb-1 fw-bold' style={{ fontSize: '2.5vh' }}>Настройка системы налогообложения</h5>
-                        <div className="filter-item col me-2 mb-3 w-50">
+                        {/* <div className="filter-item col me-2 mb-3 w-50">
                             <label style={{ fontSize: '2vh', margin: '1vh 0' }} htmlFor="store">Магазин:</label>
                             <select style={{ fontSize: '2vh' }} className='form-control w-75' id="store" defaultValue={brandNames ? brandNames[0] : null}
                                 onChange={e => setActiveBrand(e.target.value)}
@@ -146,8 +146,8 @@ const Settings = () => {
                                     ))
                                 }
                             </select>
-                        </div>
-                        <div className='d-flex justify-content-between align-items-center w-50'>
+                        </div> */}
+                        {/* <div className='d-flex justify-content-between align-items-center w-50'>
                             <div className=''>
                                 <label htmlFor="" className='mt-0 mb-0 fw-bold'>Вариант расчёта</label>
                                 <select className='form-control mt-2 w-75' name="" id="" style={{ fontSize: '2vh' }}
@@ -158,10 +158,10 @@ const Settings = () => {
                                     <option value="От прибыли">От прибыли (выручка за вычетом возвратов и комиссий, не включая себестоимость)</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> */}
                         <div className='w-75'>
                             <div>
-                                <label htmlFor="" className='mt-2 mb-0 fw-bold'>Процентная ставка</label>
+                                <label htmlFor="" className='mt-2 mb-0 fw-bold'>Процентная ставка по налогу</label>
                                 <input type="number" className="form-control mt-2 w-50" onChange={e => setTax({ ...tax, value: Number(e.target.value) })} />
                             </div>
                         </div>

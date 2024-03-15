@@ -269,7 +269,8 @@ const DashboardPage = () => {
         changePeriod()
     }, [days, activeBrand])
 
-    const [chartUnitRub, setChartUnitRub] = useState(true)
+    const [byMoney, setByMoney] = useState(true)
+    const [byAmount, setByAmount] = useState(true)
 
     const dateList = days ? generateDateList(Number(days)) : generateDateList(7)
 
@@ -314,7 +315,9 @@ const DashboardPage = () => {
     const totalsalesByDate = Object.entries(salesByDate).map(([date, count]) => count).slice(0, days);
 
     const [orderOn, setOrderOn] = useState(true)
+    const [orderLineOn, setOrderLineOn] = useState(true)
     const [salesOn, setSalesOn] = useState(true)
+    const [salesLineOn, setSalesLineOn] = useState(true)
 
 
     const uniquSalesDate = [...new Set(sales.map(i => formatDate(new Date(i.date))))]
@@ -324,30 +327,120 @@ const DashboardPage = () => {
     const data = {
         labels: labels?.map(item => item.split(' ')) || [],
         datasets: [
-            orderOn ? {
+            orderLineOn ? {
                 label: 'Заказы',
-                backgroundColor: 'rgba(240, 173, 0, 1)',
-                borderWidth: 1,
+                borderRadius: 8,
+                type: 'line',
+                backgroundColor: 'rgba(255, 219, 126, 1)',
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+                borderColor: 'rgba(255, 219, 126, 1)',
                 hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-                data: chartUnitRub ? summedOrderArray : totalOrByDate ? totalOrByDate : [],
+                yAxisID: 'A',
+                data: totalOrByDate || [],
             } : {
                 label: 'Заказы',
-                backgroundColor: 'rgba(240, 173, 0, 1)',
+                borderRadius: 8,
+                type: 'line',
+                backgroundColor: 'rgba(255, 219, 126, 1)',
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+                borderColor: 'rgba(255, 219, 126, 1)',
+                hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                yAxisID: 'A',
+                data: []
+            },
+            salesLineOn ? {
+                label: 'Продажи',
+                borderRadius: 8,
+                type: 'line',
+                backgroundColor: 'rgba(154, 129, 255, 1)',
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+                borderColor: 'rgba(154, 129, 255, 1)',
+                hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                yAxisID: 'A',
+                data: totalsalesByDate || [],
+            } : {
+                label: 'Продажи',
+                borderRadius: 8,
+                type: 'line',
+                backgroundColor: 'rgba(154, 129, 255, 1)',
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+                borderColor: 'rgba(154, 129, 255, 1)',
+                hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                yAxisID: 'A',
+                data: []
+            },
+            orderOn ? {
+                label: 'Заказы',
+                borderRadius: 8,
+                type: 'bar',
+                backgroundColor: (context) => {
+                    const ctx = context.chart.ctx;
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                    gradient.addColorStop(0, "rgba(240, 173, 0, 1)");
+                    gradient.addColorStop(0.5, "rgba(240, 173, 0, 0.9)");
+                    gradient.addColorStop(1, "rgba(240, 173, 0, 0.5)");
+                    return gradient;
+                },
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                yAxisID: 'B',
+                data: summedOrderArray || [],
+            } : {
+                label: 'Заказы',
+                borderRadius: 8,
+                type: 'bar',
+                backgroundColor: (context) => {
+                    const ctx = context.chart.ctx;
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                    gradient.addColorStop(0, "rgba(240, 173, 0, 1)");
+                    gradient.addColorStop(0.5, "rgba(240, 173, 0, 0.9)");
+                    gradient.addColorStop(1, "rgba(240, 173, 0, 0.5)");
+                    return gradient;
+                },
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                yAxisID: 'B',
                 data: []
             },
             salesOn ? {
                 label: 'Продажи',
-                backgroundColor: 'rgba(83, 41, 255, 1)',
+                borderRadius: 8,
+                type: 'bar',
+                backgroundColor: (context) => {
+                    const ctx = context.chart.ctx;
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+                    gradient.addColorStop(0, "rgba(83, 41, 255, 1)");
+                    gradient.addColorStop(0.5, "rgba(83, 41, 255, 0.9)");
+                    gradient.addColorStop(1, "rgba(83, 41, 255, 0.5)");
+                    return gradient;
+                },
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-                data: chartUnitRub ? summedSalesArray : totalsalesByDate ? totalsalesByDate : [],
+                yAxisID: 'B',
+                data: summedSalesArray || [],
             } : {
                 label: 'Продажи',
-                backgroundColor: 'rgba(83, 41, 255, 1)',
+                borderRadius: 8,
+                type: 'bar',
+                backgroundColor: (context) => {
+                    const ctx = context.chart.ctx;
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+                    gradient.addColorStop(0, "rgba(83, 41, 255, 1)");
+                    gradient.addColorStop(0.5, "rgba(83, 41, 255, 0.9)");
+                    gradient.addColorStop(1, "rgba(83, 41, 255, 0.5)");
+                    return gradient;
+                },
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+                yAxisID: 'B',
                 data: []
             },
         ],
@@ -355,6 +448,8 @@ const DashboardPage = () => {
 
     const sortedValuesArray = data?.datasets?.map(arr => arr?.data).flat(1)?.sort((a, b) => b - a)
     const maxValue = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0
+
+    const maxAmount = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray.filter(item => typeof item === 'number')[0] : 50
 
 
     // console.log(wbData);
@@ -432,9 +527,16 @@ const DashboardPage = () => {
                                         salesOn={salesOn}
                                         setOrderOn={setOrderOn}
                                         setSalesOn={setSalesOn}
-                                        setChartUnitRub={setChartUnitRub}
-                                        chartUnitRub={chartUnitRub}
+                                        setOrderLineOn={setOrderLineOn}
+                                        setSalesLineOn={setSalesLineOn}
+                                        orderLineOn={orderLineOn}
+                                        salesLineOn={salesLineOn}
+                                        setByMoney={setByMoney}
+                                        byAmount={byAmount}
+                                        byMoney={byMoney}
+
                                         maxValue={maxValue}
+                                        maxAmount={maxAmount}
                                     />
                                 </div>
                             </div>

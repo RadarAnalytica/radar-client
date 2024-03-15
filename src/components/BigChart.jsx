@@ -1,10 +1,13 @@
 import React from 'react'
 import Form from 'react-bootstrap/Form';
-import { Bar } from 'react-chartjs-2';
-import { CategoryScale, LinearScale, Chart, BarController, BarElement, Tooltip } from 'chart.js';
-Chart.register(CategoryScale, LinearScale, BarController, BarElement, [Tooltip]);
+import { Chart } from 'react-chartjs-2';
+import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
+ChartJS.register(CategoryScale, LinearScale, Filler, BarController, PointElement, BarElement, LineController, LineElement, [Tooltip]);
 
-const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, maxValue, setSalesOn, setChartUnitRub, chartUnitRub }) => {
+const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, orderLineOn, maxValue, maxAmount, setSalesOn, setByMoney, byMoney, byAmount, setOrderLineOn, setSalesLineOn }) => {
+
+    const activeIcon = require('../assets/tick-active.png')
+    const inactiveIcon = require('../assets/tick.png')
 
     return (
         <div className='big-chart'>
@@ -13,16 +16,35 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, maxValue, setSales
                 <div className='d-flex align-items-center'>
                     <div className='d-flex me-3'>
                         <input type="checkbox" id='order' defaultChecked={orderOn} onClick={() => setOrderOn(!orderOn)} className='me-2 hidden-checkbox' name="" />
-                        <label htmlFor="order">Заказы</label>
+                        <label htmlFor="order">Заказы, шт</label>
                     </div>
-                    <div className='d-flex'>
+                    <div className='d-flex me-3'>
                         <input type="checkbox" id='sales' defaultChecked={salesOn} onClick={() => setSalesOn(!salesOn)} className='me-2 hidden-checkbox' name="" />
-                        <label htmlFor="sales">Продажи</label>
+                        <label htmlFor="sales">Продажи, шт</label>
                     </div>
 
-                    <div className="d-flex toggle-block">
-                        <span onClick={() => setChartUnitRub(!chartUnitRub)} className={chartUnitRub ? 'toggler toggler-active' : 'toggler'}>₽</span>
-                        <span onClick={() => setChartUnitRub(!chartUnitRub)} className={!chartUnitRub ? 'toggler toggler-active' : 'toggler'}>Шт.</span>
+                    <div className="
+                    d-flex 
+                    gap-3
+                    "
+                    // toggle-block
+                    >
+
+                        <div className='d-flex align-items-center gap-2' style={{ cursor: 'pointer' }}
+                            onClick={() => setOrderLineOn(!orderLineOn)}
+                        >
+                            <img src={orderLineOn ? activeIcon : inactiveIcon} style={{ width: '1.5vw' }} alt="" />
+                            <span>Заказы, руб</span>
+                        </div>
+                        <div className='d-flex align-items-center gap-2' style={{ cursor: 'pointer' }}
+                            onClick={() => setSalesLineOn(!salesLineOn)}
+                        >
+                            <img src={salesLineOn ? activeIcon : inactiveIcon} style={{ width: '1.5vw' }} alt="" />
+                            <span>Продажи, руб</span>
+                        </div>
+
+                        {/* <span onClick={() => setByMoney(!chartUnitRub)} className={chartUnitRub ? 'toggler toggler-active' : 'toggler'}>₽</span>
+                        <span onClick={() => setByMoney(!chartUnitRub)} className={!chartUnitRub ? 'toggler toggler-active' : 'toggler'}>Шт.</span> */}
                     </div>
 
 
@@ -34,13 +56,14 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, maxValue, setSales
                             label="ШТ."
                             className='fw-bold'
                             style={{ fontWeight: 'bold' }}
-                            onChange={() => setChartUnitRub(!chartUnitRub)}
+                            onChange={() => setByMoney(!chartUnitRub)}
                         />
                     </Form> */}
                 </div>
             </div>
             <div className='bar-div'>
-                <Bar
+                <Chart
+                    type='bar'
                     data={data}
                     width={100}
                     height={40}
@@ -56,9 +79,33 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, maxValue, setSales
                             },
                         },
                         scales: {
-                            y:
-                            {
+                            A: {
+                                id: 'A',
+                                type: 'linear',
                                 position: 'right',
+                                suggestedMax: maxAmount * 1.5,
+                                grid: {
+                                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                },
+                            },
+                            B: {
+                                id: 'B',
+                                type: 'linear',
+                                position: 'left',
+                                suggestedMax: maxValue,
+                                grid: {
+                                    drawOnChartArea: true, // only want the grid lines for one axis to show up
+                                },
+                            },
+                            x: {
+                                grid: {
+                                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                },
+                            },
+                        },
+                        elements: {
+                            line: {
+                                tension: 0.5,
                             },
                         },
                     }}
