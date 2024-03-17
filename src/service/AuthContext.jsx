@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
             setError(data.message)
             setShow(true)
         }
-        if (response.status === 200) {
+        if (response.status === 200 && data && data.token) {
             setAuthToken(data)
             setUser(jwtDecode(data?.token))
             localStorage.setItem('authToken', data?.token)
