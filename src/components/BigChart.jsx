@@ -148,15 +148,6 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                                                     const span = '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 2px; background-color: ' + targetColor + ';">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' + style + '">' + set?.label + ', ' + targetDescr + ':  <span style="font-weight: bold;">' + value + '</span></span>';
                                                     innerHtml += '<tr><td>' + span + '</td></tr>';
                                                 });
-                                                // bodyLines.forEach(function (body, i) {
-                                                //     console.log(body);
-                                                //     const colors = tooltipModel.labelColors[i];
-                                                //     let style = ''
-                                                //     style += '; border-color:' + colors.borderColor;
-                                                //     style += '; border-width: 2px';
-                                                //     const span = '<span style="' + style + '">' + body + '</span>';
-                                                //     innerHtml += '<tr><td>' + span + '</td></tr>';
-                                                // });
                                                 innerHtml += '</tbody>';
 
                                                 let tableRoot = tooltipEl.querySelector('table');
@@ -198,12 +189,12 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                                         position: 'left',
                                         suggestedMax: maxValue,
                                         grid: {
-                                            drawOnChartArea: true, // only want the grid lines for one axis to show up
+                                            drawOnChartArea: true,
                                         },
                                     },
                                     x: {
                                         grid: {
-                                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                            drawOnChartArea: false,
                                         },
                                     },
                                 },
