@@ -119,18 +119,15 @@ const SignUpForm = () => {
             e.preventDefault()
             setError('Введите корректное значение для всех полей')
             setShow(true)
-            alert('Проблема 1')
         }
         else {
             ServiceFunctions.register(obj).then(data => {
                 if (data && data.success === true) {
                     setSent(true)
-                    alert('Проблема 2')
                 }
                 else if (data && data.success === false) {
                     setError(data.message)
                     setShow(true)
-                    alert('Проблема 3')
                 }
                 else {
                     navigate('/development/onboarding')
