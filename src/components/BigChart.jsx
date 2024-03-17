@@ -7,6 +7,7 @@ ChartJS.register(CategoryScale, LinearScale, Filler, BarController, PointElement
 const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, orderLineOn, maxValue, maxAmount, setSalesOn, setByMoney, byMoney, byAmount, setOrderLineOn, setSalesLineOn }) => {
 
     const activeIcon = require('../assets/tick-active.png')
+    const activeIconYellow = require('../assets/tick-active-yellow.png')
     const inactiveIcon = require('../assets/tick.png')
 
     return (
@@ -33,7 +34,7 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                         <div className='d-flex align-items-center gap-2' style={{ cursor: 'pointer' }}
                             onClick={() => setOrderLineOn(!orderLineOn)}
                         >
-                            <img src={orderLineOn ? activeIcon : inactiveIcon} style={{ width: '1.5vw' }} alt="" />
+                            <img src={orderLineOn ? activeIconYellow : inactiveIcon} style={{ width: '1.5vw' }} alt="" />
                             <span>Заказы, руб</span>
                         </div>
                         <div className='d-flex align-items-center gap-2' style={{ cursor: 'pointer' }}
