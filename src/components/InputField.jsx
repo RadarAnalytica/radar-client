@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { PiEyeClosed, PiEye } from "react-icons/pi";
 
 
-const InputField = ({ hide, options, callback, label, subtext, required, placeholder, value, defautlValue, type, minLength, maxLength }) => {
+const InputField = ({ hide, options, emailErrorText, passErrorText, callback, label, subtext, required, placeholder, value, defautlValue, type, minLength, maxLength }) => {
 
     const [shown, setShown] = useState(false)
 
@@ -21,8 +21,23 @@ const InputField = ({ hide, options, callback, label, subtext, required, placeho
                 minLength={minLength}
                 maxLength={maxLength}
                 value={value}
-                style={{ minHeight: '4vh' }}
+                style={emailErrorText || passErrorText ?
+                    {
+                        minHeight: '4vh',
+                        backgroundColor: 'rgba(255, 0, 0, 0.05)',
+                        border: '1px solid rgba(255, 0, 0, 0.2) !important',
+                    }
+                    :
+                    { minHeight: '4vh' }
+                }
             />
+            {
+                emailErrorText ?
+                    <p className="mb-1" style={{ color: 'red', fontWeight: 600 }}>{emailErrorText}</p>
+                    : passErrorText ?
+                        <p className="mb-1" style={{ color: 'red', fontWeight: 600 }}>{passErrorText}</p>
+                        : null
+            }
             {
                 hide ?
                     !shown ?

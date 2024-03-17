@@ -71,7 +71,7 @@ const RestorePass = ({ email }) => {
                     required={true}
                 />
             </div>
-            <button className='prime-btn' onClick={(e) => handler(e)}>Обновить</button>
+            <button className='prime-btn' onClick={(e) => handler(e)} style={{ height: '7vh', width: '100%' }}>Обновить</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text'>
                     <Link className='link' to={'/development/signup'} style={{ marginRight: '20px' }}>Регистрация</Link>

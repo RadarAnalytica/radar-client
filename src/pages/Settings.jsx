@@ -81,7 +81,7 @@ const Settings = () => {
         <div className='dashboard-page'>
             <SideNav />
             <div className="dashboard-content pb-3">
-                <TopNav title={'Настройки профиля'} />
+                <TopNav title={'Настройки аккаунта'} />
 
                 <div className="container dash-container">
                     <div className="mt-3 wide-plate">

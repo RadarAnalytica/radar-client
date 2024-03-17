@@ -42,15 +42,26 @@ const FinanceTable = ({ title, data, sign }) => {
 
     return (
         <div className='finance-table mb-0'>
-            <p className="fw-bold numbers mb-2">{title}</p>
             {
-                data && data.map((item, i) => {
-                    let values = item ? Object.values(item) : []
-                    let keys = item ? Object.keys(item) : []
-                    let rate = keys ? keys.find(el => el === 'rate') : null
-                    return <TableRow key={i} values={values} sign={sign} percent={rate ? item['rate'] : null} />
+                // !data || (!data[0]?.value === null || !data[0]?.amount === null) ?
+                //     <div className='d-flex flex-column align-items-center justify-content-center'
+                //         style={{ height: '100%' }}
+                //     >
+                //         <span className="loader"></span>
+                //     </div>
+                //     :
+                <div>
+                    <p className="fw-bold numbers mb-2">{title}</p>
+                    {
+                        data && data.map((item, i) => {
+                            let values = item ? Object.values(item) : []
+                            let keys = item ? Object.keys(item) : []
+                            let rate = keys ? keys.find(el => el === 'rate') : null
+                            return <TableRow key={i} values={values} sign={sign} percent={rate ? item['rate'] : null} />
 
-                })
+                        })
+                    }
+                </div>
             }
         </div>
     )

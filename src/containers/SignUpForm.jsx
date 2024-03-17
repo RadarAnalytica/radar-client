@@ -93,6 +93,26 @@ const SignUpForm = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [emailErrorText, setEmailErrorText] = useState()
+    const [passErrorText, setPassErrorText] = useState()
+
+    const isValidEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    useEffect(() => {
+        if (regData.email && !isValidEmail(regData?.email)) {
+            setEmailErrorText('Введите корректный Email')
+        }
+        else if (regData.password && regData.password.length < 6) {
+            setPassErrorText("Пароль должен быть не короче 6 символов")
+        }
+        else {
+            setEmailErrorText()
+            setPassErrorText()
+        }
+    }, [regData?.email, regData?.password])
+
     const sumbitHandler = (e, obj) => {
         const nullable = Object.values(obj)?.filter(item => item === null)
         if (!obj || nullable?.length > 1 || !isValidEmail(obj.email)) {
@@ -115,11 +135,6 @@ const SignUpForm = () => {
             })
         }
     }
-
-
-    const isValidEmail = (email) => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
 
     const warningIcon = require('../assets/warning.png')
 
@@ -156,6 +171,7 @@ const SignUpForm = () => {
                         type={'text'}
                         placeholder={'На него придет подтвеждение'}
                         label={'Email'}
+                        emailErrorText={emailErrorText}
                         callback={getEmail}
                         required={true}
                     />
@@ -164,6 +180,7 @@ const SignUpForm = () => {
                         placeholder={'Минимум 6 символов'}
                         label={'Пароль'}
                         callback={getPass}
+                        passErrorText={passErrorText}
                         hide={true}
                         maxLength={40}
                     />

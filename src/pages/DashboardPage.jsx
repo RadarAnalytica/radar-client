@@ -451,9 +451,6 @@ const DashboardPage = () => {
 
     const maxAmount = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray.filter(item => typeof item === 'number')[0] : 50
 
-
-    // console.log(wbData);
-
     return (
         user && <div className='dashboard-page'>
             <SideNav />
@@ -467,157 +464,157 @@ const DashboardPage = () => {
                     changeBrand={setActiveBrand}
                 />
                 {
-                    loading ?
-                        <div className='d-flex flex-column align-items-center justify-content-center' style={{ minHeight: '70vh' }}>
-                            <span className="loader"></span>
+                    // loading ?
+                    //     <div className='d-flex flex-column align-items-center justify-content-center' style={{ minHeight: '70vh' }}>
+                    //         <span className="loader"></span>
+                    //     </div>
+                    //     :
+                    //     wbData && user &&
+
+                    <div>
+
+                        <div className="container dash-container p-4 pt-0 d-flex gap-3">
+                            <MediumPlate name={'Заказы'}
+                                value={curOrders?.selectedPeriod?.ordersSumRub}
+                                quantity={curOrders?.selectedPeriod?.ordersCount}
+                                percent={curOrders?.periodComparison?.avgPriceRubDynamics}
+                                percent2={curOrders?.periodComparison?.avgOrdersCountPerDayDynamics}
+                                text={curOrders?.selectedPeriod?.avgPriceRub * curOrders?.selectedPeriod?.avgOrdersCountPerDay}
+                                text2={curOrders?.selectedPeriod?.avgOrdersCountPerDay}
+                            />
+                            <MediumPlate
+                                name={'Продажи'}
+                                value={curOrders?.selectedPeriod?.buyoutsSumRub}
+                                quantity={curOrders?.selectedPeriod?.buyoutsCount}
+                                percent={curOrders?.periodComparison?.buyoutsSumRubDynamics}
+                                percent2={curOrders?.periodComparison?.buyoutsCountDynamics}
+                                text={curOrders?.selectedPeriod?.buyoutsSumRub / days}
+                                text2={curOrders?.selectedPeriod?.buyoutsCount / days}
+                            />
+                            <MediumPlate
+                                name={'Возвраты'}
+                                value={curOrders?.selectedPeriod?.cancelSumRub}
+                                quantity={curOrders?.selectedPeriod?.cancelCount}
+                                percent={curOrders?.periodComparison?.cancelSumRubDynamics}
+                                percent2={curOrders?.periodComparison?.cancelCountDynamics}
+                            // text={content?.returned?.currentReturnsCount }
+                            // text2={content?.returned?.currentReturnsCount }
+                            />
+                            <div className="col d-flex flex-column" style={{ gap: '2vh' }}>
+                                <div className=''>
+                                    <SmallPlate
+                                        name={'Процент выкупа'}
+                                        value={curOrders?.selectedPeriod?.conversions?.buyoutsPercent}
+                                        type={'percent'}
+                                        percent={curOrders?.periodComparison?.conversions?.buyoutsPercent || '0'}
+                                    />
+                                </div>
+                                <SmallPlate
+                                    name={'Средний чек'}
+                                    value={curOrders?.selectedPeriod?.avgPriceRub}
+                                    type={'price'}
+                                    percent={curOrders?.periodComparison?.avgPriceRubDynamics}
+                                />
+                            </div>
                         </div>
-                        :
-                        wbData && user &&
+                        <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3">
+                            <div className="col chart-wrapper">
+                                <BigChart name={'Заказы и продажи'} data={data}
+                                    orderOn={orderOn}
+                                    salesOn={salesOn}
+                                    setOrderOn={setOrderOn}
+                                    setSalesOn={setSalesOn}
+                                    setOrderLineOn={setOrderLineOn}
+                                    setSalesLineOn={setSalesLineOn}
+                                    orderLineOn={orderLineOn}
+                                    salesLineOn={salesLineOn}
+                                    setByMoney={setByMoney}
+                                    byAmount={byAmount}
+                                    byMoney={byMoney}
 
-                        <div>
+                                    maxValue={maxValue}
+                                    maxAmount={maxAmount}
+                                />
+                            </div>
+                        </div>
 
-                            <div className="container dash-container p-4 pt-0 d-flex gap-3">
-                                <MediumPlate name={'Заказы'}
-                                    value={curOrders?.selectedPeriod?.ordersSumRub || 0}
-                                    quantity={curOrders?.selectedPeriod?.ordersCount || 0}
-                                    percent={curOrders?.periodComparison?.avgPriceRubDynamics || 0}
-                                    percent2={curOrders?.periodComparison?.avgOrdersCountPerDayDynamics || 0}
-                                    text={curOrders?.selectedPeriod?.avgPriceRub * curOrders?.selectedPeriod?.avgOrdersCountPerDay || 0}
-                                    text2={curOrders?.selectedPeriod?.avgOrdersCountPerDay || 0}
+
+                        <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3">
+                            <div className="col">
+                                <SmallPlate smallText={true}
+                                    name={'Себестоимость проданных товаров'}
+                                    nochart={true}
+                                    type={'price'}
+                                    quantity={curOrders?.selectedPeriod?.buyoutsCount}
+                                    value={selfCost}
                                 />
-                                <MediumPlate
-                                    name={'Продажи'}
-                                    value={curOrders?.selectedPeriod?.buyoutsSumRub || 0}
-                                    quantity={curOrders?.selectedPeriod?.buyoutsCount || 0}
-                                    percent={curOrders?.periodComparison?.buyoutsSumRubDynamics || 0}
-                                    percent2={curOrders?.periodComparison?.buyoutsCountDynamics || 0}
-                                    text={curOrders?.selectedPeriod?.buyoutsSumRub / days || 0}
-                                    text2={curOrders?.selectedPeriod?.buyoutsCount / days || 0}
-                                />
-                                <MediumPlate
+                            </div>
+                            <div className="col">
+                                <SmallPlate
+                                    smallText={true}
                                     name={'Возвраты'}
-                                    value={curOrders?.selectedPeriod?.cancelSumRub || 0}
-                                    quantity={curOrders?.selectedPeriod?.cancelCount || 0}
-                                    percent={curOrders?.periodComparison?.cancelSumRubDynamics || 0}
-                                    percent2={curOrders?.periodComparison?.cancelCountDynamics || 0}
-                                // text={content?.returned?.currentReturnsCount || 0}
-                                // text2={content?.returned?.currentReturnsCount || 0}
+                                    value={curOrders?.selectedPeriod?.cancelSumRub}
+                                    quantity={curOrders?.selectedPeriod?.cancelCount}
+                                    type={'price'}
                                 />
-                                <div className="col d-flex flex-column" style={{ gap: '2vh' }}>
-                                    <div className=''>
-                                        <SmallPlate
-                                            name={'Процент выкупа'}
-                                            value={curOrders?.selectedPeriod?.conversions?.buyoutsPercent || 0}
-                                            type={'percent'}
-                                            percent={curOrders?.periodComparison?.conversions?.buyoutsPercent || '0'}
-                                        />
-                                    </div>
-                                    <SmallPlate
-                                        name={'Средний чек'}
-                                        value={curOrders?.selectedPeriod?.avgPriceRub || 0}
-                                        type={'price'}
-                                        percent={curOrders?.periodComparison?.avgPriceRubDynamics || 0}
-                                    />
-                                </div>
                             </div>
-                            <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3">
-                                <div className="col chart-wrapper">
-                                    <BigChart name={'Заказы и продажи'} data={data}
-                                        orderOn={orderOn}
-                                        salesOn={salesOn}
-                                        setOrderOn={setOrderOn}
-                                        setSalesOn={setSalesOn}
-                                        setOrderLineOn={setOrderLineOn}
-                                        setSalesLineOn={setSalesLineOn}
-                                        orderLineOn={orderLineOn}
-                                        salesLineOn={salesLineOn}
-                                        setByMoney={setByMoney}
-                                        byAmount={byAmount}
-                                        byMoney={byMoney}
-
-                                        maxValue={maxValue}
-                                        maxAmount={maxAmount}
-                                    />
-                                </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Штрафы WB'} value={content?.penalty} type={'price'} nochart={true} />
                             </div>
-
-
-                            <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3">
-                                <div className="col">
-                                    <SmallPlate smallText={true}
-                                        name={'Себестоимость проданных товаров'}
-                                        nochart={true}
-                                        type={'price'}
-                                        quantity={curOrders?.selectedPeriod?.buyoutsCount || 0}
-                                        value={selfCost || 0}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate
-                                        smallText={true}
-                                        name={'Возвраты'}
-                                        value={curOrders?.selectedPeriod?.cancelSumRub || 0}
-                                        quantity={curOrders?.selectedPeriod?.cancelCount || 0 || '0'}
-                                        type={'price'}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Штрафы WB'} value={content?.penalty || 0} type={'price'} nochart={true} />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Доплаты WB'} value={content?.additionalPayment || 0} type={'price'} nochart={true} />
-                                </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Доплаты WB'} value={content?.additionalPayment} type={'price'} nochart={true} />
                             </div>
-                            <div className="container dash-container p-4 pt-0 d-flex gap-3">
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Комиссия WB'} value={content?.wbComission?.currentPeriodCommission || 0} type={'price'}
-                                        percent={content?.wbComission?.growthPercentage * -1 || 0}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Расходы на логистику'} value={content?.logistics?.totalDeliveryCostCurrentPeriod || 0} type={'price'}
-                                        percent={content?.logistics?.percentageGrowth || 0}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Маржинальная прибыль'}
-                                        value={(curOrders?.selectedPeriod?.buyoutsSumRub || 0) - selfCost || 0}
-                                        percent={content?.marginRevenue?.profitGrowth || 0}
-                                        type={'price'}
-                                    />
-                                </div>
-                                <div className="col">
-                                    <SmallPlate smallText={true} name={'Упущенные продажи'}
-                                        type={'price'}
-                                        value={curOrders?.selectedPeriod?.cancelSumRub || 0}
-                                        quantity={curOrders?.selectedPeriod?.cancelCount || 0 || '0'}
-                                    />
-                                </div>
+                        </div>
+                        <div className="container dash-container p-4 pt-0 d-flex gap-3">
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Комиссия WB'} value={content?.wbComission?.currentPeriodCommission * -1} type={'price'}
+                                    percent={content?.wbComission?.growthPercentage * -1}
+                                />
                             </div>
-
-                            <div className="container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3" style={{ width: '100%' }}>
-                                <div className="wrapper">
-                                    <FinanceTable title={'Финансы'} data={financeData} />
-                                    <StorageTable
-                                        title={'Склад'}
-                                        data={storeData}
-                                        titles={['Где товар', "Капитализация", "", "Остатки"]}
-                                        subtitles={['', 'Себестоимость', 'Розница', '']}
-                                    />
-                                </div>
-                                <div className="wrapper">
-                                    <FinanceTable title={'Прибыльность'} data={profitabilityData} sign={' %'} />
-                                    <ChartTable title={'Расходы'} data={costsData} />
-                                </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Расходы на логистику'} value={content?.logistics?.totalDeliveryCostCurrentPeriod} type={'price'}
+                                    percent={content?.logistics?.percentageGrowth}
+                                />
                             </div>
-                            <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
-                                <WidePlate
-                                    title={'ABC-анализ'}
-                                    titles={['Группа А', "Группа В", "Группа С"]}
-                                    data={wbData && wbData.sales ? abcAnalysis(wbData.sales.data) : []}
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Маржинальная прибыль'}
+                                    value={(curOrders?.selectedPeriod?.buyoutsSumRub) - selfCost}
+                                    percent={content?.marginRevenue?.profitGrowth}
+                                    type={'price'}
+                                />
+                            </div>
+                            <div className="col">
+                                <SmallPlate smallText={true} name={'Упущенные продажи'}
+                                    type={'price'}
+                                    value={curOrders?.selectedPeriod?.cancelSumRub}
+                                    quantity={curOrders?.selectedPeriod?.cancelCount}
                                 />
                             </div>
                         </div>
+
+                        <div className="container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3" style={{ width: '100%' }}>
+                            <div className="wrapper">
+                                <FinanceTable title={'Финансы'} data={financeData} />
+                                <StorageTable
+                                    title={'Склад'}
+                                    data={storeData}
+                                    titles={['Где товар', "Капитализация", "", "Остатки"]}
+                                    subtitles={['', 'Себестоимость', 'Розница', '']}
+                                />
+                            </div>
+                            <div className="wrapper">
+                                <FinanceTable title={'Прибыльность'} data={profitabilityData} sign={' %'} />
+                                <ChartTable title={'Расходы'} data={costsData} />
+                            </div>
+                        </div>
+                        <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>
+                            <WidePlate
+                                title={'ABC-анализ'}
+                                titles={['Группа А', "Группа В", "Группа С"]}
+                                data={wbData && wbData.sales ? abcAnalysis(wbData.sales.data) : []}
+                            />
+                        </div>
+                    </div>
                 }
 
             </div>

@@ -115,7 +115,7 @@
 .select-field::after {
   content: '';
   position: absolute;
-  top: 20%;
+  top: 70%;
   right: 10px;
   transform: translateY(-50%);
   width: 12px;
@@ -774,7 +774,7 @@ select {
 
 .loader {
   color: var(--primary-color);
-  font-size: 10px;
+  font-size: 8px;
   width: 1em;
   height: 1em;
   border-radius: 50%;

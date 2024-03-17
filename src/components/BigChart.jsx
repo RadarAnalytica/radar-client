@@ -9,6 +9,8 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
     const activeIcon = require('../assets/tick-active.png')
     const inactiveIcon = require('../assets/tick.png')
 
+    console.log(data);
+
     return (
         <div className='big-chart'>
             <div className="d-flex justify-content-between align-items-center">
@@ -62,54 +64,63 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                 </div>
             </div>
             <div className='bar-div'>
-                <Chart
-                    type='bar'
-                    data={data}
-                    width={100}
-                    height={40}
-                    options={{
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: true,
-                                callbacks: {
+                {
+                    !data?.labels?.length ?
+                        <div className='d-flex flex-column align-items-center justify-content-center'
+                            style={{ height: '100%', paddingTop: '15%' }}
+                        >
+                            <span className="loader"></span>
+                        </div>
+                        :
+                        <Chart
+                            type='bar'
+                            data={data}
+                            width={100}
+                            height={40}
+                            options={{
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    },
+                                    tooltip: {
+                                        enabled: true,
+                                        callbacks: {
+                                        },
+                                    },
                                 },
-                            },
-                        },
-                        scales: {
-                            A: {
-                                id: 'A',
-                                type: 'linear',
-                                position: 'right',
-                                suggestedMax: maxAmount * 1.5,
-                                grid: {
-                                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                scales: {
+                                    A: {
+                                        id: 'A',
+                                        type: 'linear',
+                                        position: 'right',
+                                        suggestedMax: maxAmount * 1.5,
+                                        grid: {
+                                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                        },
+                                    },
+                                    B: {
+                                        id: 'B',
+                                        type: 'linear',
+                                        position: 'left',
+                                        suggestedMax: maxValue,
+                                        grid: {
+                                            drawOnChartArea: true, // only want the grid lines for one axis to show up
+                                        },
+                                    },
+                                    x: {
+                                        grid: {
+                                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                        },
+                                    },
                                 },
-                            },
-                            B: {
-                                id: 'B',
-                                type: 'linear',
-                                position: 'left',
-                                suggestedMax: maxValue,
-                                grid: {
-                                    drawOnChartArea: true, // only want the grid lines for one axis to show up
+                                elements: {
+                                    line: {
+                                        tension: 0.5,
+                                    },
                                 },
-                            },
-                            x: {
-                                grid: {
-                                    drawOnChartArea: false, // only want the grid lines for one axis to show up
-                                },
-                            },
-                        },
-                        elements: {
-                            line: {
-                                tension: 0.5,
-                            },
-                        },
-                    }}
-                />
+                            }}
+                        />
+                }
             </div>
         </div>
     )

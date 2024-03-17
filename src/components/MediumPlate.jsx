@@ -23,32 +23,41 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) 
 
     return (
         <div className='medium-plate col'>
-            <div className="d-flex align-items-start justify-content-between" style={{ position: 'relative' }}>
-                <div className='w-100'>
-                    <div className='mb-3'>
-                        <p className='p-0 m-0 mb-2 clue-text' style={{ fontSize: '1.75vh' }}>{name}</p>
-                        <p className='p-0 m-0 mb-1 fw-bold numbers'>{formatPrice(value) || '0,00'} ₽</p>
-                        <div className="d-flex align-items-center gap-2">
-                            <div className="d-flex align-items-center">
-                                <img src={percent > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} />
-                                <p className='m-0 p-0 tiny-numbers' style={percent > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{formatPrice(percent)}%</p>
-                            </div>
-                            {text && <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh', fontWeight: 600 }}>{"В день ~ " + formatPrice(text) + ' ₽'}</p>}
-                        </div>
+            {
+                value === null || value === undefined ?
+                    <div className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100%' }}
+                    >
+                        <span className="loader"></span>
                     </div>
-                    <div>
-                        <p className='p-0 m-0 mb-1 fw-bold numbers'>{quantity} шт.</p>
-                        <div className="d-flex align-items-center gap-2">
-                            <div className="d-flex align-items-center">
-                                <img src={percent2 > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} />
-                                <p className='m-0 p-0 tiny-numbers' style={percent2 > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{formatPrice(percent2)}%</p>
+                    :
+                    <div className="d-flex align-items-start justify-content-between" style={{ position: 'relative' }}>
+                        <div className='w-100'>
+                            <div className='mb-3'>
+                                <p className='p-0 m-0 mb-1 clue-text' style={{ fontSize: '1.75vh' }}>{name}</p>
+                                <p className='p-0 m-0 mb-1 fw-bold numbers'>{formatPrice(value) || '0,00'} ₽</p>
+                                <div className="d-flex align-items-center gap-2">
+                                    <div className="d-flex align-items-center">
+                                        <img src={percent > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} />
+                                        <p className='m-0 p-0 tiny-numbers' style={percent > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{formatPrice(percent)}%</p>
+                                    </div>
+                                    {text && <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh', fontWeight: 600 }}>{"В день ~ " + formatPrice(text) + ' ₽'}</p>}
+                                </div>
                             </div>
-                            {text2 && <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh', fontWeight: 600 }}>{'В день ~ ' + formatPrice(text2) + ' шт'}</p> || <p className='m-0 p-0'>&nbsp;</p>}
+                            <div>
+                                <p className='p-0 m-0 mb-1 fw-bold numbers'>{quantity} шт.</p>
+                                <div className="d-flex align-items-center gap-2">
+                                    <div className="d-flex align-items-center">
+                                        <img src={percent2 > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} />
+                                        <p className='m-0 p-0 tiny-numbers' style={percent2 > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{formatPrice(percent2)}%</p>
+                                    </div>
+                                    {text2 && <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh', fontWeight: 600 }}>{'В день ~ ' + formatPrice(text2) + ' шт'}</p> || <p className='m-0 p-0'>&nbsp;</p>}
+                                </div>
+                            </div>
                         </div>
+                        <img className='' src={getIcon(name)} alt="" style={{ position: 'absolute', right: '0', top: '0' }} />
                     </div>
-                </div>
-                <img className='' src={getIcon(name)} alt="" style={{ position: 'absolute', right: '0', top: '0' }} />
-            </div>
+            }
         </div>
     )
 }

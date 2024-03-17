@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }) => {
         }
         if (response.status === 200) {
             setAuthToken(data)
-            setUser(jwtDecode(data.token))
-            localStorage.setItem('authToken', data.token)
+            setUser(jwtDecode(data?.token))
+            localStorage.setItem('authToken', data?.token)
             if (data.isOnboarded) {
                 navigate('/development/dashboard')
             } else if (!data.isOnboarded) {

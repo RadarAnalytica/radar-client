@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import logo from '../assets/logo.png'
 import InputField from '../components/InputField'
 import { Link, useNavigate } from 'react-router-dom'
@@ -30,6 +30,26 @@ const SignInForm = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [emailErrorText, setEmailErrorText] = useState()
+    const [passErrorText, setPassErrorText] = useState()
+
+    const isValidEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    useEffect(() => {
+        if (email && !isValidEmail(email)) {
+            setEmailErrorText('Введите корректный Email')
+        }
+        else if (password && password.length < 6) {
+            setPassErrorText("Пароль должен быть не короче 6 символов")
+        }
+        else {
+            setEmailErrorText()
+            setPassErrorText()
+        }
+    }, [email, password])
+
     const handleSubmit = (e) => {
         if (!email || !password) {
             e.preventDefault()
@@ -56,6 +76,7 @@ const SignInForm = () => {
                     placeholder={'Указанный при регистрации'}
                     label={'Email'}
                     callback={emailHandler}
+                    emailErrorText={emailErrorText}
                     subtext={'Обещаем не слать рекламу и звонить только по делу'}
                 // required={true}
                 />
@@ -64,6 +85,7 @@ const SignInForm = () => {
                     placeholder={'Введите пароль'}
                     label={'Пароль'}
                     callback={passHandler}
+                    passErrorText={passErrorText}
                     hide={true}
                 // required={true}
                 />

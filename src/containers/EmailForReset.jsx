@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import logo from '../assets/logo.png'
 import InputField from '../components/InputField'
 import { Link, useNavigate } from 'react-router-dom'
@@ -28,6 +28,21 @@ const EmailForReset = () => {
 
     const navigate = useNavigate()
 
+    const [emailErrorText, setEmailErrorText] = useState()
+
+    const isValidEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    useEffect(() => {
+        if (email && !isValidEmail(email)) {
+            setEmailErrorText('Введите корректный Email')
+        }
+        else {
+            setEmailErrorText()
+        }
+    }, [email])
+
     return (
         <div className='signin-form'>
             <div className='d-flex flex-column align-items-center'>
@@ -41,14 +56,19 @@ const EmailForReset = () => {
                     label={'Email'}
                     callback={emailHandler}
                     required={true}
+                    emailErrorText={emailErrorText}
                 />
             </div>
-            <button className='prime-btn' onClick={() => {
-                alert('Сыылка на сброс пароля была направлена на Вашу почту')
-                email ? requestLink(email).then(data => {
-                    navigate('/development/signin')
-                }) : console.log();
-            }}>Получить ссылку</button>
+            <button className='prime-btn'
+                style={{ height: '7vh', width: '100%' }}
+                onClick={() => {
+                    alert('Сыылка на сброс пароля была направлена на Вашу почту')
+                    email ? requestLink(email).then(data => {
+                        navigate('/development/signin')
+                    }) : console.log();
+                }}
+
+            >Получить ссылку</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text'>
                     <Link className='link' style={{ marginRight: '20px' }} to={'/development/signup'}>Регистрация</Link>
