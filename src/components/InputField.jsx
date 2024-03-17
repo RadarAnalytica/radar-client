@@ -42,11 +42,11 @@ const InputField = ({ hide, options, emailErrorText, passErrorText, callback, la
                 hide ?
                     !shown ?
                         <div className='eyes' style={{ cursor: 'pointer', position: 'absolute', right: '10px', top: '4vh', fontSize: '24px' }}>
-                            <PiEyeClosed style={{ backgroundColor: 'white', paddingLeft: '20px', fontSize: '40px', height: '3.9vh' }} onClick={() => { setShown(!shown); setNewType('text') }} />
+                            <PiEyeClosed style={{ fontSize: '40px', height: '3.9vh' }} onClick={() => { setShown(!shown); setNewType('text') }} />
                         </div>
                         :
                         <div className='eyes' style={{ cursor: 'pointer', position: 'absolute', right: '10px', top: '4vh', fontSize: '24px' }}>
-                            <PiEye style={{ backgroundColor: 'white', paddingLeft: '20px', fontSize: '40px', height: '3.9vh' }} onClick={() => { setShown(!shown); setNewType('password') }} />
+                            <PiEye style={{ fontSize: '40px', height: '3.9vh' }} onClick={() => { setShown(!shown); setNewType('password') }} />
                         </div>
                     : null
             }

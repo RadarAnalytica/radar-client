@@ -112,21 +112,6 @@
   position: relative;
 }
 
-.select-field::after {
-  content: '';
-  position: absolute;
-  top: 70%;
-  right: 10px;
-  transform: translateY(-50%);
-  width: 12px;
-  /* Ширина стрелки */
-  height: 8px;
-  /* Высота стрелки */
-  background-image: url('/src/assets/arrow.png');
-  /* Путь к изображению со стрелкой */
-  background-repeat: no-repeat;
-  background-position: center;
-}
 
 .signin-form {
   background-color: white;

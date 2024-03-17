@@ -9,6 +9,8 @@ const CustomSelect = ({ options, callback, label, required, placeholder, defautl
         }
     }, [options])
 
+    const arrow = require('../assets/arrow-down.svg')
+
     const [shown, setShown] = useState(false)
 
     return (
@@ -17,6 +19,9 @@ const CustomSelect = ({ options, callback, label, required, placeholder, defautl
             <label name="" id="" className='form-control mt-2'
                 onClick={() => setShown(!shown)}
             >
+                <svg style={{ position: 'absolute', right: '16px', top: '5.75vh', width: '1vw', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 2L14 14L26 2" stroke="#1A1A1A" strokeWidth="4" strokeLinecap="round" />
+                </svg>
                 <div style={{ position: 'relative', width: '100%' }}>
                     <p className='mb-0' style={{ fontSize: '2vh', border: '1px solid rgb(232, 232, 232) !important', cursor: 'pointer' }}>{state}</p>
                     <div style={{ position: 'absolute', top: '4.1vh', zIndex: 99999, backgroundColor: 'white', width: '106%', marginLeft: '-3%', borderRadius: '4px', boxShadow: '0 3px 12px silver' }}>

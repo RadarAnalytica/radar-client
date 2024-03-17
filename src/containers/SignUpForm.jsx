@@ -25,7 +25,7 @@ const SignUpForm = () => {
         firstName: null,
         lastName: null,
         patronym: null,
-        phone: '',
+        phone: '+7',
         stage: options[0],
         email: null,
         password: null,
@@ -46,19 +46,19 @@ const SignUpForm = () => {
             value = value.replace(/^(\+7|\+8)/, '+7'); // Убираем 8 в начале и заменяем его на +7
             let formattedValue = '+7';
             if (value.length > 1) {
-                formattedValue += '-' + value.slice(1, 2);
+                formattedValue += ' ' + value.slice(1, 2);
             }
             if (value.length > 2) {
                 formattedValue += value.slice(2, 4);
             }
             if (value.length > 4) {
-                formattedValue += '-' + value.slice(4, 7);
+                formattedValue += ' ' + value.slice(4, 7);
             }
             if (value.length > 7) {
-                formattedValue += '-' + value.slice(7, 9);
+                formattedValue += ' ' + value.slice(7, 9);
             }
             if (value.length > 9) {
-                formattedValue += '-' + value.slice(9);
+                formattedValue += ' ' + value.slice(9);
             }
             value = formattedValue;
         }
@@ -71,7 +71,7 @@ const SignUpForm = () => {
     }
 
     const getStage = (e) => {
-        setRegData({ ...regData, stage: e.target.value })
+        setRegData({ ...regData, stage: e })
     }
 
     const getPass = (e) => {
