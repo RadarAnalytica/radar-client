@@ -9,8 +9,6 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
     const activeIcon = require('../assets/tick-active.png')
     const inactiveIcon = require('../assets/tick.png')
 
-    console.log(data);
-
     return (
         <div className='big-chart'>
             <div className="d-flex justify-content-between align-items-center">

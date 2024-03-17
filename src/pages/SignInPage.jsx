@@ -10,11 +10,13 @@ const SignInPage = () => {
     const navigate = useNavigate()
     useEffect(() => {
         setTimeout(() => {
-            if (user) {
+            if (user && user.isOnboarded === true) {
                 navigate('/development/dashboard')
+            } else if (user && user.isOnboarded === false) {
+                navigate('/development/onboarding')
             }
-        }, 200);
-    }, [user])
+        }, 300);
+    }, [user?.isOnboarded])
 
     return (
         <div className='signin-page'>
