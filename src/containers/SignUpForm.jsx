@@ -130,7 +130,7 @@ const SignUpForm = () => {
                     setShow(true)
                 }
                 else {
-                    navigate('/development/onboarding')
+                    // navigate('/development/onboarding')
                 }
             })
         }
