@@ -923,9 +923,9 @@ select {
   }
 
   .eyes {
-    top: 34 px !important;
+    /* top: 34px !important;
     right: 10px !important;
-    width: 84vw !important;
+    width: 84vw !important; */
     display: flex !important;
     justify-content: flex-end !important;
     font-size: 3vh !important;

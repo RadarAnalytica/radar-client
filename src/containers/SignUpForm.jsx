@@ -122,8 +122,8 @@ const SignUpForm = () => {
         }
         else {
             ServiceFunctions.register(obj).then(data => {
-                if (!data) {
-                    setSent(!sent)
+                if (data && data.success === true) {
+                    setSent(true)
                 }
                 else if (data && data.success === false) {
                     setError(data.message)
