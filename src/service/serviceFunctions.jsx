@@ -5,15 +5,19 @@ import { URL } from "./config"
 export const ServiceFunctions = {
 
     register: async (object) => {
-        const res = await fetch(`${URL}/api/user/signup`, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: JSON.stringify(object)
-        })
-        const data = res.json()
-        return data
+        try {
+            const res = await fetch(`${URL}/api/user/signup`, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                },
+                body: JSON.stringify(object)
+            })
+            const data = res.json()
+            return data
+        } catch (error) {
+            alert(error)
+        }
     },
 
     updateToken: async (brandName, token, id) => {
