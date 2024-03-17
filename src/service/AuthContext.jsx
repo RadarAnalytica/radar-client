@@ -31,10 +31,13 @@ export const AuthProvider = ({ children }) => {
             setError(data.message)
             setShow(true)
         }
-        if (response.status === 200 && data && data.token) {
+        if (response.status === 200) {
             setAuthToken(data)
-            setUser(jwtDecode(data?.token))
+            if (data && data.token) {
+                setUser(jwtDecode(data.token))
+            }
             localStorage.setItem('authToken', data?.token)
+
 
             // if (data.isOnboarded) {
             //     navigate('/development/dashboard')
