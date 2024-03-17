@@ -10,7 +10,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
         <div className="filter container dash-container p-4 pt-0 d-flex">
             <div className="row">
                 <div className="filter-item col">
-                    <label htmlFor="period">Период:</label>
+                    <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="period">Период:</label>
                     <select className='form-control' id="period"
                         defaultValue={'14'}
                         onChange={e => { setDays(e.target.value) }}
@@ -23,13 +23,13 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                     </select>
                 </div>
                 <div className="filter-item col">
-                    <label htmlFor="marketplace">Маркетплейс:</label>
+                    <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="marketplace">Маркетплейс:</label>
                     <select className='form-control' id="marketplace" disabled>
                         <option value="amazon">Wildberries</option>
                     </select>
                 </div>
                 <div className="filter-item col">
-                    <label htmlFor="store">Магазин:</label>
+                    <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="store">Магазин:</label>
                     <select className='form-control' id="store" defaultValue={brandNames ? brandNames[0] : null} onChange={e => changeBrand(e.target.value)}>
                         {
                             brandNames && brandNames.map((brand, i) => (
@@ -42,7 +42,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                     </select>
                 </div>
                 <div className="filter-item col-2 me-2">
-                    <label htmlFor="brand">Бренд:</label>
+                    <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="brand">Бренд:</label>
                     <select className='form-control' id="brand" disabled>
                         <option value="brand1">Не выбрано</option>
                         <option value="brand2">Бренд 2</option>
