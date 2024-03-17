@@ -133,7 +133,7 @@ const SignUpForm = () => {
                     alert('Проблема 3')
                 }
                 else {
-                    navigate('/development/dashboard')
+                    navigate('/development/onboarding')
                 }
             })
         }
