@@ -25,6 +25,7 @@ const ConfirmationPage = () => {
                     navigate('/development/signin')
                 })
                 .catch(error => {
+                    alert(error.message)
                     console.error('Ошибка при подтверждении', error);
                 });
         }
