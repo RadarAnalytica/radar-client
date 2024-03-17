@@ -22,7 +22,7 @@ const DashboardPage = () => {
 
 
     const [wbData, setWbData] = useState()
-    const [days, setDays] = useState(30)
+    const [days, setDays] = useState(14)
 
     const navigate = useNavigate()
 

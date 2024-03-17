@@ -12,12 +12,12 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                 <div className="filter-item col">
                     <label htmlFor="period">Период:</label>
                     <select className='form-control' id="period"
-                        defaultValue={'30'}
+                        defaultValue={'14'}
                         onChange={e => { setDays(e.target.value) }}
                     >
                         <option selected={defaultValue === 1 ? true : false} value={'1'}>1 день</option>
                         <option selected={defaultValue === 7 ? true : false} value={'7'}>Неделя</option>
-                        <option selected={defaultValue === 14 ? true : false} value={'14'}>14 дней</option>
+                        <option selected={defaultValue === 14 ? true : false} value={'14'}>Последние 14 дней</option>
                         <option selected={defaultValue === 30 ? true : false} value={'30'}>Месяц</option>
                         <option selected={defaultValue === 92 ? true : false} value={'92'}>3 месяца</option>
                     </select>
@@ -25,7 +25,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                 <div className="filter-item col">
                     <label htmlFor="marketplace">Маркетплейс:</label>
                     <select className='form-control' id="marketplace" disabled>
-                        <option value="amazon">Wildeberries</option>
+                        <option value="amazon">Wildberries</option>
                     </select>
                 </div>
                 <div className="filter-item col">
@@ -41,14 +41,14 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                     <option value="store3">Магазин 3</option> */}
                     </select>
                 </div>
-                {/* <div className="filter-item col-2 me-2">
-                <label htmlFor="brand">Бренд:</label>
-                <select className='form-control' id="brand">
-                    <option value="brand1">Бренд 1</option>
-                    <option value="brand2">Бренд 2</option>
-                    <option value="brand3">Бренд 3</option>
-                </select>
-            </div> */}
+                <div className="filter-item col-2 me-2">
+                    <label htmlFor="brand">Бренд:</label>
+                    <select className='form-control' id="brand" disabled>
+                        <option value="brand1">Не выбрано</option>
+                        <option value="brand2">Бренд 2</option>
+                        <option value="brand3">Бренд 3</option>
+                    </select>
+                </div>
             </div>
         </div>
     )

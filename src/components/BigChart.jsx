@@ -82,9 +82,103 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                                         display: false
                                     },
                                     tooltip: {
-                                        enabled: true,
+                                        enabled: false,
                                         callbacks: {
                                         },
+                                        external: function (context) {
+                                            // Tooltip Element
+                                            let tooltipEl = document.getElementById('chartjs-tooltip');
+
+                                            // Create element on first render
+                                            if (!tooltipEl) {
+                                                tooltipEl = document.createElement('div');
+                                                tooltipEl.id = 'chartjs-tooltip';
+                                                tooltipEl.innerHTML = '<table></table>';
+                                                document.body.appendChild(tooltipEl);
+                                            }
+
+                                            // Hide if no tooltip
+                                            const tooltipModel = context.tooltip;
+                                            if (tooltipModel.opacity === 0) {
+                                                tooltipEl.style.opacity = 0;
+                                                return;
+                                            }
+
+                                            // Set caret Position
+                                            tooltipEl.classList.remove('above', 'below', 'no-transform');
+                                            if (tooltipModel.yAlign) {
+                                                tooltipEl.classList.add(tooltipModel.yAlign);
+                                            } else {
+                                                tooltipEl.classList.add('no-transform');
+                                            }
+
+                                            function getBody(bodyItem) {
+                                                return bodyItem.lines;
+                                            }
+
+                                            // Set Text
+                                            if (tooltipModel.body) {
+
+                                                const datasets = data?.datasets
+                                                const datalabels = data?.labels?.map(item => item[0].concat(',' + item[1]))
+                                                const targetInex = datalabels?.indexOf(tooltipModel.title[0])
+
+                                                console.log(datasets);
+
+
+                                                const titleLines = tooltipModel.title || [];
+                                                const bodyLines = tooltipModel.body.map(getBody);
+
+                                                let innerHtml = '<thead>';
+
+                                                titleLines.forEach(function (title) {
+                                                    innerHtml += '<tr><th style="color: silver; font-weight: 400;">' + title?.split(',').join(' ') + '</th></tr>';
+                                                });
+                                                innerHtml += '</thead><tbody>';
+
+                                                datasets?.forEach(function (set, i) {
+                                                    console.log(set);
+                                                    const colors = ['rgba(240, 173, 0, 1)', 'rgba(83, 41, 255, 1)']
+                                                    const targetColor = set.label === 'Заказы' ? colors[0] : colors[1]
+                                                    const targetDescr = set.type === 'bar' ? ' руб' : " шт"
+                                                    let style = ''
+                                                    // style += '; border-color:' + colors.borderColor;
+                                                    style += '; border-width: 2px';
+                                                    const span = '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 2px; background-color: ' + targetColor + ';">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' + style + '">' + set?.label + ', ' + targetDescr + ':  <span style="font-weight: bold;">' + set?.data[targetInex] + '</span></span>';
+                                                    innerHtml += '<tr><td>' + span + '</td></tr>';
+                                                });
+                                                // bodyLines.forEach(function (body, i) {
+                                                //     console.log(body);
+                                                //     const colors = tooltipModel.labelColors[i];
+                                                //     let style = ''
+                                                //     style += '; border-color:' + colors.borderColor;
+                                                //     style += '; border-width: 2px';
+                                                //     const span = '<span style="' + style + '">' + body + '</span>';
+                                                //     innerHtml += '<tr><td>' + span + '</td></tr>';
+                                                // });
+                                                innerHtml += '</tbody>';
+
+                                                let tableRoot = tooltipEl.querySelector('table');
+                                                tableRoot.innerHTML = innerHtml;
+                                            }
+
+                                            const position = context.chart.canvas.getBoundingClientRect();
+                                            const bodyFont = Chart?.helpers?.toFont(tooltipModel.options.bodyFont);
+
+                                            // Display, position, and set styles for font
+                                            tooltipEl.style.transition = 'all 0.25s ease-in-out';
+                                            tooltipEl.style.backgroundColor = 'white';
+                                            tooltipEl.style.borderRadius = '8px';
+                                            tooltipEl.style.boxShadow = '0 0 20px rgba(19,19, 19, 0.7)';
+                                            tooltipEl.style.padding = '1rem';
+                                            tooltipEl.style.opacity = 1;
+                                            tooltipEl.style.position = 'absolute';
+                                            tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                                            tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+                                            tooltipEl.style.font = bodyFont?.string;
+                                            tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                                            tooltipEl.style.pointerEvents = 'none';
+                                        }
                                     },
                                 },
                                 scales: {
