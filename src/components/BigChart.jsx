@@ -141,10 +141,11 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                                                     const colors = ['rgba(240, 173, 0, 1)', 'rgba(83, 41, 255, 1)']
                                                     const targetColor = set.label === 'Заказы' ? colors[0] : colors[1]
                                                     const targetDescr = set.type === 'bar' ? ' руб' : " шт"
+                                                    let value = set?.data[targetInex] || ''
                                                     let style = ''
                                                     // style += '; border-color:' + colors.borderColor;
                                                     style += '; border-width: 2px';
-                                                    const span = '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 2px; background-color: ' + targetColor + ';">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' + style + '">' + set?.label + ', ' + targetDescr + ':  <span style="font-weight: bold;">' + set?.data[targetInex] + '</span></span>';
+                                                    const span = '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 2px; background-color: ' + targetColor + ';">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' + style + '">' + set?.label + ', ' + targetDescr + ':  <span style="font-weight: bold;">' + value + '</span></span>';
                                                     innerHtml += '<tr><td>' + span + '</td></tr>';
                                                 });
                                                 // bodyLines.forEach(function (body, i) {
