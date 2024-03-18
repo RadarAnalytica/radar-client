@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
             },
             body: JSON.stringify(object)
         })
-        const data = res.json()
+        const data = await res.json()
         return data
     }
 
