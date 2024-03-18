@@ -13,7 +13,7 @@ export const ServiceFunctions = {
                 },
                 body: JSON.stringify(object)
             })
-            const data = res.json()
+            const data = await res.json()
             return data
         } catch (error) {
             alert(error)
