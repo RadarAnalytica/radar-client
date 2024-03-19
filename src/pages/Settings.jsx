@@ -101,7 +101,7 @@ const Settings = () => {
                         <div className='d-flex justify-content-between align-items-center'>
                             <div className='d-flex align-items-center'>
                                 <input type="file" id="excelFile" name="excelFile" className='form-control' onChange={handleFileChange}
-                                    style={{ maxWidth: '168px' }}
+                                    style={{ maxWidth: '27vh', height: '5vh', fontSize: '2.25vh' }}
                                 />
                                 <button className='prime-btn' style={{ padding: '1.25vh 2vh', maxWidth: '12vw', marginLeft: '1rem' }}
                                     onClick={handleSubmit}
