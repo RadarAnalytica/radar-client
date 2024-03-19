@@ -5,10 +5,10 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) 
 
     const green = require('../assets/greenarrow.png')
     const red = require('../assets/redarrow.png')
-    const rateUp = <svg style={{ width: '20px', height: '12px', marginRight: '10px' }} width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    const rateUp = <svg style={{ width: '16px', height: '12px', marginRight: '10px' }} width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M14 0L16.29 2.29L11.41 7.17L7.41 3.17L0 10.59L1.41 12L7.41 6L11.41 10L17.71 3.71L20 6V0H14Z" fill="#00B69B" />
     </svg>
-    const rateDown = <svg style={{ width: '20px', height: '12px', marginRight: '10px' }} width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    const rateDown = <svg style={{ width: '16px', height: '12px', marginRight: '10px' }} width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M14 12L16.29 9.71L11.41 4.83L7.41 8.83L0 1.41L1.41 0L7.41 6L11.41 2L17.71 8.29L20 6V12H14Z" fill="#F93C65" />
     </svg>
 
@@ -38,7 +38,7 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) 
     }
 
     return (
-        <div className='medium-plate col'>
+        <div className='medium-plate col' >
             {
                 value === null || value === undefined ?
                     <div className='d-flex flex-column align-items-center justify-content-center'
@@ -49,7 +49,7 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) 
                     :
                     <div className="d-flex align-items-start justify-content-between" style={{ position: 'relative' }}>
                         <div className='w-100'>
-                            <div className='mb-3'>
+                            <div className='mb-1'>
                                 <p className='p-0 m-0 mb-1 clue-text' style={{ fontSize: '1.75vh' }}>{name}</p>
                                 <p className='p-0 m-0 mb-1 fw-bold numbers'>{formatPrice(value) || '0,00'} ₽</p>
                                 <div className="d-flex align-items-center gap-2">

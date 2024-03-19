@@ -127,7 +127,7 @@
 }
 
 .filter-item {
-  min-width: 13vw !important;
+  min-width: 14vw !important;
   position: relative;
 }
 
@@ -350,7 +350,7 @@ select {
 }
 
 .support-icon {
-  width: 4vw;
+  width: 3vw;
   cursor: pointer;
 }
 
@@ -547,7 +547,7 @@ select {
   height: 11vh;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: space-between;
   padding: 16px;
   min-width: 15vw;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -861,7 +861,7 @@ select {
 
 .numbers {
   font-weight: 700;
-  font-size: 2.75vh;
+  font-size: 1.5vw;
 }
 
 .small-title {
@@ -921,6 +921,11 @@ select {
     display: flex;
     flex-direction: column;
     width: 80vw !important;
+  }
+
+  .numbers {
+    font-weight: 700;
+    font-size: 2.75vh;
   }
 
   .eyes {

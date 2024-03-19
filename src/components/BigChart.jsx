@@ -149,10 +149,11 @@ const BigChart = ({ name, loading, data, orderOn, salesOn, setOrderOn, salesLine
                                             // Set Text
                                             if (tooltipModel.body) {
 
-                                                const datasets = data?.datasets
+                                                const datasets = data?.datasets?.filter(obj => obj.data?.length > 0)
                                                 const datalabels = data?.labels?.map(item => item[0].concat(',' + item[1]))
                                                 const targetInex = datalabels?.indexOf(tooltipModel.title[0])
 
+                                                console.log(datasets);
 
                                                 const titleLines = tooltipModel.title || [];
                                                 const bodyLines = tooltipModel.body.map(getBody);
@@ -225,7 +226,7 @@ const BigChart = ({ name, loading, data, orderOn, salesOn, setOrderOn, salesLine
                                         },
                                         ticks: {
                                             autoSkip: true,
-                                            maxTicksLimit: 20
+                                            maxTicksLimit: 30
                                         }
                                     },
                                 },
