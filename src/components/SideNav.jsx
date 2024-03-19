@@ -82,7 +82,9 @@ const SideNav = () => {
                 </div>
             </div>
             <div className='support-block'>
-                <img src={support} alt="" className='support-icon' />
+                <a href="mailto:radar-analytica@inbox.ru">
+                    <img src={support} alt="" className='support-icon' />
+                </a>
                 <p className='fw-bold mb-0 mt-2 p-0' style={{ fontSize: '1.8vh' }}>Обратиться в поддержку</p>
                 <p className='m-0 p-0' style={{ fontSize: '1.8vh' }}>или предложить идею</p>
             </div>
