@@ -254,7 +254,7 @@ const DashboardPage = () => {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 8000);
+        }, 5000);
     }, [loading])
 
 
@@ -531,6 +531,7 @@ const DashboardPage = () => {
                                     setByMoney={setByMoney}
                                     byAmount={byAmount}
                                     byMoney={byMoney}
+                                    loading={loading}
 
                                     maxValue={maxValue}
                                     maxAmount={maxAmount}
@@ -567,12 +568,12 @@ const DashboardPage = () => {
                         </div>
                         <div className="container dash-container p-4 pt-0 d-flex gap-3">
                             <div className="col">
-                                <SmallPlate smallText={true} name={'Комиссия WB'} value={content?.wbComission?.currentPeriodCommission * -1} type={'price'}
+                                <SmallPlate smallText={true} name={'Комиссия WB'} value={content?.wbComission?.currentPeriodCommission * -1 || '0'} type={'price'}
                                     percent={content?.wbComission?.growthPercentage * -1}
                                 />
                             </div>
                             <div className="col">
-                                <SmallPlate smallText={true} name={'Расходы на логистику'} value={content?.logistics?.totalDeliveryCostCurrentPeriod} type={'price'}
+                                <SmallPlate smallText={true} name={'Расходы на логистику'} value={content?.logistics?.totalDeliveryCostCurrentPeriod || '0'} type={'price'}
                                     percent={content?.logistics?.percentageGrowth}
                                 />
                             </div>
@@ -594,8 +595,9 @@ const DashboardPage = () => {
 
                         <div className="container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3" style={{ width: '100%' }}>
                             <div className="wrapper">
-                                <FinanceTable title={'Финансы'} data={financeData} />
+                                <FinanceTable title={'Финансы'} data={financeData} wbData={wbData} />
                                 <StorageTable
+                                    wbData={wbData}
                                     title={'Склад'}
                                     data={storeData}
                                     titles={['Где товар', "Капитализация", "", "Остатки"]}
@@ -603,8 +605,8 @@ const DashboardPage = () => {
                                 />
                             </div>
                             <div className="wrapper">
-                                <FinanceTable title={'Прибыльность'} data={profitabilityData} sign={' %'} />
-                                <ChartTable title={'Расходы'} data={costsData} />
+                                <FinanceTable title={'Прибыльность'} data={profitabilityData} sign={' %'} wbData={wbData} />
+                                <ChartTable title={'Расходы'} data={costsData} wbData={wbData} />
                             </div>
                         </div>
                         <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3" style={{ width: '100%' }}>

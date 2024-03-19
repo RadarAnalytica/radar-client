@@ -49,17 +49,28 @@ const ChartTableRow = ({ object }) => {
     )
 }
 
-const ChartTable = ({ data, title }) => {
+const ChartTable = ({ data, title, wbData }) => {
 
     return (
         <div className='chart-table mt-3'>
-            <p className="fw-bold numbers mb-2">{title}</p>
             {
-                data && data.map((obj, i) => (
-                    <ChartTableRow object={obj} key={i} />
-                ))
+                !wbData ?
+                    <div className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100%', paddingTop: '20%' }}
+                    >
+                        <span className="loader"></span>
+                    </div>
+                    :
+                    <div>
+                        <p className="fw-bold numbers mb-2">{title}</p>
+                        {
+                            data && data.map((obj, i) => (
+                                <ChartTableRow object={obj} key={i} />
+                            ))
+                        }
+                        <p></p>
+                    </div>
             }
-            <p></p>
         </div>
     )
 }

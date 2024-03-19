@@ -16,10 +16,10 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                         onChange={e => { setDays(e.target.value) }}
                     >
                         <option selected={defaultValue === 1 ? true : false} value={'1'}>1 день</option>
-                        <option selected={defaultValue === 7 ? true : false} value={'7'}>Неделя</option>
-                        <option selected={defaultValue === 14 ? true : false} value={'14'}>Последние 14 дней</option>
-                        <option selected={defaultValue === 30 ? true : false} value={'30'}>Месяц</option>
-                        <option selected={defaultValue === 92 ? true : false} value={'92'}>3 месяца</option>
+                        <option selected={defaultValue === 7 ? true : false} value={'7'}>7 дней</option>
+                        <option selected={defaultValue === 14 ? true : false} value={'14'}>14 дней</option>
+                        <option selected={defaultValue === 30 ? true : false} value={'30'}>30 дней</option>
+                        <option selected={defaultValue === 92 ? true : false} value={'92'}>90 дней</option>
                     </select>
                 </div>
                 <div className="filter-item col">

@@ -1,10 +1,9 @@
 import React from 'react'
-import Form from 'react-bootstrap/Form';
 import { Chart } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 ChartJS.register(CategoryScale, LinearScale, Filler, BarController, PointElement, BarElement, LineController, LineElement, [Tooltip]);
 
-const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, orderLineOn, maxValue, maxAmount, setSalesOn, setByMoney, byMoney, byAmount, setOrderLineOn, setSalesLineOn }) => {
+const BigChart = ({ name, loading, data, orderOn, salesOn, setOrderOn, salesLineOn, orderLineOn, maxValue, maxAmount, setSalesOn, setByMoney, byMoney, byAmount, setOrderLineOn, setSalesLineOn }) => {
 
     const activeIcon = require('../assets/tick-active.png')
     const activeIconYellow = require('../assets/tick-active-yellow.png')
@@ -14,57 +13,84 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
         <div className='big-chart'>
             <div className="d-flex justify-content-between align-items-center">
                 <p className="fw-bold fs-4">{name}</p>
-                <div className='d-flex align-items-center'>
-                    <div className='d-flex me-3'>
-                        <input type="checkbox" id='order' defaultChecked={orderOn} onClick={() => setOrderOn(!orderOn)} className='me-2 hidden-checkbox' name="" />
-                        <label htmlFor="order">Заказы, шт</label>
+                <div className='d-flex align-items-center' style={{ cursor: 'pointer' }}>
+                    <div className='d-flex me-3 aligin-items-center' onClick={() => setOrderOn(!orderOn)} >
+                        {
+                            orderOn ?
+                                <svg style={{ width: '2.5vh', marginRight: '0.5vh' }} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="20" height="20" rx="3" fill="#F0AD00" />
+                                    <path d="M4 9.21459L9.07692 14L16 6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+                                :
+                                <svg style={{ width: '2.5vh', marginRight: '0.5vh' }} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="0.5" y="0.5" width="19" height="19" rx="2.5" stroke="#8C8C8C" />
+                                    <path d="M4 9.21459L9.07692 14L16 6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+
+                        }
+                        <label style={{ cursor: 'pointer' }} htmlFor="order">Заказы, шт</label>
                     </div>
-                    <div className='d-flex me-3'>
-                        <input type="checkbox" id='sales' defaultChecked={salesOn} onClick={() => setSalesOn(!salesOn)} className='me-2 hidden-checkbox' name="" />
-                        <label htmlFor="sales">Продажи, шт</label>
+                    <div className='d-flex me-3 aligin-items-center' onClick={() => setSalesOn(!salesOn)}>
+                        {
+                            salesOn ?
+                                <svg style={{ width: '2.5vh', marginRight: '0.5vh' }} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="20" height="20" rx="3" fill="#5329FF" />
+                                    <path d="M4 9.21459L9.07692 14L16 6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+
+                                :
+                                <svg style={{ width: '2.5vh', marginRight: '0.5vh' }} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="0.5" y="0.5" width="19" height="19" rx="2.5" stroke="#8C8C8C" />
+                                    <path d="M4 9.21459L9.07692 14L16 6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+
+                        }
+                        <label style={{ cursor: 'pointer' }} htmlFor="sales">Продажи, шт</label>
                     </div>
 
-                    <div className="
-                    d-flex 
-                    gap-3
-                    "
-                    // toggle-block
-                    >
-
+                    <div className="d-flex gap-3 ">
                         <div className='d-flex align-items-center gap-2' style={{ cursor: 'pointer' }}
                             onClick={() => setOrderLineOn(!orderLineOn)}
                         >
-                            <img src={orderLineOn ? activeIconYellow : inactiveIcon} style={{ width: '1.5vw' }} alt="" />
+                            {
+                                orderLineOn ?
+                                    <svg style={{ width: '2.75vh' }} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="20" height="20" rx="10" fill="#FFDB7E" />
+                                        <path d="M4 9.21459L9.07692 14L16 6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+
+                                    :
+                                    <svg style={{ width: '2.75vh' }} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="#8C8C8C" />
+                                        <path d="M4 9.21459L9.07692 14L16 6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+                            }
                             <span>Заказы, руб</span>
                         </div>
                         <div className='d-flex align-items-center gap-2' style={{ cursor: 'pointer' }}
                             onClick={() => setSalesLineOn(!salesLineOn)}
                         >
-                            <img src={salesLineOn ? activeIcon : inactiveIcon} style={{ width: '1.5vw' }} alt="" />
+                            {
+                                salesLineOn ?
+                                    <svg style={{ width: '2.75vh' }} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="20" height="20" rx="10" fill="#9A81FF" />
+                                        <path d="M4 9.21459L9.07692 14L16 6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+
+                                    :
+                                    <svg style={{ width: '2.75vh' }} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="#8C8C8C" />
+                                        <path d="M4 9.21459L9.07692 14L16 6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+                            }
                             <span>Продажи, руб</span>
                         </div>
-
-                        {/* <span onClick={() => setByMoney(!chartUnitRub)} className={chartUnitRub ? 'toggler toggler-active' : 'toggler'}>₽</span>
-                        <span onClick={() => setByMoney(!chartUnitRub)} className={!chartUnitRub ? 'toggler toggler-active' : 'toggler'}>Шт.</span> */}
                     </div>
-
-
-                    {/* <Form className='d-flex ms-4'>
-                        <label htmlFor="" className='fw-bold me-2'>₽</label>
-                        <Form.Check // prettier-ignore
-                            type="switch"
-                            id="custom-switch"
-                            label="ШТ."
-                            className='fw-bold'
-                            style={{ fontWeight: 'bold' }}
-                            onChange={() => setByMoney(!chartUnitRub)}
-                        />
-                    </Form> */}
                 </div>
             </div>
             <div className='bar-div'>
                 {
-                    !data?.labels?.length ?
+                    loading ?
                         <div className='d-flex flex-column align-items-center justify-content-center'
                             style={{ height: '100%', paddingTop: '15%' }}
                         >
@@ -77,12 +103,16 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                             width={100}
                             height={40}
                             options={{
+                                animation: {
+                                    duration: 0
+                                },
                                 plugins: {
                                     legend: {
                                         display: false
                                     },
                                     tooltip: {
                                         enabled: false,
+                                        intersect: false,
                                         callbacks: {
                                         },
                                         external: function (context) {
@@ -123,8 +153,6 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                                                 const datalabels = data?.labels?.map(item => item[0].concat(',' + item[1]))
                                                 const targetInex = datalabels?.indexOf(tooltipModel.title[0])
 
-                                                console.log(datasets);
-
 
                                                 const titleLines = tooltipModel.title || [];
                                                 const bodyLines = tooltipModel.body.map(getBody);
@@ -137,7 +165,6 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                                                 innerHtml += '</thead><tbody>';
 
                                                 datasets?.forEach(function (set, i) {
-                                                    console.log(set);
                                                     const colors = ['rgba(240, 173, 0, 1)', 'rgba(83, 41, 255, 1)']
                                                     const targetColor = set.label === 'Заказы' ? colors[0] : colors[1]
                                                     const targetDescr = set.type === 'bar' ? ' руб' : " шт"
@@ -196,6 +223,10 @@ const BigChart = ({ name, data, orderOn, salesOn, setOrderOn, salesLineOn, order
                                         grid: {
                                             drawOnChartArea: false,
                                         },
+                                        ticks: {
+                                            autoSkip: true,
+                                            maxTicksLimit: 20
+                                        }
                                     },
                                 },
                                 elements: {
