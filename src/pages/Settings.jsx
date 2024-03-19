@@ -99,9 +99,9 @@ const Settings = () => {
                             </select>
                         </div>
                         <div className='d-flex justify-content-between align-items-center'>
-                            <div className='d-flex align-items-center'>
-                                <input type="file" id="excelFile" name="excelFile" className='form-control' onChange={handleFileChange}
-                                    style={{ maxWidth: '27vh', height: '5vh', fontSize: '2.25vh' }}
+                            <div className='d-flex align-items-center w-50'>
+                                <input type="file" id="excelFile" name="excelFile" className='form-control ' onChange={handleFileChange}
+                                    style={{ height: '5vh', fontSize: '2.25vh', }}
                                 />
                                 <button className='prime-btn' style={{ padding: '1.25vh 2vh', maxWidth: '12vw', marginLeft: '1rem' }}
                                     onClick={handleSubmit}
@@ -121,7 +121,7 @@ const Settings = () => {
                                                 const url = window.URL.createObjectURL(new Blob([blob]));
                                                 const link = document.createElement('a');
                                                 link.href = url;
-                                                link.setAttribute('download', `${user.id}-${activeBrand}.xlsx`); // Устанавливаем имя файла для скачивания
+                                                link.setAttribute('download', `Себестоимость.xlsx`); // Устанавливаем имя файла для скачивания
                                                 document.body.appendChild(link);
                                                 link.click();
                                                 link.parentNode.removeChild(link);
