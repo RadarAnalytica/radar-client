@@ -119,7 +119,7 @@ const Settings = () => {
                                                 const url = window.URL.createObjectURL(new Blob([blob]));
                                                 const link = document.createElement('a');
                                                 link.href = url;
-                                                link.setAttribute('download', 'data.xlsx'); // Устанавливаем имя файла для скачивания
+                                                link.setAttribute('download', `${user.id}-${activeBrand}.xlsx`); // Устанавливаем имя файла для скачивания
                                                 document.body.appendChild(link);
                                                 link.click();
                                                 link.parentNode.removeChild(link);
