@@ -127,7 +127,8 @@
 }
 
 .filter-item {
-  min-width: 12vw !important;
+  min-width: 13vw !important;
+  position: relative;
 }
 
 .top-wrapper {
@@ -1054,7 +1055,7 @@ select {
   }
 
   .filter-item {
-    min-width: 104px;
+    min-width: 120px;
     font-size: 14px;
   }
 

@@ -473,7 +473,7 @@ const DashboardPage = () => {
 
                     <div>
 
-                        <div className="container dash-container p-4 pt-0 d-flex gap-3">
+                        <div className="container dash-container p-3 pt-0 d-flex gap-3">
                             <MediumPlate name={'Заказы'}
                                 value={curOrders?.selectedPeriod?.ordersSumRub}
                                 quantity={curOrders?.selectedPeriod?.ordersCount}
@@ -517,7 +517,7 @@ const DashboardPage = () => {
                                 />
                             </div>
                         </div>
-                        <div className="container dash-container p-4 pt-0 pb-3 d-flex gap-3">
+                        <div className="container dash-container p-3 pt-0 pb-3 d-flex gap-3">
                             <div className="col chart-wrapper">
                                 <BigChart name={'Заказы и продажи'} data={data}
                                     orderOn={orderOn}
