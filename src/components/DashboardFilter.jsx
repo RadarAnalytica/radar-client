@@ -11,7 +11,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
             <div className="row">
                 <div className="filter-item col">
                     <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="period">Период:</label>
-                    <select className='form-control' id="period"
+                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="period"
                         defaultValue={'14'}
                         onChange={e => { setDays(e.target.value) }}
                     >
@@ -21,22 +21,23 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                         <option selected={defaultValue === 30 ? true : false} value={'30'}>30 дней</option>
                         <option selected={defaultValue === 92 ? true : false} value={'92'}>90 дней</option>
                     </select>
-                    <svg style={{ position: 'absolute', right: '1.5vw', top: '5.25vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 2L14 14L26 2" stroke="#1A1A1A" strokeWidth="4" strokeLinecap="round" />
+                    <svg style={{ position: 'absolute', right: '1.75vw', top: '5.5vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 2L14 14L26 2" stroke="rgba(140, 140, 140, 1)" strokeWidth="4" strokeLinecap="round" />
                     </svg>
                 </div>
-                <div className="filter-item col">
+                {/* <div className="filter-item col">
                     <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="marketplace">Маркетплейс:</label>
-                    <select className='form-control' id="marketplace" disabled>
+                    <select style={{padding: '1vh 1.75vh'}} className='form-control' id="marketplace" disabled>
+                        <option value="amazon" style={{ opacity: 0.8 }}>Не выбрано</option>
                         <option value="amazon">Wildberries</option>
                     </select>
-                    <svg style={{ position: 'absolute', right: '1.5vw', top: '5.25vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg style={{ position: 'absolute', right: '1.75vw', top: '5.5vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 2L14 14L26 2" stroke="#1A1A1A" strokeWidth="4" strokeLinecap="round" />
                     </svg>
-                </div>
+                </div> */}
                 <div className="filter-item col">
                     <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="store">Магазин:</label>
-                    <select className='form-control' id="store" defaultValue={brandNames ? brandNames[0] : null} onChange={e => changeBrand(e.target.value)}>
+                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue={brandNames ? brandNames[0] : null} onChange={e => changeBrand(e.target.value)}>
                         {
                             brandNames && brandNames.map((brand, i) => (
                                 <option key={i} value={brand}>{brand}</option>
@@ -46,11 +47,11 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                     <option value="store2">Магазин 2</option>
                     <option value="store3">Магазин 3</option> */}
                     </select>
-                    <svg style={{ position: 'absolute', right: '1.5vw', top: '5.25vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 2L14 14L26 2" stroke="#1A1A1A" strokeWidth="4" strokeLinecap="round" />
+                    <svg style={{ position: 'absolute', right: '1.75vw', top: '5.5vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 2L14 14L26 2" stroke="rgba(140, 140, 140, 1)" strokeWidth="4" strokeLinecap="round" />
                     </svg>
                 </div>
-                <div className="filter-item col-2 me-2">
+                {/* <div className="filter-item col-2 me-2">
                     <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="brand">Бренд:</label>
                     <select className='form-control' id="brand" disabled>
                         <option value="brand1">Не выбрано</option>
@@ -60,7 +61,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                     <svg style={{ position: 'absolute', right: '1.5vw', top: '5.25vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 2L14 14L26 2" stroke="#1A1A1A" strokeWidth="4" strokeLinecap="round" />
                     </svg>
-                </div>
+                </div> */}
             </div>
         </div>
     )
