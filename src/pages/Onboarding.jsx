@@ -38,7 +38,11 @@ const Onboarding = () => {
         } else {
             ServiceFunctions.updateToken(brandName, token, user.id).then(data => {
                 if (data) {
-                    localStorage.setItem('authToken', data.token)
+                    try {
+                        localStorage.setItem('authToken', data.token)
+                    } catch (e) {
+                        console.log(e);
+                    }
                 }
             })
             handleShow()

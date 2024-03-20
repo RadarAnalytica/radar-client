@@ -26,13 +26,6 @@ const DashboardPage = () => {
 
     const navigate = useNavigate()
 
-    useEffect(() => {
-        setTimeout(() => {
-            if (!user || (user && !user.isOnboarded)) {
-                // navigate('/development/onboarding')
-            }
-        }, 1500);
-    }, [user])
 
     const [content, setContent] = useState()
     const [state, setState] = useState()
@@ -42,8 +35,9 @@ const DashboardPage = () => {
     useEffect(() => {
         if (user) {
             ServiceFunctions.getBrandNames(user.id).then(data => {
-                let names = [...new Set(data)]
-                setBrandNames(names)
+                // let names = [...new Set(data)]
+                console.log(data);
+                setBrandNames(data)
             })
         }
     }, [user])
@@ -272,8 +266,6 @@ const DashboardPage = () => {
     const [byMoney, setByMoney] = useState(true)
     const [byAmount, setByAmount] = useState(true)
 
-    const dateList = days ? generateDateList(Number(days)) : generateDateList(7)
-
     const orderValuesRub = orders && orders.length ? orders?.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
     const salesValuesRub = sales && sales.length ? sales?.map(i => ({ price: i.finishedPrice, date: new Date(i.date).toLocaleDateString() })) : []
 
@@ -338,7 +330,7 @@ const DashboardPage = () => {
                 borderColor: 'rgba(255, 219, 126, 1)',
                 hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                 yAxisID: 'A',
-                data: totalOrByDate || [],
+                data: summedOrderArray || [],
             } : {
                 label: 'Заказы',
                 borderRadius: 8,
@@ -363,7 +355,7 @@ const DashboardPage = () => {
                 borderColor: 'rgba(154, 129, 255, 1)',
                 hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
                 yAxisID: 'A',
-                data: totalsalesByDate || [],
+                data: summedSalesArray || [],
             } : {
                 label: 'Продажи',
                 borderRadius: 8,
@@ -392,7 +384,7 @@ const DashboardPage = () => {
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                 yAxisID: 'B',
-                data: summedOrderArray || [],
+                data: totalOrByDate || [],
             } : {
                 label: 'Заказы',
                 borderRadius: 8,
@@ -425,7 +417,7 @@ const DashboardPage = () => {
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
                 yAxisID: 'B',
-                data: summedSalesArray || [],
+                data: totalsalesByDate || [],
             } : {
                 label: 'Продажи',
                 borderRadius: 8,
@@ -445,6 +437,8 @@ const DashboardPage = () => {
             },
         ],
     };
+
+    // console.log(wbData);
 
     const sortedValuesArray = data?.datasets?.map(arr => arr?.data).flat(1)?.sort((a, b) => b - a)
     const maxValue = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0
@@ -534,6 +528,8 @@ const DashboardPage = () => {
                                     byAmount={byAmount}
                                     byMoney={byMoney}
                                     loading={loading}
+                                    days={days}
+                                    wbData={wbData}
 
                                     maxValue={maxValue}
                                     maxAmount={maxAmount}

@@ -3,7 +3,7 @@ import { Chart } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 ChartJS.register(CategoryScale, LinearScale, Filler, BarController, PointElement, BarElement, LineController, LineElement, [Tooltip]);
 
-const BigChart = ({ name, loading, data, orderOn, salesOn, setOrderOn, salesLineOn, orderLineOn, maxValue, maxAmount, setSalesOn, setByMoney, byMoney, byAmount, setOrderLineOn, setSalesLineOn }) => {
+const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, salesLineOn, orderLineOn, maxValue, maxAmount, setSalesOn, setByMoney, byMoney, byAmount, setOrderLineOn, setSalesLineOn }) => {
 
     const activeIcon = require('../assets/tick-active.png')
     const activeIconYellow = require('../assets/tick-active-yellow.png')
@@ -149,11 +149,11 @@ const BigChart = ({ name, loading, data, orderOn, salesOn, setOrderOn, salesLine
                                             // Set Text
                                             if (tooltipModel.body) {
 
-                                                const datasets = data?.datasets?.filter(obj => obj.data?.length > 0)
+
+                                                let datasets = data?.datasets?.filter(obj => obj.data?.length > 0)?.reverse()
+                                                // datasets = datasets?.slice(2, 4)?.concat(datasets?s.slice(0, 2))
                                                 const datalabels = data?.labels?.map(item => item[0].concat(',' + item[1]))
                                                 const targetInex = datalabels?.indexOf(tooltipModel.title[0])
-
-                                                console.log(datasets);
 
                                                 const titleLines = tooltipModel.title || [];
                                                 const bodyLines = tooltipModel.body.map(getBody);
@@ -166,9 +166,11 @@ const BigChart = ({ name, loading, data, orderOn, salesOn, setOrderOn, salesLine
                                                 innerHtml += '</thead><tbody>';
 
                                                 datasets?.forEach(function (set, i) {
+                                                    console.log(set);
+                                                    console.log(targetInex);
                                                     const colors = ['rgba(240, 173, 0, 1)', 'rgba(83, 41, 255, 1)']
                                                     const targetColor = set.label === 'Заказы' ? colors[0] : colors[1]
-                                                    const targetDescr = set.type === 'bar' ? ' руб' : " шт"
+                                                    const targetDescr = set.type === 'bar' ? ' шт' : " руб"
                                                     let value = set?.data[targetInex] || ''
                                                     let style = ''
                                                     // style += '; border-color:' + colors.borderColor;
@@ -206,7 +208,7 @@ const BigChart = ({ name, loading, data, orderOn, salesOn, setOrderOn, salesLine
                                         id: 'A',
                                         type: 'linear',
                                         position: 'right',
-                                        suggestedMax: maxAmount * 1.5,
+                                        suggestedMax: maxValue * 1.5,
                                         grid: {
                                             drawOnChartArea: false, // only want the grid lines for one axis to show up
                                         },
@@ -215,7 +217,7 @@ const BigChart = ({ name, loading, data, orderOn, salesOn, setOrderOn, salesLine
                                         id: 'B',
                                         type: 'linear',
                                         position: 'left',
-                                        suggestedMax: maxValue,
+                                        suggestedMax: maxAmount,
                                         grid: {
                                             drawOnChartArea: true,
                                         },
@@ -226,7 +228,7 @@ const BigChart = ({ name, loading, data, orderOn, salesOn, setOrderOn, salesLine
                                         },
                                         ticks: {
                                             autoSkip: true,
-                                            maxTicksLimit: 30
+                                            maxTicksLimit: days == 92 ? Math.ceil(92 / 13) : 30
                                         }
                                     },
                                 },
