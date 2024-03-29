@@ -129,7 +129,6 @@ const OrdersMap = () => {
     const [foName, setFoName] = useState()
     const [foFirst, setFoFirst] = useState()
 
-    const [tooltipText, setTooltipText] = useState('');
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
 
@@ -138,23 +137,14 @@ const OrdersMap = () => {
         setTooltipPosition({ x: event.pageX, y: event.pageY });
     };
 
-    // Функция для скрытия тултипа
-
-
     function findGTagName(evt) {
         // Получаем элемент, на который было наведение курсора
         const target = evt.target.closest('g');
-        const pathName = evt.target.closest('path')
 
         // Если элемент найден
         if (target) {
             // Получаем значение атрибута name и выводим его в консоль
             const nameAttribute = target.getAttribute('name');
-            setFoName(nameAttribute);
-            setFoFirst(nameAttribute?.split(' ')[0]?.toLowerCase())
-        }
-        if (pathName) {
-            const nameAttribute = pathName.getAttribute('name');
             setFoName(nameAttribute);
             setFoFirst(nameAttribute?.split(' ')[0]?.toLowerCase())
         }
@@ -174,11 +164,41 @@ const OrdersMap = () => {
             }
             setTooltipData(info)
         }
-    }, [foFirst, data])
+    }, [foFirst, data, tooltipPosition.x])
 
     const hideTooltip = () => {
         setTooltipData();
     };
+
+    const backgroundColor = [
+        'rgba(129, 172, 255, 1)',
+        'rgba(255, 153, 114, 1)',
+        'rgba(154, 129, 255, 1)',
+        'rgba(74, 217, 145, 1)',
+        'rgba(254, 197, 61, 1)',
+    ]
+
+    const getColor = (name) => {
+        switch (name) {
+            case 'Сибирский ФО':
+                return 'rgba(254, 197, 61, 1)'
+            case 'Уральский ФО':
+                return 'grey'
+            case 'Южный ФО':
+                return 'rgba(74, 217, 145, 1)'
+            case 'Северо-Кавказский ФО':
+                return 'orangered'
+            case 'Центральный ФО':
+                return 'rgba(129, 172, 255, 1)'
+            case 'Приволжский ФО':
+                return 'rgba(255, 153, 114, 1)'
+            case 'Северо-Западный ФО':
+                return 'yellow'
+            case 'Дальневосточный ФО':
+                return 'brown'
+            default: return 'transparent'
+        }
+    }
 
     return (
         <div className='orders-map'>
@@ -192,7 +212,7 @@ const OrdersMap = () => {
                     changeBrand={setActiveBrand}
                 />
 
-                <div className="map-container dash-container container">
+                <div className="map-container dash-container container p-3">
                     <div className="map-radio mb-3">
                         <div className="radio-item">
                             <input
@@ -238,7 +258,10 @@ const OrdersMap = () => {
                                         }}
                                     >
                                         <div>
-                                            <h6 className='fw-bold'>{foName}</h6>
+                                            <h6 className='fw-bold d-flex align-items-center'>
+                                                <div style={{ width: '1vw', height: '1vw', marginRight: '8px', borderRadius: '100%', backgroundColor: getColor(foName) }}></div>
+                                                {foName}
+                                            </h6>
                                             <div className='d-flex'>
                                                 <p className='mb-1 col'>Продажи, руб</p>
                                                 <p className='mb-1 fw-bold  col'>{formatPrice(tooltipData.salesSum)}</p>
@@ -313,7 +336,7 @@ const OrdersMap = () => {
                                             />
                                         </div>
                                     </div>
-                                    <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>Детализайия по заказам</h5>
+                                    <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>Детализация по заказам</h5>
                                     {
                                         whNames && whNames.length ?
                                             whNames.map((w, i) => {

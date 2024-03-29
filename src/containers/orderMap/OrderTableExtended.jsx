@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatPrice } from '../../service/utils'
 
 const OrderTableExtended = ({ title, data }) => {
 
@@ -26,7 +27,7 @@ const OrderTableExtended = ({ title, data }) => {
                     data.data.map((item, key) => (
                         <div key={key} className='d-flex'>
                             <p style={{ fontWeight: 600 }} className="mb-2 col-5 pe-2">{item.name}</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-2">{(item.sum)?.toFixed(1)} ₽</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col-2">{formatPrice(item.sum)} ₽</p>
                             <p style={{ fontWeight: 600 }} className="mb-2 col-3 text-center">{(item.percent)?.toFixed(1)}%</p>
                             <p style={{ fontWeight: 600 }} className="mb-2 col-2 fw-bold text-end">{(item.percentTotal)?.toFixed(1)}%</p>
                         </div>
