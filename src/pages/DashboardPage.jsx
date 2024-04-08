@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
-import { useNavigate } from 'react-router-dom'
 import AuthContext from '../service/AuthContext'
 import DashboardFilter from '../components/DashboardFilter'
 import MediumPlate from '../components/MediumPlate'
@@ -11,10 +10,8 @@ import FinanceTable from '../components/FinanceTable'
 import StorageTable from '../components/StorageTable'
 import ChartTable from '../components/ChartTable'
 import WidePlate from '../components/WidePlate'
-import { URL } from '../service/config'
 import { abcAnalysis, filterArrays, formatDate, generateDateList } from '../service/utils'
 import { ServiceFunctions } from '../service/serviceFunctions'
-import MobileMenu from '../components/MobileMenu'
 
 const DashboardPage = () => {
 
@@ -23,8 +20,6 @@ const DashboardPage = () => {
 
     const [wbData, setWbData] = useState()
     const [days, setDays] = useState(14)
-
-    const navigate = useNavigate()
 
 
     const [content, setContent] = useState()
@@ -65,8 +60,6 @@ const DashboardPage = () => {
     const orders = wbData && wbData.orders ? wbData.orders.data : []
     // продажи
     const sales = wbData && wbData.sales ? wbData.sales.data : []
-    // склады
-    const warehouses = wbData && wbData.warehouses ? wbData.warehouses.data : []
 
     const selfCostArray = sales && state && state.initialCostsAndTax && state.initialCostsAndTax.data ?
         sales.map(item => state.initialCostsAndTax.data.find(el => el.nmID === item.nmId)?.initialCosts) : []
@@ -217,11 +210,6 @@ const DashboardPage = () => {
         },
     ]
 
-    const calcRoi = (stock) => {
-        const sum = stock?.reduce((acc, item) => acc + (item.quantity + item.quantityFull) * 1000, 0)
-        return sum || 0
-    }
-
     const salesSelfCost = sales && sales ? sales.reduce((acc, el) => acc + (state?.initialCostsAndTax?.data?.find(item => item.nmID === el.nmId)?.initialCosts || 0), 0) : 0
 
     const profitabilityData = [
@@ -258,6 +246,10 @@ const DashboardPage = () => {
             ServiceFunctions.getFilteredCollection(user.id, days, activeBrand).then(data => setWbData(filterArrays(data, days)))
         }
     }
+
+    const uniquSalesDate = [...new Set(sales.map(i => formatDate(new Date(i.date))))]
+    const uniquOrdersDate = [...new Set(orders.map(i => formatDate(new Date(i.date))))]
+    const labels = [...new Set(uniquOrdersDate.concat(uniquSalesDate))]
 
     useEffect(() => {
         changePeriod()
@@ -311,10 +303,6 @@ const DashboardPage = () => {
     const [salesOn, setSalesOn] = useState(true)
     const [salesLineOn, setSalesLineOn] = useState(true)
 
-
-    const uniquSalesDate = [...new Set(sales.map(i => formatDate(new Date(i.date))))]
-    const uniquOrdersDate = [...new Set(orders.map(i => formatDate(new Date(i.date))))]
-    const labels = [...new Set(uniquOrdersDate.concat(uniquSalesDate))]
 
     const data = {
         labels: labels?.map(item => item.split(' ')) || [],
@@ -458,13 +446,6 @@ const DashboardPage = () => {
                     changeBrand={setActiveBrand}
                 />
                 {
-                    // loading ?
-                    //     <div className='d-flex flex-column align-items-center justify-content-center' style={{ minHeight: '70vh' }}>
-                    //         <span className="loader"></span>
-                    //     </div>
-                    //     :
-                    //     wbData && user &&
-
                     <div>
 
                         <div className="container dash-container p-3 pt-0 d-flex gap-3">
