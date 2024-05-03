@@ -15,7 +15,7 @@ const InputField = ({ hide, options, emailErrorText, passErrorText, callback, la
             <div className='d-flex gap-2 justify-content-between' style={{ width: '100%' }}>
                 <div style={{ width: '100%' }}>
                     <input
-                        className='form-control mt-2 mb-2'
+                        className='form-control mt-1 mb-0'
                         type={neType}
                         placeholder={placeholder}
                         defaultValue={defautlValue}

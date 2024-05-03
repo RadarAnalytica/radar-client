@@ -200,6 +200,13 @@ const OrdersMap = () => {
         }
     }
 
+    let totalOrdersSum = data && data.ordersTableData ? data.ordersTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
+    let totalSalesSum = data && data.ordersTableData ? data.salesTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
+
+    console.log(data);
+    console.log(tooltipData);
+
+
     return (
         <div className='orders-map'>
             <SideNav />

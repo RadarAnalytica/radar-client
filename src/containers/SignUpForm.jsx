@@ -22,14 +22,14 @@ const SignUpForm = () => {
 
     const [name, setName] = useState()
     const [regData, setRegData] = useState({
-        firstName: null,
-        lastName: null,
+        firstname: null,
+        lastname: null,
         patronym: null,
         phone: '+7',
         stage: options[0],
         email: null,
         password: null,
-        promoCode: null,
+        promo_сode: null,
         confirmed: false,
         isOnboarded: false
     })
@@ -78,13 +78,17 @@ const SignUpForm = () => {
         setRegData({ ...regData, password: `${e.target.value}` })
     }
 
+    const getPromocode = e => {
+        setRegData({ ...regData, promo_сode: e.target.value })
+    }
+
     const [sent, setSent] = useState(false)
 
     useEffect(() => {
-        let firstName = name?.split(' ')[0]
-        let lastName = name?.split(' ')[1]
+        let firstname = name?.split(' ')[0]
+        let lastname = name?.split(' ')[1]
         let patronym = name?.split(' ')[2]
-        setRegData({ ...regData, firstName, lastName, patronym })
+        setRegData({ ...regData, firstname, lastname, patronym })
     }, [name])
 
     const [show, setShow] = useState(false);
@@ -112,6 +116,8 @@ const SignUpForm = () => {
             setPassErrorText()
         }
     }, [regData?.email, regData?.password])
+
+    console.log(regData);
 
     const sumbitHandler = (e, obj) => {
         const nullable = Object.values(obj)?.filter(item => item === null)
@@ -144,7 +150,7 @@ const SignUpForm = () => {
             :
             <div className='signup-form'>
                 <div className='d-flex flex-column align-items-center'>
-                    <svg width="200" height="74" viewBox="0 0 200 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="200" height="60" viewBox="0 0 200 74" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M160.646 41.5532V15.744H169.233V21.8258C170.118 19.6111 171.328 17.9501 172.861 16.8428C174.394 15.7355 176.251 15.1818 178.432 15.1818C178.79 15.1818 179.147 15.1989 179.505 15.2329C179.88 15.25 180.255 15.284 180.629 15.3351L179.761 23.6145C179.215 23.4271 178.679 23.2909 178.151 23.2057C177.623 23.1205 177.112 23.0779 176.618 23.0779C174.403 23.0779 172.691 23.7593 171.481 25.1222C170.289 26.468 169.692 28.3846 169.692 30.8718V41.5532H160.646Z" fill="#1A1A1A" />
                         <path d="M147.293 28.6233C147.293 26.6131 146.756 25.0202 145.683 23.8448C144.609 22.6693 143.144 22.0815 141.287 22.0815C139.431 22.0815 137.965 22.6693 136.892 23.8448C135.836 25.0032 135.308 26.596 135.308 28.6233C135.308 30.6335 135.845 32.2178 136.918 33.3763C137.991 34.5347 139.448 35.1139 141.287 35.1139C143.144 35.1139 144.609 34.5347 145.683 33.3763C146.756 32.2178 147.293 30.6335 147.293 28.6233ZM155.291 15.7442V41.5535H146.935V37.3626C145.742 39.1514 144.396 40.4632 142.897 41.2979C141.415 42.1327 139.669 42.5501 137.659 42.5501C134.218 42.5501 131.466 41.2979 129.405 38.7937C127.344 36.2724 126.313 32.8993 126.313 28.6744C126.313 24.4666 127.386 21.1275 129.533 18.6574C131.696 16.1701 134.601 14.9265 138.247 14.9265C140.189 14.9265 141.858 15.3439 143.255 16.1786C144.669 16.9964 145.879 18.2655 146.884 19.9861V15.7442H155.291Z" fill="#1A1A1A" />
                         <path d="M114.365 28.6742C114.365 26.6639 113.829 25.0796 112.756 23.9212C111.699 22.7627 110.251 22.1835 108.411 22.1835C106.572 22.1835 105.124 22.7627 104.067 23.9212C103.011 25.0796 102.483 26.6639 102.483 28.6742C102.483 30.7014 103.003 32.2943 104.042 33.4527C105.098 34.5941 106.555 35.1648 108.411 35.1648C110.251 35.1648 111.699 34.5856 112.756 33.4272C113.829 32.2687 114.365 30.6844 114.365 28.6742ZM122.44 1.94501V41.5532H114.059V37.3624C112.9 39.1001 111.597 40.4033 110.149 41.2721C108.701 42.1239 107.091 42.5498 105.319 42.5498C101.691 42.5498 98.8033 41.2977 96.6568 38.7934C94.5103 36.2892 93.437 32.9161 93.437 28.6742C93.437 24.5685 94.5017 21.2551 96.6312 18.7338C98.7777 16.1954 101.572 14.9263 105.013 14.9263C107.193 14.9263 108.965 15.3181 110.328 16.1018C111.708 16.8854 112.934 18.1972 114.008 20.037C113.906 19.4237 113.829 18.7338 113.778 17.9672C113.727 17.1835 113.701 16.3403 113.701 15.4374V1.94501H122.44Z" fill="#1A1A1A" />
@@ -201,6 +207,15 @@ const SignUpForm = () => {
                         callback={getPass}
                         passErrorText={passErrorText}
                         hide={true}
+                        maxLength={40}
+                    />
+                    <InputField
+                        type={'text'}
+                        placeholder={'Ваш промокод'}
+                        label={'Промокод'}
+                        callback={getPromocode}
+                        // passErrorText={passErrorText}
+                        // hide={true}
                         maxLength={40}
                     />
                 </div>

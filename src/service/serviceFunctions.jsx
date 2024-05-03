@@ -24,7 +24,7 @@ export const ServiceFunctions = {
         const res = await fetch(`${URL}/api/user/update/${id}`, {
             method: 'PATCH',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
             },
             body: JSON.stringify({ brandName, token })
         })
@@ -55,6 +55,18 @@ export const ServiceFunctions = {
         const data = await res.json()
         return data
     },
+
+    // getBrandNames: async (id) => {
+    //     const res = await fetch(`${URL}/api/shop/all`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'content-type': 'application/json'
+    //         },
+    //     })
+
+    //     const data = await res.json()
+    //     return data
+    // },
 
     getBrandNames: async (id) => {
         const res = await fetch(`${URL}/api/data-collection/names/${id}`, {

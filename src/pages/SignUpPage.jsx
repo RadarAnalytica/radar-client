@@ -17,7 +17,7 @@ const SignUpPage = () => {
     }, [user])
 
     return (
-        <div className='signup-page'>
+        <div className='signup-page pt-1 pb-1'>
             <SignUpForm />
         </div>
     )

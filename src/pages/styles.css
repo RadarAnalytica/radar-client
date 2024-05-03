@@ -114,6 +114,169 @@ g:hover * {
     display: flex;
 }
 
+
+/* SPASIBO */
+.spasibo-page {
+    background-color: white;
+    overflow-x: hidden;
+}
+
+.spasibo-container {
+    padding: 3vh 0;
+    min-height: 100vh !important;
+}
+
+.top-right-spasibo {
+    display: flex;
+    gap: 12px;
+}
+
+.sps-top {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.tg-bot-top {
+    background-color: rgba(247, 247, 247, 1);
+    min-height: 114px;
+    display: flex;
+    align-items: center;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.top-right {
+    background-image: url('/src/pages/images/topwide.png');
+    border-radius: 20px;
+    background-size: cover;
+    background-position: bottom;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    padding: 30px;
+}
+
+.sps-second {
+    background-color: rgba(0, 182, 155, 0.1);
+    border-radius: 20px;
+    display: flex;
+    gap: 12px;
+    padding: 30px;
+    margin-top: 12px;
+}
+
+.second-sub {
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 80%;
+}
+
+.sps-second>div:first-child {
+    width: 40%;
+}
+
+.sps-share-cta {
+    min-height: 200px;
+    /* width: 90vw; */
+    background-image: url('/src/pages/images/widebg.png');
+    background-repeat: no-repeat;
+    border-radius: 20px;
+    margin: 12px 0;
+    padding: 30px;
+}
+
+.separator {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+}
+
+.bottom-first {
+    background-color: rgba(83, 41, 255, 1);
+    max-width: 381px;
+    max-height: 450px;
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+}
+
+.sps-bottom {
+    display: flex;
+    gap: 12px;
+}
+
+.bottom-second {
+    width: 100%;
+}
+
+.grey-block-btm {
+    background-color: rgba(247, 247, 247, 1);
+    padding: 30px;
+    border-radius: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.nav-to-profile {
+    background-color: rgba(83, 41, 255, 1);
+    padding: 12px 12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bottom-last {
+    background-image: url('/src/pages/images/bottombg.png');
+    margin-top: 12px;
+    border-radius: 20px;
+    padding: 30px;
+    color: white;
+}
+
+.white-last {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* INSTRUCTION PAGE */
+.instruction-page {
+    background-color: white;
+    overflow-x: hidden;
+}
+
+.instruction-container {
+    padding: 3vh 0;
+    min-height: 100vh !important;
+}
+
+
+
+/* FOOTER */
+.footer {
+    min-height: 280px;
+    padding-bottom: 40px;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-link {
+    color: black;
+    text-decoration: none;
+}
+
+
 @media screen and (max-width: 1048px) {
 
     .order-map-doughnut,

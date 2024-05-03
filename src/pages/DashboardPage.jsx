@@ -12,6 +12,8 @@ import ChartTable from '../components/ChartTable'
 import WidePlate from '../components/WidePlate'
 import { abcAnalysis, filterArrays, formatDate, generateDateList } from '../service/utils'
 import { ServiceFunctions } from '../service/serviceFunctions'
+import SelfCostWarning from '../components/SelfCostWarning'
+import DataCollectionNotification from '../components/DataCollectionNotification'
 
 const DashboardPage = () => {
 
@@ -426,7 +428,7 @@ const DashboardPage = () => {
         ],
     };
 
-    // console.log(wbData);
+    console.log(wbData);
 
     const sortedValuesArray = data?.datasets?.map(arr => arr?.data).flat(1)?.sort((a, b) => b - a)
     const maxValue = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0
@@ -439,6 +441,17 @@ const DashboardPage = () => {
             <div className="dashboard-content pb-3">
                 <TopNav title={'Сводка продаж'} />
 
+                {
+                    wbData?.initialCostsAndTax === null || wbData?.initialCostsAndTax?.data?.length === 0 || wbData === null ?
+                        <SelfCostWarning />
+                        : null
+                }
+                {
+                    wbData === null ?
+                        <DataCollectionNotification />
+                        :
+                        null
+                }
                 <DashboardFilter
                     brandNames={brandNames}
                     defaultValue={days}
@@ -447,7 +460,6 @@ const DashboardPage = () => {
                 />
                 {
                     <div>
-
                         <div className="container dash-container p-3 pt-0 d-flex gap-3">
                             <MediumPlate name={'Заказы'}
                                 value={curOrders?.selectedPeriod?.ordersSumRub}

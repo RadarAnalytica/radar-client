@@ -191,6 +191,37 @@ select {
   font-size: 1.95vh;
 }
 
+.grey-block {
+  background-color: rgba(247, 246, 254, 1);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.file-block {
+  background-color: rgba(247, 246, 254, 1);
+  border: 1px solid silver;
+  border-style: dashed;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.selfcost-warning {
+  background-color: white;
+  border-radius: 8px;
+}
+
+.danger-btn {
+  border: 1px solid var(--red);
+  background-color: transparent;
+  color: var(--red);
+  border-radius: 8px;
+  width: 100%;
+  /* padding: 20px 24px; */
+  margin: 10px 0;
+  font-weight: 700;
+  font-size: 1.95vh;
+}
+
 .secondary-btn {
   border: 2px solid var(--clue-color);
   background-color: white;
@@ -202,6 +233,63 @@ select {
   font-weight: 700;
   font-size: 1.95vh;
 }
+
+
+/* FILE UPLOAD */
+
+#form-file-upload {
+  height: 16rem;
+  width: 28rem;
+  max-width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+#input-file-upload {
+  display: none;
+}
+
+#label-file-upload {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 2px;
+  border-radius: 1rem;
+  border-style: dashed;
+  border-color: #cbd5e1;
+  background-color: #f8fafc;
+}
+
+#label-file-upload.drag-active {
+  background-color: #ffffff;
+}
+
+.upload-button {
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 1rem;
+  border: none;
+  font-family: 'Oswald', sans-serif;
+  background-color: transparent;
+}
+
+.upload-button:hover {
+  text-decoration-line: underline;
+}
+
+#drag-file-element {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+
 
 /* Onboarding page */
 .onboarding-page {
@@ -574,16 +662,24 @@ select {
   overflow-y: scroll;
 }
 
+.add-token-modal .modal-content {
+  box-shadow: none;
+  border: none;
+}
+
 .top-nav .dash-container div:first-child {
   padding: 2vh !important;
 }
 
 .linked-shop-block {
-  min-height: 20vw;
+  min-height: 14vw;
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  min-width: 33vw;
+  max-width: 37.5vw;
+  margin-bottom: 1.5vh;
 }
 
 .linked-shop-block h3,

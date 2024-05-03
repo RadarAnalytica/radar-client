@@ -58,8 +58,8 @@ const TopNav = ({ title }) => {
                     }
                 </div>
                 <div className="col-2 d-flex justify-content-around top-menu top-wrapper">
-                    {/* <img src={noticon} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} />
-                    <img src={question} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} /> */}
+                    <img src={noticon} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} />
+                    {/* <img src={question} alt="" style={{ maxWidth: '24px', cursor: 'pointer' }} /> */}
                     <MdOutlineSettings
                         id='settings-icon'
                         onMouseEnter={() => setMenuShown(true)}
@@ -78,7 +78,7 @@ const TopNav = ({ title }) => {
                                 </a>
                                 <div className='pt-2'>
                                     {/* <p className='mt-3 mb-2'>Сотрудники</p> */}
-                                    <p className='mb-1 mt-2' onClick={() => navigate('/development/settings')}>Настройки аккаунта</p>
+                                    {/* <p className='mb-1 mt-2' onClick={() => navigate('/development/settings')}>Настройки аккаунта</p> */}
                                     <p className='mb-1 mt-2' onClick={() => navigate('/development/linked-shops')}>Подключенный магазины</p>
                                     {/* <p className='mb-2'>Экспорт отчетов</p>
                                     <p className='mb-2'>Тарифы</p> */}
