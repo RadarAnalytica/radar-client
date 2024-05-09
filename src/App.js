@@ -20,6 +20,7 @@ import Instructions from './pages/Instructions';
 import Monitoring from './pages/Monitoring';
 import SupplyCount from './pages/SupplyCount';
 import StockAnalysis from './pages/StockAnalysis';
+import MainWidget from './pages/MainWidget';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
             <Route path='/development/dashboard' element={<DashboardPage />} />
             <Route path='/development/monitoring' element={<Monitoring />} />
             <Route path='/development/supply' element={<SupplyCount />} />
+            <Route path='/development/home' element={<MainWidget />} />
             <Route path='/development/stock-analysis' element={<StockAnalysis />} />
             <Route path='/development/calculate' element={<Calculate />} />
             {/* <Route path='/development/settings' element={<Settings />} /> */}
@@ -71,6 +73,7 @@ function App() {
           <Route path='/development/dashboard' element={<DashboardPage />} />
           <Route path='/development/monitoring' element={<Monitoring />} />
           <Route path='/development/supply' element={<SupplyCount />} />
+          <Route path='/development/home' element={<MainWidget />} />
           <Route path='/development/stock-analysis' element={<StockAnalysis />} />
           <Route path='/development/calculate' element={<Calculate />} />
           {/* <Route path='/development/settings' element={<Settings />} /> */}
