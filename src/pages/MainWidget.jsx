@@ -1,5 +1,32 @@
 import React from 'react'
 import './styles.css'
+import SolScreenshot from './images/SolScreenshot'
+import SolOptions from './images/SolOptions'
+import SolDescLabel from './images/SolDescLabel'
+import YellowRadar from './images/YellowRadar'
+import SmallOptions from './images/SmallOptions'
+import DetailLabel from './images/DetailLabel'
+import ScreenOrders from './images/ScreenOrders'
+import WBPRight from './images/WBPRight'
+import Step1 from './images/Step1'
+import Step2 from './images/Step2'
+import Step3 from './images/Step3'
+import Union from './images/Union'
+import Union1 from './images/Union1'
+import Union2 from './images/Union2'
+import Union3 from './images/Union3'
+import Union4 from './images/Union4'
+import Union5 from './images/Union5'
+import Union6 from './images/Union6'
+import Union7 from './images/Union7'
+import Union8 from './images/Union8'
+import Union9 from './images/Union9'
+import Union10 from './images/Union10'
+import Footer from '../components/Footer'
+import CtaLabel from './images/CtaLabel'
+import Free from './images/Free'
+import WidMainYellow from './images/WidMainYellow'
+import TryFree from './images/TryFree'
 
 const MainWidget = () => {
 
@@ -53,9 +80,190 @@ const MainWidget = () => {
 
             </div>
             <div className="container widbody-container">
-                asda
+
+                <div className="wid-solution">
+                    <div className="sol-description col">
+                        <div>
+                            <h2 className='fw-bold'>Расширение для аналитики на Wildberries</h2>
+                            <SolOptions />
+                        </div>
+                        <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '8px' }}
+                            className='d-flex flex-column gap-3'
+                        >
+                            <SolDescLabel />
+                            <h6 className="fw-bold">
+                                Исследуйте свой рынок вместе с Radar Analytica, находите новые ниши и точно определяйте прибыльные товары
+                            </h6>
+                            <button className="prime-btn" style={{ minHeight: '64px' }}>
+                                Установить
+                            </button>
+                        </div>
+                    </div>
+                    <div className="sol-screenshot col-7">
+                        <SolScreenshot />
+                    </div>
+                </div>
+
+                <div className="wid-note">
+                    <h3 className="fw-bold">
+                        <span> Что покажет расширение </span><YellowRadar /> <span> на Wildberries?</span>
+                    </h3>
+                    <p style={{ fontWeight: 600 }} className='col-8'>Вы сможете видеть аналитику, находясь в любой карточке товара на Wildberries, а также в результатах поиска, странице бренда и любой категории.</p>
+                </div>
+
+                <div className="wid-tools">
+                    <div className="widtool-left col-4">
+                        <h4 className="fw-bold" style={{ fontSize: 34 }}>
+                            Узнайте, что хорошо продаётся на маркетплейсах
+                        </h4>
+                        <p style={{ fontWeight: 600, fontSize: 20 }}>С помощью расширения можно отслеживать:</p>
+                        <SmallOptions />
+                        <p className='mt-3' style={{ fontWeight: 600, fontSize: 20 }}>по всем товарам на Wildberries</p>
+                    </div>
+                    <div className="widtool-right">
+                        <div>
+                            <DetailLabel />
+                            <h4 className="fw-bold mt-2" style={{ fontSize: 34 }}>
+                                <span style={{ color: 'rgba(83, 41, 255, 1)' }}>Остатки товаров в реальном времени</span>
+                                <span>, в разрезе складов и размеров</span>
+                            </h4>
+                            <p className="fw-bold" style={{ fontSize: 20 }}>
+                                Очень удобный инструмент не только для анализа конкурентов, но и для оценки собственных продаж, в том числе на предмет допоставки.
+                            </p>
+                        </div>
+                        <div>
+                            <ScreenOrders />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="wid-big-plate">
+                    <div className="wbp-left">
+                        <div>
+                            <svg width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="54" height="51" rx="15" fill="#F8F8F8" />
+                                <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p style={{ fontSize: 25 }} className='pb-0 mt-2'>Отслеживайте динамику изменения выручки</p>
+                            <p style={{ fontSize: 20 }}>Предоставим удобные инструменты для отслеживания динамики выручки в зависимости от изменения цены.</p>
+                        </div>
+                        <div>
+                            <svg width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="54" height="51" rx="15" fill="#F8F8F8" />
+                                <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p style={{ fontSize: 25 }} className='pb-0 mt-2'>Анализ категорий и запросов любой карточки товара на Wildberries</p>
+                            <p style={{ fontSize: 20 }}>Предоставим простые инструменты для анализа категорий и запросов любой карточки товара на Wildberries.</p>
+                        </div>
+                        <div>
+                            <svg width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="54" height="51" rx="15" fill="#F8F8F8" />
+                                <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p style={{ fontSize: 25 }} className='pb-0 mt-2'>Оценка карточки товара</p>
+                            <p style={{ fontSize: 20 }}>Посмотрите карточки, которые делают больше всего выручки на странице, оцените их упущенную выручку, продажи и проанализируйте диапазон цен.</p>
+                        </div>
+                    </div>
+                    <div className="wbp-right">
+                        <WBPRight />
+                    </div>
+                </div>
+
+                <div className="d-flex flex-column align-items-center justify-content-around mt-5 mb-5">
+                    <svg width="80" height="116" viewBox="0 0 80 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M40 100L40 20" stroke="#F0AD00" stroke-width="2" stroke-linecap="round" />
+                        <path d="M40 99L40 84" stroke="#F0AD00" stroke-width="2" stroke-linecap="round" />
+                        <path d="M32 92L40 100L48 92" stroke="#F0AD00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <rect opacity="0.4" x="20" width="40" height="40" rx="20" fill="#FFDB7E" />
+                        <rect x="21" y="1" width="38" height="38" rx="19" stroke="#FFDB7E" stroke-width="2" />
+                        <circle cx="40" cy="20" r="4.5" fill="white" stroke="#F0AD00" stroke-width="3" />
+                    </svg>
+                    <h4 className="fw-bold mt-3">Как установить расширение?</h4>
+                </div>
+
+                <div className="widvideo-instruction">
+                    <div className="widvideo">
+                        Video
+                    </div>
+                    <div className="widvideo-steps">
+                        <Step1 />
+                        <Step2 />
+                        <Step3 />
+                    </div>
+                </div>
+
+                <div className="wid-union">
+                    <div style={{ position: 'relative' }}>
+                        <Union />
+                        <div style={{ position: 'absolute', bottom: 0, right: 0, width: 'auto' }}>
+                            <div className="d-flex justify-content-around" style={{ width: '100%' }}>
+                                <Union1 />
+                                <span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
+                                <Union2 />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row mt-3">
+                        <div className="col">
+                            <Union3 />
+                        </div>
+                        <div className="col">
+                            <Union4 />
+                        </div>
+                        <div className="col">
+                            <Union5 />
+                        </div>
+                        <div className="col">
+                            <Union6 />
+                        </div>
+                    </div>
+                    <div className="row mt-3">
+                        <div className="col">
+                            <Union7 />
+                        </div>
+                        <div className="col">
+                            <Union8 />
+                        </div>
+                        <div className="col">
+                            <Union9 />
+                        </div>
+                        <div className="col">
+                            <Union10 />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="pt-5 pb-5 mt-5 mb-5 d-flex justify-content-center">
+                    <h4 className="fw-bold text-center" style={{ width: '50%' }}>
+                        Более 6 000 предпринимателей уже используют Radar Analytica для начала и развития бизнеса на маркетплейсах
+                    </h4>
+                </div>
+
+                <div className="wid-slider">
+
+                </div>
+
+                <div className="widmain-cta">
+                    <div className="d-flex slign-items-center justify-content-between" style={{ width: '100%' }}>
+                        <CtaLabel />
+                        <svg width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="54" height="51" rx="15" fill="#F8F8F8" />
+                            <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <p className='fw-bold mb-1' style={{ fontSize: 44 }}>Готовы начать?</p>
+                    <div className="d-flex justify-content-between">
+                        <div>
+                            <p style={{ fontWeight: 600, fontSize: 20 }}>Найдите прибыльные товары на маркетплейсе и развивайте свой бизнес.</p>
+                            <WidMainYellow />
+                        </div>
+                        <TryFree />
+                    </div>
+                </div>
+
             </div>
 
+            <Footer />
         </div>
     )
 }

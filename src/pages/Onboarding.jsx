@@ -10,7 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 
 const Onboarding = () => {
 
-    const { user } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
 
     const navigate = useNavigate()
     // useEffect(() => {
@@ -36,10 +36,10 @@ const Onboarding = () => {
         if (!token && !user) {
             e.preventDefault()
         } else {
-            ServiceFunctions.updateToken(brandName, token, user.id).then(data => {
+            ServiceFunctions.updateToken(brandName, token, authToken).then(data => {
                 if (data) {
                     try {
-                        localStorage.setItem('authToken', data.token)
+                        // localStorage.setItem('authToken', data.token)
                     } catch (e) {
                         console.log(e);
                     }

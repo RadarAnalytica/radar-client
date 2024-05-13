@@ -221,7 +221,7 @@ const SignUpForm = () => {
                 </div>
                 <button className='prime-btn' onClick={e => sumbitHandler(e, regData)} style={{ width: '100%', height: '7vh' }}>Зарегистрироваться</button>
                 <div>
-                    <p className='clue-text mb-2 mt-2'>Уже есть аккаунт? <Link className='link' to={'/development/signin'}>Войти</Link></p>
+                    <p className='clue-text mb-2 mt-2'>Уже есть аккаунт? <Link className='link' to={'/signin'}>Войти</Link></p>
                 </div>
                 <div className="text-center mb-0 pb-0">
                     <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh' }}>

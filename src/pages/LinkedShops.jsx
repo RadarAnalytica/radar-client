@@ -38,33 +38,36 @@ const LinkedShops = () => {
     const [data, setData] = useState()
     useEffect(() => {
         if (user) {
-            getTokenExp(user).then(data => setData(data))
+            ServiceFunctions.getBrandNames(authToken).then(data => setData(data))
+            // getTokenExp(user).then(data => setData(data))
         }
     }, [])
+
+    console.log(data);
 
     let [activeTokens, setActiveTokens] = useState([])
     let [inactiveTokens, setInactiveTokens] = useState([])
 
-    const [expDate, setExpDate] = useState()
-    useEffect(() => {
-        if (data) setExpDate(data.map(token => ({ date: new Date(token?.token?.exp * 1000), brandName: token.brandName })))
-    }, [data])
+    // const [expDate, setExpDate] = useState()
+    // useEffect(() => {
+    //     if (data) setExpDate(data.map(token => ({ date: new Date(token?.token?.exp * 1000), brandName: token.brandName })))
+    // }, [data])
 
-    useEffect(() => {
-        let active = []
-        let inactive = []
-        if (expDate) {
-            for (let i in expDate) {
-                if (new Date(expDate[i]?.date).getTime() > new Date().getTime()) {
-                    active.push({ date: expDate[i], brandName: expDate[i]?.brandName })
-                    setActiveTokens(active)
-                } else {
-                    inactive.push({ date: expDate[i], brandName: expDate[i]?.brandName })
-                    setInactiveTokens(inactive)
-                }
-            }
-        }
-    }, [expDate])
+    // useEffect(() => {
+    //     let active = []
+    //     let inactive = []
+    //     if (expDate) {
+    //         for (let i in expDate) {
+    //             if (new Date(expDate[i]?.date).getTime() > new Date().getTime()) {
+    //                 active.push({ date: expDate[i], brandName: expDate[i]?.brandName })
+    //                 setActiveTokens(active)
+    //             } else {
+    //                 inactive.push({ date: expDate[i], brandName: expDate[i]?.brandName })
+    //                 setInactiveTokens(inactive)
+    //             }
+    //         }
+    //     }
+    // }, [expDate])
 
     const [activeShop, setActiveShop] = useState(null)
 
@@ -86,6 +89,29 @@ const LinkedShops = () => {
     const [brandName, setBrandName] = useState()
     const [tkn, setTkn] = useState()
 
+    const editShop = async (shop, is_active, is_deleted, authtoken, brand_name, token) => {
+        setActiveShop(shop)
+
+        const res = await fetch(URL + '/api/shop/' + shop?.id, {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': 'JWT ' + authtoken
+            },
+            body: JSON.stringify({
+                brand_name,
+                token,
+                is_active,
+                is_deleted
+            })
+        })
+        const data = await res.json()
+        setBrandName()
+        setTkn()
+        return data
+
+    }
+
     return (
         <div className='linked-shops-page'>
             <SideNav />
@@ -93,82 +119,27 @@ const LinkedShops = () => {
                 <TopNav title={'Подключенные магазины'} />
 
                 <div className="container linked-shops-container d-flex" style={{ padding: '12px 24px', gap: '20px' }}>
-                    {/* <div className="linked-shop-block col">
-                        <div className="d-flex justify-content-between">
-                            <div>
-                                <p className='p-0 m-0' style={{ fontWeight: 700, fontSize: 24 }}>
-                                    {user && `${status ? status : ''} ${user.firstName} ${user.lastName} ${user.patronym ? user.patronym : ''}`}
-                                </p>
-                                <p className="clue-text p-0 m-0">Последнее обновление {new Date(user?.updatedAt).toLocaleDateString() || null}</p>
-                            </div>
-                            <div>
-                                <img src={wblogo} alt="" />
-                            </div>
-                        </div>
-                        <div className='user-tokens'>
-                            {
-                                activeTokens?.length ? activeTokens?.map((item, i) => (
-                                    <div className="user-token-item" key={i}>
-                                        <div>
-                                            <span className="fw-bold">{item.brandName}</span>
-                                            <br />
-                                            <span>Токен статистика</span>
-                                        </div>
-                                        <div className='d-flex token-status'>
-                                            <div className='token-active'>
-                                                <img src={greencircle} alt="" />
-                                                <span>
-                                                    {item.date ? 'Активен до ' + new Date(item.date.date).toLocaleDateString() : ''}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )) : null
-                            }
-                            {
-                                inactiveTokens?.length ? inactiveTokens?.map((item, i) => (
-                                    <div className="user-token-item" key={i}>
-                                        <div>
-                                            <span className="fw-bold">{item.brandName}</span>
-                                            <span>Токен статистика</span>
-                                        </div>
-                                        <div className='d-flex token-status'>
-                                            <div className='token-active'>
-                                                <img src={redcircle} alt="" />
-                                                <span>
-                                                    {'Неактивен'}
-                                                    <span
-                                                        className="refresh-token-btn prime-text ms-2"
-                                                        onClick={() => navigate('/development/onboarding')}
-                                                    >
-                                                        Обновить
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )) : null
-                            }
-                        </div>
-                    </div> */}
+
                     <div className="row p-0">
                         {
-                            activeTokens && activeTokens.length ?
-                                activeTokens.map((item, i) => (
+                            data && data.length ?
+                                data.map((item, i) => (
                                     <div className="linked-shop-block col me-2" key={i}>
                                         <div>
                                             <div className='d-flex align-items-center gap-2'>
                                                 <img src={wblogo} alt="" />
                                                 <div style={{ width: '100%' }}>
                                                     <div className="d-flex justify-content-between">
-                                                        <h3 className="fw-bold">{item.brandName}</h3>
-                                                        <svg width="50" height="30" viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <h3 className="fw-bold">{item.brand_name}</h3>
+                                                        {/* <svg 
+                                                        onClick={() => {}}
+                                                        width="50" height="30" viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <rect width="50" height="30" rx="15" fill="#5329FF" />
                                                             <circle cx="35" cy="15" r="13" fill="white" />
-                                                        </svg>
+                                                        </svg> */}
 
                                                     </div>
-                                                    <span style={{ fontSize: '2vh !important' }} className="clue-text p-0 m-0">Последнее обновление {new Date(user?.updatedAt).toLocaleDateString() || null}</span>
+                                                    <span style={{ fontSize: '2vh !important' }} className="clue-text p-0 m-0">Последнее обновление {new Date(item?.updated_at?.split(' ')[0]).toLocaleDateString() || null}</span>
                                                 </div>
                                             </div>
 
@@ -277,7 +248,7 @@ const LinkedShops = () => {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-2">
                         <button className='prime-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => { ServiceFunctions.updateToken(brandName, tkn, user?.id); handleClose(); setShowSuccess(true) }}>
+                            onClick={() => { ServiceFunctions.updateToken(brandName, tkn, authToken); handleClose(); setShowSuccess(true) }}>
                             Сохранить
                         </button>
                     </div>
@@ -302,13 +273,13 @@ const LinkedShops = () => {
                         placeholder={'Например, тестовый'}
                         label={'Название магазина'}
                         defautlValue={activeShop?.brandName}
-                        callback={() => { console.log(); }}
+                        callback={(e) => { setBrandName(e.target.value) }}
                     />
                     <InputField
                         type={'text'}
                         placeholder={'Что-то вроде: GJys67G7sbNw178F'}
                         label={'Токен'}
-                    // callback={passHandler}
+                        callback={e => setTkn(e.target.value)}
                     />
                     <div className="mt-3">
                         <a href="#" className='link mb-0 pb-0'>Где найти токен?</a>
@@ -331,7 +302,7 @@ const LinkedShops = () => {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-2">
                         <button className='prime-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => setShowEdit(false)}>
+                            onClick={() => { editShop(activeShop, true, false, authToken, brandName, tkn); setShowEdit(false) }}>
                             Сохранить
                         </button>
                     </div>
@@ -346,7 +317,7 @@ const LinkedShops = () => {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-2 gap-2">
                         <button className='danger-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => setShowDelete(false)}>
+                            onClick={() => { editShop(activeShop, false, true, authToken, activeShop?.brand_name, activeShop?.token); setShowDelete(false) }}>
                             Удалить
                         </button>
                         <button className='prime-btn' style={{ padding: '16px 20px' }}

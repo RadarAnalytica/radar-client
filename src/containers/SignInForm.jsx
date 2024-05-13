@@ -112,14 +112,14 @@ const SignInForm = () => {
             <div className="mb-0 mt-1" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <p className="clue-text"
                     style={{ cursor: 'pointer' }}
-                    onClick={() => { navigate('/development/reset') }}
+                    onClick={() => { navigate('/reset') }}
                 >
                     Забыли пароль?
                 </p>
             </div>
             <button className='prime-btn mt-0 mb-3' onClick={handleSubmit} style={{ height: '7vh' }}>Войти</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <p className='clue-text mb-0'>Еще нет аккаунта? <Link className='link' to={'/development/signup'}>Регистрация</Link></p>
+                <p className='clue-text mb-0'>Еще нет аккаунта? <Link className='link' to={'/signup'}>Регистрация</Link></p>
             </div>
 
             <Modal show={show} onHide={handleClose}>

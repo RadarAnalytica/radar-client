@@ -20,13 +20,14 @@ export const ServiceFunctions = {
         }
     },
 
-    updateToken: async (brandName, token, id) => {
-        const res = await fetch(`${URL}/api/user/update/${id}`, {
-            method: 'PATCH',
+    updateToken: async (brand_name, token, authToken) => {
+        const res = await fetch(`${URL}/api/shop/`, {
+            method: 'POST',
             headers: {
                 'content-type': 'application/json',
+                'authorization': 'JWT ' + authToken
             },
-            body: JSON.stringify({ brandName, token })
+            body: JSON.stringify({ brand_name, token, is_active: true })
         })
         const data = await res.json()
         return data
@@ -56,8 +57,21 @@ export const ServiceFunctions = {
         return data
     },
 
+    getBrandNames: async (token) => {
+        const res = await fetch(`${URL}/api/shop/all`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': 'JWT ' + token
+            },
+        })
+
+        const data = await res.json()
+        return data
+    },
+
     // getBrandNames: async (id) => {
-    //     const res = await fetch(`${URL}/api/shop/all`, {
+    //     const res = await fetch(`${URL}/api/data-collection/names/${id}`, {
     //         method: 'GET',
     //         headers: {
     //             'content-type': 'application/json'
@@ -67,18 +81,6 @@ export const ServiceFunctions = {
     //     const data = await res.json()
     //     return data
     // },
-
-    getBrandNames: async (id) => {
-        const res = await fetch(`${URL}/api/data-collection/names/${id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json'
-            },
-        })
-
-        const data = await res.json()
-        return data
-    },
 
     getOrders: async (id, brandName) => {
         const res = await fetch(`${URL}/api/orders/${id}?brandName=${brandName}`, {

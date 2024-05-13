@@ -18,29 +18,29 @@ const ResetPage = () => {
 
     const [confirmed, setConfirmed] = useState(false)
 
-    useEffect(() => {
-        if (email && code) {
-            const postData = { email, code };
+    // useEffect(() => {
+    //     if (email && code) {
+    //         const postData = { email, code };
 
-            axios.patch(`${URL}/api/user/confirm-reset`, postData)
-                .then(response => {
-                    console.log('Успешно подтверждено', response.data);
-                    setConfirmed(true)
-                })
-                .catch(error => {
-                    console.error('Ошибка при подтверждении', error);
-                });
-        }
-    }, [email, code]);
+    //         axios.patch(`${URL}/api/user/confirm-reset`, postData)
+    //             .then(response => {
+    //                 console.log('Успешно подтверждено', response.data);
+    //                 setConfirmed(true)
+    //             })
+    //             .catch(error => {
+    //                 console.error('Ошибка при подтверждении', error);
+    //             });
+    //     }
+    // }, [email, code]);
 
     return (
         <div className='confirmation-page'>
             {
                 <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                     {
-                        confirmed ?
-                            <RestorePass email={email} />
-                            : null
+                        // confirmed ?
+                        <RestorePass email={email} />
+                        // : null
                     }
                 </div>
             }

@@ -34,8 +34,8 @@ function App() {
           <MobileMenu />
           <Routes>
             <Route path='/' element={<MockUpPage />} />
-            <Route path='/development/signup' element={<SignUpPage />} />
-            <Route path='/development/signin' element={<SignInPage />} />
+            <Route path='/signup' element={<SignUpPage />} />
+            <Route path='/signin' element={<SignInPage />} />
             <Route path='/development/spasibo' element={<Spasibo />} />
             <Route path='/development/instruction' element={<Instructions />} />
             <Route path='/development/onboarding' element={<Onboarding />} />
@@ -48,8 +48,8 @@ function App() {
             {/* <Route path='/development/settings' element={<Settings />} /> */}
             <Route path='/development/orders-map' element={<OrdersMap />} />
             <Route path='/development/linked-shops' element={<LinkedShops />} />
-            <Route path='/development/reset' element={<RequestResetLink />} />
-            <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
+            <Route path='/reset' element={<RequestResetLink />} />
+            <Route path='/confirmation/:email/:code' element={<ConfirmationPage />} />
             {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
           </Routes>
         </AuthProvider>
@@ -64,9 +64,9 @@ function App() {
       <AuthProvider >
         <Routes>
           <Route path='/' element={<MockUpPage />} />
-          {/* <Route path='/development/*' element={<Navigate to={'/development/signin'} replace />} /> */}
-          <Route path='/development/signup' element={<SignUpPage />} />
-          <Route path='/development/signin' element={<SignInPage />} />
+          {/* <Route path='/development/*' element={<Navigate to={'/signin'} replace />} /> */}
+          <Route path='/signup' element={<SignUpPage />} />
+          <Route path='/signin' element={<SignInPage />} />
           <Route path='/development/spasibo' element={<Spasibo />} />
           <Route path='/development/instruction' element={<Instructions />} />
           <Route path='/development/onboarding' element={<Onboarding />} />
@@ -79,9 +79,9 @@ function App() {
           {/* <Route path='/development/settings' element={<Settings />} /> */}
           <Route path='/development/orders-map' element={<OrdersMap />} />
 
-          <Route path='/development/confirmation/:email/:code' element={<ConfirmationPage />} />
-          <Route path='/development/restore/:email/:code' element={<ResetPage />} />
-          <Route path='/development/reset' element={<RequestResetLink />} />
+          <Route path='/confirmation/:email/:code' element={<ConfirmationPage />} />
+          <Route path='/restore/:email/:code' element={<ResetPage />} />
+          <Route path='/reset' element={<RequestResetLink />} />
           {/* <Route path='*' element={<Navigate to={'/development/signin'} replace />} /> */}
         </Routes>
       </AuthProvider>

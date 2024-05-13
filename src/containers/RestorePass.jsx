@@ -15,14 +15,15 @@ const RestorePass = ({ email }) => {
     const navigate = useNavigate()
 
     const updatePass = async (email, pass) => {
-        const res = await fetch(`${URL}/api/user`, {
-            method: 'PUT',
+        const res = await fetch(`${URL}/api/user/restore_password`, {
+            method: 'POST',
             headers: {
                 'content-type': 'application/json'
             },
             body: JSON.stringify({
                 email,
-                password: pass
+                password: pass,
+                confirm: pass
             })
         })
         const data = await res.json()
@@ -35,13 +36,13 @@ const RestorePass = ({ email }) => {
                 console.log(data);
                 if (data) {
                     alert('Пароль успешно обновлен!')
-                    navigate('/development/signin')
+                    navigate('/signin')
                 } else {
                     alert('Возникла ошибка. Поторите попытку')
                 }
             }).then(data => {
                 alert('Пароль успешно обновлен')
-                navigate('/development/signin')
+                navigate('/signin')
             })
         }
         else {
@@ -74,8 +75,8 @@ const RestorePass = ({ email }) => {
             <button className='prime-btn' onClick={(e) => handler(e)} style={{ height: '7vh', width: '100%' }}>Обновить</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text'>
-                    <Link className='link' to={'/development/signup'} style={{ marginRight: '20px' }}>Регистрация</Link>
-                    <Link className='link' to={'/development/signin'}>Вход</Link></p>
+                    <Link className='link' to={'/signup'} style={{ marginRight: '20px' }}>Регистрация</Link>
+                    <Link className='link' to={'/signin'}>Вход</Link></p>
             </div>
         </div>
     )

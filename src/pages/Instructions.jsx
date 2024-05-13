@@ -41,13 +41,15 @@ const Instructions = () => {
                         <div className="top-right-spasibo col">
                             <div className="tg-bot-top col-5">
                                 {/* <img src={toptg} alt="" className='me-3' /> */}
-                                <TopTgIcon />
-                                <span className='me-2 ms-2'>Бот Telegram</span>
-                                <span>
-                                    <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.52 5.577V4.065H11.005L8.413 1.473L9.331 0.537L13.624 4.83L9.331 9.123L8.413 8.187L11.023 5.577H0.52Z" fill="black" fill-opacity="0.7" />
-                                    </svg>
-                                </span>
+                                <a href="https://t.me/SpyRadar_bot" style={{ textDecoration: 'none', color: 'black' }}>
+                                    <TopTgIcon />
+                                    <span className='me-2 ms-2'>Бот Telegram</span>
+                                    <span>
+                                        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.52 5.577V4.065H11.005L8.413 1.473L9.331 0.537L13.624 4.83L9.331 9.123L8.413 8.187L11.023 5.577H0.52Z" fill="black" fill-opacity="0.7" />
+                                        </svg>
+                                    </span>
+                                </a>
                             </div>
                             <div className="col top-right">
                                 <span>
@@ -93,10 +95,12 @@ const Instructions = () => {
                     <div className="sps-share-cta">
                         <div className="d-flex align-items-center justify-content-between mb-2">
                             <Fragment1 />
-                            <svg className="me-3" width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="54" height="51" rx="15" fill="#F8F8F8" />
-                                <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+                            <a href="https://radar-analytica.ru/signin">
+                                <svg className="me-3" width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="54" height="51" rx="15" fill="#F8F8F8" />
+                                    <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
                         </div>
                         <div>
                             <h2>
@@ -139,22 +143,25 @@ const Instructions = () => {
                                     </h6>
                                 </div>
                                 <div className="col-4 nav-to-profile">
-                                    <div className="d-flex justify-content-end">
-                                        <svg className="me-3" width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect width="54" height="51" rx="15" fill="#F8F8F8" />
-                                            <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </div>
-                                    <div className="text-center">
-                                        <span style={{ color: 'white' }}>
-                                            Перейти в личный кабинет
-                                            <span className='ms-2'>
-                                                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M0.52 5.577V4.065H11.005L8.413 1.473L9.331 0.537L13.624 4.83L9.331 9.123L8.413 8.187L11.023 5.577H0.52Z" fill="white" fillOpacity="1" />
-                                                </svg>
+                                    <a href="https://radar-analytica.ru/signin" style={{ textDecoration: 'none', color: 'black' }}>
+                                        <div className="d-flex justify-content-end">
+                                            <svg className="me-3" width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect width="54" height="51" rx="15" fill="#F8F8F8" />
+                                                <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </div>
+                                        <br />
+                                        <div className="text-center">
+                                            <span style={{ color: 'white' }}>
+                                                Перейти в личный кабинет
+                                                <span className='ms-2'>
+                                                    <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0.52 5.577V4.065H11.005L8.413 1.473L9.331 0.537L13.624 4.83L9.331 9.123L8.413 8.187L11.023 5.577H0.52Z" fill="white" fillOpacity="1" />
+                                                    </svg>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </div>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                             <div className='bottom-last mb-5'>
@@ -165,14 +172,16 @@ const Instructions = () => {
                                         <img src={toptg} alt="" className='me-3' />
                                         <span className='me-2 fw-bold' style={{ color: 'black' }}>Протестировать Telegram-бота</span>
                                     </div>
-                                    <h1 style={{ color: 'rgba(64, 146, 247, 1)' }}>
-                                        @WB-Radar
-                                        <span className='ms-2'>
-                                            <svg width="28" height="20" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M0.52 5.577V4.065H11.005L8.413 1.473L9.331 0.537L13.624 4.83L9.331 9.123L8.413 8.187L11.023 5.577H0.52Z" fill="rgba(64, 146, 247, 1)" fillOpacity="1" />
-                                            </svg>
-                                        </span>
-                                    </h1>
+                                    <a href="https://t.me/SpyRadar_bot" style={{ textDecoration: 'none', color: 'black' }}>
+                                        <h1 style={{ color: 'rgba(64, 146, 247, 1)' }}>
+                                            @WB-Radar
+                                            <span className='ms-2'>
+                                                <svg width="28" height="20" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M0.52 5.577V4.065H11.005L8.413 1.473L9.331 0.537L13.624 4.83L9.331 9.123L8.413 8.187L11.023 5.577H0.52Z" fill="rgba(64, 146, 247, 1)" fillOpacity="1" />
+                                                </svg>
+                                            </span>
+                                        </h1>
+                                    </a>
                                 </div>
                             </div>
                         </div>

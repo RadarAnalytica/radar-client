@@ -26,7 +26,7 @@
     position: relative;
 }
 
-g:hover * {
+#map>g:hover * {
     stroke: rgba(254, 197, 61, 1);
     stroke-width: 2px !important;
     fill: rgba(255, 249, 236, 1);
@@ -259,6 +259,11 @@ g:hover * {
 }
 
 /* WIDGET MAIN */
+.widget-main {
+    background-color: white;
+    min-height: 100vh;
+}
+
 .widmain-header {
     border-bottom: 1px solid silver;
 }
@@ -280,6 +285,109 @@ g:hover * {
     font-weight: 600;
     font-size: 20px;
 }
+
+.widbody-container {
+    padding: 4vh 0;
+}
+
+.wid-solution {
+    background-color: rgba(0, 0, 0, 0.03);
+    min-height: 200px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.sol-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.wid-note {
+    background-color: rgba(83, 41, 255, 1);
+    min-height: 200px;
+    border-radius: 20px;
+    padding: 30px;
+    color: white;
+    margin-top: 80px;
+    margin-bottom: 12px;
+}
+
+.wid-tools {
+    min-height: 200px;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.widtool-left {
+    /* width: 30%; */
+    padding: 30px;
+    border-radius: 20px;
+    border: 1.5px solid silver;
+}
+
+.widtool-right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1.5px solid silver;
+    width: 100%;
+}
+
+.wid-big-plate {
+    min-height: 400px;
+    background-image: url('/src/pages/images/bigbg.png');
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    gap: 30px;
+}
+
+.wbp-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.widvideo-instruction {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin-bottom: 100px;
+}
+
+.widvideo {
+    background-color: rgba(247, 247, 247, 1);
+    border-radius: 20px;
+    width: 100%;
+}
+
+.widvideo-steps {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+    width: 80%;
+}
+
+.widmain-cta {
+    background-color: rgba(83, 41, 255, 1);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 100px;
+    color: white;
+}
+
+
+
 
 
 /* FOOTER */

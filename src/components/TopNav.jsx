@@ -84,7 +84,7 @@ const TopNav = ({ title }) => {
                                     <p className='mb-2'>Тарифы</p> */}
                                 </div>
                                 <hr style={{ minWidth: '220px', height: '1px', border: '1px solid silver', marginBottom: '4px' }} />
-                                <a href="/development/signin" className='link'
+                                <a href="/signin" className='link'
                                     style={{
                                         paddingTop: '4px',
                                         width: '240px'
