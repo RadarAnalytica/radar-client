@@ -13,7 +13,7 @@ const SignInPage = () => {
             if (user && user.is_onboarded === true) {
                 navigate('/development/dashboard')
             } else if (user && user.is_onboarded === false) {
-                navigate('/development/onboarding')
+                navigate('/development/linked-shops')
             }
         }, 300);
     }, [user?.is_onboarded])

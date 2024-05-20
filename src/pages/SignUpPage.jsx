@@ -11,7 +11,7 @@ const SignUpPage = () => {
     useEffect(() => {
         setTimeout(() => {
             if (user) {
-                navigate('/development/dashboard')
+                navigate('/instruction')
             }
         }, 200);
     }, [user])

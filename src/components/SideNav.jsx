@@ -34,7 +34,7 @@ const SideNav = () => {
                     <div className='sidenav-el' onClick={() => navigate('/development/dashboard')}>
                         <div className='d-flex align-items-center'>
                             <img src={active === 'dashboard' ? purplegrow : greygrow} alt="" className='side-nav-icon' />
-                            <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', color: 'black' } : {}}>Сводка продаж</span>
+                            <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', fontSize: '14px', color: 'black' } : {}}>Сводка продаж</span>
                         </div>
                     </div>
                     <div className='sidenav-el' onClick={() => setGoodsShown(!goodsShown)}>
@@ -47,7 +47,7 @@ const SideNav = () => {
                                     :
                                     <img src={goods} alt="" className='side-nav-icon' />
                             }
-                            <span className='sidenav-title' style={location === 'orders-map' || location === 'supply' || location === 'stock-analysis' ? { fontWeight: 'bold', color: 'black' } : {}}>Мои товары</span>
+                            <span className='sidenav-title' style={location === 'orders-map' || location === 'supply' || location === 'stock-analysis' ? { fontWeight: 'bold', fontSize: '14px', color: 'black' } : {}}>Мои товары</span>
                         </div>
                         <span>
                             {goodsShown ? <IoIosArrowUp /> : <IoIosArrowDown />}
@@ -57,7 +57,7 @@ const SideNav = () => {
                         goodsShown ?
                             <div>
                                 <p
-                                    className='sidenav-title ps-4 submenu-item' style={location === 'supply' ? { fontWeight: 'bold' } : {}}
+                                    className='sidenav-title ps-4 submenu-item' style={location === 'supply' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
                                     onClick={() => navigate('/development/supply')}
                                 >
                                     {
@@ -70,7 +70,7 @@ const SideNav = () => {
                                     Расчет поставок
                                 </p>
                                 <p
-                                    className='sidenav-title ps-4 submenu-item' style={location === 'orders-map' ? { fontWeight: 'bold' } : {}}
+                                    className='sidenav-title ps-4 submenu-item' style={location === 'orders-map' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
                                     onClick={() => navigate('/development/orders-map')}
                                 >
                                     {
@@ -83,7 +83,7 @@ const SideNav = () => {
                                     География заказов
                                 </p>
                                 <p
-                                    className='sidenav-title ps-4 submenu-item' style={location === 'stock-analysis' ? { fontWeight: 'bold' } : {}}
+                                    className='sidenav-title ps-4 submenu-item' style={location === 'stock-analysis' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
                                     onClick={() => navigate('/development/stock-analysis')}
                                 >
                                     {
@@ -108,7 +108,7 @@ const SideNav = () => {
                                     :
                                     <img src={magic} alt="" className='side-nav-icon' />
                             }
-                            <span className='sidenav-title' style={location === 'calculate' || location === 'monitoring' ? { fontWeight: 'bold', color: 'black' } : {}}>Продвижение</span>
+                            <span className='sidenav-title' style={location === 'calculate' || location === 'monitoring' ? { fontWeight: 'bold', fontSize: '14px', color: 'black' } : {}}>Продвижение</span>
                         </div>
                         <span>
                             {promotionShown ? <IoIosArrowUp /> : <IoIosArrowDown />}
@@ -120,7 +120,7 @@ const SideNav = () => {
                                 <p
                                     className='sidenav-title ps-4 submenu-item'
                                     onClick={() => navigate('/development/monitoring')}
-                                    style={location === 'monitoring' ? { fontWeight: 'bold' } : {}}
+                                    style={location === 'monitoring' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
                                 >
                                     {
                                         location === 'monitoring' ?
@@ -134,7 +134,7 @@ const SideNav = () => {
                                 <p
                                     className='sidenav-title ps-4 submenu-item'
                                     onClick={() => navigate('/development/calculate')}
-                                    style={location === 'calculate' ? { fontWeight: 'bold' } : {}}
+                                    style={location === 'calculate' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
                                 >
                                     {
                                         location === 'calculate' ?

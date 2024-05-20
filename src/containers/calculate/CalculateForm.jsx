@@ -54,15 +54,15 @@ const CalculateForm = ({
             <p className="fw-bold mb-1 mt-2" style={{ fontSize: '2.25vh' }}>Дополнительно</p>
             <div className="calc-inputs row pl-3">
                 <div className='col'>
-                    <label style={{ fontSize: '1.75vh' }} htmlFor="">Процент выкупа, %</label>
+                    <label className='mb-2' style={{ fontSize: '1.75vh' }} htmlFor="">Процент выкупа, %</label>
                     <input type="number" className='form-control' onChange={e => setBuyoutRate(Number(e.target.value))} />
                 </div>
                 <div className='col'>
-                    <label style={{ fontSize: '1.75vh' }} htmlFor="">Налоговая ставка, %</label>
+                    <label className='mb-2' style={{ fontSize: '1.75vh' }} htmlFor="">Налоговая ставка, %</label>
                     <input type="number" className='form-control' onChange={e => setTaxRate(Number(e.target.value))} />
                 </div>
                 <div className='col'>
-                    <label style={{ fontSize: '1.75vh' }} htmlFor="">Амортизация, %</label>
+                    <label className='mb-2' style={{ fontSize: '1.75vh' }} htmlFor="">Амортизация, %</label>
                     <input type="number" className='form-control' onChange={e => setAmortization(Number(e.target.value))} />
                 </div>
             </div>

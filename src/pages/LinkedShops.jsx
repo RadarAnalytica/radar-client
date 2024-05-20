@@ -12,6 +12,7 @@ import Modal from 'react-bootstrap/Modal';
 import InputField from '../components/InputField'
 import DragDropFile from '../components/DragAndDropFiles'
 import { ServiceFunctions } from '../service/serviceFunctions'
+import WbIcon from '../assets/WbIcon'
 
 const LinkedShops = () => {
 
@@ -127,7 +128,7 @@ const LinkedShops = () => {
                                     <div className="linked-shop-block col me-2" key={i}>
                                         <div>
                                             <div className='d-flex align-items-center gap-2'>
-                                                <img src={wblogo} alt="" />
+                                                <WbIcon />
                                                 <div style={{ width: '100%' }}>
                                                     <div className="d-flex justify-content-between">
                                                         <h3 className="fw-bold">{item.brand_name}</h3>
@@ -222,7 +223,7 @@ const LinkedShops = () => {
             <Modal show={show} onHide={handleClose} className='add-token-modal'>
                 <Modal.Header closeButton>
                     <div className="d-flex align-items-center gap-2">
-                        <img src={wblogo} alt="" style={{ width: '40px' }} />
+                        <WbIcon />
                         <div style={{ width: '100%' }}>
                             <div className="d-flex justify-content-between">
                                 <h4 className="fw-bold mb-0">Подключение магазина</h4>
@@ -259,7 +260,7 @@ const LinkedShops = () => {
             <Modal show={showEdit} onHide={() => setShowEdit(false)} className='add-token-modal'>
                 <Modal.Header closeButton>
                     <div className="d-flex align-items-center gap-2">
-                        <img src={wblogo} alt="" style={{ width: '40px' }} />
+                        <WbIcon />
                         <div style={{ width: '100%' }}>
                             <div className="d-flex justify-content-between">
                                 <h4 className="fw-bold mb-0">Редактирование магазина</h4>
@@ -284,7 +285,7 @@ const LinkedShops = () => {
                     <div className="mt-3">
                         <a href="#" className='link mb-0 pb-0'>Где найти токен?</a>
                     </div>
-                    <div className="mt-3 d-flex align-items-center justify-content-between">
+                    {/* <div className="mt-3 d-flex align-items-center justify-content-between">
                         <span>Себестоимость</span>
                         <div className="d-flex align-items-center gap-2">
                             <svg width="149" height="36" viewBox="0 0 149 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -299,7 +300,7 @@ const LinkedShops = () => {
                                 Изменить
                             </a>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="d-flex justify-content-between w-100 mt-2">
                         <button className='prime-btn' style={{ padding: '16px 20px' }}
                             onClick={() => { editShop(activeShop, true, false, authToken, brandName, tkn); setShowEdit(false) }}>

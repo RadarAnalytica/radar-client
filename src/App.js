@@ -21,6 +21,7 @@ import Monitoring from './pages/Monitoring';
 import SupplyCount from './pages/SupplyCount';
 import StockAnalysis from './pages/StockAnalysis';
 import MainWidget from './pages/MainWidget';
+import Politics from './pages/Politics';
 
 function App() {
 
@@ -36,8 +37,9 @@ function App() {
             <Route path='/' element={<MockUpPage />} />
             <Route path='/signup' element={<SignUpPage />} />
             <Route path='/signin' element={<SignInPage />} />
-            <Route path='/development/spasibo' element={<Spasibo />} />
-            <Route path='/development/instruction' element={<Instructions />} />
+            <Route path='/spasibo' element={<Spasibo />} />
+            <Route path='/politics' element={<Politics />} />
+            <Route path='/instruction' element={<Instructions />} />
             <Route path='/development/onboarding' element={<Onboarding />} />
             <Route path='/development/dashboard' element={<DashboardPage />} />
             <Route path='/development/monitoring' element={<Monitoring />} />
@@ -67,13 +69,15 @@ function App() {
           {/* <Route path='/development/*' element={<Navigate to={'/signin'} replace />} /> */}
           <Route path='/signup' element={<SignUpPage />} />
           <Route path='/signin' element={<SignInPage />} />
-          <Route path='/development/spasibo' element={<Spasibo />} />
-          <Route path='/development/instruction' element={<Instructions />} />
+          <Route path='/spasibo' element={<Spasibo />} />
+          <Route path='/politics' element={<Politics />} />
+          <Route path='/instruction' element={<Instructions />} />
           <Route path='/development/onboarding' element={<Onboarding />} />
           <Route path='/development/dashboard' element={<DashboardPage />} />
           <Route path='/development/monitoring' element={<Monitoring />} />
           <Route path='/development/supply' element={<SupplyCount />} />
           <Route path='/development/home' element={<MainWidget />} />
+          <Route path='/development/linked-shops' element={<LinkedShops />} />
           <Route path='/development/stock-analysis' element={<StockAnalysis />} />
           <Route path='/development/calculate' element={<Calculate />} />
           {/* <Route path='/development/settings' element={<Settings />} /> */}

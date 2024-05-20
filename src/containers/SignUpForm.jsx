@@ -85,8 +85,8 @@ const SignUpForm = () => {
     const [sent, setSent] = useState(false)
 
     useEffect(() => {
-        let firstname = name?.split(' ')[0]
-        let lastname = name?.split(' ')[1]
+        let lastname = name?.split(' ')[0]
+        let firstname = name?.split(' ')[1]
         let patronym = name?.split(' ')[2]
         setRegData({ ...regData, firstname, lastname, patronym })
     }, [name])
@@ -209,7 +209,7 @@ const SignUpForm = () => {
                         hide={true}
                         maxLength={40}
                     />
-                    <InputField
+                    {/* <InputField
                         type={'text'}
                         placeholder={'Ваш промокод'}
                         label={'Промокод'}
@@ -217,7 +217,7 @@ const SignUpForm = () => {
                         // passErrorText={passErrorText}
                         // hide={true}
                         maxLength={40}
-                    />
+                    /> */}
                 </div>
                 <button className='prime-btn' onClick={e => sumbitHandler(e, regData)} style={{ width: '100%', height: '7vh' }}>Зарегистрироваться</button>
                 <div>
@@ -225,7 +225,7 @@ const SignUpForm = () => {
                 </div>
                 <div className="text-center mb-0 pb-0">
                     <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh' }}>
-                        Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с <span className="fw-bold" style={{ textDecoration: 'underline', }}>Пользовательским соглашением</span> и <span className="fw-bold" style={{ textDecoration: 'underline', }}>Политикой конфиденциальности</span>
+                        Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с <span className="fw-bold" style={{ textDecoration: 'underline', }}>Пользовательским соглашением</span> и <a href='/politics' className="fw-bold" style={{ textDecoration: 'underline', color: 'grey' }}>Политикой конфиденциальности</a>
                     </p>
                 </div>
 

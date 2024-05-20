@@ -750,6 +750,10 @@ select {
   justify-content: center;
 }
 
+.modal-content {
+  border-radius: 16px !important;
+}
+
 #order+label {
   position: relative;
   padding-left: 25px;
