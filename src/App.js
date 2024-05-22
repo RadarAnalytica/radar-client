@@ -22,6 +22,7 @@ import SupplyCount from './pages/SupplyCount';
 import StockAnalysis from './pages/StockAnalysis';
 import MainWidget from './pages/MainWidget';
 import Politics from './pages/Politics';
+import StubPage from './pages/StubPage';
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
           <MobileMenu />
           <Routes>
             <Route path='/' element={<MockUpPage />} />
+            <Route path='/stub' element={<StubPage />} />
             <Route path='/signup' element={<SignUpPage />} />
             <Route path='/signin' element={<SignInPage />} />
             <Route path='/spasibo' element={<Spasibo />} />
@@ -67,6 +69,7 @@ function App() {
         <Routes>
           <Route path='/' element={<MockUpPage />} />
           {/* <Route path='/development/*' element={<Navigate to={'/signin'} replace />} /> */}
+          <Route path='/stub' element={<StubPage />} />
           <Route path='/signup' element={<SignUpPage />} />
           <Route path='/signin' element={<SignInPage />} />
           <Route path='/spasibo' element={<Spasibo />} />
