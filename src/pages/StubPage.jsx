@@ -81,7 +81,9 @@ const StubPage = () => {
                             <h2 className='fw-bold'>
                                 <span style={{ color: 'rgba(83, 41, 255, 1)' }}>Переходите</span> на любую страницу товара на Wildberries и изучайте данные
                             </h2>
-                            <button className="prime-btn" style={{ minHeight: '63px' }}>
+                            <button onClick={() => {
+                                document.location.href = 'https://www.wildberries.ru/catalog/211645637/detail.aspx'
+                            }} className="prime-btn" style={{ minHeight: '63px' }}>
                                 Протестировать расширение
                             </button>
                         </div>
