@@ -1,19 +1,19 @@
 import React from 'react'
 import './styles.css'
-import Footer from '../components/Footer'
-import toptg from './images/toptgicon.png'
-import demo from '../assets/ext-demo.png'
+// import Footer from '../components/Footer'
+// import toptg from './images/toptgicon.png'
+// import demo from '../assets/ext-demo.png'
 import ExtDemoSvg from '../components/ExtDemoSvg'
-import Fragment1 from './images/Fragment1'
-import YellowBtn from './images/YellowBtn'
-import Button from './images/Button'
-import Free from './images/Free'
+// import Fragment1 from './images/Fragment1'
+// import YellowBtn from './images/YellowBtn'
+// import Button from './images/Button'
+// import Free from './images/Free'
 import TopTgIcon from './images/TopTgIcon'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 const Spasibo = () => {
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     return (
         <div className='spasibo-page'>
@@ -93,7 +93,7 @@ const Spasibo = () => {
                         <ExtDemoSvg />
                     </div>
 
-                    <div className="sps-share-cta">
+                    {/* <div className="sps-share-cta">
                         <div className="d-flex align-items-center justify-content-between mb-2">
                             <Fragment1 />
                             <a href="https://radar-analytica.ru/signin">
@@ -186,7 +186,7 @@ const Spasibo = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                 </div>
             </div>

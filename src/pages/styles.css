@@ -409,7 +409,30 @@
     /* padding-bottom: 40px; */
 }
 
+.stub-page {
 
+    .spasibo-container {
+        height: calc(100vh-48px);
+
+        .sps-stub {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+
+            .footer {
+                height: 48px;
+                min-height: 48px;
+                padding-bottom: 4px;
+            
+            }
+        }
+    }
+}
+
+.stub-second {
+    margin-bottom: auto;
+}
 
 
 /* FOOTER */

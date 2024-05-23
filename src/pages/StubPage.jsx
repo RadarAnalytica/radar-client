@@ -1,22 +1,22 @@
 import React from 'react'
 import './styles.css'
-import Footer from '../components/Footer'
-import toptg from './images/toptgicon.png'
-import demo from '../assets/ext-demo.png'
-import ExtDemoSvg from '../components/ExtDemoSvg'
-import Fragment1 from './images/Fragment1'
-import YellowBtn from './images/YellowBtn'
-import Button from './images/Button'
-import Free from './images/Free'
+// import Footer from '../components/Footer'
+// import toptg from './images/toptgicon.png'
+// import demo from '../assets/ext-demo.png'
+// import ExtDemoSvg from '../components/ExtDemoSvg'
+// import Fragment1 from './images/Fragment1'
+// import YellowBtn from './images/YellowBtn'
+// import Button from './images/Button'
+// import Free from './images/Free'
 import TopTgIcon from './images/TopTgIcon'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 const StubPage = () => {
 
     return (
-        <div className='spasibo-page'>
+        <div className='spasibo-page stub-page'>
             <div className="container spasibo-container">
-                <div>
+                <div className="sps-stub">
                     <div className='sps-top'>
                         <svg width="200" height="74" viewBox="0 0 200 74" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M160.646 41.5532V15.744H169.233V21.8258C170.118 19.6111 171.328 17.9501 172.861 16.8428C174.394 15.7355 176.251 15.1818 178.432 15.1818C178.79 15.1818 179.147 15.1989 179.505 15.2329C179.88 15.25 180.255 15.284 180.629 15.3351L179.761 23.6145C179.215 23.4271 178.679 23.2909 178.151 23.2057C177.623 23.1205 177.112 23.0779 176.618 23.0779C174.403 23.0779 172.691 23.7593 171.481 25.1222C170.289 26.468 169.692 28.3846 169.692 30.8718V41.5532H160.646Z" fill="#1A1A1A" />
@@ -67,7 +67,7 @@ const StubPage = () => {
                         </div>
                     </div>
 
-                    <div className="sps-second">
+                    <div className="sps-second stub-second">
                         <div>
                             <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="54" height="54" rx="15" fill="#00B69B" />
