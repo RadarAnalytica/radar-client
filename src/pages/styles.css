@@ -178,6 +178,18 @@
     width: 40%;
 }
 
+.sps__wb-link:hover {
+    color: white;
+}
+
+.sps-lk {
+    text-decoration: none;
+}
+
+.sps-lk:hover {
+    color: white;
+}
+
 .sps-share-cta {
     min-height: 200px;
     /* width: 90vw; */
@@ -244,6 +256,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.sps-share-cta,
+.separator,
+.sps-bottom {
+    display: none;
 }
 
 
@@ -386,6 +404,10 @@
     color: white;
 }
 
+.footer-sps {
+    height: 75px;
+    /* padding-bottom: 40px; */
+}
 
 
 
