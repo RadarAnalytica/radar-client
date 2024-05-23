@@ -11,9 +11,9 @@ const SignInPage = () => {
     useEffect(() => {
         setTimeout(() => {
             if (user && user.is_onboarded === true) {
-                navigate('/development/dashboard')
+                navigate('/stub')
             } else if (user && user.is_onboarded === false) {
-                navigate('/development/linked-shops')
+                navigate('/stub')
             }
         }, 300);
     }, [user?.is_onboarded])
