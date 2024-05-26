@@ -37,7 +37,7 @@ const InfoForm = () => {
                 </p>
             </div>
             <div>
-                <p className='clue-text text-center mb-0 mt-1'>Уже подтвердили аккаунт? <Link className='link' to={'/development/signin'}>Войти</Link></p>
+                <p className='clue-text text-center mb-0 mt-1'>Уже подтвердили аккаунт? <Link className='link' to={'/signin'}>Войти</Link></p>
             </div>
         </div>
     )

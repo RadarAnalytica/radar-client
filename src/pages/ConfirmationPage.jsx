@@ -23,7 +23,7 @@ const ConfirmationPage = () => {
                 .then(response => {
                     if (response.status === 200) {
                         console.log('Успешно подтверждено', response.data);
-                        navigate('/development/signin')
+                        navigate('/signin')
                     }
                 })
                 .catch(error => {
