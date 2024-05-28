@@ -11,7 +11,7 @@ const SignUpPage = () => {
     useEffect(() => {
         setTimeout(() => {
             if (user) {
-                navigate('/instruction')
+                navigate('/stub')
             }
         }, 200);
     }, [user])
