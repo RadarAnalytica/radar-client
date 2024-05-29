@@ -23,6 +23,9 @@ import StockAnalysis from './pages/StockAnalysis';
 import MainWidget from './pages/MainWidget';
 import Politics from './pages/Politics';
 import StubPage from './pages/StubPage';
+import MainPage from './pages/MainPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
 
@@ -36,6 +39,7 @@ function App() {
           <MobileMenu />
           <Routes>
             <Route path='/' element={<MockUpPage />} />
+            
             <Route path='/stub' element={<StubPage />} />
             <Route path='/signup' element={<SignUpPage />} />
             <Route path='/signin' element={<SignInPage />} />
@@ -68,6 +72,7 @@ function App() {
       <AuthProvider >
         <Routes>
           <Route path='/' element={<MockUpPage />} />
+          <Route path='/development/home' element={<MainPage />} />
           {/* <Route path='/development/*' element={<Navigate to={'/signin'} replace />} /> */}
           <Route path='/stub' element={<StubPage />} />
           <Route path='/signup' element={<SignUpPage />} />
@@ -79,7 +84,7 @@ function App() {
           <Route path='/development/dashboard' element={<DashboardPage />} />
           <Route path='/development/monitoring' element={<Monitoring />} />
           <Route path='/development/supply' element={<SupplyCount />} />
-          <Route path='/development/home' element={<MainWidget />} />
+          <Route path='/app' element={<MainWidget />} />
           <Route path='/development/linked-shops' element={<LinkedShops />} />
           <Route path='/development/stock-analysis' element={<StockAnalysis />} />
           <Route path='/development/calculate' element={<Calculate />} />
