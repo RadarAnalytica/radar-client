@@ -11,6 +11,7 @@ import bussines3 from '../pages/images/bussines3.png';
 import manager1 from '../pages/images/manager1.png';
 import manager2 from '../pages/images/manager2.png';
 import manager3 from '../pages/images/manager3.png';
+import Steps from '../pages/images/Steps';
 
 const newbie = [
   {
@@ -86,9 +87,10 @@ const BtnHomePage = () => {
       >
         <button
           onClick={() => handleClick(newbie, 'newbie')}
-          className={activeButton === 'newbie' ? 'prime-btn' : 'secondary-btn'} // Проверяем, какая кнопка активна
+          className={activeButton === 'newbie' ? 'prime-btn' : 'secondary-btn'}
           id='btnDop'
-        >
+        >{activeButton === 'newbie' ? <Steps.Circle /> : <span></span>}
+          
           Новички
         </button>
         <button
@@ -97,7 +99,7 @@ const BtnHomePage = () => {
             activeButton === 'currentSellers' ? 'prime-btn' : 'secondary-btn'
           }
           id='btnDop'
-        >
+        >{activeButton === 'currentSellers' ? <Steps.Circle /> : <span></span>}
           Действующие продавцы
         </button>
         <button
@@ -106,14 +108,14 @@ const BtnHomePage = () => {
             activeButton === 'business' ? 'prime-btn' : 'secondary-btn'
           }
           id='btnDop'
-        >
+        >{activeButton === 'business' ? <Steps.Circle /> : <span></span>}
           Крупный бизнес
         </button>
         <button
           onClick={() => handleClick(manager, 'manager')}
           className={activeButton === 'manager' ? 'prime-btn' : 'secondary-btn'}
           id='btnDop'
-        >
+        >{activeButton === 'manager' ? <Steps.Circle /> : <span></span>}
           Менеджеры маркетплейсов и агентства
         </button>
       </div>

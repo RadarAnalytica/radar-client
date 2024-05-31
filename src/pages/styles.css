@@ -274,16 +274,25 @@
 }
 
 /* WIDGET MAIN */
-.widget-main {
+.widget-main,
+.page-main {
   background-color: white;
   min-height: 100vh;
 }
 
-.widmain-header {
+.widmain-header,
+.page-header {
   border-bottom: 1px solid silver;
 }
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
 
-.widhead-container {
+.widhead-container,
+.page-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -292,7 +301,6 @@
 .thesesHome {
   display: flex;
   align-items: center;
-
   border: 1px solid black;
   padding: 5px;
   margin: 10px;
@@ -300,6 +308,18 @@
   font-size: 20px;
   background-color: rgba(255, 255, 255, 0.19);
   color: white;
+}
+
+.thesesHome2 {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 15px;
+  font-size: 20px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
 }
 
 .btn-warning {
@@ -311,14 +331,31 @@
   width: 100%;
 }
 
-.mainBlock {
+.white-btn {
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: none;
+  font-size: 25px;
+  width: 60%;
+  color: #5329ff;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.blockInOnAnalytics {
   background-color: rgba(83, 41, 255, 1);
   width: 100%;
   border-radius: 15px;
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  margin-top: -10px;
+  margin-top: -25px;
+  position: relative;
+}
+
+.secondary-btn {
+  border: none;
+  background-color: rgb(255, 255, 255);
 }
 
 .mainBlockFourBtn {
@@ -326,7 +363,75 @@
   padding: 40px;
   border-radius: 20px;
   margin-top: 50px;
-  
+}
+
+.btn-black {
+  background-color: black;
+  border-radius: 12px;
+  border: none;
+  font-size: 25px;
+  color: white;
+  width: 100%;
+}
+
+.cardsPriceStart,
+.cardsPricePro,
+.cardsPriceProPlus {
+  margin: 5px;
+  width: 100%;
+  border-radius: 20px;
+  border: 2px solid #0000001a;
+  box-shadow: 0px 20px 30px 2px #0000001a;
+  padding: 20px;
+  height: 665px;
+}
+.labelCard {
+  margin-top: 10px;
+}
+.priceCardOne {
+  font-weight: 700;
+  font-size: 40px;
+}
+
+.bonusPro {
+  background-color: #5329ff1a;
+}
+
+.bonusProPlus {
+  background: #0000001a;
+}
+.bonusPro,
+.bonusProPlus {
+  margin-top: 10px;
+  padding: 16px;
+  gap: 10px;
+  border-radius: 10px;
+}
+
+.HeadCardStart {
+  background: #f0ad001a;
+}
+
+.HeadCardPro {
+  background: #5329ff1a;
+}
+
+.HeadCardProPlus {
+  background: white;
+}
+.cardsPriceProPlus {
+  background: #0069ff;
+}
+
+.HeadCardStart,
+.HeadCardPro,
+.HeadCardProPlus {
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.bodyCardProPlus {
+  color: white;
 }
 
 #btnDop {
@@ -388,14 +493,16 @@
   width: 100%;
 }
 
-.widheader-menu {
+.widheader-menu,
+.home-menu {
   display: flex;
   align-items: center;
   justify-content: space-around;
   width: 40%;
 }
 
-.widmenu-item {
+.widmenu-item,
+.home-item {
   font-weight: 600;
   font-size: 20px;
 }
@@ -407,6 +514,18 @@
 .wid-solution {
   background-color: rgba(0, 0, 0, 0.03);
   min-height: 200px;
+  width: 100%;
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  gap: 20px;
+}
+
+.wid-solutionMain {
+  background-image: url('/src/pages/images/imageFonStartBsn.png');
+  background-size: cover;
+  min-height: 200px;
+  color: white;
   width: 100%;
   border-radius: 20px;
   padding: 30px;
@@ -463,6 +582,23 @@
   justify-content: space-between;
   color: white;
   gap: 30px;
+}
+
+button.accordion-button:not(.collapsed)::after {
+  background-image: url('/src/pages/images/accordStr2.png');
+  background-size: 2rem;
+  width: 35px;
+  height: 35px;
+}
+
+button.accordion-button {
+  background-color: rgba(245, 222, 179, 0.13);
+}
+button.accordion-button.collapsed::after {
+  background-image: url('/src/pages/images/accordStr.png');
+  background-size: 2rem;
+  width: 35px;
+  height: 35px;
 }
 
 .wbp-left {

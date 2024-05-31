@@ -6,7 +6,7 @@ const BlockImg = () => {
     <img
       src={blockMainPage}
       alt='Block Main Page'
-      style={{ width: '841px', height: '575' }}
+      style={{ width: '100%' }}
     />
   );
 };

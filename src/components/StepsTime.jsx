@@ -38,14 +38,15 @@ const StepsTime = () => {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',marginTop:'30px'
+          justifyContent: 'space-between',
+          marginTop: '30px',
         }}
       >
         {' '}
         <div className='steps' style={{ transform: 'rotate(-4deg)' }}>
           <div>
             <div>
-              <Steps />
+              <Steps.StepsBlue />
             </div>
             <div style={{ fontSize: '25px', fontWeight: '700' }}>Запуск</div>
             <div style={{ fontSize: '16px' }}>
@@ -63,7 +64,7 @@ const StepsTime = () => {
         >
           <div>
             <div>
-              <Steps />
+              <Steps.StepsBlue />
             </div>
             <div style={{ fontSize: '25px', fontWeight: '700' }}>
               Старт работы
@@ -81,7 +82,7 @@ const StepsTime = () => {
         <div className='steps' style={{ zIndex: 2 }}>
           <div>
             <div>
-              <Steps />
+              <Steps.StepsBlue />
             </div>
             <div style={{ fontSize: '25px', fontWeight: '700' }}>Рост</div>
             <div style={{ fontSize: '16px' }}>
@@ -100,7 +101,7 @@ const StepsTime = () => {
         >
           <div>
             <div>
-              <Steps />
+              <Steps.StepsBlue />
             </div>
             <div style={{ fontSize: '25px', fontWeight: '700' }}>Кризис</div>
             <div style={{ fontSize: '16px' }}>
@@ -117,7 +118,7 @@ const StepsTime = () => {
         <div className='stepsBtn' style={{ transform: 'rotate(5deg)' }}>
           <div>
             <div>
-              <Steps />
+              <Steps.StepsWhite />
             </div>
             <div style={{ fontSize: '25px', fontWeight: '700', zIndex: 2 }}>
               Масштабируй свой бизнес
