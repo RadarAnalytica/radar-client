@@ -144,4 +144,62 @@ const Circle = () => {
   );
 };
 
-export default { StepsBlue, StepsWhite, Circle };
+const CircleOkBlue = () => {
+  return (
+    <svg
+      width='31'
+      height='31'
+      viewBox='0 0 31 31'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <circle
+        cx='15.6104'
+        cy='15.0566'
+        r='11.25'
+        stroke='#5329FF'
+        stroke-width='2.5'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
+      <path
+        d='M19.3604 12.5566L14.3604 17.5566L11.8604 15.0566'
+        stroke='#5329FF'
+        stroke-width='2.5'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
+    </svg>
+  );
+};
+
+const CircleOkWhite = () => {
+  return (
+    <svg
+      width='31'
+      height='31'
+      viewBox='0 0 31 31'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <circle
+        cx='15.6104'
+        cy='15.0566'
+        r='11.25'
+        stroke='white'
+        stroke-width='2.5'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
+      <path
+        d='M19.3604 12.5566L14.3604 17.5566L11.8604 15.0566'
+        stroke='white'
+        stroke-width='2.5'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+      />
+    </svg>
+  );
+};
+
+export default { StepsBlue, StepsWhite, Circle, CircleOkBlue, CircleOkWhite };

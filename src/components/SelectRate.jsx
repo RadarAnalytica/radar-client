@@ -53,37 +53,46 @@ const SelectRate = () => {
               Выберите тариф, который подойдет{' '}
               <span style={{ color: '#F0AD00' }}>именно Вам</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between',backgroundColor: '#1A1A1A08', padding:'5px', borderRadius:'10px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                backgroundColor: '#1A1A1A08',
+                padding: '5px',
+                borderRadius: '10px',
+              }}
+            >
               <button
                 onClick={() => handlePeriodChange('1month')}
-                className={selectedPeriod === '1month' ? 'prime-btn' : 'secondary-btn'}
+                className={
+                  selectedPeriod === '1month' ? 'prime-btn' : 'secondary-btn'
+                }
                 id='btnDop'
-              >{selectedPeriod === '1month' ? <Steps.Circle /> : <span></span>}
+              >
+                {selectedPeriod === '1month' ? <Steps.Circle /> : <span></span>}
                 1 месяц
               </button>
               <button
                 onClick={() => handlePeriodChange('3month')}
-                className={selectedPeriod === '3month' ? 'prime-btn' : 'secondary-btn'}
+                className={
+                  selectedPeriod === '3month' ? 'prime-btn' : 'secondary-btn'
+                }
                 id='btnDop'
-              >{selectedPeriod === '3month' ? <Steps.Circle /> : <span></span>}
+              >
+                {selectedPeriod === '3month' ? <Steps.Circle /> : <span></span>}
                 3 месяца{' '}
-                <span
-                  style={{ backgroundColor: '#5329FF1A' }}
-                >
-                  -10%
-                </span>
+                <span style={{ backgroundColor: '#5329FF1A' }}>-10%</span>
               </button>
               <button
                 onClick={() => handlePeriodChange('6month')}
-                className={selectedPeriod === '6month' ? 'prime-btn' : 'secondary-btn'}
+                className={
+                  selectedPeriod === '6month' ? 'prime-btn' : 'secondary-btn'
+                }
                 id='btnDop'
-              >{selectedPeriod === '6month' ? <Steps.Circle /> : <span></span>}
+              >
+                {selectedPeriod === '6month' ? <Steps.Circle /> : <span></span>}
                 6 месяцев{' '}
-                <span
-                  style={{ backgroundColor: '#5329FF1A' }}
-                >
-                  до -60%
-                </span>
+                <span style={{ backgroundColor: '#5329FF1A' }}>до -60%</span>
               </button>
             </div>
           </div>
@@ -321,7 +330,8 @@ const SelectRate = () => {
                     fontWeight: '500',
                   }}
                 >
-                  Личный менеджер
+                  <Steps.CircleOkBlue />
+                  <span style={{ marginLeft: '5px' }}>Личный менеджер</span>
                 </div>
               </div>
             </div>
@@ -445,8 +455,16 @@ const SelectRate = () => {
                     fontWeight: '500',
                   }}
                 >
-                  <div>Личный менеджер</div>
-                  <div>приоритетная поддержка</div>
+                  <div>
+                    <Steps.CircleOkWhite />
+                    <span style={{ marginLeft: '5px' }}>Личный менеджер</span>
+                  </div>
+                  <div>
+                    <Steps.CircleOkWhite />
+                    <span style={{ marginLeft: '5px' }}>
+                      приоритетная поддержка
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
