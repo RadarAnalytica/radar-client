@@ -177,6 +177,7 @@ const NavbarMainHome = () => {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+
           <span className='home-item'>Тарифы</span>
           <span className='home-item'>Контакты</span>
         </div>

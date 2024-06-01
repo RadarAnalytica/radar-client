@@ -18,6 +18,7 @@ import SelectRate from '../components/SelectRate';
 import SolLabelStartBsn from './images/SolLabelStartBsn';
 import YellowRadarPoint from './images/YellowRadarPoint';
 import NavbarMainHome from '../components/NavbarMainHome';
+import Reviews from '../components/Reviews';
 
 const MainPage = () => {
   const [isActive, setActive] = useState(true);
@@ -294,11 +295,14 @@ const MainPage = () => {
           <div>
             <SelectRate />
           </div>
-          <div className='pt-5 pb-5 mt-5 mb-5 d-flex justify-content-center'>
+          <div className='pt-5 pb-3 mt-5 d-flex justify-content-center'>
             <h4 className='fw-bold text-center' style={{ width: '50%' }}>
               Более 6 000 предпринимателей уже используют Radar Analytica
               для начала и развития бизнеса на маркетплейсах
             </h4>
+          </div>
+          <div className='ReviewsUsersIP'>
+            <Reviews />
           </div>
           <div style={{ marginBottom: '50px' }}>
             <AccordionMain />
