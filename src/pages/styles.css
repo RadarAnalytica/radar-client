@@ -336,6 +336,21 @@
   width: 100%;
 }
 
+.context404 {
+  font-size: 20vw;
+}
+
+.context404noFound {
+  font-size: 5vw;
+  margin-bottom: 30px;
+}
+
+.context404,
+.context404noFound {
+  text-align: center;
+  font-weight: 700;
+}
+
 .white-btn {
   background-color: #ffffff;
   border-radius: 12px;
@@ -528,6 +543,7 @@
 .home-item {
   font-weight: 600;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .widbody-container {

@@ -436,7 +436,8 @@ const DashboardPage = () => {
     const maxAmount = sortedValuesArray && sortedValuesArray.length ? sortedValuesArray.filter(item => typeof item === 'number')[0] : 50
 
     return (
-        user && <div className='dashboard-page'>
+        user && 
+        <div className='dashboard-page'>
             <SideNav />
             <div className="dashboard-content pb-3">
                 <TopNav title={'Сводка продаж'} />

@@ -7,6 +7,7 @@ import MobileMenu from './components/MobileMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
+
 const SignUpPage = React.lazy(() => import('./pages/SignUpPage'));
 const SignInPage = React.lazy(() => import('./pages/SignInPage'));
 const Onboarding = React.lazy(() => import('./pages/Onboarding'));
@@ -28,6 +29,7 @@ const MainWidget = React.lazy(() => import('./pages/MainWidget'));
 const Politics = React.lazy(() => import('./pages/Politics'));
 const StubPage = React.lazy(() => import('./pages/StubPage'));
 const MainPage = React.lazy(() => import('./pages/MainPage'));
+const Page404 = React.lazy(() => import('./pages/Page404'))
 
 
 function App() {
@@ -79,6 +81,8 @@ function App() {
               <React.Suspense fallback={<>...</>}> <RequestResetLink /></React.Suspense>} />
             <Route path='/confirmation/:email/:code' element={
               <React.Suspense fallback={<>...</>}> <ConfirmationPage /></React.Suspense>} />
+               <Route path='/development/Page404' element={
+              <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
             {/* <Route path='/development/settings' element={<Settings />} /> */}
             {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
           </Routes>
@@ -133,7 +137,8 @@ function App() {
             <React.Suspense fallback={<>...</>}> <ConfirmationPage /></React.Suspense>} />
           <Route path='/restore/:email/:code' element={
             <React.Suspense fallback={<>...</>}> <ResetPage /></React.Suspense>} />
-
+          <Route path='/development/Page404' element={
+            <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
 
           {/* <Route path='/' element={<MockUpPage />} />
           <Route path='/development/home' element={<MainPage />} />
