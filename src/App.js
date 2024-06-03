@@ -92,7 +92,7 @@ function App() {
               :
             (<>
             <Route path='/development/dashboard' element={
-                <React.Suspense fallback={<>...</>}> <DashboardPage /></React.Suspense>} />
+                <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             <Route path='/development/monitoring' element={
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             <Route path='/development/supply' element={

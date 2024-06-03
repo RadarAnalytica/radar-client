@@ -41,6 +41,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                         {
                             brandNames && brandNames.map((brand, i) => (
                                 <option key={i} value={brand}>{brand}</option>
+                                
                             ))
                         }
                         {/* <option value="store1">Магазин 1</option>
