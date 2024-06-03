@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import LogoNavbarSelect from '../pages/images/LogoNavbarSelect';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../service/AuthContext';
 
 const NavbarMainHome = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   return (
     <div className='page-header'>
       <div className='container page-container'>
@@ -183,12 +187,24 @@ const NavbarMainHome = () => {
         </div>
 
         <div className='widheader-login'>
-          <button
-            className='prime-btn'
-            style={{ width: '134px', height: '71px', fontSize: '20px' }}
-          >
-            Войти
-          </button>
+          {user ? (
+            <button
+              className='prime-btn'
+              style={{ width: '134px', height: '71px', fontSize: '20px' }}
+            >
+              Войти
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                navigate('/signin');
+              }}
+              className='prime-btn'
+              style={{ width: '134px', height: '71px', fontSize: '20px' }}
+            >
+              Войти
+            </button>
+          )}
         </div>
       </div>
     </div>

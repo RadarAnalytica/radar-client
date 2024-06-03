@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import YellowRadar from './images/YellowRadar';
@@ -43,6 +43,8 @@ const MainPage = () => {
   const handleInternalClick = () => {
     setActive(false);
   };
+
+ 
 
   return (
     <div className='page-main'>
