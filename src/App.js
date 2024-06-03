@@ -43,6 +43,7 @@ function App() {
         <AuthProvider >
           <MobileMenu />
           <Routes>
+            
             <Route path='/' element={
               <React.Suspense fallback={<>...</>}> <MockUpPage /></React.Suspense>} />
             <Route path='/development/home' element={
@@ -59,30 +60,53 @@ function App() {
               <React.Suspense fallback={<>...</>}> <Politics /></React.Suspense>} />
             <Route path='/instruction' element={
               <React.Suspense fallback={<>...</>}> <Instructions /></React.Suspense>} />
+
             <Route path='/development/onboarding' element={
               <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
+            <Route path='/app' element={
+              <React.Suspense fallback={<>...</>}> <MainWidget /></React.Suspense>} />
+            <Route path='/reset' element={
+              <React.Suspense fallback={<>...</>}> <RequestResetLink /></React.Suspense>} />
+            <Route path='/confirmation/:email/:code' element={
+              <React.Suspense fallback={<>...</>}> <ConfirmationPage /></React.Suspense>} />
+            <Route path='/development/Page404' element={
+              <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
+            
+            {user.is_onboarded ? (
+            <>
             <Route path='/development/dashboard' element={
               <React.Suspense fallback={<>...</>}> <DashboardPage /></React.Suspense>} />
             <Route path='/development/monitoring' element={
               <React.Suspense fallback={<>...</>}> <Monitoring /></React.Suspense>} />
             <Route path='/development/supply' element={
               <React.Suspense fallback={<>...</>}> <SupplyCount /></React.Suspense>} />
-            <Route path='/app' element={
-              <React.Suspense fallback={<>...</>}> <MainWidget /></React.Suspense>} />
             <Route path='/development/stock-analysis' element={
               <React.Suspense fallback={<>...</>}> <StockAnalysis /></React.Suspense>} />
             <Route path='/development/calculate' element={
               <React.Suspense fallback={<>...</>}> <Calculate /></React.Suspense>} />
             <Route path='/development/orders-map' element={
               <React.Suspense fallback={<>...</>}> <OrdersMap /></React.Suspense>} />
-            <Route path='/development/linked-shops' element={
+              <Route path='/development/linked-shops' element={
               <React.Suspense fallback={<>...</>}> <LinkedShops /></React.Suspense>} />
-            <Route path='/reset' element={
-              <React.Suspense fallback={<>...</>}> <RequestResetLink /></React.Suspense>} />
-            <Route path='/confirmation/:email/:code' element={
-              <React.Suspense fallback={<>...</>}> <ConfirmationPage /></React.Suspense>} />
-               <Route path='/development/Page404' element={
-              <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
+            </>)
+              :
+            (<>
+            <Route path='/development/dashboard' element={
+                <React.Suspense fallback={<>...</>}> <DashboardPage /></React.Suspense>} />
+            <Route path='/development/monitoring' element={
+                <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
+            <Route path='/development/supply' element={
+                <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
+            <Route path='/development/stock-analysis' element={
+                <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
+            <Route path='/development/calculate' element={
+                <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
+            <Route path='/development/orders-map' element={
+                <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
+                <Route path='/development/linked-shops' element={
+              <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
+            </>)}
+   
             {/* <Route path='/development/settings' element={<Settings />} /> */}
             {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
           </Routes>
@@ -112,25 +136,25 @@ function App() {
           <Route path='/politics' element={
             <React.Suspense fallback={<>...</>}> <Politics /></React.Suspense>} />
           <Route path='/instruction' element={
-            <React.Suspense fallback={<>...</>}> <Instructions /></React.Suspense>} />
+            <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/onboarding' element={
-            <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
+            <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/dashboard' element={
-            <React.Suspense fallback={<>...</>}> <DashboardPage /></React.Suspense>} />
+            <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/monitoring' element={
-            <React.Suspense fallback={<>...</>}> <Monitoring /></React.Suspense>} />
+            <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/supply' element={
-            <React.Suspense fallback={<>...</>}> <SupplyCount /></React.Suspense>} />
+            <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/app' element={
             <React.Suspense fallback={<>...</>}> <MainWidget /></React.Suspense>} />
           <Route path='/development/stock-analysis' element={
-            <React.Suspense fallback={<>...</>}> <StockAnalysis /></React.Suspense>} />
+            <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/calculate' element={
-            <React.Suspense fallback={<>...</>}> <Calculate /></React.Suspense>} />
+            <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/orders-map' element={
-            <React.Suspense fallback={<>...</>}> <OrdersMap /></React.Suspense>} />
+            <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/linked-shops' element={
-            <React.Suspense fallback={<>...</>}> <LinkedShops /></React.Suspense>} />
+            <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/reset' element={
             <React.Suspense fallback={<>...</>}> <RequestResetLink /></React.Suspense>} />
           <Route path='/confirmation/:email/:code' element={
