@@ -71,6 +71,8 @@ function App() {
               <React.Suspense fallback={<>...</>}> <ConfirmationPage /></React.Suspense>} />
             <Route path='/development/Page404' element={
               <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
+            <Route path='*' element={
+              <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
             
             {user.is_onboarded ? (
             <>
@@ -163,7 +165,8 @@ function App() {
             <React.Suspense fallback={<>...</>}> <ResetPage /></React.Suspense>} />
           <Route path='/development/Page404' element={
             <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
-
+          <Route path='*' element={
+            <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
           {/* <Route path='/' element={<MockUpPage />} />
           <Route path='/development/home' element={<MainPage />} />
           <Route path='/stub' element={<StubPage />} />
