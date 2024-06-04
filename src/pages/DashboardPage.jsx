@@ -40,7 +40,10 @@ const DashboardPage = () => {
   console.log('данные с BE по магазину, =============>', shops);
 
   useEffect(() => {
-    dispatch(fetchAllShops(days));
+    const timeout = setTimeout(() => {
+      dispatch(fetchAllShops(days));
+    }, 1000);
+    return () => clearTimeout(timeout);
   }, [dispatch]);
 
   useEffect(() => {
