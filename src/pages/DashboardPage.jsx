@@ -26,6 +26,7 @@ const DashboardPage = () => {
   const { user, authToken, showMobile } = useContext(AuthContext);
 
   const [wbData, setWbData] = useState();
+  console.log('wbData==>', wbData);
 
   const [days, setDays] = useState(14);
 
@@ -40,11 +41,8 @@ const DashboardPage = () => {
   console.log('данные с BE по магазину, =============>', shops);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      dispatch(fetchAllShops(days));
-    }, 1000);
-    return () => clearTimeout(timeout);
-  }, [dispatch]);
+    dispatch(fetchAllShops(days, activeBrand));
+  }, [activeBrand, days, dispatch]);
 
   useEffect(() => {
     if (user) {
@@ -61,6 +59,7 @@ const DashboardPage = () => {
     }
   }, [brandNames]);
 
+  //! getDataCollection - роута нет
   useEffect(() => {
     if (user && activeBrand) {
       ServiceFunctions.getDataCollection(user.id, days, activeBrand).then(
@@ -70,7 +69,8 @@ const DashboardPage = () => {
         (data) => setState(data)
       );
     }
-  }, [user, activeBrand]);
+  }, [user, activeBrand, days]);
+
 
   useEffect(() => {
     if (wbData) {
@@ -98,6 +98,7 @@ const DashboardPage = () => {
       : 0;
 
   const [reportDaily, setReportDaily] = useState();
+  console.log('reportDaily==>', reportDaily);
   const [reportWeekly, setReportWeekly] = useState();
   const [reportTwoWeeks, setReportTwoWeeks] = useState();
   const [reportMonthly, setReportMonthly] = useState();
@@ -118,6 +119,7 @@ const DashboardPage = () => {
   }, [wbData]);
 
   const [curOrders, setCurOrders] = useState();
+  console.log('curOrder==>', curOrders);
   useEffect(() => {
     if (days == 1) {
       setCurOrders(reportDaily);

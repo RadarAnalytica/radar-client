@@ -71,7 +71,7 @@ const LinkedShops = () => {
     // }, [expDate])
 
     const [activeShop, setActiveShop] = useState(null)
-
+    console.log('===>',activeShop)
     const [show, setShow] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
@@ -88,6 +88,7 @@ const LinkedShops = () => {
     const [files, setFiles] = useState()
 
     const [brandName, setBrandName] = useState()
+
     const [tkn, setTkn] = useState()
 
     const editShop = async (shop, is_active, is_deleted, authtoken, brand_name, token) => {
@@ -112,6 +113,10 @@ const LinkedShops = () => {
         return data
 
     }
+
+const setFileExel=()=>{
+    console.log('first')
+}
 
     return (
         <div className='linked-shops-page'>
@@ -393,7 +398,7 @@ const LinkedShops = () => {
                                     </div>
                                 </div>
                                 <div className="d-flex justify-content-center w-100 mt-2 gap-2">
-                                    <button className="prime-btn" style={{ height: '52px' }}>
+                                    <button className="prime-btn" style={{ height: '52px' }} onClick={setFileExel()}>
                                         Сохранить
                                     </button>
                                 </div>

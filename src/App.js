@@ -60,7 +60,6 @@ function App() {
               <React.Suspense fallback={<>...</>}> <Politics /></React.Suspense>} />
             <Route path='/instruction' element={
               <React.Suspense fallback={<>...</>}> <Instructions /></React.Suspense>} />
-
             <Route path='/development/onboarding' element={
               <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             <Route path='/app' element={
@@ -74,7 +73,7 @@ function App() {
             <Route path='*' element={
               <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
             
-            {user.is_onboarded ? (
+            {!user.is_onboarded ? (
             <>
             <Route path='/development/dashboard' element={
               <React.Suspense fallback={<>...</>}> <DashboardPage /></React.Suspense>} />

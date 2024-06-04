@@ -1,7 +1,7 @@
 import { URL } from "./config"
 
 
-
+const authToken = localStorage.getItem('authToken');
 export const ServiceFunctions = {
 
     register: async (object) => {
@@ -25,7 +25,8 @@ export const ServiceFunctions = {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
-                'authorization': 'JWT ' + authToken
+                Authorization: authToken,
+                // 'authorization': 'JWT ' + token
             },
             body: JSON.stringify({ brand_name, token, is_active: true })
         })
@@ -62,7 +63,8 @@ export const ServiceFunctions = {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
-                'authorization': 'JWT ' + token
+                Authorization: authToken,
+                // 'authorization': 'JWT ' + token
             },
         })
 
