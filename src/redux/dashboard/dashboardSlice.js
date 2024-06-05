@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAllShops } from '../../redux/dashboard/dashboardActions';
+import { fetchAllShops,fetchdownloadTemplate } from '../../redux/dashboard/dashboardActions';
 
 const initialState = {
   shops: [],
+  fileShop: [],
 };
 
 const dashboardSlice = createSlice({
@@ -12,6 +13,9 @@ const dashboardSlice = createSlice({
   extraReducers: (bulder) => {
     bulder.addCase(fetchAllShops.fulfilled, (state, action) => {
       state.shops = action.payload;
+    });
+    bulder.addCase(fetchdownloadTemplate.fulfilled, (state, action) => {
+      state.fileShop = action.payload;
     });
   },
 });

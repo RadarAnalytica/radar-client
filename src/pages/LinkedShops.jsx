@@ -14,8 +14,11 @@ import DragDropFile from '../components/DragAndDropFiles';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import WbIcon from '../assets/WbIcon';
 
-// import { useAppDispatch, useAppSelector } from '../redux/hooks';
-// import { fetchdownloadTemplate } from '../redux/dashboard/dashboardActions';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import {
+  fetchdownloadTemplate,
+  fetchSaveSetFile,
+} from '../redux/dashboard/dashboardActions';
 
 const LinkedShops = () => {
   const { user, authToken } = useContext(AuthContext);
@@ -27,14 +30,30 @@ const LinkedShops = () => {
     setShopId(item.id);
   };
 
-//   const dispatch = useAppDispatch();
-//   const shops = useAppSelector((state) => state.dashboardSlice.shops);
-//   console.log('данные с BE по магазину, =============>', shops);
+  const dispatch = useAppDispatch();
+  const fileShop = useAppSelector((state) => state.dashboardSlice.fileShop);
+  console.log('файл с БК для магаа, =============>', fileShop);
 
-//   const downloadTemplate = async (shopId) => {
-//     await dispatch(fetchdownloadTemplate(shopId));
-//     console.log('first');
-//   };
+  const downloadTemplate = (shopId) => {
+    dispatch(fetchdownloadTemplate({ shop_id: shopId }));
+    // const fileURL = dispatch(fetchdownloadTemplate({ shop_id: shopId }));
+    // const link = document.createElement('a');
+    // link.href = fileURL;
+    // link.setAttribute('download', fileShop);
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
+  };
+
+  //   const downloadTemplate = (file) => {
+  //     const fileURL = dispatch(fetchdownloadTemplate({ shop_id: shopId }));
+  //     const link = document.createElement('a');
+  //     link.href = fileURL;
+  //     link.setAttribute('download', fileName);
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //   };
 
   const navigate = useNavigate();
 
@@ -102,7 +121,12 @@ const LinkedShops = () => {
 
   const [file, setFile] = useState(null);
 
-  console.log(file);
+  console.log('==>file', file);
+
+  const saveSetTemplate = async () => {
+    await dispatch(fetchSaveSetFile({ shop_id: shopId, file }));
+    // console.log('status ', res);
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -627,7 +651,10 @@ const LinkedShops = () => {
               </div>
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
                 <button
-                  onClick={() => setShowSelfcost(false)}
+                  onClick={() => {
+                    setShowSelfcost(false);
+                    saveSetTemplate();
+                  }}
                   className='prime-btn'
                   style={{ height: '52px' }}
                 >
@@ -657,10 +684,14 @@ const LinkedShops = () => {
                                 </div> */}
               <DragDropFile files={file} setFiles={setFile} />
               <div
-                //  onClick={downloadTemplate()}
+                onClick={() => downloadTemplate(shopId)}
                 className='d-flex justify-content-center w-100 mt-2 gap-2'
               >
-                <a href='#' className='link'>
+                <a
+                  href={fileShop}
+                  download='себестоимость.xlsx'
+                  className='link'
+                >
                   Скачать шаблон
                 </a>
               </div>
