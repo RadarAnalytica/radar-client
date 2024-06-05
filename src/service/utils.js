@@ -1,19 +1,21 @@
 const moment = require('moment');
 
 export function filterArrays(obj, days) {
-    for (let key in obj) {
-        if (obj[key] && obj[key].data && Array.isArray(obj[key].data) && (key !== 'warehouses' && key !== 'info')) {
-            if (typeof obj[key].data === 'object' && obj[key].data.length) {
-                obj[key].data = obj[key].data.filter(item => {
+    const newObj = { ...obj }; // Создаем копию исходного объекта
+
+    for (let key in newObj) {
+        if (newObj[key] && newObj[key].data && Array.isArray(newObj[key].data) && (key !== 'warehouses' && key !== 'info')) {
+            if (typeof newObj[key].data === 'object' && newObj[key].data.length) {
+                newObj[key].data = newObj[key].data.filter(item => {
                     const date = item.date ? new Date(item.date) : item.lastChangeDate ? new Date(item.lastChangeDate) : item.sale_dt ? new Date(item.sale_dt) : new Date(item.create_dt);
                     const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
                     return date >= weekAgo;
                 });
             }
         }
-        else if (obj[key] && Array.isArray(obj[key]) && (key !== 'warehouses' && key !== 'info')) {
-            if (typeof obj[key] === 'object' && obj[key].length) {
-                obj[key] = obj[key].filter(item => {
+        else if (newObj[key] && Array.isArray(newObj[key]) && (key !== 'warehouses' && key !== 'info')) {
+            if (typeof newObj[key] === 'object' && newObj[key].length) {
+                newObj[key] = newObj[key].filter(item => {
                     const date = item.date ? new Date(item.date) : item.lastChangeDate ? new Date(item.lastChangeDate) : item.sale_dt ? new Date(item.sale_dt) : new Date(item.create_dt);
                     const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
                     return date >= weekAgo;
@@ -21,7 +23,8 @@ export function filterArrays(obj, days) {
             }
         }
     }
-    return obj
+
+    return newObj; 
 }
 
 export function filterArraysNoData(obj, days) {

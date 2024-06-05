@@ -62,15 +62,9 @@ const DashboardPage = () => {
   //! getDataCollection - роута нет
   useEffect(() => {
     if (user && activeBrand) {
-      ServiceFunctions.getDataCollection(user.id, days, activeBrand).then(
-        (data) => setWbData(filterArrays(data, days))
-      );
-      ServiceFunctions.getDataCollection(user.id, days, activeBrand).then(
-        (data) => setState(data)
-      );
+      setWbData(filterArrays(shops));
     }
-  }, [user, activeBrand, days]);
-
+  }, [user, activeBrand, shops]);
 
   useEffect(() => {
     if (wbData) {
