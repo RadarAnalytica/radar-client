@@ -72,8 +72,8 @@ function App() {
             <Route path='/development/Page404' element={
               <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
             <Route path='*' element={
-              <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
-            
+              <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />  
+
             {user.is_onboarded ? (
             <>
             <Route path='/development/dashboard' element={
