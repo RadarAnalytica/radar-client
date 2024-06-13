@@ -37,11 +37,11 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('authToken', data?.token)
 
 
-            // if (data.isOnboarded) {
-            //     navigate('/development/dashboard')
-            // } else if (!data.isOnboarded) {
-            //     navigate('/development/onboarding')
-            // }
+        }
+        if (data.isOnboarded) {
+            navigate('/development/dashboard')
+        } else if (!data.isOnboarded) {
+            navigate('/development/onboarding')
         }
     }
 
