@@ -28,12 +28,12 @@ const TableRow = ({ values }) => {
     )
 }
 
-const StorageTable = ({ title, data, titles, subtitles, wbData }) => {
+const StorageTable = ({ title, data, titles, subtitles, wbData, dataDashBoard }) => {
 
     return (
         <div className='storage-table mt-3'>
             {
-                !wbData ?
+                !dataDashBoard ?
                     <div className='d-flex flex-column align-items-center justify-content-center'
                         style={{ height: '100%', paddingTop: '20%' }}
                     >

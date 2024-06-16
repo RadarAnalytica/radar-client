@@ -61,12 +61,12 @@ const ChartTableRow = ({ object }) => {
     )
 }
 
-const ChartTable = ({ data, title, wbData }) => {
+const ChartTable = ({ data, title, wbData, dataDashBoard }) => {
 
     return (
         <div className='chart-table mt-3'>
             {
-                !wbData ?
+                !dataDashBoard ?
                     <div className='d-flex flex-column align-items-center justify-content-center'
                         style={{ height: '100%', paddingTop: '20%' }}
                     >

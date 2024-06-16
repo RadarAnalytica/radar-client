@@ -3,7 +3,7 @@ import { Chart } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 ChartJS.register(CategoryScale, LinearScale, Filler, BarController, PointElement, BarElement, LineController, LineElement, [Tooltip]);
 
-const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, salesLineOn, orderLineOn, maxValue, maxAmount, setSalesOn, setByMoney, byMoney, byAmount, setOrderLineOn, setSalesLineOn }) => {
+const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, salesLineOn, orderLineOn, maxValue, maxAmount, setSalesOn, setByMoney, byMoney, byAmount, setOrderLineOn, setSalesLineOn, dataDashBoard }) => {
 
     const activeIcon = require('../assets/tick-active.png')
     const activeIconYellow = require('../assets/tick-active-yellow.png')
@@ -20,7 +20,7 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
         }
     }, [data, loading])
 
-    console.log(data);
+        
 
     return (
         <div className='big-chart'>
@@ -103,7 +103,7 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
             </div>
             <div className='bar-div'>
                 {
-                    !labels?.length ?
+                    dataDashBoard?.length ?
                         <div className='d-flex flex-column align-items-center justify-content-center'
                             style={{ height: '100%', paddingTop: '15%' }}
                         >

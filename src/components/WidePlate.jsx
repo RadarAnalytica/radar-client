@@ -1,9 +1,8 @@
 import React from 'react'
 import { formatPrice } from '../service/utils';
 
-const WidePlate = ({ title, titles, income, products, data }) => {
-
-    const sales = data ? Object.values(data)?.map(array => array?.totalSales) : []
+const WidePlate = ({ title, titles, income, products, data, dataDashBoard }) => {
+    const sales = data ? Object.values(data)?.filter(array => array?.totalSales) : []
     const salesPerc = data ? Object.values(data)?.map(array => array?.salesPercentage) : []
     const amount = data ? Object.values(data)?.map(array => array?.totalAmount) : []
     const amountPerc = data ? Object.values(data)?.map(array => array?.quantityPercentage) : []
@@ -24,21 +23,39 @@ const WidePlate = ({ title, titles, income, products, data }) => {
             <div className='d-flex mb-2' style={{ borderTop: '1px solid silver', paddingTop: '8px' }}>
                 <span className="col-2 medium-numbers" style={{ fontWeight: 600 }}>Выручка</span>
                 {
-                    sales && sales.map((t, i) =>
-                        <div className={'col '} key={i}>
-                            <span className='me-2 medium-numbers'>{formatPrice(t) + ' ₽' || 0}</span>
-                            <span className='tiny-numbers' style={salesPerc[i] >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : salesPerc[i] > 25 && salesPerc[i] < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{salesPerc ? formatPrice(salesPerc[i]) + ' %' : 0}</span>
-                        </div>)
+                    <>
+                        <div className={'col '} >
+                            <span className='me-2 medium-numbers'>{dataDashBoard?.amountA + ' ₽' }</span>
+                            <span className='tiny-numbers' style={dataDashBoard?.amountPercentA >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : dataDashBoard?.amountPercentA > 25 && dataDashBoard?.amountPercentA < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{dataDashBoard?.amountPercentA ? formatPrice(dataDashBoard?.amountPercentA) + ' %' : 0}</span>
+                        </div>
+                        <div className={'col '} >
+                            <span className='me-2 medium-numbers'>{dataDashBoard?.amountB + ' ₽'}</span>
+                            <span className='tiny-numbers' style={dataDashBoard?.amountPercentB >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : dataDashBoard?.amountPercentB > 25 && dataDashBoard?.amountPercentB < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{dataDashBoard?.amountPercentB ? formatPrice(dataDashBoard?.amountPercentB) + ' %' : 0}</span>
+                        </div>
+                        <div className={'col '} >
+                            <span className='me-2 medium-numbers'>{dataDashBoard?.amountC + ' ₽'}</span>
+                            <span className='tiny-numbers' style={dataDashBoard?.amountPercentC >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : dataDashBoard?.amountPercentC > 25 && dataDashBoard?.amountPercentC < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{dataDashBoard?.amountPercentC ? formatPrice(dataDashBoard?.amountPercentC) + ' %' : 0}</span>
+                        </div>
+                    </>
                 }
             </div>
             <div className='d-flex mb-2' style={{ borderTop: '1px solid silver', paddingTop: '8px' }}>
                 <span className="col-2 medium-numbers" style={{ fontWeight: 600 }}>Товар</span>
                 {
-                    amount && amount.map((t, i) =>
-                        <div className={'col'} key={i}>
-                            <span className='me-2 medium-numbers'>{t + ' шт'}</span>
-                            <span className='tiny-numbers' style={amountPerc[i] >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : amountPerc[i] > 25 && amountPerc[i] < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{amountPerc ? formatPrice(amountPerc[i]) + ' %' : 0}</span>
-                        </div>)
+                    <>
+                        <div className={'col'} >
+                            <span className='me-2 medium-numbers'>{dataDashBoard?.countA + ' шт'}</span>
+                            <span className='tiny-numbers' style={dataDashBoard?.countPercentA >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : dataDashBoard?.countPercentA > 25 && dataDashBoard?.countPercentA < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{dataDashBoard?.countPercentA ? formatPrice(dataDashBoard?.countPercentA) + ' %' : 0}</span>
+                        </div>
+                        <div className={'col'} >
+                            <span className='me-2 medium-numbers'>{dataDashBoard?.countB + ' шт'}</span>
+                            <span className='tiny-numbers' style={dataDashBoard?.countPercentB >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : dataDashBoard?.countPercentB > 25 && dataDashBoard?.countPercentB < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{dataDashBoard?.countPercentB ? formatPrice(dataDashBoard?.countPercentB) + ' %' : 0}</span>
+                        </div>
+                        <div className={'col'} >
+                            <span className='me-2 medium-numbers'>{dataDashBoard?.countC + ' шт'}</span>
+                            <span className='tiny-numbers' style={dataDashBoard?.countPercentC >= 45 ? { fontSize: '12px', color: 'rgba(0, 182, 155, 1)' } : dataDashBoard?.countPercentC > 25 && dataDashBoard?.countPercentC < 45 ? { fontSize: '12px', color: 'rgba(240, 173, 0, 1)' } : { fontSize: '12px', color: 'rgba(249, 60, 101, 1)' }}>{dataDashBoard?.countPercentC ? formatPrice(dataDashBoard?.countPercentC) + ' %' : 0}</span>
+                        </div>
+                    </>
                 }
             </div>
         </div>

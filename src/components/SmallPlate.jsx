@@ -1,11 +1,11 @@
 import React from 'react'
 import { formatPrice } from '../service/utils'
 
-const SmallPlate = ({ name, value, type, percent, quantity, nochart, smallText, minHeight }) => {
+const SmallPlate = ({ name, value, type, percent, quantity, nochart, smallText, minHeight , dataDashBoard, marginalProfitCompare}) => {
 
     const green = require('../assets/greenarrow.png')
     const red = require('../assets/redarrow.png')
-
+    
     const rateUp = <svg style={{ width: '16px', height: '12px', marginRight: '10px' }} width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M14 0L16.29 2.29L11.41 7.17L7.41 3.17L0 10.59L1.41 12L7.41 6L11.41 10L17.71 3.71L20 6V0H14Z" fill="#00B69B" />
     </svg>
@@ -16,7 +16,7 @@ const SmallPlate = ({ name, value, type, percent, quantity, nochart, smallText, 
     return (
         <div className='small-plate' style={{ height: '100%' }}>
             {
-                value === null || value === undefined ?
+                dataDashBoard === null || dataDashBoard === undefined ?
                     <div className='d-flex flex-column align-items-center justify-content-center'
                         style={{ height: '100%' }}
                     >
@@ -26,7 +26,7 @@ const SmallPlate = ({ name, value, type, percent, quantity, nochart, smallText, 
                     <div className='d-flex flex-column justify-content-between' style={{ height: '100%' }}>
                         <p className='p-0 m-0  clue-text small-title' style={{ fontSize: '1.65vh' }} >{name}</p>
                         <div className='d-flex justify-content-between align-items-end'>
-                            <p className='p-0 m-0 fw-bold numbers'>{value ? formatPrice(value) : 0}{type === 'price' ? ' ₽' : ' %'}</p>
+                            <p className='p-0 m-0 fw-bold numbers'>{dataDashBoard ? formatPrice(dataDashBoard) : 0}{type === 'price' ? ' ₽' : ' %'}</p>
                             {
                                 !quantity ?
                                     <div>

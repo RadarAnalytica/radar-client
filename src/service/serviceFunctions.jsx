@@ -45,27 +45,27 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getFilteredCollection: async (id, days, brandName) => {
-    const res = await fetch(
-      `${URL}/api/data-collection/filtered/${id}?days=${days}&brandName=${brandName}`,
-      {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
+  // getFilteredCollection: async (id, days, brandName) => {
+  //   const res = await fetch(
+  //     `${URL}/api/data-collection/filtered/${id}?days=${days}&brandName=${brandName}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //     }
+  //   );
 
-    const data = await res.json();
-    return data;
-  },
+  //   const data = await res.json();
+  //   return data;
+  // },
 
   getBrandNames: async (token) => {
-    const res = await fetch(`${URL}/api/shop/all`, {
+    const res = await fetch('https://radar-analytica.ru/api/shop/all', {
       method: "GET",
       headers: {
         "content-type": "application/json",
-        authorization: "JWT " + token,
+        "authorization": "JWT " + token,
       },
     });
 
@@ -141,5 +141,42 @@ export const ServiceFunctions = {
     return data;
   },
 
- 
+  getDashBoard: async (token, day, idShop) => {
+    const res = await fetch(`https://radar-analytica.ru/api/dashboard/?period=${day}&shop=${idShop}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        "authorization": "JWT " + token
+
+      },
+    });
+
+    const data = await res.json();
+
+    return data;
+  },
+
+
+  getAllShops: async (token) => {
+    const res = await fetch('https://radar-analytica.ru/api/shop/all', {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        "authorization": "JWT " + token
+      },
+    });
+    const data = await res.json();
+    return data;
+  },
+  getGeographyData: async (token, day, idShop) => {
+    const res = await fetch(`https://radar-analytica.ru/api/geo/?period=${day}&shop=${idShop}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        "authorization": "JWT " + token
+      },
+    })
+    const data = await res.json()
+    return data
+  }
 };
