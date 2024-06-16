@@ -1,15 +1,33 @@
 import React from 'react'
 import { formatPrice } from '../../service/utils'
 
-const OrderTableExtended = ({ title, data }) => {
+const OrderTableExtended = ({ title, data, geoData }) => {
 
-    data?.data?.forEach(item => {
-        if (item.name && item.name.length) {
-            let name = item.name.split(' ')?.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-            item.name = name
+    const uniqueDistricts = Array.from(new Set(geoData.map(item => item.districtName[0].toUpperCase() + item.districtName.slice(1))));
+
+    const filteredGeoData = geoData.filter(item => uniqueDistricts.includes(item.districtName));
+
+
+    const updatedStockData = data.map((stock, index) => {
+        return {
+          ...stock,
+          districtName: filteredGeoData[index].districtName,
+          percentRegion: filteredGeoData[index].percent
+        };
+      });
+
+      updatedStockData.forEach(item => {
+        let sub = item.districtName?.split('федеральный округ')?.join('фо')
+        item.districtName = sub
+    })
+
+      updatedStockData?.forEach(item => {
+        if (item.stockName && item.stockName.length) {
+            let name = item.stockName.split(' ')?.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+            item.stockName = name
         }
         else {
-            item.name = "Регион не определен"
+            item.stockName = "Регион не определен"
         }
     })
 
@@ -22,14 +40,24 @@ const OrderTableExtended = ({ title, data }) => {
                 <p className="mb-2 clue-text col-3 text-center">Общая доля</p>
                 <p className="mb-2 clue-text col-2 text-end">По складу</p>
             </div>
+            { 
+            updatedStockData.map((item, key) => (
+                <div key={key} className='d-flex'>
+                <p style={{ fontWeight: 600 }} className="mb-2 col-5 pe-2">{item.districtName}</p>
+                
+            </div>
+            ))
+           
+                }
+           
             {
-                data && data.data && data.data.length ?
-                    data.data.map((item, key) => (
+                updatedStockData  && updatedStockData.length ?
+                updatedStockData.map((item, key) => (
                         <div key={key} className='d-flex'>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-5 pe-2">{item.name}</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-2">{formatPrice(item.sum)} ₽</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-3 text-center">{(item.percent)?.toFixed(1)}%</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-2 fw-bold text-end">{(item.percentTotal)?.toFixed(1)}%</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col-5 pe-2">{item.districtName}</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col-2">{formatPrice(item.orderAmount) || 0} ₽</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col-3 text-center">{(item.percentRegion)?.toFixed(1)}%</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col-2 fw-bold text-end">{(item.percent)?.toFixed(1)}%</p>
                         </div>
                     )) : null
             }

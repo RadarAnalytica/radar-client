@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OrdersMapFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => {
+const OrdersMapFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop }) => {
 
     return (
         <div className='orders-filter container dash-container'>
@@ -17,6 +17,9 @@ const OrdersMapFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                         <option selected={defaultValue === 31 ? true : false} value={'31'}>Месяц</option>
                         <option selected={defaultValue === 92 ? true : false} value={'92'}>3 месяца</option>
                     </select>
+                    <svg style={{ position: 'absolute', right: '1.75vw', top: '4.5vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 2L14 14L26 2" stroke="rgba(140, 140, 140, 1)" strokeWidth="4" strokeLinecap="round" />
+                    </svg>
                 </div>
                 {/* <div className="filter-item col me-2" st0le={{maxWidth: '12vw'}}>
                     <label htmlFor="marketplace">Маркетплейс:</label>
@@ -26,13 +29,16 @@ const OrdersMapFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                 </div> */}
                 <div className="filter-item col me-0" style={{ maxWidth: '12vw' }}>
                     <label htmlFor="store">Магазин:</label>
-                    <select className='form-control' defaultValue={brandNames ? brandNames[0] : null} onChange={e => changeBrand(e.target.value)}>
+                    <select className='form-control' defaultValue={shop?.slice(0, 1)[0].id} onChange={e => changeBrand(e.target.value)}>
                         {
-                            brandNames && brandNames.map((brand, i) => (
-                                <option key={i} value={brand}>{brand}</option>
+                            shop && shop.map((brand, i) => (
+                                <option key={i} value={brand.id}>{brand.brand_name}</option>
                             ))
                         }
                     </select>
+                    <svg style={{ position: 'absolute', right: '1.75vw', top: '4.5vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 2L14 14L26 2" stroke="rgba(140, 140, 140, 1)" strokeWidth="4" strokeLinecap="round" />
+                    </svg>
                 </div>
                 {/* <div className="filter-item col me-2" st0le={{maxWidth: '12vw'}}>
                     <label htmlFor="store">Бренд:</label>

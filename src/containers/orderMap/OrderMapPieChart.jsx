@@ -5,7 +5,7 @@ import { formatPrice } from '../../service/utils';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const OrderMapPieChart = ({ title, data, info, sub, link }) => {
+const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
 
     const backgroundColor = [
         'rgba(129, 172, 255, 1)',
@@ -15,17 +15,31 @@ const OrderMapPieChart = ({ title, data, info, sub, link }) => {
         'rgba(254, 197, 61, 1)',
     ]
 
-    info = info ? info?.filter(o => o.fo)?.slice(0, 5) : []
+    info = info ? info?.sort((a,b) => b.orderCount - a.orderCount).filter(o => o.districtName ? o.districtName : o.stockName)?.slice(0, 5) : []
     info.forEach(item => {
-        let sub = item.fo?.split('Федеральный Округ')?.join('ФО')
-        item.fo = sub
+        let sub = item.districtName?.split('федеральный округ')?.join('фо')
+        item.districtName = sub
     })
 
-    const totalAmount = info ? info.reduce((acc, item) => acc + item.amount, 0) : 0
-    const totalSum = info ? info.reduce((acc, item) => acc + Number(item.sum), 0) : 0
 
+    const totalAmount =  info.reduce((acc, item) => acc + item.saleAmount, 0) 
+    const totalSum =  info.reduce((acc, item) => acc + Number(item.saleCount), 0)
+    const otherRegion = info.reduce((acc, item) => acc + item.percent, 0)
     const green = require('../../assets/greenarrow.png')
     const red = require('../../assets/redarrow.png')
+
+
+    const data = {
+        labels: info?.map(item => item.districtName ? item.districtName : item.stockName),
+        datasets: [
+            {
+                data: info?.map(item => item.orderCount),
+                backgroundColor: backgroundColor,
+                borderColor: 'white',
+                borderWidth: 0
+            },
+        ],
+    }
 
     return (
         <div className='order-map-doughnut'>
@@ -123,23 +137,23 @@ const OrderMapPieChart = ({ title, data, info, sub, link }) => {
                                                 marginRight: '0.5vw',
                                                 marginTop: '0.75vh'
                                             }}>&nbsp;</span>
-                                        <p className="mb-0 col-6 pe-2" style={{ fontSize: '1.75vh' }}>
-                                            {obj.fo}
+                                        <p className="mb-0  pe-2" style={{ fontSize: '1.75vh' }}>
+                                            {obj.districtName ? obj.districtName : obj.stockName}
                                         </p>
                                     </div>
-                                    <p className="mb-0 col text-end fw-bold" style={{ fontSize: '1.85vh' }}>{obj.percent}&nbsp;%</p>
+                                    <p className="mb-0 col text-end fw-bold" style={{ fontSize: '1.85vh' }}>{obj.percent.toFixed(1)}&nbsp;%</p>
                                     <div
                                         className="mb-0 ms-1 col-2 text-end d-flex justify-content-around align-items-start"
                                         style={{ fontSize: '1.85vh', paddingLeft: '1vw' }}
                                     >
                                         <span className='pb-1'>
-                                            <img src={obj.growth > 0 ? green : red} alt="" style={{ width: '1.25vw', marginRight: '4px' }} />
+                                            <img src={obj.comparePercent > 0 ? green : red} alt="" style={{ width: '1.25vw', marginRight: '4px' }} />
                                         </span>
-                                        <span className='pt-1' style={obj.growth > 0 ?
+                                        <span className='pt-1' style={obj.comparePercent > 0 ?
                                             { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(0, 182, 155, 1)' } :
                                             { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(249, 60, 101, 1)' }}
                                         >
-                                            {Number(obj.growth).toFixed(0)} %
+                                            {Number(obj.comparePercent).toFixed(0)} %
                                         </span>
                                     </div>
                                 </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { formatPrice } from '../service/utils'
 
-const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) => {
+const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2, dataDashBoard }) => {
 
     const green = require('../assets/greenarrow.png')
     const red = require('../assets/redarrow.png')
@@ -40,7 +40,7 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) 
     return (
         <div className='medium-plate col' >
             {
-                value === null || value === undefined ?
+                dataDashBoard === null || dataDashBoard === undefined ?
                     <div className='d-flex flex-column align-items-center justify-content-center'
                         style={{ height: '100%' }}
                     >
@@ -51,7 +51,7 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2 }) 
                         <div className='w-100'>
                             <div className='mb-1'>
                                 <p className='p-0 m-0 mb-1 clue-text' style={{ fontSize: '1.75vh' }}>{name}</p>
-                                <p className='p-0 m-0 mb-1 fw-bold numbers'>{formatPrice(value) || '0,00'} ₽</p>
+                                <p className='p-0 m-0 mb-1 fw-bold numbers'>{formatPrice(dataDashBoard) || '0,00'} ₽</p>
                                 <div className="d-flex align-items-center gap-2">
                                     <div className="d-flex align-items-center">
                                         {percent > 0 ? rateUp : rateDown}

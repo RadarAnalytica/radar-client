@@ -13,6 +13,8 @@ import DropFile from "../components/DropFile";
 
 const Onboarding = () => {
   const { user, authToken } = useContext(AuthContext);
+  console.log(user, 'USER')
+
   
 
   const [activeShop, setActiveShop] = useState(null)

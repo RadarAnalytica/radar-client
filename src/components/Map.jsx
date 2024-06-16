@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
-const Map = ({ onMouseOut, onMouseMove }) => {
+let ref
+
+const Map = ({refProp, onMouseOut, onMouseMove }) => {
     return (
-        <svg onMouseMove={e => onMouseMove(e)} onMouseOut={e => onMouseOut(e)} width="1334" height="579" viewBox="0 0 1334 579" fill="none" xmlns="http://www.w3.org/2000/svg" id='order-map'>
+        <svg ref={refProp} onMouseMove={e => onMouseMove(e)} onMouseOut={e => onMouseOut(e)} width="1334" height="579" viewBox="0 0 1334 579" fill="none" xmlns="http://www.w3.org/2000/svg" id='order-map'>
 
             <g className='g-box-shadow' name='Центральный ФО'>
                 <path name="Центральный ФО" fill-rule="evenodd" clip-rule="evenodd" d="M136.826 261.961L137.872 264.696L135.779 271.035L140.564 273.396L144.003 275.509L148.189 273.396H148.338H148.488L153.87 273.645L160.449 270.786L162.094 267.182L162.243 266.933H162.542L168.822 267.554L172.56 266.809L172.859 266.684V266.933L174.354 271.035L179.736 272.65L181.231 271.78L183.026 266.56L179.886 264.323H179.736V264.074L180.334 260.843L178.391 258.978L175.4 256.989L175.251 256.865V256.741L177.045 251.645L171.064 247.295H170.915V247.17L171.214 243.814L168.822 242.82H168.672L169.27 240.458L168.523 238.967L164.635 238.843L163.589 240.086L163.439 240.21L163.29 240.334L161.496 240.458L161.346 240.583L161.197 240.458L160.449 239.34H158.655L155.665 241.204L154.618 244.809L154.468 244.933L152.525 246.549L153.571 247.419H153.721V247.667L153.272 249.408V249.656H152.824L149.983 249.532L148.338 251.148L148.189 254.504L148.039 254.628L136.826 261.961Z" fill="white" fill-opacity="0.8" />

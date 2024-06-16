@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => {
+const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop,  }) => {
 
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14)).toLocaleDateString('ru')?.split('.').reverse().join('-')
@@ -37,10 +37,10 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays }) => 
                 </div> */}
                 <div className="filter-item col">
                     <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="store">Магазин:</label>
-                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue={brandNames ? brandNames[0] : null} onChange={e => changeBrand(e.target.value)}>
+                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue={shop?.slice(0, 1)[0].id} onChange={e => changeBrand(e.target.value)}>
                         {
-                            brandNames && brandNames.map((brand, i) => (
-                                <option key={i} value={brand}>{brand}</option>
+                            shop && shop?.map((brand) => (
+                                <option key={brand.id} value={brand.id}>{brand.brand_name}</option>
                                 
                             ))
                         }

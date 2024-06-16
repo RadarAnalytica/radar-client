@@ -49,12 +49,12 @@ export const TableRow = ({ values, percent, sign }) => {
     )
 }
 
-const FinanceTable = ({ title, data, sign, wbData }) => {
+const FinanceTable = ({ title, data, sign, wbData, dataDashBoard }) => {
 
     return (
         <div className='finance-table mb-0'>
             {
-                !wbData ?
+                !dataDashBoard ?
                     <div className='d-flex flex-column align-items-center justify-content-center'
                         style={{ height: '100%', paddingTop: '20%' }}
                     >
