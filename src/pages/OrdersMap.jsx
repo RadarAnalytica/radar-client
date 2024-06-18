@@ -11,204 +11,21 @@ import AuthContext from '../service/AuthContext'
 import { ServiceFunctions } from '../service/serviceFunctions'
 import { calculateGrowthPercentageGeo, filterArrays, filterArraysNoData, formatPrice } from '../service/utils'
 
+
+
 const OrdersMap = () => {
 
 
-  const geoData = {
-    stock_data: [
-      {
-        stockName: "Краснодар",
-        percent: 0.0004662126159837921,
-        comparePercent: -34.8678993545798,
-        orderCount: 1,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        stockName: "Коледино",
-        percent: 0.05174960037420092,
-        comparePercent: 78.51020176892943,
-        orderCount: 79,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        stockName: "Электросталь",
-        percent: 0.041026710206573704,
-        comparePercent: -29.673314640527884,
-        orderCount: 148,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        stockName: "Казань",
-        percent: 0.0004662126159837921,
-        comparePercent: -34.8678993545798,
-        orderCount: 1,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-    ],
-    geo_data: [
-      {
-        districtName: "южный федеральный округ",
-        percent: 0,
-        comparePercent: 100,
-        orderCount: 37,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        districtName: "Центральный федеральный округ",
-        percent: 0.027506544343043733,
-        comparePercent: -11.65990946943008,
-        orderCount: 0,
-        orderAmount: 0,
-        saleCount: 0,
-        saleAmount: 0,
-      },
-      {
-        districtName: "Южный федеральный округ",
-        percent: 0.01352016586352997,
-        comparePercent: -14.144049149218834,
-        orderCount: 0,
-        orderAmount: 0,
-        saleCount: 0,
-        saleAmount: 0,
-      },
-      {
-        districtName: "северо-кавказский федеральный округ",
-        percent: 0,
-        comparePercent: 100,
-        orderCount: 6,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        districtName: "Приволжский федеральный округ",
-        percent: 0.01352016586352997,
-        comparePercent: 11.107701101010926,
-        orderCount: 0,
-        orderAmount: 0,
-        saleCount: 0,
-        saleAmount: 0,
-      },
-      {
-        districtName: "приволжский федеральный округ",
-        percent: 0,
-        comparePercent: 100,
-        orderCount: 45,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        districtName: "Северо-Кавказский федеральный округ",
-        percent: 0.0027972756959027526,
-        comparePercent: -2.3018490318696934,
-        orderCount: 50,
-        orderAmount: 40,
-        saleCount: 40,
-        saleAmount: 10,
-      },
-      {
-        districtName: "северо-западный федеральный округ",
-        percent: 0,
-        comparePercent: 100,
-        orderCount: 14,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        districtName: "сибирский федеральный округ",
-        percent: 0,
-        comparePercent: 100,
-        orderCount: 23,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        districtName: "Другой округ",
-        percent: 0.008391827087708258,
-        comparePercent: 6.5798010561421485,
-        orderCount: 19,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        districtName: "дальневосточный федеральный округ",
-        percent: 0,
-        comparePercent: 100,
-        orderCount: 1,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        districtName: "Сибирский федеральный округ",
-        percent: 0.01118910278361101,
-        comparePercent: 95.39630193626061,
-        orderCount: 0,
-        orderAmount: 0,
-        saleCount: 0,
-        saleAmount: 0,
-      },
-      {
-        districtName: "центральный федеральный округ",
-        percent: 0,
-        comparePercent: 100,
-        orderCount: 61,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-      {
-        districtName: "Уральский федеральный округ",
-        percent: 0.008858039703692049,
-        comparePercent: 30.26420129084038,
-        orderCount: 0,
-        orderAmount: 0,
-        saleCount: 0,
-        saleAmount: 0,
-      },
-      {
-        districtName: "Северо-Западный федеральный округ",
-        percent: 0.007925614471724466,
-        comparePercent: 16.55218010233088,
-        orderCount: 0,
-        orderAmount: 0,
-        saleCount: 0,
-        saleAmount: 0,
-      },
-      {
-        districtName: "уральский федеральный округ",
-        percent: 0,
-        comparePercent: 100,
-        orderCount: 23,
-        orderAmount: 0,
-        saleCount: null,
-        saleAmount: null,
-      },
-    ],
-  };
+  
 
 
     const { user, authToken } = useContext(AuthContext)
 
     const [byRegions, setByRegions] = useState(true)
 
-    const [days, setDays] = useState(31)
+    const [days, setDays] = useState(14)
     const [brandNames, setBrandNames] = useState()
-    const [activeBrand, setActiveBrand] = useState()
+    const [activeBrand, setActiveBrand] = useState(0)
     // useEffect(() => {
     //     if (user) {
     //         ServiceFunctions.getBrandNames(user.id).then(data => setBrandNames(data))
@@ -221,14 +38,15 @@ const OrdersMap = () => {
     }, [brandNames])
 
     const [shop, setShop] = useState()
-    const [regionData, setRigionData] = useState()
+    const [geoData, setGeoData] = useState({})
+    console.log(geoData, 'GEO DATA')
 
     useEffect(() => {
         ServiceFunctions.getAllShops(authToken).then(data => setShop(data));
     }, [])
 
     useEffect(() => {
-        ServiceFunctions.getGeographyData(authToken, days, activeBrand).then(data => setRigionData(data))
+        ServiceFunctions.getGeographyData(authToken, days, activeBrand).then(data => setGeoData(data))
     }, [days, activeBrand])
 
 
@@ -329,6 +147,7 @@ const OrdersMap = () => {
 
     const [foName, setFoName] = useState()
     const [foFirst, setFoFirst] = useState()
+    console.log(foFirst, 'foFirst');
 
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
@@ -355,17 +174,21 @@ const OrdersMap = () => {
     map ? map.addEventListener('mouseover', findGTagName) : console.log();
 
     const [tooltipData, setTooltipData] = useState()
+    console.log(tooltipData, 'tooltipData');
     useEffect(() => {
-        if (foFirst && data) {
+        if (foFirst && geoData) {
             const info = {
-                ordersSum: data.orders?.filter(el => el.oblastOkrugName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.reduce((acc, item) => acc + item.finishedPrice, 0),
-                salesSum: data.sales?.filter(el => el.oblastOkrugName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.reduce((acc, item) => acc + item.finishedPrice, 0),
-                ordersAmount: data.orders?.filter(el => el.oblastOkrugName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.length,
-                salesAmount: data.sales?.filter(el => el.oblastOkrugName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.length,
+                ordersCount:  [...geoData?.geo_data]?.filter(el => el.districtName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.orderCount || 1,
+                salesAmount: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.saleAmount || 1,
+                ordersAmount: [...geoData?.geo_data]?.filter(el => el.districtName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.orderAmount || 1,
+                salesCount: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.saleCount || 1,
+                percent: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.percent || 1,
+                comparePercent: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.comparePercent || 1
             }
+            console.log(info, "INFO")
             setTooltipData(info)
         }
-    }, [foFirst, data, tooltipPosition.x])
+    }, [foFirst, geoData, tooltipPosition.x])
 
     const hideTooltip = () => {
         setTooltipData();
@@ -401,13 +224,15 @@ const OrdersMap = () => {
         }
     }
 
+    const green = require('../assets/greenarrow.png')
+    const red = require('../assets/redarrow.png')
+
+
     let totalOrdersSum = data && data.ordersTableData ? data.ordersTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
     let totalSalesSum = data && data.ordersTableData ? data.salesTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
-
+    
 
   const [isHovered, setIsHovered] = useState(false);
-  const ref = React.useRef();
-  console.log(ref, 'refRef')
    
     return (
         <div className='orders-map'>
@@ -454,7 +279,6 @@ const OrdersMap = () => {
                             onMouseLeave={() => setIsHovered(false)}
                              id="map">
                                 <Map
-                                    childRef={ref}
                                     onMouseMove={showTooltip}
                                     onMouseOut={hideTooltip}
                                 />
@@ -478,20 +302,33 @@ const OrdersMap = () => {
                                                 {foName}
                                             </h6>
                                             <div className='d-flex'>
+                                                <p className='mb-1 col'>Общая доля</p>
+                                                <p className='mb-1 fw-bold  col'>{formatPrice(tooltipData?.percent)} %
+                                                <img src={tooltipData?.comparePercent > 0 ? green : red} alt="" style={{ width: '1.25vw', marginLeft: '8px' }} />
+                                                <span className='pt-1' style={tooltipData?.comparePercent > 0 ?
+                                                { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(0, 182, 155, 1)', marginLeft: '2px' } :
+                                                { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(249, 60, 101, 1)', marginLeft: '2px' }}
+                                                 >
+                                                    {Number(tooltipData?.comparePercent).toFixed(0)} %
+                                                 </span>
+                                                </p>
+                                                
+                                            </div>
+                                            <div className='d-flex'>
                                                 <p className='mb-1 col'>Продажи, руб</p>
-                                                <p className='mb-1 fw-bold  col'>{formatPrice(896)}</p>
+                                                <p className='mb-1 fw-bold  col'>{formatPrice(tooltipData?.salesAmount)}</p>
                                             </div>
                                             <div className='d-flex'>
                                                 <p className='mb-1 col'>Продажи, шт</p>
-                                                <p className='mb-1 fw-bold  col'>{formatPrice(896)}</p>
+                                                <p className='mb-1 fw-bold  col'>{formatPrice(tooltipData?.salesCount)}</p>
                                             </div>
                                             <div className='d-flex'>
                                                 <p className='mb-1 col'>Заказы, руб</p>
-                                                <p className='mb-1 fw-bold col'>{formatPrice(896)}</p>
+                                                <p className='mb-1 fw-bold col'>{formatPrice(tooltipData?.ordersAmount)}</p>
                                             </div>
                                             <div className='d-flex'>
                                                 <p className='mb-1 col'>Заказы, шт</p>
-                                                <p className='mb-1 fw-bold col'>{formatPrice(896)}</p>
+                                                <p className='mb-1 fw-bold col'>{formatPrice(tooltipData?.ordersCount)}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -507,7 +344,7 @@ const OrdersMap = () => {
                                             sub={'Всего заказов'}
                                             info={geoData.geo_data}
                                             title={'Топ 5 по заказам'}
-                                            geoData={geoData}
+                                            geoData={geoData.geo_data}
                                             link={'Смотреть все регионы*'}
                                         />
                                     </div>
@@ -516,7 +353,7 @@ const OrdersMap = () => {
                                             sub={'Всего продаж'}
                                             info={geoData.geo_data}
                                             title={'Топ 5 по продажам'}
-                                            geoData={geoData}
+                                            geoData={geoData.geo_data}
                                             link={'Место для кнопки-ссылки'}
                                         />
                                     </div>
@@ -531,14 +368,14 @@ const OrdersMap = () => {
                                 </div>
                             </div>
                             :
-                            !byRegions && !loading && geoData ?
+                            !byRegions && !loading && geoData.stock_data ?
                                 <div className="map-data-content">
                                     <div className=" pl-3 d-flex map-data-row">
                                         <div className="col">
                                             <OrderMapPieChart
                                                 info={geoData.stock_data}
                                                 title={'Топ 5 по заказам'}
-                                                data={geoData}
+                                                geoData={geoData.stock_data}
                                                 sub={'Всего заказов'}
                                             />
                                         </div>
@@ -546,7 +383,7 @@ const OrdersMap = () => {
                                             <OrderMapPieChart
                                                 info={geoData.stock_data}
                                                 title={'Топ 5 по продажам'}
-                                                data={geoData.stock_data}
+                                                geoData={geoData.stock_data}
                                                 sub={'Всего продаж'}
                                             />
                                         </div>
@@ -559,10 +396,10 @@ const OrdersMap = () => {
                                                 return (
                                                     <div className=" pl-3 map-data-row" key={i}>
                                                         <div className="col">
-                                                            <OrderTableExtended title={`Заказы из ${w.stockName}`} data={ geoData.stock_data} geoData={geoData.geo_data}  />
+                                                            <OrderTableExtended title={`Заказы из ${w.stockName}`} data={ geoData?.stock_data[i]?.orderDetails} />
                                                         </div>
                                                         <div className="col">
-                                                            <OrderTableExtended title={`Продажи из ${w.stockName}`} data={ geoData.stock_data} geoData={geoData.geo_data} />
+                                                            <OrderTableExtended title={`Продажи из ${w.stockName}`} data={ geoData?.stock_data[i]?.saleDetails} />
                                                         </div>
                                                     </div>
                                                 )

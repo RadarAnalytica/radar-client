@@ -13,6 +13,7 @@ import InputField from '../components/InputField'
 import DragDropFile from '../components/DragAndDropFiles'
 import { ServiceFunctions } from '../service/serviceFunctions'
 import WbIcon from '../assets/WbIcon'
+import { getFileClickHandler, saveFileClickHandler } from '../service/getSvaeFile'
 
 const LinkedShops = () => {
 
@@ -37,13 +38,14 @@ const LinkedShops = () => {
     }
 
     const [data, setData] = useState()
+    console.log(data, 'DATA')
     useEffect(() => {
         if (user) {
-            ServiceFunctions.getBrandNames(authToken).then(data => setData(data))
+            ServiceFunctions.getAllShops(authToken).then(data => setData(data))
             // getTokenExp(user).then(data => setData(data))
         }
     }, [])
-
+   
     console.log(data);
 
     let [activeTokens, setActiveTokens] = useState([])
@@ -71,6 +73,7 @@ const LinkedShops = () => {
     // }, [expDate])
 
     const [activeShop, setActiveShop] = useState(null)
+    console.log(activeShop, 'ACTIVE SHOP')
 
     const [show, setShow] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -78,19 +81,22 @@ const LinkedShops = () => {
     const [showSuccess, setShowSuccess] = useState(false);
     const [showSelfcost, setShowSelfcost] = useState(false);
 
-    const [file, setFile] = useState(null)
+    const [file, setFile] = useState()
 
-    console.log(file);
 
     const handleClose = () => setShow(false);
+    const handleSelfcostClose = () => setShowSelfcost(false);
     const handleShow = () => setShow(true);
 
-    const [files, setFiles] = useState()
 
     const [brandName, setBrandName] = useState()
     const [tkn, setTkn] = useState()
+    console.log(tkn, 'TKN')
+   
 
-    const editShop = async (shop, is_active, is_deleted, authtoken, brand_name, token) => {
+    console.log(brandName, 'GET BRAND');
+
+    const editShop = async (shop, is_active, is_delete, authtoken, brand_name, token) => {
         setActiveShop(shop)
 
         const res = await fetch(URL + '/api/shop/' + shop?.id, {
@@ -103,10 +109,12 @@ const LinkedShops = () => {
                 brand_name,
                 token,
                 is_active,
-                is_deleted
+                is_delete
+                
             })
         })
         const data = await res.json()
+       
         setBrandName()
         setTkn()
         return data
@@ -273,8 +281,8 @@ const LinkedShops = () => {
                         type={'text'}
                         placeholder={'Например, тестовый'}
                         label={'Название магазина'}
-                        defautlValue={activeShop?.brandName}
-                        callback={(e) => { setBrandName(e.target.value) }}
+                        defautlValue={activeShop?.brand_name}
+                        callback={(e) => setBrandName(e.target.value)}
                     />
                     <InputField
                         type={'text'}
@@ -282,8 +290,13 @@ const LinkedShops = () => {
                         label={'Токен'}
                         callback={e => setTkn(e.target.value)}
                     />
-                    <div className="mt-3">
-                        <a href="#" className='link mb-0 pb-0'>Где найти токен?</a>
+                    <div className='d-flex token-status'>
+                        <span style={{display: 'flex', justifyContent: 'flex-start'}} >Себестоимость</span>
+                        <div className='token-active'>
+                            <img src={greencircle} alt="" />
+                            <span>Установлена</span>
+                        </div>
+                    <a onClick={() => {setShowSelfcost(true); setShowEdit(false)}} href="#" className='link'>Изменить</a>
                     </div>
                     {/* <div className="mt-3 d-flex align-items-center justify-content-between">
                         <span>Себестоимость</span>
@@ -393,7 +406,12 @@ const LinkedShops = () => {
                                     </div>
                                 </div>
                                 <div className="d-flex justify-content-center w-100 mt-2 gap-2">
-                                    <button className="prime-btn" style={{ height: '52px' }}>
+                                    <button className="prime-btn" style={{ height: '52px' }}
+                                     onClick={() => {
+                                        saveFileClickHandler(file, authToken, activeShop.id)
+                                        setFile(null)
+                                        handleSelfcostClose()
+                                     }}>
                                         Сохранить
                                     </button>
                                 </div>
@@ -418,7 +436,7 @@ const LinkedShops = () => {
                                 </div> */}
                                 <DragDropFile files={file} setFiles={setFile} />
                                 <div className="d-flex justify-content-center w-100 mt-2 gap-2">
-                                    <a href="#" className='link'>Скачать шаблон</a>
+                                    <a onClick={() => getFileClickHandler(authToken, activeShop.id)}  href="#" className='link'>Скачать шаблон</a>
                                 </div>
                             </div>
                     }

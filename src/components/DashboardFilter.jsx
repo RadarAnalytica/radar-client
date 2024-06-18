@@ -19,7 +19,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop,
                         <option selected={defaultValue === 7 ? true : false} value={'7'}>7 дней</option>
                         <option selected={defaultValue === 14 ? true : false} value={'14'}>14 дней</option>
                         <option selected={defaultValue === 30 ? true : false} value={'30'}>30 дней</option>
-                        <option selected={defaultValue === 92 ? true : false} value={'92'}>90 дней</option>
+                        <option selected={defaultValue === 90 ? true : false} value={'90'}>90 дней</option>
                     </select>
                     <svg style={{ position: 'absolute', right: '1.75vw', top: '5.5vh', width: '1.5vh', }} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 2L14 14L26 2" stroke="rgba(140, 140, 140, 1)" strokeWidth="4" strokeLinecap="round" />
@@ -38,6 +38,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop,
                 <div className="filter-item col">
                     <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="store">Магазин:</label>
                     <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue={shop?.slice(0, 1)[0].id} onChange={e => changeBrand(e.target.value)}>
+                        <option value="Все" selected>Все</option>
                         {
                             shop && shop?.map((brand) => (
                                 <option key={brand.id} value={brand.id}>{brand.brand_name}</option>
