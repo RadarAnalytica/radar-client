@@ -96,7 +96,7 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                         <path d="M4 9.21459L9.07692 14L16 6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
                                     </svg>
                             }
-                            <span>Продажи, руб</span>
+                            <span>Продажи, руб </span>
                         </div>
                     </div>
                 </div>

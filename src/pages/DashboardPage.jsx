@@ -21,6 +21,7 @@ import SelfCostWarning from "../components/SelfCostWarning";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchAllShops } from "../redux/dashboard/dashboardActions";
+import { useNavigate } from "react-router-dom";
 
 const DashboardPage = () => {
   const { user, authToken, showMobile } = useContext(AuthContext);
@@ -28,13 +29,14 @@ console.log(user, 'USER')
   const [wbData, setWbData] = useState();
 
   const [days, setDays] = useState(14);
-
+console.log(days)
   const [content, setContent] = useState();
   const [state, setState] = useState();
 
   const [brandNames, setBrandNames] = useState();
 
-  const [dataDashBoard, setDataDashboard] = useState(null);
+  const [dataDashBoard, setDataDashboard] = useState();
+  console.log(dataDashBoard, 'DATA DASHBOARD')
   const [shop, setShop] = useState();
   const [activeBrand, setActiveBrand] = useState(0);
   
@@ -48,10 +50,20 @@ console.log(user, 'USER')
       // setActiveBrand(data?.slice(0, 1)[0].id);
     });
   }, []);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     ServiceFunctions.getDashBoard(authToken, days, activeBrand).then((data) =>
-      setDataDashboard(data)
+      setDataDashboard(data),
+      
+      setTimeout(() => {
+          if (!user) {
+              navigate('/development/signin')
+          }else{
+              navigate('/development/dashboard')
+          }
+      }, )
     );
   }, [days, activeBrand]);
 
@@ -475,7 +487,7 @@ console.log(user, 'USER')
   const arrayDay = getPastDays(days);
 
   const data = {
-    labels: arrayDay || [],
+    labels: arrayDay.reverse() || [],
     datasets: [
       orderLineOn
         ? {
@@ -616,6 +628,15 @@ console.log(user, 'USER')
       ? sortedValuesArray.filter((item) => typeof item === "number")[0]
       : 50;
 
+      // text={dataDashBoard?.orderAmount / days}
+      // text2={dataDashBoard?.orderCount / days}
+      // text={dataDashBoard?.saleAmount / days}
+      // text2={dataDashBoard?.saleCount / days}
+      let oneDayOrderAmount = dataDashBoard?.orderAmount
+      let oneDayOrderCount = dataDashBoard?.orderCount
+      let oneDaySaleAmount = dataDashBoard?.saleAmount
+      let oneDaySaleCount = dataDashBoard?.saleCount
+
   return (
     user && (
       <div className="dashboard-page">
@@ -641,8 +662,8 @@ console.log(user, 'USER')
               <div className="container dash-container p-3 pt-0 d-flex gap-3">
                 <MediumPlate
                   name={"Заказы"}
-                  text={dataDashBoard?.orderAmount}
-                  text2={dataDashBoard?.orderCount}
+                  text={oneDayOrderAmount / days}
+                  text2={oneDayOrderCount / days}
                   dataDashBoard={dataDashBoard?.orderAmount}
                   quantity={dataDashBoard?.orderCount}
                   percent={dataDashBoard?.orderAmountCompare}
@@ -650,8 +671,8 @@ console.log(user, 'USER')
                 />
                 <MediumPlate
                   name={"Продажи"}
-                  text={dataDashBoard?.saleAmount / days}
-                  text2={dataDashBoard?.saleCount / days}
+                  text={oneDaySaleAmount }
+                  text2={oneDaySaleCount }
                   dataDashBoard={dataDashBoard?.saleAmount}
                   quantity={dataDashBoard?.saleCount}
                   percent={dataDashBoard?.saleAmountCompare}

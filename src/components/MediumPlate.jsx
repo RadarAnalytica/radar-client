@@ -1,8 +1,8 @@
 import React from 'react'
 import { formatPrice } from '../service/utils'
 
-const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2, dataDashBoard }) => {
-
+const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2, dataDashBoard, days }) => {
+console.log(text, text2, "TEXT")
     const green = require('../assets/greenarrow.png')
     const red = require('../assets/redarrow.png')
     const rateUp = <svg style={{ width: '16px', height: '12px', marginRight: '10px' }} width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +58,7 @@ const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2, da
                                         {/* <img src={percent > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} /> */}
                                         <p className='m-0 p-0 tiny-numbers' style={percent > 0 ? { color: 'rgba(0, 182, 155, 1)' } : { color: 'rgba(249, 60, 101, 1)' }}>{formatPrice(percent)}%</p>
                                     </div>
-                                    {text && <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh', fontWeight: 600 }}>{"В день ~ " + formatPrice(text) + ' ₽'}</p>}
+                                    {text && <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh', fontWeight: 600 }}>{"В день ~ " + formatPrice(text)  + ' ₽'}</p>}
                                 </div>
                             </div>
                             <div>

@@ -2,7 +2,7 @@ import React from 'react'
 
 const OrderMapTable = ({ title, data }) => {
 
-    const withName = data.filter(item => item.districtName).slice(0, 5)
+    const withName = [...data].slice(5, -1)
     // const otherRegion = withName.slice(-5)
     const withoutName = data.filter(item => !item.districtName)
 
@@ -18,21 +18,21 @@ const OrderMapTable = ({ title, data }) => {
                 <p className="mb-2 clue-text col text-end">Доля</p>
             </div>
             {
-                refreshed && refreshed.length > 5 ?
-                    refreshed.slice(5).map((item, key) => (
+                withName && withName.length > 5 ?
+                withName.map((item, key) => (
                         <div key={key} className='d-flex justify-content-between'>
                             <p className="mb-2 col-6 pe-2">{item.districtName || 'Регион не определен'}</p>
-                            <p className="mb-2 col">{item.saleAmount}&nbsp;шт</p>
-                            <p className="mb-2 col">{item.saleCount}&nbsp;₽</p>
+                            <p className="mb-2 col">{item.saleCount}&nbsp;шт</p>
+                            <p className="mb-2 col">{item.saleAmount}&nbsp;₽</p>
                             <p className="mb-2 col text-end fw-bold">{item.percent.toFixed(1)}&nbsp;%</p>
                         </div>
                     ))
                     :
-                    refreshed.map((item, key) => (
+                    withName.map((item, key) => (
                         <div key={key} className='d-flex justify-content-between'>
                             <p className="mb-2 col-6 pe-2">{item.districtName}</p>
-                            <p className="mb-2 col">{item.saleAmount}&nbsp;шт</p>
-                            <p className="mb-2 col">{item.saleCount}&nbsp;₽</p>
+                            <p className="mb-2 col">{item.saleCount}&nbsp;шт</p>
+                            <p className="mb-2 col">{item.saleAmount}&nbsp;₽</p>
                             <p className="mb-2 col text-end fw-bold">{item.percent.toFixed(1)}&nbsp;%</p>
                         </div>
                     ))

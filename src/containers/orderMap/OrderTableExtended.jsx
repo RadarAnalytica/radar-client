@@ -2,36 +2,36 @@ import React from 'react'
 import { formatPrice } from '../../service/utils'
 
 const OrderTableExtended = ({ title, data, geoData }) => {
+    console.log(data, "DATAREG")
+    // const uniqueDistricts = Array.from(new Set(geoData.map(item => item.districtName[0].toUpperCase() + item.districtName.slice(1))));
 
-    const uniqueDistricts = Array.from(new Set(geoData.map(item => item.districtName[0].toUpperCase() + item.districtName.slice(1))));
-
-    const filteredGeoData = geoData.filter(item => uniqueDistricts.includes(item.districtName));
+    // const filteredGeoData = geoData.filter(item => uniqueDistricts.includes(item.districtName));
 
 
-    const updatedStockData = data.map((stock, index) => {
-        return {
-          ...stock,
-          districtName: filteredGeoData[index].districtName,
-          percentRegion: filteredGeoData[index].percent
-        };
-      });
-
-      updatedStockData.forEach(item => {
-        let sub = item.districtName?.split('федеральный округ')?.join('фо')
-        item.districtName = sub
-    })
-
-      updatedStockData?.forEach(item => {
-        if (item.stockName && item.stockName.length) {
-            let name = item.stockName.split(' ')?.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-            item.stockName = name
-        }
-        else {
-            item.stockName = "Регион не определен"
-        }
-    })
-
-    return (
+    // const updatedStockData = data.map((stock, index) => {
+    //     return {
+    //       ...stock,
+    //       districtName: filteredGeoData[index].districtName,
+    //       percentRegion: filteredGeoData[index].percent
+    //     };
+    //   });
+    
+    data.forEach(item => {
+            let sub = item.district?.split('федеральный округ')?.join('фо')
+            item.district = sub
+        })
+        
+        // stok?.forEach(item => {
+        //     if (item.stockName && item.stockName.length) {
+        //         let name = item.stockName.split(' ')?.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+        //         item.stockName = name
+        //     }
+        //     else {
+        //         item.stockName = "Регион не определен"
+        //     }
+        // })
+        
+        return (
         <div className='order-table-extended'>
             <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>{title}</h5>
             <div className='d-flex justify-content-between'>
@@ -40,24 +40,15 @@ const OrderTableExtended = ({ title, data, geoData }) => {
                 <p className="mb-2 clue-text col-3 text-center">Общая доля</p>
                 <p className="mb-2 clue-text col-2 text-end">По складу</p>
             </div>
-            { 
-            updatedStockData.map((item, key) => (
-                <div key={key} className='d-flex'>
-                <p style={{ fontWeight: 600 }} className="mb-2 col-5 pe-2">{item.districtName}</p>
-                
-            </div>
-            ))
-           
-                }
            
             {
-                updatedStockData  && updatedStockData.length ?
-                updatedStockData.map((item, key) => (
+                data  && data.length ?
+                data.map((item, key) =>   (
                         <div key={key} className='d-flex'>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-5 pe-2">{item.districtName}</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-2">{formatPrice(item.orderAmount) || 0} ₽</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-3 text-center">{(item.percentRegion)?.toFixed(1)}%</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-2 fw-bold text-end">{(item.percent)?.toFixed(1)}%</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col-5 pe-2">{item.district}</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col-2">{formatPrice(item.amount) || 0} ₽</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col-3 text-center">{(item.common_percent)?.toFixed(1)}%</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col-2 fw-bold text-end">{(item.stock_percent)?.toFixed(1)}%</p>
                         </div>
                     )) : null
             }

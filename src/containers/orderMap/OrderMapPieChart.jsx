@@ -14,8 +14,8 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
         'rgba(74, 217, 145, 1)',
         'rgba(254, 197, 61, 1)',
     ]
-
-    info = info ? info?.sort((a,b) => b.orderCount - a.orderCount).filter(o => o.districtName ? o.districtName : o.stockName)?.slice(0, 5) : []
+    
+    const firsFive = [...info].filter(o => o.districtName ? o.districtName : o.stockName)?.slice(0, 5)
     info.forEach(item => {
         let sub = item.districtName?.split('федеральный округ')?.join('фо')
         item.districtName = sub
@@ -30,10 +30,10 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
 
 
     const data = {
-        labels: info?.map(item => item.districtName ? item.districtName : item.stockName),
+        labels: firsFive?.map(item => item.districtName ? item.districtName : item.stockName),
         datasets: [
             {
-                data: info?.map(item => item.orderCount),
+                data: firsFive?.map(item => item.orderCount),
                 backgroundColor: backgroundColor,
                 borderColor: 'white',
                 borderWidth: 0
@@ -116,14 +116,14 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
                         }}
                     >
                         <p className="clue-text mb-1" style={{ fontSize: '1.75vh' }}>{sub}</p>
-                        <p className="mb-1 fw-bold" style={{ fontSize: '2vh' }}>{formatPrice(Number(totalSum))} ₽</p>
-                        <p className="mb-1" style={{ fontSize: '1.75vh', fontWeight: 600 }}>{formatPrice(Number(totalAmount))} шт</p>
+                        <p className="mb-1 fw-bold" style={{ fontSize: '2vh' }}>{formatPrice(Number(totalAmount))} ₽</p>
+                        <p className="mb-1" style={{ fontSize: '1.75vh', fontWeight: 600 }}>{formatPrice(Number(totalSum))} шт</p>
                     </div>
                 </div>
                 <div className='col pt-4' style={{ marginLeft: '0' }}>
                     {
-                        info ?
-                            info.map((obj, key) => (
+                        firsFive ?
+                        firsFive.map((obj, key) => (
                                 <div className="mb-2 d-flex" key={key}>
                                     <div className='d-flex align-items-start'>
                                         <span

@@ -60,18 +60,18 @@ export const ServiceFunctions = {
   //   return data;
   // },
 
-  getBrandNames: async (token) => {
-    const res = await fetch('https://radar-analytica.ru/api/shop/all', {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        "authorization": "JWT " + token,
-      },
-    });
+  // getBrandNames: async (token) => {
+  //   const res = await fetch('https://radar-analytica.ru/api/shop/all', {
+  //     method: "GET",
+  //     headers: {
+  //       "content-type": "application/json",
+  //       "authorization": "JWT " + token,
+  //     },
+  //   });
 
-    const data = await res.json();
-    return data;
-  },
+  //   const data = await res.json();
+  //   return data;
+  // },
 
   // getBrandNames: async (id) => {
   //     const res = await fetch(`${URL}/api/data-collection/names/${id}`, {
