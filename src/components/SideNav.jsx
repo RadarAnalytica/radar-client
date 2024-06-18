@@ -57,7 +57,7 @@ const SideNav = () => {
                         goodsShown ?
                             <div>
                                 <p
-                                    className='sidenav-title ps-4 submenu-item' style={location === 'supply' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
+                                    className='sidenav-title ps-4 submenu-item' style={location === 'supply' ? { fontWeight: 'bold', fontSize: '14px', display: 'none' } : {display: 'none'}}
                                     onClick={() => navigate('/development/supply')}
                                 >
                                     {
@@ -83,7 +83,7 @@ const SideNav = () => {
                                     География заказов
                                 </p>
                                 <p
-                                    className='sidenav-title ps-4 submenu-item' style={location === 'stock-analysis' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
+                                    className='sidenav-title ps-4 submenu-item' style={location === 'stock-analysis' ? { fontWeight: 'bold', fontSize: '14px', display: 'none' } : {display: 'none'}}
                                     onClick={() => navigate('/development/stock-analysis')}
                                 >
                                     {
@@ -98,7 +98,7 @@ const SideNav = () => {
                             </div>
                             : null
                     }
-                    <div className='sidenav-el' onClick={() => setPromotionShown(!promotionShown)}>
+                    <div className='sidenav-el'style={{display: 'none'}} onClick={() => setPromotionShown(!promotionShown)}>
                         <div className="d-flex align-items-center">
                             {
                                 location === 'calculate' || location === 'monitoring' ?
@@ -120,7 +120,7 @@ const SideNav = () => {
                                 <p
                                     className='sidenav-title ps-4 submenu-item'
                                     onClick={() => navigate('/development/monitoring')}
-                                    style={location === 'monitoring' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
+                                    style={location === 'monitoring' ? { fontWeight: 'bold', fontSize: '14px', display: 'none' } : {display: 'none'}}
                                 >
                                     {
                                         location === 'monitoring' ?
@@ -134,7 +134,7 @@ const SideNav = () => {
                                 <p
                                     className='sidenav-title ps-4 submenu-item'
                                     onClick={() => navigate('/development/calculate')}
-                                    style={location === 'calculate' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
+                                    style={location === 'calculate' ? { fontWeight: 'bold', fontSize: '14px' } : {display: 'none'}}
                                 >
                                     {
                                         location === 'calculate' ?

@@ -61,7 +61,7 @@ function App() {
             <Route path='/instruction' element={
               <React.Suspense fallback={<>...</>}> <Instructions /></React.Suspense>} />
 
-            <Route path='/development/onboarding' element={
+            <Route path='/onboarding' element={
               <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             <Route path='/app' element={
               <React.Suspense fallback={<>...</>}> <MainWidget /></React.Suspense>} />
@@ -76,7 +76,7 @@ function App() {
 
             {user.is_onboarded ? (
             <>
-            <Route path='/development/dashboard' element={
+            <Route path='/dashboard' element={
               <React.Suspense fallback={<>...</>}> <DashboardPage /></React.Suspense>} />
             <Route path='/development/monitoring' element={
               <React.Suspense fallback={<>...</>}> <Monitoring /></React.Suspense>} />
@@ -86,14 +86,14 @@ function App() {
               <React.Suspense fallback={<>...</>}> <StockAnalysis /></React.Suspense>} />
             <Route path='/development/calculate' element={
               <React.Suspense fallback={<>...</>}> <Calculate /></React.Suspense>} />
-            <Route path='/development/orders-map' element={
+            <Route path='/orders-map' element={
               <React.Suspense fallback={<>...</>}> <OrdersMap /></React.Suspense>} />
-              <Route path='/development/linked-shops' element={
+              <Route path='/linked-shops' element={
               <React.Suspense fallback={<>...</>}> <LinkedShops /></React.Suspense>} />
             </>)
               :
             (<>
-            <Route path='/development/dashboard' element={
+            <Route path='/dashboard' element={
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             <Route path='/development/monitoring' element={
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
@@ -103,9 +103,9 @@ function App() {
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             <Route path='/development/calculate' element={
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
-            <Route path='/development/orders-map' element={
+            <Route path='/orders-map' element={
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
-                <Route path='/development/linked-shops' element={
+                <Route path='/linked-shops' element={
               <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             </>)}
    
@@ -141,7 +141,7 @@ function App() {
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/onboarding' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
-          <Route path='/development/dashboard' element={
+          <Route path='/dashboard' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/monitoring' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
@@ -153,9 +153,9 @@ function App() {
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/development/calculate' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
-          <Route path='/development/orders-map' element={
+          <Route path='/orders-map' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
-          <Route path='/development/linked-shops' element={
+          <Route path='/linked-shops' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/reset' element={
             <React.Suspense fallback={<>...</>}> <RequestResetLink /></React.Suspense>} />

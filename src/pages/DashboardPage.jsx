@@ -59,9 +59,9 @@ console.log(days)
       
       setTimeout(() => {
           if (!user) {
-              navigate('/development/signin')
+              navigate('/signin')
           }else{
-              navigate('/development/dashboard')
+              navigate('/dashboard')
           }
       }, )
     );

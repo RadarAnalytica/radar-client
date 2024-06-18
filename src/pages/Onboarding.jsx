@@ -20,7 +20,7 @@ const Onboarding = () => {
 
   
 
-  const [activeShop, setActiveShop] = useState(null)
+  const [activeShop, setActiveShop] = useState()
 
 
   const navigate = useNavigate();
@@ -33,6 +33,9 @@ const Onboarding = () => {
   //         }
   //     }, 800);
   // }, [user])
+   const redirect = () => {
+    navigate('/linked-shops')
+   }
 
   const [brandName, setBrandName] = useState();
   const [token, setToken] = useState();
@@ -54,7 +57,7 @@ const Onboarding = () => {
 
   const handleCostPriceClose = () => setCostPriceShow(false);
   
-
+  const [data, setData] = useState();
   const submitHandler = (e) => {
     if (!token && !user) {
       e.preventDefault();
@@ -73,7 +76,7 @@ const Onboarding = () => {
   };
    
   useEffect(() => {
-    ServiceFunctions.getAllShops(authToken).then(data => setActiveShop(data))
+    ServiceFunctions.getAllShops(authToken).then(data => setData(data))
   }, [])
 
   // const getFileClickHandler = async (token) => {
@@ -150,7 +153,7 @@ const Onboarding = () => {
               <button
                 className="prime-btn"
                 style={{ height: "7vh" }}
-                onClick={submitHandler}
+                onClick={() => {submitHandler(); redirect()}}
               >
                 Получить 3 дня бесплатно
               </button>
@@ -277,7 +280,7 @@ const Onboarding = () => {
                                 </div>
                                 <div className="d-flex justify-content-center w-100 mt-2 gap-2">
                                     <button onClick={() =>{
-                                      saveFileClickHandler(file, authToken)
+                                      saveFileClickHandler(file, authToken, activeShop.id)
                                       setFile(null)
                                       handleCostPriceClose()
                                       }} 
@@ -306,7 +309,7 @@ const Onboarding = () => {
                                 </div> */}
                                 <DragDropFile files={file} setFiles={setFile} />
                                 <div className="d-flex justify-content-center w-100 mt-2 gap-2">
-                                    <a href="#" className='link' onClick={() => getFileClickHandler(authToken)}>Скачать шаблон</a>
+                                    <a href="#" className='link' onClick={() => getFileClickHandler(authToken, activeShop.id)}>Скачать шаблон</a>
                                 </div>
                             </div>
                     }
