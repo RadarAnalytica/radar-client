@@ -139,7 +139,7 @@ function App() {
             <React.Suspense fallback={<>...</>}> <Politics /></React.Suspense>} />
           <Route path='/instruction' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
-          <Route path='/development/onboarding' element={
+          <Route path='/onboarding' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/dashboard' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />

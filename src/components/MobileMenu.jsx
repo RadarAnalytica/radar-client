@@ -31,7 +31,7 @@ const MobileMenu = () => {
                 <img src={logo} alt="" style={{ maxWidth: '140px' }} />
             </div>
             <div className='mt-4 mb-4'>
-                <div className='sidenav-el' onClick={() => { setShowMobile(false); navigate('/development/dashboard') }}>
+                <div className='sidenav-el' onClick={() => { setShowMobile(false); navigate('/dashboard') }}>
                     <div className="d-flex align-items-center">
                         <img src={active === 'dashboard' ? purplegrow : greygrow} alt="" className='side-nav-icon' />
                         <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', color: 'black' } : {}}>Сводка продаж</span>
@@ -48,7 +48,7 @@ const MobileMenu = () => {
                                     <p className='mb-2'>Настройки аккаунта</p> */}
                     <p
                         className='mb-1 mt-2'
-                        onClick={() => { setShowMobile(false); navigate('/development/linked-shops') }}>
+                        onClick={() => { setShowMobile(false); navigate('/linked-shops') }}>
                         Подключенный магазины
                     </p>
                     {/* <p className='mb-2'>Экспорт отчетов</p>

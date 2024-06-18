@@ -39,9 +39,9 @@ export const AuthProvider = ({ children }) => {
 
         }
         if (data.isOnboarded) {
-            navigate('/development/dashboard')
+            navigate('/dashboard')
         } else if (!data.isOnboarded) {
-            navigate('/development/onboarding')
+            navigate('/onboarding')
         }
     }
 

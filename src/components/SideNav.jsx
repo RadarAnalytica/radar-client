@@ -31,7 +31,7 @@ const SideNav = () => {
                 <img src={logo} alt="" style={{ maxWidth: '160px' }} />
 
                 <div className='mt-4'>
-                    <div className='sidenav-el' onClick={() => navigate('/development/dashboard')}>
+                    <div className='sidenav-el' onClick={() => navigate('/dashboard')}>
                         <div className='d-flex align-items-center'>
                             <img src={active === 'dashboard' ? purplegrow : greygrow} alt="" className='side-nav-icon' />
                             <span className='sidenav-title' style={active === 'dashboard' ? { fontWeight: 'bold', fontSize: '14px', color: 'black' } : {}}>Сводка продаж</span>
@@ -71,7 +71,7 @@ const SideNav = () => {
                                 </p>
                                 <p
                                     className='sidenav-title ps-4 submenu-item' style={location === 'orders-map' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
-                                    onClick={() => navigate('/development/orders-map')}
+                                    onClick={() => navigate('/orders-map')}
                                 >
                                     {
                                         location === 'orders-map' ?

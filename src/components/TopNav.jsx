@@ -87,7 +87,7 @@ const TopNav = ({ title }) => {
                                 <div className='pt-2'>
                                     {/* <p className='mt-3 mb-2'>Сотрудники</p> */}
                                     {/* <p className='mb-1 mt-2' onClick={() => navigate('/development/settings')}>Настройки аккаунта</p> */}
-                                    <p className='mb-1 mt-2' onClick={() => navigate('/development/linked-shops')}>Подключенные магазины</p>
+                                    <p className='mb-1 mt-2' onClick={() => navigate('/linked-shops')}>Подключенные магазины</p>
                                     {/* <p className='mb-2'>Экспорт отчетов</p>
                                     <p className='mb-2'>Тарифы</p> */}
                                 </div>

@@ -232,7 +232,7 @@ const Onboarding = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <p>
-                        Ваш токен успешно подключен к сервису и находится на проверке. В ближайшее время данные начнут отображаться в разделе <a href="/development/dashboard" className='link'>Сводка продаж</a>
+                        Ваш токен успешно подключен к сервису и находится на проверке. В ближайшее время данные начнут отображаться в разделе <a href="/dashboard" className='link'>Сводка продаж</a>
                     </p>
                     <div className="d-flex justify-content-between">
                         <div className="grey-block d-flex align-items-center">
