@@ -39,6 +39,7 @@ console.log(days)
   console.log(dataDashBoard, 'DATA DASHBOARD')
   const [shop, setShop] = useState();
   const [activeBrand, setActiveBrand] = useState(0);
+  console.log(activeBrand, 'ACTIVE BRAND')
   
 
   const dispatch = useAppDispatch();
@@ -63,7 +64,7 @@ console.log(days)
           }else{
               navigate('/dashboard')
           }
-      }, )
+      },800 )
     );
   }, [days, activeBrand]);
 
