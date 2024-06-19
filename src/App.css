@@ -678,7 +678,7 @@ select {
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   min-width: 33vw;
-  max-width: 37.5vw;
+  max-width: 37.5vw !important;
   margin-bottom: 1.5vh;
 }
 
