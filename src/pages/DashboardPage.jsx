@@ -58,13 +58,13 @@ console.log(days)
     ServiceFunctions.getDashBoard(authToken, days, activeBrand).then((data) =>
       setDataDashboard(data),
       
-      setTimeout(() => {
-          if (!user) {
-              navigate('/signin')
-          }else{
-              navigate('/dashboard')
-          }
-      },800 )
+      // setTimeout(() => {
+      //     if (!user) {
+      //         navigate('/signin')
+      //     }else{
+      //         navigate('/dashboard')
+      //     }
+      // },800 )
     );
   }, [days, activeBrand]);
 
@@ -486,7 +486,8 @@ console.log(days)
     return pastDays;
   }
   const arrayDay = getPastDays(days);
-
+  console.log(dataDashBoard?.orderAmountList, "DATADAsh" )
+  console.log(dataDashBoard?.saleAmountList, "DATADAsh2" )
   const data = {
     labels: arrayDay.reverse() || [],
     datasets: [
@@ -502,7 +503,7 @@ console.log(days)
             borderColor: "rgba(255, 219, 126, 1)",
             hoverBackgroundColor: "rgba(240, 173, 0, 7)",
             yAxisID: "A",
-            data: dataDashBoard?.orderCountList || [3, 6, 9],
+            data: dataDashBoard?.orderAmountList || [],
           }
         : {
             label: "Заказы",
@@ -529,7 +530,7 @@ console.log(days)
             borderColor: "rgba(154, 129, 255, 1)",
             hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
             yAxisID: "A",
-            data: dataDashBoard?.saleCountList || [],
+            data: dataDashBoard?.saleAmountList || [],
           }
         : {
             label: "Продажи",
@@ -560,7 +561,7 @@ console.log(days)
             borderWidth: 1,
             hoverBackgroundColor: "rgba(240, 173, 0, 7)",
             yAxisID: "B",
-            data: dataDashBoard?.orderAmountList || [3, 6, 9],
+            data: dataDashBoard?.orderCountList || [3, 6, 9],
           }
         : {
             label: "Заказы",
@@ -595,7 +596,7 @@ console.log(days)
             borderWidth: 1,
             hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
             yAxisID: "B",
-            data: dataDashBoard?.saleAmountList || [],
+            data: dataDashBoard?.saleCountList || [],
           }
         : {
             label: "Продажи",
@@ -624,10 +625,15 @@ console.log(days)
   const maxValue =
     sortedValuesArray && sortedValuesArray.length ? sortedValuesArray[0] : 0;
 
-  const maxAmount =
-    sortedValuesArray && sortedValuesArray.length
-      ? sortedValuesArray.filter((item) => typeof item === "number")[0]
-      : 50;
+  // const maxAmount =
+  //   sortedValuesArray && sortedValuesArray.length
+  //     ? sortedValuesArray.filter((item) => typeof item === "number")[0]
+  //     : 50;
+    const bar = data?.datasets?.filter((item) => item?.type === "bar");
+    const maxAmount = bar?.map((arr) => arr?.data)?.flat(1)?.sort((a, b) => b - a)[0]
+    console.log(maxAmount, 'maxAmount')
+
+    console.log(bar, 'bar')
 
       // text={dataDashBoard?.orderAmount / days}
       // text2={dataDashBoard?.orderCount / days}

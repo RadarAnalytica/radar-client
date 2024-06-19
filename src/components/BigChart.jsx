@@ -19,6 +19,30 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
             setLabels(data?.labels)
         }
     }, [data, loading])
+      const getArrayStep = (max) => {
+        
+    
+        let expectStep = Math.ceil(max / 6)
+        let range = 0
+    
+        while (expectStep > 20) {
+            expectStep = Math.ceil(expectStep / 10)
+            range++
+    
+        }
+    
+        if (expectStep > 15 && 20 >= expectStep) {
+            return 20 * 10 ** range
+        } else if (15 >= expectStep && expectStep > 10) {
+            return 15 * 10 ** range
+        } else if (expectStep > 0) {
+            return Math.ceil(expectStep) * 10 ** range
+        } else {
+            return 1
+        }
+    }
+    const maxSale = getArrayStep(maxValue)
+    console.log(maxSale, 'MAX SALE')
 
         
 
@@ -121,7 +145,8 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                 },
                                 plugins: {
                                     legend: {
-                                        display: false
+                                        display: false,
+                                        
                                     },
                                     tooltip: {
                                         enabled: false,
@@ -218,19 +243,25 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                         id: 'A',
                                         type: 'linear',
                                         position: 'right',
-                                        suggestedMax: maxValue * 1.5,
+                                        suggestedMax: maxValue,
                                         grid: {
                                             drawOnChartArea: false, // only want the grid lines for one axis to show up
                                         },
+                                        ticks: {
+                                            stepSize: maxSale
+                                        }
                                     },
                                     B: {
                                         id: 'B',
                                         type: 'linear',
                                         position: 'left',
-                                        suggestedMax: maxAmount,
+                                        suggestedMax: maxAmount  ,
                                         grid: {
                                             drawOnChartArea: true,
                                         },
+                                        ticks: {
+                                            stepSize: getArrayStep(maxAmount)
+                                        }
                                     },
                                     x: {
                                         grid: {
@@ -239,6 +270,7 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                         ticks: {
                                             autoSkip: true,
                                             maxTicksLimit: days === 90 ? Math.ceil(92 / 13) : 30
+                                            
                                         }
                                     },
                                 },
