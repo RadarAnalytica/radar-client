@@ -107,8 +107,8 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
                     <div
                         style={{
                             position: 'absolute',
-                            top: '33%',
-                            left: '21%',
+                            top: '30%',
+                            left: '23%',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',

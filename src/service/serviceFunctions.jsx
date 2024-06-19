@@ -30,20 +30,20 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getDataCollection: async (id, days, brandName) => {
-    const res = await fetch(
-      `${URL}/api/data-collection/${id}?days=${days}&brandName=${brandName}`,
-      {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
+  // getDataCollection: async (id, days, brandName) => {
+  //   const res = await fetch(
+  //     `${URL}/api/data-collection/${id}?days=${days}&brandName=${brandName}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //     }
+  //   );
 
-    const data = await res.json();
-    return data;
-  },
+  //   const data = await res.json();
+  //   return data;
+  // },
 
   // getFilteredCollection: async (id, days, brandName) => {
   //   const res = await fetch(
@@ -85,61 +85,61 @@ export const ServiceFunctions = {
   //     return data
   // },
 
-  getOrders: async (id, brandName) => {
-    const res = await fetch(`${URL}/api/orders/${id}?brandName=${brandName}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+  // getOrders: async (id, brandName) => {
+  //   const res = await fetch(`${URL}/api/orders/${id}?brandName=${brandName}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //   });
 
-    const data = await res.json();
-    return data;
-  },
+  //   const data = await res.json();
+  //   return data;
+  // },
 
-  getSales: async (id, brandName) => {
-    const res = await fetch(`${URL}/api/sales/${id}?brandName=${brandName}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+  // getSales: async (id, brandName) => {
+  //   const res = await fetch(`${URL}/api/sales/${id}?brandName=${brandName}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //   });
 
-    const data = await res.json();
-    return data;
-  },
+  //   const data = await res.json();
+  //   return data;
+  // },
 
-  getGeoData: async (id, brandName, days) => {
-    const res = await fetch(
-      `${URL}/api/data-collection/geo/${id}?brandName=${brandName}&days=${days}`,
-      {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
+  // getGeoData: async (id, brandName, days) => {
+  //   const res = await fetch(
+  //     `${URL}/api/data-collection/geo/${id}?brandName=${brandName}&days=${days}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //     }
+  //   );
 
-    const data = await res.json();
-    return data;
-  },
+  //   const data = await res.json();
+  //   return data;
+  // },
 
-  updateTax: async (id, brandName, obj) => {
-    const res = await fetch(
-      `${URL}/api/data-collection/tax/${id}?brandName=${brandName}`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(obj),
-      }
-    );
+  // updateTax: async (id, brandName, obj) => {
+  //   const res = await fetch(
+  //     `${URL}/api/data-collection/tax/${id}?brandName=${brandName}`,
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //       body: JSON.stringify(obj),
+  //     }
+  //   );
 
-    console.log(obj);
-    const data = await res.json();
-    return data;
-  },
+  //   console.log(obj);
+  //   const data = await res.json();
+  //   return data;
+  // },
 
   getDashBoard: async (token, day, idShop) => {
     const res = await fetch(`https://radar-analytica.ru/api/dashboard/?period=${day}&shop=${idShop}`, {

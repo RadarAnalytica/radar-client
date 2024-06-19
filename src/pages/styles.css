@@ -25,12 +25,27 @@
   position: relative;
 }
 
-#map > g:hover * {
+#order-map > g:hover * {
   stroke: rgba(254, 197, 61, 1);
-  stroke-width: 2px !important;
+  /* stroke-width: 2px !important; */
   fill: rgba(255, 249, 236, 1);
   transition: all 0.25s ease-in-out;
   stroke-opacity: 1 !important;
+}
+
+.g-box-shadow .test-div {
+  width: 110px;
+  height: 34px;
+  padding: 8px;
+  font-size: .7rem;
+  text-align: center;
+  background-color: #fff;
+  opacity: 1;
+  cursor: default;
+}
+
+select {
+  cursor: pointer;
 }
 
 /* Calc */

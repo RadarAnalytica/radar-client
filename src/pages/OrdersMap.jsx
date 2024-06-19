@@ -101,6 +101,12 @@ const OrdersMap = () => {
     const whNames = ordersByWarehouses && ordersByWarehouses.length ? ordersByWarehouses.map(item => item.warehouse) : []
 
     // console.log(whNames);
+    const test = {
+        centr: {
+            common: 8,
+            compare: 3
+        }
+    }
 
     const modifiedOrders = ordersByWarehouses ? ordersByWarehouses.map(item => {
         const totalSum = item.data?.reduce((acc, el) => acc + el.finishedPrice, 0)
@@ -281,6 +287,7 @@ const OrdersMap = () => {
                                 <Map
                                     onMouseMove={showTooltip}
                                     onMouseOut={hideTooltip}
+                                    data={ test }
                                 />
                                 {geoData && isHovered && (
                                     <div

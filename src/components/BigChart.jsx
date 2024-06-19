@@ -11,7 +11,7 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
 
     const [show, setShow] = useState(false)
     const [labels, setLabels] = useState(data?.labels)
-
+    
     useEffect(() => {
         if (loading === true) {
             setLabels([])
@@ -158,14 +158,14 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                             function getBody(bodyItem) {
                                                 return bodyItem.lines;
                                             }
-
+                                            console.log('tooltipModel', tooltipModel);
                                             // Set Text
                                             if (tooltipModel.body) {
-
-
                                                 let datasets = data?.datasets?.filter(obj => obj.data?.length > 0)?.reverse()
                                                 // datasets = datasets?.slice(2, 4)?.concat(datasets?s.slice(0, 2))
-                                                const datalabels = data?.labels?.map(item => item[0].concat(',' + item[1]))
+                                                // const datalabels = data?.labels?.map(item => item[0].concat(',' + item[1]))
+                                                const datalabels = data?.labels
+
                                                 const targetInex = datalabels?.indexOf(tooltipModel.title[0])
 
                                                 const titleLines = tooltipModel.title || [];
@@ -177,10 +177,7 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                                     innerHtml += '<tr><th style="color: silver; font-weight: 400;">' + title?.split(',').join(' ') + '</th></tr>';
                                                 });
                                                 innerHtml += '</thead><tbody>';
-
                                                 datasets?.forEach(function (set, i) {
-                                                    console.log(set);
-                                                    console.log(targetInex);
                                                     const colors = ['rgba(240, 173, 0, 1)', 'rgba(83, 41, 255, 1)']
                                                     const targetColor = set.label === 'Заказы' ? colors[0] : colors[1]
                                                     const targetDescr = set.type === 'bar' ? ' шт' : " руб"
@@ -208,8 +205,8 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                             tooltipEl.style.padding = '1rem';
                                             tooltipEl.style.opacity = 1;
                                             tooltipEl.style.position = 'absolute';
-                                            tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
-                                            tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+                                            tooltipEl.style.left = position.left + window.scrollX + tooltipModel.caretX + 'px';
+                                            tooltipEl.style.top = position.top + window.scrollY + tooltipModel.caretY + 'px';
                                             tooltipEl.style.font = bodyFont?.string;
                                             tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
                                             tooltipEl.style.pointerEvents = 'none';
@@ -241,7 +238,7 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                         },
                                         ticks: {
                                             autoSkip: true,
-                                            maxTicksLimit: days == 92 ? Math.ceil(92 / 13) : 30
+                                            maxTicksLimit: days === 90 ? Math.ceil(92 / 13) : 30
                                         }
                                     },
                                 },

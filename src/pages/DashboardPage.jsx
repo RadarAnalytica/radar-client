@@ -147,15 +147,15 @@ console.log(days)
 
   const [curOrders, setCurOrders] = useState();
   useEffect(() => {
-    if (days == 1) {
+    if (days === 1) {
       setCurOrders(reportDaily);
-    } else if (days == 7) {
+    } else if (days === 7) {
       setCurOrders(reportWeekly);
-    } else if (days == 14) {
+    } else if (days === 14) {
       setCurOrders(reportTwoWeeks);
-    } else if (days == 30) {
+    } else if (days === 30) {
       setCurOrders(reportMonthly);
-    } else if (days == 90) {
+    } else if (days === 90) {
       setCurOrders(reportThreeMonths);
     }
   }, [days, wbData]);
@@ -615,7 +615,7 @@ console.log(days)
           },
     ],
   };
-
+  console.log('data in Dashboard after form', data);
   const sortedValuesArray = data?.datasets
     ?.map((arr) => arr?.data)
     .flat(1)
@@ -708,6 +708,7 @@ console.log(days)
               </div>
               <div className="container dash-container p-3 pt-0 pb-3 d-flex gap-3">
                 <div className="col chart-wrapper">
+                  
                   <BigChart
                     name={"Заказы и продажи"}
                     data={data}
