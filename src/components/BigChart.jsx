@@ -206,7 +206,7 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                                     const colors = ['rgba(240, 173, 0, 1)', 'rgba(83, 41, 255, 1)']
                                                     const targetColor = set.label === 'Заказы' ? colors[0] : colors[1]
                                                     const targetDescr = set.type === 'bar' ? ' шт' : " руб"
-                                                    let value = set?.data[targetInex] || ''
+                                                    let value = set?.data[targetInex] || '0';
                                                     let style = ''
                                                     // style += '; border-color:' + colors.borderColor;
                                                     style += '; border-width: 2px';
