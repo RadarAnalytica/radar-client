@@ -1,7 +1,7 @@
 import React from 'react'
 
 const OrderMapTable = ({ title, data }) => {
-
+    
     const withName = [...data].slice(5, -1)
     // const otherRegion = withName.slice(-5)
     const withoutName = data.filter(item => !item.districtName)

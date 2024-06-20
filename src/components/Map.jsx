@@ -83,7 +83,7 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                     { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                     { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
                         >
-                        {Number(data?.northCaucasian?.compare).toFixed(0)} %
+                        {data?.northCaucasian?.compare} %
                         </span>
                     </p>
                                                 
@@ -120,13 +120,13 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 <foreignObject x="40" y="280" width="140" height="40" style={{ backgroundColor: 'white',borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                 <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
                 <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'rgba(74, 217, 145, 1)' }}></div>
-                    <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>{formatPrice(data?.southern?.common)} %
-                    <img src={data?.southern?.compare > 0 ? green : red} alt=""  />
-                    <span className='pt-1' style={data?.southern?.compare > 0 ?
+                    <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>{formatPrice(data?.southern?.common )} %
+                    <img src={data?.southern?.compare  > 0 ? green : red} alt=""  />
+                    <span className='pt-1' style={data?.southern?.compare   > 0 ?
                     { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                     { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
                         >
-                        {Number(data?.southern?.compare).toFixed(0)} %
+                        {Number( data?.southern?.compare ).toFixed(0)} %
                         </span>
                     </p>
                                                 
@@ -205,7 +205,7 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 <foreignObject x="900" y="250" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                 <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
                 <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'brown' }}></div>
-                    <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>{data?.farEastern?.common? formatPrice(data?.farEastern?.common) : 0} %
+                    <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>{formatPrice(data?.farEastern?.common)} %
                     <img src={data?.farEastern?.compare > 0 ? green : red} alt=""  />
                     <span className='pt-1' style={data?.farEastern?.compare > 0 ?
                     { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
@@ -447,13 +447,13 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 <foreignObject x="300" y="150" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                 <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
                 <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'yellow' }}></div>
-                    <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>{formatPrice(data?.NorthWestern?.common)} %
-                    <img src={data?.NorthWestern?.compare > 0 ? green : red} alt=""  />
-                    <span className='pt-1' style={data?.NorthWestern?.compare > 0 ?
+                    <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>{formatPrice(data?.northWestern?.common)} %
+                    <img src={data?.northWestern?.compare > 0 ? green : red} alt=""  />
+                    <span className='pt-1' style={data?.northWestern?.compare > 0 ?
                     { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                     { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
                         >
-                        {Number(data?.NorthWestern?.compare).toFixed(0)} %
+                        {Number(data?.northWestern?.compare).toFixed(0)} %
                         </span>
                     </p>
                                                 

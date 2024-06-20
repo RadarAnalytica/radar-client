@@ -25,22 +25,20 @@ import { useNavigate } from "react-router-dom";
 
 const DashboardPage = () => {
   const { user, authToken, showMobile } = useContext(AuthContext);
-console.log(user, 'USER')
+  console.log(user, "USER");
   const [wbData, setWbData] = useState();
 
   const [days, setDays] = useState(14);
-console.log(days)
+  console.log(days);
   const [content, setContent] = useState();
   const [state, setState] = useState();
 
   const [brandNames, setBrandNames] = useState();
 
   const [dataDashBoard, setDataDashboard] = useState();
-  console.log(dataDashBoard, 'DATA DASHBOARD')
+  console.log(dataDashBoard, "DATA DASHBOARD");
   const [shop, setShop] = useState();
   const [activeBrand, setActiveBrand] = useState(0);
-  console.log(activeBrand, 'ACTIVE BRAND')
-  
 
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.dashboardSlice.shops);
@@ -53,11 +51,10 @@ console.log(days)
   }, []);
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    ServiceFunctions.getDashBoard(authToken, days, activeBrand).then((data) =>
-      setDataDashboard(data),
-      
+    ServiceFunctions.getDashBoard(authToken, days, activeBrand).then(
+      (data) => setDataDashboard(data)
+
       // setTimeout(() => {
       //     if (!user) {
       //         navigate('/signin')
@@ -248,17 +245,17 @@ console.log(days)
     },
     {
       name: "Комиссия (от выручки)",
-      amount: dataDashBoard?.commissionWBPercent || "0",
+      amount: dataDashBoard?.commissionWB || "0",
       percent: dataDashBoard?.commissionWBPercent || "0",
-      percentRate: dataDashBoard?.commissionWBPercent || "0",
-      percentRate2: dataDashBoard?.commissionWBPercent || "0",
+      percentRate: dataDashBoard?.commissionWBCompare || "0",
+      percentRate2: dataDashBoard?.commissionWBPercentCompare || "0",
     },
     {
       name: "Логистика (от выручки)",
-      amount: dataDashBoard?.logisticsPercent || "0",
+      amount: dataDashBoard?.logistics || "0",
       percent: dataDashBoard?.logisticsPercent || "0",
-      percentRate: dataDashBoard?.logisticsPercent || "0",
-      percentRate2: dataDashBoard?.logisticsPercent || "0",
+      percentRate: dataDashBoard?.logisticsCompare || "0",
+      percentRate2: dataDashBoard?.logisticsPercentCompare || "0",
     },
   ];
 
@@ -340,16 +337,11 @@ console.log(days)
     },
     {
       name: "Рентабельность ВП",
-      value:
-        (100 * vp?.amount) / curOrders?.selectedPeriod?.buyoutsSumRub || "0",
+      value: dataDashBoard?.grossProfitAbility || "0",
     },
     {
       name: "Рентабельность ОП",
-      value:
-        ((curOrders?.selectedPeriod?.buyoutsSumRub -
-          (curOrders?.selectedPeriod?.buyoutsSumRub / 100) * tax?.value || 0) /
-          sales?.reduce((acc, item) => acc + item.forPay, 0)) *
-          100 || "0",
+      value: dataDashBoard?.operatingProfitAbility || "0",
     },
   ];
 
@@ -486,8 +478,6 @@ console.log(days)
     return pastDays;
   }
   const arrayDay = getPastDays(days);
-  console.log(dataDashBoard?.orderAmountList, "DATADAsh" )
-  console.log(dataDashBoard?.saleAmountList, "DATADAsh2" )
   const data = {
     labels: arrayDay.reverse() || [],
     datasets: [
@@ -617,7 +607,6 @@ console.log(days)
           },
     ],
   };
-  console.log('data in Dashboard after form', data);
   const sortedValuesArray = data?.datasets
     ?.map((arr) => arr?.data)
     .flat(1)
@@ -629,20 +618,20 @@ console.log(days)
   //   sortedValuesArray && sortedValuesArray.length
   //     ? sortedValuesArray.filter((item) => typeof item === "number")[0]
   //     : 50;
-    const bar = data?.datasets?.filter((item) => item?.type === "bar");
-    const maxAmount = bar?.map((arr) => arr?.data)?.flat(1)?.sort((a, b) => b - a)[0]
-    console.log(maxAmount, 'maxAmount')
+  const bar = data?.datasets?.filter((item) => item?.type === "bar");
+  const maxAmount = bar
+    ?.map((arr) => arr?.data)
+    ?.flat(1)
+    ?.sort((a, b) => b - a)[0];
 
-    console.log(bar, 'bar')
-
-      // text={dataDashBoard?.orderAmount / days}
-      // text2={dataDashBoard?.orderCount / days}
-      // text={dataDashBoard?.saleAmount / days}
-      // text2={dataDashBoard?.saleCount / days}
-      let oneDayOrderAmount = dataDashBoard?.orderAmount
-      let oneDayOrderCount = dataDashBoard?.orderCount
-      let oneDaySaleAmount = dataDashBoard?.saleAmount
-      let oneDaySaleCount = dataDashBoard?.saleCount
+  // text={dataDashBoard?.orderAmount / days}
+  // text2={dataDashBoard?.orderCount / days}
+  // text={dataDashBoard?.saleAmount / days}
+  // text2={dataDashBoard?.saleCount / days}
+  let oneDayOrderAmount = dataDashBoard?.orderAmount;
+  let oneDayOrderCount = dataDashBoard?.orderCount;
+  let oneDaySaleAmount = dataDashBoard?.saleAmount;
+  let oneDaySaleCount = dataDashBoard?.saleCount;
 
   return (
     user && (
@@ -678,8 +667,8 @@ console.log(days)
                 />
                 <MediumPlate
                   name={"Продажи"}
-                  text={oneDaySaleAmount }
-                  text2={oneDaySaleCount }
+                  text={oneDaySaleAmount / days}
+                  text2={oneDaySaleCount / days}
                   dataDashBoard={dataDashBoard?.saleAmount}
                   quantity={dataDashBoard?.saleCount}
                   percent={dataDashBoard?.saleAmountCompare}
@@ -715,7 +704,6 @@ console.log(days)
               </div>
               <div className="container dash-container p-3 pt-0 pb-3 d-flex gap-3">
                 <div className="col chart-wrapper">
-                  
                   <BigChart
                     name={"Заказы и продажи"}
                     data={data}

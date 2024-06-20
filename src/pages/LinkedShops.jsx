@@ -36,15 +36,15 @@ const LinkedShops = () => {
         const data = await res.json()
         return data
     }
-
+    
+    
     const [data, setData] = useState()
+
+
+
+
     console.log(data, 'DATA')
-    useEffect(() => {
-        if (user) {
-            ServiceFunctions.getAllShops(authToken).then(data => setData(data))
-            // getTokenExp(user).then(data => setData(data))
-        }
-    }, [])
+    
    
     console.log(data);
 
@@ -97,8 +97,7 @@ const LinkedShops = () => {
     console.log(brandName, 'GET BRAND');
 
     const editShop = async (shop, is_active, is_delete, authtoken, brand_name, token) => {
-        setActiveShop(shop)
-
+        
         const res = await fetch(URL + '/api/shop/' + shop?.id, {
             method: 'PATCH',
             headers: {
@@ -106,20 +105,51 @@ const LinkedShops = () => {
                 'authorization': 'JWT ' + authtoken
             },
             body: JSON.stringify({
-                brand_name,
-                token,
-                is_active,
-                is_delete
+                brand_name : brand_name,
+                token : token,
+                is_active : is_active,
+                is_delete : is_delete
                 
             })
         })
         const data = await res.json()
-       
+        if(res.status === 200){
+            ServiceFunctions.getAllShops(authToken).then(data => setData(data))
+        }
+        
+        
+        // setData(data)
         setBrandName()
         setTkn()
         return data
 
     }
+
+    const deleteShop = async (shop, authtoken) => {
+        const res = await fetch(URL + '/api/shop/' + shop?.id, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': 'JWT ' + authtoken
+            }
+        })
+        
+        
+        if(res.status === 204){
+            ServiceFunctions.getAllShops(authToken).then(data => setData(data))
+        }else{
+            throw new Error('Произошла ошибка при удалении магазина')
+        }
+    }
+
+    useEffect(() => {
+        
+        if (user) {
+            ServiceFunctions.getAllShops(authToken).then(data => setData(data))
+            // getTokenExp(user).then(data => setData(data))
+        }
+    }, [])
+    
 
     return (
         <div className='linked-shops-page'>
@@ -257,7 +287,7 @@ const LinkedShops = () => {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-2">
                         <button className='prime-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => { ServiceFunctions.updateToken(brandName, tkn, authToken); handleClose(); setShowSuccess(true) }}>
+                            onClick={() => { ServiceFunctions.updateToken(brandName, tkn, authToken).then(data => setData((prev) => [...prev, data])); handleClose(); setShowSuccess(true) }}>
                             Сохранить
                         </button>
                     </div>
@@ -331,7 +361,7 @@ const LinkedShops = () => {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-2 gap-2">
                         <button className='danger-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => { editShop(activeShop, false, true, authToken, activeShop?.brand_name, activeShop?.token); setShowDelete(false) }}>
+                            onClick={() => { deleteShop(activeShop, authToken); setShowDelete(false) }}>
                             Удалить
                         </button>
                         <button className='prime-btn' style={{ padding: '16px 20px' }}

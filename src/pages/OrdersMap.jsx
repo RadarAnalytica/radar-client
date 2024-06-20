@@ -25,9 +25,7 @@ const OrdersMap = () => {
 
     const [days, setDays] = useState(14)
     const [brandNames, setBrandNames] = useState()
-    console.log(brandNames, 'BRAND NAMES')
     const [activeBrand, setActiveBrand] = useState(0)
-    console.log(activeBrand, 'ACTIVE BRAND')
     // useEffect(() => {
     //     if (user) {
     //         ServiceFunctions.getBrandNames(user.id).then(data => setBrandNames(data))
@@ -102,43 +100,45 @@ const OrdersMap = () => {
 
     const whNames = ordersByWarehouses && ordersByWarehouses.length ? ordersByWarehouses.map(item => item.warehouse) : []
 
-    // console.log(whNames);
+    // console.log(geoData?.geo_data?.filter((item) => item.districtName === 'Центральный фо')?.[0]?.percent, "Фильтрация");
     const commonAndCompareOnMap = {
         centr: {
             
-            common: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Центральный федеральный округ' || item.districtName === 'Центральный фо')?.[0].percent : 0,
-            compare: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Центральный федеральный округ' || item.districtName === 'Центральный фо')?.[0].comparePercent : 0,
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Центральный федеральный округ' || item.districtName === 'Центральный фо')?.percent.toFixed(0) || '0',
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Центральный федеральный округ' || item.districtName === 'Центральный фо')?.comparePercent.toFixed(0) || '0',
         },
         siberian: {
-            common: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Сибирский федеральный округ' || item.districtName === 'Сибирский фо')?.[0].percent : 0,
-            compare: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Сибирский федеральный округ' || item.districtName === 'Сибирский фо')?.[0].comparePercent : 0,
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Сибирский федеральный округ' || item.districtName === 'Сибирский фо')?.percent.toFixed(0) || '0',
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Сибирский федеральный округ' || item.districtName === 'Сибирский фо')?.comparePercent.toFixed(0) || '0',
         },
         ural: {
-            common: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Уральский федеральный округ' || item.districtName === 'Уральский фо')?.[0].percent : 0,
-            compare: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Уральский федеральный округ' || item.districtName === 'Уральский фо')?.[0].comparePercent : 0,
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Уральский федеральный округ' || item.districtName === 'Уральский фо')?.percent.toFixed(0) || '0',
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Уральский федеральный округ' || item.districtName === 'Уральский фо')?.comparePercent.toFixed(0) || '0',
         },
         southern: {
-            common: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Южный федеральный округ' || item.districtName === 'Южный фо')?.[0].percent : 0,
-            compare: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Южный федеральный округ' || item.districtName === 'Южный фо')?.[0].comparePercent : 0,
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Южный федеральный округ' || item.districtName === 'Южный фо')?.percent.toFixed(0) || "0",
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Южный федеральный округ' || item.districtName === 'Южный фо')?.comparePercent.toFixed(0) || "0",
         },
         northCaucasian: {
-            common: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Северо-Кавказский федеральный округ' || item.districtName === 'Северо-Кавказский фо')?.[0].percent : 0,
-            compare: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Северо-Кавказский федеральный округ' || item.districtName === 'Северо-Кавказский фо')?.[0].comparePercent : 0,
-        },
-        privolzhsky: {
-            common: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Приволжский федеральный округ' || item.districtName === 'Приволжский фо')?.[0].percent : 0,
-            compare: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Приволжский федеральный округ' || item.districtName === 'Приволжский фо')?.[0].comparePercent : 0,
-        },
-        NorthWestern: {
-            common: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Северо-Западный федеральный округ' || item.districtName === 'Северо-Западный фо')?.[0].percent : 0,
-            compare: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Северо-Западный федеральный округ' || item.districtName === 'Северо-Западный фо')?.[0].comparePercent : 0,
+            common:  geoData?.geo_data?.find((item) => item.districtName === 'Северо-Кавказский федеральный округ' || item.districtName === 'Северо-Кавказский фо')?.percent.toFixed(0) || '0',
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Северо-Кавказский федеральный округ' || item.districtName === 'Северо-Кавказский фо')?.comparePercent.toFixed(0) || '0',
         },
         farEastern: {
-            common: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Дальневосточный федеральный округ' || item.districtName === 'Дальневосточный фо')?.[0].percent : 0,
-            compare: geoData && geoData?.geo_data ? [...geoData?.geo_data]?.filter((item) => item.districtName === 'Дальневосточный федеральный округ' || item.districtName === 'Дальневосточный фо')?.[0].comparePercent : 0,
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Дальневосточный федеральный округ' || item.districtName === 'Дальневосточный фо')?.percent.toFixed(0) || '0',
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Дальневосточный федеральный округ' || item.districtName === 'Дальневосточный фо')?.comparePercent.toFixed(0) || '0',
+        },
+        privolzhsky: {
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Приволжский федеральный округ' || item.districtName === 'Приволжский фо')?.percent.toFixed(0) || '0',
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Приволжский федеральный округ' || item.districtName === 'Приволжский фо')?.comparePercent.toFixed(0) || '0',
+        },
+        northWestern: {
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Северо-Западный федеральный округ' || item.districtName === 'Северо-Западный фо')?.percent.toFixed(0) || '0',
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Северо-Западный федеральный округ' || item.districtName === 'Северо-Западный фо')?.comparePercent.toFixed(0) || '0',
         },
 
-    }
+    }       
+
+    console.log(commonAndCompareOnMap.farEastern, 'commonAndCompareOnMap')
 
     // const modifiedOrders = ordersByWarehouses ? ordersByWarehouses.map(item => {
     //     const totalSum = item.data?.reduce((acc, el) => acc + el.finishedPrice, 0)
@@ -188,7 +188,6 @@ const OrdersMap = () => {
     console.log(foFirst, 'foFirst');
 
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-    console.log(tooltipPosition, 'tooltipPosition');
 
 
 
@@ -213,16 +212,15 @@ const OrdersMap = () => {
     map ? map.addEventListener('mouseover', findGTagName) : console.log();
 
     const [tooltipData, setTooltipData] = useState()
-    console.log(tooltipData, 'tooltipData');
     useEffect(() => {
         if (foFirst && geoData) {
             const info = {
-                ordersCount:  [...geoData?.geo_data]?.filter(el => el.districtName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.orderCount || 1,
-                salesAmount: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.saleAmount || 1,
-                ordersAmount: [...geoData?.geo_data]?.filter(el => el.districtName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.orderAmount || 1,
-                salesCount: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.saleCount || 1,
-                percent: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.percent || 1,
-                comparePercent: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.comparePercent || 1
+                ordersCount:  [...geoData?.geo_data]?.filter(el => el.districtName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.orderCount || '0',
+                salesAmount: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.saleAmount || '0',
+                ordersAmount: [...geoData?.geo_data]?.filter(el => el.districtName.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.orderAmount || '0',
+                salesCount: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.saleCount || '0',
+                percent: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.percent || '0',
+                comparePercent: [...geoData?.geo_data]?.filter(el => el.districtName?.toLowerCase()?.indexOf(foFirst?.toLowerCase()) >= 0)?.[0]?.comparePercent || '0'
             }
             setTooltipData(info)
         }
