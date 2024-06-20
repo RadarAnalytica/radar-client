@@ -159,6 +159,7 @@ a.link {
   text-decoration: none;
   font-weight: bold;
   color: var(--primary-color);
+  padding: 10px;
 }
 
 .select-element:hover {
@@ -323,6 +324,7 @@ select {
   justify-content: flex-end;
   text-align: right;
 }
+
 
 .token-inactive {
   display: flex;

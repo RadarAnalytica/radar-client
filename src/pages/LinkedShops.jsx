@@ -320,13 +320,15 @@ const LinkedShops = () => {
                         label={'Токен'}
                         callback={e => setTkn(e.target.value)}
                     />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span >Себестоимость</span>
                     <div className='d-flex token-status'>
-                        <span style={{display: 'flex', justifyContent: 'flex-start'}} >Себестоимость</span>
                         <div className='token-active'>
                             <img src={greencircle} alt="" />
                             <span>Установлена</span>
                         </div>
-                    <a onClick={() => {setShowSelfcost(true); setShowEdit(false)}} href="#" className='link'>Изменить</a>
+                    <a onClick={() => {setShowSelfcost(true); setShowEdit(false)}} href="#" className='link' >Изменить</a>
+                    </div>
                     </div>
                     {/* <div className="mt-3 d-flex align-items-center justify-content-between">
                         <span>Себестоимость</span>

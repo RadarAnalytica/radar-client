@@ -82,6 +82,7 @@ select {
   padding: 24px 32px;
   margin-bottom: 3vh;
   max-width: 35.5vw;
+  
 }
 
 .filter-item select,
@@ -91,7 +92,7 @@ select {
 }
 
 .order-table-extended {
-  min-height: 75vh;
+  min-height: 30vh;
 }
 
 .order-map-table {
@@ -99,7 +100,7 @@ select {
 }
 
 .order-map-doughnut {
-  min-height: 45vh;
+  min-height: 30vh;
 }
 
 .order-map-doughnut p,

@@ -269,6 +269,7 @@ const OrdersMap = () => {
     
 
   const [isHovered, setIsHovered] = useState(false);
+  console.log(geoData.stock_data, 'stockData')
    
     return (
         <div className='orders-map'>
@@ -396,10 +397,10 @@ const OrdersMap = () => {
                                     </div>
                                 </div>
                                 <div className=" pl-3 map-data-row">
-                                    <div className="col">
+                                    <div className="col" style={geoData?.geo_data?.length <= 5 ? {visibility: 'hidden'} : {}}>
                                         <OrderMapTable title={'Заказы в других регионах'} data={geoData?.geo_data} />
                                     </div>
-                                    <div className="col">
+                                    <div className="col" style={geoData?.geo_data?.length <=5 ? {visibility: 'hidden'} : {}}>
                                     <OrderMapTable title={'Продажи в других регионах'} data={geoData?.geo_data} />
                                     </div>
                                 </div>
@@ -408,7 +409,7 @@ const OrdersMap = () => {
                             !byRegions && !loading && geoData.stock_data ?
                                 <div className="map-data-content">
                                     <div className=" pl-3 d-flex map-data-row">
-                                        <div className="col">
+                                        <div className="col" >
                                             <OrderMapPieChart
                                                 info={geoData.stock_data}
                                                 title={'Топ 5 по заказам'}
@@ -432,10 +433,10 @@ const OrdersMap = () => {
                                                 
                                                 return (
                                                     <div className=" pl-3 map-data-row" key={i}>
-                                                        <div className="col">
+                                                        <div className="col" style={geoData?.stock_data[i]?.orderDetails?.length === 0 ? { visibility: 'hidden' } : {}} >
                                                             <OrderTableExtended title={`Заказы из ${w.stockName}`} data={ geoData?.stock_data[i]?.orderDetails} />
                                                         </div>
-                                                        <div className="col">
+                                                        <div className="col" style={geoData?.stock_data[i]?.saleDetails?.length === 0 ? { visibility: 'hidden' } : {}}  >
                                                             <OrderTableExtended title={`Продажи из ${w.stockName}`} data={ geoData?.stock_data[i]?.saleDetails} />
                                                         </div>
                                                     </div>
