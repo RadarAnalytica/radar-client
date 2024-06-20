@@ -11,37 +11,50 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 const TopNav = ({ title }) => {
 
+    const navigate = useNavigate()
     const { user, logout, setShowMobile } = useContext(AuthContext)
 
+    
     const [menuShown, setMenuShown] = useState(false)
+    const [timeoutId, setTimeoutId] = useState(null);
 
-    const navigate = useNavigate()
+    const handleMouseEnter = () => {
+      clearTimeout(timeoutId);
+      setMenuShown(true);
+    };
+  
+    const handleMouseLeave = () => {
+      const newTimeoutId = setTimeout(() => {
+        setMenuShown(false);
+      }, 1500);
+      setTimeoutId(newTimeoutId);
+    };
 
-    useEffect(() => {
-        // Получаем элемент иконки по ID
-        const icon = document.getElementById('settings-icon');
+    // useEffect(() => {
+    //     // Получаем элемент иконки по ID
+    //     const icon = document.getElementById('settings-icon');
 
-        // Функция, которая будет вызываться при клике вне блока
-        const handleOutsideClick = (e) => {
-            // Проверяем, кликнули ли мы вне блока
-            if (icon && !icon.contains(e.target)) {
-                // Скрываем блок
-                setMenuShown(false)
-            }
-        };
+    //     // Функция, которая будет вызываться при клике вне блока
+    //     const handleOutsideClick = (e) => {
+    //         // Проверяем, кликнули ли мы вне блока
+    //         if (icon && !icon.contains(e.target)) {
+    //             // Скрываем блок
+    //             setMenuShown(false)
+    //         }
+    //     };
 
-        // Добавляем слушатель события на наведение на иконку
-        // icon.addEventListener('mouseenter', setMenuShown(true));
+    //     // Добавляем слушатель события на наведение на иконку
+    //     // icon.addEventListener('mouseenter', setMenuShown(true));
 
-        // Добавляем слушатель события на клик на странице
-        document.addEventListener('click', handleOutsideClick);
+    //     // Добавляем слушатель события на клик на странице
+    //     document.addEventListener('click', handleOutsideClick);
 
-        // Очистка при размонтировании компонента
-        return () => {
-            // icon.removeEventListener('mouseenter', setMenuShown(true));
-            document.removeEventListener('click', handleOutsideClick);
-        };
-    }, []);
+    //     // Очистка при размонтировании компонента
+    //     return () => {
+    //         // icon.removeEventListener('mouseenter', setMenuShown(true));
+    //         document.removeEventListener('click', handleOutsideClick);
+    //     };
+    // }, []);
 
     return (
         <div className='top-nav'>
@@ -70,12 +83,16 @@ const TopNav = ({ title }) => {
                     </svg>
                     <MdOutlineSettings
                         id='settings-icon'
-                        onMouseEnter={() => setMenuShown(true)}
+                        onClick={() => setMenuShown(true)}
                         style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px' }}
                     />
                     {
                         menuShown ?
-                            <div className='settings-modal' id='settings-modal'>
+                            <div 
+                            onMouseEnter={() =>  handleMouseEnter()}
+                            onMouseLeave={() => handleMouseLeave()}
+                            
+                            className='settings-modal' id='settings-modal'>
                                 <a href="#" className='link'
                                     style={{
                                         borderBottom: '1px  solid silver',

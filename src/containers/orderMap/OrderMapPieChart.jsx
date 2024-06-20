@@ -15,7 +15,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
         'rgba(254, 197, 61, 1)',
     ]
     
-    const firsFive = [...info].filter(o => o.districtName ? o.districtName : o.stockName)?.slice(0, 5)
+    const firstFive = [...info].filter(o => o.districtName ? o.districtName : o.stockName)?.slice(0, 5)
     info.forEach(item => {
         let sub = item.districtName?.split('федеральный округ')?.join('фо')
         item.districtName = sub
@@ -30,10 +30,10 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
 
 
     const data = {
-        labels: firsFive?.map(item => item.districtName ? item.districtName : item.stockName),
+        labels: firstFive?.map(item => item.districtName ? item.districtName : item.stockName),
         datasets: [
             {
-                data: firsFive?.map(item => item.orderCount),
+                data: firstFive?.map(item => item.orderCount),
                 backgroundColor: backgroundColor,
                 borderColor: 'white',
                 borderWidth: 0
@@ -122,8 +122,8 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
                 </div>
                 <div className='col pt-4' style={{ marginLeft: '0' }}>
                     {
-                        firsFive ?
-                        firsFive.map((obj, key) => (
+                        firstFive ?
+                        firstFive.map((obj, key) => (
                                 <div className="mb-2 d-flex" key={key}>
                                     <div className='d-flex align-items-start'>
                                         <span
