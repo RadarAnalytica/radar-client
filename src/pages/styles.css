@@ -95,8 +95,11 @@ select {
   min-height: 30vh;
 }
 
+
+
+
 .order-map-table {
-  min-height: 45vh;
+  min-height: 20vh;
 }
 
 .order-map-doughnut {

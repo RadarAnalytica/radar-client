@@ -510,7 +510,7 @@ select {
 .storage-table {
   background-color: white;
   border-radius: 16px;
-  min-height: 60vh;
+  min-height: 30vh;
   padding: 16px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -519,7 +519,7 @@ select {
 .chart-table {
   background-color: white;
   border-radius: 16px;
-  min-height: 60vh;
+  min-height: 30vh;
   padding: 16px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -538,7 +538,7 @@ select {
 .finance-table {
   background-color: white;
   border-radius: 16px;
-  min-height: 60vh;
+  min-height: 30vh;
   padding: 16px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);

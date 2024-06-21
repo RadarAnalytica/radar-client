@@ -1,11 +1,11 @@
 import React from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import { Chart, Doughnut } from 'react-chartjs-2';
 import { formatPrice } from '../../service/utils';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
+const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }) => {
 
     const backgroundColor = [
         'rgba(129, 172, 255, 1)',
@@ -22,11 +22,14 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
     })
 
 
-    const totalAmount =  info.reduce((acc, item) => acc + item.saleAmount, 0) 
-    const totalSum =  info.reduce((acc, item) => acc + Number(item.saleCount), 0)
+    // const totalAmount =  info.reduce((acc, item) => acc + item.saleAmount, 0) 
+    // const totalSum =  info.reduce((acc, item) => acc + Number(item.saleCount), 0)
+
     const otherRegion = info.reduce((acc, item) => acc + item.percent, 0)
     const green = require('../../assets/greenarrow.png')
     const red = require('../../assets/redarrow.png')
+
+ 
 
 
     const data = {
@@ -58,18 +61,77 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
                                         display: false
                                     },
                                     tooltip: {
-                                        callbacks: {
-                                            // label: (tooltipItem) => {
-                                            //     return ``
-                                            // },
-                                            // footer: (tooltipItem) => {
-
-                                            //     return `aksd`
-                                            // }
-                                        },
-                                        borderRadius: 16,
-                                        padding: 16,
-                                        displayColors: false,
+                                        enabled: false,
+                                        external: function(context) {
+                                            // Tooltip Element
+                                            let tooltipEl = document.getElementById('chartjs-tooltip');
+                        
+                                            // Create element on first render
+                                            if (!tooltipEl) {
+                                                tooltipEl = document.createElement('div');
+                                                tooltipEl.id = 'chartjs-tooltip';
+                                                tooltipEl.innerHTML = '<table></table>';
+                                                document.body.appendChild(tooltipEl);
+                                            }
+                        
+                                            // Hide if no tooltip
+                                            const tooltipModel = context.tooltip;
+                                            if (tooltipModel.opacity === 0) {
+                                                tooltipEl.style.opacity = 0;
+                                                return;
+                                            }
+                        
+                                            // Set caret Position
+                                            tooltipEl.classList.remove('above', 'below', 'no-transform');
+                                            if (tooltipModel.yAlign) {
+                                                tooltipEl.classList.add(tooltipModel.yAlign);
+                                            } else {
+                                                tooltipEl.classList.add('no-transform');
+                                            }
+                        
+                                            function getBody(bodyItem) {
+                                                return bodyItem.lines;
+                                            }
+                        
+                                            // Set Text
+                                            if (tooltipModel.body) {
+                                                const titleLines = tooltipModel.title || [];
+                                                const bodyLines = tooltipModel.body.map(getBody);
+                        
+                                                let innerHtml = '<thead>';
+                        
+                                                titleLines.forEach(function(title) {
+                                                    innerHtml += '<tr><th>' + title + '</th></tr>';
+                                                });
+                                                innerHtml += '</thead><tbody>';
+                        
+                                                bodyLines.forEach(function(body, i) {
+                                                    const colors = tooltipModel.labelColors[i];
+                                                    let style = 'background:' + colors.backgroundColor;
+                                                    style += '; border-color:' + colors.borderColor;
+                                                    style += '; border-width: 2px';
+                                                    const span = '<span style="' + style + '">' + body + '</span>';
+                                                    innerHtml += '<tr><td>' + span + '</td></tr>';
+                                                });
+                                                innerHtml += '</tbody>';
+                        
+                                                let tableRoot = tooltipEl.querySelector('table');
+                                                tableRoot.innerHTML = innerHtml;
+                                            }
+                        
+                                            const position = context.chart.canvas.getBoundingClientRect();
+                                            const bodyFont = <Chart className="helpers toFont">(tooltipModel.options.bodyFont)</Chart>;
+                        
+                                            // Display, position, and set styles for font
+                                            tooltipEl.style.opacity = 1;
+                                            tooltipEl.style.position = 'absolute';
+                                            tooltipEl.style.left = position.left + window.scrollX + tooltipModel.caretX + 'px';
+                                            tooltipEl.style.top = position.top + window.scrollY + tooltipModel.caretY + 'px';
+                                            tooltipEl.style.font = bodyFont.string;
+                                            tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+                                            tooltipEl.style.pointerEvents = 'none';
+                                        }
+                                        
                                     }
                                 },
                                 animation: {
@@ -117,7 +179,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
                     >
                         <p className="clue-text mb-1" style={{ fontSize: '1.75vh' }}>{sub}</p>
                         <p className="mb-1 fw-bold" style={{ fontSize: '2vh' }}>{formatPrice(Number(totalAmount))} ₽</p>
-                        <p className="mb-1" style={{ fontSize: '1.75vh', fontWeight: 600 }}>{formatPrice(Number(totalSum))} шт</p>
+                        <p className="mb-1" style={{ fontSize: '1.75vh', fontWeight: 600 }}>{formatPrice(totalCount)} шт</p>
                     </div>
                 </div>
                 <div className='col pt-4' style={{ marginLeft: '0' }}>
@@ -161,9 +223,9 @@ const OrderMapPieChart = ({ title, geoData, info, sub, link }) => {
                     }
                 </div>
             </div>
-            <div className="text-end">
+            {/* <div className="text-end">
                 <p className='mb-0 prime-text'>{link}</p>
-            </div>
+            </div> */}
         </div>
     )
 }

@@ -104,36 +104,36 @@ const OrdersMap = () => {
     const commonAndCompareOnMap = {
         centr: {
             
-            common: geoData?.geo_data?.find((item) => item.districtName === 'Центральный федеральный округ' || item.districtName === 'Центральный фо')?.percent.toFixed(0) || '0',
-            compare: geoData?.geo_data?.find((item) => item.districtName === 'Центральный федеральный округ' || item.districtName === 'Центральный фо')?.comparePercent.toFixed(0) || '0',
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Центральный федеральный округ' || item.districtName === 'Центральный фо')?.percent.toFixed(0) || 0,
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Центральный федеральный округ' || item.districtName === 'Центральный фо')?.comparePercent.toFixed(0) || 0,
         },
         siberian: {
-            common: geoData?.geo_data?.find((item) => item.districtName === 'Сибирский федеральный округ' || item.districtName === 'Сибирский фо')?.percent.toFixed(0) || '0',
-            compare: geoData?.geo_data?.find((item) => item.districtName === 'Сибирский федеральный округ' || item.districtName === 'Сибирский фо')?.comparePercent.toFixed(0) || '0',
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Сибирский федеральный округ' || item.districtName === 'Сибирский фо')?.percent.toFixed(0) || 0,
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Сибирский федеральный округ' || item.districtName === 'Сибирский фо')?.comparePercent.toFixed(0) || 0,
         },
         ural: {
-            common: geoData?.geo_data?.find((item) => item.districtName === 'Уральский федеральный округ' || item.districtName === 'Уральский фо')?.percent.toFixed(0) || '0',
-            compare: geoData?.geo_data?.find((item) => item.districtName === 'Уральский федеральный округ' || item.districtName === 'Уральский фо')?.comparePercent.toFixed(0) || '0',
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Уральский федеральный округ' || item.districtName === 'Уральский фо')?.percent.toFixed(0) || 0,
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Уральский федеральный округ' || item.districtName === 'Уральский фо')?.comparePercent.toFixed(0) || 0,
         },
         southern: {
-            common: geoData?.geo_data?.find((item) => item.districtName === 'Южный федеральный округ' || item.districtName === 'Южный фо')?.percent.toFixed(0) || "0",
-            compare: geoData?.geo_data?.find((item) => item.districtName === 'Южный федеральный округ' || item.districtName === 'Южный фо')?.comparePercent.toFixed(0) || "0",
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Южный федеральный округ' || item.districtName === 'Южный фо')?.percent.toFixed(0) || 0,
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Южный федеральный округ' || item.districtName === 'Южный фо')?.comparePercent.toFixed(0) || 0,
         },
         northCaucasian: {
-            common:  geoData?.geo_data?.find((item) => item.districtName === 'Северо-Кавказский федеральный округ' || item.districtName === 'Северо-Кавказский фо')?.percent.toFixed(0) || '0',
-            compare: geoData?.geo_data?.find((item) => item.districtName === 'Северо-Кавказский федеральный округ' || item.districtName === 'Северо-Кавказский фо')?.comparePercent.toFixed(0) || '0',
+            common:  geoData?.geo_data?.find((item) => item.districtName === 'Северо-Кавказский федеральный округ' || item.districtName === 'Северо-Кавказский фо')?.percent.toFixed(0) || 0,
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Северо-Кавказский федеральный округ' || item.districtName === 'Северо-Кавказский фо')?.comparePercent.toFixed(0) || 0,
         },
         farEastern: {
-            common: geoData?.geo_data?.find((item) => item.districtName === 'Дальневосточный федеральный округ' || item.districtName === 'Дальневосточный фо')?.percent.toFixed(0) || '0',
-            compare: geoData?.geo_data?.find((item) => item.districtName === 'Дальневосточный федеральный округ' || item.districtName === 'Дальневосточный фо')?.comparePercent.toFixed(0) || '0',
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Дальневосточный федеральный округ' || item.districtName === 'Дальневосточный фо')?.percent.toFixed(0) || 0,
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Дальневосточный федеральный округ' || item.districtName === 'Дальневосточный фо')?.comparePercent.toFixed(0) || 0,
         },
         privolzhsky: {
-            common: geoData?.geo_data?.find((item) => item.districtName === 'Приволжский федеральный округ' || item.districtName === 'Приволжский фо')?.percent.toFixed(0) || '0',
-            compare: geoData?.geo_data?.find((item) => item.districtName === 'Приволжский федеральный округ' || item.districtName === 'Приволжский фо')?.comparePercent.toFixed(0) || '0',
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Приволжский федеральный округ' || item.districtName === 'Приволжский фо')?.percent.toFixed(0) || 0,
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Приволжский федеральный округ' || item.districtName === 'Приволжский фо')?.comparePercent.toFixed(0) || 0,
         },
         northWestern: {
-            common: geoData?.geo_data?.find((item) => item.districtName === 'Северо-Западный федеральный округ' || item.districtName === 'Северо-Западный фо')?.percent.toFixed(0) || '0',
-            compare: geoData?.geo_data?.find((item) => item.districtName === 'Северо-Западный федеральный округ' || item.districtName === 'Северо-Западный фо')?.comparePercent.toFixed(0) || '0',
+            common: geoData?.geo_data?.find((item) => item.districtName === 'Северо-Западный федеральный округ' || item.districtName === 'Северо-Западный фо')?.percent.toFixed(0) || 0,
+            compare: geoData?.geo_data?.find((item) => item.districtName === 'Северо-Западный федеральный округ' || item.districtName === 'Северо-Западный фо')?.comparePercent.toFixed(0) || 0,
         },
 
     }       
@@ -264,8 +264,34 @@ const OrdersMap = () => {
     const red = require('../assets/redarrow.png')
 
 
-    let totalOrdersSum = data && data.ordersTableData ? data.ordersTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
-    let totalSalesSum = data && data.ordersTableData ? data.salesTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
+    const totalOrderAmount =  geoData?.geo_data?.reduce((acc, item) => acc + item.orderAmount, 0) 
+    const totalOrderSum =  geoData?.geo_data?.reduce((acc, item) => acc + item.orderCount, 0)
+
+    const totalSaleAmount =  geoData?.geo_data?.reduce((acc, item) => acc + item.saleAmount, 0) 
+    const totalSaleSum =  geoData?.geo_data?.reduce((acc, item) => acc + item.saleCount, 0)
+
+    const totalOrdersOther =  geoData?.geo_data?.map(el => {
+       
+        return { 
+        districtName: el?.districtName,
+        percent: el?.percent,
+        amount: el?.orderAmount,
+        count: el?.orderCount
+        }
+    })
+    const totalSalesOther =  geoData?.geo_data?.map(el => {
+       
+        return { 
+         districtName: el.districtName,
+         percent: el.percent,
+         amount: el.saleAmount,
+         count: el.saleCount
+     }
+    })
+    console.log(totalOrdersOther, 'totalOrdersOther')
+    console.log(totalSalesOther, 'totalSalesOther')
+    // let totalOrdersSum = data && data.ordersTableData ? data.ordersTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
+    // let totalSalesSum = data && data.ordersTableData ? data.salesTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
     
 
   const [isHovered, setIsHovered] = useState(false);
@@ -383,7 +409,9 @@ const OrdersMap = () => {
                                             info={geoData.geo_data}
                                             title={'Топ 5 по заказам'}
                                             geoData={geoData.geo_data}
-                                            link={'Смотреть все регионы*'}
+                                            totalAmount={totalOrderAmount}
+                                            totalCount={totalOrderSum}
+                                            // link={'Смотреть все регионы*'}
                                         />
                                     </div>
                                     <div className="col">
@@ -392,16 +420,24 @@ const OrdersMap = () => {
                                             info={geoData.geo_data}
                                             title={'Топ 5 по продажам'}
                                             geoData={geoData.geo_data}
-                                            link={'Место для кнопки-ссылки'}
+                                            totalAmount={totalSaleAmount}
+                                            totalCount={totalSaleSum}
+                                            // link={'Место для кнопки-ссылки'}
                                         />
                                     </div>
                                 </div>
                                 <div className=" pl-3 map-data-row">
                                     <div className="col" style={geoData?.geo_data?.length <= 5 ? {visibility: 'hidden'} : {}}>
-                                        <OrderMapTable title={'Заказы в других регионах'} data={geoData?.geo_data} />
+                                        <OrderMapTable 
+                                        title={'Заказы в других регионах'}
+                                        data={totalOrdersOther} 
+                                         />
                                     </div>
                                     <div className="col" style={geoData?.geo_data?.length <=5 ? {visibility: 'hidden'} : {}}>
-                                    <OrderMapTable title={'Продажи в других регионах'} data={geoData?.geo_data} />
+                                    <OrderMapTable 
+                                    title={'Продажи в других регионах'} 
+                                    data={totalSalesOther} 
+                                    />
                                     </div>
                                 </div>
                             </div>
