@@ -5,6 +5,7 @@ import AuthContext, { AuthProvider } from './service/AuthContext';
 import { useContext } from 'react';
 import MobileMenu from './components/MobileMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import DataCollectionNotification from './components/DataCollectionNotification';
 
 
 
@@ -90,6 +91,8 @@ function App() {
               <React.Suspense fallback={<>...</>}> <OrdersMap /></React.Suspense>} />
               <Route path='/linked-shops' element={
               <React.Suspense fallback={<>...</>}> <LinkedShops /></React.Suspense>} />
+              <Route path='/data-collection' element={
+              <React.Suspense fallback={<>...</>}> <DataCollectionNotification /></React.Suspense>} />
             </>)
               :
             (<>

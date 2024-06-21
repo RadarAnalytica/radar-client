@@ -12,7 +12,7 @@ const TableRow = ({ values }) => {
                         key={i}
                         style={
                             i === 0 ?
-                                { textAlign: 'left', fontWeight: 'bold', minWidth: '150px' } :
+                                { textAlign: 'left', minWidth: '150px' } :
                                 i === 1 ?
                                     { fontWeight: 700, textAlign: 'left' } :
                                     i > 1 ?

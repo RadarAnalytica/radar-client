@@ -84,7 +84,7 @@ const TopNav = ({ title }) => {
                     <MdOutlineSettings
                         id='settings-icon'
                         onClick={() => setMenuShown(true)}
-                        style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px' }}
+                        style={{ maxWidth: '3vw', cursor: 'pointer', fontSize: '28px' }}
                     />
                     {
                         menuShown ?

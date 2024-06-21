@@ -149,6 +149,9 @@ const LinkedShops = () => {
             // getTokenExp(user).then(data => setData(data))
         }
     }, [])
+    const redirect = () => {
+        navigate('/data-collection')
+    }
     
 
     return (
@@ -287,7 +290,7 @@ const LinkedShops = () => {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-2">
                         <button className='prime-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => { ServiceFunctions.updateToken(brandName, tkn, authToken).then(data => setData((prev) => [...prev, data])); handleClose(); setShowSuccess(true) }}>
+                            onClick={() => { ServiceFunctions.updateToken(brandName, tkn, authToken).then(data => setData((prev) => [...prev, data])); handleClose(); setShowSuccess(true); redirect()}}>
                             Сохранить
                         </button>
                     </div>
@@ -393,7 +396,7 @@ const LinkedShops = () => {
                     <p>
                         Ваш токен успешно подключен к сервису и находится на проверке. В ближайшее время данные начнут отображаться в разделе <a href="/dashboard" className='link'>Сводка продаж</a>
                     </p>
-                    <div className="d-flex justify-content-between">
+                    {/* <div className="d-flex justify-content-between">
                         <div className="grey-block d-flex align-items-center">
                             <p className='col mb-0' style={{ fontSize: '14px' }}>
                                 Для максимального использования всего функционала, внесите себестоимость ваших товаров
@@ -405,7 +408,7 @@ const LinkedShops = () => {
                                 Внести себестоимость товаров
                             </button>
                         </div>
-                    </div>
+                    </div> */}
                 </Modal.Body>
             </Modal>
 

@@ -38,6 +38,7 @@ const DashboardPage = () => {
   const [dataDashBoard, setDataDashboard] = useState();
   console.log(dataDashBoard, "DATA DASHBOARD");
   const [shop, setShop] = useState();
+  console.log(shop, "SHOP");
   const [activeBrand, setActiveBrand] = useState(0);
 
   const dispatch = useAppDispatch();
