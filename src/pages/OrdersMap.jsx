@@ -264,11 +264,16 @@ const OrdersMap = () => {
     const red = require('../assets/redarrow.png')
 
 
-    const totalOrderAmount =  geoData?.geo_data?.reduce((acc, item) => acc + item.orderAmount, 0) 
-    const totalOrderSum =  geoData?.geo_data?.reduce((acc, item) => acc + item.orderCount, 0)
+    const totalOrderAmount =  geoData?.geo_data?.reduce((acc, item) => acc + item.orderAmount, 0) || '0' 
+    const totalOrderSum =  geoData?.geo_data?.reduce((acc, item) => acc + item.orderCount, 0) || '0'
+    const totalOrderAmountStock =  geoData?.stock_data?.reduce((acc, item) => acc + item.orderAmount, 0) || '0'
+    const totalOrderSumStock =  geoData?.stock_data?.reduce((acc, item) => acc + item.orderCount, 0)|| '0'
 
-    const totalSaleAmount =  geoData?.geo_data?.reduce((acc, item) => acc + item.saleAmount, 0) 
-    const totalSaleSum =  geoData?.geo_data?.reduce((acc, item) => acc + item.saleCount, 0)
+    const totalSaleAmount =  geoData?.geo_data?.reduce((acc, item) => acc + item.saleAmount, 0) || '0'
+    const totalSaleSum =  geoData?.geo_data?.reduce((acc, item) => acc + item.saleCount, 0)|| '0'
+    const totalSaleAmountStock =  geoData?.stock_data?.reduce((acc, item) => acc + item.saleAmount, 0) || '0'
+    const totalSaleSumStock =  geoData?.stock_data?.reduce((acc, item) => acc + item.saleCount, 0)|| '0'
+
 
     const totalOrdersOther =  geoData?.geo_data?.map(el => {
        
@@ -296,6 +301,65 @@ const OrdersMap = () => {
 
   const [isHovered, setIsHovered] = useState(false);
   console.log(geoData.stock_data, 'stockData')
+
+  const orderSaleStock = [
+    {
+        amount: 0,
+        common_percent: 0,
+        district: "Другой округ",
+        stock_percent: 0
+    },
+    {
+        amount: 0,
+        common_percent: 0,
+        district: "Центральный фо",
+        stock_percent: 0
+    },
+    {
+        amount: 0,
+        common_percent: 0,
+        district: "Южный фо",
+        stock_percent: 0
+    },
+    {
+        amount: 0,
+        common_percent: 0,
+        district: "Приволжский фо",
+        stock_percent: 0
+    },
+    {
+        amount: 0,
+        common_percent: 0,
+        district: "Северо-Западный фо",
+        stock_percent: 0
+    },
+    {
+        amount: 0,
+        common_percent: 0,
+        district: "Сибирский фо",
+        stock_percent: 0
+    },
+    {
+        amount: 0,
+        common_percent: 0,
+        district: "Северо-Кавказский фо",
+        stock_percent: 0
+    },
+    {
+        amount: 0,
+        common_percent: 0,
+        district: "Уральский фо",
+        stock_percent: 0
+    },
+    // {
+    //     amount: 0,
+    //     common_percent: 0,
+    //     district: "Дальневосточный фо",
+    //     stock_percent: 0
+    // },
+  ]
+
+  
    
     return (
         <div className='orders-map'>
@@ -451,6 +515,8 @@ const OrdersMap = () => {
                                                 title={'Топ 5 по заказам'}
                                                 geoData={geoData.stock_data}
                                                 sub={'Всего заказов'}
+                                                totalAmount={totalOrderAmountStock}
+                                                totalCount={totalOrderSumStock}
                                             />
                                         </div>
                                         <div className="col">
@@ -459,6 +525,8 @@ const OrdersMap = () => {
                                                 title={'Топ 5 по продажам'}
                                                 geoData={geoData.stock_data}
                                                 sub={'Всего продаж'}
+                                                totalAmount={totalSaleAmountStock}
+                                                totalCount={totalSaleSumStock}
                                             />
                                         </div>
                                     </div>
@@ -469,11 +537,12 @@ const OrdersMap = () => {
                                                 
                                                 return (
                                                     <div className=" pl-3 map-data-row" key={i}>
-                                                        <div className="col" style={geoData?.stock_data[i]?.orderDetails?.length === 0 ? { visibility: 'hidden' } : {}} >
-                                                            <OrderTableExtended title={`Заказы из ${w.stockName}`} data={ geoData?.stock_data[i]?.orderDetails} />
+                                                        <div className="col"  >
+                                                            <OrderTableExtended title={`Заказы из ${w.stockName}`} data={ geoData?.stock_data[i]?.orderDetails.length !== 0 ? geoData?.stock_data[i]?.orderDetails : orderSaleStock } />
                                                         </div>
-                                                        <div className="col" style={geoData?.stock_data[i]?.saleDetails?.length === 0 ? { visibility: 'hidden' } : {}}  >
-                                                            <OrderTableExtended title={`Продажи из ${w.stockName}`} data={ geoData?.stock_data[i]?.saleDetails} />
+                                                        {/* style={geoData?.stock_data[i]?.saleDetails?.length === 0 ? { visibility: 'hidden' } : {}} */}
+                                                        <div className="col"   >
+                                                            <OrderTableExtended title={`Продажи из ${w.stockName}`} data={ geoData?.stock_data[i]?.saleDetails.length !== 0 ? geoData?.stock_data[i]?.saleDetails : orderSaleStock} />
                                                         </div>
                                                     </div>
                                                 )

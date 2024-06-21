@@ -178,7 +178,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }
                         }}
                     >
                         <p className="clue-text mb-1" style={{ fontSize: '1.75vh' }}>{sub}</p>
-                        <p className="mb-1 fw-bold" style={{ fontSize: '2vh' }}>{formatPrice(Number(totalAmount))} ₽</p>
+                        <p className="mb-1 fw-bold" style={{ fontSize: '2vh' }}>{formatPrice(totalAmount)} ₽</p>
                         <p className="mb-1" style={{ fontSize: '1.75vh', fontWeight: 600 }}>{formatPrice(totalCount)} шт</p>
                     </div>
                 </div>
