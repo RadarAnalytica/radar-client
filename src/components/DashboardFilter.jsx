@@ -37,7 +37,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop,
                 </div> */}
                 <div className="filter-item col">
                     <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="store">Магазин:</label>
-                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue={shop?.slice(0, 1)[0].id} onChange={e => changeBrand(e.target.value)}>
+                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue='0' onChange={e => changeBrand(e.target.value)}>
                         <option value="Все" selected>Все</option>
                         {
                             shop && shop?.map((brand) => (

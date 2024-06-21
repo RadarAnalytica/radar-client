@@ -421,7 +421,8 @@ const OrdersMap = () => {
                                             boxShadow: '0 0 40px rgba(19, 19, 19, 0.3)',
                                             padding: '16px',
                                             borderRadius: 16,
-                                            width: '22vw'
+                                            width: '22vw',
+                                            pointerEvents: 'none',
                                         }}
                                     >
                                         <div>

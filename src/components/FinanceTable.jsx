@@ -15,7 +15,7 @@ export const TableRow = ({ values, percent, sign }) => {
                         key={i}
                         style={
                             i === 0 ?
-                                { textAlign: 'left', fontWeight: 'bold' } :
+                                { textAlign: 'left',  } :
                                 i > 1 ?
                                     { textAlign: 'right', fontWeight: 400 }
                                     :

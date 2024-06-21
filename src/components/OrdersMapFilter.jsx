@@ -29,7 +29,7 @@ const OrdersMapFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop 
                 </div> */}
                 <div className="filter-item col me-0" style={{ maxWidth: '12vw' }}>
                     <label htmlFor="store">Магазин:</label>
-                    <select className='form-control' defaultValue={shop?.slice(0, 1)[0].id} onChange={e => changeBrand(e.target.value)}>
+                    <select className='form-control' defaultValue= '0' onChange={e => changeBrand(e.target.value)}>
                         <option value="Все" selected>Все</option>
                         {
                             shop && shop.map((brand, i) => (
