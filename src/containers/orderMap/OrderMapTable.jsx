@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OrderMapTable = ({ title, data }) => {
+const OrderMapTable = ({ title, data, totalAmount, totalCount }) => {
     
     const withName = [...data].slice(5, -1)
     // const otherRegion = withName.slice(-5)
@@ -22,8 +22,8 @@ const OrderMapTable = ({ title, data }) => {
                 withName.map((item, key) => (
                         <div key={key} className='d-flex justify-content-between'>
                             <p className="mb-2 col-6 pe-2">{item.districtName || 'Регион не определен'}</p>
-                            <p className="mb-2 col">{item.saleCount}&nbsp;шт</p>
-                            <p className="mb-2 col">{item.saleAmount}&nbsp;₽</p>
+                            <p className="mb-2 col">{item.count}&nbsp;шт</p>
+                            <p className="mb-2 col">{item.amount}&nbsp;₽</p>
                             <p className="mb-2 col text-end fw-bold">{item.percent.toFixed(1)}&nbsp;%</p>
                         </div>
                     ))
@@ -31,8 +31,8 @@ const OrderMapTable = ({ title, data }) => {
                     withName.map((item, key) => (
                         <div key={key} className='d-flex justify-content-between'>
                             <p className="mb-2 col-6 pe-2">{item.districtName}</p>
-                            <p className="mb-2 col">{item.saleCount}&nbsp;шт</p>
-                            <p className="mb-2 col">{item.saleAmount}&nbsp;₽</p>
+                            <p className="mb-2 col">{item.count}&nbsp;шт</p>
+                            <p className="mb-2 col">{item.amount}&nbsp;₽</p>
                             <p className="mb-2 col text-end fw-bold">{item.percent.toFixed(1)}&nbsp;%</p>
                         </div>
                     ))

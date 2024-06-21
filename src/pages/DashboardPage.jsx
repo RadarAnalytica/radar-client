@@ -297,21 +297,21 @@ const DashboardPage = () => {
       amount: dataDashBoard?.grossProfit || "0",
       rate: dataDashBoard?.grossProfitCompare || "0",
     },
-    {
-      name: "Налог",
-      amount: dataDashBoard?.tax || "0",
-      rate: dataDashBoard?.taxCompare || "0",
-    },
+    // {
+    //   name: "Налог",
+    //   amount: dataDashBoard?.tax || "0",
+    //   rate: dataDashBoard?.taxCompare || "0",
+    // },
     {
       name: "Чистая прибыль",
       amount: dataDashBoard?.netProfit || "0",
       rate: dataDashBoard?.netProfitCompare || "0",
     },
-    {
-      name: "Средняя прибыль",
-      amount: dataDashBoard?.averageProfit || "0",
-      rate: dataDashBoard?.averageProfitCompare || "0",
-    },
+    // {
+    //   name: "Средняя прибыль",
+    //   amount: dataDashBoard?.averageProfit || "0",
+    //   rate: dataDashBoard?.averageProfitCompare || "0",
+    // },
   ];
 
   const salesSelfCost =
