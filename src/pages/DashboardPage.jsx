@@ -640,6 +640,7 @@ const DashboardPage = () => {
         <SideNav />
         <div className="dashboard-content pb-3">
           <TopNav title={"Сводка продаж"} />
+          <SelfCostWarning />
 
           {wbData?.initialCostsAndTax === null ||
           wbData?.initialCostsAndTax?.data?.length === 0 ||
