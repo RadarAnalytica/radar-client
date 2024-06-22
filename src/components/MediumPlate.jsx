@@ -2,7 +2,6 @@ import React from 'react'
 import { formatPrice } from '../service/utils'
 
 const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2, dataDashBoard, days }) => {
-console.log(text, text2, "TEXT")
     const green = require('../assets/greenarrow.png')
     const red = require('../assets/redarrow.png')
     const rateUp = <svg style={{ width: '16px', height: '12px', marginRight: '10px' }} width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -9,7 +9,6 @@ import AuthContext from "../service/AuthContext";
 import { URL } from "../service/config";
 
 import Modal from "react-bootstrap/Modal";
-import DropFile from "../components/DropFile";
 import DragDropFile from "../components/DragAndDropFiles";
 import WbIcon from "../assets/WbIcon";
 import { getFileClickHandler, saveFileClickHandler } from "../service/getSvaeFile";

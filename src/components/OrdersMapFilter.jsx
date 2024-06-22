@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OrdersMapFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop }) => {
+const OrdersMapFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop, setChangeBrand }) => {
 
     return (
         <div className='orders-filter container dash-container'>
@@ -29,11 +29,16 @@ const OrdersMapFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop 
                 </div> */}
                 <div className="filter-item col me-0" style={{ maxWidth: '12vw' }}>
                     <label htmlFor="store">Магазин:</label>
-                    <select className='form-control' defaultValue= '0' onChange={e => changeBrand(e.target.value)}>
+                    <select className='form-control' defaultValue= '0' onChange={e => {
+
+                        const firsValue = e.target.value.split('|')[0];
+                        const secondValue = e.target.value.split('|')[1];
+                        setChangeBrand(secondValue)
+                        changeBrand(firsValue)}}>
                         <option value="Все" selected>Все</option>
                         {
                             shop && shop.map((brand, i) => (
-                                <option key={i} value={brand.id}>{brand.brand_name}</option>
+                                <option key={i} value={`${brand.id}|${brand.is_primary_collect}`}>{brand.brand_name}</option>
                             ))
                         }
                     </select>

@@ -2,7 +2,6 @@ import React from 'react'
 import { formatPrice } from '../../service/utils'
 
 const OrderTableExtended = ({ title, data, geoData }) => {
-    console.log(data, "DATAREG")
     // const uniqueDistricts = Array.from(new Set(geoData.map(item => item.districtName[0].toUpperCase() + item.districtName.slice(1))));
 
     // const filteredGeoData = geoData.filter(item => uniqueDistricts.includes(item.districtName));

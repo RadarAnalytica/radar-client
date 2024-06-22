@@ -150,7 +150,7 @@ const LinkedShops = () => {
         }
     }, [])
     const redirect = () => {
-        navigate('/data-collection')
+        navigate('/dashboard')
     }
     
 

@@ -10,6 +10,8 @@ import OrderTableExtended from '../containers/orderMap/OrderTableExtended'
 import AuthContext from '../service/AuthContext'
 import { ServiceFunctions } from '../service/serviceFunctions'
 import { calculateGrowthPercentageGeo, filterArrays, filterArraysNoData, formatPrice } from '../service/utils'
+import SelfCostWarning from '../components/SelfCostWarning'
+import DataCollectionNotification from '../components/DataCollectionNotification'
 
 
 
@@ -22,6 +24,8 @@ const OrdersMap = () => {
     const { user, authToken } = useContext(AuthContext)
 
     const [byRegions, setByRegions] = useState(true)
+    const [changeBrand, setChangeBrand] = useState(false);
+    console.log(changeBrand, "CHANGE BRAND");
 
     const [days, setDays] = useState(14)
     const [brandNames, setBrandNames] = useState()
@@ -138,7 +142,6 @@ const OrdersMap = () => {
 
     }       
 
-    console.log(commonAndCompareOnMap.farEastern, 'commonAndCompareOnMap')
 
     // const modifiedOrders = ordersByWarehouses ? ordersByWarehouses.map(item => {
     //     const totalSum = item.data?.reduce((acc, el) => acc + el.finishedPrice, 0)
@@ -185,7 +188,6 @@ const OrdersMap = () => {
 
     const [foName, setFoName] = useState()
     const [foFirst, setFoFirst] = useState()
-    console.log(foFirst, 'foFirst');
 
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
@@ -293,14 +295,11 @@ const OrdersMap = () => {
          count: el.saleCount
      }
     })
-    console.log(totalOrdersOther, 'totalOrdersOther')
-    console.log(totalSalesOther, 'totalSalesOther')
     // let totalOrdersSum = data && data.ordersTableData ? data.ordersTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
     // let totalSalesSum = data && data.ordersTableData ? data.salesTableData.reduce((acc, item) => acc + Number(item.sum), 0) : 0
     
 
   const [isHovered, setIsHovered] = useState(false);
-  console.log(geoData.stock_data, 'stockData')
 
   const orderSaleStock = [
     {
@@ -366,14 +365,18 @@ const OrdersMap = () => {
             <SideNav />
             <div className="orders-map-content pb-3">
                 <TopNav title={'География заказов и продаж'} />
+                {!changeBrand && <SelfCostWarning activeBrand={activeBrand} />} 
+
                 <OrdersMapFilter
                     brandNames={brandNames}
                     defaultValue={days}
                     setDays={setDays}
                     changeBrand={setActiveBrand}
                     shop={shop}
+                    setChangeBrand={setChangeBrand}
+                    
                 />
-
+                {!changeBrand ? 
                 <div className="map-container dash-container container p-3">
                     <div className="map-radio mb-3">
                         <div className="radio-item">
@@ -558,6 +561,8 @@ const OrdersMap = () => {
                                     : null
                     }
                 </div>
+                : <DataCollectionNotification title={'Ваши данные еще формируются и обрабатываются.'} />
+                }   
             </div>
         </div>
     )

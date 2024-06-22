@@ -29,17 +29,20 @@ const DashboardPage = () => {
   const [wbData, setWbData] = useState();
 
   const [days, setDays] = useState(14);
-  console.log(days);
   const [content, setContent] = useState();
   const [state, setState] = useState();
 
   const [brandNames, setBrandNames] = useState();
+
+  const [changeBrand, setChangeBrand] = useState(false);
+  console.log(changeBrand, "CHANGE BRAND");
 
   const [dataDashBoard, setDataDashboard] = useState();
   console.log(dataDashBoard, "DATA DASHBOARD");
   const [shop, setShop] = useState();
   console.log(shop, "SHOP");
   const [activeBrand, setActiveBrand] = useState(0);
+  console.log(activeBrand, "ACTIVE BRAND");
 
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.dashboardSlice.shops);
@@ -478,6 +481,7 @@ const DashboardPage = () => {
 
     return pastDays;
   }
+  
   const arrayDay = getPastDays(days);
   const data = {
     labels: arrayDay.reverse() || [],
@@ -640,22 +644,23 @@ const DashboardPage = () => {
         <SideNav />
         <div className="dashboard-content pb-3">
           <TopNav title={"Сводка продаж"} />
-          <SelfCostWarning />
+         {!changeBrand && <SelfCostWarning activeBrand={activeBrand} />} 
 
-          {wbData?.initialCostsAndTax === null ||
+          {/* {wbData?.initialCostsAndTax === null ||
           wbData?.initialCostsAndTax?.data?.length === 0 ||
           wbData === null ? (
             <SelfCostWarning />
           ) : null}
-          {wbData === null ? <DataCollectionNotification /> : null}
+          {wbData === null ? <DataCollectionNotification /> : null} */}
           <DashboardFilter
             brandNames={brandNames}
             defaultValue={days}
             setDays={setDays}
             changeBrand={setActiveBrand}
+            setChangeBrand={setChangeBrand}
             shop={shop}
           />
-          {
+          {!changeBrand  ? (
             <div>
               <div className="container dash-container p-3 pt-0 d-flex gap-3">
                 <MediumPlate
@@ -877,9 +882,15 @@ const DashboardPage = () => {
                 />
               </div>
             </div>
+          ) : (
+            <DataCollectionNotification title={
+             'Ваши данные еще формируются и обрабатываются.'
+            } />
+          )
           }
         </div>
       </div>
+      
     )
   );
 };
