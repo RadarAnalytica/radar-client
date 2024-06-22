@@ -42,7 +42,6 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
         }
     }
     const maxSale = getArrayStep(maxValue)
-    console.log(maxSale, 'MAX SALE')
 
         
 
@@ -183,7 +182,6 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                             function getBody(bodyItem) {
                                                 return bodyItem.lines;
                                             }
-                                            console.log('tooltipModel', tooltipModel);
                                             // Set Text
                                             if (tooltipModel.body) {
                                                 let datasets = data?.datasets?.filter(obj => obj.data?.length > 0)?.reverse()
