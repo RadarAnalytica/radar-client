@@ -93,14 +93,14 @@ const TopNav = ({ title }) => {
                             onMouseLeave={() => handleMouseLeave()}
                             
                             className='settings-modal' id='settings-modal'>
-                                <a href="#" className='link'
+                                {/* <a href="#" className='link'
                                     style={{
                                         borderBottom: '1px  solid silver',
                                         paddingBottom: '8px',
                                     }}
                                 >
                                     Получить полный доступ
-                                </a>
+                                </a> */}
                                 <div className='pt-2'>
                                     {/* <p className='mt-3 mb-2'>Сотрудники</p> */}
                                     {/* <p className='mb-1 mt-2' onClick={() => navigate('/development/settings')}>Настройки аккаунта</p> */}
@@ -112,6 +112,7 @@ const TopNav = ({ title }) => {
                                 <a href="/signin" className='link'
                                     style={{
                                         paddingTop: '4px',
+                                        paddingLeft: '20px',
                                         width: '240px'
                                     }}
                                     onClick={() => {
@@ -124,12 +125,12 @@ const TopNav = ({ title }) => {
                             null
                     }
                 </div>
-                <div className="hamburger col-2 d-flex justify-content-around">
+                {/* <div className="hamburger col-2 d-flex justify-content-around">
                     <RxHamburgerMenu
                         style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px', color: 'black' }}
                         onClick={() => setShowMobile(true)}
                     />
-                </div>
+                </div> */}
             </div>
         </div>
     )

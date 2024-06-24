@@ -223,12 +223,13 @@ const LinkedShops = () => {
                                                     </svg>
                                                     <h5 className='mb-0 pb-0'>Токен</h5>
                                                 </div>
-                                                <div className='d-flex token-status'>
-                                                    <div className='token-active'>
-                                                        <img src={greencircle} alt="" />
-                                                        <span>Активен</span>
-                                                    </div>
-                                                </div>
+                                                {/* <div className='d-flex token-status'>
+                                                <svg width="120" height="40" fill='#00B69B' xmlns="http://www.w3.org/2000/svg">
+                                                    <rect width="120" height="40" rx="8" fill="#00B69B" fill-opacity="0.15" />
+                                                    <circle cx="15" cy="18" r="5" fill="#00B69B" />
+                                                    <text x="30" y="25" font-family="Arial" font-size="18" font-weight="400" fill="black">Активен</text>
+                                                </svg>
+                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
@@ -290,7 +291,7 @@ const LinkedShops = () => {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-2">
                         <button className='prime-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => { ServiceFunctions.updateToken(brandName, tkn, authToken).then(data => setData((prev) => [...prev, data])); handleClose(); setShowSuccess(true); redirect()}}>
+                            onClick={() => { ServiceFunctions.updateToken(brandName, tkn, authToken).then(data => setData((prev) => [...prev, data])); handleClose(); setShowSuccess(true);}}>
                             Сохранить
                         </button>
                     </div>
@@ -326,10 +327,11 @@ const LinkedShops = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span >Себестоимость</span>
                     <div className='d-flex token-status'>
-                        <div className='token-active'>
-                            <img src={greencircle} alt="" />
-                            <span>Установлена</span>
-                        </div>
+                    {/* <svg width="150" height="40" fill='#00B69B' xmlns="http://www.w3.org/2000/svg">
+                        <rect width="150" height="40" rx="8" fill="#00B69B" fill-opacity="0.15" />
+                        <circle cx="15" cy="18" r="5" fill="#00B69B" />
+                        <text x="30" y="25" font-family="Arial" font-size="18" font-weight="400" fill="black">Установлена</text>
+                    </svg> */}
                     <a onClick={() => {setShowSelfcost(true); setShowEdit(false)}} href="#" className='link' >Изменить</a>
                     </div>
                     </div>

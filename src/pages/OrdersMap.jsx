@@ -25,9 +25,8 @@ const OrdersMap = () => {
 
     const [byRegions, setByRegions] = useState(true)
     const [changeBrand, setChangeBrand] = useState(false);
-    console.log(changeBrand, "CHANGE BRAND");
 
-    const [days, setDays] = useState(14)
+    const [days, setDays] = useState(30)
     const [brandNames, setBrandNames] = useState()
     const [activeBrand, setActiveBrand] = useState(0)
     // useEffect(() => {
@@ -205,10 +204,11 @@ const OrdersMap = () => {
         if (target) {
             // Получаем значение атрибута name и выводим его в консоль
             const nameAttribute = target.getAttribute('name');
-            setFoName(nameAttribute);
+            setFoName(nameAttribute.split('ФО')?.join('фо'));
             setFoFirst(nameAttribute?.split(' ')[0]?.toLowerCase())
         }
     }
+console.log(foName)
 
     let map = document.getElementById('order-map')
     map ? map.addEventListener('mouseover', findGTagName) : console.log();
@@ -242,23 +242,73 @@ const OrdersMap = () => {
 
     const getColor = (name) => {
         switch (name) {
-            case 'Сибирский ФО':
-                return 'rgba(254, 197, 61, 1)'
-            case 'Уральский ФО':
-                return 'grey'
-            case 'Южный ФО':
-                return 'rgba(74, 217, 145, 1)'
-            case 'Северо-Кавказский ФО':
-                return 'orangered'
-            case 'Центральный ФО':
-                return 'rgba(129, 172, 255, 1)'
-            case 'Приволжский ФО':
-                return 'rgba(255, 153, 114, 1)'
-            case 'Северо-Западный ФО':
-                return 'yellow'
-            case 'Дальневосточный ФО':
-                return 'brown'
-            default: return 'transparent'
+            case 'Сибирский фо':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="rgba(254, 197, 61, 1)" /> 
+                       </svg>
+            case 'Уральский фо':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="grey" /> 
+                       </svg>
+            case 'Южный фо':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                             <circle cx="8" cy="8" r="8" fill="rgba(74, 217, 145, 1)" /> 
+                       </svg>
+            case 'Северо-Кавказский фо':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="orangered" /> 
+                       </svg>
+            case 'Центральный фо':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="rgba(129, 172, 255, 1)" /> 
+                       </svg>
+            case 'Приволжский фо':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="rgba(255, 153, 114, 1)" /> 
+                       </svg>
+            case 'Северо-Западный фо':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                           <circle cx="8" cy="8" r="8" fill="yellow" /> 
+                       </svg>
+            case 'Дальневосточный фо':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                         <circle cx="8" cy="8" r="8" fill="brown" /> 
+                     </svg>
+            default: return ''
+        }
+    }
+
+    const getColorStock = (name) => {
+        switch (name) {
+            case 'Тула':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="rgba(254, 197, 61, 1)" /> 
+                       </svg>
+            case 'Казань':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="grey" /> 
+                       </svg>
+            case 'Подольск':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                             <circle cx="8" cy="8" r="8" fill="rgba(74, 217, 145, 1)" /> 
+                       </svg>
+            case 'Краснодар':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="orangered" /> 
+                       </svg>
+            case 'Электросталь':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="rgba(129, 172, 255, 1)" /> 
+                       </svg>
+            case 'Коледино':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="rgba(255, 153, 114, 1)" /> 
+                       </svg>
+            case 'Екатеринбург':
+                return <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                           <circle cx="8" cy="8" r="8" fill="yellow" /> 
+                       </svg>
+            default: return ''
         }
     }
 
@@ -270,12 +320,12 @@ const OrdersMap = () => {
     const totalOrderSum =  geoData?.geo_data?.reduce((acc, item) => acc + item.orderCount, 0) || '0'
     const totalOrderAmountStock =  geoData?.stock_data?.reduce((acc, item) => acc + item.orderAmount, 0) || '0'
     const totalOrderSumStock =  geoData?.stock_data?.reduce((acc, item) => acc + item.orderCount, 0)|| '0'
-
+    
     const totalSaleAmount =  geoData?.geo_data?.reduce((acc, item) => acc + item.saleAmount, 0) || '0'
     const totalSaleSum =  geoData?.geo_data?.reduce((acc, item) => acc + item.saleCount, 0)|| '0'
     const totalSaleAmountStock =  geoData?.stock_data?.reduce((acc, item) => acc + item.saleAmount, 0) || '0'
     const totalSaleSumStock =  geoData?.stock_data?.reduce((acc, item) => acc + item.saleCount, 0)|| '0'
-
+    
 
     const totalOrdersOther =  geoData?.geo_data?.map(el => {
        
@@ -358,6 +408,15 @@ const OrdersMap = () => {
     // },
   ]
 
+  const orderCount = geoData?.geo_data?.map(el => el.orderCount)
+  const orderAmount = geoData?.geo_data?.map(el => el.orderAmount)
+  const saleCount = geoData?.geo_data?.map(el => el.saleCount)
+  const saleAmount = geoData?.geo_data?.map(el => el.saleAmount)
+
+  const orderCountStock = geoData?.stock_data?.map(el => el.orderCount)
+  const orderAmountStock = geoData?.stock_data?.map(el => el.orderAmount)
+  const saleCountStock = geoData?.stock_data?.map(el => el.saleCount)
+  const saleAmountStock = geoData?.stock_data?.map(el => el.saleAmount)
   
    
     return (
@@ -430,18 +489,20 @@ const OrdersMap = () => {
                                     >
                                         <div>
                                             <h6 className='fw-bold d-flex align-items-center'>
-                                                <div style={{ width: '1vw', height: '1vw', marginRight: '8px', borderRadius: '100%', backgroundColor: getColor(foName) }}></div>
+                                                <div style={{ width: '1vw', height: '1vw', marginRight: '8px', borderRadius: '100%' }}>
+                                                    {getColor(foName)}
+                                                </div>
                                                 {foName}
                                             </h6>
                                             <div className='d-flex'>
                                                 <p className='mb-1 col'>Общая доля</p>
-                                                <p className='mb-1 fw-bold  col'>{formatPrice(tooltipData?.percent)} %
+                                                <p className='mb-1 fw-bold  col'>{formatPrice(tooltipData?.percent) } %
                                                 <img src={tooltipData?.comparePercent > 0 ? green : red} alt="" style={{ width: '1.25vw', marginLeft: '8px' }} />
                                                 <span className='pt-1' style={tooltipData?.comparePercent > 0 ?
                                                 { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(0, 182, 155, 1)', marginLeft: '2px' } :
                                                 { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(249, 60, 101, 1)', marginLeft: '2px' }}
                                                  >
-                                                    {Number(tooltipData?.comparePercent).toFixed(0)} %
+                                                    {tooltipData?.comparePercent.toFixed(0)} %
                                                  </span>
                                                 </p>
                                                 
@@ -479,6 +540,11 @@ const OrdersMap = () => {
                                             geoData={geoData.geo_data}
                                             totalAmount={totalOrderAmount}
                                             totalCount={totalOrderSum}
+                                            count={orderCount}
+                                            amount={orderAmount}
+                                            titleTooltipAmount={'Заказы, руб'}
+                                            titleTooltipCount={'Заказы, шт'}
+                                            getColor={getColor}
                                             // link={'Смотреть все регионы*'}
                                         />
                                     </div>
@@ -490,6 +556,11 @@ const OrdersMap = () => {
                                             geoData={geoData.geo_data}
                                             totalAmount={totalSaleAmount}
                                             totalCount={totalSaleSum}
+                                            count={saleCount}
+                                            amount={saleAmount}
+                                            titleTooltipAmount={'Продажи, руб'}
+                                            titleTooltipCount={'Продажи, шт'}
+                                            getColor={getColor}
                                             // link={'Место для кнопки-ссылки'}
                                         />
                                     </div>
@@ -521,6 +592,11 @@ const OrdersMap = () => {
                                                 sub={'Всего заказов'}
                                                 totalAmount={totalOrderAmountStock}
                                                 totalCount={totalOrderSumStock}
+                                                count={orderCountStock}
+                                                amount={orderAmountStock}
+                                                titleTooltipAmount={'Заказы, руб'}
+                                                titleTooltipCount={'Заказы, шт'}
+                                                getColor={getColorStock}
                                             />
                                         </div>
                                         <div className="col">
@@ -531,6 +607,11 @@ const OrdersMap = () => {
                                                 sub={'Всего продаж'}
                                                 totalAmount={totalSaleAmountStock}
                                                 totalCount={totalSaleSumStock}
+                                                count={saleCountStock}
+                                                amount={saleAmountStock}
+                                                titleTooltipAmount={'Продажи, руб'}
+                                                titleTooltipCount={'Продажи, шт'}
+                                                getColor={getColorStock}
                                             />
                                         </div>
                                     </div>
