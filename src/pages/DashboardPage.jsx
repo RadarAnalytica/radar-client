@@ -28,7 +28,7 @@ const DashboardPage = () => {
   console.log(user, "USER");
   const [wbData, setWbData] = useState();
 
-  const [days, setDays] = useState(14);
+  const [days, setDays] = useState(30);
   const [content, setContent] = useState();
   const [state, setState] = useState();
 

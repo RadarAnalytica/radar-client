@@ -5,8 +5,50 @@ import { formatPrice } from '../../service/utils';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }) => {
-
+const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, count, amount, titleTooltipAmount, titleTooltipCount, getColor }) => {
+    console.log(info, 'INFO')
+    const getColorTooltip = (name) => {
+        switch (name) {
+            case 'Сибирский фо':
+                return 'rgba(254, 197, 61, 1)'
+            case 'Уральский фо':
+                return 'grey'
+            case 'Южный фо':
+                return 'rgba(74, 217, 145, 1)'
+            case 'Северо-Кавказский фо':
+                return 'orangered'
+            case 'Центральный фо':
+                return 'rgba(129, 172, 255, 1)'
+            case 'Приволжский фо':
+                return 'rgba(255, 153, 114, 1)'
+            case 'Северо-Западный фо':
+                return 'yellow'
+            case 'Дальневосточный фо':
+                return 'brown'
+            default: return 'transparent'
+        }
+    }
+   
+    const getColorStockTooltip = (name) => {
+        switch (name) {
+            case 'Тула':
+                return "rgba(254, 197, 61, 1)"
+            case 'Казань':
+                return "grey"
+            case 'Подольск':
+                return "rgba(74, 217, 145, 1)"
+            case 'Краснодар':
+                return "orangered"
+            case 'Электросталь':
+                return "rgba(129, 172, 255, 1)"
+            case 'Коледино':
+                return "rgba(255, 153, 114, 1)"
+            case 'Екатеринбург':
+                return "yellow"
+            default: return ''
+        }
+    }
+    
     const backgroundColor = [
         'rgba(129, 172, 255, 1)',
         'rgba(255, 153, 114, 1)',
@@ -20,7 +62,8 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }
         let sub = item.districtName?.split('федеральный округ')?.join('фо')
         item.districtName = sub
     })
-
+    const colorCons = firstFive.map(el => el.districtName ? getColorTooltip(el.districtName) : getColorStockTooltip(el.stockName));
+   
 
     // const totalAmount =  info.reduce((acc, item) => acc + item.saleAmount, 0) 
     // const totalSum =  info.reduce((acc, item) => acc + Number(item.saleCount), 0)
@@ -36,11 +79,29 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }
         labels: firstFive?.map(item => item.districtName ? item.districtName : item.stockName),
         datasets: [
             {
-                data: firstFive?.map(item => item.orderCount),
-                backgroundColor: backgroundColor,
+                label: 'Общая доля',
+                data: firstFive?.map(item => item.percent + '%'),
+                backgroundColor: colorCons,
                 borderColor: 'white',
                 borderWidth: 0
             },
+            
+            {
+                label: titleTooltipAmount,
+                data: amount,
+                backgroundColor: colorCons,
+                borderColor: 'white',
+                borderWidth: 0
+            },
+            {   
+                label: titleTooltipCount,
+                data: count,
+                backgroundColor: colorCons,
+                borderColor: 'white',
+                borderWidth: 0
+            },
+            
+            
         ],
     }
 
@@ -52,6 +113,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }
                     <Doughnut data={data}
                         options={
                             {
+                               
                                 maintainAspectRatio: false,
                                 plugins: {
                                     legend: {
@@ -62,10 +124,13 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }
                                     },
                                     tooltip: {
                                         enabled: false,
-                                        external: function(context) {
+                                        intersect: false,
+                                        callbacks: {
+                                        },
+                                        external: function (context) {
                                             // Tooltip Element
                                             let tooltipEl = document.getElementById('chartjs-tooltip');
-                        
+
                                             // Create element on first render
                                             if (!tooltipEl) {
                                                 tooltipEl = document.createElement('div');
@@ -73,14 +138,15 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }
                                                 tooltipEl.innerHTML = '<table></table>';
                                                 document.body.appendChild(tooltipEl);
                                             }
-                        
+
                                             // Hide if no tooltip
                                             const tooltipModel = context.tooltip;
+                                            console.log(tooltipModel, "TOOLTIPMODEL")
                                             if (tooltipModel.opacity === 0) {
                                                 tooltipEl.style.opacity = 0;
                                                 return;
                                             }
-                        
+
                                             // Set caret Position
                                             tooltipEl.classList.remove('above', 'below', 'no-transform');
                                             if (tooltipModel.yAlign) {
@@ -88,51 +154,69 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }
                                             } else {
                                                 tooltipEl.classList.add('no-transform');
                                             }
-                        
+
                                             function getBody(bodyItem) {
                                                 return bodyItem.lines;
                                             }
-                        
                                             // Set Text
                                             if (tooltipModel.body) {
+                                                let datasets = data?.datasets?.filter(obj => obj.data?.length > 0)
+                                                console.log(datasets, "DATASETS")
+                                                // datasets = datasets?.slice(2, 4)?.concat(datasets?s.slice(0, 2))
+                                                // const datalabels = data?.labels?.map(item => item[0].concat(',' + item[1]))
+                                                const datalabels = data?.labels
+                                                console.log(datalabels, "DATALABELS")
+                                                
+                                                const targetInex = datalabels?.indexOf(tooltipModel.title[0])
+                                                const color =tooltipModel.labelColors[0].backgroundColor;
+                                                console.log(color, "COLOR")
                                                 const titleLines = tooltipModel.title || [];
+                                                console.log(titleLines, "TITLELINES")
                                                 const bodyLines = tooltipModel.body.map(getBody);
-                        
+                                               
+
                                                 let innerHtml = '<thead>';
-                        
-                                                titleLines.forEach(function(title) {
-                                                    innerHtml += '<tr><th>' + title + '</th></tr>';
+                                                
+
+                                                titleLines.forEach(function (title) {
+                                                    innerHtml += '<tr><th style="color: black; font-weight: 400;"><span style="width: 10px; height: 10px; background-color: ' + color + '; display: inline-block; margin-right: 5px; border-radius: 50%;" ></span>' + title + '</th></tr>';
                                                 });
                                                 innerHtml += '</thead><tbody>';
-                        
-                                                bodyLines.forEach(function(body, i) {
-                                                    const colors = tooltipModel.labelColors[i];
-                                                    let style = 'background:' + colors.backgroundColor;
-                                                    style += '; border-color:' + colors.borderColor;
+                                                datasets?.forEach(function (set, i) {
+                                                    const colors = set.backgroundColor[i]
+                                                    // const targetColor = set.label === 'Заказы' ? colors[0] : colors[1]
+                                                    // const targetDescr = set.type === 'bar' ? ' шт' : " руб"
+                                                    let value = set?.data[targetInex] || '0';
+                                                    let style = ''
+                                                    // style += '; border-color:' + colors.borderColor;
                                                     style += '; border-width: 2px';
-                                                    const span = '<span style="' + style + '">' + body + '</span>';
+                                                    const span = '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 2px;">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' + style + '">' + set?.label + ':  <span style="font-weight: bold;">' + value +  '</span></span>';
                                                     innerHtml += '<tr><td>' + span + '</td></tr>';
                                                 });
                                                 innerHtml += '</tbody>';
-                        
+
                                                 let tableRoot = tooltipEl.querySelector('table');
                                                 tableRoot.innerHTML = innerHtml;
                                             }
-                        
+
                                             const position = context.chart.canvas.getBoundingClientRect();
-                                            const bodyFont = <Chart className="helpers toFont">(tooltipModel.options.bodyFont)</Chart>;
-                        
+                                            const bodyFont = Chart?.helpers?.toFont(tooltipModel.options.bodyFont);
+
                                             // Display, position, and set styles for font
+                                            tooltipEl.style.transition = 'all 0.25s ease-in-out';
+                                            tooltipEl.style.backgroundColor = 'white';
+                                            tooltipEl.style.borderRadius = '8px';
+                                            tooltipEl.style.boxShadow = '0 0 20px rgba(19,19, 19, 0.7)';
+                                            tooltipEl.style.padding = '1rem';
                                             tooltipEl.style.opacity = 1;
                                             tooltipEl.style.position = 'absolute';
                                             tooltipEl.style.left = position.left + window.scrollX + tooltipModel.caretX + 'px';
                                             tooltipEl.style.top = position.top + window.scrollY + tooltipModel.caretY + 'px';
-                                            tooltipEl.style.font = bodyFont.string;
+                                            tooltipEl.style.font = bodyFont?.string;
                                             tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
                                             tooltipEl.style.pointerEvents = 'none';
                                         }
-                                        
-                                    }
+                                    },
                                 },
                                 animation: {
                                     onComplete: (chart) => {
@@ -194,11 +278,11 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount }
                                                 width: '0.75vw',
                                                 height: '0.75vw',
                                                 borderRadius: '100%',
-                                                backgroundColor: backgroundColor[key],
+                                                
                                                 marginLeft: '-0.5vw',
                                                 marginRight: '0.5vw',
-                                                marginTop: '0.75vh'
-                                            }}>&nbsp;</span>
+                                                // marginTop: '0.75vh'
+                                            }}>{obj.districtName ? getColor(obj.districtName) : getColor(obj.stockName)}</span>
                                         <p className="mb-0  pe-2" style={{ fontSize: '1.75vh' }}>
                                             {obj.districtName ? obj.districtName : obj.stockName}
                                         </p>
