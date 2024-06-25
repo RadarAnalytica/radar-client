@@ -208,7 +208,6 @@ const OrdersMap = () => {
             setFoFirst(nameAttribute?.split(' ')[0]?.toLowerCase())
         }
     }
-console.log(foName)
 
     let map = document.getElementById('order-map')
     map ? map.addEventListener('mouseover', findGTagName) : console.log();
@@ -311,6 +310,23 @@ console.log(foName)
             default: return ''
         }
     }
+    const backgroundColorStok = [
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="8" fill="rgba(254, 197, 61, 1)" /> 
+                       </svg>,
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="8" r="8" fill="grey" /> 
+   </svg>,
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="8" r="8" fill="rgba(74, 217, 145, 1)" /> 
+  </svg>,
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="8" r="8" fill="orangered" /> 
+   </svg>,
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="8" r="8" fill="rgba(129, 172, 255, 1)" /> 
+   </svg>,
+    ]
 
     const green = require('../assets/greenarrow.png')
     const red = require('../assets/redarrow.png')
@@ -417,6 +433,23 @@ console.log(foName)
   const orderAmountStock = geoData?.stock_data?.map(el => el.orderAmount)
   const saleCountStock = geoData?.stock_data?.map(el => el.saleCount)
   const saleAmountStock = geoData?.stock_data?.map(el => el.saleAmount)
+
+  const tooltipOrderDataGeo = geoData?.geo_data?.map(item => ({
+    amount: item.orderAmount,
+    count: item.orderCount
+}));
+const tooltipSalesDataGeo = geoData?.geo_data?.map(item => ({
+    amount: item.saleAmount,
+    count: item.saleCount
+}));
+const tooltipOrderDataStock = geoData?.stock_data?.map(item => ({
+    amount: item.orderAmount,
+    count: item.orderCount
+}));
+const tooltipSalesDataStock = geoData?.stock_data?.map(item => ({
+    amount: item.saleAmount,
+    count: item.saleCount
+}));
   
    
     return (
@@ -542,9 +575,10 @@ console.log(foName)
                                             totalCount={totalOrderSum}
                                             count={orderCount}
                                             amount={orderAmount}
-                                            titleTooltipAmount={'Заказы, руб'}
-                                            titleTooltipCount={'Заказы, шт'}
+                                            titleTooltipAmount={'Заказы, руб  '}
+                                            titleTooltipCount={'Заказы, шт  '}
                                             getColor={getColor}
+                                            tooltipData={tooltipOrderDataGeo}
                                             // link={'Смотреть все регионы*'}
                                         />
                                     </div>
@@ -559,8 +593,9 @@ console.log(foName)
                                             count={saleCount}
                                             amount={saleAmount}
                                             titleTooltipAmount={'Продажи, руб'}
-                                            titleTooltipCount={'Продажи, шт'}
+                                            titleTooltipCount={'Продажи, шт  '}
                                             getColor={getColor}
+                                            tooltipData={tooltipSalesDataGeo}
                                             // link={'Место для кнопки-ссылки'}
                                         />
                                     </div>
@@ -596,7 +631,8 @@ console.log(foName)
                                                 amount={orderAmountStock}
                                                 titleTooltipAmount={'Заказы, руб'}
                                                 titleTooltipCount={'Заказы, шт'}
-                                                getColor={getColorStock}
+                                                getColorStok={backgroundColorStok}
+                                                tooltipData={tooltipOrderDataStock}
                                             />
                                         </div>
                                         <div className="col">
@@ -609,9 +645,10 @@ console.log(foName)
                                                 totalCount={totalSaleSumStock}
                                                 count={saleCountStock}
                                                 amount={saleAmountStock}
-                                                titleTooltipAmount={'Продажи, руб'}
-                                                titleTooltipCount={'Продажи, шт'}
-                                                getColor={getColorStock}
+                                                titleTooltipAmount={'Продажи,руб'}
+                                                titleTooltipCount={'Продажи,шт'}
+                                                getColorStok={backgroundColorStok}
+                                                tooltipData={tooltipSalesDataStock}
                                             />
                                         </div>
                                     </div>
