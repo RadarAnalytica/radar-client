@@ -5,8 +5,7 @@ import { formatPrice } from '../../service/utils';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, count, amount, titleTooltipAmount, titleTooltipCount, getColor }) => {
-    console.log(info, 'INFO')
+const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, count, amount, titleTooltipAmount, titleTooltipCount, getColor, tooltipData, getColorStok }) => {
     const getColorTooltip = (name) => {
         switch (name) {
             case 'Сибирский фо':
@@ -28,6 +27,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
             default: return 'transparent'
         }
     }
+    
    
     const getColorStockTooltip = (name) => {
         switch (name) {
@@ -62,7 +62,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
         let sub = item.districtName?.split('федеральный округ')?.join('фо')
         item.districtName = sub
     })
-    const colorCons = firstFive.map(el => el.districtName ? getColorTooltip(el.districtName) : getColorStockTooltip(el.stockName));
+    const colorCons = firstFive.map((el, i) => el.districtName ? getColorTooltip(el.districtName) : getColorStockTooltip(el.stockName));
    
 
     // const totalAmount =  info.reduce((acc, item) => acc + item.saleAmount, 0) 
@@ -80,30 +80,31 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
         datasets: [
             {
                 label: 'Общая доля',
-                data: firstFive?.map(item => item.percent + '%'),
+                data: firstFive?.map(item => item.percent),
                 backgroundColor: colorCons,
                 borderColor: 'white',
                 borderWidth: 0
-            },
+            }
             
-            {
-                label: titleTooltipAmount,
-                data: amount,
-                backgroundColor: colorCons,
-                borderColor: 'white',
-                borderWidth: 0
-            },
-            {   
-                label: titleTooltipCount,
-                data: count,
-                backgroundColor: colorCons,
-                borderColor: 'white',
-                borderWidth: 0
-            },
+            // {
+            //     label: titleTooltipAmount,
+            //     data: amount,
+            //     backgroundColor: colorCons,
+            //     borderColor: 'white',
+            //     borderWidth: 0
+            // },
+            // {   
+            //     label: titleTooltipCount,
+            //     data: count,
+            //     backgroundColor: colorCons,
+            //     borderColor: 'white',
+            //     borderWidth: 0
+            // },
             
             
         ],
     }
+   
 
     return (
         <div className='order-map-doughnut'>
@@ -125,8 +126,6 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                                     tooltip: {
                                         enabled: false,
                                         intersect: false,
-                                        callbacks: {
-                                        },
                                         external: function (context) {
                                             // Tooltip Element
                                             let tooltipEl = document.getElementById('chartjs-tooltip');
@@ -141,7 +140,6 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
 
                                             // Hide if no tooltip
                                             const tooltipModel = context.tooltip;
-                                            console.log(tooltipModel, "TOOLTIPMODEL")
                                             if (tooltipModel.opacity === 0) {
                                                 tooltipEl.style.opacity = 0;
                                                 return;
@@ -161,19 +159,16 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                                             // Set Text
                                             if (tooltipModel.body) {
                                                 let datasets = data?.datasets?.filter(obj => obj.data?.length > 0)
-                                                console.log(datasets, "DATASETS")
                                                 // datasets = datasets?.slice(2, 4)?.concat(datasets?s.slice(0, 2))
                                                 // const datalabels = data?.labels?.map(item => item[0].concat(',' + item[1]))
                                                 const datalabels = data?.labels
-                                                console.log(datalabels, "DATALABELS")
                                                 
                                                 const targetInex = datalabels?.indexOf(tooltipModel.title[0])
                                                 const color =tooltipModel.labelColors[0].backgroundColor;
-                                                console.log(color, "COLOR")
                                                 const titleLines = tooltipModel.title || [];
-                                                console.log(titleLines, "TITLELINES")
                                                 const bodyLines = tooltipModel.body.map(getBody);
-                                               
+                                               const amount = tooltipData[targetInex]?.amount ;
+                                               const count = tooltipData[targetInex]?.count
 
                                                 let innerHtml = '<thead>';
                                                 
@@ -190,7 +185,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                                                     let style = ''
                                                     // style += '; border-color:' + colors.borderColor;
                                                     style += '; border-width: 2px';
-                                                    const span = '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 2px;">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' + style + '">' + set?.label + ':  <span style="font-weight: bold;">' + value +  '</span></span>';
+                                                    const span = '<span style="font-size: 12px; margin-left: -18px; line-height: 0.5vw; border-radius: 2px;">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span>' + set?.label + '  <span style="font-weight: bold;  margin-left: 50px; ">' + value + '%' + '</span><span ><p>' + titleTooltipAmount + '<span style="font-weight: bold; margin-left: 40px;">'+'&nbsp;&nbsp;' + amount  + '</span></p><p style="margin-top: -15px;" >' + titleTooltipCount + '<span style="font-weight: bold; margin-left: 50px;">' + count  + '</span></p></span>';
                                                     innerHtml += '<tr><td>' + span + '</td></tr>';
                                                 });
                                                 innerHtml += '</tbody>';
@@ -216,7 +211,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                                             tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
                                             tooltipEl.style.pointerEvents = 'none';
                                         }
-                                    },
+                                    }
                                 },
                                 animation: {
                                     onComplete: (chart) => {
@@ -282,7 +277,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                                                 marginLeft: '-0.5vw',
                                                 marginRight: '0.5vw',
                                                 // marginTop: '0.75vh'
-                                            }}>{obj.districtName ? getColor(obj.districtName) : getColor(obj.stockName)}</span>
+                                            }}>{obj.districtName ? getColor(obj.districtName) : getColorStok[key]}</span>
                                         <p className="mb-0  pe-2" style={{ fontSize: '1.75vh' }}>
                                             {obj.districtName ? obj.districtName : obj.stockName}
                                         </p>
