@@ -42,6 +42,10 @@ const OrdersMap = () => {
     // }, [brandNames])
 
     const [shop, setShop] = useState()
+    console.log(shop, "SHOP");
+  const [primary, setPrimary] = useState();
+  console.log(primary, "PRIMARY");
+    
     const [geoData, setGeoData] = useState({})
     console.log(geoData, 'GEO DATA')
 
@@ -458,7 +462,7 @@ const tooltipSalesDataStock = geoData?.stock_data?.map(item => ({
             <SideNav />
             <div className="orders-map-content pb-3">
                 <TopNav title={'География заказов и продаж'} />
-                {changeBrand && <SelfCostWarning activeBrand={activeBrand} changeBrand={changeBrand}/>} 
+                {primary && <SelfCostWarning activeBrand={activeBrand}/>} 
 
                 <OrdersMapFilter
                     brandNames={brandNames}
@@ -467,9 +471,10 @@ const tooltipSalesDataStock = geoData?.stock_data?.map(item => ({
                     changeBrand={setActiveBrand}
                     shop={shop}
                     setChangeBrand={setChangeBrand}
+                    setPrimary={setPrimary}
                     
                 />
-                {!changeBrand ? 
+                {shop?.some((item) => item?.is_primary_collect === true ) ? 
                 <div className="map-container dash-container container p-3">
                     <div className="map-radio mb-3">
                         <div className="radio-item">
