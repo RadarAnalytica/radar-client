@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop, setChangeBrand  }) => {
+const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop, setChangeBrand, setPrimary  }) => {
 
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14)).toLocaleDateString('ru')?.split('.').reverse().join('-')
@@ -40,12 +40,14 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop,
                     <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue='0' onChange={e => {
                         const firstValue = e.target.value.split('|')[0] ;
                         const secondValue = e.target.value.split('|')[1] ;
+                        const lastValue = e.target.value.split('|')[2] ;
+                        setPrimary(lastValue)
                         setChangeBrand(secondValue)
                         changeBrand(firstValue)}}>
                         <option value="0" selected>Все</option>
                         {
                             shop && shop?.map((brand) => (
-                                <option key={brand.id} value={`${brand.id}|${brand.is_primary_collect}`}>{brand.brand_name}</option>
+                                <option key={brand.id} value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}>{brand.brand_name}</option>
                                 
                             ))
                         }

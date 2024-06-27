@@ -34,8 +34,7 @@ const DashboardPage = () => {
   const [state, setState] = useState();
 
   const [brandNames, setBrandNames] = useState();
-
-  const [changeBrand, setChangeBrand] = useState(false);
+  const [changeBrand, setChangeBrand] = useState();
   console.log(changeBrand, "CHANGE BRAND");
 
   const [dataDashBoard, setDataDashboard] = useState();
@@ -43,6 +42,7 @@ const DashboardPage = () => {
   const [shop, setShop] = useState();
   console.log(shop, "SHOP");
   const [primary, setPrimary] = useState();
+  console.log(primary, "PRIMARY");
   const [activeBrand, setActiveBrand] = useState(0);
   console.log(activeBrand, "ACTIVE BRAND");
 
@@ -641,6 +641,7 @@ const DashboardPage = () => {
   let oneDayOrderCount = dataDashBoard?.orderCount;
   let oneDaySaleAmount = dataDashBoard?.saleAmount;
   let oneDaySaleCount = dataDashBoard?.saleCount;
+  
 
   return (
     user && (
@@ -648,7 +649,7 @@ const DashboardPage = () => {
         <SideNav />
         <div className="dashboard-content pb-3">
           <TopNav title={"Сводка продаж"} />
-         {changeBrand && <SelfCostWarning activeBrand={activeBrand} changeBrand={changeBrand}  />} 
+         {!primary && <SelfCostWarning activeBrand={activeBrand}   />} 
 
           {/* {wbData?.initialCostsAndTax === null ||
           wbData?.initialCostsAndTax?.data?.length === 0 ||
@@ -663,8 +664,9 @@ const DashboardPage = () => {
             changeBrand={setActiveBrand}
             setChangeBrand={setChangeBrand}
             shop={shop}
+            setPrimary={setPrimary}
           />
-          {!changeBrand  ? (
+          { shop?.some((item) => item?.is_primary_collect === true ) ? (
             <div>
               <div className="container dash-container p-3 pt-0 d-flex gap-3">
                 <MediumPlate

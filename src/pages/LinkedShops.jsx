@@ -116,7 +116,6 @@ const LinkedShops = () => {
         const data = await res.json()
         if(res.status === 200){
             ServiceFunctions.getAllShops(authToken).then(data => {
-                setPrimary(data.is_primary_collect)
                 setData(data)})
         }
         
@@ -148,10 +147,15 @@ const LinkedShops = () => {
     useEffect(() => {
         
         if (user) {
-            ServiceFunctions.getAllShops(authToken).then(data => setData(data))
+            ServiceFunctions.getAllShops(authToken).then(data => {
+                
+                setData(data)})
             // getTokenExp(user).then(data => setData(data))
         }
     }, [])
+
+    console.log(primary, 'PRIMARY')
+
     const redirect = () => {
         navigate('/dashboard')
     }
@@ -226,7 +230,7 @@ const LinkedShops = () => {
                                                     </svg>
                                                     <h5 className='mb-0 pb-0'>Токен</h5>
                                                 </div>
-                                                { primary ?
+                                                { item.is_primary_collect ?
                                                 <div className='d-flex token-status' style={{marginTop: '10px'}}>
                                                 <svg width="120" height="40" fill='#00B69B' xmlns="http://www.w3.org/2000/svg">
                                                     <rect width="120" height="40" rx="8" fill="#00B69B" fill-opacity="0.15" />
