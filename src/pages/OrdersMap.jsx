@@ -44,6 +44,8 @@ const OrdersMap = () => {
 
     const [shop, setShop] = useState()
     console.log(shop, "SHOP");
+  const [currentShop, setCurrentShop] = useState();
+
   const [primary, setPrimary] = useState();
   console.log(primary, "PRIMARY");
     
@@ -51,7 +53,9 @@ const OrdersMap = () => {
     console.log(geoData, 'GEO DATA')
 
     useEffect(() => {
-        ServiceFunctions.getAllShops(authToken).then(data => setShop(data));
+        ServiceFunctions.getAllShops(authToken).then(data => {
+            setCurrentShop(data)
+            setShop(data)});
     }, [])
 
     useEffect(() => {
@@ -457,13 +461,18 @@ const tooltipSalesDataStock = geoData?.stock_data?.map(item => ({
     count: item.saleCount
 }));
   
+const allShop = shop?.some((item) => item?.is_primary_collect === true )
+  console.log(allShop, "ALL SHOP");
+  const oneShop = currentShop?.filter((item) => item?.id == activeBrand )[0]
+  console.log(oneShop, "ONE SHOP");
+  const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
    
     return (
         <div className='orders-map'>
             <SideNav />
             <div className="orders-map-content pb-3">
                 <TopNav title={'География заказов и продаж'} />
-                {primary && <SelfCostWarning activeBrand={activeBrand}/>} 
+                {oneShop?.is_primary_collect && <SelfCostWarning activeBrand={activeBrand}/>} 
 
                 <OrdersMapFilter
                     brandNames={brandNames}
@@ -475,7 +484,7 @@ const tooltipSalesDataStock = geoData?.stock_data?.map(item => ({
                     setPrimary={setPrimary}
                     
                 />
-                {shop?.some((item) => item?.is_primary_collect === true ) ? 
+                {shouldDisplay ? 
                 <div className="map-container dash-container container p-3">
                     <div className="map-radio mb-3">
                         <div className="radio-item">
