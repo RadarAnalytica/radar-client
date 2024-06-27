@@ -37,6 +37,9 @@ const DashboardPage = () => {
   const [changeBrand, setChangeBrand] = useState();
   console.log(changeBrand, "CHANGE BRAND");
 
+  const [currentShop, setCurrentShop] = useState();
+  console.log(currentShop, "CURRENT SHOP");
+
   const [dataDashBoard, setDataDashboard] = useState();
   console.log(dataDashBoard, "DATA DASHBOARD");
   const [shop, setShop] = useState();
@@ -51,6 +54,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     ServiceFunctions.getAllShops(authToken).then((data) => {
+      setCurrentShop(data)
       setShop(data);
       // setActiveBrand(data?.slice(0, 1)[0].id);
     });
@@ -641,6 +645,10 @@ const DashboardPage = () => {
   let oneDayOrderCount = dataDashBoard?.orderCount;
   let oneDaySaleAmount = dataDashBoard?.saleAmount;
   let oneDaySaleCount = dataDashBoard?.saleCount;
+  const allShop = shop?.some((item) => item?.is_primary_collect === true )
+  console.log(allShop, "ALL SHOP");
+  const oneShop = currentShop?.filter((item) => item?.id == activeBrand )[0]
+  console.log(oneShop, "ONE SHOP");
   
 
   return (
@@ -665,8 +673,9 @@ const DashboardPage = () => {
             setChangeBrand={setChangeBrand}
             shop={shop}
             setPrimary={setPrimary}
+            setCurrentShop={setCurrentShop}
           />
-          { shop?.some((item) => item?.is_primary_collect === true ) && changeBrand ? (
+          { allShop && oneShop?.is_primary_collect ? (
             <div>
               <div className="container dash-container p-3 pt-0 d-flex gap-3">
                 <MediumPlate
