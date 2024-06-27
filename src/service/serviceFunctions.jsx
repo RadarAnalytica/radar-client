@@ -142,7 +142,7 @@ export const ServiceFunctions = {
   // },
 
   getDashBoard: async (token, day, idShop) => {
-    const res = await fetch(`https://radar-analytica.ru/api/dashboard/?period=${day}&shop=${idShop}`, {
+    const res = await fetch(`${URL}/api/dashboard/?period=${day}&shop=${idShop}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -158,7 +158,7 @@ export const ServiceFunctions = {
 
 
   getAllShops: async (token) => {
-    const res = await fetch('https://radar-analytica.ru/api/shop/all', {
+    const res = await fetch(`${URL}/api/shop/all`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -169,7 +169,7 @@ export const ServiceFunctions = {
     return data;
   },
   getGeographyData: async (token, day, idShop) => {
-    const res = await fetch(`https://radar-analytica.ru/api/geo/?period=${day}&shop=${idShop}`, {
+    const res = await fetch(`${URL}/api/geo/?period=${day}&shop=${idShop}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",

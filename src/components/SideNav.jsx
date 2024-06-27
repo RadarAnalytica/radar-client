@@ -98,7 +98,7 @@ const SideNav = () => {
                             </div>
                             : null
                     }
-                    <div className='sidenav-el'style={{display: 'none'}} onClick={() => setPromotionShown(!promotionShown)}>
+                    <div className='sidenav-el' onClick={() => setPromotionShown(!promotionShown)}>
                         <div className="d-flex align-items-center">
                             {
                                 location === 'calculate' || location === 'monitoring' ?
@@ -133,8 +133,8 @@ const SideNav = () => {
                                 </p>
                                 <p
                                     className='sidenav-title ps-4 submenu-item'
-                                    onClick={() => navigate('/development/calculate')}
-                                    style={location === 'calculate' ? { fontWeight: 'bold', fontSize: '14px' } : {display: 'none'}}
+                                    onClick={() => navigate('/calculate')}
+                                    style={promotionShown ? { fontWeight: 'bold', fontSize: '14px' } : {display: 'none'}}
                                 >
                                     {
                                         location === 'calculate' ?

@@ -61,7 +61,8 @@ function App() {
               <React.Suspense fallback={<>...</>}> <Politics /></React.Suspense>} />
             <Route path='/instruction' element={
               <React.Suspense fallback={<>...</>}> <Instructions /></React.Suspense>} />
-
+            <Route path='/calculate' element={
+              <React.Suspense fallback={<>...</>}> <Calculate /></React.Suspense>} />
             <Route path='/onboarding' element={
               <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             <Route path='/app' element={
@@ -85,7 +86,7 @@ function App() {
               <React.Suspense fallback={<>...</>}> <SupplyCount /></React.Suspense>} />
             <Route path='/development/stock-analysis' element={
               <React.Suspense fallback={<>...</>}> <StockAnalysis /></React.Suspense>} />
-            <Route path='/development/calculate' element={
+            <Route path='/calculate' element={
               <React.Suspense fallback={<>...</>}> <Calculate /></React.Suspense>} />
             <Route path='/orders-map' element={
               <React.Suspense fallback={<>...</>}> <OrdersMap /></React.Suspense>} />
@@ -104,7 +105,7 @@ function App() {
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             <Route path='/development/stock-analysis' element={
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
-            <Route path='/development/calculate' element={
+            <Route path='/calculate' element={
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
             <Route path='/orders-map' element={
                 <React.Suspense fallback={<>...</>}> <Onboarding /></React.Suspense>} />
@@ -154,7 +155,7 @@ function App() {
             <React.Suspense fallback={<>...</>}> <MainWidget /></React.Suspense>} />
           <Route path='/development/stock-analysis' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
-          <Route path='/development/calculate' element={
+          <Route path='/calculate' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
           <Route path='/orders-map' element={
             <React.Suspense fallback={<>...</>}> <SignInPage /></React.Suspense>} />
