@@ -24,12 +24,13 @@ const OrdersMap = () => {
     const { user, authToken } = useContext(AuthContext)
 
     const [byRegions, setByRegions] = useState(true)
-    const [changeBrand, setChangeBrand] = useState(false);
+    const [changeBrand, setChangeBrand] = useState();
     console.log(changeBrand, "CHANGE BRAND");
 
     const [days, setDays] = useState(30)
     const [brandNames, setBrandNames] = useState()
     const [activeBrand, setActiveBrand] = useState(0)
+    console.log(activeBrand, "ACTIVE BRAND");
     // useEffect(() => {
     //     if (user) {
     //         ServiceFunctions.getBrandNames(user.id).then(data => setBrandNames(data))
@@ -456,13 +457,31 @@ const tooltipSalesDataStock = geoData?.stock_data?.map(item => ({
     count: item.saleCount
 }));
   
+const vaildData = [
+    {
+        "brand_name": "123",
+        "is_active": true,
+        "id": 193,
+        "updated_at": "2024-06-21 15:33:46.059607",
+        "is_valid": false,
+        "is_primary_collect": false
+    },
+    {
+        "brand_name": "werr",
+        "is_active": true,
+        "id": 195,
+        "updated_at": "2024-06-21 15:51:54.453973",
+        "is_valid": true,
+        "is_primary_collect": true
+    },
+]
    
     return (
         <div className='orders-map'>
             <SideNav />
             <div className="orders-map-content pb-3">
                 <TopNav title={'География заказов и продаж'} />
-                {primary && <SelfCostWarning activeBrand={activeBrand}/>} 
+                {vaildData?.some((item) => item?.is_valid === true ) && <SelfCostWarning activeBrand={activeBrand}/>} 
 
                 <OrdersMapFilter
                     brandNames={brandNames}
@@ -474,7 +493,7 @@ const tooltipSalesDataStock = geoData?.stock_data?.map(item => ({
                     setPrimary={setPrimary}
                     
                 />
-                {shop?.some((item) => item?.is_primary_collect === true ) ? 
+                {vaildData?.some((item) => item?.is_primary_collect === true ) ? 
                 <div className="map-container dash-container container p-3">
                     <div className="map-radio mb-3">
                         <div className="radio-item">

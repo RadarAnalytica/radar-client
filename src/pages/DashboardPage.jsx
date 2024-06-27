@@ -666,7 +666,7 @@ const DashboardPage = () => {
             shop={shop}
             setPrimary={setPrimary}
           />
-          { shop?.some((item) => item?.is_primary_collect === true ) ? (
+          { shop?.some((item) => item?.is_primary_collect === true ) && changeBrand ? (
             <div>
               <div className="container dash-container p-3 pt-0 d-flex gap-3">
                 <MediumPlate
