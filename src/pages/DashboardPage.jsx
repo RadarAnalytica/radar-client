@@ -649,7 +649,7 @@ const DashboardPage = () => {
         <SideNav />
         <div className="dashboard-content pb-3">
           <TopNav title={"Сводка продаж"} />
-         {!primary && <SelfCostWarning activeBrand={activeBrand}   />} 
+         {shop?.some((item) => item?.is_valid === true ) && primary ? <SelfCostWarning activeBrand={activeBrand}/> : null} 
 
           {/* {wbData?.initialCostsAndTax === null ||
           wbData?.initialCostsAndTax?.data?.length === 0 ||
