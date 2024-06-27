@@ -649,6 +649,7 @@ const DashboardPage = () => {
   console.log(allShop, "ALL SHOP");
   const oneShop = currentShop?.filter((item) => item?.id == activeBrand )[0]
   console.log(oneShop, "ONE SHOP");
+  const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
   
 
   return (
@@ -675,7 +676,7 @@ const DashboardPage = () => {
             setPrimary={setPrimary}
             setCurrentShop={setCurrentShop}
           />
-          { allShop && oneShop?.is_primary_collect ? (
+          { shouldDisplay ? (
             <div>
               <div className="container dash-container p-3 pt-0 d-flex gap-3">
                 <MediumPlate
