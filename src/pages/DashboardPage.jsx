@@ -23,6 +23,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchAllShops } from "../redux/dashboard/dashboardActions";
 import { useNavigate } from "react-router-dom";
 
+
 const DashboardPage = () => {
   const { user, authToken, showMobile } = useContext(AuthContext);
   console.log(user, "USER");
@@ -41,6 +42,7 @@ const DashboardPage = () => {
   console.log(dataDashBoard, "DATA DASHBOARD");
   const [shop, setShop] = useState();
   console.log(shop, "SHOP");
+  const [primary, setPrimary] = useState();
   const [activeBrand, setActiveBrand] = useState(0);
   console.log(activeBrand, "ACTIVE BRAND");
 
@@ -499,6 +501,7 @@ const DashboardPage = () => {
             hoverBackgroundColor: "rgba(240, 173, 0, 7)",
             yAxisID: "A",
             data: dataDashBoard?.orderAmountList || [],
+            xAxisID: 'x-1'
           }
         : {
             label: "Заказы",
@@ -526,6 +529,7 @@ const DashboardPage = () => {
             hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
             yAxisID: "A",
             data: dataDashBoard?.saleAmountList || [],
+            
           }
         : {
             label: "Продажи",
@@ -644,7 +648,7 @@ const DashboardPage = () => {
         <SideNav />
         <div className="dashboard-content pb-3">
           <TopNav title={"Сводка продаж"} />
-         {!changeBrand && <SelfCostWarning activeBrand={activeBrand} />} 
+         {changeBrand && <SelfCostWarning activeBrand={activeBrand} changeBrand={changeBrand}  />} 
 
           {/* {wbData?.initialCostsAndTax === null ||
           wbData?.initialCostsAndTax?.data?.length === 0 ||

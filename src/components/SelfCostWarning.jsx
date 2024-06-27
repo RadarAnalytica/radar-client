@@ -5,7 +5,7 @@ import { getFileClickHandler, saveFileClickHandler } from '../service/getSvaeFil
 import DragDropFile from './DragAndDropFiles';
 
 
-const SelfCostWarning = ({activeBrand}) => {
+const SelfCostWarning = ({activeBrand, changeBrand}) => {
 
   const { user, authToken } = useContext(AuthContext);
   console.log(user, 'USER')
@@ -27,7 +27,7 @@ const SelfCostWarning = ({activeBrand}) => {
 
     return (
         <div className='container dash-container p-3 pt-0 d-flex gap-3 '>
-            <div className='p-3 selfcost-warning w-100'>
+            {!changeBrand && <div className='p-3 selfcost-warning w-100'>
                 <div className="d-flex align-items-center gap-2 mb-2">
                     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect width="30" height="30" rx="5" fill="#F0AD00" fill-opacity="0.1" />
@@ -41,7 +41,7 @@ const SelfCostWarning = ({activeBrand}) => {
                     Для правильного расчета данных нам нужно знать себестоимость ваших товаров. Данные в блоках «прибыль», «финансы», «себестоимость проданных товаров» не учитывают себестоимость товаров, для которых она неизвестна.
                 </p>
                 <a href="#" className="link" onClick={handleCostPriceShow}>Заполнить себестоимость</a>
-            </div>
+            </div>}
             <Modal show={costPriceShow} onHide={handleCostPriceClose} className='add-token-modal'>
                 <Modal.Header closeButton>
                     <div className="d-flex align-items-center gap-2">

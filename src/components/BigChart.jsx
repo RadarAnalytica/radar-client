@@ -266,11 +266,13 @@ const BigChart = ({ name, loading, data, days, orderOn, salesOn, setOrderOn, sal
                                             drawOnChartArea: false,
                                         },
                                         ticks: {
+                                            display: false,
                                             autoSkip: true,
                                             maxTicksLimit: days === 90 ? Math.ceil(92 / 13) : 30
                                             
                                         }
                                     },
+                                    
                                 },
                                 elements: {
                                     line: {

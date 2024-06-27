@@ -91,8 +91,7 @@ function App() {
               <React.Suspense fallback={<>...</>}> <OrdersMap /></React.Suspense>} />
               <Route path='/linked-shops' element={
               <React.Suspense fallback={<>...</>}> <LinkedShops /></React.Suspense>} />
-              <Route path='/data-collection' element={
-              <React.Suspense fallback={<>...</>}> <DataCollectionNotification /></React.Suspense>} />
+              
             </>)
               :
             (<>

@@ -2,6 +2,8 @@ import React from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Chart, Doughnut } from 'react-chartjs-2';
 import { formatPrice } from '../../service/utils';
+import GreenArrow from '../../assets/greenarrow.svg'
+import RedArrow from '../../assets/redarrow.svg'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -288,7 +290,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                                         style={{ fontSize: '1.85vh', paddingLeft: '1vw' }}
                                     >
                                         <span className='pb-1'>
-                                            <img src={obj.comparePercent > 0 ? green : red} alt="" style={{ width: '1.25vw', marginRight: '4px' }} />
+                                            <img src={obj.comparePercent > 0 ? GreenArrow : RedArrow} alt="" style={{ width: '1.25vw', marginRight: '4px' }} />
                                         </span>
                                         <span className='pt-1' style={obj.comparePercent > 0 ?
                                             { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(0, 182, 155, 1)' } :

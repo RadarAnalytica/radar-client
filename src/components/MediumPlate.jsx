@@ -1,5 +1,7 @@
 import React from 'react'
 import { formatPrice } from '../service/utils'
+import GreenArrow from '../assets/greenarrow.svg'
+import RedArrow from '../assets/redarrow.svg'
 
 const MediumPlate = ({ name, value, quantity, percent, percent2, text, text2, dataDashBoard, days }) => {
     const green = require('../assets/greenarrow.png')
