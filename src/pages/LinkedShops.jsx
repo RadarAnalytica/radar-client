@@ -39,6 +39,7 @@ const LinkedShops = () => {
     
     
     const [data, setData] = useState()
+    const [primary, setPrimary] = useState()
 
 
 
@@ -114,7 +115,9 @@ const LinkedShops = () => {
         })
         const data = await res.json()
         if(res.status === 200){
-            ServiceFunctions.getAllShops(authToken).then(data => setData(data))
+            ServiceFunctions.getAllShops(authToken).then(data => {
+                setPrimary(data.is_primary_collect)
+                setData(data)})
         }
         
         
@@ -223,13 +226,22 @@ const LinkedShops = () => {
                                                     </svg>
                                                     <h5 className='mb-0 pb-0'>Токен</h5>
                                                 </div>
-                                                {/* <div className='d-flex token-status'>
+                                                { primary ?
+                                                <div className='d-flex token-status' style={{marginTop: '10px'}}>
                                                 <svg width="120" height="40" fill='#00B69B' xmlns="http://www.w3.org/2000/svg">
                                                     <rect width="120" height="40" rx="8" fill="#00B69B" fill-opacity="0.15" />
                                                     <circle cx="15" cy="18" r="5" fill="#00B69B" />
                                                     <text x="30" y="25" font-family="Arial" font-size="18" font-weight="400" fill="black">Активен</text>
                                                 </svg>
-                                                </div> */}
+                                                </div>
+                                                :
+                                                <div className='d-flex token-status' style={{marginTop: '10px'}}>
+                                                <svg width="150" height="40" fill='#00B69B' xmlns="http://www.w3.org/2000/svg">
+                                                    <rect width="150" height="40" rx="8" fill="rgba(128, 128, 128, 1)" fill-opacity="0.15" />
+                                                    <circle cx="15" cy="18" r="5" fill="rgba(128, 128, 128, 1)" />
+                                                    <text x="30" y="25" font-family="Arial" font-size="18" font-weight="400" fill="black">Сбор данных</text>
+                                                </svg>
+                                                </div> }
                                             </div>
                                         </div>
                                     </div>

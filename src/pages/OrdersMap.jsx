@@ -25,6 +25,7 @@ const OrdersMap = () => {
 
     const [byRegions, setByRegions] = useState(true)
     const [changeBrand, setChangeBrand] = useState(false);
+    console.log(changeBrand, "CHANGE BRAND");
 
     const [days, setDays] = useState(30)
     const [brandNames, setBrandNames] = useState()
@@ -34,11 +35,11 @@ const OrdersMap = () => {
     //         ServiceFunctions.getBrandNames(user.id).then(data => setBrandNames(data))
     //     }
     // }, [user])
-    useEffect(() => {
-        if (brandNames && brandNames.length) {
-            setActiveBrand(brandNames[0])
-        }
-    }, [brandNames])
+    // useEffect(() => {
+    //     if (brandNames && brandNames.length) {
+    //         setActiveBrand(brandNames[0])
+    //     }
+    // }, [brandNames])
 
     const [shop, setShop] = useState()
     const [geoData, setGeoData] = useState({})
@@ -457,7 +458,7 @@ const tooltipSalesDataStock = geoData?.stock_data?.map(item => ({
             <SideNav />
             <div className="orders-map-content pb-3">
                 <TopNav title={'География заказов и продаж'} />
-                {!changeBrand && <SelfCostWarning activeBrand={activeBrand} />} 
+                {changeBrand && <SelfCostWarning activeBrand={activeBrand} changeBrand={changeBrand}/>} 
 
                 <OrdersMapFilter
                     brandNames={brandNames}

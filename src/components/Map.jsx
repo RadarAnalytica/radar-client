@@ -1,6 +1,15 @@
 import React from 'react'
-import { formatPrice } from '../service/utils'
-
+ import GreenArrow from '../assets/greenarrow.svg'
+ import RedArrow from '../assets/redarrow.svg'
+ import SibCircle from '../assets/siberiancircle.svg'
+ import UralCircle from '../assets/uralcircle.svg'
+ import SouthCircle from '../assets/southcircle.svg'
+ import NorthCircle from '../assets/northcaucasiancircle.svg'
+ import CentrCircle from '../assets/centrcircle.svg'
+ import PrivolCircle from '../assets/privolcircle.svg'
+ import NorthWesternCircle from '../assets/northwesterncircle.svg'
+ import FarEasternCircle from '../assets/fareasterncircle.svg'
+ 
 
 
 const Map = ({ onMouseOut, onMouseMove, data }) => {
@@ -47,10 +56,10 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 (data?.centr?.common > 0 || data?.centr?.compare !== 0 ) && (
                     <foreignObject x="120" y="180" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                     <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
-                        <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'rgba(129, 172, 255, 1)' }}></div>
+                       <img style={{ margin: ' 0 0 5px 5px'}} src= {CentrCircle} alt="" />
                         <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
                         {Number(data?.centr?.common)} %
-                        <img src={data?.centr?.compare > 0 ? green : data?.centr?.compare < 0 ? red : ''} alt="" />
+                        <img src={data?.centr?.compare > 0 ? GreenArrow : data?.centr?.compare < 0 ? RedArrow : ''} alt="" />
                         <span className='pt-1' style={data?.centr?.compare > 0 ?
                             { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                             { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
@@ -82,10 +91,10 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 (data?.northCaucasian?.common > 0 || data?.northCaucasian?.compare !== 0 ) && (
                     <foreignObject x="10" y="360" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                     <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
-                        <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'orangered' }}></div>
+                       <img style={{margin: '0 0 5px 5px'}} src= {NorthCircle} alt="" />
                         <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
                         {Number(data?.northCaucasian?.common)} %
-                        <img src={data?.northCaucasian?.compare > 0 ? green : data?.northCaucasian?.compare < 0 ? red : ''} alt="" />
+                        <img src={data?.northCaucasian?.compare > 0 ? GreenArrow : data?.northCaucasian?.compare < 0 ? RedArrow : ''} alt="" />
                         <span className='pt-1' style={data?.northCaucasian?.compare > 0 ?
                             { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                             { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
@@ -129,10 +138,10 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 (data?.southern?.common > 0 || data?.southern?.compare !== 0 ) && (
                     <foreignObject x="40" y="280" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                     <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
-                        <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'rgba(74, 217, 145, 1)' }}></div>
+                        <img style={{margin: '0 0 5px 5px'}} src= {SouthCircle} alt="" />
                         <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
                         {Number(data?.southern?.common)} %
-                        <img src={data?.southern?.compare > 0 ? green : data?.southern?.compare < 0 ? red : ''} alt="" />
+                        <img src={data?.southern?.compare > 0 ? GreenArrow : data?.southern?.compare < 0 ? RedArrow : ''} alt="" />
                         <span className='pt-1' style={data?.southern?.compare > 0 ?
                             { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                             { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
@@ -218,10 +227,10 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 (data?.farEastern?.common > 0 || data?.farEastern?.compare !== 0 ) && (
                     <foreignObject x="900" y="250" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                     <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
-                        <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'brown' }}></div>
+                    <img style={{margin: '0 0 5px 5px'}} src= {FarEasternCircle} alt="" />
                         <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
                         {Number(data?.farEastern?.common)} %
-                        <img src={data?.farEastern?.compare > 0 ? green : data?.farEastern?.compare < 0 ? red : ''} alt="" />
+                        <img src={data?.farEastern?.compare > 0 ? GreenArrow : data?.farEastern?.compare < 0 ? RedArrow : ''} alt="" />
                         <span className='pt-1' style={data?.farEastern?.compare > 0 ?
                             { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                             { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
@@ -307,10 +316,10 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 (data?.siberian?.common > 0 || data?.siberian?.compare !== 0 ) && (
                     <foreignObject x="650" y="300" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                     <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
-                        <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'rgba(254, 197, 61, 1)' }}></div>
+                        <img style={{margin: '0 0 5px 5px'}} src={SibCircle} alt="" />
                         <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
                         {Number(data?.siberian?.common)} %
-                        <img src={data?.siberian?.compare > 0 ? green : data?.siberian?.compare < 0 ? red : ''} alt="" />
+                        <img src={data?.siberian?.compare > 0 ? GreenArrow : data?.siberian?.compare < 0 ? RedArrow : ''} alt="" />
                         <span className='pt-1' style={data?.siberian?.compare > 0 ?
                             { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                             { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
@@ -352,10 +361,10 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 (data?.ural?.common > 0 || data?.ural?.compare !== 0 ) && (
                     <foreignObject x="420" y="250" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                     <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
-                        <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'grey' }}></div>
+                       <img style={{margin: '0 0 5px 5px'}} src={UralCircle} alt="" />
                         <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
                         {Number(data?.ural?.common)} %
-                        <img src={data?.ural?.compare > 0 ? green : data?.ural?.compare < 0 ? red : ''} alt="" />
+                        <img src={data?.ural?.compare > 0 ? GreenArrow : data?.ural?.compare < 0 ? RedArrow : ''} alt="" />
                         <span className='pt-1' style={data?.ural?.compare > 0 ?
                             { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                             { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
@@ -409,10 +418,10 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 (data?.privolzhsky?.common > 0 || data?.privolzhsky?.compare !== 0 ) && (
                     <foreignObject x="220" y="250" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                     <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
-                        <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'rgba(255, 153, 114, 1)' }}></div>
+                        <img style={{margin: '0 0 5px 5px'}} src= {PrivolCircle} alt="" />
                         <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
                         {Number(data?.privolzhsky?.common)} %
-                        <img src={data?.privolzhsky?.compare > 0 ? green : data?.privolzhsky?.compare < 0 ? red : ''} alt="" />
+                        <img src={data?.privolzhsky?.compare > 0 ? GreenArrow : data?.privolzhsky?.compare < 0 ? RedArrow : ''} alt="" />
                         <span className='pt-1' style={data?.privolzhsky?.compare > 0 ?
                             { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                             { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
@@ -477,10 +486,10 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
                 (data?.northWestern?.common > 0 || data?.northWestern?.compare !== 0 ) && (
                     <foreignObject x="300" y="150" width="140" height="40" style={{backgroundColor: "white", borderRadius: "8px" , boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.1)" }}>
                     <div className='d-flex fw-bold' style={{fontSize: '12px', display: 'flex', alignItems: 'center'}} xmlns="http://www.w3.org/1999/xhtml">
-                        <div style={{ width: '1vw', height: '1vw', margin: '0px 0px 5px 5px', borderRadius: '100%', backgroundColor: 'yellow' }}></div>
+                    <img style={{margin: '0 0 5px 5px'}} src= {NorthWesternCircle} alt="" />
                         <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
                         {Number(data?.northWestern?.common)} %
-                        <img src={data?.northWestern?.compare > 0 ? green : data?.northWestern?.compare < 0 ? red : ''} alt="" />
+                        <img src={data?.northWestern?.compare > 0 ? GreenArrow : data?.northWestern?.compare < 0 ? RedArrow : ''} alt="" />
                         <span className='pt-1' style={data?.northWestern?.compare > 0 ?
                             { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' } :
                             { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }}
