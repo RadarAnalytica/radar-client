@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
 import { URL } from "./config";
 import { jwtDecode } from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
 
     const [authToken, setAuthToken] = useState()
     const [user, setUser] = useState(null)
+  console.log(user, 'USER11111111111')
+
 
     const navigate = useNavigate()
 
@@ -87,21 +89,21 @@ export const AuthProvider = ({ children }) => {
     const handleOpenMenu = () => setShowMenu(true)
     const handleCloseMenu = () => setShowMenu(false)
 
-    const contextData = {
-        login: login,
-        logout: logout,
-        user: user,
-        authToken: authToken,
-        // userImage: userImage,
-        showMenu: showMenu,
-        handleCloseMenu: handleCloseMenu,
-        handleOpenMenu: handleOpenMenu,
+    const contextData = useMemo(() => ({
+        login,
+         logout,
+         user,
+         authToken,
+         setUser,
+         showMenu,
+         handleCloseMenu,
+        handleOpenMenu,
         register,
         dataobject,
         setDataobject,
         showMobile,
         setShowMobile
-    }
+    }), [user, authToken])
 
     useEffect(() => {
         let interval = setInterval(() => {

@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import MobileMenu from './components/MobileMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DataCollectionNotification from './components/DataCollectionNotification';
+import { ServiceFunctions } from './service/serviceFunctions';
 
 
 
@@ -35,8 +36,10 @@ const Page404 = React.lazy(() => import('./pages/Page404'))
 
 function App() {
 
-  const { user } = useContext(AuthContext)
-
+  const { user } = useContext(AuthContext);
+  
+  
+  console.log(user, 'USERAAAAAAAAAAA')
   if (user) {
     return (
       <div className="App">

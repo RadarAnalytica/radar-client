@@ -14,7 +14,7 @@ import WbIcon from "../assets/WbIcon";
 import { getFileClickHandler, saveFileClickHandler } from "../service/getSvaeFile";
 
 const Onboarding = () => {
-  const { user, authToken } = useContext(AuthContext);
+  const { user, authToken, setUser } = useContext(AuthContext);
   console.log(user, 'USER')
 
   
@@ -46,8 +46,19 @@ const Onboarding = () => {
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
   
-
-  const handleClose = () => setShow(false);
+  const updateIsOnboarded = () => {
+    setUser(prevUser => ({
+      ...prevUser,
+      is_onboarded: true
+    }));
+  };
+  const handleClose = () => {
+    
+    
+      navigate('/linked-shops')
+    
+    setShow(false)
+  };
   const handleShow = () => setShow(true);
   const handleCostPriceShow = () => {
     handleClose();
@@ -57,6 +68,7 @@ const Onboarding = () => {
   const handleCostPriceClose = () => setCostPriceShow(false);
   
   const [data, setData] = useState();
+  
   const submitHandler = (e) => {
     if (!token && !user) {
       e.preventDefault();
@@ -64,6 +76,7 @@ const Onboarding = () => {
         ServiceFunctions.updateToken(brandName, token, authToken).then((data) => {
           if (data) {
             try {
+              
               // localStorage.setItem('authToken', data.token)
             } catch (e) {
               console.log(e);
@@ -152,7 +165,7 @@ const Onboarding = () => {
               <button
                 className="prime-btn"
                 style={{ height: "7vh" }}
-                onClick={() => {submitHandler(); redirect()}}
+                onClick={() => {submitHandler()}}
               >
                 Получить 3 дня бесплатно
               </button>
@@ -215,7 +228,7 @@ const Onboarding = () => {
             </div>
           </div>
         </div>
-        <Modal show={show} onHide={() => handleClose()} className='add-token-modal'>
+        <Modal show={show} onHide={() => {updateIsOnboarded(); handleClose() }} className='add-token-modal'>
                 <Modal.Header closeButton>
                     <div className="d-flex align-items-center gap-2">
                         <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
