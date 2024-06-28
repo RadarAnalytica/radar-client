@@ -222,8 +222,8 @@ const LinkedShops = () => {
 
                                             </div>
                                             <hr style={{ border: '1px solid silver', width: '100%' }} className='mt-4' />
-                                            <div className="d-flex align-items-end justify-content-between">
-                                                <div className="d-flex gap-2 align-items-start">
+                                            <div className="d-flex align-items-end justify-content-between" style={{ margin: '-10px 10px 0 0'}}>
+                                                <div className="d-flex gap-2 align-items-start mb-1">
                                                     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <circle cx="15" cy="15" r="14" stroke="#8C8C8C" stroke-width="2" />
                                                         <path d="M15.9769 19.6808L15.4884 20.5534L15.9769 19.6808C15.3699 19.3411 14.6301 19.3411 14.0231 19.6808L9.93771 21.9676L10.8502 17.3755C10.9857 16.6933 10.7571 15.9896 10.2464 15.5174L6.80904 12.3386L11.4584 11.7873C12.1491 11.7054 12.7477 11.2706 13.039 10.6389L15 6.38751L16.961 10.6389C17.2523 11.2706 17.8509 11.7054 18.5416 11.7873L23.191 12.3386L19.7536 15.5174C19.2429 15.9896 19.0143 16.6933 19.1498 17.3755L20.0623 21.9676L15.9769 19.6808Z" stroke="#8C8C8C" stroke-width="2" />
@@ -240,8 +240,8 @@ const LinkedShops = () => {
                                                 </div>
                                                 :
                                                 <div className='d-flex token-status' style={{marginTop: '10px'}}>
-                                                <svg width="150" height="40" fill='#00B69B' xmlns="http://www.w3.org/2000/svg">
-                                                    <rect width="150" height="40" rx="8" fill="rgba(128, 128, 128, 1)" fill-opacity="0.15" />
+                                                <svg width="160" height="40" fill='#00B69B' xmlns="http://www.w3.org/2000/svg">
+                                                    <rect width="160" height="40" rx="8" fill="rgba(128, 128, 128, 1)" fill-opacity="0.15" />
                                                     <circle cx="15" cy="18" r="5" fill="rgba(128, 128, 128, 1)" />
                                                     <text x="30" y="25" font-family="Arial" font-size="18" font-weight="400" fill="black">Сбор данных</text>
                                                 </svg>
