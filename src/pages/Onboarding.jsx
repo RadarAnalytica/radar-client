@@ -233,7 +233,7 @@ const Onboarding = () => {
                     <p>
                         Ваш токен успешно подключен к сервису и находится на проверке. В ближайшее время данные начнут отображаться в разделе <a href="/dashboard" className='link'>Сводка продаж</a>
                     </p>
-                    <div className="d-flex justify-content-between">
+                    {/* <div className="d-flex justify-content-between">
                         <div className="grey-block d-flex align-items-center">
                             <p className='col mb-0' style={{ fontSize: '14px' }}>
                                 Для максимального использования всего функционала, внесите себестоимость ваших товаров
@@ -245,7 +245,7 @@ const Onboarding = () => {
                                 Внести себестоимость товаров
                             </button>
                         </div>
-                    </div>
+                    </div> */}
                 </Modal.Body>
             </Modal>
 
