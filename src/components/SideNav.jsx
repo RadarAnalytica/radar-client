@@ -134,7 +134,7 @@ const SideNav = () => {
                                 <p
                                     className='sidenav-title ps-4 submenu-item'
                                     onClick={() => navigate('/calculate')}
-                                    style={promotionShown ? { fontWeight: 'bold', fontSize: '14px' } : {display: 'none'}}
+                                    style={location === 'calculate' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
                                 >
                                     {
                                         location === 'calculate' ?
