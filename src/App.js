@@ -5,8 +5,8 @@ import AuthContext, { AuthProvider } from './service/AuthContext';
 import { useContext } from 'react';
 import MobileMenu from './components/MobileMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DataCollectionNotification from './components/DataCollectionNotification';
-import { ServiceFunctions } from './service/serviceFunctions';
+// import DataCollectionNotification from './components/DataCollectionNotification';
+// import { ServiceFunctions } from './service/serviceFunctions';
 
 
 

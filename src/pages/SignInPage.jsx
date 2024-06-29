@@ -11,12 +11,12 @@ const SignInPage = () => {
     useEffect(() => {
         setTimeout(() => {
             if (user && user.is_onboarded === true) {
-                navigate('/stub')
+                navigate('/linked-shops')
             } else if (user && user.is_onboarded === false) {
-                navigate('/stub')
+                navigate('/onboarding')
             }
         }, 300);
-    }, [user?.is_onboarded])
+    }, [navigate, user, user?.is_onboarded])
 
     return (
         <div className='signin-page'>

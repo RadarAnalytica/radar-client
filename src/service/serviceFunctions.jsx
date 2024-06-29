@@ -30,6 +30,18 @@ export const ServiceFunctions = {
     return data;
   },
 
+  refreshUser: async (authToken) => {
+    const res = await fetch(`${URL}/api/user/refresh`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        authorization: "JWT " + authToken,
+      }
+    });
+    const data = await res.json();
+    return data;
+  },
+
   // getDataCollection: async (id, days, brandName) => {
   //   const res = await fetch(
   //     `${URL}/api/data-collection/${id}?days=${days}&brandName=${brandName}`,

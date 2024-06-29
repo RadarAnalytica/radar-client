@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import { jwtDecode } from 'jwt-decode'
+
 import TopNav from "../components/TopNav";
 import SideNav from "../components/SideNav";
 import InputField from "../components/InputField";
@@ -15,7 +17,7 @@ import { getFileClickHandler, saveFileClickHandler } from "../service/getSvaeFil
 
 const Onboarding = () => {
   const { user, authToken, setUser } = useContext(AuthContext);
-  console.log(user, 'USER')
+  // console.log(user, 'USER')
 
   
 
@@ -47,16 +49,29 @@ const Onboarding = () => {
   const [costPriceShow, setCostPriceShow] = useState(false);
   
   const updateIsOnboarded = () => {
-    setUser(prevUser => ({
-      ...prevUser,
-      is_onboarded: true
-    }));
+    // // console.log('Update is Onboarded');
+    // user.is_onboarded = true;
+    // setUser(user)
+    // setAuthToken(data)
+    const currentToken = localStorage.getItem('authToken')
+    // console.log(currentToken);
+    ServiceFunctions.refreshUser(currentToken).then(data => {
+      // console.log('After refresh User data is:', data)
+      setUser(jwtDecode(data?.token))
+      localStorage.setItem('authToken', data?.token)
+      navigate('/linked-shops')
+    })
+    
+  //   setUser(prevUser => ({
+  //     ...prevUser,
+  //     is_onboarded: true
+  //   }));
   };
   const handleClose = () => {
-    
+    updateIsOnboarded()
     
       navigate('/linked-shops')
-    
+      // window.reload()
     setShow(false)
   };
   const handleShow = () => setShow(true);
@@ -70,6 +85,7 @@ const Onboarding = () => {
   const [data, setData] = useState();
   
   const submitHandler = (e) => {
+
     if (!token && !user) {
       e.preventDefault();
     } else {
@@ -79,7 +95,7 @@ const Onboarding = () => {
               
               // localStorage.setItem('authToken', data.token)
             } catch (e) {
-              console.log(e);
+              // console.log(e);
             }
           }
         });
@@ -108,7 +124,7 @@ const Onboarding = () => {
   //     link.click();
   //     document.body.removeChild(link);
   //   } else {
-  //     console.log("error");
+  //     // console.log("error");
   //   }
   // };
 
@@ -127,9 +143,9 @@ const Onboarding = () => {
     //       body: formData,
     //     });
     //     if(res.status === 200){
-    //         console.log('success Post')
+    //         // console.log('success Post')
     //     }else{
-    //         console.log('error Post')
+    //         // console.log('error Post')
     //     }
     // }
         
