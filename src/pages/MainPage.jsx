@@ -1,17 +1,17 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import YellowRadar from './images/YellowRadar';
-import BlockImg from './images/BlockImg';
+import BlockImg from './images/Dashboard.svg';
 import Footer from '../components/Footer';
 import AccordionMain from '../components/AccordionMain';
 import imgHomeBlick from './images/imageForHomePage.png';
 import Theses from './images/ThesesAnalyticsHome';
-import blockApi1 from './images/blockApi1.png';
-import blockApi2 from './images/blockApi2.png';
-import blockApi3 from './images/blockApi3.png';
-import manyApi from './images/manyApi.png';
-import apiBlock from './images/111.png';
+import blockApi1 from './images/blockapi1.svg';
+import blockApi2 from './images/blockapi2.svg';
+import blockApi3 from './images/blockapi3.svg';
+import manyApi from './images/manyApi.svg';
+import apiBlock from './images/apiBlock.svg';
 import BtnHomePage from '../components/BtnHomePage';
 import StepsTime from '../components/StepsTime';
 import SelectRate from '../components/SelectRate';
@@ -19,8 +19,14 @@ import SolLabelStartBsn from './images/SolLabelStartBsn';
 import YellowRadarPoint from './images/YellowRadarPoint';
 import NavbarMainHome from '../components/NavbarMainHome';
 import Reviews from '../components/Reviews';
+import AuthContext from '../service/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
+const navigate = useNavigate()
+
+  const {user} = useContext(AuthContext)
+  console.log(user, 'user')
   const [isActive, setActive] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -31,6 +37,15 @@ const MainPage = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const redirect = () => {
+    if(user.is_onboarded){
+      
+      navigate('/dashboard')
+    }else{
+      navigate('/onboarding')
+    }
+  }
 
   const toggleClass = (index) => {
     return index === activeIndex ? 'thesesHome2' : 'thesesHome';
@@ -77,13 +92,14 @@ const MainPage = () => {
               <button
                 className='prime-btn'
                 style={{ minHeight: '64px', fontSize: '18px' }}
+                onClick={() => redirect()}
               >
                 Попробовать бесплатно
               </button>
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            <BlockImg />
+            <img src={BlockImg} alt="" />
           </div>
         </div>
         <div>
@@ -282,6 +298,7 @@ const MainPage = () => {
                 <button
                   className='btn-warning'
                   style={{ minHeight: '64px', fontSize: '18px' }}
+                  onClick={() => redirect()}
                 >
                   Попробовать бесплатно
                 </button>
@@ -292,10 +309,10 @@ const MainPage = () => {
             <BtnHomePage />
           </div>
           <div>
-            <StepsTime />
+            <StepsTime redirect={redirect} />
           </div>
           <div>
-            <SelectRate />
+            <SelectRate redirect={redirect} />
           </div>
           <div className='pt-5 pb-3 mt-5 d-flex justify-content-center'>
             <h4 className='fw-bold text-center' style={{ width: '50%' }}>
@@ -332,13 +349,14 @@ const MainPage = () => {
                 <button
                   className='white-btn'
                   style={{ minHeight: '64px', fontSize: '18px' }}
+                  onClick={() => redirect()}
                 >
                   Попробовать 3 дня бесплатно
                 </button>
               </div>
             </div>
             <div className='BlockImg'>
-              <BlockImg />
+              <img src={BlockImg} alt="" />
             </div>
           </div>
         </div>

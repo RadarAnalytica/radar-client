@@ -5,7 +5,7 @@ import logoPro from '../pages/images/logoForCardPro.png';
 import logoProPlus from '../pages/images/logoForCardProPlus.png';
 import Steps from '../pages/images/Steps';
 
-const SelectRate = () => {
+const SelectRate = ({redirect}) => {
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
 
   const handlePeriodChange = (period) => {
@@ -188,6 +188,7 @@ const SelectRate = () => {
                   fontSize: '18px',
                   marginTop: '15px',
                 }}
+                onClick={() => redirect()}
               >
                 Попробовать бесплатно
               </button>
@@ -301,6 +302,7 @@ const SelectRate = () => {
                   fontSize: '18px',
                   marginTop: '15px',
                 }}
+                onClick={() => redirect()}
               >
                 Попробовать бесплатно
               </button>
@@ -426,6 +428,7 @@ const SelectRate = () => {
                   fontSize: '18px',
                   marginTop: '15px',
                 }}
+                onClick={() => redirect()}
               >
                 Попробовать бесплатно
               </button>

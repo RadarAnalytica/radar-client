@@ -3,7 +3,7 @@ import Steps from '../pages/images/Steps';
 import YellowRadar from '../pages/images/YellowRadar';
 import time from '../pages/images/time.png';
 
-const StepsTime = () => {
+const StepsTime = ({redirect}) => {
   return (
     <div
       style={{
@@ -131,6 +131,7 @@ const StepsTime = () => {
           <button
             className='btn-warning'
             style={{ minHeight: '64px', fontSize: '18px' }}
+            onClick={() => redirect()}
           >
             Попробовать бесплатно
           </button>
