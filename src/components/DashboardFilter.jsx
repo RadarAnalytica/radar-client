@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop, setChangeBrand, setPrimary, setCurrentShop  }) => {
+const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop, setChangeBrand, setPrimary  }) => {
 
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14)).toLocaleDateString('ru')?.split('.').reverse().join('-')
@@ -37,13 +37,18 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop,
                 </div> */}
                 <div className="filter-item col">
                     <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="store">Магазин:</label>
-                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue='0' onChange={e => {
+                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" 
+                    defaultValue={`${shop?.[0]?.id}`} 
+                    onChange={e => {
                         const firstValue = e.target.value.split('|')[0] ;
                         const secondValue = e.target.value.split('|')[1] ;
                         const lastValue = e.target.value.split('|')[2] ;
                         setPrimary(lastValue)
                         setChangeBrand(secondValue)
                         changeBrand(firstValue)}}>
+                            <option value={`${shop?.[0]?.id}|${shop?.[0]?.is_primary_collect}|${shop?.[0]?.is_valid}`} hidden>
+                                {shop?.[0]?.brand_name}
+                            </option>
                         <option value="0" selected>Все</option>
                         {
                             shop && shop?.map((brand) => (

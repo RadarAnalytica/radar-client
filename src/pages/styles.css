@@ -348,6 +348,7 @@ select {
 /* WIDGET MAIN */
 .widget-main,
 .page-main {
+  
   background-color: white;
   min-height: 100vh;
 }
@@ -834,4 +835,16 @@ button.accordion-button.collapsed::after {
   .calc-inputs input {
     margin-bottom: 1vh;
   }
+}
+.telegram{
+  position: relative;
+  justify-content: end;
+  margin: 30px;
+  width: 238px;
+  height: 204px;
+}
+
+.telegram-icon{
+    justify-content: end;
+    position: absolute;
 }

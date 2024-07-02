@@ -12,6 +12,8 @@ import { ServiceFunctions } from '../service/serviceFunctions'
 import { calculateGrowthPercentageGeo, filterArrays, filterArraysNoData, formatPrice } from '../service/utils'
 import SelfCostWarning from '../components/SelfCostWarning'
 import DataCollectionNotification from '../components/DataCollectionNotification'
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
+import { shops } from '../redux/shops/shopsActions'
 
 
 
@@ -42,8 +44,18 @@ const OrdersMap = () => {
     //     }
     // }, [brandNames])
 
-    const [shop, setShop] = useState()
-    console.log(shop, "SHOP");
+
+    const dispatch = useAppDispatch();
+  const shop = useAppSelector((state) => state.shopsSlice.shops);
+  console.log(shop, "SHOPSAAAAllll");
+
+  useEffect(() => {
+    dispatch(shops(authToken))
+  }, [dispatch])
+  
+
+    // const [shop, setShop] = useState()
+    // console.log(shop, "SHOP");
   const [currentShop, setCurrentShop] = useState();
 
   const [primary, setPrimary] = useState();
@@ -52,11 +64,11 @@ const OrdersMap = () => {
     const [geoData, setGeoData] = useState({})
     console.log(geoData, 'GEO DATA')
 
-    useEffect(() => {
-        ServiceFunctions.getAllShops(authToken).then(data => {
-            setCurrentShop(data)
-            setShop(data)});
-    }, [])
+    // useEffect(() => {
+    //     ServiceFunctions.getAllShops(authToken).then(data => {
+    //         setCurrentShop(data)
+    //         setShop(data)});
+    // }, [])
 
     useEffect(() => {
         ServiceFunctions.getGeographyData(authToken, days, activeBrand).then(data => setGeoData(data))
@@ -463,7 +475,7 @@ const tooltipSalesDataStock = geoData?.stock_data?.map(item => ({
   
 const allShop = shop?.some((item) => item?.is_primary_collect === true )
   console.log(allShop, "ALL SHOP");
-  const oneShop = currentShop?.filter((item) => item?.id == activeBrand )[0]
+  const oneShop = shop?.filter((item) => item?.id == activeBrand )[0]
   console.log(oneShop, "ONE SHOP");
   const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
    
@@ -472,7 +484,7 @@ const allShop = shop?.some((item) => item?.is_primary_collect === true )
             <SideNav />
             <div className="orders-map-content pb-3">
                 <TopNav title={'География заказов и продаж'} />
-                {oneShop?.is_primary_collect && <SelfCostWarning activeBrand={activeBrand}/>} 
+                {/* {oneShop?.is_primary_collect && <SelfCostWarning activeBrand={activeBrand}/>}  */}
 
                 <OrdersMapFilter
                     brandNames={brandNames}
@@ -551,7 +563,7 @@ const allShop = shop?.some((item) => item?.is_primary_collect === true )
                                                 { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(0, 182, 155, 1)', marginLeft: '2px' } :
                                                 { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(249, 60, 101, 1)', marginLeft: '2px' }}
                                                  >
-                                                    {tooltipData?.comparePercent.toFixed(0)} %
+                                                    {tooltipData?.comparePercent?.toFixed(0)} %
                                                  </span>
                                                 </p>
                                                 
