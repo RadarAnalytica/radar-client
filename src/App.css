@@ -191,6 +191,11 @@ select {
   font-weight: 700;
   font-size: 1.95vh;
 }
+.butt{
+  position: absolute; /* Абсолютное позиционирование кнопки */
+  top: 65%; /* Процентное значение от верхнего края контейнера */
+  left: 6%; 
+}
 
 .grey-block {
   background-color: rgba(247, 246, 254, 1);
@@ -327,6 +332,7 @@ select {
 }
 
 
+
 .token-inactive {
   display: flex;
   align-items: center;
@@ -426,6 +432,10 @@ select {
 .submenu-item {
   cursor: pointer;
   color: #1A1A1A;
+}
+.submenu-item:hover{
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .side-nav-icon {
@@ -687,6 +697,7 @@ select {
 }
 
 .linked-shop-block {
+  position: relative;
   min-height: 13.5vw;
   background-color: white;
   padding: 1rem;

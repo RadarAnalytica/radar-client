@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import SideNav from "../components/SideNav";
 import TopNav from "../components/TopNav";
 import AuthContext from "../service/AuthContext";
@@ -21,6 +21,7 @@ import SelfCostWarning from "../components/SelfCostWarning";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchAllShops } from "../redux/dashboard/dashboardActions";
+import { shops } from "../redux/shops/shopsActions";
 import { useNavigate } from "react-router-dom";
 
 
@@ -37,28 +38,33 @@ const DashboardPage = () => {
   const [changeBrand, setChangeBrand] = useState();
   console.log(changeBrand, "CHANGE BRAND");
 
-  const [currentShop, setCurrentShop] = useState();
-  console.log(currentShop, "CURRENT SHOP");
 
   const [dataDashBoard, setDataDashboard] = useState();
   console.log(dataDashBoard, "DATA DASHBOARD");
-  const [shop, setShop] = useState();
-  console.log(shop, "SHOP");
+  // const [shop, setShop] = useState();
+  // console.log(shop, "SHOP");
   const [primary, setPrimary] = useState();
   console.log(primary, "PRIMARY");
+  
+  const dispatch = useAppDispatch();
+  const shop = useAppSelector((state) => state.shopsSlice.shops);
+  console.log(shop, "SHOPSAAAAllll");
+  
   const [activeBrand, setActiveBrand] = useState(0);
   console.log(activeBrand, "ACTIVE BRAND");
 
-  const dispatch = useAppDispatch();
-  const shops = useAppSelector((state) => state.dashboardSlice.shops);
 
-  useEffect(() => {
-    ServiceFunctions.getAllShops(authToken).then((data) => {
-      setCurrentShop(data)
-      setShop(data);
-      // setActiveBrand(data?.slice(0, 1)[0].id);
-    });
-  }, []);
+useEffect(() => {
+  dispatch(shops(authToken))
+}, [dispatch])
+
+  // useEffect(() => {
+  //   ServiceFunctions.getAllShops(authToken).then((data) => {
+  //     setCurrentShop(data)
+  //     setShop(data);
+  //     // setActiveBrand(data?.slice(0, 1)[0].id);
+  //   });
+  // }, []);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -208,27 +214,27 @@ const DashboardPage = () => {
   const storeData = [
     {
       name: "FBO",
-      initialPrice: dataDashBoard?.fbo ? dataDashBoard?.fbo.cost_amount : "0",
-      salesPrice: dataDashBoard?.fbo ? dataDashBoard.fbo.retail_amount : "0",
-      quantity: dataDashBoard?.fbo ? dataDashBoard.fbo.count : "0",
+      initialPrice: dataDashBoard?.fbo ? dataDashBoard?.fbo?.cost_amount : "0",
+      salesPrice: dataDashBoard?.fbo ? dataDashBoard.fbo?.retail_amount : "0",
+      quantity: dataDashBoard?.fbo ? dataDashBoard.fbo?.count : "0",
     },
     {
       name: "FBS",
-      initialPrice: dataDashBoard?.fbs.cost_amount,
-      salesPrice: dataDashBoard?.fbs.retail_amount,
-      quantity: dataDashBoard?.fbs.count || 0,
+      initialPrice: dataDashBoard?.fbs?.cost_amount,
+      salesPrice: dataDashBoard?.fbs?.retail_amount,
+      quantity: dataDashBoard?.fbs?.count || 0,
     },
     {
       name: "Едет к клиенту",
-      initialPrice: dataDashBoard?.toClient.cost_amount,
-      salesPrice: dataDashBoard?.toClient.retail_amount,
-      quantity: dataDashBoard?.toClient.count || 0,
+      initialPrice: dataDashBoard?.toClient?.cost_amount,
+      salesPrice: dataDashBoard?.toClient?.retail_amount,
+      quantity: dataDashBoard?.toClient?.count || 0,
     },
     {
       name: "Едет от клиента",
-      initialPrice: dataDashBoard?.fromClient.cost_amount,
-      salesPrice: dataDashBoard?.fromClient.retail_amount,
-      quantity: dataDashBoard?.fromClient.count || 0,
+      initialPrice: dataDashBoard?.fromClient?.cost_amount,
+      salesPrice: dataDashBoard?.fromClient?.retail_amount,
+      quantity: dataDashBoard?.fromClient?.count || 0,
     },
     // {
     //   name: "Не распределено",
@@ -647,7 +653,7 @@ const DashboardPage = () => {
   let oneDaySaleCount = dataDashBoard?.saleCount;
   const allShop = shop?.some((item) => item?.is_primary_collect === true )
   console.log(allShop, "ALL SHOP");
-  const oneShop = currentShop?.filter((item) => item?.id == activeBrand )[0]
+  const oneShop = shop?.filter((item) => item?.id == activeBrand )[0] || shop?.[0]
   console.log(oneShop, "ONE SHOP");
   const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
   
@@ -674,7 +680,6 @@ const DashboardPage = () => {
             setChangeBrand={setChangeBrand}
             shop={shop}
             setPrimary={setPrimary}
-            setCurrentShop={setCurrentShop}
           />
           { shouldDisplay ? (
             <div>

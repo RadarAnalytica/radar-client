@@ -70,7 +70,7 @@ const SideNav = () => {
                                     Расчет поставок
                                 </p>
                                 <p
-                                    className='sidenav-title ps-4 submenu-item' style={location === 'orders-map' ? { fontWeight: 'bold', fontSize: '14px' } : {}}
+                                    className='sidenav-title ps-4 submenu-item' style={(location === 'orders-map'  ? { fontWeight: 'bold', fontSize: '14px' } : {})}
                                     onClick={() => navigate('/orders-map')}
                                 >
                                     {

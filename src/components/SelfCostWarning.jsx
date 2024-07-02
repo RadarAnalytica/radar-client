@@ -14,6 +14,7 @@ const SelfCostWarning = ({activeBrand}) => {
 
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
+  console.log('HELLOOOOO')
 
 
   const handleClose = () => setShow(false);

@@ -266,7 +266,7 @@ const LinkedShops = () => {
                             </div>
                             <p style={{ fontWeight: 600 }}>Добавьте новые данные, чтобы отслеживать статистику по всем вашим магазинам в одном месте</p>
                             <div>
-                                <button className="mt-2 prime-btn" style={{ maxWidth: '200px', height: '6vh' }}
+                                <button className="mt-2 prime-btn butt" style={{ maxWidth: '200px', height: '6vh' }}
                                     onClick={() => handleShow()}
                                 >
                                     Подключить

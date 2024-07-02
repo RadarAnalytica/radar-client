@@ -5,6 +5,7 @@ import AuthContext, { AuthProvider } from './service/AuthContext';
 import { useContext } from 'react';
 import MobileMenu from './components/MobileMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Digitization from './pages/Digitization';
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
 
@@ -95,6 +96,8 @@ function App() {
               <React.Suspense fallback={<>...</>}> <OrdersMap /></React.Suspense>} />
               <Route path='/linked-shops' element={
               <React.Suspense fallback={<>...</>}> <LinkedShops /></React.Suspense>} />
+                <Route path='/digitization' element={
+              <React.Suspense fallback={<>...</>}> <Digitization /></React.Suspense>} />
               
             </>)
               :

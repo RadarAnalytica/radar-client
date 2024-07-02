@@ -169,8 +169,8 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                                                 const color =tooltipModel.labelColors[0].backgroundColor;
                                                 const titleLines = tooltipModel.title || [];
                                                 const bodyLines = tooltipModel.body.map(getBody);
-                                               const amount = tooltipData[targetInex]?.amount ;
-                                               const count = tooltipData[targetInex]?.count
+                                               const amount = tooltipData[targetInex]?.amount?.toFixed(2) ;
+                                               const count = tooltipData[targetInex]?.count?.toFixed(2)
 
                                                 let innerHtml = '<thead>';
                                                 
