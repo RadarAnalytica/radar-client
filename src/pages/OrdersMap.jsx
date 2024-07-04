@@ -31,7 +31,7 @@ const OrdersMap = () => {
 
     const [days, setDays] = useState(30)
     const [brandNames, setBrandNames] = useState()
-    const [activeBrand, setActiveBrand] = useState(0)
+    const [activeBrand, setActiveBrand] = useState('0')
     console.log(activeBrand, "ACTIVE BRAND");
     // useEffect(() => {
     //     if (user) {
@@ -53,6 +53,12 @@ const OrdersMap = () => {
     dispatch(shops(authToken))
   }, [dispatch])
   
+  useEffect(() => {
+   
+    if (shop.length > 0) {
+        setActiveBrand(shop?.[0]?.id);
+      }
+  }, [shop]);
 
     // const [shop, setShop] = useState()
     // console.log(shop, "SHOP");
@@ -76,6 +82,19 @@ const OrdersMap = () => {
 
 
     const [data, setData] = useState()
+
+
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+      
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 400);
+  
+     
+      return () => clearTimeout(timer);
+    }, []);
 
 
     // useEffect(() => {
@@ -480,6 +499,7 @@ const allShop = shop?.some((item) => item?.is_primary_collect === true )
   const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
    
     return (
+        isVisible && (
         <div className='orders-map'>
             <SideNav />
             <div className="orders-map-content pb-3">
@@ -711,6 +731,7 @@ const allShop = shop?.some((item) => item?.is_primary_collect === true )
                 }   
             </div>
         </div>
+    )
     )
 }
 

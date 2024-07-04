@@ -87,23 +87,6 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                 borderColor: 'white',
                 borderWidth: 0
             }
-            
-            // {
-            //     label: titleTooltipAmount,
-            //     data: amount,
-            //     backgroundColor: colorCons,
-            //     borderColor: 'white',
-            //     borderWidth: 0
-            // },
-            // {   
-            //     label: titleTooltipCount,
-            //     data: count,
-            //     backgroundColor: colorCons,
-            //     borderColor: 'white',
-            //     borderWidth: 0
-            // },
-            
-            
         ],
     }
    
@@ -187,7 +170,18 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                                                     let style = ''
                                                     // style += '; border-color:' + colors.borderColor;
                                                     style += '; border-width: 2px';
-                                                    const span = '<span style="font-size: 12px; margin-left: -18px; line-height: 0.5vw; border-radius: 2px;">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span>' + set?.label + '  <span style="font-weight: bold;  margin-left: 50px; ">' + value + '%' + '</span><span ><p>' + titleTooltipAmount + '<span style="font-weight: bold; margin-left: 40px;">'+'&nbsp;&nbsp;' + amount  + '</span></p><p style="margin-top: -15px;" >' + titleTooltipCount + '<span style="font-weight: bold; margin-left: 50px;">' + count  + '</span></p></span>';
+                                                    const span = `<div style="display: flex; justify-content: space-between; align-items: flex-start; width: 210px;">
+                                                    <div>
+                                                      <span>${set?.label}</span>
+                                                      <p style="margin: 0">${titleTooltipAmount}</p>
+                                                      <p>${titleTooltipCount}</p>
+                                                    </div>
+                                                    <div style="text-align: left;">
+                                                      <span style="font-weight: bold;">${value}%</span>
+                                                      <p style="margin: 0" ><span style="font-weight: bold;">${amount}</span></p>
+                                                      <p><span style="font-weight: bold;">${count}</span></p>
+                                                    </div>
+                                                  </div>`
                                                     innerHtml += '<tr><td>' + span + '</td></tr>';
                                                 });
                                                 innerHtml += '</tbody>';
