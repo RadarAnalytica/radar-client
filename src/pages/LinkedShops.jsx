@@ -14,10 +14,17 @@ import DragDropFile from '../components/DragAndDropFiles'
 import { ServiceFunctions } from '../service/serviceFunctions'
 import WbIcon from '../assets/WbIcon'
 import { getFileClickHandler, saveFileClickHandler } from '../service/getSvaeFile'
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
+import { shops } from '../redux/shops/shopsActions'
+import { editShop } from '../redux/editShop/editShopActions'
+import { addShop } from '../redux/addShop/addShopActions'
+import { deleteShop } from '../redux/deleteShop/deleteShopActions'
 
 const LinkedShops = () => {
 
     const { user, authToken } = useContext(AuthContext)
+    console.log(authToken, 'AUTH TOKEN')
+    
 
     const navigate = useNavigate()
 
@@ -38,16 +45,16 @@ const LinkedShops = () => {
     }
     
     
-    const [data, setData] = useState()
+    // const [data, setData] = useState()
     const [primary, setPrimary] = useState()
 
 
 
 
-    console.log(data, 'DATA')
+    // console.log(data, 'DATA')
     
    
-    console.log(data);
+    
 
     let [activeTokens, setActiveTokens] = useState([])
     let [inactiveTokens, setInactiveTokens] = useState([])
@@ -93,69 +100,106 @@ const LinkedShops = () => {
     const [brandName, setBrandName] = useState()
     const [tkn, setTkn] = useState()
     console.log(tkn, 'TKN')
-   
-
     console.log(brandName, 'GET BRAND');
 
-    const editShop = async (shop, is_active, is_delete, authtoken, brand_name, token) => {
+
+    const dispatch = useAppDispatch();
+    const data = useAppSelector((state) => state.shopsSlice.shops);
+    console.log(data, "SHOPSAAAAllll");
+   
+
+    // const editShop = async (shop, is_active, is_delete, authtoken, brand_name, token) => {
         
-        const res = await fetch(URL + '/api/shop/' + shop?.id, {
-            method: 'PATCH',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': 'JWT ' + authtoken
-            },
-            body: JSON.stringify({
-                brand_name : brand_name,
-                token : token,
-                is_active : is_active,
-                is_delete : is_delete
+    //     const res = await fetch(URL + '/api/shop/' + shop?.id, {
+    //         method: 'PATCH',
+    //         headers: {
+    //             'content-type': 'application/json',
+    //             'authorization': 'JWT ' + authtoken
+    //         },
+    //         body: JSON.stringify({
+    //             brand_name : brand_name,
+    //             token : token,
+    //             is_active : is_active,
+    //             is_delete : is_delete
                 
-            })
-        })
-        const data = await res.json()
-        if(res.status === 200){
-            ServiceFunctions.getAllShops(authToken).then(data => {
-                setData(data)})
-        }
+    //         })
+    //     })
+    //     const data = await res.json()
+    //     if(res.status === 200){
+    //         ServiceFunctions.getAllShops(authToken).then(data => {
+    //             setData(data)})
+    //     }
         
         
-        // setData(data)
-        setBrandName()
-        setTkn()
-        return data
+    //     // setData(data)
+    //     setBrandName()
+    //     setTkn()
+    //     return data
 
-    }
+    // }
 
-    const deleteShop = async (shop, authtoken) => {
-        const res = await fetch(URL + '/api/shop/' + shop?.id, {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': 'JWT ' + authtoken
-            }
-        })
+    // const deleteShop = async (shop, authtoken) => {
+    //     const res = await fetch(URL + '/api/shop/' + shop?.id, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'content-type': 'application/json',
+    //             'authorization': 'JWT ' + authtoken
+    //         }
+    //     })
         
         
-        if(res.status === 204){
-            ServiceFunctions.getAllShops(authToken).then(data => setData(data))
-        }else{
-            throw new Error('Произошла ошибка при удалении магазина')
-        }
-    }
+    //     if(res.status === 204){
+    //         ServiceFunctions.getAllShops(authToken).then(data => setData(data))
+    //     }else{
+    //         throw new Error('Произошла ошибка при удалении магазина')
+    //     }
+    // }
 
     useEffect(() => {
-        
-        if (user) {
-            ServiceFunctions.getAllShops(authToken).then(data => {
-                
-                setData(data)})
-            // getTokenExp(user).then(data => setData(data))
+
+        if(user){
+            dispatch(shops(authToken))
         }
+        
+        // if (user) {
+        //     ServiceFunctions.getAllShops(authToken).then(data => {
+                
+        //         setData(data)})
+        //     // getTokenExp(user).then(data => setData(data))
+        // }
     }, [])
 
     console.log(primary, 'PRIMARY')
 
+    const editData = {
+        activeShop: activeShop,
+        is_active: true,
+        is_delete: false,
+        authToken: authToken,
+        brandName: brandName,
+        tkn: tkn
+    }
+
+    const addShopData = {
+        brandName: brandName,
+        tkn: tkn,
+        authToken: authToken
+    }
+
+    const deleteShopData = {
+        shop: activeShop,
+        authToken: authToken
+    }
+
+    const handleDeleteShop = () => {
+        dispatch(deleteShop(deleteShopData))
+    }
+    const handleAddShop = () => {
+        dispatch(addShop(addShopData))
+    }
+    const handleEditShop = () => {
+        dispatch(editShop (editData))
+    };
     const redirect = () => {
         navigate('/dashboard')
     }
@@ -273,6 +317,8 @@ const LinkedShops = () => {
                                 </button>
                             </div>
                         </div>
+                        
+
                     </div>
                 </div>
 
@@ -307,7 +353,8 @@ const LinkedShops = () => {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-2">
                         <button className='prime-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => { ServiceFunctions.updateToken(brandName, tkn, authToken).then(data => setData((prev) => [...prev, data])); handleClose(); setShowSuccess(true);}}>
+                            onClick={() => {handleAddShop();  handleClose(); setShowSuccess(true);}}
+                            >
                             Сохранить
                         </button>
                     </div>
@@ -369,7 +416,8 @@ const LinkedShops = () => {
                     </div> */}
                     <div className="d-flex justify-content-between w-100 mt-2">
                         <button className='prime-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => { editShop(activeShop, true, false, authToken, brandName, tkn); setShowEdit(false) }}>
+                            onClick={() => { handleEditShop() ; setShowEdit(false) }}
+                            >
                             Сохранить
                         </button>
                     </div>
@@ -384,7 +432,9 @@ const LinkedShops = () => {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-2 gap-2">
                         <button className='danger-btn' style={{ padding: '16px 20px' }}
-                            onClick={() => { deleteShop(activeShop, authToken); setShowDelete(false) }}>
+                            onClick={() => { handleDeleteShop() ; setShowDelete(false)}}
+                                // deleteShop(activeShop, authToken);  }}
+                            >
                             Удалить
                         </button>
                         <button className='prime-btn' style={{ padding: '16px 20px' }}

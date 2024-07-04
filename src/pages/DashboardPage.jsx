@@ -50,14 +50,20 @@ const DashboardPage = () => {
   const shop = useAppSelector((state) => state.shopsSlice.shops);
   console.log(shop, "SHOPSAAAAllll");
   
-  const [activeBrand, setActiveBrand] = useState(0);
+  const [activeBrand, setActiveBrand] = useState('0');
   console.log(activeBrand, "ACTIVE BRAND");
 
 
 useEffect(() => {
   dispatch(shops(authToken))
+  
 }, [dispatch])
 
+useEffect(() => {
+  if (shop.length > 0) {
+    setActiveBrand(shop?.[0]?.id);
+  }
+}, [shop]);
   // useEffect(() => {
   //   ServiceFunctions.getAllShops(authToken).then((data) => {
   //     setCurrentShop(data)
@@ -69,8 +75,8 @@ useEffect(() => {
 
   useEffect(() => {
     ServiceFunctions.getDashBoard(authToken, days, activeBrand).then(
-      (data) => setDataDashboard(data)
-
+      (data) => setDataDashboard(data));
+      
       // setTimeout(() => {
       //     if (!user) {
       //         navigate('/signin')
@@ -78,9 +84,21 @@ useEffect(() => {
       //         navigate('/dashboard')
       //     }
       // },800 )
-    );
+ 
+     
   }, [days, activeBrand]);
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 400);
+
+   
+    return () => clearTimeout(timer);
+  }, []);
   // useEffect(() => {
   //   const timeout = setTimeout(() => {
   //     dispatch(fetchAllShops(days));
@@ -570,7 +588,7 @@ useEffect(() => {
             borderWidth: 1,
             hoverBackgroundColor: "rgba(240, 173, 0, 7)",
             yAxisID: "B",
-            data: dataDashBoard?.orderCountList || [3, 6, 9],
+            data: dataDashBoard?.orderCountList || [],
           }
         : {
             label: "Заказы",
@@ -659,6 +677,7 @@ useEffect(() => {
   
 
   return (
+    isVisible && (
     user && (
       <div className="dashboard-page">
         <SideNav />
@@ -912,6 +931,7 @@ useEffect(() => {
         </div>
       </div>
       
+    )
     )
   );
 };
