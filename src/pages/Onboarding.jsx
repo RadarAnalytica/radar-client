@@ -13,7 +13,7 @@ import { URL } from "../service/config";
 import Modal from "react-bootstrap/Modal";
 import DragDropFile from "../components/DragAndDropFiles";
 import WbIcon from "../assets/WbIcon";
-import { getFileClickHandler, saveFileClickHandler } from "../service/getSvaeFile";
+import { getFileClickHandler, saveFileClickHandler } from "../service/getSaveFile";
 
 const Onboarding = () => {
   const { user, authToken, setUser } = useContext(AuthContext);

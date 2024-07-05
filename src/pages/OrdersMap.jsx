@@ -708,11 +708,11 @@ const allShop = shop?.some((item) => item?.is_primary_collect === true )
                                                 return (
                                                     <div className=" pl-3 map-data-row" key={i}>
                                                         <div className="col"  >
-                                                            <OrderTableExtended title={`Заказы из ${w.stockName}`} data={ geoData?.stock_data[i]?.orderDetails.length !== 0 ? geoData?.stock_data[i]?.orderDetails : orderSaleStock } />
+                                                            <OrderTableExtended title={`Заказы из ${w.stockName}`} data={ geoData?.stock_data[i]?.orderDetails } />
                                                         </div>
                                                         {/* style={geoData?.stock_data[i]?.saleDetails?.length === 0 ? { visibility: 'hidden' } : {}} */}
                                                         <div className="col"   >
-                                                            <OrderTableExtended title={`Продажи из ${w.stockName}`} data={ geoData?.stock_data[i]?.saleDetails.length !== 0 ? geoData?.stock_data[i]?.saleDetails : orderSaleStock} />
+                                                            <OrderTableExtended title={`Продажи из ${w.stockName}`} data={ geoData?.stock_data[i]?.saleDetails} />
                                                         </div>
                                                     </div>
                                                 )

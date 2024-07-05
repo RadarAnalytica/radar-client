@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import AuthContext from '../service/AuthContext';
 import Modal from "react-bootstrap/Modal";
-import { getFileClickHandler, saveFileClickHandler } from '../service/getSvaeFile';
+import { getFileClickHandler, saveFileClickHandler } from '../service/getSaveFile';
 import DragDropFile from './DragAndDropFiles';
 
 

@@ -51,7 +51,7 @@ function App() {
             
             <Route path='/' element={
               <React.Suspense fallback={<>...</>}> <MockUpPage /></React.Suspense>} />
-            <Route path='/development/home' element={
+            <Route path='/home' element={
               <React.Suspense fallback={<>...</>}> <MainPage /></React.Suspense>} />
             <Route path='/stub' element={
               <React.Suspense fallback={<>...</>}> <StubPage /></React.Suspense>} />

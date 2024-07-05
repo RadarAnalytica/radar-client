@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StockAnalysisFilter = () => {
+const StockAnalysisFilter = ({shop, setActiveBrand}) => {
   return (
      <div className="filter container dash-container p-3 pb-4 pt-0 d-flex">
             <div className="row">
@@ -32,14 +32,15 @@ const StockAnalysisFilter = () => {
                 </div> */}
                 <div className="filter-item col">
                     <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="store">Магазин:</label>
-                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue='0'>
+                    <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px' }} className='form-control' id="store" defaultValue='0' onChange={(e) => setActiveBrand(e.target.value)}>
                         <option value="Все" selected>Все</option>
-                        
-                            
                                 <option>0</option>
+                                {
+                            shop && shop?.map((brand) => (
+                                <option key={brand.id} value={`${brand.id}`}>{brand.brand_name}</option>
                                 
-                           
-                        
+                            ))
+                        }
                         {/* <option value="store1">Магазин 1</option>
                     <option value="store2">Магазин 2</option>
                     <option value="store3">Магазин 3</option> */}
@@ -61,6 +62,7 @@ const StockAnalysisFilter = () => {
                 </div> */}
             </div>
         </div>
+        
   )
 }
 

@@ -140,7 +140,7 @@ select {
 }
 
 .order-table-extended {
-  min-height: 30vh;
+  height: auto;
 }
 
 

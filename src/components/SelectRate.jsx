@@ -4,6 +4,8 @@ import logoStart from '../pages/images/logoForCardStart.png';
 import logoPro from '../pages/images/logoForCardPro.png';
 import logoProPlus from '../pages/images/logoForCardProPlus.png';
 import Steps from '../pages/images/Steps';
+import StartLogo from '../assets/startlogo.svg';
+import FireLogo from '../assets/firelogo.svg';
 
 const SelectRate = ({redirect}) => {
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
@@ -123,7 +125,7 @@ const SelectRate = ({redirect}) => {
                     fontSize: '18px',
                   }}
                 >
-                  <img src={logoStart} style={{ width: '20%' }} />{' '}
+                  <img src={StartLogo} style={{ width: '20%' }} />{' '}
                   <div>Для начала</div>
                 </div>
               </div>
@@ -237,7 +239,7 @@ const SelectRate = ({redirect}) => {
                     fontSize: '18px',
                   }}
                 >
-                  <img src={logoPro} style={{ width: '20%' }} />{' '}
+                  <img src={FireLogo} style={{ width: '20%' }} />{' '}
                   <div>Популярно</div>
                 </div>
               </div>

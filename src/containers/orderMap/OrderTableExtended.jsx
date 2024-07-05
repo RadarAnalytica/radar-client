@@ -43,7 +43,7 @@ const OrderTableExtended = ({ title, data, geoData }) => {
             {
                 data  && data.length ?
                 data.map((item, key) =>   (
-                        <div key={key} className='d-flex' style={item.amount !== 0 && item.common_percent !== 0  && item.stock_percent !== 0 ? {} : {visibility: 'hidden', height: '0'}}>
+                        <div key={key} className='d-flex' >
                             <p style={{ fontWeight: 600 }} className="mb-2 col-5 pe-2">{item.district}</p>
                             <p style={{ fontWeight: 600 }} className="mb-2 col-2">{formatPrice(item.amount) || '0'} ₽</p>
                             <p style={{ fontWeight: 600 }} className="mb-2 col-3 text-center">{(item.common_percent)?.toFixed(1) || '0'}%</p>
