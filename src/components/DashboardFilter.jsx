@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop, setChangeBrand, setPrimary  }) => {
+const DashboardFilter = ({ brandNames, setActiveBrand, defaultValue, setDays, shop, setChangeBrand, setPrimary  }) => {
 
     const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7)).toLocaleDateString('ru')?.split('.').reverse().join('-')
     const twoWeeksAgo = new Date(new Date().setDate(new Date().getDate() - 14)).toLocaleDateString('ru')?.split('.').reverse().join('-')
@@ -45,7 +45,7 @@ const DashboardFilter = ({ brandNames, changeBrand, defaultValue, setDays, shop,
                         const lastValue = e.target.value.split('|')[2] ;
                         setPrimary(lastValue)
                         setChangeBrand(secondValue)
-                        changeBrand(firstValue)}}>
+                        setActiveBrand(firstValue)}}>
                             <option value={`${shop?.[0]?.id}|${shop?.[0]?.is_primary_collect}|${shop?.[0]?.is_valid}`} hidden>
                                 {shop?.[0]?.brand_name}
                             </option>

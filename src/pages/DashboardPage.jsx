@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SideNav from "../components/SideNav";
 import TopNav from "../components/TopNav";
 import AuthContext from "../service/AuthContext";
@@ -695,7 +695,7 @@ useEffect(() => {
             brandNames={brandNames}
             defaultValue={days}
             setDays={setDays}
-            changeBrand={setActiveBrand}
+            setActiveBrand={setActiveBrand}
             setChangeBrand={setChangeBrand}
             shop={shop}
             setPrimary={setPrimary}

@@ -190,6 +190,7 @@ select {
   margin: 10px 0;
   font-weight: 700;
   font-size: 1.95vh;
+  transition: background-color 1.1s ease;
 }
 .butt{
   position: absolute; 
@@ -1351,7 +1352,8 @@ select {
 
 .table-header{
   height: 76px;
-  background-color: #f1f1f1;
+  background-color: #F7F6FE;
+  color: grey
 }
 
 
