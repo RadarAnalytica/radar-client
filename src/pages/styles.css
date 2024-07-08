@@ -353,8 +353,9 @@ select {
   min-height: 100vh;
 }
 
-.widmain-header,
-.page-header {
+
+/* .page-header, */
+.widmain-header{
   border-bottom: 1px solid silver;
 }
 .switch {
@@ -371,10 +372,87 @@ select {
   justify-content: space-between;
 }
 
+
+.vertical-line{
+  position: absolute;
+  left: 25px;
+  top: 35px;
+  border-radius: 2px;
+  width: 4px; 
+  background-color: #ffffff;
+  transition: height 2s; 
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  max-height: 81%;
+}
+/* .vertical-line::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0;
+  width: 170%; 
+  height: 100%; 
+  background-color: rgba(255, 255, 255, 0.5); 
+  z-index: 1; 
+} */
+
+
+.vertical-line::after {
+  content: '';
+  position: absolute;
+  left: -6px; 
+  bottom: -6px; 
+  width: 16px; 
+  height: 16px; 
+  border: 2px solid white; 
+  background-color: rgba(216, 215, 215, 0.5); 
+  border-radius: 50%; 
+  box-shadow: 0 0 0 4px rgba(216, 215, 215, 0.5); 
+}
+
+
+.steps-time1{
+  transition: transform 0.3s ease;
+  transform: rotate(-4deg)
+}
+.steps-time1:hover{
+  transform: scale(1.1) rotate(-4deg) ;
+}
+
+.steps-time2{
+  transition: transform 0.3s ease;
+  transform: rotate(-3deg)
+}
+.steps-time2:hover{
+  transform: scale(1.1) rotate(-3deg) ;
+}
+
+.steps-time3{
+  transition: transform 0.3s ease;
+}
+.steps-time3:hover{
+  transform: scale(1.1) ;
+}
+
+.steps-time4{
+  transition: transform 0.3s ease;
+  transform: rotate(3deg);
+}
+.steps-time4:hover{
+  transform: scale(1.1) rotate(3deg);
+}
+.steps-time5{
+  transition: transform 0.3s ease;
+  transform: rotate(5deg);
+}
+.steps-time5:hover{
+  transform: scale(1.1) rotate(5deg);
+}
+
+
 .thesesHome {
   display: flex;
   align-items: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 5px;
   margin: 10px;
   border-radius: 15px;
@@ -386,7 +464,7 @@ select {
 .thesesHome2 {
   display: flex;
   align-items: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 5px;
   margin: 10px;
   border-radius: 15px;
@@ -441,6 +519,8 @@ select {
   position: relative;
 }
 
+
+
 .secondary-btn {
   border: none;
   background-color: rgb(255, 255, 255);
@@ -450,7 +530,7 @@ select {
   background-color: #f0ad00;
   padding: 40px;
   border-radius: 20px;
-  margin-top: 50px;
+  margin-top: 120px;
 }
 
 .btn-black {
@@ -540,10 +620,10 @@ select {
 .blockBtn {
   background-image: url('/src/pages/images/imageFon.png');
   background-size: cover;
-  width: 90%;
+  width: 39%;
   display: flex;
   justify-content: center;
-  padding: 10px;
+  padding: 25px;
   border-radius: 20px;
 }
 .steps {
@@ -775,13 +855,17 @@ button.accordion-button.collapsed::after {
 .footer {
   min-height: 280px;
   padding-bottom: 40px;
+  border-top: none; /* Убираем верхнюю границу */
+  box-shadow: 0 -2px 10px rgba(63, 62, 62, 0.07); 
 }
 
 .footer-col {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-top: 25px;
 }
+
 
 .footer-link {
   color: black;

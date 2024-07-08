@@ -87,7 +87,7 @@ const NavbarMainHome = () => {
           />
         </svg>
 
-        <div className='home-menu'>
+        {/* <div className='home-menu'>
           <Dropdown>
             <Dropdown.Toggle
               style={{
@@ -184,17 +184,35 @@ const NavbarMainHome = () => {
 
           <span className='home-item'>Тарифы</span>
           <span className='home-item'>Контакты</span>
-        </div>
+        </div> */}
 
         <div className='widheader-login'>
           {user ? (
+            <>
+            <button
+              className='prime-btn'
+              style={{ width: '160px', height: '71px', fontSize: '20px', marginRight: '40px' }}
+            >
+              Регистрация
+            </button>
             <button
               className='prime-btn'
               style={{ width: '134px', height: '71px', fontSize: '20px' }}
             >
               Войти
             </button>
+            </>
           ) : (
+            <>
+            <button
+            onClick={() => {
+              navigate('/signup');
+            }}
+              className='prime-btn'
+              style={{ width: '160px', height: '71px', fontSize: '20px', marginRight: '40px' }}
+            >
+              Регистрация
+            </button>
             <button
               onClick={() => {
                 navigate('/signin');
@@ -204,6 +222,7 @@ const NavbarMainHome = () => {
             >
               Войти
             </button>
+            </>
           )}
         </div>
       </div>

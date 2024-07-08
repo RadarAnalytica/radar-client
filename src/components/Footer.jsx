@@ -7,8 +7,8 @@ const Footer = () => {
     return (
         <div className='footer'>
             <div className="container footer-container">
-                <div className="row">
-                    <div className="col-5">
+                <div className="row" >
+                    <div className="col-5" style={{ marginTop: '17px' }}>
                         <div className='mb-3' style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M24 34.6667V11.5555H30.7046C33.3307 11.5555 35.1582 11.6766 36.1872 11.9186C37.2269 12.1502 38.1219 12.5448 38.8722 13.1026C39.719 13.734 40.3675 14.5391 40.8177 15.5179C41.2786 16.4966 41.509 17.5754 41.509 18.7541C41.509 20.5432 41.0589 22.0008 40.1585 23.1269C39.2688 24.2424 37.9665 24.9844 36.2515 25.3527L42.6667 34.6667H35.4154L30.0132 25.6211V34.6667H24ZM30.0132 22.4796H31.203C32.5857 22.4796 33.5933 22.2481 34.2257 21.785C34.8688 21.322 35.1904 20.5958 35.1904 19.6065C35.1904 18.4489 34.8902 17.628 34.29 17.1439C33.7004 16.6492 32.7036 16.4019 31.2995 16.4019H30.0132V22.4796Z" fill="#1A1A1A" />

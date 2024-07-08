@@ -17,7 +17,7 @@ const SelectRate = ({redirect}) => {
   return (
     <>
       <div
-        style={{ display: 'flex', flexDirection: 'column', marginTop: '50px' }}
+        style={{ display: 'flex', flexDirection: 'column', marginTop: '100px' }}
       >
         <div className='doughnut-content'>
           <div
@@ -83,7 +83,7 @@ const SelectRate = ({redirect}) => {
               >
                 {selectedPeriod === '3month' ? <Steps.Circle /> : <span></span>}
                 3 месяца{' '}
-                <span style={{ backgroundColor: '#5329FF1A' }}>-10%</span>
+                <span>-10%</span>
               </button>
               <button
                 onClick={() => handlePeriodChange('6month')}
@@ -94,7 +94,7 @@ const SelectRate = ({redirect}) => {
               >
                 {selectedPeriod === '6month' ? <Steps.Circle /> : <span></span>}
                 6 месяцев{' '}
-                <span style={{ backgroundColor: '#5329FF1A' }}>до -60%</span>
+                <span>до -60%</span>
               </button>
             </div>
           </div>
