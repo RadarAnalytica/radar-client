@@ -9,7 +9,7 @@ const StepsTime = ({redirect}) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        marginTop: '50px',
+        marginTop: '120px',
       }}
     >
       <div
@@ -43,7 +43,7 @@ const StepsTime = ({redirect}) => {
         }}
       >
         {' '}
-        <div className='steps' style={{ transform: 'rotate(-4deg)' }}>
+        <div className='steps steps-time1'>
           <div>
             <div>
               <Steps.StepsBlue />
@@ -59,8 +59,8 @@ const StepsTime = ({redirect}) => {
           </div>
         </div>
         <div
-          className='steps'
-          style={{ transform: 'rotate(-3deg)', marginTop: '50px', zIndex: 2 }}
+          className='steps steps-time2'
+          style={{  marginTop: '50px', zIndex: 2 }}
         >
           <div>
             <div>
@@ -79,7 +79,7 @@ const StepsTime = ({redirect}) => {
             <img src={time} alt='tims' style={{ width: '20%' }} /> 2 дня
           </div>
         </div>
-        <div className='steps' style={{ zIndex: 2 }}>
+        <div className='steps steps-time3' style={{ zIndex: 2 }}>
           <div>
             <div>
               <Steps.StepsBlue />
@@ -96,10 +96,10 @@ const StepsTime = ({redirect}) => {
           </div>
         </div>
         <div
-          className='steps'
-          style={{ transform: 'rotate(3deg)', marginTop: '50px', zIndex: 2 }}
+          className='steps steps-time4'
+          style={{  marginTop: '50px', zIndex: 2 }}
         >
-          <div>
+          <div >
             <div>
               <Steps.StepsBlue />
             </div>
@@ -115,7 +115,7 @@ const StepsTime = ({redirect}) => {
             <img src={time} alt='tims' style={{ width: '20%' }} /> 7 дней
           </div>
         </div>
-        <div className='stepsBtn' style={{ transform: 'rotate(5deg)' }}>
+        <div className='stepsBtn steps-time5' >
           <div>
             <div>
               <Steps.StepsWhite />
