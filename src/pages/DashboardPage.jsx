@@ -94,7 +94,7 @@ useEffect(() => {
     
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 400);
+    }, 800);
 
    
     return () => clearTimeout(timer);

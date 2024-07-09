@@ -90,7 +90,7 @@ const OrdersMap = () => {
       
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 400);
+      }, 800);
   
      
       return () => clearTimeout(timer);
@@ -583,7 +583,7 @@ const allShop = shop?.some((item) => item?.is_primary_collect === true )
                                                 { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(0, 182, 155, 1)', marginLeft: '2px' } :
                                                 { fontSize: '1.5vh', whiteSpace: 'nowrap', fontWeight: 600, color: 'rgba(249, 60, 101, 1)', marginLeft: '2px' }}
                                                  >
-                                                    {tooltipData?.comparePercent?.toFixed(0)} %
+                                                    {tooltipData?.comparePercent} %
                                                  </span>
                                                 </p>
                                                 
