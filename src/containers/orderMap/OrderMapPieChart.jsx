@@ -244,7 +244,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                     <div
                         style={{
                             position: 'absolute',
-                            top: '30%',
+                            top: '32%',
                             left: '23%',
                             display: 'flex',
                             flexDirection: 'column',
@@ -261,7 +261,7 @@ const OrderMapPieChart = ({ title, geoData, info, sub, totalAmount, totalCount, 
                     {
                         firstFive ?
                         firstFive.map((obj, key) => (
-                                <div className="mb-2 d-flex" key={key}>
+                                <div className="mb-2 d-flex" style={{ flexWrap: 'wrap', maxWidth: '100%'}} key={key}>
                                     <div className='d-flex align-items-start'>
                                         <span
                                             className='pb-2'

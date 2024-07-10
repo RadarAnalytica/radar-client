@@ -76,9 +76,9 @@ const navigate = useNavigate()
             <div>
               <YellowRadar />
             </div>
-            <div style={{ fontSize: '34px' }}>
+            <div style={{ fontSize: '34px', fontWeight: 'bold' }}>
               – сервис аналитики для{' '}
-              <span style={{ color: 'blue', fontWeight: 'bold' }}>
+              <span style={{ color: 'blue', fontWeight: '800' }}>
                 увеличения ваших продаж
               </span>{' '}
               на маркетплейсах
@@ -94,7 +94,7 @@ const navigate = useNavigate()
             >
               <button
                 className='prime-btn'
-                style={{ minHeight: '64px', fontSize: '18px' }}
+                style={{ minHeight: '64px', fontSize: '18px', marginLeft: '-15px' }}
                 onClick={() => redirect()}
               >
                 Попробовать бесплатно
@@ -111,7 +111,7 @@ const navigate = useNavigate()
             className='col-8'
           >
             Увеличьте продажи на маркетплейсе в 2 раза{' '}
-            <span style={{ color: 'orange' }}>
+            <span style={{ color: 'orange', fontWeight: '800' }}>
               с помощью инструментов Radar
             </span>
           </p>
@@ -164,11 +164,11 @@ const navigate = useNavigate()
         <div style={{ marginTop: '100px' }}>
           <div className='widhead-container'>
             <div className='mainBlock-api'>
-              <div style={{ fontSize: '40px' }}>
+              <div style={{ fontSize: '40px', fontWeight: '700' }}>
                 Подключение личного кабинета{' '}
-                <span style={{ color: 'orange' }}>по API</span>
+                <span style={{ color: 'orange', fontWeight: '800' }}>по API</span>
               </div>
-              <div style={{ fontSize: '20px' }}>
+              <div style={{ fontSize: '20px', fontWeight: '700' }}>
                 Получайте данные по всем вашим магазинам в режиме реального
                 времени в одном месте
               </div>
@@ -195,7 +195,7 @@ const navigate = useNavigate()
                 <div
                   style={{ display: 'flex', justifyContent: 'space-between' }}
                 >
-                  <div>
+                  <div >
                     <svg
                       width='270'
                       height='33'
@@ -297,7 +297,7 @@ const navigate = useNavigate()
                 </div>
                 <button
                   className='btn-warning'
-                  style={{ minHeight: '64px', fontSize: '18px' }}
+                  style={{ minHeight: '64px', fontSize: '18px', fontWeight: '700' }}
                   onClick={() => redirect()}
                 >
                   Попробовать бесплатно
@@ -337,7 +337,7 @@ const navigate = useNavigate()
                   Найдите прибыльные товары на маркетплейсе и развивайте свой
                   бизнес.
                 </div>
-                <div className='YellowRadarPoint'>
+                <div className='YellowRadarPoint' style={{marginTop: '20px'}}>
                   <YellowRadarPoint />
                 </div>
               </div>
@@ -360,8 +360,7 @@ const navigate = useNavigate()
             </div>
           </div>
         </div>
-      </div>
-      <div className="row" style={{ maxWidth: '1500px', marginLeft: '150px', marginBottom: '60px'}}>
+        <div className="row" style={{ width: '112%', marginLeft: '-107px', marginBottom: '60px'}}>
                 <div className="col-5 pt-1">
                     <div className='mb-3' style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '25px', marginLeft: '90px' }}>
                         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -379,7 +378,7 @@ const navigate = useNavigate()
 
                 </div>
                 <div className="col pt-3 footer-col">
-                    <a href="#" style={{ textDecoration: 'none', color: 'black', fontSize: '20px' }} className='fw-bold'>Контакты</a>
+                    <a href="/contacts" style={{ textDecoration: 'none', color: 'black', fontSize: '20px' }} className='fw-bold'>Контакты</a>
 
                 </div>
                 <div className="col-3 pt-3 footer-col">
@@ -387,6 +386,8 @@ const navigate = useNavigate()
 
                 </div>
             </div>
+      </div>
+      
       {/* <Footer /> */}
     </div>
   );

@@ -1,63 +1,111 @@
 import React, { useState } from 'react';
-import newbie1 from '../pages/images/new1.png';
-import newbie2 from '../pages/images/new2.png';
-import newbie3 from '../pages/images/new3.png';
-import sellers1 from '../pages/images/sellers11.png';
-import sellers2 from '../pages/images/sellers22.png';
-import sellers3 from '../pages/images/sellers33.png';
-import bussines1 from '../pages/images/bussines1.png';
-import bussines2 from '../pages/images/bussines2.png';
-import bussines3 from '../pages/images/bussines3.png';
-import manager1 from '../pages/images/manager1.png';
-import manager2 from '../pages/images/manager2.png';
-import manager3 from '../pages/images/manager3.png';
+import newbie1 from '../pages/images/newbie1.svg';
+import newbie2 from '../pages/images/newbie2.svg';
+import newbie3 from '../pages/images/newbie3.svg';
+import sellers1 from '../pages/images/sellers1.svg';
+import sellers2 from '../pages/images/sellers2.svg';
+import sellers3 from '../pages/images/sellers3.svg';
+import bussines1 from '../pages/images/bussines1.svg';
+import bussines2 from '../pages/images/bussines2.svg';
+import bussines3 from '../pages/images/bussines3.svg';
+import manager1 from '../pages/images/manager1.svg';
+import manager2 from '../pages/images/manager2.svg';
+import manager3 from '../pages/images/manager3.svg';
 import Steps from '../pages/images/Steps';
 
 const newbie = [
   {
-    img: <img src={newbie1} alt='Block Main Page' className='imgBox' />,
+    img:<div>
+          <img src={newbie1} alt='Block Main Page' className='imgBox' />
+          <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f50d;</span>
+          <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f4c8;</span>
+        </div> ,
   },
   {
-    img: <img src={newbie2} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+          <img src={newbie2} alt='Block Main Page' className='imgBox' />
+          <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f4ca;</span>
+          <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f451;</span>
+        </div>
   },
   {
-    img: <img src={newbie3} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+          <img src={newbie3} alt='Block Main Page' className='imgBox' />
+          <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f4e6;</span>
+          <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f680;</span>
+         </div>
   },
 ];
 
 const currentSellers = [
   {
-    img: <img src={sellers1} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+    <img src={sellers1} alt='Block Main Page' className='imgBox' />
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f4b8;</span>
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f4c8;</span>
+   </div>
   },
   {
-    img: <img src={sellers2} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+    <img src={sellers2} alt='Block Main Page' className='imgBox' />
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f4ca;</span>
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f4b0;</span>
+   </div>
   },
   {
-    img: <img src={sellers3} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+    <img src={sellers3} alt='Block Main Page' className='imgBox' />
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f51d;</span>
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f4c8;</span>
+   </div>
   },
 ];
 
 const business = [
   {
-    img: <img src={bussines1} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+    <img src={bussines1} alt='Block Main Page' className='imgBox' />
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f465;</span>
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f4dd;</span>
+   </div>
   },
   {
-    img: <img src={bussines2} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+    <img src={bussines2} alt='Block Main Page' className='imgBox' />
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f4cd;</span>
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f4b0;</span>
+   </div>
   },
   {
-    img: <img src={bussines3} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+    <img src={bussines3} alt='Block Main Page' className='imgBox' />
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f4a1;</span>
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f44d;</span>
+   </div>
   },
 ];
 
 const manager = [
   {
-    img: <img src={manager1} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+    <img src={manager1} alt='Block Main Page' className='imgBox' />
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f465;</span>
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f4c8;</span>
+   </div>
   },
   {
-    img: <img src={manager2} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+    <img src={manager2} alt='Block Main Page' className='imgBox' />
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f4dd;</span>
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f4bb;</span>
+   </div>
   },
   {
-    img: <img src={manager3} alt='Block Main Page' className='imgBox' />,
+    img: <div>
+    <img src={manager3} alt='Block Main Page' className='imgBox' />
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-90px', fontSize: '20px' }} >&#x1f511;</span>
+    <span style={{position: 'absolute', marginTop: '85px', marginLeft: '-50px', fontSize: '20px' }} >&#x1f4ca;</span>
+   </div>
   },
 ];
 

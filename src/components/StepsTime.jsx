@@ -30,9 +30,9 @@ const StepsTime = ({redirect}) => {
         >
           <YellowRadar />
         </div>
-        <div style={{ fontSize: '36px', width: '80%', fontWeight: '700' }}>
+        <div style={{ fontSize: '44px', width: '90%', fontWeight: '700', lineHeight: '1.2' }}>
           поможет на каждом этапе вашего{' '}
-          <span style={{ color: 'blue' }}>развития на маркетплейсах</span>
+          <span style={{ color: 'blue', fontWeight: '800' }}>развития на маркетплейсах</span>
         </div>
       </div>
       <div
@@ -60,7 +60,7 @@ const StepsTime = ({redirect}) => {
         </div>
         <div
           className='steps steps-time2'
-          style={{  marginTop: '50px', zIndex: 2 }}
+          style={{  marginTop: '50px' }}
         >
           <div>
             <div>
@@ -79,7 +79,7 @@ const StepsTime = ({redirect}) => {
             <img src={time} alt='tims' style={{ width: '20%' }} /> 2 дня
           </div>
         </div>
-        <div className='steps steps-time3' style={{ zIndex: 2 }}>
+        <div className='steps steps-time3'>
           <div>
             <div>
               <Steps.StepsBlue />
@@ -97,7 +97,7 @@ const StepsTime = ({redirect}) => {
         </div>
         <div
           className='steps steps-time4'
-          style={{  marginTop: '50px', zIndex: 2 }}
+          style={{  marginTop: '50px'}}
         >
           <div >
             <div>

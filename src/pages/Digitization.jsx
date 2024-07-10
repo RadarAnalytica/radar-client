@@ -22,7 +22,7 @@ const Digitization = () => {
             <div className='telegram-icon' >
               <img src={TelegramBot} alt="" />
             </div>
-              <a  style={{ textDecoration: 'none', color: 'black'}} href='#'>Telegram бот </a>
+              <a  style={{position:'relative', marginBottom: '-70px', marginLeft: '-50px', textDecoration: 'none', color: 'black'}} href='#'>Telegram бот </a>
           </div>
           <div>
             <img src={DigitIcon} alt="" />
