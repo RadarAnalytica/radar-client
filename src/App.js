@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import MobileMenu from './components/MobileMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Digitization from './pages/Digitization';
+import Contacts from './components/Contacts';
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
 
@@ -79,6 +80,8 @@ function App() {
               <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
             <Route path='*' element={
               <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />  
+              <Route path='/contacts' element={
+              <React.Suspense fallback={<>...</>}> <Contacts /></React.Suspense>} />  
 
             {user.is_onboarded ? (
             <>
@@ -98,6 +101,8 @@ function App() {
               <React.Suspense fallback={<>...</>}> <LinkedShops /></React.Suspense>} />
                 <Route path='/digitization' element={
               <React.Suspense fallback={<>...</>}> <Digitization /></React.Suspense>} />
+              <Route path='/contacts' element={
+              <React.Suspense fallback={<>...</>}> <Contacts /></React.Suspense>} /> 
               
             </>)
               :
@@ -176,6 +181,8 @@ function App() {
             <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
           <Route path='*' element={
             <React.Suspense fallback={<>...</>}> <Page404 /></React.Suspense>} />
+            <Route path='/contacts' element={
+              <React.Suspense fallback={<>...</>}> <Contacts /></React.Suspense>} /> 
           {/* <Route path='/' element={<MockUpPage />} />
           <Route path='/development/home' element={<MainPage />} />
           <Route path='/stub' element={<StubPage />} />

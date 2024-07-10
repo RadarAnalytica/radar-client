@@ -346,11 +346,15 @@ select {
 }
 
 /* WIDGET MAIN */
-.widget-main,
-.page-main {
+.widget-main{
   
   background-color: white;
   min-height: 100vh;
+}
+.page-main {
+  background-color: white;
+  max-height: 100vh;
+  transform: scale(0.9);
 }
 
 
@@ -370,6 +374,9 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.widhead-container{
+  margin-top: 10px;
 }
 
 
@@ -412,40 +419,52 @@ select {
 
 .steps-time1{
   transition: transform 0.3s ease;
-  transform: rotate(-4deg)
+  transform: rotate(-4deg);
+  z-index: 1;
 }
 .steps-time1:hover{
   transform: scale(1.1) rotate(-4deg) ;
+  z-index: 2;
 }
 
 .steps-time2{
   transition: transform 0.3s ease;
-  transform: rotate(-3deg)
+  transform: rotate(-3deg);
+  z-index: 1;
 }
 .steps-time2:hover{
   transform: scale(1.1) rotate(-3deg) ;
+  z-index: 2;
 }
 
 .steps-time3{
   transition: transform 0.3s ease;
+  z-index: 1;
 }
 .steps-time3:hover{
   transform: scale(1.1) ;
+  z-index: 2;
 }
 
 .steps-time4{
   transition: transform 0.3s ease;
   transform: rotate(3deg);
+  z-index: 1;
 }
 .steps-time4:hover{
   transform: scale(1.1) rotate(3deg);
+  z-index: 2;
 }
 .steps-time5{
   transition: transform 0.3s ease;
   transform: rotate(5deg);
+  z-index: 1;
+
 }
 .steps-time5:hover{
   transform: scale(1.1) rotate(5deg);
+  z-index: 2;
+
 }
 
 
@@ -524,6 +543,7 @@ select {
 .secondary-btn {
   border: none;
   background-color: rgb(255, 255, 255);
+  color: gray;
 }
 
 .mainBlockFourBtn {
@@ -620,11 +640,12 @@ select {
 .blockBtn {
   background-image: url('/src/pages/images/imageFon.png');
   background-size: cover;
-  width: 39%;
+  width: 34%;
   display: flex;
   justify-content: center;
   padding: 25px;
   border-radius: 20px;
+  height: 340px;
 }
 .steps {
   display: flex;
@@ -695,6 +716,7 @@ select {
 }
 
 .widbody-container {
+  
   padding: 4vh 0;
 }
 

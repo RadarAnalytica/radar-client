@@ -53,7 +53,7 @@ const SelectRate = ({redirect}) => {
           >
             <div style={{ fontSize: '46px', fontWeight: '700' }}>
               Выберите тариф, который подойдет{' '}
-              <span style={{ color: '#F0AD00' }}>именно Вам</span>
+              <span style={{ color: '#F0AD00', fontWeight: '800' }}>именно Вам</span>
             </div>
             <div
               style={{
