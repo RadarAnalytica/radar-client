@@ -7,6 +7,7 @@ import MobileMenu from './components/MobileMenu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Digitization from './pages/Digitization';
 import Contacts from './components/Contacts';
+import StockAnalysisGlitter from './components/StockAnalysisGlitter';
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
 
@@ -103,6 +104,8 @@ function App() {
               <React.Suspense fallback={<>...</>}> <Digitization /></React.Suspense>} />
               <Route path='/contacts' element={
               <React.Suspense fallback={<>...</>}> <Contacts /></React.Suspense>} /> 
+              <Route path='/glitter' element={
+              <React.Suspense fallback={<>...</>}> <StockAnalysisGlitter /></React.Suspense>} /> 
               
             </>)
               :
