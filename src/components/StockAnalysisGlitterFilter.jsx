@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StockAnalysisGlitterFilter = () => {
+const StockAnalysisGlitterFilter = ({setDays}) => {
   return (
     <div className="filter  dash-container p-3 pb-4 pt-0 d-flex">
     <div className="row">
@@ -8,7 +8,7 @@ const StockAnalysisGlitterFilter = () => {
             <label style={{ fontWeight: 600, marginBottom: '4px ' }} htmlFor="period">Период</label>
             <select style={{ padding: '1vh 1.75vh', backgroundColor: 'rgba(0, 0, 0, 0.05)', borderRadius: '8px', width: '240px' }} className='form-control' id="period"
                 defaultValue={'30'}
-                
+                onChange={e => { setDays(e.target.value) }}
             >
                 {/* <option selected={defaultValue === 1 ? true : false} value={'1'}>1 день</option> */}
                 <option  value={'7'}>Последние 7 дней</option>
