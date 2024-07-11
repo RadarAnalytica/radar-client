@@ -7,9 +7,7 @@ import glityellow from '../pages/images/glityellow.svg';
 import glitFile from '../pages/images/glitfile.svg';
 
 import StockAnalysisGlitterFilter from './StockAnalysisGlitterFilter';
-import BigChart from './BigChart';
-import BigChartGlitter from './BigChartGlitter';
-import TableStockGlitter from './TableStockGlitter';
+
 import Product from './TabContent/Product';
 import CategoryMonitoring from './TabContent/CategoryMonitoring';
 import RequestMonitoring from './TabContent/RequestMonitoring';
@@ -19,21 +17,10 @@ import Summary from './TabContent/Summary';
 const StockAnalysisGlitter = () => {
 
    
-       
-
-    const [activeTab, setActiveTab] = useState('product');
-
-
-
-
-   
-      
+    const [activeTab, setActiveTab] = useState('summary');
     const [days, setDays] = useState(30);
 
      
-        
-
-
         function TabContent() {
             switch (activeTab) {
               case 'summary':
