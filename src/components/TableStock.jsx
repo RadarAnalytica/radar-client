@@ -12,18 +12,14 @@ const TableStock = ({dataTable, setDataTable}) => {
   
 
   const sortData = (key) => {
-    console.log('Hello');
-    // Копируем массив для иммутабельности
     const sortedData = [...dataTable].sort((a, b) => {
-      // Проверяем, являются ли значения числами
       if (typeof a[key] === 'number' && typeof b[key] === 'number') {
         return asc ? a[key] - b[key] : b[key] - a[key];
       } else {
-        // Если значения не числа, используем локальное сравнение строк
         return asc ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key]);
       }
     });
-    setAsc(!asc); // Переключаем направление сортировки
+    setAsc(!asc); 
     return setDataTable(sortedData);
   };
 
