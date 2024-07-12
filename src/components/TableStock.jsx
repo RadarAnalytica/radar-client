@@ -28,18 +28,18 @@ const TableStock = ({dataTable, setDataTable}) => {
     <table className='table'>
     <tr style={{fontSize: '24px', fontWeight: '700'}}>
       <th colspan="7">О товаре</th>
-      <th colspan="4">Продажи</th>
-      <th colspan='3'>Возвраты</th>
-      <th colspan ='2'>Себестоимость </th>
-      <th colspan ='2'>Логистика </th>
-      <th colspan ='4'>Прочие расходы </th>
-      <th colspan ='7'>Прибыль </th>
-      <th colspan ='2'>АВС анализ </th>
-      <th colspan ='3'>Цена </th>
-      <th colspan ='2'>Заказы </th>
-      <th colspan ='4'>Выкуп </th>
-      <th colspan ='2'>Скорость </th>
-      <th colspan ='2'>Остаток </th>
+      <th style={{width: '30vw'}} colspan="4">Продажи</th>
+      <th style={{width: '23vw'}} colspan='3'>Возвраты</th>
+      <th style={{width: '22vw'}} colspan ='2'>Себестоимость </th>
+      <th style={{width: '18vw'}} colspan ='2'>Логистика </th>
+      <th style={{width: '40vw'}} colspan ='4'>Прочие расходы </th>
+      <th style={{width: '65vw'}} colspan ='7'>Прибыль </th>
+      <th style={{width: '18vw'}} colspan ='2'>АВС анализ </th>
+      <th style={{width: '22vw'}} colspan ='3'>Цена </th>
+      <th style={{width: '13vw'}} colspan ='2'>Заказы </th>
+      <th style={{width: '40vw'}} colspan ='4'>Выкуп </th>
+      <th style={{width: '20vw'}} colspan ='2'>Скорость </th>
+      <th style={{width: '10vw'}} colspan ='2'>Остаток </th>
 
 
     </tr>
@@ -72,7 +72,7 @@ const TableStock = ({dataTable, setDataTable}) => {
         Категория
         <img onClick={() => sortData('category')}  src={sortArrow} alt="" />
       </th>
-      <th>
+      <th style={{}}>
         Сумма
         <img onClick={() => sortData('saleSum')} src={sortArrow} alt="" />
       </th>
@@ -202,12 +202,9 @@ const TableStock = ({dataTable, setDataTable}) => {
         Продаж, р/день
       </th>
       <th>
-        Данные Радар
+        Остаток
       </th>
-      <th>
-        Данные Вайлдберриз
-        <img onClick={() => sortData('dataWB')} src={sortArrow} alt="" />
-      </th>
+     
     </tr>
     
       {dataTable.map((item, i) => (
@@ -254,8 +251,8 @@ const TableStock = ({dataTable, setDataTable}) => {
         <td>{item.completed}</td>
         <td>{item.orderCountDay}</td>
         <td>{item.slaeCountDay}</td>
-        <td>{item.dataRadar}</td>
-        <td>{item.dataWB}</td>
+        <td>{item.slaeCountDay}</td>
+        
     </tr>
       ))}
         
