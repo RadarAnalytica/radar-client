@@ -115,7 +115,7 @@ const Page404 = () => {
       </div>
       <div className='context404'>404</div>
       <div className='context404noFound'>Страница не найдена</div>
-      <Footer />
+      <Footer isWide />
     </div>
   );
 };

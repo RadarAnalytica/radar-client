@@ -34,17 +34,26 @@ const Reviews = () => {
 
   const scrollLeft = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollLeft -= 300;
+      const scrollWidth = scrollRef.current.scrollWidth;
+      // Находим ширину элемента, который нужно прокрутить
+      const itemWidth = scrollWidth / reviewsIP.length; // Предполагается, что все элементы одинаковой ширины
+      // Прокручиваем на ширину элемента
+      scrollRef.current.scrollBy({ left: -itemWidth, behavior: 'smooth' });
       setScrollPosition(scrollRef.current.scrollLeft);
     }
   };
 
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollLeft += 300;
+      const scrollWidth = scrollRef.current.scrollWidth; // Общая ширина контейнера
+      // Находим ширину элемента, который нужно прокрутить
+      const itemWidth = scrollWidth / reviewsIP.length; // Предполагается, что все элементы одинаковой ширины
+      // Прокручиваем на ширину элемента
+      scrollRef.current.scrollBy({ left: itemWidth, behavior: 'smooth' });
       setScrollPosition(scrollRef.current.scrollLeft);
     }
   };
+
   return (
     <>
       <div

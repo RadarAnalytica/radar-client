@@ -1,24 +1,26 @@
 import React from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 
-
 const AccordionMain = () => {
   return (
     <>
-      <div style={{ marginTop: '50px', fontSize: '44px', fontWeight: '700' }}>
+      <div
+        style={{ margin: '50px 0 16px', fontSize: '44px', fontWeight: '700' }}
+      >
         Вопросы и ответы
       </div>
       <Accordion
         defaultActiveKey='-1'
         style={{ width: '70%', fontSize: '25px' }}
+        className='custom-accordion'
       >
-        <Accordion.Item eventKey='0' style={{ backgroundColor: '#5329FF0D' }}>
+        <Accordion.Item eventKey='0' className='custom-accordion-item'>
           <Accordion.Header>
-            <div style={{ fontSize: '25px' }}>
+            <div className='custom-accordion-header-text'>
               Чем мне поможет ваш сервис? Сможет ли он окупить инвестиции?
             </div>
           </Accordion.Header>
-          <Accordion.Body>
+          <Accordion.Body className='custom-accordion-body'>
             <p>Наш сервис поможет вам несколькими способами.</p>{' '}
             <p>
               С помощью анализа ниши вы сможете подобрать такую категорию, где
@@ -41,47 +43,57 @@ const AccordionMain = () => {
             </p>
           </Accordion.Body>
         </Accordion.Item>
-        <Accordion.Item eventKey='1' style={{ backgroundColor: '#5329FF0D' }}>
+        <Accordion.Item eventKey='1' className='custom-accordion-item'>
           <Accordion.Header>
-            <div style={{ fontSize: '25px' }}>
+            <div className='custom-accordion-header-text'>
               Откуда вы берёте данные? Насколько они точные?
             </div>
           </Accordion.Header>
-          <Accordion.Body>Что-то надо написать</Accordion.Body>
+          <Accordion.Body className='custom-accordion-body'>
+            Что-то надо написать
+          </Accordion.Body>
         </Accordion.Item>
-        <Accordion.Item eventKey='2' style={{ backgroundColor: '#5329FF0D' }}>
+        <Accordion.Item eventKey='2' className='custom-accordion-item'>
           <Accordion.Header>
-            <div style={{ fontSize: '25px' }}>
+            <div className='custom-accordion-header-text'>
               Какие маркетплейсы поддерживаются?
             </div>
           </Accordion.Header>
-          <Accordion.Body>Что-то надо написать</Accordion.Body>
+          <Accordion.Body className='custom-accordion-body'>
+            Что-то надо написать
+          </Accordion.Body>
         </Accordion.Item>
-        <Accordion.Item eventKey='3' style={{ backgroundColor: '#5329FF0D' }}>
+        <Accordion.Item eventKey='3' className='custom-accordion-item'>
           <Accordion.Header>
-            <div style={{ fontSize: '25px' }}>
+            <div className='custom-accordion-header-text'>
               Ваш сервис выглядит круто, но я боюсь, что у меня не получится в
               нём разобраться
             </div>
           </Accordion.Header>
-          <Accordion.Body>Что-то надо написать</Accordion.Body>
+          <Accordion.Body className='custom-accordion-body'>
+            Что-то надо написать
+          </Accordion.Body>
         </Accordion.Item>
-        <Accordion.Item eventKey='4' style={{ backgroundColor: '#5329FF0D' }}>
+        <Accordion.Item eventKey='4' className='custom-accordion-item'>
           <Accordion.Header>
-            <div style={{ fontSize: '25px' }}>
+            <div className='custom-accordion-header-text'>
               Не хочу платить за аналитику, пока не начну зарабатывать
             </div>
           </Accordion.Header>
-          <Accordion.Body>Что-то надо написать</Accordion.Body>
+          <Accordion.Body className='custom-accordion-body'>
+            Что-то надо написать
+          </Accordion.Body>
         </Accordion.Item>
-        <Accordion.Item eventKey='5' style={{ backgroundColor: '#5329FF0D' }}>
+        <Accordion.Item eventKey='5' className='custom-accordion-item'>
           <Accordion.Header>
-            <div style={{ fontSize: '25px' }}>
+            <div className='custom-accordion-header-text'>
               Я представляю крупную компанию, можете ли вы что-то сделать
               специально для нас?
             </div>
           </Accordion.Header>
-          <Accordion.Body>Что-то надо написать</Accordion.Body>
+          <Accordion.Body className='custom-accordion-body'>
+            Что-то надо написать
+          </Accordion.Body>
         </Accordion.Item>
       </Accordion>
     </>

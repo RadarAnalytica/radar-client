@@ -1,13 +1,13 @@
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 
 input[type='number'],
-input[type="number"]:hover,
-input[type="number"]:focus {
-    appearance: none;
-    -moz-appearance: textfield;
+input[type='number']:hover,
+input[type='number']:focus {
+  appearance: none;
+  -moz-appearance: textfield;
 }
 
 .map-container {
@@ -80,12 +80,11 @@ input[type="number"]:focus {
   stroke-opacity: 1;
 } */
 
-
 .g-box-shadow .test-div {
   width: 110px;
   height: 34px;
   padding: 8px;
-  font-size: .7rem;
+  font-size: 0.7rem;
   text-align: center;
   background-color: #fff;
   opacity: 1;
@@ -130,7 +129,6 @@ select {
   padding: 24px 32px;
   margin-bottom: 3vh;
   max-width: 35.5vw;
-  
 }
 
 .filter-item select,
@@ -142,9 +140,6 @@ select {
 .order-table-extended {
   height: auto;
 }
-
-
-
 
 .order-map-table {
   min-height: 20vh;
@@ -346,20 +341,21 @@ select {
 }
 
 /* WIDGET MAIN */
-.widget-main{
-  
+.widget-main {
   background-color: white;
   min-height: 100vh;
 }
 .page-main {
   background-color: white;
-  max-height: 100vh;
-  transform: scale(0.9);
+  /* max-height: 100vh; */
+  /* transform: scale(0.9); */
 }
 
-
-/* .page-header, */
-.widmain-header{
+.page-header {
+  padding: 10px 0;
+  border-bottom: 1px solid silver;
+}
+.widmain-header {
   border-bottom: 1px solid silver;
 }
 .switch {
@@ -368,26 +364,26 @@ select {
   width: 60px;
   height: 34px;
 }
-
-.widhead-container,
 .page-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 auto;
 }
-.widhead-container{
+.widhead-container {
   margin-top: 10px;
+  display: flex;
+  gap: 10px;
 }
 
-
-.vertical-line{
+.vertical-line {
   position: absolute;
   left: 25px;
   top: 35px;
   border-radius: 2px;
-  width: 4px; 
+  width: 4px;
   background-color: #ffffff;
-  transition: height 2s; 
+  transition: height 2s;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   max-height: 81%;
 }
@@ -402,71 +398,66 @@ select {
   z-index: 1; 
 } */
 
-
 .vertical-line::after {
   content: '';
   position: absolute;
-  left: -6px; 
-  bottom: -6px; 
-  width: 16px; 
-  height: 16px; 
-  border: 2px solid white; 
-  background-color: rgba(216, 215, 215, 0.5); 
-  border-radius: 50%; 
-  box-shadow: 0 0 0 4px rgba(216, 215, 215, 0.5); 
+  left: -6px;
+  bottom: -6px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  background-color: rgba(216, 215, 215, 0.5);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(216, 215, 215, 0.5);
 }
 
-
-.steps-time1{
+.steps-time1 {
   transition: transform 0.3s ease;
   transform: rotate(-4deg);
   z-index: 1;
 }
-.steps-time1:hover{
-  transform: scale(1.1) rotate(-4deg) ;
+.steps-time1:hover {
+  transform: scale(1.1) rotate(-4deg);
   z-index: 2;
 }
 
-.steps-time2{
+.steps-time2 {
   transition: transform 0.3s ease;
   transform: rotate(-3deg);
   z-index: 1;
 }
-.steps-time2:hover{
-  transform: scale(1.1) rotate(-3deg) ;
+.steps-time2:hover {
+  transform: scale(1.1) rotate(-3deg);
   z-index: 2;
 }
 
-.steps-time3{
+.steps-time3 {
   transition: transform 0.3s ease;
   z-index: 1;
 }
-.steps-time3:hover{
-  transform: scale(1.1) ;
+.steps-time3:hover {
+  transform: scale(1.1);
   z-index: 2;
 }
 
-.steps-time4{
+.steps-time4 {
   transition: transform 0.3s ease;
   transform: rotate(3deg);
   z-index: 1;
 }
-.steps-time4:hover{
+.steps-time4:hover {
   transform: scale(1.1) rotate(3deg);
   z-index: 2;
 }
-.steps-time5{
+.steps-time5 {
   transition: transform 0.3s ease;
   transform: rotate(5deg);
   z-index: 1;
-
 }
-.steps-time5:hover{
+.steps-time5:hover {
   transform: scale(1.1) rotate(5deg);
   z-index: 2;
-
 }
-
 
 .thesesHome {
   display: flex;
@@ -538,8 +529,6 @@ select {
   position: relative;
 }
 
-
-
 .secondary-btn {
   border: none;
   background-color: rgb(255, 255, 255);
@@ -561,17 +550,21 @@ select {
   color: white;
   width: 100%;
 }
-
-.cardsPriceStart,
-.cardsPricePro,
-.cardsPriceProPlus {
-  margin: 5px;
+.price-wrap {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+.cardPrice {
   width: 100%;
   border-radius: 20px;
   border: 2px solid #0000001a;
   box-shadow: 0px 20px 30px 2px #0000001a;
   padding: 20px;
-  height: 665px;
+}
+.cardPrice_color {
+  background-color: #0069ff;
 }
 .labelCard {
   margin-top: 10px;
@@ -636,6 +629,7 @@ select {
   flex-direction: column;
   padding: 30px;
   color: white;
+  flex-grow: 1;
 }
 .blockBtn {
   background-image: url('/src/pages/images/imageFon.png');
@@ -645,7 +639,6 @@ select {
   justify-content: center;
   padding: 25px;
   border-radius: 20px;
-  height: 340px;
 }
 .steps {
   display: flex;
@@ -716,16 +709,13 @@ select {
 }
 
 .widbody-container {
-  
-  padding: 4vh 0;
+  padding: 40px 20px 0;
 }
 
 .wid-solution {
-  background-color: rgba(0, 0, 0, 0.03);
   min-height: 200px;
   width: 100%;
   border-radius: 20px;
-  padding: 30px;
   display: flex;
   gap: 20px;
 }
@@ -741,11 +731,33 @@ select {
   display: flex;
   gap: 20px;
 }
-
+.sol-screenshot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex: 7;
+}
+.sol-screenshot_bottom {
+  max-width: 730px;
+}
+.sol-screenshot img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
 .sol-description {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 40px;
+  border-radius: 20px;
+
+  min-width: 600px;
+  flex: 1;
 }
 
 .wid-note {
@@ -878,7 +890,7 @@ button.accordion-button.collapsed::after {
   min-height: 280px;
   padding-bottom: 40px;
   border-top: none; /* Убираем верхнюю границу */
-  box-shadow: 0 -2px 10px rgba(63, 62, 62, 0.07); 
+  box-shadow: 0 -2px 10px rgba(63, 62, 62, 0.07);
 }
 
 .footer-col {
@@ -887,11 +899,24 @@ button.accordion-button.collapsed::after {
   gap: 8px;
   margin-top: 25px;
 }
-
+.footer-container {
+  margin: 0 auto;
+}
 
 .footer-link {
   color: black;
   text-decoration: none;
+}
+
+@media (min-width: 1480px) {
+  .page-container.container,
+  .page-container.container-lg,
+  .page-container.container-md,
+  .page-container.container-sm,
+  .page-container.container-xl,
+  .page-container.container-xxl {
+    max-width: 1480px;
+  }
 }
 
 @media screen and (max-width: 1048px) {
@@ -904,6 +929,7 @@ button.accordion-button.collapsed::after {
   .doughnut-content {
     display: flex;
     flex-direction: column;
+    gap: 10px;
   }
 
   .doughnut-content canvas {
@@ -942,7 +968,7 @@ button.accordion-button.collapsed::after {
     margin-bottom: 1vh;
   }
 }
-.telegram{
+.telegram {
   position: relative;
   justify-content: end;
   margin: 30px;
@@ -950,7 +976,60 @@ button.accordion-button.collapsed::after {
   height: 204px;
 }
 
-.telegram-icon{
-    justify-content: end;
-    position: absolute;
+.telegram-icon {
+  justify-content: end;
+  position: absolute;
+}
+
+.wide_container {
+  max-width: 1480px;
+  padding: 0 20px;
+}
+.custom-accordion .custom-accordion-item {
+  margin-bottom: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.custom-accordion .accordion-header {
+  border-radius: 10px;
+  position: relative;
+  padding-left: 30px;
+}
+.custom-accordion .custom-accordion-header-text {
+  font-weight: bold;
+  font-size: 25px;
+}
+.custom-accordion .accordion-button {
+  background-color: transparent; /* Снятие выделения с заголовка */
+  box-shadow: none; /* Удаление тени при раскрытии */
+}
+.custom-accordion .accordion-button:focus {
+  box-shadow: none; /* Удаление фокуса */
+}
+.custom-accordion .accordion-header::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  bottom: 20px;
+  width: 10px;
+  background-color: #5329ff0d;
+  border-radius: 5px;
+  transition: background-color 0.3s; /* Плавный переход цвета */
+}
+.custom-accordion .custom-accordion-body {
+  position: relative;
+  padding-left: 50px;
+}
+.custom-accordion .custom-accordion-body::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  bottom: 20px;
+  width: 10px;
+  background-color: #5329ff;
+  border-radius: 5px;
+  transition: background-color 0.3s; /* Плавный переход цвета */
 }

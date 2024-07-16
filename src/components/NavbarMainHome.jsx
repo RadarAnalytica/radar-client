@@ -9,7 +9,7 @@ const NavbarMainHome = () => {
   const navigate = useNavigate();
   return (
     <div className='page-header'>
-      <div className='container page-container'>
+      <div className='wide_container page-container'>
         <svg
           width='187'
           height='74'
@@ -189,39 +189,49 @@ const NavbarMainHome = () => {
         <div className='widheader-login'>
           {user ? (
             <>
-            <button
-              className='prime-btn'
-              style={{ width: '160px', height: '71px', fontSize: '20px', marginRight: '40px' }}
-            >
-              Регистрация
-            </button>
-            <button
-              className='prime-btn'
-              style={{ width: '134px', height: '71px', fontSize: '20px' }}
-            >
-              Войти
-            </button>
+              <button
+                className='prime-btn'
+                style={{
+                  width: '160px',
+                  height: '71px',
+                  fontSize: '20px',
+                  marginRight: '40px',
+                }}
+              >
+                Регистрация
+              </button>
+              <button
+                className='prime-btn'
+                style={{ width: '134px', height: '71px', fontSize: '20px' }}
+              >
+                Войти
+              </button>
             </>
           ) : (
             <>
-            <button
-            onClick={() => {
-              navigate('/signup');
-            }}
-              className='prime-btn'
-              style={{ width: '160px', height: '71px', fontSize: '20px', marginRight: '40px' }}
-            >
-              Регистрация
-            </button>
-            <button
-              onClick={() => {
-                navigate('/signin');
-              }}
-              className='prime-btn'
-              style={{ width: '134px', height: '71px', fontSize: '20px' }}
-            >
-              Войти
-            </button>
+              <button
+                onClick={() => {
+                  navigate('/signup');
+                }}
+                className='prime-btn'
+                style={{
+                  width: '160px',
+                  height: '71px',
+                  fontSize: '20px',
+                  marginRight: '40px',
+                }}
+              >
+                Регистрация
+              </button>
+              <button
+                onClick={() => {
+                  navigate('/signin');
+                }}
+                className='prime-btn'
+                style={{ width: '134px', height: '71px', fontSize: '20px' }}
+              >
+                Войти
+              </button>
             </>
           )}
         </div>

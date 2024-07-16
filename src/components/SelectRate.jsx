@@ -7,7 +7,7 @@ import Steps from '../pages/images/Steps';
 import StartLogo from '../assets/startlogo.svg';
 import FireLogo from '../assets/firelogo.svg';
 
-const SelectRate = ({redirect}) => {
+const SelectRate = ({ redirect }) => {
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
 
   const handlePeriodChange = (period) => {
@@ -17,7 +17,12 @@ const SelectRate = ({redirect}) => {
   return (
     <>
       <div
-        style={{ display: 'flex', flexDirection: 'column', marginTop: '100px' }}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginTop: '100px',
+          marginBottom: '10px',
+        }}
       >
         <div className='doughnut-content'>
           <div
@@ -48,12 +53,15 @@ const SelectRate = ({redirect}) => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              marginLeft: '10px',
+              marginLeft: '20px',
+              justifyContent: 'space-between',
             }}
           >
             <div style={{ fontSize: '46px', fontWeight: '700' }}>
               Выберите тариф, который подойдет{' '}
-              <span style={{ color: '#F0AD00', fontWeight: '800' }}>именно Вам</span>
+              <span style={{ color: '#F0AD00', fontWeight: '800' }}>
+                именно Вам
+              </span>
             </div>
             <div
               style={{
@@ -82,8 +90,7 @@ const SelectRate = ({redirect}) => {
                 id='btnDop'
               >
                 {selectedPeriod === '3month' ? <Steps.Circle /> : <span></span>}
-                3 месяца{' '}
-                <span>-10%</span>
+                3 месяца <span>-10%</span>
               </button>
               <button
                 onClick={() => handlePeriodChange('6month')}
@@ -93,14 +100,13 @@ const SelectRate = ({redirect}) => {
                 id='btnDop'
               >
                 {selectedPeriod === '6month' ? <Steps.Circle /> : <span></span>}
-                6 месяцев{' '}
-                <span>до -60%</span>
+                6 месяцев <span>до -60%</span>
               </button>
             </div>
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div className='cardsPriceStart'>
+        <div className='price-wrap'>
+          <div className='cardPrice'>
             <div className='HeadCardStart'>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {' '}
@@ -214,7 +220,7 @@ const SelectRate = ({redirect}) => {
               </div>
             </div>
           </div>
-          <div className='cardsPricePro'>
+          <div className='cardPrice'>
             <div className='HeadCardPro'>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {' '}
@@ -340,9 +346,14 @@ const SelectRate = ({redirect}) => {
               </div>
             </div>
           </div>
-          <div className='cardsPriceProPlus'>
+          <div className='cardPrice cardPrice_color'>
             <div className='HeadCardProPlus'>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
                 {' '}
                 <div
                   style={{

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import YellowRadar from './images/YellowRadar';
-import BlockImg from './images/Dashboard.svg';
+import BlockImg_x2 from './images/Dashboard_x2.png';
+import BlockImg_x3 from './images/Dashboard_x3.png';
 import Footer from '../components/Footer';
 import AccordionMain from '../components/AccordionMain';
 import imgHomeBlick from './images/imageForHomePage.png';
@@ -22,12 +23,13 @@ import NavbarMainHome from '../components/NavbarMainHome';
 import Reviews from '../components/Reviews';
 import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { FULL_WIDTH } from '../constants';
 
 const MainPage = () => {
-const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const {user} = useContext(AuthContext)
-  console.log(user, 'user')
+  const { user } = useContext(AuthContext);
+  console.log(user, 'user');
   const [isActive, setActive] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -40,34 +42,34 @@ const navigate = useNavigate()
   }, []);
 
   const redirect = () => {
-    if(user.is_onboarded){
-      
-      navigate('/dashboard')
-    }else{
-      navigate('/onboarding')
+    if (user.is_onboarded) {
+      navigate('/dashboard');
+    } else {
+      navigate('/onboarding');
     }
-  }
+  };
 
   const toggleClass = (index) => {
     return index === activeIndex ? 'thesesHome2' : 'thesesHome';
   };
 
   const handleExternalClick = () => {
-    setActiveIndex(0)
+    setActiveIndex(0);
     setActive(true);
   };
 
   const handleInternalClick = () => {
-    setActiveIndex(0)
+    setActiveIndex(0);
     setActive(false);
   };
-
- 
 
   return (
     <div className='page-main'>
       <NavbarMainHome />
-      <div className='container widbody-container'>
+      <div
+        className='container widbody-container'
+        style={{ maxWidth: FULL_WIDTH }}
+      >
         <div className='wid-solution'>
           <div className='sol-description col'>
             <div style={{ marginBottom: '20px' }}>
@@ -76,25 +78,36 @@ const navigate = useNavigate()
             <div>
               <YellowRadar />
             </div>
-            <div style={{ fontSize: '34px', fontWeight: 'bold' }}>
+            <div
+              style={{
+                fontSize: '34px',
+                fontWeight: 'bold',
+                marginTop: '16px',
+                maxWidth: '500px',
+                lineHeight: '42px',
+              }}
+            >
               – сервис аналитики для{' '}
               <span style={{ color: 'blue', fontWeight: '800' }}>
                 увеличения ваших продаж
               </span>{' '}
               на маркетплейсах
             </div>
-            <div style={{ fontSize: '20px' }}>
+            <div
+              style={{
+                fontSize: '20px',
+                margin: '16px 0 32px',
+                maxWidth: '460px',
+              }}
+            >
               Анализируйте конкурентов, повышайте показатели своих карточек и
               контролируйте финансы в одном месте.
             </div>
 
-            <div
-              style={{ padding: '15px' }}
-              className='d-flex flex-column gap-3'
-            >
+            <div className='d-flex flex-column gap-3'>
               <button
                 className='prime-btn'
-                style={{ minHeight: '64px', fontSize: '18px', marginLeft: '-15px' }}
+                style={{ minHeight: '64px', fontSize: '18px', margin: 0 }}
                 onClick={() => redirect()}
               >
                 Попробовать бесплатно
@@ -102,7 +115,7 @@ const navigate = useNavigate()
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            <img style={{ width: '105%' }} src={BlockImg} alt="" />
+            <img style={{ width: '105%' }} src={BlockImg_x3} alt='' />
           </div>
         </div>
         <div>
@@ -140,8 +153,13 @@ const navigate = useNavigate()
           </div>
 
           <div className='blockInOnAnalytics '>
-          <div className='vertical-line' style={{ height: `${(activeIndex + 1) * 20}%` }}></div>
-            <div style={{ width: '45%', alignItems: 'center', marginLeft:'11px' }}>
+            <div
+              className='vertical-line'
+              style={{ height: `${(activeIndex + 1) * 20}%` }}
+            ></div>
+            <div
+              style={{ width: '45%', alignItems: 'center', marginLeft: '11px' }}
+            >
               {isActive
                 ? Theses.inTheses.map((el, index) => (
                     <div key={index} className={toggleClass(index)}>
@@ -157,7 +175,9 @@ const navigate = useNavigate()
                   ))}
             </div>
             <div style={{ width: '55%' }}>
-              {isActive ? IMG.imgInAnalytics[activeIndex] : IMG.imgOnAnalytics[activeIndex]}
+              {isActive
+                ? IMG.imgInAnalytics[activeIndex]
+                : IMG.imgOnAnalytics[activeIndex]}
             </div>
           </div>
         </div>
@@ -166,7 +186,9 @@ const navigate = useNavigate()
             <div className='mainBlock-api'>
               <div style={{ fontSize: '40px', fontWeight: '700' }}>
                 Подключение личного кабинета{' '}
-                <span style={{ color: 'orange', fontWeight: '800' }}>по API</span>
+                <span style={{ color: 'orange', fontWeight: '800' }}>
+                  по API
+                </span>
               </div>
               <div style={{ fontSize: '20px', fontWeight: '700' }}>
                 Получайте данные по всем вашим магазинам в режиме реального
@@ -191,11 +213,11 @@ const navigate = useNavigate()
               <img src={apiBlock} alt='logo' style={{ width: '100%' }} />
             </div>
             <div className='blockBtn'>
-              <div >
+              <div>
                 <div
                   style={{ display: 'flex', justifyContent: 'space-between' }}
                 >
-                  <div >
+                  <div>
                     <svg
                       width='270'
                       height='33'
@@ -290,6 +312,7 @@ const navigate = useNavigate()
                     fontSize: '20px',
                     fontWeight: '600',
                     color: 'white',
+                    marginBottom: '20px',
                   }}
                 >
                   Найдите прибыльные товары на маркетплейсе и развивайте свой
@@ -297,7 +320,11 @@ const navigate = useNavigate()
                 </div>
                 <button
                   className='btn-warning'
-                  style={{ minHeight: '64px', fontSize: '18px', fontWeight: '700' }}
+                  style={{
+                    minHeight: '64px',
+                    fontSize: '18px',
+                    fontWeight: '700',
+                  }}
                   onClick={() => redirect()}
                 >
                   Попробовать бесплатно
@@ -316,8 +343,9 @@ const navigate = useNavigate()
           </div>
           <div className='pt-5 pb-3 mt-5 d-flex justify-content-center'>
             <h4 className='fw-bold text-center' style={{ width: '50%' }}>
-              Более 6 000 предпринимателей уже используют Radar Analytica
-              для начала и развития бизнеса на маркетплейсах
+              <p style={{ margin: 0 }}>Более 6 000 предпринимателей уже</p>{' '}
+              <p style={{ margin: 0 }}>используют Radar Analytica для начала</p>{' '}
+              <p style={{ margin: 0 }}>и развития бизнеса на маркетплейсах</p>
             </h4>
           </div>
           <div className='ReviewsUsersIP'>
@@ -337,7 +365,7 @@ const navigate = useNavigate()
                   Найдите прибыльные товары на маркетплейсе и развивайте свой
                   бизнес.
                 </div>
-                <div className='YellowRadarPoint' style={{marginTop: '20px'}}>
+                <div className='YellowRadarPoint' style={{ marginTop: '20px' }}>
                   <YellowRadarPoint />
                 </div>
               </div>
@@ -355,40 +383,101 @@ const navigate = useNavigate()
                 </button>
               </div>
             </div>
-            <div className='BlockImg'>
-              <img style={{ width: '102%' }} src={BlockImg} alt="" />
+            <div className='sol-screenshot sol-screenshot_bottom'>
+              <img src={BlockImg_x2} alt='' />
             </div>
           </div>
         </div>
-        <div className="row" style={{ width: '112%', marginLeft: '-107px', marginBottom: '60px'}}>
-                <div className="col-5 pt-1">
-                    <div className='mb-3' style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '25px', marginLeft: '90px' }}>
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M24 34.6667V11.5555H30.7046C33.3307 11.5555 35.1582 11.6766 36.1872 11.9186C37.2269 12.1502 38.1219 12.5448 38.8722 13.1026C39.719 13.734 40.3675 14.5391 40.8177 15.5179C41.2786 16.4966 41.509 17.5754 41.509 18.7541C41.509 20.5432 41.0589 22.0008 40.1585 23.1269C39.2688 24.2424 37.9665 24.9844 36.2515 25.3527L42.6667 34.6667H35.4154L30.0132 25.6211V34.6667H24ZM30.0132 22.4796H31.203C32.5857 22.4796 33.5933 22.2481 34.2257 21.785C34.8688 21.322 35.1904 20.5958 35.1904 19.6065C35.1904 18.4489 34.8902 17.628 34.29 17.1439C33.7004 16.6492 32.7036 16.4019 31.2995 16.4019H30.0132V22.4796Z" fill="#1A1A1A" />
-                            <path d="M17.0918 39.0179C15.9673 39.3478 14.7616 38.7756 14.4473 37.7269C11.7541 28.7389 11.7773 19.2416 14.5145 10.2648C14.8339 9.21748 16.0424 8.65034 17.1652 8.9849C18.288 9.31946 18.8995 10.429 18.5838 11.4773C16.1162 19.6707 16.095 28.3278 18.5225 36.5313C18.833 37.5809 18.2162 38.688 17.0918 39.0179Z" fill="#F0AD00" />
-                            <path d="M8.07128 34.617C6.90049 34.8509 5.7234 34.2364 5.49284 33.2355C4.15877 27.4445 4.09722 21.4942 5.31128 15.6843C5.5211 14.6802 6.68529 14.0483 7.86074 14.2647C9.03618 14.4811 9.7774 15.4639 9.57139 16.4686C8.4905 21.7398 8.5463 27.1337 9.73607 32.3881C9.96284 33.3895 9.24207 34.3832 8.07128 34.617Z" fill="#F0AD00" />
-                        </svg>
-                        <span style={{maxWidth: '400px' , fontSize: '14px', lineHeight: '15px', fontWeight: "600" }}>
-                            Комплексный инструмент для роста продаж на маркетплейсах
-                        </span>
-                    </div>
-                </div>
-                <div className="col pt-3 footer-col">
-                    <a href="https://t.me/SpyRadar_bot" style={{ textDecoration: 'none', color: 'black', fontSize: '20px' }} className='fw-bold'>Telegram-бот</a>
-
-                </div>
-                <div className="col pt-3 footer-col">
-                    <a href="/contacts" style={{ textDecoration: 'none', color: 'black', fontSize: '20px' }} className='fw-bold'>Контакты</a>
-
-                </div>
-                <div className="col-3 pt-3 footer-col">
-                    <a href='/politics' className="fw-bold" style={{ textDecoration: 'none', color: 'black', fontSize: '20px' }}>Политика конфиденцильности</a>
-
-                </div>
+        {/* <div
+          className='row'
+          style={{ width: '112%', marginLeft: '-107px', marginBottom: '60px' }}
+        >
+          <div className='col-5 pt-1'>
+            <div
+              className='mb-3'
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginTop: '25px',
+                marginLeft: '90px',
+              }}
+            >
+              <svg
+                width='48'
+                height='48'
+                viewBox='0 0 48 48'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M24 34.6667V11.5555H30.7046C33.3307 11.5555 35.1582 11.6766 36.1872 11.9186C37.2269 12.1502 38.1219 12.5448 38.8722 13.1026C39.719 13.734 40.3675 14.5391 40.8177 15.5179C41.2786 16.4966 41.509 17.5754 41.509 18.7541C41.509 20.5432 41.0589 22.0008 40.1585 23.1269C39.2688 24.2424 37.9665 24.9844 36.2515 25.3527L42.6667 34.6667H35.4154L30.0132 25.6211V34.6667H24ZM30.0132 22.4796H31.203C32.5857 22.4796 33.5933 22.2481 34.2257 21.785C34.8688 21.322 35.1904 20.5958 35.1904 19.6065C35.1904 18.4489 34.8902 17.628 34.29 17.1439C33.7004 16.6492 32.7036 16.4019 31.2995 16.4019H30.0132V22.4796Z'
+                  fill='#1A1A1A'
+                />
+                <path
+                  d='M17.0918 39.0179C15.9673 39.3478 14.7616 38.7756 14.4473 37.7269C11.7541 28.7389 11.7773 19.2416 14.5145 10.2648C14.8339 9.21748 16.0424 8.65034 17.1652 8.9849C18.288 9.31946 18.8995 10.429 18.5838 11.4773C16.1162 19.6707 16.095 28.3278 18.5225 36.5313C18.833 37.5809 18.2162 38.688 17.0918 39.0179Z'
+                  fill='#F0AD00'
+                />
+                <path
+                  d='M8.07128 34.617C6.90049 34.8509 5.7234 34.2364 5.49284 33.2355C4.15877 27.4445 4.09722 21.4942 5.31128 15.6843C5.5211 14.6802 6.68529 14.0483 7.86074 14.2647C9.03618 14.4811 9.7774 15.4639 9.57139 16.4686C8.4905 21.7398 8.5463 27.1337 9.73607 32.3881C9.96284 33.3895 9.24207 34.3832 8.07128 34.617Z'
+                  fill='#F0AD00'
+                />
+              </svg>
+              <span
+                style={{
+                  maxWidth: '400px',
+                  fontSize: '14px',
+                  lineHeight: '15px',
+                  fontWeight: '600',
+                }}
+              >
+                Комплексный инструмент для роста продаж на маркетплейсах
+              </span>
             </div>
+          </div>
+          <div className='col pt-3 footer-col'>
+            <a
+              href='https://t.me/SpyRadar_bot'
+              style={{
+                textDecoration: 'none',
+                color: 'black',
+                fontSize: '20px',
+              }}
+              className='fw-bold'
+            >
+              Telegram-бот
+            </a>
+          </div>
+          <div className='col pt-3 footer-col'>
+            <a
+              href='/contacts'
+              style={{
+                textDecoration: 'none',
+                color: 'black',
+                fontSize: '20px',
+              }}
+              className='fw-bold'
+            >
+              Контакты
+            </a>
+          </div>
+          <div className='col-3 pt-3 footer-col'>
+            <a
+              href='/politics'
+              className='fw-bold'
+              style={{
+                textDecoration: 'none',
+                color: 'black',
+                fontSize: '20px',
+              }}
+            >
+              Политика конфиденцильности
+            </a>
+          </div>
+        </div> */}
       </div>
-      
-      {/* <Footer /> */}
+
+      <Footer isWide />
     </div>
   );
 };
