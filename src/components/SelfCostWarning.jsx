@@ -1,22 +1,18 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react';
 import AuthContext from '../service/AuthContext';
-import Modal from "react-bootstrap/Modal";
-import { getFileClickHandler, saveFileClickHandler } from '../service/getSaveFile';
+import Modal from 'react-bootstrap/Modal';
+import {
+  getFileClickHandler,
+  saveFileClickHandler,
+} from '../service/getSaveFile';
 import DragDropFile from './DragAndDropFiles';
 
-
-const SelfCostWarning = ({activeBrand}) => {
-
+const SelfCostWarning = ({ activeBrand }) => {
   const { user, authToken } = useContext(AuthContext);
-  console.log(user, 'USER')
-
   const [file, setFile] = useState();
 
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
-  console.log('HELLOOOOO')
-
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleCostPriceShow = () => {
@@ -25,68 +21,111 @@ const SelfCostWarning = ({activeBrand}) => {
   };
   const handleCostPriceClose = () => setCostPriceShow(false);
 
-
-    return (
-        <div className='container dash-container p-3 pt-0 d-flex gap-3 '>
-            <div className='p-3 selfcost-warning w-100'>
-                <div className="d-flex align-items-center gap-2 mb-2">
-                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="30" height="30" rx="5" fill="#F0AD00" fill-opacity="0.1" />
-                        <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F0AD00" />
-                    </svg>
-                    <span className="fw-bold">
-                        У ваших товаров отсутствует себестоимость
-                    </span>
-                </div>
-                <p>
-                    Для правильного расчета данных нам нужно знать себестоимость ваших товаров. Данные в блоках «прибыль», «финансы», «себестоимость проданных товаров» не учитывают себестоимость товаров, для которых она неизвестна.
-                </p>
-                <a href="#" className="link" onClick={handleCostPriceShow}>Заполнить себестоимость</a>
+  return (
+    <div className='container dash-container p-3 pt-0 d-flex gap-3 '>
+      <div className='p-3 selfcost-warning w-100'>
+        <div className='d-flex align-items-center gap-2 mb-2'>
+          <svg
+            width='30'
+            height='30'
+            viewBox='0 0 30 30'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <rect
+              width='30'
+              height='30'
+              rx='5'
+              fill='#F0AD00'
+              fill-opacity='0.1'
+            />
+            <path
+              d='M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z'
+              fill='#F0AD00'
+            />
+          </svg>
+          <span className='fw-bold'>
+            У ваших товаров отсутствует себестоимость
+          </span>
+        </div>
+        <p>
+          Для правильного расчета данных нам нужно знать себестоимость ваших
+          товаров. Данные в блоках «прибыль», «финансы», «себестоимость
+          проданных товаров» не учитывают себестоимость товаров, для которых она
+          неизвестна.
+        </p>
+        <a href='#' className='link' onClick={handleCostPriceShow}>
+          Заполнить себестоимость
+        </a>
+      </div>
+      <Modal
+        show={costPriceShow}
+        onHide={handleCostPriceClose}
+        className='add-token-modal'
+      >
+        <Modal.Header closeButton>
+          <div className='d-flex align-items-center gap-2'>
+            <div style={{ width: '100%' }}>
+              <div className='d-flex justify-content-between'>
+                <h4 className='fw-bold mb-0'>Установка себестоимости товара</h4>
+              </div>
             </div>
-            <Modal show={costPriceShow} onHide={handleCostPriceClose} className='add-token-modal'>
-                <Modal.Header closeButton>
-                    <div className="d-flex align-items-center gap-2">
-                        <div style={{ width: '100%' }}>
-                            <div className="d-flex justify-content-between">
-                                <h4 className="fw-bold mb-0">Установка себестоимости товара</h4>
-                            </div>
-                        </div>
-                    </div>
-                </Modal.Header>
-                <Modal.Body>
-                    {
-                        file ?
-                            <div>
-                                <div className="d-flex align-items-center justify-content-between w-100 mt-2 gap-2">
-                                    <div className='d-flex gap-2'>
-                                        <svg width="17" height="23" viewBox="0 0 17 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z" stroke="black" stroke-opacity="0.5" stroke-width="1.5" />
-                                        </svg>
-                                        <span>{file ? file.name : ''}</span>
-                                    </div>
-                                    <div>
-                                        <a href='#' className='link' onClick={() => setFile(null)} style={{ color: 'red', cursor: 'pointer' }}
-                                            
-                                        >Удалить</a>
-                                    </div>
-                                </div>
-                                <div className="d-flex justify-content-center w-100 mt-2 gap-2">
-                                    <button onClick={() =>{
-                                      saveFileClickHandler(file, authToken, activeBrand)
-                                      setFile(null)
-                                      handleCostPriceClose()
-                                      }} 
-                                      className="prime-btn" style={{ height: '52px' }}>
-                                        Сохранить
-                                    </button>
-                                </div>
-                                <div className="d-flex justify-content-center w-100 mt-2 gap-2">
-                                    <a href="#" className='link' onClick={handleCostPriceClose}>Отмена</a>
-                                </div>
-                            </div>
-                            :
-                            <div>
-                                {/* <div className="file-block d-flex flex-column align-items-center justify-content-around w-100 mt-2 gap-2">
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          {file ? (
+            <div>
+              <div className='d-flex align-items-center justify-content-between w-100 mt-2 gap-2'>
+                <div className='d-flex gap-2'>
+                  <svg
+                    width='17'
+                    height='23'
+                    viewBox='0 0 17 23'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      d='M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z'
+                      stroke='black'
+                      stroke-opacity='0.5'
+                      stroke-width='1.5'
+                    />
+                  </svg>
+                  <span>{file ? file.name : ''}</span>
+                </div>
+                <div>
+                  <a
+                    href='#'
+                    className='link'
+                    onClick={() => setFile(null)}
+                    style={{ color: 'red', cursor: 'pointer' }}
+                  >
+                    Удалить
+                  </a>
+                </div>
+              </div>
+              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+                <button
+                  onClick={() => {
+                    saveFileClickHandler(file, authToken, activeBrand);
+                    setFile(null);
+                    handleCostPriceClose();
+                  }}
+                  className='prime-btn'
+                  style={{ height: '52px' }}
+                >
+                  Сохранить
+                </button>
+              </div>
+              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+                <a href='#' className='link' onClick={handleCostPriceClose}>
+                  Отмена
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div>
+              {/* <div className="file-block d-flex flex-column align-items-center justify-content-around w-100 mt-2 gap-2">
                                     <svg width="64" height="48" viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20 11C17.5147 11 15.5 13.0147 15.5 15.5V16C15.5 18.4853 17.5147 20.5 20 20.5C22.4853 20.5 24.5 18.4853 24.5 16V15.5C24.5 13.0147 22.4853 11 20 11Z" fill="#5329FF" />
                                         <path d="M11.5 47H53.5C58.4706 47 62.5 42.9706 62.5 38V30L47.8422 21.4198C44.3822 19.3944 39.9996 19.902 37.0941 22.6647L26.75 32.5L11.5 47Z" fill="#5329FF" />
@@ -99,16 +138,22 @@ const SelfCostWarning = ({activeBrand}) => {
                                         Выбрать файл
                                     </button>
                                 </div> */}
-                                <DragDropFile  files={file} setFiles={setFile} />
-                                <div className="d-flex justify-content-center w-100 mt-2 gap-2">
-                                    <a href="#" className='link' onClick={() => getFileClickHandler(authToken, activeBrand)}>Скачать шаблон</a>
-                                </div>
-                            </div>
-                    }
-                </Modal.Body>
-            </Modal>
-        </div>
-    )
-}
+              <DragDropFile files={file} setFiles={setFile} />
+              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+                <a
+                  href='#'
+                  className='link'
+                  onClick={() => getFileClickHandler(authToken, activeBrand)}
+                >
+                  Скачать шаблон
+                </a>
+              </div>
+            </div>
+          )}
+        </Modal.Body>
+      </Modal>
+    </div>
+  );
+};
 
-export default SelfCostWarning
+export default SelfCostWarning;

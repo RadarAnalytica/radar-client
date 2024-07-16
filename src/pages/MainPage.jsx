@@ -29,7 +29,6 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const { user } = useContext(AuthContext);
-  console.log(user, 'user');
   const [isActive, setActive] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 

@@ -37,7 +37,6 @@ const Page404 = React.lazy(() => import('./pages/Page404'));
 function App() {
   const { user } = useContext(AuthContext);
 
-  console.log(user, 'USERAAAAAAAAAAA');
   if (user) {
     return (
       <div className='App'>
