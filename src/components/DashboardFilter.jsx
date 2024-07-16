@@ -1,9 +1,8 @@
 import React from 'react';
 
 const DashboardFilter = ({
-  brandNames,
   setActiveBrand,
-  defaultValue,
+  periodValue,
   setDays,
   shop,
   setChangeBrand,
@@ -43,12 +42,11 @@ const DashboardFilter = ({
             }}
             className='form-control'
             id='period'
-            defaultValue={'30'}
+            value={periodValue}
             onChange={(e) => {
               setDays(e.target.value);
             }}
           >
-            {/* <option selected={defaultValue === 1 ? true : false} value={'1'}>1 день</option> */}
             <option value={'7'}>7 дней</option>
             <option value={'14'}>14 дней</option>
             <option value={'30'}>30 дней</option>
@@ -98,7 +96,7 @@ const DashboardFilter = ({
             }}
             className='form-control'
             id='store'
-            defaultValue={`${shop?.[0]?.id}`}
+            defaultValue={'0'}
             onChange={(e) => {
               const firstValue = e.target.value.split('|')[0];
               const secondValue = e.target.value.split('|')[1];
@@ -114,9 +112,7 @@ const DashboardFilter = ({
             >
               {shop?.[0]?.brand_name}
             </option>
-            <option value='0' selected>
-              Все
-            </option>
+            <option value='0'>Все</option>
             {shop &&
               shop?.map((brand) => (
                 <option
