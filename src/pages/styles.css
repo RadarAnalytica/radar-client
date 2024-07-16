@@ -39,7 +39,7 @@ input[type='number']:focus {
 
 #order-map > g:hover * {
   stroke: rgba(254, 197, 61, 1);
-  /* stroke-width: 2px !important; */
+  /* strokeWidth: 2px !important; */
   fill: rgba(255, 249, 236, 1);
   transition: all 0.25s ease-in-out;
   stroke-opacity: 1 !important;

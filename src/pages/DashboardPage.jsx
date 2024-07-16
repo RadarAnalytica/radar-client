@@ -673,8 +673,8 @@ const DashboardPage = () => {
           ) : null}
           {wbData === null ? <DataCollectionNotification /> : null} */}
           <DashboardFilter
-            brandNames={brandNames}
             defaultValue={days}
+            brandNames={brandNames}
             setDays={setDays}
             setActiveBrand={setActiveBrand}
             setChangeBrand={setChangeBrand}

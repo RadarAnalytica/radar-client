@@ -236,8 +236,8 @@ const MainWidget = () => {
                 <path
                   d='M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5'
                   stroke='#5329FF'
-                  stroke-width='2'
-                  stroke-linecap='round'
+                  strokeWidth='2'
+                  strokeLinecap='round'
                   stroke-linejoin='round'
                 />
               </svg>
@@ -261,8 +261,8 @@ const MainWidget = () => {
                 <path
                   d='M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5'
                   stroke='#5329FF'
-                  stroke-width='2'
-                  stroke-linecap='round'
+                  strokeWidth='2'
+                  strokeLinecap='round'
                   stroke-linejoin='round'
                 />
               </svg>
@@ -286,8 +286,8 @@ const MainWidget = () => {
                 <path
                   d='M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5'
                   stroke='#5329FF'
-                  stroke-width='2'
-                  stroke-linecap='round'
+                  strokeWidth='2'
+                  strokeLinecap='round'
                   stroke-linejoin='round'
                 />
               </svg>
@@ -317,20 +317,20 @@ const MainWidget = () => {
             <path
               d='M40 100L40 20'
               stroke='#F0AD00'
-              stroke-width='2'
-              stroke-linecap='round'
+              strokeWidth='2'
+              strokeLinecap='round'
             />
             <path
               d='M40 99L40 84'
               stroke='#F0AD00'
-              stroke-width='2'
-              stroke-linecap='round'
+              strokeWidth='2'
+              strokeLinecap='round'
             />
             <path
               d='M32 92L40 100L48 92'
               stroke='#F0AD00'
-              stroke-width='2'
-              stroke-linecap='round'
+              strokeWidth='2'
+              strokeLinecap='round'
               stroke-linejoin='round'
             />
             <rect
@@ -348,7 +348,7 @@ const MainWidget = () => {
               height='38'
               rx='19'
               stroke='#FFDB7E'
-              stroke-width='2'
+              strokeWidth='2'
             />
             <circle
               cx='40'
@@ -356,7 +356,7 @@ const MainWidget = () => {
               r='4.5'
               fill='white'
               stroke='#F0AD00'
-              stroke-width='3'
+              strokeWidth='3'
             />
           </svg>
           <h4 className='fw-bold mt-3'>Как установить расширение?</h4>
@@ -448,8 +448,8 @@ const MainWidget = () => {
               <path
                 d='M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5'
                 stroke='#5329FF'
-                stroke-width='2'
-                stroke-linecap='round'
+                strokeWidth='2'
+                strokeLinecap='round'
                 stroke-linejoin='round'
               />
             </svg>

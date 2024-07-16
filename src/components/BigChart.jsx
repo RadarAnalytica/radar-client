@@ -102,8 +102,8 @@ const BigChart = ({
                 <path
                   d='M4 9.21459L9.07692 14L16 6'
                   stroke='white'
-                  stroke-width='1.5'
-                  stroke-linecap='round'
+                  strokeWidth='1.5'
+                  strokeLinecap='round'
                 />
               </svg>
             ) : (
@@ -124,8 +124,8 @@ const BigChart = ({
                 <path
                   d='M4 9.21459L9.07692 14L16 6'
                   stroke='white'
-                  stroke-width='1.5'
-                  stroke-linecap='round'
+                  strokeWidth='1.5'
+                  strokeLinecap='round'
                 />
               </svg>
             )}
@@ -148,8 +148,8 @@ const BigChart = ({
                 <path
                   d='M4 9.21459L9.07692 14L16 6'
                   stroke='white'
-                  stroke-width='1.5'
-                  stroke-linecap='round'
+                  strokeWidth='1.5'
+                  strokeLinecap='round'
                 />
               </svg>
             ) : (
@@ -170,8 +170,8 @@ const BigChart = ({
                 <path
                   d='M4 9.21459L9.07692 14L16 6'
                   stroke='white'
-                  stroke-width='1.5'
-                  stroke-linecap='round'
+                  strokeWidth='1.5'
+                  strokeLinecap='round'
                 />
               </svg>
             )}
@@ -197,8 +197,8 @@ const BigChart = ({
                   <path
                     d='M4 9.21459L9.07692 14L16 6'
                     stroke='white'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
                   />
                 </svg>
               ) : (
@@ -219,8 +219,8 @@ const BigChart = ({
                   <path
                     d='M4 9.21459L9.07692 14L16 6'
                     stroke='white'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
                   />
                 </svg>
               )}
@@ -242,8 +242,8 @@ const BigChart = ({
                   <path
                     d='M4 9.21459L9.07692 14L16 6'
                     stroke='white'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
                   />
                 </svg>
               ) : (
@@ -264,8 +264,8 @@ const BigChart = ({
                   <path
                     d='M4 9.21459L9.07692 14L16 6'
                     stroke='white'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
                   />
                 </svg>
               )}

@@ -113,7 +113,7 @@ const Politics = () => {
                     <path
                       d='M0.52 5.577V4.065H11.005L8.413 1.473L9.331 0.537L13.624 4.83L9.331 9.123L8.413 8.187L11.023 5.577H0.52Z'
                       fill='black'
-                      fill-opacity='0.7'
+                      fillOpacity='0.7'
                     />
                   </svg>
                 </span>
@@ -133,8 +133,8 @@ const Politics = () => {
                   <path
                     d='M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5'
                     stroke='#5329FF'
-                    stroke-width='2'
-                    stroke-linecap='round'
+                    strokeWidth='2'
+                    strokeLinecap='round'
                     stroke-linejoin='round'
                   />
                 </svg>
