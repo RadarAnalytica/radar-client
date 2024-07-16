@@ -388,10 +388,7 @@ const MainPage = () => {
             </div>
           </div>
         </div>
-        {/* <div
-          className='row'
-          style={{ width: '112%', marginLeft: '-107px', marginBottom: '60px' }}
-        >
+        <div className='row' style={{ marginBottom: '60px' }}>
           <div className='col-5 pt-1'>
             <div
               className='mb-3'
@@ -399,8 +396,8 @@ const MainPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                marginTop: '25px',
-                marginLeft: '90px',
+                alignItems: 'center',
+                marginTop: '34px',
               }}
             >
               <svg
@@ -474,10 +471,10 @@ const MainPage = () => {
               Политика конфиденцильности
             </a>
           </div>
-        </div> */}
+        </div>
       </div>
 
-      <Footer isWide />
+      {/* <Footer isWide /> */}
     </div>
   );
 };
