@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import AuthContext from '../service/AuthContext';
@@ -39,6 +39,8 @@ const DashboardPage = () => {
   const dispatch = useAppDispatch();
   const shop = useAppSelector((state) => state.shopsSlice.shops);
   const [activeBrand, setActiveBrand] = useState('0');
+  const [loading, setLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     dispatch(shops(authToken));
@@ -49,30 +51,28 @@ const DashboardPage = () => {
       setActiveBrand(shop?.[0]?.id);
     }
   }, [shop]);
-  // useEffect(() => {
-  //   ServiceFunctions.getAllShops(authToken).then((data) => {
-  //     setCurrentShop(data)
-  //     setShop(data);
-  //     // setActiveBrand(data?.slice(0, 1)[0].id);
-  //   });
-  // }, []);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    ServiceFunctions.getDashBoard(authToken, days, activeBrand).then((data) =>
-      setDataDashboard(data)
-    );
+    updateDataDashBoard(days, activeBrand, authToken);
+  }, [days, activeBrand, authToken]);
 
-    // setTimeout(() => {
-    //     if (!user) {
-    //         navigate('/signin')
-    //     }else{
-    //         navigate('/dashboard')
-    //     }
-    // },800 )
-  }, [days, activeBrand]);
-
-  const [isVisible, setIsVisible] = useState(false);
+  const updateDataDashBoard = async (days, activeBrand, authToken) => {
+    setLoading(true);
+    try {
+      const data = await ServiceFunctions.getDashBoard(
+        authToken,
+        days,
+        activeBrand
+      );
+      setDataDashboard(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -81,12 +81,6 @@ const DashboardPage = () => {
 
     return () => clearTimeout(timer);
   }, []);
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     dispatch(fetchAllShops(days));
-  //   }, 1000);
-  //   return () => clearTimeout(timeout);
-  // }, [dispatch]);
 
   // useEffect(() => {
   //   if (user) {
@@ -361,12 +355,11 @@ const DashboardPage = () => {
     },
   ];
 
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-  }, [loading]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 5000);
+  // }, [loading]);
 
   // const changePeriod = () => {
   //   setLoading(true);
@@ -494,138 +487,141 @@ const DashboardPage = () => {
     return pastDays;
   }
 
-  const arrayDay = getPastDays(days);
-  const data = {
-    labels: arrayDay.reverse() || [],
-    datasets: [
-      orderLineOn
-        ? {
-            label: 'Заказы',
-            borderRadius: 8,
-            type: 'line',
-            backgroundColor: 'rgba(255, 219, 126, 1)',
-            borderWidth: 2,
-            pointRadius: 5,
-            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-            borderColor: 'rgba(255, 219, 126, 1)',
-            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-            yAxisID: 'A',
-            data: dataDashBoard?.orderAmountList || [],
-            xAxisID: 'x-1',
-          }
-        : {
-            label: 'Заказы',
-            borderRadius: 8,
-            type: 'line',
-            backgroundColor: 'rgba(255, 219, 126, 1)',
-            borderWidth: 2,
-            pointRadius: 5,
-            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-            borderColor: 'rgba(255, 219, 126, 1)',
-            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-            yAxisID: 'A',
-            data: [],
-          },
-      salesLineOn
-        ? {
-            label: 'Продажи',
-            borderRadius: 8,
-            type: 'line',
-            backgroundColor: 'rgba(154, 129, 255, 1)',
-            borderWidth: 2,
-            pointRadius: 5,
-            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-            borderColor: 'rgba(154, 129, 255, 1)',
-            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-            yAxisID: 'A',
-            data: dataDashBoard?.saleAmountList || [],
-          }
-        : {
-            label: 'Продажи',
-            borderRadius: 8,
-            type: 'line',
-            backgroundColor: 'rgba(154, 129, 255, 1)',
-            borderWidth: 2,
-            pointRadius: 5,
-            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-            borderColor: 'rgba(154, 129, 255, 1)',
-            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-            yAxisID: 'A',
-            data: [],
-          },
-      orderOn
-        ? {
-            label: 'Заказы',
-            borderRadius: 8,
-            type: 'bar',
-            backgroundColor: (context) => {
-              const ctx = context.chart.ctx;
-              const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-              gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-              gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-              gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-              return gradient;
+  const chartData = useMemo(() => {
+    const countDays = dataDashBoard?.orderCountList.length;
+    return {
+      labels: getPastDays(countDays).reverse(),
+      datasets: [
+        orderLineOn
+          ? {
+              label: 'Заказы',
+              borderRadius: 8,
+              type: 'line',
+              backgroundColor: 'rgba(255, 219, 126, 1)',
+              borderWidth: 2,
+              pointRadius: 5,
+              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+              borderColor: 'rgba(255, 219, 126, 1)',
+              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+              yAxisID: 'A',
+              data: dataDashBoard?.orderAmountList || [],
+              xAxisID: 'x-1',
+            }
+          : {
+              label: 'Заказы',
+              borderRadius: 8,
+              type: 'line',
+              backgroundColor: 'rgba(255, 219, 126, 1)',
+              borderWidth: 2,
+              pointRadius: 5,
+              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+              borderColor: 'rgba(255, 219, 126, 1)',
+              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+              yAxisID: 'A',
+              data: [],
             },
-            borderWidth: 1,
-            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-            yAxisID: 'B',
-            data: dataDashBoard?.orderCountList || [],
-          }
-        : {
-            label: 'Заказы',
-            borderRadius: 8,
-            type: 'bar',
-            backgroundColor: (context) => {
-              const ctx = context.chart.ctx;
-              const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-              gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-              gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-              gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-              return gradient;
+        salesLineOn
+          ? {
+              label: 'Продажи',
+              borderRadius: 8,
+              type: 'line',
+              backgroundColor: 'rgba(154, 129, 255, 1)',
+              borderWidth: 2,
+              pointRadius: 5,
+              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+              borderColor: 'rgba(154, 129, 255, 1)',
+              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+              yAxisID: 'A',
+              data: dataDashBoard?.saleAmountList || [],
+            }
+          : {
+              label: 'Продажи',
+              borderRadius: 8,
+              type: 'line',
+              backgroundColor: 'rgba(154, 129, 255, 1)',
+              borderWidth: 2,
+              pointRadius: 5,
+              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+              borderColor: 'rgba(154, 129, 255, 1)',
+              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+              yAxisID: 'A',
+              data: [],
             },
-            borderWidth: 1,
-            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-            yAxisID: 'B',
-            data: [],
-          },
-      salesOn
-        ? {
-            label: 'Продажи',
-            borderRadius: 8,
-            type: 'bar',
-            backgroundColor: (context) => {
-              const ctx = context.chart.ctx;
-              const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-              gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-              gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-              gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-              return gradient;
+        orderOn
+          ? {
+              label: 'Заказы',
+              borderRadius: 8,
+              type: 'bar',
+              backgroundColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+                gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+                gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+                return gradient;
+              },
+              borderWidth: 1,
+              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+              yAxisID: 'B',
+              data: dataDashBoard?.orderCountList || [],
+            }
+          : {
+              label: 'Заказы',
+              borderRadius: 8,
+              type: 'bar',
+              backgroundColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+                gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+                gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+                return gradient;
+              },
+              borderWidth: 1,
+              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+              yAxisID: 'B',
+              data: [],
             },
-            borderWidth: 1,
-            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-            yAxisID: 'B',
-            data: dataDashBoard?.saleCountList || [],
-          }
-        : {
-            label: 'Продажи',
-            borderRadius: 8,
-            type: 'bar',
-            backgroundColor: (context) => {
-              const ctx = context.chart.ctx;
-              const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-              gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-              gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-              gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-              return gradient;
+        salesOn
+          ? {
+              label: 'Продажи',
+              borderRadius: 8,
+              type: 'bar',
+              backgroundColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+                gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+                gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+                gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+                return gradient;
+              },
+              borderWidth: 1,
+              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+              yAxisID: 'B',
+              data: dataDashBoard?.saleCountList || [],
+            }
+          : {
+              label: 'Продажи',
+              borderRadius: 8,
+              type: 'bar',
+              backgroundColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+                gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+                gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+                gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+                return gradient;
+              },
+              borderWidth: 1,
+              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+              yAxisID: 'B',
+              data: [],
             },
-            borderWidth: 1,
-            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-            yAxisID: 'B',
-            data: [],
-          },
-    ],
-  };
-  const sortedValuesArray = data?.datasets
+      ],
+    };
+  }, [orderLineOn, salesLineOn, orderOn, salesOn, dataDashBoard]);
+
+  const sortedValuesArray = chartData?.datasets
     ?.map((arr) => arr?.data)
     .flat(1)
     ?.sort((a, b) => b - a);
@@ -636,7 +632,7 @@ const DashboardPage = () => {
   //   sortedValuesArray && sortedValuesArray.length
   //     ? sortedValuesArray.filter((item) => typeof item === "number")[0]
   //     : 50;
-  const bar = data?.datasets?.filter((item) => item?.type === 'bar');
+  const bar = chartData?.datasets?.filter((item) => item?.type === 'bar');
   const maxAmount = bar
     ?.map((arr) => arr?.data)
     ?.flat(1)
@@ -731,7 +727,7 @@ const DashboardPage = () => {
                 <div className='col chart-wrapper'>
                   <BigChart
                     name={'Заказы и продажи'}
-                    data={data}
+                    data={chartData}
                     orderOn={orderOn}
                     salesOn={salesOn}
                     setOrderOn={setOrderOn}
