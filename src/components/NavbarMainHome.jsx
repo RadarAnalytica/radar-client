@@ -188,25 +188,15 @@ const NavbarMainHome = () => {
 
         <div className='widheader-login'>
           {user ? (
-            <>
-              <button
-                className='prime-btn'
-                style={{
-                  width: '160px',
-                  height: '71px',
-                  fontSize: '20px',
-                  marginRight: '40px',
-                }}
-              >
-                Регистрация
-              </button>
-              <button
-                className='prime-btn'
-                style={{ width: '134px', height: '71px', fontSize: '20px' }}
-              >
-                Войти
-              </button>
-            </>
+            <button
+              className='prime-btn'
+              style={{ width: '134px', height: '71px', fontSize: '20px' }}
+              onClick={() => {
+                navigate('/dashboard');
+              }}
+            >
+              Войти
+            </button>
           ) : (
             <>
               <button
