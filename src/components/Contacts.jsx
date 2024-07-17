@@ -1,5 +1,6 @@
 import React from 'react';
 import '../pages/styles.css';
+import '../App.css';
 import RadarAnalitica from '../pages/images/RadarAnalitica.svg';
 import TelegramBot from '../pages/images/TelegramSmall.svg';
 import DigitIcon from '../pages/images/digit.svg';
@@ -8,7 +9,7 @@ import LimitedFooter from './LimitedFooter';
 const Contacts = () => {
   return (
     <div className='page-wrap'>
-      <div className='custom-container'>
+      <div className='container custom-container container-xlwidth'>
         <div className='content-wrap'>
           <div className='d-flex' style={{ marginTop: '20px' }}>
             <div>

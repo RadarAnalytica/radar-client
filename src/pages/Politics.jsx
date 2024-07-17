@@ -1,21 +1,12 @@
 import React from 'react';
 import './styles.css';
-import Footer from '../components/Footer';
-import toptg from './images/toptgicon.png';
-import demo from '../assets/ext-demo.png';
-import ExtDemoSvg from '../components/ExtDemoSvg';
-import Fragment1 from './images/Fragment1';
-import YellowBtn from './images/YellowBtn';
-import Button from './images/Button';
-import Free from './images/Free';
-import DesktopExtInfo from './images/DesktopExtInfo';
-import MiniDemo from './images/MiniDemo';
 import TopTgIcon from './images/TopTgIcon';
+import LimitedFooter from '../components/LimitedFooter';
 
 const Politics = () => {
   return (
     <div className='instruction-page'>
-      <div className='container instruction-container col-10'>
+      <div className='container instruction-container col-10 container-xlwidth'>
         <div className='sps-top'>
           <svg
             width='200'
@@ -164,7 +155,10 @@ const Politics = () => {
         <div className='container col-10 pt-5 pb-5'>
           <h4
             className='mb-4'
-            style={{ color: 'rgba(83, 41, 255, 1)', fontWeight: 'bold' }}
+            style={{
+              color: 'rgba(83, 41, 255, 1)',
+              fontWeight: 'bold',
+            }}
           >
             Политика в отношении обработки персональных данных
           </h4>
@@ -569,8 +563,8 @@ const Politics = () => {
             https://radar-analytica.ru/politics.
           </span>
         </div>
+        <LimitedFooter />
       </div>
-      <Footer />
     </div>
   );
 };

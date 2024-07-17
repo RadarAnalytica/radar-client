@@ -66,10 +66,7 @@ const MainPage = () => {
   return (
     <div className='page-main'>
       <NavbarMainHome />
-      <div
-        className='container widbody-container'
-        style={{ maxWidth: FULL_WIDTH }}
-      >
+      <div className='container widbody-container container-xlwidth'>
         <div className='wid-solution'>
           <div className='sol-description col'>
             <div style={{ marginBottom: '20px' }}>

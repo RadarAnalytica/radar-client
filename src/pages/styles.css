@@ -1045,14 +1045,16 @@ button.accordion-button.collapsed::after {
 .custom-container {
   display: flex;
   flex-direction: column;
-  max-width: 1480px;
   margin: 0 auto;
-  padding: 0 20px;
   min-height: 100vh;
+}
+.container-xlwidth {
+  max-width: 1480px;
 }
 .content-wrap {
   flex-grow: 1;
 }
 .page-wrap {
   background-color: white;
+  padding: 0 20px;
 }
