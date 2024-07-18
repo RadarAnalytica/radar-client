@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import YellowRadar from './images/YellowRadar';
 import BlockImg_x2 from './images/Dashboard_x2.png';
 import BlockImg_x3 from './images/Dashboard_x3.png';
-import Footer from '../components/Footer';
 import AccordionMain from '../components/AccordionMain';
-import imgHomeBlick from './images/imageForHomePage.png';
-import Theses from './images/ThesesAnalyticsHome';
-import IMG from './images/imgAnalytics';
 import blockApi1 from './images/blockapi1.svg';
 import blockApi2 from './images/blockapi2.svg';
 import blockApi3 from './images/blockapi3.svg';
@@ -23,23 +19,13 @@ import NavbarMainHome from '../components/NavbarMainHome';
 import Reviews from '../components/Reviews';
 import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FULL_WIDTH } from '../constants';
 import LimitedFooter from '../components/LimitedFooter';
+import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
 
 const MainPage = () => {
   const navigate = useNavigate();
 
   const { user } = useContext(AuthContext);
-  const [isActive, setActive] = useState(true);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % Theses.inTheses.length);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const redirect = () => {
     if (user.is_onboarded) {
@@ -47,20 +33,6 @@ const MainPage = () => {
     } else {
       navigate('/onboarding');
     }
-  };
-
-  const toggleClass = (index) => {
-    return index === activeIndex ? 'thesesHome2' : 'thesesHome';
-  };
-
-  const handleExternalClick = () => {
-    setActiveIndex(0);
-    setActive(true);
-  };
-
-  const handleInternalClick = () => {
-    setActiveIndex(0);
-    setActive(false);
   };
 
   return (
@@ -126,58 +98,8 @@ const MainPage = () => {
             </span>
           </p>
         </div>
-        <div className='InOnAnalytics'>
-          <div className='btnAnalytics'>
-            {' '}
-            <button
-              className={isActive ? 'prime-btn' : 'secondary-btn'}
-              style={{ width: '25%', padding: '25px', border: 'none' }}
-              onClick={handleExternalClick}
-            >
-              <span style={{ fontSize: '24px' }}>Внутренняя аналитика</span>
-            </button>
-            <button
-              className={isActive ? 'secondary-btn' : 'prime-btn'}
-              style={{
-                width: '25%',
-                padding: '25px',
-                border: 'none',
-              }}
-              onClick={handleInternalClick}
-            >
-              <span style={{ fontSize: '24px' }}>Внешняя аналитика</span>
-            </button>
-          </div>
+        <ToggleAnaliticsPanel />
 
-          <div className='blockInOnAnalytics '>
-            <div
-              className='vertical-line'
-              style={{ height: `${(activeIndex + 1) * 20}%` }}
-            ></div>
-            <div
-              style={{ width: '45%', alignItems: 'center', marginLeft: '11px' }}
-            >
-              {isActive
-                ? Theses.inTheses.map((el, index) => (
-                    <div key={index} className={toggleClass(index)}>
-                      <div>{el.img}</div>
-                      <div>{el.txt}</div>
-                    </div>
-                  ))
-                : Theses.onTheses.map((el, index) => (
-                    <div key={index} className={toggleClass(index)}>
-                      <div>{el.img}</div>
-                      <div>{el.txt}</div>
-                    </div>
-                  ))}
-            </div>
-            <div style={{ width: '55%' }}>
-              {isActive
-                ? IMG.imgInAnalytics[activeIndex]
-                : IMG.imgOnAnalytics[activeIndex]}
-            </div>
-          </div>
-        </div>
         <div style={{ marginTop: '100px' }}>
           <div className='widhead-container'>
             <div className='mainBlock-api'>
