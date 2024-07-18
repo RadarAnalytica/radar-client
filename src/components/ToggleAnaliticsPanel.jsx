@@ -2,18 +2,42 @@ import React, { useEffect, useState } from 'react';
 import '../pages/styles.css';
 import Theses from '../pages/images/ThesesAnalyticsHome';
 import IMG from '../pages/images/imgAnalytics';
+import lightImg from '../pages/images/mainDashboard.png';
 
 const ToggleAnaliticsPanel = () => {
   const [isActive, setActive] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isImagesLoaded, setIsImagesLoaded] = useState(false);
 
   useEffect(() => {
+    const loadImage = (src) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = resolve;
+      });
+    };
+
+    const loadImages = async () => {
+      const images = [
+        ...IMG.imgInAnalytics.map((el) => el.props.src),
+        ...IMG.imgOnAnalytics.map((el) => el.props.src),
+      ];
+      await Promise.all(images.map(loadImage));
+      setIsImagesLoaded(true);
+    };
+
+    loadImages();
+  }, []);
+
+  useEffect(() => {
+    if (!isImagesLoaded) return;
     const interval = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % Theses.inTheses.length);
     }, 2000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isImagesLoaded]);
 
   const toggleClass = (index) => {
     return index === activeIndex ? 'thesesHome2' : 'thesesHome';
@@ -74,9 +98,19 @@ const ToggleAnaliticsPanel = () => {
               ))}
         </div>
         <div style={{ width: '55%' }}>
-          {isActive
-            ? IMG.imgInAnalytics[activeIndex]
-            : IMG.imgOnAnalytics[activeIndex]}
+          {isImagesLoaded ? (
+            isActive ? (
+              IMG.imgInAnalytics[activeIndex]
+            ) : (
+              IMG.imgOnAnalytics[activeIndex]
+            )
+          ) : (
+            <img
+              style={{ width: '96%', marginLeft: '2%', marginTop: '1%' }}
+              src={lightImg}
+              alt=''
+            />
+          )}
         </div>
       </div>
     </div>

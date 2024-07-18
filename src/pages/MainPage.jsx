@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import YellowRadar from './images/YellowRadar';
+import BlockImg_x1 from './images/Dashboard_x1.png';
 import BlockImg_x2 from './images/Dashboard_x2.png';
 import BlockImg_x3 from './images/Dashboard_x3.png';
 import AccordionMain from '../components/AccordionMain';
@@ -24,8 +25,18 @@ import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
 
 const MainPage = () => {
   const navigate = useNavigate();
-
   const { user } = useContext(AuthContext);
+  const [isBlockImg_x3Loaded, setIsBlockImg_x3Loaded] = useState(false);
+
+  const handleBlockImg_x3Loaded = () => {
+    setIsBlockImg_x3Loaded(true);
+  };
+
+  useEffect(() => {
+    const heavyImage = new Image();
+    heavyImage.src = BlockImg_x3;
+    heavyImage.onload = handleBlockImg_x3Loaded;
+  }, []);
 
   const redirect = () => {
     if (user.is_onboarded) {
@@ -84,7 +95,11 @@ const MainPage = () => {
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            <img style={{ width: '105%' }} src={BlockImg_x3} alt='' />
+            <img
+              style={{ width: '105%' }}
+              src={isBlockImg_x3Loaded ? BlockImg_x3 : BlockImg_x1}
+              alt=''
+            />
           </div>
         </div>
         <div>
@@ -92,7 +107,7 @@ const MainPage = () => {
             style={{ fontWeight: 700, fontSize: '42px', marginTop: '100px' }}
             className='col-8'
           >
-            Увеличьте продажи на маркетплейсе в 2 раза{' '}
+            Увеличьте продажи на маркетплейсе <br /> в 2 раза{' '}
             <span style={{ color: 'orange', fontWeight: '800' }}>
               с помощью инструментов Radar
             </span>
