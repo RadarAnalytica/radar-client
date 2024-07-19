@@ -34,13 +34,12 @@ const DashboardPage = () => {
   const [brandNames, setBrandNames] = useState();
   const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
-  // const [shop, setShop] = useState();
   const [primary, setPrimary] = useState();
   const dispatch = useAppDispatch();
   const shop = useAppSelector((state) => state.shopsSlice.shops);
   const [activeBrand, setActiveBrand] = useState('0');
   const [loading, setLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     dispatch(shops(authToken));
@@ -74,13 +73,13 @@ const DashboardPage = () => {
     }
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 800);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsVisible(true);
+  //   }, 800);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   // useEffect(() => {
   //   if (user) {
