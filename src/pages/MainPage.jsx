@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
-import YellowRadar from './images/YellowRadar';
 import BlockImg_x1 from './images/Dashboard_x1.png';
 import BlockImg_x2 from './images/Dashboard_x2.png';
 import BlockImg_x3 from './images/Dashboard_x3.png';
@@ -16,6 +15,7 @@ import StepsTime from '../components/StepsTime';
 import SelectRate from '../components/SelectRate';
 import SolLabelStartBsn from './images/SolLabelStartBsn';
 import YellowRadarPoint from './images/YellowRadarPoint';
+import YellowRadarSmall from './images/YelowRadarSmall';
 import NavbarMainHome from '../components/NavbarMainHome';
 import Reviews from '../components/Reviews';
 import AuthContext from '../service/AuthContext';
@@ -56,7 +56,7 @@ const MainPage = () => {
               <SolLabelBsn />
             </div>
             <div>
-              <YellowRadar />
+              <YellowRadarSmall />
             </div>
             <div
               style={{
