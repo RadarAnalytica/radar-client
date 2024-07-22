@@ -15,7 +15,7 @@ const OrderTableExtended = ({ title, data, geoData }) => {
     //     };
     //   });
     
-    data?.forEach(item => {
+    data?.forEach((...item) => {
             let sub = item?.district?.split('федеральный округ')?.join('фо')
             item.district = sub
         })
