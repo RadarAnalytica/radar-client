@@ -2,32 +2,55 @@ import React from 'react';
 import '../pages/styles.css';
 import '../App.css';
 import RadarAnalitica from '../pages/images/RadarAnalitica.svg';
+import RadarAnaliticaPng from '../pages/images/RadarAnalitica.png';
 import TelegramBot from '../pages/images/TelegramSmall.svg';
+import TelegramPng from '../pages/images/TelegramSmall.png';
 import DigitIcon from '../pages/images/digit.svg';
+import DigitIconPng from '../pages/images/digit.png';
 import LimitedFooter from './LimitedFooter';
+import ImageComponent from './utilsComponents/ImageComponent ';
 
 const Contacts = () => {
   return (
     <div className='page-wrap'>
       <div className='container custom-container container-xlwidth'>
         <div className='content-wrap'>
-          <div className='d-flex' style={{ marginTop: '20px' }}>
-            <div>
-              <img src={RadarAnalitica} alt='' />
+          <div
+            className='d-flex'
+            style={{
+              marginTop: '20px',
+              justifyContent: 'space-between',
+              gap: '10px',
+            }}
+          >
+            <div style={{ alignSelf: 'center' }}>
+              <ImageComponent
+                heavyImageSrc={RadarAnalitica}
+                lightImageSrc={RadarAnaliticaPng}
+              />
             </div>
-            <div className='telegram'>
-              <div className='telegram-icon'>
-                <img src={TelegramBot} alt='' />
+            <div style={{ display: 'flex' }}>
+              <div className='telegram'>
+                <div className='telegram-icon'>
+                  <ImageComponent
+                    heavyImageSrc={TelegramBot}
+                    lightImageSrc={TelegramPng}
+                  />
+                </div>
+                <a className='telegram-link' href='https://t.me/SpyRadar_bot'>
+                  Бот Telegram
+                </a>
               </div>
-              <a className='telegram-link' href='https://t.me/SpyRadar_bot'>
-                Бот Telegram
-              </a>
-            </div>
-            <div>
-              <img style={{ borderRadius: '18px' }} src={DigitIcon} alt='' />
+              <div>
+                <ImageComponent
+                  heavyImageSrc={DigitIcon}
+                  lightImageSrc={DigitIconPng}
+                  style={{ borderRadius: '18px' }}
+                />
+              </div>
             </div>
           </div>
-          <div className='row' style={{ marginLeft: '20%', marginTop: '70px' }}>
+          <div className='row' style={{ marginTop: '70px' }}>
             <h3 style={{ fontSize: '24px', fontWeight: '700', color: 'blue' }}>
               Контакты
             </h3>

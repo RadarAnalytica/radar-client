@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -24,21 +24,11 @@ import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LimitedFooter from '../components/LimitedFooter';
 import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
+import ImageComponent from '../components/utilsComponents/ImageComponent ';
 
 const MainPage = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  const [isBlockImg_x3Loaded, setIsBlockImg_x3Loaded] = useState(false);
-
-  const handleBlockImg_x3Loaded = () => {
-    setIsBlockImg_x3Loaded(true);
-  };
-
-  useEffect(() => {
-    const heavyImage = new Image();
-    heavyImage.src = BlockImg_x3;
-    heavyImage.onload = handleBlockImg_x3Loaded;
-  }, []);
 
   const redirect = () => {
     if (user.is_onboarded) {
@@ -97,10 +87,9 @@ const MainPage = () => {
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            <img
-              style={{ width: '105%' }}
-              src={isBlockImg_x3Loaded ? BlockImg_x3 : BlockImg_x1}
-              alt=''
+            <ImageComponent
+              heavyImageSrc={BlockImg_x3}
+              lightImageSrc={BlockImg_x1}
             />
           </div>
         </div>
@@ -143,7 +132,11 @@ const MainPage = () => {
           </div>
           <div className='widhead-container'>
             <div>
-              <img src={manyApi} alt='logo' style={{ width: '100%', borderRadius: '15px'}}/>
+              <img
+                src={manyApi}
+                alt='logo'
+                style={{ width: '100%', borderRadius: '15px' }}
+              />
             </div>
             <div>
               <img src={apiBlock} alt='logo' style={{ width: '100%' }} />
@@ -218,7 +211,7 @@ const MainPage = () => {
             <AccordionMain />
           </div>
           <div className='wid-solutionMain' style={{ marginBottom: '100px' }}>
-            <div className='sol-description col'>
+            <div className='sol-description col' style={{ padding: 0 }}>
               <div className='headStartBsn'>
                 <SolLabelStartBsn />
                 <div style={{ fontSize: '34px', fontWeight: '700' }}>
@@ -233,10 +226,7 @@ const MainPage = () => {
                 </div>
               </div>
 
-              <div
-                style={{ padding: '15px' }}
-                className='d-flex flex-column gap-3'
-              >
+              <div className='d-flex flex-column gap-3'>
                 <button
                   className='white-btn'
                   style={{ minHeight: '64px', fontSize: '18px' }}

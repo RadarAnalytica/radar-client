@@ -770,8 +770,8 @@ const DashboardPage = () => {
                     value={curOrders?.selectedPeriod?.cancelSumRub}
                     quantity={curOrders?.selectedPeriod?.cancelCount}
                     type={'price'}
-                    dataDashBoard={dataDashBoard?.returnCount}
-                    percent={dataDashBoard?.returnCountCompare}
+                    dataDashBoard={dataDashBoard?.returnAmount}
+                    percent={dataDashBoard?.returnAmountCompare}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
