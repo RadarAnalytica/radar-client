@@ -753,6 +753,7 @@ select {
   justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.03);
   border-radius: 20px;
+  padding: 40px;
   min-width: 600px;
   flex: 1;
 }
