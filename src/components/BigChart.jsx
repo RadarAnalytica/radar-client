@@ -386,6 +386,16 @@ const BigChart = ({
                     tooltipModel.options.bodyFont
                   );
 
+                  // Calculate tooltip position
+                  let tooltipLeft =
+                    position.left + window.scrollX + tooltipModel.caretX;
+                  // Adjust position to stay within chart area
+                  const tooltipWidth = tooltipEl.offsetWidth;
+
+                  if (tooltipLeft + tooltipWidth > position.right) {
+                    tooltipLeft = position.right - tooltipWidth;
+                  }
+
                   // Display, position, and set styles for font
                   tooltipEl.style.transition = 'all 0.25s ease-in-out';
                   tooltipEl.style.backgroundColor = 'white';
@@ -394,8 +404,7 @@ const BigChart = ({
                   tooltipEl.style.padding = '1rem';
                   tooltipEl.style.opacity = 1;
                   tooltipEl.style.position = 'absolute';
-                  tooltipEl.style.left =
-                    position.left + window.scrollX + tooltipModel.caretX + 'px';
+                  tooltipEl.style.left = tooltipLeft + 'px';
                   tooltipEl.style.top =
                     position.top + window.scrollY + tooltipModel.caretY + 'px';
                   tooltipEl.style.font = bodyFont?.string;

@@ -1,4 +1,5 @@
 import React from 'react';
+import '../pages/styles.css';
 import Accordion from 'react-bootstrap/Accordion';
 
 const AccordionMain = () => {

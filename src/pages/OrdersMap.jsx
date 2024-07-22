@@ -8,94 +8,44 @@ import OrderMapPieChart from '../containers/orderMap/OrderMapPieChart';
 import OrderMapTable from '../containers/orderMap/OrderMapTable';
 import OrderTableExtended from '../containers/orderMap/OrderTableExtended';
 import AuthContext from '../service/AuthContext';
-import { ServiceFunctions } from '../service/serviceFunctions';
-import {
-  calculateGrowthPercentageGeo,
-  filterArrays,
-  filterArraysNoData,
-  formatPrice,
-} from '../service/utils';
+import { formatPrice } from '../service/utils';
 import SelfCostWarning from '../components/SelfCostWarning';
 import DataCollectionNotification from '../components/DataCollectionNotification';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { shops } from '../redux/shops/shopsActions';
+import { fetchGeographyData } from '../redux/geoData/geoDataActions';
 
 const OrdersMap = () => {
+  const dispatch = useAppDispatch();
   const { user, authToken } = useContext(AuthContext);
+  const { geoData, loading, error } = useAppSelector(
+    (state) => state.geoDataSlice
+  );
+  const shop = useAppSelector((state) => state.shopsSlice.shops);
 
   const [byRegions, setByRegions] = useState(true);
-  const [changeBrand, setChangeBrand] = useState();
   const [days, setDays] = useState(30);
   const [brandNames, setBrandNames] = useState();
   const [activeBrand, setActiveBrand] = useState('0');
-  // useEffect(() => {
-  //     if (user) {
-  //         ServiceFunctions.getBrandNames(user.id).then(data => setBrandNames(data))
-  //     }
-  // }, [user])
-  // useEffect(() => {
-  //     if (brandNames && brandNames.length) {
-  //         setActiveBrand(brandNames[0])
-  //     }
-  // }, [brandNames])
 
-  const dispatch = useAppDispatch();
-  const shop = useAppSelector((state) => state.shopsSlice.shops);
+  const [changeBrand, setChangeBrand] = useState();
+  const [primary, setPrimary] = useState();
+  const [data, setData] = useState();
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+  }, [dispatch, authToken, days, activeBrand]);
 
   useEffect(() => {
     dispatch(shops(authToken));
-  }, [dispatch]);
+  }, [dispatch, authToken]);
 
   useEffect(() => {
     if (shop.length > 0) {
       setActiveBrand(shop?.[0]?.id);
     }
   }, [shop]);
-
-  // const [shop, setShop] = useState()
-  // console.log(shop, "SHOP");
-  const [currentShop, setCurrentShop] = useState();
-
-  const [primary, setPrimary] = useState();
-  const [geoData, setGeoData] = useState({});
-
-  // useEffect(() => {
-  //     ServiceFunctions.getAllShops(authToken).then(data => {
-  //         setCurrentShop(data)
-  //         setShop(data)});
-  // }, [])
-
-  useEffect(() => {
-    ServiceFunctions.getGeographyData(authToken, days, activeBrand).then(
-      (data) => setGeoData(data)
-    );
-  }, [days, activeBrand]);
-
-  const [data, setData] = useState();
-
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 800);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // useEffect(() => {
-  //     if (user && activeBrand) {
-  //         ServiceFunctions.getGeoData(user.id, activeBrand, days).then(data => setData(data))
-  //         // ServiceFunctions.getGeoData(user.id, activeBrand).then(data => setState(data))
-  //     }
-  // }, [user && activeBrand])
-
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, [loading]);
 
   // const changePeriod = () => {
   //     setLoading(true)
@@ -109,11 +59,11 @@ const OrdersMap = () => {
   // }, [days, activeBrand])
 
   const orders =
-    data && data.orders && data.orders.data ? data.orders.data : [];
-  const sales = data && data.sales && data.sales.data ? data.sales.data : [];
+    data && data?.orders && data?.orders.data ? data?.orders.data : [];
+  const sales = data && data?.sales && data?.sales.data ? data?.sales.data : [];
 
-  const ordersByWarehouses = data ? data.ordersByWarehouse : [];
-  const salesByWarehouses = data ? data.salesByWarehouse : [];
+  const ordersByWarehouses = data ? data?.ordersByWarehouse : [];
+  const salesByWarehouses = data ? data?.salesByWarehouse : [];
 
   let totalPriceOrders = 0;
   ordersByWarehouses
@@ -355,7 +305,7 @@ const OrdersMap = () => {
 
   const [tooltipData, setTooltipData] = useState();
   useEffect(() => {
-    if (foFirst && geoData) {
+    if (foFirst && geoData?.geo_data.length) {
       const info = {
         ordersCount:
           [...geoData?.geo_data]?.filter(
@@ -662,6 +612,10 @@ const OrdersMap = () => {
   const oneShop = shop?.filter((item) => item?.id == activeBrand)[0];
   const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
 
+  useEffect(() => {
+    console.log('shouldDisplay', shouldDisplay);
+  }, [shouldDisplay]);
+
   return (
     isVisible && (
       <div className='orders-map'>
@@ -691,7 +645,7 @@ const OrdersMap = () => {
                     defaultChecked
                     onClick={() => {
                       setByRegions(true);
-                      setLoading(true);
+                      //setLoading(true);
                     }}
                   />
                   <label
@@ -709,7 +663,7 @@ const OrdersMap = () => {
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
                       setByRegions(false);
-                      setLoading(true);
+                      //setLoading(true);
                     }}
                   />
                   <label
@@ -732,7 +686,7 @@ const OrdersMap = () => {
                     onMouseOut={hideTooltip}
                     data={commonAndCompareOnMap}
                   />
-                  {geoData && isHovered && (
+                  {geoData?.length && isHovered && (
                     <div
                       style={{
                         position: 'absolute',
@@ -824,7 +778,7 @@ const OrdersMap = () => {
                   )}
                 </div>
               ) : null}
-              {byRegions && !loading && geoData.geo_data ? (
+              {byRegions && !loading && geoData?.geo_data ? (
                 <div className='map-data-content'>
                   <div className=' pl-3 d-flex map-data-row'>
                     <div className='col'>
@@ -891,7 +845,7 @@ const OrdersMap = () => {
                     </div>
                   </div>
                 </div>
-              ) : !byRegions && !loading && geoData.stock_data ? (
+              ) : !byRegions && !loading && geoData?.stock_data ? (
                 <div className='map-data-content'>
                   <div className=' pl-3 d-flex map-data-row'>
                     <div className='col'>
@@ -930,8 +884,8 @@ const OrdersMap = () => {
                   <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>
                     Детализация по заказам
                   </h5>
-                  {geoData.stock_data && geoData.stock_data.length
-                    ? geoData.stock_data.map((w, i) => {
+                  {geoData?.stock_data && geoData?.stock_data.length
+                    ? geoData?.stock_data.map((w, i) => {
                         return (
                           <div className=' pl-3 map-data-row' key={i}>
                             <div className='col'>

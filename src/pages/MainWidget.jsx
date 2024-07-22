@@ -3,7 +3,7 @@ import './styles.css';
 import SolScreenshot from './images/SolScreenshot';
 import SolOptions from './images/SolOptions';
 import SolDescLabel from './images/SolDescLabel';
-import YellowRadar from './images/YellowRadar';
+import YellowRadar from './images/YellowRadarLarge';
 import SmallOptions from './images/SmallOptions';
 import DetailLabel from './images/DetailLabel';
 import ScreenOrders from './images/ScreenOrders';

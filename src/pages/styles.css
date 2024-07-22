@@ -353,7 +353,6 @@ select {
 
 .page-header {
   padding: 10px 0;
-  border-bottom: 1px solid silver;
 }
 .widmain-header {
   border-bottom: 1px solid silver;
@@ -634,7 +633,7 @@ select {
 .blockBtn {
   background-image: url('/src/pages/images/imageFon.png');
   background-size: cover;
-  width: 34%;
+  width: 32%;
   display: flex;
   justify-content: center;
   padding: 25px;
@@ -709,7 +708,7 @@ select {
 }
 
 .widbody-container {
-  padding: 40px 20px 0;
+  padding: 0px 20px 0;
 }
 
 .wid-solution {
