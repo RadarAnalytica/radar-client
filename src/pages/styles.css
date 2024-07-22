@@ -752,9 +752,7 @@ select {
   flex-direction: column;
   justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.03);
-  padding: 40px;
   border-radius: 20px;
-
   min-width: 600px;
   flex: 1;
 }

@@ -143,7 +143,11 @@ const MainPage = () => {
           </div>
           <div className='widhead-container'>
             <div>
-              <img src={manyApi} alt='logo' style={{ width: '100%', borderRadius: '15px'}}/>
+              <img
+                src={manyApi}
+                alt='logo'
+                style={{ width: '100%', borderRadius: '15px' }}
+              />
             </div>
             <div>
               <img src={apiBlock} alt='logo' style={{ width: '100%' }} />
@@ -233,10 +237,7 @@ const MainPage = () => {
                 </div>
               </div>
 
-              <div
-                style={{ padding: '15px' }}
-                className='d-flex flex-column gap-3'
-              >
+              <div className='d-flex flex-column gap-3'>
                 <button
                   className='white-btn'
                   style={{ minHeight: '64px', fontSize: '18px' }}
