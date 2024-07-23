@@ -96,7 +96,7 @@ const DashboardFilter = ({
             }}
             className='form-control'
             id='store'
-            defaultValue={'0'}
+            defaultValue={`${shop?.[0]?.id}`}
             onChange={(e) => {
               const firstValue = e.target.value.split('|')[0];
               const secondValue = e.target.value.split('|')[1];
