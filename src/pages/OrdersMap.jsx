@@ -676,14 +676,12 @@ const OrdersMap = () => {
               </div>
 
               {byRegions ? (
-                <div
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                  id='map'
-                >
+                <div id='map'>
                   <Map
                     onMouseMove={showTooltip}
                     onMouseOut={hideTooltip}
+                    onMouseEnterAction={setIsHovered}
+                    onMouseLeaveAction={setIsHovered}
                     data={commonAndCompareOnMap}
                   />
                   {geoData && isHovered && (
