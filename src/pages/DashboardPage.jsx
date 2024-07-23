@@ -649,7 +649,15 @@ const DashboardPage = () => {
   const allShop = shop?.some((item) => item?.is_primary_collect === true);
   const oneShop =
     shop?.filter((item) => item?.id == activeBrand)[0] || shop?.[0];
-  const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
+  //const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
+
+  const [shouldDisplay, setShouldDisplay] = useState(true);
+
+  useEffect(() => {
+    if (shop?.length) {
+      setShouldDisplay(oneShop ? oneShop.is_primary_collect : allShop);
+    }
+  }, [shop, allShop, oneShop]);
 
   return (
     isVisible &&
@@ -883,6 +891,7 @@ const DashboardPage = () => {
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
                   />
+
                   <ChartTable
                     title={'Расходы'}
                     data={costsData}
