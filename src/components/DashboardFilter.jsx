@@ -25,7 +25,7 @@ const DashboardFilter = ({
     .join('-');
 
   return (
-    <div className='filter container dash-container p-3 pb-4 pt-0 d-flex'>
+    <div className='filter  dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
         <div className='filter-item col'>
           <label

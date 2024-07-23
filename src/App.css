@@ -502,7 +502,6 @@ select {
 .linked-shops-container {
   max-width: 78vw !important;
 }
-
 .orders-map {
   overflow: hidden;
 }
@@ -1564,4 +1563,32 @@ select {
   height: 47px;
   border-radius: 8px;
   margin-left: 20px;
+}
+
+.download-button {
+  display: flex;
+  align-items: center;
+  background-color: #5329ff;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px;
+  min-width: 150px;
+  white-space: nowrap;
+  height: 45px;
+  cursor: pointer;
+}
+.download-button img {
+  width: 18px;
+  height: 16px;
+  margin-right: 6px;
+}
+
+.filter-panel {
+  display: flex;
+  max-width: 78.5vw !important;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 30px !important
 }
