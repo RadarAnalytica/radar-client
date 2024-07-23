@@ -686,7 +686,7 @@ const OrdersMap = () => {
                     onMouseOut={hideTooltip}
                     data={commonAndCompareOnMap}
                   />
-                  {geoData?.length && isHovered && (
+                  {geoData && isHovered && (
                     <div
                       style={{
                         position: 'absolute',
