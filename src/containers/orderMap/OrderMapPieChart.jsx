@@ -334,7 +334,7 @@ const OrderMapPieChart = ({
 
                         marginLeft: '-0.5vw',
                         marginRight: '0.7vw',
-                        marginTop: '-0.75vh'
+                        marginTop: '-0.75vh',
                       }}
                     >
                       {obj.districtName
