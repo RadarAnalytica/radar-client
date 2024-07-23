@@ -74,17 +74,19 @@ const OrderMapPieChart = ({
     'rgba(254, 197, 61, 1)',
   ];
 
-  const firstFive = [...info]
+  const updatedInfo = info.map((item) => {
+    let sub = item.districtName?.split('федеральный округ')?.join('фо');
+    return { ...item, districtName: sub };
+  });
+
+  const firstFive = updatedInfo
     .filter((o) => (o.districtName ? o.districtName : o.stockName))
     ?.slice(0, 5);
-  info.forEach((...item) => {
-    let sub = item.districtName?.split('федеральный округ')?.join('фо');
-    item.districtName = sub;
-  });
-  const colorCons = firstFive.map((el, i) =>
-    el.districtName
-      ? getColorTooltip(el.districtName)
-      : getColorStockTooltip(el.stockName)
+
+  const colorCons = firstFive.map((systemItem) =>
+    systemItem.districtName
+      ? getColorTooltip(systemItem.districtName)
+      : getColorStockTooltip(systemItem.stockName)
   );
 
   // const totalAmount =  info.reduce((acc, item) => acc + item.saleAmount, 0)
@@ -331,8 +333,8 @@ const OrderMapPieChart = ({
                         borderRadius: '100%',
 
                         marginLeft: '-0.5vw',
-                        marginRight: '0.5vw',
-                        // marginTop: '0.75vh'
+                        marginRight: '0.7vw',
+                        marginTop: '-0.75vh'
                       }}
                     >
                       {obj.districtName
