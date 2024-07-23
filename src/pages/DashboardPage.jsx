@@ -883,6 +883,7 @@ const DashboardPage = () => {
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
                   />
+
                   <ChartTable
                     title={'Расходы'}
                     data={costsData}

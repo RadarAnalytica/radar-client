@@ -55,7 +55,7 @@ const StorageTable = ({ title, data, titles, subtitles, wbData, dataDashBoard })
                                 } key={i}>{t}</span>)
                             }
                         </div>
-                        <div className='d-flex mt-2 mb-2 clue-text'>
+                        <div className='d-flex  clue-text'>
                             {
                                 subtitles && subtitles.map((t, i) => <span className='col fin-row' style={
                                     i === 0 ?
