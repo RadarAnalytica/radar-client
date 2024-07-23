@@ -10,7 +10,13 @@ import PrivolCircle from '../assets/privolcircle.svg';
 import NorthWesternCircle from '../assets/northwesterncircle.svg';
 import FarEasternCircle from '../assets/fareasterncircle.svg';
 
-const Map = ({ onMouseOut, onMouseMove, data }) => {
+const Map = ({
+  onMouseOut,
+  onMouseMove,
+  data,
+  onMouseEnterAction,
+  onMouseLeaveAction,
+}) => {
   const green = require('../assets/greenarrow.png');
   const red = require('../assets/redarrow.png');
   return (
@@ -24,7 +30,16 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
       xmlns='http://www.w3.org/2000/svg'
       id='order-map'
     >
-      <g className='g-box-shadow' name='Центральный ФО'>
+      <g
+        className='g-box-shadow'
+        name='Центральный ФО'
+        onMouseEnter={() => {
+          if (data?.centr?.common > 0 || data?.centr?.compare !== 0) {
+            onMouseEnterAction(true);
+          }
+        }}
+        onMouseLeave={() => onMouseEnterAction(false)}
+      >
         <path
           name='Центральный ФО'
           fillRule='evenodd'
@@ -317,7 +332,19 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
           </foreignObject>
         )}
       </g>
-      <g className='g-box-shadow' name='Северо-Кавказский ФО'>
+      <g
+        className='g-box-shadow'
+        name='Северо-Кавказский ФО'
+        onMouseEnter={() => {
+          if (
+            data?.northCaucasian?.common > 0 ||
+            data?.northCaucasian?.compare !== 0
+          ) {
+            onMouseEnterAction(true);
+          }
+        }}
+        onMouseLeave={() => onMouseEnterAction(false)}
+      >
         <path
           name='Северо-Кавказский ФО'
           fillRule='evenodd'
@@ -473,7 +500,16 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
           </foreignObject>
         )}
       </g>
-      <g className='g-box-shadow' name='Южный ФО'>
+      <g
+        className='g-box-shadow'
+        name='Южный ФО'
+        onMouseEnter={() => {
+          if (data?.southern?.common > 0 || data?.southern?.compare !== 0) {
+            onMouseEnterAction(true);
+          }
+        }}
+        onMouseLeave={() => onMouseEnterAction(false)}
+      >
         <path
           name='Южный ФО'
           fillRule='evenodd'
@@ -698,7 +734,16 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
           </foreignObject>
         )}
       </g>
-      <g className='g-box-shadow' name='Дальневосточный ФО'>
+      <g
+        className='g-box-shadow'
+        name='Дальневосточный ФО'
+        onMouseEnter={() => {
+          if (data?.farEastern?.common > 0 || data?.farEastern?.compare !== 0) {
+            onMouseEnterAction(true);
+          }
+        }}
+        onMouseLeave={() => onMouseEnterAction(false)}
+      >
         <path
           name='Дальневосточный ФО'
           fillRule='evenodd'
@@ -1197,7 +1242,16 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
           </foreignObject>
         )}
       </g>
-      <g className='g-box-shadow' name='Сибирский ФО'>
+      <g
+        className='g-box-shadow'
+        name='Сибирский ФО'
+        onMouseEnter={() => {
+          if (data?.siberian?.common > 0 || data?.siberian?.compare !== 0) {
+            onMouseEnterAction(true);
+          }
+        }}
+        onMouseLeave={() => onMouseEnterAction(false)}
+      >
         <path
           name='Сибирский ФО'
           fillRule='evenodd'
@@ -1721,7 +1775,16 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
           </foreignObject>
         )}
       </g>
-      <g className='g-box-shadow' name='Уральский ФО'>
+      <g
+        className='g-box-shadow'
+        name='Уральский ФО'
+        onMouseEnter={() => {
+          if (data?.ural?.common > 0 || data?.ural?.compare !== 0) {
+            onMouseEnterAction(true);
+          }
+        }}
+        onMouseLeave={() => onMouseEnterAction(false)}
+      >
         <path
           name='Уральский ФО'
           fillRule='evenodd'
@@ -1922,7 +1985,19 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
           </foreignObject>
         )}
       </g>
-      <g className='g-box-shadow' name='Приволжский ФО'>
+      <g
+        className='g-box-shadow'
+        name='Приволжский ФО'
+        onMouseEnter={() => {
+          if (
+            data?.privolzhsky?.common > 0 ||
+            data?.privolzhsky?.compare !== 0
+          ) {
+            onMouseEnterAction(true);
+          }
+        }}
+        onMouseLeave={() => onMouseEnterAction(false)}
+      >
         <path
           name='Приволжский ФО'
           fillRule='evenodd'
@@ -2225,7 +2300,19 @@ const Map = ({ onMouseOut, onMouseMove, data }) => {
           </foreignObject>
         )}
       </g>
-      <g className='g-box-shadow' name='Северо-Западный ФО'>
+      <g
+        className='g-box-shadow'
+        name='Северо-Западный ФО'
+        onMouseEnter={() => {
+          if (
+            data?.northWestern?.common > 0 ||
+            data?.northWestern?.compare !== 0
+          ) {
+            onMouseEnterAction(true);
+          }
+        }}
+        onMouseLeave={() => onMouseEnterAction(false)}
+      >
         <path
           name='Северо-Западный ФО'
           d='M501.367 154.566L501.816 154.54L501.832 154.091L501.981 149.74L501.984 149.649L501.955 149.563L500.46 145.213L500.322 144.811L499.904 144.888L494.522 145.883L494.217 145.939L494.136 146.238L493.089 150.091L493.021 150.34L493.187 150.537L496.626 154.639L496.785 154.828L497.031 154.814L501.367 154.566Z'

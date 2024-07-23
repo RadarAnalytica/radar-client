@@ -305,7 +305,7 @@ const OrdersMap = () => {
 
   const [tooltipData, setTooltipData] = useState();
   useEffect(() => {
-    if (foFirst && geoData?.geo_data.length) {
+    if (foFirst && geoData?.geo_data?.length) {
       const info = {
         ordersCount:
           [...geoData?.geo_data]?.filter(
@@ -612,9 +612,28 @@ const OrdersMap = () => {
   const oneShop = shop?.filter((item) => item?.id == activeBrand)[0];
   const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
 
-  useEffect(() => {
-    console.log('shouldDisplay', shouldDisplay);
-  }, [shouldDisplay]);
+  const handleTooltipPosition = (x, y) => {
+    const tooltipWidth = (22 * window.innerWidth) / 100;
+    const padding = 16;
+    // Defining the right border of an element
+    const element = document.getElementById('map');
+    const elementRect = element.getBoundingClientRect();
+    const rightEdge = elementRect.right;
+    // Adjusting the position of the tooltip
+    let correctedX = x;
+    if (x + tooltipWidth > rightEdge) {
+      correctedX = rightEdge - tooltipWidth - padding;
+    }
+
+    setTooltipPosition({ x: correctedX, y });
+  };
+
+  const updateTooltipPosition = (event) => {
+    const x = event.clientX;
+    const y = event.clientY;
+
+    handleTooltipPosition(x, y);
+  };
 
   return (
     isVisible && (
@@ -676,14 +695,12 @@ const OrdersMap = () => {
               </div>
 
               {byRegions ? (
-                <div
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                  id='map'
-                >
+                <div id='map'>
                   <Map
-                    onMouseMove={showTooltip}
+                    onMouseMove={updateTooltipPosition}
                     onMouseOut={hideTooltip}
+                    onMouseEnterAction={setIsHovered}
+                    onMouseLeaveAction={setIsHovered}
                     data={commonAndCompareOnMap}
                   />
                   {geoData && isHovered && (

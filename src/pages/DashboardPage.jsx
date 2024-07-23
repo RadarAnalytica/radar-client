@@ -22,6 +22,7 @@ import DataCollectionNotification from '../components/DataCollectionNotification
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchAllShops } from '../redux/dashboard/dashboardActions';
 import { shops } from '../redux/shops/shopsActions';
+import downloadIcon from '../pages/images/Download.svg';
 import { useNavigate } from 'react-router-dom';
 
 const DashboardPage = () => {
@@ -657,7 +658,7 @@ const DashboardPage = () => {
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Сводка продаж'} />
-          {oneShop?.is_primary_collect ? (
+          {!dataDashBoard?.costPriceCount ? (
             <SelfCostWarning activeBrand={activeBrand} />
           ) : null}
 
@@ -667,14 +668,21 @@ const DashboardPage = () => {
             <SelfCostWarning />
           ) : null}
           {wbData === null ? <DataCollectionNotification /> : null} */}
-          <DashboardFilter
-            periodValue={days}
-            setDays={setDays}
-            setActiveBrand={setActiveBrand}
-            setChangeBrand={setChangeBrand}
-            shop={shop}
-            setPrimary={setPrimary}
-          />
+          <div className='filter-panel'>
+            <DashboardFilter
+              periodValue={days}
+              setDays={setDays}
+              setActiveBrand={setActiveBrand}
+              setChangeBrand={setChangeBrand}
+              shop={shop}
+              setPrimary={setPrimary}
+            />
+            <div className='download-button'>
+              <img src={downloadIcon} />
+              Скачать Excel
+            </div>
+          </div>
+
           {shouldDisplay ? (
             <div>
               <div className='container dash-container p-3 pt-0 d-flex gap-3'>
