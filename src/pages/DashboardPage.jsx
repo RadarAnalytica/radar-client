@@ -22,7 +22,7 @@ import DataCollectionNotification from '../components/DataCollectionNotification
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchAllShops } from '../redux/dashboard/dashboardActions';
 import { shops } from '../redux/shops/shopsActions';
-import downloadIcon from '../pages/images/Download.svg'
+import downloadIcon from '../pages/images/Download.svg';
 import { useNavigate } from 'react-router-dom';
 
 const DashboardPage = () => {
@@ -658,7 +658,7 @@ const DashboardPage = () => {
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Сводка продаж'} />
-          {oneShop?.is_primary_collect ? (
+          {!dataDashBoard?.costPriceCount ? (
             <SelfCostWarning activeBrand={activeBrand} />
           ) : null}
 
@@ -677,7 +677,10 @@ const DashboardPage = () => {
               shop={shop}
               setPrimary={setPrimary}
             />
-            <div className='download-button'><img src={downloadIcon} />Скачать Excel</div>
+            <div className='download-button'>
+              <img src={downloadIcon} />
+              Скачать Excel
+            </div>
           </div>
 
           {shouldDisplay ? (
