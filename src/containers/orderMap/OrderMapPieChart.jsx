@@ -20,7 +20,6 @@ const OrderMapPieChart = ({
   titleTooltipCount,
   getColor,
   tooltipData,
-  getColorStok,
 }) => {
   const getColorTooltip = (name) => {
     switch (name) {
@@ -45,34 +44,50 @@ const OrderMapPieChart = ({
     }
   };
 
-  const getColorStockTooltip = (name) => {
-    switch (name) {
-      case 'Тула':
-        return 'rgba(254, 197, 61, 1)';
-      case 'Казань':
-        return 'grey';
-      case 'Подольск':
-        return 'rgba(74, 217, 145, 1)';
-      case 'Краснодар':
-        return 'orangered';
-      case 'Электросталь':
-        return 'rgba(129, 172, 255, 1)';
-      case 'Коледино':
-        return 'rgba(255, 153, 114, 1)';
-      case 'Екатеринбург':
-        return 'yellow';
-      default:
-        return '';
-    }
-  };
-
-  const backgroundColor = [
+  const cityColors = [
     'rgba(129, 172, 255, 1)',
     'rgba(255, 153, 114, 1)',
     'rgba(154, 129, 255, 1)',
     'rgba(74, 217, 145, 1)',
     'rgba(254, 197, 61, 1)',
   ];
+
+ 
+
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+  
+  let cityColorMap = {}; //Do not delete! Needed for getColorStockTooltip to work
+  const getColorStockTooltip = (city) => {
+    // If the city already exists in cityColorMap, return its color
+    if (cityColorMap[city]) {
+      return cityColorMap[city];
+    }
+    // If the number of cities in cityColorMap is less than 5, assign a color from the colors array
+    const colorIndex = Object.keys(cityColorMap).length;
+    if (colorIndex < 5) {
+      cityColorMap[city] = cityColors[colorIndex];
+    } else {
+      // Otherwise, we assign a random color
+      cityColorMap[city] = getRandomColor();
+    }
+
+    return cityColorMap[city];
+  };
+
+  const getCityCircle = (color) => {
+    return (
+      <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
+        <circle cx='8' cy='8' r='8' fill={color} />
+      </svg>
+    );
+  };
 
   const updatedInfo = info.map((item) => {
     let sub = item.districtName?.split('федеральный округ')?.join('фо');
@@ -318,73 +333,75 @@ const OrderMapPieChart = ({
         </div>
         <div className='col pt-4' style={{ marginLeft: '0' }}>
           {firstFive
-            ? firstFive.map((obj, key) => (
-                <div
-                  className='mb-2 d-flex'
-                  style={{ flexWrap: 'wrap', maxWidth: '100%' }}
-                  key={key}
-                >
-                  <div className='d-flex align-items-start'>
-                    <span
-                      className='pb-2'
-                      style={{
-                        width: '0.75vw',
-                        height: '0.75vw',
-                        borderRadius: '100%',
-
-                        marginLeft: '-0.5vw',
-                        marginRight: '0.7vw',
-                        marginTop: '-0.75vh',
-                      }}
-                    >
-                      {obj.districtName
-                        ? getColor(obj.districtName)
-                        : getColorStok[key]}
-                    </span>
-                    <p className='mb-0  pe-2' style={{ fontSize: '1.75vh' }}>
-                      {obj.districtName ? obj.districtName : obj.stockName}
-                    </p>
-                  </div>
-                  <p
-                    className='mb-0 col text-end fw-bold'
-                    style={{ fontSize: '1.85vh' }}
-                  >
-                    {obj.percent.toFixed(1)}&nbsp;%
-                  </p>
+            ? firstFive.map((obj, key) => {
+                return (
                   <div
-                    className='mb-0 ms-1 col-2 text-end d-flex justify-content-around align-items-start'
-                    style={{ fontSize: '1.85vh', paddingLeft: '1vw' }}
+                    className='mb-2 d-flex'
+                    style={{ flexWrap: 'wrap', maxWidth: '100%' }}
+                    key={key}
                   >
-                    <span className='pb-1'>
-                      <img
-                        src={obj.comparePercent > 0 ? GreenArrow : RedArrow}
-                        alt=''
-                        style={{ width: '1.25vw', marginRight: '4px' }}
-                      />
-                    </span>
-                    <span
-                      className='pt-1'
-                      style={
-                        obj.comparePercent > 0
-                          ? {
-                              fontSize: '1.5vh',
-                              whiteSpace: 'nowrap',
-                              fontWeight: 600,
-                              color: 'rgba(0, 182, 155, 1)',
-                            }
-                          : {
-                              fontSize: '1.5vh',
-                              whiteSpace: 'nowrap',
-                              fontWeight: 600,
-                              color: 'rgba(249, 60, 101, 1)',
-                            }
-                      }
+                    <div className='d-flex align-items-start'>
+                      <span
+                        className='pb-2'
+                        style={{
+                          width: '0.75vw',
+                          height: '0.75vw',
+                          borderRadius: '100%',
+
+                          marginLeft: '-0.5vw',
+                          marginRight: '0.7vw',
+                          marginTop: '-0.75vh',
+                        }}
+                      >
+                        {obj.districtName
+                          ? getColor(obj.districtName)
+                          : getCityCircle(getColorStockTooltip(obj.stockName))}
+                      </span>
+                      <p className='mb-0  pe-2' style={{ fontSize: '1.75vh' }}>
+                        {obj.districtName ? obj.districtName : obj.stockName}
+                      </p>
+                    </div>
+                    <p
+                      className='mb-0 col text-end fw-bold'
+                      style={{ fontSize: '1.85vh' }}
                     >
-                      {Number(obj.comparePercent).toFixed(0)} %
-                    </span>
+                      {obj.percent.toFixed(1)}&nbsp;%
+                    </p>
+                    <div
+                      className='mb-0 ms-1 col-2 text-end d-flex justify-content-around align-items-start'
+                      style={{ fontSize: '1.85vh', paddingLeft: '1vw' }}
+                    >
+                      <span className='pb-1'>
+                        <img
+                          src={obj.comparePercent > 0 ? GreenArrow : RedArrow}
+                          alt=''
+                          style={{ width: '1.25vw', marginRight: '4px' }}
+                        />
+                      </span>
+                      <span
+                        className='pt-1'
+                        style={
+                          obj.comparePercent > 0
+                            ? {
+                                fontSize: '1.5vh',
+                                whiteSpace: 'nowrap',
+                                fontWeight: 600,
+                                color: 'rgba(0, 182, 155, 1)',
+                              }
+                            : {
+                                fontSize: '1.5vh',
+                                whiteSpace: 'nowrap',
+                                fontWeight: 600,
+                                color: 'rgba(249, 60, 101, 1)',
+                              }
+                        }
+                      >
+                        {Number(obj.comparePercent).toFixed(0)} %
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             : null}
         </div>
       </div>
