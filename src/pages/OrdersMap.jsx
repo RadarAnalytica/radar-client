@@ -415,72 +415,6 @@ const OrdersMap = () => {
     }
   };
 
-  const getColorStock = (name) => {
-    switch (name) {
-      case 'Тула':
-        return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-            <circle cx='8' cy='8' r='8' fill='rgba(254, 197, 61, 1)' />
-          </svg>
-        );
-      case 'Казань':
-        return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-            <circle cx='8' cy='8' r='8' fill='grey' />
-          </svg>
-        );
-      case 'Подольск':
-        return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-            <circle cx='8' cy='8' r='8' fill='rgba(74, 217, 145, 1)' />
-          </svg>
-        );
-      case 'Краснодар':
-        return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-            <circle cx='8' cy='8' r='8' fill='orangered' />
-          </svg>
-        );
-      case 'Электросталь':
-        return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-            <circle cx='8' cy='8' r='8' fill='rgba(129, 172, 255, 1)' />
-          </svg>
-        );
-      case 'Коледино':
-        return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-            <circle cx='8' cy='8' r='8' fill='rgba(255, 153, 114, 1)' />
-          </svg>
-        );
-      case 'Екатеринбург':
-        return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-            <circle cx='8' cy='8' r='8' fill='yellow' />
-          </svg>
-        );
-      default:
-        return '';
-    }
-  };
-  const backgroundColorStok = [
-    <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-      <circle cx='8' cy='8' r='8' fill='rgba(254, 197, 61, 1)' />
-    </svg>,
-    <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-      <circle cx='8' cy='8' r='8' fill='grey' />
-    </svg>,
-    <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-      <circle cx='8' cy='8' r='8' fill='rgba(74, 217, 145, 1)' />
-    </svg>,
-    <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-      <circle cx='8' cy='8' r='8' fill='orangered' />
-    </svg>,
-    <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-      <circle cx='8' cy='8' r='8' fill='rgba(129, 172, 255, 1)' />
-    </svg>,
-  ];
-
   const green = require('../assets/greenarrow.png');
   const red = require('../assets/redarrow.png');
 
@@ -877,7 +811,6 @@ const OrdersMap = () => {
                         amount={orderAmountStock}
                         titleTooltipAmount={'Заказы, руб'}
                         titleTooltipCount={'Заказы, шт'}
-                        getColorStok={backgroundColorStok}
                         tooltipData={tooltipOrderDataStock}
                       />
                     </div>
@@ -893,7 +826,6 @@ const OrdersMap = () => {
                         amount={saleAmountStock}
                         titleTooltipAmount={'Продажи,руб'}
                         titleTooltipCount={'Продажи,шт'}
-                        getColorStok={backgroundColorStok}
                         tooltipData={tooltipSalesDataStock}
                       />
                     </div>
