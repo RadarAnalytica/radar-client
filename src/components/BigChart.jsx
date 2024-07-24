@@ -293,6 +293,8 @@ const BigChart = ({
               tooltip: {
                 enabled: false,
                 intersect: false,
+                mode: 'index',
+                axis: 'x',
                 callbacks: {},
                 external: function (context) {
                   // Tooltip Element
