@@ -1,4 +1,5 @@
 import React from 'react';
+import downloadIcon from '../pages/images/Download.svg';
 
 const DashboardFilter = ({
   setActiveBrand,
@@ -25,7 +26,7 @@ const DashboardFilter = ({
     .join('-');
 
   return (
-    <div className='filter  dash-container p-3 pb-4 pt-0 d-flex'>
+    <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
         <div className='filter-item col'>
           <label
@@ -156,6 +157,10 @@ const DashboardFilter = ({
                         <path d="M2 2L14 14L26 2" stroke="#1A1A1A" strokeWidth="4" strokeLinecap="round" />
                     </svg>
                 </div> */}
+      </div>
+      <div className='download-button'>
+        <img src={downloadIcon} />
+        Скачать Excel
       </div>
     </div>
   );

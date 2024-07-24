@@ -52,8 +52,6 @@ const OrderMapPieChart = ({
     'rgba(254, 197, 61, 1)',
   ];
 
- 
-
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -62,7 +60,7 @@ const OrderMapPieChart = ({
     }
     return color;
   };
-  
+
   let cityColorMap = {}; //Do not delete! Needed for getColorStockTooltip to work
   const getColorStockTooltip = (city) => {
     // If the city already exists in cityColorMap, return its color
@@ -331,7 +329,14 @@ const OrderMapPieChart = ({
             </p>
           </div>
         </div>
-        <div className='col pt-4' style={{ marginLeft: '0' }}>
+        <div
+          style={{
+            marginLeft: '0',
+            display: 'flex',
+            flexDirection: 'column',
+            alignSelf: 'center',
+          }}
+        >
           {firstFive
             ? firstFive.map((obj, key) => {
                 return (
@@ -368,8 +373,12 @@ const OrderMapPieChart = ({
                       {obj.percent.toFixed(1)}&nbsp;%
                     </p>
                     <div
-                      className='mb-0 ms-1 col-2 text-end d-flex justify-content-around align-items-start'
-                      style={{ fontSize: '1.85vh', paddingLeft: '1vw' }}
+                      className='mb-0 ms-1  col-2 text-end d-flex justify-content-around align-items-start'
+                      style={{
+                        fontSize: '1.85vh',
+                        paddingLeft: '1vw',
+                        marginRight: '1vw',
+                      }}
                     >
                       <span className='pb-1'>
                         <img
@@ -379,7 +388,7 @@ const OrderMapPieChart = ({
                         />
                       </span>
                       <span
-                        className='pt-1'
+                        className='pt-1 mr-1'
                         style={
                           obj.comparePercent > 0
                             ? {

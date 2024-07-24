@@ -676,7 +676,7 @@ const DashboardPage = () => {
             <SelfCostWarning />
           ) : null}
           {wbData === null ? <DataCollectionNotification /> : null} */}
-          <div className='filter-panel'>
+          
             <DashboardFilter
               periodValue={days}
               setDays={setDays}
@@ -685,11 +685,11 @@ const DashboardPage = () => {
               shop={shop}
               setPrimary={setPrimary}
             />
-            <div className='download-button'>
+            {/* <div className='download-button'>
               <img src={downloadIcon} />
               Скачать Excel
-            </div>
-          </div>
+            </div> */}
+          
 
           {shouldDisplay ? (
             <div>
