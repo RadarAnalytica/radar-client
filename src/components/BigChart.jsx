@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Chart } from 'react-chartjs-2';
 import {
   CategoryScale,
@@ -391,11 +391,18 @@ const BigChart = ({
                   // Calculate tooltip position
                   let tooltipLeft =
                     position.left + window.scrollX + tooltipModel.caretX;
+                  let tooltipTop =
+                    position.top + window.scrollY + tooltipModel.caretY;
                   // Adjust position to stay within chart area
                   const tooltipWidth = tooltipEl.offsetWidth;
+                  const tooltipHeight = tooltipEl.offsetHeight / 2;
 
                   if (tooltipLeft + tooltipWidth > position.right) {
                     tooltipLeft = position.right - tooltipWidth;
+                  }
+
+                  if (tooltipTop + tooltipHeight > position.bottom) {
+                    tooltipTop = position.bottom - tooltipHeight;
                   }
 
                   // Display, position, and set styles for font
@@ -407,9 +414,7 @@ const BigChart = ({
                   tooltipEl.style.opacity = 1;
                   tooltipEl.style.position = 'absolute';
                   tooltipEl.style.left = tooltipLeft + 'px';
-                  tooltipEl.style.top =
-                    position.top + window.scrollY + tooltipModel.caretY + 'px';
-                  tooltipEl.style.font = bodyFont?.string;
+                  tooltipEl.style.top = tooltipTop + 'px';
                   tooltipEl.style.padding =
                     tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
                   tooltipEl.style.pointerEvents = 'none';
@@ -422,6 +427,7 @@ const BigChart = ({
                 type: 'linear',
                 position: 'right',
                 suggestedMax: maxValue,
+                min: 0,
                 grid: {
                   drawOnChartArea: false, // only want the grid lines for one axis to show up
                 },
@@ -433,6 +439,7 @@ const BigChart = ({
                 id: 'B',
                 type: 'linear',
                 position: 'left',
+                min: 0,
                 suggestedMax: maxAmount,
                 grid: {
                   drawOnChartArea: true,

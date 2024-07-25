@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Chart, Doughnut } from 'react-chartjs-2';
 import { formatPrice } from '../../service/utils';
@@ -370,7 +370,7 @@ const OrderMapPieChart = ({
                       className='mb-0 col text-end fw-bold'
                       style={{ fontSize: '1.85vh' }}
                     >
-                      {obj.percent.toFixed(1)}&nbsp;%
+                      {obj.percent.toFixed(obj.percent < 10 ? 1 : 0)}&nbsp;%
                     </p>
                     <div
                       className='mb-0 ms-1  col-2 text-end d-flex justify-content-around align-items-start'

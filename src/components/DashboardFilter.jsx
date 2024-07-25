@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import downloadIcon from '../pages/images/Download.svg';
+import { ServiceFunctions } from '../service/serviceFunctions';
+import AuthContext from '../service/AuthContext';
+import { URL } from '../service/config';
 
 const DashboardFilter = ({
   setActiveBrand,
@@ -8,7 +11,10 @@ const DashboardFilter = ({
   shop,
   setChangeBrand,
   setPrimary,
+  activeShopId,
 }) => {
+  const { authToken } = useContext(AuthContext);
+  const shopName = shop?.find((item) => item.id == activeShopId)?.brand_name;
   const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7))
     .toLocaleDateString('ru')
     ?.split('.')
@@ -24,6 +30,31 @@ const DashboardFilter = ({
     ?.split('.')
     .reverse()
     .join('-');
+
+  const handleDownload = async () => {
+    fetch(
+      `${URL}/api/dashboard/download?period=${periodValue}&shop=${activeShopId}`,
+      {
+        method: 'GET',
+        headers: {
+          authorization: 'JWT ' + authToken,
+        },
+      }
+    )
+      .then((response) => {
+        return response.blob();
+      })
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `Сводка_продаж.xlsx`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      })
+      .catch((e) => console.error(e));
+  };
 
   return (
     <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
@@ -97,7 +128,7 @@ const DashboardFilter = ({
             }}
             className='form-control'
             id='store'
-            defaultValue={`${shop?.[0]?.id}`}
+            defaultValue={activeShopId || `${shop?.[0]?.id}`}
             onChange={(e) => {
               const firstValue = e.target.value.split('|')[0];
               const secondValue = e.target.value.split('|')[1];
@@ -111,7 +142,9 @@ const DashboardFilter = ({
               value={`${shop?.[0]?.id}|${shop?.[0]?.is_primary_collect}|${shop?.[0]?.is_valid}`}
               hidden
             >
-              {shop?.[0]?.brand_name}
+              {shopName ||
+                shop?.[activeShopId]?.brand_name ||
+                shop?.[0]?.brand_name}
             </option>
             <option value='0'>Все</option>
             {shop &&
@@ -158,7 +191,7 @@ const DashboardFilter = ({
                     </svg>
                 </div> */}
       </div>
-      <div className='download-button'>
+      <div className='download-button' onClick={handleDownload}>
         <img src={downloadIcon} />
         Скачать Excel
       </div>

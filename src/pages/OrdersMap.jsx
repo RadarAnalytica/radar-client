@@ -22,11 +22,12 @@ const OrdersMap = () => {
     (state) => state.geoDataSlice
   );
   const shop = useAppSelector((state) => state.shopsSlice.shops);
+  const activeShopId = localStorage.getItem('activeShop');
 
   const [byRegions, setByRegions] = useState(true);
   const [days, setDays] = useState(30);
   const [brandNames, setBrandNames] = useState();
-  const [activeBrand, setActiveBrand] = useState('0');
+  const [activeBrand, setActiveBrand] = useState(activeShopId || shop?.[0]?.id);
 
   const [changeBrand, setChangeBrand] = useState();
   const [primary, setPrimary] = useState();
@@ -34,7 +35,8 @@ const OrdersMap = () => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+    activeBrand &&
+      dispatch(fetchGeographyData({ authToken, days, activeBrand }));
   }, [dispatch, authToken, days, activeBrand]);
 
   useEffect(() => {
@@ -43,9 +45,14 @@ const OrdersMap = () => {
 
   useEffect(() => {
     if (shop.length > 0) {
-      setActiveBrand(shop?.[0]?.id);
+      setActiveBrand(activeShopId || shop?.[0]?.id);
     }
   }, [shop]);
+
+  const handleSaveActiveShop = (shopId) => {
+    localStorage.setItem('activeShop', shopId);
+    setActiveBrand(shopId);
+  };
 
   // const changePeriod = () => {
   //     setLoading(true)
@@ -581,10 +588,11 @@ const OrdersMap = () => {
             brandNames={brandNames}
             defaultValue={days}
             setDays={setDays}
-            changeBrand={setActiveBrand}
+            changeBrand={handleSaveActiveShop}
             shop={shop}
             setChangeBrand={setChangeBrand}
             setPrimary={setPrimary}
+            activeShopId={activeShopId}
           />
           {shouldDisplay ? (
             <div className='map-container dash-container container p-3'>
