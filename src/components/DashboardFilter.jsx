@@ -8,7 +8,9 @@ const DashboardFilter = ({
   shop,
   setChangeBrand,
   setPrimary,
+  activeShopId,
 }) => {
+  const shopName = shop?.find((item) => item.id == activeShopId)?.brand_name;
   const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7))
     .toLocaleDateString('ru')
     ?.split('.')
@@ -97,7 +99,7 @@ const DashboardFilter = ({
             }}
             className='form-control'
             id='store'
-            defaultValue={`${shop?.[0]?.id}`}
+            defaultValue={activeShopId || `${shop?.[0]?.id}`}
             onChange={(e) => {
               const firstValue = e.target.value.split('|')[0];
               const secondValue = e.target.value.split('|')[1];
@@ -111,7 +113,9 @@ const DashboardFilter = ({
               value={`${shop?.[0]?.id}|${shop?.[0]?.is_primary_collect}|${shop?.[0]?.is_valid}`}
               hidden
             >
-              {shop?.[0]?.brand_name}
+              {shopName ||
+                shop?.[activeShopId]?.brand_name ||
+                shop?.[0]?.brand_name}
             </option>
             <option value='0'>Все</option>
             {shop &&

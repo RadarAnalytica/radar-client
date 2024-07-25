@@ -38,7 +38,8 @@ const DashboardPage = () => {
   const [primary, setPrimary] = useState();
   const dispatch = useAppDispatch();
   const shop = useAppSelector((state) => state.shopsSlice.shops);
-  const [activeBrand, setActiveBrand] = useState('0');
+  const activeShopId = localStorage.getItem('activeShop');
+  const [activeBrand, setActiveBrand] = useState(activeShopId || shop?.[0]?.id);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -48,14 +49,19 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (shop.length > 0) {
-      setActiveBrand(shop?.[0]?.id);
+      setActiveBrand(activeShopId || shop?.[0]?.id);
     }
   }, [shop]);
+
+  const handleSaveActiveShop = (shopId) => {
+    localStorage.setItem('activeShop', shopId);
+    setActiveBrand(shopId);
+  };
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    updateDataDashBoard(days, activeBrand, authToken);
+    activeBrand && updateDataDashBoard(days, activeBrand, authToken);
   }, [days, activeBrand, authToken]);
 
   const updateDataDashBoard = async (days, activeBrand, authToken) => {
@@ -488,7 +494,7 @@ const DashboardPage = () => {
   }
 
   const chartData = useMemo(() => {
-    const countDays = dataDashBoard?.orderCountList.length;
+    const countDays = dataDashBoard?.orderCountList?.length;
     return {
       labels: getPastDays(countDays).reverse(),
       datasets: [
@@ -676,20 +682,20 @@ const DashboardPage = () => {
             <SelfCostWarning />
           ) : null}
           {wbData === null ? <DataCollectionNotification /> : null} */}
-          
-            <DashboardFilter
-              periodValue={days}
-              setDays={setDays}
-              setActiveBrand={setActiveBrand}
-              setChangeBrand={setChangeBrand}
-              shop={shop}
-              setPrimary={setPrimary}
-            />
-            {/* <div className='download-button'>
+
+          <DashboardFilter
+            periodValue={days}
+            setDays={setDays}
+            setActiveBrand={handleSaveActiveShop}
+            setChangeBrand={setChangeBrand}
+            shop={shop}
+            setPrimary={setPrimary}
+            activeShopId={activeShopId}
+          />
+          {/* <div className='download-button'>
               <img src={downloadIcon} />
               Скачать Excel
             </div> */}
-          
 
           {shouldDisplay ? (
             <div>
