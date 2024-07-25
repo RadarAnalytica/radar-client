@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import sortArrow from '../assets/sortarrow.svg';
+import ArrowUp from '../assets/ArrowUp.svg';
+import ArrowDown from '../assets/ArrowDown.svg';
 
 const TableStock = ({ dataTable, setDataTable }) => {
   const [asc, setAsc] = useState(true);
@@ -17,8 +19,25 @@ const TableStock = ({ dataTable, setDataTable }) => {
     return setDataTable(sortedData);
   };
 
+  // document.addEventListener('DOMContentLoaded', function () {
+  //   const iconContainer = document.getElementById('icon-sort-wrap');
+  //   const icon = document.getElementById('icon-sort');
+
+  //   iconContainer.addEventListener('click', function () {
+  //     console.log('qqwwwwwwq');
+  //     icon.classList.toggle('sort-icon_rotate');
+  //   });
+  // });
+
+  function toggleRotate() {
+    const iconUp = document.getElementById('icon-sort-up');
+    const iconDown = document.getElementById('icon-sort-down');
+    iconUp.classList.toggle('sort-icon_rotate');
+    iconDown.classList.toggle('sort-icon_rotate');
+  }
+
   return (
-    <div class='scrollable-table table-content'>
+    <div class=' dash-container scrollable-table table-content '>
       <table className='table'>
         <tr style={{ fontSize: '24px', fontWeight: '700' }}>
           <th colspan='7'>О товаре</th>
@@ -67,11 +86,28 @@ const TableStock = ({ dataTable, setDataTable }) => {
             }}
           >
             Товар
-            <img
-              onClick={() => sortData('productName')}
-              src={sortArrow}
-              alt=''
-            />
+            <div
+              className='icon-sort-wrap'
+              id='icon-sort-wrap'
+              onClick={() => {
+                toggleRotate();
+                sortData('productName');
+              }}
+              style={{ background: 'transparent' }}
+            >
+              <img
+                className='icon-sort'
+                id='icon-sort-up'
+                src={ArrowUp}
+                alt=''
+              />
+              <img
+                className='icon-sort'
+                id='icon-sort-down'
+                src={ArrowDown}
+                alt=''
+              />
+            </div>
           </th>
           <th>
             Бренд
