@@ -173,10 +173,12 @@ const LinkedShops = () => {
   };
 
   const handleDeleteShop = () => {
-    dispatch(deleteShop(deleteShopData));
+    dispatch(deleteShop(deleteShopData)).then((data) =>
+      console.log('111data', data)
+    );
   };
   const handleAddShop = () => {
-    dispatch(addShop(addShopData));
+    dispatch(addShop(addShopData)).then((data) => console.log('222data', data));
   };
   const handleEditShop = () => {
     dispatch(editShop(editData));
