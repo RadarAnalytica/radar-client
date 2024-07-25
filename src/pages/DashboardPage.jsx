@@ -672,7 +672,7 @@ const DashboardPage = () => {
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Сводка продаж'} />
-          {!dataDashBoard?.costPriceCount ? (
+          {shouldDisplay && !dataDashBoard?.costPriceCount ? (
             <SelfCostWarning activeBrand={activeBrand} />
           ) : null}
 
@@ -692,10 +692,6 @@ const DashboardPage = () => {
             setPrimary={setPrimary}
             activeShopId={activeShopId}
           />
-          {/* <div className='download-button'>
-              <img src={downloadIcon} />
-              Скачать Excel
-            </div> */}
 
           {shouldDisplay ? (
             <div>
