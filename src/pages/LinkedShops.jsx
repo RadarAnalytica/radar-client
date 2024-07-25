@@ -22,6 +22,8 @@ import { shops } from '../redux/shops/shopsActions';
 import { editShop } from '../redux/editShop/editShopActions';
 import { addShop } from '../redux/addShop/addShopActions';
 import { deleteShop } from '../redux/deleteShop/deleteShopActions';
+import { areAllFieldsFilled } from '../service/utils';
+const warningIcon = require('../assets/warning.png');
 
 const LinkedShops = () => {
   const { user, authToken } = useContext(AuthContext);
@@ -77,14 +79,17 @@ const LinkedShops = () => {
 
   const [activeShop, setActiveShop] = useState(null);
   const [show, setShow] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showSelfcost, setShowSelfcost] = useState(false);
+  const [error, setError] = useState('');
 
   const [file, setFile] = useState();
 
   const handleClose = () => setShow(false);
+  const handleCloseError = () => setShowError(false);
   const handleSelfcostClose = () => setShowSelfcost(false);
   const handleShow = () => setShow(true);
 
@@ -173,16 +178,32 @@ const LinkedShops = () => {
   };
 
   const handleDeleteShop = () => {
-    dispatch(deleteShop(deleteShopData)).then((data) =>
-      console.log('111data', data)
-    );
+    dispatch(deleteShop(deleteShopData));
   };
-  const handleAddShop = () => {
-    dispatch(addShop(addShopData)).then((data) => console.log('222data', data));
+
+  const handleAddShop = (e) => {
+    if (!areAllFieldsFilled(addShopData)) {
+      e.preventDefault();
+      setError('Введите корректное значение для всех полей');
+      setShowError(true);
+      return;
+    }
+    dispatch(addShop(addShopData));
+    handleClose();
+    setShowSuccess(true);
   };
-  const handleEditShop = () => {
+
+  const handleEditShop = (e) => {
+    if (!areAllFieldsFilled(editData)) {
+      e.preventDefault();
+      setError('Введите корректное значение для всех полей');
+      setShowError(true);
+      return;
+    }
     dispatch(editShop(editData));
+    setShowEdit(false);
   };
+
   const redirect = () => {
     navigate('/dashboard');
   };
@@ -473,12 +494,14 @@ const LinkedShops = () => {
             type={'text'}
             placeholder={'Например, тестовый'}
             label={'Название магазина'}
+            required={true}
             callback={(e) => setBrandName(e.target.value)}
           />
           <InputField
             type={'text'}
             placeholder={'Что-то вроде: GJys67G7sbNw178F'}
             label={'Токен'}
+            required={true}
             callback={(e) => setTkn(e.target.value)}
           />
           <div className='mt-3'>
@@ -490,10 +513,8 @@ const LinkedShops = () => {
             <button
               className='prime-btn'
               style={{ padding: '16px 20px' }}
-              onClick={() => {
-                handleAddShop();
-                handleClose();
-                setShowSuccess(true);
+              onClick={(e) => {
+                handleAddShop(e);
               }}
             >
               Сохранить
@@ -578,9 +599,8 @@ const LinkedShops = () => {
             <button
               className='prime-btn'
               style={{ padding: '16px 20px' }}
-              onClick={() => {
-                handleEditShop();
-                setShowEdit(false);
+              onClick={(e) => {
+                handleEditShop(e);
               }}
             >
               Сохранить
@@ -774,6 +794,20 @@ const LinkedShops = () => {
             </div>
           )}
         </Modal.Body>
+      </Modal>
+
+      <Modal show={showError} onHide={handleCloseError}>
+        <Modal.Header closeButton>
+          <div>
+            <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
+              <img src={warningIcon} alt='' style={{ height: '3vh' }} />
+              <p className='fw-bold mb-0'>Ошибка!</p>
+            </div>
+            <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>
+              {error}
+            </p>
+          </div>
+        </Modal.Header>
       </Modal>
     </div>
   );
