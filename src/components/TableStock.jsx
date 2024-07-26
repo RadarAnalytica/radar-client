@@ -19,22 +19,17 @@ const TableStock = ({ dataTable, setDataTable }) => {
     return setDataTable(sortedData);
   };
 
-  // document.addEventListener('DOMContentLoaded', function () {
-  //   const iconContainer = document.getElementById('icon-sort-wrap');
-  //   const icon = document.getElementById('icon-sort');
-
-  //   iconContainer.addEventListener('click', function () {
-  //     console.log('qqwwwwwwq');
-  //     icon.classList.toggle('sort-icon_rotate');
-  //   });
-  // });
-
-  function toggleRotate() {
-    const iconUp = document.getElementById('icon-sort-up');
-    const iconDown = document.getElementById('icon-sort-down');
+  const toggleRotate = (element) => {
+    const iconUp = element.querySelector('.icon-sort-up');
+    const iconDown = element.querySelector('.icon-sort-down');
     iconUp.classList.toggle('sort-icon_rotate');
     iconDown.classList.toggle('sort-icon_rotate');
-  }
+  };
+
+  const handleSort = (element, columnName) => {
+    toggleRotate(element);
+    sortData(columnName);
+  };
 
   return (
     <div class=' dash-container scrollable-table table-content '>
@@ -88,22 +83,15 @@ const TableStock = ({ dataTable, setDataTable }) => {
             Товар
             <div
               className='icon-sort-wrap'
-              id='icon-sort-wrap'
-              onClick={() => {
-                toggleRotate();
+              onClick={(e) => {
+                toggleRotate(e.currentTarget);
                 sortData('productName');
               }}
               style={{ background: 'transparent' }}
             >
+              <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
               <img
-                className='icon-sort'
-                id='icon-sort-up'
-                src={ArrowUp}
-                alt=''
-              />
-              <img
-                className='icon-sort'
-                id='icon-sort-down'
+                className='icon-sort icon-sort-down'
                 src={ArrowDown}
                 alt=''
               />

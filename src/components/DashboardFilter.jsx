@@ -14,7 +14,9 @@ const DashboardFilter = ({
   activeShopId,
 }) => {
   const { authToken } = useContext(AuthContext);
-  const shopName = shop?.find((item) => item.id == activeShopId)?.brand_name;
+  const currentShop = shop?.find((item) => item.id == activeShopId);
+  const shopName = currentShop?.brand_name;
+
   const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7))
     .toLocaleDateString('ru')
     ?.split('.')
@@ -191,10 +193,12 @@ const DashboardFilter = ({
                     </svg>
                 </div> */}
       </div>
-      <div className='download-button' onClick={handleDownload}>
-        <img src={downloadIcon} />
-        Скачать Excel
-      </div>
+      {currentShop?.is_primary_collect && (
+        <div className='download-button' onClick={handleDownload}>
+          <img src={downloadIcon} />
+          Скачать Excel
+        </div>
+      )}
     </div>
   );
 };
