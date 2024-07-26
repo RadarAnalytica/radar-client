@@ -362,10 +362,6 @@ const OrdersMap = () => {
     }
   }, [foFirst, geoData, tooltipPosition.x]);
 
-  const hideTooltip = () => {
-    setTooltipData();
-  };
-
   const backgroundColor = [
     'rgba(129, 172, 255, 1)',
     'rgba(255, 153, 114, 1)',
@@ -647,9 +643,7 @@ const OrdersMap = () => {
                 <div id='map'>
                   <Map
                     onMouseMove={updateTooltipPosition}
-                    onMouseOut={hideTooltip}
                     onMouseEnterAction={setIsHovered}
-                    onMouseLeaveAction={setIsHovered}
                     data={commonAndCompareOnMap}
                   />
                   {geoData && isHovered && (

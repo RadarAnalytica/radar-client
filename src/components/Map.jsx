@@ -10,19 +10,12 @@ import PrivolCircle from '../assets/privolcircle.svg';
 import NorthWesternCircle from '../assets/northwesterncircle.svg';
 import FarEasternCircle from '../assets/fareasterncircle.svg';
 
-const Map = ({
-  onMouseOut,
-  onMouseMove,
-  data,
-  onMouseEnterAction,
-  onMouseLeaveAction,
-}) => {
+const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
   const green = require('../assets/greenarrow.png');
   const red = require('../assets/redarrow.png');
   return (
     <svg
       onMouseMove={(e) => onMouseMove(e)}
-      onMouseOut={(e) => onMouseOut(e)}
       width='1334'
       height='579'
       viewBox='0 0 1334 579'
