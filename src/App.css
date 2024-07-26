@@ -190,9 +190,14 @@ select {
   transition: background-color 1.1s ease;
 }
 .butt {
-  position: absolute;
+  /* align-self: flex-end; */
+  font-size: 16px;
+  width: 150px;
+  height: 64px;
+ 
+  /* position: absolute;
   top: 64%;
-  left: 6%;
+  left: 6%; */
 }
 
 .grey-block {
@@ -720,14 +725,18 @@ select {
 
 .linked-shop-block {
   position: relative;
+  display: flex;
+  flex-direction: column;
   height: 250px;
   background-color: white;
   padding: 1rem;
+  /* padding-left: 30px; */
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   min-width: 33vw;
   max-width: 37.5vw !important;
   margin-bottom: 1.5vh;
+  /* border: 1px solid red; */
 }
 
 .linked-shop-block h3,
@@ -1613,4 +1622,8 @@ select {
   align-items: center;
   z-index: 0;
   white-space: nowrap;
+}
+
+.linked-wrap .linked-shop-block {
+  padding-left: 1rem;
 }
