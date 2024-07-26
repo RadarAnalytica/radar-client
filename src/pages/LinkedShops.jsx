@@ -218,7 +218,7 @@ const LinkedShops = () => {
           className='container linked-shops-container d-flex'
           style={{ padding: '12px 24px', gap: '20px' }}
         >
-          <div className='row p-0'>
+          <div className='row linked-wrap p-0'>
             {data && data.length
               ? data.map((item, i) => (
                   <div className='linked-shop-block col me-2' key={i}>
@@ -460,14 +460,20 @@ const LinkedShops = () => {
 
                 <h3 className='fw-bold'>Новый магазин</h3>
               </div>
-              <p style={{ fontWeight: 600 }}>
-                Добавьте новые данные, чтобы отслеживать статистику по всем
-                вашим магазинам в одном месте
+              <p
+                style={{
+                  fontWeight: 600,
+                  fontSize: '16px',
+                  marginBottom: '1.5rem',
+                }}
+              >
+                Добавьте новые данные, чтобы отслеживать
+                <br /> статистику по всем вашим магазинам в одном месте
               </p>
               <div>
                 <button
                   className='mt-2 prime-btn butt'
-                  style={{ maxWidth: '200px', height: '6vh' }}
+                  style={{ maxWidth: '200px', height: '8vh' }}
                   onClick={() => handleShow()}
                 >
                   Подключить
