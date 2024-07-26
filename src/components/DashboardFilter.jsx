@@ -8,13 +8,13 @@ const DashboardFilter = ({
   setActiveBrand,
   periodValue,
   setDays,
-  shop,
+  shops,
   setChangeBrand,
   setPrimary,
   activeShopId,
 }) => {
   const { authToken } = useContext(AuthContext);
-  const currentShop = shop?.find((item) => item.id == activeShopId);
+  const currentShop = shops?.find((item) => item.id == activeShopId);
   const shopName = currentShop?.brand_name;
 
   const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7))
@@ -130,7 +130,7 @@ const DashboardFilter = ({
             }}
             className='form-control'
             id='store'
-            defaultValue={activeShopId || `${shop?.[0]?.id}`}
+            defaultValue={activeShopId || `${shops?.[0]?.id}`}
             onChange={(e) => {
               const firstValue = e.target.value.split('|')[0];
               const secondValue = e.target.value.split('|')[1];
@@ -141,16 +141,16 @@ const DashboardFilter = ({
             }}
           >
             <option
-              value={`${shop?.[0]?.id}|${shop?.[0]?.is_primary_collect}|${shop?.[0]?.is_valid}`}
+              value={`${shops?.[0]?.id}|${shops?.[0]?.is_primary_collect}|${shops?.[0]?.is_valid}`}
               hidden
             >
               {shopName ||
-                shop?.[activeShopId]?.brand_name ||
-                shop?.[0]?.brand_name}
+                shops?.[activeShopId]?.brand_name ||
+                shops?.[0]?.brand_name}
             </option>
             <option value='0'>Все</option>
-            {shop &&
-              shop?.map((brand) => (
+            {shops &&
+              shops?.map((brand) => (
                 <option
                   key={brand.id}
                   value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}

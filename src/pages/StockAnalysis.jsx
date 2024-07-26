@@ -12,7 +12,7 @@ import {
 } from '../service/getSaveFile';
 import AuthContext from '../service/AuthContext';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { shops } from '../redux/shops/shopsActions';
+import { fetchShops } from '../redux/shops/shopsActions';
 import DragDropFile from '../components/DragAndDropFiles';
 import Modal from 'react-bootstrap/Modal';
 
@@ -173,7 +173,7 @@ const StockAnalysis = () => {
   };
 
   useEffect(() => {
-    dispatch(shops(authToken));
+    dispatch(fetchShops(authToken));
   }, [dispatch]);
 
   console.log(shop, 'shop');

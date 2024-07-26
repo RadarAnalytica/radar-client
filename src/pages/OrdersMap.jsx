@@ -12,7 +12,7 @@ import { formatPrice } from '../service/utils';
 import SelfCostWarning from '../components/SelfCostWarning';
 import DataCollectionNotification from '../components/DataCollectionNotification';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { shops } from '../redux/shops/shopsActions';
+import { fetchShops } from '../redux/shops/shopsActions';
 import { fetchGeographyData } from '../redux/geoData/geoDataActions';
 
 const OrdersMap = () => {
@@ -21,13 +21,18 @@ const OrdersMap = () => {
   const { geoData, loading, error } = useAppSelector(
     (state) => state.geoDataSlice
   );
-  const shop = useAppSelector((state) => state.shopsSlice.shops);
-  const activeShopId = localStorage.getItem('activeShop');
+  const shops = useAppSelector((state) => state.shopsSlice.shops);
+  const storedActiveShop = localStorage.getItem('activeShop');
+  let activeShop;
+  if (storedActiveShop) activeShop = JSON.parse(storedActiveShop);
+  const activeShopId = activeShop?.id;
 
   const [byRegions, setByRegions] = useState(true);
   const [days, setDays] = useState(30);
   const [brandNames, setBrandNames] = useState();
-  const [activeBrand, setActiveBrand] = useState(activeShopId || shop?.[0]?.id);
+  const [activeBrand, setActiveBrand] = useState(
+    activeShopId || shops?.[0]?.id
+  );
 
   const [changeBrand, setChangeBrand] = useState();
   const [primary, setPrimary] = useState();
@@ -40,17 +45,19 @@ const OrdersMap = () => {
   }, [dispatch, authToken, days, activeBrand]);
 
   useEffect(() => {
-    dispatch(shops(authToken));
+    dispatch(fetchShops(authToken));
   }, [dispatch, authToken]);
 
   useEffect(() => {
-    if (shop.length > 0) {
-      setActiveBrand(activeShopId || shop?.[0]?.id);
+    if (shops.length > 0) {
+      setActiveBrand(activeShopId || shops?.[0]?.id);
     }
-  }, [shop]);
+  }, [shops]);
 
   const handleSaveActiveShop = (shopId) => {
-    localStorage.setItem('activeShop', shopId);
+    const currentShop = shops?.find((item) => item.id == shopId);
+    currentShop &&
+      localStorage.setItem('activeShop', JSON.stringify(currentShop));
     setActiveBrand(shopId);
   };
 
@@ -549,8 +556,8 @@ const OrdersMap = () => {
     count: item.saleCount,
   }));
 
-  const allShop = shop?.some((item) => item?.is_primary_collect === true);
-  const oneShop = shop?.filter((item) => item?.id == activeBrand)[0];
+  const allShop = shops?.some((item) => item?.is_primary_collect === true);
+  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
   const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
 
   const handleTooltipPosition = (x, y) => {
@@ -589,7 +596,7 @@ const OrdersMap = () => {
             defaultValue={days}
             setDays={setDays}
             changeBrand={handleSaveActiveShop}
-            shop={shop}
+            shops={shops}
             setChangeBrand={setChangeBrand}
             setPrimary={setPrimary}
             activeShopId={activeShopId}

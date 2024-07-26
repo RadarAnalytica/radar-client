@@ -18,7 +18,7 @@ import {
   saveFileClickHandler,
 } from '../service/getSaveFile';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { shops } from '../redux/shops/shopsActions';
+import { fetchShops, shops } from '../redux/shops/shopsActions';
 import { editShop } from '../redux/editShop/editShopActions';
 import { addShop } from '../redux/addShop/addShopActions';
 import { deleteShop } from '../redux/deleteShop/deleteShopActions';
@@ -146,7 +146,7 @@ const LinkedShops = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(shops(authToken));
+      dispatch(fetchShops(authToken));
     }
 
     // if (user) {

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {URL} from '../../service/config';
 
-export const shops = createAsyncThunk("shops", async (token) => {
+export const fetchShops = createAsyncThunk("shops", async (token) => {
     const res = await fetch(`${URL}/api/shop/all`, {
         method: "GET",
         headers: {

@@ -21,7 +21,7 @@ import SelfCostWarning from '../components/SelfCostWarning';
 import DataCollectionNotification from '../components/DataCollectionNotification';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchAllShops } from '../redux/dashboard/dashboardActions';
-import { shops } from '../redux/shops/shopsActions';
+import { fetchShops } from '../redux/shops/shopsActions';
 import downloadIcon from '../pages/images/Download.svg';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,24 +37,38 @@ const DashboardPage = () => {
   const [dataDashBoard, setDataDashboard] = useState();
   const [primary, setPrimary] = useState();
   const dispatch = useAppDispatch();
-  const shop = useAppSelector((state) => state.shopsSlice.shops);
-  const activeShopId = localStorage.getItem('activeShop');
-  const [activeBrand, setActiveBrand] = useState(activeShopId || shop?.[0]?.id);
+  const shops = useAppSelector((state) => state.shopsSlice.shops);
+  const storedActiveShop = localStorage.getItem('activeShop');
+  let activeShop;
+  if (storedActiveShop) activeShop = JSON.parse(storedActiveShop);
+  const activeShopId = activeShop?.id;
+  const [activeBrand, setActiveBrand] = useState(
+    activeShopId || shops?.[0]?.id
+  );
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
 
+  const allShop = shops?.some((item) => item?.is_primary_collect === true);
+  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
+  const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
+
   useEffect(() => {
-    dispatch(shops(authToken));
+    dispatch(fetchShops(authToken));
   }, [dispatch]);
 
   useEffect(() => {
-    if (shop.length > 0) {
-      setActiveBrand(activeShopId || shop?.[0]?.id);
+    if (shops.length > 0) {
+      setActiveBrand(activeShopId || shops?.[0]?.id);
+      if (!activeShopId) {
+        localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
+      }
     }
-  }, [shop]);
+  }, [shops]);
 
   const handleSaveActiveShop = (shopId) => {
-    localStorage.setItem('activeShop', shopId);
+    const currentShop = shops?.find((item) => item.id == shopId);
+    currentShop &&
+      localStorage.setItem('activeShop', JSON.stringify(currentShop));
     setActiveBrand(shopId);
   };
 
@@ -72,6 +86,7 @@ const DashboardPage = () => {
         days,
         activeBrand
       );
+      console.log('data', data);
       setDataDashboard(data);
     } catch (e) {
       console.error(e);
@@ -652,22 +667,9 @@ const DashboardPage = () => {
   let oneDayOrderCount = dataDashBoard?.orderCount;
   let oneDaySaleAmount = dataDashBoard?.saleAmount;
   let oneDaySaleCount = dataDashBoard?.saleCount;
-  const allShop = shop?.some((item) => item?.is_primary_collect === true);
-  const oneShop =
-    shop?.filter((item) => item?.id == activeBrand)[0] || shop?.[0];
-  //const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
-
-  const [shouldDisplay, setShouldDisplay] = useState(true);
-
-  useEffect(() => {
-    if (shop?.length) {
-      setShouldDisplay(oneShop ? oneShop.is_primary_collect : allShop);
-    }
-  }, [shop, allShop, oneShop]);
 
   return (
-    isVisible &&
-    user && (
+    isVisible && (
       <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
@@ -688,7 +690,7 @@ const DashboardPage = () => {
             setDays={setDays}
             setActiveBrand={handleSaveActiveShop}
             setChangeBrand={setChangeBrand}
-            shop={shop}
+            shops={shops}
             setPrimary={setPrimary}
             activeShopId={activeShopId}
           />

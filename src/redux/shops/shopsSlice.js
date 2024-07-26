@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {shops} from '../shops/shopsActions';
+import {fetchShops} from '../shops/shopsActions';
 import { editShop } from '../editShop/editShopActions';
 import { addShop } from '../addShop/addShopActions';
 import { deleteShop } from '../deleteShop/deleteShopActions';
@@ -15,7 +15,7 @@ const shopsSlice = createSlice({
     reducers: {},
     extraReducers: (bulder) => {
         bulder
-        .addCase(shops.fulfilled, (state, action) => {
+        .addCase(fetchShops.fulfilled, (state, action) => {
             state.shops = action.payload;
         })
         .addCase(editShop.fulfilled, (state, action) => {
