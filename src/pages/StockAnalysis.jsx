@@ -12,7 +12,7 @@ import {
 } from '../service/getSaveFile';
 import AuthContext from '../service/AuthContext';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { shops } from '../redux/shops/shopsActions';
+import { fetchShops } from '../redux/shops/shopsActions';
 import DragDropFile from '../components/DragAndDropFiles';
 import Modal from 'react-bootstrap/Modal';
 
@@ -173,7 +173,7 @@ const StockAnalysis = () => {
   };
 
   useEffect(() => {
-    dispatch(shops(authToken));
+    dispatch(fetchShops(authToken));
   }, [dispatch]);
 
   console.log(shop, 'shop');
@@ -184,17 +184,21 @@ const StockAnalysis = () => {
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
-          <div className='container dash-container p-3 pt-0 d-flex gap-3'>
+          <div className=' pt-0 d-flex gap-3'>
             <StockAnalysisFilter shop={shop} setActiveBrand={setActiveBrand} />
           </div>
-          <div className='search'>
+          <div className='container dash-container search'>
             <input
               type='text'
               placeholder='Поиск по SKU или артикулу'
-              className='search-input'
+              className='container dash-container search-input'
             />
             <div>
-              <img style={{ marginLeft: '10px' }} src={SearchButton} alt='' />
+              <img
+                style={{ marginLeft: '10px', cursor: 'pointer' }}
+                src={SearchButton}
+                alt=''
+              />
             </div>
             <div
               className='d-flex'
@@ -202,6 +206,7 @@ const StockAnalysis = () => {
             >
               <div>
                 <img
+                  style={{ cursor: 'pointer' }}
                   onClick={handleCostPriceShow}
                   src={StockCostPrice}
                   alt=''
@@ -209,6 +214,7 @@ const StockAnalysis = () => {
               </div>
               <div>
                 <img
+                  style={{ cursor: 'pointer' }}
                   onClick={() => getFileClickHandler(authToken, activeBrand)}
                   src={DownloadFile}
                   alt=''

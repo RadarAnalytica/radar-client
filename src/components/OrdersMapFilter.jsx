@@ -5,17 +5,22 @@ const OrdersMapFilter = ({
   changeBrand,
   defaultValue,
   setDays,
-  shop,
+  shops,
   setChangeBrand,
   setPrimary,
   activeShopId,
 }) => {
-  const shopName = shop?.find((item) => item.id == activeShopId)?.brand_name;
+  const shopName = shops?.find((item) => item.id == activeShopId)?.brand_name;
   return (
     <div className='filter container dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
         <div className='filter-item col' style={{ maxWidth: '12vw' }}>
-          <label htmlFor='period'>Период:</label>
+          <label
+            htmlFor='period'
+            style={{ fontWeight: 600, marginBottom: '4px ' }}
+          >
+            Период:
+          </label>
           <select
             style={{
               padding: '1vh 1.75vh',
@@ -45,7 +50,7 @@ const OrdersMapFilter = ({
             style={{
               position: 'absolute',
               right: '1.75vw',
-              top: '4.5vh',
+              top: '5.5vh',
               width: '1.5vh',
             }}
             viewBox='0 0 28 17'
@@ -66,8 +71,13 @@ const OrdersMapFilter = ({
                         <option value="wildberries">Wildeberries</option>
                     </select>
                 </div> */}
-        <div className='filter-item col me-0' style={{ maxWidth: '12vw' }}>
-          <label htmlFor='store'>Магазин:</label>
+        <div className='filter-item col' style={{ maxWidth: '12vw' }}>
+          <label
+            htmlFor='store'
+            style={{ fontWeight: 600, marginBottom: '4px ' }}
+          >
+            Магазин:
+          </label>
           <select
             style={{
               padding: '1vh 1.75vh',
@@ -75,7 +85,8 @@ const OrdersMapFilter = ({
               borderRadius: '8px',
             }}
             className='form-control'
-            defaultValue={`${activeShopId || shop?.[0]?.id}`}
+            id='store'
+            defaultValue={`${activeShopId || shops?.[0]?.id}`}
             onChange={(e) => {
               const firstValue = e.target.value.split('|')[0];
               const secondValue = e.target.value.split('|')[1];
@@ -87,16 +98,14 @@ const OrdersMapFilter = ({
             }}
           >
             <option
-              value={`${shop?.[0]?.id}|${shop?.[0]?.is_primary_collect}|${shop?.[0]?.is_valid}`}
+              value={`${shops?.[0]?.id}|${shops?.[0]?.is_primary_collect}|${shops?.[0]?.is_valid}`}
               hidden
             >
-              {shopName || shop?.[0]?.brand_name}
+              {shopName || shops?.[0]?.brand_name}
             </option>
-            <option value='0' selected>
-              Все
-            </option>
-            {shop &&
-              shop.map((brand, i) => (
+            <option value='0'>Все</option>
+            {shops &&
+              shops.map((brand, i) => (
                 <option
                   key={i}
                   value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}
@@ -109,7 +118,7 @@ const OrdersMapFilter = ({
             style={{
               position: 'absolute',
               right: '1.75vw',
-              top: '4.5vh',
+              top: '5.5vh',
               width: '1.5vh',
             }}
             viewBox='0 0 28 17'

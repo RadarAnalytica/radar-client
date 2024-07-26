@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import sortArrow from '../assets/sortarrow.svg';
+import ArrowUp from '../assets/ArrowUp.svg';
+import ArrowDown from '../assets/ArrowDown.svg';
 
 const TableStock = ({ dataTable, setDataTable }) => {
   const [asc, setAsc] = useState(true);
@@ -17,8 +19,20 @@ const TableStock = ({ dataTable, setDataTable }) => {
     return setDataTable(sortedData);
   };
 
+  const toggleRotate = (element) => {
+    const iconUp = element.querySelector('.icon-sort-up');
+    const iconDown = element.querySelector('.icon-sort-down');
+    iconUp.classList.toggle('sort-icon_rotate');
+    iconDown.classList.toggle('sort-icon_rotate');
+  };
+
+  const handleSort = (element, columnName) => {
+    toggleRotate(element);
+    sortData(columnName);
+  };
+
   return (
-    <div class='scrollable-table table-content'>
+    <div class=' dash-container scrollable-table table-content '>
       <table className='table'>
         <tr style={{ fontSize: '24px', fontWeight: '700' }}>
           <th colspan='7'>О товаре</th>
@@ -67,11 +81,21 @@ const TableStock = ({ dataTable, setDataTable }) => {
             }}
           >
             Товар
-            <img
-              onClick={() => sortData('productName')}
-              src={sortArrow}
-              alt=''
-            />
+            <div
+              className='icon-sort-wrap'
+              onClick={(e) => {
+                toggleRotate(e.currentTarget);
+                sortData('productName');
+              }}
+              style={{ background: 'transparent' }}
+            >
+              <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
+              <img
+                className='icon-sort icon-sort-down'
+                src={ArrowDown}
+                alt=''
+              />
+            </div>
           </th>
           <th>
             Бренд
