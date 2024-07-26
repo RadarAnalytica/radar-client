@@ -1602,3 +1602,15 @@ select {
 .sort-icon_rotate {
   transform: rotate(180deg);
 }
+
+.in-circle {
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 0;
+  white-space: nowrap;
+}

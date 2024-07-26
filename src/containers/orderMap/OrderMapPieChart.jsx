@@ -307,17 +307,7 @@ const OrderMapPieChart = ({
               cutout: '85%',
             }}
           />
-          <div
-            style={{
-              position: 'absolute',
-              top: '32%',
-              left: '23%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              zIndex: 0,
-            }}
-          >
+          <div className='in-circle'>
             <p className='clue-text mb-1' style={{ fontSize: '1.75vh' }}>
               {sub}
             </p>
