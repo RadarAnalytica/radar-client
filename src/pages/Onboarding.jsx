@@ -20,131 +20,50 @@ import {
 
 const Onboarding = () => {
   const { user, authToken, setUser } = useContext(AuthContext);
-  // console.log(user, 'USER')
-
-  const [activeShop, setActiveShop] = useState();
-
   const navigate = useNavigate();
-  // useEffect(() => {
-  //     setTimeout(() => {
-  //         if (!user) {
-  //             navigate('/development/signin')
-  //         }else{
-  //             navigate('/development/dashboard')
-  //         }
-  //     }, 800);
-  // }, [user])
-  const redirect = () => {
-    navigate('/linked-shops');
-  };
-
+  const [activeShop, setActiveShop] = useState();
   const [brandName, setBrandName] = useState();
   const [token, setToken] = useState();
   const [file, setFile] = useState();
+  const [data, setData] = useState();
+  const [show, setShow] = useState(false);
+  const [costPriceShow, setCostPriceShow] = useState(false);
 
   const getBrand = (e) => setBrandName(e.target.value);
   const getToken = (e) => setToken(e.target.value);
 
-  const [show, setShow] = useState(false);
-  const [costPriceShow, setCostPriceShow] = useState(false);
-
   const updateIsOnboarded = () => {
-    // // console.log('Update is Onboarded');
-    // user.is_onboarded = true;
-    // setUser(user)
-    // setAuthToken(data)
     const currentToken = localStorage.getItem('authToken');
-    // console.log(currentToken);
     ServiceFunctions.refreshUser(currentToken).then((data) => {
-      // console.log('After refresh User data is:', data)
       setUser(jwtDecode(data?.token));
       localStorage.setItem('authToken', data?.token);
       navigate('/linked-shops');
     });
-
-    //   setUser(prevUser => ({
-    //     ...prevUser,
-    //     is_onboarded: true
-    //   }));
   };
+
   const handleClose = () => {
     updateIsOnboarded();
-
-    navigate('/linked-shops');
-    // window.reload()
     setShow(false);
   };
   const handleShow = () => setShow(true);
-  const handleCostPriceShow = () => {
-    handleClose();
-    setCostPriceShow(true);
-  };
 
   const handleCostPriceClose = () => setCostPriceShow(false);
-
-  const [data, setData] = useState();
 
   const submitHandler = (e) => {
     if (!token && !user) {
       e.preventDefault();
     } else {
-      ServiceFunctions.updateToken(brandName, token, authToken).then((data) => {
-        if (data) {
-          try {
-            // localStorage.setItem('authToken', data.token)
-          } catch (e) {
-            // console.log(e);
-          }
-        }
-      });
-      handleShow();
+      ServiceFunctions.updateToken(brandName, token, authToken)
+        .then((data) => {
+          console.log('Токен успешно добавлен');
+        })
+        .finally(handleShow());
     }
   };
 
   useEffect(() => {
     ServiceFunctions.getAllShops(authToken).then((data) => setData(data));
   }, []);
-
-  // const getFileClickHandler = async (token) => {
-  //   const res = await fetch(`${URL}/api/shop/cost/19`, {
-  //     method: "GET",
-  //     headers: {
-  //       'authorization': "JWT " + token,
-  //     },
-  //   });
-  //   if (res.status === 200) {
-  //     const blob = await res.blob();
-  //     const downloadUrl = window.URL.createObjectURL(blob);
-  //     const link = document.createElement("a");
-  //     link.href = downloadUrl;
-  //     link.download = "Себестоимость.xlsx";
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     document.body.removeChild(link);
-  //   } else {
-  //     // console.log("error");
-  //   }
-  // };
-
-  // const saveFileClickHandler = async (file, token) => {
-  //   const modifiedFile = file
-  //     const newFile = new File([modifiedFile], "modified_file.xlsx", { type: modifiedFile.type });
-  //     const formData = new FormData();
-  //     formData.append("file", newFile);
-
-  //     const res = await fetch(`${URL}/api/shop/cost/19`, {
-  //       method: "POST",
-  //       headers: {
-  //         'authorization': "JWT " + token,
-  //       },
-  //       body: formData,
-  //     });
-  //     if(res.status === 200){
-  //         // console.log('success Post')
-  //     }else{
-  //         // console.log('error Post')
-  //     }
-  // }
 
   return (
     user && (
@@ -245,7 +164,6 @@ const Onboarding = () => {
         <Modal
           show={show}
           onHide={() => {
-            updateIsOnboarded();
             handleClose();
           }}
           className='add-token-modal'
@@ -282,9 +200,9 @@ const Onboarding = () => {
             <p>
               Ваш токен успешно подключен к сервису и находится на проверке. В
               ближайшее время данные начнут отображаться в разделе{' '}
-              <a href='/dashboard' className='link'>
+              <p onClick={handleClose} className='link'>
                 Сводка продаж
-              </a>
+              </p>
             </p>
             {/* <div className="d-flex justify-content-between">
                         <div className="grey-block d-flex align-items-center">
