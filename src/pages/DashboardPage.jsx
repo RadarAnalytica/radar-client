@@ -674,7 +674,7 @@ const DashboardPage = () => {
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Сводка продаж'} />
-          {shouldDisplay && !dataDashBoard?.costPriceCount ? (
+          {shouldDisplay && !dataDashBoard?.costPriceAmount ? (
             <SelfCostWarning activeBrand={activeBrand} />
           ) : null}
 
