@@ -159,6 +159,14 @@ a.link {
   padding: 10px;
 }
 
+.link {
+  text-decoration: none;
+  font-weight: bold;
+  color: var(--primary-color);
+  padding: 10px;
+  cursor: pointer;
+}
+
 .select-element:hover {
   color: var(--primary-color);
   font-weight: 600;
@@ -194,7 +202,7 @@ select {
   font-size: 16px;
   width: 150px;
   height: 64px;
- 
+
   /* position: absolute;
   top: 64%;
   left: 6%; */

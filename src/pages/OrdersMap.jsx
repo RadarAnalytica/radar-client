@@ -30,14 +30,30 @@ const OrdersMap = () => {
   const [byRegions, setByRegions] = useState(true);
   const [days, setDays] = useState(30);
   const [brandNames, setBrandNames] = useState();
-  const [activeBrand, setActiveBrand] = useState(
-    activeShopId || shops?.[0]?.id
-  );
+  const idShopAsValue =
+    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
+  const [activeBrand, setActiveBrand] = useState(idShopAsValue);
+
+  const allShop = shops?.some((item) => item?.is_primary_collect === true);
+  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
+  const shouldDisplay = activeShop
+    ? activeShop.is_primary_collect
+    : oneShop
+    ? oneShop.is_primary_collect
+    : allShop;
 
   const [changeBrand, setChangeBrand] = useState();
   const [primary, setPrimary] = useState();
   const [data, setData] = useState();
   const [isVisible, setIsVisible] = useState(true);
+
+  const plugForAllStores = {
+    id: 0,
+    brand_name: 'Все',
+    is_active: true,
+    is_primary_collect: allShop,
+    is_valid: true,
+  };
 
   useEffect(() => {
     activeBrand &&
@@ -50,14 +66,26 @@ const OrdersMap = () => {
 
   useEffect(() => {
     if (shops.length > 0) {
-      setActiveBrand(activeShopId || shops?.[0]?.id);
+      let id;
+      if (activeShopId == undefined) {
+        id = shops?.[0].id;
+        localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
+      } else {
+        id = activeShopId;
+      }
+      setActiveBrand(id);
     }
   }, [shops]);
 
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
-    currentShop &&
+    if (currentShop) {
       localStorage.setItem('activeShop', JSON.stringify(currentShop));
+    }
+    if (shopId == 0) {
+      localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
+      //localStorage.removeItem('activeShop');
+    }
     setActiveBrand(shopId);
   };
 
@@ -552,10 +580,6 @@ const OrdersMap = () => {
     count: item.saleCount,
   }));
 
-  const allShop = shops?.some((item) => item?.is_primary_collect === true);
-  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
-  const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
-
   const handleTooltipPosition = (x, y) => {
     const tooltipWidth = (22 * window.innerWidth) / 100;
     const padding = 16;
@@ -718,7 +742,7 @@ const OrdersMap = () => {
                         <div className='d-flex'>
                           <p className='mb-1 col'>Продажи, шт</p>
                           <p className='mb-1 fw-bold  col'>
-                            {formatPrice(tooltipData?.salesCount)}
+                            {tooltipData?.salesCount}
                           </p>
                         </div>
                         <div className='d-flex'>
@@ -730,7 +754,7 @@ const OrdersMap = () => {
                         <div className='d-flex'>
                           <p className='mb-1 col'>Заказы, шт</p>
                           <p className='mb-1 fw-bold col'>
-                            {formatPrice(tooltipData?.ordersCount)}
+                            {tooltipData?.ordersCount}
                           </p>
                         </div>
                       </div>

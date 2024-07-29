@@ -35,7 +35,7 @@ const OrderMapTable = ({ title, data, totalAmount, totalCount }) => {
           : withName.map((item, key) => (
               <div key={key} className='d-flex justify-content-between'>
                 <p className='mb-2 col-6 pe-2'>{item.districtName}</p>
-                <p className='mb-2 col'>{item.count.toFixed(2)}&nbsp;шт</p>
+                <p className='mb-2 col'>{item.count.toFixed(0)}&nbsp;шт</p>
                 <p className='mb-2 col'>{item.amount.toFixed(2)}&nbsp;₽</p>
                 <p className='mb-2 col text-end fw-bold'>
                   {item.percent.toFixed(1)}&nbsp;%
