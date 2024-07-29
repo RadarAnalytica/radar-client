@@ -42,15 +42,27 @@ const DashboardPage = () => {
   let activeShop;
   if (storedActiveShop) activeShop = JSON.parse(storedActiveShop);
   const activeShopId = activeShop?.id;
-  const [activeBrand, setActiveBrand] = useState(
-    activeShopId || shops?.[0]?.id
-  );
+  const idShopAsValue =
+    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
+  const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
 
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
-  const shouldDisplay = oneShop ? oneShop.is_primary_collect : allShop;
+  const shouldDisplay = activeShop
+    ? activeShop.is_primary_collect
+    : oneShop
+    ? oneShop.is_primary_collect
+    : allShop;
+
+  const plugForAllStores = {
+    id: 0,
+    brand_name: 'Все',
+    is_active: true,
+    is_primary_collect: allShop,
+    is_valid: true,
+  };
 
   useEffect(() => {
     dispatch(fetchShops(authToken));
@@ -58,17 +70,25 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (shops.length > 0) {
-      setActiveBrand(activeShopId || shops?.[0]?.id);
-      if (!activeShopId) {
+      let id;
+      if (activeShopId == undefined) {
+        id = shops?.[0].id;
         localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
+      } else {
+        id = activeShopId;
       }
+      setActiveBrand(id);
     }
   }, [shops]);
 
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
-    currentShop &&
+    if (currentShop) {
       localStorage.setItem('activeShop', JSON.stringify(currentShop));
+    }
+    if (shopId == 0) {
+      localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
+    }
     setActiveBrand(shopId);
   };
 
@@ -86,7 +106,6 @@ const DashboardPage = () => {
         days,
         activeBrand
       );
-      console.log('data', data);
       setDataDashboard(data);
     } catch (e) {
       console.error(e);
