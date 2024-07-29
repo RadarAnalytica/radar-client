@@ -742,7 +742,7 @@ const OrdersMap = () => {
                         <div className='d-flex'>
                           <p className='mb-1 col'>Продажи, шт</p>
                           <p className='mb-1 fw-bold  col'>
-                            {formatPrice(tooltipData?.salesCount)}
+                            {tooltipData?.salesCount}
                           </p>
                         </div>
                         <div className='d-flex'>
@@ -754,7 +754,7 @@ const OrdersMap = () => {
                         <div className='d-flex'>
                           <p className='mb-1 col'>Заказы, шт</p>
                           <p className='mb-1 fw-bold col'>
-                            {formatPrice(tooltipData?.ordersCount)}
+                            {tooltipData?.ordersCount}
                           </p>
                         </div>
                       </div>

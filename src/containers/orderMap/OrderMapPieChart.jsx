@@ -315,7 +315,7 @@ const OrderMapPieChart = ({
               {formatPrice(totalAmount)} ₽
             </p>
             <p className='mb-1' style={{ fontSize: '1.75vh', fontWeight: 600 }}>
-              {formatPrice(totalCount)} шт
+              {totalCount} шт
             </p>
           </div>
         </div>
