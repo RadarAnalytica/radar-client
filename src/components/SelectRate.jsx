@@ -4,11 +4,14 @@ import logoStart from '../pages/images/logoForCardStart.png';
 import logoPro from '../pages/images/logoForCardPro.png';
 import logoProPlus from '../pages/images/logoForCardProPlus.png';
 import Steps from '../pages/images/Steps';
+import OneRuble from '../pages/images/OneRuble.svg';
+import BlueSwich from '../pages/images/BlueSwich.svg';
 import StartLogo from '../assets/startlogo.svg';
 import FireLogo from '../assets/firelogo.svg';
 
 const SelectRate = ({ redirect }) => {
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
+  const [isTrial, setIsTrial] = useState(true);
 
   const handlePeriodChange = (period) => {
     setSelectedPeriod(period);
@@ -24,7 +27,7 @@ const SelectRate = ({ redirect }) => {
           marginBottom: '10px',
         }}
       >
-        <div className='doughnut-content'>
+        {/* <div className='doughnut-content'>
           <div
             style={{
               display: 'flex',
@@ -104,9 +107,71 @@ const SelectRate = ({ redirect }) => {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className='price-wrap'>
-          <div className='cardPrice'>
+          <div className='landing-price-wrap'>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: 'rgba(83, 41, 255, 1)',
+                padding: '20px',
+                borderRadius: '20px',
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: '700',
+                  fontSize: '30px',
+                  lineHeight: '40px',
+                  color: 'white',
+                  width: '100%',
+                  paddingBottom: '16px',
+                }}
+              >
+                Здесь есть всё, что нужно любому бизнесу на маркетплейсе
+              </div>
+              <div className='OrangeLabel'>
+                <img src={BlueSwich} label='swich' />
+              </div>
+            </div>
+            <div className='landing-price'>
+              <p
+                style={{
+                  fontSize: '42px',
+                  fontWeight: '700',
+                  lineHeight: '58px',
+                  margin: 0,
+                }}
+              >
+                Это то, что подойдет
+                <br />
+                {'именно '}
+                <span style={{ color: '#F0AD00', fontWeight: '800' }}>Вам</span>
+              </p>
+              <p
+                style={{
+                  fontSize: '28px',
+                  fontWeight: 600,
+                  lineHeight: '45px',
+                  margin: 0,
+                }}
+              >
+                Мы предлагаем один тариф,
+                <br /> который даст полный доступ к<br /> нашей аналитике и ко
+                всему ее функционалу!
+              </p>
+              <div className='landing-price-btn'>
+                <p className='landing-price-btn-text'>
+                  Мы дарим тестовый доступ
+                  <br /> на 3 дня всего за
+                </p>
+                <img src={OneRuble} alt='ruble'></img>
+              </div>
+            </div>
+          </div>
+          {/* Не удалять!!! */}
+          {/* <div className='cardPrice'>
             <div className='HeadCardStart'>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {' '}
@@ -219,8 +284,8 @@ const SelectRate = ({ redirect }) => {
                 <div style={{ fontSize: '20px', fontWeight: '500' }}>1</div>
               </div>
             </div>
-          </div>
-          <div className='cardPrice'>
+          </div> */}
+          {/* <div className='cardPrice'>
             <div className='HeadCardPro'>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {' '}
@@ -345,144 +410,223 @@ const SelectRate = ({ redirect }) => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className='cardPrice cardPrice_color'>
-            <div className='HeadCardProPlus'>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                }}
-              >
-                {' '}
-                <div
-                  style={{
-                    color: '#0069FF',
-                    fontWeight: '700',
-                    fontSize: '30px',
-                  }}
-                >
-                  PRO +
-                </div>
+          </div> */}
+          <div style={{ width: '100%', borderRadius: '20px' }}>
+            <div className='cardPrice cardPrice_color'>
+              <div className='HeadCardProPlus'>
                 <div
                   style={{
                     display: 'flex',
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                    backgroundColor: 'black',
-                    borderRadius: '10px',
-                    padding: '4px',
-                    color: 'white',
-                    fontSize: '18px',
+                    justifyContent: 'space-between',
                   }}
                 >
-                  <img src={logoProPlus} style={{ width: '20%' }} />{' '}
-                  <div>Лучший выбор</div>
+                  {' '}
+                  <div
+                    style={{
+                      color: '#0069FF',
+                      fontWeight: '700',
+                      fontSize: '30px',
+                    }}
+                  >
+                    Smart
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      alignItems: 'center',
+                      backgroundColor: 'black',
+                      borderRadius: '10px',
+                      padding: '4px',
+                      color: 'white',
+                      fontSize: '18px',
+                    }}
+                  >
+                    <img src={logoProPlus} style={{ width: '20%' }} />{' '}
+                    <div>Лучший выбор</div>
+                  </div>
                 </div>
-              </div>
-              <div className='selectPrice'>
-                {' '}
-                {selectedPeriod === '1month' && (
-                  <span className='priceCardOne'>5 490 ₽</span>
-                )}
-                {selectedPeriod === '3month' && (
-                  <span style={{ display: 'flex', alignItems: 'center' }}>
-                    <span className='priceCardOne'>14 823 ₽</span>
-                    <span
-                      style={{
-                        marginLeft: '10px',
-                        textDecoration: 'line-through',
-                      }}
-                    >
-                      16 470 ₽
-                    </span>
-                    <span
-                      style={{
-                        marginLeft: '10px',
-                        color: '#5329FF',
-                        backgroundColor: '#5329FF1A',
-                        fontWeight: '700',
-                      }}
-                    >
-                      -10%
-                    </span>
-                  </span>
-                )}
-                {selectedPeriod === '6month' && (
-                  <span style={{ display: 'flex', alignItems: 'center' }}>
-                    <span className='priceCardOne'>19 764 ₽</span>
-                    <span
-                      style={{
-                        marginLeft: '10px',
-                        textDecoration: 'line-through',
-                      }}
-                    >
-                      32 940 ₽
-                    </span>
-                    <span
-                      style={{
-                        marginLeft: '10px',
-                        color: '#5329FF',
-                        backgroundColor: '#5329FF1A',
-                        fontWeight: '700',
-                      }}
-                    >
-                      -60%
-                    </span>
-                  </span>
-                )}
-                <div>В месяц</div>
-              </div>
+                <div className='selectPrice'>
+                  {' '}
+                  {selectedPeriod === '1month' && (
+                    <>
+                      <span className='priceCardOne'>
+                        {isTrial ? '1 ₽' : '2 990 ₽'}
+                      </span>
+                      {isTrial && (
+                        <>
+                          <span
+                            style={{
+                              marginLeft: '10px',
+                              textDecoration: 'line-through',
+                            }}
+                          >
+                            2 990 ₽
+                          </span>
+                          <span
+                            style={{
+                              marginLeft: '10px',
+                              color: '#5329FF',
+                              backgroundColor: '#5329FF1A',
+                              fontWeight: '700',
+                            }}
+                          >
+                            -99%
+                          </span>
+                        </>
+                      )}
+                      <div>
+                        {isTrial ? 'Тестовый доступ на 3 дня' : 'За месяц'}
+                      </div>
+                    </>
+                  )}
+                  {selectedPeriod === '3month' && (
+                    <>
+                      <span style={{ display: 'flex', alignItems: 'center' }}>
+                        <span className='priceCardOne'>8 073 ₽</span>
+                        <span
+                          style={{
+                            marginLeft: '10px',
+                            textDecoration: 'line-through',
+                          }}
+                        >
+                          8 970 ₽
+                        </span>
+                        <span
+                          style={{
+                            marginLeft: '10px',
+                            color: '#5329FF',
+                            backgroundColor: '#5329FF1A',
+                            fontWeight: '700',
+                          }}
+                        >
+                          -10%
+                        </span>
+                      </span>
+                      <div>За 3 месяцев</div>
+                    </>
+                  )}
+                  {selectedPeriod === '6month' && (
+                    <>
+                      <span style={{ display: 'flex', alignItems: 'center' }}>
+                        <span className='priceCardOne'>10 764 ₽</span>
+                        <span
+                          style={{
+                            marginLeft: '10px',
+                            textDecoration: 'line-through',
+                          }}
+                        >
+                          17 940 ₽
+                        </span>
+                        <span
+                          style={{
+                            marginLeft: '10px',
+                            color: '#5329FF',
+                            backgroundColor: '#5329FF1A',
+                            fontWeight: '700',
+                          }}
+                        >
+                          -40%
+                        </span>
+                      </span>
+                      <div>За 6 месяцев</div>
+                    </>
+                  )}
+                </div>
 
-              <button
-                className='btn-black'
-                style={{
-                  minHeight: '64px',
-                  fontSize: '18px',
-                  marginTop: '15px',
-                }}
-                onClick={() => redirect()}
-              >
-                Попробовать бесплатно
-              </button>
-            </div>
-            <div className='bodyCardProPlus'>
-              <div className='labelCard'>
-                Оборот селлера:
-                <div style={{ fontSize: '20px', fontWeight: '500' }}>
-                  Более 6 млн Р / мес
-                </div>
-              </div>
-              <div className='labelCard'>
-                Функционал
-                <div style={{ fontSize: '20px', fontWeight: '500' }}>
-                  Полный функционал
-                </div>
-              </div>
-              <div className='labelCard'>
-                Количество магазинов:
-                <div style={{ fontSize: '20px', fontWeight: '500' }}>До 15</div>
-              </div>
-              <div className='bonusProPlus'>
-                Бонус:
-                <div
+                <button
+                  className='btn-black'
                   style={{
-                    fontSize: '20px',
-                    fontWeight: '500',
+                    minHeight: '64px',
+                    fontSize: '18px',
+                    marginTop: '15px',
                   }}
+                  onClick={() => redirect()}
                 >
-                  <div>
-                    <Steps.CircleOkWhite />
-                    <span style={{ marginLeft: '5px' }}>Личный менеджер</span>
+                  Начать работать
+                </button>
+              </div>
+              <div className='bodyCardProPlus'>
+                <div className='labelCard'>
+                  <p>Оборот селлера:</p>
+                  <div style={{ fontSize: '20px', fontWeight: '500' }}>
+                    Любой. Без лимитов и ограничений
                   </div>
-                  <div>
-                    <Steps.CircleOkWhite />
-                    <span style={{ marginLeft: '5px' }}>
-                      приоритетная поддержка
-                    </span>
+                </div>
+                <div className='labelCard'>
+                  <p>Функционал</p>
+                  <div style={{ fontSize: '20px', fontWeight: '500' }}>
+                    Полный доступ. Без ограничений
+                  </div>
+                </div>
+                <div className='labelCard'>
+                  <p>Количество магазинов:</p>
+                  <div style={{ fontSize: '20px', fontWeight: '500' }}>
+                    Можно подключить одновременно до 20 магазинов
+                  </div>
+                </div>
+                <div className='bonusProPlus'>
+                  Бонус:
+                  <div
+                    style={{
+                      fontSize: '20px',
+                      fontWeight: '500',
+                    }}
+                  >
+                    <div>
+                      <Steps.CircleOkWhite />
+                      <span style={{ marginLeft: '5px' }}>Личный менеджер</span>
+                    </div>
+                    <div>
+                      <Steps.CircleOkWhite />
+                      <span style={{ marginLeft: '5px' }}>
+                        приоритетная поддержка
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                backgroundColor: '#1A1A1A08',
+                padding: '5px',
+                borderRadius: '10px',
+                marginTop: '20px',
+              }}
+            >
+              <button
+                onClick={() => handlePeriodChange('1month')}
+                className={
+                  selectedPeriod === '1month' ? 'prime-btn' : 'secondary-btn'
+                }
+                id='btnDop'
+              >
+                {selectedPeriod === '1month' ? <Steps.Circle /> : <span></span>}
+                1 месяц
+              </button>
+              <button
+                onClick={() => handlePeriodChange('3month')}
+                className={
+                  selectedPeriod === '3month' ? 'prime-btn' : 'secondary-btn'
+                }
+                id='btnDop'
+              >
+                {selectedPeriod === '3month' ? <Steps.Circle /> : <span></span>}
+                3 месяца <span>-10%</span>
+              </button>
+              <button
+                onClick={() => handlePeriodChange('6month')}
+                className={
+                  selectedPeriod === '6month' ? 'prime-btn' : 'secondary-btn'
+                }
+                id='btnDop'
+              >
+                {selectedPeriod === '6month' ? <Steps.Circle /> : <span></span>}
+                6 месяцев <span>до -60%</span>
+              </button>
             </div>
           </div>
         </div>
