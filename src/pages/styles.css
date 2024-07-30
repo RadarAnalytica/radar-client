@@ -552,7 +552,7 @@ select {
 .price-wrap {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 20px;
   margin-top: 20px;
 }
 .cardPrice {
@@ -566,7 +566,11 @@ select {
   background-color: #0069ff;
 }
 .labelCard {
-  margin-top: 10px;
+  margin-top: 20px;
+}
+.labelCard p {
+  opacity: 0.6;
+  margin: 0;
 }
 .priceCardOne {
   font-weight: 700;
@@ -582,7 +586,7 @@ select {
 }
 .bonusPro,
 .bonusProPlus {
-  margin-top: 10px;
+  margin-top: 30px;
   padding: 16px;
   gap: 10px;
   border-radius: 10px;
@@ -608,6 +612,7 @@ select {
 .HeadCardProPlus {
   border-radius: 15px;
   padding: 20px;
+  margin-bottom: 30px;
 }
 
 .bodyCardProPlus {
@@ -1055,4 +1060,34 @@ button.accordion-button.collapsed::after {
 .page-wrap {
   background-color: white;
   padding: 0 20px;
+}
+.landing-price-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 45.7%;
+}
+.landing-price {
+  display: flex;
+  flex-direction: column;
+  background-color: #f7f7f7;
+  border-radius: 20px;
+  height: 100%;
+  justify-content: space-between;
+  padding: 40px;
+}
+.landing-price-btn {
+  background-color: #f0ad00;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+.landing-price-btn-text {
+  font-size: 29px;
+  font-weight: 700;
+  line-height: 36px;
+  color: #fff;
+  margin: 0;
 }

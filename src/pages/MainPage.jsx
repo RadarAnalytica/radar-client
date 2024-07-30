@@ -31,7 +31,7 @@ const MainPage = () => {
   const { user } = useContext(AuthContext);
 
   const redirect = () => {
-    if (user.is_onboarded) {
+    if (user?.is_onboarded) {
       navigate('/dashboard');
     } else {
       navigate('/onboarding');
@@ -82,7 +82,7 @@ const MainPage = () => {
                 style={{ minHeight: '64px', fontSize: '18px', margin: 0 }}
                 onClick={() => redirect()}
               >
-                Попробовать бесплатно
+                Начать работать
               </button>
             </div>
           </div>
@@ -183,7 +183,7 @@ const MainPage = () => {
                   }}
                   onClick={() => redirect()}
                 >
-                  Попробовать бесплатно
+                  Начать работать
                 </button>
               </div>
             </div>
