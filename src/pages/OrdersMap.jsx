@@ -478,7 +478,7 @@ const OrdersMap = () => {
   const totalOrdersOther = geoData?.geo_data?.map((el) => {
     return {
       districtName: el?.districtName,
-      percent: el?.comparePercent,
+      percent: el?.percentOrder,
       amount: el?.orderAmount,
       count: el?.orderCount,
     };

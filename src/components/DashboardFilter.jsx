@@ -15,7 +15,10 @@ const DashboardFilter = ({
 }) => {
   const { authToken } = useContext(AuthContext);
   const currentShop = shops?.find((item) => item.id == activeShopId);
-  const shopName = currentShop?.brand_name;
+  const shopName = activeShopId == 0 ? 'Все' : currentShop?.brand_name;
+  const allShop =
+    activeShopId == 0 &&
+    shops?.some((item) => item?.is_primary_collect === true);
 
   const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7))
     .toLocaleDateString('ru')
@@ -130,7 +133,9 @@ const DashboardFilter = ({
             }}
             className='form-control'
             id='store'
-            defaultValue={activeShopId || `${shops?.[0]?.id}`}
+            defaultValue={`${
+              activeShopId != undefined ? activeShopId : shops?.[0]?.id
+            }`}
             onChange={(e) => {
               const firstValue = e.target.value.split('|')[0];
               const secondValue = e.target.value.split('|')[1];
@@ -193,7 +198,7 @@ const DashboardFilter = ({
                     </svg>
                 </div> */}
       </div>
-      {currentShop?.is_primary_collect && (
+      {(currentShop?.is_primary_collect || allShop) && (
         <div className='download-button' onClick={handleDownload}>
           <img src={downloadIcon} />
           Скачать Excel

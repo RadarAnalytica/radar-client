@@ -362,7 +362,8 @@ const OrderMapPieChart = ({
                       className='mb-0 col text-end fw-bold'
                       style={{ fontSize: '1.85vh' }}
                     >
-                      {percent.toFixed(percent < 10 ? 1 : 0)}&nbsp;%
+                      {percent ? percent.toFixed(percent < 10 ? 1 : 0) : 0}
+                      &nbsp;%
                     </p>
                     <div
                       className='mb-0 ms-1  col-2 text-end d-flex justify-content-around align-items-start'
@@ -397,7 +398,7 @@ const OrderMapPieChart = ({
                               }
                         }
                       >
-                        {Number(compare).toFixed(0)} %
+                        {compare ? Number(compare).toFixed(0) : 0} %
                       </span>
                     </div>
                   </div>

@@ -10,7 +10,10 @@ const OrdersMapFilter = ({
   setPrimary,
   activeShopId,
 }) => {
-  const shopName = shops?.find((item) => item.id == activeShopId)?.brand_name;
+  const shopName =
+    activeShopId == 0
+      ? 'Все'
+      : shops?.find((item) => item.id == activeShopId)?.brand_name;
   return (
     <div className='filter container dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
@@ -86,7 +89,9 @@ const OrdersMapFilter = ({
             }}
             className='form-control'
             id='store'
-            defaultValue={`${activeShopId || shops?.[0]?.id}`}
+            defaultValue={`${
+              activeShopId != undefined ? activeShopId : shops?.[0]?.id
+            }`}
             onChange={(e) => {
               const firstValue = e.target.value.split('|')[0];
               const secondValue = e.target.value.split('|')[1];

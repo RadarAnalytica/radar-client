@@ -95,8 +95,11 @@ const DashboardPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    activeBrand && updateDataDashBoard(days, activeBrand, authToken);
+    activeBrand != undefined &&
+      updateDataDashBoard(days, activeBrand, authToken);
   }, [days, activeBrand, authToken]);
+
+  console.log('activeBrand', activeBrand);
 
   const updateDataDashBoard = async (days, activeBrand, authToken) => {
     setLoading(true);
@@ -113,46 +116,6 @@ const DashboardPage = () => {
       setLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setIsVisible(true);
-  //   }, 800);
-
-  //   return () => clearTimeout(timer);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     ServiceFunctions.getBrandNames(user.id).then((data) => {
-  //       // let names = [...new Set(data)]
-  //       console.log(data);
-  //       setBrandNames(data);
-  //     });
-  //   }
-  // }, [user]);
-  // useEffect(() => {
-  //   if (brandNames && brandNames.length) {
-  //     setActiveBrand(brandNames[0]);
-  //   }
-  // }, [brandNames]);
-
-  // useEffect(() => {
-  //   if (user && activeBrand) {
-  //     ServiceFunctions.getDataCollection(user.id, days, activeBrand).then(
-  //       (data) => setWbData(filterArrays(data, days))
-  //     );
-  //     ServiceFunctions.getDataCollection(user.id, days, activeBrand).then(
-  //       (data) => setState(data)
-  //     );
-  //   }
-  // }, [user, activeBrand]);
-
-  // useEffect(() => {
-  //   if (wbData) {
-  //     setContent(wbData.content);
-  //   }
-  // }, [wbData]);
 
   // Заказы
   const orders = wbData && wbData.orders ? wbData.orders.data : [];
