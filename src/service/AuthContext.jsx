@@ -29,8 +29,14 @@ export const AuthProvider = ({ children }) => {
       },
       body: JSON.stringify({ email: email, password: password }),
     });
+    console.log(response.status)
     const data = await response.json();
-    if (response.status !== 200) {
+    if (response.status === 303) {
+      console.log(response.status)
+      console.log(data.redirect)
+      window.location = data.redirect
+    }
+    if (response.status !== 200 && response.status !== 303) {
       setError(data.message);
       setShow(true);
     }
