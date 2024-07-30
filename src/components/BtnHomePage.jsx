@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import newbie1 from '../pages/images/newbie1.png';
 import newbie2 from '../pages/images/newbie2.png';
 import newbie3 from '../pages/images/newbie3.png';
@@ -24,6 +24,23 @@ const BtnHomePage = () => {
 
   const handleClick = useCallback((buttonName) => {
     setActiveButton(buttonName);
+  }, []);
+
+  useEffect(() => {
+    const loadImage = (src) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = resolve;
+      });
+    };
+
+    const loadImages = async () => {
+      const images = Object.values(dataImages).flat();
+      await Promise.all(images.map(loadImage));
+    };
+
+    loadImages();
   }, []);
 
   const renderedImages = useMemo(() => {

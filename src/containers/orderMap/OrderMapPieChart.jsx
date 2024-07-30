@@ -9,18 +9,16 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const OrderMapPieChart = ({
   title,
-  geoData,
   info,
   sub,
   totalAmount,
   totalCount,
-  count,
-  amount,
   titleTooltipAmount,
   titleTooltipCount,
   getColor,
   tooltipData,
 }) => {
+  const isOrders = title == 'Топ 5 по заказам';
   const getColorTooltip = (name) => {
     switch (name) {
       case 'Сибирский фо':
@@ -329,6 +327,10 @@ const OrderMapPieChart = ({
         >
           {firstFive
             ? firstFive.map((obj, key) => {
+                const compare = isOrders
+                  ? obj.comparePercentOrder
+                  : obj.comparePercent;
+                const percent = isOrders ? obj.percentOrder : obj.percent;
                 return (
                   <div
                     className='mb-2 d-flex'
@@ -360,7 +362,7 @@ const OrderMapPieChart = ({
                       className='mb-0 col text-end fw-bold'
                       style={{ fontSize: '1.85vh' }}
                     >
-                      {obj.percent.toFixed(obj.percent < 10 ? 1 : 0)}&nbsp;%
+                      {percent.toFixed(percent < 10 ? 1 : 0)}&nbsp;%
                     </p>
                     <div
                       className='mb-0 ms-1  col-2 text-end d-flex justify-content-around align-items-start'
@@ -372,7 +374,7 @@ const OrderMapPieChart = ({
                     >
                       <span className='pb-1'>
                         <img
-                          src={obj.comparePercent > 0 ? GreenArrow : RedArrow}
+                          src={compare > 0 ? GreenArrow : RedArrow}
                           alt=''
                           style={{ width: '1.25vw', marginRight: '4px' }}
                         />
@@ -380,7 +382,7 @@ const OrderMapPieChart = ({
                       <span
                         className='pt-1 mr-1'
                         style={
-                          obj.comparePercent > 0
+                          compare > 0
                             ? {
                                 fontSize: '1.5vh',
                                 whiteSpace: 'nowrap',
@@ -395,7 +397,7 @@ const OrderMapPieChart = ({
                               }
                         }
                       >
-                        {Number(obj.comparePercent).toFixed(0)} %
+                        {Number(compare).toFixed(0)} %
                       </span>
                     </div>
                   </div>

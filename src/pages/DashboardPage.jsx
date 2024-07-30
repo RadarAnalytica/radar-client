@@ -790,35 +790,30 @@ const DashboardPage = () => {
               <div className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    minHeight={'12vh'}
-                    smallText={true}
                     name={'Себестоимость проданных товаров'}
-                    nochart={true}
+                    nochart={false}
                     type={'price'}
                     quantity={curOrders?.selectedPeriod?.buyoutsCount}
-                    value={selfCost}
                     dataDashBoard={dataDashBoard?.costPriceAmount}
                     percent={dataDashBoard?.costPriceAmountCompare}
+                    pieces={dataDashBoard?.saleCount}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    minHeight={'12vh'}
-                    smallText={true}
+                    nochart={false}
                     name={'Возвраты'}
-                    value={curOrders?.selectedPeriod?.cancelSumRub}
                     quantity={curOrders?.selectedPeriod?.cancelCount}
                     type={'price'}
                     dataDashBoard={dataDashBoard?.returnAmount}
                     percent={dataDashBoard?.returnAmountCompare}
+                    pieces={dataDashBoard?.returnCount}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    minHeight={'12vh'}
                     smallText={true}
                     name={'Штрафы WB'}
-                    value={content?.penalty}
                     type={'price'}
                     nochart={true}
                     dataDashBoard={dataDashBoard?.penalty}
@@ -826,10 +821,7 @@ const DashboardPage = () => {
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    minHeight={'12vh'}
-                    smallText={true}
                     name={'Доплаты WB'}
-                    value={content?.additionalPayment}
                     type={'price'}
                     nochart={true}
                     dataDashBoard={dataDashBoard?.additional}
@@ -839,8 +831,6 @@ const DashboardPage = () => {
               <div className='container dash-container p-4 pt-0 d-flex gap-3'>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    minHeight={'12vh'}
-                    smallText={true}
                     name={'Комиссия WB'}
                     type={'price'}
                     dataDashBoard={dataDashBoard?.commissionWB}
@@ -849,12 +839,7 @@ const DashboardPage = () => {
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    minHeight={'12vh'}
-                    smallText={true}
                     name={'Расходы на логистику'}
-                    value={
-                      content?.logistics?.totalDeliveryCostCurrentPeriod || '0'
-                    }
                     type={'price'}
                     dataDashBoard={dataDashBoard?.logistics}
                     percent={dataDashBoard?.logisticsCompare}
@@ -862,26 +847,20 @@ const DashboardPage = () => {
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    minHeight={'12vh'}
-                    smallText={true}
                     name={'Хранение'}
-                    value={curOrders?.selectedPeriod?.buyoutsSumRub - selfCost}
                     type={'price'}
                     dataDashBoard={dataDashBoard?.storageData || 0}
                     percent={dataDashBoard?.storageDataCompare || 0}
-                    // dataDashBoard={dataDashBoard?.marginalProfit}
-                    // percent={dataDashBoard?.marginalProfitCompare}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    minHeight={'12vh'}
-                    smallText={true}
+                    nochart={false}
                     name={'Упущенные продажи'}
                     type={'price'}
-                    value={curOrders?.selectedPeriod?.cancelSumRub}
                     quantity={curOrders?.selectedPeriod?.cancelCount}
                     dataDashBoard={dataDashBoard?.lostSalesCount}
+                    pieces={dataDashBoard?.lostSalesCount}
                   />
                 </div>
               </div>

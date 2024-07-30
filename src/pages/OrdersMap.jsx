@@ -770,11 +770,8 @@ const OrdersMap = () => {
                         sub={'Всего заказов'}
                         info={geoData.geo_data}
                         title={'Топ 5 по заказам'}
-                        geoData={geoData.geo_data}
                         totalAmount={totalOrderAmount}
                         totalCount={totalOrderSum}
-                        count={orderCount}
-                        amount={orderAmount}
                         titleTooltipAmount={'Заказы, руб  '}
                         titleTooltipCount={'Заказы, шт  '}
                         getColor={getColor}
@@ -787,11 +784,8 @@ const OrdersMap = () => {
                         sub={'Всего продаж'}
                         info={geoData.geo_data}
                         title={'Топ 5 по продажам'}
-                        geoData={geoData.geo_data}
                         totalAmount={totalSaleAmount}
                         totalCount={totalSaleSum}
-                        count={saleCount}
-                        amount={saleAmount}
                         titleTooltipAmount={'Продажи, руб'}
                         titleTooltipCount={'Продажи, шт  '}
                         getColor={getColor}
