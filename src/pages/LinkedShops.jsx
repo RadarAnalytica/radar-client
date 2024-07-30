@@ -18,7 +18,7 @@ import {
   saveFileClickHandler,
 } from '../service/getSaveFile';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { fetchShops, shops } from '../redux/shops/shopsActions';
+import { fetchShops } from '../redux/shops/shopsActions';
 import { editShop } from '../redux/editShop/editShopActions';
 import { addShop } from '../redux/addShop/addShopActions';
 import { deleteShop } from '../redux/deleteShop/deleteShopActions';
@@ -27,55 +27,11 @@ const warningIcon = require('../assets/warning.png');
 
 const LinkedShops = () => {
   const { user, authToken } = useContext(AuthContext);
+  const loading = useAppSelector((state) => state.loadingSlice);
+  const dispatch = useAppDispatch();
+  const shops = useAppSelector((state) => state.shopsSlice.shops);
 
   const navigate = useNavigate();
-
-  const status =
-    user && user.stage && user.stage?.indexOf('Предприниматель') >= 0
-      ? 'ИП'
-      : (user && user.stage?.indexOf('Менеджер') >= 0) ||
-        (user && user.stage?.indexOf('менеджер') >= 0)
-      ? 'Менеджер'
-      : null;
-
-  const getTokenExp = async (user) => {
-    const res = await fetch(`${URL}/api/user/exp/${user.id}`, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        authorization: 'Bearer ' + authToken,
-      },
-    });
-    const data = await res.json();
-    return data;
-  };
-
-  // const [data, setData] = useState()
-  const [primary, setPrimary] = useState();
-
-  let [activeTokens, setActiveTokens] = useState([]);
-  let [inactiveTokens, setInactiveTokens] = useState([]);
-
-  // const [expDate, setExpDate] = useState()
-  // useEffect(() => {
-  //     if (data) setExpDate(data.map(token => ({ date: new Date(token?.token?.exp * 1000), brandName: token.brandName })))
-  // }, [data])
-
-  // useEffect(() => {
-  //     let active = []
-  //     let inactive = []
-  //     if (expDate) {
-  //         for (let i in expDate) {
-  //             if (new Date(expDate[i]?.date).getTime() > new Date().getTime()) {
-  //                 active.push({ date: expDate[i], brandName: expDate[i]?.brandName })
-  //                 setActiveTokens(active)
-  //             } else {
-  //                 inactive.push({ date: expDate[i], brandName: expDate[i]?.brandName })
-  //                 setInactiveTokens(inactive)
-  //             }
-  //         }
-  //     }
-  // }, [expDate])
 
   const [activeShop, setActiveShop] = useState(null);
   const [show, setShow] = useState(false);
@@ -96,8 +52,25 @@ const LinkedShops = () => {
   const [brandName, setBrandName] = useState();
   const [tkn, setTkn] = useState();
 
-  const dispatch = useAppDispatch();
-  const data = useAppSelector((state) => state.shopsSlice.shops);
+  // const status =
+  //   user && user.stage && user.stage?.indexOf('Предприниматель') >= 0
+  //     ? 'ИП'
+  //     : (user && user.stage?.indexOf('Менеджер') >= 0) ||
+  //       (user && user.stage?.indexOf('менеджер') >= 0)
+  //     ? 'Менеджер'
+  //     : null;
+
+  // const getTokenExp = async (user) => {
+  //   const res = await fetch(`${URL}/api/user/exp/${user.id}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       authorization: 'Bearer ' + authToken,
+  //     },
+  //   });
+  //   const data = await res.json();
+  //   return data;
+  // };
 
   // const editShop = async (shop, is_active, is_delete, authtoken, brand_name, token) => {
 
@@ -148,13 +121,6 @@ const LinkedShops = () => {
     if (user) {
       dispatch(fetchShops(authToken));
     }
-
-    // if (user) {
-    //     ServiceFunctions.getAllShops(authToken).then(data => {
-
-    //         setData(data)})
-    //     // getTokenExp(user).then(data => setData(data))
-    // }
   }, []);
 
   const editData = {
@@ -219,8 +185,8 @@ const LinkedShops = () => {
           style={{ padding: '12px 24px', gap: '20px' }}
         >
           <div className='row linked-wrap p-0'>
-            {data && data.length
-              ? data.map((item, i) => (
+            {shops && shops.length
+              ? shops.map((item, i) => (
                   <div className='linked-shop-block col me-2' key={i}>
                     <div>
                       <div className='d-flex align-items-center gap-2'>
@@ -435,51 +401,52 @@ const LinkedShops = () => {
                   </div>
                 ))
               : null}
-
-            <div className='linked-shop-block col me-2'>
-              <div className='d-flex align-items-center mb-2 gap-2'>
-                <svg
-                  width='60'
-                  height='60'
-                  viewBox='0 0 60 60'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <rect
+            {loading ? null : (
+              <div className='linked-shop-block col me-2'>
+                <div className='d-flex align-items-center mb-2 gap-2'>
+                  <svg
                     width='60'
                     height='60'
-                    rx='10'
-                    fill='#5329FF'
-                    fillOpacity='0.15'
-                  />
-                  <path
-                    d='M38.5455 42H19.4545C19.0929 42 18.746 41.8606 18.4903 41.6124C18.2346 41.3643 18.0909 41.0277 18.0909 40.6767V28.7673H14L28.0823 16.3445C28.3333 16.1228 28.6606 16 29 16C29.3394 16 29.6667 16.1228 29.9177 16.3445L44 28.7673H39.9091V40.6767C39.9091 41.0277 39.7654 41.3643 39.5097 41.6124C39.254 41.8606 38.9071 42 38.5455 42ZM20.8182 39.3535H37.1818V26.3286L29 19.1115L20.8182 26.3286V39.3535ZM23.5455 34.0604H34.4545V36.7069H23.5455V34.0604Z'
-                    fill='#5329FF'
-                  />
-                </svg>
+                    viewBox='0 0 60 60'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <rect
+                      width='60'
+                      height='60'
+                      rx='10'
+                      fill='#5329FF'
+                      fillOpacity='0.15'
+                    />
+                    <path
+                      d='M38.5455 42H19.4545C19.0929 42 18.746 41.8606 18.4903 41.6124C18.2346 41.3643 18.0909 41.0277 18.0909 40.6767V28.7673H14L28.0823 16.3445C28.3333 16.1228 28.6606 16 29 16C29.3394 16 29.6667 16.1228 29.9177 16.3445L44 28.7673H39.9091V40.6767C39.9091 41.0277 39.7654 41.3643 39.5097 41.6124C39.254 41.8606 38.9071 42 38.5455 42ZM20.8182 39.3535H37.1818V26.3286L29 19.1115L20.8182 26.3286V39.3535ZM23.5455 34.0604H34.4545V36.7069H23.5455V34.0604Z'
+                      fill='#5329FF'
+                    />
+                  </svg>
 
-                <h3 className='fw-bold'>Новый магазин</h3>
-              </div>
-              <p
-                style={{
-                  fontWeight: 600,
-                  fontSize: '16px',
-                  marginBottom: '1.5rem',
-                }}
-              >
-                Добавьте новые данные, чтобы отслеживать
-                <br /> статистику по всем вашим магазинам в одном месте
-              </p>
-              <div>
-                <button
-                  className='mt-2 prime-btn butt'
-                  style={{ maxWidth: '200px', height: '8vh' }}
-                  onClick={() => handleShow()}
+                  <h3 className='fw-bold'>Новый магазин</h3>
+                </div>
+                <p
+                  style={{
+                    fontWeight: 600,
+                    fontSize: '16px',
+                    marginBottom: '1.5rem',
+                  }}
                 >
-                  Подключить
-                </button>
+                  Добавьте новые данные, чтобы отслеживать
+                  <br /> статистику по всем вашим магазинам в одном месте
+                </p>
+                <div>
+                  <button
+                    className='mt-2 prime-btn butt'
+                    style={{ maxWidth: '200px', height: '8vh' }}
+                    onClick={() => handleShow()}
+                  >
+                    Подключить
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
