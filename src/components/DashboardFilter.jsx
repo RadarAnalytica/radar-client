@@ -16,7 +16,10 @@ const DashboardFilter = ({
   const { authToken } = useContext(AuthContext);
   const currentShop = shops?.find((item) => item.id == activeShopId);
   const shopName = currentShop?.brand_name;
-  const allShop = activeShopId == 0 && shops?.some((item) => item?.is_primary_collect === true);
+  const allShop =
+    activeShopId == 0 &&
+    shops?.some((item) => item?.is_primary_collect === true);
+
   const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7))
     .toLocaleDateString('ru')
     ?.split('.')
@@ -193,7 +196,7 @@ const DashboardFilter = ({
                     </svg>
                 </div> */}
       </div>
-      {currentShop?.is_primary_collect || allShop && (
+      {(currentShop?.is_primary_collect || allShop) && (
         <div className='download-button' onClick={handleDownload}>
           <img src={downloadIcon} />
           Скачать Excel
