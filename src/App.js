@@ -33,6 +33,7 @@ const Politics = React.lazy(() => import('./pages/Politics'));
 const StubPage = React.lazy(() => import('./pages/StubPage'));
 const MainPage = React.lazy(() => import('./pages/MainPage'));
 const AfterPayment = React.lazy(() => import('./pages/AfterPayment'));
+const TariffsPage = React.lazy(() => import('./pages/TariffsPage'));
 const Page404 = React.lazy(() => import('./pages/Page404'));
 
 function App() {
@@ -194,6 +195,15 @@ function App() {
                 <React.Suspense fallback={<>...</>}>
                   {' '}
                   <AfterPayment />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/tariffs'
+              element={
+                <React.Suspense fallback={<>...</>}>
+                  {' '}
+                  <TariffsPage />
                 </React.Suspense>
               }
             />

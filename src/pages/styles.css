@@ -347,7 +347,8 @@ select {
 }
 .page-white {
   background-color: white;
-  /* max-height: 100vh; */
+  min-height: 100vh;
+  display: flex;
   /* transform: scale(0.9); */
 }
 
@@ -363,6 +364,11 @@ select {
   width: 60px;
   height: 34px;
 }
+.home-container {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}
 .page-container {
   display: flex;
   align-items: center;
@@ -374,7 +380,11 @@ select {
   display: flex;
   gap: 10px;
 }
-
+.column-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .vertical-line {
   position: absolute;
   left: 25px;
@@ -510,11 +520,11 @@ select {
   background-color: #ffffff;
   border-radius: 12px;
   border: none;
-  font-size: 25px;
+  font-size: 18px;
   width: 60%;
+  min-height: 64px;
   color: #5329ff;
   font-weight: 600;
-  font-size: 25px;
 }
 
 .blockInOnAnalytics {
@@ -1128,4 +1138,10 @@ button.accordion-button.collapsed::after {
   font-size: 30px;
   line-height: 45px;
   margin-bottom: 20px;
+}
+.tariffs {
+  display: flex;
+  flex-direction: column;
+  gap: 90px;
+  margin: 50px 0px 100px;
 }

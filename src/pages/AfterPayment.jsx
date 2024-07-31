@@ -36,15 +36,8 @@ const AfterPayment = ({ status }) => {
     ));
 
   return (
-    <div className='page-white' style={{ display: 'flex', minHeight: '100vh' }}>
-      <div
-        className='container widbody-container container-xlwidth'
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}
-      >
+    <div className='page-white'>
+      <div className='container widbody-container container-xlwidth column-container'>
         <NavbarMainHome onlyLogo />
         <div
           className={`result-payment ${
