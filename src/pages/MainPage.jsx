@@ -232,7 +232,7 @@ const MainPage = () => {
                   style={{ minHeight: '64px', fontSize: '18px' }}
                   onClick={() => redirect()}
                 >
-                  Попробовать 3 дня бесплатно
+                  Начать работать
                 </button>
               </div>
             </div>
