@@ -1635,3 +1635,19 @@ select {
 .linked-wrap .linked-shop-block {
   padding-left: 1rem;
 }
+.header-btn-wrap {
+  display: flex;
+  gap: 40px;
+}
+.header-btn {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 20px 30px 20px 14px;
+  width: auto;
+  gap: 16px;
+}
+.header-btn_light {
+  background-color: #5329ff1a;
+  color: #5329ff;
+}
