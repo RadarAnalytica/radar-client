@@ -345,7 +345,7 @@ select {
   background-color: white;
   min-height: 100vh;
 }
-.page-main {
+.page-white {
   background-color: white;
   /* max-height: 100vh; */
   /* transform: scale(0.9); */
@@ -994,7 +994,6 @@ button.accordion-button.collapsed::after {
 
 .wide_container {
   max-width: 1480px;
-  padding: 0 20px;
 }
 .custom-accordion .custom-accordion-item {
   margin-bottom: 10px;
@@ -1090,4 +1089,43 @@ button.accordion-button.collapsed::after {
   line-height: 36px;
   color: #fff;
   margin: 0;
+}
+.result-payment {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 20px;
+  padding: 30px;
+}
+.result-payment_success {
+  background-color: #00b69b26;
+}
+.result-payment_fail {
+  background-color: #eb2f5026;
+}
+.result-payment-img {
+  margin-bottom: 20px;
+}
+.result-payment-box {
+  border-radius: 18px;
+  font-weight: 700;
+  align-self: flex-start;
+}
+.result-payment-box_right {
+  background-color: #fff;
+  padding: 30px;
+  min-width: 65%;
+}
+.result-payment-box-title {
+  font-size: 40px;
+  line-height: 50px;
+  margin: 0;
+  margin-bottom: 20px;
+}
+.result-payment-box-title_blue {
+  color: #5329ff;
+}
+.result-payment-box-text {
+  font-size: 30px;
+  line-height: 45px;
+  margin-bottom: 20px;
 }

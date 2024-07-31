@@ -6,7 +6,7 @@ import AuthContext from '../service/AuthContext';
 import RadarAnaliticaMedium from '../pages/images/RadarAnaliticaMedium.svg';
 import Steps from '../pages/images/Steps';
 
-const NavbarMainHome = () => {
+const NavbarMainHome = ({ onlyLogo }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -127,25 +127,26 @@ const NavbarMainHome = () => {
           <span className='home-item'>Тарифы</span>
           <span className='home-item'>Контакты</span>
         </div> */}
-
-        <div className='widheader-login'>
-          {user ? (
-            buttonSignIn('/dashboard')
-          ) : (
-            <div className='header-btn-wrap'>
-              <button
-                onClick={() => {
-                  navigate('/signup');
-                }}
-                className='prime-btn header-btn'
-              >
-                <Steps.StepsWhite />
-                <p style={{ margin: 0, fontWeight: 600 }}>Регистрация</p>
-              </button>
-              {buttonSignIn('/signin')}
-            </div>
-          )}
-        </div>
+        {!onlyLogo && (
+          <div className='widheader-login'>
+            {user ? (
+              buttonSignIn('/dashboard')
+            ) : (
+              <div className='header-btn-wrap'>
+                <button
+                  onClick={() => {
+                    navigate('/signup');
+                  }}
+                  className='prime-btn header-btn'
+                >
+                  <Steps.StepsWhite />
+                  <p style={{ margin: 0, fontWeight: 600 }}>Регистрация</p>
+                </button>
+                {buttonSignIn('/signin')}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

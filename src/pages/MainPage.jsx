@@ -39,9 +39,9 @@ const MainPage = () => {
   };
 
   return (
-    <div className='page-main'>
-      <NavbarMainHome />
+    <div className='page-white'>
       <div className='container widbody-container container-xlwidth'>
+        <NavbarMainHome />
         <div className='wid-solution'>
           <div className='sol-description col'>
             <div style={{ marginBottom: '20px' }}>

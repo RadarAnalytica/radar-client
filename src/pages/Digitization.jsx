@@ -11,9 +11,9 @@ import Percent from './images/percent.svg';
 const Digitization = () => {
   return (
     <div>
-      <div className='page-main'>
-        <NavbarMainHome />
+      <div className='page-white'>
         <div className='container custom-container container-xlwidth'>
+          <NavbarMainHome />
           <div className='d-flex' style={{ justifyContent: 'space-between' }}>
             <div style={{ alignSelf: 'center' }}>
               <img src={RadarAnalitica} alt='' />
