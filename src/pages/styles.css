@@ -128,7 +128,7 @@ select {
   border-radius: 16px;
   padding: 24px 32px;
   margin-bottom: 3vh;
-  max-width: 35.5vw;
+  max-width: 39vw;
 }
 
 .filter-item select,
@@ -345,9 +345,10 @@ select {
   background-color: white;
   min-height: 100vh;
 }
-.page-main {
+.page-white {
   background-color: white;
-  /* max-height: 100vh; */
+  min-height: 100vh;
+  display: flex;
   /* transform: scale(0.9); */
 }
 
@@ -363,6 +364,11 @@ select {
   width: 60px;
   height: 34px;
 }
+.home-container {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}
 .page-container {
   display: flex;
   align-items: center;
@@ -374,7 +380,11 @@ select {
   display: flex;
   gap: 10px;
 }
-
+.column-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .vertical-line {
   position: absolute;
   left: 25px;
@@ -510,11 +520,11 @@ select {
   background-color: #ffffff;
   border-radius: 12px;
   border: none;
-  font-size: 25px;
+  font-size: 18px;
   width: 60%;
+  min-height: 64px;
   color: #5329ff;
   font-weight: 600;
-  font-size: 25px;
 }
 
 .blockInOnAnalytics {
@@ -994,7 +1004,6 @@ button.accordion-button.collapsed::after {
 
 .wide_container {
   max-width: 1480px;
-  padding: 0 20px;
 }
 .custom-accordion .custom-accordion-item {
   margin-bottom: 10px;
@@ -1090,4 +1099,49 @@ button.accordion-button.collapsed::after {
   line-height: 36px;
   color: #fff;
   margin: 0;
+}
+.result-payment {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 20px;
+  padding: 30px;
+}
+.result-payment_success {
+  background-color: #00b69b26;
+}
+.result-payment_fail {
+  background-color: #eb2f5026;
+}
+.result-payment-img {
+  margin-bottom: 20px;
+}
+.result-payment-box {
+  border-radius: 18px;
+  font-weight: 700;
+  align-self: flex-start;
+}
+.result-payment-box_right {
+  background-color: #fff;
+  padding: 30px;
+  min-width: 65%;
+}
+.result-payment-box-title {
+  font-size: 40px;
+  line-height: 50px;
+  margin: 0;
+  margin-bottom: 20px;
+}
+.result-payment-box-title_blue {
+  color: #5329ff;
+}
+.result-payment-box-text {
+  font-size: 30px;
+  line-height: 45px;
+  margin-bottom: 20px;
+}
+.tariffs {
+  display: flex;
+  flex-direction: column;
+  gap: 90px;
+  margin: 50px 0px 100px;
 }

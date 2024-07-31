@@ -23,7 +23,6 @@ const SelectRate = ({ redirect }) => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          marginTop: '100px',
           marginBottom: '10px',
         }}
       >

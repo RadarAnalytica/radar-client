@@ -319,10 +319,11 @@ const OrderMapPieChart = ({
         </div>
         <div
           style={{
-            marginLeft: '0',
+            marginLeft: '1vw',
             display: 'flex',
             flexDirection: 'column',
             alignSelf: 'center',
+            width: '100%',
           }}
         >
           {firstFive

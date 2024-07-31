@@ -25,6 +25,8 @@ import { useNavigate } from 'react-router-dom';
 import LimitedFooter from '../components/LimitedFooter';
 import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
 import ImageComponent from '../components/utilsComponents/ImageComponent ';
+import ReviewsUsers from '../components/ReviewsUsers';
+import TryProduct from '../components/TryProduct';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -39,10 +41,10 @@ const MainPage = () => {
   };
 
   return (
-    <div className='page-main'>
-      <NavbarMainHome />
+    <div className='page-white'>
       <div className='container widbody-container container-xlwidth'>
-        <div className='wid-solution'>
+        <NavbarMainHome />
+        <div className='wid-solution' style={{ marginTop: '20px' }}>
           <div className='sol-description col'>
             <div style={{ marginBottom: '20px' }}>
               <SolLabelBsn />
@@ -194,51 +196,17 @@ const MainPage = () => {
           <div>
             <StepsTime redirect={redirect} />
           </div>
-          <div>
+          <div style={{ marginTop: '100px' }}>
             <SelectRate redirect={redirect} />
           </div>
-          <div className='pt-5 pb-3 mt-5 d-flex justify-content-center'>
-            <h4 className='fw-bold text-center' style={{ width: '50%' }}>
-              <p style={{ margin: 0 }}>Более 6 000 предпринимателей уже</p>{' '}
-              <p style={{ margin: 0 }}>используют Radar Analytica для начала</p>{' '}
-              <p style={{ margin: 0 }}>и развития бизнеса на маркетплейсах</p>
-            </h4>
+          <div style={{ marginTop: '100px' }}>
+            <ReviewsUsers />
           </div>
-          <div className='ReviewsUsersIP'>
-            <Reviews />
-          </div>
-          <div style={{ marginBottom: '50px' }}>
+          <div style={{ marginBottom: '100px' }}>
             <AccordionMain />
           </div>
-          <div className='wid-solutionMain' style={{ marginBottom: '100px' }}>
-            <div className='sol-description col' style={{ padding: 0 }}>
-              <div className='headStartBsn'>
-                <SolLabelStartBsn />
-                <div style={{ fontSize: '34px', fontWeight: '700' }}>
-                  Готовы начать?
-                </div>
-                <div style={{ fontSize: '22px' }}>
-                  Найдите прибыльные товары на маркетплейсе и развивайте свой
-                  бизнес.
-                </div>
-                <div className='YellowRadarPoint' style={{ marginTop: '20px' }}>
-                  <YellowRadarPoint />
-                </div>
-              </div>
-
-              <div className='d-flex flex-column gap-3'>
-                <button
-                  className='white-btn'
-                  style={{ minHeight: '64px', fontSize: '18px' }}
-                  onClick={() => redirect()}
-                >
-                  Попробовать 3 дня бесплатно
-                </button>
-              </div>
-            </div>
-            <div className='sol-screenshot sol-screenshot_bottom'>
-              <img src={BlockImg_x2} alt='' />
-            </div>
+          <div style={{ marginBottom: '100px' }}>
+            <TryProduct redirect={redirect} />
           </div>
         </div>
         <LimitedFooter />
