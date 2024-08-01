@@ -27,7 +27,12 @@ const NavbarMainHome = ({ onlyLogo }) => {
   return (
     <div className='page-header'>
       <div className='wide_container page-container'>
-        <img src={RadarAnaliticaMedium} alt='logo' />
+        <img
+          src={RadarAnaliticaMedium}
+          alt='logo'
+          onClick={() => navigate('/home')}
+          style={{ cursor: 'pointer' }}
+        />
 
         {/* <div className='home-menu'>
           <Dropdown>

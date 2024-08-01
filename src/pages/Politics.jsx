@@ -3,13 +3,20 @@ import './styles.css';
 import TopTgIcon from './images/TopTgIcon';
 import RadarAnaliticaMedium from './images/RadarAnaliticaMedium.svg';
 import LimitedFooter from '../components/LimitedFooter';
+import { useNavigate } from 'react-router-dom';
 
 const Politics = () => {
+  const navigate = useNavigate();
   return (
     <div className='instruction-page'>
       <div className='container instruction-container col-10 container-xlwidth'>
         <div className='sps-top'>
-          <img src={RadarAnaliticaMedium} alt='logo' />
+          <img
+            src={RadarAnaliticaMedium}
+            alt='logo'
+            onClick={() => navigate('/home')}
+            style={{ cursor: 'pointer' }}
+          />
           <div className='top-right-spasibo col'>
             <div className='tg-bot-top col-5'>
               {/* <img src={toptg} alt="" className='me-3' /> */}
