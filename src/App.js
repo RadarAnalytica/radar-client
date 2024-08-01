@@ -30,6 +30,7 @@ const SupplyCount = React.lazy(() => import('./pages/SupplyCount'));
 const StockAnalysis = React.lazy(() => import('./pages/StockAnalysis'));
 const MainWidget = React.lazy(() => import('./pages/MainWidget'));
 const Politics = React.lazy(() => import('./pages/Politics'));
+const PublicOffer = React.lazy(() => import('./pages/PublicOffer'));
 const StubPage = React.lazy(() => import('./pages/StubPage'));
 const MainPage = React.lazy(() => import('./pages/MainPage'));
 const AfterPayment = React.lazy(() => import('./pages/AfterPayment'));
@@ -108,6 +109,16 @@ function App() {
                 </React.Suspense>
               }
             />
+            <Route
+              path='/offer'
+              element={
+                <React.Suspense fallback={<>...</>}>
+                  {' '}
+                  <PublicOffer />
+                </React.Suspense>
+              }
+            />
+            ;
             <Route
               path='/instruction'
               element={
@@ -207,7 +218,6 @@ function App() {
                 </React.Suspense>
               }
             />
-
             {user.is_onboarded ? (
               <>
                 <Route
@@ -368,7 +378,6 @@ function App() {
                 />
               </>
             )}
-
             {/* <Route path='/development/settings' element={<Settings />} /> */}
             {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
           </Routes>
@@ -444,6 +453,16 @@ function App() {
               </React.Suspense>
             }
           />
+          <Route
+            path='/offer'
+            element={
+              <React.Suspense fallback={<>...</>}>
+                {' '}
+                <PublicOffer />
+              </React.Suspense>
+            }
+          />
+          ;
           <Route
             path='/instruction'
             element={
@@ -608,7 +627,6 @@ function App() {
           <Route path='/confirmation/:email/:code' element={<ConfirmationPage />} />
           <Route path='/restore/:email/:code' element={<ResetPage />} />
           <Route path='/reset' element={<RequestResetLink />} /> */}
-
           {/* <Route path='/development/*' element={<Navigate to={'/signin'} replace />} /> */}
           {/* <Route path='/development/settings' element={<Settings />} /> */}
           {/* <Route path='*' element={<Navigate to={'/development/signin'} replace />} /> */}

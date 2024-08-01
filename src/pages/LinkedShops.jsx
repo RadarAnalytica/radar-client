@@ -328,7 +328,38 @@ const LinkedShops = () => {
                           </svg>
                           <h5 className='mb-0 pb-0'>Токен</h5>
                         </div>
-                        {item.is_primary_collect ? (
+                        {!item.is_valid ? (
+                          <div
+                            className='d-flex token-status'
+                            style={{ marginTop: '10px' }}
+                          >
+                            <svg
+                              width='120'
+                              height='40'
+                              fill='#00B69B'
+                              xmlns='http://www.w3.org/2000/svg'
+                            >
+                              <rect
+                                width='120'
+                                height='40'
+                                rx='8'
+                                fill='#F93C65'
+                                fillOpacity='0.15'
+                              />
+                              <circle cx='15' cy='18' r='5' fill='#F93C65' />
+                              <text
+                                x='30'
+                                y='25'
+                                font-family='Arial'
+                                font-size='18'
+                                font-weight='400'
+                                fill='black'
+                              >
+                                Ошибка
+                              </text>
+                            </svg>
+                          </div>
+                        ) : item.is_primary_collect ? (
                           <div
                             className='d-flex token-status'
                             style={{ marginTop: '10px' }}
