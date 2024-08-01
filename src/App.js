@@ -51,7 +51,7 @@ function App() {
               element={
                 <React.Suspense fallback={<>...</>}>
                   {' '}
-                  <MockUpPage />
+                  <MainPage />
                 </React.Suspense>
               }
             />
@@ -395,7 +395,7 @@ function App() {
             element={
               <React.Suspense fallback={<>...</>}>
                 {' '}
-                <MockUpPage />
+                <MainPage />
               </React.Suspense>
             }
           />
