@@ -60,7 +60,7 @@ const LimitedFooter = () => {
       </div>
       <div className='col footer-col'>
         <a
-          href='/contacts'
+          href='/offer'
           style={{
             textDecoration: 'none',
             color: 'black',
@@ -68,7 +68,7 @@ const LimitedFooter = () => {
           }}
           className='fw-bold'
         >
-          Контакты
+          Публичная оферта
         </a>
       </div>
       <div className='col-3 footer-col'>
