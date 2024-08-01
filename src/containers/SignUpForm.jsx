@@ -287,9 +287,13 @@ const SignUpForm = () => {
       <div className='text-center mb-0 pb-0'>
         <p className='m-0 p-0 clue-text' style={{ fontSize: '1.75vh' }}>
           Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с{' '}
-          <span className='fw-bold' style={{ textDecoration: 'underline' }}>
+          <a
+            href='/offer'
+            className='fw-bold'
+            style={{ textDecoration: 'underline', color: 'grey' }}
+          >
             Пользовательским соглашением
-          </span>{' '}
+          </a>{' '}
           и{' '}
           <a
             href='/politics'
