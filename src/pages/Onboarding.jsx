@@ -100,22 +100,8 @@ const Onboarding = () => {
                   submitHandler();
                 }}
               >
-                Получить 3 дня бесплатно
+                Начать работать
               </button>
-              <div className='text-center'>
-                <p className='clue-text'>
-                  Тяжело разобраться?{' '}
-                  <Link className='link' to={'/instruction'}>
-                    Полная инструкция
-                  </Link>
-                </p>
-              </div>
-              <div className='text-center'>
-                <p className='clue-text'>
-                  Нажимая кнопку “Зарегистрироваться”, вы соглашаетесь с
-                  Пользовательским соглашением и Политикой конфиденциальности
-                </p>
-              </div>
             </div>
             <div className='onboard-description col'>
               <p style={{ fontWeight: 700, fontSize: 24, width: '90%' }}>
@@ -147,17 +133,6 @@ const Onboarding = () => {
                   Готово!
                 </li>
               </ol>
-              <div className='mt-1'>
-                <a
-                  href='#'
-                  style={{
-                    textDecoration: 'none',
-                    color: 'rgba(83, 41, 255, 1)',
-                  }}
-                >
-                  Полная инструкция как найти токен на Wildberries
-                </a>
-              </div>
             </div>
           </div>
         </div>

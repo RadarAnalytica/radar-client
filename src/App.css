@@ -373,7 +373,6 @@ select {
 }
 
 .onboard-form-block {
-  min-height: 440px;
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
@@ -381,7 +380,6 @@ select {
 }
 
 .onboard-description {
-  min-height: 440px;
   padding: 1rem;
   border-radius: 1rem;
 }
