@@ -135,7 +135,11 @@ const NavbarMainHome = ({ onlyLogo }) => {
         {!onlyLogo && (
           <div className='widheader-login'>
             {user ? (
-              buttonSignIn('/dashboard')
+              user.subscription_status ? (
+                buttonSignIn('/dashboard')
+              ) : !user.subscription_status ? (
+                buttonSignIn('/tariffs')
+              ) : null
             ) : (
               <div className='header-btn-wrap'>
                 <button

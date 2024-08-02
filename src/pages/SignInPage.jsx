@@ -1,28 +1,33 @@
-import React, { useContext, useEffect } from 'react'
-import SignInForm from '../containers/SignInForm'
-import { useNavigate } from 'react-router-dom'
-import AuthContext from '../service/AuthContext'
+import React, { useContext, useEffect } from 'react';
+import SignInForm from '../containers/SignInForm';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../service/AuthContext';
 
 const SignInPage = () => {
+  const { user } = useContext(AuthContext);
 
-    const { user } = useContext(AuthContext)
+  const navigate = useNavigate();
+  useEffect(() => {
+    const handleNavigation = () => {
+      if (!user) return;
 
-    const navigate = useNavigate()
-    useEffect(() => {
-        setTimeout(() => {
-            if (user && user.is_onboarded === true) {
-                navigate('/linked-shops')
-            } else if (user && user.is_onboarded === false) {
-                navigate('/onboarding')
-            }
-        }, 300);
-    }, [navigate, user, user?.is_onboarded])
+      if (!user.subscription_status) {
+        navigate('/tariffs');
+      } else if (user.is_onboarded) {
+        navigate('/linked-shops');
+      } else {
+        navigate('/onboarding');
+      }
+    };
+    handleNavigation();
+    //setTimeout(handleNavigation, 300);
+  }, [navigate, user]);
 
-    return (
-        <div className='signin-page'>
-            <SignInForm />
-        </div>
-    )
-}
+  return (
+    <div className='signin-page'>
+      <SignInForm />
+    </div>
+  );
+};
 
-export default SignInPage
+export default SignInPage;
