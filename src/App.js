@@ -9,6 +9,7 @@ import Digitization from './pages/Digitization';
 import Contacts from './components/Contacts';
 import StockAnalysisGlitter from './components/StockAnalysisGlitter';
 import LoaderPage from './pages/LoaderPage';
+import Subscriptions from './pages/Subscriptions';
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
 
@@ -46,7 +47,6 @@ function App() {
       <div className='App'>
         <AuthProvider>
           <MobileMenu />
-
           <Routes>
             <Route
               path='/'
@@ -217,6 +217,15 @@ function App() {
                 <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <TariffsPage />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/subscription'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {' '}
+                  <Subscriptions />
                 </React.Suspense>
               }
             />
