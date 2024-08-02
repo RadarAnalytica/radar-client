@@ -13,7 +13,9 @@ import AuthContext from '../service/AuthContext';
 const SelectRate = ({ redirect }) => {
   const { user } = useContext(AuthContext);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
-  const [isTrial, setIsTrial] = useState(user?.is_test_used);
+  const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
+
+  console.log('user', user);
 
   const handlePeriodChange = (period) => {
     setSelectedPeriod(period);
@@ -452,9 +454,9 @@ const SelectRate = ({ redirect }) => {
                   {selectedPeriod === '1month' && (
                     <>
                       <span className='priceCardOne'>
-                        {isTrial ? '1 ₽' : '2 990 ₽'}
+                        {!trialExpired ? '1 ₽' : '2 990 ₽'}
                       </span>
-                      {isTrial && (
+                      {!trialExpired && (
                         <>
                           <span
                             style={{
@@ -477,7 +479,9 @@ const SelectRate = ({ redirect }) => {
                         </>
                       )}
                       <div>
-                        {isTrial ? 'Тестовый доступ на 3 дня' : 'За месяц'}
+                        {!trialExpired
+                          ? 'Тестовый доступ на 3 дня'
+                          : 'За месяц'}
                       </div>
                     </>
                   )}
