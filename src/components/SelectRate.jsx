@@ -15,8 +15,6 @@ const SelectRate = ({ redirect }) => {
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
   const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
 
-  console.log('user', user);
-
   const handlePeriodChange = (period) => {
     setSelectedPeriod(period);
   };

@@ -22,7 +22,7 @@ const TariffsPage = () => {
   return (
     <div className='page-white'>
       <div className='container widbody-container container-xlwidth'>
-        <NavbarMainHome />
+        <NavbarMainHome onlyLogo />
         <div className='tariffs'>
           <SelectRate redirect={redirect} />
           <ReviewsUsers />
