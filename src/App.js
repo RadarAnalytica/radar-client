@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Digitization from './pages/Digitization';
 import Contacts from './components/Contacts';
 import StockAnalysisGlitter from './components/StockAnalysisGlitter';
+import LoaderPage from './pages/LoaderPage';
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
 
@@ -45,11 +46,12 @@ function App() {
       <div className='App'>
         <AuthProvider>
           <MobileMenu />
+
           <Routes>
             <Route
               path='/'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <MainPage />
                 </React.Suspense>
@@ -58,7 +60,7 @@ function App() {
             <Route
               path='/home'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <MainPage />
                 </React.Suspense>
@@ -67,7 +69,7 @@ function App() {
             <Route
               path='/stub'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <StubPage />
                 </React.Suspense>
@@ -76,7 +78,7 @@ function App() {
             <Route
               path='/signup'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <SignUpPage />
                 </React.Suspense>
@@ -85,7 +87,7 @@ function App() {
             <Route
               path='/signin'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <SignInPage />
                 </React.Suspense>
@@ -94,7 +96,7 @@ function App() {
             <Route
               path='/spasibo'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <Spasibo />
                 </React.Suspense>
@@ -103,7 +105,7 @@ function App() {
             <Route
               path='/politics'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <Politics />
                 </React.Suspense>
@@ -112,7 +114,7 @@ function App() {
             <Route
               path='/offer'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <PublicOffer />
                 </React.Suspense>
@@ -122,7 +124,7 @@ function App() {
             <Route
               path='/instruction'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <Instructions />
                 </React.Suspense>
@@ -131,7 +133,7 @@ function App() {
             <Route
               path='/calculate'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <Calculate />
                 </React.Suspense>
@@ -140,7 +142,7 @@ function App() {
             <Route
               path='/onboarding'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <Onboarding />
                 </React.Suspense>
@@ -149,7 +151,7 @@ function App() {
             <Route
               path='/app'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <MainWidget />
                 </React.Suspense>
@@ -158,7 +160,7 @@ function App() {
             <Route
               path='/reset'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <RequestResetLink />
                 </React.Suspense>
@@ -167,7 +169,7 @@ function App() {
             <Route
               path='/confirmation/:email/:code'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <ConfirmationPage />
                 </React.Suspense>
@@ -176,7 +178,7 @@ function App() {
             <Route
               path='/development/Page404'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <Page404 />
                 </React.Suspense>
@@ -185,7 +187,7 @@ function App() {
             <Route
               path='*'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <Page404 />
                 </React.Suspense>
@@ -194,7 +196,7 @@ function App() {
             <Route
               path='/contacts'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <Contacts />
                 </React.Suspense>
@@ -203,7 +205,7 @@ function App() {
             <Route
               path='/after-payment'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <AfterPayment />
                 </React.Suspense>
@@ -212,7 +214,7 @@ function App() {
             <Route
               path='/tariffs'
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense fallback={<LoaderPage />}>
                   {' '}
                   <TariffsPage />
                 </React.Suspense>
@@ -223,7 +225,7 @@ function App() {
                 <Route
                   path='/dashboard'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <DashboardPage />
                     </React.Suspense>
@@ -232,7 +234,7 @@ function App() {
                 <Route
                   path='/development/monitoring'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Monitoring />
                     </React.Suspense>
@@ -241,7 +243,7 @@ function App() {
                 <Route
                   path='/development/supply'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <SupplyCount />
                     </React.Suspense>
@@ -250,7 +252,7 @@ function App() {
                 <Route
                   path='/development/stock-analysis'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <StockAnalysis />
                     </React.Suspense>
@@ -259,7 +261,7 @@ function App() {
                 <Route
                   path='/calculate'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Calculate />
                     </React.Suspense>
@@ -268,7 +270,7 @@ function App() {
                 <Route
                   path='/orders-map'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <OrdersMap />
                     </React.Suspense>
@@ -277,7 +279,7 @@ function App() {
                 <Route
                   path='/linked-shops'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <LinkedShops />
                     </React.Suspense>
@@ -286,7 +288,7 @@ function App() {
                 <Route
                   path='/digitization'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Digitization />
                     </React.Suspense>
@@ -295,7 +297,7 @@ function App() {
                 <Route
                   path='/contacts'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Contacts />
                     </React.Suspense>
@@ -304,7 +306,7 @@ function App() {
                 <Route
                   path='/glitter'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <StockAnalysisGlitter />
                     </React.Suspense>
@@ -316,7 +318,7 @@ function App() {
                 <Route
                   path='/dashboard'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Onboarding />
                     </React.Suspense>
@@ -325,7 +327,7 @@ function App() {
                 <Route
                   path='/development/monitoring'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Onboarding />
                     </React.Suspense>
@@ -334,7 +336,7 @@ function App() {
                 <Route
                   path='/development/supply'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Onboarding />
                     </React.Suspense>
@@ -343,7 +345,7 @@ function App() {
                 <Route
                   path='/development/stock-analysis'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Onboarding />
                     </React.Suspense>
@@ -352,7 +354,7 @@ function App() {
                 <Route
                   path='/calculate'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Onboarding />
                     </React.Suspense>
@@ -361,7 +363,7 @@ function App() {
                 <Route
                   path='/orders-map'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Onboarding />
                     </React.Suspense>
@@ -370,7 +372,7 @@ function App() {
                 <Route
                   path='/linked-shops'
                   element={
-                    <React.Suspense fallback={<>...</>}>
+                    <React.Suspense fallback={<LoaderPage />}>
                       {' '}
                       <Onboarding />
                     </React.Suspense>
@@ -393,7 +395,7 @@ function App() {
           <Route
             path='/'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <MainPage />
               </React.Suspense>
@@ -402,7 +404,7 @@ function App() {
           <Route
             path='/home'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <MainPage />
               </React.Suspense>
@@ -411,7 +413,7 @@ function App() {
           <Route
             path='/stub'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <StubPage />
               </React.Suspense>
@@ -420,7 +422,7 @@ function App() {
           <Route
             path='/signup'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignUpPage />
               </React.Suspense>
@@ -429,7 +431,7 @@ function App() {
           <Route
             path='/signin'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -438,7 +440,7 @@ function App() {
           <Route
             path='/spasibo'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <Spasibo />
               </React.Suspense>
@@ -447,7 +449,7 @@ function App() {
           <Route
             path='/politics'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <Politics />
               </React.Suspense>
@@ -456,7 +458,7 @@ function App() {
           <Route
             path='/offer'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <PublicOffer />
               </React.Suspense>
@@ -466,7 +468,7 @@ function App() {
           <Route
             path='/instruction'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -475,7 +477,7 @@ function App() {
           <Route
             path='/onboarding'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -484,7 +486,7 @@ function App() {
           <Route
             path='/dashboard'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -493,7 +495,7 @@ function App() {
           <Route
             path='/development/monitoring'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -502,7 +504,7 @@ function App() {
           <Route
             path='/development/supply'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -511,7 +513,7 @@ function App() {
           <Route
             path='/app'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <MainWidget />
               </React.Suspense>
@@ -520,7 +522,7 @@ function App() {
           <Route
             path='/development/stock-analysis'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -529,7 +531,7 @@ function App() {
           <Route
             path='/calculate'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -538,7 +540,7 @@ function App() {
           <Route
             path='/orders-map'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -547,7 +549,7 @@ function App() {
           <Route
             path='/linked-shops'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <SignInPage />
               </React.Suspense>
@@ -556,7 +558,7 @@ function App() {
           <Route
             path='/reset'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <RequestResetLink />
               </React.Suspense>
@@ -565,7 +567,7 @@ function App() {
           <Route
             path='/confirmation/:email/:code'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <ConfirmationPage />
               </React.Suspense>
@@ -574,7 +576,7 @@ function App() {
           <Route
             path='/restore/:email/:code'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <ResetPage />
               </React.Suspense>
@@ -583,7 +585,7 @@ function App() {
           <Route
             path='/development/Page404'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <Page404 />
               </React.Suspense>
@@ -592,7 +594,7 @@ function App() {
           <Route
             path='*'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <Page404 />
               </React.Suspense>
@@ -601,7 +603,7 @@ function App() {
           <Route
             path='/contacts'
             element={
-              <React.Suspense fallback={<>...</>}>
+              <React.Suspense fallback={<LoaderPage />}>
                 {' '}
                 <Contacts />
               </React.Suspense>

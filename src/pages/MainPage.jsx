@@ -34,7 +34,7 @@ const MainPage = () => {
 
   const redirect = () => {
     if (user?.is_onboarded) {
-      navigate('/dashboard');
+      !user.subscription_status ? navigate('/tariffs') : navigate('/dashboard');
     } else {
       navigate('/onboarding');
     }

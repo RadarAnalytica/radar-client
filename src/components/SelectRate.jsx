@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import OrangeLabelSelect from '../pages/images/OrangeLabelSelect';
 import logoStart from '../pages/images/logoForCardStart.png';
 import logoPro from '../pages/images/logoForCardPro.png';
@@ -8,10 +8,12 @@ import OneRuble from '../pages/images/OneRuble.svg';
 import BlueSwich from '../pages/images/BlueSwich.svg';
 import StartLogo from '../assets/startlogo.svg';
 import FireLogo from '../assets/firelogo.svg';
+import AuthContext from '../service/AuthContext';
 
 const SelectRate = ({ redirect }) => {
+  const { user } = useContext(AuthContext);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
-  const [isTrial, setIsTrial] = useState(true);
+  const [isTrial, setIsTrial] = useState(user?.is_test_used);
 
   const handlePeriodChange = (period) => {
     setSelectedPeriod(period);
