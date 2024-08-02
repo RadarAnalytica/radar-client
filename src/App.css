@@ -720,6 +720,69 @@ select {
   overflow-y: scroll;
 }
 
+.sub-page {
+  min-height: 100vh;
+  display: flex;
+}
+.sub-page-content {
+  width: 100%;
+}
+.sub-page-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+.sub-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  background-color: #fff;
+  padding: 24px;
+}
+.sub-card-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.sub-card-content-wrap {
+  display: flex;
+  gap: 16px;
+}
+.sub-card-content {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.sub-card-content-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+}
+.sub-card-content-text {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.sub-card-content-pay {
+  padding-bottom: 20px;
+  color: #8c8c8c;
+}
+.sub-divider {
+  padding: 0;
+  border-bottom: 1px solid #8c8c8c80;
+}
+.sub-card-toggle {
+  display: flex;
+  
+}
+
 .add-token-modal .modal-content {
   box-shadow: none;
   border: none;
