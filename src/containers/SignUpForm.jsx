@@ -232,7 +232,7 @@ const SignUpForm = () => {
         <CustomSelect
           options={options}
           label={'На каком этапе вы находитесь?'}
-          defautlValue={'На каком этапе вы находитесь?'}
+          defaultValue={regData.stage}
           callback={getStage}
         />
         <InputField
@@ -292,7 +292,7 @@ const SignUpForm = () => {
             className='fw-bold'
             style={{ textDecoration: 'underline', color: 'grey' }}
           >
-            Пользовательским соглашением
+            Договором публичной аферты
           </a>{' '}
           и{' '}
           <a

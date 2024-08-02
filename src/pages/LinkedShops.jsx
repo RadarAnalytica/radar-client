@@ -121,7 +121,7 @@ const LinkedShops = () => {
     if (user) {
       dispatch(fetchShops(authToken));
     }
-  }, []);
+  }, [shops.length]);
 
   const editData = {
     activeShop: activeShop,
@@ -328,7 +328,8 @@ const LinkedShops = () => {
                           </svg>
                           <h5 className='mb-0 pb-0'>Токен</h5>
                         </div>
-                        {!item.is_valid ? (
+                        {item.is_valid !== undefined &&
+                        item.is_valid === false ? (
                           <div
                             className='d-flex token-status'
                             style={{ marginTop: '10px' }}

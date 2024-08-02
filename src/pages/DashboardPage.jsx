@@ -99,8 +99,6 @@ const DashboardPage = () => {
       updateDataDashBoard(days, activeBrand, authToken);
   }, [days, activeBrand, authToken]);
 
-  console.log('activeBrand', activeBrand);
-
   const updateDataDashBoard = async (days, activeBrand, authToken) => {
     setLoading(true);
     try {
