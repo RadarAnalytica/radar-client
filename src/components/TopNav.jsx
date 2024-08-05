@@ -119,6 +119,12 @@ const TopNav = ({ title }) => {
                 >
                   Подключенные магазины
                 </p>
+                <p
+                className='mt-2'
+                onClick={() => navigate('/subscription')}
+                >
+                  Моя подписка
+                </p>
                 {/* <p className='mb-2'>Экспорт отчетов</p>
                                     <p className='mb-2'>Тарифы</p> */}
               </div>
