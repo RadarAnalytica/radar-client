@@ -135,7 +135,7 @@ const StubPage = () => {
                       stroke='#5329FF'
                       strokeWidth='2'
                       strokeLinecap='round'
-                      stroke-linejoin='round'
+                      strokeLinejoin='round'
                     />
                   </svg>
                   <span style={{ color: 'white' }} className='me-2'>
@@ -176,7 +176,7 @@ const StubPage = () => {
                   stroke='white'
                   strokeWidth='4'
                   strokeLinecap='round'
-                  stroke-linejoin='round'
+                  strokeLinejoin='round'
                 />
               </svg>
               <h2 className='fw-bold mt-2'>Все готово!</h2>

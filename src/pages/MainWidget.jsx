@@ -238,7 +238,7 @@ const MainWidget = () => {
                   stroke='#5329FF'
                   strokeWidth='2'
                   strokeLinecap='round'
-                  stroke-linejoin='round'
+                  strokeLinejoin='round'
                 />
               </svg>
               <p style={{ fontSize: 25 }} className='pb-0 mt-2'>
@@ -263,7 +263,7 @@ const MainWidget = () => {
                   stroke='#5329FF'
                   strokeWidth='2'
                   strokeLinecap='round'
-                  stroke-linejoin='round'
+                  strokeLinejoin='round'
                 />
               </svg>
               <p style={{ fontSize: 25 }} className='pb-0 mt-2'>
@@ -288,7 +288,7 @@ const MainWidget = () => {
                   stroke='#5329FF'
                   strokeWidth='2'
                   strokeLinecap='round'
-                  stroke-linejoin='round'
+                  strokeLinejoin='round'
                 />
               </svg>
               <p style={{ fontSize: 25 }} className='pb-0 mt-2'>
@@ -331,7 +331,7 @@ const MainWidget = () => {
               stroke='#F0AD00'
               strokeWidth='2'
               strokeLinecap='round'
-              stroke-linejoin='round'
+              strokeLinejoin='round'
             />
             <rect
               opacity='0.4'
@@ -450,7 +450,7 @@ const MainWidget = () => {
                 stroke='#5329FF'
                 strokeWidth='2'
                 strokeLinecap='round'
-                stroke-linejoin='round'
+                strokeLinejoin='round'
               />
             </svg>
           </div>

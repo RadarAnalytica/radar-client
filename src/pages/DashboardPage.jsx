@@ -86,7 +86,7 @@ const DashboardPage = () => {
     if (currentShop) {
       localStorage.setItem('activeShop', JSON.stringify(currentShop));
     }
-    if (shopId == 0) {
+    if (shopId === 0) {
       localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
     }
     setActiveBrand(shopId);
@@ -95,7 +95,7 @@ const DashboardPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    activeBrand != undefined &&
+    activeBrand !== undefined &&
       updateDataDashBoard(days, activeBrand, authToken);
   }, [days, activeBrand, authToken]);
 
@@ -463,7 +463,7 @@ const DashboardPage = () => {
     const today = new Date();
     const pastDays = [];
 
-    for (let i = 1; i <= number; i++) {
+    for (let i = 0; i < number; i++) {
       const pastDate = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
       const day = pastDate.getDate().toString().padStart(2, '0');
       const monthNames = [

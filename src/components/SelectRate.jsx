@@ -19,6 +19,54 @@ const SelectRate = ({ redirect }) => {
     setSelectedPeriod(period);
   };
 
+  const pay = (email, amount) => {
+    console.log('user.email', user);
+
+    
+    // eslint-disable-next-line no-undef
+    var widget = new cp.CloudPayments({
+      language: "ru-RU",
+      email: user.email,
+      applePaySupport: false,
+      googlePaySupport: false,
+      yandexPaySupport: true,
+      tinkoffPaySupport: true,
+      tinkoffInstallmentSupport: false,
+      sbpSupport: true,
+      // sberSupport: true,
+      // sberPaySupport: true,
+    });
+       widget.pay('charge', // или 'charge'
+           { //options
+               publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
+               description: 'Оплата подписки в Radar Analityca', //назначение
+               amount: amount, //сумма
+               currency: 'RUB', //валюта
+               accountId: user.id, //идентификатор плательщика (необязательно)
+              //  invoiceId: '1234567', //номер заказа  (необязательно)
+               email: user.email, //email плательщика (необязательно)
+               skin: "modern", //дизайн виджета (необязательно)
+           },
+           {
+               onSuccess: function (options) { // success
+                   //действие при успешной оплате
+                   console.log('Payment success:', 'options', options);
+                   
+               },
+               onFail: function (reason, options) { // fail
+                   //действие при неуспешной оплате
+                   console.log('Payment fail:', 'reason', reason, 'options', options);
+                   
+               },
+               onComplete: function (paymentResult, options) { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
+                   //например вызов вашей аналитики Facebook Pixel
+                   console.log('Payment complete:', 'paymentResult', paymentResult, 'options', options);
+               }
+           }
+       )
+   };
+   
+
   return (
     <>
       <div
@@ -544,7 +592,7 @@ const SelectRate = ({ redirect }) => {
                     fontSize: '18px',
                     marginTop: '15px',
                   }}
-                  onClick={() => redirect()}
+                  onClick={async () => {redirect(); await pay('ddd', 1)}}
                 >
                   Начать работать
                 </button>
@@ -634,6 +682,9 @@ const SelectRate = ({ redirect }) => {
           </div>
         </div>
       </div>
+      {/* <script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script> */}
+      <script type='module' src="../service/payService.js"></script>
+      
     </>
   );
 };
