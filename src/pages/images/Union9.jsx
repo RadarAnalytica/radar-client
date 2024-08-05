@@ -28,7 +28,7 @@ const Union9 = () => {
         stroke='#5329FF'
         strokeWidth='2'
         strokeLinecap='round'
-        stroke-linejoin='round'
+        strokeLinejoin='round'
       />
       <rect x='40' y='197' width='271' height='34' rx='17' fill='#F4F1FF' />
       <rect x='11' y='210' width='329' height='31' rx='15.5' fill='#EBE6FF' />

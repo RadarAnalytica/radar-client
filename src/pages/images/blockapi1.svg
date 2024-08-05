@@ -5,7 +5,7 @@
 <rect x="32.6104" y="213" width="70.772" height="42.3005" rx="21.1503" fill="#5329FF"/>
 <rect x="65.1494" y="217.881" width="32.5389" height="32.5389" rx="16.2694" fill="white"/>
 <rect x="30.6104" y="29" width="62" height="62" rx="10" fill="white"/>
-<path d="M75.6104 233.5L80.6104 238.5L88.1104 231" stroke="#5329FF" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round"/>
+<path d="M75.6104 233.5L80.6104 238.5L88.1104 231" stroke="#5329FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
 <rect x="36.6377" y="35" width="50" height="50" fill="url(#pattern0_413_4573)"/>
 <defs>
 <pattern id="pattern0_413_4573" patternContentUnits="objectBoundingBox" width="1" height="1">

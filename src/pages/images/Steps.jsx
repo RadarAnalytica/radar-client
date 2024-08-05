@@ -144,14 +144,14 @@ const CircleOkBlue = () => {
         stroke='#5329FF'
         strokeWidth='2.5'
         strokeLinecap='round'
-        stroke-linejoin='round'
+        strokeLinejoin='round'
       />
       <path
         d='M19.3604 12.5566L14.3604 17.5566L11.8604 15.0566'
         stroke='#5329FF'
         strokeWidth='2.5'
         strokeLinecap='round'
-        stroke-linejoin='round'
+        strokeLinejoin='round'
       />
     </svg>
   );
@@ -173,14 +173,14 @@ const CircleOkWhite = () => {
         stroke='white'
         strokeWidth='2.5'
         strokeLinecap='round'
-        stroke-linejoin='round'
+        strokeLinejoin='round'
       />
       <path
         d='M19.3604 12.5566L14.3604 17.5566L11.8604 15.0566'
         stroke='white'
         strokeWidth='2.5'
         strokeLinecap='round'
-        stroke-linejoin='round'
+        strokeLinejoin='round'
       />
     </svg>
   );

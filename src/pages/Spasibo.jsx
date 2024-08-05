@@ -137,7 +137,7 @@ const Spasibo = () => {
                       stroke='#5329FF'
                       strokeWidth='2'
                       strokeLinecap='round'
-                      stroke-linejoin='round'
+                      strokeLinejoin='round'
                     />
                   </svg>
                   <span style={{ color: 'white' }} className='me-2'>
@@ -178,7 +178,7 @@ const Spasibo = () => {
                   stroke='white'
                   strokeWidth='4'
                   strokeLinecap='round'
-                  stroke-linejoin='round'
+                  strokeLinejoin='round'
                 />
               </svg>
               <h2 className='fw-bold mt-2'>Расширение установлено!</h2>
@@ -218,7 +218,7 @@ const Spasibo = () => {
                             <a href="https://radar-analytica.ru/signin">
                                 <svg className="me-3" width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect width="54" height="51" rx="15" fill="#F8F8F8" />
-                                    <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round" />
+                                    <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </a>
                         </div>
@@ -236,7 +236,7 @@ const Spasibo = () => {
                         <svg width="80" height="116" viewBox="0 0 80 116" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M40 100L40 20" stroke="#F0AD00" strokeWidth="2" strokeLinecap="round" />
                             <path d="M40 99L40 84" stroke="#F0AD00" strokeWidth="2" strokeLinecap="round" />
-                            <path d="M32 92L40 100L48 92" stroke="#F0AD00" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round" />
+                            <path d="M32 92L40 100L48 92" stroke="#F0AD00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             <rect opacity="0.4" x="20" width="40" height="40" rx="20" fill="#FFDB7E" />
                             <rect x="21" y="1" width="38" height="38" rx="19" stroke="#FFDB7E" strokeWidth="2" />
                             <circle cx="40" cy="20" r="4.5" fill="white" stroke="#F0AD00" strokeWidth="3" />
@@ -267,7 +267,7 @@ const Spasibo = () => {
                                         <div className="d-flex justify-content-end">
                                             <svg className="me-3" width="54" height="51" viewBox="0 0 54 51" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect width="54" height="51" rx="15" fill="#F8F8F8" />
-                                                <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round" />
+                                                <path d="M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                         </div>
                                         <br />

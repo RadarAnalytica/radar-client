@@ -136,7 +136,7 @@ const Instructions = () => {
                       stroke='#5329FF'
                       strokeWidth='2'
                       strokeLinecap='round'
-                      stroke-linejoin='round'
+                      strokeLinejoin='round'
                     />
                   </svg>
                   <span style={{ color: 'white' }} className='me-2'>
@@ -177,7 +177,7 @@ const Instructions = () => {
                   stroke='white'
                   strokeWidth='4'
                   strokeLinecap='round'
-                  stroke-linejoin='round'
+                  strokeLinejoin='round'
                 />
               </svg>
               <h2 className='fw-bold mt-2'>Ваш аккаунт готов!</h2>
@@ -222,7 +222,7 @@ const Instructions = () => {
                     stroke='#5329FF'
                     strokeWidth='2'
                     strokeLinecap='round'
-                    stroke-linejoin='round'
+                    strokeLinejoin='round'
                   />
                 </svg>
               </a>
@@ -262,7 +262,7 @@ const Instructions = () => {
                 stroke='#F0AD00'
                 strokeWidth='2'
                 strokeLinecap='round'
-                stroke-linejoin='round'
+                strokeLinejoin='round'
               />
               <rect
                 opacity='0.4'
@@ -332,7 +332,7 @@ const Instructions = () => {
                           stroke='#5329FF'
                           strokeWidth='2'
                           strokeLinecap='round'
-                          stroke-linejoin='round'
+                          strokeLinejoin='round'
                         />
                       </svg>
                     </div>
