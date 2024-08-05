@@ -37,7 +37,7 @@ const Onboarding = () => {
     ServiceFunctions.refreshUser(currentToken).then((data) => {
       setUser(jwtDecode(data?.token));
       localStorage.setItem('authToken', data?.token);
-      navigate('/linked-shops');
+      navigate('/dashboard');
     });
   };
 
@@ -64,6 +64,14 @@ const Onboarding = () => {
   useEffect(() => {
     ServiceFunctions.getAllShops(authToken).then((data) => setData(data));
   }, []);
+
+  useEffect(() => {
+    if (show) {
+      setTimeout(() => {
+        handleClose();
+      }, 4000);
+    }
+  }, [show]);
 
   return (
     user && (
@@ -175,9 +183,9 @@ const Onboarding = () => {
             <p>
               Ваш токен успешно подключен к сервису и находится на проверке. В
               ближайшее время данные начнут отображаться в разделе{' '}
-              <p onClick={handleClose} className='link'>
+              <Link onClick={handleClose} className='link' style={{padding: '0'}}>
                 Сводка продаж
-              </p>
+              </Link>
             </p>
             {/* <div className="d-flex justify-content-between">
                         <div className="grey-block d-flex align-items-center">
