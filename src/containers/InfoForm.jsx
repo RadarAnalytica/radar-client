@@ -31,8 +31,8 @@ const InfoForm = () => {
                 <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>Остался всего один шаг</h1>
             </div>
             <p style={{ fontWeight: 700, fontSize: '16px' }} className='mt-1 text-center'>Отправили письмо с подтверждением на вашу почту, указанную при регистрации</p>
-            <div className="mt-1 mb-2" style={{ padding: '1rem', backgroundColor: 'rgba(247, 246, 254, 1)', borderRadius: '1rem' }}>
-                <p className='text-left' style={{ fontWeight: 600 }}>
+            <div className="mt-1 mb-2" style={{ padding: '24px 36px 24px 36px', backgroundColor: 'rgba(247, 246, 254, 1)', borderRadius: '1rem' }}>
+                <p className='text-center' style={{ fontWeight: 500, fontSize: '16px', lineHeight: '25.6px', margin: 0 }}>
                     После перехода по ссылке в письме вы сможете пользоваться нашим сервисом. Обязательно проверьте папку “Спам”
                 </p>
             </div>
