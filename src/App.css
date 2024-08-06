@@ -375,10 +375,13 @@ select {
 }
 
 .onboard-form-block {
+  display: flex;
+  flex-direction: column;
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
 }
 
 .onboard-description {

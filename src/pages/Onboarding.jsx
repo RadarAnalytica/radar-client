@@ -101,15 +101,23 @@ const Onboarding = () => {
                 callback={getToken}
                 placeholder={'Пример: GJys67G7sbNw178F'}
               />
-              <button
-                className='prime-btn'
-                style={{ height: '7vh' }}
-                onClick={() => {
-                  submitHandler();
-                }}
-              >
-                Начать работать
-              </button>
+              <div 
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  position: 'relative', 
+                  height: '100%' 
+                }}>
+                <button
+                  className='prime-btn'
+                  style={{ height: '7vh' }}
+                  onClick={() => {
+                    submitHandler();
+                  }}
+                >
+                  Начать работать
+                </button>
+              </div>
             </div>
             <div className='onboard-description col'>
               <p style={{ fontWeight: 700, fontSize: 24, width: '90%' }}>
