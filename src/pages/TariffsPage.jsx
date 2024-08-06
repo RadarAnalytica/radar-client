@@ -5,8 +5,6 @@ import LimitedFooter from '../components/LimitedFooter';
 import { useNavigate } from 'react-router-dom';
 import SelectRate from '../components/SelectRate';
 import AuthContext from '../service/AuthContext';
-import ReviewsUsers from '../components/ReviewsUsers';
-import TryProduct from '../components/TryProduct';
 
 const TariffsPage = () => {
   const navigate = useNavigate();
@@ -25,8 +23,6 @@ const TariffsPage = () => {
         <NavbarMainHome onlyLogo />
         <div className='tariffs'>
           <SelectRate redirect={redirect} />
-          <ReviewsUsers />
-          <TryProduct redirect={redirect} />
         </div>
         <LimitedFooter />
       </div>

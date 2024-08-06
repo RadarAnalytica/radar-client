@@ -9,8 +9,12 @@ import BlueSwich from '../pages/images/BlueSwich.svg';
 import StartLogo from '../assets/startlogo.svg';
 import FireLogo from '../assets/firelogo.svg';
 import AuthContext from '../service/AuthContext';
-import { URL } from '../service/config';
-import axios from 'axios'
+import axios from 'axios';
+import ReviewsUsers from '../components/ReviewsUsers';
+import BlockImg_x2 from '../pages/images/Dashboard_x2.png';
+import SolLabelStartBsn from '../pages/images/SolLabelStartBsn';
+import YellowRadarPoint from '../pages/images/YellowRadarPoint';
+import CustomButton from './utilsComponents/CustomButton';
 
 const SelectRate = ({ redirect }) => {
   const { user } = useContext(AuthContext);
@@ -716,7 +720,10 @@ const SelectRate = ({ redirect }) => {
                     fontSize: '18px',
                     marginTop: '15px',
                   }}
-                  onClick={async () => {redirect(); pay('ddd', 1)}}
+                  onClick={() => {
+                    pay(user.id, selectedPeriod, trialExpired)
+                    redirect(); 
+                    }}
                 >
                   Начать работать
                 </button>
@@ -806,7 +813,38 @@ const SelectRate = ({ redirect }) => {
           </div>
         </div>
       </div>
-      
+      <ReviewsUsers />
+      <div className='wid-solutionMain'>
+        <div className='sol-description col' style={{ padding: 0 }}>
+          <div className='headStartBsn'>
+            <SolLabelStartBsn />
+            <div style={{ fontSize: '34px', fontWeight: '700' }}>
+              Готовы начать?
+            </div>
+            <div style={{ fontSize: '22px' }}>
+              Найдите прибыльные товары на маркетплейсе и развивайте свой
+              бизнес.
+            </div>
+            <div className='YellowRadarPoint' style={{ marginTop: '20px' }}>
+              <YellowRadarPoint />
+            </div>
+          </div>
+
+          <div className='d-flex flex-column gap-3'>
+            <CustomButton
+              text={'Начать работать'}
+              action={() => {
+                pay(user.id, selectedPeriod, trialExpired)
+                redirect(); 
+                }}
+              className={'white-btn'}
+            />
+          </div>
+        </div>
+        <div className='sol-screenshot sol-screenshot_bottom'>
+          <img src={BlockImg_x2} alt='' />
+        </div>
+      </div>
     </>
   );
 };
