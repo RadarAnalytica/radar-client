@@ -39,6 +39,8 @@
 }
 
 .settings-modal {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 44px;
   right: 0;
