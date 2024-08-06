@@ -509,11 +509,6 @@ const LinkedShops = () => {
             required={true}
             callback={(e) => setTkn(e.target.value)}
           />
-          <div className='mt-3'>
-            <a href='#' className='link mb-0 pb-0'>
-              Где найти токен?
-            </a>
-          </div>
           <div className='d-flex justify-content-between w-100 mt-2'>
             <button
               className='prime-btn'
