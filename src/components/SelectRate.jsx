@@ -9,6 +9,8 @@ import BlueSwich from '../pages/images/BlueSwich.svg';
 import StartLogo from '../assets/startlogo.svg';
 import FireLogo from '../assets/firelogo.svg';
 import AuthContext from '../service/AuthContext';
+import { URL } from '../service/config';
+import axios from 'axios'
 
 const SelectRate = ({ redirect }) => {
   const { user } = useContext(AuthContext);
@@ -117,11 +119,41 @@ const SelectRate = ({ redirect }) => {
       accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
       data: data
       },
-      function (options) { // success
-          //действие при успешной оплате
+      function (options) { // success - действие при успешной оплате
+        // TODO отправка запроса в сервис бэкенда на обновление данных user 
+        // (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'], 
+        // subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать)) 
+        
+        // Helper function to map selectedPeriod to the correct string
+      const mapPeriodToStatus = (period) => {
+        switch(period) {
+          case 'test': return 'Test';
+          case '1month': return 'Month 1';
+          case '3months': return 'Month 3';
+          case '6months': return 'Month 6';
+          default: return period; // fallback to original value if no match
+        }
+      };
+
+    // Prepare the update data
+      const updateData = {
+        subscription_status: [mapPeriodToStatus(selectedPeriod)],
+        subscription_start_date: new Date().toISOString().split('T')[0]
+      };
+
+    // Add is_test_used only if it's a test period
+    if (selectedPeriod === '1month') {
+      updateData.is_test_used = true;
+    };
+    // Send PATCH request
+    axios.patch(`${URL}/api/user`, updateData)
+    .then(res => {
+      console.log('patch /api/user', res.data);
+      // TODO переадресация в Подключенные магазины (/linked-shops) или Сводку продаж (/dashboard) - ? уточнить
+      window.location.href = '/linked-shops';
+    })
+    .catch(err => console.log('patch /api/user', err));
           console.log('Payment success:', 'options', options);
-          // TODO отправка запроса в сервис бэкенда на обновление данных user (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'], subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать))
-          // TODO переадресация в Подключенные магазины (/linked-shops) или Сводку продаж (/dashboard) - ? уточнить
       },
       function (reason, options) { // fail
           //действие при неуспешной оплате
