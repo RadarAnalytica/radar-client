@@ -24,6 +24,7 @@ import { fetchAllShops } from '../redux/dashboard/dashboardActions';
 import { fetchShops } from '../redux/shops/shopsActions';
 import downloadIcon from '../pages/images/Download.svg';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const DashboardPage = () => {
   const { user, authToken, showMobile } = useContext(AuthContext);
@@ -50,11 +51,6 @@ const DashboardPage = () => {
 
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
-  const shouldDisplay = activeShop
-    ? activeShop.is_primary_collect
-    : oneShop
-    ? oneShop.is_primary_collect
-    : allShop;
 
   const plugForAllStores = {
     id: 0,
@@ -63,6 +59,30 @@ const DashboardPage = () => {
     is_primary_collect: allShop,
     is_valid: true,
   };
+
+  const currentShop = shops?.find((item) => item.id == activeShopId);
+
+  const shouldDisplay = currentShop
+    ? currentShop.is_primary_collect
+    : oneShop
+    ? oneShop.is_primary_collect
+    : allShop;
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      dispatch(fetchShops(authToken));
+      const selectedShop = shops.filter(item => item.id === Number(activeBrand))[0];
+      const shouldUpdate = selectedShop?.is_primary_collect !== true
+      if (shouldUpdate) {
+        updateDataDashBoard(days, activeBrand, authToken);
+      }
+    }, 30000);
+    
+  
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [shouldDisplay]);
 
   useEffect(() => {
     dispatch(fetchShops(authToken));
@@ -86,7 +106,7 @@ const DashboardPage = () => {
     if (currentShop) {
       localStorage.setItem('activeShop', JSON.stringify(currentShop));
     }
-    if (shopId === 0) {
+    if (shopId === '0') {
       localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
     }
     setActiveBrand(shopId);
