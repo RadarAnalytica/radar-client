@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 import TopNav from '../components/TopNav';
 import SideNav from '../components/SideNav';
 import TestSub from '../assets/TestSub.svg';
@@ -8,32 +8,71 @@ import SmartSubscription from '../assets/SmartSubscription.svg';
 import StatusInfo from '../components/StatusInfo';
 import moment from 'moment';
 import 'moment/locale/ru';
+import { URL } from '../service/config';
+import AuthContext from '../service/AuthContext';
 
 const Subscriptions = () => {
-  const subData = [
-    {
-      image: TestSub,
-      name: 'Тестовый период',
-      active: true,
-      validity_period: '09.09.2024',
-    },
-    {
-      image: TestSub,
-      name: 'Тестовый период',
-      active: true,
-      validity_period: '09.09.2024',
-    },
-    {
-      image: SmartSubscription,
-      name: 'Подписка “Smart”',
-      active: false,
-      validity_period: '09.09.2024',
-    },
-  ];
+  const { user, authToken } = useContext(AuthContext);
+  const [subscriptions, setSubscriptions] = React.useState([]);
+
+  useEffect(() => {
+      const fetchSubscriptions = async () => {
+        const response = await fetch(`${URL}/api/user/subscription/all`, {
+          method: 'GET',
+          headers: {
+           'content-type': 'application/json',
+            authorization: 'JWT ' + authToken,
+          },
+        });
+        const data = await response.json();
+        setSubscriptions(data);
+  
+      
+    }
+    fetchSubscriptions();
+  }, []);
+
+  const handleRestoreSubscription = async () => {
+    try {
+      const response = await fetch(
+        `${URL}/api/user/subscription/restore/564`,
+        {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            authorization: "JWT " + authToken,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleCancelSubscription = async() => {
+    try {
+      const response = await fetch(
+        `${URL}/api/user/subscription/cancel/564`,
+        {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            authorization: "JWT " + authToken,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const rejectSubscription = ({toggleText}) => {
     return(
-      <div className='sub-card-toggle'>
+      <div className='sub-card-toggle' onClick={handleCancelSubscription}>
         <img src={CloseIcon} alt='Close subscription' className='mr-5' />
         <span>{toggleText}</span>
       </div>
@@ -59,7 +98,9 @@ const Subscriptions = () => {
           fontWeight: 600,
           fontSize: '16px',
           lineHeight: '25px',
-          }}>
+          }}
+          onClick={handleRestoreSubscription}
+          >
             Восстановить подписку
           </span>
         </span>
@@ -73,25 +114,25 @@ const Subscriptions = () => {
       <div className='sub-page-content'>
         <TopNav title={'Моя подписка'} />
         <div className='container dash-container sub-page-grid'>
-          {subData.map((item) => {
+          {subscriptions.map((item) => {
             const activeText = item.active ? 'Активна' : 'Неактивна';
             const activeColor = item.active ? '#00B69B' : '#808080';
             const activeWidth = item.active ? 120 : 140;
             const toggleText = item.active
               ? rejectSubscription({toggleText: 'Отказаться от подписки'})
               : restoreSubscription({toggleText: 'Восстановить подписку'});
-            const paymentDate = moment(item.validity_period, 'DD.MM.YYYY')
+            const paymentDate = moment(item.validity_period)
               .add(1, 'days')
               .locale('ru')
               .format('DD MMMM')
-              const activeTillPeriod = moment(item.validity_period, 'DD.MM.YYYY')
+              const activeTillPeriod = moment(item.validity_period)
               .locale('ru')
               .format('DD MMMM');
             return (
               <div className='sub-card'>
                 <div className='sub-card-row'>
                   <div className='sub-card-content-wrap'>
-                    <img src={item.image} alt='subImg' />
+                    <img src={TestSub} alt='subImg' />
                     <div className='sub-card-content'>
                       <span className='sub-card-content-title'>
                         {item.name}
