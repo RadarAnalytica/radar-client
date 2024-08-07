@@ -24,6 +24,7 @@ const SelectRate = ({ redirect }) => {
   const handlePeriodChange = (period) => {
     setSelectedPeriod(period);
   };
+  const userIdInvoiceHardCode = 'radar-51-20240807-161128'
 
   const pay = (_user, _period, _trial) => {
     console.log('user.email', user);
@@ -118,7 +119,7 @@ const SelectRate = ({ redirect }) => {
       description: 'Оплата подписки в Radar Analityca', //назначение
       amount: firstAmount, //сумма
       currency: 'RUB', //валюта
-      // invoiceId: '1234567', //номер заказа  (необязательно)
+      invoiceId: userIdInvoiceHardCode, //номер заказа  (необязательно)
       email: user.email,
       accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
       data: data
@@ -158,7 +159,16 @@ const SelectRate = ({ redirect }) => {
     })
     .catch(err => console.log('patch /api/user', err));
           console.log('Payment success:', 'options', options);
-      },
+// Send POST request
+     axios.post(`${URL}/user/subscription`, userIdInvoiceHardCode)
+    .then(res =>{
+      console.log('post /user/subscription', res.data);
+    })
+    .catch(err => console.log('post /user/subscription', err));
+  },
+
+
+     
       function (reason, options) { // fail
           //действие при неуспешной оплате
           console.log('Payment fail:', 'reason', reason, 'options', options);
