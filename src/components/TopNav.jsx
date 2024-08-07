@@ -110,7 +110,7 @@ const TopNav = ({ title }) => {
                                 >
                                     Получить полный доступ
                                 </a> */}
-              <div className='pt-2'>
+              <div>
                 {/* <p className='mt-3 mb-2'>Сотрудники</p> */}
                 {/* <p className='mb-1 mt-2' onClick={() => navigate('/development/settings')}>Настройки аккаунта</p> */}
                 <p
@@ -118,6 +118,18 @@ const TopNav = ({ title }) => {
                   onClick={() => navigate('/linked-shops')}
                 >
                   Подключенные магазины
+                </p>
+                <p
+                className='m-0 mb-1'
+                onClick={() => navigate('/subscription')}
+                >
+                  Моя подписка
+                </p>
+                <p
+                className='m-0'
+                onClick={() => navigate('/tariffs')}
+                >
+                  Тарифы
                 </p>
                 {/* <p className='mb-2'>Экспорт отчетов</p>
                                     <p className='mb-2'>Тарифы</p> */}
@@ -128,6 +140,7 @@ const TopNav = ({ title }) => {
                   height: '1px',
                   border: '1px solid silver',
                   marginBottom: '4px',
+                  marginTop: '0',
                 }}
               />
               <a

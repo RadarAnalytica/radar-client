@@ -39,6 +39,8 @@
 }
 
 .settings-modal {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 44px;
   right: 0;
@@ -373,10 +375,13 @@ select {
 }
 
 .onboard-form-block {
+  display: flex;
+  flex-direction: column;
   background-color: white;
   padding: 1rem;
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
 }
 
 .onboard-description {
@@ -730,7 +735,7 @@ select {
 .sub-page-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 20px;
   padding: 16px;
 }
 .sub-card {
@@ -752,11 +757,9 @@ select {
   gap: 16px;
 }
 .sub-card-content {
-  align-self: flex-end;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
 }
 .sub-card-content-title {
   margin: 0;
@@ -780,7 +783,20 @@ select {
 }
 .sub-card-toggle {
   display: flex;
-  
+  align-items: center;
+  cursor: pointer
+}
+
+.sub-card-toggle img {
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+}
+.sub-card-toggle span {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #8c8c8c;
 }
 
 .add-token-modal .modal-content {

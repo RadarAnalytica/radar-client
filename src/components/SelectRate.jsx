@@ -9,6 +9,12 @@ import BlueSwich from '../pages/images/BlueSwich.svg';
 import StartLogo from '../assets/startlogo.svg';
 import FireLogo from '../assets/firelogo.svg';
 import AuthContext from '../service/AuthContext';
+import axios from 'axios';
+import ReviewsUsers from '../components/ReviewsUsers';
+import BlockImg_x2 from '../pages/images/Dashboard_x2.png';
+import SolLabelStartBsn from '../pages/images/SolLabelStartBsn';
+import YellowRadarPoint from '../pages/images/YellowRadarPoint';
+import CustomButton from './utilsComponents/CustomButton';
 
 const SelectRate = ({ redirect }) => {
   const { user } = useContext(AuthContext);
@@ -19,9 +25,43 @@ const SelectRate = ({ redirect }) => {
     setSelectedPeriod(period);
   };
 
-  const pay = (email, amount) => {
+  const pay = (_user, _period, _trial) => {
     console.log('user.email', user);
+    console.log('selectedPeriod', selectedPeriod)
+    console.log('trialExpired', trialExpired)
+    let periodSubscribe = ''
+    let amountSubscribe = 0
+    let firstAmount = 0
+    let startDateSubscribe = ''
 
+    if (selectedPeriod === '1month') {
+      amountSubscribe = 2990
+      firstAmount = !!trialExpired ? 2990 : 1
+      periodSubscribe = 1
+      startDateSubscribe = new Date()
+      if (!!trialExpired) {
+        startDateSubscribe.setMonth(startDateSubscribe.getMonth() + periodSubscribe)
+      } else {
+        startDateSubscribe.setDate(startDateSubscribe.getDate() + 3)
+      }
+    } else if ((selectedPeriod === '3month')) {
+      amountSubscribe = 8073
+      firstAmount = 8073
+      periodSubscribe = 3
+      startDateSubscribe = new Date()
+      startDateSubscribe.setMonth(startDateSubscribe.getMonth() + periodSubscribe)
+    } else if ((selectedPeriod === '6month')) {
+      amountSubscribe = 10764
+      firstAmount = 10764
+      periodSubscribe = 6
+      startDateSubscribe = new Date()
+      startDateSubscribe.setMonth(startDateSubscribe.getMonth() + periodSubscribe)
+    }
+    console.log('periodSubscribe', periodSubscribe);
+    console.log('firstAmount', firstAmount);
+    console.log('amountSubscribe', amountSubscribe);
+    console.log('startDateSubscribe', startDateSubscribe.toISOString().split('T')[0]);
+    startDateSubscribe = startDateSubscribe.toISOString().split('T')[0]
     
     // eslint-disable-next-line no-undef
     var widget = new cp.CloudPayments({
@@ -36,34 +76,122 @@ const SelectRate = ({ redirect }) => {
       // sberSupport: true,
       // sberPaySupport: true,
     });
-       widget.pay('charge', // или 'charge'
-           { //options
-               publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
-               description: 'Оплата подписки в Radar Analityca', //назначение
-               amount: amount, //сумма
-               currency: 'RUB', //валюта
-               accountId: user.id, //идентификатор плательщика (необязательно)
-              //  invoiceId: '1234567', //номер заказа  (необязательно)
-               email: user.email, //email плательщика (необязательно)
-               skin: "modern", //дизайн виджета (необязательно)
-           },
-           {
-               onSuccess: function (options) { // success
-                   //действие при успешной оплате
-                   console.log('Payment success:', 'options', options);
-                   
-               },
-               onFail: function (reason, options) { // fail
-                   //действие при неуспешной оплате
-                   console.log('Payment fail:', 'reason', reason, 'options', options);
-                   
-               },
-               onComplete: function (paymentResult, options) { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
-                   //например вызов вашей аналитики Facebook Pixel
-                   console.log('Payment complete:', 'paymentResult', paymentResult, 'options', options);
-               }
-           }
-       )
+
+    const receipt = {
+      Items: [//товарные позиции
+        {
+           label: 'Подписка Радар Аналитика', //наименование товара
+           price: amountSubscribe, //цена
+           quantity: 1.00, //количество
+           amount: amountSubscribe, //сумма
+           vat: 20, //ставка НДС
+           method: 0, // тег-1214 признак способа расчета - признак способа расчета
+           object: 0, // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
+       }
+      ],
+      email: user.email, //e-mail покупателя, если нужно отправить письмо с чеком
+      phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
+      isBso: false, //чек является бланком строгой отчетности
+      amounts:
+      {
+          electronic: amountSubscribe, // Сумма оплаты электронными деньгами
+          advancePayment: 0.00, // Сумма из предоплаты (зачетом аванса) (2 знака после точки)
+          credit: 0.00, // Сумма постоплатой(в кредит) (2 знака после точки)
+          provision: 0.00 // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после точки)
+      }
+    }
+
+    const data ={}
+    data.CloudPayments = {
+      CustomerReceipt: receipt, //чек для первого платежа
+      recurrent: {
+       interval: 'Month',
+       period: periodSubscribe, 
+       startDate: startDateSubscribe,
+       amount: amountSubscribe,
+       customerReceipt: receipt //чек для регулярных платежей
+      }
+    }
+
+    widget.charge({ // options
+      publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
+      description: 'Оплата подписки в Radar Analityca', //назначение
+      amount: firstAmount, //сумма
+      currency: 'RUB', //валюта
+      // invoiceId: '1234567', //номер заказа  (необязательно)
+      email: user.email,
+      accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
+      data: data
+      },
+      function (options) { // success - действие при успешной оплате
+        // TODO отправка запроса в сервис бэкенда на обновление данных user 
+        // (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'], 
+        // subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать)) 
+        
+        // Helper function to map selectedPeriod to the correct string
+      const mapPeriodToStatus = (period) => {
+        switch(period) {
+          case 'test': return 'Test';
+          case '1month': return 'Month 1';
+          case '3months': return 'Month 3';
+          case '6months': return 'Month 6';
+          default: return period; // fallback to original value if no match
+        }
+      };
+
+    // Prepare the update data
+      const updateData = {
+        subscription_status: [mapPeriodToStatus(selectedPeriod)],
+        subscription_start_date: new Date().toISOString().split('T')[0]
+      };
+
+    // Add is_test_used only if it's a test period
+    if (selectedPeriod === '1month') {
+      updateData.is_test_used = true;
+    };
+    // Send PATCH request
+    axios.patch(`${URL}/api/user`, updateData)
+    .then(res => {
+      console.log('patch /api/user', res.data);
+      // TODO переадресация в Подключенные магазины (/linked-shops) или Сводку продаж (/dashboard) - ? уточнить
+      window.location.href = '/linked-shops';
+    })
+    .catch(err => console.log('patch /api/user', err));
+          console.log('Payment success:', 'options', options);
+      },
+      function (reason, options) { // fail
+          //действие при неуспешной оплате
+          console.log('Payment fail:', 'reason', reason, 'options', options);
+    });
+
+  //   widget.pay('charge', // или 'charge'
+  //       { //options
+  //           publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
+  //           description: 'Оплата подписки в Radar Analityca', //назначение
+  //           amount: amount, //сумма
+  //           currency: 'RUB', //валюта
+  //           accountId: user.id, //идентификатор плательщика (необязательно)
+  //         //  invoiceId: '1234567', //номер заказа  (необязательно)
+  //           email: user.email, //email плательщика (необязательно)
+  //           skin: "modern", //дизайн виджета (необязательно)
+  //       },
+  //       {
+  //           onSuccess: function (options) { // success
+  //               //действие при успешной оплате
+  //               console.log('Payment success:', 'options', options);
+                
+  //           },
+  //           onFail: function (reason, options) { // fail
+  //               //действие при неуспешной оплате
+  //               console.log('Payment fail:', 'reason', reason, 'options', options);
+                
+  //           },
+  //           onComplete: function (paymentResult, options) { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
+  //               //например вызов вашей аналитики Facebook Pixel
+  //               console.log('Payment complete:', 'paymentResult', paymentResult, 'options', options);
+  //           }
+  //       }
+  //   )
    };
    
 
@@ -592,7 +720,10 @@ const SelectRate = ({ redirect }) => {
                     fontSize: '18px',
                     marginTop: '15px',
                   }}
-                  onClick={async () => {redirect(); await pay('ddd', 1)}}
+                  onClick={() => {
+                    pay(user.id, selectedPeriod, trialExpired)
+                    redirect(); 
+                    }}
                 >
                   Начать работать
                 </button>
@@ -682,9 +813,38 @@ const SelectRate = ({ redirect }) => {
           </div>
         </div>
       </div>
-      {/* <script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script> */}
-      <script type='module' src="../service/payService.js"></script>
-      
+      <ReviewsUsers />
+      <div className='wid-solutionMain'>
+        <div className='sol-description col' style={{ padding: 0 }}>
+          <div className='headStartBsn'>
+            <SolLabelStartBsn />
+            <div style={{ fontSize: '34px', fontWeight: '700' }}>
+              Готовы начать?
+            </div>
+            <div style={{ fontSize: '22px' }}>
+              Найдите прибыльные товары на маркетплейсе и развивайте свой
+              бизнес.
+            </div>
+            <div className='YellowRadarPoint' style={{ marginTop: '20px' }}>
+              <YellowRadarPoint />
+            </div>
+          </div>
+
+          <div className='d-flex flex-column gap-3'>
+            <CustomButton
+              text={'Начать работать'}
+              action={() => {
+                pay(user.id, selectedPeriod, trialExpired)
+                redirect(); 
+                }}
+              className={'white-btn'}
+            />
+          </div>
+        </div>
+        <div className='sol-screenshot sol-screenshot_bottom'>
+          <img src={BlockImg_x2} alt='' />
+        </div>
+      </div>
     </>
   );
 };
