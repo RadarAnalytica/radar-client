@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate  } from 'react-router-dom';
 import Steps from '../pages/images/Steps';
 import YellowRadar from '../pages/images/YellowRadarLarge';
 import time from '../pages/images/time.png';
 import YellowRadarLarge from '../pages/images/YellowRadarLarge';
 
 const StepsTime = ({ redirect }) => {
+  const navigate = useNavigate();
   const stepsContent = [
     {
       title: 'Запуск',
@@ -138,7 +140,7 @@ const StepsTime = ({ redirect }) => {
           <button
             className='btn-warning'
             style={{ minHeight: '64px', fontSize: '18px' }}
-            onClick={() => redirect()}
+            onClick={() => navigate('/tariffs')}
           >
             Начать работать
           </button>

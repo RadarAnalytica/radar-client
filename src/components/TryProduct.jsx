@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate  } from 'react-router-dom';
 import '../pages/styles.css';
 import BlockImg_x2 from '../pages/images/Dashboard_x2.png';
 import SolLabelStartBsn from '../pages/images/SolLabelStartBsn';
@@ -6,6 +7,8 @@ import YellowRadarPoint from '../pages/images/YellowRadarPoint';
 import CustomButton from './utilsComponents/CustomButton';
 
 const TryProduct = ({ redirect }) => {
+  const currentPath = window.location.pathname;
+  const navigate = useNavigate();
   return (
     <>
       <div className='wid-solutionMain'>
@@ -27,7 +30,14 @@ const TryProduct = ({ redirect }) => {
           <div className='d-flex flex-column gap-3'>
             <CustomButton
               text={'Начать работать'}
-              action={redirect}
+              action={() => {
+                if (currentPath === '/') {
+                  navigate('/tariffs');
+                } else {
+                  redirect()
+                }
+              }               
+              }
               className={'white-btn'}
             />
           </div>
