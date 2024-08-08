@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation  } from 'react-router-dom';
 import './styles.css';
 import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
@@ -7,9 +8,22 @@ import SuccessPaymentLight from './images/SuccessPayment.png';
 import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import CustomButton from '../components/utilsComponents/CustomButton';
 
-const AfterPayment = ({ status }) => {
-  //Temporary plug status
-  status = true;
+const AfterPayment = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { paymentStatus } = location.state;
+
+  const status = paymentStatus === 'success' ? true : false;
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (status) {
+        navigate('/onboarding');
+      } else {
+        navigate('/tariffs');
+      }
+    }, 5000);
+  }, []);
 
   const paymentMessage = status
     ? 'Оплата прошла\n успешно!'

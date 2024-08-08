@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import OrangeLabelSelect from '../pages/images/OrangeLabelSelect';
 import logoStart from '../pages/images/logoForCardStart.png';
 import logoPro from '../pages/images/logoForCardPro.png';
@@ -21,11 +22,14 @@ const SelectRate = ({ redirect }) => {
   const { user, authToken } = useContext(AuthContext);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
   const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
+  const navigate = useNavigate();
 
   const handlePeriodChange = (period) => {
     setSelectedPeriod(period);
   };
   const userIdInvoiceHardCode = 'radar-51-20240807-161128'
+
+  const currentPath = window.location.pathname;
 
   const pay = (_user, _period, _trial) => {
     console.log('user.email', user);
@@ -178,25 +182,20 @@ const SelectRate = ({ redirect }) => {
             },
           })
           .then((res) => {
-            console.log("patch /api/user", res.data);
-            // TODO переадресация в Подключенные магазины (/linked-shops) или Сводку продаж (/dashboard) - ? уточнить
-            window.location.href = "/linked-shops";
+            console.log("patch /api/user", res.data);         
+            localStorage.setItem("authToken", res.data.auth_token);
+            navigate('/after-payment', {state: {paymentStatus:'success'}});
           })
           .catch((err) => console.log("patch /api/user", err));
-        console.log("Payment success:", "options", options);
-        // Send POST request
-        //  axios.post(`${URL}/user/subscription`, userIdInvoiceHardCode)
-        // .then(res =>{
-        //   console.log('post /user/subscription', res.data);
-        // })
-        // .catch(err => console.log('post /user/subscription', err));
+          console.log("Payment success:", "options", options);
       },
 
 
      
       function (reason, options) { // fail
-          //действие при неуспешной оплате
-          console.log('Payment fail:', 'reason', reason, 'options', options);
+        //действие при неуспешной оплате
+        navigate('/after-payment', {state: {paymentStatus:'not-success'}});
+        console.log('Payment fail:', 'reason', reason, 'options', options);
     });
 
   //   widget.pay('charge', // или 'charge'
@@ -756,8 +755,13 @@ const SelectRate = ({ redirect }) => {
                     marginTop: '15px',
                   }}
                   onClick={() => {
-                    pay(user.id, selectedPeriod, trialExpired)
-                    redirect(); 
+                    if (currentPath === '/') {
+                      navigate('tariffs');
+                    } else {
+                      pay(user.id, selectedPeriod, trialExpired)
+                      redirect(); 
+                    }
+                    
                     }}
                 >
                   Начать работать
@@ -848,6 +852,8 @@ const SelectRate = ({ redirect }) => {
           </div>
         </div>
       </div>
+     { currentPath === '/tariffs' && (
+      <>
       <ReviewsUsers />
       <div className='wid-solutionMain'>
         <div className='sol-description col' style={{ padding: 0 }}>
@@ -880,6 +886,8 @@ const SelectRate = ({ redirect }) => {
           <img src={BlockImg_x2} alt='' />
         </div>
       </div>
+      </>
+      )}
     </>
   );
 };
