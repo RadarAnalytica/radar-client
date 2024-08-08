@@ -18,7 +18,7 @@ import CustomButton from './utilsComponents/CustomButton';
 import { URL } from '../service/config';
 
 const SelectRate = ({ redirect }) => {
-  const { user } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
   const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
 
@@ -136,49 +136,61 @@ const SelectRate = ({ redirect }) => {
       accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
       data: data
       },
-      function (options) { // success - действие при успешной оплате
-        // TODO отправка запроса в сервис бэкенда на обновление данных user 
-        // (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'], 
-        // subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать)) 
-        
+      function (options) {
+        // success - действие при успешной оплате
+        // TODO отправка запроса в сервис бэкенда на обновление данных user
+        // (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'],
+        // subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать))
+
         // Helper function to map selectedPeriod to the correct string
-      const mapPeriodToStatus = (period) => {
-        switch(period) {
-          case 'test': return 'Test';
-          case '1month': return 'Month 1';
-          case '3months': return 'Month 3';
-          case '6months': return 'Month 6';
-          default: return period; // fallback to original value if no match
+        const mapPeriodToStatus = (period) => {
+          switch (period) {
+            case "test":
+              return "Test";
+            case "1month":
+              return "Month 1";
+            case "3months":
+              return "Month 3";
+            case "6months":
+              return "Month 6";
+            default:
+              return period; // fallback to original value if no match
+          }
+        };
+
+        // Prepare the update data
+        const updateData = {
+          subscription_status: [mapPeriodToStatus(selectedPeriod)],
+          subscription_start_date: new Date().toISOString().split("T")[0],
+          invoice_id: invoiceId,
+        };
+
+        // Add is_test_used only if it's a test period
+        if (selectedPeriod === "1month") {
+          updateData.is_test_used = true;
         }
-      };
-
-    // Prepare the update data
-      const updateData = {
-        subscription_status: [mapPeriodToStatus(selectedPeriod)],
-        subscription_start_date: new Date().toISOString().split('T')[0],
-        invoice_id: invoiceId
-      };
-
-    // Add is_test_used only if it's a test period
-    if (selectedPeriod === '1month') {
-      updateData.is_test_used = true;
-    };
-    // Send PATCH request
-    axios.post(`${URL}/api/user/subscription`, updateData)
-    .then(res => {
-      console.log('patch /api/user', res.data);
-      // TODO переадресация в Подключенные магазины (/linked-shops) или Сводку продаж (/dashboard) - ? уточнить
-      window.location.href = '/linked-shops';
-    })
-    .catch(err => console.log('patch /api/user', err));
-          console.log('Payment success:', 'options', options);
-// Send POST request
-    //  axios.post(`${URL}/user/subscription`, userIdInvoiceHardCode)
-    // .then(res =>{
-    //   console.log('post /user/subscription', res.data);
-    // })
-    // .catch(err => console.log('post /user/subscription', err));
-  },
+        // Send PATCH request
+        axios
+          .post(`${URL}/api/user/subscription`, updateData, {
+            headers: {
+              "content-type": "application/json",
+              authorization: "JWT " + authToken,
+            },
+          })
+          .then((res) => {
+            console.log("patch /api/user", res.data);
+            // TODO переадресация в Подключенные магазины (/linked-shops) или Сводку продаж (/dashboard) - ? уточнить
+            window.location.href = "/linked-shops";
+          })
+          .catch((err) => console.log("patch /api/user", err));
+        console.log("Payment success:", "options", options);
+        // Send POST request
+        //  axios.post(`${URL}/user/subscription`, userIdInvoiceHardCode)
+        // .then(res =>{
+        //   console.log('post /user/subscription', res.data);
+        // })
+        // .catch(err => console.log('post /user/subscription', err));
+      },
 
 
      
