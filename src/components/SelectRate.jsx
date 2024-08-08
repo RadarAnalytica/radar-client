@@ -27,6 +27,8 @@ const SelectRate = ({ redirect }) => {
   };
   const userIdInvoiceHardCode = 'radar-51-20240807-161128'
 
+  const currentPath = window.location.pathname;
+
   const pay = (_user, _period, _trial) => {
     console.log('user.email', user);
     console.log('selectedPeriod', selectedPeriod)
@@ -848,6 +850,8 @@ const SelectRate = ({ redirect }) => {
           </div>
         </div>
       </div>
+     { currentPath === '/tariffs' && (
+      <>
       <ReviewsUsers />
       <div className='wid-solutionMain'>
         <div className='sol-description col' style={{ padding: 0 }}>
@@ -880,6 +884,8 @@ const SelectRate = ({ redirect }) => {
           <img src={BlockImg_x2} alt='' />
         </div>
       </div>
+      </>
+      )}
     </>
   );
 };
