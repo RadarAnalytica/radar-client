@@ -759,7 +759,7 @@ const SelectRate = ({ redirect }) => {
                       navigate('tariffs');
                     } else {
                       pay(user.id, selectedPeriod, trialExpired)
-                      redirect(); 
+                       
                     }
                     
                     }}
@@ -876,7 +876,7 @@ const SelectRate = ({ redirect }) => {
               text={'Начать работать'}
               action={() => {
                 pay(user.id, selectedPeriod, trialExpired)
-                redirect(); 
+                 
                 }}
               className={'white-btn'}
             />
