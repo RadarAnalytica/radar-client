@@ -15,6 +15,7 @@ import BlockImg_x2 from '../pages/images/Dashboard_x2.png';
 import SolLabelStartBsn from '../pages/images/SolLabelStartBsn';
 import YellowRadarPoint from '../pages/images/YellowRadarPoint';
 import CustomButton from './utilsComponents/CustomButton';
+import { URL } from '../service/config';
 
 const SelectRate = ({ redirect }) => {
   const { user } = useContext(AuthContext);
@@ -34,6 +35,15 @@ const SelectRate = ({ redirect }) => {
     let amountSubscribe = 0
     let firstAmount = 0
     let startDateSubscribe = ''
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    };
+    const invoiceId = `radar-${user.id}-${new Date().toLocaleString("ru", options).replaceAll('.', '').replaceAll(', ', '-').replaceAll(':', '')}`
 
     if (selectedPeriod === '1month') {
       amountSubscribe = 2990
@@ -42,8 +52,10 @@ const SelectRate = ({ redirect }) => {
       startDateSubscribe = new Date()
       if (!!trialExpired) {
         startDateSubscribe.setMonth(startDateSubscribe.getMonth() + periodSubscribe)
+        startDateSubscribe.setUTCHours(7, 0, 0, 0)
       } else {
         startDateSubscribe.setDate(startDateSubscribe.getDate() + 3)
+        startDateSubscribe.setUTCHours(7, 0, 0, 0)
       }
     } else if ((selectedPeriod === '3month')) {
       amountSubscribe = 8073
@@ -119,7 +131,7 @@ const SelectRate = ({ redirect }) => {
       description: 'Оплата подписки в Radar Analityca', //назначение
       amount: firstAmount, //сумма
       currency: 'RUB', //валюта
-      invoiceId: userIdInvoiceHardCode, //номер заказа  (необязательно)
+      invoiceId: invoiceId, //номер заказа  (необязательно)
       email: user.email,
       accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
       data: data
@@ -143,7 +155,8 @@ const SelectRate = ({ redirect }) => {
     // Prepare the update data
       const updateData = {
         subscription_status: [mapPeriodToStatus(selectedPeriod)],
-        subscription_start_date: new Date().toISOString().split('T')[0]
+        subscription_start_date: new Date().toISOString().split('T')[0],
+        invoice_id: invoiceId
       };
 
     // Add is_test_used only if it's a test period
@@ -151,7 +164,7 @@ const SelectRate = ({ redirect }) => {
       updateData.is_test_used = true;
     };
     // Send PATCH request
-    axios.patch(`${URL}/api/user`, updateData)
+    axios.post(`${URL}/api/user/subscription`, updateData)
     .then(res => {
       console.log('patch /api/user', res.data);
       // TODO переадресация в Подключенные магазины (/linked-shops) или Сводку продаж (/dashboard) - ? уточнить
@@ -160,11 +173,11 @@ const SelectRate = ({ redirect }) => {
     .catch(err => console.log('patch /api/user', err));
           console.log('Payment success:', 'options', options);
 // Send POST request
-     axios.post(`${URL}/user/subscription`, userIdInvoiceHardCode)
-    .then(res =>{
-      console.log('post /user/subscription', res.data);
-    })
-    .catch(err => console.log('post /user/subscription', err));
+    //  axios.post(`${URL}/user/subscription`, userIdInvoiceHardCode)
+    // .then(res =>{
+    //   console.log('post /user/subscription', res.data);
+    // })
+    // .catch(err => console.log('post /user/subscription', err));
   },
 
 
