@@ -124,7 +124,7 @@ const SelfCostWarning = ({ activeBrand }) => {
               </div>
             </div>
           ) : (
-            <div>
+            <div className='d-flex flex-column align-items-center justify-content-around w-100'>
               {/* <div className="file-block d-flex flex-column align-items-center justify-content-around w-100 mt-2 gap-2">
                                     <svg width="64" height="48" viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20 11C17.5147 11 15.5 13.0147 15.5 15.5V16C15.5 18.4853 17.5147 20.5 20 20.5C22.4853 20.5 24.5 18.4853 24.5 16V15.5C24.5 13.0147 22.4853 11 20 11Z" fill="#5329FF" />
