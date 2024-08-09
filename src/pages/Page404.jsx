@@ -1,7 +1,7 @@
 import React from 'react';
-import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
+import LimitedFooter from '../components/LimitedFooter';
 
 const Page404 = () => {
   const navigate = useNavigate();
@@ -115,7 +115,9 @@ const Page404 = () => {
       </div>
       <div className='context404'>404</div>
       <div className='context404noFound'>Страница не найдена</div>
-      <Footer isWide />
+      <div style={{width: '100%', padding: '20px 20px 0'}}>
+        <LimitedFooter />
+      </div>
     </div>
   );
 };
