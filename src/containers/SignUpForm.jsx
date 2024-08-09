@@ -86,7 +86,7 @@ const SignUpForm = () => {
   useEffect(() => {
     let lastname = name?.split(' ')[0];
     let firstname = name?.split(' ')[1];
-    let patronym = name?.split(' ')[2];
+    let patronym = name?.split(' ')[2] + ' ' + (name?.split(' ')[3] || '');
     setRegData({ ...regData, firstname, lastname, patronym });
   }, [name]);
 
