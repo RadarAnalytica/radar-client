@@ -194,7 +194,6 @@ const SelectRate = ({ redirect }) => {
      
       function (reason, options) { // fail
         //действие при неуспешной оплате
-        navigate('/after-payment', {state: {paymentStatus:'not-success'}});
         console.log('Payment fail:', 'reason', reason, 'options', options);
     });
 
