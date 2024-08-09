@@ -140,7 +140,7 @@ const StepsTime = ({ redirect }) => {
           <button
             className='btn-warning'
             style={{ minHeight: '64px', fontSize: '18px' }}
-            onClick={() => navigate('/tariffs')}
+            onClick={() => window.open('/tariffs', '_blank')}
           >
             Начать работать
           </button>

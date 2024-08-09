@@ -82,7 +82,7 @@ const MainPage = () => {
               <button
                 className='prime-btn'
                 style={{ minHeight: '64px', fontSize: '18px', margin: 0 }}
-                onClick={() => navigate('/tariffs')}
+                onClick={() => window.open('/tariffs', '_blank')}
               >
                 Начать работать
               </button>
@@ -183,7 +183,7 @@ const MainPage = () => {
                     fontSize: '18px',
                     fontWeight: '700',
                   }}
-                  onClick={() => navigate('/tariffs')}
+                  onClick={() => window.open('/tariffs', '_blank')}
                 >
                   Начать работать
                 </button>

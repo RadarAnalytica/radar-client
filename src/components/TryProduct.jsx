@@ -32,9 +32,9 @@ const TryProduct = ({ redirect }) => {
               text={'Начать работать'}
               action={() => {
                 if (currentPath === '/') {
-                  navigate('/tariffs');
+                 window.open('/tariffs', '_blank');
                 } else {
-                  redirect()
+                  redirect();
                 }
               }               
               }
