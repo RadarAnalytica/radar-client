@@ -1742,3 +1742,60 @@ select {
   font-weight: 600;
   font-size: 18px;
 }
+
+.cancel-subscription-modal{
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: #1a1a1a;
+}
+
+.cancel-subscription-modal-text {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #1a1a1a;
+}
+
+.button-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.button-stay {
+  display: flex;
+  height: 63px;
+  align-items: center;
+  justify-content: center;
+  background: #5329FF;
+  border: 2px solid #5329FF;
+  border-radius: 8px;
+  color: #f1f1f1;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.button-stay:hover {
+  cursor: pointer;
+}
+
+.button-cancel {
+  display: flex;
+  height: 63px;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 8px;
+  color: #5329FF;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  border: 2px solid #DDD4FF;
+}
+
+.button-cancel:hover {
+  cursor: pointer;
+}

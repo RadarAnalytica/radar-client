@@ -11,29 +11,37 @@ import "moment/locale/ru";
 import { URL } from "../service/config";
 import AuthContext from "../service/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
 
 const Subscriptions = () => {
   const navigate = useNavigate();
   const { authToken } = useContext(AuthContext);
   const [subscriptions, setSubscriptions] = useState([]);
+  const [keepSubscriptionId, setKeepSubscriptionId] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+
+  const fetchSubscriptions = async () => {
+    const response = await fetch(`${URL}/api/user/subscription/all`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        authorization: "JWT " + authToken,
+      },
+    });
+    const data = await response.json();
+    setSubscriptions(data);
+    return data;
+  };
 
   useEffect(() => {
-    if (subscriptions.length === 0) {
-      navigate("/tariffs", { replace: true });
-    } else {
-      const fetchSubscriptions = async () => {
-        const response = await fetch(`${URL}/api/user/subscription/all`, {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            authorization: "JWT " + authToken,
-          },
-        });
-        const data = await response.json();
-        setSubscriptions(data);
-      };
-      fetchSubscriptions();
-    }  
+    const checkSubscriptions = async () => {
+      const data = await fetchSubscriptions();
+      if (data.length === 0) {
+        navigate('/tariffs');
+      }
+    };
+  
+    checkSubscriptions();
   }, []);
 
   const handleRestoreSubscription = async (subscriptionId) => {
@@ -89,7 +97,8 @@ const Subscriptions = () => {
       <div
         className="sub-card-toggle"
         onClick={() => {
-          handleCancelSubscription(subscriptionId);
+          setOpenModal(true);
+          setKeepSubscriptionId(subscriptionId);
         }}
       >
         <img src={CloseIcon} alt="Close subscription" className="mr-5" />
@@ -133,77 +142,102 @@ const Subscriptions = () => {
   };
 
   return (
-    // <>
-    //   {isLoding ? (
-    //     <>
-    //       <div
-    //         className="d-flex flex-column align-items-center justify-content-center"
-    //         style={{
-    //           height: "100%",
-    //           width: "100%",
-    //           position: "absolute",
-    //         }}
-    //       >
-    //         <span className="loader"></span>
-    //       </div>
-    //     </>
-    //   ) : (
-        <div className="sub-page">
-          <SideNav />
-          <div className="sub-page-content">
-            <TopNav title={"Моя подписка"} />
-            <div className="container dash-container sub-page-grid">
-              {subscriptions.map((item) => {
-                const activeText = item.active ? "Активна" : "Неактивна";
-                const activeColor = item.active ? "#00B69B" : "#808080";
-                const activeWidth = item.active ? 120 : 140;
-                const toggleText = item.active
-                  ? rejectSubscription({
-                      subscriptionId: item.id,
-                    })
-                  : restoreSubscription({
-                      subscriptionId: item.id,
-                    });
-                const paymentDate = moment(item.validity_period)
-                  .add(1, "days")
-                  .locale("ru")
-                  .format("DD MMMM");
-                const activeTillPeriod = moment(item.validity_period)
-                  .locale("ru")
-                  .format("DD MMMM");
-                return (
-                  <div className="sub-card">
-                    <div className="sub-card-row">
-                      <div className="sub-card-content-wrap">
-                        <img src={TestSub} alt="subImg" />
-                        <div className="sub-card-content">
-                          <span className="sub-card-content-title">
-                            {item.name}
-                          </span>
-                          <span className="sub-card-content-text">
-                            Действует до {activeTillPeriod}
-                          </span>
-                        </div>
-                      </div>
-
-                      <StatusInfo
-                        title={activeText}
-                        fill={activeColor}
-                        width={activeWidth}
-                      />
+    <div className="sub-page">
+      <SideNav />
+      <div className="sub-page-content">
+        <TopNav title={"Моя подписка"} />
+        <div className="container dash-container sub-page-grid">
+          {subscriptions.map((item) => {
+            const activeText = item.active ? "Активна" : "Неактивна";
+            const activeColor = item.active ? "#00B69B" : "#808080";
+            const activeWidth = item.active ? 120 : 140;
+            const toggleText = item.active
+              ? rejectSubscription({
+                  subscriptionId: item.id,
+                })
+              : restoreSubscription({
+                  subscriptionId: item.id,
+                });
+            const paymentDate = moment(item.validity_period)
+              .add(1, "days")
+              .locale("ru")
+              .format("DD MMMM");
+            const activeTillPeriod = moment(item.validity_period)
+              .locale("ru")
+              .format("DD MMMM");
+            return (
+              <div className="sub-card">
+                <div className="sub-card-row">
+                  <div className="sub-card-content-wrap">
+                    <img src={TestSub} alt="subImg" />
+                    <div className="sub-card-content">
+                      <span className="sub-card-content-title">
+                        {item.name}
+                      </span>
+                      <span className="sub-card-content-text">
+                        Действует до {activeTillPeriod}
+                      </span>
                     </div>
-                    {item.active && (
-                      <span className="sub-card-content-text sub-card-content-pay">{`Следующее списание средств ${paymentDate}`}</span>
-                    )}
-                    <p className="sub-divider" />
-                    <div className="sub-card-toggle">{toggleText}</div>
                   </div>
-                );
-              })}
+
+                  <StatusInfo
+                    title={activeText}
+                    fill={activeColor}
+                    width={activeWidth}
+                  />
+                </div>
+                {item.active && (
+                  <span className="sub-card-content-text sub-card-content-pay">{`Следующее списание средств ${paymentDate}`}</span>
+                )}
+                <p className="sub-divider" />
+                <div className="sub-card-toggle">{toggleText}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <Modal
+        show={openModal}
+        onHide={() => setOpenModal(false)}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <div className="d-flex align-items-center gap-2">
+            <div style={{ width: "100%" }}>
+              <div className="d-flex justify-content-between">
+                <span className="cancel-subscription-modal">
+                  Вы уверены, что хотите отменить подписку?
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      );
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <span className="cancel-subscription-modal-text">
+              Ваши данные могут быть удалены
+            </span>
+            <div className="button-box">
+              <div className="button-stay" onClick={() => setOpenModal(false)}>
+                Остаться
+              </div>
+              <div
+                className="button-cancel"
+                onClick={() => {
+                  handleCancelSubscription(keepSubscriptionId);
+                  setOpenModal(false);
+                }}
+              >
+                Отменить подписку
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </div>
+  );
 };
 
 export default Subscriptions;
