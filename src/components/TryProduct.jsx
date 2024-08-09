@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import '../pages/styles.css';
 import BlockImg_x2 from '../pages/images/Dashboard_x2.png';
 import SolLabelStartBsn from '../pages/images/SolLabelStartBsn';
 import YellowRadarPoint from '../pages/images/YellowRadarPoint';
 import CustomButton from './utilsComponents/CustomButton';
+import AuthContext from '../service/AuthContext';
 
 const TryProduct = ({ redirect }) => {
+  const { user } = useContext(AuthContext);
   const currentPath = window.location.pathname;
   const navigate = useNavigate();
   return (
@@ -32,7 +34,12 @@ const TryProduct = ({ redirect }) => {
               text={'Начать работать'}
               action={() => {
                 if (currentPath === '/') {
-                 window.open('/tariffs', '_blank');
+                  if (user) {
+                    window.open('/tariffs', '_blank')
+                  } 
+                  if (!user) {
+                   navigate('/signup')
+                  }
                 } else {
                   redirect();
                 }

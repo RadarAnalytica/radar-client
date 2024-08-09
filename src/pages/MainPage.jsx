@@ -82,7 +82,14 @@ const MainPage = () => {
               <button
                 className='prime-btn'
                 style={{ minHeight: '64px', fontSize: '18px', margin: 0 }}
-                onClick={() => window.open('/tariffs', '_blank')}
+                onClick={() => {
+                  if (user) {
+                    window.open('/tariffs', '_blank')
+                  } 
+                  if (!user) {
+                   navigate('/signup')
+                  }
+                }}
               >
                 Начать работать
               </button>
@@ -112,7 +119,7 @@ const MainPage = () => {
           <div className='widhead-container'>
             <div className='mainBlock-api'>
               <div style={{ fontSize: '40px', fontWeight: '700' }}>
-                Подключение личного кабинета{' '}
+                Подключение личного кабинета
                 <span style={{ color: 'orange', fontWeight: '800' }}>
                   по API
                 </span>
@@ -183,7 +190,14 @@ const MainPage = () => {
                     fontSize: '18px',
                     fontWeight: '700',
                   }}
-                  onClick={() => window.open('/tariffs', '_blank')}
+                  onClick={() => {
+                    if (user) {
+                      window.open('/tariffs', '_blank')
+                    } 
+                    if (!user) {
+                     navigate('/signup')
+                    }
+                  }}
                 >
                   Начать работать
                 </button>

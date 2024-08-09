@@ -1,12 +1,14 @@
-import React from 'react';
+import React , { useContext } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import Steps from '../pages/images/Steps';
 import YellowRadar from '../pages/images/YellowRadarLarge';
 import time from '../pages/images/time.png';
 import YellowRadarLarge from '../pages/images/YellowRadarLarge';
+import AuthContext from '../service/AuthContext';
 
 const StepsTime = ({ redirect }) => {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const stepsContent = [
     {
       title: 'Запуск',
@@ -140,7 +142,14 @@ const StepsTime = ({ redirect }) => {
           <button
             className='btn-warning'
             style={{ minHeight: '64px', fontSize: '18px' }}
-            onClick={() => window.open('/tariffs', '_blank')}
+            onClick={() => {
+              if (user) {
+                window.open('/tariffs', '_blank')
+              } 
+              if (!user) {
+               navigate('/signup')
+              }
+            }}
           >
             Начать работать
           </button>

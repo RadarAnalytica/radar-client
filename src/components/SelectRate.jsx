@@ -755,7 +755,12 @@ const SelectRate = ({ redirect }) => {
                   }}
                   onClick={() => {
                     if (currentPath === '/') {
-                       window.open('/tariffs', '_blank')
+                      if (user) {
+                        window.open('/tariffs', '_blank')
+                      } 
+                      if (!user) {
+                       navigate('/signup')
+                      }
                     } else {
                       pay(user.id, selectedPeriod, trialExpired)
                        
