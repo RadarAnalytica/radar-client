@@ -127,7 +127,7 @@ const TopNav = ({ title }) => {
                 </p>
                 <p
                 className='m-0'
-                onClick={() => navigate('/tariffs')}
+                onClick={() => window.open('/tariffs', '_blank')}
                 >
                   Тарифы
                 </p>
