@@ -12,9 +12,8 @@ import { URL } from '../service/config';
 import AuthContext from '../service/AuthContext';
 
 const Subscriptions = () => {
-  const { user, authToken } = useContext(AuthContext);
+  const { authToken } = useContext(AuthContext);
   const [subscriptions, setSubscriptions] = useState([]);
-  const [subscriptionToggleText, setSubscriptionToggleText] = useState({});
 
   useEffect(() => {
       const fetchSubscriptions = async () => {
@@ -44,10 +43,11 @@ const Subscriptions = () => {
         }
       );
       const data = await response.json();
-      setSubscriptionToggleText((prevState) => ({
-        ...prevState,
-        [subscriptionId]: "Отказаться от подписки",
-      }));
+      setSubscriptions(prevSubscriptions => 
+        prevSubscriptions.map(sub => 
+          sub.id === subscriptionId ? { ...sub, active: true } : sub
+        )
+      )
       console.log(data);
     } catch (e) {
       console.log(e);
@@ -67,10 +67,11 @@ const Subscriptions = () => {
         }
       );
       const data = await response.json();
-      setSubscriptionToggleText((prevState) => ({
-        ...prevState,
-        [subscriptionId]: "Восстановить подписку",
-      }));
+      setSubscriptions(prevSubscriptions => 
+        prevSubscriptions.map(sub => 
+          sub.id === subscriptionId ? { ...sub, active: false } : sub
+        )
+      );
       console.log(data);
     } catch (e) {
       console.log(e);
@@ -86,7 +87,7 @@ const Subscriptions = () => {
         }}
       >
         <img src={CloseIcon} alt="Close subscription" className="mr-5" />
-        <span>{subscriptionToggleText[subscriptionId] || "Отказаться от подписки"}</span>
+        <span>Отказаться от подписки</span>
       </div>
     );
   };
@@ -110,7 +111,7 @@ const Subscriptions = () => {
               lineHeight: "25px",
           }}
           >
-            {subscriptionToggleText[subscriptionId] || "Восстановить подписку"}
+             Восстановить подписку
           </span>
         </span>
       </div>
@@ -124,6 +125,7 @@ const Subscriptions = () => {
         <TopNav title={"Моя подписка"} />
         <div className="container dash-container sub-page-grid">
           {subscriptions.map((item) => {
+            console.log('item', item.active)
             const activeText = item.active ? "Активна" : "Неактивна";
             const activeColor = item.active ? "#00B69B" : "#808080";
             const activeWidth = item.active ? 120 : 140;
