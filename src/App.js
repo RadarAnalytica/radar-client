@@ -176,6 +176,15 @@ function App() {
               }
             />
             <Route
+              path='/restore/:email/:code'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {' '}
+                  <ResetPage />
+                </React.Suspense>
+              }
+            />
+            <Route
               path='/development/Page404'
               element={
                 <React.Suspense fallback={<LoaderPage />}>

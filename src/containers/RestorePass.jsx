@@ -14,6 +14,7 @@ const RestorePass = ({ email }) => {
   const navigate = useNavigate();
 
   const updatePass = async (email, pass) => {
+    let loc_string = window.location.href
     const res = await fetch(`${URL}/api/user/restore_password`, {
       method: 'POST',
       headers: {
@@ -23,6 +24,7 @@ const RestorePass = ({ email }) => {
         email,
         password: pass,
         confirm: pass,
+        confirm_code: loc_string.split('/').at(-1)
       }),
     });
     const data = await res.json();
@@ -48,6 +50,7 @@ const RestorePass = ({ email }) => {
       e.preventDefault();
     }
   };
+  localStorage.removeItem('authToken')
 
   return (
     <div className='signin-form'>

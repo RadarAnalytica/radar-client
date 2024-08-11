@@ -13,6 +13,7 @@ const EmailForReset = () => {
     }
 
     const requestLink = async (email) => {
+        localStorage.removeItem("authToken")
         const res = await fetch(`${URL}/api/user/reset`, {
             method: 'POST',
             headers: {
