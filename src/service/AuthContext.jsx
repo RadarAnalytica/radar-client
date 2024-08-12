@@ -19,63 +19,62 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const login = async (email, password, setError, setShow) => {
     if (!password || !email) {
-      setError("Введите корректное значение для всех полей");
+      setError('Введите корректное значение для всех полей');
       return;
     }
-
+    
     try {
-      const response = await fetch(URL + "/api/user/signin", {
-        method: "POST",
+      const response = await fetch(URL + '/api/user/signin', {
+        method: 'POST',
         headers: {
-          "content-type": "application/json",
+          'content-type': 'application/json',
         },
         body: JSON.stringify({ email: email, password: password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.status === 303) {
         window.location = data.redirect;
         return;
       }
-
       if (response.status !== 200) {
         setError(data.message);
         setShow(true);
         return;
       }
-
+  
       if (data?.token === "undefined") {
-        setError("Токен не получен");
+        setError('Неверный логин или пароль');
         setShow(true);
         return;
       }
-
+  
       setAuthToken(data);
       setUser(jwtDecode(data?.token));
-
+      localStorage.setItem('authToken', data?.token);
+  
       if (data.isOnboarded) {
-        navigate("/dashboard");
+        navigate('/dashboard');
       } else {
-        navigate("/onboarding");
+        navigate('/onboarding');
       }
     } catch (error) {
-      setError("Произошла ошибка при входе");
+      setError('Произошла ошибка при входе');
       setShow(true);
     }
   };
-
-  const target = localStorage.getItem("authToken");
-  useEffect(() => {
-    if (target && target !== "undefined") {
+const target = localStorage.getItem('authToken');
+  useEffect(() => {    if (target && target !== "undefined") {
       setAuthToken(target);
       try {
         const decodedUser = jwtDecode(target);
         setUser(decodedUser);
       } catch (error) {
         console.error("Error decoding token:", error);
-        // Clear the invalid token from localStorage
-        localStorage.removeItem("authToken");
+        // Handle the error appropriately, e.g., clear the invalid token
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('activeShop');
       }
     }
   }, [target]);
