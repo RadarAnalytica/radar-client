@@ -21,42 +21,63 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password, setError, setShow) => {
     if (!password || !email) {
       setError('Введите корректное значение для всех полей');
+      return;
     }
-    const response = await fetch(URL + '/api/user/signin', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({ email: email, password: password }),
-    });
-    console.log(response.status)
-    const data = await response.json();
-    if (response.status === 303) {
-      console.log(response.status)
-      console.log(data.redirect)
-      window.location = data.redirect
-    }
-    if (response.status !== 200 && response.status !== 303) {
-      setError(data.message);
-      setShow(true);
-    }
-    if (response.status === 200) {
+    
+    try {
+      const response = await fetch(URL + '/api/user/signin', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, password: password }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.status === 303) {
+        window.location = data.redirect;
+        return;
+      }
+  
+      if (response.status !== 200) {
+        setError(data.message);
+        setShow(true);
+        return;
+      }
+  
+      if (data?.token === "undefined") {
+        setError('Неверный логин или пароль');
+        setShow(true);
+        return;
+      }
+  
       setAuthToken(data);
       setUser(jwtDecode(data?.token));
       localStorage.setItem('authToken', data?.token);
-    }
-    if (data.isOnboarded) {
-      navigate('/dashboard');
-    } else if (!data.isOnboarded) {
-      navigate('/onboarding');
+  
+      if (data.isOnboarded) {
+        navigate('/dashboard');
+      } else {
+        navigate('/onboarding');
+      }
+    } catch (error) {
+      setError('Произошла ошибка при входе');
+      setShow(true);
     }
   };
-
-  const target = localStorage.getItem('authToken');
-  useEffect(() => {
-    if (target) {
+const target = localStorage.getItem('authToken');
+  useEffect(() => {    if (target && target !== "undefined") {
       setAuthToken(target);
-      setUser(jwtDecode(target));
+      try {
+        const decodedUser = jwtDecode(target);
+        setUser(decodedUser);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        // Handle the error appropriately, e.g., clear the invalid token
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('activeShop');
+      }
     }
   }, [target]);
 
