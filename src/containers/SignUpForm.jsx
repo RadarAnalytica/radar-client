@@ -117,7 +117,9 @@ const SignUpForm = () => {
 
   const sumbitHandler = (e, obj) => {
     const nullable = Object.values(obj)?.filter((item) => item === null);
-    if (!obj || nullable?.length > 1 || !isValidEmail(obj.email)) {
+    console.log(obj, Object.values(obj), nullable);
+    
+    if (!obj || nullable?.length > 3 || !isValidEmail(obj.email)) {
       e.preventDefault();
       setError('Введите корректное значение для всех полей');
       setShow(true);
