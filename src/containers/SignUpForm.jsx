@@ -20,6 +20,7 @@ const SignUpForm = () => {
   ];
 
   const [name, setName] = useState();
+  console.log('name', name);
   const [regData, setRegData] = useState({
     firstname: null,
     lastname: null,
@@ -84,10 +85,10 @@ const SignUpForm = () => {
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
-    let lastname = name?.split(' ')[0];
-    let firstname = name?.split(' ')[1];
-    let patronym = name?.split(' ')[2] + ' ' + (name?.split(' ')[3] || '');
-    setRegData({ ...regData, firstname, lastname, patronym });
+    let lastname = name;
+    // let firstname = name?.split(' ')[1];
+    // let patronym = name?.split(' ')[2] + ' ' + (name?.split(' ')[3] || '');
+    setRegData({ ...regData, lastname });
   }, [name]);
 
   const [show, setShow] = useState(false);
