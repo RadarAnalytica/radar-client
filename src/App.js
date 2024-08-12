@@ -1,6 +1,6 @@
 import './App.css';
 import * as React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthContext, { AuthProvider } from './service/AuthContext';
 import { useContext } from 'react';
 import MobileMenu from './components/MobileMenu';
@@ -41,8 +41,10 @@ const Page404 = React.lazy(() => import('./pages/Page404'));
 
 function App() {
   const { user } = useContext(AuthContext);
+  console.log('user', user);
 
   if (user) {
+
     return (
       <div className='App'>
         <AuthProvider>
@@ -51,10 +53,21 @@ function App() {
             <Route
               path='/'
               element={
-                <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
-                  <MainPage />
-                </React.Suspense>
+                user?.is_onboarded ? (
+                  !user.subscription_status ? (
+                    <React.Suspense fallback={<LoaderPage />}>
+                      <TariffsPage />
+                    </React.Suspense>
+                  ) : (
+                    <React.Suspense fallback={<LoaderPage />}>
+                      <DashboardPage />
+                    </React.Suspense>
+                  )
+                ) : (
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <Onboarding />
+                  </React.Suspense>
+                )
               }
             />
             <Route
