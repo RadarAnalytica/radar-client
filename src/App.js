@@ -623,7 +623,7 @@ function App() {
             element={
               <React.Suspense fallback={<LoaderPage />}>
                 {' '}
-                <Page404 />
+                <SignInPage />
               </React.Suspense>
             }
           />
