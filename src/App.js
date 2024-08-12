@@ -511,6 +511,15 @@ function App() {
             }
           />
           <Route
+            path='/tariffs'
+            element={
+              <React.Suspense fallback={<LoaderPage />}>
+                {' '}
+                <SignInPage />
+              </React.Suspense>
+            }
+          />
+          <Route
             path='/development/monitoring'
             element={
               <React.Suspense fallback={<LoaderPage />}>
