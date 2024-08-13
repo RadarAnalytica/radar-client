@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import AuthContext from '../service/AuthContext';
 import wblogo from '../assets/wblogo.png';
 import redcircle from '../assets/redcircle.png';
@@ -32,6 +32,7 @@ const LinkedShops = () => {
   const shops = useAppSelector((state) => state.shopsSlice.shops);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [activeShop, setActiveShop] = useState(null);
   const [show, setShow] = useState(false);
@@ -173,6 +174,21 @@ const LinkedShops = () => {
   const redirect = () => {
     navigate('/dashboard');
   };
+
+  const checkIdQueryParam = () => {
+    const idQueryParam = new URLSearchParams(location.search).get("id");
+    if (idQueryParam && parseInt(idQueryParam) !== user.id) {
+      navigate("/signin");
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (location.search) {
+      checkIdQueryParam();
+    }
+  }, [location.search]);
 
   return (
     <div className='linked-shops-page'>

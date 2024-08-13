@@ -42,8 +42,9 @@ const SelectRate = ({ redirect }) => {
         },
       });
       if (response.status === 200) {
-        const data = await response.json();
+        const data = await response.json(); 
         localStorage.setItem("authToken", data.token);
+        user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false)
         return data.token;
       }
     } catch (error) {

@@ -23,11 +23,12 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchAllShops } from '../redux/dashboard/dashboardActions';
 import { fetchShops } from '../redux/shops/shopsActions';
 import downloadIcon from '../pages/images/Download.svg';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const DashboardPage = () => {
   const { user, authToken, showMobile } = useContext(AuthContext);
+  const location = useLocation();
   const [wbData, setWbData] = useState();
 
   const [days, setDays] = useState(30);
@@ -134,6 +135,21 @@ const DashboardPage = () => {
       setLoading(false);
     }
   };
+
+  const checkIdQueryParam = () => {
+    const idQueryParam = new URLSearchParams(location.search).get("id");
+    if (idQueryParam && parseInt(idQueryParam) !== user.id) {
+      navigate("/signin");
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (location.search) {
+      checkIdQueryParam();
+    }
+  }, [location.search]);
 
   // Заказы
   const orders = wbData && wbData.orders ? wbData.orders.data : [];

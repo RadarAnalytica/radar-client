@@ -14,8 +14,11 @@ import DataCollectionNotification from '../components/DataCollectionNotification
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchShops } from '../redux/shops/shopsActions';
 import { fetchGeographyData } from '../redux/geoData/geoDataActions';
+import { useLocation, useNavigate } from "react-router-dom";
 
 const OrdersMap = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, authToken } = useContext(AuthContext);
   const { geoData, loading, error } = useAppSelector(
@@ -88,6 +91,21 @@ const OrdersMap = () => {
     }
     setActiveBrand(shopId);
   };
+
+  const checkIdQueryParam = () => {
+    const idQueryParam = new URLSearchParams(location.search).get("id");
+    if (idQueryParam && parseInt(idQueryParam) !== user.id) {
+      navigate("/signin");
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (location.search) {
+      checkIdQueryParam();
+    }
+  }, [location.search]);
 
   // const changePeriod = () => {
   //     setLoading(true)

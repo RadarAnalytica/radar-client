@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-
 import TopNav from '../components/TopNav';
 import SideNav from '../components/SideNav';
 import InputField from '../components/InputField';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 
@@ -21,6 +20,7 @@ import {
 const Onboarding = () => {
   const { user, authToken, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeShop, setActiveShop] = useState();
   const [brandName, setBrandName] = useState();
   const [token, setToken] = useState();
@@ -60,6 +60,20 @@ const Onboarding = () => {
         .finally(handleShow());
     }
   };
+  const checkIdQueryParam = () => {
+    const idQueryParam = new URLSearchParams(location.search).get("id");
+    if (idQueryParam && parseInt(idQueryParam) !== user.id) {
+      navigate("/signin");
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (location.search) {
+      checkIdQueryParam();
+    }
+  }, [location.search]);
 
   useEffect(() => {
     ServiceFunctions.getAllShops(authToken).then((data) => setData(data));
