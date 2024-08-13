@@ -31,7 +31,29 @@ const SelectRate = ({ redirect }) => {
 
   const currentPath = window.location.pathname;
 
+  const refreshUserToken = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      const response = await fetch(`${URL}/api/user/refresh`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "JWT " + authToken,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        localStorage.setItem("authToken", data.token);
+        return data.token;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return null;
+  };
+
   const pay = (_user, _period, _trial) => {
+    refreshUserToken();
     console.log('user.email', user);
     console.log('selectedPeriod', selectedPeriod)
     console.log('trialExpired', trialExpired)
