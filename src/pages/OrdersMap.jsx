@@ -20,7 +20,7 @@ const OrdersMap = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { user, authToken } = useContext(AuthContext);
+  const { user, authToken, logout } = useContext(AuthContext);
   const { geoData, loading, error } = useAppSelector(
     (state) => state.geoDataSlice
   );
@@ -93,9 +93,12 @@ const OrdersMap = () => {
   };
 
   const checkIdQueryParam = () => {
-    const idQueryParam = new URLSearchParams(location.search).get("id");
+    const searchParams = new URLSearchParams(location.search);
+    const idQueryParam = searchParams.get('id');
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
-      navigate("/signin");
+      logout();
+      navigate('/signin');
+     
     } else {
       return;
     }

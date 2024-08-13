@@ -26,7 +26,7 @@ import { areAllFieldsFilled } from '../service/utils';
 const warningIcon = require('../assets/warning.png');
 
 const LinkedShops = () => {
-  const { user, authToken } = useContext(AuthContext);
+  const { user, authToken, logout } = useContext(AuthContext);
   const loading = useAppSelector((state) => state.loadingSlice);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
@@ -176,9 +176,11 @@ const LinkedShops = () => {
   };
 
   const checkIdQueryParam = () => {
-    const idQueryParam = new URLSearchParams(location.search).get("id");
+    const searchParams = new URLSearchParams(location.search);
+    const idQueryParam = searchParams.get('id');
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
-      navigate("/signin");
+      logout();
+      navigate('/signin');
     } else {
       return;
     }
