@@ -53,8 +53,8 @@ const SelectRate = ({ redirect }) => {
     return null;
   };
 
-  const pay = (_user, _period, _trial) => {
-    refreshUserToken();
+  const pay = async (_user, _period, _trial) => {
+    await refreshUserToken();
     console.log('user.email', user);
     console.log('selectedPeriod', selectedPeriod)
     console.log('trialExpired', trialExpired)
