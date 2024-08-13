@@ -66,21 +66,16 @@ const DashboardPage = () => {
     : oneShop
     ? oneShop.is_primary_collect
     : allShop;
-    console.log('shouldDisplay', shouldDisplay);
-
-    const currentShop = shops?.find((item) => item.id == activeShopId);
 
     useEffect(() => {
       let intervalId = null;
 
-      // if (oneShop?.is_primary_collect) {
-      //   updateDataDashBoard(days, activeBrand, authToken);
-      //   clearInterval(intervalId);
-        
-      // }
+      if (oneShop?.is_primary_collect) {
+        updateDataDashBoard(days, activeBrand, authToken);
+        clearInterval(intervalId);
+      }
       if (!oneShop?.is_primary_collect && activeBrand !== 0) {
         intervalId = setInterval(() => {
-          console.log('inside interval ...');
           dispatch(fetchShops(authToken));
         }, 30000);
       }
@@ -92,17 +87,8 @@ const DashboardPage = () => {
     }, [oneShop, activeBrand]);
 
   useEffect(() => {
-    console.log('inside use effect [dispatch]....');
     dispatch(fetchShops(authToken));
-  
   }, [dispatch]);
-
-  useEffect(() => {
-    if (currentShop?.is_primary_collect) {
-      console.log('inside use effect currentShop [currentShop]....');
-      updateDataDashBoard(days, activeBrand, authToken);
-    }
-  }, [currentShop]);
 
   useEffect(() => {
     if (shops.length > 0) {
@@ -115,10 +101,6 @@ const DashboardPage = () => {
       }
       setActiveBrand(id);
     }
-    // if (cu) {
-    //   console.log('inside use effect shouldDisplay [shops]....');
-    //   updateDataDashBoard(days, activeBrand, authToken);
-    // }
   }, [shops]);
 
   const handleSaveActiveShop = (shopId) => {
