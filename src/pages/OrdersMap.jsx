@@ -59,8 +59,10 @@ const OrdersMap = () => {
   };
 
   useEffect(() => {
-    activeBrand &&
+    if (activeBrand || activeBrand == 0) {
       dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+    }
+      
   }, [dispatch, authToken, days, activeBrand]);
 
   useEffect(() => {
