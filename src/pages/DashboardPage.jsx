@@ -61,29 +61,31 @@ const DashboardPage = () => {
     is_valid: true,
   };
 
-  const currentShop = shops?.find((item) => item.id == activeShopId);
-
-  const shouldDisplay = currentShop
-    ? currentShop.is_primary_collect
+  const shouldDisplay = activeShop
+    ? activeShop.is_primary_collect
     : oneShop
     ? oneShop.is_primary_collect
     : allShop;
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      dispatch(fetchShops(authToken));
-      const selectedShop = shops.filter(item => item.id === Number(activeBrand))[0];
-      const shouldUpdate = selectedShop?.is_primary_collect !== true
-      if (shouldUpdate) {
+    useEffect(() => {
+      let intervalId = null;
+
+      if (oneShop?.is_primary_collect) {
         updateDataDashBoard(days, activeBrand, authToken);
+        clearInterval(intervalId);
+        
       }
-    }, 30000);
-    
-  
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [shouldDisplay]);
+      if (!oneShop?.is_primary_collect && activeBrand !== 0) {
+        intervalId = setInterval(() => {
+          dispatch(fetchShops(authToken));
+        }, 30000);
+      }
+      return () => {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+      };
+    }, [oneShop, activeBrand]);
 
   useEffect(() => {
     dispatch(fetchShops(authToken));
