@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import OrangeLabelSelect from '../pages/images/OrangeLabelSelect';
 import logoStart from '../pages/images/logoForCardStart.png';
 import logoPro from '../pages/images/logoForCardPro.png';
@@ -41,6 +42,8 @@ const SelectRate = ({ redirect }) => {
           authorization: "JWT " + authToken,
         },
       });
+      console.log('response', response);
+      
       if (response.status === 200) {
         const data = await response.json(); 
         localStorage.setItem("authToken", data.token);
@@ -54,7 +57,12 @@ const SelectRate = ({ redirect }) => {
   };
 
   const pay = async (_user, _period, _trial) => {
-    await refreshUserToken();
+    const refresh_result = await refreshUserToken();
+    console.log('refresh_result', refresh_result);
+    localStorage.setItem("authToken", refresh_result);
+    const decodedUser = jwtDecode(refresh_result)
+    console.log('decodedUser:', decodedUser)
+    const newTrialExpired = !!decodedUser ? decodedUser?.is_test_used : trialExpired
     console.log('user.email', user);
     console.log('selectedPeriod', selectedPeriod)
     console.log('trialExpired', trialExpired)
@@ -74,10 +82,10 @@ const SelectRate = ({ redirect }) => {
 
     if (selectedPeriod === '1month') {
       amountSubscribe = 2990
-      firstAmount = !!trialExpired ? 2990 : 1
+      firstAmount = !!newTrialExpired ? 2990 : 1
       periodSubscribe = 1
       startDateSubscribe = new Date()
-      if (!!trialExpired) {
+      if (!!newTrialExpired) {
         startDateSubscribe.setMonth(startDateSubscribe.getMonth() + periodSubscribe)
         startDateSubscribe.setUTCHours(7, 0, 0, 0)
       } else {
