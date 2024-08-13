@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './styles.css';
 import NavbarMainHome from '../components/NavbarMainHome';
 import LimitedFooter from '../components/LimitedFooter';
@@ -26,6 +26,29 @@ const TariffsPage = () => {
   if (!user) {
     window.location.href = `${URL}/signup`
   }
+
+  useEffect(() => {
+    const refreshUserToken = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        const response = await fetch(`${URL}/api/user/refresh`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "JWT " + authToken,
+          },
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          localStorage.setItem("authToken", data.token);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    refreshUserToken();
+  }, []); 
+
   return (
     <div className='page-white'>
       <div className='container widbody-container container-xlwidth'>
