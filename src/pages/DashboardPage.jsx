@@ -42,7 +42,14 @@ const DashboardPage = () => {
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const storedActiveShop = localStorage.getItem('activeShop');
   let activeShop;
-  if (storedActiveShop) activeShop = JSON.parse(storedActiveShop);
+  if (storedActiveShop && typeof storedActiveShop === 'string') {
+    try {
+      activeShop = JSON.parse(storedActiveShop);
+    } catch (error) {
+      console.error('Error parsing storedActiveShop:', error);
+      activeShop = null;
+    }
+  }
   const activeShopId = activeShop?.id;
   const idShopAsValue =
     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
@@ -71,7 +78,11 @@ const DashboardPage = () => {
       let intervalId = null;
 
       if (oneShop?.is_primary_collect) {
-        updateDataDashBoard(days, activeBrand, authToken);
+        const currentShop = shops?.find((item) => item.id == activeShopId);
+          if(currentShop) {
+          localStorage.setItem('activeShop', JSON.stringify(currentShop));
+       }
+       updateDataDashBoard(days, activeBrand, authToken);
         clearInterval(intervalId);
       }
       if (!oneShop?.is_primary_collect && activeBrand !== 0) {
@@ -102,6 +113,16 @@ const DashboardPage = () => {
       setActiveBrand(id);
     }
   }, [shops]);
+
+  const handleUpdateDashboard = () => {
+    setTimeout(() => {
+      updateDataDashBoardCaller();
+    }, 3000);
+  };
+  const updateDataDashBoardCaller = async () => {
+    activeBrand !== undefined &&
+      updateDataDashBoard(days, activeBrand, authToken);
+  };
 
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
@@ -694,7 +715,7 @@ const DashboardPage = () => {
         <div className='dashboard-content pb-3'>
           <TopNav title={'Сводка продаж'} />
           {shouldDisplay && !dataDashBoard?.costPriceAmount ? (
-            <SelfCostWarning activeBrand={activeBrand} />
+            <SelfCostWarning activeBrand={activeBrand} onUpdateDashboard={handleUpdateDashboard}/>
           ) : null}
 
           {/* {wbData?.initialCostsAndTax === null ||

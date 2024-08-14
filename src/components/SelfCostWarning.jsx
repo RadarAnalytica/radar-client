@@ -7,7 +7,7 @@ import {
 } from '../service/getSaveFile';
 import DragDropFile from './DragAndDropFiles';
 
-const SelfCostWarning = ({ activeBrand }) => {
+const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
   const { user, authToken } = useContext(AuthContext);
   const [file, setFile] = useState();
 
@@ -19,7 +19,18 @@ const SelfCostWarning = ({ activeBrand }) => {
     handleClose();
     setCostPriceShow(true);
   };
-  const handleCostPriceClose = () => setCostPriceShow(false);
+  const handleCostPriceClose = () => {
+    setCostPriceShow(false);
+    onUpdateDashboard();
+    console.log('handleCostPriceClose in SelfCostWarning ....')
+  }
+
+  const handleCostPriceSave = () => {
+    saveFileClickHandler(file, authToken, activeBrand);
+    setFile(null);
+    onUpdateDashboard();
+    setCostPriceShow(false);
+  }
 
   return (
     <div className='container dash-container p-3 pt-0 d-flex gap-3 '>
@@ -106,11 +117,7 @@ const SelfCostWarning = ({ activeBrand }) => {
               </div>
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
                 <button
-                  onClick={() => {
-                    saveFileClickHandler(file, authToken, activeBrand);
-                    setFile(null);
-                    handleCostPriceClose();
-                  }}
+                  onClick={handleCostPriceSave}
                   className='prime-btn'
                   style={{ height: '52px' }}
                 >
