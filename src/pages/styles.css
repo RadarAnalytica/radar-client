@@ -392,9 +392,11 @@ select {
   border-radius: 2px;
   width: 4px;
   background-color: #ffffff;
-  transition: height 2s;
+  transition: height 1.75s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   max-height: 81%;
+  transform-origin: top center;
+  will-change: height;
 }
 /* .vertical-line::before {
   content: '';

@@ -1,62 +1,95 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import '../pages/styles.css';
 import Theses from '../pages/images/ThesesAnalyticsHome';
 import IMG from '../pages/images/imgAnalytics';
 import lightImg from '../pages/images/mainDashboard.png';
 
-const ToggleAnaliticsPanel = () => {
+const ToggleAnalyticsPanel = () => {
   const [isActive, setActive] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isImagesLoaded, setIsImagesLoaded] = useState(false);
 
-  useEffect(() => {
-    const loadImage = (src) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = resolve;
-      });
-    };
+  const preloadImages = useCallback(() => {
+    const images = [
+      ...IMG.imgInAnalytics.map((el) => el.props.src),
+      ...IMG.imgOnAnalytics.map((el) => el.props.src),
+    ];
 
-    const loadImages = async () => {
-      const images = [
-        ...IMG.imgInAnalytics.map((el) => el.props.src),
-        ...IMG.imgOnAnalytics.map((el) => el.props.src),
-      ];
-      await Promise.all(images.map(loadImage));
-      setIsImagesLoaded(true);
-    };
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
 
-    loadImages();
+    setIsImagesLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (!isImagesLoaded) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % Theses.inTheses.length);
-    }, 2000);
+    preloadImages();
+  }, [preloadImages]);
 
-    return () => clearInterval(interval);
+  useEffect(() => {
+    if (!isImagesLoaded) return;
+
+    let animationFrameId;
+    let lastTime = 0;
+    const interval = 2000;
+
+    const animate = (currentTime) => {
+      if (currentTime - lastTime >= interval) {
+        setActiveIndex((prevIndex) => (prevIndex + 1) % Theses.inTheses.length);
+        lastTime = currentTime;
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrameId);
   }, [isImagesLoaded]);
 
-  const toggleClass = (index) => {
-    return index === activeIndex ? 'thesesHome2' : 'thesesHome';
-  };
+  const toggleClass = useCallback(
+    (index) => (index === activeIndex ? 'thesesHome2' : 'thesesHome'),
+    [activeIndex]
+  );
 
-  const handleExternalClick = () => {
+  const handleExternalClick = useCallback(() => {
     setActiveIndex(0);
     setActive(true);
-  };
+  }, []);
 
-  const handleInternalClick = () => {
+  const handleInternalClick = useCallback(() => {
     setActiveIndex(0);
     setActive(false);
-  };
+  }, []);
+
+  const renderTheses = useMemo(() => {
+    const thesesList = isActive ? Theses.inTheses : Theses.onTheses;
+    return thesesList.map((el, index) => (
+      <div key={index} className={toggleClass(index)}>
+        <div>{el.img}</div>
+        <div>{el.txt}</div>
+      </div>
+    ));
+  }, [isActive, toggleClass]);
+
+  const renderImage = useMemo(() => {
+    if (!isImagesLoaded) {
+      return (
+        <img
+          style={{ width: '96%', marginLeft: '2%', marginTop: '1%' }}
+          src={lightImg}
+          alt=""
+        />
+      );
+    }
+    return isActive
+      ? IMG.imgInAnalytics[activeIndex]
+      : IMG.imgOnAnalytics[activeIndex];
+  }, [isActive, isImagesLoaded, activeIndex]);
 
   return (
-    <div className='InOnAnalytics'>
-      <div className='btnAnalytics'>
-        {' '}
+    <div className="InOnAnalytics">
+      <div className="btnAnalytics">
         <button
           className={isActive ? 'prime-btn' : 'secondary-btn'}
           style={{ width: '25%', padding: '25px', border: 'none' }}
@@ -66,55 +99,25 @@ const ToggleAnaliticsPanel = () => {
         </button>
         <button
           className={isActive ? 'secondary-btn' : 'prime-btn'}
-          style={{
-            width: '25%',
-            padding: '25px',
-            border: 'none',
-          }}
+          style={{ width: '25%', padding: '25px', border: 'none' }}
           onClick={handleInternalClick}
         >
           <span style={{ fontSize: '24px' }}>Внешняя аналитика</span>
         </button>
       </div>
 
-      <div className='blockInOnAnalytics '>
+      <div className="blockInOnAnalytics">
         <div
-          className='vertical-line'
+          className="vertical-line"
           style={{ height: `${(activeIndex + 1) * 20}%` }}
         ></div>
         <div style={{ width: '45%', alignItems: 'center', marginLeft: '11px' }}>
-          {isActive
-            ? Theses.inTheses.map((el, index) => (
-                <div key={index} className={toggleClass(index)}>
-                  <div>{el.img}</div>
-                  <div>{el.txt}</div>
-                </div>
-              ))
-            : Theses.onTheses.map((el, index) => (
-                <div key={index} className={toggleClass(index)}>
-                  <div>{el.img}</div>
-                  <div>{el.txt}</div>
-                </div>
-              ))}
+          {renderTheses}
         </div>
-        <div style={{ width: '55%' }}>
-          {isImagesLoaded ? (
-            isActive ? (
-              IMG.imgInAnalytics[activeIndex]
-            ) : (
-              IMG.imgOnAnalytics[activeIndex]
-            )
-          ) : (
-            <img
-              style={{ width: '96%', marginLeft: '2%', marginTop: '1%' }}
-              src={lightImg}
-              alt=''
-            />
-          )}
-        </div>
+        <div style={{ width: '55%' }}>{renderImage}</div>
       </div>
     </div>
   );
 };
 
-export default ToggleAnaliticsPanel;
+export default ToggleAnalyticsPanel;
