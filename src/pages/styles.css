@@ -1147,3 +1147,74 @@ button.accordion-button.collapsed::after {
   gap: 90px;
   margin: 50px 0px 100px;
 }
+.background-cover {
+  width: 100%;
+}
+.image-background {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 50px;
+  margin-right: 20px;
+}
+.image-background img{
+  width: 100%;
+  max-height: 700px;
+  height: 100%;
+  object-fit: cover
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.informer_nosubscription{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 16px;
+  gap: 16px;
+}
+.informer_nosubscription p {
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 47px;
+  color: #F93C65;
+  margin: 0;
+  text-align: center;
+}
+.informer_nosubscription img{
+  height: 84px;
+  width: auto;
+  margin: 24px 0 0 0;
+}
+.informer_text {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  color: rgba(26, 26, 26, 1);
+  margin: 0 32px 0 32px;
+}
+.informer_nosubscription button {
+  background-color: rgba(83, 41, 255, 1);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #FFFFFF;
+  padding: 20px 24px 20px 24px;
+  border: none;
+  margin-bottom: 24px;
+}
+
+
+

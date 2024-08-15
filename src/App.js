@@ -38,10 +38,10 @@ const MainPage = React.lazy(() => import('./pages/MainPage'));
 const AfterPayment = React.lazy(() => import('./pages/AfterPayment'));
 const TariffsPage = React.lazy(() => import('./pages/TariffsPage'));
 const Page404 = React.lazy(() => import('./pages/Page404'));
+const NoSubscriptionPage = React.lazy(() => import('./pages/NoSubscriptionPage'));
 
 function App() {
   const { user } = useContext(AuthContext);
-  console.log('user', user);
 
   if (user) {
 
@@ -257,8 +257,7 @@ function App() {
                   path='/dashboard'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
-                      <DashboardPage />
+                      {!user?.subscription_status ? <NoSubscriptionPage /> : <DashboardPage />}
                     </React.Suspense>
                   }
                 />
@@ -302,8 +301,7 @@ function App() {
                   path='/orders-map'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
-                      <OrdersMap />
+                      {!user?.subscription_status ? <NoSubscriptionPage /> : <OrdersMap />}
                     </React.Suspense>
                   }
                 />

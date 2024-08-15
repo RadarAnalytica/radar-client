@@ -10,7 +10,6 @@ export default AuthContext;
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState();
   const [user, setUser] = useState(null);
-  // console.log(user, 'USER11111111111')
 
   const updateUser = (user) => {
     this.setState((prevState) => ({ user }));
