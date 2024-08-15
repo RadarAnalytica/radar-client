@@ -1,5 +1,6 @@
 import React from 'react';
 import './styles.css';
+import { URL } from '../service/config';
 import Footer from '../components/Footer';
 import toptg from './images/toptgicon.png';
 import demo from '../assets/ext-demo.png';
@@ -207,7 +208,7 @@ const Instructions = () => {
           <div className='sps-share-cta'>
             <div className='d-flex align-items-center justify-content-between mb-2'>
               <Fragment1 />
-              <a href='https://radar-analytica.ru/signin'>
+              <a href={`https://${URL}/signin`}>
                 <svg
                   className='me-3'
                   width='54'
@@ -314,7 +315,7 @@ const Instructions = () => {
                 </div>
                 <div className='col-4 nav-to-profile'>
                   <a
-                    href='https://radar-analytica.ru/signin'
+                    href={`https://${URL}/signin`}
                     style={{ textDecoration: 'none', color: 'black' }}
                   >
                     <div className='d-flex justify-content-end'>

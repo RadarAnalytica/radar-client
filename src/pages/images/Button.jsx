@@ -1,11 +1,12 @@
 import React from 'react';
+import { URL } from '../../service/config';
 import copy from 'clipboard-copy';
 
 const Button = () => {
   return (
     <svg
       onClick={() => {
-        copy('https://radar-analytica.ru');
+        copy(`https://${URL}`);
       }}
       style={{ cursor: 'pointer' }}
       width='275'
