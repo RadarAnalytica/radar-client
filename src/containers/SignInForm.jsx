@@ -37,6 +37,13 @@ const SignInForm = () => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleSubmit(event);
+        }
+    };
+
     useEffect(() => {
         if (email && !isValidEmail(email)) {
             setEmailErrorText('Введите корректный Email')
@@ -97,6 +104,7 @@ const SignInForm = () => {
                     callback={emailHandler}
                     emailErrorText={emailErrorText}
                     subtext={'Обещаем не слать рекламу и звонить только по делу'}
+                    onKeyDown={handleKeyDown}
                 // required={true}
                 />
                 <InputField
@@ -106,6 +114,7 @@ const SignInForm = () => {
                     callback={passHandler}
                     passErrorText={passErrorText}
                     hide={true}
+                    onKeyDown={handleKeyDown}
                 // required={true}
                 />
             </div>
