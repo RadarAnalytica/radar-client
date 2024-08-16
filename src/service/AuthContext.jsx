@@ -11,6 +11,21 @@ export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState();
   const [user, setUser] = useState(null);
 
+  const token = document.cookie.split(';')
+    .find(c => c.trim().startsWith('radar='))
+    ?.split('=')[1];
+
+  // useEffect(() => {
+  //   const token = document.cookie.split(';')
+  //     .find(c => c.trim().startsWith('radar='))
+  //     ?.split('=')[1];
+  //   if (token) {
+  //     setAuthToken(token);
+  //     setUser(jwtDecode(token));
+  //   }
+  // }, []);
+  console.log('token', token);
+
   const updateUser = (user) => {
     this.setState((prevState) => ({ user }));
   };
