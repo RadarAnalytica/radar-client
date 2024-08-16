@@ -1,4 +1,3 @@
-const moment = require('moment');
 import Cookies from "js-cookie";
 import { useState, useCallback, useEffect } from 'react';
 
