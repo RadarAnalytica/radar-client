@@ -37,6 +37,7 @@ const DashboardPage = () => {
   const [brandNames, setBrandNames] = useState();
   const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [primary, setPrimary] = useState();
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
@@ -77,7 +78,7 @@ const DashboardPage = () => {
     useEffect(() => {
       let intervalId = null;
 
-      if (oneShop?.is_primary_collect) {
+      if (oneShop?.is_primary_collect && oneShop?.is_primary_collect === allShop) {
         const currentShop = shops?.find((item) => item.id == activeShopId);
           if(currentShop) {
           localStorage.setItem('activeShop', JSON.stringify(currentShop));
@@ -155,6 +156,7 @@ const DashboardPage = () => {
       console.error(e);
     } finally {
       setLoading(false);
+      setIsInitialLoading(false);
     }
   };
 
@@ -714,7 +716,7 @@ const DashboardPage = () => {
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Сводка продаж'} />
-          {shouldDisplay && !dataDashBoard?.costPriceAmount ? (
+          {!isInitialLoading && !dataDashBoard?.costPriceAmount && activeShopId !== 0 && shouldDisplay  ? (
             <SelfCostWarning activeBrand={activeBrand} onUpdateDashboard={handleUpdateDashboard}/>
           ) : null}
 
