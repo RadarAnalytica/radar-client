@@ -476,7 +476,7 @@ export const areAllFieldsFilled = (obj) => {
   return true;
 };
 
-export default function useCookie(name, defaultValue) {
+export function useCookie(name, defaultValue) {
   const [value, setValue] = useState(() => {
     const cookie = Cookies.get(name);
     if (cookie) return cookie;
