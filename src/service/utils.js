@@ -478,7 +478,7 @@ export const areAllFieldsFilled = (obj) => {
 export function useCookie(name, defaultValue) {
   const [value, setValue] = useState(() => {
     const cookie = Cookies.get(name);
-    if (cookie) return cookie;
+    if (cookie !== undefined) return cookie;
     Cookies.set(name, defaultValue);
     return defaultValue;
   });
@@ -497,14 +497,24 @@ export function useCookie(name, defaultValue) {
   }, [name]);
 
   useEffect(() => {
-    const cookieWatcher = Cookies.watch(name, (newValue) => {
-      setValue(newValue);
-    });
+    const checkCookie = () => {
+      const newValue = Cookies.get(name);
+      if (newValue !== value) {
+        setValue(newValue !== undefined ? newValue : null);
+      }
+    };
+
+    // Check cookie value periodically every 2 seconds
+    const intervalId = setInterval(checkCookie, 2000);
+
+    // Also check when the window regains focus
+    window.addEventListener('focus', checkCookie);
 
     return () => {
-      cookieWatcher.stop();
+      clearInterval(intervalId);
+      window.removeEventListener('focus', checkCookie);
     };
-  }, [name]);
+  }, [name, value]);
 
   return [value, updateCookie, deleteCookie];
 }

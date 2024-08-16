@@ -13,9 +13,16 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [value, update, remove] = useCookie('radar', null);
  
-  const decode = (value) => jwtDecode(value);
+  const decode = (value) => {
+    try {
+      return jwtDecode(value);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  };
   console.log('value', value);
-  console.log('decode', decode);
+  console.log('decode', decode(value));
 
   const updateUser = (user) => {
     this.setState((prevState) => ({ user }));
