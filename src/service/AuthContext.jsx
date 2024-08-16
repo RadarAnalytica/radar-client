@@ -1,7 +1,8 @@
-import { createContext, useState, useEffect, useMemo } from 'react';
+import { createContext, useState, useEffect, useMemo, useCallback  } from 'react';
 import { URL } from './config';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import { useCookie } from '../service/utils';
 
 const AuthContext = createContext();
 
@@ -10,21 +11,11 @@ export default AuthContext;
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState();
   const [user, setUser] = useState(null);
-
-  const token = document.cookie.split(';')
-    .find(c => c.trim().startsWith('radar='))
-    ?.split('=')[1];
-
-  // useEffect(() => {
-  //   const token = document.cookie.split(';')
-  //     .find(c => c.trim().startsWith('radar='))
-  //     ?.split('=')[1];
-  //   if (token) {
-  //     setAuthToken(token);
-  //     setUser(jwtDecode(token));
-  //   }
-  // }, []);
-  console.log('token', token);
+  const [value, update, remove] = useCookie('radar', null);
+ 
+  const decode = (value) => jwtDecode(value);
+  console.log('value', value);
+  console.log('decode', decode);
 
   const updateUser = (user) => {
     this.setState((prevState) => ({ user }));

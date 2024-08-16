@@ -1,4 +1,6 @@
 const moment = require('moment');
+import Cookies from "js-cookie";
+import { useState, useCallback, useEffect } from 'react';
 
 export function filterArrays(obj, days) {
   for (let key in obj) {
@@ -14,10 +16,10 @@ export function filterArrays(obj, days) {
           const date = item.date
             ? new Date(item.date)
             : item.lastChangeDate
-            ? new Date(item.lastChangeDate)
-            : item.sale_dt
-            ? new Date(item.sale_dt)
-            : new Date(item.create_dt);
+              ? new Date(item.lastChangeDate)
+              : item.sale_dt
+                ? new Date(item.sale_dt)
+                : new Date(item.create_dt);
           const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
           return date >= weekAgo;
         });
@@ -33,10 +35,10 @@ export function filterArrays(obj, days) {
           const date = item.date
             ? new Date(item.date)
             : item.lastChangeDate
-            ? new Date(item.lastChangeDate)
-            : item.sale_dt
-            ? new Date(item.sale_dt)
-            : new Date(item.create_dt);
+              ? new Date(item.lastChangeDate)
+              : item.sale_dt
+                ? new Date(item.sale_dt)
+                : new Date(item.create_dt);
           const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
           return date >= weekAgo;
         });
@@ -59,10 +61,10 @@ export function filterArraysNoData(obj, days) {
           const date = item.date
             ? new Date(item.date)
             : item.lastChangeDate
-            ? new Date(item.lastChangeDate)
-            : item.sale_dt
-            ? new Date(item.sale_dt)
-            : new Date(item.create_dt);
+              ? new Date(item.lastChangeDate)
+              : item.sale_dt
+                ? new Date(item.sale_dt)
+                : new Date(item.create_dt);
           const weekAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
           return date >= weekAgo;
         });
@@ -473,3 +475,37 @@ export const areAllFieldsFilled = (obj) => {
   }
   return true;
 };
+
+export default function useCookie(name, defaultValue) {
+  const [value, setValue] = useState(() => {
+    const cookie = Cookies.get(name);
+    if (cookie) return cookie;
+    Cookies.set(name, defaultValue);
+    return defaultValue;
+  });
+
+  const updateCookie = useCallback(
+    (newValue, options) => {
+      Cookies.set(name, newValue, options);
+      setValue(newValue);
+    },
+    [name]
+  );
+
+  const deleteCookie = useCallback(() => {
+    Cookies.remove(name);
+    setValue(null);
+  }, [name]);
+
+  useEffect(() => {
+    const cookieWatcher = Cookies.watch(name, (newValue) => {
+      setValue(newValue);
+    });
+
+    return () => {
+      cookieWatcher.stop();
+    };
+  }, [name]);
+
+  return [value, updateCookie, deleteCookie];
+}
