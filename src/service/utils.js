@@ -477,25 +477,19 @@ export const areAllFieldsFilled = (obj) => {
 };
 export function useCookie(name) {
   const [value, setValue] = useState(() => {
-    const cookieValue = Cookies.get(name);
-    return cookieValue ? decode(cookieValue) : null;
+    return Cookies.get(name) || null;
   });
 
-  function decode(token) {
-    try {
-      return jwtDecode(token);
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      return null;
-    }
-  }
+  const deleteCookie = useCallback(() => {
+    Cookies.remove(name);
+    setValue(null);
+  }, [name]);
 
   useEffect(() => {
     const checkCookie = () => {
-      const cookieValue = Cookies.get(name);
-      const decodedValue = cookieValue ? decode(cookieValue) : null;
-      if (JSON.stringify(decodedValue) !== JSON.stringify(value)) {
-        setValue(decodedValue);
+      const newValue = Cookies.get(name);
+      if (newValue !== value) {
+        setValue(newValue || null);
       }
     };
 
@@ -511,5 +505,5 @@ export function useCookie(name) {
     };
   }, [name, value]);
 
-  return value;
+  return [value, deleteCookie];
 }

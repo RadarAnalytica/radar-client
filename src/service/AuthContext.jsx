@@ -11,9 +11,30 @@ export default AuthContext;
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState();
   const [user, setUser] = useState(null);
-  const decodedValue = useCookie('radar');
+  const [value, deleteCookie] = useCookie('radar');
 
-  console.log('decodedValue', decodedValue);
+const decode = (token) => {
+  try {
+    return jwtDecode(token);
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    deleteCookie('radar');
+    return null;
+  }
+};
+
+console.log('Raw token value:', value);
+if (value) {
+  console.log('Decoded token:', decode(value));
+} else {
+  console.log('No token found');
+}
+
+// To delete the cookie:
+// deleteCookie();
+  // const decodedValue = useCookie('radar');
+
+  // console.log('decodedValue', decodedValue);
 
   const updateUser = (user) => {
     this.setState((prevState) => ({ user }));
@@ -53,8 +74,8 @@ export const AuthProvider = ({ children }) => {
         return;
       }
   
-      setAuthToken(data);
-      setUser(jwtDecode(data?.token));
+      setAuthToken(value);
+      setUser(decode(value));
       localStorage.setItem('authToken', data?.token);
   
       if (data.isOnboarded) {
