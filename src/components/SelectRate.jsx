@@ -24,9 +24,13 @@ const SelectRate = ({ redirect }) => {
   console.log('SelectRate user:', user);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
   const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
+  const [subscriptionDiscount, setSubscriptionDiscount] = useState(user?.is_subscription_discount);
   const navigate = useNavigate();
   if (user?.is_test_used !== trialExpired) {
     user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false)
+  }
+  if (user?.is_subscription_discount !== subscriptionDiscount) {
+    user?.is_subscription_discount ? setSubscriptionDiscount(true) : setSubscriptionDiscount(false)
   }
   
 
@@ -87,7 +91,7 @@ const SelectRate = ({ redirect }) => {
 
     if (selectedPeriod === '1month') {
       amountSubscribe = 2990
-      firstAmount = !!newTrialExpired ? 2990 : 1
+      firstAmount = (!subscriptionDiscount && trialExpired) ? 2990 : 1
       periodSubscribe = 1
       startDateSubscribe = new Date()
       if (!!newTrialExpired) {
@@ -99,13 +103,13 @@ const SelectRate = ({ redirect }) => {
       }
     } else if ((selectedPeriod === '3month')) {
       amountSubscribe = 8073
-      firstAmount = 8073
+      firstAmount = !subscriptionDiscount ? 8073 : 4485
       periodSubscribe = 3
       startDateSubscribe = new Date()
       startDateSubscribe.setMonth(startDateSubscribe.getMonth() + periodSubscribe)
     } else if ((selectedPeriod === '6month')) {
       amountSubscribe = 10764
-      firstAmount = 10764
+      firstAmount = !subscriptionDiscount ? 10764 : 5382
       periodSubscribe = 6
       startDateSubscribe = new Date()
       startDateSubscribe.setMonth(startDateSubscribe.getMonth() + periodSubscribe)
@@ -666,7 +670,6 @@ const SelectRate = ({ redirect }) => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  {' '}
                   <div
                     style={{
                       color: '#0069FF',
@@ -693,10 +696,34 @@ const SelectRate = ({ redirect }) => {
                   </div>
                 </div>
                 <div className='selectPrice'>
-                  {' '}
-                  {selectedPeriod === '1month' && (
+                  {selectedPeriod === '1month' && (                  
                     <>
-                      <span className='priceCardOne'>
+                    {subscriptionDiscount ? (
+                      <>
+                      <span className='priceCardOne'>{!trialExpired ? '1 ₽' : '1 495 ₽'}</span>
+                      <span
+                        style={{
+                          marginLeft: '10px',
+                          textDecoration: 'line-through',
+                        }}
+                      >
+                        2 990 ₽
+                      </span>
+                      <span
+                        style={{
+                          marginLeft: '10px',
+                          color: '#5329FF',
+                          backgroundColor: '#5329FF1A',
+                          fontWeight: '700',
+                        }}
+                      >
+                        {!trialExpired ? '-99%' : '-50%'}
+                      </span>
+                      <div>За месяц</div>
+                    </>
+                    ) : (
+                      <>
+                       <span className='priceCardOne'>
                         {!trialExpired ? '1 ₽' : '2 990 ₽'}
                       </span>
                       {!trialExpired && (
@@ -726,19 +753,23 @@ const SelectRate = ({ redirect }) => {
                           ? 'Тестовый доступ на 3 дня'
                           : 'За месяц'}
                       </div>
+                      </>
+                    )}
                     </>
                   )}
                   {selectedPeriod === '3month' && (
                     <>
                       <span style={{ display: 'flex', alignItems: 'center' }}>
-                        <span className='priceCardOne'>8 073 ₽</span>
+                        <span className='priceCardOne'>
+                        {!subscriptionDiscount ? '8 073 ₽' : '4 485 ₽'}
+                        </span>
                         <span
                           style={{
                             marginLeft: '10px',
                             textDecoration: 'line-through',
                           }}
                         >
-                          8 970 ₽
+                          {!subscriptionDiscount ? '8 970 ₽' : '8 073 ₽'}
                         </span>
                         <span
                           style={{
@@ -748,7 +779,7 @@ const SelectRate = ({ redirect }) => {
                             fontWeight: '700',
                           }}
                         >
-                          -10%
+                         {!subscriptionDiscount ? '-10%' : '-50%'}
                         </span>
                       </span>
                       <div>За 3 месяцев</div>
@@ -757,14 +788,16 @@ const SelectRate = ({ redirect }) => {
                   {selectedPeriod === '6month' && (
                     <>
                       <span style={{ display: 'flex', alignItems: 'center' }}>
-                        <span className='priceCardOne'>10 764 ₽</span>
+                        <span className='priceCardOne'>
+                        {!subscriptionDiscount ? '10 764 ₽' : '5 382 ₽'}
+                        </span>
                         <span
                           style={{
                             marginLeft: '10px',
                             textDecoration: 'line-through',
                           }}
                         >
-                          17 940 ₽
+                         {!subscriptionDiscount ? '17 940 ₽' : '10 764 ₽'}
                         </span>
                         <span
                           style={{
@@ -774,7 +807,7 @@ const SelectRate = ({ redirect }) => {
                             fontWeight: '700',
                           }}
                         >
-                          -40%
+                         {!subscriptionDiscount ? '-40%' : '-50%'}
                         </span>
                       </span>
                       <div>За 6 месяцев</div>
@@ -866,7 +899,7 @@ const SelectRate = ({ redirect }) => {
                 id='btnDop'
               >
                 {selectedPeriod === '1month' ? <Steps.Circle /> : <span></span>}
-                1 месяц
+                1 месяц <span>{!subscriptionDiscount ? '' : '-50%'}</span>
               </button>
               <button
                 onClick={() => handlePeriodChange('3month')}
@@ -876,7 +909,7 @@ const SelectRate = ({ redirect }) => {
                 id='btnDop'
               >
                 {selectedPeriod === '3month' ? <Steps.Circle /> : <span></span>}
-                3 месяца <span>-10%</span>
+                3 месяца <span>{!subscriptionDiscount ? '-10%' : '-50%'}</span>
               </button>
               <button
                 onClick={() => handlePeriodChange('6month')}
@@ -886,7 +919,7 @@ const SelectRate = ({ redirect }) => {
                 id='btnDop'
               >
                 {selectedPeriod === '6month' ? <Steps.Circle /> : <span></span>}
-                6 месяцев <span>до -60%</span>
+                6 месяцев <span>{!subscriptionDiscount ? 'до -60%' : '-50%'}</span>
               </button>
             </div>
           </div>
