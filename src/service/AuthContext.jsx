@@ -76,7 +76,7 @@ if (value) {
   
       setAuthToken(value);
       setUser(decode(value));
-      localStorage.setItem('authToken', data?.token);
+      // localStorage.setItem('authToken', data?.token);
   
       if (data.isOnboarded) {
         navigate('/dashboard');
@@ -88,20 +88,20 @@ if (value) {
       setShow(true);
     }
   };
-const target = localStorage.getItem('authToken');
-  useEffect(() => {    if (target && target !== "undefined") {
-      setAuthToken(target);
-      try {
-        const decodedUser = jwtDecode(target);
-        setUser(decodedUser);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-        // Handle the error appropriately, e.g., clear the invalid token
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('activeShop');
-      }
-    }
-  }, [target]);
+// const target = localStorage.getItem('authToken');
+//   useEffect(() => {    if (target && target !== "undefined") {
+//       setAuthToken(target);
+//       try {
+//         const decodedUser = jwtDecode(target);
+//         setUser(decodedUser);
+//       } catch (error) {
+//         console.error("Error decoding token:", error);
+//         // Handle the error appropriately, e.g., clear the invalid token
+//         localStorage.removeItem('authToken');
+//         localStorage.removeItem('activeShop');
+//       }
+//     }
+//   }, [target]);
 
   const register = async (object) => {
     const res = await fetch(`${URL}/api/user/signup`, {
@@ -127,9 +127,10 @@ const target = localStorage.getItem('authToken');
   const logout = () => {
     setAuthToken(null);
     setUser(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('dashboard');
-    localStorage.removeItem('activeShop');
+    deleteCookie();
+    // localStorage.removeItem('authToken');
+    // localStorage.removeItem('dashboard');
+    // localStorage.removeItem('activeShop');
   };
 
   // Offcanvas functions

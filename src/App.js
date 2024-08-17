@@ -42,6 +42,7 @@ const NoSubscriptionPage = React.lazy(() => import('./pages/NoSubscriptionPage')
 
 function App() {
   const { user } = useContext(AuthContext);
+  console.log('user', user);
 
   if (user) {
 
