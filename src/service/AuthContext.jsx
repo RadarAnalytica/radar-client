@@ -11,18 +11,9 @@ export default AuthContext;
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState();
   const [user, setUser] = useState(null);
-  const [value, update, remove] = useCookie('radar', null);
- 
-  const decode = (value) => {
-    try {
-      return jwtDecode(value);
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      return null;
-    }
-  };
-  console.log('value', value);
-  console.log('decode', decode(value));
+  const decodedValue = useCookie('radar');
+
+  console.log('decodedValue', decodedValue);
 
   const updateUser = (user) => {
     this.setState((prevState) => ({ user }));

@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { jwtDecode } from 'jwt-decode';
 import { useState, useCallback, useEffect } from 'react';
 
 export function filterArrays(obj, days) {
@@ -474,38 +475,32 @@ export const areAllFieldsFilled = (obj) => {
   }
   return true;
 };
-
-export function useCookie(name, defaultValue) {
+export function useCookie(name) {
   const [value, setValue] = useState(() => {
-    const cookie = Cookies.get(name);
-    if (cookie !== undefined) return cookie;
-    Cookies.set(name, defaultValue);
-    return defaultValue;
+    const cookieValue = Cookies.get(name);
+    return cookieValue ? decode(cookieValue) : null;
   });
 
-  const updateCookie = useCallback(
-    (newValue, options) => {
-      Cookies.set(name, newValue, options);
-      setValue(newValue);
-    },
-    [name]
-  );
-
-  const deleteCookie = useCallback(() => {
-    Cookies.remove(name);
-    setValue(null);
-  }, [name]);
+  function decode(token) {
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
 
   useEffect(() => {
     const checkCookie = () => {
-      const newValue = Cookies.get(name);
-      if (newValue !== value) {
-        setValue(newValue !== undefined ? newValue : null);
+      const cookieValue = Cookies.get(name);
+      const decodedValue = cookieValue ? decode(cookieValue) : null;
+      if (JSON.stringify(decodedValue) !== JSON.stringify(value)) {
+        setValue(decodedValue);
       }
     };
 
-    // Check cookie value periodically every 2 seconds
-    const intervalId = setInterval(checkCookie, 2000);
+    // Check cookie value periodically
+    const intervalId = setInterval(checkCookie, 1000);
 
     // Also check when the window regains focus
     window.addEventListener('focus', checkCookie);
@@ -516,5 +511,5 @@ export function useCookie(name, defaultValue) {
     };
   }, [name, value]);
 
-  return [value, updateCookie, deleteCookie];
+  return value;
 }
