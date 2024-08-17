@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import OrangeLabelSelect from '../pages/images/OrangeLabelSelect';
@@ -21,9 +21,14 @@ import { URL } from '../service/config';
 
 const SelectRate = ({ redirect }) => {
   const { user, authToken } = useContext(AuthContext);
+  console.log('SelectRate user:', user);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
   const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
   const navigate = useNavigate();
+  if (user?.is_test_used !== trialExpired) {
+    user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false)
+  }
+  
 
   const handlePeriodChange = (period) => {
     setSelectedPeriod(period);
@@ -34,7 +39,7 @@ const SelectRate = ({ redirect }) => {
 
   const refreshUserToken = async () => {
     try {
-      const authToken = localStorage.getItem("authToken");
+      // const authToken = localStorage.getItem("authToken");
       const response = await fetch(`${URL}/api/user/refresh`, {
         method: "GET",
         headers: {
@@ -46,8 +51,8 @@ const SelectRate = ({ redirect }) => {
       
       if (response.status === 200) {
         const data = await response.json(); 
-        localStorage.setItem("authToken", data.token);
-        user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false)
+        // localStorage.setItem("authToken", data.token);
+        // user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false)
         return data.token;
       }
     } catch (error) {
@@ -59,10 +64,10 @@ const SelectRate = ({ redirect }) => {
   const pay = async (_user, _period, _trial) => {
     const refresh_result = await refreshUserToken();
     console.log('refresh_result', refresh_result);
-    localStorage.setItem("authToken", refresh_result);
-    const decodedUser = jwtDecode(refresh_result)
-    console.log('decodedUser:', decodedUser)
-    const newTrialExpired = !!decodedUser ? decodedUser?.is_test_used : trialExpired
+    // localStorage.setItem("authToken", refresh_result);
+    // const decodedUser = jwtDecode(refresh_result)
+    // console.log('decodedUser:', decodedUser)
+    const newTrialExpired = !!user ? user?.is_test_used : trialExpired
     console.log('user.email', user);
     console.log('selectedPeriod', selectedPeriod)
     console.log('trialExpired', trialExpired)
