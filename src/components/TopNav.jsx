@@ -28,7 +28,7 @@ const TopNav = ({ title }) => {
 
   const logoutBtnClick = async () => {
     console.log('LOGOUT');
-    
+    document.cookie = `radar=; expires=${new Date(0)}`;
     const res = await fetch(`${URL}/api/user/logout`, {
       method: 'GET',
       headers: {
@@ -36,6 +36,7 @@ const TopNav = ({ title }) => {
       }
       
     });
+    logout();
     console.log('logout res:', await res.json());
   }
 

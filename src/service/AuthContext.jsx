@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
 
   const [value, deleteCookie] = useCookie('radar');
   const [authToken, setAuthToken] = useState();
+   
   let prevToken = authToken;
   console.log('authToken', authToken);
   const [user, setUser] = useState(decode(value));
@@ -138,15 +139,17 @@ if (value && value !== prevToken) {
 
   const logout = async () => {
 
-    setAuthToken(null);
-    setUser(null);
+   
     const res = await fetch(`${URL}/api/user/logout`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
       }
       
-    });
+    }); 
+    setAuthToken(null);
+    setUser(null);
+    
     console.log('logout res:', await res.json());
     
     // deleteCookie();
