@@ -26,19 +26,19 @@ const TopNav = ({ title }) => {
     setTimeoutId(newTimeoutId);
   };
 
-  const logoutBtnClick = async () => {
-    console.log('LOGOUT');
-    document.cookie = `radar=; expires=${new Date(0)}`;
-    const res = await fetch(`${URL}/api/user/logout`, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      }
+  // const logoutBtnClick = async () => {
+  //   console.log('LOGOUT');
+  //   document.cookie = `radar=; expires=${new Date(0)}`;
+  //   const res = await fetch(`${URL}/api/user/logout`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //     }
       
-    });
-    logout();
-    console.log('logout res:', await res.json());
-  }
+  //   });
+  //   logout();
+  //   console.log('logout res:', await res.json());
+  // }
 
   // useEffect(() => {
   //     // Получаем элемент иконки по ID
@@ -166,7 +166,6 @@ const TopNav = ({ title }) => {
                   width: '240px',
                 }}
                 onClick={() => {
-                  logoutBtnClick();
                   logout();
                 }}
               >

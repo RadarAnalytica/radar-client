@@ -140,17 +140,19 @@ if (value && value !== prevToken) {
   const logout = async () => {
 
    
-    const res = await fetch(`${URL}/api/user/logout`, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-      }
+    // const res = await fetch(`${URL}/api/user/logout`, {
+    //   method: 'GET',
+    //   headers: {
+    //     'content-type': 'application/json',
+    //   }
       
-    }); 
+    // }); 
+    document.cookie = 'radar=;domain=test-server-pro.ru'
     setAuthToken(null);
     setUser(null);
+    navigate('/')
     
-    console.log('logout res:', await res.json());
+    // console.log('logout res:', await res.json());
     
     // deleteCookie();
     // localStorage.removeItem('authToken');
