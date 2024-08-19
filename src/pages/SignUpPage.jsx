@@ -11,7 +11,12 @@ const SignUpPage = () => {
     useEffect(() => {
         setTimeout(() => {
             if (user) {
-                navigate('/stub')
+                if (user.subscription_status) {
+                    navigate('onboarding')
+                } else {
+                    navigate('/tariffs')
+                }
+                
             }
         }, 200);
     }, [user])

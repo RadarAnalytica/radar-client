@@ -68,13 +68,24 @@ const SelectRate = ({ redirect }) => {
   const pay = async (_user, _period, _trial) => {
     const refresh_result = await refreshUserToken();
     console.log('refresh_result', refresh_result);
+    
     // localStorage.setItem("authToken", refresh_result);
-    // const decodedUser = jwtDecode(refresh_result)
-    // console.log('decodedUser:', decodedUser)
-    const newTrialExpired = !!user ? user?.is_test_used : trialExpired
+    const decodedUser = jwtDecode(refresh_result)
+    console.log('decodedUser:', decodedUser)
+    let newTrialExpired
+    if (decodedUser.is_test_used) {
+      setTrialExpired(true)
+      newTrialExpired = true
+    } else {
+      setTrialExpired(false)
+      newTrialExpired = false
+    }
+    
     console.log('user.email', user);
     console.log('selectedPeriod', selectedPeriod)
     console.log('trialExpired', trialExpired)
+    console.log('newTrialExpired', newTrialExpired)
+
     let periodSubscribe = ''
     let amountSubscribe = 0
     let firstAmount = 0
@@ -91,7 +102,7 @@ const SelectRate = ({ redirect }) => {
 
     if (selectedPeriod === '1month') {
       amountSubscribe = 2990
-      firstAmount = (!subscriptionDiscount && trialExpired) ? 2990 : 1
+      firstAmount = newTrialExpired ? 2990 : 1
       periodSubscribe = 1
       startDateSubscribe = new Date()
       if (!!newTrialExpired) {
