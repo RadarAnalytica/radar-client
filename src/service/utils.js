@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import { jwtDecode } from 'jwt-decode';
 import { useState, useCallback, useEffect } from 'react';
+import { URL } from "./config";
 
 export function filterArrays(obj, days) {
   for (let key in obj) {
@@ -481,7 +482,10 @@ export function useCookie(name) {
   });
 
   const deleteCookie = useCallback(() => {
-    Cookies.remove(name);
+    // document.cookie = 'radar=; Max-Age=-1;';
+    // Cookies.remove(name, { path: '/' });
+    // const url = new URL(URL);
+    // Cookies.remove(name, { path: '/', domain: `.${url.hostname}` });
     setValue(null);
   }, [name]);
 

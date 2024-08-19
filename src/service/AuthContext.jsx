@@ -132,10 +132,17 @@ if (value && value !== prevToken) {
   //     user && user.id ? ServiceFunctions.getOneUser(user.id, authToken.token).then(data => setUserImage(data.image)) : setUserImage()
   // }, [])
 
-  const logout = () => {
+  const logout = async () => {
     setAuthToken(null);
     setUser(null);
-    deleteCookie();
+    const res = await fetch(`${URL}/api/user/logout`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      }
+      
+    });
+    // deleteCookie();
     // localStorage.removeItem('authToken');
     // localStorage.removeItem('dashboard');
     // localStorage.removeItem('activeShop');
