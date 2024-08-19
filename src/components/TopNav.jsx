@@ -26,6 +26,19 @@ const TopNav = ({ title }) => {
     setTimeoutId(newTimeoutId);
   };
 
+  const logoutBtnClick = async () => {
+    console.log('LOGOUT');
+    
+    const res = await fetch(`${URL}/api/user/logout`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      }
+      
+    });
+    console.log('logout res:', await res.json());
+  }
+
   // useEffect(() => {
   //     // Получаем элемент иконки по ID
   //     const icon = document.getElementById('settings-icon');
@@ -144,7 +157,7 @@ const TopNav = ({ title }) => {
                 }}
               />
               <a
-                href='/signin'
+                href='/'
                 className='link'
                 style={{
                   paddingTop: '4px',
@@ -152,6 +165,7 @@ const TopNav = ({ title }) => {
                   width: '240px',
                 }}
                 onClick={() => {
+                  logoutBtnClick();
                   logout();
                 }}
               >

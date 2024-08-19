@@ -11,7 +11,11 @@ export default AuthContext;
 export const AuthProvider = ({ children }) => { 
   const decode = (token) => {
   try {
-    return jwtDecode(token);
+    if (!!token) {
+      return jwtDecode(token);
+    }
+    return
+    
   } catch (error) {
     console.error('Error decoding token:', error);
     // deleteCookie('radar');
@@ -133,6 +137,7 @@ if (value && value !== prevToken) {
   // }, [])
 
   const logout = async () => {
+
     setAuthToken(null);
     setUser(null);
     const res = await fetch(`${URL}/api/user/logout`, {
@@ -142,6 +147,8 @@ if (value && value !== prevToken) {
       }
       
     });
+    console.log('logout res:', await res.json());
+    
     // deleteCookie();
     // localStorage.removeItem('authToken');
     // localStorage.removeItem('dashboard');
