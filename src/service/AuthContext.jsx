@@ -89,13 +89,6 @@ if (value && value !== prevToken) {
   
       setAuthToken(value);
       setUser(decode(value));
-      // localStorage.setItem('authToken', data?.token);
-  
-      if (data.isOnboarded) {
-        navigate('/dashboard');
-      } else {
-        navigate('/onboarding');
-      }
     } catch (error) {
       setError('Произошла ошибка при входе');
       setShow(true);
@@ -136,28 +129,11 @@ if (value && value !== prevToken) {
   // useEffect(() => {
   //     user && user.id ? ServiceFunctions.getOneUser(user.id, authToken.token).then(data => setUserImage(data.image)) : setUserImage()
   // }, [])
-
   const logout = async () => {
-
-   
-    // const res = await fetch(`${URL}/api/user/logout`, {
-    //   method: 'GET',
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   }
-      
-    // }); 
-    document.cookie = 'radar=;domain=test-server-pro.ru'
+    document.cookie = `radar=;domain=${URL.split('://')[1]}`;
     setAuthToken(null);
     setUser(null);
-    navigate('/')
-    
-    // console.log('logout res:', await res.json());
-    
-    // deleteCookie();
-    // localStorage.removeItem('authToken');
-    // localStorage.removeItem('dashboard');
-    // localStorage.removeItem('activeShop');
+    navigate('/');
   };
 
   // Offcanvas functions
