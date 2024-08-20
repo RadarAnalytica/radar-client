@@ -55,7 +55,7 @@ function App() {
               path='/'
               element={
                 user?.is_onboarded ? (
-                  !user.subscription_status ? (
+                  user?.subscription_status === 'expired' ? (
                     <React.Suspense fallback={<LoaderPage />}>
                       <TariffsPage />
                     </React.Suspense>
@@ -258,7 +258,7 @@ function App() {
                   path='/dashboard'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {!user?.subscription_status ? <NoSubscriptionPage /> : <DashboardPage />}
+                      {user?.subscription_status === 'expired' ? <NoSubscriptionPage /> : <DashboardPage />}
                     </React.Suspense>
                   }
                 />
@@ -293,8 +293,7 @@ function App() {
                   path='/calculate'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
-                      <Calculate />
+                      {user?.subscription_status === 'expired' ? <NoSubscriptionPage /> : <Calculate />}
                     </React.Suspense>
                   }
                 />
@@ -302,7 +301,7 @@ function App() {
                   path='/orders-map'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {!user?.subscription_status ? <NoSubscriptionPage /> : <OrdersMap />}
+                      {user?.subscription_status === 'expired' ? <NoSubscriptionPage /> : <OrdersMap />}
                     </React.Suspense>
                   }
                 />
@@ -310,8 +309,7 @@ function App() {
                   path='/linked-shops'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
-                      <LinkedShops />
+                      {user?.subscription_status === 'expired' ? <NoSubscriptionPage /> : <LinkedShops />}
                     </React.Suspense>
                   }
                 />

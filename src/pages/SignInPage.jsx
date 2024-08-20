@@ -11,7 +11,7 @@ const SignInPage = () => {
     const handleNavigation = () => {
       if (!user) return;
 
-      if (!user.subscription_status) {
+      if (user?.subscription_status === 'expired') {
         navigate('/tariffs');
       } else if (user.is_onboarded) {
         navigate('/linked-shops');

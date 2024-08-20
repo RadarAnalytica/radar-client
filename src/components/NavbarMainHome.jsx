@@ -135,9 +135,9 @@ const NavbarMainHome = ({ onlyLogo }) => {
         {!onlyLogo && (
           <div className='widheader-login'>
             {user ? (
-              user.subscription_status ? (
+              user?.subscription_status !== 'expired' ? (
                 buttonSignIn('/dashboard')
-              ) : !user.subscription_status ? (
+              ) : user?.subscription_status === 'expired' ? (
                 buttonSignIn('/tariffs')
               ) : null
             ) : (

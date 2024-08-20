@@ -17,7 +17,7 @@ const TariffsPage = () => {
       navigate('/signup')
     } else {
       if (user?.is_onboarded) {
-        !user.subscription_status ? navigate('/tariffs') : navigate('/dashboard');
+        user?.subscription_status === 'expired' ? navigate('/tariffs') : navigate('/dashboard');
       } else {
         navigate('/onboarding');
       }

@@ -11,7 +11,7 @@ const SignUpPage = () => {
     useEffect(() => {
         setTimeout(() => {
             if (user) {
-                if (user.subscription_status) {
+                if (user?.subscription_status !== 'expired') {
                     navigate('onboarding')
                 } else {
                     navigate('/tariffs')
