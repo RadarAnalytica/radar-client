@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState, useRef } from 'react';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import AuthContext from '../service/AuthContext';
@@ -29,8 +29,8 @@ import { useSelector } from 'react-redux';
 const DashboardPage = () => {
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
+  const authTokenRef = useRef(authToken);
   const [wbData, setWbData] = useState();
-
   const [days, setDays] = useState(30);
   const [content, setContent] = useState();
   const [state, setState] = useState();
@@ -139,9 +139,10 @@ const DashboardPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    activeBrand !== undefined &&
+    if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       updateDataDashBoard(days, activeBrand, authToken);
-  }, [days, activeBrand, authToken]);
+    }   
+  }, [days, activeBrand]);
 
   const updateDataDashBoard = async (days, activeBrand, authToken) => {
     setLoading(true);
