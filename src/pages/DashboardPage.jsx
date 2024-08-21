@@ -76,6 +76,7 @@ const DashboardPage = () => {
     : allShop;
 
     useEffect(() => {
+      console.log('useEffect [oneShop, activeBrand]');
       let intervalId = null;
 
       if (oneShop?.is_primary_collect && oneShop?.is_primary_collect === allShop) {
@@ -100,6 +101,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     dispatch(fetchShops(authToken));
+    updateDataDashBoard(days, activeBrand, authToken);
   }, [dispatch]);
 
   useEffect(() => {

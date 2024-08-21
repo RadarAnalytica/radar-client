@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import OrdersMapFilter from '../components/OrdersMapFilter';
@@ -21,6 +21,7 @@ const OrdersMap = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, authToken, logout } = useContext(AuthContext);
+  const authTokenRef = useRef(authToken);
   const { geoData, loading, error } = useAppSelector(
     (state) => state.geoDataSlice
   );
@@ -59,15 +60,26 @@ const OrdersMap = () => {
   };
 
   useEffect(() => {
-    if (activeBrand || activeBrand == 0) {
+    if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       dispatch(fetchGeographyData({ authToken, days, activeBrand }));
-    }
-      
-  }, [dispatch, authToken, days, activeBrand]);
+    } 
+  }, [dispatch, days, activeBrand]);
 
   useEffect(() => {
     dispatch(fetchShops(authToken));
-  }, [dispatch, authToken]);
+    dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+  }, [days, activeBrand]);
+  
+  useEffect(() => {
+    if (authToken !== authTokenRef.current) {
+      dispatch(fetchShops(authToken));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchShops(authToken));
+    dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+  }, []);
 
   useEffect(() => {
     if (shops.length > 0) {
