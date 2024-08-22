@@ -5,6 +5,8 @@ import ArrowDown from "../assets/ArrowDown.svg";
 
 const TableAbcData = ({ dataTable, setDataTable }) => {
   const [asc, setAsc] = useState(true);
+  const [byRevenue, setByRevenue] = useState(true);
+  const [byProfit, setByProfit] = useState(false);
   const sortData = (key) => {
     const sortedData = [...dataTable].sort((a, b) => {
       if (typeof a[key] === "number" && typeof b[key] === "number") {
@@ -31,8 +33,29 @@ const TableAbcData = ({ dataTable, setDataTable }) => {
     sortData(columnName);
   };
 
+  const handleByRevenue = (e) => {
+    setByRevenue(true)
+    setByProfit(false)
+  }
+
+  const handleByProfit = (e) => {
+    setByRevenue(false)
+    setByProfit(true)
+  }
+
   return (
-    <div class=' dash-container scrollable-table table-content '>
+    <div className='abcAnalysis dash-container scrollable-table table-content scrollable-table-request' style={{maxHeight:"700px"}}>
+      <div className="filter container dash-container pt-0 d-flex">
+        <div className="">Выбрать вид: </div>
+        
+        <div className={`my-div ${byRevenue ? 'active' : ''}`} onClick={handleByRevenue}>
+        По выручке
+        </div>
+
+        <div className={`my-div ${byProfit ? 'active' : ''}`} onClick={handleByProfit}>
+        По прибыли
+        </div>
+      </div>
       <table className='table'>
         <tr style={{ fontSize: "24px", fontWeight: "700" }}></tr>
         <tr className='table-header'>
@@ -76,7 +99,7 @@ const TableAbcData = ({ dataTable, setDataTable }) => {
             <img onClick={() => sortData("amount")} src={sortArrow} alt='' />
           </th>
           <th>
-            Дата выручки
+            Доля выручки
             <img
               onClick={() => sortData("amount_percent")}
               src={sortArrow}
@@ -96,18 +119,26 @@ const TableAbcData = ({ dataTable, setDataTable }) => {
             />
           </th>
         </tr>
+        <tbody>
 
         {dataTable.map((item, i) => (
           <tr>
-            <td style={{ color: "#5329FF" }}>{item.title}</td>
+            <td style={{ color: "#5329FF" }}>
+            <img
+                src={item.photo} 
+                alt="User"
+                style={{ marginRight: "8px", width: "32px", height: "40px" }}
+              />{item.title}</td>
             <td>{item.wb_id}</td>
             <td>{item.supplier_id}</td>
             <td>{item.amount}</td>
             <td>{item.amount_percent}</td>
             <td>{item.category}</td>
             <td>{item.category_total}</td>
+           
           </tr>
         ))}
+        </tbody>
       </table>
     </div>
   );

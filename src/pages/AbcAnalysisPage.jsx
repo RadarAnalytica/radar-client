@@ -20,7 +20,7 @@ const AbcAnalysisPage = () => {
   const [changeBrand, setChangeBrand] = useState();
   const [primary, setPrimary] = useState();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-  // const [dataTable, setDataTable] = useState();
+ 
 
   const storedActiveShop = localStorage.getItem("activeShop");
   let activeShop;
@@ -50,11 +50,11 @@ const AbcAnalysisPage = () => {
     is_valid: true,
   };
 
-  // const shouldDisplay = activeShop
-  //   ? activeShop.is_primary_collect
-  //   : oneShop
-  //   ? oneShop.is_primary_collect
-  //   : allShop;
+//   const shouldDisplay = activeShop
+// ? activeShop.is_primary_collect
+// : oneShop
+//   ? oneShop.is_primary_collect
+//     : allShop;
 
   useEffect(() => {
     let intervalId = null;
