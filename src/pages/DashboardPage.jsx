@@ -25,6 +25,7 @@ import { fetchShops } from '../redux/shops/shopsActions';
 import downloadIcon from '../pages/images/Download.svg';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import NoSubscriptionPage from './NoSubscriptionPage';
 
 const DashboardPage = () => {
   const { user, authToken, logout } = useContext(AuthContext);
@@ -712,6 +713,10 @@ const DashboardPage = () => {
   let oneDayOrderCount = dataDashBoard?.orderCount;
   let oneDaySaleAmount = dataDashBoard?.saleAmount;
   let oneDaySaleCount = dataDashBoard?.saleCount;
+
+  if (user?.subscription_status === 'expired') {
+    return <NoSubscriptionPage title={'Сводка продаж'} />;
+  };
 
   return (
     isVisible && (

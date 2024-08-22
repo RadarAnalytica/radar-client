@@ -23,6 +23,7 @@ import { editShop } from '../redux/editShop/editShopActions';
 import { addShop } from '../redux/addShop/addShopActions';
 import { deleteShop } from '../redux/deleteShop/deleteShopActions';
 import { areAllFieldsFilled } from '../service/utils';
+import NoSubscriptionPage from './NoSubscriptionPage';
 const warningIcon = require('../assets/warning.png');
 
 const LinkedShops = () => {
@@ -191,6 +192,10 @@ const LinkedShops = () => {
       checkIdQueryParam();
     }
   }, [location.search]);
+
+  if (user?.subscription_status === 'expired') {
+    return <NoSubscriptionPage title={'Подключенные магазины'}/>
+  };
 
   return (
     <div className='linked-shops-page'>

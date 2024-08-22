@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchShops } from '../redux/shops/shopsActions';
 import { fetchGeographyData } from '../redux/geoData/geoDataActions';
 import { useLocation, useNavigate } from "react-router-dom";
+import NoSubscriptionPage from './NoSubscriptionPage';
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -636,6 +637,10 @@ const OrdersMap = () => {
     const y = event.clientY;
 
     handleTooltipPosition(x, y);
+  };
+
+  if (user?.subscription_status === 'expired') {
+    return <NoSubscriptionPage title={'География заказов и продаж'}/>
   };
 
   return (

@@ -6,13 +6,13 @@ import TopNav from '../components/TopNav';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
 
-const NoSubscriptionPage = () => {
+const NoSubscriptionPage = ({title}) => {
   const navigate = useNavigate();
   return (
     <div className="sub-page">
       <SideNav />
       <div className="background-cover">
-        <TopNav title={'Сводка продаж'} />
+        <TopNav title={title} />
         <div className="image-background">
           <img src={background} alt="background" />
           <div className="overlay">

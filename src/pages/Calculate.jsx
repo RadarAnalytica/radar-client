@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import SideNav from '../components/SideNav'
 import TopNav from '../components/TopNav'
 import CalculateForm from '../containers/calculate/CalculateForm'
 import CalculateResults from '../containers/calculate/CalculateResults'
+import NoSubscriptionPage from './NoSubscriptionPage'
+import AuthContext from '../service/AuthContext';
 
 const Calculate = () => {
-
+    const { user } = useContext(AuthContext);
     const [sellPrice, setSellPrice] = useState(0)
     const [targetIncome, setTargetIncome] = useState(0)
     const [mpComission, setMpComission] = useState(0)
@@ -63,7 +65,9 @@ const Calculate = () => {
         console.log(result); // You can display or utilize the result in any way you want
     };
 
-
+    if (user?.subscription_status === 'expired') {
+        return <NoSubscriptionPage title={'Калькулятор unit-экономики товара'} />
+      };
 
     return (
         <div className='calculate-page'>

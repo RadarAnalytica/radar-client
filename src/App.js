@@ -148,7 +148,6 @@ function App() {
               path='/calculate'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
                   <Calculate />
                 </React.Suspense>
               }
@@ -258,7 +257,7 @@ function App() {
                   path='/dashboard'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === 'expired' ? <NoSubscriptionPage /> : <DashboardPage />}
+                      <DashboardPage />
                     </React.Suspense>
                   }
                 />
@@ -293,7 +292,7 @@ function App() {
                   path='/calculate'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === 'expired' ? <NoSubscriptionPage /> : <Calculate />}
+                      <Calculate />
                     </React.Suspense>
                   }
                 />
@@ -301,7 +300,7 @@ function App() {
                   path='/orders-map'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === 'expired' ? <NoSubscriptionPage /> : <OrdersMap />}
+                      <OrdersMap />
                     </React.Suspense>
                   }
                 />
@@ -309,7 +308,7 @@ function App() {
                   path='/linked-shops'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === 'expired' ? <NoSubscriptionPage /> : <LinkedShops />}
+                      <LinkedShops />
                     </React.Suspense>
                   }
                 />
