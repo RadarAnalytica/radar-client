@@ -36,7 +36,7 @@ export const ServiceFunctions = {
       headers: {
         "content-type": "application/json",
         authorization: "JWT " + authToken,
-      }
+      },
     });
     const data = await res.json();
     return data;
@@ -185,10 +185,25 @@ export const ServiceFunctions = {
       method: "GET",
       headers: {
         "content-type": "application/json",
-        "authorization": "JWT " + token
+        authorization: "JWT " + token,
       },
-    })
-    const data = await res.json()
-    return data
-  }
+    });
+    const data = await res.json();
+    return data;
+  },
+
+  getAbcData: async (token, day, idShop) => {
+    const res = await fetch(
+      `${URL}/api/abc_data/?period=${day}&shop=${idShop}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
 };
