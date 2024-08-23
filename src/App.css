@@ -1799,3 +1799,110 @@ select {
 .button-cancel:hover {
   cursor: pointer;
 }
+
+.error-notifications {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px solid rgba(232, 232, 232, 1);
+  padding-bottom: 12px;
+}
+
+.error-notification {
+  position: relative;
+}
+
+.error-notification svg {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.error-number {
+  font-size: 12px;
+  color: white;
+  background-color: red;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -7px;
+  right: -4px;
+  cursor: pointer;
+}
+
+.error-popup {
+  position: absolute;
+  top: 110%;
+  left: -450px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 24px 32px 24px 32px;
+  width: 500px;
+  border-radius: 8px;
+  z-index: 12;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.error-popup::-webkit-scrollbar {
+  width: 0;
+}
+
+.error-popup-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.message-popup-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.message-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.message-icon-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.message-date-close {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.message-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgba(26, 26, 26, 1);
+}
+
+.message-date {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgba(140, 140, 140, 1);
+}
+
+.message-text {
+ font-weight: 500;
+ font-size: 16px;
+ line-height: 20px;
+ color: rgba(26, 26, 26, 1);
+ margin-bottom: 12px;
+}

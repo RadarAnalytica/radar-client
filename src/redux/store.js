@@ -4,6 +4,7 @@ import dashboardSlice from './dashboard/dashboardSlice';
 import shopsSlice from './shops/shopsSlice';
 import geoDataSlice from './geoData/geoDataSlice';
 import loadingSlice from './loading/loadingSlice';
+import messagesSlice from './messages/messagesSlice';
 
 const storeOptions = {
   reducer: {
@@ -11,6 +12,7 @@ const storeOptions = {
     shopsSlice,
     geoDataSlice,
     loadingSlice,
+    messagesSlice,
   },
 };
 
