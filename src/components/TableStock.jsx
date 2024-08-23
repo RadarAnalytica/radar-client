@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import sortArrow from '../assets/sortarrow.svg';
 import ArrowUp from '../assets/ArrowUp.svg';
 import ArrowDown from '../assets/ArrowDown.svg';
+import sortByIcon from '../pages/images/sortByIcon.svg';
 
 const TableStock = ({ dataTable, setDataTable }) => {
+  console.log(dataTable, 'dataTable');
   const [asc, setAsc] = useState(true);
   const sortData = (key) => {
     const sortedData = [...dataTable].sort((a, b) => {
@@ -34,43 +36,43 @@ const TableStock = ({ dataTable, setDataTable }) => {
   return (
     <div class=' dash-container scrollable-table table-content '>
       <table className='table'>
-        <tr style={{ fontSize: '24px', fontWeight: '700' }}>
-          <th colspan='7'>О товаре</th>
-          <th style={{ width: '30vw' }} colspan='4'>
+        <tr style={{ fontSize: '24px', fontWeight: '700', lineHeight: '30px', padding: '6.5px 0 8.5px 0' }}>
+          <th colspan='7' className='about-product-title'>О товаре</th>
+          <th colspan='4' className='sells-title'>
             Продажи
           </th>
-          <th style={{ width: '23vw' }} colspan='3'>
+          <th className='returns-title' colspan='3'>
             Возвраты
           </th>
-          <th style={{ width: '22vw' }} colspan='2'>
-            Себестоимость{' '}
+          <th className='cost-title' colspan='2'>
+            Себестоимость
           </th>
-          <th style={{ width: '18vw' }} colspan='2'>
-            Логистика{' '}
+          <th className='logistics-title' colspan='2'>
+            Логистика
           </th>
-          <th style={{ width: '40vw' }} colspan='4'>
-            Прочие расходы{' '}
+          <th className='other-title' colspan='4'>
+            Прочие расходы
           </th>
-          <th style={{ width: '65vw' }} colspan='7'>
-            Прибыль{' '}
+          <th className='profit-title' colspan='7'>
+            Прибыль
           </th>
-          <th style={{ width: '18vw' }} colspan='2'>
-            АВС анализ{' '}
+          <th className='abc-title' colspan='2'>
+            АВС анализ
           </th>
-          <th style={{ width: '22vw' }} colspan='3'>
-            Цена{' '}
+          <th className='price-title' colspan='3'>
+            Цена
           </th>
-          <th style={{ width: '13vw' }} colspan='2'>
-            Заказы{' '}
+          <th className='orders-title' colspan='2'>
+            Заказы
           </th>
-          <th style={{ width: '40vw' }} colspan='4'>
-            Выкуп{' '}
+          <th className='purchase-title' colspan='4'>
+            Выкуп
           </th>
-          <th style={{ width: '20vw' }} colspan='2'>
-            Скорость{' '}
+          <th className='speed-title' colspan='2'>
+            Скорость
           </th>
-          <th style={{ width: '10vw' }} colspan='2'>
-            Остаток{' '}
+          <th className='left-title' colspan='2'>
+            Остаток
           </th>
         </tr>
         <tr className='table-header'>
@@ -78,7 +80,9 @@ const TableStock = ({ dataTable, setDataTable }) => {
             style={{
               borderTopLeftRadius: '8px',
               borderBottomLeftRadius: '8px',
+              width: '200px',
             }}
+            className='table-header-item-product'
           >
             Товар
             <div
@@ -89,73 +93,78 @@ const TableStock = ({ dataTable, setDataTable }) => {
               }}
               style={{ background: 'transparent' }}
             >
-              <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
+              <img src={sortByIcon} alt='sort by' />
+              {/* <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
               <img
                 className='icon-sort icon-sort-down'
                 src={ArrowDown}
                 alt=''
-              />
+              /> */}
             </div>
           </th>
           <th>
             Бренд
-            <img onClick={() => sortData('brandName')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('brandName')} src={sortByIcon} alt='brand' style={{ background: 'transparent' }}/>
           </th>
           <th>
             Артикул
             <img
               onClick={() => sortData('vendorСode')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='article'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             Баркод
-            <img onClick={() => sortData('barCode')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('barCode')} src={sortByIcon} alt='barcode' style={{ background: 'transparent' }}/>
           </th>
           <th>
             SKU
-            <img onClick={() => sortData('sku')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('sku')} src={sortByIcon} alt='sku' style={{ background: 'transparent' }}/>
           </th>
           <th>
             Размер
-            <img onClick={() => sortData('size')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('size')} src={sortByIcon} alt='size' style={{ background: 'transparent' }}/>
           </th>
           <th>
             Категория
-            <img onClick={() => sortData('category')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('category')} src={sortByIcon} alt='category' style={{ background: 'transparent' }}/>
           </th>
           <th style={{}}>
             Сумма
-            <img onClick={() => sortData('saleSum')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('saleSum')} src={sortByIcon} alt='sum' style={{ background: 'transparent' }}/>
           </th>
           <th>
             Кол-во
-            <img onClick={() => sortData('quantity')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('quantity')} src={sortByIcon} alt='quantity' style={{ background: 'transparent' }}/>
           </th>
           <th>
             За вычетом возвратов
             <img
               onClick={() => sortData('lessReturns')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='minus-returns'
+              style={{ background: 'transparent' }}
             />
           </th>
-          <th>Себестоимость проданных товаров</th>
+          <th>Себестоимость проданных<br/> товаров</th>
           <th>
             Сумма
             <img
               onClick={() => sortData('returnsSum')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='returned-sum'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             Кол-во
             <img
               onClick={() => sortData('returnsQuantity')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='quantity'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>Себестоимость возвращенных товаров</th>
@@ -163,54 +172,59 @@ const TableStock = ({ dataTable, setDataTable }) => {
             За еденицу
             <img
               onClick={() => sortData('costPriceOne')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='for a single unit'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>Себестоимость товарного запаса(сегодня)</th>
           <th>
             К клиенту
-            <img onClick={() => sortData('toClient')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('toClient')} src={sortByIcon} alt='goods for today' style={{ background: 'transparent' }}/>
           </th>
           <th>
             От клиента
             <img
               onClick={() => sortData('fromClient')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='from a client'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             Комиссия WB
             <img
               onClick={() => sortData('commissionWB')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='commission'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             Штрафы
-            <img onClick={() => sortData('fines')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('fines')} src={sortByIcon} alt='fines' style={{ background: 'transparent' }}/>
           </th>
           <th>
             Доплаты
             <img
               onClick={() => sortData('additionalpayment')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='additional payments'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             Расходы услуг проверенного
             <img
               onClick={() => sortData('serviceExpenses')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='service expenses'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             К выплоте
-            <img onClick={() => sortData('toPayoff')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('toPayoff')} src={sortByIcon} alt='to pay off' style={{ background: 'transparent' }}/>
           </th>
           <th>Маржинальная прибыль</th>
           <th>Средняя прибыль</th>
@@ -219,75 +233,80 @@ const TableStock = ({ dataTable, setDataTable }) => {
           <th>Годовая рентабельность товарных запасов</th>
           <th>Упущеная выручка</th>
           <th>
-            По выручке
-            <img onClick={() => sortData('byRevenue')} src={sortArrow} alt='' />
+            По <br/> выручке
+            <img onClick={() => sortData('byRevenue')} src={sortByIcon} alt='be revenue' style={{ background: 'transparent' }}/>
           </th>
           <th>
-            По прибыли
-            <img onClick={() => sortData('byProfit')} src={sortArrow} alt='' />
+            По<br/>  прибыли
+            <img onClick={() => sortData('byProfit')} src={sortByIcon} alt='by profit' style={{ background: 'transparent' }}/>
           </th>
           <th>
             Базовая
-            <img onClick={() => sortData('basic')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('basic')} src={sortByIcon} alt='basic' style={{ background: 'transparent' }}/>
           </th>
           <th>
             Макс. скидка
             <img
               onClick={() => sortData('maxDiscount')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='max discount'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             Мин. цена со скидкой
             <img
               onClick={() => sortData('minDiscountPrice')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='minimum price with discount'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             Кол-во
             <img
               onClick={() => sortData('orderQuantity')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='quantity'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             Сумма
-            <img onClick={() => sortData('orderSum')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('orderSum')} src={sortByIcon} alt='sum' style={{ background: 'transparent' }}/>
           </th>
           <th>
             Выкуплено
-            <img onClick={() => sortData('purchased')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('purchased')} src={sortByIcon} alt='purchased' style={{ background: 'transparent' }}/>
           </th>
           <th>
             Не выкуплено
             <img
               onClick={() => sortData('notPurchased')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='not purchased'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
-            Процент выкупа
+            Процент<br /> выкупа
             <img
               onClick={() => sortData('purchasedPrecent')}
-              src={sortArrow}
-              alt=''
+              src={sortByIcon}
+              alt='purchased precent'
+              style={{ background: 'transparent' }}
             />
           </th>
           <th>
             Завершены
-            <img onClick={() => sortData('completed')} src={sortArrow} alt='' />
+            <img onClick={() => sortData('completed')} src={sortByIcon} alt='closed' style={{ background: 'transparent' }}/>
           </th>
           <th>Заказов, шт/день</th>
           <th>Продаж, р/день</th>
           <th>Остаток</th>
         </tr>
 
-        {dataTable.map((item, i) => (
+        {Array.isArray(dataTable) &&dataTable?.map((item, i) => (
           <tr>
             <td style={{ color: '#5329FF' }}>{item.productName}</td>
             <td>{item.brandName}</td>

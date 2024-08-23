@@ -126,7 +126,8 @@
 }
 
 .filter-item {
-  min-width: 14vw !important;
+  width: 100%;
+  min-width: 240px;
   position: relative;
 }
 
@@ -1508,6 +1509,11 @@ select {
   padding: 0 16px;
 }
 
+.stock-search-input {
+  width: 100%;
+  min-width: 470px;
+}
+
 .search-input::placeholder {
   width: 250px;
   height: 25px;
@@ -1521,7 +1527,19 @@ select {
 .table-header {
   height: 76px;
   background-color: #f7f6fe;
-  color: grey;
+  color: rgba(247, 246, 254, 1);
+}
+.table-header th {
+  color: rgba(140, 140, 140, 1);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.table-header th:nth-child(1) {
+  width: 200px;
+  height: 300px;
+  grid-column: span 7;
 }
 
 .scrollable-table {
@@ -1565,13 +1583,13 @@ select {
 }
 
 .table th:first-child {
-  width: 80vw;
+  width: 1300px;
 }
 
 /* Устанавливаем ширину остальных th в соответствии с содержимым */
-.table th:not(:first-child) {
-  width: 60vw;
-}
+/* .table th:not(:first-child) {
+  width: 200px;
+} */
 
 /* Добавляем стиль для таблицы, чтобы обеспечить корректное отображение */
 .table {
@@ -1582,6 +1600,10 @@ select {
 .table td {
   height: 50px;
   border-bottom: 1px solid #f1f1f1;
+  color: rgba(26, 26, 26, 1);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 .table-content {
@@ -1592,7 +1614,7 @@ select {
 }
 
 .table {
-  margin: 20px;
+  margin: 17px;
 }
 .table-glit {
   width: 100%;
@@ -1640,6 +1662,78 @@ select {
 
 .table-glit-request th:not(:first-child) {
   width: 3vw;
+}
+
+.about-product-title {
+  padding-left: 20px;
+  width: 1300px;
+  padding-bottom: 8px;
+}
+
+.table-header-item-product {
+  width: 200px !important;
+  margin-left: 15px;
+  height: 36px !important;
+}
+
+.sells-title {
+  width: 645px;
+  padding-bottom: 8px;
+}
+
+.returns-title {
+  width: 465px;
+  padding-bottom: 8px;
+}
+
+.cost-title {
+  width: 345px;
+  padding-bottom: 8px;
+}
+
+.logistics-title {
+  width: 340px;
+  padding-bottom: 8px;
+}
+
+.other-title {
+  width: 700px;
+  padding-bottom: 8px;
+}
+
+.profit-title {
+  width: 1260px;
+  padding-bottom: 8px;
+}
+
+.abc-title {
+  width: 280px;
+  padding-bottom: 8px;
+}
+
+.price-title {
+  width: 480px;
+  padding-bottom: 8px;
+}
+
+.orders-title {
+  width: 295px;
+  padding-bottom: 8px;
+}
+
+.purchase-title {
+  width: 650px;
+  padding-bottom: 8px;
+}
+
+.speed-title {
+  width: 298px;
+  padding-bottom: 8px;
+}
+
+.left-title {
+  width: 281px;
+  padding-bottom: 8px;
 }
 
 .product-cont {
@@ -1698,6 +1792,7 @@ select {
   display: inline-block;
   cursor: pointer;
   background: transparent;
+  padding: 0 0 0 5px !important;
 }
 .sort-icon {
   transition: transform 0.3s ease;

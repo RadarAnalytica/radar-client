@@ -15,8 +15,12 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchShops } from '../redux/shops/shopsActions';
 import DragDropFile from '../components/DragAndDropFiles';
 import Modal from 'react-bootstrap/Modal';
+import {fetchStockAnalysisData} from '../redux/stockAnalysis/stockAnalysisDataActions';
 
 const StockAnalysis = () => {
+ 
+
+
   const data = [
     {
       productName: 'Шампунь',
@@ -157,16 +161,48 @@ const StockAnalysis = () => {
       dataWB: 6,
     },
   ];
+  const stockAnalysisData = useAppSelector(
+    (state) => state.stockAnalysisDataSlice.stockAnalysisData
+  );
+  console.log('stockAnalysisData', stockAnalysisData);
+  const dispatch = useAppDispatch();
+  const shops = useAppSelector((state) => state.shopsSlice.shops);
+  const allShop = shops?.some((item) => item?.is_primary_collect === true);
+  // const [dataFromServer, setDataFromServer] = useState([]);
+  // console.log('dataFromServer', dataFromServer);
+  const storedActiveShop = localStorage.getItem('activeShop');
+  let activeShop;
+  if (storedActiveShop && typeof storedActiveShop === 'string') {
+    try {
+      activeShop = JSON.parse(storedActiveShop);
+    } catch (error) {
+      console.error('Error parsing storedActiveShop:', error);
+      activeShop = null;
+    }
+  }
+  const activeShopId = activeShop?.id;
+  const idShopAsValue =
+    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
   const { user, authToken } = useContext(AuthContext);
   const [file, setFile] = useState();
 
-  const dispatch = useAppDispatch();
-  const shop = useAppSelector((state) => state.shopsSlice.shops);
-
-  const [activeBrand, setActiveBrand] = useState('0');
-  const [dataTable, setDataTable] = useState(data);
+  const [activeBrand, setActiveBrand] = useState(idShopAsValue);
+  console.log('activeBrand', activeBrand);
+  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
+  const [dataTable, setDataTable] = useState(stockAnalysisData);
+  console.log('dataTable in StockAnalysis ...', dataTable);
   const [costPriceShow, setCostPriceShow] = useState(false);
+  const [days, setDays] = useState(30);
+  console.log('days', days);
   const handleCostPriceClose = () => setCostPriceShow(false);
+
+  const plugForAllStores = {
+    id: 0,
+    brand_name: 'Все',
+    is_active: true,
+    is_primary_collect: allShop,
+    is_valid: true,
+  };
 
   const handleCostPriceShow = () => {
     setCostPriceShow(true);
@@ -175,8 +211,57 @@ const StockAnalysis = () => {
   useEffect(() => {
     dispatch(fetchShops(authToken));
   }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+    setDataTable(stockAnalysisData);
+    // const fetchData = async () => {
+    //   // const token = useAppSelector((state) => state.auth.token);
 
-  console.log(shop, 'shop');
+    //   const response = await fetch(`${URL}/api/prod_analytic/`, {
+    //     method: 'GET',
+    //     headers: {
+    //       'content-type': 'application/json',
+    //       authorization: "JWT " + authToken,
+    //   },
+    //   });
+
+    //   const data = await response.json();
+    //   setDataFromServer(data);
+    // };
+
+  //  fetchData();
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+  }, [days, activeBrand]);
+
+  useEffect(() => {
+    if (shops.length > 0) {
+      let id;
+      if (activeShopId == undefined) {
+        id = shops?.[0].id;
+        localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
+      } else {
+        id = activeShopId;
+      }
+      setActiveBrand(id);
+    }
+  }, [shops]);
+
+  
+  const handleSaveActiveShop = (shopId) => {
+    const currentShop = shops?.find((item) => item.id == shopId);
+    if (currentShop) {
+      localStorage.setItem('activeShop', JSON.stringify(currentShop));
+    }
+    if (shopId === '0') {
+      localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
+    }
+    setActiveBrand(shopId);
+  };
+
+  console.log(shops, 'shops');
 
   return (
     <>
@@ -185,13 +270,18 @@ const StockAnalysis = () => {
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
           <div className=' pt-0 d-flex gap-3'>
-            <StockAnalysisFilter shop={shop} setActiveBrand={setActiveBrand} />
+            <StockAnalysisFilter 
+              shops={shops} 
+              setActiveBrand={handleSaveActiveShop} 
+              setDays={setDays}
+              activeShopId={activeShopId}
+            />
           </div>
           <div className='container dash-container search'>
             <input
               type='text'
               placeholder='Поиск по SKU или артикулу'
-              className='container dash-container search-input'
+              className='container dash-container stock-search-input'
             />
             <div>
               <img
@@ -222,7 +312,7 @@ const StockAnalysis = () => {
               </div>
             </div>
           </div>
-          <TableStock dataTable={dataTable} setDataTable={setDataTable} />
+          <TableStock dataTable={stockAnalysisData} setDataTable={setDataTable} />
         </div>
       </div>
       <Modal
