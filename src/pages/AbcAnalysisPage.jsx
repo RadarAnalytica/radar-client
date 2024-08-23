@@ -9,6 +9,7 @@ import { fetchShops } from "../redux/shops/shopsActions";
 import { ServiceFunctions } from "../service/serviceFunctions";
 import { abcAnalysis } from "../service/utils";
 import TableAbcData from "../components/TableAbcData";
+import { act } from "react";
 
 const AbcAnalysisPage = () => {
   const [days, setDays] = useState(30);
@@ -19,8 +20,8 @@ const AbcAnalysisPage = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [changeBrand, setChangeBrand] = useState();
   const [primary, setPrimary] = useState();
+  const [viewType, setViewType] = useState("revenue");
   const shops = useAppSelector((state) => state.shopsSlice.shops);
- 
 
   const storedActiveShop = localStorage.getItem("activeShop");
   let activeShop;
@@ -50,15 +51,18 @@ const AbcAnalysisPage = () => {
     is_valid: true,
   };
 
-//   const shouldDisplay = activeShop
-// ? activeShop.is_primary_collect
-// : oneShop
-//   ? oneShop.is_primary_collect
-//     : allShop;
+  //   const shouldDisplay = activeShop
+  // ? activeShop.is_primary_collect
+  // : oneShop
+  //   ? oneShop.is_primary_collect
+  //     : allShop;
 
   useEffect(() => {
     let intervalId = null;
-
+    if (activeBrand == 0) {
+      updateDataAbcAnalysis(days, activeBrand, authToken);
+      clearInterval(intervalId);
+    }
     if (
       oneShop?.is_primary_collect &&
       oneShop?.is_primary_collect === allShop
@@ -98,6 +102,12 @@ const AbcAnalysisPage = () => {
       setActiveBrand(id);
     }
   }, [shops]);
+
+  useEffect(() => {
+    if (viewType !== undefined) {
+      updateDataAbcAnalysis(days, activeBrand, authToken);
+    }
+  }, [viewType]);
 
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
@@ -167,6 +177,8 @@ const AbcAnalysisPage = () => {
           <TableAbcData
             dataTable={dataAbcAnalysis}
             setDataTable={setDataAbcAnalysis}
+            setViewType={setViewType}
+            viewType={viewType}
           />
         </div>
       </div>

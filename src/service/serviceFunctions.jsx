@@ -154,27 +154,28 @@ export const ServiceFunctions = {
   // },
 
   getDashBoard: async (token, day, idShop) => {
-    const res = await fetch(`${URL}/api/dashboard/?period=${day}&shop=${idShop}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        "authorization": "JWT " + token
-
-      },
-    });
+    const res = await fetch(
+      `${URL}/api/dashboard/?period=${day}&shop=${idShop}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+      }
+    );
 
     const data = await res.json();
 
     return data;
   },
 
-
   getAllShops: async (token) => {
     const res = await fetch(`${URL}/api/shop/all`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
-        "authorization": "JWT " + token
+        authorization: "JWT " + token,
       },
     });
     const data = await res.json();

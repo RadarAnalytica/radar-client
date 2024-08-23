@@ -37,31 +37,6 @@ const DashboardFilter = ({
     .reverse()
     .join("-");
 
-  // const handleDownload = async () => {
-  //   fetch(
-  //     `${URL}/api/dashboard/download?period=${periodValue}&shop=${activeShopId}`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         authorization: "JWT " + authToken,
-  //       },
-  //     }
-  //   )
-  //     .then((response) => {
-  //       return response.blob();
-  //     })
-  //     .then((blob) => {
-  //       const url = window.URL.createObjectURL(new Blob([blob]));
-  //       const link = document.createElement("a");
-  //       link.href = url;
-  //       link.setAttribute("download", `Сводка_продаж.xlsx`);
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       link.parentNode.removeChild(link);
-  //     })
-  //     .catch((e) => console.error(e));
-  // };
-
   return (
     <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
@@ -194,7 +169,7 @@ const DashboardFilter = ({
       </div>
       {(currentShop?.is_primary_collect || allShop) && (
         <div className='download-button'>
-          <img src={downloadIcon} /> 
+          <img src={downloadIcon} />
           Скачать Excel
         </div>
       )}
