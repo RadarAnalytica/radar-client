@@ -14,6 +14,7 @@ import { act } from "react";
 const AbcAnalysisPage = () => {
   const [days, setDays] = useState(30);
   const { authToken } = useContext(AuthContext);
+  const [wbData, setWbData] = useState();
   const dispatch = useAppDispatch();
   const authTokenRef = useRef(authToken);
   const [dataAbcAnalysis, setDataAbcAnalysis] = useState([]);
@@ -104,10 +105,10 @@ const AbcAnalysisPage = () => {
   }, [shops]);
 
   useEffect(() => {
-    if (viewType !== undefined) {
+    if (viewType !== undefined || days !== undefined) {
       updateDataAbcAnalysis(days, activeBrand, authToken);
     }
-  }, [viewType]);
+  }, [viewType, days]);
 
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
@@ -155,6 +156,41 @@ const AbcAnalysisPage = () => {
       amount: el?.amount,
     };
   });
+
+  const [reportDaily, setReportDaily] = useState();
+  const [reportWeekly, setReportWeekly] = useState();
+  const [reportTwoWeeks, setReportTwoWeeks] = useState();
+  const [reportMonthly, setReportMonthly] = useState();
+  const [reportThreeMonths, setReportThreeMonths] = useState();
+
+  useEffect(() => {
+    if (wbData) {
+      setReportDaily(wbData.reportDaily?.data?.data?.groups[0]?.statistics);
+      setReportWeekly(wbData.reportWeekly?.data?.data?.groups[0]?.statistics);
+      setReportTwoWeeks(
+        wbData.reportTwoWeeks?.data?.data?.groups[0]?.statistics
+      );
+      setReportMonthly(wbData.reportMonthly?.data?.data?.groups[0]?.statistics);
+      setReportThreeMonths(
+        wbData.reportThreeMonths?.data?.data?.groups[0]?.statistics
+      );
+    }
+  }, [wbData]);
+
+  const [curOrders, setCurOrders] = useState();
+  useEffect(() => {
+    if (days === 1) {
+      setCurOrders(reportDaily);
+    } else if (days === 7) {
+      setCurOrders(reportWeekly);
+    } else if (days === 14) {
+      setCurOrders(reportTwoWeeks);
+    } else if (days === 30) {
+      setCurOrders(reportMonthly);
+    } else if (days === 90) {
+      setCurOrders(reportThreeMonths);
+    }
+  }, [days, wbData]);
 
   const [dataTable, setDataTable] = useState(totalAbcData);
   return (

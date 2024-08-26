@@ -271,7 +271,7 @@ function App() {
                 />
 
                 <Route
-                  path='/abcAnalysis'
+                  path='/abc-data'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
                       {user?.subscription_status === "expired" ? (
