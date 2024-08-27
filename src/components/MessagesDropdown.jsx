@@ -56,7 +56,7 @@ export const MessagesDropdown = () => {
                 <span className='message-date-close'>
                   <span className='message-date'>
                     {(() => {
-                      const date = new Date(msg.created_at);
+                      const date = new Date(msg.created_at + 'Z');
                       const now = new Date();
                       const diff = (now.getTime() - date.getTime()) / 1000;
                       if (diff < 60) {
