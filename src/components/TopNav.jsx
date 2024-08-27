@@ -1,18 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import AuthContext from '../service/AuthContext';
-import noticon from '../assets/notification.png';
-import question from '../assets/question.png';
-import settings from '../assets/settings.png';
 import { useNavigate } from 'react-router-dom';
 import { MdOutlineSettings } from 'react-icons/md';
-import { RxHamburgerMenu } from 'react-icons/rx';
+import { fetchMessages } from '../redux/messages/messagesSlice';
+import { useAppDispatch } from '../redux/hooks';
+import { useSelector } from 'react-redux';
+import { MessagesDropdown } from './MessagesDropdown';
+import '../App.css';
 
 const TopNav = ({ title }) => {
   const navigate = useNavigate();
-  const { user, logout, setShowMobile } = useContext(AuthContext);
+  const dispatch = useAppDispatch();
+  const componentRef = useRef(null);
+  const { user, logout, authToken } = useContext(AuthContext);
 
   const [menuShown, setMenuShown] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+
+  const messages = useSelector((state) => state.messagesSlice.messages);
 
   const handleMouseEnter = () => {
     clearTimeout(timeoutId);
@@ -25,46 +31,40 @@ const TopNav = ({ title }) => {
     }, 1500);
     setTimeoutId(newTimeoutId);
   };
+  useEffect(() => {
+    // Initial fetch
+    dispatch(fetchMessages(authToken));
+  
+    // Set up interval to fetch messages every minute
+    const intervalId = setInterval(() => {
+      dispatch(fetchMessages(authToken));
+    }, 60000); // 60000 milliseconds = 1 minute
+  
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [dispatch, authToken]);
 
-  // const logoutBtnClick = async () => {
-  //   console.log('LOGOUT');
-  //   document.cookie = `radar=; expires=${new Date(0)}`;
-  //   const res = await fetch(`${URL}/api/user/logout`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //     }
-      
-  //   });
-  //   logout();
-  //   console.log('logout res:', await res.json());
-  // }
 
-  // useEffect(() => {
-  //     // Получаем элемент иконки по ID
-  //     const icon = document.getElementById('settings-icon');
+  const handleErrorClick = (event) => {
+    event.stopPropagation();
+    setShowErrorPopup(!showErrorPopup);
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (componentRef.current && !componentRef.current.contains(event.target)) {
+        setShowErrorPopup(false);
+      }
+    };
 
-  //     // Функция, которая будет вызываться при клике вне блока
-  //     const handleOutsideClick = (e) => {
-  //         // Проверяем, кликнули ли мы вне блока
-  //         if (icon && !icon.contains(e.target)) {
-  //             // Скрываем блок
-  //             setMenuShown(false)
-  //         }
-  //     };
+    // Attach the event listener
+    document.addEventListener('click', handleClickOutside);
 
-  //     // Добавляем слушатель события на наведение на иконку
-  //     // icon.addEventListener('mouseenter', setMenuShown(true));
+    // Clean up the event listener
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
-  //     // Добавляем слушатель события на клик на странице
-  //     document.addEventListener('click', handleOutsideClick);
-
-  //     // Очистка при размонтировании компонента
-  //     return () => {
-  //         // icon.removeEventListener('mouseenter', setMenuShown(true));
-  //         document.removeEventListener('click', handleOutsideClick);
-  //     };
-  // }, []);
 
   return (
     <div className='top-nav'>
@@ -84,31 +84,43 @@ const TopNav = ({ title }) => {
             </p>
           )}
         </div>
-        <div className='col-2 d-flex justify-content-around top-menu top-wrapper'>
-          <svg
-            width='24'
-            height='24'
-            viewBox='0 0 24 24'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <g clipPath='url(#clip0_592_1517)'>
-              <path
-                d='M22 19.8372H2V17.7442H3V10.451C3 5.23105 7.03 1 12 1C16.97 1 21 5.23105 21 10.451V17.7442H22V19.8372ZM5 17.7442H19V10.451C19 6.38744 15.866 3.09302 12 3.09302C8.134 3.09302 5 6.38744 5 10.451V17.7442ZM9.5 20.8837H14.5C14.5 21.5776 14.2366 22.2431 13.7678 22.7337C13.2989 23.2244 12.663 23.5 12 23.5C11.337 23.5 10.7011 23.2244 10.2322 22.7337C9.76339 22.2431 9.5 21.5776 9.5 20.8837Z'
-                fill='#09121F'
-              />
-            </g>
-            <defs>
-              <clipPath id='clip0_592_1517'>
-                <rect width='24' height='24' fill='white' />
-              </clipPath>
-            </defs>
-          </svg>
+        <span className='col-2 d-flex justify-content-around top-menu top-wrapper'>
+          <span className='error-notification' ref={componentRef}>
+            <span onClick={(event) => handleErrorClick(event)}>
+              <svg
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <g clipPath='url(#clip0_592_1517)'>
+                  <path
+                    d='M22 19.8372H2V17.7442H3V10.451C3 5.23105 7.03 1 12 1C16.97 1 21 5.23105 21 10.451V17.7442H22V19.8372ZM5 17.7442H19V10.451C19 6.38744 15.866 3.09302 12 3.09302C8.134 3.09302 5 6.38744 5 10.451V17.7442ZM9.5 20.8837H14.5C14.5 21.5776 14.2366 22.2431 13.7678 22.7337C13.2989 23.2244 12.663 23.5 12 23.5C11.337 23.5 10.7011 23.2244 10.2322 22.7337C9.76339 22.2431 9.5 21.5776 9.5 20.8837Z'
+                    fill='#09121F'
+                  />
+                </g>
+                <defs>
+                  <clipPath id='clip0_592_1517'>
+                    <rect width='24' height='24' fill='white' />
+                  </clipPath>
+                </defs>
+              </svg>
+              <span className='error-number'>{messages?.length}</span>
+            </span>
+            {showErrorPopup && (
+              <span className='error-popup'>
+                <MessagesDropdown messages={messages} />
+              </span>
+            )}
+          </span>
           <MdOutlineSettings
             id='settings-icon'
             onClick={() => setMenuShown(true)}
             style={{ maxWidth: '3vw', cursor: 'pointer', fontSize: '28px' }}
           />
+          </span>
+
           {menuShown ? (
             <div
               onMouseEnter={() => handleMouseEnter()}
@@ -133,10 +145,7 @@ const TopNav = ({ title }) => {
                 >
                   Подключенные магазины
                 </p>
-                <p
-                className='m-0 mb-1'
-                onClick={() => navigate('/subscription')}
-                >
+                <p className='m-0 mb-1'onClick={() => navigate('/subscription')}>
                   Моя подписка
                 </p>
                 <p
@@ -173,7 +182,6 @@ const TopNav = ({ title }) => {
               </a>
             </div>
           ) : null}
-        </div>
         {/* <div className="hamburger col-2 d-flex justify-content-around">
                     <RxHamburgerMenu
                         style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px', color: 'black' }}
