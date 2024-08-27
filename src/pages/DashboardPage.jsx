@@ -128,6 +128,32 @@ const DashboardPage = () => {
       updateDataDashBoard(days, activeBrand, authToken);
   };
 
+  useEffect(() => {
+    const calculateNextEvenHourPlus30 = () => {
+      const now = new Date();
+      let targetTime = new Date(now);
+      targetTime.setMinutes(30, 0, 0);
+      
+      if (targetTime.getHours() % 2 !== 0 || now > targetTime) {
+        targetTime.setHours(targetTime.getHours() + (targetTime.getHours() % 2 === 0 ? 1 : 2));
+      }
+      
+      return targetTime;
+    };
+  
+    const targetTime = calculateNextEvenHourPlus30();
+    const timeToTarget = targetTime.getTime() - Date.now();
+  
+    const intervalId = setTimeout(() => {
+      dispatch(fetchShops(authToken));
+      updateDataDashBoard(days, activeBrand, authToken);
+    }, timeToTarget);
+  
+    return () => {
+      clearTimeout(intervalId);
+    };
+  }, [dispatch, activeBrand, days, authToken]);
+
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
     if (currentShop) {
