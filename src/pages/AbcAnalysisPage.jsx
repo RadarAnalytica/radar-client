@@ -21,7 +21,7 @@ const AbcAnalysisPage = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [changeBrand, setChangeBrand] = useState();
   const [primary, setPrimary] = useState();
-  const [viewType, setViewType] = useState("revenue");
+  const [viewType, setViewType] = useState("proceeds");
   const shops = useAppSelector((state) => state.shopsSlice.shops);
 
   const storedActiveShop = localStorage.getItem("activeShop");
@@ -106,7 +106,7 @@ const AbcAnalysisPage = () => {
 
   useEffect(() => {
     if (viewType !== undefined || days !== undefined) {
-      updateDataAbcAnalysis(days, activeBrand, authToken);
+      updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
     }
   }, [viewType, days]);
 
@@ -121,18 +121,22 @@ const AbcAnalysisPage = () => {
     setActiveBrand(shopId);
   };
 
-  // const navigate = useNavigate();
-
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       updateDataAbcAnalysis(days, activeBrand, authToken);
     }
   }, [days, activeBrand]);
 
-  const updateDataAbcAnalysis = async (days, activeBrand, authToken) => {
+  const updateDataAbcAnalysis = async (
+    viewType,
+    days,
+    activeBrand,
+    authToken
+  ) => {
     setLoading(true);
     try {
       const data = await ServiceFunctions.getAbcData(
+        viewType,
         authToken,
         days,
         activeBrand

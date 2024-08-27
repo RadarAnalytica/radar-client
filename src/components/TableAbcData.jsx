@@ -51,8 +51,8 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
       >
         <div className='filter-btn-p'>Выбрать вид: </div>
         <div
-          className={`filter-btn ${viewType === "revenue" ? "active" : ""}`}
-          onClick={() => handleViewType("revenue")}
+          className={`filter-btn ${viewType === "proceeds" ? "active" : ""}`}
+          onClick={() => handleViewType("proceeds")}
         >
           По выручке
         </div>
@@ -65,7 +65,6 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
       </div>
       <div className='scrollable-table-wrapper scrollable-table'>
         <table className='table' style={{ margin: "0 20px" }}>
-          <tr style={{ fontSize: "24px", fontWeight: "700" }}></tr>
           <tr className='table-header'>
             <th
               style={{
@@ -180,7 +179,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
                 />
               </div>
             </th>
-            <th>
+            {/* <th>
               Общая категория
               <div
                 className='icon-sort-wrap'
@@ -197,31 +196,49 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
                   alt=''
                 />
               </div>
-            </th>
+            </th> */}
           </tr>
 
           <tbody>
             {dataTable.map((item, i) => (
               <tr key={i}>
                 <td style={{ color: "#5329FF" }}>
-                  <img
-                    src={item.photo}
-                    alt='User'
-                    style={{
-                      marginRight: "8px",
-                      width: "30px",
-                      height: "40px",
-                      borderRadius: "5px",
-                    }}
-                  />
+                  {item.photo ? (
+                    <img
+                      src={item.photo}
+                      alt='User'
+                      style={{
+                        marginRight: "8px",
+                        width: "30px",
+                        height: "40px",
+                        borderRadius: "5px",
+                      }}
+                      onError={(e) => {
+                        e.target.style.backgroundColor = "#D3D3D3";
+                        e.target.alt = "";
+                        e.target.src =
+                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=";
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        marginRight: "8px",
+                        width: "30px",
+                        height: "40px",
+                        borderRadius: "5px",
+                        backgroundColor: "#D3D3D3",
+                      }}
+                    />
+                  )}
                   {item.title}
                 </td>
-                <td>{item.wb_id}</td>
+                <td>{item.wb_id}knckds</td>
                 <td>{item.supplier_id}</td>
                 <td>{formatNumber(item.amount)}</td>
                 <td>{item.amount_percent}%</td>
                 <td>{item.category}</td>
-                <td>{item.category_total}</td>
+                {/* <td>{item.category_total}</td> */}
               </tr>
             ))}
           </tbody>
