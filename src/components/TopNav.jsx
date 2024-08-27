@@ -31,16 +31,24 @@ const TopNav = ({ title }) => {
     }, 1500);
     setTimeoutId(newTimeoutId);
   };
-
   useEffect(() => {
+    // Initial fetch
     dispatch(fetchMessages(authToken));
-  }, [dispatch]);
-
+  
+    // Set up interval to fetch messages every minute
+    const intervalId = setInterval(() => {
+      dispatch(fetchMessages(authToken));
+    }, 60000); // 60000 milliseconds = 1 minute
+  
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [dispatch, authToken]);
 
   const handleErrorClick = (event) => {
     event.stopPropagation();
     setShowErrorPopup(!showErrorPopup);
   };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (componentRef.current && !componentRef.current.contains(event.target)) {
