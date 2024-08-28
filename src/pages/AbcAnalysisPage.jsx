@@ -123,7 +123,7 @@ const AbcAnalysisPage = () => {
 
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
-      updateDataAbcAnalysis(days, activeBrand, authToken);
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
     }
   }, [days, activeBrand]);
   useEffect(() => {
@@ -131,28 +131,30 @@ const AbcAnalysisPage = () => {
       const now = new Date();
       let targetTime = new Date(now);
       targetTime.setMinutes(30, 0, 0);
-      
+
       if (now.getMinutes() >= 30) {
         targetTime.setHours(targetTime.getHours() + 2);
       } else {
-        targetTime.setHours(targetTime.getHours() + (targetTime.getHours() % 2));
+        targetTime.setHours(
+          targetTime.getHours() + (targetTime.getHours() % 2)
+        );
       }
-      
+
       return targetTime;
     };
-  
+
     const targetTime = calculateNextEvenHourPlus30();
     const timeToTarget = targetTime.getTime() - Date.now();
-  
+
     const intervalId = setTimeout(() => {
       dispatch(fetchShops(authToken));
-      updateDataAbcAnalysis(days, activeBrand, authToken);
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
     }, timeToTarget);
-  
+
     return () => {
       clearTimeout(intervalId);
     };
-  }, [dispatch, activeBrand, days, authToken]);
+  }, [dispatch, viewType, authToken, days, activeBrand]);
   const updateDataAbcAnalysis = async (
     viewType,
     authToken,
