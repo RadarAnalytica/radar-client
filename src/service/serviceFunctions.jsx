@@ -194,7 +194,7 @@ export const ServiceFunctions = {
   },
 
   getAbcData: async (viewType, token, day, idShop) => {
-    const res = await fetch(`${URL}/api/abc_data/${viewType}/?period=${30}`, {
+    const res = await fetch(`${URL}/api/abc_data/${viewType}?period=${day}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",

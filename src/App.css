@@ -10,7 +10,7 @@
 }
 
 * {
-  font-family: 'Mulish', sans-serif;
+  font-family: "Mulish", sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -1518,19 +1518,45 @@ select {
 
 /*Table */
 
-.table-header th:last-child {
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
 .table-header {
   height: 76px;
   background-color: #f7f6fe;
   color: grey;
+  padding: 5px;
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: 8px;
 }
 
+.table-header div:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.table-body {
+  max-height: 550px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.table-body-row {
+  width: 100%;
+  height: 100%;
+  /* margin: 20px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: left;
+  border-bottom: 1px solid #f1f1f1;
+}
 .scrollable-table {
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: scroll;
+  max-height: 580px;
+  overflow-x: hidden;
 }
 
 /* Стилизация ползунка прокрутки для элементов с классом 'scrollable-table' */
@@ -1586,19 +1612,14 @@ select {
   white-space: nowrap;
   vertical-align: middle;
 }
-
-/* Добавляем стиль для таблицы, чтобы обеспечить корректное отображение */
-.table {
-  width: 100%;
-  table-layout: auto;
-}
-
 .table td {
   height: 50px;
   border-bottom: 1px solid #f1f1f1;
   white-space: nowrap;
   text-align: start;
 }
+
+/* Добавляем стиль для таблицы, чтобы обеспечить корректное отображение */
 
 .table-content {
   height: auto;
@@ -1607,9 +1628,6 @@ select {
   margin: 22px 0px 0px 40px;
 }
 
-.table {
-  margin: 20px;
-}
 .table-glit {
   width: 100%;
   table-layout: fixed;
@@ -1853,11 +1871,6 @@ select {
   white-space: nowrap;
   /* padding: 0px, 12px, 0px, 12px; */
   align-items: center;
-}
-
-.scrollable-table-wrapper {
-  max-height: 580px;
-  overflow-y: auto;
 }
 
 .filter-btn-p {

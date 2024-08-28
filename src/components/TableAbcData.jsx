@@ -5,6 +5,7 @@ import ArrowDown from "../assets/ArrowDown.svg";
 
 const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
   const [asc, setAsc] = useState(true);
+  const [sortedColumn, setSortedColumn] = useState(""); // Для отслеживания текущего столбца сортировки
 
   const sortData = (key) => {
     const sortedData = [...dataTable].sort((a, b) => {
@@ -17,36 +18,49 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
       }
     });
     setAsc(!asc);
+    setSortedColumn(key);
     return setDataTable(sortedData);
   };
-
-  const toggleRotate = (element) => {
-    const iconUp = element.querySelector(".icon-sort-up");
-    const iconDown = element.querySelector(".icon-sort-down");
-    iconUp.classList.toggle("sort-icon_rotate");
-    iconDown.classList.toggle("sort-icon_rotate");
+  const getIconStyle = (key, direction) => {
+    if (sortedColumn === key) {
+      if ((asc && direction === "up") || (!asc && direction === "down")) {
+        return {
+          filter:
+            "brightness(0) saturate(100%) invert(29%) sepia(81%) saturate(6689%) hue-rotate(243deg) brightness(96%) contrast(101%)",
+        }; // Цвет #5329ff
+      }
+    }
+    return { filter: "none" };
   };
-
+  // const toggleRotate = (element) => {
+  //   const iconUp = element.querySelector(".icon-sort-up");
+  //   const iconDown = element.querySelector(".icon-sort-down");
+  //   iconUp.classList.toggle("sort-icon_rotate");
+  //   iconDown.classList.toggle("sort-icon_rotate");
+  // };
   const handleSort = (element, columnName) => {
-    toggleRotate(element);
     sortData(columnName);
   };
 
   const handleViewType = (viewType) => {
     setViewType(viewType);
+    // window.location.reload();
   };
 
   function formatNumber(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return num
+      .toFixed(2)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
 
   return (
     <div
-      className='abcAnalysis dash-container table-content scrollable-table'
+      className='abcAnalysis dash-container table-content'
       style={{ maxHeight: "700px" }}
     >
       <div
-        className='filter abc-filter-container  dash-container d-flex'
+        className='filter abc-filter-container p-3 pb-4 pt-0 dash-container d-flex'
         style={{ margin: "5px 8px" }}
       >
         <div className='filter-btn-p'>Выбрать вид: </div>
@@ -63,146 +77,155 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
           По прибыли
         </div>
       </div>
-      <div className='scrollable-table-wrapper scrollable-table'>
-        <table className='table' style={{ margin: "0 20px" }}>
-          <tr className='table-header'>
-            <th
+
+      <div>
+        <div className='table'>
+          <div className='table-header'>
+            <div
+              className='first-child-table-header'
               style={{
-                borderTopLeftRadius: "8px",
-                borderBottomLeftRadius: "8px",
+                width: "25%",
+                textAlign: "center",
               }}
             >
               Товар
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => {
-                  toggleRotate(e.currentTarget);
-                  sortData("title");
-                }}
+                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
               >
-                <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
+                <img
+                  className='icon-sort icon-sort-up'
+                  src={ArrowUp}
+                  alt=''
+                  style={getIconStyle("title", "up")} // Применяем стиль
+                />
                 <img
                   className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
+                  style={getIconStyle("title", "down")} // Применяем стиль
                 />
               </div>
-            </th>
-            <th>
+            </div>
+            <div style={{ width: "20%", textAlign: "left" }}>
               Артикул поставщика
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => {
-                  toggleRotate(e.currentTarget);
-                  sortData("wb_id");
-                }}
+                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
               >
-                <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
+                <img
+                  className='icon-sort icon-sort-up'
+                  src={ArrowUp}
+                  alt=''
+                  style={getIconStyle("title", "up")} // Применяем стиль
+                />
                 <img
                   className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
+                  style={getIconStyle("title", "down")} // Применяем стиль
                 />
               </div>
-            </th>
-            <th>
+            </div>
+            <div style={{ width: "13.75%", textAlign: "left" }}>
               Артикул
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => {
-                  toggleRotate(e.currentTarget);
-                  sortData("supplier_id");
-                }}
+                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
               >
-                <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
+                <img
+                  className='icon-sort icon-sort-up'
+                  src={ArrowUp}
+                  alt=''
+                  style={getIconStyle("title", "up")} // Применяем стиль
+                />
                 <img
                   className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
+                  style={getIconStyle("title", "down")} // Применяем стиль
                 />
               </div>
-            </th>
-            <th>
-              Выручка
+            </div>
+            <div style={{ width: "13.75%", textAlign: "left" }}>
+              {viewType === "proceeds" ? "Выручка" : "Прибыль"}
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => {
-                  toggleRotate(e.currentTarget);
-                  sortData("amount");
-                }}
+                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
               >
-                <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
+                <img
+                  className='icon-sort icon-sort-up'
+                  src={ArrowUp}
+                  alt=''
+                  style={getIconStyle("title", "up")} // Применяем стиль
+                />
                 <img
                   className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
+                  style={getIconStyle("title", "down")} // Применяем стиль
                 />
               </div>
-            </th>
-            <th>
-              Доля выручки
+            </div>
+            <div style={{ width: "13.75%", textAlign: "left" }}>
+              Доля {viewType === "proceeds" ? "выручки" : "прибыли"}
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => {
-                  toggleRotate(e.currentTarget);
-                  sortData("amount_percent");
-                }}
+                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
               >
-                <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
+                <img
+                  className='icon-sort icon-sort-up'
+                  src={ArrowUp}
+                  alt=''
+                  style={getIconStyle("title", "up")} // Применяем стиль
+                />
                 <img
                   className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
+                  style={getIconStyle("title", "down")} // Применяем стиль
                 />
               </div>
-            </th>
-            <th>
+            </div>
+            <div
+              className='last-child-table-header'
+              style={{ width: "13.75%", textAlign: "left" }}
+            >
               Категория
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => {
-                  toggleRotate(e.currentTarget);
-                  sortData("category");
-                }}
+                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
               >
-                <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
+                <img
+                  className='icon-sort icon-sort-up'
+                  src={ArrowUp}
+                  alt=''
+                  style={getIconStyle("title", "up")} // Применяем стиль
+                />
                 <img
                   className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
+                  style={getIconStyle("title", "down")} // Применяем стиль
                 />
               </div>
-            </th>
-            {/* <th>
-              Общая категория
-              <div
-                className='icon-sort-wrap'
-                onClick={(e) => {
-                  toggleRotate(e.currentTarget);
-                  sortData("category_total");
-                }}
-                style={{ background: "transparent" }}
-              >
-                <img className='icon-sort icon-sort-up' src={ArrowUp} alt='' />
-                <img
-                  className='icon-sort icon-sort-down'
-                  src={ArrowDown}
-                  alt=''
-                />
-              </div>
-            </th> */}
-          </tr>
-
-          <tbody>
+            </div>
+          </div>
+          <div className='table-body scrollable-table'>
             {dataTable.map((item, i) => (
-              <tr key={i}>
-                <td style={{ color: "#5329FF" }}>
+              <div className='table-body-row' key={i}>
+                <div
+                  style={{
+                    color: "#5329FF",
+                    width: "25%",
+                  }}
+                >
                   {item.photo ? (
                     <img
                       src={item.photo}
@@ -223,6 +246,8 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
                   ) : (
                     <div
                       style={{
+                        color: "#5329FF",
+
                         marginRight: "8px",
                         width: "30px",
                         height: "40px",
@@ -232,17 +257,19 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
                     />
                   )}
                   {item.title}
-                </td>
-                <td>{item.wb_id}knckds</td>
-                <td>{item.supplier_id}</td>
-                <td>{formatNumber(item.amount)}</td>
-                <td>{item.amount_percent}%</td>
-                <td>{item.category}</td>
-                {/* <td>{item.category_total}</td> */}
-              </tr>
+                </div>
+                <div style={{ width: "20%" }}>{item.wb_id}</div>
+                <div style={{ width: "13.75%" }}>{item.supplier_id}</div>
+                <div style={{ width: "13.75%" }}>
+                  {formatNumber(item.amount)}
+                </div>
+                <div style={{ width: "13.75%" }}>{item.amount_percent}%</div>
+                <div style={{ width: "13.75%" }}>{item.category}</div>
+                {/* <div style={{ width: "10%" }}>{item.category_total}</div> */}
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -196,7 +196,7 @@ const AbcAnalysisPage = () => {
     }
   }, [days, wbData]);
 
-  const [dataTable, setDataTable] = useState(totalAbcData);
+  // const [dataTable, setDataTable] = useState(totalAbcData);
   return (
     isVisible && (
       <div className='dashboard-page'>
