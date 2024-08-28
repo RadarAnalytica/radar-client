@@ -274,11 +274,7 @@ function App() {
                   path='/abc-data'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === "expired" ? (
-                        <NoSubscriptionPage />
-                      ) : (
-                        <AbcAnalysisPage />
-                      )}
+                      <AbcAnalysisPage />
                     </React.Suspense>
                   }
                 />

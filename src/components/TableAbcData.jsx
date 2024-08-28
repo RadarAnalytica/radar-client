@@ -59,10 +59,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
       className='abcAnalysis dash-container table-content'
       style={{ maxHeight: "700px" }}
     >
-      <div
-        className='filter abc-filter-container p-3 pb-4 pt-0 dash-container d-flex'
-        style={{ margin: "5px 8px" }}
-      >
+      <div className='filter abc-filter-container dash-container d-flex'>
         <div className='filter-btn-p'>Выбрать вид: </div>
         <div
           className={`filter-btn ${viewType === "proceeds" ? "active" : ""}`}
@@ -221,42 +218,51 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
             {dataTable.map((item, i) => (
               <div className='table-body-row' key={i}>
                 <div
+                  className='table-row-image'
                   style={{
                     color: "#5329FF",
                     width: "25%",
+                    display: "flex", // Use flexbox for layout
+                    alignItems: "center", // Center align items vertically
                   }}
                 >
-                  {item.photo ? (
-                    <img
-                      src={item.photo}
-                      alt='User'
-                      style={{
-                        marginRight: "8px",
-                        width: "30px",
-                        height: "40px",
-                        borderRadius: "5px",
-                      }}
-                      onError={(e) => {
-                        e.target.style.backgroundColor = "#D3D3D3";
-                        e.target.alt = "";
-                        e.target.src =
-                          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=";
-                      }}
-                    />
-                  ) : (
-                    <div
-                      style={{
-                        color: "#5329FF",
-
-                        marginRight: "8px",
-                        width: "30px",
-                        height: "40px",
-                        borderRadius: "5px",
-                        backgroundColor: "#D3D3D3",
-                      }}
-                    />
-                  )}
-                  {item.title}
+                  <div
+                    style={{
+                      width: "30px",
+                      height: "40px",
+                      borderRadius: "5px",
+                      backgroundColor: "#D3D3D3",
+                      marginRight: "8px",
+                    }}
+                  >
+                    {item.photo ? (
+                      <img
+                        src={item.photo}
+                        alt='User'
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "5px",
+                          objectFit: "cover",
+                        }}
+                        onError={(e) => {
+                          e.target.style.backgroundColor = "#D3D3D3";
+                          e.target.alt = "";
+                          e.target.src =
+                            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=";
+                        }}
+                      />
+                    ) : null}
+                  </div>
+                  <div
+                    style={{
+                      flex: "1",
+                      wordWrap: "break-word",
+                      marginRight: item.photo ? "8px" : "16px",
+                    }}
+                  >
+                    {item.title}
+                  </div>
                 </div>
                 <div style={{ width: "20%" }}>{item.wb_id}</div>
                 <div style={{ width: "13.75%" }}>{item.supplier_id}</div>

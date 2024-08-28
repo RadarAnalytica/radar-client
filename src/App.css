@@ -1538,7 +1538,6 @@ select {
   border-bottom-right-radius: 8px;
 }
 .table-body {
-  max-height: 550px;
   margin: 20px;
   display: flex;
   flex-direction: column;
@@ -1554,8 +1553,8 @@ select {
   border-bottom: 1px solid #f1f1f1;
 }
 .scrollable-table {
-  overflow-y: scroll;
-  max-height: 580px;
+  overflow-y: auto;
+  max-height: 500px;
   overflow-x: hidden;
 }
 
@@ -1622,7 +1621,7 @@ select {
 /* Добавляем стиль для таблицы, чтобы обеспечить корректное отображение */
 
 .table-content {
-  height: auto;
+  height: 800px;
   border-radius: 10px;
   background-color: #ffffff;
   margin: 22px 0px 0px 40px;
@@ -1846,7 +1845,7 @@ select {
   background-color: transparent;
 }
 
-.abcAnalysis .filter .filter-btn {
+.abcAnalysis .filter-btn {
   text-align: center;
   border-radius: 8px;
   font-size: 16px;
@@ -1858,19 +1857,10 @@ select {
   cursor: pointer;
   color: grey;
 }
-.abcAnalysis .filter .filter-btn.active {
+
+.abcAnalysis .filter-btn.active {
   background-color: #5329ff;
   color: #fff;
-}
-
-.abc-filter-container {
-  /* margin: 20px 0 0 0px; */
-  position: sticky;
-  z-index: 1000000;
-  top: 0px;
-  white-space: nowrap;
-  /* padding: 0px, 12px, 0px, 12px; */
-  align-items: center;
 }
 
 .filter-btn-p {
@@ -1883,6 +1873,13 @@ select {
   position: sticky;
   z-index: 1000000;
   top: 0px;
-  padding: 16px;
+  white-space: nowrap;
+  padding: 16px 0 0px 16px;
+  /* padding: 16px; */
+  align-items: center;
+}
+.table-row-image {
+  display: flex;
+  flex-direction: row;
   align-items: center;
 }

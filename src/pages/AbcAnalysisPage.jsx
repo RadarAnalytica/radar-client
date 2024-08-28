@@ -5,15 +5,15 @@ import AbcAnalysisFilter from "../components/AbcAnalysisFilter";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import AuthContext from "../service/AuthContext";
 import { fetchShops } from "../redux/shops/shopsActions";
-
+import NoSubscriptionPage from "../pages/NoSubscriptionPage";
 import { ServiceFunctions } from "../service/serviceFunctions";
-import { abcAnalysis } from "../service/utils";
+// import { abcAnalysis } from "../service/utils";
 import TableAbcData from "../components/TableAbcData";
-import { act } from "react";
+// import { act } from "react";
 
 const AbcAnalysisPage = () => {
   const [days, setDays] = useState(30);
-  const { authToken } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const [wbData, setWbData] = useState();
   const dispatch = useAppDispatch();
   const authTokenRef = useRef(authToken);
@@ -126,7 +126,30 @@ const AbcAnalysisPage = () => {
       updateDataAbcAnalysis(days, activeBrand, authToken);
     }
   }, [days, activeBrand]);
+  useEffect(() => {
+    const calculateNextEvenHourPlus30 = () => {
+      const now = new Date();
+      let targetTime = new Date(now);
+      targetTime.setMinutes(30, 0, 0);
 
+      targetTime.setHours(
+        targetTime.getHours() + (targetTime.getHours() % 2 === 0 ? 2 : 1)
+      );
+
+      return targetTime;
+    };
+
+    const targetTime = calculateNextEvenHourPlus30();
+    const timeToTarget = targetTime.getTime() - Date.now();
+
+    const intervalId = setTimeout(() => {
+      updateDataAbcAnalysis(days, activeBrand, authToken);
+    }, timeToTarget);
+
+    return () => {
+      clearTimeout(intervalId);
+    };
+  }, [dispatch, activeBrand, days, authToken]);
   const updateDataAbcAnalysis = async (
     viewType,
     days,
@@ -195,6 +218,10 @@ const AbcAnalysisPage = () => {
       setCurOrders(reportThreeMonths);
     }
   }, [days, wbData]);
+
+  if (user?.subscription_status === "expired") {
+    return <NoSubscriptionPage title={"ABC-анализ"} />;
+  }
 
   // const [dataTable, setDataTable] = useState(totalAbcData);
   return (
