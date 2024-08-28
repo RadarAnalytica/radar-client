@@ -167,12 +167,12 @@ const DashboardFilter = ({
           </div>
         </div>
       </div>
-      {(currentShop?.is_primary_collect || allShop) && (
+      {/* {(currentShop?.is_primary_collect || allShop) && (
         <div className='download-button'>
           <img src={downloadIcon} />
           Скачать Excel
         </div>
-      )}
+      )} */}
     </div>
   );
 };

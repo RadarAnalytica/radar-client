@@ -61,7 +61,7 @@ const AbcAnalysisPage = () => {
   useEffect(() => {
     let intervalId = null;
     if (activeBrand == 0) {
-      updateDataAbcAnalysis(days, activeBrand, authToken);
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
       clearInterval(intervalId);
     }
     if (
@@ -72,7 +72,7 @@ const AbcAnalysisPage = () => {
       if (currentShop) {
         localStorage.setItem("activeShop", JSON.stringify(currentShop));
       }
-      updateDataAbcAnalysis(days, activeBrand, authToken);
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
       clearInterval(intervalId);
     }
     if (!oneShop?.is_primary_collect && activeBrand !== 0) {
@@ -106,7 +106,7 @@ const AbcAnalysisPage = () => {
 
   useEffect(() => {
     if (viewType !== undefined || days !== undefined) {
-      updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
     }
   }, [viewType, days]);
 
@@ -152,9 +152,9 @@ const AbcAnalysisPage = () => {
   }, [dispatch, activeBrand, days, authToken]);
   const updateDataAbcAnalysis = async (
     viewType,
+    authToken,
     days,
-    activeBrand,
-    authToken
+    activeBrand
   ) => {
     setLoading(true);
     try {
@@ -222,7 +222,6 @@ const AbcAnalysisPage = () => {
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"ABC-анализ"} />;
   }
-
   // const [dataTable, setDataTable] = useState(totalAbcData);
   return (
     isVisible && (

@@ -156,7 +156,7 @@ const SideNav = () => {
                     <circle cx='4' cy='4' r='4' fill='#5329FF' />
                   </svg>
                 ) : null}
-                Товарная аналитика
+                ABC-анализ
               </p>
 
               <p

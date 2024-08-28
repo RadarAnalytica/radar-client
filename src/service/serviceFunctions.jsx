@@ -194,13 +194,16 @@ export const ServiceFunctions = {
   },
 
   getAbcData: async (viewType, token, day, idShop) => {
-    const res = await fetch(`${URL}/api/abc_data/${viewType}?period=${day}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        authorization: "JWT " + token,
-      },
-    });
+    const res = await fetch(
+      `${URL}/api/abc_data/${viewType}?period=${day}&shop=${idShop}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+      }
+    );
     const data = await res.json();
     return data;
   },

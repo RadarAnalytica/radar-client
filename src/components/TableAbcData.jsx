@@ -2,35 +2,49 @@ import React, { useState } from "react";
 import sortArrow from "../assets/sortarrow.svg";
 import ArrowUp from "../assets/ArrowUp.svg";
 import ArrowDown from "../assets/ArrowDown.svg";
+import "../App.css";
 
 const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
   const [asc, setAsc] = useState(true);
   const [sortedColumn, setSortedColumn] = useState(""); // Для отслеживания текущего столбца сортировки
+  const [sortConfig, setSortConfig] = useState({
+    column: null,
+    direction: "asc", // 'asc' or 'desc'
+  });
 
   const sortData = (key) => {
+    const { column, direction } = sortConfig;
+    const newDirection =
+      column === key ? (direction === "asc" ? "desc" : "asc") : "asc";
+
     const sortedData = [...dataTable].sort((a, b) => {
       if (typeof a[key] === "number" && typeof b[key] === "number") {
-        return asc ? a[key] - b[key] : b[key] - a[key];
+        return newDirection === "asc" ? a[key] - b[key] : b[key] - a[key];
       } else {
-        return asc
+        return newDirection === "asc"
           ? a[key].localeCompare(b[key])
           : b[key].localeCompare(a[key]);
       }
     });
-    setAsc(!asc);
-    setSortedColumn(key);
-    return setDataTable(sortedData);
+
+    setSortConfig({ column: key, direction: newDirection });
+    setDataTable(sortedData);
   };
   const getIconStyle = (key, direction) => {
-    if (sortedColumn === key) {
-      if ((asc && direction === "up") || (!asc && direction === "down")) {
+    const { column, direction: sortDirection } = sortConfig;
+
+    if (column === key) {
+      if (sortDirection === direction) {
         return {
           filter:
-            "brightness(0) saturate(100%) invert(29%) sepia(81%) saturate(6689%) hue-rotate(243deg) brightness(96%) contrast(101%)",
-        }; // Цвет #5329ff
+            "brightness(0) saturate(100%) invert(29%) sepia(81%) saturate(6689%) hue-rotate(243deg) brightness(96%) contrast(101%)", // Color #5329ff
+        };
       }
     }
     return { filter: "none" };
+  };
+  const handleSort = (element, columnName) => {
+    sortData(columnName);
   };
   // const toggleRotate = (element) => {
   //   const iconUp = element.querySelector(".icon-sort-up");
@@ -38,9 +52,6 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
   //   iconUp.classList.toggle("sort-icon_rotate");
   //   iconDown.classList.toggle("sort-icon_rotate");
   // };
-  const handleSort = (element, columnName) => {
-    sortData(columnName);
-  };
 
   const handleViewType = (viewType) => {
     setViewType(viewType);
@@ -88,20 +99,22 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
               Товар
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
+                onClick={() => sortData("title")}
               >
                 <img
-                  className='icon-sort icon-sort-up'
                   src={ArrowUp}
-                  alt=''
-                  style={getIconStyle("title", "up")} // Применяем стиль
+                  alt='Sort Ascending'
+                  style={{
+                    ...getIconStyle("title", "asc"),
+                  }}
                 />
                 <img
-                  className='icon-sort icon-sort-down'
                   src={ArrowDown}
-                  alt=''
-                  style={getIconStyle("title", "down")} // Применяем стиль
+                  alt='Sort Descending'
+                  style={{
+                    ...getIconStyle("title", "desc"),
+                  }}
                 />
               </div>
             </div>
@@ -109,20 +122,22 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
               Артикул поставщика
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
+                onClick={() => sortData("wb_id")}
               >
                 <img
-                  className='icon-sort icon-sort-up'
+                  style={{
+                    ...getIconStyle("wb_id", "asc"),
+                  }}
                   src={ArrowUp}
                   alt=''
-                  style={getIconStyle("title", "up")} // Применяем стиль
                 />
                 <img
-                  className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
-                  style={getIconStyle("title", "down")} // Применяем стиль
+                  style={{
+                    ...getIconStyle("wb_id", "desc"),
+                  }}
                 />
               </div>
             </div>
@@ -130,20 +145,22 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
               Артикул
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
+                onClick={() => sortData("supplier_id")}
               >
                 <img
-                  className='icon-sort icon-sort-up'
+                  style={{
+                    ...getIconStyle("supplier_id", "asc"),
+                  }}
                   src={ArrowUp}
                   alt=''
-                  style={getIconStyle("title", "up")} // Применяем стиль
                 />
                 <img
-                  className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
-                  style={getIconStyle("title", "down")} // Применяем стиль
+                  style={{
+                    ...getIconStyle("supplier_id", "desc"),
+                  }}
                 />
               </div>
             </div>
@@ -151,20 +168,22 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
               {viewType === "proceeds" ? "Выручка" : "Прибыль"}
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
+                onClick={() => sortData("amount")}
               >
                 <img
-                  className='icon-sort icon-sort-up'
+                  style={{
+                    ...getIconStyle("amount", "asc"),
+                  }}
                   src={ArrowUp}
                   alt=''
-                  style={getIconStyle("title", "up")} // Применяем стиль
                 />
                 <img
-                  className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
-                  style={getIconStyle("title", "down")} // Применяем стиль
+                  style={{
+                    ...getIconStyle("amount", "desc"),
+                  }}
                 />
               </div>
             </div>
@@ -172,20 +191,22 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
               Доля {viewType === "proceeds" ? "выручки" : "прибыли"}
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
+                onClick={() => sortData("amount_percent")}
               >
                 <img
-                  className='icon-sort icon-sort-up'
+                  style={{
+                    ...getIconStyle("amount_percent", "asc"),
+                  }}
                   src={ArrowUp}
                   alt=''
-                  style={getIconStyle("title", "up")} // Применяем стиль
                 />
                 <img
-                  className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
-                  style={getIconStyle("title", "down")} // Применяем стиль
+                  style={{
+                    ...getIconStyle("amount_percent", "desc"),
+                  }}
                 />
               </div>
             </div>
@@ -196,20 +217,22 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
               Категория
               <div
                 className='icon-sort-wrap'
-                onClick={(e) => handleSort(e.currentTarget, "title")}
                 style={{ background: "transparent" }}
+                onClick={() => sortData("category")}
               >
                 <img
-                  className='icon-sort icon-sort-up'
+                  style={{
+                    ...getIconStyle("category", "asc"),
+                  }}
                   src={ArrowUp}
                   alt=''
-                  style={getIconStyle("title", "up")} // Применяем стиль
                 />
                 <img
-                  className='icon-sort icon-sort-down'
                   src={ArrowDown}
                   alt=''
-                  style={getIconStyle("title", "down")} // Применяем стиль
+                  style={{
+                    ...getIconStyle("category", "desc"),
+                  }}
                 />
               </div>
             </div>
