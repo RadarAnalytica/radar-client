@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import logo from '../assets/logo.png';
-import greygrow from '../assets/grey-grow.png';
-import purplegrow from '../assets/purple-grow.png';
-import goods from '../assets/mygoods.png';
-import magic from '../assets/magic.png';
-import support from '../assets/support.png';
-import { useNavigate } from 'react-router-dom';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import React, { useEffect, useState } from "react";
+import logo from "../assets/logo.png";
+import greygrow from "../assets/grey-grow.png";
+import purplegrow from "../assets/purple-grow.png";
+import goods from "../assets/mygoods.png";
+import magic from "../assets/magic.png";
+import support from "../assets/support.png";
+import { useNavigate } from "react-router-dom";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const SideNav = () => {
   const navigate = useNavigate();
 
   const url = document.location.href;
-  const chunkArray = url ? url.split('/').reverse() : null;
+  const chunkArray = url ? url.split("/").reverse() : null;
   const location = chunkArray ? chunkArray[0] : null;
 
-  const [active, setActive] = useState('');
+  const [active, setActive] = useState("");
   useEffect(() => {
     setActive(location);
   }, [location]);
@@ -26,21 +26,21 @@ const SideNav = () => {
   return (
     <div className='side-nav'>
       <div>
-        <img src={logo} alt='' style={{ maxWidth: '160px' }} />
+        <img src={logo} alt='' style={{ maxWidth: "160px" }} />
 
         <div className='mt-4'>
-          <div className='sidenav-el' onClick={() => navigate('/dashboard')}>
+          <div className='sidenav-el' onClick={() => navigate("/dashboard")}>
             <div className='d-flex align-items-center'>
               <img
-                src={active === 'dashboard' ? purplegrow : greygrow}
+                src={active === "dashboard" ? purplegrow : greygrow}
                 alt=''
                 className='side-nav-icon'
               />
               <span
                 className='sidenav-title'
                 style={
-                  active === 'dashboard'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                  active === "dashboard"
+                    ? { fontWeight: "bold", fontSize: "14px", color: "black" }
                     : {}
                 }
               >
@@ -53,9 +53,9 @@ const SideNav = () => {
             onClick={() => setGoodsShown(!goodsShown)}
           >
             <div className='d-flex align-items-center'>
-              {location === 'orders-map' ||
-              location === 'supply' ||
-              location === 'stock-analysis' ? (
+              {location === "orders-map" ||
+              location === "supply" ||
+              location === "stock-analysis" ? (
                 <svg
                   width='18'
                   height='18'
@@ -74,10 +74,11 @@ const SideNav = () => {
               <span
                 className='sidenav-title'
                 style={
-                  location === 'orders-map' ||
-                  location === 'supply' ||
-                  location === 'stock-analysis'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                  location === "orders-map" ||
+                  location === "supply" ||
+                  location === "abc-data" ||
+                  location === "stock-analysis"
+                    ? { fontWeight: "bold", fontSize: "14px", color: "black" }
                     : {}
                 }
               >
@@ -91,15 +92,15 @@ const SideNav = () => {
               <p
                 className='sidenav-title ps-4 submenu-item'
                 style={
-                  location === 'supply'
-                    ? { fontWeight: 'bold', fontSize: '14px', display: 'none' }
-                    : { display: 'none' }
+                  location === "supply"
+                    ? { fontWeight: "bold", fontSize: "14px", display: "none" }
+                    : { display: "none" }
                 }
-                onClick={() => navigate('/development/supply')}
+                onClick={() => navigate("/development/supply")}
               >
-                {location === 'supply' ? (
+                {location === "supply" ? (
                   <svg
-                    style={{ marginRight: '0.5vw' }}
+                    style={{ marginRight: "0.5vw" }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -114,15 +115,15 @@ const SideNav = () => {
               <p
                 className='sidenav-title ps-4 submenu-item'
                 style={
-                  location === 'orders-map'
-                    ? { fontWeight: 'bold', fontSize: '14px' }
+                  location === "orders-map"
+                    ? { fontWeight: "bold", fontSize: "14px" }
                     : {}
                 }
-                onClick={() => navigate('/orders-map')}
+                onClick={() => navigate("/orders-map")}
               >
-                {location === 'orders-map' ? (
+                {location === "orders-map" ? (
                   <svg
-                    style={{ marginRight: '0.5vw' }}
+                    style={{ marginRight: "0.5vw" }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -137,15 +138,39 @@ const SideNav = () => {
               <p
                 className='sidenav-title ps-4 submenu-item'
                 style={
-                  location === 'stock-analysis'
-                    ? { fontWeight: 'bold', fontSize: '14px', display: 'none' }
-                    : { display: 'none' }
+                  location === "abc-data"
+                    ? { fontWeight: "bold", fontSize: "14px" }
+                    : {}
                 }
-                onClick={() => navigate('/development/stock-analysis')}
+                onClick={() => navigate("/abc-data")}
               >
-                {location === 'stock-analysis' ? (
+                {location === "abc-data" ? (
                   <svg
-                    style={{ marginRight: '0.5vw' }}
+                    style={{ marginRight: "0.5vw" }}
+                    width='8'
+                    height='8'
+                    viewBox='0 0 8 8'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <circle cx='4' cy='4' r='4' fill='#5329FF' />
+                  </svg>
+                ) : null}
+                Товарная аналитика
+              </p>
+
+              <p
+                className='sidenav-title ps-4 submenu-item'
+                style={
+                  location === "stock-analysis"
+                    ? { fontWeight: "bold", fontSize: "14px", display: "none" }
+                    : { display: "none" }
+                }
+                onClick={() => navigate("/development/stock-analysis")}
+              >
+                {location === "stock-analysis" ? (
+                  <svg
+                    style={{ marginRight: "0.5vw" }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -164,7 +189,7 @@ const SideNav = () => {
             onClick={() => setPromotionShown(!promotionShown)}
           >
             <div className='d-flex align-items-center'>
-              {location === 'calculate' || location === 'monitoring' ? (
+              {location === "calculate" || location === "monitoring" ? (
                 <svg
                   width='20'
                   height='20'
@@ -183,8 +208,8 @@ const SideNav = () => {
               <span
                 className='sidenav-title'
                 style={
-                  location === 'calculate' || location === 'monitoring'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                  location === "calculate" || location === "monitoring"
+                    ? { fontWeight: "bold", fontSize: "14px", color: "black" }
                     : {}
                 }
               >
@@ -199,16 +224,16 @@ const SideNav = () => {
             <div>
               <p
                 className='sidenav-title ps-4 submenu-item'
-                onClick={() => navigate('/development/monitoring')}
+                onClick={() => navigate("/development/monitoring")}
                 style={
-                  location === 'monitoring'
-                    ? { fontWeight: 'bold', fontSize: '14px', display: 'none' }
-                    : { display: 'none' }
+                  location === "monitoring"
+                    ? { fontWeight: "bold", fontSize: "14px", display: "none" }
+                    : { display: "none" }
                 }
               >
-                {location === 'monitoring' ? (
+                {location === "monitoring" ? (
                   <svg
-                    style={{ marginRight: '0.5vw' }}
+                    style={{ marginRight: "0.5vw" }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -222,16 +247,16 @@ const SideNav = () => {
               </p>
               <p
                 className='sidenav-title ps-4 submenu-item'
-                onClick={() => navigate('/calculate')}
+                onClick={() => navigate("/calculate")}
                 style={
-                  location === 'calculate'
-                    ? { fontWeight: 'bold', fontSize: '14px' }
+                  location === "calculate"
+                    ? { fontWeight: "bold", fontSize: "14px" }
                     : {}
                 }
               >
-                {location === 'calculate' ? (
+                {location === "calculate" ? (
                   <svg
-                    style={{ marginRight: '0.5vw' }}
+                    style={{ marginRight: "0.5vw" }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -250,9 +275,9 @@ const SideNav = () => {
       <div
         className='support-block'
         onClick={() =>
-          (window.location.href = 'mailto:radar-analytica@inbox.ru')
+          (window.location.href = "mailto:radar-analytica@inbox.ru")
         }
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: "pointer" }}
       >
         <a
           href='mailto:radar-analytica@inbox.ru'
@@ -260,10 +285,10 @@ const SideNav = () => {
         >
           <img src={support} alt='' className='support-icon' />
         </a>
-        <p className='fw-bold mb-0 mt-2 p-0' style={{ fontSize: '1.8vh' }}>
+        <p className='fw-bold mb-0 mt-2 p-0' style={{ fontSize: "1.8vh" }}>
           Обратиться в поддержку
         </p>
-        <p className='m-0 p-0' style={{ fontSize: '1.8vh' }}>
+        <p className='m-0 p-0' style={{ fontSize: "1.8vh" }}>
           или предложить идею
         </p>
       </div>

@@ -36,7 +36,7 @@ export const ServiceFunctions = {
       headers: {
         "content-type": "application/json",
         authorization: "JWT " + authToken,
-      }
+      },
     });
     const data = await res.json();
     return data;
@@ -154,27 +154,28 @@ export const ServiceFunctions = {
   // },
 
   getDashBoard: async (token, day, idShop) => {
-    const res = await fetch(`${URL}/api/dashboard/?period=${day}&shop=${idShop}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        "authorization": "JWT " + token
-
-      },
-    });
+    const res = await fetch(
+      `${URL}/api/dashboard/?period=${day}&shop=${idShop}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+      }
+    );
 
     const data = await res.json();
 
     return data;
   },
 
-
   getAllShops: async (token) => {
     const res = await fetch(`${URL}/api/shop/all`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
-        "authorization": "JWT " + token
+        authorization: "JWT " + token,
       },
     });
     const data = await res.json();
@@ -185,10 +186,22 @@ export const ServiceFunctions = {
       method: "GET",
       headers: {
         "content-type": "application/json",
-        "authorization": "JWT " + token
+        authorization: "JWT " + token,
       },
-    })
-    const data = await res.json()
-    return data
-  }
+    });
+    const data = await res.json();
+    return data;
+  },
+
+  getAbcData: async (viewType, token, day, idShop) => {
+    const res = await fetch(`${URL}/api/abc_data/${viewType}?period=${day}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        authorization: "JWT " + token,
+      },
+    });
+    const data = await res.json();
+    return data;
+  },
 };

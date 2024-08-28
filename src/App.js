@@ -1,51 +1,54 @@
-import './App.css';
-import * as React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import AuthContext, { AuthProvider } from './service/AuthContext';
-import { useContext } from 'react';
-import MobileMenu from './components/MobileMenu';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Digitization from './pages/Digitization';
-import Contacts from './components/Contacts';
-import StockAnalysisGlitter from './components/StockAnalysisGlitter';
-import LoaderPage from './pages/LoaderPage';
-import Subscriptions from './pages/Subscriptions';
+import "./App.css";
+import * as React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import AuthContext, { AuthProvider } from "./service/AuthContext";
+import { useContext } from "react";
+import MobileMenu from "./components/MobileMenu";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Digitization from "./pages/Digitization";
+import Contacts from "./components/Contacts";
+import StockAnalysisGlitter from "./components/StockAnalysisGlitter";
+import LoaderPage from "./pages/LoaderPage";
+import Subscriptions from "./pages/Subscriptions";
+
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
+const AbcAnalysisPage = React.lazy(() => import("./pages/AbcAnalysisPage"));
+const SignUpPage = React.lazy(() => import("./pages/SignUpPage"));
+const SignInPage = React.lazy(() => import("./pages/SignInPage"));
+const Onboarding = React.lazy(() => import("./pages/Onboarding"));
+const ConfirmationPage = React.lazy(() => import("./pages/ConfirmationPage"));
+const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
+const MockUpPage = React.lazy(() => import("./pages/MockUpPage"));
+const ResetPage = React.lazy(() => import("./pages/ResetPage"));
+const RequestResetLink = React.lazy(() => import("./pages/RequestResetLink"));
+const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
+const Calculate = React.lazy(() => import("./pages/Calculate"));
+const OrdersMap = React.lazy(() => import("./pages/OrdersMap"));
+const Settings = React.lazy(() => import("./pages/Settings"));
+const Spasibo = React.lazy(() => import("./pages/Spasibo"));
+const Instructions = React.lazy(() => import("./pages/Instructions"));
+const Monitoring = React.lazy(() => import("./pages/Monitoring"));
+const SupplyCount = React.lazy(() => import("./pages/SupplyCount"));
+const StockAnalysis = React.lazy(() => import("./pages/StockAnalysis"));
+const MainWidget = React.lazy(() => import("./pages/MainWidget"));
+const Politics = React.lazy(() => import("./pages/Politics"));
+const PublicOffer = React.lazy(() => import("./pages/PublicOffer"));
+const StubPage = React.lazy(() => import("./pages/StubPage"));
+const MainPage = React.lazy(() => import("./pages/MainPage"));
+const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
+const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
+const Page404 = React.lazy(() => import("./pages/Page404"));
 
-const SignUpPage = React.lazy(() => import('./pages/SignUpPage'));
-const SignInPage = React.lazy(() => import('./pages/SignInPage'));
-const Onboarding = React.lazy(() => import('./pages/Onboarding'));
-const ConfirmationPage = React.lazy(() => import('./pages/ConfirmationPage'));
-const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
-const MockUpPage = React.lazy(() => import('./pages/MockUpPage'));
-const ResetPage = React.lazy(() => import('./pages/ResetPage'));
-const RequestResetLink = React.lazy(() => import('./pages/RequestResetLink'));
-const LinkedShops = React.lazy(() => import('./pages/LinkedShops'));
-const Calculate = React.lazy(() => import('./pages/Calculate'));
-const OrdersMap = React.lazy(() => import('./pages/OrdersMap'));
-const Settings = React.lazy(() => import('./pages/Settings'));
-const Spasibo = React.lazy(() => import('./pages/Spasibo'));
-const Instructions = React.lazy(() => import('./pages/Instructions'));
-const Monitoring = React.lazy(() => import('./pages/Monitoring'));
-const SupplyCount = React.lazy(() => import('./pages/SupplyCount'));
-const StockAnalysis = React.lazy(() => import('./pages/StockAnalysis'));
-const MainWidget = React.lazy(() => import('./pages/MainWidget'));
-const Politics = React.lazy(() => import('./pages/Politics'));
-const PublicOffer = React.lazy(() => import('./pages/PublicOffer'));
-const StubPage = React.lazy(() => import('./pages/StubPage'));
-const MainPage = React.lazy(() => import('./pages/MainPage'));
-const AfterPayment = React.lazy(() => import('./pages/AfterPayment'));
-const TariffsPage = React.lazy(() => import('./pages/TariffsPage'));
-const Page404 = React.lazy(() => import('./pages/Page404'));
-const NoSubscriptionPage = React.lazy(() => import('./pages/NoSubscriptionPage'));
+const NoSubscriptionPage = React.lazy(() =>
+  import("./pages/NoSubscriptionPage")
+);
 
 function App() {
   const { user } = useContext(AuthContext);
-  console.log('user', user);
+  console.log("user", user);
 
   if (user) {
-
     return (
       <div className='App'>
         <AuthProvider>
@@ -55,7 +58,7 @@ function App() {
               path='/'
               element={
                 user?.is_onboarded ? (
-                  user?.subscription_status === 'expired' || user?.subscription_status === null ? (
+                  user?.subscription_status === "expired" ? (
                     <React.Suspense fallback={<LoaderPage />}>
                       <TariffsPage />
                     </React.Suspense>
@@ -75,7 +78,7 @@ function App() {
               path='/home'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <MainPage />
                 </React.Suspense>
               }
@@ -84,7 +87,7 @@ function App() {
               path='/stub'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <StubPage />
                 </React.Suspense>
               }
@@ -93,7 +96,7 @@ function App() {
               path='/signup'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <SignUpPage />
                 </React.Suspense>
               }
@@ -102,7 +105,7 @@ function App() {
               path='/signin'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <SignInPage />
                 </React.Suspense>
               }
@@ -111,7 +114,7 @@ function App() {
               path='/spasibo'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <Spasibo />
                 </React.Suspense>
               }
@@ -120,7 +123,7 @@ function App() {
               path='/politics'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <Politics />
                 </React.Suspense>
               }
@@ -129,7 +132,7 @@ function App() {
               path='/offer'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <PublicOffer />
                 </React.Suspense>
               }
@@ -139,7 +142,7 @@ function App() {
               path='/instruction'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <Instructions />
                 </React.Suspense>
               }
@@ -148,7 +151,8 @@ function App() {
               path='/calculate'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {user?.subscription_status === null ? <TariffsPage /> : <Calculate />}
+                  {" "}
+                  <Calculate />
                 </React.Suspense>
               }
             />
@@ -156,7 +160,8 @@ function App() {
               path='/onboarding'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
+                  {" "}
+                  <Onboarding />
                 </React.Suspense>
               }
             />
@@ -164,7 +169,7 @@ function App() {
               path='/app'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <MainWidget />
                 </React.Suspense>
               }
@@ -173,7 +178,7 @@ function App() {
               path='/reset'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <RequestResetLink />
                 </React.Suspense>
               }
@@ -182,7 +187,7 @@ function App() {
               path='/confirmation/:email/:code'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <ConfirmationPage />
                 </React.Suspense>
               }
@@ -191,7 +196,7 @@ function App() {
               path='/restore/:email/:code'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <ResetPage />
                 </React.Suspense>
               }
@@ -200,7 +205,7 @@ function App() {
               path='/development/Page404'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <Page404 />
                 </React.Suspense>
               }
@@ -209,7 +214,7 @@ function App() {
               path='*'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <Page404 />
                 </React.Suspense>
               }
@@ -218,7 +223,7 @@ function App() {
               path='/contacts'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <Contacts />
                 </React.Suspense>
               }
@@ -227,7 +232,7 @@ function App() {
               path='/after-payment'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <AfterPayment />
                 </React.Suspense>
               }
@@ -236,7 +241,7 @@ function App() {
               path='/tariffs'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {' '}
+                  {" "}
                   <TariffsPage />
                 </React.Suspense>
               }
@@ -245,6 +250,7 @@ function App() {
               path='/subscription'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
                   <Subscriptions />
                 </React.Suspense>
               }
@@ -255,15 +261,25 @@ function App() {
                   path='/dashboard'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <DashboardPage />}
+                    {user?.subscription_status === null ? <TariffsPage /> : <DashboardPage />}
                     </React.Suspense>
                   }
                 />
+
+                <Route
+                  path='/abc-data'
+                  element={
+                    <React.Suspense fallback={<LoaderPage />}>
+                      <AbcAnalysisPage />
+                    </React.Suspense>
+                  }
+                />
+
                 <Route
                   path='/development/monitoring'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Monitoring />
                     </React.Suspense>
                   }
@@ -272,7 +288,7 @@ function App() {
                   path='/development/supply'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <SupplyCount />
                     </React.Suspense>
                   }
@@ -281,7 +297,7 @@ function App() {
                   path='/development/stock-analysis'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <StockAnalysis />
                     </React.Suspense>
                   }
@@ -314,7 +330,7 @@ function App() {
                   path='/digitization'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Digitization />
                     </React.Suspense>
                   }
@@ -323,7 +339,7 @@ function App() {
                   path='/contacts'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Contacts />
                     </React.Suspense>
                   }
@@ -332,7 +348,7 @@ function App() {
                   path='/glitter'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <StockAnalysisGlitter />
                     </React.Suspense>
                   }
@@ -344,16 +360,17 @@ function App() {
                   path='/dashboard'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Onboarding />
                     </React.Suspense>
                   }
                 />
+
                 <Route
                   path='/development/monitoring'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Onboarding />
                     </React.Suspense>
                   }
@@ -362,7 +379,7 @@ function App() {
                   path='/development/supply'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Onboarding />
                     </React.Suspense>
                   }
@@ -371,7 +388,7 @@ function App() {
                   path='/development/stock-analysis'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Onboarding />
                     </React.Suspense>
                   }
@@ -380,7 +397,7 @@ function App() {
                   path='/calculate'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Onboarding />
                     </React.Suspense>
                   }
@@ -389,7 +406,7 @@ function App() {
                   path='/orders-map'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Onboarding />
                     </React.Suspense>
                   }
@@ -398,7 +415,7 @@ function App() {
                   path='/linked-shops'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {' '}
+                      {" "}
                       <Onboarding />
                     </React.Suspense>
                   }
@@ -421,7 +438,7 @@ function App() {
             path='/'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <MainPage />
               </React.Suspense>
             }
@@ -430,7 +447,7 @@ function App() {
             path='/home'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <MainPage />
               </React.Suspense>
             }
@@ -439,7 +456,7 @@ function App() {
             path='/stub'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <StubPage />
               </React.Suspense>
             }
@@ -448,7 +465,7 @@ function App() {
             path='/signup'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignUpPage />
               </React.Suspense>
             }
@@ -457,7 +474,7 @@ function App() {
             path='/signin'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -466,7 +483,7 @@ function App() {
             path='/spasibo'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <Spasibo />
               </React.Suspense>
             }
@@ -475,7 +492,7 @@ function App() {
             path='/politics'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <Politics />
               </React.Suspense>
             }
@@ -484,7 +501,7 @@ function App() {
             path='/offer'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <PublicOffer />
               </React.Suspense>
             }
@@ -494,7 +511,7 @@ function App() {
             path='/instruction'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -503,7 +520,7 @@ function App() {
             path='/onboarding'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -512,7 +529,7 @@ function App() {
             path='/dashboard'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -521,7 +538,7 @@ function App() {
             path='/tariffs'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -530,7 +547,7 @@ function App() {
             path='/development/monitoring'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -539,7 +556,7 @@ function App() {
             path='/development/supply'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -548,7 +565,7 @@ function App() {
             path='/app'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <MainWidget />
               </React.Suspense>
             }
@@ -557,7 +574,7 @@ function App() {
             path='/development/stock-analysis'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -566,7 +583,7 @@ function App() {
             path='/calculate'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -575,7 +592,7 @@ function App() {
             path='/orders-map'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -584,7 +601,7 @@ function App() {
             path='/linked-shops'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -593,7 +610,7 @@ function App() {
             path='/reset'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <RequestResetLink />
               </React.Suspense>
             }
@@ -602,7 +619,7 @@ function App() {
             path='/confirmation/:email/:code'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <ConfirmationPage />
               </React.Suspense>
             }
@@ -611,7 +628,7 @@ function App() {
             path='/restore/:email/:code'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <ResetPage />
               </React.Suspense>
             }
@@ -620,7 +637,7 @@ function App() {
             path='/development/Page404'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <Page404 />
               </React.Suspense>
             }
@@ -629,7 +646,7 @@ function App() {
             path='*'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <SignInPage />
               </React.Suspense>
             }
@@ -638,7 +655,7 @@ function App() {
             path='/contacts'
             element={
               <React.Suspense fallback={<LoaderPage />}>
-                {' '}
+                {" "}
                 <Contacts />
               </React.Suspense>
             }
