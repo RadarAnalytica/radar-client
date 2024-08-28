@@ -131,21 +131,24 @@ const AbcAnalysisPage = () => {
       const now = new Date();
       let targetTime = new Date(now);
       targetTime.setMinutes(30, 0, 0);
-
-      targetTime.setHours(
-        targetTime.getHours() + (targetTime.getHours() % 2 === 0 ? 2 : 1)
-      );
-
+      
+      if (now.getMinutes() >= 30) {
+        targetTime.setHours(targetTime.getHours() + 2);
+      } else {
+        targetTime.setHours(targetTime.getHours() + (targetTime.getHours() % 2));
+      }
+      
       return targetTime;
     };
-
+  
     const targetTime = calculateNextEvenHourPlus30();
     const timeToTarget = targetTime.getTime() - Date.now();
-
+  
     const intervalId = setTimeout(() => {
+      dispatch(fetchShops(authToken));
       updateDataAbcAnalysis(days, activeBrand, authToken);
     }, timeToTarget);
-
+  
     return () => {
       clearTimeout(intervalId);
     };
