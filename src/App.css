@@ -1840,6 +1840,12 @@ select {
   padding-bottom: 12px;
 }
 
+.error-no-messages {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
 .error-notification {
   position: relative;
 }

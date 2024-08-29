@@ -34,7 +34,7 @@ export const MessagesDropdown = () => {
   return (
     <span className='error-popup-container scrollable-dropdown'>
       <span className='message-popup-table'>
-        <span className='message-popup-body'>
+        { messages?.length > 0 &&( <span className='message-popup-body'>
           {messages?.map((msg) => (
             <span key={msg.id} className='error-notifications'>
               <span className='message-header'>
@@ -86,7 +86,10 @@ export const MessagesDropdown = () => {
               <span className='message-text'>{msg.text}</span>
             </span>
           ))}
-        </span>
+        </span>)}
+        {messages?.length <= 0 && (
+          <span className='error-no-messages'>Новых сообщений нет</span>
+        )}
       </span>
     </span>
   );

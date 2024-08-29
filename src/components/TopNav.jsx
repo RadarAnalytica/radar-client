@@ -106,7 +106,7 @@ const TopNav = ({ title }) => {
                   </clipPath>
                 </defs>
               </svg>
-              <span className='error-number'>{messages?.length}</span>
+              {messages?.length <= 0 ? '' : <span className='error-number'>{messages?.length}</span>}
             </span>
             {showErrorPopup && (
               <span className='error-popup'>
