@@ -14,6 +14,7 @@ const SideNav = () => {
   const url = document.location.href;
   const chunkArray = url ? url.split('/').reverse() : null;
   const location = chunkArray ? chunkArray[0] : null;
+  console.log('location', location);
 
   const [active, setActive] = useState('');
   useEffect(() => {
@@ -138,10 +139,10 @@ const SideNav = () => {
                 className='sidenav-title ps-4 submenu-item'
                 style={
                   location === 'stock-analysis'
-                    ? { fontWeight: 'bold', fontSize: '14px', display: 'none' }
-                    : { display: 'none' }
+                    ? { fontWeight: 'bold', fontSize: '14px' }
+                    : {}
                 }
-                onClick={() => navigate('/development/stock-analysis')}
+                onClick={() => navigate('/stock-analysis')}
               >
                 {location === 'stock-analysis' ? (
                   <svg

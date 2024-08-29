@@ -278,7 +278,7 @@ function App() {
                   }
                 />
                 <Route
-                  path='/development/stock-analysis'
+                  path='/stock-analysis'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
                       {' '}
@@ -368,7 +368,7 @@ function App() {
                   }
                 />
                 <Route
-                  path='/development/stock-analysis'
+                  path='/stock-analysis'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
                       {' '}
@@ -554,7 +554,7 @@ function App() {
             }
           />
           <Route
-            path='/development/stock-analysis'
+            path='/stock-analysis'
             element={
               <React.Suspense fallback={<LoaderPage />}>
                 {' '}

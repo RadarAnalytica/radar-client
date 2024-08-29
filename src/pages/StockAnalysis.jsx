@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchShops } from '../redux/shops/shopsActions';
 import DragDropFile from '../components/DragAndDropFiles';
 import Modal from 'react-bootstrap/Modal';
+import {fetchStockAnalysisData} from '../redux/stockAnalysis/stockAnalysisDataActions';
 
 const StockAnalysis = () => {
   const data = [
@@ -156,17 +157,417 @@ const StockAnalysis = () => {
       dataRadar: 57,
       dataWB: 6,
     },
+    {
+      productName: 'Вентилятор',
+      brandName: 'Бренд 3',
+      vendorСode: 523,
+      barCode: 7896,
+      sku: 3345,
+      size: 'M',
+      category: 'Бытовая',
+      saleSum: 54428,
+      quantity: 231,
+      lessReturns: 56842,
+      costGoodsSold: 56984,
+      returnsSum: 56842,
+      returnsQuantity: 25,
+      returnsCostSold: 56842,
+      costPriceOne: 120,
+      costOfProductStockToday: 2562,
+      toClient: 5568,
+      fromClient: 2862,
+      commissionWB: 7743,
+      fines: 3562,
+      additionalpayment: 4562,
+      serviceExpenses: 322,
+      toPayoff: 25865,
+      marginalProfit: 9342,
+      averageProfit: 9322,
+      profitabilityOfProductsSold: 9322,
+      marginal: 29,
+      annualReturnOnInventory: 152,
+      lostRevenue: 254,
+      byRevenue: 152,
+      byProfit: 152,
+      basic: 505,
+      maxDiscount: 58,
+      minDiscountPrice: 15,
+      orderQuantity: 27,
+      orderSum: 23,
+      purchased: 44,
+      notPurchased: 46,
+      purchasedPrecent: 25,
+      completed: 78,
+      orderCountDay: 2,
+      slaeCountDay: 6,
+      dataRadar: 57,
+      dataWB: 6,
+    },
+    {
+      productName: 'Вентилятор',
+      brandName: 'Бренд 3',
+      vendorСode: 523,
+      barCode: 7896,
+      sku: 3345,
+      size: 'M',
+      category: 'Бытовая',
+      saleSum: 54428,
+      quantity: 231,
+      lessReturns: 56842,
+      costGoodsSold: 56984,
+      returnsSum: 56842,
+      returnsQuantity: 25,
+      returnsCostSold: 56842,
+      costPriceOne: 120,
+      costOfProductStockToday: 2562,
+      toClient: 5568,
+      fromClient: 2862,
+      commissionWB: 7743,
+      fines: 3562,
+      additionalpayment: 4562,
+      serviceExpenses: 322,
+      toPayoff: 25865,
+      marginalProfit: 9342,
+      averageProfit: 9322,
+      profitabilityOfProductsSold: 9322,
+      marginal: 29,
+      annualReturnOnInventory: 152,
+      lostRevenue: 254,
+      byRevenue: 152,
+      byProfit: 152,
+      basic: 505,
+      maxDiscount: 58,
+      minDiscountPrice: 15,
+      orderQuantity: 27,
+      orderSum: 23,
+      purchased: 44,
+      notPurchased: 46,
+      purchasedPrecent: 25,
+      completed: 78,
+      orderCountDay: 2,
+      slaeCountDay: 6,
+      dataRadar: 57,
+      dataWB: 6,
+    },
+    {
+      productName: 'Вентилятор',
+      brandName: 'Бренд 3',
+      vendorСode: 523,
+      barCode: 7896,
+      sku: 3345,
+      size: 'M',
+      category: 'Бытовая',
+      saleSum: 54428,
+      quantity: 231,
+      lessReturns: 56842,
+      costGoodsSold: 56984,
+      returnsSum: 56842,
+      returnsQuantity: 25,
+      returnsCostSold: 56842,
+      costPriceOne: 120,
+      costOfProductStockToday: 2562,
+      toClient: 5568,
+      fromClient: 2862,
+      commissionWB: 7743,
+      fines: 3562,
+      additionalpayment: 4562,
+      serviceExpenses: 322,
+      toPayoff: 25865,
+      marginalProfit: 9342,
+      averageProfit: 9322,
+      profitabilityOfProductsSold: 9322,
+      marginal: 29,
+      annualReturnOnInventory: 152,
+      lostRevenue: 254,
+      byRevenue: 152,
+      byProfit: 152,
+      basic: 505,
+      maxDiscount: 58,
+      minDiscountPrice: 15,
+      orderQuantity: 27,
+      orderSum: 23,
+      purchased: 44,
+      notPurchased: 46,
+      purchasedPrecent: 25,
+      completed: 78,
+      orderCountDay: 2,
+      slaeCountDay: 6,
+      dataRadar: 57,
+      dataWB: 6,
+    },
+    {
+      productName: 'Вентилятор',
+      brandName: 'Бренд 3',
+      vendorСode: 523,
+      barCode: 7896,
+      sku: 3345,
+      size: 'M',
+      category: 'Бытовая',
+      saleSum: 54428,
+      quantity: 231,
+      lessReturns: 56842,
+      costGoodsSold: 56984,
+      returnsSum: 56842,
+      returnsQuantity: 25,
+      returnsCostSold: 56842,
+      costPriceOne: 120,
+      costOfProductStockToday: 2562,
+      toClient: 5568,
+      fromClient: 2862,
+      commissionWB: 7743,
+      fines: 3562,
+      additionalpayment: 4562,
+      serviceExpenses: 322,
+      toPayoff: 25865,
+      marginalProfit: 9342,
+      averageProfit: 9322,
+      profitabilityOfProductsSold: 9322,
+      marginal: 29,
+      annualReturnOnInventory: 152,
+      lostRevenue: 254,
+      byRevenue: 152,
+      byProfit: 152,
+      basic: 505,
+      maxDiscount: 58,
+      minDiscountPrice: 15,
+      orderQuantity: 27,
+      orderSum: 23,
+      purchased: 44,
+      notPurchased: 46,
+      purchasedPrecent: 25,
+      completed: 78,
+      orderCountDay: 2,
+      slaeCountDay: 6,
+      dataRadar: 57,
+      dataWB: 6,
+    },
+    {
+      productName: 'Вентилятор',
+      brandName: 'Бренд 3',
+      vendorСode: 523,
+      barCode: 7896,
+      sku: 3345,
+      size: 'M',
+      category: 'Бытовая',
+      saleSum: 54428,
+      quantity: 231,
+      lessReturns: 56842,
+      costGoodsSold: 56984,
+      returnsSum: 56842,
+      returnsQuantity: 25,
+      returnsCostSold: 56842,
+      costPriceOne: 120,
+      costOfProductStockToday: 2562,
+      toClient: 5568,
+      fromClient: 2862,
+      commissionWB: 7743,
+      fines: 3562,
+      additionalpayment: 4562,
+      serviceExpenses: 322,
+      toPayoff: 25865,
+      marginalProfit: 9342,
+      averageProfit: 9322,
+      profitabilityOfProductsSold: 9322,
+      marginal: 29,
+      annualReturnOnInventory: 152,
+      lostRevenue: 254,
+      byRevenue: 152,
+      byProfit: 152,
+      basic: 505,
+      maxDiscount: 58,
+      minDiscountPrice: 15,
+      orderQuantity: 27,
+      orderSum: 23,
+      purchased: 44,
+      notPurchased: 46,
+      purchasedPrecent: 25,
+      completed: 78,
+      orderCountDay: 2,
+      slaeCountDay: 6,
+      dataRadar: 57,
+      dataWB: 6,
+    },
+    {
+      productName: 'Вентилятор',
+      brandName: 'Бренд 3',
+      vendorСode: 523,
+      barCode: 7896,
+      sku: 3345,
+      size: 'M',
+      category: 'Бытовая',
+      saleSum: 54428,
+      quantity: 231,
+      lessReturns: 56842,
+      costGoodsSold: 56984,
+      returnsSum: 56842,
+      returnsQuantity: 25,
+      returnsCostSold: 56842,
+      costPriceOne: 120,
+      costOfProductStockToday: 2562,
+      toClient: 5568,
+      fromClient: 2862,
+      commissionWB: 7743,
+      fines: 3562,
+      additionalpayment: 4562,
+      serviceExpenses: 322,
+      toPayoff: 25865,
+      marginalProfit: 9342,
+      averageProfit: 9322,
+      profitabilityOfProductsSold: 9322,
+      marginal: 29,
+      annualReturnOnInventory: 152,
+      lostRevenue: 254,
+      byRevenue: 152,
+      byProfit: 152,
+      basic: 505,
+      maxDiscount: 58,
+      minDiscountPrice: 15,
+      orderQuantity: 27,
+      orderSum: 23,
+      purchased: 44,
+      notPurchased: 46,
+      purchasedPrecent: 25,
+      completed: 78,
+      orderCountDay: 2,
+      slaeCountDay: 6,
+      dataRadar: 57,
+      dataWB: 6,
+    },
+    {
+      productName: 'Вентилятор',
+      brandName: 'Бренд 3',
+      vendorСode: 523,
+      barCode: 7896,
+      sku: 3345,
+      size: 'M',
+      category: 'Бытовая',
+      saleSum: 54428,
+      quantity: 231,
+      lessReturns: 56842,
+      costGoodsSold: 56984,
+      returnsSum: 56842,
+      returnsQuantity: 25,
+      returnsCostSold: 56842,
+      costPriceOne: 120,
+      costOfProductStockToday: 2562,
+      toClient: 5568,
+      fromClient: 2862,
+      commissionWB: 7743,
+      fines: 3562,
+      additionalpayment: 4562,
+      serviceExpenses: 322,
+      toPayoff: 25865,
+      marginalProfit: 9342,
+      averageProfit: 9322,
+      profitabilityOfProductsSold: 9322,
+      marginal: 29,
+      annualReturnOnInventory: 152,
+      lostRevenue: 254,
+      byRevenue: 152,
+      byProfit: 152,
+      basic: 505,
+      maxDiscount: 58,
+      minDiscountPrice: 15,
+      orderQuantity: 27,
+      orderSum: 23,
+      purchased: 44,
+      notPurchased: 46,
+      purchasedPrecent: 25,
+      completed: 78,
+      orderCountDay: 2,
+      slaeCountDay: 6,
+      dataRadar: 57,
+      dataWB: 6,
+    },
+    {
+      productName: 'Вентилятор',
+      brandName: 'Бренд 3',
+      vendorСode: 523,
+      barCode: 7896,
+      sku: 3345,
+      size: 'M',
+      category: 'Бытовая',
+      saleSum: 54428,
+      quantity: 231,
+      lessReturns: 56842,
+      costGoodsSold: 56984,
+      returnsSum: 56842,
+      returnsQuantity: 25,
+      returnsCostSold: 56842,
+      costPriceOne: 120,
+      costOfProductStockToday: 2562,
+      toClient: 5568,
+      fromClient: 2862,
+      commissionWB: 7743,
+      fines: 3562,
+      additionalpayment: 4562,
+      serviceExpenses: 322,
+      toPayoff: 25865,
+      marginalProfit: 9342,
+      averageProfit: 9322,
+      profitabilityOfProductsSold: 9322,
+      marginal: 29,
+      annualReturnOnInventory: 152,
+      lostRevenue: 254,
+      byRevenue: 152,
+      byProfit: 152,
+      basic: 505,
+      maxDiscount: 58,
+      minDiscountPrice: 15,
+      orderQuantity: 27,
+      orderSum: 23,
+      purchased: 44,
+      notPurchased: 46,
+      purchasedPrecent: 25,
+      completed: 78,
+      orderCountDay: 2,
+      slaeCountDay: 6,
+      dataRadar: 57,
+      dataWB: 6,
+    },
   ];
+  const stockAnalysisData = useAppSelector(
+    (state) => state.stockAnalysisDataSlice.stockAnalysisData
+  );
+  console.log('stockAnalysisData', stockAnalysisData);
+  const dispatch = useAppDispatch();
+  const shops = useAppSelector((state) => state.shopsSlice.shops);
+  const allShop = shops?.some((item) => item?.is_primary_collect === true);
+  // const [dataFromServer, setDataFromServer] = useState([]);
+  // console.log('dataFromServer', dataFromServer);
+  const storedActiveShop = localStorage.getItem('activeShop');
+  let activeShop;
+  if (storedActiveShop && typeof storedActiveShop === 'string') {
+    try {
+      activeShop = JSON.parse(storedActiveShop);
+    } catch (error) {
+      console.error('Error parsing storedActiveShop:', error);
+      activeShop = null;
+    }
+  }
+  const activeShopId = activeShop?.id;
+  const idShopAsValue =
+    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
   const { user, authToken } = useContext(AuthContext);
   const [file, setFile] = useState();
 
-  const dispatch = useAppDispatch();
-  const shop = useAppSelector((state) => state.shopsSlice.shops);
-
-  const [activeBrand, setActiveBrand] = useState('0');
-  const [dataTable, setDataTable] = useState(data);
+  const [activeBrand, setActiveBrand] = useState(idShopAsValue);
+  console.log('activeBrand', activeBrand);
+  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
+  const [dataTable, setDataTable] = useState([]);
+  console.log('dataTable in StockAnalysis ...', dataTable);
   const [costPriceShow, setCostPriceShow] = useState(false);
+  const [days, setDays] = useState(30);
+  console.log('days', days);
   const handleCostPriceClose = () => setCostPriceShow(false);
+
+  const plugForAllStores = {
+    id: 0,
+    brand_name: 'Все',
+    is_active: true,
+    is_primary_collect: allShop,
+    is_valid: true,
+  };
 
   const handleCostPriceShow = () => {
     setCostPriceShow(true);
@@ -176,8 +577,50 @@ const StockAnalysis = () => {
     dispatch(fetchShops(authToken));
   }, [dispatch]);
 
-  console.log(shop, 'shop');
+  // useEffect(() => {
+  //   console.log('inside useEffect initail ...')
+  //   if (stockAnalysisData.length > 0) {
+  //     console.log('inside useEffect initail ...')
+  //      dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+  //   setDataTable(stockAnalysisData);
+  //   } 
+   
+  // }, []);
 
+  useEffect(() => {
+    setDataTable(stockAnalysisData);
+  }, [stockAnalysisData]);
+
+  useEffect(() => {
+    dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+  }, [days, activeBrand]);
+
+  useEffect(() => {
+    if (shops.length > 0) {
+      let id;
+      if (activeShopId == undefined) {
+        id = shops?.[0].id;
+        localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
+      } else {
+        id = activeShopId;
+      }
+      setActiveBrand(id);
+    }
+  }, [shops]);
+
+
+  const handleSaveActiveShop = (shopId) => {
+    const currentShop = shops?.find((item) => item.id == shopId);
+    if (currentShop) {
+      localStorage.setItem('activeShop', JSON.stringify(currentShop));
+    }
+    if (shopId === '0') {
+      localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
+    }
+    setActiveBrand(shopId);
+  };
+
+  console.log(shops, 'shops');
   return (
     <>
       <div className='dashboard-page'>
@@ -185,7 +628,12 @@ const StockAnalysis = () => {
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
           <div className=' pt-0 d-flex gap-3'>
-            <StockAnalysisFilter shop={shop} setActiveBrand={setActiveBrand} />
+          <StockAnalysisFilter 
+              shops={shops} 
+              setActiveBrand={handleSaveActiveShop} 
+              setDays={setDays}
+              activeShopId={activeShopId}
+            />
           </div>
           <div className='container dash-container search'>
             <input
