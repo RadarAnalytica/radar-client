@@ -9,6 +9,9 @@ import NoSubscriptionPage from "../pages/NoSubscriptionPage";
 import { ServiceFunctions } from "../service/serviceFunctions";
 // import { abcAnalysis } from "../service/utils";
 import TableAbcData from "../components/TableAbcData";
+import SelfCostWarning from "../components/SelfCostWarning";
+import { abcAnalysis } from "../service/utils";
+import DataCollectionNotification from "../components/DataCollectionNotification";
 // import { act } from "react";
 
 const AbcAnalysisPage = () => {
@@ -18,6 +21,7 @@ const AbcAnalysisPage = () => {
   const dispatch = useAppDispatch();
   const authTokenRef = useRef(authToken);
   const [dataAbcAnalysis, setDataAbcAnalysis] = useState([]);
+  const [isNeedCost, setIsNeedCost] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [changeBrand, setChangeBrand] = useState();
   const [primary, setPrimary] = useState();
@@ -52,11 +56,11 @@ const AbcAnalysisPage = () => {
     is_valid: true,
   };
 
-  //   const shouldDisplay = activeShop
-  // ? activeShop.is_primary_collect
-  // : oneShop
-  //   ? oneShop.is_primary_collect
-  //     : allShop;
+  const shouldDisplay = activeShop
+    ? activeShop.is_primary_collect
+    : oneShop
+    ? oneShop.is_primary_collect
+    : allShop;
 
   useEffect(() => {
     let intervalId = null;
@@ -103,6 +107,18 @@ const AbcAnalysisPage = () => {
       setActiveBrand(id);
     }
   }, [shops]);
+
+  //for SelfCostWarning
+  const handleUpdateAbcAnalysis = () => {
+    setTimeout(() => {
+      updateAbcAnalysisCaller();
+    }, 3000);
+  };
+
+  const updateAbcAnalysisCaller = async () => {
+    activeBrand !== undefined &&
+      updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
+  };
 
   useEffect(() => {
     if (viewType !== undefined || days !== undefined) {
@@ -169,8 +185,12 @@ const AbcAnalysisPage = () => {
         days,
         activeBrand
       );
-      if (data && data.length > 0) {
-        setDataAbcAnalysis(data);
+      setIsNeedCost(data.is_need_cost);
+      const result = data.results;
+
+      if (result && result.length > 0) {
+        setDataAbcAnalysis(result);
+        console.log(dataAbcAnalysis);
       }
     } catch (e) {
       console.error(e);
@@ -180,14 +200,14 @@ const AbcAnalysisPage = () => {
     }
   };
 
-  const totalAbcData = dataAbcAnalysis?.map((el) => {
-    return {
-      title: el?.title,
-      wb_id: el?.wb_id,
-      supplier_id: el?.supplier_id,
-      amount: el?.amount,
-    };
-  });
+  // const totalAbcData = dataAbcAnalysis?.map((el) => {
+  //   return {
+  //     title: el?.title,
+  //     wb_id: el?.wb_id,
+  //     supplier_id: el?.supplier_id,
+  //     amount: el?.amount,
+  //   };
+  // });
 
   const [reportDaily, setReportDaily] = useState();
   const [reportWeekly, setReportWeekly] = useState();
@@ -234,6 +254,14 @@ const AbcAnalysisPage = () => {
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={"ABC-анализ"} />
+
+          {!isInitialLoading && isNeedCost && shouldDisplay ? (
+            <SelfCostWarning
+              activeBrand={activeBrand}
+              onUpdateDashboard={handleUpdateAbcAnalysis}
+            />
+          ) : null}
+
           <div className=' pt-0 d-flex gap-3'>
             <AbcAnalysisFilter
               periodValue={days}
@@ -245,12 +273,18 @@ const AbcAnalysisPage = () => {
               activeShopId={activeShopId}
             />
           </div>
-          <TableAbcData
-            dataTable={dataAbcAnalysis}
-            setDataTable={setDataAbcAnalysis}
-            setViewType={setViewType}
-            viewType={viewType}
-          />
+          {shouldDisplay ? (
+            <TableAbcData
+              dataTable={dataAbcAnalysis}
+              setDataTable={setDataAbcAnalysis}
+              setViewType={setViewType}
+              viewType={viewType}
+            />
+          ) : (
+            <DataCollectionNotification
+              title={"Ваши данные еще формируются и обрабатываются."}
+            />
+          )}
         </div>
       </div>
     )

@@ -1,7 +1,7 @@
-import React from 'react';
-import DataCollectionPreview from '../assets/DataCollectionPreview';
-import SideNav from './SideNav';
-import TopNav from './TopNav';
+import React from "react";
+import DataCollectionPreview from "../assets/DataCollectionPreview";
+import SideNav from "./SideNav";
+import TopNav from "./TopNav";
 
 const DataCollectionNotification = ({ title }) => {
   return (

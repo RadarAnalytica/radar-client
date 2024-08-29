@@ -92,78 +92,16 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
             <div
               className='first-child-table-header'
               style={{
-                width: "25%",
+                width: "18.75%",
                 textAlign: "center",
               }}
             >
               Товар
-              <div
-                className='icon-sort-wrap'
-                style={{ background: "transparent" }}
-                onClick={() => sortData("title")}
-              >
-                <img
-                  src={ArrowUp}
-                  alt='Sort Ascending'
-                  style={{
-                    ...getIconStyle("title", "asc"),
-                  }}
-                />
-                <img
-                  src={ArrowDown}
-                  alt='Sort Descending'
-                  style={{
-                    ...getIconStyle("title", "desc"),
-                  }}
-                />
-              </div>
             </div>
             <div style={{ width: "20%", textAlign: "left" }}>
               Артикул поставщика
-              <div
-                className='icon-sort-wrap'
-                style={{ background: "transparent" }}
-                onClick={() => sortData("wb_id")}
-              >
-                <img
-                  style={{
-                    ...getIconStyle("wb_id", "asc"),
-                  }}
-                  src={ArrowUp}
-                  alt=''
-                />
-                <img
-                  src={ArrowDown}
-                  alt=''
-                  style={{
-                    ...getIconStyle("wb_id", "desc"),
-                  }}
-                />
-              </div>
             </div>
-            <div style={{ width: "13.75%", textAlign: "left" }}>
-              Артикул
-              <div
-                className='icon-sort-wrap'
-                style={{ background: "transparent" }}
-                onClick={() => sortData("supplier_id")}
-              >
-                <img
-                  style={{
-                    ...getIconStyle("supplier_id", "asc"),
-                  }}
-                  src={ArrowUp}
-                  alt=''
-                />
-                <img
-                  src={ArrowDown}
-                  alt=''
-                  style={{
-                    ...getIconStyle("supplier_id", "desc"),
-                  }}
-                />
-              </div>
-            </div>
+            <div style={{ width: "13.75%", textAlign: "left" }}>Артикул</div>
             <div style={{ width: "13.75%", textAlign: "left" }}>
               {viewType === "proceeds" ? "Выручка" : "Прибыль"}
               <div
@@ -187,7 +125,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
                 />
               </div>
             </div>
-            <div style={{ width: "13.75%", textAlign: "left" }}>
+            <div style={{ width: "20%", textAlign: "left" }}>
               Доля {viewType === "proceeds" ? "выручки" : "прибыли"}
               <div
                 className='icon-sort-wrap'
@@ -244,7 +182,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
                   className='table-row-image'
                   style={{
                     color: "#5329FF",
-                    width: "25%",
+                    width: "18.75%",
                     display: "flex", // Use flexbox for layout
                     alignItems: "center", // Center align items vertically
                   }}
@@ -287,12 +225,12 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
                     {item.title}
                   </div>
                 </div>
-                <div style={{ width: "20%" }}>{item.wb_id}</div>
-                <div style={{ width: "13.75%" }}>{item.supplier_id}</div>
+                <div style={{ width: "20%" }}>{item.supplier_id}</div>
+                <div style={{ width: "13.75%" }}>{item.wb_id}</div>
                 <div style={{ width: "13.75%" }}>
                   {formatNumber(item.amount)}
                 </div>
-                <div style={{ width: "13.75%" }}>{item.amount_percent}%</div>
+                <div style={{ width: "20%" }}>{item.amount_percent}%</div>
                 <div style={{ width: "13.75%" }}>{item.category}</div>
                 {/* <div style={{ width: "10%" }}>{item.category_total}</div> */}
               </div>
