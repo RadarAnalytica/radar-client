@@ -920,8 +920,8 @@ const DashboardPage = () => {
                   <SmallPlate
                     name={"Хранение"}
                     type={"price"}
-                    dataDashBoard={dataDashBoard?.storageData || 0}
-                    percent={dataDashBoard?.storageDataCompare || 0}
+                    dataDashBoard={dataDashBoard?.storageData}
+                    percent={dataDashBoard?.storageDataCompare}
                   />
                 </div>
                 <div className='col' style={{ height: "14vh" }}>
