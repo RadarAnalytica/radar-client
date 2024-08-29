@@ -50,7 +50,7 @@ function App() {
 
   const renderElement = (user) => {
     if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
-      return user?.is_onboarded && <TariffsPage />;
+      return <TariffsPage />;
     } else {
       return user?.is_onboarded ? <DashboardPage /> : <Onboarding />;
     }
