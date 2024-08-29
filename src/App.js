@@ -48,6 +48,14 @@ function App() {
   const { user } = useContext(AuthContext);
   console.log("user", user);
 
+  const renderElement = (user) => {
+    if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
+      return user?.is_onboarded && <TariffsPage />;
+    } else {
+      return user?.is_onboarded ? <DashboardPage /> : <Onboarding />;
+    }
+  };
+
   if (user) {
     return (
       <div className='App'>
@@ -57,21 +65,9 @@ function App() {
             <Route
               path='/'
               element={
-                user?.is_onboarded ? (
-                  user?.subscription_status === "expired" ? (
-                    <React.Suspense fallback={<LoaderPage />}>
-                      <TariffsPage />
-                    </React.Suspense>
-                  ) : (
-                    <React.Suspense fallback={<LoaderPage />}>
-                      <DashboardPage />
-                    </React.Suspense>
-                  )
-                ) : (
-                  <React.Suspense fallback={<LoaderPage />}>
-                    <Onboarding />
-                  </React.Suspense>
-                )
+                <React.Suspense fallback={<LoaderPage />}>
+                  {renderElement(user)}
+                </React.Suspense>
               }
             />
             <Route
@@ -151,8 +147,7 @@ function App() {
               path='/calculate'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {" "}
-                  <Calculate />
+                  {user?.subscription_status === null ? <TariffsPage /> : <Calculate />}
                 </React.Suspense>
               }
             />
@@ -160,8 +155,7 @@ function App() {
               path='/onboarding'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {" "}
-                  <Onboarding />
+                  {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
                 </React.Suspense>
               }
             />
@@ -261,7 +255,7 @@ function App() {
                   path='/dashboard'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                    {user?.subscription_status === null ? <TariffsPage /> : <DashboardPage />}
+                      {user?.subscription_status === null ? <TariffsPage /> : <DashboardPage />}
                     </React.Suspense>
                   }
                 />
@@ -360,8 +354,7 @@ function App() {
                   path='/dashboard'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Onboarding />
+                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
                     </React.Suspense>
                   }
                 />
@@ -388,8 +381,7 @@ function App() {
                   path='/development/stock-analysis'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Onboarding />
+                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
                     </React.Suspense>
                   }
                 />
@@ -397,8 +389,7 @@ function App() {
                   path='/calculate'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Onboarding />
+                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
                     </React.Suspense>
                   }
                 />
@@ -406,8 +397,7 @@ function App() {
                   path='/orders-map'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Onboarding />
+                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
                     </React.Suspense>
                   }
                 />
@@ -415,8 +405,7 @@ function App() {
                   path='/linked-shops'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Onboarding />
+                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
                     </React.Suspense>
                   }
                 />
