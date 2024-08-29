@@ -360,6 +360,15 @@ function App() {
                 />
 
                 <Route
+                  path='/abc-data'
+                  element={
+                    <React.Suspense fallback={<LoaderPage />}>
+                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
+                    </React.Suspense>
+                  }
+                />
+
+                <Route
                   path='/development/monitoring'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
