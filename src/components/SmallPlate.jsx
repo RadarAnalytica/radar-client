@@ -1,5 +1,6 @@
-import React from 'react';
-import { formatPrice } from '../service/utils';
+import React from "react";
+import { formatPrice } from "../service/utils";
+import TooltipInfo from "./TooltipInfo";
 
 const SmallPlate = ({
   name,
@@ -12,7 +13,7 @@ const SmallPlate = ({
 }) => {
   const rateUp = (
     <svg
-      style={{ width: '16px', height: '12px', marginRight: '10px' }}
+      style={{ width: "16px", height: "12px", marginRight: "10px" }}
       width='20'
       height='12'
       viewBox='0 0 20 12'
@@ -27,7 +28,7 @@ const SmallPlate = ({
   );
   const rateDown = (
     <svg
-      style={{ width: '16px', height: '12px', marginRight: '10px' }}
+      style={{ width: "16px", height: "12px", marginRight: "10px" }}
       width='20'
       height='12'
       viewBox='0 0 20 12'
@@ -42,29 +43,43 @@ const SmallPlate = ({
   );
 
   return (
-    <div className='small-plate' style={{ height: '100%' }}>
+    <div className='small-plate' style={{ height: "100%" }}>
       {dataDashBoard === null || dataDashBoard === undefined ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'
-          style={{ height: '100%' }}
+          style={{ height: "100%" }}
         >
           <span className='loader'></span>
         </div>
       ) : (
         <div
           className='d-flex flex-column justify-content-between'
-          style={{ height: '100%' }}
+          style={{ height: "100%" }}
         >
           <p
             className='p-0 m-0  clue-text small-title'
-            style={{ fontSize: '1.65vh' }}
+            style={{ fontSize: "1.65vh" }}
           >
             {name}
+
+            {name === "Комиссия WB" && (
+              <TooltipInfo text='3.Тут должен быть текст...' />
+            )}
+            {name === "Расходы на логистику" && (
+              <TooltipInfo text='3.Тут должен быть текст...' />
+            )}
+            {name === "Хранение" && (
+              <TooltipInfo text='3.Тут должен быть текст...' />
+            )}
+            {name === "Упущенные продажи" && (
+              <TooltipInfo text='3.Тут должен быть текст...' />
+            )}
           </p>
+
           <div className='d-flex justify-content-between align-items-end'>
             <p className='p-0 m-0 fw-bold numbers'>
               {dataDashBoard ? formatPrice(dataDashBoard) : 0}
-              {type === 'price' ? ' ₽' : ' %'}
+              {type === "price" ? " ₽" : " %"}
             </p>
             {!quantity ? (
               <div>
@@ -75,8 +90,8 @@ const SmallPlate = ({
                       className='m-0 p-0 tiny-numbers'
                       style={
                         percent > 0
-                          ? { color: 'rgba(0, 182, 155, 1)' }
-                          : { color: 'rgba(249, 60, 101, 1)' }
+                          ? { color: "rgba(0, 182, 155, 1)" }
+                          : { color: "rgba(249, 60, 101, 1)" }
                       }
                     >
                       {formatPrice(percent) || 0}%

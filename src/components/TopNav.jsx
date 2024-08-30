@@ -13,7 +13,7 @@ const TopNav = ({ title }) => {
   const dispatch = useAppDispatch();
   const componentRef = useRef(null);
   const { user, logout, authToken } = useContext(AuthContext);
-  
+
   const [menuShown, setMenuShown] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
@@ -43,6 +43,10 @@ const TopNav = ({ title }) => {
     // Clean up the interval on component unmount
     return () => clearInterval(intervalId);
   }, [dispatch, authToken]);
+<<<<<<< HEAD
+=======
+
+>>>>>>> WorkingBranch
 
   const handleErrorClick = (event) => {
     event.stopPropagation();
@@ -64,7 +68,7 @@ const TopNav = ({ title }) => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
-  
+
 
   return (
     <div className='top-nav'>
@@ -106,7 +110,7 @@ const TopNav = ({ title }) => {
                   </clipPath>
                 </defs>
               </svg>
-              <span className='error-number'>{messages?.length}</span>
+              {messages?.length <= 0 ? '' : <span className='error-number'>{messages?.length}</span>}
             </span>
             {showErrorPopup && (
               <span className='error-popup'>
@@ -119,16 +123,16 @@ const TopNav = ({ title }) => {
             onClick={() => setMenuShown(true)}
             style={{ maxWidth: '3vw', cursor: 'pointer', fontSize: '28px' }}
           />
-        </span>
+          </span>
 
-        {menuShown ? (
-          <div
-            onMouseEnter={() => handleMouseEnter()}
-            onMouseLeave={() => handleMouseLeave()}
-            className='settings-modal'
-            id='settings-modal'
-          >
-            {/* <a href="#" className='link'
+          {menuShown ? (
+            <div
+              onMouseEnter={() => handleMouseEnter()}
+              onMouseLeave={() => handleMouseLeave()}
+              className='settings-modal'
+              id='settings-modal'
+            >
+              {/* <a href="#" className='link'
                                     style={{
                                         borderBottom: '1px  solid silver',
                                         paddingBottom: '8px',
@@ -136,52 +140,52 @@ const TopNav = ({ title }) => {
                                 >
                                     Получить полный доступ
                                 </a> */}
-            <div>
-              {/* <p className='mt-3 mb-2'>Сотрудники</p> */}
-              {/* <p className='mb-1 mt-2' onClick={() => navigate('/development/settings')}>Настройки аккаунта</p> */}
-              <p
-                className='mb-1 mt-2'
-                onClick={() => navigate('/linked-shops')}
-              >
-                Подключенные магазины
-              </p>
-              <p className='m-0 mb-1' onClick={() => navigate('/subscription')}>
-                Моя подписка
-              </p>
-              <p
+              <div>
+                {/* <p className='mt-3 mb-2'>Сотрудники</p> */}
+                {/* <p className='mb-1 mt-2' onClick={() => navigate('/development/settings')}>Настройки аккаунта</p> */}
+                <p
+                  className='mb-1 mt-2'
+                  onClick={() => navigate('/linked-shops')}
+                >
+                  Подключенные магазины
+                </p>
+                <p className='m-0 mb-1'onClick={() => navigate('/subscription')}>
+                  Моя подписка
+                </p>
+                <p
                 className='m-0'
                 onClick={() => window.open('/tariffs', '_blank')}
-              >
-                Тарифы
-              </p>
-              {/* <p className='mb-2'>Экспорт отчетов</p>
+                >
+                  Тарифы
+                </p>
+                {/* <p className='mb-2'>Экспорт отчетов</p>
                                     <p className='mb-2'>Тарифы</p> */}
+              </div>
+              <hr
+                style={{
+                  minWidth: '220px',
+                  height: '1px',
+                  border: '1px solid silver',
+                  marginBottom: '4px',
+                  marginTop: '0',
+                }}
+              />
+              <a
+                href='/'
+                className='link'
+                style={{
+                  paddingTop: '4px',
+                  paddingLeft: '20px',
+                  width: '240px',
+                }}
+                onClick={() => {
+                  logout();
+                }}
+              >
+                Выход
+              </a>
             </div>
-            <hr
-              style={{
-                minWidth: '220px',
-                height: '1px',
-                border: '1px solid silver',
-                marginBottom: '4px',
-                marginTop: '0',
-              }}
-            />
-            <a
-              href='/'
-              className='link'
-              style={{
-                paddingTop: '4px',
-                paddingLeft: '20px',
-                width: '240px',
-              }}
-              onClick={() => {
-                logout();
-              }}
-            >
-              Выход
-            </a>
-          </div>
-        ) : null}
+          ) : null}
         {/* <div className="hamburger col-2 d-flex justify-content-around">
                     <RxHamburgerMenu
                         style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px', color: 'black' }}

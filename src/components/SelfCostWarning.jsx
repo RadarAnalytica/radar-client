@@ -1,11 +1,11 @@
-import React, { useContext, useState } from 'react';
-import AuthContext from '../service/AuthContext';
-import Modal from 'react-bootstrap/Modal';
+import React, { useContext, useState } from "react";
+import AuthContext from "../service/AuthContext";
+import Modal from "react-bootstrap/Modal";
 import {
   getFileClickHandler,
   saveFileClickHandler,
-} from '../service/getSaveFile';
-import DragDropFile from './DragAndDropFiles';
+} from "../service/getSaveFile";
+import DragDropFile from "./DragAndDropFiles";
 
 const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
   const { user, authToken } = useContext(AuthContext);
@@ -22,15 +22,15 @@ const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
   const handleCostPriceClose = () => {
     setCostPriceShow(false);
     onUpdateDashboard();
-    console.log('handleCostPriceClose in SelfCostWarning ....')
-  }
+    console.log("handleCostPriceClose in SelfCostWarning ....");
+  };
 
   const handleCostPriceSave = () => {
     saveFileClickHandler(file, authToken, activeBrand);
     setFile(null);
     onUpdateDashboard();
     setCostPriceShow(false);
-  }
+  };
 
   return (
     <div className='container dash-container p-3 pt-0 d-flex gap-3 '>
@@ -76,7 +76,7 @@ const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
       >
         <Modal.Header closeButton>
           <div className='d-flex align-items-center gap-2'>
-            <div style={{ width: '100%' }}>
+            <div style={{ width: "100%" }}>
               <div className='d-flex justify-content-between'>
                 <h4 className='fw-bold mb-0'>Установка себестоимости товара</h4>
               </div>
@@ -102,14 +102,14 @@ const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
                       strokeWidth='1.5'
                     />
                   </svg>
-                  <span>{file ? file.name : ''}</span>
+                  <span>{file ? file.name : ""}</span>
                 </div>
                 <div>
                   <a
                     href='#'
                     className='link'
                     onClick={() => setFile(null)}
-                    style={{ color: 'red', cursor: 'pointer' }}
+                    style={{ color: "red", cursor: "pointer" }}
                   >
                     Удалить
                   </a>
@@ -119,7 +119,7 @@ const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
                 <button
                   onClick={handleCostPriceSave}
                   className='prime-btn'
-                  style={{ height: '52px' }}
+                  style={{ height: "52px" }}
                 >
                   Сохранить
                 </button>

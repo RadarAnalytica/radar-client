@@ -10,7 +10,7 @@
 }
 
 * {
-  font-family: 'Mulish', sans-serif;
+  font-family: "Mulish", sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -288,7 +288,7 @@ select {
   padding: 0.25rem;
   font-size: 1rem;
   border: none;
-  font-family: 'Oswald', sans-serif;
+  font-family: "Oswald", sans-serif;
   background-color: transparent;
 }
 
@@ -467,6 +467,24 @@ select {
   padding: 12px;
   margin-top: 10px;
 }
+.additional-tools {
+  background: #f0ad000d;
+  color: #f0ad00;
+  font-size: 16px;
+  border-radius: 16px;
+  /* padding: 10px; */
+}
+.additional-tools.expanded {
+  background: #f0ad000d;
+  color: #f0ad00;
+  font-size: 16px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  /* padding: 10px; */
+  margin: 0;
+}
 
 #root
   > div
@@ -568,6 +586,12 @@ select {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
+.storage-table-title-element {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
 .chart-table {
   background-color: white;
   border-radius: 16px;
@@ -640,7 +664,7 @@ select {
 
 .storage-table div {
   display: flex;
-  align-items: flex-start;
+  /* align-items: flex-start; */
 }
 
 #root
@@ -784,7 +808,7 @@ select {
 .sub-card-toggle {
   display: flex;
   align-items: center;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .sub-card-toggle img {
@@ -904,7 +928,7 @@ select {
 
 /* Создать вид для фоновой заливки */
 #order + label:before {
-  content: '';
+  content: "";
   position: absolute;
   left: -3px;
   top: -1px;
@@ -927,7 +951,7 @@ select {
 
 /* Создать вид для галочки (иконки) */
 #order + label:after {
-  content: '\2713';
+  content: "\2713";
   /* Юникод символ галочки */
   position: absolute;
   top: 0;
@@ -955,7 +979,7 @@ select {
 
 /* Создать вид для фоновой заливки */
 #sales + label:before {
-  content: '';
+  content: "";
   position: absolute;
   left: -3px;
   top: -1px;
@@ -978,7 +1002,7 @@ select {
 
 /* Создать вид для галочки (иконки) */
 #sales + label:after {
-  content: '\2713';
+  content: "\2713";
   /* Юникод символ галочки */
   position: absolute;
   top: 0;
@@ -1522,16 +1546,49 @@ select {
   height: 76px;
   background-color: #f7f6fe;
   color: grey;
+  padding: 5px;
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: 8px;
 }
 
+.table-header div:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.table-body {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.table-body-row {
+  width: 100%;
+  height: 100%;
+  /* margin: 20px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: left;
+  border-bottom: 1px solid #f1f1f1;
+}
 .scrollable-table {
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
+  max-height: 500px;
+  overflow-x: hidden;
 }
 
 /* Стилизация ползунка прокрутки для элементов с классом 'scrollable-table' */
 .scrollable-table::-webkit-scrollbar {
-  height: 8px;
+  height: 33%;
+  background: #5329ff80;
+  border-radius: 6px;
+  width: 6px;
+  height: 33%;
 }
 
 .scrollable-table::-webkit-scrollbar-track {
@@ -1566,34 +1623,34 @@ select {
 
 .table th:first-child {
   width: 80vw;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 /* Устанавливаем ширину остальных th в соответствии с содержимым */
 .table th:not(:first-child) {
   width: 60vw;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
 }
-
-/* Добавляем стиль для таблицы, чтобы обеспечить корректное отображение */
-.table {
-  width: 100%;
-  table-layout: fixed;
-}
-
 .table td {
   height: 50px;
   border-bottom: 1px solid #f1f1f1;
+  white-space: nowrap;
+  text-align: start;
 }
 
+/* Добавляем стиль для таблицы, чтобы обеспечить корректное отображение */
+
 .table-content {
-  height: auto;
+  height: 800px;
   border-radius: 10px;
   background-color: #ffffff;
   margin: 22px 0px 0px 40px;
 }
 
-.table {
-  margin: 20px;
-}
 .table-glit {
   width: 100%;
   table-layout: fixed;
@@ -1743,7 +1800,7 @@ select {
   font-size: 18px;
 }
 
-.cancel-subscription-modal{
+.cancel-subscription-modal {
   font-weight: 700;
   font-size: 24px;
   line-height: 30px;
@@ -1769,8 +1826,8 @@ select {
   height: 63px;
   align-items: center;
   justify-content: center;
-  background: #5329FF;
-  border: 2px solid #5329FF;
+  background: #5329ff;
+  border: 2px solid #5329ff;
   border-radius: 8px;
   color: #f1f1f1;
   font-size: 18px;
@@ -1789,11 +1846,11 @@ select {
   justify-content: center;
   background: white;
   border-radius: 8px;
-  color: #5329FF;
+  color: #5329ff;
   font-size: 18px;
   font-weight: 700;
   line-height: 22px;
-  border: 2px solid #DDD4FF;
+  border: 2px solid #ddd4ff;
 }
 
 .button-cancel:hover {
@@ -1805,6 +1862,12 @@ select {
   display: inline-block;
   border-bottom: 1px solid rgba(232, 232, 232, 1);
   padding-bottom: 12px;
+}
+
+.error-no-messages {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
 }
 
 .error-notification {
@@ -1900,9 +1963,134 @@ select {
 }
 
 .message-text {
- font-weight: 500;
- font-size: 16px;
- line-height: 20px;
- color: rgba(26, 26, 26, 1);
- margin-bottom: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgba(26, 26, 26, 1);
+  margin-bottom: 12px;
 }
+/* fixed header */
+.abcAnalysis .table-header th,
+.abcAnalysis .table-header {
+  position: sticky;
+  top: 0;
+}
+
+.abcAnalysis .table-header img {
+  background-color: transparent;
+}
+
+.abcAnalysis .filter-btn {
+  text-align: center;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 20px;
+  margin-left: 12px;
+  white-space: nowrap;
+  height: 45px;
+  cursor: pointer;
+  color: grey;
+}
+
+.abcAnalysis .filter-btn.active {
+  background-color: #5329ff;
+  color: #fff;
+}
+
+.filter-btn-p {
+  color: grey;
+  font-size: 16px;
+  margin-left: 12px;
+}
+
+.abc-filter-container {
+  position: sticky;
+
+  top: 0px;
+  white-space: nowrap;
+  padding: 16px 0 0px 16px;
+  /* padding: 16px; */
+  align-items: center;
+}
+.table-row-image {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.icon-sort {
+  width: 16px;
+  height: 16px;
+  margin: 0 4px;
+}
+
+/* Styles for sorting icons when active */
+
+/*TooltipInfo*/
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.info-icon {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.tooltip-content {
+  visibility: visible;
+  width: 300px;
+  background-color: white;
+  color: black;
+  text-align: left;
+  padding: 10px;
+  justify-content: space-between;
+  border-radius: 8px;
+  box-shadow: 0px 0px 20px 0px #00000014;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 100%;
+  font-size: 14px;
+  white-space: normal;
+}
+
+/*TooltipInfo*/
+
+/*SeeMoreButton*/
+.image-button {
+  padding: 5px 14px; /* Consistent padding */
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  cursor: pointer;
+  background-color: #5329ff0d;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 230px; /* Fixed maximum width */
+  max-height: 50px; /* Fixed maximum height */
+  box-sizing: border-box;
+}
+
+.circle {
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-image {
+  width: 24px; /* Fixed width for icon */
+  height: 24px; /* Fixed height for icon */
+  object-fit: cover;
+}
+
+.label {
+  margin-left: 5px;
+  font-size: 16px; /* Consistent font size */
+  font-weight: 600;
+  color: #5329ff;
+  white-space: nowrap;
+}
+/*SeeMoreButton*/
