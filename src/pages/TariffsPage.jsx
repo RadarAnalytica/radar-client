@@ -5,12 +5,15 @@ import LimitedFooter from '../components/LimitedFooter';
 import { useNavigate, useLocation  } from 'react-router-dom';
 import SelectRate from '../components/SelectRate';
 import AuthContext from '../service/AuthContext';
-import { URL } from '../service/config'
+import { URL } from '../service/config';
+import { useAppDispatch } from '../redux/hooks';
+import { fetchMessages } from '../redux/messages/messagesSlice';
 
 const TariffsPage = () => {
   const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, authToken } = useContext(AuthContext);
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   const redirect = () => {
     if (!user) {
@@ -38,6 +41,10 @@ const TariffsPage = () => {
       return;
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchMessages(authToken));
+  }, []);
 
   useEffect(() => {
     if (location.search) {
