@@ -16,6 +16,7 @@ const SideNav = () => {
   const chunkArray = url ? url.split("/").reverse() : null;
   const location = chunkArray ? chunkArray[0] : null;
   const linkPlagin = "https://chromewebstore.google.com/";
+  console.log('location', location);
 
   const [active, setActive] = useState("");
   useEffect(() => {
@@ -141,11 +142,19 @@ const SideNav = () => {
               <p
                 className='sidenav-title ps-4 submenu-item'
                 style={
+// <<<<<<< HEAD
                   location === "abc-data"
                     ? { fontWeight: "bold", fontSize: "14px" }
                     : {}
                 }
                 onClick={() => navigate("/abc-data")}
+// =======
+//                   location === 'stock-analysis'
+//                     ? { fontWeight: 'bold', fontSize: '14px' }
+//                     : {}
+//                 }
+//                 onClick={() => navigate('/stock-analysis')}
+// >>>>>>> stockAnlysis
               >
                 {location === "abc-data" ? (
                   <svg
@@ -166,10 +175,10 @@ const SideNav = () => {
                 className='sidenav-title ps-4 submenu-item'
                 style={
                   location === "stock-analysis"
-                    ? { fontWeight: "bold", fontSize: "14px", display: "none" }
-                    : { display: "none" }
+                    ? { fontWeight: "bold", fontSize: "14px" }
+                    : {  }
                 }
-                onClick={() => navigate("/development/stock-analysis")}
+                onClick={() => navigate("/stock-analysis")}
               >
                 {location === "stock-analysis" ? (
                   <svg

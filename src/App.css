@@ -1629,12 +1629,25 @@ select {
 }
 
 /* Устанавливаем ширину остальных th в соответствии с содержимым */
+/* <<<<<<< HEAD */
 .table th:not(:first-child) {
   width: 60vw;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
 }
+/* ======= */
+/* .table th:not(:first-child) {
+  width: 100%;
+} */
+
+/* Добавляем стиль для таблицы, чтобы обеспечить корректное отображение */
+.table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* >>>>>>> stockAnlysis */
 .table td {
   height: 50px;
   border-bottom: 1px solid #f1f1f1;
@@ -1963,6 +1976,7 @@ select {
 }
 
 .message-text {
+/* <<<<<<< HEAD */
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
@@ -2094,3 +2108,213 @@ select {
   white-space: nowrap;
 }
 /*SeeMoreButton*/
+/* =======
+ font-weight: 500;
+ font-size: 16px;
+ line-height: 20px;
+ color: rgba(26, 26, 26, 1);
+ margin-bottom: 12px;
+} */
+
+/* .table-stock thead th {
+  width: 200px;
+} */
+
+.goods-cell {
+  min-width: 200px;
+}
+.goods-cell-150 {
+  min-width: 150px;
+}
+
+.goods-cell-120 {
+  min-width: 120px;
+}
+
+.goods-cell-135 {
+  min-width: 135px;
+}
+
+.goods-cell-160 {
+  min-width: 160px;
+}
+
+.goods-cell-180 {
+  min-width: 180px;
+}
+
+.goods-cell-100 {
+  min-width: 100px;
+}
+
+.about-goods-first {
+  width: 250px;
+}
+
+.name-of-goods {
+  min-width: 200px;
+}
+
+.about-goods {
+  display: flex;
+  align-items: center;
+}
+
+.table-caption {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  color: rgba(26, 26, 26, 1);
+  margin: 20px 0 5px 50px;
+}
+
+.table-caption thead {
+  height: 76px;
+}
+
+.table-stock thead {
+  min-width: 7360px;
+}
+
+.table-stock tbody {
+  min-width: 7370px;
+}
+
+.about-goods-title {
+  min-width: 1280px;
+}
+
+.about-goods-title-sells {
+  min-width: 615px;
+}
+
+.about-goods-title-returns {
+  min-width: 440px;
+}
+
+.about-goods-title-selfcost {
+  min-width: 320px;
+}
+
+.about-goods-title-logistic {
+  min-width: 320px;
+}
+
+.about-goods-title-other {
+  min-width: 670px;
+}
+
+.about-goods-title-profit {
+  min-width: 1240px;
+}
+
+.about-goods-title-abc {
+  min-width: 260px;
+}
+
+.about-goods-title-price {
+  min-width: 460px;
+}
+
+.about-goods-title-orders {
+  min-width: 275px;
+}
+
+.about-goods-title-purchase {
+  min-width: 625px;
+}
+
+.about-goods-title-speed {
+  min-width: 275px;
+}
+
+.about-goods-title-remainder {
+  min-width: 281px;
+}
+
+.table-stock {
+  width: 100%;
+  max-width: none;
+  table-layout: auto;
+}
+
+.table-stock thead tr {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  /* justify-content: space-between; */
+  width: 100%;
+  height: 40px;
+  border-bottom: 1px solid #E8E8E8;
+  height: 76px;
+  background: rgba(247, 246, 254, 1);
+  border-radius: 12px;
+  margin-left: 15px;
+}
+.table-stock thead tr th {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgba(140, 140, 140, 1);
+  height: 100%;
+}
+
+.table-stock tbody tr {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  min-height: 44px;
+  padding: 5px 0 5px 0;
+  border-bottom: 1px solid rgba(232, 232, 232, 1);
+}
+
+.goods-cell-first {
+  margin-left: 25px;
+}
+
+.table-stock tbody tr td {
+ height: 100%;
+}
+
+.table-alignment {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.about-goods-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.empty-box {
+  min-width: 30px;
+  margin: 0 10px 0 10px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.about-goods-cell {
+  min-width: 1400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.border-right {
+  border-right: 1px solid rgba(232, 232, 232, 1);
+}
+
+.height-100 {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+/* >>>>>>> stockAnlysis */

@@ -1,38 +1,44 @@
 import React from "react";
 
-const StockAnalysisFilter = ({ shop, setActiveBrand }) => {
+const StockAnalysisFilter = ({shops, setActiveBrand, setDays, activeShopId}) => {
+  const currentShop = shops?.find((item) => item.id == activeShopId);
+  const shopName = activeShopId == 0 ? 'Все' : currentShop?.brand_name;
+
   return (
     <div className='filter container dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
         <div className='filter-item col'>
           <label
-            style={{ fontWeight: 600, marginBottom: "4px " }}
+            style={{ fontWeight: 600, marginBottom: '4px ' }}
             htmlFor='period'
           >
-            Период:
+            Период
           </label>
           <select
             style={{
-              padding: "1vh 1.75vh",
-              backgroundColor: "rgba(0, 0, 0, 0.05)",
-              borderRadius: "8px",
+              padding: '1vh 1.75vh',
+              backgroundColor: 'rgba(0, 0, 0, 0.05)',
+              borderRadius: '8px',
             }}
             className='form-control'
             id='period'
-            defaultValue={"30"}
+            defaultValue={'30'}
+            onChange={(e) => {
+              setDays(e.target.value);
+            }}
           >
             {/* <option selected={defaultValue === 1 ? true : false} value={'1'}>1 день</option> */}
-            <option value={"7"}>7 дней</option>
-            <option value={"14"}>14 дней</option>
-            <option value={"30"}>30 дней</option>
-            <option value={"90"}>90 дней</option>
+            <option value={'7'}>7 дней</option>
+            <option value={'14'}>14 дней</option>
+            <option value={'30'}>30 дней</option>
+            <option value={'90'}>90 дней</option>
           </select>
           <svg
             style={{
-              position: "absolute",
-              right: "1.75vw",
-              top: "5.5vh",
-              width: "1.5vh",
+              position: 'absolute',
+              right: '1.75vw',
+              top: '5.5vh',
+              width: '1.5vh',
             }}
             viewBox='0 0 28 17'
             fill='none'
@@ -58,29 +64,46 @@ const StockAnalysisFilter = ({ shop, setActiveBrand }) => {
                 </div> */}
         <div className='filter-item col'>
           <label
-            style={{ fontWeight: 600, marginBottom: "4px " }}
+
+            style={{ fontWeight: 600, marginBottom: '4px ' }}
             htmlFor='store'
           >
-            Магазин:
+            Магазин
           </label>
           <select
             style={{
-              padding: "1vh 1.75vh",
-              backgroundColor: "rgba(0, 0, 0, 0.05)",
-              borderRadius: "8px",
+              padding: '1vh 1.75vh',
+              backgroundColor: 'rgba(0, 0, 0, 0.05)',
+              borderRadius: '8px',
             }}
             className='form-control'
             id='store'
-            defaultValue='0'
-            onChange={(e) => setActiveBrand(e.target.value)}
+            defaultValue={`${
+              activeShopId !== undefined ? activeShopId : shops?.[0]?.id
+            }`}
+            onChange={(e) => {
+              const firstValue = e.target.value.split('|')[0];
+              // const secondValue = e.target.value.split('|')[1];
+              // const lastValue = e.target.value.split('|')[2];
+              // setPrimary(lastValue);
+              // setChangeBrand(secondValue);
+              setActiveBrand(firstValue);
+            }}
           >
-            <option value='Все' selected>
+              <option
+                value={`${shops?.[0]?.id}|${shops?.[0]?.is_primary_collect}|${shops?.[0]?.is_valid}`}
+                hidden
+              >
+                {shopName ||
+                  shops?.[activeShopId]?.brand_name ||
+                  shops?.[0]?.brand_name}
+              </option>
+            <option value='0'>
               Все
             </option>
-            <option>0</option>
-            {shop &&
-              shop?.map((brand) => (
-                <option key={brand.id} value={`${brand.id}`}>
+            {shops &&
+              shops?.map((brand) => (
+                <option key={brand.id} value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}>
                   {brand.brand_name}
                 </option>
               ))}
@@ -90,10 +113,10 @@ const StockAnalysisFilter = ({ shop, setActiveBrand }) => {
           </select>
           <svg
             style={{
-              position: "absolute",
-              right: "1.75vw",
-              top: "5.5vh",
-              width: "1.5vh",
+              position: 'absolute',
+              right: '1.75vw',
+              top: '5.5vh',
+              width: '1.5vh',
             }}
             viewBox='0 0 28 17'
             fill='none'
