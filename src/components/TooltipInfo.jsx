@@ -28,7 +28,7 @@ const TooltipInfo = ({ text }) => {
             stroke-width='1.5'
           />
           <path
-            d='M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z'
+            d='M8.9 15V7.958H10.5V15H8.9ZM8.9 6.418V5.246H10.5V6.418H8.9Z'
             fill='#1A1A1A'
             fill-opacity='0.5'
           />

@@ -965,6 +965,7 @@ const DashboardPage = () => {
                     sign={" %"}
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
+                    tableType={1}
                   />
 
                   <ChartTable
