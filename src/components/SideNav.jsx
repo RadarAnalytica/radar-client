@@ -3,6 +3,7 @@ import logo from "../assets/logo.png";
 import greygrow from "../assets/grey-grow.png";
 import purplegrow from "../assets/purple-grow.png";
 import goods from "../assets/mygoods.png";
+import lightning from "../assets/Lightning 1.png";
 import magic from "../assets/magic.png";
 import support from "../assets/support.png";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +15,7 @@ const SideNav = () => {
   const url = document.location.href;
   const chunkArray = url ? url.split("/").reverse() : null;
   const location = chunkArray ? chunkArray[0] : null;
+  const linkPlagin = "https://chromewebstore.google.com/";
 
   const [active, setActive] = useState("");
   useEffect(() => {
@@ -22,6 +24,7 @@ const SideNav = () => {
 
   const [goodsShown, setGoodsShown] = useState(true);
   const [promotionShown, setPromotionShown] = useState(true);
+  const [additionalTools, setAdditionalTools] = useState(true);
 
   return (
     <div className='side-nav'>
@@ -270,8 +273,111 @@ const SideNav = () => {
               </p>
             </div>
           ) : null}
+          <div
+            className={`sidenav-el additional-tools ${
+              additionalTools ? "expanded" : ""
+            }`}
+            onClick={() => setAdditionalTools(!additionalTools)}
+          >
+            <div className='d-flex align-items-center'>
+              <svg
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M6 14L13 2V10H18L11 22V14H6Z'
+                  stroke='#F0AD00'
+                  stroke-width='2'
+                  stroke-linejoin='round'
+                />
+              </svg>
+
+              {/* <img src={lightning} alt='' className='side-nav-icon' /> */}
+
+              <span
+                className='sidenav-title'
+                style={
+                  location === "abc-data"
+                    ? { fontWeight: "", fontSize: "14px", color: "#F0AD00" }
+                    : {
+                        fontWeight: "",
+                        fontSize: "14px",
+                        color: "#F0AD00",
+                      }
+                }
+              >
+                Дополнительные
+                <br />
+                инструменты
+              </span>
+            </div>
+
+            <span>
+              {additionalTools ? (
+                <IoIosArrowUp color='#F0AD00' />
+              ) : (
+                <IoIosArrowDown color='#F0AD00' />
+              )}
+            </span>
+          </div>
+          {additionalTools ? (
+            <div
+              style={{
+                background: "#F0AD000D",
+                borderBottomLeftRadius: "16px",
+                borderBottomRightRadius: "16px",
+                padding: "5px",
+              }}
+            >
+              <p
+                className='sidenav-title ps-4 submenu-item'
+                style={
+                  location === "plagin"
+                    ? { fontWeight: "bold", fontSize: "14px" }
+                    : {}
+                }
+                onClick={() => navigate("")}
+              >
+                <a
+                  href='https://chromewebstore.google.com/'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  Плагин-браузер
+                </a>
+              </p>
+              {/* <p
+                className='sidenav-title ps-4 submenu-item'
+                style={
+                  location === "abc-data"
+                    ? { fontWeight: "bold", fontSize: "14px" }
+                    : {}
+                }
+                onClick={() => navigate("/abc-data")}
+              >
+                {location === "abc-data" ? (
+                  <svg
+                    style={{ marginRight: "0.5vw" }}
+                    width='8'
+                    height='8'
+                    viewBox='0 0 8 8'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <circle cx='4' cy='4' r='4' fill='#F0AD00' />
+                  </svg>
+                ) : null}
+                Умная таблица Excel
+              </p> */}
+            </div>
+          ) : null}
         </div>
       </div>
+
       <div
         className='support-block'
         onClick={() =>

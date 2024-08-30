@@ -1,9 +1,10 @@
-import React from 'react';
-import { formatPrice } from '../service/utils';
+import React from "react";
+import { formatPrice } from "../service/utils";
+import TooltipInfo from "../components/TooltipInfo";
 
-export const TableRow = ({ values, percent, sign }) => {
-  const green = require('../assets/greenarrow.png');
-  const red = require('../assets/redarrow.png');
+export const TableRow = ({ values, percent, sign, tableType }) => {
+  const green = require("../assets/greenarrow.png");
+  const red = require("../assets/redarrow.png");
 
   return (
     <div className='d-flex'>
@@ -11,21 +12,21 @@ export const TableRow = ({ values, percent, sign }) => {
         ? values.map((val, i) => {
             return (
               <span
-                className={i < 2 ? 'col fin-row' : 'col-2 fin-row'}
+                className={i < 2 ? "col fin-row" : "col-2 fin-row"}
                 key={i}
                 style={
                   i === 0
-                    ? { textAlign: 'left' }
+                    ? { textAlign: "left" }
                     : i > 1
-                    ? { textAlign: 'right', fontWeight: 400 }
-                    : { fontWeight: 700, textAlign: 'right' }
+                    ? { textAlign: "right", fontWeight: 400 }
+                    : { fontWeight: 700, textAlign: "right" }
                 }
               >
                 {(percent || percent === 0 || !percent) && i === 2 ? (
                   <span>
                     {percent && percent > 0 ? (
                       <svg
-                        style={{ height: '1.25vh', marginRight: '4px' }}
+                        style={{ height: "1.25vh", marginRight: "4px" }}
                         viewBox='0 0 20 12'
                         fill='none'
                         xmlns='http://www.w3.org/2000/svg'
@@ -37,7 +38,7 @@ export const TableRow = ({ values, percent, sign }) => {
                       </svg>
                     ) : (
                       <svg
-                        style={{ height: '1.25vh', marginRight: '4px' }}
+                        style={{ height: "1.25vh", marginRight: "4px" }}
                         viewBox='0 0 20 12'
                         fill='none'
                         xmlns='http://www.w3.org/2000/svg'
@@ -54,27 +55,60 @@ export const TableRow = ({ values, percent, sign }) => {
                 <span
                   style={
                     percent <= 0 && i > 1
-                      ? { fontWeight: 700, fontSize: '1.75vh', color: 'red' }
+                      ? { fontWeight: 700, fontSize: "1.75vh", color: "red" }
                       : !percent && i > 1
-                      ? { fontWeight: 700, fontSize: '1.75vh', color: 'red' }
+                      ? { fontWeight: 700, fontSize: "1.75vh", color: "red" }
                       : percent > 0 && i > 1
                       ? {
                           fontWeight: 700,
-                          fontSize: '1.75vh',
-                          color: 'rgba(0, 182, 155, 1)',
+                          fontSize: "1.75vh",
+                          color: "rgba(0, 182, 155, 1)",
                         }
                       : {}
                   }
                 >
+                  {/* {i === 0 && tableType === 1 && val === "Выручка" && (
+                    <span style={{ display: "flex", alignItems: "center" }}>
+                      {val}
+                      <TooltipInfo text='Маржинальная прибыль — это разница между выручкой и переменными затратами. Маржинальность или рентабельность по маржинальной прибыли — это отношение маржинальной прибыли к выручке.' />
+                    </span>
+                  )}
+
                   {i === 1
-                    ? typeof val === 'string'
+                    ? typeof val === "string"
                       ? val
-                      : formatPrice(val) + (sign ? sign : ' ₽')
+                      : formatPrice(val) + (sign ? sign : " ₽")
                     : i > 1 && val
-                    ? formatPrice(val) + ' %'
+                    ? formatPrice(val) + " %"
                     : i > 1
-                    ? 0 + ' %'
-                    : val}
+                    ? 0 + " %"
+                    : val} */}
+                  {i === 0 &&
+                  tableType === 1 &&
+                  (val === "Выручка" || val === "Маржинальная стоимость") ? (
+                    <>
+                      {val}
+                      <TooltipInfo
+                        text={
+                          val === "Выручка"
+                            ? "Маржинальная прибыль — это разница между выручкой и переменными затратами. Маржинальность или рентабельность по маржинальной прибыли — это отношение маржинальной прибыли к выручке."
+                            : "Маржинальная стоимость — это разница между ценой продажи и себестоимостью товара. Этот показатель помогает определить прибыльность и эффективность бизнеса."
+                        }
+                      />
+                    </>
+                  ) : i === 1 ? (
+                    typeof val === "string" ? (
+                      val
+                    ) : (
+                      formatPrice(val) + (sign ? sign : " ₽")
+                    )
+                  ) : i > 1 && val ? (
+                    formatPrice(val) + " %"
+                  ) : i > 1 ? (
+                    0 + " %"
+                  ) : (
+                    val
+                  )}
                 </span>
               </span>
             );
@@ -84,13 +118,20 @@ export const TableRow = ({ values, percent, sign }) => {
   );
 };
 
-const FinanceTable = ({ title, data, sign, wbData, dataDashBoard }) => {
+const FinanceTable = ({
+  title,
+  data,
+  sign,
+  wbData,
+  dataDashBoard,
+  tableType,
+}) => {
   return (
     <div className='finance-table mb-0'>
       {!dataDashBoard ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'
-          style={{ height: '100%', paddingTop: '20%' }}
+          style={{ height: "100%", paddingTop: "20%" }}
         >
           <span className='loader'></span>
         </div>
@@ -101,13 +142,14 @@ const FinanceTable = ({ title, data, sign, wbData, dataDashBoard }) => {
             data.map((item, i) => {
               let values = item ? Object.values(item) : [];
               let keys = item ? Object.keys(item) : [];
-              let rate = keys ? keys.find((el) => el === 'rate') : null;
+              let rate = keys ? keys.find((el) => el === "rate") : null;
               return (
                 <TableRow
                   key={i}
                   values={values}
                   sign={sign}
-                  percent={rate ? item['rate'] : null}
+                  percent={rate ? item["rate"] : null}
+                  tableType={tableType}
                 />
               );
             })}

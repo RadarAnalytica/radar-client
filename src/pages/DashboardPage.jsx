@@ -26,6 +26,7 @@ import downloadIcon from "../pages/images/Download.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import NoSubscriptionPage from "./NoSubscriptionPage";
+import TooltipInfo from "../components/TooltipInfo";
 
 const DashboardPage = () => {
   const { user, authToken, logout } = useContext(AuthContext);
@@ -946,6 +947,7 @@ const DashboardPage = () => {
                     data={financeData}
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
+                    tableType={1}
                   />
                   <StorageTable
                     wbData={wbData}
