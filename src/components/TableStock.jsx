@@ -21,20 +21,8 @@ const TableStock = ({ dataTable, setDataTable }) => {
     setDataTable(sortedData);
   }, [dataTable, asc]);
 
-  const toggleRotate = (element) => {
-    const iconUp = element.querySelector('.icon-sort-up');
-    const iconDown = element.querySelector('.icon-sort-down');
-    iconUp.classList.toggle('sort-icon_rotate');
-    iconDown.classList.toggle('sort-icon_rotate');
-  };
-
-  const handleSort = (element, columnName) => {
-    toggleRotate(element);
-    sortData(columnName);
-  };
-
   return (
-    <div class='scrollable-table table-content'>
+    <div class= 'table-content-stock'>
       <table className='table-stock table-alignment' style={{ height: '100%' }}>
         <span className='table-caption'>
         <caption className='about-goods-title'>О товаре</caption>
