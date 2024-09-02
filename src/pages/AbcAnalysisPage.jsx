@@ -142,6 +142,12 @@ const AbcAnalysisPage = () => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
     }
+  }, [authToken]);
+
+  useEffect(() => {
+    if (activeBrand !== undefined) {
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
+    }
   }, [days, activeBrand]);
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
