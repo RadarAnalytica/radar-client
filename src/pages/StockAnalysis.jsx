@@ -17,6 +17,7 @@ import DragDropFile from '../components/DragAndDropFiles';
 import Modal from 'react-bootstrap/Modal';
 import {fetchStockAnalysisData} from '../redux/stockAnalysis/stockAnalysisDataActions';
 import { ServiceFunctions } from "../service/serviceFunctions";
+import DownloadButton from '../components/DownloadButton';
 
 const StockAnalysis = () => {
 
@@ -170,12 +171,7 @@ const StockAnalysis = () => {
                   />
                 </div>
                 <div>
-                  <img
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => getFileClickHandler(authToken, activeBrand)}
-                    src={DownloadFile}
-                    alt=''
-                  />
+                  <DownloadButton handleDownload={() =>getFileClickHandler(authToken, activeBrand)}/>
                 </div>
               </div>
             </>

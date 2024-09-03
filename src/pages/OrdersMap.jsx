@@ -16,6 +16,9 @@ import { fetchShops } from '../redux/shops/shopsActions';
 import { fetchGeographyData } from '../redux/geoData/geoDataActions';
 import { useLocation, useNavigate } from "react-router-dom";
 import NoSubscriptionPage from './NoSubscriptionPage';
+import RadioGroup from '../components/RadioGroup';
+import OrderSalesPieCharts from '../components/OrderSalesPieCharts';
+import StockDataRow from '../components/StockDataRow';
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -59,6 +62,11 @@ const OrdersMap = () => {
     is_primary_collect: allShop,
     is_valid: true,
   };
+
+  const radioOptions = [
+    { value: 'region', label: 'По регионам' },
+    { value: 'store', label: 'По складам' },
+  ];
 
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
@@ -667,6 +675,10 @@ const OrdersMap = () => {
     handleTooltipPosition(x, y);
   };
 
+  const handleRadioChange = (value) => {
+    setByRegions(value === 'region');
+  };
+
   if (user?.subscription_status === 'expired') {
     return <NoSubscriptionPage title={'География заказов и продаж'}/>
   };
@@ -691,45 +703,12 @@ const OrdersMap = () => {
           />
           {shouldDisplay ? (
             <div className='map-container dash-container container p-3'>
-              <div className='map-radio mb-3'>
-                <div className='radio-item'>
-                  <input
-                    type='radio'
-                    name='radio'
-                    id='region-radio'
-                    style={{ cursor: 'pointer' }}
-                    defaultChecked
-                    onClick={() => {
-                      setByRegions(true);
-                      //setLoading(true);
-                    }}
-                  />
-                  <label
-                    htmlFor='region-radio'
-                    style={{ cursor: 'pointer', fontSize: '2vh' }}
-                  >
-                    По регионам
-                  </label>
-                </div>
-                <div className='radio-item'>
-                  <input
-                    type='radio'
-                    name='radio'
-                    id='store-radio'
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      setByRegions(false);
-                      //setLoading(true);
-                    }}
-                  />
-                  <label
-                    htmlFor='store-radio'
-                    style={{ cursor: 'pointer', fontSize: '2vh' }}
-                  >
-                    По складам
-                  </label>
-                </div>
-              </div>
+              <RadioGroup
+                options={radioOptions}
+                name='mapView'
+                defaultValue='region'
+                onChange={handleRadioChange}
+              />
 
               {byRegions ? (
                 <div id='map'>
@@ -893,59 +872,35 @@ const OrdersMap = () => {
                 </div>
               ) : !byRegions && !loading && geoData?.stock_data ? (
                 <div className='map-data-content'>
-                  <div className=' pl-3 d-flex map-data-row'>
-                    <div className='col'>
-                      <OrderMapPieChart
-                        info={geoData.stock_data}
-                        title={'Топ 5 по заказам'}
-                        geoData={geoData.stock_data}
-                        sub={'Всего заказов'}
-                        totalAmount={totalOrderAmountStock}
-                        totalCount={totalOrderSumStock}
-                        count={orderCountStock}
-                        amount={orderAmountStock}
-                        titleTooltipAmount={'Заказы, руб'}
-                        titleTooltipCount={'Заказы, шт'}
-                        tooltipData={tooltipOrderDataStock}
-                      />
-                    </div>
-                    <div className='col'>
-                      <OrderMapPieChart
-                        info={geoData.stock_data}
-                        title={'Топ 5 по продажам'}
-                        geoData={geoData.stock_data}
-                        sub={'Всего продаж'}
-                        totalAmount={totalSaleAmountStock}
-                        totalCount={totalSaleSumStock}
-                        count={saleCountStock}
-                        amount={saleAmountStock}
-                        titleTooltipAmount={'Продажи,руб'}
-                        titleTooltipCount={'Продажи,шт'}
-                        tooltipData={tooltipSalesDataStock}
-                      />
-                    </div>
-                  </div>
+                  <OrderSalesPieCharts
+                    geoData={geoData}
+                    orderData={{
+                      totalOrderAmountStock,
+                      totalOrderSumStock,
+                      orderCountStock,
+                      orderAmountStock,
+                      tooltipOrderDataStock,
+                    }}
+                    salesData={{
+                      totalSaleAmountStock,
+                      totalSaleSumStock,
+                      saleCountStock,
+                      saleAmountStock,
+                      tooltipSalesDataStock,
+                    }}
+                  />
                   <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>
                     Детализация по заказам
                   </h5>
                   {geoData?.stock_data && geoData?.stock_data.length
-                    ? geoData?.stock_data.map((w, i) => {
+                    ? geoData?.stock_data.map((stockData, i) => {
                         return (
-                          <div className=' pl-3 map-data-row' key={i}>
-                            <div className='col'>
-                              <OrderTableExtended
-                                title={`Заказы из ${w.stockName}`}
-                                data={geoData?.stock_data[i]?.orderDetails}
-                              />
-                            </div>
-                            {/* style={geoData?.stock_data[i]?.saleDetails?.length === 0 ? { visibility: 'hidden' } : {}} */}
-                            <div className='col'>
-                              <OrderTableExtended
-                                title={`Продажи из ${w.stockName}`}
-                                data={geoData?.stock_data[i]?.saleDetails}
-                              />
-                            </div>
-                          </div>
+                          <StockDataRow
+                            key={i}
+                            stockName={stockData.stockName}
+                            orderDetails={stockData.orderDetails}
+                            saleDetails={stockData.saleDetails}
+                          />
                         );
                       })
                     : null}
