@@ -18,6 +18,9 @@ import Modal from 'react-bootstrap/Modal';
 import {fetchStockAnalysisData} from '../redux/stockAnalysis/stockAnalysisDataActions';
 import { ServiceFunctions } from "../service/serviceFunctions";
 import DownloadButton from '../components/DownloadButton';
+import NoSubscriptionPage from "./NoSubscriptionPage";
+import SelfCostWarning from "../components/SelfCostWarning";
+import DataCollectionNotification from "../components/DataCollectionNotification";
 
 const StockAnalysis = () => {
 
@@ -59,6 +62,12 @@ const StockAnalysis = () => {
     is_primary_collect: allShop,
     is_valid: true,
   };
+ 
+  const shouldDisplay = activeShop
+  ? activeShop.is_primary_collect
+  : oneShop
+  ? oneShop.is_primary_collect
+  : allShop;
 
   const handleCostPriceShow = () => {
     setCostPriceShow(true);
@@ -122,12 +131,37 @@ const StockAnalysis = () => {
     setActiveBrand(shopId);
   };
 
+  
+  const handleUpdateDashboard = () => {
+    setTimeout(() => {
+      updateDataDashBoardCaller();
+    }, 3000);
+  };
+
+  const updateDataDashBoardCaller = async () => {
+    activeBrand !== undefined &&
+      updateDataDashBoard(days, activeBrand, authToken);
+  };
+
+  if (user?.subscription_status === "expired") {
+    return <NoSubscriptionPage title={"Товарная аналитика"} />;
+  }
+
   return (
     <>
       <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
+          {!isInitialLoading &&
+          !dataDashBoard?.costPriceAmount &&
+          activeShopId !== 0 &&
+          shouldDisplay ? (
+            <SelfCostWarning
+              activeBrand={activeBrand}
+              onUpdateDashboard={handleUpdateDashboard}
+            />
+          ) : null}
           <div className=' pt-0 d-flex gap-3'>
             <StockAnalysisFilter
               shops={shops}
@@ -136,47 +170,58 @@ const StockAnalysis = () => {
               activeShopId={activeShopId}
             />
           </div>
-          <div className='input-and-button-container container'>
-          <div className='search'>
-            <div className='search-box'>
-              <input
-                type='text'
-                placeholder='Поиск по SKU или артикулу'
-                className='container dash-container search-input'
-              />
-              <div>
-                <img
-                  style={{ marginLeft: '10px', cursor: 'pointer' }}
-                  src={SearchButton}
-                  alt='search'
-                />
-              </div>
-            </div>
-          </div>
-          {!isInitialLoading && !dataDashBoard?.costPriceAmount && (
+          {shouldDisplay ? (
             <>
-              <div
-                className='d-flex'
-                style={{
-                  gap: '20px',
-                  alignItems: 'center',
-                }}
-              >
-                <div>
-                  <img
-                    style={{ cursor: 'pointer' }}
-                    onClick={handleCostPriceShow}
-                    src={StockCostPrice}
-                    alt=''
-                  />
+              <div className='input-and-button-container container'>
+                <div className='search'>
+                  <div className='search-box'>
+                    <input
+                      type='text'
+                      placeholder='Поиск по SKU или артикулу'
+                      className='container dash-container search-input'
+                    />
+                    <div>
+                      <img
+                        style={{ marginLeft: '10px', cursor: 'pointer' }}
+                        src={SearchButton}
+                        alt='search'
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <DownloadButton handleDownload={() =>getFileClickHandler(authToken, activeBrand)}/>
-                </div>
+                <>
+                  <div
+                    className='d-flex'
+                    style={{
+                      gap: '20px',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div>
+                      <img
+                        style={{ cursor: 'pointer' }}
+                        onClick={handleCostPriceShow}
+                        src={StockCostPrice}
+                        alt=''
+                      />
+                    </div>
+                    <div>
+                      <DownloadButton
+                        handleDownload={() =>
+                          getFileClickHandler(authToken, activeBrand)
+                        }
+                      />
+                    </div>
+                  </div>
+                </>
               </div>
+              <TableStock dataTable={dataTable} setDataTable={setDataTable} />
             </>
-          )}</div>
-          <TableStock dataTable={dataTable} setDataTable={setDataTable} />
+          ) : (
+            <DataCollectionNotification
+              title={'Ваши данные еще формируются и обрабатываются.'}
+            />
+          )}
         </div>
       </div>
       <Modal
