@@ -43,9 +43,41 @@ const TariffsPage = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchMessages(authToken));
+    if (user) {
+      const refreshToken = async () => {
+         await refreshUserToken();
+      };
+
+      // Initial token refresh
+      refreshToken();
+
+      // Set up interval to refresh token every minute
+      const intervalId = setInterval(refreshToken, 60000);
+
+      // Clean up interval on component unmount
+      return () => clearInterval(intervalId);
+    }
   }, []);
 
+  const refreshUserToken = async () => {
+    try {
+      const response = await fetch(`${URL}/api/user/refresh`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "JWT " + authToken,
+        },
+      });
+      
+      if (response.status === 200) {
+        const data = await response.json(); 
+        return data.token;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return null;
+  };
   useEffect(() => {
     if (location.search) {
       checkIdQueryParam();
