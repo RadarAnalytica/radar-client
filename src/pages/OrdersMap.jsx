@@ -64,7 +64,7 @@ const OrdersMap = () => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       dispatch(fetchGeographyData({ authToken, days, activeBrand }));
     } 
-  }, [dispatch, days, activeBrand]);
+  }, [authToken]);
 
   useEffect(() => {
     dispatch(fetchShops(authToken));

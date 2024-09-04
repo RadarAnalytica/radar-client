@@ -149,6 +149,12 @@ const DashboardPage = () => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       updateDataDashBoard(days, activeBrand, authToken);
     }
+  }, [authToken]);
+
+  useEffect(() => {
+    if (activeBrand !== undefined ) {
+      updateDataDashBoard(days, activeBrand, authToken);
+    }
   }, [days, activeBrand]);
 
   useEffect(() => {
