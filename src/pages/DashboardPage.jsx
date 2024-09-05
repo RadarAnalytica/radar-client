@@ -169,16 +169,20 @@ const DashboardPage = () => {
     const calculateNextEvenHourPlus30 = () => {
       const now = new Date();
       let targetTime = new Date(now);
-      targetTime.setMinutes(30, 0, 0);
-
-      if (now.getMinutes() >= 30) {
-        targetTime.setHours(targetTime.getHours() + 2);
-      } else {
-        targetTime.setHours(
-          targetTime.getHours() + (targetTime.getHours() % 2)
-        );
+      
+      // Set to the next half hour
+      targetTime.setMinutes(targetTime.getMinutes() <= 30 ? 30 : 60, 0, 0);
+      
+      // If we're already past an even hour + 30 minutes, move to the next even hour
+      if (targetTime.getHours() % 2 !== 0 || (targetTime.getHours() % 2 === 0 && targetTime <= now)) {
+        targetTime.setHours(targetTime.getHours() + 1);
       }
-
+      
+      // Ensure we're on an even hour
+      if (targetTime.getHours() % 2 !== 0) {
+        targetTime.setHours(targetTime.getHours() + 1);
+      }
+    
       return targetTime;
     };
 
