@@ -113,10 +113,10 @@ const DashboardPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (shops?.length === 0 ) {
+    if (shops?.length === 0 && !isInitialLoading) {
       navigate("/onboarding");
-    } 
-  }, [isInitialLoading, shops])
+    }
+  }, [isInitialLoading])
 
   useEffect(() => {
     if (shops.length > 0) {

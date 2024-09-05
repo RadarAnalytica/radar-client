@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -31,7 +31,7 @@ const LinkedShops = () => {
   const loading = useAppSelector((state) => state.loadingSlice);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-
+  const prevShopsLengthRef = useRef(shops.length);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -120,8 +120,31 @@ const LinkedShops = () => {
   // }
 
   useEffect(() => {
-    if (user) {
+    if (user && shops.length > 0) {
       dispatch(fetchShops(authToken));
+      
+      const prevShopsLength = prevShopsLengthRef.current;
+      
+      if (shops.length > prevShopsLength) {
+        // A shop was added
+        const newAddedShop = shops[shops.length - 1]; // Assuming the new shop is added at the end
+        if (newAddedShop) {
+          localStorage.setItem('activeShop', JSON.stringify(newAddedShop));
+        }
+      } else if (shops.length < prevShopsLength) {
+        // A shop was removed
+        if (shops.length > 0) {
+          // If there are still shops, set the first one as active
+          localStorage.setItem('activeShop', JSON.stringify(shops[0]));
+        } else {
+          // If no shops left, remove activeShop from localStorage
+          localStorage.removeItem('activeShop');
+        }
+      }
+      
+      prevShopsLengthRef.current = shops.length;
+    } else {
+      localStorage.removeItem('activeShop');
     }
   }, [shops.length]);
 
@@ -147,6 +170,11 @@ const LinkedShops = () => {
 
   const handleDeleteShop = () => {
     dispatch(deleteShop(deleteShopData));
+  };
+
+  const handleVisitDashboard = () => {
+    setShowSuccess(false);
+    navigate('/dashboard');
   };
 
   const handleAddShop = (e) => {
@@ -705,9 +733,12 @@ const LinkedShops = () => {
           <p>
             Ваш токен успешно подключен к сервису и находится на проверке. В
             ближайшее время данные начнут отображаться в разделе{' '}
-            <a href='/dashboard' className='link'>
+            <span
+              className='link'
+              onClick={handleVisitDashboard}
+            >
               Сводка продаж
-            </a>
+            </span>
           </p>
           {/* <div className="d-flex justify-content-between">
                         <div className="grey-block d-flex align-items-center">
