@@ -1,14 +1,21 @@
-import React, { useContext } from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import LogoNavbarSelect from '../pages/images/LogoNavbarSelect';
-import { useNavigate } from 'react-router-dom';
-import AuthContext from '../service/AuthContext';
-import RadarAnaliticaMedium from '../pages/images/RadarAnaliticaMedium.svg';
-import Steps from '../pages/images/Steps';
+import React, { useContext, useState } from "react";
+import Dropdown from "react-bootstrap/Dropdown";
+import LogoNavbarSelect from "../pages/images/LogoNavbarSelect";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../service/AuthContext";
+import RadarAnaliticaMedium from "../pages/images/RadarAnaliticaMedium.svg";
+import Steps from "../pages/images/Steps";
+import menu from "../assets/menu.png";
+import closebtn from "../assets/closebtn.png";
 
 const NavbarMainHome = ({ onlyLogo }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   const buttonSignIn = (path) => {
     return (
@@ -26,14 +33,37 @@ const NavbarMainHome = ({ onlyLogo }) => {
 
   return (
     <div className='page-header'>
-      <div className='wide_container page-container'>
+      <div className='wide_container page-container mobile-container'>
         <img
           src={RadarAnaliticaMedium}
           alt='logo'
-          onClick={() => navigate('/home')}
-          style={{ cursor: 'pointer' }}
+          onClick={() => navigate("/home")}
+          style={{ cursor: "pointer" }}
         />
-
+        {!onlyLogo && (
+          <div className='widheader-login hide-on-mobile'>
+            {user ? (
+              user?.subscription_status !== "expired" ? (
+                buttonSignIn("/dashboard")
+              ) : user?.subscription_status === "expired" ? (
+                buttonSignIn("/tariffs")
+              ) : null
+            ) : (
+              <div className='header-btn-wrap'>
+                <button
+                  onClick={() => {
+                    navigate("/signup");
+                  }}
+                  className='prime-btn header-btn'
+                >
+                  <Steps.StepsWhite />
+                  <p style={{ margin: 0, fontWeight: 600 }}>Регистрация</p>
+                </button>
+                {buttonSignIn("/signin")}
+              </div>
+            )}
+          </div>
+        )}
         {/* <div className='home-menu'>
           <Dropdown>
             <Dropdown.Toggle
@@ -132,30 +162,43 @@ const NavbarMainHome = ({ onlyLogo }) => {
           <span className='home-item'>Тарифы</span>
           <span className='home-item'>Контакты</span>
         </div> */}
-        {!onlyLogo && (
-          <div className='widheader-login'>
-            {user ? (
-              user?.subscription_status !== 'expired' ? (
-                buttonSignIn('/dashboard')
-              ) : user?.subscription_status === 'expired' ? (
-                buttonSignIn('/tariffs')
-              ) : null
-            ) : (
-              <div className='header-btn-wrap'>
-                <button
-                  onClick={() => {
-                    navigate('/signup');
-                  }}
-                  className='prime-btn header-btn'
-                >
-                  <Steps.StepsWhite />
-                  <p style={{ margin: 0, fontWeight: 600 }}>Регистрация</p>
-                </button>
-                {buttonSignIn('/signin')}
-              </div>
-            )}
-          </div>
-        )}
+      </div>
+      <div className='mobile-menu-container'>
+        {/* Burger Menu Icon */}
+        <button className='mobile-menu-button' onClick={toggleMenu}>
+          <img src={isOpen ? closebtn : menu} alt='Menu' />
+        </button>
+
+        {/* Mobile Menu */}
+        <nav
+          className={`mobilemenu ${isOpen ? "open" : ""}`}
+          style={{ display: isOpen ? "block" : "none" }}
+        >
+          {!onlyLogo && (
+            <div className='widheader-login'>
+              {user ? (
+                user?.subscription_status !== "expired" ? (
+                  buttonSignIn("/dashboard")
+                ) : user?.subscription_status === "expired" ? (
+                  buttonSignIn("/tariffs")
+                ) : null
+              ) : (
+                <div className='header-btn-wrap'>
+                  <button
+                    onClick={() => {
+                      navigate("/signup");
+                    }}
+                    className='prime-btn header-btn'
+                  >
+                    <Steps.StepsWhite />
+                    <p style={{ margin: 0, fontWeight: 600 }}>Регистрация</p>
+                  </button>
+                  {buttonSignIn("/signin")}
+                </div>
+              )}
+            </div>
+          )}
+        </nav>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const SolLabelBsn = () => {
   return (
-    <div>
+    <div className='sol-label-btn'>
       <svg
         width='480'
         height='33'

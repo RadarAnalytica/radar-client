@@ -1,18 +1,14 @@
-import React from 'react';
-import '../pages/styles.css';
-import Accordion from 'react-bootstrap/Accordion';
+import React from "react";
+import "../pages/styles.css";
+import Accordion from "react-bootstrap/Accordion";
 
 const AccordionMain = () => {
   return (
     <>
-      <div
-        style={{ margin: '50px 0 16px', fontSize: '44px', fontWeight: '700' }}
-      >
-        Вопросы и ответы
-      </div>
+      <div className='qaBlock'>Вопросы и ответы</div>
       <Accordion
         defaultActiveKey='-1'
-        style={{ width: '70%', fontSize: '25px' }}
+        style={{ width: "70%", fontSize: "25px" }}
         className='custom-accordion'
       >
         <Accordion.Item eventKey='0' className='custom-accordion-item'>

@@ -1,32 +1,35 @@
-import React, { useContext } from 'react';
-import './styles.css';
-import SolLabelBsn from './images/SolLabelBsn';
-import BlockImg_x1 from './images/Dashboard_x1.png';
-import BlockImg_x2 from './images/Dashboard_x2.png';
-import BlockImg_x3 from './images/Dashboard_x3.png';
-import AccordionMain from '../components/AccordionMain';
-import blockApi1 from './images/blockapi1.svg';
-import blockApi2 from './images/blockapi2.svg';
-import blockApi3 from './images/blockapi3.svg';
-import manyApi from './images/manyApi.svg';
-import apiBlock from './images/apiblock2.svg';
-import startAnalitic from './images/startAnalitic.svg';
-import arrowLink from './images/arrowLink.svg';
-import BtnHomePage from '../components/BtnHomePage';
-import StepsTime from '../components/StepsTime';
-import SelectRate from '../components/SelectRate';
-import SolLabelStartBsn from './images/SolLabelStartBsn';
-import YellowRadarPoint from './images/YellowRadarPoint';
-import YellowRadarSmall from './images/YelowRadarSmall';
-import NavbarMainHome from '../components/NavbarMainHome';
-import Reviews from '../components/Reviews';
-import AuthContext from '../service/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import LimitedFooter from '../components/LimitedFooter';
-import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
-import ImageComponent from '../components/utilsComponents/ImageComponent ';
-import ReviewsUsers from '../components/ReviewsUsers';
-import TryProduct from '../components/TryProduct';
+import React, { useContext, useState, useEffect } from "react";
+import "./styles.css";
+import SolLabelBsn from "./images/SolLabelBsn";
+import BlockImg_x1 from "./images/Dashboard_x1.png";
+import BlockImg_x2 from "./images/Dashboard_x2.png";
+import BlockImg_x3 from "./images/Dashboard_x3.png";
+import AccordionMain from "../components/AccordionMain";
+import blockApi1 from "./images/blockapi1.svg";
+import blockApi2 from "./images/blockapi2.svg";
+import blockApi3 from "./images/blockapi3.svg";
+import blockApi3Mobile from "./images/blockApi3Mobile.svg";
+import manyApi from "./images/manyApi.svg";
+import manyApiMobile from "./images/manyApiMobile.svg";
+
+import apiBlock from "./images/apiblock2.svg";
+import startAnalitic from "./images/startAnalitic.svg";
+import arrowLink from "./images/arrowLink.svg";
+import BtnHomePage from "../components/BtnHomePage";
+import StepsTime from "../components/StepsTime";
+import SelectRate from "../components/SelectRate";
+import SolLabelStartBsn from "./images/SolLabelStartBsn";
+import YellowRadarPoint from "./images/YellowRadarPoint";
+import YellowRadarSmall from "./images/YelowRadarSmall";
+import NavbarMainHome from "../components/NavbarMainHome";
+import Reviews from "../components/Reviews";
+import AuthContext from "../service/AuthContext";
+import { useNavigate } from "react-router-dom";
+import LimitedFooter from "../components/LimitedFooter";
+import ToggleAnaliticsPanel from "../components/ToggleAnaliticsPanel";
+import ImageComponent from "../components/utilsComponents/ImageComponent ";
+import ReviewsUsers from "../components/ReviewsUsers";
+import TryProduct from "../components/TryProduct";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -34,9 +37,11 @@ const MainPage = () => {
 
   const redirect = () => {
     if (user?.is_onboarded) {
-      user?.subscription_status === 'expired' ? navigate('/tariffs') : navigate('/dashboard');
+      user?.subscription_status === "expired"
+        ? navigate("/tariffs")
+        : navigate("/dashboard");
     } else {
-      navigate('/onboarding');
+      navigate("/onboarding");
     }
   };
 
@@ -44,36 +49,22 @@ const MainPage = () => {
     <div className='page-white'>
       <div className='container widbody-container container-xlwidth'>
         <NavbarMainHome />
-        <div className='wid-solution' style={{ marginTop: '20px' }}>
+        <div className='wid-solution' style={{ marginTop: "20px" }}>
           <div className='sol-description col'>
-            <div style={{ marginBottom: '20px' }}>
+            <div className='sol-description-label-container'>
               <SolLabelBsn />
             </div>
             <div>
               <YellowRadarSmall />
             </div>
-            <div
-              style={{
-                fontSize: '34px',
-                fontWeight: 'bold',
-                marginTop: '16px',
-                maxWidth: '500px',
-                lineHeight: '42px',
-              }}
-            >
-              – сервис аналитики для{' '}
-              <span style={{ color: 'blue', fontWeight: '800' }}>
+            <div className='sales-increase-text'>
+              – сервис аналитики для{" "}
+              <span className='sales-increse-text-span'>
                 увеличения ваших продаж
-              </span>{' '}
+              </span>{" "}
               на маркетплейсах
             </div>
-            <div
-              style={{
-                fontSize: '20px',
-                margin: '16px 0 32px',
-                maxWidth: '460px',
-              }}
-            >
+            <div className='analyze-competitors-text'>
               Анализируйте конкурентов, повышайте показатели своих карточек и
               контролируйте финансы в одном месте.
             </div>
@@ -81,13 +72,13 @@ const MainPage = () => {
             <div className='d-flex flex-column gap-3'>
               <button
                 className='prime-btn'
-                style={{ minHeight: '64px', fontSize: '18px', margin: 0 }}
+                style={{ minHeight: "64px", fontSize: "18px", margin: 0 }}
                 onClick={() => {
                   if (user) {
-                    window.open('/tariffs', '_blank')
-                  } 
+                    window.open("/tariffs", "_blank");
+                  }
                   if (!user) {
-                   navigate('/signup')
+                    navigate("/signup");
                   }
                 }}
               >
@@ -102,100 +93,101 @@ const MainPage = () => {
             />
           </div>
         </div>
-        <div>
-          <p
-            style={{ fontWeight: 700, fontSize: '42px', marginTop: '100px' }}
-            className='col-8'
-          >
-            Увеличьте продажи на маркетплейсе <br /> в 2 раза{' '}
-            <span style={{ color: 'orange', fontWeight: '800' }}>
+        <div className='wid-solution-text'>
+          <p className='wid-solution-text-p col-8'>
+            Увеличьте продажи на маркетплейсе <br /> в 2 раза{" "}
+            <span style={{ color: "orange", fontWeight: "800" }}>
               с помощью инструментов Radar
             </span>
           </p>
         </div>
         <ToggleAnaliticsPanel />
 
-        <div style={{ marginTop: '100px' }}>
+        <div style={{ marginTop: "100px" }}>
           <div className='widhead-container'>
             <div className='mainBlock-api'>
-              <div style={{ fontSize: '40px', fontWeight: '700' }}>
+              <div className='personal-account-connect-text'>
                 Подключение личного кабинета
-                <span style={{ color: 'orange', fontWeight: '800' }}>
+                <span style={{ color: "orange", fontWeight: "800" }}>
                   по API
                 </span>
               </div>
-              <div style={{ fontSize: '20px', fontWeight: '700' }}>
+              <div className='receive-data-text'>
                 Получайте данные по всем вашим магазинам в режиме реального
                 времени в одном месте
               </div>
             </div>
-            <div style={{ width: '25%' }}>
-              <img src={blockApi1} alt='logo' style={{ width: '100%' }} />
-            </div>
-            <div style={{ width: '25%' }}>
-              <img src={blockApi2} alt='logo' style={{ width: '100%' }} />
-            </div>
-            <div style={{ width: '25%' }}>
-              <img src={blockApi3} alt='logo' style={{ width: '100%' }} />
+            <div className='widhead-container-block'>
+              <div className='widhead-containe-img'>
+                <img src={blockApi1} alt='logo' />
+              </div>
+              <div className='widhead-containe-img'>
+                <img src={blockApi2} alt='logo' />
+              </div>
+              <div className='widhead-containe-img'>
+                <img
+                  src={blockApi3}
+                  className='widhead-container-img3-main'
+                  alt='logo'
+                />
+                <img
+                  src={blockApi3Mobile}
+                  className='widhead-container-img3-mini'
+                  alt='logo'
+                />
+              </div>
             </div>
           </div>
           <div className='widhead-container'>
-            <div>
+            <div className='widhead-container-image'>
               <img
+                className='manyApiLogo'
                 src={manyApi}
                 alt='logo'
-                style={{ width: '100%', borderRadius: '15px' }}
+                style={{ borderRadius: "15px" }}
+              />
+              <img
+                className='manyApiLogoMobile'
+                src={manyApiMobile}
+                alt='logo'
+                style={{ borderRadius: "15px" }}
               />
             </div>
             <div>
-              <img src={apiBlock} alt='logo' style={{ width: '100%' }} />
+              <img src={apiBlock} alt='logo' style={{ width: "100%" }} />
             </div>
             <div className='blockBtn'>
-              <div>
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <div>
-                    <img src={startAnalitic} alt='start-analitic' />
+              <div className='blockBtnContainer'>
+                <div className='blockBtnContainerHeader'>
+                  <div className='blockBtnContainerImageBlock'>
+                    <img
+                      className='blockBtnContainerImage'
+                      src={startAnalitic}
+                      alt='start-analitic'
+                    />
                   </div>
-                  <div>
-                    <img src={arrowLink} alt='arrow-link' />
+                  <div className='blockBtnContainerArrowImgBlock'>
+                    <img
+                      className='blockBtnContainerArrowImg'
+                      src={arrowLink}
+                      alt='arrow-link'
+                    />
                   </div>
                 </div>
 
-                <div
-                  style={{
-                    fontSize: '44px',
-                    fontWeight: '700',
-                    color: 'white',
-                  }}
-                >
-                  Готовы начать?
-                </div>
-                <div
-                  style={{
-                    fontSize: '20px',
-                    fontWeight: '600',
-                    color: 'white',
-                    marginBottom: '20px',
-                  }}
-                >
+                <div className='readyforStartText'>Готовы начать?</div>
+                <div className='profitableStafText'>
                   Найдите прибыльные товары на маркетплейсе и развивайте свой
                   бизнес.
                 </div>
                 <button
-                  className='btn-warning'
-                  style={{
-                    minHeight: '64px',
-                    fontSize: '18px',
-                    fontWeight: '700',
-                  }}
+                  className='btn-warning btn-warning-home'
                   onClick={() => {
                     if (user) {
-                      window.open('/tariffs', '_blank')
-                    } 
+                      window.open("/tariffs", "_blank");
+                    }
                     if (!user) {
-                     navigate('/signup')
+                      navigate("/signup");
                     }
                   }}
                 >
@@ -210,16 +202,16 @@ const MainPage = () => {
           <div>
             <StepsTime redirect={redirect} />
           </div>
-          <div style={{ marginTop: '100px' }}>
+          <div style={{ marginTop: "100px" }}>
             <SelectRate redirect={redirect} />
           </div>
-          <div style={{ marginTop: '100px' }}>
+          <div style={{ marginTop: "100px" }}>
             <ReviewsUsers />
           </div>
-          <div style={{ marginBottom: '100px' }}>
+          <div style={{ marginBottom: "100px" }}>
             <AccordionMain />
           </div>
-          <div style={{ marginBottom: '100px' }}>
+          <div style={{ marginBottom: "100px" }}>
             <TryProduct redirect={redirect} />
           </div>
         </div>

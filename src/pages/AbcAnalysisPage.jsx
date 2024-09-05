@@ -178,6 +178,7 @@ const AbcAnalysisPage = () => {
       clearTimeout(intervalId);
     };
   }, [dispatch, viewType, authToken, days, activeBrand]);
+
   const updateDataAbcAnalysis = async (
     viewType,
     authToken,

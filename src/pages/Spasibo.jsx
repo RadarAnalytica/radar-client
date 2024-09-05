@@ -1,14 +1,14 @@
-import React from 'react';
-import './styles.css';
+import React from "react";
+import "./styles.css";
 // import Footer from '../components/Footer'
 // import toptg from './images/toptgicon.png'
 // import demo from '../assets/ext-demo.png'
-import ExtDemoSvg from '../components/ExtDemoSvg';
+import ExtDemoSvg from "../components/ExtDemoSvg";
 // import Fragment1 from './images/Fragment1'
 // import YellowBtn from './images/YellowBtn'
 // import Button from './images/Button'
 // import Free from './images/Free'
-import TopTgIcon from './images/TopTgIcon';
+import TopTgIcon from "./images/TopTgIcon";
 // import { useNavigate } from 'react-router-dom'
 
 const Spasibo = () => {
@@ -100,7 +100,7 @@ const Spasibo = () => {
                 {/* <img src={toptg} alt="" className='me-3' /> */}
                 <a
                   href='https://t.me/SpyRadar_bot'
-                  style={{ textDecoration: 'none', color: 'black' }}
+                  style={{ textDecoration: "none", color: "black" }}
                 >
                   <TopTgIcon />
                   <span className='me-2 ms-2'>Бот Telegram</span>
@@ -140,7 +140,7 @@ const Spasibo = () => {
                       strokeLinejoin='round'
                     />
                   </svg>
-                  <span style={{ color: 'white' }} className='me-2'>
+                  <span style={{ color: "white" }} className='me-2'>
                     Оцифровка личного кабинета
                   </span>
                   <span>
@@ -185,7 +185,7 @@ const Spasibo = () => {
             </div>
             <div className='second-sub'>
               <h2 className='fw-bold'>
-                <span style={{ color: 'rgba(83, 41, 255, 1)' }}>
+                <span style={{ color: "rgba(83, 41, 255, 1)" }}>
                   Переходите
                 </span>
                  на любую страницу товара на Wildberries и изучайте данные
@@ -194,13 +194,13 @@ const Spasibo = () => {
                 href='https://www.wildberries.ru/catalog/154750075/detail.aspx'
                 className='prime-btn sps__wb-link'
                 style={{
-                  display: 'inline-block',
-                  paddingBlock: '20px',
-                  minHeight: '63px',
-                  width: '100%',
-                  textDecoration: 'none',
-                  fontSize: '18px',
-                  textAlign: 'center',
+                  display: "inline-block",
+                  paddingBlock: "20px",
+                  minHeight: "63px",
+                  width: "100%",
+                  textDecoration: "none",
+                  fontSize: "18px",
+                  textAlign: "center",
                 }}
               >
                 Протестировать расширение
@@ -315,7 +315,7 @@ const Spasibo = () => {
               <div className='col-5 pt-1'>
                 <div
                   className='mb-3'
-                  style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
+                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
                 >
                   <svg
                     width='48'
@@ -337,7 +337,10 @@ const Spasibo = () => {
                       fill='#F0AD00'
                     />
                   </svg>
-                  <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                  <span
+                    className='footer-text'
+                    style={{ fontSize: "12px", fontWeight: "bold" }}
+                  >
                     Комплексный инструмент для роста продаж на маркетплейсах
                   </span>
                 </div>
@@ -345,27 +348,18 @@ const Spasibo = () => {
               <div className='col pt-3 footer-col'>
                 <a
                   href='https://t.me/SpyRadar_bot'
-                  style={{ textDecoration: 'none', color: 'black' }}
-                  className='fw-bold'
+                  className='fw-bold footer-col-a'
                 >
                   Telegram-бот
                 </a>
               </div>
               <div className='col pt-3 footer-col'>
-                <a
-                  href='#'
-                  style={{ textDecoration: 'none', color: 'black' }}
-                  className='fw-bold'
-                >
+                <a href='#' className='fw-bold footer-col-a'>
                   Контакты
                 </a>
               </div>
               <div className='col-3 pt-3 footer-col'>
-                <a
-                  href='/politics'
-                  className='fw-bold'
-                  style={{ textDecoration: 'none', color: 'black' }}
-                >
+                <a href='/politics' className='fw-bold footer-col-a'>
                   Политика конфиденцильности
                 </a>
               </div>

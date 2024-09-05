@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 const LimitedFooter = () => {
   return (
-    <div className='row' style={{ marginBottom: '45px' }}>
+    <div className='row footerRow' style={{ marginBottom: "45px" }}>
       <div className='col-5'>
         <div
           className='mb-3'
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            alignItems: 'center',
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            alignItems: "center",
             // marginTop: '34px',
           }}
         >
@@ -35,10 +35,10 @@ const LimitedFooter = () => {
           </svg>
           <span
             style={{
-              maxWidth: '400px',
-              fontSize: '14px',
-              lineHeight: '15px',
-              fontWeight: '600',
+              maxWidth: "400px",
+              fontSize: "14px",
+              lineHeight: "15px",
+              fontWeight: "600",
             }}
           >
             Комплексный инструмент для роста продаж на маркетплейсах
@@ -48,39 +48,18 @@ const LimitedFooter = () => {
       <div className='col footer-col'>
         <a
           href='https://t.me/SpyRadar_bot'
-          style={{
-            textDecoration: 'none',
-            color: 'black',
-            fontSize: '20px',
-          }}
-          className='fw-bold'
+          className='fw-bold footer-col-text-a'
         >
           Telegram-бот
         </a>
       </div>
       <div className='col footer-col'>
-        <a
-          href='/offer'
-          style={{
-            textDecoration: 'none',
-            color: 'black',
-            fontSize: '20px',
-          }}
-          className='fw-bold'
-        >
+        <a href='/offer' className='fw-bold footer-col-text-a'>
           Публичная оферта
         </a>
       </div>
       <div className='col-3 footer-col'>
-        <a
-          href='/politics'
-          className='fw-bold'
-          style={{
-            textDecoration: 'none',
-            color: 'black',
-            fontSize: '20px',
-          }}
-        >
+        <a href='/politics' className='fw-bold footer-col-text-a'>
           Политика конфиденцильности
         </a>
       </div>
