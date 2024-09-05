@@ -13,9 +13,10 @@ import SelfCostWarning from "../components/SelfCostWarning";
 import { abcAnalysis } from "../service/utils";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import SeeMoreButton from "../components/SeeMoreButton";
-// import { act } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AbcAnalysisPage = () => {
+  const navigate = useNavigate();
   const [days, setDays] = useState(30);
   const { user, authToken } = useContext(AuthContext);
   const [wbData, setWbData] = useState();
@@ -93,7 +94,9 @@ const AbcAnalysisPage = () => {
   }, [oneShop, activeBrand]);
 
   useEffect(() => {
-    dispatch(fetchShops(authToken));
+    dispatch(fetchShops(authToken)).then(() => {
+      setIsInitialLoading(false);
+    });
   }, [dispatch]);
 
   useEffect(() => {
@@ -149,20 +152,25 @@ const AbcAnalysisPage = () => {
       updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
     }
   }, [days, activeBrand]);
+
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
       const now = new Date();
       let targetTime = new Date(now);
-      targetTime.setMinutes(30, 0, 0);
-
-      if (now.getMinutes() >= 30) {
-        targetTime.setHours(targetTime.getHours() + 2);
-      } else {
-        targetTime.setHours(
-          targetTime.getHours() + (targetTime.getHours() % 2)
-        );
+      
+      // Set to the next half hour
+      targetTime.setMinutes(targetTime.getMinutes() <= 30 ? 30 : 60, 0, 0);
+      
+      // If we're already past an even hour + 30 minutes, move to the next even hour
+      if (targetTime.getHours() % 2 !== 0 || (targetTime.getHours() % 2 === 0 && targetTime <= now)) {
+        targetTime.setHours(targetTime.getHours() + 1);
       }
-
+      
+      // Ensure we're on an even hour
+      if (targetTime.getHours() % 2 !== 0) {
+        targetTime.setHours(targetTime.getHours() + 1);
+      }
+    
       return targetTime;
     };
 
@@ -179,6 +187,15 @@ const AbcAnalysisPage = () => {
     };
   }, [dispatch, viewType, authToken, days, activeBrand]);
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    if (shops?.length === 0 && !isInitialLoading ) {
+      navigate("/onboarding");
+    } 
+  }, [isInitialLoading, shops.length]);
+
+>>>>>>> 65e451c0781a7b63bf9ad97621212a12b9c65ddb
   const updateDataAbcAnalysis = async (
     viewType,
     authToken,
@@ -204,7 +221,6 @@ const AbcAnalysisPage = () => {
       console.error(e);
     } finally {
       setLoading(false);
-      setIsInitialLoading(false);
     }
   };
 
@@ -255,7 +271,11 @@ const AbcAnalysisPage = () => {
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"ABC-анализ"} />;
   }
-  // const [dataTable, setDataTable] = useState(totalAbcData);
+  
+  if (!shops || shops.length === 0) {
+    return null; // or a loading indicator
+  }
+
   return (
     isVisible && (
       <div className='dashboard-page'>

@@ -16,6 +16,7 @@ import {
   getFileClickHandler,
   saveFileClickHandler,
 } from '../service/getSaveFile';
+import NoSubscriptionPage from './NoSubscriptionPage';
 
 const Onboarding = () => {
   const { user, authToken, setUser, logout } = useContext(AuthContext);
@@ -88,6 +89,10 @@ const Onboarding = () => {
       }, 4000);
     }
   }, [show]);
+
+  if (user?.subscription_status === "expired") {
+    return <NoSubscriptionPage title={"Подключение API"} />;
+  }
 
   return (
     user && (

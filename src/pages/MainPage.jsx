@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useContext, useState, useEffect } from "react";
 import "./styles.css";
 import SolLabelBsn from "./images/SolLabelBsn";
@@ -30,10 +31,42 @@ import ToggleAnaliticsPanel from "../components/ToggleAnaliticsPanel";
 import ImageComponent from "../components/utilsComponents/ImageComponent ";
 import ReviewsUsers from "../components/ReviewsUsers";
 import TryProduct from "../components/TryProduct";
+=======
+import React, { useContext, useEffect } from 'react';
+import './styles.css';
+import SolLabelBsn from './images/SolLabelBsn';
+import BlockImg_x1 from './images/Dashboard_x1.png';
+import BlockImg_x2 from './images/Dashboard_x2.png';
+import BlockImg_x3 from './images/Dashboard_x3.png';
+import AccordionMain from '../components/AccordionMain';
+import blockApi1 from './images/blockapi1.svg';
+import blockApi2 from './images/blockapi2.svg';
+import blockApi3 from './images/blockapi3.svg';
+import manyApi from './images/manyApi.svg';
+import apiBlock from './images/apiblock2.svg';
+import startAnalitic from './images/startAnalitic.svg';
+import arrowLink from './images/arrowLink.svg';
+import BtnHomePage from '../components/BtnHomePage';
+import StepsTime from '../components/StepsTime';
+import SelectRate from '../components/SelectRate';
+import SolLabelStartBsn from './images/SolLabelStartBsn';
+import YellowRadarPoint from './images/YellowRadarPoint';
+import YellowRadarSmall from './images/YelowRadarSmall';
+import NavbarMainHome from '../components/NavbarMainHome';
+import Reviews from '../components/Reviews';
+import AuthContext from '../service/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import LimitedFooter from '../components/LimitedFooter';
+import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
+import ImageComponent from '../components/utilsComponents/ImageComponent ';
+import ReviewsUsers from '../components/ReviewsUsers';
+import TryProduct from '../components/TryProduct';
+import { URL } from '../service/config';
+>>>>>>> 65e451c0781a7b63bf9ad97621212a12b9c65ddb
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
 
   const redirect = () => {
     if (user?.is_onboarded) {
@@ -43,6 +76,43 @@ const MainPage = () => {
     } else {
       navigate("/onboarding");
     }
+  };
+
+  useEffect(() => {
+    if (user) {
+      const refreshToken = async () => {
+         await refreshUserToken();
+      };
+
+      // Initial token refresh
+      refreshToken();
+
+      // Set up interval to refresh token every minute
+      const intervalId = setInterval(refreshToken, 60000); // 60000 milliseconds = 1 minute
+
+      // Clean up interval on component unmount
+      return () => clearInterval(intervalId);
+    }
+  }, []);
+
+  const refreshUserToken = async () => {
+    try {
+      const response = await fetch(`${URL}/api/user/refresh`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "JWT " + authToken,
+        },
+      });
+
+      if (response.status === 200) {
+        const data = await response.json(); 
+        return data.token;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return null;
   };
 
   return (

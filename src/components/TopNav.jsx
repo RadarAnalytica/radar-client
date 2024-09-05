@@ -31,9 +31,14 @@ const TopNav = ({ title }) => {
     }, 1500);
     setTimeoutId(newTimeoutId);
   };
+
+  useEffect(() => {
+    dispatch(fetchMessages(authToken));
+  }, []);
+
   useEffect(() => {
     // Initial fetch
-    dispatch(fetchMessages(authToken));
+    // dispatch(fetchMessages(authToken));
 
     // Set up interval to fetch messages every minute
     const intervalId = setInterval(() => {
@@ -42,7 +47,7 @@ const TopNav = ({ title }) => {
 
     // Clean up the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [dispatch, authToken]);
+  }, [authToken]);
 
   const handleErrorClick = (event) => {
     event.stopPropagation();

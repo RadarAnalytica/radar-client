@@ -29,6 +29,7 @@ import NoSubscriptionPage from "./NoSubscriptionPage";
 import TooltipInfo from "../components/TooltipInfo";
 
 const DashboardPage = () => {
+  const navigate = useNavigate();
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
   const authTokenRef = useRef(authToken);
@@ -40,7 +41,10 @@ const DashboardPage = () => {
   const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [firstLoading ,setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
+  // const [shouldNavigate, setShouldNavigate] = useState(false);
+  // console.log('shouldNavigate', shouldNavigate);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const storedActiveShop = localStorage.getItem("activeShop");
@@ -104,10 +108,20 @@ const DashboardPage = () => {
     };
   }, [oneShop, activeBrand]);
 
+  console.log('firsttLoading', firstLoading)
+
   useEffect(() => {
-    dispatch(fetchShops(authToken));
+    dispatch(fetchShops(authToken)).then(() => {
+      setFirstLoading(false);
+    });
     updateDataDashBoard(days, activeBrand, authToken);
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    if (shops.length === 0 && !firstLoading) {
+      navigate("/onboarding");
+    }
+  }, [firstLoading, shops.length]);
 
   useEffect(() => {
     if (shops.length > 0) {
@@ -144,8 +158,6 @@ const DashboardPage = () => {
     setActiveBrand(shopId);
   };
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       updateDataDashBoard(days, activeBrand, authToken);
@@ -162,16 +174,20 @@ const DashboardPage = () => {
     const calculateNextEvenHourPlus30 = () => {
       const now = new Date();
       let targetTime = new Date(now);
-      targetTime.setMinutes(30, 0, 0);
-
-      if (now.getMinutes() >= 30) {
-        targetTime.setHours(targetTime.getHours() + 2);
-      } else {
-        targetTime.setHours(
-          targetTime.getHours() + (targetTime.getHours() % 2)
-        );
+      
+      // Set to the next half hour
+      targetTime.setMinutes(targetTime.getMinutes() <= 30 ? 30 : 60, 0, 0);
+      
+      // If we're already past an even hour + 30 minutes, move to the next even hour
+      if (targetTime.getHours() % 2 !== 0 || (targetTime.getHours() % 2 === 0 && targetTime <= now)) {
+        targetTime.setHours(targetTime.getHours() + 1);
       }
-
+      
+      // Ensure we're on an even hour
+      if (targetTime.getHours() % 2 !== 0) {
+        targetTime.setHours(targetTime.getHours() + 1);
+      }
+    
       return targetTime;
     };
 
@@ -757,6 +773,10 @@ const DashboardPage = () => {
 
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"Сводка продаж"} />;
+  }
+
+  if (!shops || shops.length === 0) {
+    return null; // or a loading indicator
   }
 
   return (

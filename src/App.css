@@ -1523,6 +1523,22 @@ select {
   /* flex-direction: row; */
 }
 
+.input-and-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.search-box {
+  width: 670px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 25px;
+}
+
 .search-input {
   width: 670px;
   height: 44px;
@@ -1662,6 +1678,15 @@ select {
   border-radius: 10px;
   background-color: #ffffff;
   margin: 22px 0px 0px 40px;
+}
+
+.table-content-stock {
+  border-radius: 10px;
+  background-color: #ffffff;
+  margin: 22px 0px 0px 40px;
+  overflow-x: auto;
+  width: calc(100% - 40px);
+  height: calc(100vh - 220px);
 }
 
 .table-glit {
@@ -2152,7 +2177,10 @@ select {
 }
 
 .name-of-goods {
+  word-break: break-word;
+  hyphens: auto;
   min-width: 200px;
+  max-width: 200px;
 }
 
 .about-goods {
@@ -2178,11 +2206,11 @@ select {
 }
 
 .table-stock thead {
-  min-width: 7360px;
+  min-width: 7160px;
 }
 
 .table-stock tbody {
-  min-width: 7370px;
+  min-width: 7200px;
 }
 
 .about-goods-title {
@@ -2234,20 +2262,35 @@ select {
 }
 
 .about-goods-title-remainder {
-  min-width: 281px;
+  min-width: 150px;
 }
 
 .table-stock {
-  width: 100%;
   max-width: none;
-  table-layout: auto;
+  table-layout: fixed;
+  width: 7150px;
+}
+
+.table-content-stock::-webkit-scrollbar {
+  height: 6px;
+  background: #5329ff80;
+  border-radius: 6px;
+  width: 6px;
+}
+
+.table-content-stock::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-content-stock::-webkit-scrollbar-thumb {
+  background: #5329ff80;
+  border-radius: 6px;
 }
 
 .table-stock thead tr {
   display: flex;
   align-items: center;
   gap: 20px;
-  /* justify-content: space-between; */
   width: 100%;
   height: 40px;
   border-bottom: 1px solid #E8E8E8;

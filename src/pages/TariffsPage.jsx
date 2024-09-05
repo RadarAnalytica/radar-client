@@ -5,12 +5,15 @@ import LimitedFooter from '../components/LimitedFooter';
 import { useNavigate, useLocation  } from 'react-router-dom';
 import SelectRate from '../components/SelectRate';
 import AuthContext from '../service/AuthContext';
-import { URL } from '../service/config'
+import { URL } from '../service/config';
+import { useAppDispatch } from '../redux/hooks';
+import { fetchMessages } from '../redux/messages/messagesSlice';
 
 const TariffsPage = () => {
   const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, authToken } = useContext(AuthContext);
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   const redirect = () => {
     if (!user) {
@@ -37,6 +40,43 @@ const TariffsPage = () => {
     } else {
       return;
     }
+  };
+
+  useEffect(() => {
+    if (user) {
+      const refreshToken = async () => {
+         await refreshUserToken();
+      };
+
+      // Initial token refresh
+      refreshToken();
+
+      // Set up interval to refresh token every minute
+      const intervalId = setInterval(refreshToken, 60000);
+
+      // Clean up interval on component unmount
+      return () => clearInterval(intervalId);
+    }
+  }, []);
+
+  const refreshUserToken = async () => {
+    try {
+      const response = await fetch(`${URL}/api/user/refresh`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "JWT " + authToken,
+        },
+      });
+
+      if (response.status === 200) {
+        const data = await response.json(); 
+        return data.token;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return null;
   };
 
   useEffect(() => {
