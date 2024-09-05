@@ -13,9 +13,10 @@ import SelfCostWarning from "../components/SelfCostWarning";
 import { abcAnalysis } from "../service/utils";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import SeeMoreButton from "../components/SeeMoreButton";
-// import { act } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AbcAnalysisPage = () => {
+  const navigate = useNavigate();
   const [days, setDays] = useState(30);
   const { user, authToken } = useContext(AuthContext);
   const [wbData, setWbData] = useState();
@@ -149,6 +150,7 @@ const AbcAnalysisPage = () => {
       updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
     }
   }, [days, activeBrand]);
+
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
       const now = new Date();
@@ -178,6 +180,13 @@ const AbcAnalysisPage = () => {
       clearTimeout(intervalId);
     };
   }, [dispatch, viewType, authToken, days, activeBrand]);
+
+  useEffect(() => {
+    if (shops?.length === 0 ) {
+      navigate("/onboarding");
+    } 
+  }, [isInitialLoading, shops]);
+
   const updateDataAbcAnalysis = async (
     viewType,
     authToken,
@@ -254,7 +263,11 @@ const AbcAnalysisPage = () => {
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"ABC-анализ"} />;
   }
-  // const [dataTable, setDataTable] = useState(totalAbcData);
+  
+  if (!shops || shops.length === 0) {
+    return null; // or a loading indicator
+  }
+
   return (
     isVisible && (
       <div className='dashboard-page'>

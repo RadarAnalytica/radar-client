@@ -29,6 +29,7 @@ import NoSubscriptionPage from "./NoSubscriptionPage";
 import TooltipInfo from "../components/TooltipInfo";
 
 const DashboardPage = () => {
+  const navigate = useNavigate();
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
   const authTokenRef = useRef(authToken);
@@ -41,6 +42,8 @@ const DashboardPage = () => {
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [primary, setPrimary] = useState();
+  // const [shouldNavigate, setShouldNavigate] = useState(false);
+  // console.log('shouldNavigate', shouldNavigate);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const storedActiveShop = localStorage.getItem("activeShop");
@@ -110,6 +113,12 @@ const DashboardPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    if (shops?.length === 0 ) {
+      navigate("/onboarding");
+    } 
+  }, [isInitialLoading, shops])
+
+  useEffect(() => {
     if (shops.length > 0) {
       let id;
       if (activeShopId == undefined) {
@@ -143,8 +152,6 @@ const DashboardPage = () => {
     }
     setActiveBrand(shopId);
   };
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
@@ -757,6 +764,10 @@ const DashboardPage = () => {
 
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"Сводка продаж"} />;
+  }
+
+  if (!shops || shops.length === 0) {
+    return null; // or a loading indicator
   }
 
   return (

@@ -21,9 +21,10 @@ import DownloadButton from '../components/DownloadButton';
 import NoSubscriptionPage from "./NoSubscriptionPage";
 import SelfCostWarning from "../components/SelfCostWarning";
 import DataCollectionNotification from "../components/DataCollectionNotification";
+import { useNavigate } from "react-router-dom";
 
 const StockAnalysis = () => {
-
+  const navigate = useNavigate();
   const stockAnalysisData = useAppSelector(
     (state) => state.stockAnalysisDataSlice.stockAnalysisData
   );
@@ -119,6 +120,12 @@ const StockAnalysis = () => {
     }
   }, [shops]);
 
+  useEffect(() => {
+    if (shops?.length === 0 ) {
+      navigate("/onboarding");
+    } 
+  }, [isInitialLoading, shops])
+
 
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
@@ -145,7 +152,11 @@ const StockAnalysis = () => {
 
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"Товарная аналитика"} />;
-  }
+  };
+
+  if (!shops || shops.length === 0) {
+    return null; // or a loading indicator
+  };
 
   return (
     <>

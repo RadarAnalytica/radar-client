@@ -16,7 +16,6 @@ const SideNav = () => {
   const chunkArray = url ? url.split("/").reverse() : null;
   const location = chunkArray ? chunkArray[0] : null;
   const linkPlagin = "https://chromewebstore.google.com/";
-  console.log('location', location);
 
   const [active, setActive] = useState("");
   useEffect(() => {
@@ -288,7 +287,6 @@ const SideNav = () => {
             }`}
             onClick={() => setAdditionalTools(!additionalTools)}
           >
-            {console.log(additionalTools)}
             <div className='d-flex align-items-center'>
               <svg
                 width='24'

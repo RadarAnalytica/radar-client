@@ -78,6 +78,12 @@ const OrdersMap = () => {
     dispatch(fetchShops(authToken));
     dispatch(fetchGeographyData({ authToken, days, activeBrand }));
   }, [days, activeBrand]);
+
+  useEffect(() => {
+    if (shops?.length === 0 && !loading) {
+      navigate("/onboarding");
+    } 
+  },[loading]);
   
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
@@ -682,6 +688,10 @@ const OrdersMap = () => {
   if (user?.subscription_status === 'expired') {
     return <NoSubscriptionPage title={'География заказов и продаж'}/>
   };
+
+  if (!shops || shops.length === 0) {
+    return null; // or a loading indicator
+  }
 
   return (
     isVisible && (
