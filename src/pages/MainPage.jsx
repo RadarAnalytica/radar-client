@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useContext, useState, useEffect } from "react";
 import "./styles.css";
 import SolLabelBsn from "./images/SolLabelBsn";
@@ -31,38 +30,8 @@ import ToggleAnaliticsPanel from "../components/ToggleAnaliticsPanel";
 import ImageComponent from "../components/utilsComponents/ImageComponent ";
 import ReviewsUsers from "../components/ReviewsUsers";
 import TryProduct from "../components/TryProduct";
-=======
-import React, { useContext, useEffect } from 'react';
-import './styles.css';
-import SolLabelBsn from './images/SolLabelBsn';
-import BlockImg_x1 from './images/Dashboard_x1.png';
-import BlockImg_x2 from './images/Dashboard_x2.png';
-import BlockImg_x3 from './images/Dashboard_x3.png';
-import AccordionMain from '../components/AccordionMain';
-import blockApi1 from './images/blockapi1.svg';
-import blockApi2 from './images/blockapi2.svg';
-import blockApi3 from './images/blockapi3.svg';
-import manyApi from './images/manyApi.svg';
-import apiBlock from './images/apiblock2.svg';
-import startAnalitic from './images/startAnalitic.svg';
-import arrowLink from './images/arrowLink.svg';
-import BtnHomePage from '../components/BtnHomePage';
-import StepsTime from '../components/StepsTime';
-import SelectRate from '../components/SelectRate';
-import SolLabelStartBsn from './images/SolLabelStartBsn';
-import YellowRadarPoint from './images/YellowRadarPoint';
-import YellowRadarSmall from './images/YelowRadarSmall';
-import NavbarMainHome from '../components/NavbarMainHome';
-import Reviews from '../components/Reviews';
-import AuthContext from '../service/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import LimitedFooter from '../components/LimitedFooter';
-import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
-import ImageComponent from '../components/utilsComponents/ImageComponent ';
-import ReviewsUsers from '../components/ReviewsUsers';
-import TryProduct from '../components/TryProduct';
+
 import { URL } from '../service/config';
->>>>>>> 65e451c0781a7b63bf9ad97621212a12b9c65ddb
 
 const MainPage = () => {
   const navigate = useNavigate();

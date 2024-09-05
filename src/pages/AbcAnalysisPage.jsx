@@ -187,15 +187,12 @@ const AbcAnalysisPage = () => {
     };
   }, [dispatch, viewType, authToken, days, activeBrand]);
 
-<<<<<<< HEAD
-=======
   useEffect(() => {
     if (shops?.length === 0 && !isInitialLoading ) {
       navigate("/onboarding");
     } 
   }, [isInitialLoading, shops.length]);
 
->>>>>>> 65e451c0781a7b63bf9ad97621212a12b9c65ddb
   const updateDataAbcAnalysis = async (
     viewType,
     authToken,
