@@ -41,6 +41,7 @@ const DashboardPage = () => {
   const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [firstLoading ,setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
   // const [shouldNavigate, setShouldNavigate] = useState(false);
   // console.log('shouldNavigate', shouldNavigate);
@@ -107,16 +108,20 @@ const DashboardPage = () => {
     };
   }, [oneShop, activeBrand]);
 
-  useEffect(() => {
-    dispatch(fetchShops(authToken));
-    updateDataDashBoard(days, activeBrand, authToken);
-  }, [dispatch]);
+  console.log('firsttLoading', firstLoading)
 
   useEffect(() => {
-    if (shops?.length === 0 && !isInitialLoading) {
+    dispatch(fetchShops(authToken)).then(() => {
+      setFirstLoading(false);
+    });
+    updateDataDashBoard(days, activeBrand, authToken);
+  }, []);
+
+  useEffect(() => {
+    if (shops.length === 0 && !firstLoading) {
       navigate("/onboarding");
     }
-  }, [isInitialLoading])
+  }, [firstLoading, shops.length]);
 
   useEffect(() => {
     if (shops.length > 0) {

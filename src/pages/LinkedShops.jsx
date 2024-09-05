@@ -148,6 +148,10 @@ const LinkedShops = () => {
     }
   }, [shops.length]);
 
+  useEffect(() => {
+    dispatch(fetchShops(authToken));
+  }, []);
+
   const editData = {
     activeShop: activeShop,
     is_active: true,

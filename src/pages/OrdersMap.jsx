@@ -41,6 +41,7 @@ const OrdersMap = () => {
   const idShopAsValue =
     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
+  const [firstLoading ,setFirstLoading] = useState(true);
 
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
@@ -80,10 +81,10 @@ const OrdersMap = () => {
   }, [days, activeBrand]);
 
   useEffect(() => {
-    if (shops?.length === 0 && !loading) {
+    if (shops?.length === 0 && !firstLoading) {
       navigate("/onboarding");
     } 
-  },[loading]);
+  },[firstLoading, shops.length]);
   
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
@@ -126,7 +127,9 @@ const OrdersMap = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchShops(authToken));
+    dispatch(fetchShops(authToken)).then(() => {
+      setFirstLoading(false);
+    });
     dispatch(fetchGeographyData({ authToken, days, activeBrand }));
   }, []);
 

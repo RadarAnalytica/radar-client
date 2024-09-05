@@ -87,16 +87,14 @@ const StockAnalysis = () => {
       console.error(e);
     } finally {
       setLoading(false);
-      setIsInitialLoading(false);
     }
   };
 
   useEffect(() => {
+    dispatch(fetchShops(authToken)).then(() => {
+      setIsInitialLoading(false);
+    });
     updateDataDashBoard(days, activeBrand, authToken);
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchShops(authToken));
   }, [dispatch]);
 
   useEffect(() => {
@@ -121,10 +119,10 @@ const StockAnalysis = () => {
   }, [shops]);
 
   useEffect(() => {
-    if (shops?.length === 0 ) {
+    if (shops?.length === 0 && !isInitialLoading ) {
       navigate("/onboarding");
     } 
-  }, [isInitialLoading, shops])
+  }, [isInitialLoading, shops.length]);
 
 
   const handleSaveActiveShop = (shopId) => {

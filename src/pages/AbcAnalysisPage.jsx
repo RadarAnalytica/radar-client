@@ -94,7 +94,9 @@ const AbcAnalysisPage = () => {
   }, [oneShop, activeBrand]);
 
   useEffect(() => {
-    dispatch(fetchShops(authToken));
+    dispatch(fetchShops(authToken)).then(() => {
+      setIsInitialLoading(false);
+    });
   }, [dispatch]);
 
   useEffect(() => {
@@ -186,10 +188,10 @@ const AbcAnalysisPage = () => {
   }, [dispatch, viewType, authToken, days, activeBrand]);
 
   useEffect(() => {
-    if (shops?.length === 0 ) {
+    if (shops?.length === 0 && !isInitialLoading ) {
       navigate("/onboarding");
     } 
-  }, [isInitialLoading, shops]);
+  }, [isInitialLoading, shops.length]);
 
   const updateDataAbcAnalysis = async (
     viewType,
@@ -216,7 +218,6 @@ const AbcAnalysisPage = () => {
       console.error(e);
     } finally {
       setLoading(false);
-      setIsInitialLoading(false);
     }
   };
 
