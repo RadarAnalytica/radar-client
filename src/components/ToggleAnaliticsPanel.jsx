@@ -96,7 +96,9 @@ const ToggleAnalyticsPanel = () => {
           }`}
           onClick={handleExternalClick}
         >
-          <span className='internal-analytics-btn'>Внутренняя аналитика</span>
+          <span className='secondary-btn-text internal-analytics-btn'>
+            Внутренняя аналитика
+          </span>
         </button>
         <button
           className={`btnAnalysticsInternalExternal ${

@@ -83,17 +83,14 @@ const StepsTime = ({ redirect }) => {
               <Steps.StepsWhite />
               <p style={{ margin: 0 }}>Шаг 5</p>
             </div>
-            <div style={{ fontSize: "25px", fontWeight: "700" }}>
-              Масштабируй свой бизнес
-            </div>
-            <div style={{ fontSize: "16px" }}>
+            <div className='stepsBtnTitle'>Масштабируй свой бизнес</div>
+            <div className='stepsBtnContent'>
               Найдите выгодные товары для выхода на маркетплейсы
             </div>
           </div>
 
           <button
-            className='btn-warning'
-            style={{ minHeight: "64px", fontSize: "18px" }}
+            className='btn-warning btn-warning-special'
             onClick={() => {
               if (user) {
                 window.open("/tariffs", "_blank");

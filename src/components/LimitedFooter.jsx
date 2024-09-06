@@ -33,14 +33,7 @@ const LimitedFooter = () => {
               fill='#F0AD00'
             />
           </svg>
-          <span
-            style={{
-              maxWidth: "400px",
-              fontSize: "14px",
-              lineHeight: "15px",
-              fontWeight: "600",
-            }}
-          >
+          <span className='limited-footer-text'>
             Комплексный инструмент для роста продаж на маркетплейсах
           </span>
         </div>

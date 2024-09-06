@@ -865,34 +865,51 @@ const SelectRate = ({ redirect }) => {
             >
               <button
                 onClick={() => handlePeriodChange("1month")}
-                className={
+                className={` ${
                   selectedPeriod === "1month" ? "prime-btn" : "secondary-btn"
-                }
+                }`}
+                style={{
+                  fontSize: window.innerWidth < 768 ? "15px" : "18px", // Динамический размер шрифта
+                }}
                 id='btnDop'
               >
                 {selectedPeriod === "1month" ? <Steps.Circle /> : <span></span>}
-                1 месяц <span>{!subscriptionDiscount ? "" : "-50%"}</span>
+                1 месяц{" "}
+                <span className='saleTextMobile'>
+                  {!subscriptionDiscount ? "" : "-50%"}
+                </span>
               </button>
               <button
                 onClick={() => handlePeriodChange("3month")}
-                className={
+                className={`monthesText ${
                   selectedPeriod === "3month" ? "prime-btn" : "secondary-btn"
-                }
+                }`}
+                style={{
+                  fontSize: window.innerWidth < 768 ? "15px" : "18px", // Динамический размер шрифта
+                }}
                 id='btnDop'
               >
                 {selectedPeriod === "3month" ? <Steps.Circle /> : <span></span>}
-                3 месяца <span>{!subscriptionDiscount ? "-10%" : "-50%"}</span>
+                3 месяца{" "}
+                <span className='saleTextMobile'>
+                  {!subscriptionDiscount ? "-10%" : "-50%"}
+                </span>
               </button>
               <button
                 onClick={() => handlePeriodChange("6month")}
-                className={
+                className={`monthesTextBtn ${
                   selectedPeriod === "6month" ? "prime-btn" : "secondary-btn"
-                }
+                }`}
+                style={{
+                  fontSize: window.innerWidth < 768 ? "15px" : "18px",
+                }}
                 id='btnDop'
               >
                 {selectedPeriod === "6month" ? <Steps.Circle /> : <span></span>}
-                6 месяцев{" "}
-                <span>{!subscriptionDiscount ? "до -60%" : "-50%"}</span>
+                <span>6 месяцев</span>
+                <span className='saleTextMobile'>
+                  {!subscriptionDiscount ? "до -60%" : "-50%"}
+                </span>
               </button>
             </div>
           </div>

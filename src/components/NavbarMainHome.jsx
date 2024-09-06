@@ -169,13 +169,13 @@ const NavbarMainHome = ({ onlyLogo }) => {
           <img src={isOpen ? closebtn : menu} alt='Menu' />
         </button>
 
-        {/* Mobile Menu */}
-        <nav
+        <div
           className={`mobilemenu ${isOpen ? "open" : ""}`}
           style={{ display: isOpen ? "block" : "none" }}
         >
+          {/* Insert mobile menu content here */}
           {!onlyLogo && (
-            <div className='widheader-login'>
+            <div className='mobile-menu-content'>
               {user ? (
                 user?.subscription_status !== "expired" ? (
                   buttonSignIn("/dashboard")
@@ -198,7 +198,7 @@ const NavbarMainHome = ({ onlyLogo }) => {
               )}
             </div>
           )}
-        </nav>
+        </div>
       </div>
     </div>
   );

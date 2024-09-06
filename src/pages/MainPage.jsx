@@ -31,7 +31,7 @@ import ImageComponent from "../components/utilsComponents/ImageComponent ";
 import ReviewsUsers from "../components/ReviewsUsers";
 import TryProduct from "../components/TryProduct";
 
-import { URL } from '../service/config';
+import { URL } from "../service/config";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ const MainPage = () => {
   useEffect(() => {
     if (user) {
       const refreshToken = async () => {
-         await refreshUserToken();
+        await refreshUserToken();
       };
 
       // Initial token refresh
@@ -75,7 +75,7 @@ const MainPage = () => {
       });
 
       if (response.status === 200) {
-        const data = await response.json(); 
+        const data = await response.json();
         return data.token;
       }
     } catch (error) {
@@ -132,6 +132,7 @@ const MainPage = () => {
             />
           </div>
         </div>
+
         <div className='wid-solution-text'>
           <p className='wid-solution-text-p col-8'>
             Увеличьте продажи на маркетплейсе <br /> в 2 раза{" "}

@@ -681,6 +681,18 @@ select {
   box-shadow: 2px 2px 15px 1px rgba(0, 0, 0, 0.2);
 }
 
+.stepsBtnContent {
+  font-size: 16px;
+  font-weight: 700;
+}
+.stepsBtnTitle {
+  font-size: 25px;
+  font-weight: 700;
+}
+.btn-warning-special {
+  min-height: 64px;
+  font-size: 18px;
+}
 .imgTheses {
   width: 70px;
   height: 70px;
@@ -1504,12 +1516,14 @@ button.accordion-button.collapsed::after {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: balck;
+  background-color: black;
   border-radius: 10px;
   padding: 4px;
   color: white;
   font-size: 18px;
+  width: 65%;
 }
+
 .HeadCardProPlusBestDes img {
   width: 20%;
 }
@@ -1559,6 +1573,12 @@ button.accordion-button.collapsed::after {
 }
 .manyApiLogoMobile {
   display: none;
+}
+.limited-footer-text {
+  max-width: 400px;
+  font-size: 14px;
+  line-height: 15px;
+  font-weight: 600;
 }
 @media (max-width: 768px) {
   .widhead-container-header,
@@ -1663,33 +1683,47 @@ button.accordion-button.collapsed::after {
     flex-direction: column;
   }
   .steps {
-    min-width: 300px;
+    width: 100%;
     justify-content: space-between;
   }
 
-  .steps-time1 {
-    height: 198px;
-    display: flex;
-  }
-
-  .steps-time2 {
-    height: 250px;
-    display: flex;
-  }
-
-  .steps-time3 {
-    height: 310px;
-    display: flex;
-  }
-
-  .steps-time4 {
-    height: 330px;
-    display: flex;
-  }
+  .steps-time1,
+  .steps-time2,
+  .steps-time3,
+  .steps-time4,
   .steps-time5 {
-    min-width: 259px;
-    height: 320px;
+    transition: transform 0.3s ease;
+    transform: rotate(0);
+    z-index: 1;
+    margin-top: 8px;
+    height: auto;
   }
+  .steps-time1:hover,
+  .steps-time2:hover,
+  .steps-time3:hover,
+  .steps-time4:hover,
+  .steps-time5:hover {
+    transform: scale(1.1) rotate(0);
+    z-index: 2;
+  }
+  .stepsBtn {
+    width: 100%;
+  }
+  .stepsBtnContent {
+    font-size: 13px;
+    color: #ffffffb2;
+  }
+  .stepsBtnTitle {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .btn-warning-special {
+    margin-top: 10px;
+    min-height: 50px;
+    width: 70%;
+    font-size: 18px;
+  }
+
   .price-wrap {
     flex-direction: column;
   }
@@ -1775,6 +1809,7 @@ button.accordion-button.collapsed::after {
   }
   .external-analytics-btn {
     font-size: 16px;
+    /* white-space: normal; */
   }
   .thesesListImages img {
     width: 35px;
@@ -1810,7 +1845,6 @@ button.accordion-button.collapsed::after {
 
   .widhead-containe-img:nth-child(3) {
     width: 100%;
-    height: 140px;
 
     position: relative;
     margin-bottom: 10px;
@@ -1958,23 +1992,69 @@ button.accordion-button.collapsed::after {
   .mainBlockFourBtn {
     margin-top: 80px;
   }
+  .monthesText {
+    font-size: 12px;
+  }
+  .HeadCardProPlusMainText {
+    font-size: 25px;
+  }
+  .priceCardOne {
+    font-size: 30px;
+  }
+  .monthesTextBtn {
+    font-size: 15px;
+  }
+  .saleTextMobile {
+    font-size: 15px;
+    display: block;
+  }
+  .mobile-menu-container {
+    position: relative; /* Ensure the menu is positioned correctly */
+  }
+
+  .mobile-menu-button {
+    background: transparent; /* Adjust as needed */
+    border: none;
+    cursor: pointer;
+  }
+
+  .mobilemenu {
+    display: none;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+  }
+
+  .mobilemenu.open {
+    display: block;
+  }
+
+  .mobile-menu-content {
+    padding: 20px;
+  }
+
+  .limited-footer-text {
+    width: 60%;
+    font-size: 12px;
+    line-height: 15px;
+    font-weight: 600;
+  }
 }
 
 /*RESPONSIVE for MOBILE*/
 
-/* Container for the mobile menu and burger icon */
 .mobile-menu-container {
   /* position: relative; */
 }
 
-/* Burger menu icon styling */
 .burger-menu {
   font-size: 24px;
   cursor: pointer;
   padding: 10px;
   z-index: 1001;
 }
-/* Mobile menu styling */
+
 .mobilemenu.open {
   position: fixed;
   top: 95px;
@@ -1993,23 +2073,6 @@ button.accordion-button.collapsed::after {
   transform: translateX(0);
 }
 
-/* Mobile menu links styling */
-.mobilemenu.open ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.mobilemenu.open li {
-  padding: 15px;
-}
-
-.mobilemenu.open a {
-  text-decoration: none;
-  display: block;
-}
-
 .mobilemenu > .widheader-login {
-  background-color: #0069ff;
   align-items: center;
 }
