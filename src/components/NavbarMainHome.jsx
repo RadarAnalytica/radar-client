@@ -23,7 +23,7 @@ const NavbarMainHome = ({ onlyLogo }) => {
         onClick={() => {
           navigate(path);
         }}
-        className='prime-btn header-btn header-btn_light'
+        className='prime-btn prime-btn-mobile header-btn header-btn_light'
       >
         <Steps.StepsBlue />
         <p style={{ margin: 0, fontWeight: 600 }}>Войти</p>
@@ -176,7 +176,6 @@ const NavbarMainHome = ({ onlyLogo }) => {
           {/* Insert mobile menu content here */}
           {!onlyLogo && (
             <div className='mobile-menu-content'>
-              
               {user ? (
                 user?.subscription_status !== "expired" ? (
                   buttonSignIn("/dashboard")
@@ -189,7 +188,7 @@ const NavbarMainHome = ({ onlyLogo }) => {
                     onClick={() => {
                       navigate("/signup");
                     }}
-                    className='prime-btn header-btn'
+                    className='prime-btn prime-btn-mobile header-btn'
                   >
                     <Steps.StepsWhite />
                     <p style={{ margin: 0, fontWeight: 600 }}>Регистрация</p>

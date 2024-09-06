@@ -1241,7 +1241,6 @@ button.accordion-button.collapsed::after {
 .header-btn-wrap {
   display: flex;
   align-items: center;
-  flex-direction: column;
 }
 
 .mobile-menu-button {
@@ -1263,10 +1262,15 @@ button.accordion-button.collapsed::after {
     max-width: 100%;
     margin: 0 auto;
   }
-
-  /* .header-btn-wrap {
-    display: none;
-  } */
+  .header-btn-wrap {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .page-header {
+    position: sticky;
+  }
 
   .mobile-menu-button {
     display: block;
@@ -2042,6 +2046,12 @@ button.accordion-button.collapsed::after {
     line-height: 15px;
     font-weight: 600;
   }
+  .prime-btn-mobile {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
 }
 
 /*RESPONSIVE for MOBILE*/
@@ -2061,8 +2071,9 @@ button.accordion-button.collapsed::after {
   position: fixed;
   top: 95px;
   right: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
+  overflow: hidden;
   background-color: white;
   color: black;
   transform: translateX(100%); /* Hide menu initially */
@@ -2077,4 +2088,135 @@ button.accordion-button.collapsed::after {
 
 .mobilemenu > .widheader-login {
   align-items: center;
+}
+
+/*Responsive for 1680*/
+@media (min-width: 1300px) and (max-width: 1680px) {
+  .wid-solution-text-p {
+    font-size: 35px;
+  }
+  .internal-analytics-btn {
+    white-space: nowrap;
+  }
+  .thesesListText {
+    font-size: 16px;
+  }
+  .steps-container-content {
+    font-size: 14px;
+    color: #00000080;
+  }
+  .steps-container-title {
+    font-size: 20px;
+  }
+  .stepsBtnContent {
+    color: #ffffffb2;
+    font-size: 14px;
+  }
+  .stepsBtnTitle {
+    font-size: 20px;
+  }
+  .landing-price-wrap-header {
+    font-size: 26px;
+  }
+  .OrangeLabel img {
+    width: 100%;
+  }
+  .HeadCardProPlusMainText {
+    font-size: 26px;
+  }
+  .HeadCardProPlusBestDes {
+    width: 30%;
+    font-size: 16px;
+  }
+  .priceCardOne {
+    font-size: 35px;
+  }
+  .landing-price-text {
+    font-size: 40px;
+  }
+  .landing-price-text span {
+    font-size: 40px;
+  }
+  .landing-price-text-main {
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 39px;
+  }
+  .landing-price-btn > .landing-price-btn-text {
+    font-size: 24px;
+    line-height: 32.63px;
+  }
+  .landing-price-btn img {
+    width: 19%;
+  }
+  .landing-price-btn {
+    width: 100%;
+  }
+  .helpEveryStepText {
+    font-size: 35px;
+  }
+  .qaBlock {
+    font-size: 35px;
+  }
+  .custom-accordion-header-text {
+    font-size: 24px;
+  }
+  .custom-accordion-body p {
+    font-size: 20px;
+  }
+  .sales-increase-text {
+    font-size: 26px;
+  }
+  .analyze-competitors-text {
+    font-size: 16px;
+  }
+  .sol-description {
+    min-width: 550px;
+  }
+  .apiBlock img {
+    height: -webkit-fill-available;
+  }
+  .widhead-containe-img {
+    margin-right: 5px;
+  }
+  .blockReviewsText {
+    font-size: 15px;
+  }
+  .photoReviewUser {
+    width: 105px;
+    height: 105px;
+  }
+  .sol-label-btn {
+    width: 100%;
+  }
+  .readyforStartText {
+    font-size: 35px;
+  }
+  .profitableStafText {
+    font-size: 20px;
+  }
+  .blockBtnContainerArrowImg {
+    width: 65%;
+  }
+  .blockBtnContainerImage {
+    width: 80%;
+  }
+  .blockBtnContainerHeader {
+    display: flex;
+    align-items: center;
+  }
+  .btn-warning-home {
+    width: 100%;
+  }
+  .blockBtn img,
+  .apiBlock img,
+  .widhead-container-image img {
+    width: revert-layer;
+  }
+}
+.apiBlockImg {
+  width: 100%;
+}
+.OrangeLabel img {
+  width: 100%;
 }

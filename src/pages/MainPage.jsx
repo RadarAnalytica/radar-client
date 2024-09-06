@@ -97,10 +97,11 @@ const MainPage = () => {
               <YellowRadarSmall />
             </div>
             <div className='sales-increase-text'>
-              – сервис аналитики для{" "}
+              – сервис аналитики для
               <span className='sales-increse-text-span'>
-                увеличения ваших продаж
-              </span>{" "}
+                {" "}
+                увеличения ваших продаж{" "}
+              </span>
               на маркетплейсах
             </div>
             <div className='analyze-competitors-text'>
@@ -193,8 +194,8 @@ const MainPage = () => {
                 style={{ borderRadius: "15px" }}
               />
             </div>
-            <div>
-              <img src={apiBlock} alt='logo' style={{ width: "100%" }} />
+            <div className='apiBlock'>
+              <img className='apiBlockImg' src={apiBlock} alt='logo' />
             </div>
             <div className='blockBtn'>
               <div className='blockBtnContainer'>

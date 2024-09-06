@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 const ImageComponent = ({ heavyImageSrc, lightImageSrc, style }) => {
   const [heavyImageLoaded, setHeavyImageLoaded] = useState(false);
@@ -10,11 +10,13 @@ const ImageComponent = ({ heavyImageSrc, lightImageSrc, style }) => {
   }, [heavyImageSrc]);
 
   return (
-    <img
-      src={heavyImageLoaded ? heavyImageSrc : lightImageSrc}
-      alt='dynamic-icon'
-      style={style}
-    />
+    <div>
+      <img
+        src={heavyImageLoaded ? heavyImageSrc : lightImageSrc}
+        alt='dynamic-icon'
+        style={style}
+      />
+    </div>
   );
 };
 
