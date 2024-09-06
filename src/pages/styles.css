@@ -1241,6 +1241,7 @@ button.accordion-button.collapsed::after {
 .header-btn-wrap {
   display: flex;
   align-items: center;
+  flex-direction: column;
 }
 
 .mobile-menu-button {
@@ -1263,9 +1264,10 @@ button.accordion-button.collapsed::after {
     margin: 0 auto;
   }
 
-  .header-btn-wrap {
+  /* .header-btn-wrap {
     display: none;
-  }
+  } */
+
   .mobile-menu-button {
     display: block;
   }

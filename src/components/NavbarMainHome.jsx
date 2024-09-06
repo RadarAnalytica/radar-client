@@ -176,6 +176,7 @@ const NavbarMainHome = ({ onlyLogo }) => {
           {/* Insert mobile menu content here */}
           {!onlyLogo && (
             <div className='mobile-menu-content'>
+              
               {user ? (
                 user?.subscription_status !== "expired" ? (
                   buttonSignIn("/dashboard")

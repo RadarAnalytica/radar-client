@@ -12,7 +12,7 @@ const SignUpPage = () => {
         setTimeout(() => {
             if (user) {
                 if (user?.subscription_status !== 'expired') {
-                    navigate('onboarding')
+                    navigate('/onboarding')
                 } else {
                     navigate('/tariffs')
                 }
