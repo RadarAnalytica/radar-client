@@ -2271,18 +2271,18 @@ select {
   width: 7150px;
 }
 
-.table-content-stock::-webkit-scrollbar {
+.custom-table::-webkit-scrollbar {
   height: 6px;
   background: #5329ff80;
   border-radius: 6px;
   width: 6px;
 }
 
-.table-content-stock::-webkit-scrollbar-track {
+.custom-table::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-.table-content-stock::-webkit-scrollbar-thumb {
+.custom-table::-webkit-scrollbar-thumb {
   background: #5329ff80;
   border-radius: 6px;
 }
@@ -2361,3 +2361,132 @@ select {
   align-items: center;
 }
 /* >>>>>>> stockAnlysis */
+
+
+
+
+.custom-table-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.custom-table {
+  width: 100%;
+  height: calc(100vh - 150px);
+  overflow: auto;
+}
+
+.table-container {
+  display: flex;
+  width: max-content;
+}
+
+.fixed-columns {
+  display: flex;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background-color: #fff;
+  border-radius: 16px;
+}
+
+.scrollable-columns {
+  display: flex;
+  margin-right: 10px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.cell {
+  height: 100%;
+  min-height: 60px;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.header-cell {
+  font-weight: bold;
+  background-color: #f8f9fa;
+  position: sticky;
+  top: 0;
+}
+
+.data-cell {
+  background-color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+ .custom-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-container {
+  display: flex;
+}
+
+.scrollable-columns {
+  overflow-x: auto;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 150px;
+  padding: 10px;
+}
+
+.header-cell {
+  background: rgba(255, 255, 255, 1);
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  color: rgba(26, 26, 26, 1);
+}
+
+.subheader-cell {
+  font-weight: 600;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+.data-cell {
+  background-color: #fff;
+}
+
+.goods-cell-header {
+  color: #8c8c8c;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  height: 70px;
+  line-height: 20px;
+  border: 'none';
+  padding-left: 50px;
+  margin-left: 17px;
+  background: #f7f6fe;
+}
+
+.cell-header {
+  color: #8c8c8c;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  height: 70px;
+  line-height: 20px;
+  border: 'none';
+  background: #f7f6fe;
+}
