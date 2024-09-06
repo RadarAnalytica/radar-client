@@ -30,601 +30,1328 @@ const TableStock = ({ dataTable, setDataTable }) => {
   };
 
   return (
-    <div class='table-content-stock'>
-      <table className='table-stock table-alignment' style={{ height: '100%' }}>
-        <span className='table-caption'>
-          <caption className='about-goods-title'>О товаре</caption>
-          <caption className='about-goods-title-sells'>Продажи</caption>
-          <caption className='about-goods-title-returns'>Возвраты</caption>
-          <caption className='about-goods-title-selfcost'>
-            Себестоимость
-          </caption>
-          <caption className='about-goods-title-logistic'>Логистика</caption>
-          <caption className='about-goods-title-other'>Прочие расходы</caption>
-          <caption className='about-goods-title-profit'>Прибыль</caption>
-          <caption className='about-goods-title-abc'>АВС анализ</caption>
-          <caption className='about-goods-title-price'>Цена</caption>
-          <caption className='about-goods-title-orders'>Заказы</caption>
-          <caption className='about-goods-title-purchase'>Выкупы</caption>
-          <caption className='about-goods-title-speed'>Скорость</caption>
-          <caption className='about-goods-title-remainder'>Остаток</caption>
-        </span>
-        <thead>
-          <tr>
-            <th
-              className='goods-cell-first'
-              style={{ paddingLeft: '15px !important' }}
+    <div style={{display: 'flex', flexDirection: 'row'}}>
+    <div style={{width: '35px', height: '100%'}}></div>
+    <div className='custom-table'>
+      <div className='table-container'>
+        {/* Fixed columns */}
+        <div className='fixed-columns'>
+          <div className='column goods-cell'>
+            <div
+              className='cell header-cell goods-cell'
+              style={{ border: 'none', paddingLeft: '50px' }}
             >
-              <span className='about-goods height-100'>
-                <div
-                  style={{ width: '30px', height: '40px', marginLeft: '10px' }}
-                ></div>
-                <span className='name-of-goods'>
-                  Товар
-                  <div
-                    className='icon-sort-wrap'
-                    style={{ background: 'transparent' }}
-                    onClick={() => sortData('productName')}
-                  >
-                    {renderSortArrows('productName')}
-                  </div>
-                </span>
-              </span>
-            </th>
-            <th className='goods-cell'>
-              <span className='height-100'>
-                Бренд
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('brandName')}
-                >
-                  {renderSortArrows('brandName')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell'>
-              <span className='height-100'>
-                Артикул
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('vendorСode')}
-                >
-                  {renderSortArrows('vendorСode')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Баркод
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('barCode')}
-                >
-                  {renderSortArrows('barCode')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-100'>
-              <span className='height-100'>
-                SKU
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('sku')}
-                >
-                  {renderSortArrows('sku')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-100'>
-              <span className='height-100'>
-                Размер
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('size')}
-                >
-                  {renderSortArrows('size')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell border-right'>
-              <span className='height-100'>
-                Категория
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('category')}
-                >
-                  {renderSortArrows('category')}
-                </div>
-              </span>
-            </th>
-            {/* Sells cells */}
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Сумма
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('saleSum')}
-                >
-                  {renderSortArrows('saleSum')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-100'>
-              <span className='height-100'>
-                Кол-во
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('quantity')}
-                >
-                  {renderSortArrows('quantity')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                За вычетом
-                <br /> возвратов
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('lessReturns')}
-                >
-                  {renderSortArrows('lessReturns')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150 border-right'>
-              <span className='height-100'>
-                Себестоимость
-                <br /> проданных
-                <br /> товаров
-              </span>
-            </th>
-            {/* Returns cells */}
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Сумма
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('returnsSum')}
-                >
-                  {renderSortArrows('returnsSum')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-100'>
-              <span className='height-100'>
-                Кол-во
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('returnsQuantity')}
-                >
-                  {renderSortArrows('returnsQuantity')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Себестоимость
-                <br /> возвращенных
-                <br /> товаров
-              </span>
-            </th>
-            {/* Sebestoimost cells */}
-            <th className='goods-cell-150'>
-              <span className='height-100'>За единицу</span>
-            </th>
-            <th className='goods-cell-150 border-right'>
-              <span className='height-100'>
-                Себестоимость
-                <br /> товарного запаса
-                <br /> (сегодня)
-              </span>
-            </th>
-            {/* Logistic cells */}
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                К клиенту
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('toClient')}
-                >
-                  {renderSortArrows('toClient')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100 border-right'>
-                От клиента
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('fromClient')}
-                >
-                  {renderSortArrows('fromClient')}
-                </div>
-              </span>
-            </th>
-            {/* Other expenses cells */}
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Комиссия WB
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('commissionWB')}
-                >
-                  {renderSortArrows('commissionWB')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Штрафы
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('fines')}
-                >
-                  {renderSortArrows('fines')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Доплаты
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('additionalpayment')}
-                >
-                  {renderSortArrows('additionalpayment')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-160'>
-              <span className='height-100 border-right'>
-                Расходы услуг
-                <br /> проверенного
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('serviceExpenses')}
-                >
-                  {renderSortArrows('serviceExpenses')}
-                </div>
-              </span>
-            </th>
-            {/* Profit cells */}
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                К выплате
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('toPayoff')}
-                >
-                  {renderSortArrows('toPayoff')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Маржинальная
-                <br /> прибыль
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100'>Средняя прибыль</span>
-            </th>
-            <th className='goods-cell-180'>
-              <span className='height-100'>
-                Рентабельность
-                <br /> реализованной
-                <br /> продукции
-              </span>
-            </th>
-            <th className='goods-cell-160'>
-              <span className='height-100'>Маржинальность</span>
-            </th>
-            <th className='goods-cell-180'>
-              <span className='height-100'>
-                Годовая
-                <br /> рентабельность
-                <br /> товарных запасов
-              </span>
-            </th>
-            <th className='goods-cell-150 border-right'>
-              <span className='height-100'>
-                Упущенная
-                <br /> выручка
-              </span>
-            </th>
-            {/* Abc cells */}
-            <th className='goods-cell-120'>
-              <span className='height-100'>
-                По
-                <br /> выручке
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('byRevenue')}
-                >
-                  {renderSortArrows('byRevenue')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-120'>
-              <span className='height-100 border-right'>
-                По
-                <br /> прибыли
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('byProfit')}
-                >
-                  {renderSortArrows('byProfit')}
-                </div>
-              </span>
-            </th>
-            {/* Price cells */}
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Базовая
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('basic')}
-                >
-                  {renderSortArrows('basic')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-120'>
-              <span className='height-100'>
-                Макс.
-                <br /> скидка
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('maxDiscount')}
-                >
-                  {renderSortArrows('maxDiscount')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100 border-right'>
-                Мин. цена
-                <br /> со скидкой
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('minDiscountPrice')}
-                >
-                  {renderSortArrows('minDiscountPrice')}
-                </div>
-              </span>
-            </th>
-            {/* Orders cells */}
-            <th className='goods-cell-100'>
-              <span className='height-100'>
-                Кол-во
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('orderQuantity')}
-                >
-                  {renderSortArrows('orderQuantity')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100 border-right'>
-                Сумма
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('orderSum')}
-                >
-                  {renderSortArrows('orderSum')}
-                </div>
-              </span>
-            </th>
-            {/* Buy out cells */}
-            <th className='goods-cell-135'>
-              <span className='height-100'>
-                Выкуплено
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('purchased')}
-                >
-                  {renderSortArrows('purchased')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-135'>
-              <span className='height-100'>
-                Не
-                <br /> выкуплено
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('notPurchased')}
-                >
-                  {renderSortArrows('notPurchased')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100'>
-                Процент
-                <br /> выкупа
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('purchasedPrecent')}
-                >
-                  {renderSortArrows('purchasedPrecent')}
-                </div>
-              </span>
-            </th>
-            <th className='goods-cell-150'>
-              <span className='height-100 border-right'>
-                Завершены
-                <div
-                  className='icon-sort-wrap'
-                  style={{ background: 'transparent' }}
-                  onClick={() => sortData('completed')}
-                >
-                  {renderSortArrows('completed')}
-                </div>
-              </span>
-            </th>
-            {/* Speed cells */}
-            <th className='goods-cell-100'>
-              <span className='height-100'>
-                Заказов,
-                <br />
-                шт/день
-              </span>
-            </th>
-            <th className='goods-cell-150 border-right'>
-              <span className='height-100'>
-                Продаж,
-                <br />
-                ₽/день
-              </span>
-            </th>
-            {/* Left cells */}
-            <th className='goods-cell-150'>
-              <span className='height-100'>Остаток</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataTable.map((item, i) => (
-            <tr key={i}>
-              <td className='goods-cell-first'>
-                <span
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    paddingLeft: '7px',
-                  }}
-                >
-                  <div className='empty-box'>
-                    <img
-                      src={item.photo}
-                      style={{
-                        width: '30px',
-                        height: '40px',
-                        objectFit: 'cover',
-                      }}
-                      onError={(e) => {
-                        e.target.style.backgroundColor = '#D3D3D3';
-                        e.target.alt = '';
-                        e.target.src =
-                          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
-                      }}
-                    />
-                  </div>
-
-                  <span className='name-of-goods'>{item.productName}</span>
-                </span>
-              </td>
-              <td className='goods-cell'>
-                <span className='height-100' style={{ minHeight: '44px' }}>
-                  <span>{item.brandName}</span>
-                </span>
-              </td>
-              <td className='goods-cell'>{item.vendorСode}</td>
-              <td className='goods-cell-150'>{item.barCode}</td>
-              <td
-                className='goods-cell-100'
-                style={{
-                  width: '100px',
-                  maxWidth: '100px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-                title={item.sku}
+              О товаре
+            </div>
+            <div
+              className='goods-cell-header'
+              onClick={() => sortData('productName')}
+              style={{ minHeight: '70px', zIndex: '1' }}
+            >
+              Товар
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('saleSum')}
               >
-                {item.sku}
-              </td>
-              <td className='goods-cell-100'>{item.size}</td>
-              <td className='goods-cell'>{item.category}</td>
-              {/* Sells cells */}
-              <td className='goods-cell-150'>{item.saleSum} </td>
-              <td className='goods-cell-100'>{item.quantity}</td>
-              <td className='goods-cell-150'>{item.lessReturns}</td>
-              <td className='goods-cell-150'>{item.costGoodsSold}</td>
-              {/* Returns cells */}
-              <td className='goods-cell-150'>{item.returnsSum}</td>
-              <td className='goods-cell-100'>{item.returnsQuantity}</td>
-              <td className='goods-cell-150'>{item.returnsCostSold}</td>
-              {/* Sebestoimost cells */}
-              <td className='goods-cell-150'>{item.costPriceOne}</td>
-              <td className='goods-cell-150'>
-                {item.costOfProductStockToday} ₽
-              </td>
-              {/* Logistic cells */}
-              <td className='goods-cell-150'>{item.toClient}</td>
-              <td className='goods-cell-150'>{item.fromClient}</td>
-              {/* Other expenses cells */}
-              <td className='goods-cell-150'>{item.commissionWB}</td>
-              <td className='goods-cell-150'>{item.fines}</td>
-              <td className='goods-cell-150'>{item.additionalpayment}</td>
-              <td className='goods-cell-160'>{item.serviceExpenses} ₽</td>
-              {/* Profit cells */}
-              <td className='goods-cell-150'>{item.toPayoff} ₽</td>
-              <td className='goods-cell-150'>{item.marginalProfit} ₽</td>
-              <td className='goods-cell-150'>{item.averageProfit} ₽</td>
-              <td className='goods-cell-180'>
-                {item.profitabilityOfProductsSold} %
-              </td>
-              <td className='goods-cell-160'>{item.marginal} %</td>
-              <td className='goods-cell-180'>
-                {item.annualReturnOnInventory} %
-              </td>
-              <td className='goods-cell-150'>{item.lostRevenue} ₽</td>
-              {/* Abc cells */}
-              <td className='goods-cell-120'>{item.byRevenue}</td>
-              <td className='goods-cell-120'>{item.byProfit}</td>
-              {/* Price cells */}
-              <td className='goods-cell-150'>{item.basic} ₽</td>
-              <td className='goods-cell-120'>{item.maxDiscount} %</td>
-              <td className='goods-cell-150'>{item.minDiscountPrice} ₽</td>
-              {/* Orders cells */}
-              <td className='goods-cell-100'>{item.orderQuantity}</td>
-              <td className='goods-cell-150'>{item.orderSum} ₽</td>
-              {/* Buy out cells */}
-              <td className='goods-cell-135'>{item.purchased}</td>
-              <td className='goods-cell-135'>{item.notPurchased}</td>
-              <td className='goods-cell-150'>{item.purchasedPrecent} %</td>
-              <td className='goods-cell-150'>{item.completed}</td>
-              {/* Speed cells */}
-              <td className='goods-cell-100'>{item.orderCountDay}</td>
-              <td className='goods-cell-150'>{item.slaeCountDay}</td>
-              {/* Left cells */}
-              <td className='goods-cell-150'>{item.slaeCountDay}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                {renderSortArrows('productName')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell goods-cell'
+                style={{
+                  minWidth: '260px',
+                  marginLeft: '17px',
+                  padding: '10px',
+                  zIndex: '1',
+                }}
+              >
+                <div className='empty-box'>
+                  <img
+                    src={row.photo}
+                    style={{
+                      width: '30px',
+                      height: '40px',
+                      objectFit: 'cover',
+                    }}
+                    onError={(e) => {
+                      e.target.style.backgroundColor = '#D3D3D3';
+                      e.target.alt = '';
+                      e.target.src =
+                        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
+                    }}
+                  />
+                </div>
+                <span style={{color: 'rgba(83, 41, 255, 1)'}}>{row.productName}</span>
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '200px', border: 'none', minHeight: '40px' }}
+            ></div>
+            <div
+              className='cell goods-cell cell-header'
+              style={{ minWidth: '200px', border: 'none', minHeight: '70px', zIndex: '1' }}
+              onClick={() => sortData('brandName')}
+            >
+              Бренд
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('saleSum')}
+              >
+                {renderSortArrows('brandName')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell goods-cell'
+                style={{ minWidth: '200px', zIndex: '1' }}
+              >
+                {row.brandName}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '200px', border: 'none', minHeight: '40px' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '200px', minHeight: '70px', border: 'none', zIndex: '1' }}
+              onClick={() => sortData('vendorСode')}
+            >
+              Артикул
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('saleSum')}
+              >
+                {renderSortArrows('vendorСode')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '200px', zIndex: '1' }}
+              >
+                {row.vendorСode}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Scrollable columns */}
+        <div className='scrollable-columns'>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '100px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '100px', minHeight: '70px', border: 'none' }}
+              onClick={() => sortData('sku')}
+            >
+              SKU
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('saleSum')}
+              >
+                {renderSortArrows('sku')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '100px' }}
+              >
+                {row.sku}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '100px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '100px', minHeight: '70px', border: 'none' }}
+              onClick={() => sortData('size')}
+            >
+              Размер
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('saleSum')}
+              >
+                {renderSortArrows('size')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '100px' }}
+              >
+                {row.size}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '200px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '200px', minHeight: '70px', border: 'none' }}
+              onClick={() => sortData('category')}
+            >
+              Категория
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('saleSum')}
+              >
+                {renderSortArrows('category')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '200px' }}
+              >
+                {row.category}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '150px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Продажи
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '150px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+              onClick={() => sortData('saleSum')}
+            >
+              Сумма
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('saleSum')}
+              >
+                {renderSortArrows('saleSum')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.saleSum} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '100px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '100px', minHeight: '70px', border: 'none' }}
+            >
+              Кол-во
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('quantity')}
+              >
+                {renderSortArrows('quantity')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '100px' }}
+              >
+                {row.quantity}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+              onClick={() => sortData('lessReturns')}
+            >
+              За вычетом
+              <br /> возвратов
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('quantity')}
+              >
+                {renderSortArrows('lessReturns')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.lessReturns} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Себестоимость
+              <br /> проданных
+              <br /> товаров
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.costGoodsSold} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '150px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Возвраты
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '150px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+              onClick={() => sortData('returnsSum')}
+            >
+              Сумма
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('quantity')}
+              >
+                {renderSortArrows('returnsSum')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.returnsSum} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '100px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '100px', minHeight: '70px', border: 'none' }}
+            >
+              Кол-во
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('returnsQuantity')}
+              >
+                {renderSortArrows('returnsQuantity')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '100px' }}
+              >
+                {row.returnsQuantity}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Себестоимость
+              <br /> возвращенных
+              <br /> товаров
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.returnsCostSold} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+                whiteSpace: 'nowrap',
+                overflow: 'visible',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              Себестоимость
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '150px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              За единицу
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px',borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.costPriceOne}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '170px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '170px', minHeight: '70px', border: 'none' }}
+            >
+              Себестоимость
+              <br /> товарного запаса
+              <br /> (сегодня)
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '170px' }}
+              >
+                {row.costOfProductStockToday} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '150px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Логистика
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '150px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              К клиенту
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('toClient')}
+              >
+                {renderSortArrows('toClient')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px',borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.toClient}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              От клиента
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('fromClient')}
+              >
+                {renderSortArrows('fromClient')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.fromClient}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '170px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+                whiteSpace: 'nowrap',
+                overflow: 'visible',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              Прочие расходы
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '170px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Комиссия WB
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('commissionWB')}
+              >
+                {renderSortArrows('commissionWB')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '170px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.commissionWB} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Штрафы
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('fines')}
+              >
+                {renderSortArrows('fines')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.fines} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Доплаты
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('additionalpayment')}
+              >
+                {renderSortArrows('additionalpayment')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.additionalpayment} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '150px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Прибыль
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '150px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              К выплате
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('toPayoff')}
+              >
+                {renderSortArrows('toPayoff')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.toPayoff} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Маржинальная
+              <br /> прибыль
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.marginalProfit} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Средняя прибыль
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.averageProfit} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '180px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '180px', minHeight: '70px', border: 'none' }}
+            >
+              Рентабельность
+              <br /> реализованной
+              <br /> продукции
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '180px' }}
+              >
+                {row.profitabilityOfProductsSold} %
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '160px', border: 'none' }}
+            ></div>
+            <div
+              className='cell '
+              style={{ minWidth: '160px', minHeight: '70px', border: 'none' }}
+            >
+              Маржинальность
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '160px' }}
+              >
+                {row.marginal} %
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '180px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '180px', minHeight: '70px', border: 'none' }}
+            >
+              Годовая
+              <br /> рентабельность
+              <br /> товарных запасов
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '180px' }}
+              >
+                {row.annualReturnOnInventory} %
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell '
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Упущенная
+              <br /> выручка
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              > 
+                {row.lostRevenue} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '120px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+                whiteSpace: 'nowrap',
+                overflow: 'visible',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              АВС анализ
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '120px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              По
+              <br /> выручке
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('byRevenue')}
+              >
+                {renderSortArrows('byRevenue')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '120px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.byRevenue}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '120px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '120px', minHeight: '70px', border: 'none' }}
+            >
+              По
+              <br /> прибыли
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('byProfit')}
+              >
+                {renderSortArrows('byProfit')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '120px' }}
+              >
+                {row.byProfit}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '150px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Цена
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '150px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Базовая
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('basic')}
+              >
+                {renderSortArrows('basic')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.basic} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '120px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '120px', minHeight: '70px', border: 'none' }}
+            >
+              Макс.
+              <br /> скидка
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('maxDiscount')}
+              >
+                {renderSortArrows('maxDiscount')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '120px' }}
+              >
+                {row.maxDiscount} %
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Мин. цена
+              <br /> со скидкой
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('minDiscountPrice')}
+              >
+                {renderSortArrows('minDiscountPrice')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.minDiscountPrice} ₽
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '100px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Заказы
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '100px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Кол-во
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('orderQuantity')}
+              >
+                {renderSortArrows('orderQuantity')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '100px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.orderQuantity}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Сумма
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('orderSum')}
+              >
+                {renderSortArrows('orderSum')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.orderSum}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '135px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Выкупы
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '135px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Выкуплено
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('purchased')}
+              >
+                {renderSortArrows('purchased')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '135px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.purchased}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '135px', border: 'none' }}
+            ></div>
+            <div
+              className='cell '
+              style={{ minWidth: '135px', minHeight: '70px', border: 'none' }}
+            >
+              Не выкуплено
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('notPurchased')}
+              >
+                {renderSortArrows('notPurchased')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '135px' }}
+              >
+                {row.notPurchased}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Процент
+              <br /> выкупа
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('purchasedPrecent')}
+              >
+                {renderSortArrows('purchasedPrecent')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.purchasedPrecent} %
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
+            >
+              Завершены
+              <div
+                className='icon-sort-wrap'
+                style={{ background: 'transparent' }}
+                onClick={() => sortData('completed')}
+              >
+                {renderSortArrows('completed')}
+              </div>
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.completed}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '120px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Скорость
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '120px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Заказов,
+              <br />
+              шт/день
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '120px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.orderCountDay}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{ minWidth: '150px', border: 'none' }}
+            ></div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '150px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+              }}
+            >
+              Продаж,
+              <br />
+              ₽/день
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px' }}
+              >
+                {row.slaeCountDay}
+              </div>
+            ))}
+          </div>
+          <div className='column'>
+            <div
+              className='cell header-cell'
+              style={{
+                minWidth: '150px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Остаток
+            </div>
+            <div
+              className='cell cell-header'
+              style={{
+                minWidth: '150px',
+                minHeight: '70px',
+                borderRight: 'none',
+                borderBottom: 'none',
+                borderTop: 'none',
+                marginRight: '17px',
+                borderLeft: '1px solid #e0e0e0',
+              }}
+            >
+              Данные Радар
+            </div>
+            {dataTable.map((row, index) => (
+              <div
+                key={index}
+                className='cell data-cell'
+                style={{ minWidth: '150px', borderLeft: '1px solid #e0e0e0', }}
+              >
+                {row.orderCountDay}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   );
 };

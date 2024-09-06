@@ -224,6 +224,7 @@ const StockAnalysis = () => {
                   </div>
                 </>
               </div>
+              <div style={{ height: '20px' }}></div>
               <TableStock dataTable={dataTable} setDataTable={setDataTable} />
             </>
           ) : (
