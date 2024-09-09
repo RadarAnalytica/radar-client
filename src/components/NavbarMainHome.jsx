@@ -165,14 +165,26 @@ const NavbarMainHome = ({ onlyLogo }) => {
       </div>
       <div className='mobile-menu-container'>
         {/* Burger Menu Icon */}
+
         <button className='mobile-menu-button' onClick={toggleMenu}>
           <img src={isOpen ? closebtn : menu} alt='Menu' />
         </button>
 
         <div
-          className={`mobilemenu ${isOpen ? "open" : ""}`}
+          className={`mobilemenu ${isOpen ? "open" : ""} `}
           style={{ display: isOpen ? "block" : "none" }}
         >
+          <div className='page-header' style={{ margin: "0px 20px" }}>
+            <img
+              src={RadarAnaliticaMedium}
+              alt='logo'
+              onClick={() => navigate("/home")}
+              style={{ cursor: "pointer" }}
+            />
+            <button className='mobile-menu-button' onClick={toggleMenu}>
+              <img src={isOpen ? closebtn : menu} alt='Menu' />
+            </button>
+          </div>
           {/* Insert mobile menu content here */}
           {!onlyLogo && (
             <div className='mobile-menu-content'>

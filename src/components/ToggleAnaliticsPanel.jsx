@@ -115,7 +115,8 @@ const ToggleAnalyticsPanel = () => {
       <div className='blockInOnAnalytics'>
         <div
           className='vertical-line'
-          style={{ height: `${(activeIndex + 1) * 20}%` }}
+          style={{ "--activeIndex": activeIndex }}
+          // style={{ height: `${(activeIndex + 1) * 20}%` }}
         ></div>
         <div
           className='blocks'

@@ -867,7 +867,9 @@ button.accordion-button.collapsed::after {
   border-radius: 20px;
   width: 100%;
 }
-
+.mobile-version {
+  display: none;
+}
 .widvideo-steps {
   display: flex;
   flex-direction: column;
@@ -1248,9 +1250,28 @@ button.accordion-button.collapsed::after {
   background: none;
   border: none;
 }
-
+.vertical-line {
+  height: calc((var(--activeIndex) + 1) * 20%);
+}
 @media (max-width: 768px) {
-  /* Скрываем все элементы кроме логотипа и кнопки на мобильных устройствах */
+  .page-white {
+    overflow-x: hidden;
+  }
+  .header-btn-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .prime-btn-mobile {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .vertical-line {
+    height: calc((var(--activeIndex) + 1) * 13%);
+  }
+
   .mobile-container {
     width: 100%;
     padding: 0 15px;
@@ -1267,9 +1288,6 @@ button.accordion-button.collapsed::after {
     align-items: center;
     flex-direction: column;
     gap: 2px;
-  }
-  .page-header {
-    position: sticky;
   }
 
   .mobile-menu-button {
@@ -1316,6 +1334,16 @@ button.accordion-button.collapsed::after {
   display: flex;
   justify-content: space-between;
   margin-top: 30px;
+}
+.steps-container {
+  max-width: 40%;
+}
+
+.steps-container p {
+  padding-left: 5px;
+}
+.steps-container > stepsBlue {
+  /* margin-right: 5px; */
 }
 .landing-price-wrap-main {
   display: flex;
@@ -1592,6 +1620,10 @@ button.accordion-button.collapsed::after {
   .widhead-container-img3-main {
     display: none;
   }
+  /* .page-header {
+    position: sticky;
+  } */
+
   .manyApiLogo {
     display: none;
   }
@@ -1605,8 +1637,9 @@ button.accordion-button.collapsed::after {
   .widhead-container-img3-mini {
     display: initial;
   }
-  .mainBlockFourBtn div {
+  .widhead-container-title {
     font-size: 24px;
+    margin-bottom: 10px;
   }
   .photoReviewUser {
     width: 50px;
@@ -1614,6 +1647,9 @@ button.accordion-button.collapsed::after {
   }
   .wid-solution {
     flex-direction: column;
+  }
+  .mobile-version {
+    display: block;
   }
   .sol-screenshot.col-7,
   .wid-solution-text > p,
@@ -1997,6 +2033,7 @@ button.accordion-button.collapsed::after {
   }
   .mainBlockFourBtn {
     margin-top: 80px;
+    padding: 20px;
   }
   .monthesText {
     font-size: 12px;
@@ -2069,7 +2106,7 @@ button.accordion-button.collapsed::after {
 
 .mobilemenu.open {
   position: fixed;
-  top: 95px;
+  top: 0px;
   right: 0;
   width: 100vw;
   height: 100%;

@@ -1,42 +1,44 @@
-import React from 'react';
+import React from "react";
 
 const StepsBlue = () => {
   return (
-    <svg
-      width='33'
-      height='33'
-      viewBox='0 0 33 33'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <circle opacity='0.2' cx='21.6104' cy='16.5' r='12' fill='#9A81FF' />
-      <rect
-        opacity='0.4'
-        x='14.1104'
-        y='9'
-        width='15'
-        height='15'
-        rx='7.5'
-        fill='#9A81FF'
-      />
-      <rect
-        x='14.5104'
-        y='9.4'
-        width='14.2'
-        height='14.2'
-        rx='7.1'
-        stroke='#9A81FF'
-        strokeWidth='0.8'
-      />
-      <circle
-        cx='21.7105'
-        cy='16.2'
-        r='1.8'
-        fill='white'
-        stroke='#5030E5'
-        strokeWidth='1.2'
-      />
-    </svg>
+    <div className='stepsBlue'>
+      <svg
+        width='33'
+        height='33'
+        viewBox='0 0 33 33'
+        fill='none'
+        xmlns='http://www.w3.org/2000/svg'
+      >
+        <circle opacity='0.2' cx='21.6104' cy='16.5' r='12' fill='#9A81FF' />
+        <rect
+          opacity='0.4'
+          x='14.1104'
+          y='9'
+          width='15'
+          height='15'
+          rx='7.5'
+          fill='#9A81FF'
+        />
+        <rect
+          x='14.5104'
+          y='9.4'
+          width='14.2'
+          height='14.2'
+          rx='7.1'
+          stroke='#9A81FF'
+          strokeWidth='0.8'
+        />
+        <circle
+          cx='21.7105'
+          cy='16.2'
+          r='1.8'
+          fill='white'
+          stroke='#5030E5'
+          strokeWidth='1.2'
+        />
+      </svg>
+    </div>
   );
 };
 

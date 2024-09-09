@@ -12,10 +12,6 @@ import manager1 from "../pages/images/manager1.png";
 import manager2 from "../pages/images/manager2.png";
 import manager3 from "../pages/images/manager3.png";
 import Steps from "../pages/images/Steps";
-import frame1 from "../pages/images/frame1.png";
-import frame2 from "../pages/images/frame1.png";
-import frame3 from "../pages/images/frame1.png";
-import frame4 from "../pages/images/frame1.png";
 
 const dataImages = {
   newbie: [newbie1, newbie2, newbie3],
@@ -23,42 +19,66 @@ const dataImages = {
   business: [bussines1, bussines2, bussines3],
   manager: [manager1, manager2, manager3],
 };
-const dataImagesMobile = [frame1, frame2, frame3, frame4];
 
 const whyUs = {
   newbie: {
     title: "Новички",
     functions: [
-      "Найти прибыльную нишу и проанализировать спрос",
-      "Проанализировать стратегию лидеров рынка",
-      "Выбрать товар для запуска бизнеса, который будет продаваться",
+      {
+        emoji: "🔍",
+        text: "Найти прибыльную нишу и проанализировать спрос",
+      },
+      { emoji: "📊", text: "Проанализировать стратегию лидеров рынка" },
+      {
+        emoji: "📦",
+        text: "Выбрать товар для запуска бизнеса, который будет продаваться",
+      },
     ],
   },
   currentSellers: {
     title: "Действующие продавцы",
     functions: [
-      "Масштабировать продажи и показатели ",
-      "Проанализировать стратегию лидеров рынка",
-      "Выбрать товар для запуска бизнеса, который будет продаваться",
+      { emoji: "💸", text: "Масштабировать продажи и показатели" },
+      {
+        emoji: "💰",
+        text: "Анализировать тренды и расширять товарную матрицу прибыльными товарами",
+      },
+      { emoji: "🔝", text: "Вывести товары в ТОП и улучшить SEO-выдачу" },
     ],
   },
   business: {
     title: "Крупный бизнес",
     functions: [
-      "Найти прибыльную нишу и проанализировать спрос",
-      "Проанализировать стратегию лидеров рынка",
-      "Выбрать товар для запуска бизнеса, который будет продаваться",
+      {
+        emoji: "👥",
+        text: "Добавить менеджеров и удобно контролировать отчетность",
+      },
+      {
+        emoji: "📍",
+        text: "Видеть все финансовые показатели по всем магазинам в одном месте",
+      },
+      {
+        emoji: "💡",
+        text: "Принимать стратегически верные решения для развития бизнеса",
+      },
     ],
   },
   manager: {
-    title: "Менеджеры маркетплейсов и агентства",
+    title: `Менеджеры маркетплейсов и агентства`,
     functions: [
-      "Найти прибыльную нишу и проанализировать спрос",
-      "Проанализировать стратегию лидеров рынка",
-      "Выбрать товар для запуска бизнеса, который будет продаваться",
+      { emoji: "📈", text: "Добавить всех клиентов в один сервис" },
+      {
+        emoji: "📝",
+        text: "Автоматизировать отчетность и рутинные задачи",
+      },
+      {
+        emoji: "🔑",
+        text: "Удобная форма контроля за ключевыми показателями",
+      },
     ],
   },
 };
+
 const BtnHomePage = () => {
   const [activeButton, setActiveButton] = useState("newbie");
 
@@ -99,16 +119,33 @@ const BtnHomePage = () => {
     ));
   }, [activeButton]);
 
+  const sections = Object.values(whyUs);
   const renderedTitles = () => {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {dataImagesMobile.map((image, index) => (
-          <div key={index} style={{ marginBottom: "20px", width: "100%" }}>
-            <img
-              src={image}
-              alt={`frame-${index}`}
-              style={{ width: "100%", objectFit: "cover" }}
-            />
+        {sections.map((section, index) => (
+          <div key={index} className='card' style={{}}>
+            <div className='cardHeader'>
+              <Steps.StepsWhite />
+              <p className='cardTitle' style={{ margin: 0, fontWeight: 600 }}>
+                {section.title}
+              </p>
+            </div>
+
+            <div style={{ padding: "12px 0" }}>
+              {section.functions.map((func, funcIndex) => (
+                <div
+                  className='cardContent'
+                  key={funcIndex}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <div className='cardImage'>
+                    <span>{func.emoji}</span>
+                  </div>
+                  <div className='cardText'>{func.text}</div>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
