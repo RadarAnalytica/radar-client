@@ -46,7 +46,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
             <div
               className='goods-cell-header'
               onClick={() => sortData('productName')}
-              style={{ minHeight: '70px', zIndex: '1' }}
+              style={{ minHeight: '70px' }}
             >
               Товар
               <div
@@ -75,6 +75,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       width: '30px',
                       height: '40px',
                       objectFit: 'cover',
+                      borderRadius: '3px',
                     }}
                     onError={(e) => {
                       e.target.style.backgroundColor = '#D3D3D3';
@@ -84,18 +85,18 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     }}
                   />
                 </div>
-                <span style={{color: 'rgba(83, 41, 255, 1)'}}>{row.productName}</span>
+                <span style={{color: 'rgba(83, 41, 255, 1)', width: '200px', height: '100%'}}>{row.productName}</span>
               </div>
             ))}
           </div>
-          <div className='column'>
+          <div className='column' style={{ width: '200px' }}>
             <div
               className='cell header-cell'
-              style={{ minWidth: '200px', border: 'none', minHeight: '40px' }}
+              style={{ border: 'none' }}
             ></div>
             <div
               className='cell goods-cell cell-header'
-              style={{ minWidth: '200px', border: 'none', minHeight: '70px', zIndex: '1' }}
+              style={{ width: '200px', border: 'none', minHeight: '70px' }}
               onClick={() => sortData('brandName')}
             >
               Бренд
@@ -120,11 +121,11 @@ const TableStock = ({ dataTable, setDataTable }) => {
           <div className='column'>
             <div
               className='cell header-cell'
-              style={{ minWidth: '200px', border: 'none', minHeight: '40px' }}
+              style={{ minWidth: '200px', border: 'none' }}
             ></div>
             <div
               className='cell cell-header'
-              style={{ minWidth: '200px', minHeight: '70px', border: 'none', zIndex: '1' }}
+              style={{ minWidth: '200px', minHeight: '70px', border: 'none' }}
               onClick={() => sortData('vendorСode')}
             >
               Артикул
@@ -465,10 +466,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                 borderBottom: 'none',
                 borderTop: 'none',
                 borderLeft: '1px solid #e0e0e0',
-                whiteSpace: 'nowrap',
-                overflow: 'visible',
-                position: 'relative',
-                zIndex: 1,
               }}
             >
               Себестоимость
@@ -599,10 +596,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                 borderBottom: 'none',
                 borderTop: 'none',
                 borderLeft: '1px solid #e0e0e0',
-                whiteSpace: 'nowrap',
-                overflow: 'visible',
-                position: 'relative',
-                zIndex: 1,
               }}
             >
               Прочие расходы
@@ -808,7 +801,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
               style={{ minWidth: '160px', border: 'none' }}
             ></div>
             <div
-              className='cell '
+              className='cell cell-header'
               style={{ minWidth: '160px', minHeight: '70px', border: 'none' }}
             >
               Маржинальность
@@ -852,7 +845,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
               style={{ minWidth: '150px', border: 'none' }}
             ></div>
             <div
-              className='cell '
+              className='cell cell-header'
               style={{ minWidth: '150px', minHeight: '70px', border: 'none' }}
             >
               Упущенная
@@ -877,10 +870,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                 borderBottom: 'none',
                 borderTop: 'none',
                 borderLeft: '1px solid #e0e0e0',
-                whiteSpace: 'nowrap',
-                overflow: 'visible',
-                position: 'relative',
-                zIndex: 1,
               }}
             >
               АВС анализ
@@ -1166,7 +1155,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
               style={{ minWidth: '135px', border: 'none' }}
             ></div>
             <div
-              className='cell '
+              className='cell cell-header'
               style={{ minWidth: '135px', minHeight: '70px', border: 'none' }}
             >
               Не выкуплено
