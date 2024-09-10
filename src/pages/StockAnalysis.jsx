@@ -225,7 +225,7 @@ const StockAnalysis = () => {
                 </>
               </div>
               <div style={{ height: '20px' }}></div>
-              <TableStock dataTable={dataTable} setDataTable={setDataTable} />
+              <TableStock dataTable={dataTable} setDataTable={setDataTable} />          
             </>
           ) : (
             <DataCollectionNotification
