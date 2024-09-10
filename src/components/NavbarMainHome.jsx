@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import LogoNavbarSelect from "../pages/images/LogoNavbarSelect";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../service/AuthContext";
 import RadarAnaliticaMedium from "../pages/images/RadarAnaliticaMedium.svg";
 import Steps from "../pages/images/Steps";
@@ -12,6 +12,8 @@ const NavbarMainHome = ({ onlyLogo }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isTariffsPage = location.pathname === "/tariffs";
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -26,6 +28,18 @@ const NavbarMainHome = ({ onlyLogo }) => {
         className='prime-btn prime-btn-mobile header-btn header-btn_light'
       >
         <Steps.StepsBlue />
+        <p style={{ margin: 0, fontWeight: 600 }}>Войти</p>
+      </button>
+    );
+  };
+  const buttonSignInMobile = (path) => {
+    return (
+      <button
+        onClick={() => {
+          navigate(path);
+        }}
+        className='prime-btn prime-btn-mobile header-btn header-btn_light'
+      >
         <p style={{ margin: 0, fontWeight: 600 }}>Войти</p>
       </button>
     );
@@ -165,10 +179,11 @@ const NavbarMainHome = ({ onlyLogo }) => {
       </div>
       <div className='mobile-menu-container'>
         {/* Burger Menu Icon */}
-
-        <button className='mobile-menu-button' onClick={toggleMenu}>
-          <img src={isOpen ? closebtn : menu} alt='Menu' />
-        </button>
+        {!isTariffsPage && (
+          <button className='mobile-menu-button' onClick={toggleMenu}>
+            <img src={isOpen ? closebtn : menu} alt='Menu' />
+          </button>
+        )}
 
         <div
           className={`mobilemenu ${isOpen ? "open" : ""} `}
@@ -185,14 +200,13 @@ const NavbarMainHome = ({ onlyLogo }) => {
               <img src={isOpen ? closebtn : menu} alt='Menu' />
             </button>
           </div>
-          {/* Insert mobile menu content here */}
-          {!onlyLogo && (
+          {!onlyLogo && !isTariffsPage && (
             <div className='mobile-menu-content'>
               {user ? (
                 user?.subscription_status !== "expired" ? (
-                  buttonSignIn("/dashboard")
+                  buttonSignInMobile("/dashboard")
                 ) : user?.subscription_status === "expired" ? (
-                  buttonSignIn("/tariffs")
+                  buttonSignInMobile("/tariffs")
                 ) : null
               ) : (
                 <div className='header-btn-wrap'>
@@ -202,10 +216,9 @@ const NavbarMainHome = ({ onlyLogo }) => {
                     }}
                     className='prime-btn prime-btn-mobile header-btn'
                   >
-                    <Steps.StepsWhite />
                     <p style={{ margin: 0, fontWeight: 600 }}>Регистрация</p>
                   </button>
-                  {buttonSignIn("/signin")}
+                  {buttonSignInMobile("/signin")}
                 </div>
               )}
             </div>

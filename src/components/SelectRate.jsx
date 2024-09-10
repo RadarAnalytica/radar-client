@@ -841,7 +841,7 @@ const SelectRate = ({ redirect }) => {
                   >
                     <div>
                       <Steps.CircleOkWhite />
-                      <span style={{ marginLeft: "5px" }}>Личный менеджер</span>
+                      <span style={{ marginLeft: "5px" }}>личный менеджер</span>
                     </div>
                     <div>
                       <Steps.CircleOkWhite />

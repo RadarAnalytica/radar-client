@@ -81,7 +81,7 @@ const StepsTime = ({ redirect }) => {
           <div>
             <div className='stepsBtnBlock'>
               <Steps.StepsWhite />
-              <p style={{ margin: 0 }}>Шаг 5</p>
+              <p className='stepsBtnBlockStepText'>Шаг 5</p>
             </div>
             <div className='stepsBtnTitle'>Масштабируй свой бизнес</div>
             <div className='stepsBtnContent'>

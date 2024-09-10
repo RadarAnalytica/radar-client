@@ -1,13 +1,13 @@
-import React, { useContext, useEffect } from 'react';
-import './styles.css';
-import NavbarMainHome from '../components/NavbarMainHome';
-import LimitedFooter from '../components/LimitedFooter';
-import { useNavigate, useLocation  } from 'react-router-dom';
-import SelectRate from '../components/SelectRate';
-import AuthContext from '../service/AuthContext';
-import { URL } from '../service/config';
-import { useAppDispatch } from '../redux/hooks';
-import { fetchMessages } from '../redux/messages/messagesSlice';
+import React, { useContext, useEffect } from "react";
+import "./styles.css";
+import NavbarMainHome from "../components/NavbarMainHome";
+import LimitedFooter from "../components/LimitedFooter";
+import { useNavigate, useLocation } from "react-router-dom";
+import SelectRate from "../components/SelectRate";
+import AuthContext from "../service/AuthContext";
+import { URL } from "../service/config";
+import { useAppDispatch } from "../redux/hooks";
+import { fetchMessages } from "../redux/messages/messagesSlice";
 
 const TariffsPage = () => {
   const navigate = useNavigate();
@@ -17,26 +17,27 @@ const TariffsPage = () => {
 
   const redirect = () => {
     if (!user) {
-      navigate('/signup')
+      navigate("/signup");
     } else {
       if (user?.is_onboarded) {
-        user?.subscription_status === 'expired' ? navigate('/tariffs') : navigate('/dashboard');
+        user?.subscription_status === "expired"
+          ? navigate("/tariffs")
+          : navigate("/dashboard");
       } else {
-        navigate('/onboarding');
+        navigate("/onboarding");
       }
     }
-    
   };
   if (!user) {
-    window.location.href = `${URL}/signup`
-  };
+    window.location.href = `${URL}/signup`;
+  }
 
   const checkIdQueryParam = () => {
     const searchParams = new URLSearchParams(location.search);
-    const idQueryParam = searchParams.get('id');
+    const idQueryParam = searchParams.get("id");
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
       logout();
-      navigate('/signin');
+      navigate("/signin");
     } else {
       return;
     }
@@ -45,7 +46,7 @@ const TariffsPage = () => {
   useEffect(() => {
     if (user) {
       const refreshToken = async () => {
-         await refreshUserToken();
+        await refreshUserToken();
       };
 
       // Initial token refresh
@@ -70,7 +71,7 @@ const TariffsPage = () => {
       });
 
       if (response.status === 200) {
-        const data = await response.json(); 
+        const data = await response.json();
         return data.token;
       }
     } catch (error) {
@@ -87,8 +88,9 @@ const TariffsPage = () => {
 
   return (
     <div className='page-white'>
-      <div className='container widbody-container container-xlwidth'>
+      <div className='container widbody-container container-xlwidth '>
         <NavbarMainHome onlyLogo />
+
         <div className='tariffs'>
           <SelectRate redirect={redirect} />
         </div>

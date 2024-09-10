@@ -89,6 +89,45 @@ const StepsWhite = () => {
     </svg>
   );
 };
+const CircleWhite = () => {
+  return (
+    <svg
+      width='25'
+      height='25'
+      viewBox='0 0 25 25'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <circle opacity='0.2' cx='12.6025' cy='12.252' r='12' fill='white' />
+      <rect
+        opacity='0.4'
+        x='5.10254'
+        y='4.75195'
+        width='15'
+        height='15'
+        rx='7.5'
+        fill='white'
+      />
+      <rect
+        x='5.49147'
+        y='5.14088'
+        width='14.2221'
+        height='14.2221'
+        rx='7.11107'
+        stroke='white'
+        stroke-width='0.777853'
+      />
+      <circle
+        cx='12.4918'
+        cy='12.1412'
+        r='1.75017'
+        fill='white'
+        stroke='white'
+        stroke-width='1.16678'
+      />
+    </svg>
+  );
+};
 
 const Circle = () => {
   return (
@@ -188,4 +227,11 @@ const CircleOkWhite = () => {
   );
 };
 
-export default { StepsBlue, StepsWhite, Circle, CircleOkBlue, CircleOkWhite };
+export default {
+  StepsBlue,
+  StepsWhite,
+  Circle,
+  CircleOkBlue,
+  CircleOkWhite,
+  CircleWhite,
+};

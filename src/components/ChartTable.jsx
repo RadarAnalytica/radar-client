@@ -11,13 +11,13 @@ const ChartTableRow = ({ object }) => {
       <p className='clue-text mb-2' style={{ fontSize: "14px" }}>
         {object.name}
         {object.name === "Реклама (ДРР (общий))" && (
-          <TooltipInfo text='1.Тут должен быть текст...' />
+          <TooltipInfo text='Отношение суммарных расходов на рекламу к выручке' />
         )}
         {object.name === "Комиссия (от выручки)" && (
-          <TooltipInfo text='2.Тут должен быть текст...' />
+          <TooltipInfo text='Отношение суммарной комиссии к выручке' />
         )}
         {object.name === "Логистика (от выручки)" && (
-          <TooltipInfo text='3.Тут должен быть текст...' />
+          <TooltipInfo text='Отношение суммарных расходов на логистику к выручке' />
         )}
       </p>
 

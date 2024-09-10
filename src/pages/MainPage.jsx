@@ -109,7 +109,7 @@ const MainPage = () => {
               контролируйте финансы в одном месте.
             </div>
 
-            <div className='d-flex flex-column gap-3'>
+            <div className='d-flex flex-column gap-3 startWorkBtn'>
               <button
                 className='prime-btn'
                 style={{ minHeight: "64px", fontSize: "18px", margin: 0 }}

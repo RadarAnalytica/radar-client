@@ -124,21 +124,15 @@ const BtnHomePage = () => {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         {sections.map((section, index) => (
-          <div key={index} className='card' style={{}}>
+          <div key={index} className='card'>
             <div className='cardHeader'>
-              <Steps.StepsWhite />
-              <p className='cardTitle' style={{ margin: 0, fontWeight: 600 }}>
-                {section.title}
-              </p>
+              <Steps.CircleWhite />
+              <p className='cardTitle'>{section.title}</p>
             </div>
 
-            <div style={{ padding: "12px 0" }}>
+            <div className='cardBody'>
               {section.functions.map((func, funcIndex) => (
-                <div
-                  className='cardContent'
-                  key={funcIndex}
-                  style={{ display: "flex", alignItems: "center" }}
-                >
+                <div className='cardContent' key={funcIndex}>
                   <div className='cardImage'>
                     <span>{func.emoji}</span>
                   </div>
