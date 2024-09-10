@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import SortArrows from './SortArrows';
 
 const TableStock = ({ dataTable, setDataTable }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const sortData = useCallback(
     (key) => {
@@ -29,6 +30,28 @@ const TableStock = ({ dataTable, setDataTable }) => {
     return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const tableContainer = document.querySelector('.custom-table');
+      if (tableContainer) {
+        setIsScrolled(tableContainer.scrollLeft > 0.1);
+      }
+    };
+  
+    const tableContainer = document.querySelector('.custom-table');
+    console.log('tableContainer', tableContainer);
+    if (tableContainer) {
+      tableContainer.addEventListener('scroll', handleScroll);
+    }
+  
+    return () => {
+      if (tableContainer) {
+        tableContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+  
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <div style={{ width: '35px', height: '100%' }}></div>
@@ -50,7 +73,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
           {dataTable.length > 0 && (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               {/* Fixed columns */}
-              <div className='fixed-columns fixed-columns-shadow'>
+              <div className={`fixed-columns ${isScrolled ? 'fixed-columns-shadow' : ''}`}>
                 <div className='column goods-cell'>
                   <div
                     className='cell header-cell goods-cell'
