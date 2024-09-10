@@ -96,71 +96,8 @@ const Spasibo = () => {
                 fill='white'
               />
             </svg>
-            <div className='top-right-spasibo col'>
-              <div className='tg-bot-top col-5'>
-                {/* <img src={toptg} alt="" className='me-3' /> */}
-                <a
-                  href='https://t.me/SpyRadar_bot'
-                  style={{ textDecoration: 'none', color: 'black' }}
-                >
-                  <TopTgIcon />
-                  <span className='me-2 ms-2'>Бот Telegram</span>
-                  <span>
-                    <svg
-                      width='14'
-                      height='10'
-                      viewBox='0 0 14 10'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <path
-                        d='M0.52 5.577V4.065H11.005L8.413 1.473L9.331 0.537L13.624 4.83L9.331 9.123L8.413 8.187L11.023 5.577H0.52Z'
-                        fill='black'
-                        fillOpacity='0.7'
-                      />
-                    </svg>
-                  </span>
-                </a>
-              </div>
-              <div className='col top-right'>
-                <a href='https://marketplace-radar.ru/' className='sps-lk'>
-                  <svg
-                    className='me-3'
-                    width='54'
-                    height='51'
-                    viewBox='0 0 54 51'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <rect width='54' height='51' rx='15' fill='#F8F8F8' />
-                    <path
-                      d='M20 32.5L34 18.5M34 18.5H20M34 18.5V32.5'
-                      stroke='#5329FF'
-                      strokeWidth='2'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                  </svg>
-                  <span style={{ color: 'white' }} className='me-2'>
-                    Оцифровка личного кабинета
-                  </span>
-                  <span>
-                    <svg
-                      width='14'
-                      height='10'
-                      viewBox='0 0 14 10'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <path
-                        d='M0.52 5.577V4.065H11.005L8.413 1.473L9.331 0.537L13.624 4.83L9.331 9.123L8.413 8.187L11.023 5.577H0.52Z'
-                        fill='white'
-                        fillOpacity='1'
-                      />
-                    </svg>
-                  </span>
-                </a>
-              </div>
+            <div className='top-right-spasibo top-right-height col'>
+             
             </div>
           </div>
 

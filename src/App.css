@@ -751,7 +751,7 @@ select {
 .linked-shops-content {
   width: 100%;
   max-height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .sub-page {
@@ -1541,7 +1541,11 @@ select {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 25px;
+  margin-left: 35px;
+}
+
+.search-box button {
+  border: none;
 }
 
 .search-input {
@@ -2380,6 +2384,8 @@ select {
   height: calc(100vh - 150px);
   overflow: auto;
   position: relative;
+  border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
 }
 
 .table-container {
@@ -2506,6 +2512,10 @@ select {
 
 .goods-cell {
   width: 300px;
+}
+
+.fixed-columns-shadow {
+  box-shadow: 6px 0 10px -5px rgba(0, 0, 0, 0.06);
 }
 
 /* .custom-table-container {

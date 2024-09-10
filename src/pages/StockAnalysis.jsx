@@ -54,6 +54,7 @@ const StockAnalysis = () => {
   const [dataTable, setDataTable] = useState([]);
   const [costPriceShow, setCostPriceShow] = useState(false);
   const [days, setDays] = useState(30);
+  const [searchQuery, setSearchQuery] = useState('');
   const handleCostPriceClose = () => setCostPriceShow(false);
 
   const plugForAllStores = {
@@ -90,6 +91,19 @@ const StockAnalysis = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filterData = (data, query) => {
+    if (!query) return data;
+    return data.filter(item => 
+      item?.sku?.toLowerCase().includes(query.toLowerCase()) ||
+      item?.vendorСode?.toLowerCase().includes(query.toLowerCase()) ||
+      item?.productName?.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
   useEffect(() => {
     dispatch(fetchShops(authToken)).then(() => {
       setIsInitialLoading(false);
@@ -98,8 +112,9 @@ const StockAnalysis = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setDataTable(stockAnalysisData);
-  }, [stockAnalysisData]);
+    const filteredData = filterData(stockAnalysisData, searchQuery);
+    setDataTable(filteredData);
+  }, [stockAnalysisData, searchQuery]);
 
   useEffect(() => {
     dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
@@ -181,21 +196,24 @@ const StockAnalysis = () => {
           </div>
           {shouldDisplay ? (
             <>
-              <div className='input-and-button-container container'>
+              <div className='input-and-button-container'>
                 <div className='search'>
                   <div className='search-box'>
                     <input
                       type='text'
                       placeholder='Поиск по SKU или артикулу'
                       className='container dash-container search-input'
+                      value={searchQuery}
+                      onChange={handleSearchChange}
                     />
-                    <div>
+                    <button>
                       <img
+                        onClick={() => setDataTable(filterData(stockAnalysisData, searchQuery))}
                         style={{ marginLeft: '10px', cursor: 'pointer' }}
                         src={SearchButton}
                         alt='search'
                       />
-                    </div>
+                    </button>
                   </div>
                 </div>
                 <>
@@ -204,6 +222,7 @@ const StockAnalysis = () => {
                     style={{
                       gap: '20px',
                       alignItems: 'center',
+                      marginRight: '20px',
                     }}
                   >
                     <div>
@@ -225,7 +244,7 @@ const StockAnalysis = () => {
                 </>
               </div>
               <div style={{ height: '20px' }}></div>
-              <TableStock dataTable={dataTable} setDataTable={setDataTable} />
+              <TableStock dataTable={dataTable} setDataTable={setDataTable} />          
             </>
           ) : (
             <DataCollectionNotification

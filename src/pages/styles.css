@@ -192,6 +192,10 @@ select {
   gap: 12px;
 }
 
+.top-right-height {
+  min-height: 114px;
+}
+
 .sps-top {
   display: flex;
   gap: 12px;

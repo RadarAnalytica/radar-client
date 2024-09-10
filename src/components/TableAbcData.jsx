@@ -87,7 +87,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
       </div>
 
       <div>
-        {!dataTable ? (
+        {dataTable.length === 0 ? (
           <div
             className='d-flex flex-column align-items-center justify-content-center'
             style={{ height: "100%", paddingTop: "20%" }}
