@@ -89,7 +89,7 @@ const MainPage = () => {
       <div className='container widbody-container container-xlwidth'>
         <NavbarMainHome />
         <div className='wid-solution' style={{ marginTop: "20px" }}>
-          <div className='sol-description col'>
+          <div className='sol-description sol-description-top col'>
             <div className='sol-description-label-container'>
               <SolLabelBsn />
             </div>

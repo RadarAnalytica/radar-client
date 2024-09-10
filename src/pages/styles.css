@@ -1751,7 +1751,7 @@ button.accordion-button.collapsed::after {
     flex-direction: column;
   }
   .wid-solutionMain .white-btn {
-    width: 88%;
+    width: 100%%;
   }
   .blockInOnAnalytics {
     flex-direction: column;
@@ -1867,7 +1867,7 @@ button.accordion-button.collapsed::after {
     width: 20px;
   }
   .YellowRadarPoint svg {
-    width: 88%;
+    width: 100%;
   }
   .searchTextDiv {
     font-size: 16px;
@@ -1883,6 +1883,11 @@ button.accordion-button.collapsed::after {
     width: 90%;
   }
   .sol-description {
+    padding: 20px;
+    /* display: flex;
+    align-items: flex-start; */
+  }
+  .sol-description-top {
     padding: 20px;
     display: flex;
     align-items: flex-start;
@@ -2098,6 +2103,7 @@ button.accordion-button.collapsed::after {
   }
   .white-btn {
     width: 100%;
+    margin-top: 5pxw;
   }
   .footer-col-text-a {
     text-decoration: none;
