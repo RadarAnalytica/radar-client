@@ -54,6 +54,7 @@ const StockAnalysis = () => {
   const [dataTable, setDataTable] = useState([]);
   const [costPriceShow, setCostPriceShow] = useState(false);
   const [days, setDays] = useState(30);
+  const [searchQuery, setSearchQuery] = useState('');
   const handleCostPriceClose = () => setCostPriceShow(false);
 
   const plugForAllStores = {
@@ -90,6 +91,18 @@ const StockAnalysis = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filterData = (data, query) => {
+    if (!query) return data;
+    return data.filter(item => 
+      item?.sku?.toLowerCase().includes(query.toLowerCase()) ||
+      item?.vendorСode?.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
   useEffect(() => {
     dispatch(fetchShops(authToken)).then(() => {
       setIsInitialLoading(false);
@@ -98,8 +111,9 @@ const StockAnalysis = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setDataTable(stockAnalysisData);
-  }, [stockAnalysisData]);
+    const filteredData = filterData(stockAnalysisData, searchQuery);
+    setDataTable(filteredData);
+  }, [stockAnalysisData, searchQuery]);
 
   useEffect(() => {
     dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
@@ -188,14 +202,17 @@ const StockAnalysis = () => {
                       type='text'
                       placeholder='Поиск по SKU или артикулу'
                       className='container dash-container search-input'
+                      value={searchQuery}
+                      onChange={handleSearchChange}
                     />
-                    <div>
+                    <button>
                       <img
+                        onClick={() => setDataTable(filterData(stockAnalysisData, searchQuery))}
                         style={{ marginLeft: '10px', cursor: 'pointer' }}
                         src={SearchButton}
                         alt='search'
                       />
-                    </div>
+                    </button>
                   </div>
                 </div>
                 <>

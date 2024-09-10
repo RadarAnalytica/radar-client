@@ -39,7 +39,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
               className='d-flex flex-column align-items-center justify-content-center'
               style={{
                 width: '100%',
-                height: '70vh',
+                height: '100%',
                 position: 'absolute',
                 background: 'white',
               }}
@@ -50,7 +50,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
           {dataTable.length > 0 && (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               {/* Fixed columns */}
-              <div className='fixed-columns'>
+              <div className='fixed-columns fixed-columns-shadow'>
                 <div className='column goods-cell'>
                   <div
                     className='cell header-cell goods-cell'
@@ -61,7 +61,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                   <div
                     className='goods-cell-header'
                     onClick={() => sortData('productName')}
-                    style={{ minHeight: '70px' }}
+                    style={{ minHeight: '70px', borderRadius: '12px' }}
                   >
                     Товар
                     <div
