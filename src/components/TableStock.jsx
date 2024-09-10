@@ -61,7 +61,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                   <div
                     className='goods-cell-header'
                     onClick={() => sortData('productName')}
-                    style={{ minHeight: '70px', borderRadius: '12px' }}
+                    style={{ minHeight: '70px', borderTopLeftRadius: '12px', borderBottomLeftRadius: '12px' }}
                   >
                     Товар
                     <div

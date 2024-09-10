@@ -99,7 +99,8 @@ const StockAnalysis = () => {
     if (!query) return data;
     return data.filter(item => 
       item?.sku?.toLowerCase().includes(query.toLowerCase()) ||
-      item?.vendorСode?.toLowerCase().includes(query.toLowerCase())
+      item?.vendorСode?.toLowerCase().includes(query.toLowerCase()) ||
+      item?.productName?.toLowerCase().includes(query.toLowerCase())
     );
   };
 
@@ -195,7 +196,7 @@ const StockAnalysis = () => {
           </div>
           {shouldDisplay ? (
             <>
-              <div className='input-and-button-container container'>
+              <div className='input-and-button-container'>
                 <div className='search'>
                   <div className='search-box'>
                     <input
@@ -221,6 +222,7 @@ const StockAnalysis = () => {
                     style={{
                       gap: '20px',
                       alignItems: 'center',
+                      marginRight: '20px',
                     }}
                   >
                     <div>
