@@ -27,7 +27,11 @@ const WidePlate = ({
   return (
     <div className='wide-plate w-100'>
       <div className='wide-plate-title-element'>
-        <p className='fw-bold mb-2 numbers'>{title}</p>
+        <div className='wide-plate-title-element-div'>
+          <p className='fw-bold mb-2 numbers wide-plate-title-elem-p'>
+            {title}
+          </p>
+        </div>
         <div style={{ width: "225px " }}>
           <SeeMoreButton path='/abc-data' />
         </div>

@@ -1,30 +1,30 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import AuthContext from '../service/AuthContext';
-import wblogo from '../assets/wblogo.png';
-import redcircle from '../assets/redcircle.png';
-import greencircle from '../assets/greencircle.png';
-import { URL } from '../service/config';
+import React, { useContext, useEffect, useState, useRef } from "react";
+import SideNav from "../components/SideNav";
+import TopNav from "../components/TopNav";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import AuthContext from "../service/AuthContext";
+import wblogo from "../assets/wblogo.png";
+import redcircle from "../assets/redcircle.png";
+import greencircle from "../assets/greencircle.png";
+import { URL } from "../service/config";
 
-import Modal from 'react-bootstrap/Modal';
-import InputField from '../components/InputField';
-import DragDropFile from '../components/DragAndDropFiles';
-import { ServiceFunctions } from '../service/serviceFunctions';
-import WbIcon from '../assets/WbIcon';
+import Modal from "react-bootstrap/Modal";
+import InputField from "../components/InputField";
+import DragDropFile from "../components/DragAndDropFiles";
+import { ServiceFunctions } from "../service/serviceFunctions";
+import WbIcon from "../assets/WbIcon";
 import {
   getFileClickHandler,
   saveFileClickHandler,
-} from '../service/getSaveFile';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { fetchShops } from '../redux/shops/shopsActions';
-import { editShop } from '../redux/editShop/editShopActions';
-import { addShop } from '../redux/addShop/addShopActions';
-import { deleteShop } from '../redux/deleteShop/deleteShopActions';
-import { areAllFieldsFilled } from '../service/utils';
-import NoSubscriptionPage from './NoSubscriptionPage';
-const warningIcon = require('../assets/warning.png');
+} from "../service/getSaveFile";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { fetchShops } from "../redux/shops/shopsActions";
+import { editShop } from "../redux/editShop/editShopActions";
+import { addShop } from "../redux/addShop/addShopActions";
+import { deleteShop } from "../redux/deleteShop/deleteShopActions";
+import { areAllFieldsFilled } from "../service/utils";
+import NoSubscriptionPage from "./NoSubscriptionPage";
+const warningIcon = require("../assets/warning.png");
 
 const LinkedShops = () => {
   const { user, authToken, logout } = useContext(AuthContext);
@@ -42,7 +42,7 @@ const LinkedShops = () => {
   const [showDelete, setShowDelete] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showSelfcost, setShowSelfcost] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const [file, setFile] = useState();
 
@@ -122,29 +122,29 @@ const LinkedShops = () => {
   useEffect(() => {
     if (user && shops.length > 0) {
       dispatch(fetchShops(authToken));
-      
+
       const prevShopsLength = prevShopsLengthRef.current;
-      
+
       if (shops.length > prevShopsLength) {
         // A shop was added
         const newAddedShop = shops[shops.length - 1]; // Assuming the new shop is added at the end
         if (newAddedShop) {
-          localStorage.setItem('activeShop', JSON.stringify(newAddedShop));
+          localStorage.setItem("activeShop", JSON.stringify(newAddedShop));
         }
       } else if (shops.length < prevShopsLength) {
         // A shop was removed
         if (shops.length > 0) {
           // If there are still shops, set the first one as active
-          localStorage.setItem('activeShop', JSON.stringify(shops[0]));
+          localStorage.setItem("activeShop", JSON.stringify(shops[0]));
         } else {
           // If no shops left, remove activeShop from localStorage
-          localStorage.removeItem('activeShop');
+          localStorage.removeItem("activeShop");
         }
       }
-      
+
       prevShopsLengthRef.current = shops.length;
     } else {
-      localStorage.removeItem('activeShop');
+      localStorage.removeItem("activeShop");
     }
   }, [shops.length]);
 
@@ -178,13 +178,13 @@ const LinkedShops = () => {
 
   const handleVisitDashboard = () => {
     setShowSuccess(false);
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   const handleAddShop = (e) => {
     if (!areAllFieldsFilled(addShopData)) {
       e.preventDefault();
-      setError('Введите корректное значение для всех полей');
+      setError("Введите корректное значение для всех полей");
       setShowError(true);
       return;
     }
@@ -196,7 +196,7 @@ const LinkedShops = () => {
   const handleEditShop = (e) => {
     if (!areAllFieldsFilled(editData)) {
       e.preventDefault();
-      setError('Введите корректное значение для всех полей');
+      setError("Введите корректное значение для всех полей");
       setShowError(true);
       return;
     }
@@ -205,15 +205,15 @@ const LinkedShops = () => {
   };
 
   const redirect = () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   const checkIdQueryParam = () => {
     const searchParams = new URLSearchParams(location.search);
-    const idQueryParam = searchParams.get('id');
+    const idQueryParam = searchParams.get("id");
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
       logout();
-      navigate('/signin');
+      navigate("/signin");
     } else {
       return;
     }
@@ -225,19 +225,24 @@ const LinkedShops = () => {
     }
   }, [location.search]);
 
-  if (user?.subscription_status === 'expired') {
-    return <NoSubscriptionPage title={'Подключенные магазины'}/>
-  };
+  if (user?.subscription_status === "expired") {
+    return <NoSubscriptionPage title={"Подключенные магазины"} />;
+  }
 
   return (
     <div className='linked-shops-page'>
       <SideNav />
       <div className='linked-shops-content'>
-        <TopNav title={'Подключенные магазины'} />
+        <TopNav title={"Подключенные магазины"} />
 
         <div
           className='container linked-shops-container d-flex'
-          style={{ padding: '12px 24px', gap: '20px' }}
+          style={{
+            padding: "12px 20px",
+            marginLeft: "50px",
+            gap: "20px",
+            maxWidth: "78vw !importan",
+          }}
         >
           <div className='row linked-wrap p-0'>
             {shops && shops.length
@@ -246,7 +251,7 @@ const LinkedShops = () => {
                     <div>
                       <div className='d-flex align-items-center gap-2'>
                         <WbIcon />
-                        <div style={{ width: '100%' }}>
+                        <div style={{ width: "100%" }}>
                           <div className='d-flex justify-content-between'>
                             <h3 className='fw-bold'>{item.brand_name}</h3>
                             {/* <svg 
@@ -257,12 +262,12 @@ const LinkedShops = () => {
                                                         </svg> */}
                           </div>
                           <span
-                            style={{ fontSize: '2vh !important' }}
+                            style={{ fontSize: "2vh !important" }}
                             className='clue-text p-0 m-0'
                           >
-                            Последнее обновление{' '}
+                            Последнее обновление{" "}
                             {new Date(
-                              item?.updated_at?.split(' ')[0]
+                              item?.updated_at?.split(" ")[0]
                             ).toLocaleDateString() || null}
                           </span>
                         </div>
@@ -275,7 +280,7 @@ const LinkedShops = () => {
                             setActiveShop(item);
                             setShowEdit(true);
                           }}
-                          style={{ cursor: 'pointer' }}
+                          style={{ cursor: "pointer" }}
                           width='168'
                           height='42'
                           viewBox='0 0 168 42'
@@ -316,7 +321,7 @@ const LinkedShops = () => {
                             setActiveShop(item);
                             setShowDelete(true);
                           }}
-                          style={{ cursor: 'pointer' }}
+                          style={{ cursor: "pointer" }}
                           width='115'
                           height='40'
                           viewBox='0 0 115 40'
@@ -353,12 +358,12 @@ const LinkedShops = () => {
                         </svg>
                       </div>
                       <hr
-                        style={{ border: '1px solid silver', width: '100%' }}
+                        style={{ border: "1px solid silver", width: "100%" }}
                         className='mt-4'
                       />
                       <div
                         className='d-flex align-items-end justify-content-between'
-                        style={{ margin: '-10px 10px 0 0' }}
+                        style={{ margin: "-10px 10px 0 0" }}
                       >
                         <div className='d-flex gap-2 align-items-start mb-1'>
                           <svg
@@ -387,7 +392,7 @@ const LinkedShops = () => {
                         item.is_valid === false ? (
                           <div
                             className='d-flex token-status'
-                            style={{ marginTop: '10px' }}
+                            style={{ marginTop: "10px" }}
                           >
                             <svg
                               width='120'
@@ -418,7 +423,7 @@ const LinkedShops = () => {
                         ) : item.is_primary_collect ? (
                           <div
                             className='d-flex token-status'
-                            style={{ marginTop: '10px' }}
+                            style={{ marginTop: "10px" }}
                           >
                             <svg
                               width='120'
@@ -449,7 +454,7 @@ const LinkedShops = () => {
                         ) : (
                           <div
                             className='d-flex token-status'
-                            style={{ marginTop: '10px' }}
+                            style={{ marginTop: "10px" }}
                           >
                             <svg
                               width='160'
@@ -516,8 +521,8 @@ const LinkedShops = () => {
                 <p
                   style={{
                     fontWeight: 600,
-                    fontSize: '16px',
-                    marginBottom: '1.5rem',
+                    fontSize: "16px",
+                    marginBottom: "1.5rem",
                   }}
                 >
                   Добавьте новые данные, чтобы отслеживать
@@ -526,7 +531,7 @@ const LinkedShops = () => {
                 <div>
                   <button
                     className='mt-2 prime-btn butt'
-                    style={{ maxWidth: '200px', height: '8vh' }}
+                    style={{ maxWidth: "200px", height: "8vh" }}
                     onClick={() => handleShow()}
                   >
                     Подключить
@@ -542,7 +547,7 @@ const LinkedShops = () => {
         <Modal.Header closeButton>
           <div className='d-flex align-items-center gap-2'>
             <WbIcon />
-            <div style={{ width: '100%' }}>
+            <div style={{ width: "100%" }}>
               <div className='d-flex justify-content-between'>
                 <h4 className='fw-bold mb-0'>Подключение магазина</h4>
               </div>
@@ -551,23 +556,23 @@ const LinkedShops = () => {
         </Modal.Header>
         <Modal.Body>
           <InputField
-            type={'text'}
-            placeholder={'Например, тестовый'}
-            label={'Название магазина'}
+            type={"text"}
+            placeholder={"Например, тестовый"}
+            label={"Название магазина"}
             required={true}
             callback={(e) => setBrandName(e.target.value)}
           />
           <InputField
-            type={'text'}
-            placeholder={'Что-то вроде: GJys67G7sbNw178F'}
-            label={'Токен'}
+            type={"text"}
+            placeholder={"Что-то вроде: GJys67G7sbNw178F"}
+            label={"Токен"}
             required={true}
             callback={(e) => setTkn(e.target.value)}
           />
           <div className='d-flex justify-content-between w-100 mt-2'>
             <button
               className='prime-btn'
-              style={{ padding: '16px 20px' }}
+              style={{ padding: "16px 20px" }}
               onClick={(e) => {
                 handleAddShop(e);
               }}
@@ -587,7 +592,7 @@ const LinkedShops = () => {
         <Modal.Header closeButton>
           <div className='d-flex align-items-center gap-2'>
             <WbIcon />
-            <div style={{ width: '100%' }}>
+            <div style={{ width: "100%" }}>
               <div className='d-flex justify-content-between'>
                 <h4 className='fw-bold mb-0'>Редактирование магазина</h4>
               </div>
@@ -596,23 +601,23 @@ const LinkedShops = () => {
         </Modal.Header>
         <Modal.Body>
           <InputField
-            type={'text'}
-            placeholder={'Например, тестовый'}
-            label={'Название магазина'}
+            type={"text"}
+            placeholder={"Например, тестовый"}
+            label={"Название магазина"}
             defautlValue={activeShop?.brand_name}
             callback={(e) => setBrandName(e.target.value)}
           />
           <InputField
-            type={'text'}
-            placeholder={'Что-то вроде: GJys67G7sbNw178F'}
-            label={'Токен'}
+            type={"text"}
+            placeholder={"Что-то вроде: GJys67G7sbNw178F"}
+            label={"Токен"}
             callback={(e) => setTkn(e.target.value)}
           />
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
             <span>Себестоимость</span>
@@ -653,7 +658,7 @@ const LinkedShops = () => {
           <div className='d-flex justify-content-between w-100 mt-2'>
             <button
               className='prime-btn'
-              style={{ padding: '16px 20px' }}
+              style={{ padding: "16px 20px" }}
               onClick={(e) => {
                 handleEditShop(e);
               }}
@@ -679,7 +684,7 @@ const LinkedShops = () => {
           <div className='d-flex justify-content-between w-100 mt-2 gap-2'>
             <button
               className='danger-btn'
-              style={{ padding: '16px 20px' }}
+              style={{ padding: "16px 20px" }}
               onClick={() => {
                 handleDeleteShop();
                 setShowDelete(false);
@@ -690,7 +695,7 @@ const LinkedShops = () => {
             </button>
             <button
               className='prime-btn'
-              style={{ padding: '16px 20px' }}
+              style={{ padding: "16px 20px" }}
               onClick={() => setShowDelete(false)}
             >
               Оставить
@@ -726,7 +731,7 @@ const LinkedShops = () => {
                 fill='#00B69B'
               />
             </svg>
-            <div style={{ width: '100%' }}>
+            <div style={{ width: "100%" }}>
               <div className='d-flex justify-content-between'>
                 <h4 className='fw-bold mb-0'>Токен успешно добавлен</h4>
               </div>
@@ -736,11 +741,8 @@ const LinkedShops = () => {
         <Modal.Body>
           <p>
             Ваш токен успешно подключен к сервису и находится на проверке. В
-            ближайшее время данные начнут отображаться в разделе{' '}
-            <span
-              className='link'
-              onClick={handleVisitDashboard}
-            >
+            ближайшее время данные начнут отображаться в разделе{" "}
+            <span className='link' onClick={handleVisitDashboard}>
               Сводка продаж
             </span>
           </p>
@@ -768,7 +770,7 @@ const LinkedShops = () => {
       >
         <Modal.Header closeButton>
           <div className='d-flex align-items-center gap-2'>
-            <div style={{ width: '100%' }}>
+            <div style={{ width: "100%" }}>
               <div className='d-flex justify-content-between'>
                 <h4 className='fw-bold mb-0'>Установка себестоимости товара</h4>
               </div>
@@ -794,11 +796,11 @@ const LinkedShops = () => {
                       strokeWidth='1.5'
                     />
                   </svg>
-                  <span>{file ? file.name : ''}</span>
+                  <span>{file ? file.name : ""}</span>
                 </div>
                 <div>
                   <span
-                    style={{ color: 'red', cursor: 'pointer' }}
+                    style={{ color: "red", cursor: "pointer" }}
                     onClick={() => setFile(null)}
                   >
                     Удалить
@@ -808,7 +810,7 @@ const LinkedShops = () => {
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
                 <button
                   className='prime-btn'
-                  style={{ height: '52px' }}
+                  style={{ height: "52px" }}
                   onClick={() => {
                     saveFileClickHandler(file, authToken, activeShop.id);
                     setFile(null);
@@ -858,7 +860,7 @@ const LinkedShops = () => {
         <Modal.Header closeButton>
           <div>
             <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
-              <img src={warningIcon} alt='' style={{ height: '3vh' }} />
+              <img src={warningIcon} alt='' style={{ height: "3vh" }} />
               <p className='fw-bold mb-0'>Ошибка!</p>
             </div>
             <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>

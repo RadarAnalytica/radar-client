@@ -54,7 +54,10 @@ const StorageTable = ({
       ) : (
         <div style={{ display: "block" }}>
           <div className='storage-table-title-element'>
-            <p className='fw-bold numbers mb-2'>{title}</p>
+            <div>
+              <p className='fw-bold numbers mb-2'>{title}</p>
+            </div>
+
             <div>
               <SeeMoreButton path='/orders-map' />
             </div>

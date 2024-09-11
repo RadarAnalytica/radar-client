@@ -158,6 +158,14 @@ const MainPage = () => {
                 времени в одном месте
               </div>
             </div>
+            <div className='widhead-container-image'>
+              <img
+                className='manyApiLogoMobile'
+                src={manyApiMobile}
+                alt='logo'
+                style={{ borderRadius: "15px" }}
+              />
+            </div>
             <div className='widhead-container-block'>
               <div className='widhead-containe-img'>
                 <img src={blockApi1} alt='logo' />
@@ -165,7 +173,10 @@ const MainPage = () => {
               <div className='widhead-containe-img'>
                 <img src={blockApi2} alt='logo' />
               </div>
-              <div className='widhead-containe-img'>
+              <div
+                className='widhead-containe-img'
+                style={{ marginBottom: "0" }}
+              >
                 <img
                   src={blockApi3}
                   className='widhead-container-img3-main'
@@ -184,12 +195,6 @@ const MainPage = () => {
               <img
                 className='manyApiLogo'
                 src={manyApi}
-                alt='logo'
-                style={{ borderRadius: "15px" }}
-              />
-              <img
-                className='manyApiLogoMobile'
-                src={manyApiMobile}
                 alt='logo'
                 style={{ borderRadius: "15px" }}
               />

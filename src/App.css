@@ -540,7 +540,7 @@ select {
 
 .dash-container,
 .linked-shops-container {
-  max-width: 78vw !important;
+  max-width: 76vw !important;
 }
 .orders-map {
   overflow: hidden;
@@ -616,7 +616,13 @@ select {
   font-weight: 600;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
-
+.wide-plate-title-element-div > .wide-plate-title-elem-p {
+  margin-bottom: 0 !important;
+  font-size: 24px;
+}
+.wide-plate-title-element {
+  margin-bottom: 15px;
+}
 .finance-table {
   background-color: white;
   min-height: 42vh;
@@ -670,7 +676,7 @@ select {
 
 .storage-table div {
   display: flex;
-  /* align-items: flex-start; */
+  align-items: flex-start;
 }
 
 #root
@@ -1825,6 +1831,9 @@ select {
 
 .linked-wrap .linked-shop-block {
   padding-left: 1rem;
+}
+.linked-wrap {
+  width: 100vw;
 }
 .header-btn-wrap {
   display: flex;

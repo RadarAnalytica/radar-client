@@ -384,6 +384,7 @@ select {
   display: flex;
   gap: 10px;
 }
+
 .column-container {
   display: flex;
   flex-direction: column;
@@ -1744,7 +1745,9 @@ button.accordion-button.collapsed::after {
   .landing-price {
     padding: 20px;
   }
-
+  .widhead-container {
+    margin-top: 0px;
+  }
   .wid-solutionMain,
   .footerRow {
     display: flex;
@@ -2156,7 +2159,8 @@ button.accordion-button.collapsed::after {
   }
 
   .mobile-menu-content {
-    padding: 20px;
+    /* padding: 20px; */
+    padding: 0 120px 0 120px;
   }
 
   .limited-footer-text {
@@ -2166,7 +2170,7 @@ button.accordion-button.collapsed::after {
     font-weight: 600;
   }
   .prime-btn-mobile {
-    /* width: 100% !important; */
+    width: 100% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -2290,7 +2294,7 @@ button.accordion-button.collapsed::after {
     min-width: 550px;
   }
   .apiBlock img {
-    height: -webkit-fill-available;
+    /* height: -webkit-fill-available; */
   }
   .widhead-containe-img {
     margin-right: 5px;
