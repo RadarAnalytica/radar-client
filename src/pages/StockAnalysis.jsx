@@ -108,7 +108,7 @@ const StockAnalysis = () => {
     dispatch(fetchShops(authToken)).then(() => {
       setIsInitialLoading(false);
     });
-    updateDataDashBoard(days, activeBrand, authToken);
+    dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -186,7 +186,7 @@ const StockAnalysis = () => {
               onUpdateDashboard={handleUpdateDashboard}
             />
           ) : null}
-          <div className=' pt-0 d-flex gap-3'>
+          <div className='pt-0 d-flex gap-3'>
             <StockAnalysisFilter
               shops={shops}
               setActiveBrand={handleSaveActiveShop}
@@ -196,7 +196,7 @@ const StockAnalysis = () => {
           </div>
           {shouldDisplay ? (
             <>
-              <div className='input-and-button-container'>
+              <div className='input-and-button-container container dash-container'>
                 <div className='search'>
                   <div className='search-box'>
                     <input
@@ -222,7 +222,6 @@ const StockAnalysis = () => {
                     style={{
                       gap: '20px',
                       alignItems: 'center',
-                      marginRight: '20px',
                     }}
                   >
                     <div>

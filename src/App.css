@@ -1542,7 +1542,6 @@ select {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 35px;
 }
 
 .search-box button {
