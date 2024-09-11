@@ -39,7 +39,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
     };
   
     const tableContainer = document.querySelector('.custom-table');
-    console.log('tableContainer', tableContainer);
     if (tableContainer) {
       tableContainer.addEventListener('scroll', handleScroll);
     }
