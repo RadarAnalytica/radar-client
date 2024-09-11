@@ -63,7 +63,8 @@ const StepsTime = ({ redirect }) => {
       <div className='stepsTimeHeader' style={{}}>
         <div
           style={{
-            paddingRight: "28px",
+            // paddingRight: "28px",
+            marginRight: "140px",
           }}
         >
           <YellowRadarLarge />

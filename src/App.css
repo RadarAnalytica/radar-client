@@ -1534,6 +1534,12 @@ select {
   display: flex;
   /* flex-direction: row; */
 }
+.search-box-btn {
+  border: none;
+  outline: none;
+  background-color: inherit;
+  color: inherit;
+}
 
 .input-and-button-container {
   display: flex;

@@ -206,10 +206,14 @@ const StockAnalysis = () => {
                       value={searchQuery}
                       onChange={handleSearchChange}
                     />
-                    <button>
+                    <button className='search-box-btn'>
                       <img
-                        onClick={() => setDataTable(filterData(stockAnalysisData, searchQuery))}
-                        style={{ marginLeft: '10px', cursor: 'pointer' }}
+                        onClick={() =>
+                          setDataTable(
+                            filterData(stockAnalysisData, searchQuery)
+                          )
+                        }
+                        style={{ marginLeft: "10px", cursor: "pointer" }}
                         src={SearchButton}
                         alt='search'
                       />

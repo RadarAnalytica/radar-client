@@ -1630,6 +1630,9 @@ button.accordion-button.collapsed::after {
   .widhead-container-img3-main {
     display: none;
   }
+  .yellow-radar-small-cont {
+    margin-right: 60px;
+  }
   .card {
     margin-bottom: 20px;
   }
