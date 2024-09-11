@@ -1751,7 +1751,7 @@ button.accordion-button.collapsed::after {
     flex-direction: column;
   }
   .wid-solutionMain .white-btn {
-    width: 100%%;
+    width: 100%;
   }
   .blockInOnAnalytics {
     flex-direction: column;
@@ -2103,7 +2103,7 @@ button.accordion-button.collapsed::after {
   }
   .white-btn {
     width: 100%;
-    margin-top: 5pxw;
+    margin-top: 5px;
   }
   .footer-col-text-a {
     text-decoration: none;
@@ -2175,10 +2175,6 @@ button.accordion-button.collapsed::after {
 }
 
 /*RESPONSIVE for MOBILE*/
-
-.mobile-menu-container {
-  /* position: relative; */
-}
 
 .burger-menu {
   font-size: 24px;

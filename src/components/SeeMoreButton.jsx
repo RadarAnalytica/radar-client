@@ -1,5 +1,6 @@
-import interaction from "../assets/Interaction.png";
+import CirclePurple from "../assets/CirclePurple.svg";
 import { useNavigate } from "react-router-dom";
+
 function SeeMoreButton({ path }) {
   const navigate = useNavigate();
 
@@ -9,7 +10,7 @@ function SeeMoreButton({ path }) {
   return (
     <div className='image-button' onClick={handleClick}>
       <div className='circle'>
-        <img src={interaction} alt='icon' className='icon-image' />
+        <img src={CirclePurple} alt='icon' className='icon-image' />
       </div>
       <span className='label'>Смотреть подробнее</span>
     </div>
