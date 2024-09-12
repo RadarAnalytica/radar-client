@@ -21,7 +21,6 @@ const AbcAnalysisPage = () => {
   const { user, authToken } = useContext(AuthContext);
   const [wbData, setWbData] = useState();
   const dispatch = useAppDispatch();
-  const authTokenRef = useRef(authToken);
   const [dataAbcAnalysis, setDataAbcAnalysis] = useState([]);
   const [isNeedCost, setIsNeedCost] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -46,6 +45,10 @@ const AbcAnalysisPage = () => {
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+  const authTokenRef = useRef(authToken);
+  const prevDays = useRef(days);
+  const prevActiveBrand = useRef(activeBrand);
+  const prevViewType = useRef(viewType);
 
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
@@ -94,10 +97,18 @@ const AbcAnalysisPage = () => {
   }, [oneShop, activeBrand]);
 
   useEffect(() => {
-    dispatch(fetchShops(authToken)).then(() => {
-      setIsInitialLoading(false);
-    });
-  }, [dispatch]);
+    const fetchInitialData = async () => {
+      try {
+        await dispatch(fetchShops(authToken));
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, []);
 
   useEffect(() => {
     if (shops.length > 0) {
@@ -124,12 +135,6 @@ const AbcAnalysisPage = () => {
       updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
   };
 
-  useEffect(() => {
-    if (viewType !== undefined || days !== undefined) {
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
-    }
-  }, [viewType, days]);
-
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
     if (currentShop) {
@@ -147,11 +152,22 @@ const AbcAnalysisPage = () => {
     }
   }, [authToken]);
 
-  useEffect(() => {
-    if (activeBrand !== undefined) {
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
-    }
-  }, [days, activeBrand]);
+     // Update data when days, activeBrand, viewType changes
+     useEffect(() => {
+      if (
+        days !== prevDays.current ||
+        activeBrand !== prevActiveBrand.current ||
+        viewType !== prevViewType.current
+      ) {
+        if (activeBrand !== undefined) {
+          console.log('updateDataDashbord when days or activeBrand is changed');
+          updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
+        }
+        prevDays.current = days;
+        prevActiveBrand.current = activeBrand;
+        prevViewType.current = viewType;
+      }
+    }, [days, activeBrand, viewType]);
 
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {

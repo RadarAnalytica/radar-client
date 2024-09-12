@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import StockAnalysisFilter from '../components/StockAnalysisFilter';
@@ -55,6 +55,9 @@ const StockAnalysis = () => {
   const [costPriceShow, setCostPriceShow] = useState(false);
   const [days, setDays] = useState(30);
   const [searchQuery, setSearchQuery] = useState('');
+  const prevDays = useRef(days);
+  const prevActiveBrand = useRef(activeBrand);
+  const authTokenRef = useRef(authToken);
   const handleCostPriceClose = () => setCostPriceShow(false);
 
   const plugForAllStores = {
@@ -105,11 +108,20 @@ const StockAnalysis = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchShops(authToken)).then(() => {
-      setIsInitialLoading(false);
-    });
-    dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
-  }, [dispatch]);
+    const fetchInitialData = async () => {
+      try {
+        await updateDataDashBoard(days, activeBrand, authToken);
+        await dispatch(fetchShops(authToken));
+        await dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, []);
 
   useEffect(() => {
     const filteredData = filterData(stockAnalysisData, searchQuery);
@@ -117,7 +129,17 @@ const StockAnalysis = () => {
   }, [stockAnalysisData, searchQuery]);
 
   useEffect(() => {
-    dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+    if (
+      days !== prevDays.current ||
+      activeBrand !== prevActiveBrand.current
+    ) {
+      if (activeBrand !== undefined) {
+        updateDataDashBoard(days, activeBrand, authToken);
+        dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+      }
+      prevDays.current = days;
+      prevActiveBrand.current = activeBrand;
+    }
   }, [days, activeBrand]);
 
   useEffect(() => {
