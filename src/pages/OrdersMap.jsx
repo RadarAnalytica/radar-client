@@ -25,7 +25,6 @@ const OrdersMap = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, authToken, logout } = useContext(AuthContext);
-  const authTokenRef = useRef(authToken);
   const { geoData, loading, error } = useAppSelector(
     (state) => state.geoDataSlice
   );
@@ -55,6 +54,9 @@ const OrdersMap = () => {
   const [primary, setPrimary] = useState();
   const [data, setData] = useState();
   const [isVisible, setIsVisible] = useState(true);
+  const prevDays = useRef(days);
+  const prevActiveBrand = useRef(activeBrand);
+  const authTokenRef = useRef(authToken);
 
   const plugForAllStores = {
     id: 0,
@@ -76,8 +78,16 @@ const OrdersMap = () => {
   }, [dispatch, days, activeBrand]);
 
   useEffect(() => {
-    dispatch(fetchShops(authToken));
-    dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+    if (days !== prevDays.current || activeBrand !== prevActiveBrand.current) {
+      if (activeBrand !== undefined) {
+        dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+        dispatch(fetchShops(authToken));
+      }
+      prevDays.current = days;
+      prevActiveBrand.current = activeBrand;
+    }
+    // dispatch(fetchShops(authToken));
+    // dispatch(fetchGeographyData({ authToken, days, activeBrand }));
   }, [days, activeBrand]);
 
   useEffect(() => {
@@ -127,10 +137,24 @@ const OrdersMap = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchShops(authToken)).then(() => {
-      setFirstLoading(false);
-    });
-    dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+    const fetchInitalData = async () => {
+      try{
+        await dispatch(fetchShops(authToken));
+        if (activeBrand !== undefined) {
+          await dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+        }
+        } catch (error) {
+          console.error("Error fetching initial data:", error);
+        } finally {
+          setFirstLoading(false);
+        }
+    }
+    // dispatch(fetchShops(authToken)).then(() => {
+    //   setFirstLoading(false);
+    // });
+    // dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+
+    fetchInitalData();
   }, []);
 
   useEffect(() => {

@@ -32,7 +32,6 @@ const DashboardPage = () => {
   const navigate = useNavigate();
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
-  const authTokenRef = useRef(authToken);
   const [wbData, setWbData] = useState();
   const [days, setDays] = useState(30);
   const [content, setContent] = useState();
@@ -63,6 +62,9 @@ const DashboardPage = () => {
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+  const prevDays = useRef(days);
+  const prevActiveBrand = useRef(activeBrand);
+  const authTokenRef = useRef(authToken);
 
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
@@ -93,10 +95,17 @@ const DashboardPage = () => {
       if (currentShop) {
         localStorage.setItem("activeShop", JSON.stringify(currentShop));
       }
-      updateDataDashBoard(days, activeBrand, authToken);
+      if (!isInitialLoading && (days === prevDays.current ||
+        activeBrand === prevActiveBrand.current)) 
+        {
+          console.log('updateDataDashbord when is primary collect is true'); 
+          updateDataDashBoard(days, activeBrand, authToken);
+      }
+      // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
       clearInterval(intervalId);
     }
     if (!oneShop?.is_primary_collect && activeBrand !== 0) {
+      console.log('Starting interval to fetch shops...');
       intervalId = setInterval(() => {
         dispatch(fetchShops(authToken));
       }, 30000);
@@ -108,13 +117,31 @@ const DashboardPage = () => {
     };
   }, [oneShop, activeBrand]);
 
-  console.log('firsttLoading', firstLoading)
-
   useEffect(() => {
-    dispatch(fetchShops(authToken)).then(() => {
-      setFirstLoading(false);
-    });
-    updateDataDashBoard(days, activeBrand, authToken);
+
+    const fetchInitialData = async () => {
+      try {
+        await dispatch(fetchShops(authToken));
+        if (activeBrand !== undefined) {
+          await updateDataDashBoard(days, activeBrand, authToken);
+        }
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setFirstLoading(false);
+        setIsInitialLoading(false);
+      }
+    };
+    //   if (firstLoading) {
+    //     await dispatch(fetchShops(authToken)).then(() => {
+    //       setFirstLoading(false);
+    //     });
+    //     await updateDataDashBoard(days, activeBrand, authToken);
+    //   }
+      
+    // }
+
+    fetchInitialData();
   }, []);
 
   useEffect(() => {
@@ -164,9 +191,18 @@ const DashboardPage = () => {
     }
   }, [authToken]);
 
-  useEffect(() => {
-    if (activeBrand !== undefined ) {
-      updateDataDashBoard(days, activeBrand, authToken);
+   // Update dashboard data when necessary
+   useEffect(() => {
+    if (
+      days !== prevDays.current ||
+      activeBrand !== prevActiveBrand.current
+    ) {
+      if (activeBrand !== undefined) {
+        console.log('updateDataDashbord when days or activeBrand is changed');
+        updateDataDashBoard(days, activeBrand, authToken);
+      }
+      prevDays.current = days;
+      prevActiveBrand.current = activeBrand;
     }
   }, [days, activeBrand]);
 
@@ -192,8 +228,9 @@ const DashboardPage = () => {
     };
 
     const targetTime = calculateNextEvenHourPlus30();
+    console.log('targetTime:', targetTime);
     const timeToTarget = targetTime.getTime() - Date.now();
-
+    console.log('timeToTarget:', timeToTarget);
     const intervalId = setTimeout(() => {
       dispatch(fetchShops(authToken));
       updateDataDashBoard(days, activeBrand, authToken);
