@@ -4,7 +4,7 @@ import ArrowUp from "../assets/ArrowUp.svg";
 import ArrowDown from "../assets/ArrowDown.svg";
 import "../App.css";
 
-const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
+const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading }) => {
   // const [asc, setAsc] = useState(true);
   // const [sortedColumn, setSortedColumn] = useState(""); // Для отслеживания текущего столбца сортировки
   const [sortConfig, setSortConfig] = useState({
@@ -87,7 +87,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType }) => {
       </div>
 
       <div>
-        {dataTable.length === 0 ? (
+        {dataTable.length === 0 || loading ? (
           <div
             className='d-flex flex-column align-items-center justify-content-center'
             style={{ height: "100%", paddingTop: "20%" }}

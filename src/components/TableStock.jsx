@@ -53,7 +53,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <div style={{ width: '35px', height: '100%' }}></div>
+      <div style={{ width: '3.5vw', height: '100%' }}></div>
       <div className='custom-table'>
         <div className='table-container'>
           {dataTable.length === 0 && (

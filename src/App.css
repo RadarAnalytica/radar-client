@@ -164,7 +164,7 @@ a.link {
   text-decoration: none;
   font-weight: bold;
   color: var(--primary-color);
-  padding: 10px;
+  padding: 10px 0;
 }
 
 .link {
@@ -1539,6 +1539,7 @@ select {
   outline: none;
   background-color: inherit;
   color: inherit;
+  margin-left: 10px;
 }
 
 .input-and-button-container {
@@ -1556,16 +1557,11 @@ select {
   align-items: center;
 }
 
-.search-box button {
-  border: none;
-}
-
 .search-input {
   width: 670px;
   height: 44px;
   border: 1px solid #5329ff80 !important;
   border-radius: 8px;
-  /* margin-left: 50px; */
   padding: 0 16px;
 }
 

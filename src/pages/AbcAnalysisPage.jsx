@@ -43,7 +43,7 @@ const AbcAnalysisPage = () => {
   const idShopAsValue =
     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const authTokenRef = useRef(authToken);
   const prevDays = useRef(days);
@@ -320,6 +320,7 @@ const AbcAnalysisPage = () => {
               setDataTable={setDataAbcAnalysis}
               setViewType={setViewType}
               viewType={viewType}
+              loading={loading}
             />
           ) : (
             <DataCollectionNotification

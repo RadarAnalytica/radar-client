@@ -218,7 +218,7 @@ const StockAnalysis = () => {
           </div>
           {shouldDisplay ? (
             <>
-              <div className='input-and-button-container container dash-container'>
+              <div className='input-and-button-container container dash-container p-3 pb-4 pt-0'>
                 <div className='search'>
                   <div className='search-box'>
                     <input
