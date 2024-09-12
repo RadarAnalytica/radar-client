@@ -5,6 +5,7 @@ import YellowRadar from "../pages/images/YellowRadarLarge";
 import time from "../pages/images/time.png";
 import YellowRadarLarge from "../pages/images/YellowRadarLarge";
 import AuthContext from "../service/AuthContext";
+import YellowRadarSmall from "../pages/images/YelowRadarSmall";
 
 const StepsTime = ({ redirect }) => {
   const navigate = useNavigate();
@@ -61,13 +62,11 @@ const StepsTime = ({ redirect }) => {
       }}
     >
       <div className='stepsTimeHeader' style={{}}>
-        <div
-          style={{
-            // paddingRight: "28px",
-            marginRight: "140px",
-          }}
-        >
+        <div style={{ marginRight: "20px" }} className='hide-on-mobile'>
           <YellowRadarLarge />
+        </div>
+        <div className='mobile-yellow-icon'>
+          <YellowRadarSmall />
         </div>
         <div className='helpEveryStepText'>
           поможет на каждом этапе вашего{" "}

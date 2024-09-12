@@ -93,7 +93,10 @@ const MainPage = () => {
             <div className='sol-description-label-container'>
               <SolLabelBsn />
             </div>
-            <div>
+            <div
+              className='yellow-radar-small-container'
+              style={{ display: "flex", justifyContent: "start" }}
+            >
               <YellowRadarSmall />
             </div>
             <div className='sales-increase-text'>

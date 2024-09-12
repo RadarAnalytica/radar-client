@@ -1623,15 +1623,21 @@ button.accordion-button.collapsed::after {
 .stepsBtnBlockStepText {
   margin: 0;
 }
+.mobile-yellow-icon {
+  display: none;
+}
 
 @media (max-width: 768px) {
+  .mobile-yellow-icon {
+    display: block;
+  }
   .widhead-container-header,
   .widhead-container-main,
   .widhead-container-img3-main {
     display: none;
   }
   .yellow-radar-small-cont {
-    margin-right: 60px;
+    /* margin-right: 60px; */
   }
   .card {
     margin-bottom: 20px;
@@ -1896,14 +1902,16 @@ button.accordion-button.collapsed::after {
   .sol-description-top {
     padding: 20px;
     display: flex;
-    align-items: flex-start;
+    align-items: start;
+    justify-content: left;
   }
+
   .startWorkBtn {
     width: 100%;
     font-size: 14px !important;
   }
   .yellow-radar-small-cont svg {
-    width: 100%;
+    width: 247px;
     height: 51px;
   }
   .sales-increase-text {
@@ -2006,14 +2014,14 @@ button.accordion-button.collapsed::after {
     font-weight: 600;
     height: 48px;
   }
-  .yellowRadarLargeIcon {
-    width: 100%;
-    height: 47px;
+  /* .yellowRadarLargeIcon {
+    width: 227px;
+    height: fit-content;
   }
   .yellowRadarLargeIcon svg {
     width: 100%;
     height: 100%;
-  }
+  } */
   .helpEveryStepText {
     /* width: 100%; */
     font-size: 25px;
