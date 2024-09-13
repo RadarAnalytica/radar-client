@@ -513,49 +513,49 @@ const OrdersMap = () => {
     switch (name) {
       case 'Сибирский фо':
         return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-            <circle cx='8' cy='8' r='8' fill='rgba(254, 197, 61, 1)' />
+          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
+            <circle cx='8' cy='8' r='8' fill='rgba(254, 197, 61, 1)'  />
           </svg>
         );
       case 'Уральский фо':
         return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
+          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
             <circle cx='8' cy='8' r='8' fill='grey' />
           </svg>
         );
       case 'Южный фо':
         return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
+          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
             <circle cx='8' cy='8' r='8' fill='rgba(74, 217, 145, 1)' />
           </svg>
         );
       case 'Северо-Кавказский фо':
         return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
+          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
             <circle cx='8' cy='8' r='8' fill='orangered' />
           </svg>
         );
       case 'Центральный фо':
         return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
+          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
             <circle cx='8' cy='8' r='8' fill='rgba(129, 172, 255, 1)' />
           </svg>
         );
       case 'Приволжский фо':
         return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
+          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
             <circle cx='8' cy='8' r='8' fill='rgba(255, 153, 114, 1)' />
           </svg>
         );
       case 'Северо-Западный фо':
         return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
+          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
             <circle cx='8' cy='8' r='8' fill='yellow' />
           </svg>
         );
       case 'Дальневосточный фо':
         return (
-          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
+          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
             <circle cx='8' cy='8' r='8' fill='brown' />
           </svg>
         );
