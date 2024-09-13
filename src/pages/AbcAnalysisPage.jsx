@@ -160,7 +160,6 @@ const AbcAnalysisPage = () => {
         viewType !== prevViewType.current
       ) {
         if (activeBrand !== undefined) {
-          console.log('updateDataDashbord when days or activeBrand is changed');
           updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
         }
         prevDays.current = days;
@@ -228,7 +227,6 @@ const AbcAnalysisPage = () => {
 
       if (result && result.length > 0) {
         setDataAbcAnalysis(result);
-        console.log(dataAbcAnalysis);
       }
     } catch (e) {
       console.error(e);

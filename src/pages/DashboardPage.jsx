@@ -198,7 +198,6 @@ const DashboardPage = () => {
       activeBrand !== prevActiveBrand.current
     ) {
       if (activeBrand !== undefined) {
-        console.log('updateDataDashbord when days or activeBrand is changed');
         updateDataDashBoard(days, activeBrand, authToken);
       }
       prevDays.current = days;
@@ -228,9 +227,7 @@ const DashboardPage = () => {
     };
 
     const targetTime = calculateNextEvenHourPlus30();
-    console.log('targetTime:', targetTime);
     const timeToTarget = targetTime.getTime() - Date.now();
-    console.log('timeToTarget:', timeToTarget);
     const intervalId = setTimeout(() => {
       dispatch(fetchShops(authToken));
       updateDataDashBoard(days, activeBrand, authToken);

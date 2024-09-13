@@ -171,13 +171,13 @@ const SideNav = () => {
               </p>
 
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title ps-4'
                 style={
                   location === "stock-analysis"
                     ? { fontWeight: "bold", fontSize: "14px" }
                     : {  }
                 }
-                onClick={() => navigate("/stock-analysis")}
+                // onClick={() => navigate("/stock-analysis")}
               >
                 {location === "stock-analysis" ? (
                   <svg
