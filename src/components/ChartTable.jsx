@@ -1,34 +1,46 @@
-import React from 'react';
-import { formatPrice } from '../service/utils';
-import GreenArrow from '../assets/greenarrow.svg';
-import RedArrow from '../assets/redarrow.svg';
+import React from "react";
+import { formatPrice } from "../service/utils";
+import GreenArrow from "../assets/greenarrow.svg";
+import RedArrow from "../assets/redarrow.svg";
+import { Tooltip } from "chart.js";
+import TooltipInfo from "./TooltipInfo";
 
 const ChartTableRow = ({ object }) => {
   return (
     <div className='chart-table-row '>
-      <p className='clue-text mb-2' style={{ fontSize: '14px' }}>
+      <p className='clue-text mb-2' style={{ fontSize: "14px" }}>
         {object.name}
+        {object.name === "Реклама (ДРР (общий))" && (
+          <TooltipInfo text='Отношение суммарных расходов на рекламу к выручке' />
+        )}
+        {object.name === "Комиссия (от выручки)" && (
+          <TooltipInfo text='Отношение суммарной комиссии к выручке' />
+        )}
+        {object.name === "Логистика (от выручки)" && (
+          <TooltipInfo text='Отношение суммарных расходов на логистику к выручке' />
+        )}
       </p>
+
       <div className='d-flex justify-content-between'>
         <div className='container d-flex justify-content-between'>
           <div className='chart-row-data col'>
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div style={{ display: "flex", gap: 10 }}>
               <p
                 className='m-0 p-0 fw-bold'
-                style={{ fontSize: '1.25vw !important' }}
+                style={{ fontSize: "1.25vw !important" }}
               >
                 {formatPrice(object.amount)} ₽
               </p>
               <div className='d-flex align-items-center mt-2'>
                 {formatPrice(object.percentRate) > 0 ? (
                   <img
-                    style={{ height: '1.25vh', marginRight: '4px' }}
+                    style={{ height: "1.25vh", marginRight: "4px" }}
                     src={GreenArrow}
                     alt=''
                   />
                 ) : (
                   <img
-                    style={{ height: '1.25vh', marginRight: '4px' }}
+                    style={{ height: "1.25vh", marginRight: "4px" }}
                     src={RedArrow}
                     alt=''
                   />
@@ -37,8 +49,8 @@ const ChartTableRow = ({ object }) => {
                   className='m-0 p-0 tiny-numbers'
                   style={
                     formatPrice(object.percentRate) <= 0
-                      ? { color: 'red' }
-                      : { color: 'rgb(0, 182, 155)' }
+                      ? { color: "red" }
+                      : { color: "rgb(0, 182, 155)" }
                   }
                 >
                   {formatPrice(object.percentRate)} %
@@ -50,23 +62,23 @@ const ChartTableRow = ({ object }) => {
                         </div> */}
           </div>
           <div className='row-chart col'>
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div style={{ display: "flex", gap: 10 }}>
               <p
                 className='m-0 p-0 fw-bold'
-                style={{ fontSize: '1.25vw !important' }}
+                style={{ fontSize: "1.25vw !important" }}
               >
                 {formatPrice(object.percent)} %
               </p>
               <div className='d-flex align-items-center mt-2'>
                 {formatPrice(object.percentRate2) > 0 ? (
                   <img
-                    style={{ height: '1.25vh', marginRight: '4px' }}
+                    style={{ height: "1.25vh", marginRight: "4px" }}
                     src={GreenArrow}
                     alt=''
                   />
                 ) : (
                   <img
-                    style={{ height: '1.25vh', marginRight: '4px' }}
+                    style={{ height: "1.25vh", marginRight: "4px" }}
                     src={RedArrow}
                     alt=''
                   />
@@ -75,8 +87,8 @@ const ChartTableRow = ({ object }) => {
                   className='m-0 p-0 tiny-numbers'
                   style={
                     formatPrice(object.percentRate2) <= 0
-                      ? { color: 'red' }
-                      : { color: 'rgb(0, 182, 155)' }
+                      ? { color: "red" }
+                      : { color: "rgb(0, 182, 155)" }
                   }
                 >
                   {formatPrice(object.percentRate2)} %
@@ -100,7 +112,7 @@ const ChartTable = ({ data, title, wbData, dataDashBoard }) => {
       {!dataDashBoard ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'
-          style={{ height: '100%', paddingTop: '20%' }}
+          style={{ height: "100%", paddingTop: "20%" }}
         >
           <span className='loader'></span>
         </div>
@@ -108,6 +120,7 @@ const ChartTable = ({ data, title, wbData, dataDashBoard }) => {
         <div>
           <p className='fw-bold numbers mb-2'>{title}</p>
           {data && data.map((obj, i) => <ChartTableRow object={obj} key={i} />)}
+
           <p></p>
         </div>
       )}

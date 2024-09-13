@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import StockAnalysisFilter from '../components/StockAnalysisFilter';
@@ -15,168 +15,183 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchShops } from '../redux/shops/shopsActions';
 import DragDropFile from '../components/DragAndDropFiles';
 import Modal from 'react-bootstrap/Modal';
+import {fetchStockAnalysisData} from '../redux/stockAnalysis/stockAnalysisDataActions';
+import { ServiceFunctions } from "../service/serviceFunctions";
+import DownloadButton from '../components/DownloadButton';
+import NoSubscriptionPage from "./NoSubscriptionPage";
+import SelfCostWarning from "../components/SelfCostWarning";
+import DataCollectionNotification from "../components/DataCollectionNotification";
+import { useNavigate } from "react-router-dom";
 
 const StockAnalysis = () => {
-  const data = [
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
-      barCode: 52648,
-      sku: 12345,
-      size: 'XL',
-      category: 'Разное',
-      saleSum: 55428,
-      quantity: 231,
-      lessReturns: 56842,
-      costGoodsSold: 56984,
-      returnsSum: 56842,
-      returnsQuantity: 25,
-      returnsCostSold: 56842,
-      costPriceOne: 120,
-      costOfProductStockToday: 2562,
-      toClient: 5568,
-      fromClient: 2562,
-      commissionWB: 5743,
-      fines: 2562,
-      additionalpayment: 4562,
-      serviceExpenses: 322,
-      toPayoff: 25365,
-      marginalProfit: 9322,
-      averageProfit: 9322,
-      profitabilityOfProductsSold: 9322,
-      marginal: 29,
-      annualReturnOnInventory: 152,
-      lostRevenue: 254,
-      byRevenue: 152,
-      byProfit: 152,
-      basic: 505,
-      maxDiscount: 58,
-      minDiscountPrice: 25,
-      orderQuantity: 25,
-      orderSum: 25,
-      purchased: 45,
-      notPurchased: 46,
-      purchasedPrecent: 25,
-      completed: 78,
-      orderCountDay: 2,
-      slaeCountDay: 6,
-      dataRadar: 57,
-      dataWB: 6,
-    },
-    {
-      productName: 'Крем для рук',
-      brandName: 'Бренд 1',
-      vendorСode: 1235,
-      barCode: 62648,
-      sku: 12375,
-      size: 'XL',
-      category: 'Разное',
-      saleSum: 25428,
-      quantity: 231,
-      lessReturns: 77684,
-      costGoodsSold: 569,
-      returnsSum: 16842,
-      returnsQuantity: 32,
-      returnsCostSold: 56848,
-      costPriceOne: 120,
-      costOfProductStockToday: 4562,
-      toClient: 1458,
-      fromClient: 3244,
-      commissionWB: 7896,
-      fines: 6658,
-      additionalpayment: 4562,
-      serviceExpenses: 322,
-      toPayoff: 25365,
-      marginalProfit: 7322,
-      averageProfit: 5687,
-      profitabilityOfProductsSold: 9322,
-      marginal: 29,
-      annualReturnOnInventory: 152,
-      lostRevenue: 254,
-      byRevenue: 452,
-      byProfit: 1252,
-      basic: 536,
-      maxDiscount: 60,
-      minDiscountPrice: 23,
-      orderQuantity: 12,
-      orderSum: 45,
-      purchased: 75,
-      notPurchased: 12,
-      purchasedPrecent: 25,
-      completed: 102,
-      orderCountDay: 2,
-      slaeCountDay: 7,
-      dataRadar: 55,
-      dataWB: 8,
-    },
-    {
-      productName: 'Вентилятор',
-      brandName: 'Бренд 3',
-      vendorСode: 523,
-      barCode: 7896,
-      sku: 3345,
-      size: 'M',
-      category: 'Бытовая',
-      saleSum: 54428,
-      quantity: 231,
-      lessReturns: 56842,
-      costGoodsSold: 56984,
-      returnsSum: 56842,
-      returnsQuantity: 25,
-      returnsCostSold: 56842,
-      costPriceOne: 120,
-      costOfProductStockToday: 2562,
-      toClient: 5568,
-      fromClient: 2862,
-      commissionWB: 7743,
-      fines: 3562,
-      additionalpayment: 4562,
-      serviceExpenses: 322,
-      toPayoff: 25865,
-      marginalProfit: 9342,
-      averageProfit: 9322,
-      profitabilityOfProductsSold: 9322,
-      marginal: 29,
-      annualReturnOnInventory: 152,
-      lostRevenue: 254,
-      byRevenue: 152,
-      byProfit: 152,
-      basic: 505,
-      maxDiscount: 58,
-      minDiscountPrice: 15,
-      orderQuantity: 27,
-      orderSum: 23,
-      purchased: 44,
-      notPurchased: 46,
-      purchasedPrecent: 25,
-      completed: 78,
-      orderCountDay: 2,
-      slaeCountDay: 6,
-      dataRadar: 57,
-      dataWB: 6,
-    },
-  ];
+  const navigate = useNavigate();
+  const stockAnalysisData = useAppSelector(
+    (state) => state.stockAnalysisDataSlice.stockAnalysisData
+  );
+  const dispatch = useAppDispatch();
+  const shops = useAppSelector((state) => state.shopsSlice.shops);
+  const allShop = shops?.some((item) => item?.is_primary_collect === true);
+  const storedActiveShop = localStorage.getItem('activeShop');
+  let activeShop;
+  if (storedActiveShop && typeof storedActiveShop === 'string') {
+    try {
+      activeShop = JSON.parse(storedActiveShop);
+    } catch (error) {
+      console.error('Error parsing storedActiveShop:', error);
+      activeShop = null;
+    }
+  }
+  const activeShopId = activeShop?.id;
+  const idShopAsValue =
+    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
   const { user, authToken } = useContext(AuthContext);
   const [file, setFile] = useState();
-
-  const dispatch = useAppDispatch();
-  const shop = useAppSelector((state) => state.shopsSlice.shops);
-
-  const [activeBrand, setActiveBrand] = useState('0');
-  const [dataTable, setDataTable] = useState(data);
+  const [dataDashBoard, setDataDashboard] = useState();
+  const [loading, setLoading] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [activeBrand, setActiveBrand] = useState(idShopAsValue);
+  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
+  const [dataTable, setDataTable] = useState([]);
   const [costPriceShow, setCostPriceShow] = useState(false);
+  const [days, setDays] = useState(30);
+  const [searchQuery, setSearchQuery] = useState('');
+  const prevDays = useRef(days);
+  const prevActiveBrand = useRef(activeBrand);
+  const authTokenRef = useRef(authToken);
   const handleCostPriceClose = () => setCostPriceShow(false);
+
+  const plugForAllStores = {
+    id: 0,
+    brand_name: 'Все',
+    is_active: true,
+    is_primary_collect: allShop,
+    is_valid: true,
+  };
+ 
+  const shouldDisplay = activeShop
+  ? activeShop.is_primary_collect
+  : oneShop
+  ? oneShop.is_primary_collect
+  : allShop;
 
   const handleCostPriceShow = () => {
     setCostPriceShow(true);
   };
 
-  useEffect(() => {
-    dispatch(fetchShops(authToken));
-  }, [dispatch]);
+  const updateDataDashBoard = async (days, activeBrand, authToken) => {
+    setLoading(true);
+    try {
+      const data = await ServiceFunctions.getDashBoard(
+        authToken,
+        days,
+        activeBrand
+      );
+      setDataDashboard(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  console.log(shop, 'shop');
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filterData = (data, query) => {
+    if (!query) return data;
+    return data.filter(item => 
+      item?.sku?.toLowerCase().includes(query.toLowerCase()) ||
+      item?.vendorСode?.toLowerCase().includes(query.toLowerCase()) ||
+      item?.productName?.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        await updateDataDashBoard(days, activeBrand, authToken);
+        await dispatch(fetchShops(authToken));
+        await dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
+    const filteredData = filterData(stockAnalysisData, searchQuery);
+    setDataTable(filteredData);
+  }, [stockAnalysisData, searchQuery]);
+
+  useEffect(() => {
+    if (
+      days !== prevDays.current ||
+      activeBrand !== prevActiveBrand.current
+    ) {
+      if (activeBrand !== undefined) {
+        updateDataDashBoard(days, activeBrand, authToken);
+        dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+      }
+      prevDays.current = days;
+      prevActiveBrand.current = activeBrand;
+    }
+  }, [days, activeBrand]);
+
+  useEffect(() => {
+    if (shops.length > 0) {
+      let id;
+      if (activeShopId == undefined) {
+        id = shops?.[0].id;
+        localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
+      } else {
+        id = activeShopId;
+      }
+      setActiveBrand(id);
+    }
+  }, [shops]);
+
+  useEffect(() => {
+    if (shops?.length === 0 && !isInitialLoading ) {
+      navigate("/onboarding");
+    } 
+  }, [isInitialLoading, shops.length]);
+
+
+  const handleSaveActiveShop = (shopId) => {
+    const currentShop = shops?.find((item) => item.id == shopId);
+    if (currentShop) {
+      localStorage.setItem('activeShop', JSON.stringify(currentShop));
+    }
+    if (shopId === '0') {
+      localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
+    }
+    setActiveBrand(shopId);
+  };
+
+  
+  const handleUpdateDashboard = () => {
+    setTimeout(() => {
+      updateDataDashBoardCaller();
+    }, 3000);
+  };
+
+  const updateDataDashBoardCaller = async () => {
+    activeBrand !== undefined &&
+      updateDataDashBoard(days, activeBrand, authToken);
+  };
+
+  if (user?.subscription_status === "expired") {
+    return <NoSubscriptionPage title={"Товарная аналитика"} />;
+  };
+
+  if (!shops || shops.length === 0) {
+    return null; // or a loading indicator
+  };
 
   return (
     <>
@@ -184,45 +199,83 @@ const StockAnalysis = () => {
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
-          <div className=' pt-0 d-flex gap-3'>
-            <StockAnalysisFilter shop={shop} setActiveBrand={setActiveBrand} />
-          </div>
-          <div className='container dash-container search'>
-            <input
-              type='text'
-              placeholder='Поиск по SKU или артикулу'
-              className='container dash-container search-input'
+          {!isInitialLoading &&
+          !dataDashBoard?.costPriceAmount &&
+          activeShopId !== 0 &&
+          shouldDisplay ? (
+            <SelfCostWarning
+              activeBrand={activeBrand}
+              onUpdateDashboard={handleUpdateDashboard}
             />
-            <div>
-              <img
-                style={{ marginLeft: '10px', cursor: 'pointer' }}
-                src={SearchButton}
-                alt=''
-              />
-            </div>
-            <div
-              className='d-flex'
-              style={{ gap: '20px', alignItems: 'center', marginLeft: '12vw' }}
-            >
-              <div>
-                <img
-                  style={{ cursor: 'pointer' }}
-                  onClick={handleCostPriceShow}
-                  src={StockCostPrice}
-                  alt=''
-                />
-              </div>
-              <div>
-                <img
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => getFileClickHandler(authToken, activeBrand)}
-                  src={DownloadFile}
-                  alt=''
-                />
-              </div>
-            </div>
+          ) : null}
+          <div className='pt-0 d-flex gap-3'>
+            <StockAnalysisFilter
+              shops={shops}
+              setActiveBrand={handleSaveActiveShop}
+              setDays={setDays}
+              activeShopId={activeShopId}
+            />
           </div>
-          <TableStock dataTable={dataTable} setDataTable={setDataTable} />
+          {shouldDisplay ? (
+            <>
+              <div className='input-and-button-container container dash-container p-3 pb-4 pt-0'>
+                <div className='search'>
+                  <div className='search-box'>
+                    <input
+                      type='text'
+                      placeholder='Поиск по SKU или артикулу'
+                      className='container dash-container search-input'
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                    />
+                    <button className='search-box-btn'>
+                      <img
+                        onClick={() =>
+                          setDataTable(
+                            filterData(stockAnalysisData, searchQuery)
+                          )
+                        }
+                        style={{ marginLeft: "10px", cursor: "pointer" }}
+                        src={SearchButton}
+                        alt='search'
+                      />
+                    </button>
+                  </div>
+                </div>
+                <>
+                  <div
+                    className='d-flex'
+                    style={{
+                      gap: '20px',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div>
+                      <img
+                        style={{ cursor: 'pointer' }}
+                        onClick={handleCostPriceShow}
+                        src={StockCostPrice}
+                        alt=''
+                      />
+                    </div>
+                    <div>
+                      <DownloadButton
+                        handleDownload={() =>
+                          getFileClickHandler(authToken, activeBrand)
+                        }
+                      />
+                    </div>
+                  </div>
+                </>
+              </div>
+              <div style={{ height: '20px' }}></div>
+              <TableStock dataTable={dataTable} setDataTable={setDataTable} />          
+            </>
+          ) : (
+            <DataCollectionNotification
+              title={'Ваши данные еще формируются и обрабатываются.'}
+            />
+          )}
         </div>
       </div>
       <Modal

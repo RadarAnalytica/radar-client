@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import downloadIcon from '../pages/images/Download.svg';
+import DownloadButton from './DownloadButton';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import { URL } from '../service/config';
@@ -192,10 +192,7 @@ const DashboardFilter = ({
         </div>
       </div>
       {(currentShop?.is_primary_collect || allShop) && (
-        <div className='download-button' onClick={handleDownload}>
-          <img src={downloadIcon} />
-          Скачать Excel
-        </div>
+        <DownloadButton handleDownload={handleDownload}/>
       )}
     </div>
   );

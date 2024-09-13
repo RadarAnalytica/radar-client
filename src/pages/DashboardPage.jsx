@@ -26,11 +26,12 @@ import downloadIcon from "../pages/images/Download.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import NoSubscriptionPage from "./NoSubscriptionPage";
+import TooltipInfo from "../components/TooltipInfo";
 
 const DashboardPage = () => {
+  const navigate = useNavigate();
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
-  const authTokenRef = useRef(authToken);
   const [wbData, setWbData] = useState();
   const [days, setDays] = useState(30);
   const [content, setContent] = useState();
@@ -39,7 +40,10 @@ const DashboardPage = () => {
   const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [firstLoading ,setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
+  // const [shouldNavigate, setShouldNavigate] = useState(false);
+  // console.log('shouldNavigate', shouldNavigate);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const storedActiveShop = localStorage.getItem("activeShop");
@@ -58,6 +62,9 @@ const DashboardPage = () => {
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+  const prevDays = useRef(days);
+  const prevActiveBrand = useRef(activeBrand);
+  const authTokenRef = useRef(authToken);
 
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
@@ -88,10 +95,17 @@ const DashboardPage = () => {
       if (currentShop) {
         localStorage.setItem("activeShop", JSON.stringify(currentShop));
       }
-      updateDataDashBoard(days, activeBrand, authToken);
+      if (!isInitialLoading && (days === prevDays.current ||
+        activeBrand === prevActiveBrand.current)) 
+        {
+          console.log('updateDataDashbord when is primary collect is true'); 
+          updateDataDashBoard(days, activeBrand, authToken);
+      }
+      // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
       clearInterval(intervalId);
     }
     if (!oneShop?.is_primary_collect && activeBrand !== 0) {
+      console.log('Starting interval to fetch shops...');
       intervalId = setInterval(() => {
         dispatch(fetchShops(authToken));
       }, 30000);
@@ -104,9 +118,37 @@ const DashboardPage = () => {
   }, [oneShop, activeBrand]);
 
   useEffect(() => {
-    dispatch(fetchShops(authToken));
-    updateDataDashBoard(days, activeBrand, authToken);
-  }, [dispatch]);
+
+    const fetchInitialData = async () => {
+      try {
+        await dispatch(fetchShops(authToken));
+        if (activeBrand !== undefined) {
+          await updateDataDashBoard(days, activeBrand, authToken);
+        }
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setFirstLoading(false);
+        setIsInitialLoading(false);
+      }
+    };
+    //   if (firstLoading) {
+    //     await dispatch(fetchShops(authToken)).then(() => {
+    //       setFirstLoading(false);
+    //     });
+    //     await updateDataDashBoard(days, activeBrand, authToken);
+    //   }
+      
+    // }
+
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
+    if (shops.length === 0 && !firstLoading) {
+      navigate("/onboarding");
+    }
+  }, [firstLoading, shops.length]);
 
   useEffect(() => {
     if (shops.length > 0) {
@@ -143,17 +185,24 @@ const DashboardPage = () => {
     setActiveBrand(shopId);
   };
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       updateDataDashBoard(days, activeBrand, authToken);
     }
   }, [authToken]);
 
-  useEffect(() => {
-    if (activeBrand !== undefined ) {
-      updateDataDashBoard(days, activeBrand, authToken);
+   // Update dashboard data when necessary
+   useEffect(() => {
+    if (
+      days !== prevDays.current ||
+      activeBrand !== prevActiveBrand.current
+    ) {
+      if (activeBrand !== undefined) {
+        console.log('updateDataDashbord when days or activeBrand is changed');
+        updateDataDashBoard(days, activeBrand, authToken);
+      }
+      prevDays.current = days;
+      prevActiveBrand.current = activeBrand;
     }
   }, [days, activeBrand]);
 
@@ -161,22 +210,27 @@ const DashboardPage = () => {
     const calculateNextEvenHourPlus30 = () => {
       const now = new Date();
       let targetTime = new Date(now);
-      targetTime.setMinutes(30, 0, 0);
-
-      if (now.getMinutes() >= 30) {
-        targetTime.setHours(targetTime.getHours() + 2);
-      } else {
-        targetTime.setHours(
-          targetTime.getHours() + (targetTime.getHours() % 2)
-        );
+      
+      // Set to the next half hour
+      targetTime.setMinutes(targetTime.getMinutes() <= 30 ? 30 : 60, 0, 0);
+      
+      // If we're already past an even hour + 30 minutes, move to the next even hour
+      if (targetTime.getHours() % 2 !== 0 || (targetTime.getHours() % 2 === 0 && targetTime <= now)) {
+        targetTime.setHours(targetTime.getHours() + 1);
       }
-
+      
+      // Ensure we're on an even hour
+      if (targetTime.getHours() % 2 !== 0) {
+        targetTime.setHours(targetTime.getHours() + 1);
+      }
+    
       return targetTime;
     };
 
     const targetTime = calculateNextEvenHourPlus30();
+    console.log('targetTime:', targetTime);
     const timeToTarget = targetTime.getTime() - Date.now();
-
+    console.log('timeToTarget:', timeToTarget);
     const intervalId = setTimeout(() => {
       dispatch(fetchShops(authToken));
       updateDataDashBoard(days, activeBrand, authToken);
@@ -758,6 +812,10 @@ const DashboardPage = () => {
     return <NoSubscriptionPage title={"Сводка продаж"} />;
   }
 
+  if (!shops || shops.length === 0) {
+    return null; // or a loading indicator
+  }
+
   return (
     isVisible && (
       <div className='dashboard-page'>
@@ -952,6 +1010,7 @@ const DashboardPage = () => {
                     data={financeData}
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
+                    tableType={1}
                   />
                   <StorageTable
                     wbData={wbData}
@@ -969,6 +1028,7 @@ const DashboardPage = () => {
                     sign={" %"}
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
+                    tableType={1}
                   />
 
                   <ChartTable

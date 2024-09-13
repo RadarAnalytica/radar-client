@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import '../pages/styles.css';
-import Theses from '../pages/images/ThesesAnalyticsHome';
-import IMG from '../pages/images/imgAnalytics';
-import lightImg from '../pages/images/mainDashboard.png';
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+import "../pages/styles.css";
+import Theses from "../pages/images/ThesesAnalyticsHome";
+import IMG from "../pages/images/imgAnalytics";
+import lightImg from "../pages/images/mainDashboard.png";
 
 const ToggleAnalyticsPanel = () => {
   const [isActive, setActive] = useState(true);
@@ -48,7 +48,7 @@ const ToggleAnalyticsPanel = () => {
   }, [isImagesLoaded]);
 
   const toggleClass = useCallback(
-    (index) => (index === activeIndex ? 'thesesHome2' : 'thesesHome'),
+    (index) => (index === activeIndex ? "thesesHome2" : "thesesHome"),
     [activeIndex]
   );
 
@@ -66,8 +66,8 @@ const ToggleAnalyticsPanel = () => {
     const thesesList = isActive ? Theses.inTheses : Theses.onTheses;
     return thesesList.map((el, index) => (
       <div key={index} className={toggleClass(index)}>
-        <div>{el.img}</div>
-        <div>{el.txt}</div>
+        <div className='thesesListImages'>{el.img}</div>
+        <div className='thesesListText'>{el.txt}</div>
       </div>
     ));
   }, [isActive, toggleClass]);
@@ -76,9 +76,9 @@ const ToggleAnalyticsPanel = () => {
     if (!isImagesLoaded) {
       return (
         <img
-          style={{ width: '96%', marginLeft: '2%', marginTop: '1%' }}
+          style={{ width: "96%", marginLeft: "2%", marginTop: "1%" }}
           src={lightImg}
-          alt=""
+          alt=''
         />
       );
     }
@@ -88,33 +88,43 @@ const ToggleAnalyticsPanel = () => {
   }, [isActive, isImagesLoaded, activeIndex]);
 
   return (
-    <div className="InOnAnalytics">
-      <div className="btnAnalytics">
+    <div className='InOnAnalytics'>
+      <div className='btnAnalytics'>
         <button
-          className={isActive ? 'prime-btn' : 'secondary-btn'}
-          style={{ width: '25%', padding: '25px', border: 'none' }}
+          className={`btnAnalysticsInternalExternal ${
+            isActive ? "prime-btn" : "secondary-btn"
+          }`}
           onClick={handleExternalClick}
         >
-          <span style={{ fontSize: '24px' }}>Внутренняя аналитика</span>
+          <span className='secondary-btn-text internal-analytics-btn'>
+            Внутренняя аналитика
+          </span>
         </button>
         <button
-          className={isActive ? 'secondary-btn' : 'prime-btn'}
-          style={{ width: '25%', padding: '25px', border: 'none' }}
+          className={`btnAnalysticsInternalExternal ${
+            isActive ? "secondary-btn" : "prime-btn"
+          }`}
           onClick={handleInternalClick}
         >
-          <span style={{ fontSize: '24px' }}>Внешняя аналитика</span>
+          <span className='secondary-btn-text external-analytics-btn'>
+            Внешняя аналитика
+          </span>
         </button>
       </div>
 
-      <div className="blockInOnAnalytics">
+      <div className='blockInOnAnalytics'>
         <div
-          className="vertical-line"
-          style={{ height: `${(activeIndex + 1) * 20}%` }}
+          className='vertical-line'
+          style={{ "--activeIndex": activeIndex }}
+          // style={{ height: `${(activeIndex + 1) * 20}%` }}
         ></div>
-        <div style={{ width: '45%', alignItems: 'center', marginLeft: '11px' }}>
+        <div
+          className='blocks'
+          style={{ alignItems: "center", marginLeft: "11px" }}
+        >
           {renderTheses}
         </div>
-        <div style={{ width: '55%' }}>{renderImage}</div>
+        <div className='images'>{renderImage}</div>
       </div>
     </div>
   );

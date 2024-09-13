@@ -74,7 +74,6 @@ function App() {
               path='/home'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {" "}
                   <MainPage />
                 </React.Suspense>
               }
@@ -147,7 +146,11 @@ function App() {
               path='/calculate'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {user?.subscription_status === null ? <TariffsPage /> : <Calculate />}
+                  {user?.subscription_status === null ? (
+                    <TariffsPage />
+                  ) : (
+                    <Calculate />
+                  )}
                 </React.Suspense>
               }
             />
@@ -155,7 +158,11 @@ function App() {
               path='/onboarding'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
+                  {user?.subscription_status === null ? (
+                    <TariffsPage />
+                  ) : (
+                    <Onboarding />
+                  )}
                 </React.Suspense>
               }
             />
@@ -244,7 +251,6 @@ function App() {
               path='/subscription'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {" "}
                   <Subscriptions />
                 </React.Suspense>
               }
@@ -255,7 +261,11 @@ function App() {
                   path='/dashboard'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <DashboardPage />}
+                      {user?.subscription_status === null ? (
+                        <TariffsPage />
+                      ) : (
+                        <DashboardPage />
+                      )}
                     </React.Suspense>
                   }
                 />
@@ -288,7 +298,7 @@ function App() {
                   }
                 />
                 <Route
-                  path='/development/stock-analysis'
+                  path='/stock-analysis'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
                       {" "}
@@ -308,7 +318,11 @@ function App() {
                   path='/orders-map'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <OrdersMap />}
+                      {user?.subscription_status === null ? (
+                        <TariffsPage />
+                      ) : (
+                        <OrdersMap />
+                      )}
                     </React.Suspense>
                   }
                 />
@@ -316,7 +330,11 @@ function App() {
                   path='/linked-shops'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <LinkedShops />}
+                      {user?.subscription_status === null ? (
+                        <TariffsPage />
+                      ) : (
+                        <LinkedShops />
+                      )}
                     </React.Suspense>
                   }
                 />
@@ -387,7 +405,7 @@ function App() {
                   }
                 />
                 <Route
-                  path='/development/stock-analysis'
+                  path='/stock-analysis'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
                       {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
@@ -569,7 +587,7 @@ function App() {
             }
           />
           <Route
-            path='/development/stock-analysis'
+            path='/stock-analysis'
             element={
               <React.Suspense fallback={<LoaderPage />}>
                 {" "}
