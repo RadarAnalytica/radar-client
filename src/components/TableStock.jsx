@@ -1,7 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import SortArrows from './SortArrows';
+import { useNavigate } from 'react-router-dom';
 
 const TableStock = ({ dataTable, setDataTable }) => {
+  const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -50,6 +52,9 @@ const TableStock = ({ dataTable, setDataTable }) => {
     };
   }, []);
   
+  const handleClickProductName = (shop) => {
+    navigate(`/product/${shop.sku}`);
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -127,7 +132,9 @@ const TableStock = ({ dataTable, setDataTable }) => {
                           color: 'rgba(83, 41, 255, 1)',
                           width: '200px',
                           height: '100%',
+                          cursor: 'pointer',
                         }}
+                        onClick={() => handleClickProductName(row)}
                       >
                         {row.productName}
                       </span>
@@ -1269,7 +1276,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.orderSum}
+                      {row.orderSum} ₽
                     </div>
                   ))}
                 </div>

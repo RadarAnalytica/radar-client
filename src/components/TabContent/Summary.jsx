@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import glitIconBlue from '../../pages/images/glittericonblue.svg';
 import glitCostPrise from '../../pages/images/glitsotprice.svg';
 import glitIconGreen from '../../pages/images/gliticongreen.svg';
@@ -6,7 +6,8 @@ import glitIconReturn from '../../pages/images/gliticonreturn.svg';
 import glitVectorGreen from '../../pages/images/glitvectorgreen.svg';
 import BigChartGlitter from '../BigChartGlitter';
 import TableStockGlitter from '../TableStockGlitter';
-const Summary = ({ days }) => {
+import StockCostPrice from '../../assets/stockcostprice.svg';
+const Summary = ({ days, productBySku, isInitialLoading }) => {
 
   const dataDash =  {
     orderAmountList: [4534, 7234, 5896, 3468, 1259, 7925, 6548, 4534, 7234, 5896, 3468, 1259, 7925, 6548, 8566, 4534, 7234, 5896, 3468, 1259, 7925, 6548, 4534, 7234, 5896, 3468, 1259, 7925, 6548, 8566 ],
@@ -25,9 +26,15 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
   const [salesLineOn, setSalesLineOn] = useState(true);
   const [returnLineOn, setReturnLineOn] = useState(true);
   const [returnOn, setReturnOn] = useState(true);
-
+  const [productBySku1, setProductBySku1] = useState(productBySku);
   const [loading, setLoading] = useState(true);
 
+
+  useEffect(() => {
+     if (productBySku) {
+      setProductBySku1(productBySku);
+     }
+  }, [productBySku]);
 
   function getPastDays(number) {
     const today = new Date();
@@ -542,210 +549,565 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
 
   return (
     <>
-    <div style={{display: 'flex', marginLeft: '45px', width: '93%', gap: '30px'}}> 
-                        <div style={{ width: '340px', height: '200px', backgroundColor: 'white', borderRadius: '8px'}}>
-                            <div style={{ display: 'flex', marginLeft: '10px'}}>
-                                <div>
-                                    <div style={{fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginTop: '10px'}}>
-                                        Продажи
-                                    </div>
-                                    <div style={{fontSize: '19px', fontWeight: '700'}}>
-                                        35 678.00p
-                                    </div>
-                                    <div style={{fontSize: '14px', fontWeight:'500', color: '#00B69B'}}>
-                                        + 23 678.00 p
-                                    </div>
-                                </div>
-                                <div style={{width: '60px', height: '60px', backgroundColor:'rgba(126, 126, 126, 0.2)', borderRadius: '10px', marginLeft: 'auto', marginRight: '15px', marginTop:'4%'}}>
-                                <img style={{marginLeft: '14px', marginTop: '13px'}} src={glitIconBlue} alt="" />
-                                </div>
-                            </div>
-                            <div style={{fontSize: '20px', fontWeight: '700', marginTop: '45px',  marginLeft: '10px'}}>
-                                117 шт
-                            </div>
-                            <div style={{fontSize: '14px', fontWeight:'500', color: '#00B69B',  marginLeft: '10px'}}>
-                                +117 шт
-                            </div>
-                        </div>
-                        <div style={{ width: '340px', height: '200px', backgroundColor: 'white', borderRadius: '8px'}}>
-                        <div style={{ display: 'flex', marginLeft: '10px'}}>
-                                <div>
-                                    <div style={{width: '150px', fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginTop: '10px'}}>
-                                    Себестоимость проданных товаров
-                                    </div>
-                                    <div style={{fontSize: '19px', fontWeight: '700'}}>
-                                        35 678.00p
-                                    </div>
-                                    <div style={{fontSize: '14px', fontWeight:'500', color: '#00B69B'}}>
-                                        + 14 678.00 p
-                                    </div>
-                                </div>
-                                <div style={{width: '60px', height: '60px', backgroundColor:'rgba(74, 217, 145, 0.2)', borderRadius: '10px', marginLeft: 'auto', marginRight: '15px', marginTop:'4%'}}>
-                                <img style={{marginLeft: '14px', marginTop: '13px'}} src={glitIconGreen} alt="" />
-                                </div>
-                            </div>
-                            <div>
-                                <img style={{ marginLeft: '14px', marginTop: '35px'}} src={glitCostPrise} alt="" />
-                            </div>
-                            
-                        </div>
-                        <div style={{ width: '340px', height: '200px', backgroundColor: 'white', borderRadius: '8px'}}>
-                        <div style={{ display: 'flex', marginLeft: '10px'}}>
-                                <div>
-                                    <div style={{fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginTop: '10px'}}>
-                                        Возвраты
-                                    </div>
-                                    <div style={{fontSize: '19px', fontWeight: '700'}}>
-                                        0.00p
-                                    </div>
-                                    <div style={{fontSize: '14px', fontWeight:'500', color: '#F93C65'}}>
-                                        + 1 678.00 p
-                                    </div>
-                                </div>
-                                <div style={{width: '60px', height: '60px', backgroundColor:'rgba(255, 144, 102, 0.2)', borderRadius: '10px',marginLeft: 'auto', marginRight: '15px', marginTop:'4%'}}>
-                                <img style={{marginLeft: '14px', marginTop: '13px'}} src={glitIconReturn} alt="" />
-                                </div>
-                            </div>
-                            <div style={{fontSize: '20px', fontWeight: '700', marginTop: '45px',  marginLeft: '10px'}}>
-                                0 шт
-                            </div>
-                            <div style={{fontSize: '14px', fontWeight:'500', color: '#F93C65',  marginLeft: '10px'}}>
-                                +5 шт
-                            </div>
-                        </div>
-                        <div style={{gap: '20px'}}>
-                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '340px', height: '55px', backgroundColor: 'white', borderRadius: '8px'}}>
-                                <div  style={{ fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginLeft: '10px'}}>Штрафы WB</div>
-                                <div style={{fontWeight: '700', marginRight: '10px'}}>0,00 р</div>
-                            </div>
-                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '340px', height: '55px', backgroundColor: 'white', borderRadius: '8px', marginTop: '13px'}}>
-                                <div  style={{ fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginLeft: '10px'}}>Доплаты WB</div>
-                                <div style={{fontWeight: '700', marginRight: '10px'}}>0,00 р</div>
-                            </div>
-                             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '340px', height: '55px', backgroundColor: 'white', borderRadius: '8px', marginTop: '13px'}}>
-                                <div  style={{ fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginLeft: '10px'}}>Комиссия WB</div>
-                                <div style={{fontWeight: '700', marginRight: '10px'}}>4 675,00 р</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style={{width: '93%', display: 'flex', gap: '40px', marginLeft: '47px', marginTop: '20px'}} >
-                        <div style={{ width: '422px', height: '90px', backgroundColor: 'white', borderRadius: '8px'}}>
-                            <div style={{ fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginLeft: '10px', marginTop: '10px'}}>Расходы на логистику к клиенту</div>
-                            <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '20px'}}>
-                                <div style={{marginLeft: '10px', fontWeight: '700', fontSize: '22px'}}>4 558,20 р</div>
-                                <div style={{marginRight: '10px', fontSize: '14px', color: '#00B69B'}}>-1 558,20 р</div>
-                            </div>
-                        </div>
-                        <div style={{ width: '422px', height: '90px', backgroundColor: 'white', borderRadius: '8px'}}>
-                        <div style={{ fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginLeft: '10px', marginTop: '10px'}}>Расходы на логистику от клиента</div>
-                            <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '20px'}}>
-                                <div style={{marginLeft: '10px', fontWeight: '700', fontSize: '22px'}}>370,00 ₽</div>
-                                <div style={{marginRight: '10px', fontSize: '14px', color: '#F93C65'}}>+370,00 ₽</div>
-                            </div>
-                        </div>
-                        <div style={{ width: '422px', height: '90px', backgroundColor: 'white', borderRadius: '8px'}}>
-                        <div style={{ fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginLeft: '10px', marginTop: '10px'}}>Маржинальная прибыль</div>
-                            <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '20px'}}>
-                                <div style={{marginLeft: '10px', fontWeight: '700', fontSize: '22px'}}>9 330,00 ₽</div>
-                                <div style={{marginRight: '10px', fontSize: '14px', color: '#00B69B'}}>+14 383,00 ₽</div>
-                            </div>
-                        </div>
-                    
-                    </div>
-                    <div style={{width: '93%', display: 'flex', gap: '60px', marginLeft: '50px', marginTop: '20px'}} >
-                        <div style={{ width: '644px', height: '140px', backgroundColor: 'white', borderRadius: '8px'}}>
-                            <div style={{fontSize: '20px', fontWeight: '700', marginTop: '10px', marginLeft: '10px'}}>Товарный остаток</div>
-                            <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '20px'}}>
-                                <div style={{marginLeft: '10px', fontSize: '16px'}}>На складе продавца</div>
-                                <div style={{display: 'flex'}}>
-                                    <div style={{marginRight: '10px', fontWeight: '700', fontSize: '16px'}}>65 шт</div>
-                                    <div style={{marginRight: '10px', marginTop: '3px', fontWeight: '500', fontSize: '14px', color: '#8C8C8C'}}>120 000,00 ₽</div>
-                                </div>
-                            </div>
-                            <hr style={{margin: '10px 10px 10px 10px'}}></hr>
-                            <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '10px'}}>
-                                <div style={{marginLeft: '10px', fontSize: '16px'}}>На складе WB</div>
-                                <div style={{display: 'flex'}}>
-                                    <div style={{marginRight: '10px', fontWeight: '700', fontSize: '16px'}}>1 шт</div>
-                                    <div style={{marginRight: '10px', marginTop: '3px', fontWeight: '500', fontSize: '14px', color: '#8C8C8C'}}>120 000,00 ₽</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style={{ width: '644px', height: '140px', backgroundColor: 'white', borderRadius: '8px'}}>
-                            <div style={{fontSize: '20px', fontWeight: '700', marginTop: '10px', marginLeft: '10px'}}>Заказы</div>
-                            <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '20px'}}>
-                                <div style={{marginLeft: '10px', fontSize: '16px'}}>Сумма</div>
-                                <div style={{display: 'flex'}}>
-                                    <div style={{marginRight: '10px', fontWeight: '700', fontSize: '16px'}}>5 600,00 ₽</div>
-                                    <div style={{marginRight: '10px', marginTop: '3px', fontWeight: '500', fontSize: '14px', color: '#00B69B'}}>+14 383,00 ₽</div>
-                                </div>
-                            </div>
-                            <hr style={{margin: '10px 10px 10px 10px'}}></hr>
-                            <div style={{display: 'flex', gap: '40px', marginTop: '10px'}}>
-                                <div style={{marginLeft: '10px', fontSize: '16px'}}>На складе WB</div>
-                                <div style={{display: 'flex'}}>
-                                    <div style={{marginRight: '10px', fontWeight: '700', fontSize: '16px'}}>10 шт</div>
-                                    <div style={{marginRight: '10px', marginTop: '3px', fontWeight: '500', fontSize: '14px', color: '#F93C65'}}>-2 шт</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style={{width: '93%', display: 'flex', gap: '40px', marginLeft: '50px', marginTop: '20px'}} >
-                        <div style={{ width: '422px', height: '140px', backgroundColor: 'white', borderRadius: '8px'}}>
-                            <div style={{ fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginLeft: '10px', marginTop: '10px'}}>Процент выкупа</div>
-                            <div>
-                                <div style={{marginLeft: '10px', fontWeight: '700', fontSize: '22px'}}>92,3 %</div>
-                            </div>
-                            <img src={glitVectorGreen} alt="" />
-                        </div>
-                        <div style={{ width: '422px', height: '140px', backgroundColor: 'white', borderRadius: '8px'}}>
-                        <div style={{ fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginLeft: '10px', marginTop: '10px'}}>Маржинальность</div>
-                            <div>
-                                <div style={{marginLeft: '10px', fontWeight: '700', fontSize: '22px'}}>33,3 %</div>
-                            </div>
-                            <img src={glitVectorGreen} alt="" />
-                        </div>
-                        <div style={{ width: '422px', height: '140px', backgroundColor: 'white', borderRadius: '8px'}}>
-                        <div style={{ fontSize: '14px', fontWeight:'500', color: '#8C8C8C', marginLeft: '10px', marginTop: '10px'}}>Упущенные продажи</div>
-                            <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '20px'}}>
-                                <div style={{marginLeft: '10px', fontWeight: '700', fontSize: '22px'}}>1 330,00 ₽</div>
-                                <div style={{marginRight: '10px', fontSize: '14px', fontWeight: '700'}}>5 шт</div>
-                            </div>
-                        </div>
-                    
-                    </div>
-                    <div style={{width: '93%', marginLeft: '50px', marginTop: '20px'}}>
-                        <BigChartGlitter
-                
-                        data={data}
-                        orderOn={orderOn}
-                        salesOn={salesOn}
-                        returnOn={returnOn}
-                        setOrderOn={setOrderOn}
-                        setSalesOn={setSalesOn}
-                        setReturnOn={setReturnOn}
-                        setOrderLineOn={setOrderLineOn}
-                        setSalesLineOn={setSalesLineOn}
-                        setReturnLineOn={setReturnLineOn}
-                        orderLineOn={orderLineOn}
-                        salesLineOn={salesLineOn}
-                        returnLineOn={returnLineOn}
-                        loading={loading}
-                        days={days}
-                        />
-                    </div>
-                    <div style={{width: '93%', marginLeft: '50px', marginTop: '20px', display: 'flex'}}>
-                            <div onClick={() => setActiveTabDay('saleDay')} style={{width: '184px', height: '43px', borderRadius:'8px', cursor: 'pointer', backgroundColor: activeTabDay === 'saleDay' ? '#5329FF1A' : 'transparent'}}>
-                                <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '18px'}}>Продажи по дням</p>
-                            </div>
-                            <div onClick={() => setActiveTabDay('orderDay')} style={{width: '184px', height: '43px', borderRadius:'8px', cursor: 'pointer', backgroundColor: activeTabDay === 'orderDay' ? '#5329FF1A' : 'transparent'}}>
-                                <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '18px'}}>Продажи по дням</p>
-                            </div>
-
-                    </div>
-                    <TableStockGlitter dataSaleDay={dataSaleDay} setDataSaleDay={setDataSaleDay} dataOrderDay={dataOrderDay} setDataOrderDay={setDataOrderDay} activeTabDay={activeTabDay} />
-                    </>
-  )
+      <div
+        className='container dash-container pt-0 d-flex justify-content-between'
+        style={{ gap: '20px' }}
+      >
+        <div className='sales-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '5%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='sales-box-with-image'>
+                <div>
+                  <div className='sales-box-title'>Продажи</div>
+                  <div className='sales-box-price'>
+                    {productBySku?.saleSum} ₽
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#00B69B',
+                    }}
+                  >
+                    {productBySku?.saleAmountCompare} ₽{/* + 23 678.00 p */}
+                  </div>
+                </div>
+                <div className='sales-box-image'>
+                  <img src={glitIconBlue} alt='sales' />
+                </div>
+              </div>
+              <div className='sales-box-quantity sales-box-price'>
+                {productBySku?.quantity} шт
+              </div>
+              <div
+                style={{
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  color: '#00B69B',
+                  marginLeft: '16px',
+                }}
+              >
+                +117 шт
+              </div>
+            </>
+          )}
+        </div>
+        <div className='sebestoimost-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '5%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='sebestoimost-box-row'>
+                <div>
+                  <div className='sales-box-title'>
+                    Себестоимость проданных товаров
+                  </div>
+                  <div className='sales-box-price'>
+                    {productBySku?.costGoodsSold} ₽
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#00B69B',
+                    }}
+                  >
+                    + 14 678.00 p
+                  </div>
+                </div>
+                <div className='sebestoimost-box-image'>
+                  <img src={glitIconGreen} alt='selfcost image' />
+                </div>
+              </div>
+              <div className='sebestoimost-box-button'>
+                <img
+                  style={{ cursor: 'pointer' }}
+                  src={StockCostPrice}
+                  alt=''
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <div className='returns-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '5%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='returns-box-row'>
+                <div>
+                  <div className='sales-box-title'>Возвраты</div>
+                  <div className='sales-box-price'>
+                    {productBySku?.returnsSum} ₽
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#F93C65',
+                    }}
+                  >
+                    + 1 678.00 p
+                  </div>
+                </div>
+                <div className='returns-box-image'>
+                  <img src={glitIconReturn} alt='' />
+                </div>
+              </div>
+              <div className='returns-qantity'>
+                <div className='sales-box-price'>
+                  {productBySku?.returnsQuantity || '0'} шт
+                </div>
+                <div
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    color: '#F93C65',
+                  }}
+                >
+                  +5 шт
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        <div className='penalty-wb-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '5%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='penalty-wb-box'>
+                <div className='penalty-wb-box-title'>Штрафы WB</div>
+                <div style={{ fontWeight: '700', marginRight: '10px' }}>
+                  {productBySku?.penalty || '0'} ₽
+                </div>
+              </div>
+              <div className='penalty-wb-box'>
+                <div className='penalty-wb-box-title'>Доплаты WB</div>
+                <div style={{ fontWeight: '700', marginRight: '10px' }}>
+                  {productBySku?.additionalPayment || '0'} ₽
+                </div>
+              </div>
+              <div className='penalty-wb-box'>
+                <div className='penalty-wb-box-title'>Комиссия WB</div>
+                <div style={{ fontWeight: '700', marginRight: '10px' }}>
+                  {productBySku?.commissionWB || '0'} ₽
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div
+        className='container dash-container d-flex justify-content-between'
+        style={{
+          marginTop: '20px',
+          gap: '20px',
+        }}
+      >
+        <div className='expenses-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '2%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='expenses-box-title'>
+                Расходы на логистику к клиенту
+              </div>
+              <div className='expenses-box-price'>
+                <div className='expenses-box-price-title'>
+                  {productBySku?.toClient || '0'} ₽
+                </div>
+                <div
+                  style={{
+                    marginRight: '10px',
+                    fontSize: '14px',
+                    color: '#00B69B',
+                  }}
+                >
+                  -1 558,20 р
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        <div
+          style={{
+            width: '422px',
+            height: '90px',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+          }}
+        >
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '2%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='expenses-box-title'>
+                Расходы на логистику от клиента
+              </div>
+              <div className='expenses-box-price'>
+                <div className='expenses-box-price-title'>
+                  {productBySku?.fromClient || '0'} ₽
+                </div>
+                <div
+                  style={{
+                    marginRight: '10px',
+                    fontSize: '14px',
+                    color: '#F93C65',
+                  }}
+                >
+                  +370,00 ₽
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        <div
+          style={{
+            width: '422px',
+            height: '90px',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+          }}
+        >
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '2%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='expenses-box-title'>Маржинальная прибыль</div>
+              <div className='expenses-box-price'>
+                <div className='expenses-box-price-title'>
+                  {productBySku?.marginalProfit || '0'} ₽
+                </div>
+                <div
+                  style={{
+                    marginRight: '10px',
+                    fontSize: '14px',
+                    color: '#00B69B',
+                  }}
+                >
+                  +14 383,00 ₽
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div
+        className='container dash-container d-flex justify-content-between'
+        style={{
+          marginTop: '20px',
+          gap: '20px',
+        }}
+      >
+        <div className='orders-ostatok-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '3%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='orders-ostatok-box-title'>Товарный остаток</div>
+              <div className='orders-ostatok-row'>
+                <div className='orders-ostatok-row-text'>
+                  На складе продавца
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <div className='orders-ostatok-row-digit'>
+                    {productBySku?.dataRadar - productBySku?.dataWB} шт
+                  </div>
+                  <div
+                    style={{
+                      marginRight: '10px',
+                      marginTop: '3px',
+                      fontWeight: '500',
+                      fontSize: '14px',
+                      color: '#8C8C8C',
+                    }}
+                  >
+                    120 000,00 ₽
+                  </div>
+                </div>
+              </div>
+              <hr style={{ margin: '8px 16px 8px 16px' }}></hr>
+              <div className='orders-ostatok-row-second'>
+                <div className='orders-ostatok-row-text'>На складе WB</div>
+                <div style={{ display: 'flex' }}>
+                  <div className='orders-ostatok-row-digit'>
+                    {productBySku?.dataWB} шт
+                  </div>
+                  <div
+                    style={{
+                      marginRight: '10px',
+                      marginTop: '3px',
+                      fontWeight: '500',
+                      fontSize: '14px',
+                      color: '#8C8C8C',
+                    }}
+                  >
+                    120 000,00 ₽
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        <div className='orders-ostatok-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '3%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='orders-ostatok-box-title'>Заказы</div>
+              <div className='orders-ostatok-row'>
+                <div className='orders-ostatok-row-text'>Сумма</div>
+                <div style={{ display: 'flex' }}>
+                  <div className='orders-ostatok-row-digit'>
+                    {productBySku?.orderSum || '0'} ₽
+                  </div>
+                  <div
+                    style={{
+                      marginRight: '10px',
+                      marginTop: '3px',
+                      fontWeight: '500',
+                      fontSize: '14px',
+                      color: '#00B69B',
+                    }}
+                  >
+                    +14 383,00 ₽
+                  </div>
+                </div>
+              </div>
+              <hr style={{ margin: '8px 16px 8px 16px' }}></hr>
+              <div className='orders-ostatok-row-second'>
+                <div className='orders-ostatok-row-text'>На складе WB</div>
+                <div style={{ display: 'flex' }}>
+                  <div className='orders-ostatok-row-digit'>
+                    {productBySku?.dataWB} шт
+                  </div>
+                  <div
+                    style={{
+                      marginRight: '10px',
+                      marginTop: '3px',
+                      fontWeight: '500',
+                      fontSize: '14px',
+                      color: '#F93C65',
+                    }}
+                  >
+                    -2 шт
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div
+        className='container dash-container d-flex justify-content-between'
+        style={{
+          marginTop: '20px',
+          gap: '20px',
+        }}
+      >
+        <div className='sellout-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '3%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='sellout-box-title'>Процент выкупа</div>
+              <div>
+                <div className='sellout-box-digit'>
+                  {productBySku?.purchasedPrecent} %
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        <div className='sellout-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '3%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='sellout-box-title'>Маржинальность</div>
+              <div>
+                <div className='sellout-box-digit'>
+                  {productBySku?.marginal} %
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        <div className='sellout-box-wrapper'>
+          {isInitialLoading && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{ height: '100%', paddingTop: '3%', width: '100%' }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+          {!isInitialLoading && (
+            <>
+              <div className='sellout-box-title'>Упущенные продажи</div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div className='sellout-box-digit'>
+                  {productBySku?.lostRevenue} ₽
+                </div>
+                <div
+                  style={{
+                    marginRight: '10px',
+                    fontSize: '14px',
+                    fontWeight: '700',
+                  }}
+                >
+                  5 шт
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div style={{ width: '93%', marginLeft: '50px', marginTop: '20px' }}>
+        <BigChartGlitter
+          data={data}
+          orderOn={orderOn}
+          salesOn={salesOn}
+          returnOn={returnOn}
+          setOrderOn={setOrderOn}
+          setSalesOn={setSalesOn}
+          setReturnOn={setReturnOn}
+          setOrderLineOn={setOrderLineOn}
+          setSalesLineOn={setSalesLineOn}
+          setReturnLineOn={setReturnLineOn}
+          orderLineOn={orderLineOn}
+          salesLineOn={salesLineOn}
+          returnLineOn={returnLineOn}
+          loading={loading}
+          days={days}
+        />
+      </div>
+      <div
+        style={{
+          width: '93%',
+          marginLeft: '50px',
+          marginTop: '20px',
+          display: 'flex',
+        }}
+      >
+        <div
+          onClick={() => setActiveTabDay('saleDay')}
+          style={{
+            width: '184px',
+            height: '43px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            backgroundColor:
+              activeTabDay === 'saleDay' ? '#5329FF1A' : 'transparent',
+          }}
+        >
+          <p
+            style={{ textAlign: 'center', marginTop: '10px', fontSize: '18px' }}
+          >
+            Продажи по дням
+          </p>
+        </div>
+        <div
+          onClick={() => setActiveTabDay('orderDay')}
+          style={{
+            width: '184px',
+            height: '43px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            backgroundColor:
+              activeTabDay === 'orderDay' ? '#5329FF1A' : 'transparent',
+          }}
+        >
+          <p
+            style={{ textAlign: 'center', marginTop: '10px', fontSize: '18px' }}
+          >
+            Продажи по дням
+          </p>
+        </div>
+      </div>
+      <TableStockGlitter
+        dataSaleDay={dataSaleDay}
+        setDataSaleDay={setDataSaleDay}
+        dataOrderDay={dataOrderDay}
+        setDataOrderDay={setDataOrderDay}
+        activeTabDay={activeTabDay}
+      />
+    </>
+  );
 }
 
 export default Summary

@@ -2,115 +2,118 @@ import React from 'react'
 
 import saveGlitProduct from '../../pages/images/saveglitproduct.svg'
 
-const Product = () => {
+const Product = ({productBySku, isInitialLoading}) => {
+    console.log(productBySku);
   return (
-    <div >
+    <div className='container dash-container'>
         <div className='product-cont'>
            <div className='product-cont-item'>
             <p className='product-cont-item-p' >
                 <span>Название</span>
-                <span>Глиттеры</span>
+                <span>{productBySku?.productName}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Бренд</span>
-                <span>Название бренда</span>
+                <span>{productBySku?.brandName}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Артикул</span>
-                <span>00066</span>
+                <span>{productBySku?.vendorСode}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>SKU</span>
-                <span>16367820</span>
+                <span>{productBySku?.sku}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Баркод</span>
-                <span>2000662320049</span>
+                <span>{productBySku?.barCode}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Размеры</span>
-                <span>0</span>
+                <span>{productBySku?.size}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Категория</span>
-                <span>Красота</span>
+                <span>{productBySku?.category}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Остаток WB</span>
-                <span>65</span>
+                <span>{productBySku?.dataWB}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Остаток склад</span>
-                <span>3</span>
+                <span>{productBySku?.dataRadar - productBySku?.dataWB}</span>
             </p>
            </div> 
            <div className='product-cont-item'>
             <p className='product-cont-item-p' >
                 <span>Цена</span>
-                <span>899,00 ₽</span>
+                <span>{productBySku?.basic} ₽</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Максимальная скидка</span>
-                <span>70 %</span>
+                <span>{productBySku?.maxDiscount} %</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Минимальная цена со скидкой</span>
-                <span>200,00 ₽</span>
+                <span> {productBySku?.minDiscountPrice} ₽</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>ABC анализ по выручке</span>
-                <span>A</span>
+                <span>{productBySku?.byRevenue}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>ABC анализ по прибыли</span>
-                <span>A</span>
+                <span>{productBySku?.byProfit}</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Рентабельность реализованной продукции</span>
-                <span>60 %</span>
+                <span>{productBySku?.profitabilityOfProductsSold} %</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Маржинальность</span>
-                <span>28 %</span>
+                <span>{productBySku?.marginal} %</span>
             </p>
             <hr style={{margin: '10px 10px 10px 10px'}}></hr>
             <p className='product-cont-item-p'>
                 <span>Годовая рентабельность товарных запасов</span>
-                <span>12 292,5 %</span>
+                <span>{productBySku?.annualReturnOnInventory} %</span>
             </p>
             
            </div>
         </div>
-        <div style={{width: '644px', height: '221px', backgroundColor: 'white', marginTop: '20px', marginLeft: '50px', borderRadius: '16px'}}>
-            <div style={{fontSize: '24px', fontWeight: '700', marginLeft: '20px', marginTop: '30px'}}>
+        <div
+        className='product-cont-item-box'
+        >
+            <div 
+            className='product-cont-item-title'
+            
+            >
             Редактируемые свойства
             </div>
             <div style={{display: 'flex'}}>
                 <div>
-                <p style={{fontSize: '16px', fontWeight: '700', color: '#8C8C8C', marginLeft: '20px', marginTop: '10px'}}>Себестоимость</p>
+                <p className='product-cont-item-subtitle'>Себестоимость</p>
                 <input className='input-product' type="text" />
                 </div>
                 <div>
-                <p style={{fontSize: '16px', fontWeight: '700', color: '#8C8C8C', marginLeft: '20px', marginTop: '10px'}}>Кратность короба</p>
-                <input className='input-product' type="text" />
-                </div>
-                
+                </div>            
             </div>
-            <div style={{marginLeft: '20px', marginTop: '10px'}}>
+            <div style={{ marginTop: '8px'}}>
                 <img src={saveGlitProduct} alt="" />
             </div>
         </div>

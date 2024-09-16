@@ -25,7 +25,6 @@ ChartJS.register(
 );
 
 const BigChartGlitter = ({
-  name,
   loading,
   data,
   days,
@@ -85,19 +84,18 @@ const BigChartGlitter = ({
 
   return (
     <div className='big-chart'>
-      <div className='d-flex justify-content-between align-items-center'>
-        <p className='fw-bold fs-4'>{name}</p>
+      <div className='d-flex align-items-center' style={{marginBottom: '30px'}}>
         <div
           className='d-flex align-items-center'
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', gap: '12px' }}
         >
           <div
-            className='d-flex me-3 aligin-items-center'
+            className='d-flex aligin-items-center'
             onClick={() => setOrderOn(!orderOn)}
           >
             {orderOn ? (
               <svg
-                style={{ width: '2.5vh', marginRight: '0.5vh' }}
+                style={{ width: '20px', marginRight: '8px' }}
                 viewBox='0 0 20 20'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -112,7 +110,7 @@ const BigChartGlitter = ({
               </svg>
             ) : (
               <svg
-                style={{ width: '2.5vh', marginRight: '0.5vh' }}
+              style={{ width: '20px', marginRight: '8px' }}
                 viewBox='0 0 20 20'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -138,12 +136,12 @@ const BigChartGlitter = ({
             </label>
           </div>
           <div
-            className='d-flex me-3 aligin-items-center'
+            className='d-flex aligin-items-center'
             onClick={() => setSalesOn(!salesOn)}
           >
             {salesOn ? (
               <svg
-                style={{ width: '2.5vh', marginRight: '0.5vh' }}
+                style={{ width: '20px', marginRight: '8px' }}
                 viewBox='0 0 20 20'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -158,7 +156,7 @@ const BigChartGlitter = ({
               </svg>
             ) : (
               <svg
-                style={{ width: '2.5vh', marginRight: '0.5vh' }}
+              style={{ width: '20px', marginRight: '8px' }}
                 viewBox='0 0 20 20'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -184,12 +182,12 @@ const BigChartGlitter = ({
             </label>
           </div>
           <div
-            className='d-flex me-3 aligin-items-center'
+            className='d-flex aligin-items-center'
             onClick={() => setReturnOn(!returnOn)}
           >
             {returnOn ? (
               <svg
-                style={{ width: '2.5vh', marginRight: '0.5vh' }}
+                style={{ width: '20px', marginRight: '8px' }}
                 viewBox='0 0 20 20'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -204,7 +202,7 @@ const BigChartGlitter = ({
               </svg>
             ) : (
               <svg
-                style={{ width: '2.5vh', marginRight: '0.5vh' }}
+                style={{ width: '20px', marginRight: '8px' }}
                 viewBox='0 0 20 20'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -230,15 +228,15 @@ const BigChartGlitter = ({
             </label>
           </div>
 
-          <div className='d-flex gap-3 '>
+          <div className='d-flex' style={{gap: '12px'}}>
             <div
-              className='d-flex align-items-center gap-2'
+              className='d-flex align-items-center'
               style={{ cursor: 'pointer' }}
               onClick={() => setOrderLineOn(!orderLineOn)}
             >
               {orderLineOn ? (
                 <svg
-                  style={{ width: '2.75vh' }}
+                  style={{ width: '20px', marginRight: '8px' }}
                   viewBox='0 0 20 20'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -253,7 +251,7 @@ const BigChartGlitter = ({
                 </svg>
               ) : (
                 <svg
-                  style={{ width: '2.75vh' }}
+                style={{ width: '20px', marginRight: '8px' }}
                   viewBox='0 0 20 20'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -277,13 +275,13 @@ const BigChartGlitter = ({
               <span>Заказы, руб</span>
             </div>
             <div
-              className='d-flex align-items-center gap-2'
+              className='d-flex align-items-center'
               style={{ cursor: 'pointer' }}
               onClick={() => setSalesLineOn(!salesLineOn)}
             >
               {salesLineOn ? (
                 <svg
-                  style={{ width: '2.75vh' }}
+                style={{ width: '20px', marginRight: '8px' }}
                   viewBox='0 0 20 20'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -298,7 +296,7 @@ const BigChartGlitter = ({
                 </svg>
               ) : (
                 <svg
-                  style={{ width: '2.75vh' }}
+                  style={{ width: '20px', marginRight: '8px' }}
                   viewBox='0 0 20 20'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -322,13 +320,13 @@ const BigChartGlitter = ({
               <span>Продажи, руб </span>
             </div>
             <div
-              className='d-flex align-items-center gap-2'
+              className='d-flex align-items-center'
               style={{ cursor: 'pointer' }}
               onClick={() => setReturnLineOn(!returnLineOn)}
             >
               {returnLineOn ? (
                 <svg
-                  style={{ width: '2.75vh' }}
+                  style={{ width: '20px', marginRight: '8px' }}
                   viewBox='0 0 20 20'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -343,7 +341,7 @@ const BigChartGlitter = ({
                 </svg>
               ) : (
                 <svg
-                  style={{ width: '2.75vh' }}
+                  style={{ width: '20px', marginRight: '8px' }}
                   viewBox='0 0 20 20'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'

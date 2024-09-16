@@ -357,7 +357,7 @@ function App() {
                   }
                 />
                 <Route
-                  path='/glitter'
+                  path='/product/:id'
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
                       {" "}
