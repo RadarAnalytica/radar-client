@@ -33,7 +33,7 @@ const AccordionMain = () => {
         <Accordion.Item eventKey='1' className='custom-accordion-item'>
           <Accordion.Header>
             <div className='custom-accordion-header-text'>
-              Каким образов вы получаете данные? Это безопасно?
+              Каким образом вы получаете данные? Это безопасно?
             </div>
           </Accordion.Header>
           <Accordion.Body className='custom-accordion-body'>
