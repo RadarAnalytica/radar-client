@@ -218,13 +218,13 @@ const StockAnalysis = () => {
           </div>
           {shouldDisplay ? (
             <>
-              <div className='input-and-button-container container dash-container p-3 pb-4 pt-0'>
-                <div className='search'>
+              <div className='input-and-button-container container  dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center'>
+                <div className='search search-container'>
                   <div className='search-box'>
                     <input
                       type='text'
                       placeholder='Поиск по SKU или артикулу'
-                      className='container dash-container search-input'
+                      className='search-input'
                       value={searchQuery}
                       onChange={handleSearchChange}
                     />
@@ -250,6 +250,7 @@ const StockAnalysis = () => {
                       alignItems: 'center',
                     }}
                   >
+                    <div className='button-container d-flex gap-3'>
                     <div>
                       <img
                         style={{ cursor: 'pointer' }}
@@ -265,6 +266,7 @@ const StockAnalysis = () => {
                         }
                       />
                     </div>
+                  </div>
                   </div>
                 </>
               </div>
