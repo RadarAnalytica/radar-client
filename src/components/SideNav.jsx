@@ -116,7 +116,7 @@ const SideNav = () => {
                 Расчет поставок
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title padding-left submenu-item'
                 style={
                   location === "orders-map"
                     ? { fontWeight: "bold", fontSize: "14px" }
@@ -139,7 +139,7 @@ const SideNav = () => {
                 География заказов
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title padding-left submenu-item'
                 style={
 // <<<<<<< HEAD
                   location === "abc-data"
@@ -171,7 +171,7 @@ const SideNav = () => {
               </p>
 
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title padding-left submenu-item'
                 style={
                   location === "stock-analysis"
                     ? { fontWeight: "bold", fontSize: "14px" }
@@ -234,7 +234,7 @@ const SideNav = () => {
           {promotionShown ? (
             <div>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title padding-left submenu-item'
                 onClick={() => navigate("/development/monitoring")}
                 style={
                   location === "monitoring"

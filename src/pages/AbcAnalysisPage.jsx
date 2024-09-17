@@ -81,7 +81,7 @@ const AbcAnalysisPage = () => {
       if (currentShop) {
         localStorage.setItem("activeShop", JSON.stringify(currentShop));
       }
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
+      !isInitialLoading && updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
       clearInterval(intervalId);
     }
     if (!oneShop?.is_primary_collect && activeBrand !== 0) {

@@ -431,6 +431,15 @@ select {
   cursor: pointer;
 }
 
+.padding-left {
+  padding-left: 31px;
+}
+
+@media screen and (max-width: 1462px) {
+  .padding-left {
+    padding-left: 21px;
+  }
+}
 .sidenav-title {
   color: var(--clue-color);
   font-weight: 500;
