@@ -1380,7 +1380,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.purchasedPrecent} %
+                      {row.purchasedPercent} %
                     </div>
                   ))}
                 </div>
@@ -1482,7 +1482,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.slaeCountDay}
+                      {row.saleCountDay}
                     </div>
                   ))}
                 </div>
@@ -1522,7 +1522,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.orderCountDay}
+                      {row.dataRadar}
                     </div>
                   ))}
                 </div>
