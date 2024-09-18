@@ -101,6 +101,7 @@ const AbcAnalysisPage = () => {
     const fetchInitialData = async () => {
       try {
         await dispatch(fetchShops(authToken));
+        await updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
       } catch (error) {
         console.error("Error fetching initial data:", error);
       } finally {
