@@ -75,7 +75,8 @@ const AbcAnalysisPage = () => {
     }
     if (
       oneShop?.is_primary_collect &&
-      oneShop?.is_primary_collect === allShop
+      oneShop?.is_primary_collect === allShop &&
+      !isInitialLoading
     ) {
       const currentShop = shops?.find((item) => item.id == activeShopId);
       if (currentShop) {
