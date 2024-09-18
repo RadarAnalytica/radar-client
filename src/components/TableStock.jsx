@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import SortArrows from './SortArrows';
 import { useNavigate } from 'react-router-dom';
 
@@ -97,13 +97,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     style={{ minHeight: '70px', borderTopLeftRadius: '12px', borderBottomLeftRadius: '12px' }}
                   >
                     Товар
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('productName')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -168,13 +161,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('brandName')}
                   >
                     Бренд
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('brandName')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -201,13 +187,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('vendorСode')}
                   >
                     Артикул
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('vendorСode')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -237,13 +216,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('sku')}
                   >
                     SKU
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('sku')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -1399,7 +1371,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.purchasedPrecent} %
+                      {row.purchasedPercent} %
                     </div>
                   ))}
                 </div>
@@ -1501,7 +1473,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.slaeCountDay}
+                      {row.saleCountDay}
                     </div>
                   ))}
                 </div>
@@ -1541,7 +1513,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.orderCountDay}
+                      {row.dataRadar}
                     </div>
                   ))}
                 </div>
