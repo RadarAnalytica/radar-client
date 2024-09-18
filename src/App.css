@@ -1543,11 +1543,11 @@ select {
 .search {
   width: 100%;
   display: flex;
-<<<<<<< HEAD
+/* <<<<<<< HEAD */
 
   /* flex-direction: row; */
-=======
->>>>>>> 493f58e6dede81a71954798f847fb48779b55231
+/* ======= */
+/* >>>>>>> 493f58e6dede81a71954798f847fb48779b55231 */
 }
 .search-box {
   display: flex;
