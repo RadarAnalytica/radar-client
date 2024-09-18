@@ -1,9 +1,15 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import SortArrows from './SortArrows';
 
 const TableStock = ({ dataTable, setDataTable }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleMouseEnter = (e) => {
+    const element = e.target;
+    const isTruncated = element.scrollHeight > element.clientHeight;
+    element.title = isTruncated ? element.textContent : '';
+  };
 
   const sortData = useCallback(
     (key) => {
@@ -86,13 +92,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     style={{ minHeight: '70px', borderTopLeftRadius: '12px', borderBottomLeftRadius: '12px' }}
                   >
                     Товар
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('productName')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -123,10 +122,17 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         />
                       </div>
                       <span
+                        onMouseEnter={handleMouseEnter}
                         style={{
                           color: 'rgba(83, 41, 255, 1)',
                           width: '200px',
-                          height: '100%',
+                          height: '45px',
+                          overflow: 'hidden',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          textOverflow: 'ellipsis',
+                          cursor: 'pointer',
                         }}
                       >
                         {row.productName}
@@ -149,13 +155,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('brandName')}
                   >
                     Бренд
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('brandName')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -182,13 +181,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('vendorСode')}
                   >
                     Артикул
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('vendorСode')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -218,13 +210,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('sku')}
                   >
                     SKU
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('sku')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -1380,7 +1365,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.purchasedPrecent} %
+                      {row.purchasedPercent} %
                     </div>
                   ))}
                 </div>
@@ -1482,7 +1467,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.slaeCountDay}
+                      {row.saleCountDay}
                     </div>
                   ))}
                 </div>
@@ -1522,7 +1507,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.orderCountDay}
+                      {row.dataRadar}
                     </div>
                   ))}
                 </div>

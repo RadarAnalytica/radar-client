@@ -28,6 +28,7 @@ const StockAnalysis = () => {
   const stockAnalysisData = useAppSelector(
     (state) => state.stockAnalysisDataSlice.stockAnalysisData
   );
+  const hasSelfCostPrice = stockAnalysisData.every(product => product.costPriceOne !== null);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
@@ -110,7 +111,6 @@ const StockAnalysis = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        await updateDataDashBoard(days, activeBrand, authToken);
         await dispatch(fetchShops(authToken));
         await dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
       } catch (error) {
@@ -134,7 +134,6 @@ const StockAnalysis = () => {
       activeBrand !== prevActiveBrand.current
     ) {
       if (activeBrand !== undefined) {
-        updateDataDashBoard(days, activeBrand, authToken);
         dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
       }
       prevDays.current = days;
@@ -200,7 +199,7 @@ const StockAnalysis = () => {
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
           {!isInitialLoading &&
-          !dataDashBoard?.costPriceAmount &&
+          !hasSelfCostPrice &&
           activeShopId !== 0 &&
           shouldDisplay ? (
             <SelfCostWarning
@@ -218,13 +217,14 @@ const StockAnalysis = () => {
           </div>
           {shouldDisplay ? (
             <>
-              <div className='input-and-button-container container dash-container p-3 pb-4 pt-0'>
-                <div className='search'>
+              <div 
+              className='input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center'>
+                <div className='search search-container'>
                   <div className='search-box'>
                     <input
                       type='text'
                       placeholder='Поиск по SKU или артикулу'
-                      className='container dash-container search-input'
+                      className='search-input'
                       value={searchQuery}
                       onChange={handleSearchChange}
                     />
@@ -242,7 +242,7 @@ const StockAnalysis = () => {
                     </button>
                   </div>
                 </div>
-                <>
+                <div className='button-container d-flex gap-3'>
                   <div
                     className='d-flex'
                     style={{
@@ -266,7 +266,7 @@ const StockAnalysis = () => {
                       />
                     </div>
                   </div>
-                </>
+                </div>
               </div>
               <div style={{ height: '20px' }}></div>
               <TableStock dataTable={dataTable} setDataTable={setDataTable} />          
