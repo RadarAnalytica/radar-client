@@ -92,13 +92,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     style={{ minHeight: '70px', borderTopLeftRadius: '12px', borderBottomLeftRadius: '12px' }}
                   >
                     Товар
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('productName')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -162,13 +155,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('brandName')}
                   >
                     Бренд
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('brandName')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -195,13 +181,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('vendorСode')}
                   >
                     Артикул
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('vendorСode')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -231,13 +210,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('sku')}
                   >
                     SKU
-                    <div
-                      className='icon-sort-wrap'
-                      style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
-                    >
-                      {renderSortArrows('sku')}
-                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
