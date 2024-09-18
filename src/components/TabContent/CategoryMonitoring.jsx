@@ -220,7 +220,7 @@ const CategoryMonitoring = () => {
 
   ];
   return (
-    <div class="scrollable-table table-content-category-monitoring" style={{ boxShadow: "0px 0px 20px 0px rgba(0, 0, 0, 0.08)", margin: "0 0 0 65px" }}>
+    <div class="scrollable-table table-content-category-monitoring">
       <div className='search'>
         <input type='text' placeholder='Поиск по категории' className='search-input' style={{ marginLeft: '20px', marginTop: '20px' }} />
         <div style={{ marginLeft: '10px', marginTop: '20px' }}>
@@ -229,7 +229,7 @@ const CategoryMonitoring = () => {
         <div style={{ marginLeft: '10px', marginTop: '20px' }}>
           <img src={DownloadFile} alt="" />
         </div>
-      </div>
+      </div >
 
 
 
@@ -353,7 +353,7 @@ const CategoryMonitoring = () => {
         ))}
       </table> */}
 
-      <div className="table-wrapper-category-mon scrollable-table-vertical scrollable-table-monitoring-category">
+      < div className="table-wrapper-category-mon scrollable-table-vertical scrollable-table-monitoring-category" >
         <table>
           <thead>
             <tr>
@@ -777,7 +777,7 @@ const CategoryMonitoring = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div >
     </div >
   )
 }

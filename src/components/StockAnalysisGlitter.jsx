@@ -93,7 +93,9 @@ const StockAnalysisGlitter = () => {
                     </div>
                 </div>
                 {/* <p style={{marginLeft: '45px', fontSize: '16px', fontWeight: '500'}}>Период</p> */}
-                <div className='filter-tab-container' style={{ marginLeft: '50px' }}>
+                <div className='filter-tab-container' style={{
+                    marginLeft: '60px', marginBottom: "20px"
+                }}>
                     <div>
                         <StockAnalysisGlitterFilter setDays={setDays} />
                     </div>
