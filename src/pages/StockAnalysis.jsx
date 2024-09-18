@@ -28,6 +28,7 @@ const StockAnalysis = () => {
   const stockAnalysisData = useAppSelector(
     (state) => state.stockAnalysisDataSlice.stockAnalysisData
   );
+  const hasSelfCostPrice = stockAnalysisData.every(product => product.costPriceOne !== null);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
@@ -110,7 +111,6 @@ const StockAnalysis = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        await updateDataDashBoard(days, activeBrand, authToken);
         await dispatch(fetchShops(authToken));
         await dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
       } catch (error) {
@@ -134,7 +134,6 @@ const StockAnalysis = () => {
       activeBrand !== prevActiveBrand.current
     ) {
       if (activeBrand !== undefined) {
-        updateDataDashBoard(days, activeBrand, authToken);
         dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
       }
       prevDays.current = days;
@@ -200,7 +199,7 @@ const StockAnalysis = () => {
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
           {!isInitialLoading &&
-          !dataDashBoard?.costPriceAmount &&
+           !hasSelfCostPrice&&
           activeShopId !== 0 &&
           shouldDisplay ? (
             <SelfCostWarning

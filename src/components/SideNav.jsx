@@ -14,7 +14,10 @@ const SideNav = () => {
 
   const url = document.location.href;
   const chunkArray = url ? url.split("/").reverse() : null;
+  const productUrl = chunkArray ? chunkArray.includes('product') : false;
+  console.log('chunkArray', chunkArray);
   const location = chunkArray ? chunkArray[0] : null;
+  console.log('location', location);
   const linkPlagin = "https://chromewebstore.google.com/";
 
   const [active, setActive] = useState("");
@@ -116,7 +119,7 @@ const SideNav = () => {
                 Расчет поставок
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title padding-left submenu-item'
                 style={
                   location === "orders-map"
                     ? { fontWeight: "bold", fontSize: "14px" }
@@ -139,7 +142,7 @@ const SideNav = () => {
                 География заказов
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title padding-left submenu-item'
                 style={
 // <<<<<<< HEAD
                   location === "abc-data"
@@ -171,15 +174,15 @@ const SideNav = () => {
               </p>
 
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title padding-left submenu-item'
                 style={
-                  location === "stock-analysis"
+                  location === "stock-analysis" || productUrl
                     ? { fontWeight: "bold", fontSize: "14px" }
                     : {  }
                 }
                 onClick={() => navigate("/stock-analysis")}
               >
-                {location === "stock-analysis" ? (
+                {location === "stock-analysis" || productUrl ? (
                   <svg
                     style={{ marginRight: "0.5vw" }}
                     width='8'
@@ -234,7 +237,7 @@ const SideNav = () => {
           {promotionShown ? (
             <div>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title padding-left submenu-item'
                 onClick={() => navigate("/development/monitoring")}
                 style={
                   location === "monitoring"

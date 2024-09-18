@@ -7,6 +7,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const handleMouseEnter = (e) => {
+    const element = e.target;
+    const isTruncated = element.scrollHeight > element.clientHeight;
+    element.title = isTruncated ? element.textContent : '';
+  };
+
   const sortData = useCallback(
     (key) => {
       let direction = 'asc';
@@ -128,10 +134,16 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         />
                       </div>
                       <span
+                        onMouseEnter={handleMouseEnter}
                         style={{
                           color: 'rgba(83, 41, 255, 1)',
                           width: '200px',
-                          height: '100%',
+                          height: '45px',
+                          overflow: 'hidden',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          textOverflow: 'ellipsis',
                           cursor: 'pointer',
                         }}
                         onClick={() => handleClickProductName(row)}

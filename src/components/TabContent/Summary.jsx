@@ -1059,7 +1059,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
       <div
         style={{
           width: '93%',
-          marginLeft: '50px',
+          marginLeft: '3.5vw',
           marginTop: '20px',
           display: 'flex',
         }}
@@ -1071,12 +1071,20 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
             height: '43px',
             borderRadius: '8px',
             cursor: 'pointer',
+            padding: '8px 12px px 8px 12px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             backgroundColor:
               activeTabDay === 'saleDay' ? '#5329FF1A' : 'transparent',
+            fontSize: '18px',
+            fontWeight: 
+              activeTabDay === 'saleDay' ? '600' : '500',
+            color: activeTabDay === 'saleDay' ? 'rgb(26, 26, 26, 1)' : 'rgb(26, 26, 26, 0.5)',
           }}
         >
           <p
-            style={{ textAlign: 'center', marginTop: '10px', fontSize: '18px' }}
+            style={{ margin: '0' }}
           >
             Продажи по дням
           </p>
@@ -1090,15 +1098,26 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
             cursor: 'pointer',
             backgroundColor:
               activeTabDay === 'orderDay' ? '#5329FF1A' : 'transparent',
+              padding: '8px 12px px 8px 12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor:
+                activeTabDay === 'orderDay' ? '#5329FF1A' : 'transparent',
+              fontSize: '18px',
+              fontWeight: 
+                activeTabDay === 'orderDay' ? '600' : '500',
+              color: activeTabDay === 'orderDay' ? 'rgb(26, 26, 26, 1)' : 'rgb(26, 26, 26, 0.5)',
           }}
         >
           <p
-            style={{ textAlign: 'center', marginTop: '10px', fontSize: '18px' }}
+            style={{ margin: '0' }}
           >
-            Продажи по дням
+            Заказы по дням
           </p>
         </div>
       </div>
+     { activeTabDay === 'saleDay' && 
       <TableStockGlitter
         dataSaleDay={dataSaleDay}
         setDataSaleDay={setDataSaleDay}
@@ -1106,6 +1125,14 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
         setDataOrderDay={setDataOrderDay}
         activeTabDay={activeTabDay}
       />
+      }
+       { activeTabDay === 'orderDay' && <TableStockGlitter
+        dataSaleDay={dataSaleDay}
+        setDataSaleDay={setDataSaleDay}
+        dataOrderDay={dataOrderDay}
+        setDataOrderDay={setDataOrderDay}
+        activeTabDay={activeTabDay}
+      />}
     </>
   );
 }

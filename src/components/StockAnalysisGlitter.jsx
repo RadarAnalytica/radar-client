@@ -26,6 +26,9 @@ const StockAnalysisGlitter = () => {
   const [days, setDays] = useState(30);
   const [productData, setProductData] = useState({});
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const productId = id;
+
+  const linkToWb = `https://www.wildberries.ru/catalog/${productId}/detail.aspx`;
 
   const productBySku = Array.isArray(productData)
     ? productData.find((item) => item.sku === id)
@@ -201,14 +204,14 @@ const StockAnalysisGlitter = () => {
                 </p>
                 <div style={{ marginLeft: '10px', marginTop: '20%' }}>
                   <a
-                    href='#'
+                    href={linkToWb}
                     style={{
                       textDecoration: 'none',
                       fontSize: '16px',
                       fontWeight: '600',
                     }}
                   >
-                    Посмотрреть на WB
+                    Посмотреть на WB
                   </a>
                 </div>
               </>
