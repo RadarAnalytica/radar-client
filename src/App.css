@@ -643,6 +643,8 @@ select {
 }
 
 .finance-table::-webkit-scrollbar {
+
+
   opacity: 0;
 }
 
@@ -1541,8 +1543,12 @@ select {
 .search {
   width: 100%;
   display: flex;
-}
+/* <<<<<<< HEAD */
 
+  /* flex-direction: row; */
+/* ======= */
+/* >>>>>>> 493f58e6dede81a71954798f847fb48779b55231 */
+}
 .search-box {
   display: flex;
   flex-grow: 1;
@@ -1643,10 +1649,24 @@ select {
   text-align: left;
   border-bottom: 1px solid #f1f1f1;
 }
+.scrollable-table-vertical{
+  overflow-x:scroll;
+  max-width: 100vw;
+
+}
 .scrollable-table {
   overflow-y: auto;
   max-height: 500px;
   overflow-x: hidden;
+}
+
+.table-header-category-monitoring > div{
+  width:max-content;
+  min-width:5%;
+}
+.table-body-row-category-monitoring div{
+  width:max-content;
+  min-width:6%;
 }
 
 /* Стилизация ползунка прокрутки для элементов с классом 'scrollable-table' */
@@ -1723,6 +1743,27 @@ select {
 }
 
 /* Добавляем стиль для таблицы, чтобы обеспечить корректное отображение */
+.table-glit-category-mon-header >th{
+  font-weight: 400;
+  color:#8C8C8C;
+}
+
+.table-glit-category-mon-body >td:not(:first-child){
+  
+  font-weight: 400;
+  background-color: #00000008;
+  border-radius: 8px;
+  padding:4px 8px 4px 8px;
+
+}
+.table-glit-category-mon-body {
+  width: max-content;
+  height: max-content;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
 
 .table-content {
   height: 800px;

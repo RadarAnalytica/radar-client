@@ -199,7 +199,7 @@ const StockAnalysis = () => {
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
           {!isInitialLoading &&
-           !hasSelfCostPrice&&
+          !hasSelfCostPrice &&
           activeShopId !== 0 &&
           shouldDisplay ? (
             <SelfCostWarning
@@ -217,7 +217,8 @@ const StockAnalysis = () => {
           </div>
           {shouldDisplay ? (
             <>
-              <div className='input-and-button-container container  dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center'>
+              <div 
+              className='input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center'>
                 <div className='search search-container'>
                   <div className='search-box'>
                     <input
@@ -241,7 +242,7 @@ const StockAnalysis = () => {
                     </button>
                   </div>
                 </div>
-                <>
+                <div className='button-container d-flex gap-3'>
                   <div
                     className='d-flex'
                     style={{
@@ -266,8 +267,7 @@ const StockAnalysis = () => {
                       />
                     </div>
                   </div>
-                  </div>
-                </>
+                </div>
               </div>
               <div style={{ height: '20px' }}></div>
               <TableStock dataTable={dataTable} setDataTable={setDataTable} />          

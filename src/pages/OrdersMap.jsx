@@ -75,7 +75,7 @@ const OrdersMap = () => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       dispatch(fetchGeographyData({ authToken, days, activeBrand }));
     } 
-  }, [dispatch, days, activeBrand]);
+  }, [authToken]);
 
   useEffect(() => {
     if (days !== prevDays.current || activeBrand !== prevActiveBrand.current) {
@@ -514,7 +514,7 @@ const OrdersMap = () => {
       case 'Сибирский фо':
         return (
           <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
-            <circle cx='8' cy='8' r='8' fill='rgba(254, 197, 61, 1)'  />
+            <circle cx='8' cy='8' r='8' fill='rgba(254, 197, 61, 1)' />
           </svg>
         );
       case 'Уральский фо':
