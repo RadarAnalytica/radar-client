@@ -113,7 +113,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
               <div style={{ width: "13.75%", textAlign: "left" }}>
                 {viewType === "proceeds" ? "Выручка" : "Прибыль"}
                 <div
-                  className='icon-sort-wrap'
+                  className='icon-sort-wrap' G
                   style={{ background: "transparent" }}
                   onClick={() => sortData("amount")}
                 >
