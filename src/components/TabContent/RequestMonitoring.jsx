@@ -6,97 +6,129 @@ import ArrowUp from "../../assets/ArrowUp.svg";
 import ArrowDown from "../../assets/ArrowDown.svg";
 import { useState } from 'react'
 const RequestMonitoring = () => {
-  const [requestMonitoringData, setRequestMonitoringData] = useState([])
-  const [sortConfig, setSortConfig] = useState({
-    column: null,
-    direction: "asc", // 'asc' or 'desc'
-  });
+  const dataTable = [
+    {
+      productName: 'Шампунь',
+      brandName: 'Бренд 2',
+      vendorСode: 12345,
+    },
+    {
+      productName: 'Шампунь',
+      brandName: 'Бренд 2',
+      vendorСode: 12345,
+    },
+    {
+      productName: 'Шампунь',
+      brandName: 'Бренд 2',
+      vendorСode: 12345,
+    },
+    {
+      productName: 'Шампунь',
+      brandName: 'Бренд 2',
+      vendorСode: 12345,
+    },
+    {
+      productName: 'Шампунь',
+      brandName: 'Бренд 2',
+      vendorСode: 12345,
+    },
+    {
+      productName: 'Шампунь',
+      brandName: 'Бренд 2',
+      vendorСode: 12345,
+    },
+    {
+      productName: 'Шампунь',
+      brandName: 'Бренд 2',
+      vendorСode: 12345,
+    },
+    {
+      productName: 'Шампунь',
+      brandName: 'Бренд 2',
+      vendorСode: 822343,
+    },
+    {
+      productName: 'Крем',
+      brandName: 'Аренд 3',
+      vendorСode: 325353,
+    }
+  ]
+
+  const [sortConfig, setSortConfig] = useState({ column: null, direction: null });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState(dataTable);
 
   const sortData = (key) => {
-    const { column, direction } = sortConfig;
-    const newDirection =
-      column === key ? (direction === "asc" ? "desc" : "asc") : "asc";
+    let direction = 'asc';
 
-    const sortedData = [...dataTable].sort((a, b) => {
-      if (typeof a[key] === "number" && typeof b[key] === "number") {
-        return newDirection === "asc" ? a[key] - b[key] : b[key] - a[key];
-      } else {
-        return newDirection === "asc"
+    if (sortConfig.column === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+
+    const sortedData = [...filteredData].sort((a, b) => {
+      if (typeof a[key] === 'string' && typeof b[key] === 'string') {
+        return direction === 'asc'
           ? a[key].localeCompare(b[key])
           : b[key].localeCompare(a[key]);
+      } else {
+        return direction === 'asc' ? a[key] - b[key] : b[key] - a[key];
       }
     });
 
-    setSortConfig({ column: key, direction: newDirection });
-    setRequestMonitoringData(sortedData);
+    setSortConfig({ column: key, direction });
+    setFilteredData(sortedData);
   };
+
   const getIconStyle = (key, direction) => {
     const { column, direction: sortDirection } = sortConfig;
 
     if (column === key) {
       if (sortDirection === direction) {
         return {
-          filter:
-            "brightness(0) saturate(100%) invert(29%) sepia(81%) saturate(6689%) hue-rotate(243deg) brightness(96%) contrast(101%)", // Color #5329ff
+          filter: "brightness(0) saturate(100%) invert(29%) sepia(81%) saturate(6689%) hue-rotate(243deg) brightness(96%) contrast(101%)", // Color #5329ff
         };
       }
     }
     return { filter: "none" };
   };
-  const dataTable = [
 
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
-    },
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
-    },
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
-    },
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
-    },
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
-    },
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
-    },
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
-    },
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
-    },
-    {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
+
+  // Search
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value); // Обновление значения строки поиска
+  };
+
+  const handleFilter = () => {
+    // Если строка поиска пуста, вернуть все данные
+    if (searchTerm.trim() === '') {
+      setFilteredData(dataTable); // Возвращаем все данные
+      return;
     }
-  ]
+
+    // Фильтрация данных, если есть запрос
+    const filtered = dataTable.filter((item) => {
+      return (
+        item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.brandName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.vendorСode.toString().includes(searchTerm)
+      );
+    });
+    setFilteredData(filtered); // Обновить отфильтрованные данные
+  };
+
   return (
     <div class="request-table table-content">
       <div className='search'>
-        <input type='text' placeholder='Поиск по категории' className='search-input' style={{ marginLeft: '20px', marginTop: '20px' }} />
+        <input type='text'
+          placeholder='Поиск по категории'
+          value={searchTerm}
+          onChange={handleSearch}
+          className='search-input'
+          style={{ marginLeft: '20px', marginTop: '20px' }} />
         <div style={{ marginLeft: '10px', marginTop: '20px' }}>
-          <img src={SearchButton} alt="" />
+          <img src={SearchButton} alt="Search"
+            onClick={handleFilter} style={{ cursor: 'pointer' }} />
         </div>
         <div style={{ marginLeft: '10px', marginTop: '20px' }}>
           <img src={DownloadFile} alt="" />
@@ -110,11 +142,11 @@ const RequestMonitoring = () => {
               <th style={{ width: "40%" }}>Частота WB запросов в месяц {" "}<div
                 className='icon-sort-wrap'
                 style={{ background: "transparent" }}
-                onClick={() => sortData("category_monitoring")}
+                onClick={() => sortData("brandName")}
               >
                 <img
                   style={{
-                    ...getIconStyle("category_monitoring", "asc"),
+                    ...getIconStyle("brandName", "asc"),
                   }}
                   src={ArrowUp}
                   alt=''
@@ -123,18 +155,18 @@ const RequestMonitoring = () => {
                   src={ArrowDown}
                   alt=''
                   style={{
-                    ...getIconStyle("category_monitoring", "desc"),
+                    ...getIconStyle("brandName", "desc"),
                   }}
                 />
               </div></th>
               <th style={{ width: "30%" }}>Средняя позиция карточки{" "}<div
                 className='icon-sort-wrap'
                 style={{ background: "transparent" }}
-                onClick={() => sortData("category_monitoring")}
+                onClick={() => sortData("vendorСode")}
               >
                 <img
                   style={{
-                    ...getIconStyle("category_monitoring", "asc"),
+                    ...getIconStyle("vendorСode", "asc"),
                   }}
                   src={ArrowUp}
                   alt=''
@@ -143,7 +175,7 @@ const RequestMonitoring = () => {
                   src={ArrowDown}
                   alt=''
                   style={{
-                    ...getIconStyle("category_monitoring", "desc"),
+                    ...getIconStyle("vendorСode", "desc"),
                   }}
                 />
               </div></th>
@@ -153,7 +185,7 @@ const RequestMonitoring = () => {
         <div className="scrollableBody">
           <table className="table">
             <tbody>
-              {dataTable.map((item, index) => (
+              {filteredData.map((item, index) => (
                 <tr key={index} >
                   <td style={{ width: "32%" }}>{item.productName}</td>
                   <td style={{ width: "40%" }}>{item.brandName}</td>

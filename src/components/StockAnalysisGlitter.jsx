@@ -114,7 +114,7 @@ const StockAnalysisGlitter = () => {
                             <p style={{ textAlign: 'center' }} >Мониторинг категорий</p>
                         </div>
                         <div onClick={() => setActiveTab('requestMonitoring')} className='stock-analysis-tab-container-item' style={{ cursor: 'pointer', backgroundColor: activeTab === 'requestMonitoring' ? '#5329FF1A' : 'transparent' }}>
-                            <p style={{ textAlign: 'center' }}>Монтроринг запросов</p>
+                            <p style={{ textAlign: 'center' }}>Мониторинг запросов</p>
                         </div>
                     </div>
 
