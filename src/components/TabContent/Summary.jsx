@@ -5,7 +5,7 @@ import glitIconGreen from '../../pages/images/gliticongreen.svg';
 import glitIconReturn from '../../pages/images/gliticonreturn.svg';
 import glitVectorGreen from '../../pages/images/glitvectorgreen.svg';
 import BigChartGlitter from '../BigChartGlitter';
-import TableStockGlitter from '../TableStockGlitter';
+import TableStockSalesByDay from '../TableStockSalesByDay';
 import StockCostPrice from '../../assets/stockcostprice.svg';
 const Summary = ({ days, productBySku, isInitialLoading }) => {
 
@@ -617,7 +617,8 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
                     Себестоимость проданных товаров
                   </div>
                   <div className='sales-box-price'>
-                    {productBySku?.costGoodsSold} ₽
+                    {productBySku?.costGoodsSold === "-" ? "-" : productBySku?.costGoodsSold}
+                    {productBySku?.costGoodsSold === "-" ? "" : " ₽"}
                   </div>
                   <div
                     style={{
@@ -996,7 +997,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
               <div className='sellout-box-title'>Маржинальность</div>
               <div>
                 <div className='sellout-box-digit'>
-                  {productBySku?.marginal} %
+                  {productBySku?.marginal || '0'} %
                 </div>
               </div>
             </>
@@ -1021,7 +1022,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
                 }}
               >
                 <div className='sellout-box-digit'>
-                  {productBySku?.lostRevenue} ₽
+                  {productBySku?.lostRevenue || '0'} ₽
                 </div>
                 <div
                   style={{
@@ -1118,7 +1119,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
         </div>
       </div>
      { activeTabDay === 'saleDay' && 
-      <TableStockGlitter
+      <TableStockSalesByDay
         dataSaleDay={dataSaleDay}
         setDataSaleDay={setDataSaleDay}
         dataOrderDay={dataOrderDay}
@@ -1126,7 +1127,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
         activeTabDay={activeTabDay}
       />
       }
-       { activeTabDay === 'orderDay' && <TableStockGlitter
+       { activeTabDay === 'orderDay' && <TableStockSalesByDay
         dataSaleDay={dataSaleDay}
         setDataSaleDay={setDataSaleDay}
         dataOrderDay={dataOrderDay}

@@ -2396,13 +2396,14 @@ select {
 
 .custom-table::-webkit-scrollbar {
   height: 6px;
-  background: #5329ff80;
+  /* background: #5329ff80; */
   border-radius: 6px;
   width: 6px;
 }
 
 .custom-table::-webkit-scrollbar-track {
   background: #f1f1f1;
+  margin-top: 140px;
 }
 
 .custom-table::-webkit-scrollbar-thumb {
