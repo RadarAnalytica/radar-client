@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import SideNav from './SideNav';
 import TopNav from './TopNav';
 import product from '../pages/images/product.svg';
@@ -24,7 +24,7 @@ const StockAnalysisGlitter = () => {
 
     const [activeTab, setActiveTab] = useState('summary');
     const [days, setDays] = useState(30);
-
+    const prevDays = useRef(days);
     const [productData, setProductData] = useState({});
     const [isInitialLoading, setIsInitialLoading] = useState(true);
     const productId = id;
@@ -89,16 +89,19 @@ const StockAnalysisGlitter = () => {
       }, []);
     
       useEffect(() => {
-        setIsInitialLoading(true);
-        dispatch(fetchStockAnalysisData({ authToken, days, activeBrand })).then(
-          (response) => {
-            if (response.payload) {
-              setProductData(response.payload);
-              setIsInitialLoading(false);
+        if (days !== prevDays.current) {
+          setIsInitialLoading(true);
+          dispatch(fetchStockAnalysisData({ authToken, days, activeBrand })).then(
+            (response) => {
+              if (response.payload) {
+                setProductData(response.payload);
+                setIsInitialLoading(false);
+              }
             }
-          }
-        );
-      }, [activeBrand, days]);
+          );
+        };
+        prevDays.current = days;
+      }, [days]);
 
 
     return (
