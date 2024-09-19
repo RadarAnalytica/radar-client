@@ -2,10 +2,189 @@ import React, { useState, useCallback, useEffect } from 'react';
 import SortArrows from './SortArrows';
 import styles from './TableStockSalesByDay.module.css';
 
-const TableStockSalesByDay = ({dataTable, setDataTable}) => {
+const TableStockSalesByDay = ({ setDataTable}) => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const [isScrolled, setIsScrolled] = useState(false);
-  
+    const dataTable = [
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      {
+        date: '15 янв, 2023',
+        sales: 1,
+        amount: '360,00 ₽',
+        returns: 0,
+        logisticsTo: '0,00 ₽',
+        logisticsFrom: '0,00 ₽',
+        fines: '0,00 ₽',
+        commission: '0,00 ₽',
+        profit: '300,00 ₽',
+      },
+      
+      // ... more data objects
+    ];
     const sortData = useCallback(
       (key) => {
         let direction = 'asc';
@@ -33,13 +212,14 @@ const TableStockSalesByDay = ({dataTable, setDataTable}) => {
   
     useEffect(() => {
       const handleScroll = () => {
-        const tableContainer = document.querySelector('.custom-table');
+        const tableContainer = document.querySelector(`.${styles.customTable}`);
+        console.log(tableContainer);
         if (tableContainer) {
           setIsScrolled(tableContainer.scrollLeft > 0.1);
         }
       };
     
-      const tableContainer = document.querySelector('.custom-table');
+      const tableContainer = document.querySelector(`.${styles.customTable}`);
       if (tableContainer) {
         tableContainer.addEventListener('scroll', handleScroll);
       }
@@ -53,7 +233,7 @@ const TableStockSalesByDay = ({dataTable, setDataTable}) => {
     return (
         <div className={styles.tableWrapper}>
       <div className={styles.tableLeftMargin}></div>
-      <div className='custom-table'>
+      <div className={styles.customTable}>
         <div className={styles.tableContainer}>
           {dataTable.length === 0 && (
             <div

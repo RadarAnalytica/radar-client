@@ -15,9 +15,7 @@ const SideNav = () => {
   const url = document.location.href;
   const chunkArray = url ? url.split("/").reverse() : null;
   const productUrl = chunkArray ? chunkArray.includes('product') : false;
-  console.log('chunkArray', chunkArray);
   const location = chunkArray ? chunkArray[0] : null;
-  console.log('location', location);
   const linkPlagin = "https://chromewebstore.google.com/";
 
   const [active, setActive] = useState("");
@@ -301,8 +299,8 @@ const SideNav = () => {
                 <path
                   d='M6 14L13 2V10H18L11 22V14H6Z'
                   stroke='#F0AD00'
-                  stroke-width='2'
-                  stroke-linejoin='round'
+                  strokeWidth='2'
+                  strokeLinejoin='round'
                 />
               </svg>
 
