@@ -122,7 +122,16 @@ const StockAnalysisGlitter = () => {
               {!isInitialLoading && (
                 <>
                   <div className='productInfo-price-photo-photo'>
-                    <img src={productBySku?.photo} alt='product image' />
+                  <img 
+                      src={productBySku?.photo} 
+                      alt='product image'
+                      onError={(e) => {
+                        e.target.style.backgroundColor = '#D3D3D3';
+                        e.target.alt = '';
+                        e.target.src =
+                          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
+                      }}
+                    />
                   </div>
                   <div className='productInfo-price-photo-price'>
                     <p

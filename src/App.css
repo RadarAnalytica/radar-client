@@ -2650,7 +2650,8 @@ select {
   height: 182px;
   width: 138px;
   object-fit: cover;
-  padding: 8px 0 0 8px;
+  border-radius: 3px;
+  margin: 8px 0 0 8px;
 }
 
 .productInfo-price-photo-price {
