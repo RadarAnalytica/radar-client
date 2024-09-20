@@ -409,6 +409,7 @@ const BigChartGlitter = ({
                     const tooltipModel = context.tooltip;
                     if (tooltipModel.opacity === 0) {
                       tooltipEl.style.opacity = 0;
+                      tooltipEl.style.display = 'none';
                       return;
                     }
 
@@ -504,6 +505,7 @@ const BigChartGlitter = ({
                     tooltipEl.style.boxShadow = '0 0 20px rgba(19,19, 19, 0.7)';
                     tooltipEl.style.padding = '1rem';
                     tooltipEl.style.opacity = 1;
+                    tooltipEl.style.display = 'block';
                     tooltipEl.style.position = 'absolute';
                     tooltipEl.style.left =
                       position.left +
