@@ -65,7 +65,6 @@ const StockAnalysisGlitter = () => {
             return (
               <Product
                 productBySku={productBySku}
-                isInitialLoading={isInitialLoading}
               />
             );
           case 'categoryMonitoring':

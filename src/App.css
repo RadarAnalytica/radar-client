@@ -1858,7 +1858,22 @@ select {
   width: 280px;
   height: 47px;
   border-radius: 8px;
-  margin-left: 20px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.input-product-span {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  color: rgba(26, 26, 26, 1);
 }
 
 .download-button {
