@@ -8,49 +8,49 @@ import { useState } from 'react'
 const RequestMonitoring = () => {
   const dataTable = [
     {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
+      request: 'Шампунь',
+      requestFrequency: 'Бренд 2',
+      middlePosition: 12345,
     },
     {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
+      request: 'Шампунь',
+      requestFrequency: 'Бренд 2',
+      middlePosition: 12345,
     },
     {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
+      request: 'Шампунь',
+      requestFrequency: 'Бренд 2',
+      middlePosition: 12345,
     },
     {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
+      request: 'Шампунь',
+      requestFrequency: 'Бренд 2',
+      middlePosition: 12345,
     },
     {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
+      request: 'Шампунь',
+      requestFrequency: 'Бренд 2',
+      middlePosition: 12345,
     },
     {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
+      request: 'Шампунь',
+      requestFrequency: 'Бренд 2',
+      middlePosition: 12345,
     },
     {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 12345,
+      request: 'Шампунь',
+      requestFrequency: 'Бренд 2',
+      middlePosition: 12345,
     },
     {
-      productName: 'Шампунь',
-      brandName: 'Бренд 2',
-      vendorСode: 822343,
+      request: 'Шампунь',
+      requestFrequency: 'Бренд 2',
+      middlePosition: 822343,
     },
     {
-      productName: 'Крем',
-      brandName: 'Аренд 3',
-      vendorСode: 325353,
+      request: 'Крем',
+      requestFrequency: 'Аренд 3',
+      middlePosition: 325353,
     }
   ]
 
@@ -109,9 +109,9 @@ const RequestMonitoring = () => {
     // Фильтрация данных, если есть запрос
     const filtered = dataTable.filter((item) => {
       return (
-        item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.brandName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.vendorСode.toString().includes(searchTerm)
+        item.request.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.requestFrequency.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.middlePosition.toString().includes(searchTerm)
       );
     });
     setFilteredData(filtered); // Обновить отфильтрованные данные
@@ -142,11 +142,11 @@ const RequestMonitoring = () => {
               <th style={{ width: "40%" }}>Частота WB запросов в месяц {" "}<div
                 className='icon-sort-wrap'
                 style={{ background: "transparent" }}
-                onClick={() => sortData("brandName")}
+                onClick={() => sortData("requestFrequency")}
               >
                 <img
                   style={{
-                    ...getIconStyle("brandName", "asc"),
+                    ...getIconStyle("requestFrequency", "asc"),
                   }}
                   src={ArrowUp}
                   alt=''
@@ -155,18 +155,18 @@ const RequestMonitoring = () => {
                   src={ArrowDown}
                   alt=''
                   style={{
-                    ...getIconStyle("brandName", "desc"),
+                    ...getIconStyle("requestFrequency", "desc"),
                   }}
                 />
               </div></th>
               <th style={{ width: "30%" }}>Средняя позиция карточки{" "}<div
                 className='icon-sort-wrap'
                 style={{ background: "transparent" }}
-                onClick={() => sortData("vendorСode")}
+                onClick={() => sortData("middlePosition")}
               >
                 <img
                   style={{
-                    ...getIconStyle("vendorСode", "asc"),
+                    ...getIconStyle("middlePosition", "asc"),
                   }}
                   src={ArrowUp}
                   alt=''
@@ -175,7 +175,7 @@ const RequestMonitoring = () => {
                   src={ArrowDown}
                   alt=''
                   style={{
-                    ...getIconStyle("vendorСode", "desc"),
+                    ...getIconStyle("middlePosition", "desc"),
                   }}
                 />
               </div></th>
@@ -187,9 +187,9 @@ const RequestMonitoring = () => {
             <tbody>
               {filteredData.map((item, index) => (
                 <tr key={index} >
-                  <td style={{ width: "32%" }}>{item.productName}</td>
-                  <td style={{ width: "40%" }}>{item.brandName}</td>
-                  <td style={{ width: "30%" }}>{item.vendorСode}</td>
+                  <td style={{ width: "32%" }}>{item.request}</td>
+                  <td style={{ width: "40%" }}>{item.requestFrequency}</td>
+                  <td style={{ width: "30%" }}>{item.middlePosition}</td>
                 </tr>
               ))}
             </tbody>
