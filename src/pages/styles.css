@@ -515,7 +515,7 @@ select {
 
 .context404noFound {
   font-size: 5vw;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 
 .context404,
@@ -726,7 +726,13 @@ select {
   object-fit: cover;
   border-radius: 50%;
 }
-
+.page-header-404{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+padding:20px;
+  margin: 0 auto;
+}
 .widheader-menu,
 .home-menu {
   display: flex;
