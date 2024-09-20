@@ -7,7 +7,7 @@ const Page404 = () => {
   const navigate = useNavigate();
 
   return (
-    <div className='page-header'>
+    <div className='page-header-404'>
       <div className='container page-container'>
         <svg
           width='187'
@@ -115,7 +115,7 @@ const Page404 = () => {
       </div>
       <div className='context404'>404</div>
       <div className='context404noFound'>Страница не найдена</div>
-      <div style={{width: '100%', padding: '20px 20px 0'}}>
+      <div style={{ width: '100%', padding: '20px' }}>
         <LimitedFooter />
       </div>
     </div>
