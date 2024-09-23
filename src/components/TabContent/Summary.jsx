@@ -977,7 +977,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
               <div className='sellout-box-title'>Процент выкупа</div>
               <div>
                 <div className='sellout-box-digit'>
-                  {productBySku?.purchasedPrecent} %
+                  {productBySku?.purchasedPrecent || '0'} %
                 </div>
               </div>
             </>
