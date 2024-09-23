@@ -30,12 +30,23 @@ import ToggleAnaliticsPanel from "../components/ToggleAnaliticsPanel";
 import ImageComponent from "../components/utilsComponents/ImageComponent ";
 import ReviewsUsers from "../components/ReviewsUsers";
 import TryProduct from "../components/TryProduct";
-
+import { useLocation } from 'react-router-dom';
 import { URL } from "../service/config";
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, authToken } = useContext(AuthContext);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const referral = searchParams.get('referral');
+    
+    if (referral) {
+      // Save the referral code ( to localStorage)
+      localStorage.setItem('referralCode', referral);
+    }
+  }, [location]);
 
   const redirect = () => {
     if (user?.is_onboarded) {
