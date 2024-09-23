@@ -15,7 +15,7 @@ const SignUpForm = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const referral = searchParams.get('referral');
+    const referral = searchParams.get('referral') || searchParams.get('radar');
     
     if (referral) {
       // Save the referral code (to localStorage)
