@@ -6,6 +6,7 @@ import { Tooltip } from "chart.js";
 import TooltipInfo from "./TooltipInfo";
 
 const ChartTableRow = ({ object }) => {
+  const advertising = object?.name === "Реклама (ДРР (общий))";
   return (
     <div className='chart-table-row '>
       <p className='clue-text mb-2' style={{ fontSize: "14px" }}>
@@ -32,7 +33,7 @@ const ChartTableRow = ({ object }) => {
                 {formatPrice(object.amount)} ₽
               </p>
               <div className='d-flex align-items-center mt-2'>
-                {formatPrice(object.percentRate) > 0 ? (
+                {formatPrice(advertising ? object.percent : object.percentRate) > 0 ? (
                   <img
                     style={{ height: "1.25vh", marginRight: "4px" }}
                     src={GreenArrow}
@@ -48,12 +49,12 @@ const ChartTableRow = ({ object }) => {
                 <p
                   className='m-0 p-0 tiny-numbers'
                   style={
-                    formatPrice(object.percentRate) <= 0
+                    formatPrice(advertising ? object.percent : object.percentRate) <= 0
                       ? { color: "red" }
                       : { color: "rgb(0, 182, 155)" }
                   }
                 >
-                  {formatPrice(object.percentRate)} %
+                  {formatPrice(advertising ? object.percent : object.percentRate)} %
                 </p>
               </div>
             </div>
@@ -67,7 +68,7 @@ const ChartTableRow = ({ object }) => {
                 className='m-0 p-0 fw-bold'
                 style={{ fontSize: "1.25vw !important" }}
               >
-                {formatPrice(object.percent)} %
+                {formatPrice(advertising ? object.percentRate : object.percent)} %
               </p>
               <div className='d-flex align-items-center mt-2'>
                 {formatPrice(object.percentRate2) > 0 ? (
