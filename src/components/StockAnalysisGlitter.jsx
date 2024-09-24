@@ -155,12 +155,7 @@ const StockAnalysisGlitter = () => {
             </div>
   
             <div
-              style={{
-                backgroundColor: 'white',
-                width: '422px',
-                height: '199px',
-                borderRadius: '8px',
-              }}
+             className='productInfo-wbInfo'
             >
               {isInitialLoading && (
                 <div
@@ -172,57 +167,57 @@ const StockAnalysisGlitter = () => {
               )}
               {!isInitialLoading && (
                 <>
-                  <div style={{ display: 'flex', marginTop: '10px' }}>
+                  <div className='d-flex'>
+                    <span className='productInfo-wbInfo-rating'>
+                      <span className='d-flex column'>
+                        <span className='d-flex align-items-center'>
                     <img
-                      style={{ marginLeft: '10px' }}
                       src={glitterStar}
                       alt=''
                     />
                     <p
-                      style={{
-                        fontSize: '24px',
-                        fontWeight: '700',
-                        marginLeft: '10px',
-                        marginBottom: '0',
-                        marginTop: '10px',
-                      }}
+                    style={{marginBottom: '5px', fontSize: '24px', marginLeft: '8px'}}
                     >
                       5.0
                     </p>
+                    </span>
+                    <p
+                    style={{
+                      color: '#8C8C8C',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      margin: '0',
+                    }}
+                  >
+                    189 отзывов
+                  </p>
+                    </span>
                     <div
                       style={{
                         width: '60px',
                         height: '60px',
                         backgroundColor: 'rgba(240, 173, 0, 0.2)',
                         borderRadius: '10px',
-                        marginLeft: '60%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       }}
                     >
                       <img
-                        style={{ marginLeft: '15px', marginTop: '11px' }}
                         src={glityellow}
                         alt=''
                       />
-                    </div>
-                  </div>
-                  <p
-                    style={{
-                      color: '#8C8C8C',
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      marginLeft: '10px',
-                      marginTop: '-10px',
-                    }}
-                  >
-                    189 отзывов
-                  </p>
-                  <div style={{ marginLeft: '10px', marginTop: '20%' }}>
+                    </div> 
+                  </span>   
+                  </div>      
+                  <div>
                     <a
                       href={linkToWb}
                       style={{
                         textDecoration: 'none',
                         fontSize: '16px',
                         fontWeight: '600',
+                        color: 'rgba(83, 41, 255, 1)',
                       }}
                     >
                       Посмотреть на WB

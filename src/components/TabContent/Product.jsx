@@ -95,6 +95,7 @@ const Product = ({productBySku}) => {
           </p>
         </div>
       </div>
+      <div className='product-cont-item-wrapper'>
       <div className='product-cont-item-box'>
         <div className='product-cont-item-title'>Редактируемые свойства</div>
         <div style={{ display: 'flex' }}>
@@ -107,6 +108,8 @@ const Product = ({productBySku}) => {
         <div style={{ marginTop: '8px' }}>
           <img src={saveGlitProduct} alt='' />
         </div>
+      </div>
+      <div style={{width: '612px'}}></div>
       </div>
     </div>
   );

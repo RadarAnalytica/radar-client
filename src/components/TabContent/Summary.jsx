@@ -3,6 +3,7 @@ import glitIconBlue from '../../pages/images/glittericonblue.svg';
 import glitCostPrise from '../../pages/images/glitsotprice.svg';
 import glitIconGreen from '../../pages/images/gliticongreen.svg';
 import glitIconReturn from '../../pages/images/gliticonreturn.svg';
+import sebestoimostIcon from '../../pages/images/sebstoimost-icon.svg';
 import glitVectorGreen from '../../pages/images/glitvectorgreen.svg';
 import BigChartGlitter from '../BigChartGlitter';
 import TableStockSalesByDay from '../TableStockSalesByDay';
@@ -551,8 +552,8 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
   return (
     <>
       <div
-        className='container dash-container pt-0 d-flex justify-content-between'
-        style={{ gap: '20px' }}
+        className='container dash-container pt-0'
+        style={{ display: 'flex', gap: '20px', justifyContent: 'space-between' }}
       >
         <div className='sales-box-wrapper'>
           {isInitialLoading && (
@@ -636,11 +637,10 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
                 </div>
               </div>
               <div className='sebestoimost-box-button'>
-                <img
-                  style={{ cursor: 'pointer' }}
-                  src={StockCostPrice}
-                  alt=''
-                />
+                <button> 
+                  <img src={sebestoimostIcon} alt='sebestoimost icon'/>
+                  <span>Установить себестоимость</span>
+                </button>
               </div>
             </>
           )}
@@ -765,12 +765,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
           )}
         </div>
         <div
-          style={{
-            width: '422px',
-            height: '90px',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-          }}
+          className='expenses-box-wrapper'
         >
           {isInitialLoading && (
             <div
@@ -803,12 +798,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
           )}
         </div>
         <div
-          style={{
-            width: '422px',
-            height: '90px',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-          }}
+         className='expenses-box-wrapper'
         >
           {isInitialLoading && (
             <div

@@ -2647,14 +2647,14 @@ select {
   box-shadow: 6px 0 10px -5px rgba(0, 0, 0, 0.06);
 }
 
-
-
 .productInfo-price-photo {
   display: flex;
   background: white;
-  width: 422px;
+  width: 100%;
+  max-width: 422px;
   height: 199px;
-  border-radius: 8px;
+  border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
 }
 
 .productInfo-price-photo-photo {
@@ -2676,9 +2676,44 @@ select {
 
 .barcode-sku-brand {
   background-color: white;
-  width: 422px;
+  width: 100%;
+  max-width: 422px;
   height: 199px;
-  border-radius: 8px;
+  border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+}
+
+.productInfo-wbInfo {
+  width: 100%;
+  max-width: 422px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  height: 199px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+}
+
+.productInfo-wbInfo-rating {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+}
+
+.productInfo-wbInfo-rating p {
+  font-size: 24px;
+  margin: 0;
+  margin-top: 8px;
+  font-weight: 700;
+  line-height: 30px;
+  color: rgba(26, 26, 26, 1);
+}
+
+.productInfo-wbInfo-rating img {
+  height: 30px;
 }
 
 .barcode-wrapper {
@@ -2727,7 +2762,8 @@ select {
   max-width: 312px;
   height: 205px;
   background: rgba(255, 255, 255, 1);
-  border-radius: 8px;
+  border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
 }
 
 .sales-box-title {
@@ -2775,7 +2811,8 @@ select {
   max-width: 312px;
   height: 205px;
   background: rgba(255, 255, 255, 1);
-  border-radius: 8px;
+  border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
 }
 
 .sebestoimost-box-row {
@@ -2803,17 +2840,34 @@ select {
 }
 
 .sebestoimost-box-button {
-  /* width: 100%; */
-  /* max-width: 312px; */
   height: 48px;
-  /* background: rgba(83, 41, 255, 0.05);  */
   border-radius: 8px;
   margin-top: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 16px 16px 0 16px;
-  /* position: relative; */
+}
+
+.sebestoimost-box-button button {
+  display: flex;
+  align-items: center;
+  height: 45px;
+  width: 100%;
+  border: none;
+  background: rgba(83, 41, 255, 0.05);
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 25px;
+  color: rgba(83, 41, 255, 1);
+
+}
+
+.sebestoimost-box-button button img {
+  margin-right: 8px;
+  margin-left: 14px;
 }
 
 .returns-box-wrapper {
@@ -2821,7 +2875,8 @@ select {
   max-width: 312px;
   height: 205px;
   background: rgba(255, 255, 255, 1);
-  border-radius: 8px;
+  border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
 }
 
 .returns-box-row {
@@ -2851,7 +2906,8 @@ select {
   gap: 20px;
   display: flex;
   flex-direction: column;
-  min-width: 312px;
+  max-width: 312px;
+  width: 100%;
 }
 
 .penalty-wb-box {
@@ -2860,6 +2916,7 @@ select {
   height: 55px;
   background: rgba(255, 255, 255, 1);
   border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2879,6 +2936,7 @@ select {
   height: 90px;
   background: rgba(255, 255, 255, 1);
   border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
 }
 
 .expenses-box-title {
@@ -2913,6 +2971,7 @@ select {
   border-radius: 16px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
 }
 
 .orders-ostatok-box-title {
@@ -2956,6 +3015,7 @@ select {
   margin-left: 10px;
   margin-top: 24px;
   margin-bottom: 0;
+  width: 100%;
 }
 
 .productInfo-nav-text {
@@ -2973,6 +3033,7 @@ select {
   height: 140px;
   background: rgba(255, 255, 255, 1);
   border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
   padding: 16px;
 }
 
@@ -2991,13 +3052,19 @@ select {
 }
 
 .product-cont-item-box {
-  width: 100%;
-  max-width: 644px;
+  width: 612px;
   height: 221px;
   background: rgba(255, 255, 255, 1);
   border-radius: 16px;
   padding: 16px;
   margin-top: 20px;
+  margin-bottom: 60px;
+}
+
+.product-cont-item-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
 }
 
 .product-cont-item-title {
