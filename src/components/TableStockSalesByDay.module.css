@@ -98,7 +98,6 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
-    border: none;
     background: #f7f6fe;
     display: flex;
     align-items: center;
@@ -141,4 +140,17 @@
     line-height: 20px;
     min-width: 170px;
     z-index: 0;
+}
+
+.whiteEnd {
+  width: 20px;
+  background: #fff;
+}
+
+.tableHeaderScrollablLast {
+  width: 10px;
+  height: 70px;
+  background: #f7f6fe;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
 }

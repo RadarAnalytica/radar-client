@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import SortArrows from './SortArrows';
 import styles from './TableStockSalesByDay.module.css';
 
-const TableStockSalesByDay = ({ setDataTable }) => {
+const TableStockOrdersByDay = ({ setDataTable }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
   const dataTable = [
@@ -230,6 +230,7 @@ const TableStockSalesByDay = ({ setDataTable }) => {
       }
     };
   }, []);
+
   return (
     <div className={styles.tableWrapper}>
       <div className={styles.tableLeftMargin}></div>
@@ -287,7 +288,7 @@ const TableStockSalesByDay = ({ setDataTable }) => {
                     className={styles.tableHeaderNotFirst}
                     onClick={() => sortData('brandName')}
                   >
-                    Продажи
+                    Заказы
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
@@ -308,7 +309,7 @@ const TableStockSalesByDay = ({ setDataTable }) => {
                     className={styles.tableHeaderNotFirst}
                     onClick={() => sortData('vendorСode')}
                   >
-                    Сумма продаж
+                    Сумма заказов
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
@@ -347,18 +348,13 @@ const TableStockSalesByDay = ({ setDataTable }) => {
                     </div>
                   ))}
                 </div>
-                {/* <div 
-                className={styles.columnWidth}
-
-                >
-                     <div
-                    className={styles.tableOverHeader}
-                  ></div>
+                <div className={styles.columnWidth}>
+                  <div className={styles.tableOverHeader}></div>
                   <div
-                  className={styles.tableHeaderScrollable}
+                    className={styles.tableHeaderScrollable}
                     onClick={() => sortData('size')}
                   >
-                    Логистика к<br/> клиенту
+                    Логистика к<br /> клиенту
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
@@ -368,23 +364,19 @@ const TableStockSalesByDay = ({ setDataTable }) => {
                     </div>
                   </div>
                   {dataTable.map((row, index) => (
-                    <div
-                      key={index}
-                      className={styles.tableRow}
-                    >
+                    <div key={index} className={styles.tableRow}>
                       {row.logisticsTo}
                     </div>
                   ))}
-                </div> */}
-                {/* <div className={styles.columnWidth}>
-                <div
-                    className={styles.tableOverHeader}
-                  ></div>
+                </div>
+                <div className={styles.columnWidth}>
+                  <div className={styles.tableOverHeader}></div>
                   <div
-                  className={styles.tableHeaderScrollable}
+                    className={styles.tableHeaderScrollable}
                     onClick={() => sortData('category')}
                   >
-                    Логистика от<br/> клиента
+                    Логистика от
+                    <br /> клиента
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
@@ -394,16 +386,15 @@ const TableStockSalesByDay = ({ setDataTable }) => {
                     </div>
                   </div>
                   {dataTable.map((row, index) => (
-                    <div
-                      key={index}
-                      className={styles.tableRow}
-                    >
+                    <div key={index} className={styles.tableRow}>
                       {row.logisticsFrom}
                     </div>
                   ))}
-                </div> */}
-                <div className={styles.columnWidth}>
-                  <div className={styles.tableOverHeader}></div>
+                </div>
+                {/* <div className={styles.columnWidth}>
+                <div
+                    className={styles.tableOverHeader}
+                  ></div>
                   <div
                     className={styles.tableHeaderScrollable}
                     onClick={() => sortData('saleSum')}
@@ -418,11 +409,14 @@ const TableStockSalesByDay = ({ setDataTable }) => {
                     </div>
                   </div>
                   {dataTable.map((row, index) => (
-                    <div key={index} className={styles.tableRow}>
+                    <div
+                      key={index}
+                      className={styles.tableRow}
+                    >
                       {row.fines} ₽
                     </div>
                   ))}
-                </div>
+                </div> */}
                 <div className={styles.columnWidth}>
                   <div className={styles.tableOverHeader}></div>
                   <div className={styles.tableHeaderScrollable}>
@@ -445,6 +439,10 @@ const TableStockSalesByDay = ({ setDataTable }) => {
                   <div className={styles.tableOverHeader}></div>
                   <div
                     className={styles.tableHeaderScrollable}
+                    style={{
+                      borderTopRightRadius: '16px',
+                      borderBottomRightRadius: '16px',
+                    }}
                     onClick={() => sortData('lessReturns')}
                   >
                     Маржиналь
@@ -477,4 +475,4 @@ const TableStockSalesByDay = ({ setDataTable }) => {
   );
 };
 
-export default TableStockSalesByDay;
+export default TableStockOrdersByDay;

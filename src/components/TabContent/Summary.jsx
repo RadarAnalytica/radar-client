@@ -6,6 +6,7 @@ import glitIconReturn from '../../pages/images/gliticonreturn.svg';
 import glitVectorGreen from '../../pages/images/glitvectorgreen.svg';
 import BigChartGlitter from '../BigChartGlitter';
 import TableStockSalesByDay from '../TableStockSalesByDay';
+import TableStockOrdersByDay from '../TableStockOrdersByDay';
 import StockCostPrice from '../../assets/stockcostprice.svg';
 const Summary = ({ days, productBySku, isInitialLoading }) => {
 
@@ -1127,7 +1128,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
         activeTabDay={activeTabDay}
       />
       }
-       { activeTabDay === 'orderDay' && <TableStockSalesByDay
+       { activeTabDay === 'orderDay' && <TableStockOrdersByDay
         dataSaleDay={dataSaleDay}
         setDataSaleDay={setDataSaleDay}
         dataOrderDay={dataOrderDay}
