@@ -1766,7 +1766,7 @@ select {
 
 
 .table-content {
-  height: 800px;
+ height: max-content;
   border-radius: 10px;
   background-color: #ffffff;
   margin: 22px 0px 0px 40px;
@@ -3179,7 +3179,16 @@ select {
  border-top-left-radius: 12px;
  padding: 16px;
  text-align: left;
+ position: sticky;
+ left: 0;
+ z-index: 1;
 }
+.table-wrapper-category-mon tbody td:first-child{
+  position: sticky;
+  left: 0;
+  background-color: white;
+  
+ }
 .table-wrapper-category-mon thead th:last-child{
  border-bottom-right-radius: 12px;
  border-top-right-radius: 12px;
@@ -3236,8 +3245,6 @@ select {
   display: block;
 }
 .scrollable-table-monitoring-category {
-
-  max-height: 500px;
   overflow-x: auto;
 }
 
@@ -3262,7 +3269,7 @@ select {
 
 
 .table-content-category-monitoring{
-  height:29vw;
+  height:max-content;
   border-radius: 10px;
   background-color: #ffffff;
   margin: 0px 0px 0px 60px;
@@ -3302,7 +3309,6 @@ font-weight: 500;
 /* Request Monitoring */
 .request-table{
   width: 64vw;
-  height: 25vw;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 20px 0px;
   margin: 0 0 0 60px;
 }
@@ -3365,8 +3371,7 @@ font-weight: 500;
 }
 
 .tableContainer .scrollableBody {
-  max-height: 13vw; /* Высота области с прокруткой */
-  overflow-y: scroll;
+ 
 }
 
 /* Стили для скроллбара */

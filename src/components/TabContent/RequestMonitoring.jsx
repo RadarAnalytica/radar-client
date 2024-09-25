@@ -51,7 +51,7 @@ const RequestMonitoring = () => {
       request: 'Крем',
       requestFrequency: 'Аренд 3',
       middlePosition: 325353,
-    }
+    },
   ]
 
   const [sortConfig, setSortConfig] = useState({ column: null, direction: null });
