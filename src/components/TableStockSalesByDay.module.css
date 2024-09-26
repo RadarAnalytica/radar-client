@@ -5,7 +5,6 @@
 }
 
 .customTable {
-    width: 100%;
     height: calc(100vh - 150px);
     overflow: auto;
     position: relative;
@@ -150,6 +149,9 @@
 .tableHeaderScrollablLast {
   width: 10px;
   height: 70px;
+  position: sticky;
+  z-index: 1;
+  top: 16px;
   background: #f7f6fe;
   border-top-right-radius: 16px;
   border-bottom-right-radius: 16px;

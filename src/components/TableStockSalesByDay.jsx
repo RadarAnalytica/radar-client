@@ -473,6 +473,7 @@ const TableStockSalesByDay = ({ setDataTable }) => {
           )}
         </div>
       </div>
+      <div className={styles.tableLeftMargin}></div>
     </div>
   );
 };

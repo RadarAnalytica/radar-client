@@ -1029,7 +1029,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
           )}
         </div>
       </div>
-      <div style={{ width: '93%', marginLeft: '50px', marginTop: '20px' }}>
+      <div className='container dash-container' style={{ marginTop: '20px' }}>
         <BigChartGlitter
           data={data}
           orderOn={orderOn}
@@ -1049,9 +1049,8 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
         />
       </div>
       <div
+      className='container dash-container'
         style={{
-          width: '93%',
-          marginLeft: '3.5vw',
           marginTop: '20px',
           display: 'flex',
         }}
