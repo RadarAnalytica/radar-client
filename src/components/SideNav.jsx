@@ -8,15 +8,18 @@ import magic from "../assets/magic.png";
 import support from "../assets/support.png";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { useSelector, useDispatch } from 'react-redux';
+import { openSupportWindow, closeSupportWindow } from '../redux/supportWindow/supportWindowSlice';
 
 const SideNav = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const url = document.location.href;
   const chunkArray = url ? url.split("/").reverse() : null;
   const productUrl = chunkArray ? chunkArray.includes('product') : false;
   const location = chunkArray ? chunkArray[0] : null;
   const linkPlagin = "https://chromewebstore.google.com/";
+  const isOpenSupportWindow = useSelector((state) => state.supportWindowSlice?.isOpenSupportWindow);
 
   const [active, setActive] = useState("");
   useEffect(() => {
@@ -26,6 +29,14 @@ const SideNav = () => {
   const [goodsShown, setGoodsShown] = useState(true);
   const [promotionShown, setPromotionShown] = useState(true);
   const [additionalTools, setAdditionalTools] = useState(true);
+
+  const toggleOpenSupport = () => {
+    if (isOpenSupportWindow) {
+      dispatch(closeSupportWindow());
+    } else {
+      dispatch(openSupportWindow());
+    }
+  }
 
   return (
     <div className='side-nav'>
@@ -390,14 +401,11 @@ const SideNav = () => {
       <div
         className='support-block'
         onClick={() =>
-          (window.location.href = "mailto:radar-analytica@inbox.ru")
+          toggleOpenSupport()
         }
         style={{ cursor: "pointer" }}
       >
-        <a
-          href='mailto:radar-analytica@inbox.ru'
-          onClick={(e) => e.stopPropagation()}
-        >
+        <a>
           <img src={support} alt='' className='support-icon' />
         </a>
         <p className='fw-bold mb-0 mt-2 p-0' style={{ fontSize: "1.8vh" }}>

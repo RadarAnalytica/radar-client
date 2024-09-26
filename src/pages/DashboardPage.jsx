@@ -27,6 +27,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import NoSubscriptionPage from "./NoSubscriptionPage";
 import TooltipInfo from "../components/TooltipInfo";
+import MessageWindow from "../components/MessageWindow";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -1056,6 +1057,7 @@ const DashboardPage = () => {
             />
           )}
         </div>
+        <MessageWindow />
       </div>
     )
   );
