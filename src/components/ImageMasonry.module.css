@@ -1,0 +1,73 @@
+.imageMasonry {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .masonryImage {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .container {
+    position: relative;
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  
+  .mainImage {
+    grid-column: span 3;
+    width: 100%;
+    height: 192px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .smallImagesGrid {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  
+  .smallImage {
+    width: 100%;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  .caption {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .imageCount {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 9999px;
+    font-size: 12px;
+  }
+
+  .selected {
+    border: 1px solid #09090a;
+    box-shadow: 0 0 5px rgba(102, 105, 105, 0.438);
+  }
