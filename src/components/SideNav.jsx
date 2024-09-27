@@ -175,8 +175,8 @@ const SideNav = () => {
                 className='sidenav-title padding-left submenu-item'
                 style={
                   location === "stock-analysis" || productUrl
-                    ? { fontWeight: "bold", fontSize: "14px" }
-                    : {}
+                    ? { fontWeight: "bold", fontSize: "14px", whiteSpace: "nowrap" }
+                    : {  }
                 }
                 onClick={() => navigate("/stock-analysis")}
               >

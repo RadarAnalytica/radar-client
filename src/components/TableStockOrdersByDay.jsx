@@ -439,10 +439,6 @@ const TableStockOrdersByDay = ({ setDataTable }) => {
                   <div className={styles.tableOverHeader}></div>
                   <div
                     className={styles.tableHeaderScrollable}
-                    style={{
-                      borderTopRightRadius: '16px',
-                      borderBottomRightRadius: '16px',
-                    }}
                     onClick={() => sortData('lessReturns')}
                   >
                     Маржиналь
@@ -471,6 +467,7 @@ const TableStockOrdersByDay = ({ setDataTable }) => {
           )}
         </div>
       </div>
+      <div className={styles.tableLeftMargin}></div>
     </div>
   );
 };

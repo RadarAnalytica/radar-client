@@ -84,7 +84,10 @@ const BigChartGlitter = ({
 
   return (
     <div className='big-chart'>
-      <div className='d-flex align-items-center' style={{marginBottom: '30px'}}>
+      <div
+        className='d-flex align-items-center'
+        style={{ marginBottom: '30px' }}
+      >
         <div
           className='d-flex align-items-center'
           style={{ cursor: 'pointer', gap: '12px' }}
@@ -110,7 +113,7 @@ const BigChartGlitter = ({
               </svg>
             ) : (
               <svg
-              style={{ width: '20px', marginRight: '8px' }}
+                style={{ width: '20px', marginRight: '8px' }}
                 viewBox='0 0 20 20'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -156,7 +159,7 @@ const BigChartGlitter = ({
               </svg>
             ) : (
               <svg
-              style={{ width: '20px', marginRight: '8px' }}
+                style={{ width: '20px', marginRight: '8px' }}
                 viewBox='0 0 20 20'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -228,7 +231,7 @@ const BigChartGlitter = ({
             </label>
           </div>
 
-          <div className='d-flex' style={{gap: '12px'}}>
+          <div className='d-flex' style={{ gap: '12px' }}>
             <div
               className='d-flex align-items-center'
               style={{ cursor: 'pointer' }}
@@ -251,7 +254,7 @@ const BigChartGlitter = ({
                 </svg>
               ) : (
                 <svg
-                style={{ width: '20px', marginRight: '8px' }}
+                  style={{ width: '20px', marginRight: '8px' }}
                   viewBox='0 0 20 20'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -281,7 +284,7 @@ const BigChartGlitter = ({
             >
               {salesLineOn ? (
                 <svg
-                style={{ width: '20px', marginRight: '8px' }}
+                  style={{ width: '20px', marginRight: '8px' }}
                   viewBox='0 0 20 20'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -504,14 +507,10 @@ const BigChartGlitter = ({
                     tooltipEl.style.borderRadius = '8px';
                     tooltipEl.style.boxShadow = '0 0 20px rgba(19,19, 19, 0.7)';
                     tooltipEl.style.padding = '1rem';
-                    tooltipEl.style.opacity = 1;
+                    tooltipEl.style.opacity = 0;
                     tooltipEl.style.display = 'block';
                     tooltipEl.style.position = 'absolute';
-                    tooltipEl.style.left =
-                      position.left +
-                      window.scrollX +
-                      tooltipModel.caretX +
-                      'px';
+                    tooltipEl.style.left = '-1000px';
                     tooltipEl.style.top =
                       position.top +
                       window.scrollY +
@@ -524,6 +523,34 @@ const BigChartGlitter = ({
                       tooltipModel.padding +
                       'px';
                     tooltipEl.style.pointerEvents = 'none';
+
+                    // Reflow and calculate dimensions
+                    const tooltipWidth = tooltipEl.offsetWidth;
+                    const tooltipHeight = tooltipEl.offsetHeight;
+
+                    // Reposition to the left
+                    tooltipEl.style.left =
+                      position.left +
+                      window.scrollX +
+                      tooltipModel.caretX -
+                      tooltipWidth -
+                      10 + // 10px offset from cursor
+                      'px';
+
+                    tooltipEl.style.opacity = 1; // Show the tooltip
+
+                    // Adjust vertical position if tooltip goes off the top or bottom of the screen
+                    const viewportHeight = window.innerHeight;
+                    const tooltipTop = parseInt(tooltipEl.style.top);
+
+                    if (tooltipTop + tooltipHeight > viewportHeight) {
+                      tooltipEl.style.top =
+                        viewportHeight - tooltipHeight - 10 + 'px'; // 10px padding from bottom
+                    } else if (tooltipTop < 0) {
+                      tooltipEl.style.top = '10px'; // 10px padding from top
+                    }
+
+                    tooltipEl.style.opacity = 1; // Show the tooltip
                   },
                 },
               },
