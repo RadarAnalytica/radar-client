@@ -58,7 +58,7 @@ const StepsTime = ({ redirect }) => {
       style={{
         display: "flex",
         flexDirection: "column",
-        marginTop: "120px",
+        marginTop: "50px",
       }}
     >
       <div className='stepsTimeHeader' style={{}}>

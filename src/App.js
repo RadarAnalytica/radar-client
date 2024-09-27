@@ -10,6 +10,7 @@ import Contacts from "./components/Contacts";
 import StockAnalysisGlitter from "./components/StockAnalysisGlitter";
 import LoaderPage from "./pages/LoaderPage";
 import Subscriptions from "./pages/Subscriptions";
+import RequestMonitoringPage from "./pages/RequestMonitoringPage";
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
@@ -278,7 +279,14 @@ function App() {
                     </React.Suspense>
                   }
                 />
-
+                <Route
+                  path='/monitoring'
+                  element={
+                    <React.Suspense fallback={<LoaderPage />}>
+                      <RequestMonitoringPage />
+                    </React.Suspense>
+                  }
+                />
                 <Route
                   path='/development/monitoring'
                   element={

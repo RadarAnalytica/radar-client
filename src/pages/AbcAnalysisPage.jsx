@@ -64,8 +64,8 @@ const AbcAnalysisPage = () => {
   const shouldDisplay = activeShop
     ? activeShop.is_primary_collect
     : oneShop
-    ? oneShop.is_primary_collect
-    : allShop;
+      ? oneShop.is_primary_collect
+      : allShop;
 
   useEffect(() => {
     let intervalId = null;
@@ -154,40 +154,40 @@ const AbcAnalysisPage = () => {
     }
   }, [authToken]);
 
-     // Update data when days, activeBrand, viewType changes
-     useEffect(() => {
-      if (
-        days !== prevDays.current ||
-        activeBrand !== prevActiveBrand.current ||
-        viewType !== prevViewType.current
-      ) {
-        if (activeBrand !== undefined) {
-          updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
-        }
-        prevDays.current = days;
-        prevActiveBrand.current = activeBrand;
-        prevViewType.current = viewType;
+  // Update data when days, activeBrand, viewType changes
+  useEffect(() => {
+    if (
+      days !== prevDays.current ||
+      activeBrand !== prevActiveBrand.current ||
+      viewType !== prevViewType.current
+    ) {
+      if (activeBrand !== undefined) {
+        updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
       }
-    }, [days, activeBrand, viewType]);
+      prevDays.current = days;
+      prevActiveBrand.current = activeBrand;
+      prevViewType.current = viewType;
+    }
+  }, [days, activeBrand, viewType]);
 
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
       const now = new Date();
       let targetTime = new Date(now);
-      
+
       // Set to the next half hour
       targetTime.setMinutes(targetTime.getMinutes() <= 30 ? 30 : 60, 0, 0);
-      
+
       // If we're already past an even hour + 30 minutes, move to the next even hour
       if (targetTime.getHours() % 2 !== 0 || (targetTime.getHours() % 2 === 0 && targetTime <= now)) {
         targetTime.setHours(targetTime.getHours() + 1);
       }
-      
+
       // Ensure we're on an even hour
       if (targetTime.getHours() % 2 !== 0) {
         targetTime.setHours(targetTime.getHours() + 1);
       }
-    
+
       return targetTime;
     };
 
@@ -205,9 +205,9 @@ const AbcAnalysisPage = () => {
   }, [dispatch, viewType, authToken, days, activeBrand]);
 
   useEffect(() => {
-    if (shops?.length === 0 && !isInitialLoading ) {
+    if (shops?.length === 0 && !isInitialLoading) {
       navigate("/onboarding");
-    } 
+    }
   }, [isInitialLoading, shops.length]);
 
   const updateDataAbcAnalysis = async (
@@ -284,7 +284,7 @@ const AbcAnalysisPage = () => {
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"ABC-анализ"} />;
   }
-  
+
   if (!shops || shops.length === 0) {
     return null; // or a loading indicator
   }
@@ -303,7 +303,7 @@ const AbcAnalysisPage = () => {
             />
           ) : null}
 
-          <div className=' pt-0 d-flex gap-3'>
+          <div className='pt-0 d-flex gap-3'>
             <AbcAnalysisFilter
               periodValue={days}
               setDays={setDays}

@@ -330,83 +330,83 @@ const OrderMapPieChart = ({
         >
           {firstFive
             ? firstFive.map((obj, key) => {
-                const compare = isOrders
-                  ? obj.comparePercentOrder
-                  : obj.comparePercent;
-                const percent = isOrders ? obj.percentOrder : obj.percent;
-                return (
-                  <div
-                    className='mb-2 d-flex'
-                    style={{ flexWrap: 'wrap', maxWidth: '100%' }}
-                    key={key}
-                  >
-                    <div className='d-flex align-items-start'>
-                      <span
-                        className='pb-2'
-                        style={{
-                          width: '0.75vw',
-                          height: '0.75vw',
-                          borderRadius: '100%',
-
-                          marginLeft: '-0.5vw',
-                          marginRight: '0.7vw',
-                          marginTop: '-0.75vh',
-                        }}
-                      >
-                        {obj.districtName
-                          ? getColor(obj.districtName)
-                          : getCityCircle(getColorStockTooltip(obj.stockName))}
-                      </span>
-                      <p className='mb-0  pe-2' style={{ fontSize: '1.75vh' }}>
-                        {obj.districtName ? obj.districtName : obj.stockName}
-                      </p>
-                    </div>
-                    <p
-                      className='mb-0 col text-end fw-bold'
-                      style={{ fontSize: '1.85vh' }}
-                    >
-                      {percent ? percent.toFixed(percent < 10 ? 1 : 0) : 0}
-                      &nbsp;%
-                    </p>
-                    <div
-                      className='mb-0 ms-1  col-2 text-end d-flex justify-content-around align-items-start'
+              const compare = isOrders
+                ? obj.comparePercentOrder
+                : obj.comparePercent;
+              const percent = isOrders ? obj.percentOrder : obj.percent;
+              return (
+                <div
+                  className='mb-2 d-flex'
+                  style={{ flexWrap: 'wrap', maxWidth: '100%' }}
+                  key={key}
+                >
+                  <div className='d-flex align-items-start'>
+                    <span
+                      className='pb-2'
                       style={{
-                        fontSize: '1.85vh',
-                        paddingLeft: '1vw',
-                        marginRight: '1vw',
+                        width: '0.75vw',
+                        height: '0.75vw',
+                        borderRadius: '100%',
+
+                        marginLeft: '-0.5vw',
+                        marginRight: '0.7vw',
+                        marginTop: '-0.75vh',
                       }}
                     >
-                      <span className='pb-1'>
-                        <img
-                          src={compare > 0 ? GreenArrow : RedArrow}
-                          alt=''
-                          style={{ width: '1.25vw', marginRight: '4px' }}
-                        />
-                      </span>
-                      <span
-                        className='pt-1 mr-1'
-                        style={
-                          compare > 0
-                            ? {
-                                fontSize: '1.5vh',
-                                whiteSpace: 'nowrap',
-                                fontWeight: 600,
-                                color: 'rgba(0, 182, 155, 1)',
-                              }
-                            : {
-                                fontSize: '1.5vh',
-                                whiteSpace: 'nowrap',
-                                fontWeight: 600,
-                                color: 'rgba(249, 60, 101, 1)',
-                              }
-                        }
-                      >
-                        {compare ? Number(compare).toFixed(0) : 0} %
-                      </span>
-                    </div>
+                      {obj.districtName
+                        ? getColor(obj.districtName)
+                        : getCityCircle(getColorStockTooltip(obj.stockName))}
+                    </span>
+                    <p className='mb-0  pe-2' style={{ fontSize: '1.75vh' }}>
+                      {obj.districtName ? obj.districtName : obj.stockName}
+                    </p>
                   </div>
-                );
-              })
+                  <p
+                    className='mb-0 col text-end fw-bold'
+                    style={{ fontSize: '1.85vh' }}
+                  >
+                    {percent ? percent.toFixed(percent < 10 ? 1 : 0) : 0}
+                    &nbsp;%
+                  </p>
+                  <div
+                    className='mb-0 ms-1  col-2 text-end d-flex justify-content-around align-items-start'
+                    style={{
+                      fontSize: '1.85vh',
+                      paddingLeft: '1vw',
+                      marginRight: '1vw',
+                    }}
+                  >
+                    <span className='pb-1'>
+                      <img
+                        src={compare > 0 ? GreenArrow : RedArrow}
+                        alt=''
+                        style={{ width: '1.25vw', marginRight: '4px' }}
+                      />
+                    </span>
+                    <span
+                      className='pt-1 mr-1'
+                      style={
+                        compare > 0
+                          ? {
+                            fontSize: '1.5vh',
+                            whiteSpace: 'nowrap',
+                            fontWeight: 600,
+                            color: 'rgba(0, 182, 155, 1)',
+                          }
+                          : {
+                            fontSize: '1.5vh',
+                            whiteSpace: 'nowrap',
+                            fontWeight: 600,
+                            color: 'rgba(249, 60, 101, 1)',
+                          }
+                      }
+                    >
+                      {compare ? Number(compare).toFixed(0) : 0} %
+                    </span>
+                  </div>
+                </div>
+              );
+            })
             : null}
         </div>
       </div>

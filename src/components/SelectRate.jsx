@@ -865,9 +865,8 @@ const SelectRate = ({ redirect }) => {
             >
               <button
                 onClick={() => handlePeriodChange("1month")}
-                className={` ${
-                  selectedPeriod === "1month" ? "prime-btn" : "secondary-btn"
-                }`}
+                className={` ${selectedPeriod === "1month" ? "prime-btn" : "secondary-btn"
+                  }`}
                 style={{
                   fontSize: window.innerWidth < 768 ? "15px" : "18px", // Динамический размер шрифта
                 }}
@@ -881,9 +880,8 @@ const SelectRate = ({ redirect }) => {
               </button>
               <button
                 onClick={() => handlePeriodChange("3month")}
-                className={`monthesText ${
-                  selectedPeriod === "3month" ? "prime-btn" : "secondary-btn"
-                }`}
+                className={`monthesText ${selectedPeriod === "3month" ? "prime-btn" : "secondary-btn"
+                  }`}
                 style={{
                   fontSize: window.innerWidth < 768 ? "15px" : "18px", // Динамический размер шрифта
                 }}
@@ -897,9 +895,8 @@ const SelectRate = ({ redirect }) => {
               </button>
               <button
                 onClick={() => handlePeriodChange("6month")}
-                className={`monthesTextBtn ${
-                  selectedPeriod === "6month" ? "prime-btn" : "secondary-btn"
-                }`}
+                className={`monthesTextBtn ${selectedPeriod === "6month" ? "prime-btn" : "secondary-btn"
+                  }`}
                 style={{
                   fontSize: window.innerWidth < 768 ? "15px" : "18px",
                 }}
@@ -919,6 +916,7 @@ const SelectRate = ({ redirect }) => {
         <>
           <ReviewsUsers />
           <div className='wid-solutionMain'>
+
             <div className='sol-description col' style={{ padding: 0 }}>
               <div className='headStartBsn'>
                 <SolLabelStartBsn />

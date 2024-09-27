@@ -58,8 +58,8 @@ const SideNav = () => {
           >
             <div className='d-flex align-items-center'>
               {location === "orders-map" ||
-              location === "supply" ||
-              location === "stock-analysis" ? (
+                location === "supply" ||
+                location === "stock-analysis" ? (
                 <svg
                   width='18'
                   height='18'
@@ -79,9 +79,9 @@ const SideNav = () => {
                 className='sidenav-title'
                 style={
                   location === "orders-map" ||
-                  location === "supply" ||
-                  location === "abc-data" ||
-                  location === "stock-analysis"
+                    location === "supply" ||
+                    location === "abc-data" ||
+                    location === "stock-analysis"
                     ? { fontWeight: "bold", fontSize: "14px", color: "black" }
                     : {}
                 }
@@ -142,19 +142,19 @@ const SideNav = () => {
               <p
                 className='sidenav-title padding-left submenu-item'
                 style={
-// <<<<<<< HEAD
+                  // <<<<<<< HEAD
                   location === "abc-data"
                     ? { fontWeight: "bold", fontSize: "14px" }
                     : {}
                 }
                 onClick={() => navigate("/abc-data")}
-// =======
-//                   location === 'stock-analysis'
-//                     ? { fontWeight: 'bold', fontSize: '14px' }
-//                     : {}
-//                 }
-//                 onClick={() => navigate('/stock-analysis')}
-// >>>>>>> stockAnlysis
+              // =======
+              //                   location === 'stock-analysis'
+              //                     ? { fontWeight: 'bold', fontSize: '14px' }
+              //                     : {}
+              //                 }
+              //                 onClick={() => navigate('/stock-analysis')}
+              // >>>>>>> stockAnlysis
               >
                 {location === "abc-data" ? (
                   <svg
@@ -176,7 +176,7 @@ const SideNav = () => {
                 style={
                   location === "stock-analysis" || productUrl
                     ? { fontWeight: "bold", fontSize: "14px" }
-                    : {  }
+                    : {}
                 }
                 onClick={() => navigate("/stock-analysis")}
               >
@@ -235,12 +235,12 @@ const SideNav = () => {
           {promotionShown ? (
             <div>
               <p
-                className='sidenav-title padding-left submenu-item'
-                onClick={() => navigate("/development/monitoring")}
+                className='sidenav-title ps-4 submenu-item'
+                onClick={() => navigate("/monitoring")}
                 style={
                   location === "monitoring"
-                    ? { fontWeight: "bold", fontSize: "14px", display: "none" }
-                    : { display: "none" }
+                    ? { fontWeight: "bold", fontSize: "14px" }
+                    : {}
                 }
               >
                 {location === "monitoring" ? (
@@ -283,9 +283,8 @@ const SideNav = () => {
             </div>
           ) : null}
           <div
-            className={`sidenav-el additional-tools ${
-              additionalTools ? "expanded" : ""
-            }`}
+            className={`sidenav-el additional-tools ${additionalTools ? "expanded" : ""
+              }`}
             onClick={() => setAdditionalTools(!additionalTools)}
           >
             <div className='d-flex align-items-center'>
@@ -312,10 +311,10 @@ const SideNav = () => {
                   location === "abc-data"
                     ? { fontWeight: "", fontSize: "14px", color: "#F0AD00" }
                     : {
-                        fontWeight: "",
-                        fontSize: "14px",
-                        color: "#F0AD00",
-                      }
+                      fontWeight: "",
+                      fontSize: "14px",
+                      color: "#F0AD00",
+                    }
                 }
               >
                 Дополнительные
