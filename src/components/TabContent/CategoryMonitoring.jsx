@@ -502,7 +502,7 @@ const CategoryMonitoring = () => {
         </div>
       </div >
 
-      <div className="table-wrapper-category-mon scrollable-table-vertical scrollable-table-monitoring-category" >
+      <div className="table-wrapper-category-mon scrollable-table-monitoring-category" >
         <table>
           <thead>
             <tr>

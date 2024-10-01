@@ -2655,10 +2655,18 @@ select {
   height: 199px;
   border-radius: 16px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+
 }
 
 .productInfo-price-photo-photo {
+  height: 182px;
+  width: 138px;
+  background-color: #D3D3D3;
   display: flex;
+  align-items: start;
+  justify-content: center;
+  border-radius: 3px;
+  margin: 8px 0 0 8px;
 }
 
 .productInfo-price-photo-photo img {
@@ -3269,6 +3277,7 @@ select {
 }
 
 
+
 .table-content-category-monitoring{
   height:max-content;
   border-radius: 10px;
@@ -3277,6 +3286,44 @@ select {
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08)
 
 }
+.table-container-req-mon {
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.table-container-req-mon table {
+  width: 100%;
+  /* border-collapse: collapse; */
+}
+
+
+.table-container-req-mon thead th {
+  background-color: #f2f2f2; /* Background color for the header */
+  position: sticky; /* Makes the header sticky */
+  top: 0; /* Sticks the header to the top */
+  z-index: 4; /* Ensures the header is above other content */
+}
+.table-container-req-mon thead th:first-child {
+  z-index: 5; 
+  position: sticky; /* Makes the header sticky */
+}
+
+.table-container-req-mon tbody {
+  display: table; 
+  overflow-y: auto; /* Enable vertical scrolling for tbody */
+}
+.table-container-req-mon thead {
+  display: flex; 
+}
+
+.table-container-req-mon thead tr {
+  display: contents; 
+  width: 100%; 
+}
+.table-container-req-mon tbody tr {
+  display: table; 
+  width: 100%; 
+}
+
 
 
 /* Category Monitoring css Table */
@@ -3520,4 +3567,39 @@ font-weight: 500;
   padding: 4px 16px 4px 16px;
   border-radius: 8px;
   font-weight: 700;
+}
+.enteringRequest{
+  margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+}
+.enteringRequestImg{
+  padding: 15px;
+  background-color: #5329FF26;
+  border-radius: 10px;
+}
+.enteringRequestHeader{
+  font-size: 24px;
+  color: #1A1A1A;
+  font-weight: 700;
+  margin-left: 20px;
+}
+.enteringRequestText{
+  margin: 20px 0px 20px 20px;
+  font-size: 18px;
+  color:#1A1A1A;
+}
+
+.loader-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; 
+}
+.noResulstFound{
+  align-items: center;
+  margin-left: 35vw;
 }
