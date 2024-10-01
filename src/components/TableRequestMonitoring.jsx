@@ -93,7 +93,7 @@ const TableRequestMonitoring = ({ dataTable }) => {
                     </div>
                 </div>
             </div>
-            <div className="table-wrapper-category-mon table-req-monitoring scrollable-table-vertical scrollable-table-monitoring-category">
+            {/* <div className="table-wrapper-category-mon table-req-monitoring scrollable-table-vertical scrollable-table-monitoring-category">
                 <table>
                     <thead>
                         <tr>
@@ -166,6 +166,70 @@ const TableRequestMonitoring = ({ dataTable }) => {
                         ))}
                     </tbody>
                 </table>
+            </div> */}
+
+            <div className='table-wrapper-category-mon req-mon-table scrollable-table-monitoring-category'>
+                <div>
+                    <div className='req-mon-table-header'>
+                        <div className='req-mon-table-header-tr'>
+                            <div className='req-mon-table-header-th-first'>Запрос</div>
+                            <div className='req-mon-table-header-th' style={{ minWidth: "200px", display: 'flex', alignItems: "left", justifyContent: 'space-between' }}>
+                                <div>Кол-во запросов <br />в месяц {" "}</div>
+                                <div
+                                    className='icon-sort-wrap'
+                                    style={{ background: "transparent", marginLeft: "10px" }}
+                                    onClick={() => sortData("monthlyRequests")}
+                                >
+                                    <img
+                                        style={{
+                                            ...getIconStyle("monthlyRequests", "asc"),
+                                        }}
+                                        src={ArrowUp}
+                                        alt=''
+                                    />
+                                    <img
+                                        src={ArrowDown}
+                                        alt=''
+                                        style={{
+                                            ...getIconStyle("monthlyRequests", "desc"),
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <div className='req-mon-table-header-th'>1.01</div>
+                            <div className='req-mon-table-header-th'>1.01</div>
+                            <div className='req-mon-table-header-th'>1.01</div>
+                            <div className='req-mon-table-header-th'>1.01</div>
+                            <div className='req-mon-table-header-th'>1.01</div>
+                            <div className='req-mon-table-header-th'>1.01</div>
+                            <div className='req-mon-table-header-th'>1.01</div>
+                            <div className='req-mon-table-header-th'>1.01</div>
+                            <div className='req-mon-table-header-th'>1.01</div>
+                            <div className='req-mon-table-header-th-last'>1.01</div>
+
+                        </div>
+                    </div>
+                    <div>
+                        <div className='req-mon-table-body'>
+                            {filteredData.map((item, index) => (
+                                <div className="req-mon-table-body-tr" key={index} >
+                                    <div className="category req-mon-table-body-td-first">{item.query}</div>
+                                    <div className='req-mon-table-body-td' style={{ minWidth: "200px" }}>{item.monthlyRequests}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.firstCol)}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.secondCol)}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.thirdCol)}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.fifthCol)}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.thirdCol)}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.fifthCol)}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.secondCol)}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.thirdCol)}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.fifthCol)}</div>
+                                    <div className='req-mon-table-body-td'>{renderTableCell(item.thirdCol)}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div >
     )

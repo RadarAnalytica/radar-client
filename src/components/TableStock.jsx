@@ -45,19 +45,19 @@ const TableStock = ({ dataTable, setDataTable }) => {
         setIsScrolled(tableContainer.scrollLeft > 0.1);
       }
     };
-  
+
     const tableContainer = document.querySelector('.custom-table');
     if (tableContainer) {
       tableContainer.addEventListener('scroll', handleScroll);
     }
-  
+
     return () => {
       if (tableContainer) {
         tableContainer.removeEventListener('scroll', handleScroll);
       }
     };
   }, []);
-  
+
   const handleClickProductName = (shop) => {
     navigate(`/product/${shop.sku}`);
   };

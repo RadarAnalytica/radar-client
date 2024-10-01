@@ -3177,10 +3177,95 @@ select {
 } */
 /* Category Monitoring css Table */
 
-.table-wrapper-category-mon {
-  max-width: 100%;           
-  overflow-x: auto;          /* Горизонтальная прокрутка */
+.table-wrapper-category-mon {         
+  overflow-x: auto;          
   margin: 10px 20px 10px 20px;
+}
+.req-mon-table-header{
+  width: max-content;
+  /* display: flex;
+  flex-direction: row;
+  align-items: center; */
+}
+
+.req-mon-table-header-tr{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+}
+.req-mon-table-body{
+  max-height: 600px;
+}
+.req-mon-table-header-th-first{
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  padding: 10px;
+  background: #f7f6fe;
+  min-height:70px;
+  color: #8c8c8c;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 200px;
+}
+.req-mon-table-header-th-last{
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 10px;
+  background: #f7f6fe;
+  min-height:70px;
+  color: #8c8c8c;
+  display: flex;
+  align-items: center;
+  min-width: 120px
+}
+.req-mon-table-body-td{
+  text-wrap: nowrap;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.req-mon-table-body-td-first{
+  text-wrap: nowrap;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  position: sticky !important;
+  left: 0!important;
+  z-index: 4;
+  background-color: white;
+  min-width: 200px;
+    border-bottom: 1px solid #e0e0e0;
+    
+    
+}
+.req-mon-table-header-th{
+  white-space: normal;
+  padding: 10px;
+  background: #f7f6fe;
+  min-height:70px;
+  color: #8c8c8c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px
+}
+.req-mon-table-body{
+  width: max-content;
+  max-height: 500px;
+  overflow-y: auto;
+}
+.req-mon-table-body-tr{
+  display: flex;
+  flex-direction: row;
+
 }
 .table-wrapper-category-mon thead th:first-child{
  border-bottom-left-radius: 12px;
@@ -3201,7 +3286,6 @@ select {
 .table-wrapper-category-mon thead th:last-child{
  border-bottom-right-radius: 12px;
  border-top-right-radius: 12px;
-
 }
 
 .table-wrapper-category-mon table {
@@ -3246,7 +3330,7 @@ select {
   white-space: nowrap;
 }
 
-.table-wrapper-category-mon tr:nth-child(even) td {
+.table-wrapper-category-mon tr:nth-child() td {
   background-color: #fff;
 }
 
