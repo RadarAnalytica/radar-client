@@ -40,6 +40,8 @@ const MainPage = React.lazy(() => import("./pages/MainPage"));
 const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
 const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
+const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
+const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 
 const NoSubscriptionPage = React.lazy(() =>
   import("./pages/NoSubscriptionPage")
@@ -253,6 +255,22 @@ function App() {
               element={
                 <React.Suspense fallback={<LoaderPage />}>
                   <Subscriptions />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/admin-panel'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  <AdminPanel />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/userinfo'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  <UserInfo />
                 </React.Suspense>
               }
             />
