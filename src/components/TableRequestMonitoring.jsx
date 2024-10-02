@@ -1,4 +1,6 @@
-import { useState } from 'react'
+// import { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react';
+import SortArrows from './SortArrows';
 import ArrowUp from "../assets/ArrowDown.svg";
 import ArrowDown from "../assets/ArrowUp.svg";
 import pageIcon from "../assets/page-icon.svg"
@@ -7,10 +9,14 @@ import attentionIcon from "../assets/attention.svg"
 import GreenArrow from '../assets/greenarrow.svg';
 import RedArrow from '../assets/redarrow.svg';
 import { fetchStockAnalysisData } from '../redux/stockAnalysis/stockAnalysisDataActions';
+import styles from './TableRequestMonitoring.module.css';
 
 const TableRequestMonitoring = ({ dataTable }) => {
-    const [sortConfig, setSortConfig] = useState({ column: null, direction: null });
+    // const [sortConfig, setSortConfig] = useState({ column: null, direction: null });
     const [filteredData, setFilteredData] = useState(dataTable);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+    const [isScrolled, setIsScrolled] = useState(false);
+
 
     const renderTableCell = (value) => {
         return (
@@ -56,7 +62,30 @@ const TableRequestMonitoring = ({ dataTable }) => {
         setSortConfig({ column: key, direction });
         setFilteredData(sortedData);
     };
+    const renderSortArrows = (columnKey) => {
+        return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
+    };
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const tableContainer = document.querySelector(`.${styles.customTable}`);
+            console.log(tableContainer);
+            if (tableContainer) {
+                setIsScrolled(tableContainer.scrollLeft > 0.1);
+            }
+        };
+
+        const tableContainer = document.querySelector(`.${styles.customTable}`);
+        if (tableContainer) {
+            tableContainer.addEventListener('scroll', handleScroll);
+        }
+
+        return () => {
+            if (tableContainer) {
+                tableContainer.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, []);
     const getIconStyle = (key, direction) => {
         const { column, direction: sortDirection } = sortConfig;
 
@@ -93,82 +122,162 @@ const TableRequestMonitoring = ({ dataTable }) => {
                     </div>
                 </div>
             </div>
-            {/* <div className="table-wrapper-category-mon table-req-monitoring scrollable-table-vertical scrollable-table-monitoring-category">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Запрос</th>
-                            <th style={{ display: 'flex', alignItems: "left", justifyContent: 'space-between' }}>
-                                <div>Кол-во запросов <br />в месяц {" "}</div>
+            <div className={styles.tableWrapper}>
+                <div className={styles.tableLeftMargin}></div>
+                <div className={styles.customTable}>
+                    <div className={styles.tableContainer}>
+                        {filteredData.length === 0 && (
+                            <div
+                                className='d-flex flex-column align-items-center justify-content-center'
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    position: 'absolute',
+                                    background: 'white',
+                                }}
+                            >
+                                <span className='loader'></span>
+                            </div>
+                        )}
+                        {filteredData.length > 0 && (
+                            <div className={styles.columnsWrapper}>
+                                {/* Fixed columns */}
                                 <div
-                                    className='icon-sort-wrap'
-                                    style={{ background: "transparent", marginLeft: "10px" }}
-                                    onClick={() => sortData("monthlyRequests")}
+                                    className={`fixed-columns ${isScrolled ? 'fixed-columns-shadow' : ''
+                                        }`}
                                 >
-                                    <img
-                                        style={{
-                                            ...getIconStyle("monthlyRequests", "asc"),
-                                        }}
-                                        src={ArrowUp}
-                                        alt=''
-                                    />
-                                    <img
-                                        src={ArrowDown}
-                                        alt=''
-                                        style={{
-                                            ...getIconStyle("monthlyRequests", "desc"),
-                                        }}
-                                    />
+                                    <div className={styles.columnWidth}>
+                                        <div className={styles.tableOverHeader}></div>
+                                        <div className={styles.tableHeader}>
+                                            Запрос
+                                        </div>
+                                        {filteredData.map((row, index) => (
+                                            <div
+                                                key={index}
+                                                style={{ color: "#5329FF", justifyContent: "flex-start" }}
+                                                className={styles.tableRow}
+                                            >
+                                                {row.query}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                            <th>1.01</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredData.map((item, index) => (
-                            <tr key={index} >
-                                <td className="category">{item.query}</td>
-                                <td>{item.monthlyRequests}</td>
-                                <td>{renderTableCell(item.firstCol)}</td>
-                                <td>{renderTableCell(item.secondCol)}</td>
-                                <td>{renderTableCell(item.thirdCol)}</td>
-                                <td>{renderTableCell(item.fifthCol)}</td>
-                                <td>{renderTableCell(item.thirdCol)}</td>
-                                <td>{renderTableCell(item.fifthCol)}</td>
-                                <td>{renderTableCell(item.secondCol)}</td>
-                                <td>{renderTableCell(item.thirdCol)}</td>
-                                <td>{renderTableCell(item.fifthCol)}</td>
-                                <td>{renderTableCell(item.thirdCol)}</td>
-                                <td>{renderTableCell(item.fifthCol)}</td>
-                                <td>{renderTableCell(item.secondCol)}</td>
-                                <td>{renderTableCell(item.thirdCol)}</td>
-                                <td>{renderTableCell(item.fifthCol)}</td>
-                                <td>{renderTableCell(item.thirdCol)}</td>
-                                <td>{renderTableCell(item.fifthCol)}</td>
+                                {/* Scrollable columns */}
+                                <div className='scrollable-columns' style={{ marginRight: "0px" }}>
+                                    <div className={styles.columnWidth}><div className={styles.tableOverHeader}></div>
+                                        <div
+                                            className={styles.tableHeaderScrollable}
+                                            style={{ minWidth: "200px", display: 'flex', alignItems: "left" }}
+                                        >
+                                            <div>Кол-во запросов <br />в месяц {" "}</div>
+                                            <div
+                                                className='icon-sort-wrap'
+                                                style={{ background: "transparent", marginLeft: "10px" }}
+                                                onClick={() => sortData("monthlyRequests")}
+                                            >
+                                                <img
+                                                    style={{
+                                                        ...getIconStyle("monthlyRequests", "asc"),
+                                                    }}
+                                                    src={ArrowUp}
+                                                    alt=''
+                                                />
+                                                <img
+                                                    src={ArrowDown}
+                                                    alt=''
+                                                    style={{
+                                                        ...getIconStyle("monthlyRequests", "desc"),
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                        {filteredData.map((row, index) => (
+                                            <div key={index} className={styles.tableRow} style={{ justifyContent: "flex-start", paddingLeft: "20px" }}>
+                                                {row.monthlyRequests}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className='scrollable-columns'>
+                                    <div className={styles.columnWidthN}>
+                                        <div className={styles.tableOverHeader}></div>
+                                        <div
+                                            className={styles.tableHeaderScrollable}
+                                        >
+                                            1.01
+                                        </div>
+                                        {filteredData.map((row, index) => (
+                                            <div key={index} className={styles.tableRow}>
+                                                {renderTableCell(row.firstCol)}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className={styles.columnWidthN}>
+                                        <div className={styles.tableOverHeader}></div>
+                                        <div className={styles.tableHeaderScrollable}>
+                                            1.01
+                                        </div>
+                                        {filteredData.map((row, index) => (
+                                            <div key={index} className={styles.tableRow}>
+                                                {renderTableCell(row.secondCol)}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className={styles.columnWidthN}>
+                                        <div className={styles.tableOverHeader}></div>
+                                        <div
+                                            className={styles.tableHeaderScrollable}
+                                        >
+                                            1.01
+                                        </div>
+                                        {filteredData.map((row, index) => (
+                                            <div key={index} className={styles.tableRow}>
+                                                {renderTableCell(row.thirdCol)}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className={styles.columnWidthN}>
+                                        <div className={styles.tableOverHeader}></div>
+                                        <div
+                                            className={styles.tableHeaderScrollable}
+                                        >
+                                            1.01
+                                        </div>
+                                        {filteredData.map((row, index) => (
+                                            <div key={index} className={styles.tableRow}>
+                                                {renderTableCell(row.thirdCol)}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className={styles.columnWidthN}>
+                                        <div className={styles.tableOverHeader}></div>
+                                        <div
+                                            className={styles.tableHeaderScrollable}
+                                        >
+                                            1.02
+                                        </div>
+                                        {filteredData.map((row, index) => (
+                                            <div key={index} className={styles.tableRow}>
+                                                {renderTableCell(row.thirdCol)}
+                                            </div>
+                                        ))}
+                                    </div>
 
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div> */}
+                                    <div>
+                                        <div className={styles.tableOverHeader}></div>
+                                        <div className={styles.tableHeaderScrollablLast}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className={styles.tableLeftMargin}></div>
+            </div>
 
-            <div className='table-wrapper-category-mon req-mon-table scrollable-table-monitoring-category'>
+
+
+            {/* <div className='table-wrapper-category-mon req-mon-table scrollable-table-monitoring-category'>
                 <div>
                     <div className='req-mon-table-header'>
                         <div className='req-mon-table-header-tr'>
@@ -230,7 +339,7 @@ const TableRequestMonitoring = ({ dataTable }) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div >
     )
 }
