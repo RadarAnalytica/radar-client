@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import ImagePreview from './ImagePreview';
 import Modal from 'react-bootstrap/Modal';
 
-const MessageWindow = () => {
+const MessageWindow = ({isNoHide}) => {
   const [contextMenu, setContextMenu] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [newMessage, setNewMessage] = useState('');
@@ -172,7 +172,7 @@ const MessageWindow = () => {
   return (
     <div
       className={
-        isOpenSupportWindow ? styles.container : styles.containerHidden
+        isOpenSupportWindow ? styles.container : isNoHide ? styles.containerNoHide : styles.containerHidden
       }
     >
       <div className={styles.header}>

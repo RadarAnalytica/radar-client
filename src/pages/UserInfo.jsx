@@ -2,6 +2,7 @@ import styles from './UserInfo.module.css';
 import AdminSideNav from '../components/AdminSideNav';
 import TopNav from '../components/TopNav';
 import radarIcon from '../assets/radarIconMessage.svg';
+import MessageWindow from '../components/MessageWindow';
 
 const UserInfo = () => {
   const data = [
@@ -53,8 +54,9 @@ const UserInfo = () => {
   return (
     <div className={styles.pageWrapper}>
       <AdminSideNav />
-      <div className='container'>
+      <div className={styles.scrollableContent}>
         <TopNav title={'Админ панель'} />
+        <div className='container dash-container'>
         <div className={styles.aboutUser}>
           <div className={styles.userInfowrapper}>
             <div className={styles.userItemMainTitle}>Общая информация</div>
@@ -91,26 +93,7 @@ const UserInfo = () => {
           </div>
         </div>
         <div className={styles.containerBox}>
-        <div className={styles.header}>
-        <img src={radarIcon} alt='Logo' className={styles.logo} />
-        <div className={styles.headerText}>
-          <span className={styles.title}>Поддержка Радара</span>
-          <span className={styles.subtitle}>Поддержим в любое время</span>
-        </div>
-        </div>
-        <div className={styles.messageListWrapper}>
-        <div className={styles.messageList}>
-         {data[0].supportMessges.map((message) => (
-           <div className={
-            message.type === 'user'
-              ? styles.userMessage
-              : styles.supportMessage
-          } key={message.id}>
-             <div className={styles.messageText}>{message.text}</div>
-             <div className={styles.messageDate}>{message.date}</div>
-           </div>
-         ))}
-        </div>
+        <MessageWindow isNoHide={true}/>
         </div>
         </div>
       </div>
