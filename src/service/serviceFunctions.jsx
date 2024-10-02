@@ -207,4 +207,24 @@ export const ServiceFunctions = {
     const data = await res.json();
     return data;
   },
-};
+  postRequestMonitoring: async (token, product, period, page, page_limit) => {
+    const res = await fetch(
+      `${URL}/api/requests-monitor`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+        body: JSON.stringify({
+          product: product,
+          period: period,
+          page: page,
+          page_limit: page_limit,
+        }),
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
+}

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import SideNav from '../components/SideNav'
@@ -12,7 +12,8 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import TableRequestMonitoring from '../components/TableRequestMonitoring'
 import DataCollectionNotification from '../components/DataCollectionNotification'
 import enteringQueries from "../pages/images/enteringQueries.svg"
-
+import { ServiceFunctions } from "../service/serviceFunctions";
+import AuthContext from "../service/AuthContext";
 
 const RequestMonitoringPage = () => {
 
@@ -124,12 +125,12 @@ const RequestMonitoringPage = () => {
     const [productData, setProductData] = useState({});
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredData, setFilteredData] = useState(dataTable);
-    const [days, setDays] = useState(30);
+    const [days, setDays] = useState(7);
     const [searchInputQuery, setSearchInputQuery] = useState('');
     const [hasSearched, setHasSearched] = useState(false); // Track whether a search has been performed
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingSearch, setIsLoadingSearch] = useState(false);
-
+    const { user, authToken } = useContext(AuthContext);
     //for Main Search
     const handleSearchQuery = (e) => {
         setSearchInputQuery(e.target.value);
@@ -143,6 +144,7 @@ const RequestMonitoringPage = () => {
                 setIsLoading(false); // Hide loader after 2 seconds
                 setHasSearched(true); // Show results after loader disappears
             }, 2000); // 2000 ms = 2 seconds
+            updateRequestMonitoring(authToken, searchInputQuery, days, 1, 25)// Show all data if no search query
         }
     };
     //for Main Search
@@ -187,9 +189,10 @@ const RequestMonitoringPage = () => {
         // Simulate 2-second loading time
         setTimeout(() => {
             if (searchQuery.trim() === '') {
-                setFilteredData(dataTable); // Show all data if no search query
+
             } else {
                 // Filter data based on search query
+                updateRequestMonitoring(authToken, searchQuery, days, 1, 25)// Show all data if no search query
                 const filtered = dataTable.filter((item) => {
                     const queryMatch = item.query ? item.query.toLowerCase().includes(searchQuery.toLowerCase()) : false;
                     const monthlyRequestsMatch = item.monthlyRequests ? item.monthlyRequests.toString().includes(searchQuery) : false;
@@ -215,7 +218,23 @@ const RequestMonitoringPage = () => {
             setIsLoadingSearch(false); // Hide loader and show table after 2 seconds
         }, 2000); // 2-second delay
     };
+    const updateRequestMonitoring = async (
+        token, product, period, page, page_limit
+    ) => {
+        //setLoading(true);
+        try {
+            const data = await ServiceFunctions.postRequestMonitoring(
+                token, product, period, page, page_limit
+            );
+            const result = data.results;
+            console.log(data);
 
+        } catch (e) {
+            console.error(e);
+        } finally {
+            //setLoading(false);
+        }
+    };
     //Search
     return <div className='dashboard-page'>
         <SideNav />

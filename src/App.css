@@ -3410,6 +3410,26 @@ select {
 
 
 
+.page {
+  display: flex;
+  align-items: center;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.left-arrow {
+  margin-right: 5px;
+}
+
+.right-arrow {
+  margin-left: 5px;
+}
+
 /* Category Monitoring css Table */
 
 .filter-tab-container{
@@ -3596,15 +3616,21 @@ font-weight: 500;
 .page-info {
   display: flex;
   align-items: center;
-}
 
-.page {
-  display: flex;
-  align-items: center;
-  margin-right: 15px;
+}
+.pagination {
   background-color:  #00000008;
   border-radius: 8px;
   padding: 4px 8px 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page {
+  display: flex;
+  align-items: center;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 .page span{

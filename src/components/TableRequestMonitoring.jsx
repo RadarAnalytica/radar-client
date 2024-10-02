@@ -16,8 +16,22 @@ const TableRequestMonitoring = ({ dataTable }) => {
     const [filteredData, setFilteredData] = useState(dataTable);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const [isScrolled, setIsScrolled] = useState(false);
+    const totalPages = 25;
+    const [page, setPage] = useState(1);
 
+    // Function to go to the previous page
+    const goToPreviousPage = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
 
+    // Function to go to the next page
+    const goToNextPage = () => {
+        if (page < totalPages) {
+            setPage(page + 1);
+        }
+    };
     const renderTableCell = (value) => {
         return (
             <div className="req-mon-td-wrapper">
@@ -106,9 +120,24 @@ const TableRequestMonitoring = ({ dataTable }) => {
                     <div class="exclamation-circle">!</div>
                 </div>
                 <div class="page-info">
-                    <div class="page">
-                        <img src={pageIcon} />
-                        <span>1 страница</span>
+                    <div className="pagination">
+                        {/* Left arrow, shown only if it's not the first page */}
+                        {page > 1 && (
+                            <button className="arrow left-arrow" onClick={goToPreviousPage}>
+                                &#8592; {/* Unicode for left arrow */}
+                            </button>
+                        )}
+
+                        {/* Page content */}
+                        <div className="page">
+                            <img src={pageIcon} alt="Page Icon" />
+                            <span>{page} страница</span>
+                        </div>
+
+                        {/* Right arrow, always shown */}
+                        <button className="arrow right-arrow" onClick={goToNextPage}>
+                            &#8594; {/* Unicode for right arrow */}
+                        </button>
                     </div>
                     <div class="rank">
                         <img src={rankIcon} />
