@@ -61,9 +61,9 @@
 }
 
 .searchIcon img {
-  height: 44px;
-  width: 44px;
-  margin-right: 20px;
+    height: 44px;
+    width: 44px;
+    margin-right: 20px;
 }
 
 .messageListWrapper {
@@ -77,14 +77,17 @@
     padding: 15px;
     display: flex;
     flex-direction: column;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
 }
 
 .messageList::-webkit-scrollbar {
     width: 0;
     height: 0;
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
+    /* Chrome, Safari, Opera */
 }
 
 .userMessage {
@@ -161,23 +164,46 @@
     font-size: 23px;
 }
 
+.sendButtonFullfiled {
+    background: rgba(83, 41, 255, 1);
+    height: 44px;
+    width: 44px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 23px;
+}
+
+.sendButtonFullfiled img {
+    height: 10px;
+    width: 13px;
+    margin: 0;
+}
+
+.sendButton img {
+    height: 10px;
+    width: 13px;
+    margin: 0;
+}
+
 .selected {
     border: 2px solid #5329FF;
-  }
+}
 
-  .contextMenu {
+.contextMenu {
     position: fixed;
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     font-size: 14px;
     font-weight: 500;
     line-height: 17.5px;
-  }
-  
-  .contextMenu button {
+}
+
+.contextMenu button {
     display: block;
     width: 100%;
     padding: 8px 10px;
@@ -186,8 +212,14 @@
     background: none;
     text-align: left;
     cursor: pointer;
-  }
-  
-  .contextMenu button:hover {
+}
+
+.contextMenu button:hover {
     background-color: #f0f0f0;
-  }
+}
+
+.containerNoHide {
+    display: flex;
+    flex-direction: column;
+    height: 700px;
+}

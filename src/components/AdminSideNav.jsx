@@ -4,21 +4,14 @@ import styles from './AdminSideNav.module.css';
 
 const AdminSideNav = () => {
   return (
-    <div className='side-nav'>
+    <div className={styles.sideNav}>
       <div className={styles.sidenavWrapper}>
         <img src={logo} alt='Logo' className={styles.sideNavLogo} />
         <div className='mt-4'>
-           <div className='sidenav-el'>
-             Персональная поддержка
-           </div>
-           <div className='sidenav-el'>
-             Рефералы
-           </div>
-           <div className='sidenav-el'>
-             Клиенты
-           </div>
+          <div className={styles.adminSideNavEl}>Персональная поддержка</div>
+          <div className={styles.adminSideNavEl}>Рефералы</div>
+          <div className={styles.adminSideNavEl}>Клиенты</div>
         </div>
-
       </div>
     </div>
   );
