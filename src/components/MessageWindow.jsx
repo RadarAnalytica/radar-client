@@ -7,15 +7,16 @@ import ImageMasonry from './ImageMasonry';
 import { useSelector } from 'react-redux';
 import ImagePreview from './ImagePreview';
 import Modal from 'react-bootstrap/Modal';
+import sendButton from '../assets/SendButton.svg';
 
-const MessageWindow = ({isNoHide}) => {
+const MessageWindow = ({ isNoHide }) => {
   const [contextMenu, setContextMenu] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [newMessage, setNewMessage] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
   const [previewMode, setPreviewMode] = useState(false);
   const [show, setShow] = useState(false);
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
 
   const handleImageClick = (image, event) => {
     if (event && event.type === 'contextmenu') {
@@ -125,38 +126,46 @@ const MessageWindow = ({isNoHide}) => {
     input.multiple = true; // Allow multiple file selection
     input.onchange = (e) => {
       const files = Array.from(e.target.files);
-       const validFiles = [];
-    const invalidSizeFiles = [];
-    const invalidFormatFiles = [];
+      const validFiles = [];
+      const invalidSizeFiles = [];
+      const invalidFormatFiles = [];
 
-    files.forEach(file => {
-      const isValidFormat = ['image/jpeg', 'image/png', 'image/webp'].includes(file.type);
-      const isValidSize = file.size <= 5 * 1024 * 1024; // 5MB in bytes
+      files.forEach((file) => {
+        const isValidFormat = [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+        ].includes(file.type);
+        const isValidSize = file.size <= 5 * 1024 * 1024; // 5MB in bytes
 
-      if (isValidFormat && isValidSize) {
-        validFiles.push(file);
-      } else if (!isValidSize) {
-        invalidSizeFiles.push(file.name);
-      } else {
-        invalidFormatFiles.push(file.name);
+        if (isValidFormat && isValidSize) {
+          validFiles.push(file);
+        } else if (!isValidSize) {
+          invalidSizeFiles.push(file.name);
+        } else {
+          invalidFormatFiles.push(file.name);
+        }
+      });
+      if (files.length > 4) {
+        setShow(true);
+        setError('Вы можете выбрать максимум 4 изображения');
       }
-    });
-    if (files.length > 4) {
-      setShow(true);
-          setError('Вы можете выбрать максимум 4 изображения');
-    }
-    if (invalidSizeFiles.length > 0) {
-      setShow(true);
-      setError(`Файлы привышают лимит 5MB: ${invalidSizeFiles.join(', ')}. `);
-    }
-    if (invalidFormatFiles.length > 0) {
-      setShow(true);
-      setError(`Файлы не корректного формата (jpg, jpeg, png, webp): ${invalidSizeFiles.join(', ')}. `);
-    }
-    if (validFiles.length > 0) {
-      setSelectedImages(validFiles);
-    }
-     };
+      if (invalidSizeFiles.length > 0) {
+        setShow(true);
+        setError(`Файлы привышают лимит 5MB: ${invalidSizeFiles.join(', ')}. `);
+      }
+      if (invalidFormatFiles.length > 0) {
+        setShow(true);
+        setError(
+          `Файлы не корректного формата (jpg, jpeg, png, webp): ${invalidSizeFiles.join(
+            ', '
+          )}. `
+        );
+      }
+      if (validFiles.length > 0) {
+        setSelectedImages(validFiles);
+      }
+    };
     input.click();
   };
 
@@ -167,12 +176,16 @@ const MessageWindow = ({isNoHide}) => {
     setPreviewMode(true);
   };
 
-  const warningIcon = require('../assets/warning.png')
+  const warningIcon = require('../assets/warning.png');
 
   return (
     <div
       className={
-        isOpenSupportWindow ? styles.container : isNoHide ? styles.containerNoHide : styles.containerHidden
+        isOpenSupportWindow
+          ? styles.container
+          : isNoHide
+          ? styles.containerNoHide
+          : styles.containerHidden
       }
     >
       <div className={styles.header}>
@@ -242,8 +255,15 @@ const MessageWindow = ({isNoHide}) => {
             <button onClick={() => setSelectedImage(null)}>Remove</button>
           </div>
         )}
-        <button onClick={handleSendMessage} className={styles.sendButton}>
-          &#8594;
+        <button
+          onClick={handleSendMessage}
+          className={
+            newMessage.length > 0
+              ? styles.sendButtonFullfiled
+              : styles.sendButton
+          }
+        >
+          <img src={sendButton} />
         </button>
       </div>
       {contextMenu && (
@@ -261,19 +281,19 @@ const MessageWindow = ({isNoHide}) => {
           onClose={() => setPreviewMode(false)}
         />
       )}
-       <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <div>
-              <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
-                <img src={warningIcon} alt='' style={{ height: '3vh' }} />
-                <p className='fw-bold mb-0'>Ошибка!</p>
-              </div>
-              <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>
-                {error}
-              </p>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <div>
+            <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
+              <img src={warningIcon} alt='' style={{ height: '3vh' }} />
+              <p className='fw-bold mb-0'>Ошибка!</p>
             </div>
-          </Modal.Header>
-        </Modal>
+            <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>
+              {error}
+            </p>
+          </div>
+        </Modal.Header>
+      </Modal>
     </div>
   );
 };
