@@ -654,7 +654,9 @@ select {
   flex-grow: 1;
 }
 .blockBtn {
-  background-image: url("/src/pages/images/imageFon.png");
+  /* background-image: url("/src/pages/images/imageFon_comp.png");  */
+  /* background-color: rgba(83, 41, 255, 1); */
+  transition: background-image 0.5s ease-in-out;
   background-size: cover;
   width: 32%;
   display: flex;
@@ -662,6 +664,7 @@ select {
   padding: 25px;
   border-radius: 20px;
 }
+
 .steps {
   display: flex;
   background-color: rgb(255, 255, 255);
@@ -761,7 +764,7 @@ padding:20px;
 }
 
 .wid-solutionMain {
-  background-image: url("/src/pages/images/imageFonStartBsn.png");
+  /* background-image: url("/src/pages/images/imageFonStartBsn.png"); */
   background-size: cover;
   min-height: 200px;
   color: white;

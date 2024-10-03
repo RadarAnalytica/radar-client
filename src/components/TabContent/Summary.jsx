@@ -3,9 +3,11 @@ import glitIconBlue from '../../pages/images/glittericonblue.svg';
 import glitCostPrise from '../../pages/images/glitsotprice.svg';
 import glitIconGreen from '../../pages/images/gliticongreen.svg';
 import glitIconReturn from '../../pages/images/gliticonreturn.svg';
+import sebestoimostIcon from '../../pages/images/sebstoimost-icon.svg';
 import glitVectorGreen from '../../pages/images/glitvectorgreen.svg';
 import BigChartGlitter from '../BigChartGlitter';
 import TableStockSalesByDay from '../TableStockSalesByDay';
+import TableStockOrdersByDay from '../TableStockOrdersByDay';
 import StockCostPrice from '../../assets/stockcostprice.svg';
 const Summary = ({ days, productBySku, isInitialLoading }) => {
 
@@ -550,8 +552,8 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
   return (
     <>
       <div
-        className='container dash-container pt-0 d-flex justify-content-between'
-        style={{ gap: '20px' }}
+        className='container dash-container pt-0'
+        style={{ display: 'flex', gap: '20px', justifyContent: 'space-between' }}
       >
         <div className='sales-box-wrapper'>
           {isInitialLoading && (
@@ -635,11 +637,10 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
                 </div>
               </div>
               <div className='sebestoimost-box-button'>
-                <img
-                  style={{ cursor: 'pointer' }}
-                  src={StockCostPrice}
-                  alt=''
-                />
+                <button> 
+                  <img src={sebestoimostIcon} alt='sebestoimost icon'/>
+                  <span>Установить себестоимость</span>
+                </button>
               </div>
             </>
           )}
@@ -764,12 +765,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
           )}
         </div>
         <div
-          style={{
-            width: '422px',
-            height: '90px',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-          }}
+          className='expenses-box-wrapper'
         >
           {isInitialLoading && (
             <div
@@ -802,12 +798,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
           )}
         </div>
         <div
-          style={{
-            width: '422px',
-            height: '90px',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-          }}
+         className='expenses-box-wrapper'
         >
           {isInitialLoading && (
             <div
@@ -977,7 +968,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
               <div className='sellout-box-title'>Процент выкупа</div>
               <div>
                 <div className='sellout-box-digit'>
-                  {productBySku?.purchasedPrecent} %
+                  {productBySku?.purchasedPrecent || '0'} %
                 </div>
               </div>
             </>
@@ -1038,7 +1029,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
           )}
         </div>
       </div>
-      <div style={{ width: '93%', marginLeft: '50px', marginTop: '20px' }}>
+      <div className='container dash-container' style={{ marginTop: '20px' }}>
         <BigChartGlitter
           data={data}
           orderOn={orderOn}
@@ -1058,9 +1049,8 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
         />
       </div>
       <div
+      className='container dash-container'
         style={{
-          width: '93%',
-          marginLeft: '3.5vw',
           marginTop: '20px',
           display: 'flex',
         }}
@@ -1127,7 +1117,7 @@ const [activeTabDay, setActiveTabDay] = useState('saleDay');
         activeTabDay={activeTabDay}
       />
       }
-       { activeTabDay === 'orderDay' && <TableStockSalesByDay
+       { activeTabDay === 'orderDay' && <TableStockOrdersByDay
         dataSaleDay={dataSaleDay}
         setDataSaleDay={setDataSaleDay}
         dataOrderDay={dataOrderDay}

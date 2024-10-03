@@ -10,6 +10,7 @@ import Contacts from "./components/Contacts";
 import StockAnalysisGlitter from "./components/StockAnalysisGlitter";
 import LoaderPage from "./pages/LoaderPage";
 import Subscriptions from "./pages/Subscriptions";
+import RequestMonitoringPage from "./pages/RequestMonitoringPage";
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
@@ -39,6 +40,8 @@ const MainPage = React.lazy(() => import("./pages/MainPage"));
 const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
 const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
+const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
+const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 
 const NoSubscriptionPage = React.lazy(() =>
   import("./pages/NoSubscriptionPage")
@@ -255,6 +258,22 @@ function App() {
                 </React.Suspense>
               }
             />
+            <Route
+              path='/admin-panel'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  <AdminPanel />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/userinfo'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  <UserInfo />
+                </React.Suspense>
+              }
+            />
             {user.is_onboarded ? (
               <>
                 <Route
@@ -278,7 +297,14 @@ function App() {
                     </React.Suspense>
                   }
                 />
-
+                <Route
+                  path='/monitoring'
+                  element={
+                    <React.Suspense fallback={<LoaderPage />}>
+                      <RequestMonitoringPage />
+                    </React.Suspense>
+                  }
+                />
                 <Route
                   path='/development/monitoring'
                   element={

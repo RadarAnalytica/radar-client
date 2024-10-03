@@ -1,0 +1,144 @@
+.pageWrapper {
+    min-height: 100vh;
+    display: flex;
+  }
+
+  .aboutUser {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0 20px;
+  }
+
+  .userInfowrapper {
+    padding: 16px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+  }
+
+  .userItemWrapper {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .userItemTitle {
+    margin-right: 20px;
+    font-weight: 500;
+  }
+
+  .userItemMainTitle {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: rgba(26, 26, 26, 1);
+    margin-bottom: 24px;
+  }
+
+  .containerBox {
+    width: 100%;
+    height: 70%;
+    position: relative;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  .header {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.logo {
+    width: 54px;
+    height: 54px;
+    margin: 15px 15px 9px 20px;
+}
+
+.headerText {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22.5px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.messageListWrapper {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.messageList {
+    height: 100%;
+    overflow-y: scroll;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.messageList::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.userMessage {
+    align-self: flex-end;
+    background: rgba(83, 41, 255, 0.65);
+    color: white;
+    padding: 10px;
+    border-radius: 15px 15px 0 15px;
+    max-width: 70%;
+    margin-bottom: 10px;
+}
+
+.supportMessage {
+    align-self: flex-start;
+    background-color: #f0f0f0;
+    color: black;
+    padding: 10px;
+    border-radius: 15px 15px 15px 0;
+    max-width: 70%;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19px;
+}
+
+.messageTimeUser {
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+    line-height: 14px;
+    margin-left: 5px;
+    align-self: flex-end;
+}
+
+.messageTimeBot {
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+    line-height: 14px;
+    margin-left: 5px;
+}
+
+.scrollableContent {
+  flex: 1;
+  overflow-y: auto;
+  height: 100vh;
+}

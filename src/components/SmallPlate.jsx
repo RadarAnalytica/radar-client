@@ -76,7 +76,7 @@ const SmallPlate = ({
             )}
           </p>
 
-          <div className='d-flex justify-content-between align-items-end'>
+          <div className={dataDashBoard > 1000000 ? 'd-flex flex-column align-items-start' : 'd-flex justify-content-between align-items-end'}>
             <p className='p-0 m-0 fw-bold numbers'>
               {dataDashBoard ? formatPrice(dataDashBoard) : 0}
               {type === "price" ? " ₽" : " %"}

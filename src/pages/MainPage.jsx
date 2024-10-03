@@ -30,13 +30,16 @@ import ToggleAnaliticsPanel from "../components/ToggleAnaliticsPanel";
 import ImageComponent from "../components/utilsComponents/ImageComponent ";
 import ReviewsUsers from "../components/ReviewsUsers";
 import TryProduct from "../components/TryProduct";
-import { useLocation } from 'react-router-dom';
 import { URL } from "../service/config";
+import lowResImage from './images/imageFon_comp.png'; //  the low-res image
+import highResImage from './images/imageFon.png'; //  the high-res image
 
 const MainPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, authToken } = useContext(AuthContext);
+  const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
+
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -93,6 +96,15 @@ const MainPage = () => {
     }
     return null;
   };
+  useEffect(() => {
+    const img = new Image();
+    img.src = highResImage;
+
+    img.onload = () => {
+      // When high-res image is fully loaded, change the state
+      setHighResLoaded(true);
+    };
+  }, [highResImage]);
 
   return (
     <div className='page-white'>
@@ -215,7 +227,10 @@ const MainPage = () => {
             <div className='apiBlock'>
               <img className='apiBlockImg' src={apiBlock} alt='logo' />
             </div>
-            <div className='blockBtn'>
+            <div
+              className='blockBtn'
+              style={{ backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage})` }}
+            >
               <div className='blockBtnContainer'>
                 <div className='blockBtnContainerHeader'>
                   <div className='blockBtnContainerImageBlock'>

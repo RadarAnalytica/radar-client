@@ -8,15 +8,18 @@ import magic from "../assets/magic.png";
 import support from "../assets/support.png";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { useSelector, useDispatch } from 'react-redux';
+import { openSupportWindow, closeSupportWindow } from '../redux/supportWindow/supportWindowSlice';
 
 const SideNav = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const url = document.location.href;
   const chunkArray = url ? url.split("/").reverse() : null;
   const productUrl = chunkArray ? chunkArray.includes('product') : false;
   const location = chunkArray ? chunkArray[0] : null;
   const linkPlagin = "https://chromewebstore.google.com/";
+  const isOpenSupportWindow = useSelector((state) => state.supportWindowSlice?.isOpenSupportWindow);
 
   const [active, setActive] = useState("");
   useEffect(() => {
@@ -26,6 +29,14 @@ const SideNav = () => {
   const [goodsShown, setGoodsShown] = useState(true);
   const [promotionShown, setPromotionShown] = useState(true);
   const [additionalTools, setAdditionalTools] = useState(true);
+
+  const toggleOpenSupport = () => {
+    if (isOpenSupportWindow) {
+      dispatch(closeSupportWindow());
+    } else {
+      dispatch(openSupportWindow());
+    }
+  }
 
   return (
     <div className='side-nav'>
@@ -58,8 +69,8 @@ const SideNav = () => {
           >
             <div className='d-flex align-items-center'>
               {location === "orders-map" ||
-              location === "supply" ||
-              location === "stock-analysis" ? (
+                location === "supply" ||
+                location === "stock-analysis" ? (
                 <svg
                   width='18'
                   height='18'
@@ -79,9 +90,9 @@ const SideNav = () => {
                 className='sidenav-title'
                 style={
                   location === "orders-map" ||
-                  location === "supply" ||
-                  location === "abc-data" ||
-                  location === "stock-analysis"
+                    location === "supply" ||
+                    location === "abc-data" ||
+                    location === "stock-analysis"
                     ? { fontWeight: "bold", fontSize: "14px", color: "black" }
                     : {}
                 }
@@ -142,19 +153,19 @@ const SideNav = () => {
               <p
                 className='sidenav-title padding-left submenu-item'
                 style={
-// <<<<<<< HEAD
+                  // <<<<<<< HEAD
                   location === "abc-data"
                     ? { fontWeight: "bold", fontSize: "14px" }
                     : {}
                 }
                 onClick={() => navigate("/abc-data")}
-// =======
-//                   location === 'stock-analysis'
-//                     ? { fontWeight: 'bold', fontSize: '14px' }
-//                     : {}
-//                 }
-//                 onClick={() => navigate('/stock-analysis')}
-// >>>>>>> stockAnlysis
+              // =======
+              //                   location === 'stock-analysis'
+              //                     ? { fontWeight: 'bold', fontSize: '14px' }
+              //                     : {}
+              //                 }
+              //                 onClick={() => navigate('/stock-analysis')}
+              // >>>>>>> stockAnlysis
               >
                 {location === "abc-data" ? (
                   <svg
@@ -175,7 +186,7 @@ const SideNav = () => {
                 className='sidenav-title padding-left submenu-item'
                 style={
                   location === "stock-analysis" || productUrl
-                    ? { fontWeight: "bold", fontSize: "14px" }
+                    ? { fontWeight: "bold", fontSize: "14px", whiteSpace: "nowrap" }
                     : {  }
                 }
                 onClick={() => navigate("/stock-analysis")}
@@ -235,12 +246,12 @@ const SideNav = () => {
           {promotionShown ? (
             <div>
               <p
-                className='sidenav-title padding-left submenu-item'
-                onClick={() => navigate("/development/monitoring")}
+                className='sidenav-title ps-4 submenu-item'
+                onClick={() => navigate("/monitoring")}
                 style={
                   location === "monitoring"
-                    ? { fontWeight: "bold", fontSize: "14px", display: "none" }
-                    : { display: "none" }
+                    ? { fontWeight: "bold", fontSize: "14px" }
+                    : {}
                 }
               >
                 {location === "monitoring" ? (
@@ -283,9 +294,8 @@ const SideNav = () => {
             </div>
           ) : null}
           <div
-            className={`sidenav-el additional-tools ${
-              additionalTools ? "expanded" : ""
-            }`}
+            className={`sidenav-el additional-tools ${additionalTools ? "expanded" : ""
+              }`}
             onClick={() => setAdditionalTools(!additionalTools)}
           >
             <div className='d-flex align-items-center'>
@@ -312,10 +322,10 @@ const SideNav = () => {
                   location === "abc-data"
                     ? { fontWeight: "", fontSize: "14px", color: "#F0AD00" }
                     : {
-                        fontWeight: "",
-                        fontSize: "14px",
-                        color: "#F0AD00",
-                      }
+                      fontWeight: "",
+                      fontSize: "14px",
+                      color: "#F0AD00",
+                    }
                 }
               >
                 Дополнительные
@@ -390,14 +400,11 @@ const SideNav = () => {
       <div
         className='support-block'
         onClick={() =>
-          (window.location.href = "mailto:radar-analytica@inbox.ru")
+          toggleOpenSupport()
         }
         style={{ cursor: "pointer" }}
       >
-        <a
-          href='mailto:radar-analytica@inbox.ru'
-          onClick={(e) => e.stopPropagation()}
-        >
+        <a>
           <img src={support} alt='' className='support-icon' />
         </a>
         <p className='fw-bold mb-0 mt-2 p-0' style={{ fontSize: "1.8vh" }}>
