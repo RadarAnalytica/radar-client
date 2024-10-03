@@ -23,6 +23,7 @@ const RequestMonitoringFilter = ({ setDays, days }) => {
                         className='form-control'
                         id='period'
                         value={days}
+                        // defaultValue={30}
                         onChange={(e) => {
                             setDays(e.target.value);
                         }}

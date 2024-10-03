@@ -11,6 +11,7 @@ import StockAnalysisGlitter from "./components/StockAnalysisGlitter";
 import LoaderPage from "./pages/LoaderPage";
 import Subscriptions from "./pages/Subscriptions";
 import RequestMonitoringPage from "./pages/RequestMonitoringPage";
+import AiDescriptionGeneratorPage from "./pages/AIDescriptionGeneratorPage";
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
@@ -302,6 +303,14 @@ function App() {
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
                       <RequestMonitoringPage />
+                    </React.Suspense>
+                  }
+                />
+                <Route
+                  path='/ai-generator'
+                  element={
+                    <React.Suspense fallback={<LoaderPage />}>
+                      <AiDescriptionGeneratorPage />
                     </React.Suspense>
                   }
                 />

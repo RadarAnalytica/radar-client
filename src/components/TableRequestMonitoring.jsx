@@ -11,7 +11,7 @@ import RedArrow from '../assets/redarrow.svg';
 import { fetchStockAnalysisData } from '../redux/stockAnalysis/stockAnalysisDataActions';
 import styles from './TableRequestMonitoring.module.css';
 
-const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) => {
+const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort, setSort }) => {
     // const [sortConfig, setSortConfig] = useState({ column: null, direction: null });
     const [filteredData, setFilteredData] = useState(dataTable);
     const [filteredDayLenght, setFilteredDayLenght] = useState(null);
@@ -36,24 +36,12 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
 
 
     const sortData = (key) => {
-        let direction = 'asc';
-
-        if (sortConfig.column === key && sortConfig.direction === 'asc') {
-            direction = 'desc';
+        if (key === "asc") {
+            setSort("desc")
         }
-
-        const sortedData = [...filteredData].sort((a, b) => {
-            if (typeof a[key] === 'string' && typeof b[key] === 'string') {
-                return direction === 'asc'
-                    ? a[key].localeCompare(b[key])
-                    : b[key].localeCompare(a[key]);
-            } else {
-                return direction === 'asc' ? a[key] - b[key] : b[key] - a[key];
-            }
-        });
-
-        setSortConfig({ column: key, direction });
-        setFilteredData(sortedData);
+        if (key === "desc") {
+            setSort("asc")
+        }
     };
 
     useEffect(() => {
@@ -77,14 +65,11 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
     }, []);
 
     const getIconStyle = (key, direction) => {
-        const { column, direction: sortDirection } = sortConfig;
-
-        if (column === key) {
-            if (sortDirection === direction) {
-                return {
-                    filter: "brightness(0) saturate(100%) invert(29%) sepia(81%) saturate(6689%) hue-rotate(243deg) brightness(96%) contrast(101%)", // Color #5329ff
-                };
-            }
+        // Проверка текущего столбца и направления сортировки
+        if (sort !== direction) {
+            return {
+                filter: "brightness(0) saturate(100%) invert(29%) sepia(81%) saturate(6689%) hue-rotate(243deg) brightness(96%) contrast(101%)", // Цвет #5329ff
+            };
         }
         return { filter: "none" };
     };
@@ -112,7 +97,13 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
         const month = dateParts[1]; // Получаем месяц
         return `${day}.${month}`; // Возвращаем отформатированную дату
     }
-    const totalTrueFlags = calculateCompareFlags(filteredData);
+
+    function formatQuantity(quantity) {
+        if (quantity === null || quantity === undefined) {
+            return ''; // Обработка случая, если quantity null или undefined
+        }
+        return quantity < 10 ? quantity.toString() : quantity.toString().slice(-2); // Возвращаем последние две цифры или само число
+    };
 
     return (
         <div class="table-wrapper-req-monitoring">
@@ -203,7 +194,7 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
                                             <div
                                                 className='icon-sort-wrap'
                                                 style={{ background: "transparent", marginLeft: "5px", alignItems: "center", justifyContent: "center" }}
-                                                onClick={() => sortData("request_quantity")}
+                                                onClick={() => sortData(sort)}
                                             >
                                                 <img
                                                     style={{
@@ -245,7 +236,7 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
                                                         {(item.details[colIndex].quantity) !== 0
                                                             ? (<div className="req-mon-td-quantity">{Math.floor(item.details[colIndex].quantity / 100) + 1}</div>)
                                                             : <div className='req-mon-td-quantity-empty'></div>}
-                                                        <div>{item.details[colIndex].quantity}</div>
+                                                        <div>{formatQuantity(item.details[colIndex].quantity)}</div>
                                                         <div
                                                             className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'
                                                             style={{

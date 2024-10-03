@@ -207,7 +207,7 @@ export const ServiceFunctions = {
     const data = await res.json();
     return data;
   },
-  postRequestMonitoring: async (token, product, period, page, page_limit) => {
+  postRequestMonitoring: async (token, product, period, page, page_limit, sort) => {
     const res = await fetch(
       `${URL}/api/requests-monitor/`,
       {
@@ -221,6 +221,7 @@ export const ServiceFunctions = {
           period: period,
           page: page,
           page_limit: page_limit,
+          sorting: sort
         }),
       }
     );

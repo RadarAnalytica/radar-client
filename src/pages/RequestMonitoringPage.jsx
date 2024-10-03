@@ -26,7 +26,7 @@ const RequestMonitoringPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredData, setFilteredData] = useState();
     const [monitorData, setMonitorData] = useState([]);
-    const [days, setDays] = useState(7);
+    const [days, setDays] = useState(30);
     const [page, setPage] = useState(1);
     const [searchInputQuery, setSearchInputQuery] = useState('');
     const [hasSearched, setHasSearched] = useState(false); // Track whether a search has been performed
@@ -35,6 +35,7 @@ const RequestMonitoringPage = () => {
     const { user, authToken } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [sort, setSort] = useState("desc");
 
     // Функции для открытия и закрытия модального окна
     const handleShowModal = () => setShowModal(true);
@@ -47,7 +48,7 @@ const RequestMonitoringPage = () => {
     const handleFilterSearch = async () => {
         if (searchInputQuery) {
             setIsLoading(true);
-            await updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25)
+            await updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25, sort)
 
         } else {
             setErrorMessage("Введите артикул или ссылку на карточку товара.");
@@ -57,16 +58,16 @@ const RequestMonitoringPage = () => {
 
     useEffect(() => {
         handleFilterSearch()
-    }, [days, page])
+    }, [days, page, sort])
 
     const updateRequestMonitoring = async (
-        token, product, period, page, page_limit
+        token, product, period, page, page_limit, sort
     ) => {
         setIsLoading(true);
         setErrorMessage('');
         try {
             const data = await ServiceFunctions.postRequestMonitoring(
-                token, product, period, page, page_limit
+                token, product, period, page, page_limit, sort
             );
 
             // Проверка на отсутствие данных
@@ -85,7 +86,8 @@ const RequestMonitoringPage = () => {
                 "sku": data.sku,
                 "pages": data.pages,
                 "page": data.page,
-                "page_limit": data.page_limit
+                "page_limit": data.page_limit,
+
             });
             setFilteredData(result);
 
@@ -95,6 +97,7 @@ const RequestMonitoringPage = () => {
             } else if (e.request) {
                 setErrorMessage('Ошибка сети: сервер не отвечает.');
             } else {
+                console.log(e.errorMessage)
                 setErrorMessage(`Ошибка: не удалось найти данный товар.`);
             }
             console.error(e);
@@ -104,6 +107,7 @@ const RequestMonitoringPage = () => {
             setIsLoading(false);
         }
     };
+
 
 
     return <div className='dashboard-page'>
@@ -367,7 +371,15 @@ const RequestMonitoringPage = () => {
                                     <div className='barcode'>
                                         <div className='barcode-row'>
                                             <p className='barcode-text-title'>SKU</p>
-                                            <p className='barcode-text'>{monitorData?.sku}</p>
+                                            {monitorData.sku?.map((sku, index) => (
+
+                                                sku !== null ? (
+                                                    <p key={index} className='barcode-text'>{sku}</p>
+                                                ) : null
+                                            ))}
+
+                                            {/* <p key={index} className='barcode-text'>{monitorData.sku}</p> */}
+
                                         </div>
                                         <div className='barcode-row-image'>
                                             <img src={glitFile} alt='Folder image' />
@@ -390,7 +402,7 @@ const RequestMonitoringPage = () => {
                         </div>
                     ) : (
                         filteredData.length > 0 ? (
-                            <TableRequestMonitoring dataTable={filteredData} monitoringData={monitorData} setPage={setPage} page={page} />
+                            <TableRequestMonitoring sort={sort} setSort={setSort} dataTable={filteredData} monitoringData={monitorData} setPage={setPage} page={page} />
                         ) : (
                             <div className='noResulstFound'><p>Результаты не найдены.</p></div>
                         )
