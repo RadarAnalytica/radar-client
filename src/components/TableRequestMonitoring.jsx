@@ -199,7 +199,7 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
                                             className={styles.tableHeaderScrollable}
                                             style={{ minWidth: "200px", display: 'flex', alignItems: "left" }}
                                         >
-                                            <div>Кол-во запросов <br />в месяц {" "}</div>
+                                            <div>Кол-во запросов <br />за период {" "}</div>
                                             <div
                                                 className='icon-sort-wrap'
                                                 style={{ background: "transparent", marginLeft: "5px", alignItems: "center", justifyContent: "center" }}
@@ -242,10 +242,9 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
                                             {filteredData.map((item, rowIndex) => (
                                                 <div key={rowIndex} className={styles.tableRow}>
                                                     <div className="req-mon-td-wrapper">
-                                                        {Math.floor(item.details[colIndex].quantity / 100) !== 0
-                                                            ? (<div className="req-mon-td-quantity"> {Math.floor(item.details[colIndex].quantity / 100)}</div>)
-                                                            : ""}
-
+                                                        {(item.details[colIndex].quantity) !== 0
+                                                            ? (<div className="req-mon-td-quantity">{Math.floor(item.details[colIndex].quantity / 100) + 1}</div>)
+                                                            : <div className='req-mon-td-quantity-empty'></div>}
                                                         <div>{item.details[colIndex].quantity}</div>
                                                         <div
                                                             className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'

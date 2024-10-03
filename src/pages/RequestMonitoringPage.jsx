@@ -337,6 +337,8 @@ const RequestMonitoringPage = () => {
                                     <div>
                                         <a
                                             href={`https://www.wildberries.ru/catalog/${monitorData.wb_id}/detail.aspx`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                             style={{
                                                 textDecoration: 'none',
                                                 fontSize: '16px',

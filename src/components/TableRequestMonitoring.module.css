@@ -135,7 +135,7 @@
 }
 
 .tableRow {
-    justify-content: center;
+    justify-content: flex-start;
     height: 100%;
     min-height: 22px;
     padding: 10px;

@@ -3679,6 +3679,14 @@ font-weight: 500;
   border-radius: 8px;
   font-weight: 700;
 }
+.req-mon-td-quantity-empty {
+  margin-right: 10px;
+  background-color: transparent; /* Transparent background */
+  padding: 4px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  min-width: 42px; /* Adjust this to match the expected width */
+}
 .enteringRequest{
   margin-left: 20px;
   display: flex;
