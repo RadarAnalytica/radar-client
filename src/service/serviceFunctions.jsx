@@ -209,7 +209,7 @@ export const ServiceFunctions = {
   },
   postRequestMonitoring: async (token, product, period, page, page_limit) => {
     const res = await fetch(
-      `${URL}/api/requests-monitor`,
+      `${URL}/api/requests-monitor/`,
       {
         method: "POST",
         headers: {

@@ -2674,7 +2674,7 @@ select {
   width: 138px;
   object-fit: cover;
   border-radius: 3px;
-  margin: 8px 0 0 8px;
+  /* margin: 8px 0 0 8px; */
 }
 
 .productInfo-price-photo-price {

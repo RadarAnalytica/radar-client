@@ -1,6 +1,6 @@
 import React from "react";
 
-const RequestMonitoringFilter = ({ setDays }) => {
+const RequestMonitoringFilter = ({ setDays, days }) => {
     // const currentShop = shops?.find((item) => item.id == activeShopId);
     // const shopName = activeShopId == 0 ? 'Все' : currentShop?.brand_name;
 
@@ -22,16 +22,16 @@ const RequestMonitoringFilter = ({ setDays }) => {
                         }}
                         className='form-control'
                         id='period'
-                        defaultValue={'30'}
+                        value={days}
                         onChange={(e) => {
                             setDays(e.target.value);
                         }}
                     >
                         {/* <option selected={defaultValue === 1 ? true : false} value={'1'}>1 день</option> */}
-                        <option value={'7'}>Последние 7 дней</option>
-                        <option value={'14'}>Последние 14 дней</option>
-                        <option value={'30'}>Последние 30 дней</option>
-                        <option value={'90'}>Последние 90 дней</option>
+                        <option value={7}>Последние 7 дней</option>
+                        <option value={14}>Последние 14 дней</option>
+                        <option value={30}>Последние 30 дней</option>
+                        <option value={90}>Последние 90 дней</option>
                     </select>
                     <svg
                         style={{

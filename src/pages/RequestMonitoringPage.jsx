@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import SideNav from '../components/SideNav'
@@ -14,236 +14,109 @@ import DataCollectionNotification from '../components/DataCollectionNotification
 import enteringQueries from "../pages/images/enteringQueries.svg"
 import { ServiceFunctions } from "../service/serviceFunctions";
 import AuthContext from "../service/AuthContext";
+import MessageWindow from '../components/MessageWindow';
+import warningIcon from "../assets/warning.png"
+import Modal from 'react-bootstrap/Modal';
 
 const RequestMonitoringPage = () => {
 
-    const dataTable = [
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 392020,
-            firstCol: 55,
-            secondCol: 44,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 392020,
-            firstCol: 55,
-            secondCol: 44,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 392020,
-            firstCol: 55,
-            secondCol: 44,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 392020,
-            firstCol: 55,
-            secondCol: 44,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 392020,
-            firstCol: 55,
-            secondCol: 44,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 392020,
-            firstCol: 55,
-            secondCol: 44,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 392020,
-            firstCol: 55,
-            secondCol: 44,
-            thirdCol: 2,
-            fourthCol: 4,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 392020,
-            firstCol: 55,
-            secondCol: 4,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 492020,
-            firstCol: 55,
-            secondCol: 4,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 192020,
-            firstCol: 55,
-            secondCol: 44,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-        {
-            query: 'блестки для глаз',
-            monthlyRequests: 292020,
-            firstCol: 55,
-            secondCol: 44,
-            thirdCol: 2,
-            fourthCol: 44,
-            fifthCol: 2
-        },
-    ]
-
     // const [loading, setLoading] = useState(false);
     const { id } = useParams();
-    const [isInitialLoading, setIsInitialLoading] = useState(true);
     const [productData, setProductData] = useState({});
     const [searchQuery, setSearchQuery] = useState('');
-    const [filteredData, setFilteredData] = useState(dataTable);
+    const [filteredData, setFilteredData] = useState();
+    const [monitorData, setMonitorData] = useState([]);
     const [days, setDays] = useState(7);
+    const [page, setPage] = useState(1);
     const [searchInputQuery, setSearchInputQuery] = useState('');
     const [hasSearched, setHasSearched] = useState(false); // Track whether a search has been performed
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingSearch, setIsLoadingSearch] = useState(false);
     const { user, authToken } = useContext(AuthContext);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
+
+    // Функции для открытия и закрытия модального окна
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
     //for Main Search
     const handleSearchQuery = (e) => {
         setSearchInputQuery(e.target.value);
     };
 
-    const handleFilterSearch = () => {
+    const handleFilterSearch = async () => {
         if (searchInputQuery) {
-            setIsLoading(true); // Show loader
+            setIsLoading(true);
+            await updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25)
 
-            setTimeout(() => {
-                setIsLoading(false); // Hide loader after 2 seconds
-                setHasSearched(true); // Show results after loader disappears
-            }, 2000); // 2000 ms = 2 seconds
-            updateRequestMonitoring(authToken, searchInputQuery, days, 1, 25)// Show all data if no search query
+        } else {
+            setErrorMessage("Введите артикул или ссылку на карточку товара.");
+            handleShowModal();
         }
     };
-    //for Main Search
 
-    // const shops = useAppSelector((state) => state.shopsSlice.shops);
-    // const prevDays = useRef(days);
-    // const [activeBrand, setActiveBrand] = useState(idShopAsValue);
+    useEffect(() => {
+        handleFilterSearch()
+    }, [days, page])
 
-    const productId = id;
-    const productBySku = Array.isArray(productData)
-        ? productData.find((item) => item.sku === id)
-        : null;
-    const linkToWb = `https://www.wildberries.ru/catalog/${productId}/detail.aspx`;
-    // const storedActiveShop = localStorage.getItem("activeShop");
-    // let activeShop;
-    // if (storedActiveShop && typeof storedActiveShop === "string") {
-    //     try {
-    //         activeShop = JSON.parse(storedActiveShop);
-    //     } catch (error) {
-    //         console.error("Error parsing storedActiveShop:", error);
-    //         activeShop = null;
-    //     }
-    // }
-    // const allShop = shops?.some((item) => item?.is_primary_collect === true);
-    // const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
-    // const activeShopId = activeShop?.id;
-    // const idShopAsValue =
-    //     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
-    // const shouldDisplay = activeShop
-    //     ? activeShop.is_primary_collect
-    //     : oneShop
-    //         ? oneShop.is_primary_collect
-    //         : allShop;
-    //Search
-    const handleSearch = (e) => {
-        setSearchQuery(e.target.value); // Update search query
-    };
-
-    const handleFilter = () => {
-        setIsLoadingSearch(true); // Show loader
-
-        // Simulate 2-second loading time
-        setTimeout(() => {
-            if (searchQuery.trim() === '') {
-
-            } else {
-                // Filter data based on search query
-                updateRequestMonitoring(authToken, searchQuery, days, 1, 25)// Show all data if no search query
-                const filtered = dataTable.filter((item) => {
-                    const queryMatch = item.query ? item.query.toLowerCase().includes(searchQuery.toLowerCase()) : false;
-                    const monthlyRequestsMatch = item.monthlyRequests ? item.monthlyRequests.toString().includes(searchQuery) : false;
-                    const firstColMatch = item.firstCol ? item.firstCol.toString().includes(searchQuery) : false;
-                    const secondColMatch = item.secondCol ? item.secondCol.toString().includes(searchQuery) : false;
-                    const thirdColMatch = item.thirdCol ? item.thirdCol.toString().includes(searchQuery) : false;
-                    const fourthColMatch = item.fourthCol ? item.fourthCol.toString().includes(searchQuery) : false;
-                    const fifthColMatch = item.fifthCol ? item.fifthCol.toString().includes(searchQuery) : false;
-
-                    // Return true if any of the fields match the search query
-                    return (
-                        queryMatch ||
-                        monthlyRequestsMatch ||
-                        firstColMatch ||
-                        secondColMatch ||
-                        thirdColMatch ||
-                        fourthColMatch ||
-                        fifthColMatch
-                    );
-                });
-                setFilteredData(filtered); // Update the filtered data
-            }
-            setIsLoadingSearch(false); // Hide loader and show table after 2 seconds
-        }, 2000); // 2-second delay
-    };
     const updateRequestMonitoring = async (
         token, product, period, page, page_limit
     ) => {
-        //setLoading(true);
+        setIsLoading(true);
+        setErrorMessage('');
         try {
             const data = await ServiceFunctions.postRequestMonitoring(
                 token, product, period, page, page_limit
             );
+
+            // Проверка на отсутствие данных
+            if (!data || !data.results || data.results.length === 0) {
+                throw new Error('Продукт не найден.');
+            }
+
             const result = data.results;
-            console.log(data);
+
+            setMonitorData({
+                "feedback_number": data.feedback_number,
+                "photo": data.photo,
+                "price": data.price,
+                "rate": data.rate,
+                "wb_id": data.wb_id,
+                "sku": data.sku,
+                "pages": data.pages,
+                "page": data.page,
+                "page_limit": data.page_limit
+            });
+            setFilteredData(result);
 
         } catch (e) {
+            if (e.response) {
+                setErrorMessage(`Ошибка сервера.`);
+            } else if (e.request) {
+                setErrorMessage('Ошибка сети: сервер не отвечает.');
+            } else {
+                setErrorMessage(`Ошибка: не удалось найти данный товар.`);
+            }
             console.error(e);
+            handleShowModal();
         } finally {
-            //setLoading(false);
+            setHasSearched(true);
+            setIsLoading(false);
         }
     };
-    //Search
+
+
     return <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
             <TopNav title={'Мониторинг запросов'} />
 
 
+
             {!hasSearched && !isLoading ? (
+
                 <div className='request-mon-search-wrapper container dash-container d-flex' style={{ flexDirection: "column" }}>
+
                     <div className='enteringRequest'>
                         <div className='enteringRequestImg'><img src={enteringQueries} /></div>
                         <div className='enteringRequestHeader'>Вхождение запросов</div>
@@ -270,23 +143,70 @@ const RequestMonitoringPage = () => {
                 </div>
             ) : isLoading ? (
                 <div className="loader-wrapper">
-                    <span className="loader"></span> {/* Display loader */}
+                    <span className="loader"></span>
                 </div>
-            ) : (
-                <>
-                    <div className='request-mon-search-wrapper container dash-container d-flex'>
+            ) : errorMessage ? (
+
+                <div>
+                    <Modal show={showModal} onHide={handleCloseModal}>
+                        <Modal.Header closeButton>
+                            <div>
+                                <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
+                                    <img src={warningIcon} alt='' style={{ height: '3vh' }} />
+                                    <p className='fw-bold mb-0'>Ошибка!</p>
+                                </div>
+                                <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>
+                                    {errorMessage}
+                                </p>
+                            </div>
+                        </Modal.Header>
+                    </Modal>
+                    <div className='request-mon-search-wrapper container dash-container d-flex' style={{ flexDirection: "column" }}>
+
+                        <div className='enteringRequest'>
+                            <div className='enteringRequestImg'><img src={enteringQueries} /></div>
+                            <div className='enteringRequestHeader'>Вхождение запросов</div>
+                        </div>
+                        <div className='enteringRequestText'>Раздел покажет по каким ключевым запросам индексируется карточка товара</div>
                         <div className='search'>
-                            <input type='text'
+                            <input
+                                type='text'
                                 placeholder='Введите артикул или ссылку на карточку товара'
                                 className='search-input'
-                                value={searchQuery}
-                                onChange={handleSearch}
-                                style={{ marginLeft: '20px' }} />
+                                value={searchInputQuery}
+                                onChange={handleSearchQuery}
+                                style={{ marginLeft: '20px' }}
+                            />
                             <div style={{ marginLeft: '10px' }}>
                                 <img
                                     src={SearchButton}
                                     alt="Search"
-                                    onClick={handleFilter}
+                                    onClick={handleFilterSearch}
+                                    style={{ cursor: 'pointer' }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            ) : (
+                <>
+                    <div className='request-mon-search-wrapper container dash-container d-flex'>
+                        <div className='search'>
+                            <input
+                                type='text'
+                                placeholder='Введите артикул или ссылку на карточку товара'
+                                className='search-input'
+                                value={searchInputQuery}
+                                onChange={handleSearchQuery}
+                                style={{ marginLeft: '20px' }}
+                            />
+                            <div style={{ marginLeft: '10px' }}>
+                                <img
+                                    src={SearchButton}
+                                    alt="Search"
+                                    onClick={handleFilterSearch}
                                     style={{ cursor: 'pointer' }}
                                 />
                             </div>
@@ -297,17 +217,17 @@ const RequestMonitoringPage = () => {
                         style={{ justifyContent: 'space-between', marginBottom: '9px' }}
                     >
                         <div className='productInfo-price-photo'>
-                            {/* {isInitialLoading && (
-                        <div
-                            className='d-flex flex-column align-items-center justify-content-center'
-                            style={{ height: '100%', paddingTop: '5%', width: '100%' }}
-                        >
-                            <span className='loader'></span>
-                        </div>
-                    )} */}
-                            {/* {!isInitialLoading && ( */}
-                            <>
-                                {/* <div className='productInfo-price-photo-photo'>
+                            {isLoading && (
+                                <div
+                                    className='d-flex flex-column align-items-center justify-content-center'
+                                    style={{ height: '100%', paddingTop: '5%', width: '100%' }}
+                                >
+                                    <span className='loader'></span>
+                                </div>
+                            )}
+                            {!isLoading && (
+                                <>
+                                    {/* <div className='productInfo-price-photo-photo'>
                                     <img
                                         src={productBySku?.photo}
                                         alt='product image'
@@ -319,147 +239,147 @@ const RequestMonitoringPage = () => {
                                         }}
                                     />
                                 </div> */}
-                                <div
-                                    className='productInfo-price-photo-photo'
-                                >
-                                    <img
-                                        src={productBySku?.photo}
-                                        alt='product image'
-                                        style={{
-                                            width: '100%', // Ensure the image takes full space of its container
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                            display: productBySku?.photo ? 'block' : 'none', // Hide the img tag if no image
-                                        }}
-                                        onError={(e) => {
-                                            e.target.style.display = 'none'; // Hide the image element if it fails to load
-                                        }}
-                                    />
-                                    {!productBySku?.photo && (
-                                        <div style={{ color: '#fff' }}>No Image Available</div> // Optional text inside the grey background
-                                    )}
-                                </div>
-                                <div className='productInfo-price-photo-price'>
-                                    <p
-                                        style={{
-                                            color: '#8C8C8C',
-                                            fontSize: '16px',
-                                            fontWeight: '500',
-                                            marginBottom: '0',
-                                        }}
+                                    <div
+                                        className='productInfo-price-photo-photo'
                                     >
-                                        Цена
-                                    </p>
-                                    <span style={{ fontSize: '24px', fontWeight: '700' }}>
-                                        {productBySku?.basic} ₽
-                                    </span>
-                                </div>
-                            </>
-                            {/* )} */}
+                                        <img
+                                            src={monitorData?.photo}
+                                            alt='product image'
+                                            style={{
+                                                width: '100%', // Ensure the image takes full space of its container
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                                display: monitorData?.photo ? 'block' : 'none', // Hide the img tag if no image
+                                            }}
+                                            onError={(e) => {
+                                                e.target.style.display = 'none'; // Hide the image element if it fails to load
+                                            }}
+                                        />
+                                        {!monitorData?.photo && (
+                                            <div style={{ color: '#fff' }}>No Image Available</div> // Optional text inside the grey background
+                                        )}
+                                    </div>
+                                    <div className='productInfo-price-photo-price'>
+                                        <p
+                                            style={{
+                                                color: '#8C8C8C',
+                                                fontSize: '16px',
+                                                fontWeight: '500',
+                                                marginBottom: '0',
+                                            }}
+                                        >
+                                            Цена
+                                        </p>
+                                        <span style={{ fontSize: '24px', fontWeight: '700' }}>
+                                            {`${(monitorData.price / 100).toFixed(2)} ₽`}
+                                        </span>
+                                    </div>
+                                </>
+                            )}
                         </div>
 
                         <div
                             className='productInfo-wbInfo'
                         >
-                            {/* {isInitialLoading && (
-                        <div
-                            className='d-flex flex-column align-items-center justify-content-center'
-                            style={{ height: '100%', paddingTop: '5%', width: '100%' }}
-                        >
-                            <span className='loader'></span>
-                        </div>
-                    )} */}
-                            {/* {!isInitialLoading && ( */}
-                            <>
-                                <div className='d-flex'>
-                                    <span className='productInfo-wbInfo-rating'>
-                                        <span className='d-flex column'>
-                                            <span className='d-flex align-items-center'>
-                                                <img
-                                                    src={glitterStar}
-                                                    alt=''
-                                                />
+                            {isLoading && (
+                                <div
+                                    className='d-flex flex-column align-items-center justify-content-center'
+                                    style={{ height: '100%', paddingTop: '5%', width: '100%' }}
+                                >
+                                    <span className='loader'></span>
+                                </div>
+                            )}
+                            {!isLoading && (
+                                <>
+                                    <div className='d-flex'>
+                                        <span className='productInfo-wbInfo-rating'>
+                                            <span className='d-flex column'>
+                                                <span className='d-flex align-items-center'>
+                                                    <img
+                                                        src={glitterStar}
+                                                        alt=''
+                                                    />
+                                                    <p
+                                                        style={{ marginBottom: '5px', fontSize: '24px', marginLeft: '8px' }}
+                                                    >
+                                                        {monitorData.rate}
+                                                    </p>
+                                                </span>
                                                 <p
-                                                    style={{ marginBottom: '5px', fontSize: '24px', marginLeft: '8px' }}
+                                                    style={{
+                                                        color: '#8C8C8C',
+                                                        fontSize: '16px',
+                                                        fontWeight: '500',
+                                                        margin: '0',
+                                                    }}
                                                 >
-                                                    5.0
+                                                    {monitorData.feedback_number} отзывов
                                                 </p>
                                             </span>
-                                            <p
+                                            <div
                                                 style={{
-                                                    color: '#8C8C8C',
-                                                    fontSize: '16px',
-                                                    fontWeight: '500',
-                                                    margin: '0',
+                                                    width: '60px',
+                                                    height: '60px',
+                                                    backgroundColor: 'rgba(240, 173, 0, 0.2)',
+                                                    borderRadius: '10px',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
                                                 }}
                                             >
-                                                189 отзывов
-                                            </p>
+                                                <img
+                                                    src={glityellow}
+                                                    alt=''
+                                                />
+                                            </div>
                                         </span>
-                                        <div
+                                    </div>
+                                    <div>
+                                        <a
+                                            href={`https://www.wildberries.ru/catalog/${monitorData.wb_id}/detail.aspx`}
                                             style={{
-                                                width: '60px',
-                                                height: '60px',
-                                                backgroundColor: 'rgba(240, 173, 0, 0.2)',
-                                                borderRadius: '10px',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
+                                                textDecoration: 'none',
+                                                fontSize: '16px',
+                                                fontWeight: '600',
+                                                color: 'rgba(83, 41, 255, 1)',
                                             }}
                                         >
-                                            <img
-                                                src={glityellow}
-                                                alt=''
-                                            />
-                                        </div>
-                                    </span>
-                                </div>
-                                <div>
-                                    <a
-                                        href={linkToWb}
-                                        style={{
-                                            textDecoration: 'none',
-                                            fontSize: '16px',
-                                            fontWeight: '600',
-                                            color: 'rgba(83, 41, 255, 1)',
-                                        }}
-                                    >
-                                        Посмотреть на WB
-                                    </a>
-                                </div>
-                            </>
-                            {/* )} */}
+                                            Посмотреть на WB
+                                        </a>
+                                    </div>
+                                </>
+                            )}
                         </div>
 
                         <div className='barcode-sku-brand'>
-                            {/* {isInitialLoading && (
-                        <div
-                            className='d-flex flex-column align-items-center justify-content-center'
-                            style={{ height: '100%', paddingTop: '5%', width: '100%' }}
-                        >
-                            <span className='loader'></span>
-                        </div>
-                    )} */}
-                            {/* {!isInitialLoading && ( */}
-                            <div className='barcode-wrapper'>
-                                <div className='barcode'>
-                                    <div className='barcode-row'>
-                                        <p className='barcode-text-title'>SKU</p>
-                                        <p className='barcode-text'>{productBySku?.sku}</p>
-                                    </div>
-                                    <div className='barcode-row-image'>
-                                        <img src={glitFile} alt='Folder image' />
+                            {isLoading && (
+                                <div
+                                    className='d-flex flex-column align-items-center justify-content-center'
+                                    style={{ height: '100%', paddingTop: '5%', width: '100%' }}
+                                >
+                                    <span className='loader'></span>
+                                </div>
+                            )}
+                            {!isLoading && (
+                                <div className='barcode-wrapper'>
+                                    <div className='barcode'>
+                                        <div className='barcode-row'>
+                                            <p className='barcode-text-title'>SKU</p>
+                                            <p className='barcode-text'>{monitorData?.sku}</p>
+                                        </div>
+                                        <div className='barcode-row-image'>
+                                            <img src={glitFile} alt='Folder image' />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            {/* )} */}
+                            )}
                         </div>
                     </div>
                     <div
                         className='container dash-container pt-0 d-flex'
                         style={{ marginBottom: '4px' }}
                     >
-                        <RequestMonitoringFilter setDays={setDays} />
+                        <RequestMonitoringFilter setDays={setDays} days={days} />
                     </div>
                     {/* {shouldDisplay ? ( */}
                     {isLoadingSearch ? (
@@ -468,17 +388,12 @@ const RequestMonitoringPage = () => {
                         </div>
                     ) : (
                         filteredData.length > 0 ? (
-                            <TableRequestMonitoring dataTable={filteredData} />
+                            <TableRequestMonitoring dataTable={filteredData} monitoringData={monitorData} setPage={setPage} page={page} />
                         ) : (
                             <div className='noResulstFound'><p>Результаты не найдены.</p></div>
                         )
                     )}
-                    {/* ) : (
-                <DataCollectionNotification
-                    title={"Ваши данные еще формируются и обрабатываются."}
-                />
-               
-            )} */}
+
                 </>
             )}
         </div>
