@@ -248,11 +248,11 @@ const StockAnalysis = () => {
                           alt=''
                         />
                       </div>
-                      <div>
+                      {/* <div>
                         <DownloadButton
                           handleDownload={() => getFileClickHandler(authToken, activeBrand)}
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

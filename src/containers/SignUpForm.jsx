@@ -6,11 +6,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import InfoForm from './InfoForm';
 import CustomSelect from '../components/CustomSelect';
-
+import { useLocation } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 
 const SignUpForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const referral = searchParams.get('referral') || searchParams.get('radar');
+    
+    if (referral) {
+      // Save the referral code (to localStorage)
+      localStorage.setItem('referralCode', referral);
+    }
+  }, [location]);
 
   const options = [
     'Хочу продавать на маркетплейсах',
@@ -32,6 +43,7 @@ const SignUpForm = () => {
     promo_сode: null,
     confirmed: false,
     isOnboarded: false,
+    referral_partner_link: localStorage.getItem('referralCode') || '', 
   });
 
   const nameHandler = (e) => {
