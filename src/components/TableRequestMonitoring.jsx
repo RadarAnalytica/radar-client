@@ -128,6 +128,12 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
 
         return countTrueFlags;
     };
+    function formatDate(dateString) {
+        const dateParts = dateString.split('-'); // Разделяем строку по '-'
+        const day = dateParts[2]; // Получаем день
+        const month = dateParts[1]; // Получаем месяц
+        return `${day}.${month}`; // Возвращаем отформатированную дату
+    }
     const totalTrueFlags = calculateCompareFlags(filteredData);
 
     return (
@@ -250,7 +256,7 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
                                             {/* Render column header (date) */}
                                             <div className={styles.tableOverHeader}></div>
                                             <div className={styles.tableHeaderScrollable}>
-                                                {detail.date}
+                                                {formatDate(detail.date)}
                                             </div>
 
                                             {/* Render table data for each row based on the column (date) */}
