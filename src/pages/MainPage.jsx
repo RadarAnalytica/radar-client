@@ -30,6 +30,7 @@ import ToggleAnaliticsPanel from "../components/ToggleAnaliticsPanel";
 import ImageComponent from "../components/utilsComponents/ImageComponent ";
 import ReviewsUsers from "../components/ReviewsUsers";
 import TryProduct from "../components/TryProduct";
+import { useLocation } from "react-router-dom";
 import { URL } from "../service/config";
 import lowResImage from './images/imageFon_comp.png'; //  the low-res image
 import highResImage from './images/imageFon.png'; //  the high-res image
