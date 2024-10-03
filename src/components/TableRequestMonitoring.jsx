@@ -33,29 +33,7 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
             setPage(page + 1);
         }
     };
-    const renderTableCell = (value) => {
-        return (
-            <div className="req-mon-td-wrapper">
-                <div className="req-mon-td-quantity">1{"  "}</div>
-                <div>{value}</div>
-                <div
-                    className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'
-                    style={{
-                        fontSize: '1.85vh',
-                        marginLeft: '8px',
-                    }}
-                >
-                    <span className='pb-1'>
-                        <img
-                            src={value > 30 ? GreenArrow : RedArrow}
-                            alt=''
-                            style={{ width: '1.25vw' }}
-                        />
-                    </span>
-                </div>
-            </div>
-        );
-    };
+
 
     const sortData = (key) => {
         let direction = 'asc';
@@ -139,30 +117,31 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
     return (
         <div class="table-wrapper-req-monitoring">
             <div class="infoOfTable">
-                <div class="attention-icon">
+                {/* tooltip */}
+                {/* <div class="attention-icon">
                     <div class="exclamation-circle">!</div>
-                </div>
+                </div> */}
                 <div class="page-info">
                     <div className="pagination">
-                        {/* Left arrow, shown only if it's not the first page */}
                         {page > 1 && (
                             <button className="arrow left-arrow" onClick={goToPreviousPage}>
-                                &#8592; {/* Unicode for left arrow */}
+                                &lang;
                             </button>
                         )}
 
 
                         <div className="page">
                             <img src={pageIcon} alt="Page Icon" style={{ marginRight: "5px" }} />
-                            <span>{page} страница</span>
+                            <span>{page}<span style={{ fontWeight: "400" }}> стр. из {totalPages}</span></span>
                         </div>
 
-
-                        <button className="arrow right-arrow" onClick={goToNextPage}>
-                            &#8594;
-                        </button>
+                        {page < totalPages && (
+                            <button className="arrow right-arrow" onClick={goToNextPage}>
+                                &rang;
+                            </button>
+                        )}
                     </div>
-                    <div style={{ marginLeft: "15px" }} class="rank">
+                    {/* <div style={{ marginLeft: "15px" }} class="rank">
                         <img src={rankIcon} />
                         <span style={{ marginLeft: "5px" }}>{totalTrueFlags} место</span>
                         <img
@@ -170,7 +149,7 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
                             alt=''
                             style={{ width: '1.25vw', marginLeft: "5px" }}
                         />
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className={styles.tableWrapper}>
@@ -263,7 +242,10 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
                                             {filteredData.map((item, rowIndex) => (
                                                 <div key={rowIndex} className={styles.tableRow}>
                                                     <div className="req-mon-td-wrapper">
-                                                        {/* <div className="req-mon-td-quantity">1{"  "}</div> */}
+                                                        {Math.floor(item.details[colIndex].quantity / 100) !== 0
+                                                            ? (<div className="req-mon-td-quantity"> {Math.floor(item.details[colIndex].quantity / 100)}</div>)
+                                                            : ""}
+
                                                         <div>{item.details[colIndex].quantity}</div>
                                                         <div
                                                             className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'
@@ -274,11 +256,13 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page }) =>
                                                         >
                                                             {console.log(filteredData)}
                                                             <span className='pb-1'>
-                                                                <img
-                                                                    src={(item.details[colIndex].compare_flag) ? GreenArrow : RedArrow}
-                                                                    alt=''
-                                                                    style={{ width: '1.25vw' }}
-                                                                />
+                                                                {item.details[colIndex].compare_flag !== null && (
+                                                                    <img
+                                                                        src={item.details[colIndex].compare_flag ? GreenArrow : RedArrow}
+                                                                        alt=''
+                                                                        style={{ width: '1.25vw' }}
+                                                                    />
+                                                                )}
                                                             </span>
                                                         </div>
                                                     </div>

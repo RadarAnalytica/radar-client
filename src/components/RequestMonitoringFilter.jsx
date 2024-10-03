@@ -31,7 +31,6 @@ const RequestMonitoringFilter = ({ setDays, days }) => {
                         <option value={7}>Последние 7 дней</option>
                         <option value={14}>Последние 14 дней</option>
                         <option value={30}>Последние 30 дней</option>
-                        <option value={90}>Последние 90 дней</option>
                     </select>
                     <svg
                         style={{

@@ -3418,7 +3418,8 @@ select {
 .arrow {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
 }
 
@@ -3619,7 +3620,7 @@ font-weight: 500;
 
 }
 .pagination {
-  background-color:  #00000008;
+  /* background-color:  #00000008; */
   border-radius: 8px;
   padding: 4px 8px 4px 8px;
   display: flex;
