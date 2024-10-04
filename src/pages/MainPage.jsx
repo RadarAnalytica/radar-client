@@ -30,15 +30,26 @@ import ToggleAnaliticsPanel from "../components/ToggleAnaliticsPanel";
 import ImageComponent from "../components/utilsComponents/ImageComponent ";
 import ReviewsUsers from "../components/ReviewsUsers";
 import TryProduct from "../components/TryProduct";
+import { useLocation } from 'react-router-dom';
 import { URL } from "../service/config";
 import lowResImage from './images/imageFon_comp.png'; //  the low-res image
 import highResImage from './images/imageFon.png'; //  the high-res image
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
 
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const referral = searchParams.get('referral') || searchParams.get('radar');
+    if (referral) {
+      // Save the referral code ( to localStorage)
+      localStorage.setItem('referralCode', referral);
+    }
+  }, [location]);
 
   const redirect = () => {
     if (user?.is_onboarded) {
