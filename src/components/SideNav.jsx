@@ -399,9 +399,9 @@ const SideNav = () => {
 
       <div
         className='support-block'
-        onClick={() =>
-          toggleOpenSupport()
-        }
+        // onClick={() =>
+        //   toggleOpenSupport()
+        // }
         style={{ cursor: "pointer" }}
       >
         <a>
