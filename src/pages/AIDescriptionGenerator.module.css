@@ -1,0 +1,358 @@
+
+.generatorHeader{
+    display: flex;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 20px 0px #0000000A;
+    border-radius: 16px;
+    flex-direction: column;
+    padding: 20px 32px;
+}
+.generatorTitleWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+.generatorTitle{
+    font-weight: 700;
+    font-size: 24px;
+    color: #1A1A1A;
+    margin-left: 10px;
+}
+.generatorTitleWrapperMain{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.generatorParagsWrapper{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+}
+.generatorParag{
+    margin-top: 10px;
+}
+.stepsWrapper{
+    margin-top: 20px;
+    display: flex;
+
+    margin-right: auto;
+    margin-left: auto;
+}
+.formContainer {
+    width: 50%;
+    margin-right: 10px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 20px 0px #0000000A;
+    font-family: 'Arial', sans-serif;
+}
+
+.formContainerR{
+    width: 50%;
+    height: max-content;
+    margin-left: 10px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 20px 0px #0000000A;
+    font-family: 'Arial', sans-serif;
+}
+
+.stepIndicator {
+    background-color: #5329FF0D;
+    color: #5329FF;
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-family: Mulish;
+}
+
+.aboutParag{
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 700;
+    font-size: 18px;
+    color: #1A1A1A;
+}
+
+.inputField, .textArea {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: none !important;
+    background-color: #f7f7f7;
+    font-size: 16px;
+}
+
+.textArea {
+    resize: none;
+    height: auto;
+    min-height: 120px;
+}
+
+.inputField::placeholder, .textArea::placeholder {
+    color: black;
+    font-weight: 400;
+    font-family: Mulish;
+}
+
+.submitBtn {
+    background-color: #5329FF;
+    color: white;
+    border: none;
+    padding: 16px 20px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.inputWrapper {
+    display: flex;
+    margin-bottom: 20px;
+}
+.inputWrappeR {
+    display: flex;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+.inputFieldR {
+    width: 100%;
+    flex-grow:2;
+    padding: 12px;
+    border: none!important;
+    background-color: transparent;
+    font-size: 16px;
+}
+.inputFieldR:focus {
+    outline: none;
+  }
+
+form {
+    display:flex;
+    flex-direction:row;
+    border:1px solid #E8E8E8;
+    border-radius: 6px;
+  }
+  
+.addButtonR {
+    background-color: transparent;
+    color: #5329FF;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px 16px;
+    white-space: nowrap;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e3e3e3;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+input::placeholder {
+    color: #bbb;
+}
+
+
+.keywordList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 330px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.keywordList::-webkit-scrollbar {
+    width: 6px; /* Ширина скроллбара */
+}
+
+.keywordList::-webkit-scrollbar-track {
+    background: transparent; /* Цвет фона трека */
+}
+
+.keywordList::-webkit-scrollbar-thumb {
+    background-color: #5329FF80; /* Цвет полосы прокрутки */
+    border-radius: 4px; /* Скругленные углы */
+    border: 2px solid transparent; /* Добавляем прозрачный отступ */
+}
+
+/* Дополнительная стилизация для Firefox */
+.keywordList {
+    scrollbar-width: thin; /* Узкий скроллбар */
+    scrollbar-color: #5329ff80 transparent; /* Цвет скроллбара и трека */
+}
+
+.keyword {
+    background-color: #00000008;
+    padding: 6px 10px;
+    border-radius: 8px;
+    display: flex;
+    color: #1A1A1A;
+    align-items: center;
+    font-size: 16px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+.closeBtn{
+    width: 12px;
+    height: 12px;
+}
+
+.removeKeyword {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+
+/* Modal */
+.modalOverlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+}
+.modalContent{
+    background-color: white;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    width: 650px;
+    max-width: 90%;
+    padding: 24px;
+    position: relative;
+    max-height: 420px;
+    text-align: center;
+
+}
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+  
+.modalHeaderTitle{
+    color: #1A1A1A;
+    font-size: 24px;
+    font-weight: 700;
+}
+.closeBtnModal {
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.modalBody{
+    max-height: 240px;
+    overflow-y: scroll;
+    text-align: left;
+}
+.modalBody::-webkit-scrollbar {
+    width: 6px; /* Ширина скроллбара */
+}
+
+.modalBody::-webkit-scrollbar-track {
+    background: transparent; /* Цвет фона трека */
+}
+
+.modalBody::-webkit-scrollbar-thumb {
+    background-color: #5329FF80; /* Цвет полосы прокрутки */
+    border-radius: 4px; /* Скругленные углы */
+    border: 2px solid transparent; /* Добавляем прозрачный отступ */
+}
+
+/* Дополнительная стилизация для Firefox */
+.modalBody {
+    scrollbar-width: thin; /* Узкий скроллбар */
+    scrollbar-color: #5329ff80 transparent; 
+    margin-left: 5px;/* Цвет скроллбара и трека */
+}
+
+.modalBody p {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1A1A1A;
+    margin-right: 6px;
+  }
+  
+.modalFooter{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.modalFooterBtnNew{
+    background-color: white;
+    border: none;
+    color: #5329FF;
+    padding: 20px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid #DDD4FF ;
+    font-size: 16px;
+    font-weight: 700;
+    width: 50%;
+    margin-right: 10px;
+}
+
+.modalFooterBtnCopy{
+    background-color: #5329FF;
+    border: none;
+    color: white;
+    padding: 20px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    width: 50%;
+    margin-left: 10px;
+}
+.topNavAdd{
+    color: #5329FF;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 0!important;
+}
+.topNavTitle{
+    color: black;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 0!important;
+}
+.generatorWrapper{   
+    background-color: hsla(252, 100%, 58%, 0.102);
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    padding: 24px 32px;
+    height: 8vh !important;
+    margin-right: .5rem !important;
+    flex-direction: column;
+    justify-content: center;
+}

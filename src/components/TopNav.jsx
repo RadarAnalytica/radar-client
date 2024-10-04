@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { MessagesDropdown } from "./MessagesDropdown";
 import "../App.css";
 
-const TopNav = ({ title }) => {
+const TopNav = ({ title, children }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const componentRef = useRef(null);
@@ -91,6 +91,7 @@ const TopNav = ({ title }) => {
             </p>
           )}
         </div>
+        {children}
         <span className='col-2 d-flex justify-content-around top-menu top-wrapper'>
           <span className='error-notification' ref={componentRef}>
             <span onClick={(event) => handleErrorClick(event)}>
