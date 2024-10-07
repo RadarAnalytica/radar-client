@@ -1,0 +1,106 @@
+.infoSeoPlateBox {
+    width: 100%;
+    padding: 24px 32px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);
+    border-radius: 16px;
+}
+
+.infoTitle {
+    display: flex;
+    align-items: center;
+}
+
+.infoTitle span {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: rgba(26, 26, 26, 1);
+    margin-left: 12px;
+}
+
+.infoBodyText span {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 25px;
+    color: rgba(26, 26, 26, 1);
+    margin-top: 8px;
+}
+
+.infoBodyBox {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.infoBodyBoxItem {
+    border: 1.5px solid rgba(83, 41, 255, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.infoBodyBoxItem span {
+    margin-left: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    font-weight: 22px;
+}
+
+.infoSeoGroupWrapper {
+    width: 50%;
+    padding: 24px 32px;
+    background: rgba(255, 255, 255, 1);
+    margin-top: 20px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    margin-bottom: 50px;
+}
+
+.infoSeoGroupTitle {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.groupBoxTitle {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.groupTextarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  .getReportBtn {
+    width: 100%;
+    background: rgba(83, 41, 255, 1);
+    padding: 20px 0 20px 0;
+    color: rgba(255, 255, 255, 1);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .infoSeoGroupWrapper form {
+    display: flex;
+    flex-direction: column;
+    border: none;
+  }

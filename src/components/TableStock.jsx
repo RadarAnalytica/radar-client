@@ -3,6 +3,7 @@ import SortArrows from './SortArrows';
 import { useNavigate } from 'react-router-dom';
 
 const TableStock = ({ dataTable, setDataTable }) => {
+  console.log('dataTable', dataTable);
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);

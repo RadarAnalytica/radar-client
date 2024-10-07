@@ -12,6 +12,7 @@ import LoaderPage from "./pages/LoaderPage";
 import Subscriptions from "./pages/Subscriptions";
 import RequestMonitoringPage from "./pages/RequestMonitoringPage";
 import AiDescriptionGeneratorPage from "./pages/AIDescriptionGeneratorPage";
+import SeoPage from "./pages/SeoPage";
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
@@ -295,6 +296,14 @@ function App() {
                   element={
                     <React.Suspense fallback={<LoaderPage />}>
                       <AbcAnalysisPage />
+                    </React.Suspense>
+                  }
+                />
+                <Route
+                  path='/seo'
+                  element={
+                    <React.Suspense fallback={<LoaderPage />}>
+                      <SeoPage />
                     </React.Suspense>
                   }
                 />
