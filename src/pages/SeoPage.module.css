@@ -1,0 +1,10 @@
+.pageWrapper {
+    min-height: 100vh;
+    display: flex;
+}
+
+.scrollableContent {
+    flex: 1;
+    overflow-y: auto;
+    height: 100vh;
+  }
