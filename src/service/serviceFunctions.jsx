@@ -228,4 +228,48 @@ export const ServiceFunctions = {
     const data = await res.json();
     return data;
   },
+  postAiDescriptionGeneratorKeywords: async (token, competitorsLinks) => {
+    console.log("competitorsLinks:", competitorsLinks);
+
+    const res = await fetch(
+      `${URL}/api/description-generator/keywords`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+
+        body: JSON.stringify(competitorsLinks)
+
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
+
+  postAiDescriptionGenerator: async (token, productTitle, shortDescription, keywords) => {
+
+    const res = await fetch(
+      `${URL}/api/description-generator/generate`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+
+        body: JSON.stringify({
+          product_title: productTitle,
+          short_description: shortDescription,
+          keywords: keywords,
+
+        }),
+
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
+
 }

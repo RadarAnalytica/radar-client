@@ -92,7 +92,8 @@
 
 .textArea {
     resize: none;
-    height: auto;
+    height: 120px;
+    overflow-y: auto;
     min-height: 120px;
 }
 
@@ -266,6 +267,7 @@ input::placeholder {
     cursor: pointer;
 }
 .modalBody{
+    min-height: 240px;
     max-height: 240px;
     overflow-y: scroll;
     text-align: left;

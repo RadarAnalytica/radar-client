@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import SideNav from "../components/SideNav"
 import TopNav from "../components/TopNav"
 import styles from "./AIDescriptionGenerator.module.css"
@@ -6,37 +6,197 @@ import magicWand from "./images/magic-wand-2.svg"
 import close from "./images/AiMinusIcon.svg"
 import open from "./images/AiPlusIcon.svg"
 import closebtn from "../assets/closebtn.png";
-import { Modal } from "bootstrap"
 import closeBtnModal from './images/closeBtnModal.svg'
-const AiDescriptionGeneratorPage = () => {
+import { ServiceFunctions } from "../service/serviceFunctions";
+import AuthContext from "../service/AuthContext";
+import warningIcon from "../assets/warning.png"
+import Modal from 'react-bootstrap/Modal';
 
+const AiDescriptionGeneratorPage = () => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
     const [isVisible, setIsVisible] = useState(true);
     const [keywords, setKeywords] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [nextStep, setNextStep] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [productName, setProductName] = useState('')
+    const [shortDescription, setShortDescription] = useState('')
+    const [competitorsLinks, setCompetitorsLinks] = useState('')
+    const { user, authToken } = useContext(AuthContext);
+    const [description, setDescription] = useState();
+    const [showModalError, setShowModalError] = useState(false);
 
-    const handleNextStep = () => {
-        setNextStep(true)
+    const handleShowModalError = () => setShowModalError(true);
+    const handleCloseModalError = () => setShowModalError(false);
+
+    const updateAiDescriptionGeneratorKeyword = async (
+        token, competitorsLinks
+    ) => {
+        setIsLoading(true);
+        setErrorMessage('');
+        try {
+            const data = await ServiceFunctions.postAiDescriptionGeneratorKeywords(
+                token, competitorsLinks
+            );
+
+            // Проверка на отсутствие данных
+            if (!data || data.length === 0) {
+                setErrorMessage("Не правильная ссылка или артикул.");
+                handleShowModalError();
+            }
+
+            const result = data;
+
+            // Check if data is not empty
+            if (result.length > 0) {
+
+                setKeywords(prevKeywords => [...prevKeywords, ...result]);
+                setInputValue('');
+                setNextStep(true);
+                setIsLoading(false);
+            }
+            else {
+                setErrorMessage("Не правильная ссылка или артикул.");
+                handleShowModalError();
+            }
+
+        } catch (e) {
+            if (e.response) {
+                setErrorMessage(`Ошибка сервера.`);
+            } else if (e.request) {
+                setErrorMessage('Ошибка сети: сервер не отвечает.');
+            } else {
+                console.log(e.errorMessage)
+                setErrorMessage(`Ошибка: не удалось найти данный товар.`);
+            }
+            console.error(e);
+
+
+        } finally {
+
+
+        }
+    };
+
+    const updateAiDescriptionGenerator = async (
+        token, productName, shortDescription, keywords
+    ) => {
+
+        setErrorMessage('');
+        try {
+            setIsLoading(true);
+            setIsModalOpen(true);
+            const data = await ServiceFunctions.postAiDescriptionGenerator(
+                token, productName, shortDescription, keywords
+            );
+
+            // Проверка на отсутствие данных
+            if (!data || data.length === 0) {
+                setErrorMessage("Не правильная ссылка или артикул.");
+                handleShowModalError();
+            }
+
+            const result = data; // Assuming data is already defined and is an array
+
+            // Check if data is not empty
+            if (result.length > 0) {
+                // Add all values from the data array to the keywords array
+                setDescription(result)
+            }
+
+
+        } catch (e) {
+            if (e.response) {
+                setErrorMessage(`Ошибка сервера.`);
+            } else if (e.request) {
+                setErrorMessage('Ошибка сети: сервер не отвечает.');
+            } else {
+                console.log(e.errorMessage)
+                setErrorMessage(`Ошибка: не удалось найти данный товар.`);
+            }
+            console.error(e);
+
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleNextStep = async () => {
+        const linksArray = competitorsLinks.split('\n').map(link => link.trim()).filter(link => link !== '');
+        if (linksArray.length != 0 && linksArray.length < 6) {
+            setIsLoading(true);
+            await updateAiDescriptionGeneratorKeyword(authToken, linksArray)
+
+        } else {
+            setErrorMessage("Введите до 5 ссылок на карточки товаров конкурентов");
+            handleShowModalError()
+        }
     }
 
-    const openModal = () => setIsModalOpen(true);
-    const onClose = () => setIsModalOpen(false);
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(description);
+        } catch (err) {
+            console.error('Ошибка при копировании текста: ', err);
+            alert('Не удалось скопировать описание.');
+        }
+    };
+
+    const openModal = async () => {
+
+        if (shortDescription.length < 30) {
+            setErrorMessage("Краткое описание должно содержать минимум 30 символов.");
+            setShowModalError(true);
+            return;
+        }
+
+        if (productName.length < 5) {
+            setErrorMessage("Название товара должно содержать минимум 5 символов.");
+            setShowModalError(true);
+            return;
+        }
+        await updateAiDescriptionGenerator(authToken, productName, shortDescription, keywords)
+
+    }
+    const onClose = () => {
+        setProductName("")
+        setShortDescription("")
+        setCompetitorsLinks("")
+        setNextStep(false)
+        setIsModalOpen(false)
+    }
     // Function to handle adding keywords
     const handleAddKeyword = (e) => {
-        e.preventDefault(); // Prevent the form from submitting
+        e.preventDefault();
         if (inputValue.trim()) {
             setKeywords([...keywords, inputValue.trim()]);
             setInputValue(''); // Clear the input field
         }
     };
+    //Function to get ProductName
+    const getProductName = (e) => {
+        setProductName(e.target.value);
+    };
+
+    //Function to get shortDescription
+    const getShortDescription = (e) => {
+        setShortDescription(e.target.value);
+    };
+
+    //Function to get cometitorsLinks
+    const getCompetitorsLinks = (e) => {
+        setCompetitorsLinks(e.target.value);
+
+    };
+
+
 
     // Function to handle removing keywords
     const handleRemoveKeyword = (index) => {
         const updatedKeywords = keywords.filter((_, i) => i !== index);
         setKeywords(updatedKeywords);
     };
-
 
     // Function to toggle visibility
     const toggleVisibility = () => {
@@ -48,7 +208,7 @@ const AiDescriptionGeneratorPage = () => {
             <TopNav title={'Генерация описания AI'}>
                 <div className={styles.generatorWrapper}>
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "space-between" }}>
-                        <p className={styles.topNavTitle}>Вам доступно 3<span style={{ color: "#74717f" }}>/5 генераций</span></p>
+                        <p className={styles.topNavTitle}>Вам доступно <span style={{ color: "#74717f" }}>5 генераций</span></p>
                         <div className={styles.topNavAdd}>Добавить генерации</div>
                     </div>
                 </div>
@@ -75,6 +235,19 @@ const AiDescriptionGeneratorPage = () => {
                     </div>
                 )}
             </div>
+            <Modal show={showModalError} onHide={handleCloseModalError}>
+                <Modal.Header closeButton>
+                    <div>
+                        <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
+                            <img src={warningIcon} alt='' style={{ height: '3vh' }} />
+                            <p className='fw-bold mb-0'>Ошибка!</p>
+                        </div>
+                        <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>
+                            {errorMessage}
+                        </p>
+                    </div>
+                </Modal.Header>
+            </Modal>
             <div className={`${styles.stepsWrapper} dash-container`}>
                 <div className={styles.formContainer}>
                     <div className={styles.stepIndicator}>
@@ -88,6 +261,8 @@ const AiDescriptionGeneratorPage = () => {
                         id="productName"
                         placeholder="Шорты Jony Jenson"
                         className={styles.inputField}
+                        value={productName}
+                        onChange={getProductName}
                     />
 
                     <label htmlFor="productDescription">Короткое описание товара</label>
@@ -95,13 +270,18 @@ const AiDescriptionGeneratorPage = () => {
                         id="productDescription"
                         placeholder="Шорты женские кожаные короткие"
                         className={styles.textArea}
-                    ></textarea>
+                        value={shortDescription}
+                        onChange={getShortDescription}
+                    >
+                    </textarea>
 
                     <label htmlFor="competitorLinks">Вставьте до 5 ссылок на карточки товаров конкурентов. Каждую ссылку вводите с новой строки</label>
                     <textarea
                         id="competitorLinks"
                         placeholder={`https://www.wildberries.ru/catalog/177307535\nhttps://www.wildberries.ru/catalog/177307899\nhttps://www.wildberries.ru/catalog/177337832`}
                         className={styles.textArea}
+                        value={competitorsLinks}
+                        onChange={getCompetitorsLinks}
                     ></textarea>
 
                     <button className={styles.submitBtn} onClick={handleNextStep}>Далее</button>
@@ -150,23 +330,25 @@ const AiDescriptionGeneratorPage = () => {
                             <div onClick={onClose}><img src={closeBtnModal} className={styles.closeBtnModal} /></div>
                         </div>
                         <div className={styles.modalBody}>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum tellus id eleifend efficitur. Sed ornare tortor a tortor interdum sodales vel sed dui. Maecenas viverra est auctor venenatis ullamcorper. Praesent dapibus felis risus, non pharetra diam lobortis eu. Suspendisse potenti. Ut feugiat eros metus, vitae vestibulum enim volutpat tincidunt.
-                            </p>
-                            <p>
-                                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris egestas molestie turpis sed aliquet. Quisque eget libero quis diam sodales bibendum. In ac convallis sapien. Sed sed aliquet nunc. Nam placerat, risus id posuere rhoncus, nunc tortor tempus quam, eu semper dolor odio quis nibh. Sed porttitor non magna quis aliquam.
-                            </p>
-                            <p>
-                                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris egestas molestie turpis sed aliquet. Quisque eget libero quis diam sodales bibendum. In ac convallis sapien. Sed sed aliquet nunc. Nam placerat, risus id posuere rhoncus, nunc tortor tempus quam, eu semper dolor odio quis nibh. Sed porttitor non magna quis aliquam.
-                            </p>
+                            {isLoading ? (
+                                <div
+                                    className='d-flex flex-column align-items-center justify-content-center'
+                                    style={{ height: '100%', paddingTop: '20%', width: '100%' }}
+                                >
+                                    <span className='loader'></span>
+                                </div>
+                            ) : (
+                                <p>
+                                    {description}
+                                </p>
+                            )}
                         </div>
                         <div className={styles.modalFooter}>
                             <button className={styles.modalFooterBtnNew} onClick={onClose}>Новая генерация</button>
-                            <button className={styles.modalFooterBtnCopy}>Скопировать</button>
+                            <button className={styles.modalFooterBtnCopy} onClick={handleCopy}>Скопировать</button>
                         </div>
                     </div>
                 </div>
-
             }
         </div>
     </div >
