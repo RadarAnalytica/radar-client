@@ -1,3 +1,7 @@
+.seoCompaireWrapper {
+    margin-bottom: 50px;
+}
+
 .topBlock {
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
@@ -47,6 +51,9 @@
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
     padding: 16px;
     border-radius: 16px;
+    height: 424px;
+    display: flex;
+    flex-direction: column;
 }
 
 .radioButtonsWrapper {
@@ -63,5 +70,115 @@
     font-weight: 500;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
-
 }
+
+.search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.searchInput {
+    width: 100%;
+}
+
+.tableHeader {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: rgba(247, 246, 254, 1);
+    padding: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: rgba(140, 140, 140, 1);
+    border-radius: 12px;
+    margin-top: 5px;
+}
+
+.tableWrapper {
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.tableWrapper::-webkit-scrollbar {
+    height: 6px;
+    /* background: #5329ff80; */
+    border-radius: 6px;
+    width: 6px;
+  }
+
+.tableWrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    margin-top: 40px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+    background: #5329ff80;
+    border-radius: 6px;
+}
+
+.tableContentItem {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-left: 5px;
+    min-height: 25px;
+    border-bottom: 1px solid rgba(232, 232, 232, 1);
+}
+
+.tableContentItem > div {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.circleContainer {
+    position: relative;
+    width: 350px;
+    height: 300px;
+  }
+  
+  .circle {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .circleA {
+    background-color: #E6E6FA;
+    left: 0;
+    z-index: 1;
+  }
+  
+  .circleB {
+    background-color: #E0FFFF;
+    right: 0;
+    top: 50px;
+    z-index: 2;
+    opacity: 0.4;
+  }
+  
+  .circleText {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .keywordCount {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 14px;
+  }
+  
+  .keyword-count span:first-child {
+    font-weight: bold;
+    font-size: 18px;
+  }

@@ -1,32 +1,47 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styles from './InfoSeoPlate.module.css';
 import cursor from '../assets/cursor.svg';
 import mash from '../assets/mash.svg';
 import fairystick from '../assets/fairystick.svg';
 import linkchain from '../assets/linkchain.svg';
+import { URL } from '../service/config';
+import AuthContext from '../service/AuthContext';
 
-const InfoSeoPlate = () => {
-    const [groupAInput, setGroupAInput] = useState('');
-    const [groupBInput, setGroupBInput] = useState('');
+const InfoSeoPlate = ({ setCompaireData }) => {
+  const { authToken } = useContext(AuthContext);
+  const [groupAInput, setGroupAInput] = useState('');
+  const [groupBInput, setGroupBInput] = useState('');
 
-    const processGroupInput = (input) => {
-        return input.split('\n').filter(item => item.trim() !== '');
-      };
+  const processGroupInput = (input) => {
+    return input.split('\n').filter((item) => item.trim() !== '');
+  };
 
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        const processedGroupA = processGroupInput(groupAInput);
-        const processedGroupB = processGroupInput(groupBInput);
-        
-        // Prepare data for backend
-        const dataToSend = {
-          groupA: processedGroupA,
-          groupB: processedGroupB,
-        };
-      
-        // Send dataToSend to backend
-        console.log('Data to send:', dataToSend);
-      };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const processedGroupA = processGroupInput(groupAInput);
+    const processedGroupB = processGroupInput(groupBInput);
+
+    const productA = processedGroupA.length > 0 ? processedGroupA[0] : '';
+    const productB = processedGroupB.length > 0 ? processedGroupB[0] : '';
+
+    // Prepare data for backend
+    const dataToSend = {
+      product_a: productA,
+      product_b: productB,
+    };
+
+    fetch(`${URL}api/ceo-comparison/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: 'JWT ' + authToken,
+      },
+      body: JSON.stringify(dataToSend),
+    })
+      .then((response) => response.json())
+      .then((data) => setCompaireData(data))
+      .catch((error) => console.error('Error:', error));
+  };
 
   return (
     <>
@@ -71,40 +86,42 @@ const InfoSeoPlate = () => {
           Добавление группы товаров
         </span>
         <form onSubmit={handleSubmit}>
-        <div className={styles.groupBox}>
-          <div className={styles.groupBoxTitle}>Группа А</div>
-          <textarea
-            placeholder=' Введите до 1000 названий товаров или ссылок на них.
+          <div className={styles.groupBox}>
+            <div className={styles.groupBoxTitle}>Группа А</div>
+            <textarea
+              placeholder=' Введите до 1000 названий товаров или ссылок на них.
 
             Пример:
 
             https://www.wildberries.ru/catalog/177307535
 
             https://www.wildberries.ru/catalog/177307899'
-            rows={6}
-            className={styles.groupTextarea}
-            onChange={(e) => setGroupAInput(e.target.value)}
-          />
-        </div>
-        <div className={styles.groupBox}>
-          <div className={styles.groupBoxTitle}>Группа B</div>
-          <textarea
-            placeholder=' Введите до 1000 названий товаров или ссылок на них.
+              rows={6}
+              className={styles.groupTextarea}
+              onChange={(e) => setGroupAInput(e.target.value)}
+            />
+          </div>
+          <div className={styles.groupBox}>
+            <div className={styles.groupBoxTitle}>Группа B</div>
+            <textarea
+              placeholder=' Введите до 1000 названий товаров или ссылок на них.
 
 Пример:
 
 https://www.wildberries.ru/catalog/177307535
 
 https://www.wildberries.ru/catalog/177307899'
-            rows={6}
-            className={styles.groupTextarea}
-            onChange={(e) => setGroupBInput(e.target.value)}
-          />
-        </div>
-       
-        <div>
-            <button type="submit" className={styles.getReportBtn}>Получить отчет</button>
-        </div> 
+              rows={6}
+              className={styles.groupTextarea}
+              onChange={(e) => setGroupBInput(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <button type='submit' className={styles.getReportBtn}>
+              Получить отчет
+            </button>
+          </div>
         </form>
       </div>
     </>
