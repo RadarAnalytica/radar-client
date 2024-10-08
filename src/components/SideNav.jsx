@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useSelector, useDispatch } from 'react-redux';
 import { openSupportWindow, closeSupportWindow } from '../redux/supportWindow/supportWindowSlice';
+import aiGenerator from "../assets/aiGenerator.svg"
 
 const SideNav = () => {
   const navigate = useNavigate();
@@ -187,7 +188,7 @@ const SideNav = () => {
                 style={
                   location === "stock-analysis" || productUrl
                     ? { fontWeight: "bold", fontSize: "14px", whiteSpace: "nowrap" }
-                    : {  }
+                    : {}
                 }
                 onClick={() => navigate("/stock-analysis")}
               >
@@ -212,7 +213,7 @@ const SideNav = () => {
             onClick={() => setPromotionShown(!promotionShown)}
           >
             <div className='d-flex align-items-center'>
-              {location === "calculate" || location === "monitoring" ? (
+              {location === "calculate" || location === "monitoring" || location === "ai-generator" ? (
                 <svg
                   width='20'
                   height='20'
@@ -245,6 +246,30 @@ const SideNav = () => {
           </div>
           {promotionShown ? (
             <div>
+              <p
+                className='sidenav-title ps-4 submenu-item'
+                onClick={() => navigate("/ai-generator")}
+
+                style={{
+                  whiteSpace: "nowrap",
+                  ...(location === "ai-generator" && { fontWeight: "bold", fontSize: "14px" })
+                }}
+              >
+                {location === "ai-generator" ? (
+                  <svg
+                    style={{ marginRight: "0.5vw" }}
+                    width='8'
+                    height='8'
+                    viewBox='0 0 8 8'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <circle cx='4' cy='4' r='4' fill='#5329FF' />
+                  </svg>
+                ) : null}
+                Генерация описания
+                <img src={aiGenerator} />
+              </p>
               <p
                 className='sidenav-title ps-4 submenu-item'
                 onClick={() => navigate("/monitoring")}
@@ -414,7 +439,7 @@ const SideNav = () => {
           или предложить идею
         </p>
       </div>
-    </div>
+    </div >
   );
 };
 
