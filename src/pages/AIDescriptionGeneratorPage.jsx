@@ -14,6 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 
 const AiDescriptionGeneratorPage = () => {
     const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingNext, setIsLoadingNext] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [isVisible, setIsVisible] = useState(true);
     const [keywords, setKeywords] = useState([]);
@@ -26,6 +27,16 @@ const AiDescriptionGeneratorPage = () => {
     const { user, authToken } = useContext(AuthContext);
     const [description, setDescription] = useState();
     const [showModalError, setShowModalError] = useState(false);
+    const [dataUpdated, setDataUpdated] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
+    const [isButtonVisible, setIsButtonVisible] = useState(true);
+    const [isModalOpenNewGen, setIsModalOpenNewGen] = useState(false);
+
+    const handleNewGenerator = () => {
+        setIsModalOpenNewGen(false);
+    };
+
+
 
     const handleShowModalError = () => setShowModalError(true);
     const handleCloseModalError = () => setShowModalError(false);
@@ -34,6 +45,7 @@ const AiDescriptionGeneratorPage = () => {
         token, competitorsLinks
     ) => {
         setIsLoading(true);
+        setIsLoadingNext(true)
         setErrorMessage('');
         try {
             const data = await ServiceFunctions.postAiDescriptionGeneratorKeywords(
@@ -74,7 +86,7 @@ const AiDescriptionGeneratorPage = () => {
 
 
         } finally {
-
+            setIsLoadingNext(false)
 
         }
     };
@@ -119,6 +131,7 @@ const AiDescriptionGeneratorPage = () => {
 
         } finally {
             setIsLoading(false);
+
         }
     };
 
@@ -126,17 +139,21 @@ const AiDescriptionGeneratorPage = () => {
         const linksArray = competitorsLinks.split('\n').map(link => link.trim()).filter(link => link !== '');
         if (linksArray.length != 0 && linksArray.length < 6) {
             setIsLoading(true);
+            setIsButtonVisible(false);
             await updateAiDescriptionGeneratorKeyword(authToken, linksArray)
-
         } else {
             setErrorMessage("Введите до 5 ссылок на карточки товаров конкурентов");
             handleShowModalError()
         }
     }
-
     const handleCopy = async () => {
         try {
             await navigator.clipboard.writeText(description);
+            // Показываем тултип после успешного копирования
+            setIsCopied(true);
+            setTimeout(() => {
+                setIsCopied(false);
+            }, 5000);
         } catch (err) {
             console.error('Ошибка при копировании текста: ', err);
             alert('Не удалось скопировать описание.');
@@ -170,8 +187,8 @@ const AiDescriptionGeneratorPage = () => {
     const handleAddKeyword = (e) => {
         e.preventDefault();
         if (inputValue.trim()) {
-            setKeywords([...keywords, inputValue.trim()]);
-            setInputValue(''); // Clear the input field
+            setKeywords([inputValue.trim(), ...keywords]);
+            setInputValue('');
         }
     };
     //Function to get ProductName
@@ -209,10 +226,15 @@ const AiDescriptionGeneratorPage = () => {
                 <div className={styles.generatorWrapper}>
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "space-between" }}>
                         <p className={styles.topNavTitle}>Вам доступно <span style={{ color: "#74717f" }}>5 генераций</span></p>
-                        <div className={styles.topNavAdd}>Добавить генерации</div>
+                        <div className={styles.topNavAdd} onClick={handleNewGenerator}>Добавить генерации</div>
                     </div>
                 </div>
             </TopNav>
+            {isModalOpenNewGen &&
+                <div className={styles.overlay}>
+
+                </div>
+            }
             <div className={`${styles.generatorHeader} dash-container container`}>
                 <div className={styles.generatorTitleWrapperMain}>
                     <div className={styles.generatorTitleWrapper}>
@@ -284,9 +306,21 @@ const AiDescriptionGeneratorPage = () => {
                         onChange={getCompetitorsLinks}
                     ></textarea>
 
-                    <button className={styles.submitBtn} onClick={handleNextStep}>Далее</button>
+                    {isButtonVisible && (
+                        <button className={styles.submitBtn} onClick={handleNextStep}>
+                            Далее
+                        </button>
+                    )}
                 </div>
-                {nextStep &&
+                {isLoadingNext ? (
+                    <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100%', paddingTop: '25%', paddingLeft: "5%", width: '45%' }}
+                    >
+                        <span className='loader'></span>
+                    </div>
+                ) : (
+                    nextStep &&
                     <div className={styles.formContainerR}>
                         <div className={styles.stepIndicator}>
                             <span>2 шаг</span>
@@ -318,7 +352,8 @@ const AiDescriptionGeneratorPage = () => {
 
                         <button className={styles.submitBtn} onClick={openModal}>Сгенерировать описание</button>
                     </div>
-                }
+                )}
+
             </div>
         </div>
         <div>
@@ -331,11 +366,11 @@ const AiDescriptionGeneratorPage = () => {
                         </div>
                         <div className={styles.modalBody}>
                             {isLoading ? (
-                                <div
-                                    className='d-flex flex-column align-items-center justify-content-center'
-                                    style={{ height: '100%', paddingTop: '20%', width: '100%' }}
-                                >
-                                    <span className='loader'></span>
+                                <div className={styles.modalContentLoad}>
+                                    <div className={styles.modalTextLoad}>Не закрывайте это окно, генерация занимает несколько минут.</div>
+                                    <div className={styles.loaderContainer}>
+                                        <span className='loader'></span>
+                                    </div>
                                 </div>
                             ) : (
                                 <p>
@@ -345,8 +380,13 @@ const AiDescriptionGeneratorPage = () => {
                         </div>
                         <div className={styles.modalFooter}>
                             <button className={styles.modalFooterBtnNew} onClick={onClose}>Новая генерация</button>
-                            <button className={styles.modalFooterBtnCopy} onClick={handleCopy}>Скопировать</button>
+                            <button className={isCopied ? styles.modalFooterBtnCopied : styles.modalFooterBtnCopy} onClick={handleCopy}>{isCopied ? 'Скопировано!' : 'Скопировать'}</button>
                         </div>
+                        {/* {isTooltipVisible && (
+                            <div className={styles.tooltip}>
+                                Скопировано!
+                            </div>
+                        )} */}
                     </div>
                 </div>
             }

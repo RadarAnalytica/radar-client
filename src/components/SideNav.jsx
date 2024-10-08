@@ -232,7 +232,7 @@ const SideNav = () => {
               <span
                 className='sidenav-title'
                 style={
-                  location === "calculate" || location === "monitoring"
+                  location === "calculate" || location === "monitoring" || location === "ai-generator"
                     ? { fontWeight: "bold", fontSize: "14px", color: "black" }
                     : {}
                 }
@@ -267,8 +267,8 @@ const SideNav = () => {
                     <circle cx='4' cy='4' r='4' fill='#5329FF' />
                   </svg>
                 ) : null}
-                Генерация описания
-                <img src={aiGenerator} />
+                Генерация <br />описания
+                <img src={aiGenerator} style={{ marginLeft: "5px" }} />
               </p>
               <p
                 className='sidenav-title ps-4 submenu-item'
@@ -291,7 +291,7 @@ const SideNav = () => {
                     <circle cx='4' cy='4' r='4' fill='#5329FF' />
                   </svg>
                 ) : null}
-                Мониторинг запросов
+                Мониторинг<br /> запросов
               </p>
               <p
                 className='sidenav-title ps-4 submenu-item'
