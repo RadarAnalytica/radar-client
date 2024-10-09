@@ -21,8 +21,9 @@ const InfoSeoPlate = ({ setCompaireData }) => {
     const processedGroupA = processGroupInput(groupAInput);
     const processedGroupB = processGroupInput(groupBInput);
 
-    const productA = processedGroupA.length > 0 ? processedGroupA[0] : '';
-    const productB = processedGroupB.length > 0 ? processedGroupB[0] : '';
+      // Join array elements into a single string, separated by newlines
+    const productA = processedGroupA.join('\n');
+    const productB = processedGroupB.join('\n');
 
     // Prepare data for backend
     const dataToSend = {
