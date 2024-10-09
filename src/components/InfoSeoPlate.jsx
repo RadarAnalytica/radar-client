@@ -31,7 +31,7 @@ const InfoSeoPlate = ({ setCompaireData }) => {
       product_b: productB,
     };
 
-    fetch(`${URL}api/ceo-comparison/`, {
+    fetch(`${URL}/api/ceo-comparison/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
