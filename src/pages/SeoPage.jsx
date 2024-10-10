@@ -14,7 +14,7 @@ const SeoPage = () => {
       <div className={styles.scrollableContent}>
         <TopNav title={'Сравнение SEO'} >
            {Object.keys(compaireData).length > 0 && (
-            <div className={styles.newTopNavButton}>
+            <div className={styles.newTopNavButton} onClick={() => setCompaireData({})}>
                <span>Новый запрос</span>
             </div>
            )}

@@ -1,16 +1,15 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import styles from './SeoCompaire.module.css';
 import RadioGroup from './RadioGroup';
 import SearchButton from '../assets/searchstock.svg';
 import SortArrows from './SortArrows';
+import VennDiagram from './VennDiagram';
 
 const SeoCompaire = ({ compaireData }) => {
   const [byOptions, setByOptions] = useState('onlyA');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [sortedData, setSortedData] = useState(compaireData?.product_a || []);
-  const [isHovering, setIsHovering] = useState(false);
-  const elementRef = useRef(null);
 
   const contentA = [
     {
@@ -118,7 +117,7 @@ const SeoCompaire = ({ compaireData }) => {
     const dataMap = {
       onlyA: compaireData?.product_a,
       onlyB: compaireData?.product_b,
-      commonAB: compaireData?.common,
+      commonAB: compaireData?.intersection,
       differenceAB: compaireData?.difference_a_b,
       differenceBA: compaireData?.difference_b_a,
     };
@@ -162,25 +161,11 @@ const SeoCompaire = ({ compaireData }) => {
     <div className={styles.seoCompaireWrapper}>
       <div className={styles.topBlock}>
         <div>
-          <div
-            ref={elementRef}
-            className={styles.circleContainer}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            <div className={`${styles.circle} ${styles.circleA}`}>
-              <span className={styles.circleText}>Группа A</span>
-            </div>
-            <div className={`${styles.circle} ${styles.circleB}`}>
-              <span className={styles.circleText}>Группа B</span>
-            </div>
-            {isHovering && (
-              <div className={styles.keywordCount}>
-                <span className={styles.keywordCountNumber}>{sortedData.length}</span>
-                <span className={styles.keywordCountText}>ключевых слов</span>
-              </div>
-            )}
-          </div>
+          <VennDiagram
+            groupACount={compaireData?.product_a.length}
+            groupBCount={compaireData?.product_b.length}
+            intersectionCount={compaireData?.intersection?.length}
+          />
         </div>
         <div className={styles.seoTableWrapper}>
           <div className={styles.seoTableHeader}>
