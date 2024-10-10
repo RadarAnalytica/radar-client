@@ -1,0 +1,157 @@
+.modalOverlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+
+}
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.closeBtnModal {
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    
+}
+.modalFooter{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.modalFooterBtnNew{
+    background-color: white;
+    border: none;
+    color: #5329FF;
+    padding: 20px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid #DDD4FF ;
+    font-size: 16px;
+    font-weight: 700;
+    width: 50%;
+    margin-right: 10px;
+}
+
+.modalFooterBtnCopy{
+    background-color: #5329FF;
+    border: none;
+    color: white;
+    padding: 20px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    width: 50%;
+    margin-left: 10px;
+}
+.modalContent{
+    background-color: white;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    width: 650px;
+    max-width: 90%;
+    padding: 24px;
+    position: relative;
+    max-height: 420px;
+    text-align: center;
+    
+
+}
+.modalBody{
+    min-height: max-content;
+    max-height: 240px;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.modalHeaderTitle{
+    color: #1A1A1A;
+    font-size: 24px;
+    font-weight: 700;
+    margin-left: 10px;
+}
+.radioGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-left: 20px;
+}
+
+.radioLabel {
+    font-size: 16px;
+    color: #000;
+
+}
+.radioGroupItem{
+    width: max-content;
+    display: flex;
+    align-items: flex-end;
+
+}
+
+.radioInput {
+    appearance: none; /* Remove default styling */
+    border: 2px solid #5329FF; /* Add purple border */
+    border-radius: 50%; /* Make it circular */
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+    position: relative;
+    display: inline-block;
+    z-index: 1; /* Ensure it's on top */
+    transition: border-color 0.3s ease;
+    background-color: white; 
+}
+
+.radioInput::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: transparent;
+    transform: translate(-50%, -50%);
+    z-index: 2; /* Inner dot should be on top of radio */
+    transition: background-color 0.3s ease;
+}
+
+.radioInput:checked {
+    border-color: #5329FF;
+}
+
+.radioInput::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+ 
+    transform: translate(-50%, -50%);
+}
+
+.radioInput:checked::before {
+    background-color: #5329FF;
+}
+
+.radioInput:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(83, 41, 255, 0.2); /* Add focus outline */
+}

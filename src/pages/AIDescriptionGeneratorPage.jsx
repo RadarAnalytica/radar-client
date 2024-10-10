@@ -11,6 +11,8 @@ import { ServiceFunctions } from "../service/serviceFunctions";
 import AuthContext from "../service/AuthContext";
 import warningIcon from "../assets/warning.png"
 import Modal from 'react-bootstrap/Modal';
+import AiDescriptionGeneratorTariffs from "../components/AiDescriptionGeneratorTariffs"
+import { redirect } from "react-router-dom"
 
 const AiDescriptionGeneratorPage = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -32,8 +34,9 @@ const AiDescriptionGeneratorPage = () => {
     const [isButtonVisible, setIsButtonVisible] = useState(true);
     const [isModalOpenNewGen, setIsModalOpenNewGen] = useState(false);
 
+
     const handleNewGenerator = () => {
-        setIsModalOpenNewGen(false);
+        setIsModalOpenNewGen(true);
     };
 
 
@@ -231,9 +234,7 @@ const AiDescriptionGeneratorPage = () => {
                 </div>
             </TopNav>
             {isModalOpenNewGen &&
-                <div className={styles.overlay}>
-
-                </div>
+                <AiDescriptionGeneratorTariffs redirect={redirect} setIsModalOpenNewGen={setIsModalOpenNewGen} />
             }
             <div className={`${styles.generatorHeader} dash-container container`}>
                 <div className={styles.generatorTitleWrapperMain}>
