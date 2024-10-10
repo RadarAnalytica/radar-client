@@ -272,4 +272,39 @@ export const ServiceFunctions = {
     return data;
   },
 
+  getUserGenerationsAmount: async (token) => {
+    const res = await fetch(
+      `${URL}/api/description-generator/get-generations`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
+
+  postUpdateUserGenerationsAmount: async (token, amount) => {
+
+    const res = await fetch(
+      `${URL}/api/description-generator/update-generations`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+
+        body: JSON.stringify({
+          amount
+        }),
+
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
 }

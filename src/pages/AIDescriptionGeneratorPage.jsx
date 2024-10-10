@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import SideNav from "../components/SideNav"
 import TopNav from "../components/TopNav"
 import styles from "./AIDescriptionGenerator.module.css"
@@ -33,12 +33,34 @@ const AiDescriptionGeneratorPage = () => {
     const [isCopied, setIsCopied] = useState(false);
     const [isButtonVisible, setIsButtonVisible] = useState(true);
     const [isModalOpenNewGen, setIsModalOpenNewGen] = useState(false);
+    const [amountGenerations, setAmountGenerations] = useState("")
 
 
     const handleNewGenerator = () => {
         setIsModalOpenNewGen(true);
     };
 
+
+    const getGenerationsAmount = async () => {
+        // setLoading(true);
+        try {
+            const data = await ServiceFunctions.getUserGenerationsAmount(
+                authToken,
+            );
+
+            if (data) {
+                setAmountGenerations(data);
+                console.log(amountGenerations)
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            // setLoading(false);
+        }
+    };
+    useEffect(() => {
+        getGenerationsAmount(); // Call the function when the component is mounted
+    }, [isModalOpenNewGen]);
 
 
     const handleShowModalError = () => setShowModalError(true);
@@ -228,7 +250,9 @@ const AiDescriptionGeneratorPage = () => {
             <TopNav title={'Генерация описания AI'}>
                 <div className={styles.generatorWrapper}>
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "space-between" }}>
-                        <p className={styles.topNavTitle}>Вам доступно <span style={{ color: "#74717f" }}>5 генераций</span></p>
+                        <p className={styles.topNavTitle}>
+                            Вам {amountGenerations === 1 ? "доступнa" : "доступно"} <span style={{ color: "#74717f" }}>{amountGenerations} {amountGenerations === 1 ? "генерация" : "генераций"}</span>
+                        </p>
                         <div className={styles.topNavAdd} onClick={handleNewGenerator}>Добавить генерации</div>
                     </div>
                 </div>

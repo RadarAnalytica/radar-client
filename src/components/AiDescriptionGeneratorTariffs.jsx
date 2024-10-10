@@ -20,22 +20,22 @@ import CustomButton from "./utilsComponents/CustomButton";
 import { URL } from "../service/config";
 import styles from "./AiDescriptionGeneratorTariffs.module.css"
 import closebtn from "../assets/closebtn.png";
+import { ServiceFunctions } from "../service/serviceFunctions";
 
 const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
+    const navigate = useNavigate()
 
-    const [selectedPeriod, setSelectedPeriod] = useState("5generations");
+    const [selectedGenerationsAmount, setSelectedGenerationsAmount] = useState("5generations");
     const handleClose = () => {
         setIsModalOpenNewGen(false)
     }
-    const handlePeriodChange = (e) => {
-        setSelectedPeriod(e.target.value);
+    const handleGenerationsAmountChanged = (e) => {
+        setSelectedGenerationsAmount(e.target.value);
     };
     const { user, authToken } = useContext(AuthContext);
     console.log("SelectRate user:", user);
 
-    const userIdInvoiceHardCode = "radar-51-20240807-161128";
 
-    const currentPath = window.location.pathname;
 
     const refreshUserToken = async () => {
         try {
@@ -71,11 +71,12 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
 
 
         console.log("user.email", user);
-        console.log("selectedPeriod", selectedPeriod);
+        console.log("selectedGenerationsAmount", selectedGenerationsAmount);
 
 
         let periodSubscribe = "";
         let amountSubscribe = 0;
+        let generationQuantity = 0;
         let firstAmount = 0;
         let startDateSubscribe = "";
         const options = {
@@ -92,18 +93,18 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
             .replaceAll(", ", "-")
             .replaceAll(":", "")}`;
 
-        if (selectedPeriod === "5generations") {
+        if (selectedGenerationsAmount === "5generations") {
             amountSubscribe = 500;
+            generationQuantity = 5;
 
-        } else if (selectedPeriod === "10generations") {
+        } else if (selectedGenerationsAmount === "10generations") {
             amountSubscribe = 900;
+            generationQuantity = 10;
 
-        } else if (selectedPeriod === "20generations") {
+        } else if (selectedGenerationsAmount === "20generations") {
             amountSubscribe = 1500;
+            generationQuantity = 20;
         }
-        console.log("periodSubscribe", periodSubscribe);
-        console.log("firstAmount", firstAmount);
-        console.log("amountSubscribe", amountSubscribe);
 
 
         // eslint-disable-next-line no-undef
@@ -147,13 +148,6 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
         const data = {};
         data.CloudPayments = {
             CustomerReceipt: receipt, //чек для первого платежа
-            recurrent: {
-                interval: "Month",
-                period: periodSubscribe,
-                startDate: startDateSubscribe,
-                amount: amountSubscribe,
-                customerReceipt: receipt, //чек для регулярных платежей
-            },
         };
 
         widget.charge(
@@ -173,48 +167,21 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
                 // TODO отправка запроса в сервис бэкенда на обновление данных user
                 // (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'],
                 // subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать))
-
-                // Helper function to map selectedPeriod to the correct string
-                const mapPeriodToStatus = (period) => {
-                    switch (period) {
-                        case "test":
-                            return "Test";
-                        case "1month":
-                            return "Month 1";
-                        case "3months":
-                            return "Month 3";
-                        case "6months":
-                            return "Month 6";
-                        default:
-                            return period; // fallback to original value if no match
-                    }
-                };
-
-                // Prepare the update data
                 const updateData = {
-                    subscription_status: [mapPeriodToStatus(selectedPeriod)],
-                    subscription_start_date: new Date().toISOString().split("T")[0],
-                    invoice_id: invoiceId,
+                    amount: generationQuantity,
                 };
 
-                // Add is_test_used only if it's a test period
-                if (selectedPeriod === "1month") {
-                    updateData.is_test_used = true;
-                }
-                // Send PATCH request
                 axios
-                    .post(`${URL}/api/user/subscription`, updateData, {
+                    .post(`${URL}/api/description-generator/update-generations`, updateData, {
                         headers: {
                             "content-type": "application/json",
                             authorization: "JWT " + authToken,
                         },
                     })
                     .then((res) => {
-                        console.log("patch /api/user", res.data);
-                        localStorage.setItem("authToken", res.data.auth_token);
-                        // navigate("/after-payment", { state: { paymentStatus: "success" } });
+                        setIsModalOpenNewGen(false);
                     })
-                    .catch((err) => console.log("patch /api/user", err));
+                    .catch((err) => console.log(err));
                 console.log("Payment success:", "options", options);
             },
 
@@ -247,8 +214,8 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
                                         className={styles.radioInput}
                                         id="5generations"
                                         name="paymentPeriod"
-                                        checked={selectedPeriod === "5generations"}
-                                        onChange={handlePeriodChange}
+                                        checked={selectedGenerationsAmount === "5generations"}
+                                        onChange={handleGenerationsAmountChanged}
                                     />
                                     <label className={styles.radioLabel}> 5 генераций - 500₽</label>
 
@@ -261,8 +228,8 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
                                         className={styles.radioInput}
                                         id="10generations"
                                         name="paymentPeriod"
-                                        checked={selectedPeriod === "10generations"}
-                                        onChange={handlePeriodChange}
+                                        checked={selectedGenerationsAmount === "10generations"}
+                                        onChange={handleGenerationsAmountChanged}
                                     />
                                     <label className={styles.radioLabel}>10 генераций - 900₽</label>
 
@@ -275,8 +242,8 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
                                         className={styles.radioInput}
                                         id="20generations"
                                         name="paymentPeriod"
-                                        checked={selectedPeriod === "20generations"}
-                                        onChange={handlePeriodChange}
+                                        checked={selectedGenerationsAmount === "20generations"}
+                                        onChange={handleGenerationsAmountChanged}
                                     />
                                     <label className={styles.radioLabel}>20 генераций - 1500₽</label>
                                 </div>
