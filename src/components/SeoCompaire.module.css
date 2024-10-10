@@ -78,6 +78,7 @@
     align-items: center;
     gap: 8px;
     width: 100%;
+    margin-bottom: 5px;
 }
 
 .searchInput {
@@ -94,13 +95,16 @@
     line-height: 20px;
     color: rgba(140, 140, 140, 1);
     border-radius: 12px;
-    margin-top: 5px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .tableWrapper {
     width: 100%;
     flex-grow: 1;
     overflow-y: auto;
+    position: relative;
 }
 
 .tableWrapper::-webkit-scrollbar {
@@ -156,16 +160,18 @@
   }
   
   .circleB {
-    background-color: #E0FFFF;
-    right: 0;
-    top: 50px;
+    background: rgba(0, 182, 155, 0.1);
+    right: 25px;
+    top: 110px;
     z-index: 2;
     opacity: 0.4;
+    border: 2px solid rgba(0, 182, 155, 1);
   }
   
   .circleText {
     font-size: 18px;
     font-weight: bold;
+    opacity: 1;
   }
   
   .keywordCount {
@@ -174,11 +180,29 @@
     bottom: 20px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     font-size: 14px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    z-index: 3;
+
   }
   
   .keyword-count span:first-child {
     font-weight: bold;
     font-size: 18px;
+  }
+
+  .keywordCountNumber {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .keywordCountText {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 0.5);
   }

@@ -1,11 +1,16 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import styles from './SeoCompaire.module.css';
 import RadioGroup from './RadioGroup';
 import SearchButton from '../assets/searchstock.svg';
+import SortArrows from './SortArrows';
 
 const SeoCompaire = ({ compaireData }) => {
   const [byOptions, setByOptions] = useState('onlyA');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [sortedData, setSortedData] = useState(compaireData?.product_a || []);
+  const [isHovering, setIsHovering] = useState(false);
+  const elementRef = useRef(null);
 
   const contentA = [
     {
@@ -81,6 +86,45 @@ const SeoCompaire = ({ compaireData }) => {
     { value: 'differenceBA', label: 'Разница В минус А' },
   ];
 
+  const sortData = useCallback(
+    (key) => {
+      let direction = 'asc';
+      if (sortConfig.key === key && sortConfig.direction === 'asc') {
+        direction = 'desc';
+      }
+
+      const newSortedData = [...sortedData].sort((a, b) => {
+        const aKey = Object.keys(a)[0];
+        const bKey = Object.keys(b)[0];
+        const aValue = a[aKey];
+        const bValue = b[bKey];
+
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return direction === 'asc' ? aValue - bValue : bValue - aValue;
+        } else {
+          return direction === 'asc'
+            ? String(aValue).localeCompare(String(bValue))
+            : String(bValue).localeCompare(String(aValue));
+        }
+      });
+
+      setSortConfig({ key, direction });
+      setSortedData(newSortedData);
+    },
+    [sortedData, sortConfig]
+  );
+
+  useEffect(() => {
+    const dataMap = {
+      onlyA: compaireData?.product_a,
+      onlyB: compaireData?.product_b,
+      commonAB: compaireData?.common,
+      differenceAB: compaireData?.difference_a_b,
+      differenceBA: compaireData?.difference_b_a,
+    };
+    setSortedData(dataMap[byOptions] || []);
+  }, [byOptions, compaireData]);
+
   const handleRadioChange = (value) => {
     setByOptions(value);
   };
@@ -90,22 +134,8 @@ const SeoCompaire = ({ compaireData }) => {
   };
 
   const renderData = useMemo(() => {
-    const dataMap = {
-      onlyA: compaireData?.product_a,
-      onlyB: compaireData?.product_b,
-      commonAB: compaireData?.common,
-      differenceAB: compaireData?.difference_a_b,
-      differenceBA: compaireData?.difference_b_a,
-    };
-
-    const selectedData = dataMap[byOptions];
-
-    if (
-      Array.isArray(selectedData) &&
-      selectedData.length > 0 &&
-      selectedData.every((item) => typeof item === 'object')
-    ) {
-      const filteredData = selectedData.filter((item) => {
+    if (Array.isArray(sortedData) && sortedData.length > 0) {
+      const filteredData = sortedData.filter((item) => {
         const key = Object.keys(item)[0];
         return key.toLowerCase().includes(searchQuery.toLowerCase());
       });
@@ -121,24 +151,35 @@ const SeoCompaire = ({ compaireData }) => {
         );
       });
     }
-    return <div>No data available</div>;
-  }, [byOptions, compaireData, searchQuery]);
+    return <div>Ничего не найдено</div>;
+  }, [sortedData, searchQuery]);
+
+  const renderSortArrows = (columnKey) => {
+    return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
+  };
 
   return (
     <div className={styles.seoCompaireWrapper}>
       <div className={styles.topBlock}>
         <div>
-          <div className={styles.circleContainer}>
+          <div
+            ref={elementRef}
+            className={styles.circleContainer}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
             <div className={`${styles.circle} ${styles.circleA}`}>
               <span className={styles.circleText}>Группа A</span>
             </div>
             <div className={`${styles.circle} ${styles.circleB}`}>
               <span className={styles.circleText}>Группа B</span>
             </div>
-            {/* <div className={styles.keywordCount}>
-        <span>2 200</span>
-        <span>ключевых слов</span>
-      </div> */}
+            {isHovering && (
+              <div className={styles.keywordCount}>
+                <span className={styles.keywordCountNumber}>{sortedData.length}</span>
+                <span className={styles.keywordCountText}>ключевых слов</span>
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.seoTableWrapper}>
@@ -223,11 +264,12 @@ const SeoCompaire = ({ compaireData }) => {
         <div className={styles.tableWrapper}>
           <div className={styles.tableHeader}>
             <div>Ключевые слова</div>
-            <div>Частота WB</div>
+            <div onClick={() => sortData('wb')}>
+              Частота WB
+              {renderSortArrows('wb')}
+            </div>
           </div>
-          <div className={styles.tableContent}>
-            {renderData}
-          </div>
+          <div className={styles.tableContent}>{renderData}</div>
         </div>
       </div>
     </div>

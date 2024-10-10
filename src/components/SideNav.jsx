@@ -316,6 +316,29 @@ const SideNav = () => {
                 ) : null}
                 Калькулятор unit-экономики товаров
               </p>
+              <p
+                className='sidenav-title ps-4 submenu-item'
+                onClick={() => navigate("/seo")}
+                style={
+                  location === "seo"
+                    ? { fontWeight: "bold", fontSize: "14px" }
+                    : {}
+                }
+              >
+                {location === "seo" ? (
+                  <svg
+                    style={{ marginRight: "0.5vw" }}
+                    width='8'
+                    height='8'
+                    viewBox='0 0 8 8'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <circle cx='4' cy='4' r='4' fill='#5329FF' />
+                  </svg>
+                ) : null}
+                Сравнение SEO
+              </p>
             </div>
           ) : null}
           <div
