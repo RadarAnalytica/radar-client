@@ -69,14 +69,14 @@ const InfoSeoPlate = ({ setCompaireData }) => {
               <img src={fairystick} alt='Fairystick' />
               <span>
                 Подберите уникальные запросы для
-                <br /> карточки и продвижения
+                карточки и продвижения
               </span>
             </div>
             <div className={styles.infoBodyBoxItem}>
               <img src={linkchain} alt='Linkchain' />
               <span>
                 Определите недостающие ключевые
-                <br /> слова в своих карточках
+                 слова в своих карточках
               </span>
             </div>
           </div>
@@ -90,13 +90,9 @@ const InfoSeoPlate = ({ setCompaireData }) => {
           <div className={styles.groupBox}>
             <div className={styles.groupBoxTitle}>Группа А</div>
             <textarea
-              placeholder=' Введите до 1000 названий товаров или ссылок на них.
-
-            Пример:
-
-            https://www.wildberries.ru/catalog/177307535
-
-            https://www.wildberries.ru/catalog/177307899'
+              placeholder='Введите до 10 ссылок на товары. Каждую ссылку с новой строки. Пример:
+https://www.wildberries.ru/catalog/177307535
+https://www.wildberries.ru/catalog/177307899'
               rows={6}
               className={styles.groupTextarea}
               onChange={(e) => setGroupAInput(e.target.value)}
@@ -105,12 +101,8 @@ const InfoSeoPlate = ({ setCompaireData }) => {
           <div className={styles.groupBox}>
             <div className={styles.groupBoxTitle}>Группа B</div>
             <textarea
-              placeholder=' Введите до 1000 названий товаров или ссылок на них.
-
-Пример:
-
+              placeholder='Введите до 10 ссылок на товары. Каждую ссылку с новой строки. Пример:
 https://www.wildberries.ru/catalog/177307535
-
 https://www.wildberries.ru/catalog/177307899'
               rows={6}
               className={styles.groupTextarea}
