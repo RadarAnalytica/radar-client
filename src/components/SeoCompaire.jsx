@@ -9,73 +9,11 @@ const SeoCompaire = ({ compaireData }) => {
   const [byOptions, setByOptions] = useState('onlyA');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  const [sortedData, setSortedData] = useState(compaireData?.product_a || []);
+  const [sortedData, setSortedData] = useState([]);
 
-  const contentA = [
-    {
-      id: 1,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 2,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 3,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 4,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 5,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 6,
-      photo: '',
-      productName: 'Товар 1',
-    },
-  ];
+  const contentA = compaireData?.products_a ?? [];
 
-  const contentB = [
-    {
-      id: 1,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 2,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 3,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 4,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 5,
-      photo: '',
-      productName: 'Товар 1',
-    },
-    {
-      id: 6,
-      photo: '',
-      productName: 'Товар 1',
-    },
-  ];
+  const contentB = compaireData?.products_b ?? [];
 
   const radioOptions = [
     { value: 'onlyA', label: 'Только А' },
@@ -87,27 +25,26 @@ const SeoCompaire = ({ compaireData }) => {
 
   const sortData = useCallback(
     (key) => {
-      let direction = 'asc';
-      if (sortConfig.key === key && sortConfig.direction === 'asc') {
-        direction = 'desc';
-      }
-
+      const { direction } = sortConfig;
+      const isAscending = direction === 'asc';
+      const newDirection = isAscending ? 'desc' : 'asc';
+  
       const newSortedData = [...sortedData].sort((a, b) => {
-        const aKey = Object.keys(a)[0];
-        const bKey = Object.keys(b)[0];
-        const aValue = a[aKey];
-        const bValue = b[bKey];
-
+        const aValue = key === 'key' ? a.key : a.value;
+        const bValue = key === 'key' ? b.key : b.value;
+  
         if (typeof aValue === 'number' && typeof bValue === 'number') {
-          return direction === 'asc' ? aValue - bValue : bValue - aValue;
-        } else {
-          return direction === 'asc'
+          return isAscending ? aValue - bValue : bValue - aValue;
+        } else if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return isAscending
             ? String(aValue).localeCompare(String(bValue))
             : String(bValue).localeCompare(String(aValue));
+        } else {
+          return 0;
         }
       });
-
-      setSortConfig({ key, direction });
+  
+      setSortConfig({ key, direction: newDirection });
       setSortedData(newSortedData);
     },
     [sortedData, sortConfig]
@@ -115,11 +52,11 @@ const SeoCompaire = ({ compaireData }) => {
 
   useEffect(() => {
     const dataMap = {
-      onlyA: compaireData?.product_a,
-      onlyB: compaireData?.product_b,
-      commonAB: compaireData?.intersection,
-      differenceAB: compaireData?.difference_a_b,
-      differenceBA: compaireData?.difference_b_a,
+      onlyA: Object.entries(compaireData?.keywords_a).map(([key, value]) => ({ key, value })),
+      onlyB:  Object.entries(compaireData?.keywords_b).map(([key, value]) => ({ key, value })),
+      commonAB: [],
+      differenceAB: [],
+      differenceBA: [],
     };
     setSortedData(dataMap[byOptions] || []);
   }, [byOptions, compaireData]);
@@ -135,22 +72,23 @@ const SeoCompaire = ({ compaireData }) => {
   const renderData = useMemo(() => {
     if (Array.isArray(sortedData) && sortedData.length > 0) {
       const filteredData = sortedData.filter((item) => {
-        const key = Object.keys(item)[0];
-        return key.toLowerCase().includes(searchQuery.toLowerCase());
+        return item.key.toLowerCase().includes(searchQuery.toLowerCase());
       });
-
+  
+      if (filteredData.length === 0) {
+        return <div>Ничего не найдено</div>;
+      }
+  
       return filteredData.map((item, index) => {
-        const key = Object.keys(item)[0];
-        const value = item[key];
         return (
           <div className={styles.tableContentItem} key={index}>
-            <div>{key}</div>
-            <div>{value}</div>
+            <div>{item.key}</div>
+            <div>{item.value}</div>
           </div>
         );
       });
     }
-    return <div>Ничего не найдено</div>;
+    return <div>Ничего не найдено</div>;
   }, [sortedData, searchQuery]);
 
   const renderSortArrows = (columnKey) => {
@@ -161,23 +99,25 @@ const SeoCompaire = ({ compaireData }) => {
     <div className={styles.seoCompaireWrapper}>
       <div className={styles.topBlock}>
         <div>
+        {compaireData && compaireData.keywords_a && compaireData.keywords_b && (
           <VennDiagram
-            groupACount={compaireData?.product_a.length}
-            groupBCount={compaireData?.product_b.length}
-            intersectionCount={compaireData?.intersection?.length}
+            groupACount={Object.keys(compaireData.keywords_a).length}
+            groupBCount={Object.keys(compaireData.keywords_b).length}
+            intersectionCount={compaireData.intersection.length}
           />
+)}
         </div>
         <div className={styles.seoTableWrapper}>
           <div className={styles.seoTableHeader}>
             <div className={styles.seoTableHeaderItem}>Группа А</div>
-            <div className={styles.seoTableHeaderItem}>Группа Б</div>
+            <div className={styles.seoTableHeaderItem}>Группа B</div>
           </div>
           <div className={styles.seoTableContent}>
-            <div>
+            <div className={styles.seoTableContentRowWrapper}>
               {contentA.map((item) => (
-                <div className={styles.seoTableContentItem} key={item.id}>
+                <div className={styles.seoTableContentItem} key={item.wb_id}>
                   <img
-                    src={item.photo}
+                    src={item.image}
                     style={{
                       width: '30px',
                       height: '40px',
@@ -191,15 +131,15 @@ const SeoCompaire = ({ compaireData }) => {
                         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
                     }}
                   />
-                  {item.productName}
+                  {item.title}
                 </div>
               ))}
             </div>
-            <div>
+            <div className={styles.seoTableContentRowWrapper}>
               {contentB.map((item) => (
-                <div className={styles.seoTableContentItem} key={item.id}>
+                <div className={styles.seoTableContentItem} key={item.wb_id}>
                   <img
-                    src={item.photo}
+                    src={item.image}
                     style={{
                       width: '30px',
                       height: '40px',
@@ -213,7 +153,7 @@ const SeoCompaire = ({ compaireData }) => {
                         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
                     }}
                   />
-                  {item.productName}
+                  {item.title}
                 </div>
               ))}
             </div>
@@ -236,7 +176,6 @@ const SeoCompaire = ({ compaireData }) => {
             className={styles.searchInput}
             value={searchQuery}
             onChange={handleSearchQuery}
-            // style={{ marginLeft: '20px' }}
           />
 
           <img

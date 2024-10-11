@@ -307,4 +307,20 @@ export const ServiceFunctions = {
     const data = await res.json();
     return data;
   },
+
+  postSeoLinks: async (token, seoLinks) => {
+    const res = await fetch(
+      `${URL}/api/ceo-comparison/`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+        body: JSON.stringify(seoLinks),
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
 }
