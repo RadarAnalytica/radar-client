@@ -109,7 +109,6 @@ const RequestMonitoringPage = () => {
     };
 
 
-
     return <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
@@ -370,15 +369,16 @@ const RequestMonitoringPage = () => {
                                 <div className='barcode-wrapper'>
                                     <div className='barcode'>
                                         <div className='barcode-row'>
-                                            <p className='barcode-text-title'>SKU</p>
-                                            {monitorData.sku?.map((sku, index) => (
 
-                                                sku !== null ? (
-                                                    <p key={index} className='barcode-text'>{sku}</p>
-                                                ) : null
-                                            ))}
+                                            <div className='barcode-text-title-wrapper'><p className='barcode-text-title'>SKU</p></div>
+                                            <div className='barcode-sku-data-wrapper'>
+                                                {monitorData.sku?.map((sku, index) => (
 
-                                            {/* <p key={index} className='barcode-text'>{monitorData.sku}</p> */}
+                                                    sku !== null ? (
+                                                        <div><p key={index} className='barcode-text'>{sku}</p></div>
+                                                    ) : null
+                                                ))}
+                                            </div>
 
                                         </div>
                                         <div className='barcode-row-image'>

@@ -2731,20 +2731,48 @@ select {
 
 .barcode {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
+
 
 .barcode-row {
   flex-direction: column;
 }
+.barcode-sku-data-wrapper{
+  max-height: 125px;
+  overflow: auto;
+  min-width: max-content;
+  margin-right: 20px;
+}
+.barcode-sku-data-wrapper::-webkit-scrollbar {
+
+  width: 6px;
+}
+.barcode-sku-data-wrapper::-webkit-scrollbar-track {
+  background: #f4f4f4; /* Цвет фона полосы прокрутки */
+}
+
+.barcode-sku-data-wrapper::-webkit-scrollbar-thumb {
+  background-color: #5329FF80; /* Фиолетовый цвет для прокрутки */
+  border-radius: 8px; /* Закругленные края */
+  
+}
+
+.barcode-sku-data-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #5329FF80; /* Более темный фиолетовый при наведении */
+}
 
 .barcode-text-title {
-  margin-bottom: 0;
+
+  margin-bottom: 10px;
+  margin-top: 15px;
   font-size: 16px;
   font-weight: 500;
   color: #8c8c8c;
+  position: sticky;
 }
+  
 
 .barcode-row-image {
   width: 60px;
@@ -2763,6 +2791,7 @@ select {
   font-weight: 500;
   line-height: 20px;
   color: rgba(26, 26, 26, 1);
+  margin-right: 10px;
 }
 
 .sales-box-wrapper {
