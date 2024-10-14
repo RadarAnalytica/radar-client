@@ -6,14 +6,20 @@ import SortArrows from './SortArrows';
 import VennDiagram from './VennDiagram';
 
 const SeoCompaire = ({ compaireData }) => {
+  console.log('compaireData', compaireData);
   const [byOptions, setByOptions] = useState('onlyA');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [sortedData, setSortedData] = useState([]);
 
   const contentA = compaireData?.products_a ?? [];
-
   const contentB = compaireData?.products_b ?? [];
+
+  const arrA = Object.keys(compaireData?.keywords_a).map(x => x.toLowerCase());
+  const arrB = Object.keys(compaireData?.keywords_b).map(x => x.toLowerCase());
+
+const intersection = arrA.filter(x => arrB.includes(x));
+const intersectionLength = intersection.length;
 
   const radioOptions = [
     { value: 'onlyA', label: 'Только А' },
@@ -51,14 +57,25 @@ const SeoCompaire = ({ compaireData }) => {
   );
 
   useEffect(() => {
+    const keywordsA = Object.keys(compaireData?.keywords_a || {}).map(x => x.toLowerCase());
+    const keywordsB = Object.keys(compaireData?.keywords_b || {}).map(x => x.toLowerCase());
+    const intersection = keywordsA.filter(x => keywordsB.includes(x));
+
     const dataMap = {
       onlyA: Object.entries(compaireData?.keywords_a).map(([key, value]) => ({ key, value })),
       onlyB:  Object.entries(compaireData?.keywords_b).map(([key, value]) => ({ key, value })),
-      commonAB: [],
-      differenceAB: [],
-      differenceBA: [],
-    };
-    setSortedData(dataMap[byOptions] || []);
+     commonAB: intersection.map(key => ({
+      key,
+      value: Math.max(compaireData?.keywords_a[key] || 0, compaireData?.keywords_b[key] || 0)
+    })),
+    differenceAB: Object.entries(compaireData?.keywords_a || {})
+      .filter(([key]) => !keywordsB.includes(key.toLowerCase()))
+      .map(([key, value]) => ({ key, value })),
+    differenceBA: Object.entries(compaireData?.keywords_b || {})
+      .filter(([key]) => !keywordsA.includes(key.toLowerCase()))
+      .map(([key, value]) => ({ key, value })),
+  };
+  setSortedData(dataMap[byOptions] || []);
   }, [byOptions, compaireData]);
 
   const handleRadioChange = (value) => {
@@ -95,6 +112,11 @@ const SeoCompaire = ({ compaireData }) => {
     return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
   };
 
+  const clickProduct = (wb_id) => {
+    const url = `https://www.wildberries.ru/catalog/${wb_id}/detail.aspx`;
+    window.open(url, '_blank');
+  }
+
   return (
     <div className={styles.seoCompaireWrapper}>
       <div className={styles.topBlock}>
@@ -103,7 +125,7 @@ const SeoCompaire = ({ compaireData }) => {
           <VennDiagram
             groupACount={Object.keys(compaireData.keywords_a).length}
             groupBCount={Object.keys(compaireData.keywords_b).length}
-            intersectionCount={compaireData.intersection.length}
+            intersectionCount={intersectionLength}
           />
 )}
         </div>
@@ -131,7 +153,9 @@ const SeoCompaire = ({ compaireData }) => {
                         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
                     }}
                   />
+                  <span onClick={() => clickProduct(item.wb_id)}>
                   {item.title}
+                  </span>
                 </div>
               ))}
             </div>
@@ -153,7 +177,9 @@ const SeoCompaire = ({ compaireData }) => {
                         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
                     }}
                   />
+                   <span onClick={() => clickProduct(item.wb_id)}>
                   {item.title}
+                  </span>
                 </div>
               ))}
             </div>
