@@ -415,6 +415,7 @@ select {
   width: 21vw;
   padding: 28px 20px;
   max-height: 100vh;
+  overflow-y: auto;
   position: sticky;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -422,6 +423,27 @@ select {
   justify-content: space-between;
   background-color: white;
 }
+.side-nav::-webkit-scrollbar {
+  width: 4px; /* Ширина скроллбара */
+
+}
+
+.side-nav::-webkit-scrollbar-track {
+  background: transparent; /* Цвет фона трека */
+}
+
+.side-nav::-webkit-scrollbar-thumb {
+  background-color: #5329FF80; /* Цвет полосы прокрутки */
+  border-radius: 4px; /* Скругленные углы */
+  border: 2px solid transparent; /* Добавляем прозрачный отступ */
+}
+
+/* Дополнительная стилизация для Firefox */
+.side-nav {
+  scrollbar-width: thin; /* Узкий скроллбар */
+  scrollbar-color: #5329ff80 transparent; /* Цвет скроллбара и трека */
+}
+
 
 .sidenav-el {
   display: flex;
