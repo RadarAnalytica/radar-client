@@ -240,11 +240,11 @@ input::placeholder {
     background-color: white;
     box-shadow: 0px 0px 20px 0px #00000014;
     border-radius: 16px;
-    width: 650px;
+    width: 850px;
     max-width: 90%;
     padding: 24px;
     position: relative;
-    max-height: 420px;
+    max-height: 620px;
     text-align: center;
 
 }
@@ -268,8 +268,8 @@ input::placeholder {
     cursor: pointer;
 }
 .modalBody{
-    min-height: 240px;
-    max-height: 240px;
+    min-height: 300px;
+    max-height: 400px;
     overflow-y: scroll;
     text-align: left;
 }
@@ -388,7 +388,7 @@ input::placeholder {
     opacity: 0.9;
 }
 .modalContentLoad {
-    min-height: 120px;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     height: 100%;

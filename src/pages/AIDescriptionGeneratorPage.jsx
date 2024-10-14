@@ -207,6 +207,15 @@ const AiDescriptionGeneratorPage = () => {
         setCompetitorsLinks("")
         setNextStep(false)
         setIsModalOpen(false)
+        setIsButtonVisible(true)
+    }
+    const onCloseNew = () => {
+        setProductName("")
+        setShortDescription("")
+        setCompetitorsLinks("")
+        setNextStep(false)
+        setIsModalOpen(false)
+        setIsButtonVisible(true)
     }
     // Function to handle adding keywords
     const handleAddKeyword = (e) => {
@@ -404,7 +413,7 @@ const AiDescriptionGeneratorPage = () => {
                             )}
                         </div>
                         <div className={styles.modalFooter}>
-                            <button className={styles.modalFooterBtnNew} onClick={onClose}>Новая генерация</button>
+                            <button className={styles.modalFooterBtnNew} onClick={onCloseNew}>Новая генерация</button>
                             <button className={isCopied ? styles.modalFooterBtnCopied : styles.modalFooterBtnCopy} onClick={handleCopy}>{isCopied ? 'Скопировано!' : 'Скопировать'}</button>
                         </div>
                         {/* {isTooltipVisible && (
