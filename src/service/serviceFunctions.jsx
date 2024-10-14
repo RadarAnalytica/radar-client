@@ -310,7 +310,7 @@ export const ServiceFunctions = {
 
   postSeoLinks: async (token, seoLinks) => {
     const res = await fetch(
-      `${URL}/api/ceo-comparison/`,
+      `${URL}/api/ceo-comparison/raw`,
       {
         method: "POST",
         headers: {
