@@ -455,12 +455,12 @@ const SideNav = () => {
         <a>
           <img src={support} alt='' className='support-icon' />
         </a>
-        <p className='fw-bold mb-0 mt-2 p-0' style={{ fontSize: "1.8vh" }}>
+        <p className='fw-bold mb-0 p-0' style={{ fontSize: "1.8vh", marginLeft: "15px" }}>
           Обратиться в поддержку
         </p>
-        <p className='m-0 p-0' style={{ fontSize: "1.8vh" }}>
+        {/* <p className='m-0 p-0' style={{ fontSize: "1.8vh" }}>
           или предложить идею
-        </p>
+        </p> */}
       </div>
     </div >
   );

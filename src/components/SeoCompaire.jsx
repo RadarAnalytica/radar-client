@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import styles from './SeoCompaire.module.css';
 import RadioGroup from './RadioGroup';
-import SearchButton from '../assets/searchstock.svg';
+import Union from '../assets/union.svg';
 import SortArrows from './SortArrows';
 import IntersectingCircles from './IntersectingCircles';
 
@@ -167,17 +167,6 @@ const SeoCompaire = ({ compaireData }) => {
           />
          <div 
          className={styles.keywordCount}
-    //      style={{
-    //       display: 'flex',
-    //       flexDirection: 'column',
-    //   position: 'absolute',
-    //   bottom: '10px',
-    //   right: '10px',
-    //   background: 'rgba(255, 255, 255, 0.8)',
-    //   padding: '5px',
-    //   borderRadius: '5px',
-    //   fontSize: '12px'
-    // }}
     >
       <span className={styles.keywordCountNumber}>{sortedData.length }</span>
       <span className={styles.keywordCountText}>ключевых слов</span>
@@ -257,13 +246,12 @@ const SeoCompaire = ({ compaireData }) => {
             value={searchQuery}
             onChange={handleSearchQuery}
           />
-
-          <img
-            src={SearchButton}
-            alt='Search'
-            //  onClick={handleFilterSearch}
-            style={{ cursor: 'pointer' }}
-          />
+          <button>
+            <span className={styles.unionImage}>
+              <img src={Union} alt='Search button'/>
+            </span>
+            <span className={styles.searchButtonText}>Найти</span>
+          </button>
         </div>
         <div className={styles.tableWrapper}>
           <div className={styles.tableHeader}>
