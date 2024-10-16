@@ -267,7 +267,7 @@ const SideNav = () => {
                     <circle cx='4' cy='4' r='4' fill='#5329FF' />
                   </svg>
                 ) : null}
-                Генерация <br />описания
+                Генерация описания
                 <img src={aiGenerator} style={{ marginLeft: "5px" }} />
               </p>
               <p
@@ -291,7 +291,7 @@ const SideNav = () => {
                     <circle cx='4' cy='4' r='4' fill='#5329FF' />
                   </svg>
                 ) : null}
-                Мониторинг<br /> запросов
+                Мониторинг запросов
               </p>
               <p
                 className='sidenav-title ps-4 submenu-item'
