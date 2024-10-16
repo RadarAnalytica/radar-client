@@ -251,7 +251,7 @@ export const ServiceFunctions = {
   postAiDescriptionGenerator: async (token, productTitle, shortDescription, keywords) => {
 
     const res = await fetch(
-      `${URL}/api/description-generator/generate`,
+      `${URL}/api/description-generator/v2/generate`,
       {
         method: "POST",
         headers: {
@@ -271,6 +271,19 @@ export const ServiceFunctions = {
     const data = await res.json();
     return data;
   },
+
+  getUserGenerationsData: async (token, id) => {
+    const res = await fetch(`${URL}/api/description-generator/v2?id=${id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        authorization: "JWT " + token,
+      },
+    });
+    const data = await res.json();
+    return data;
+  },
+
 
   getUserGenerationsAmount: async (token) => {
     const res = await fetch(

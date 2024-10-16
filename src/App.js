@@ -13,6 +13,7 @@ import Subscriptions from "./pages/Subscriptions";
 import RequestMonitoringPage from "./pages/RequestMonitoringPage";
 import AiDescriptionGeneratorPage from "./pages/AIDescriptionGeneratorPage";
 import SeoPage from "./pages/SeoPage";
+import { ProductProvider } from "./service/ProductContext";
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
@@ -65,6 +66,7 @@ function App() {
     return (
       <div className='App'>
         <AuthProvider>
+          <ProductProvider>
           <MobileMenu />
           <Routes>
             <Route
@@ -485,6 +487,7 @@ function App() {
             {/* <Route path='/development/settings' element={<Settings />} /> */}
             {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
           </Routes>
+          </ProductProvider>
         </AuthProvider>
       </div>
     );
@@ -493,6 +496,7 @@ function App() {
   return (
     <div className='App'>
       <AuthProvider>
+        <ProductProvider>
         <Routes>
           <Route
             path='/'
@@ -744,6 +748,7 @@ function App() {
           {/* <Route path='/development/settings' element={<Settings />} /> */}
           {/* <Route path='*' element={<Navigate to={'/development/signin'} replace />} /> */}
         </Routes>
+        </ProductProvider>
       </AuthProvider>
     </div>
   );

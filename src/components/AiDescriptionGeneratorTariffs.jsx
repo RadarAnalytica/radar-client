@@ -250,8 +250,8 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
                             </div>
                         </div>
                         <div className={styles.modalFooter}>
-                            <button className={styles.modalFooterBtnCopy} style={{ marginRight: "10px" }} onClick={handleClose}>Отменить</button>
-                            <button className={styles.modalFooterBtnNew} style={{ marginLeft: "10px" }} onClick={pay}>Оплатить</button>
+                            <button className={styles.modalFooterBtnNew} style={{ marginRight: "10px" }} onClick={handleClose}>Отменить</button>
+                            <button className={styles.modalFooterBtnCopy} style={{ marginLeft: "10px" }} onClick={pay}>Оплатить</button>
                         </div>
                     </div>
                 </div>

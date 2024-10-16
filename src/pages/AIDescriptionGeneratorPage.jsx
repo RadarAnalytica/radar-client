@@ -13,19 +13,42 @@ import warningIcon from "../assets/warning.png"
 import Modal from 'react-bootstrap/Modal';
 import AiDescriptionGeneratorTariffs from "../components/AiDescriptionGeneratorTariffs"
 import { redirect } from "react-router-dom"
-
+import { ProductContext } from "../service/ProductContext"
 const AiDescriptionGeneratorPage = () => {
+
+    const {
+        productName,
+        setProductName,
+        shortDescription,
+        setShortDescription,
+        keywords,
+        addKeyword,
+        addKeywords,
+        removeKeyword,
+        inputValue,
+        setInputValue,
+        competitorsLinks,
+        setCompetitorsLinks,
+        removeAllKeywords
+    } = useContext(ProductContext);
+
+    console.log("Product Name");
+    console.log(productName);
+    console.log("Keywords");
+    console.log(keywords);
+
+
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingNext, setIsLoadingNext] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [isVisible, setIsVisible] = useState(true);
-    const [keywords, setKeywords] = useState([]);
-    const [inputValue, setInputValue] = useState('');
+    //const [keywords, setKeywords] = useState([]);
+    //const [inputValue, setInputValue] = useState('');
     const [nextStep, setNextStep] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [productName, setProductName] = useState('')
-    const [shortDescription, setShortDescription] = useState('')
-    const [competitorsLinks, setCompetitorsLinks] = useState('')
+    //const [productName, setProductName] = useState('')
+    //const [shortDescription, setShortDescription] = useState('')
+    //const [competitorsLinks, setCompetitorsLinks] = useState('')
     const { user, authToken } = useContext(AuthContext);
     const [description, setDescription] = useState();
     const [showModalError, setShowModalError] = useState(false);
@@ -34,6 +57,7 @@ const AiDescriptionGeneratorPage = () => {
     const [isButtonVisible, setIsButtonVisible] = useState(true);
     const [isModalOpenNewGen, setIsModalOpenNewGen] = useState(false);
     const [amountGenerations, setAmountGenerations] = useState("")
+    const [idGenerator, setIdGenerator] = useState(null)
 
 
     const handleNewGenerator = () => {
@@ -63,6 +87,7 @@ const AiDescriptionGeneratorPage = () => {
     }, [isModalOpenNewGen]);
 
 
+
     const handleShowModalError = () => setShowModalError(true);
     const handleCloseModalError = () => setShowModalError(false);
 
@@ -88,7 +113,7 @@ const AiDescriptionGeneratorPage = () => {
             // Check if data is not empty
             if (result.length > 0) {
 
-                setKeywords(prevKeywords => [...prevKeywords, ...result]);
+                addKeyword(result);
                 setInputValue('');
                 setNextStep(true);
                 setIsLoading(false);
@@ -124,22 +149,22 @@ const AiDescriptionGeneratorPage = () => {
         try {
             setIsLoading(true);
             setIsModalOpen(true);
-            const data = await ServiceFunctions.postAiDescriptionGenerator(
-                token, productName, shortDescription, keywords
-            );
 
-            // Проверка на отсутствие данных
-            if (!data || data.length === 0) {
-                setErrorMessage("Не правильная ссылка или артикул.");
-                handleShowModalError();
-            }
 
-            const result = data; // Assuming data is already defined and is an array
+            const savedId = localStorage.getItem("generatedId");
+            if (savedId === null) {
+                const id = await ServiceFunctions.postAiDescriptionGenerator(
+                    token, productName, shortDescription, keywords
+                );
 
-            // Check if data is not empty
-            if (result.length > 0) {
-                // Add all values from the data array to the keywords array
-                setDescription(result)
+                // Проверка на отсутствие данных
+                if (!id || id.length === 0) {
+                    setErrorMessage("Не правильная ссылка или артикул.");
+                    handleShowModalError();
+                }
+                localStorage.setItem("generatedId", id);
+            } else {
+                console.log("ID exists:", savedId);
             }
 
 
@@ -155,10 +180,43 @@ const AiDescriptionGeneratorPage = () => {
             console.error(e);
 
         } finally {
-            setIsLoading(false);
-
         }
     };
+
+    const fetchUserGenerationsData = async (token, setDescription) => {
+        const savedId = localStorage.getItem("generatedId");
+
+        if (!savedId) {
+            console.error("No ID found in local storage.");
+            setIsLoading(false);
+            return;
+        }
+
+        setIsLoading(true); // Start loading state
+
+        const intervalId = setInterval(async () => {
+            try {
+                const data = await ServiceFunctions.getUserGenerationsData(token, savedId);
+
+                const res = data.result;
+
+                // Check if the result is valid
+                if (res && res.length > 0) {
+                    setDescription(res); // Set the fetched data
+                    localStorage.removeItem("generatedId");
+                    setIsLoading(false); // Stop loading state
+                    clearInterval(intervalId); // Clear the interval
+                } else {
+                    console.log("Result is null or empty, retrying...");
+                }
+            } catch (error) {
+                console.error("Failed to fetch user generations data:", error);
+                setIsLoading(false); // Stop loading state on error
+                clearInterval(intervalId); // Clear the interval to stop further requests
+            }
+        }, 1000); // Check every 1 second
+    };
+
 
     const handleNextStep = async () => {
         const linksArray = competitorsLinks.split('\n').map(link => link.trim()).filter(link => link !== '');
@@ -200,8 +258,19 @@ const AiDescriptionGeneratorPage = () => {
         }
         await updateAiDescriptionGenerator(authToken, productName, shortDescription, keywords)
 
+
+        try {
+            await fetchUserGenerationsData(authToken, setDescription); // Используйте токен для получения данных
+            setIsModalOpen(true); // Откройте модальное окно после получения данных
+        } catch (error) {
+            console.error("Error fetching user generations data:", error);
+            setErrorMessage("Не удалось получить данные. Пожалуйста, попробуйте еще раз.");
+
+        }
+
     }
     const onClose = () => {
+        removeAllKeywords()
         setProductName("")
         setShortDescription("")
         setCompetitorsLinks("")
@@ -221,7 +290,7 @@ const AiDescriptionGeneratorPage = () => {
     const handleAddKeyword = (e) => {
         e.preventDefault();
         if (inputValue.trim()) {
-            setKeywords([inputValue.trim(), ...keywords]);
+            addKeywords(inputValue.trim());
             setInputValue('');
         }
     };
@@ -244,15 +313,56 @@ const AiDescriptionGeneratorPage = () => {
 
 
     // Function to handle removing keywords
-    const handleRemoveKeyword = (index) => {
-        const updatedKeywords = keywords.filter((_, i) => i !== index);
-        setKeywords(updatedKeywords);
+    const handleRemoveKeyword = (keyword) => {
+        removeKeyword(keyword)
     };
 
     // Function to toggle visibility
     const toggleVisibility = () => {
         setIsVisible(!isVisible); // Toggle visibility on each click
     };
+
+    // Check if keywords already exist in context on mount
+    useEffect(() => {
+        if (keywords.length > 0) {
+            // If there are already keywords, set next step to true
+            setNextStep(true);
+            setIsButtonVisible(false);
+
+        }
+    }, [keywords, setNextStep]);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const storedId = localStorage.getItem('generatedId');
+            if (storedId) {
+                const parsedId = parseInt(storedId, 10);
+
+                try {
+                    const response = await ServiceFunctions.getUserGenerationsData(authToken, parsedId);  // Fetch data
+                    setProductName(response.product_title);
+                    setShortDescription(response.short_description);
+                    setNextStep(true);
+                    addKeyword(response.keywords);
+                    setIsLoading(true);
+                    setIsModalOpen(true);
+                    setDescription(response.result); // Set the fetched data
+                    localStorage.removeItem("generatedId");
+                    setIsLoading(false);
+                } catch (err) {
+                    // setError('Failed to fetch data');  // Handle error
+                } finally {
+                    // setIsLoading(false);  // Stop loading
+                }
+            } else {
+                // setLoading(false);  // Stop loading if no ID found
+            }
+        };
+
+        fetchData();  // Call the function on component mount
+    }, [authToken]);
+
     return <div className='dashboard-page'>
         <SideNav />
         <div className={`${styles.generatorPage} dashboard-content pb-3 `}>
@@ -377,7 +487,7 @@ const AiDescriptionGeneratorPage = () => {
                             {keywords.map((keyword, index) => (
                                 <div key={index} className={styles.keyword}>
                                     <div>{keyword}</div>
-                                    <div className={styles.removeKeyword} onClick={() => handleRemoveKeyword(index)}>
+                                    <div className={styles.removeKeyword} onClick={() => handleRemoveKeyword(keyword)}>
                                         <img className={styles.closeBtn} src={closebtn} />
                                     </div>
                                 </div>
