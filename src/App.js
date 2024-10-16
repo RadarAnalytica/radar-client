@@ -262,7 +262,7 @@ function App() {
                 </React.Suspense>
               }
             />
-            <Route
+            {/* <Route
               path='/admin-panel'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
@@ -277,7 +277,7 @@ function App() {
                   <UserInfo />
                 </React.Suspense>
               }
-            />
+            /> */}
             {user.is_onboarded ? (
               <>
                 <Route

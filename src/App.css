@@ -2751,8 +2751,10 @@ select {
 .barcode {
   display: flex;
   align-items: flex-start;
+  align-items: flex-start;
   justify-content: space-between;
 }
+
 
 .barcode-row {
   flex-direction: column;
@@ -2784,11 +2786,16 @@ select {
 .barcode-text-title {
   margin-bottom: 10px;
   margin-top: 15px;
+
+  margin-bottom: 10px;
+  margin-top: 15px;
   font-size: 16px;
   font-weight: 500;
   color: #8c8c8c;
   position: sticky;
+  position: sticky;
 }
+  
 
 .barcode-row-image {
   width: 60px;
@@ -2808,6 +2815,7 @@ select {
   line-height: 20px;
   color: rgba(26, 26, 26, 1);
   margin-right: 40px;
+  margin-right: 10px;
 }
 
 .sales-box-wrapper {
