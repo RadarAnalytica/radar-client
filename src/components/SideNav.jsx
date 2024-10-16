@@ -456,7 +456,7 @@ const SideNav = () => {
             alt='Call support window' 
             className='support-icon' 
             style={{ cursor: "pointer" }}  
-            onClick={() => toggleOpenSupport()}
+            // onClick={() => toggleOpenSupport()}
           />
         </a>
         {/* <p className='fw-bold mb-0 p-0' style={{ fontSize: "1.8vh", marginLeft: "15px" }}>

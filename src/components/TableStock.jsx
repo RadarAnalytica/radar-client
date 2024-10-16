@@ -140,7 +140,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                           textOverflow: 'ellipsis',
                           cursor: 'pointer',
                         }}
-                        onClick={() => handleClickProductName(row)}
+                        // onClick={() => handleClickProductName(row)}
                       >
                         {row.productName}
                       </span>
