@@ -4,15 +4,15 @@ const RadioGroup = ({ options, name, defaultValue, onChange }) => {
   return (
     <div className='map-radio mb-3'>
       {options.map((option) => (
-        <div key={option.value} className='radio-item'>
+        <div key={option.value} className='radio-item' style={{ cursor: 'pointer' }}>
           <input
             type='radio'
             name={name}
             id={`${name}-${option.value}`}
             value={option.value}
             defaultChecked={option.value === defaultValue}
-            style={{ cursor: 'pointer' }}
             onChange={() => onChange(option.value)}
+            style={{ cursor: 'pointer' }}
           />
           <label
             htmlFor={`${name}-${option.value}`}

@@ -25,15 +25,15 @@ const SeoCompaire = ({ compaireData }) => {
   const getCircleColors = (option) => {
     switch (option) {
       case 'onlyA':
-        return { color1: 'rgba(26, 26, 26, 1)', color2: 'transparent', colorIntersection: 'transparent', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgba(26, 26, 26, 1)' };
+        return { color1: '#f0ae03', color2: 'rgb(0, 182, 155, 0.1)', colorIntersection: 'rgb(0, 182, 155, 0.1)', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgb(0, 182, 155, 1)' };
       case 'onlyB':
-        return { color1: 'transparent', color2: 'rgba(26, 26, 26, 1)', colorIntersection: 'transparent', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgba(26, 26, 26, 1)', strockB: 'transparent' };
+        return { color1: 'rgb(0, 182, 155, 0.1)', color2: '#f0ae03', colorIntersection: 'rgb(0, 182, 155, 0.1)', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgb(0, 182, 155, 1)', strockB: 'transparent' };
       case 'commonAB':
-        return { color1: 'transparent', color2: 'transparent', colorIntersection: 'rgba(26, 26, 26, 1)', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'rgba(26, 26, 26, 1)', strockB: 'rgba(26, 26, 26, 1)' };
+        return { color1: 'rgb(0, 182, 155, 0.1)', color2: 'rgb(0, 182, 155, 0.1)', colorIntersection: '#f0ae03', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'rgb(0, 182, 155, 1)', strockB: 'rgb(0, 182, 155, 1)' };
       case 'differenceAB':
-        return { color1: 'rgba(26, 26, 26, 1)', color2: 'transparent', colorIntersection: 'rgb(247, 246, 254, 1)', textColor: 'white', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgba(26, 26, 26, 1)' };
+        return { color1: '#f0ae03', color2: 'rgb(0, 182, 155, 1)', colorIntersection: 'rgb(0, 182, 155, 1)', textColor: 'white', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgb(0, 182, 155, 0.1)' };
       case 'differenceBA':
-        return { color1: 'transparent', color2: 'rgba(26, 26, 26, 1)', colorIntersection: 'rgb(247, 246, 254, 1)', textColor: 'white', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgba(26, 26, 26, 1)', strockB: 'transparent'};
+        return { color1: 'rgb(0, 182, 155, 1)', color2: '#f0ae03', colorIntersection: 'rgb(0, 182, 155, 1)', textColor: 'white', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'transparent', strockB: 'transparent'};
       default:
         return { color1: 'purple', color2: 'blue', colorIntersection: 'white',textColor: 'white' };
     }
