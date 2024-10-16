@@ -1,0 +1,19 @@
+.svg {
+  width: 100%;
+  height: auto;
+  background-color: #f8f8ff;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-anchor: middle;
+  fill: #333;
+}
+
+.smallLabel {
+  font-size: 12px;
+  text-anchor: start;
+  fill: #666;
+}

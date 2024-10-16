@@ -3,7 +3,7 @@ import styles from './SeoCompaire.module.css';
 import RadioGroup from './RadioGroup';
 import SearchButton from '../assets/searchstock.svg';
 import SortArrows from './SortArrows';
-import VennDiagram from './VennDiagram';
+import IntersectingCircles from './IntersectingCircles';
 
 const SeoCompaire = ({ compaireData }) => {
   const [byOptions, setByOptions] = useState('onlyA');
@@ -14,16 +14,6 @@ const SeoCompaire = ({ compaireData }) => {
   const contentA = compaireData?.products_a ?? [];
   const contentB = compaireData?.products_b ?? [];
 
-  const arrA = Object.keys(compaireData?.keywords_a).map((x) =>
-    x.toLowerCase()
-  );
-  const arrB = Object.keys(compaireData?.keywords_b).map((x) =>
-    x.toLowerCase()
-  );
-
-  const intersection = arrA.filter((x) => arrB.includes(x));
-  const intersectionLength = intersection.length;
-
   const radioOptions = [
     { value: 'onlyA', label: 'Только А' },
     { value: 'onlyB', label: 'Только B' },
@@ -31,6 +21,25 @@ const SeoCompaire = ({ compaireData }) => {
     { value: 'differenceAB', label: 'Разница А минус В' },
     { value: 'differenceBA', label: 'Разница В минус А' },
   ];
+
+  const getCircleColors = (option) => {
+    switch (option) {
+      case 'onlyA':
+        return { color1: 'rgba(26, 26, 26, 1)', color2: 'transparent', colorIntersection: 'transparent', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgba(26, 26, 26, 1)' };
+      case 'onlyB':
+        return { color1: 'transparent', color2: 'rgba(26, 26, 26, 1)', colorIntersection: 'transparent', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgba(26, 26, 26, 1)', strockB: 'transparent' };
+      case 'commonAB':
+        return { color1: 'transparent', color2: 'transparent', colorIntersection: 'rgba(26, 26, 26, 1)', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'rgba(26, 26, 26, 1)', strockB: 'rgba(26, 26, 26, 1)' };
+      case 'differenceAB':
+        return { color1: 'rgba(26, 26, 26, 1)', color2: 'transparent', colorIntersection: 'rgb(247, 246, 254, 1)', textColor: 'white', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgba(26, 26, 26, 1)' };
+      case 'differenceBA':
+        return { color1: 'transparent', color2: 'rgba(26, 26, 26, 1)', colorIntersection: 'rgb(247, 246, 254, 1)', textColor: 'white', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgba(26, 26, 26, 1)', strockB: 'transparent'};
+      default:
+        return { color1: 'purple', color2: 'blue', colorIntersection: 'white',textColor: 'white' };
+    }
+  };
+
+  const { color1, color2, colorIntersection, textColorA, textColorB, strockA, strockB } = getCircleColors(byOptions);
 
   const sortData = useCallback(
     (key) => {
@@ -147,15 +156,15 @@ const SeoCompaire = ({ compaireData }) => {
     <div className={styles.seoCompaireWrapper}>
       <div className={styles.topBlock}>
         <div>
-          {compaireData &&
-            compaireData.keywords_a &&
-            compaireData.keywords_b && (
-              <VennDiagram
-                groupACount={Object.keys(compaireData.keywords_a).length}
-                groupBCount={Object.keys(compaireData.keywords_b).length}
-                intersectionCount={intersectionLength}
-              />
-            )}
+          <IntersectingCircles 
+             color1={color1} 
+             color2={color2} 
+             colorIntersection={colorIntersection}
+             textColorA={textColorA}
+             textColorB={textColorB}
+             strockA={strockA}
+             strockB={strockB}
+          />
         </div>
         <div className={styles.seoTableWrapper}>
           <div className={styles.seoTableHeader}>
