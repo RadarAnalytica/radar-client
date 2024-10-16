@@ -488,13 +488,8 @@ select {
 
 .support-block {
   border-radius: 1rem;
-  background-color: rgb(238, 238, 239);
   padding: 1rem;
-  max-width: 25vw;
   font-size: 1.25vw;
-  display: flex;
-  flex-direction: row;
-  margin-top: 20px;
 }
 
 .support-icon {

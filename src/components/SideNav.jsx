@@ -447,17 +447,21 @@ const SideNav = () => {
 
       <div
         className='support-block'
-        onClick={() =>
-          toggleOpenSupport()
-        }
-        style={{ cursor: "pointer" }}
+      
+        
       >
         <a>
-          <img src={support} alt='' className='support-icon' />
+          <img 
+            src={support} 
+            alt='Call support window' 
+            className='support-icon' 
+            style={{ cursor: "pointer" }}  
+            onClick={() => toggleOpenSupport()}
+          />
         </a>
-        <p className='fw-bold mb-0 p-0' style={{ fontSize: "1.8vh", marginLeft: "15px" }}>
+        {/* <p className='fw-bold mb-0 p-0' style={{ fontSize: "1.8vh", marginLeft: "15px" }}>
           Обратиться в поддержку
-        </p>
+        </p> */}
         {/* <p className='m-0 p-0' style={{ fontSize: "1.8vh" }}>
           или предложить идею
         </p> */}
