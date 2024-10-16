@@ -18,7 +18,7 @@ const ProductProvider = ({ children }) => {
     };
 
     const addKeywords = (newKeywords) => {
-        setKeywords([...keywords, newKeywords]);
+        setKeywords([newKeywords, ...keywords]);
     };
 
     const removeAllKeywords = () => {
