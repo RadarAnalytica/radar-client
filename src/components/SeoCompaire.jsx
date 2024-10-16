@@ -25,15 +25,15 @@ const SeoCompaire = ({ compaireData }) => {
   const getCircleColors = (option) => {
     switch (option) {
       case 'onlyA':
-        return { color1: '#f0ae03', color2: 'rgb(0, 182, 155, 0.1)', colorIntersection: 'rgb(0, 182, 155, 0.1)', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgb(0, 182, 155, 1)' };
+        return { color1: '#f0ae03', color2: '#00B69B1A', colorIntersection: 'rgb(0, 182, 155, 0.1)', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgb(0, 182, 155, 1)' };
       case 'onlyB':
-        return { color1: 'rgb(0, 182, 155, 0.1)', color2: '#f0ae03', colorIntersection: 'rgb(0, 182, 155, 0.1)', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgb(0, 182, 155, 1)', strockB: 'transparent' };
+        return { color1: '#00B69B1A', color2: '#f0ae03', colorIntersection: 'rgb(0, 182, 155, 0.1)', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgb(0, 182, 155, 1)', strockB: 'transparent' };
       case 'commonAB':
-        return { color1: 'rgb(0, 182, 155, 0.1)', color2: 'rgb(0, 182, 155, 0.1)', colorIntersection: '#f0ae03', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'rgb(0, 182, 155, 1)', strockB: 'rgb(0, 182, 155, 1)' };
+        return { color1: '#00B69B1A', color2: '#00B69B1A', colorIntersection: '#f0ae03', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'rgb(0, 182, 155, 1)', strockB: 'rgb(0, 182, 155, 1)' };
       case 'differenceAB':
-        return { color1: '#f0ae03', color2: 'rgb(0, 182, 155, 1)', colorIntersection: 'rgb(0, 182, 155, 1)', textColor: 'white', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgb(0, 182, 155, 0.1)' };
+        return { color1: '#f0ae03', color2: '#00B69B1A', colorIntersection: '#dff2f5', textColor: 'white', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgb(0, 182, 155, 1)' };
       case 'differenceBA':
-        return { color1: 'rgb(0, 182, 155, 1)', color2: '#f0ae03', colorIntersection: 'rgb(0, 182, 155, 1)', textColor: 'white', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'transparent', strockB: 'transparent'};
+        return { color1: '#00B69B1A', color2: '#f0ae03', colorIntersection: '#00B69B1', textColor: 'white', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgb(0, 182, 155, 1)', strockB: 'transparent'};
       default:
         return { color1: 'purple', color2: 'blue', colorIntersection: 'white',textColor: 'white' };
     }
@@ -155,7 +155,7 @@ const SeoCompaire = ({ compaireData }) => {
   return (
     <div className={styles.seoCompaireWrapper}>
       <div className={styles.topBlock}>
-        <div>
+        <div style={{ position: 'relative' }}>
           <IntersectingCircles 
              color1={color1} 
              color2={color2} 
@@ -165,6 +165,23 @@ const SeoCompaire = ({ compaireData }) => {
              strockA={strockA}
              strockB={strockB}
           />
+         <div 
+         className={styles.keywordCount}
+    //      style={{
+    //       display: 'flex',
+    //       flexDirection: 'column',
+    //   position: 'absolute',
+    //   bottom: '10px',
+    //   right: '10px',
+    //   background: 'rgba(255, 255, 255, 0.8)',
+    //   padding: '5px',
+    //   borderRadius: '5px',
+    //   fontSize: '12px'
+    // }}
+    >
+      <span className={styles.keywordCountNumber}>{sortedData.length }</span>
+      <span className={styles.keywordCountText}>ключевых слов</span>
+    </div>
         </div>
         <div className={styles.seoTableWrapper}>
           <div className={styles.seoTableHeader}>
