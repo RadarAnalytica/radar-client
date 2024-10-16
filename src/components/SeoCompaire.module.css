@@ -229,7 +229,7 @@
     color: rgba(26, 26, 26, 0.5);
   }
 
-  /* .seoTableContentRowWrapper {
-    overflow-y: scroll;
-    max-height: 350px;
-  } */
+  .tableContentItemKey {
+    color: rgba(83, 41, 255, 1);
+    cursor: pointer;
+  }
