@@ -194,7 +194,7 @@ const StockAnalysis = () => {
   };
 
   const getProdAnalyticXlsx = async (days, activeBrand, authToken) => { 
-    fetch(`{URL}/api/prod_analytic/download?period=${days}&shop=${activeBrand}`,
+    fetch(`${URL}/api/prod_analytic/download?period=${days}&shop=${activeBrand}`,
       {
         method: 'GET',
         headers: {
