@@ -93,24 +93,24 @@ const InfoSeoPlate = ({ setCompaireData }) => {
                   Найдем все запросы, в которых товары их двух групп
                   показывались последние 30 дней. Покажем, какие из запросов
                   пересекаются, а какие уникальны для группы. Что можно делать с
-                  помощью этого интрумента:
+                  помощью этого инструмента:
                 </span>
               </div>
               <div className={styles.infoBodyBox}>
                 <div className={styles.infoBodyBoxItem}>
                   <img src={mash} alt='Mash' />
-                  <span>Сравните свои поисковые запросы с конкурентами</span>
+                  <span>Сравнить свои поисковые запросы с конкурентами</span>
                 </div>
                 <div className={styles.infoBodyBoxItem}>
                   <img src={fairystick} alt='Fairystick' />
                   <span>
-                    Подберите уникальные запросы для карточки и продвижения
+                    Подобрать уникальные запросы для карточки и продвижения
                   </span>
                 </div>
                 <div className={styles.infoBodyBoxItem}>
                   <img src={linkchain} alt='Linkchain' />
                   <span>
-                    Определите недостающие ключевые слова в своих карточках
+                    Определить недостающие ключевые слова в своих карточках
                   </span>
                 </div>
               </div>
@@ -124,7 +124,7 @@ const InfoSeoPlate = ({ setCompaireData }) => {
               <div className={styles.groupBox}>
                 <div className={styles.groupBoxTitle}>Группа А</div>
                 <textarea
-                  placeholder='Введите до 10 ссылок на товары. Каждую ссылку с новой строки. Пример:
+                  placeholder='Введите до 50 ссылок на товары. Каждую ссылку с новой строки. Пример:
 https://www.wildberries.ru/catalog/177307535
 https://www.wildberries.ru/catalog/177307899'
                   rows={6}
@@ -135,7 +135,7 @@ https://www.wildberries.ru/catalog/177307899'
               <div className={styles.groupBox}>
                 <div className={styles.groupBoxTitle}>Группа B</div>
                 <textarea
-                  placeholder='Введите до 10 ссылок на товары. Каждую ссылку с новой строки. Пример:
+                  placeholder='Введите до 50 ссылок на товары. Каждую ссылку с новой строки. Пример:
 https://www.wildberries.ru/catalog/177307535
 https://www.wildberries.ru/catalog/177307899'
                   rows={6}
