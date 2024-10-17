@@ -9,7 +9,7 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import Modal from 'react-bootstrap/Modal';
 import warningIcon from '../assets/warning.png';
 
-const InfoSeoPlate = ({ setCompaireData }) => {
+const InfoSeoPlate = ({ setCompaireData, setLinksToSend }) => {
   const { authToken } = useContext(AuthContext);
   const [groupAInput, setGroupAInput] = useState('');
   const [groupBInput, setGroupBInput] = useState('');
@@ -76,6 +76,7 @@ const InfoSeoPlate = ({ setCompaireData }) => {
 
     // Send data to backend
     getSeoCompaireData(dataToSend);
+    setLinksToSend(dataToSend);
   };
 
   return (

@@ -1,11 +1,15 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useContext } from 'react';
 import styles from './SeoCompaire.module.css';
 import RadioGroup from './RadioGroup';
 import Union from '../assets/union.svg';
 import SortArrows from './SortArrows';
 import IntersectingCircles from './IntersectingCircles';
+import AuthContext from '../service/AuthContext';
+import { ServiceFunctions } from '../service/serviceFunctions';
+import DownloadButton from './DownloadButton';
 
-const SeoCompaire = ({ compaireData }) => {
+const SeoCompaire = ({ compaireData, linksToSend }) => {
+  const { authToken } = useContext(AuthContext);
   const [byOptions, setByOptions] = useState('onlyA');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -152,8 +156,30 @@ const SeoCompaire = ({ compaireData }) => {
     window.open(url, '_blank');
   };
 
+  const handleDownload = async () => {
+    try {
+      const response = await ServiceFunctions.postSeoLinksToGetExcel(authToken, linksToSend);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Сравнение_SEO.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error('Error downloading file:', e);
+    }
+  }
+
   return (
     <div className={styles.seoCompaireWrapper}>
+      <div className={styles.buttonWrapper}>
+      <div className={styles.downloadButton}>
+        <DownloadButton handleDownload={handleDownload}/>
+      </div>
+      </div>
       <div className={styles.topBlock}>
         <div style={{ position: 'relative' }}>
           <IntersectingCircles 

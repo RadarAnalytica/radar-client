@@ -290,3 +290,14 @@
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
 }
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.downloadButton {
+  min-width: 150px;
+}
