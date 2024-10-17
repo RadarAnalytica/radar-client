@@ -247,7 +247,7 @@ const SideNav = () => {
           {promotionShown ? (
             <div>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title submenu-item'
                 onClick={() => navigate("/ai-generator")}
 
                 style={{
@@ -271,7 +271,7 @@ const SideNav = () => {
                 <img src={aiGenerator} style={{ marginLeft: "5px" }} />
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title submenu-item'
                 onClick={() => navigate("/monitoring")}
                 style={
                   location === "monitoring"
@@ -294,7 +294,7 @@ const SideNav = () => {
                 Мониторинг запросов
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title submenu-item'
                 onClick={() => navigate("/calculate")}
                 style={
                   location === "calculate"
@@ -317,7 +317,7 @@ const SideNav = () => {
                 Калькулятор unit-экономики товаров
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title submenu-item'
                 onClick={() => navigate("/seo")}
                 style={
                   location === "seo"
