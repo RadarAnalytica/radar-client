@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ImageMasonry.module.css';
 
-const ImageMasonry = ({ images, onImageClick, selectedImages }) => {
+const ImageMasonry = ({ images, onImageClick, selectedImages, onImageDoubleClick }) => {
   if (!images || images.length === 0) return null;
 
   const handleImageClick = (image, event) => {
@@ -27,6 +27,7 @@ const ImageMasonry = ({ images, onImageClick, selectedImages }) => {
                 e.preventDefault();
                 handleImageClick(images[0], e)
               }}
+              onDoubleClick={() => onImageDoubleClick(images[0])}
             />
             <div className={styles.smallImagesGrid}>
               {images.slice(1, 4).map((image, index) => (
@@ -40,6 +41,7 @@ const ImageMasonry = ({ images, onImageClick, selectedImages }) => {
                     e.preventDefault();
                     handleImageClick(image, e)
                   }}
+                  onDoubleClick={() => onImageDoubleClick(image)}
                 />
               ))}
             </div>
@@ -54,6 +56,7 @@ const ImageMasonry = ({ images, onImageClick, selectedImages }) => {
               e.preventDefault(); 
               handleImageClick(images[0], e)
             }}
+            onDoubleClick={() => onImageDoubleClick(images[0])}
           />
         )}
       </div>
