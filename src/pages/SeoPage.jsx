@@ -7,6 +7,7 @@ import SeoCompaire from '../components/SeoCompaire';
 
 const SeoPage = () => {
   const [compaireData, setCompaireData] = useState({});
+  const [linksToSend, setLinksToSend] = useState({});
 
   return (
     <div className={styles.pageWrapper}>
@@ -20,8 +21,8 @@ const SeoPage = () => {
            )}
         </TopNav>
         <div className='container dash-container'>
-          {Object.keys(compaireData).length <= 0 && <InfoSeoPlate setCompaireData={setCompaireData} />}
-          {Object.keys(compaireData).length > 0 && <SeoCompaire compaireData={compaireData} />}
+          {Object.keys(compaireData).length <= 0 && <InfoSeoPlate setCompaireData={setCompaireData} setLinksToSend={setLinksToSend}/>}
+          {Object.keys(compaireData).length > 0 && <SeoCompaire compaireData={compaireData} linksToSend={linksToSend}/>}
         </div>
       </div>
     </div>

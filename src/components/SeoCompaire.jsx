@@ -1,11 +1,15 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useContext } from 'react';
 import styles from './SeoCompaire.module.css';
 import RadioGroup from './RadioGroup';
-import SearchButton from '../assets/searchstock.svg';
+import Union from '../assets/union.svg';
 import SortArrows from './SortArrows';
 import IntersectingCircles from './IntersectingCircles';
+import AuthContext from '../service/AuthContext';
+import { ServiceFunctions } from '../service/serviceFunctions';
+import DownloadButton from './DownloadButton';
 
-const SeoCompaire = ({ compaireData }) => {
+const SeoCompaire = ({ compaireData, linksToSend }) => {
+  const { authToken } = useContext(AuthContext);
   const [byOptions, setByOptions] = useState('onlyA');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -152,8 +156,30 @@ const SeoCompaire = ({ compaireData }) => {
     window.open(url, '_blank');
   };
 
+  const handleDownload = async () => {
+    try {
+      const response = await ServiceFunctions.postSeoLinksToGetExcel(authToken, linksToSend);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Сравнение_SEO.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error('Error downloading file:', e);
+    }
+  }
+
   return (
     <div className={styles.seoCompaireWrapper}>
+      <div className={styles.buttonWrapper}>
+      <div className={styles.downloadButton}>
+        <DownloadButton handleDownload={handleDownload}/>
+      </div>
+      </div>
       <div className={styles.topBlock}>
         <div style={{ position: 'relative' }}>
           <IntersectingCircles 
@@ -167,17 +193,6 @@ const SeoCompaire = ({ compaireData }) => {
           />
          <div 
          className={styles.keywordCount}
-    //      style={{
-    //       display: 'flex',
-    //       flexDirection: 'column',
-    //   position: 'absolute',
-    //   bottom: '10px',
-    //   right: '10px',
-    //   background: 'rgba(255, 255, 255, 0.8)',
-    //   padding: '5px',
-    //   borderRadius: '5px',
-    //   fontSize: '12px'
-    // }}
     >
       <span className={styles.keywordCountNumber}>{sortedData.length }</span>
       <span className={styles.keywordCountText}>ключевых слов</span>
@@ -257,13 +272,12 @@ const SeoCompaire = ({ compaireData }) => {
             value={searchQuery}
             onChange={handleSearchQuery}
           />
-
-          <img
-            src={SearchButton}
-            alt='Search'
-            //  onClick={handleFilterSearch}
-            style={{ cursor: 'pointer' }}
-          />
+          <button>
+            <span className={styles.unionImage}>
+              <img src={Union} alt='Search button'/>
+            </span>
+            <span className={styles.searchButtonText}>Найти</span>
+          </button>
         </div>
         <div className={styles.tableWrapper}>
           <div className={styles.tableHeader}>

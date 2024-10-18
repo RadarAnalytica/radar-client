@@ -108,6 +108,7 @@ const RequestMonitoringPage = () => {
         }
     };
 
+
     return <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
@@ -368,6 +369,7 @@ const RequestMonitoringPage = () => {
                                 <div className='barcode-wrapper'>
                                     <div className='barcode'>
                                         <div className='barcode-row'>
+
                                             <div className='barcode-text-title-wrapper'><p className='barcode-text-title'>SKU</p></div>
                                             <div className='barcode-sku-data-wrapper'>
                                                 {monitorData.sku?.map((sku, index) => (
@@ -377,6 +379,7 @@ const RequestMonitoringPage = () => {
                                                     ) : null
                                                 ))}
                                             </div>
+
                                         </div>
 
                                         <div className='barcode-row-image'>

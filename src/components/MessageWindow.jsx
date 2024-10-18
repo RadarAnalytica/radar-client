@@ -4,12 +4,16 @@ import radarIcon from '../assets/radarIconMessage.svg';
 import serchIcon from '../assets/searchIcon.svg';
 import attachFileIcon from '../assets/attachIcon.svg';
 import ImageMasonry from './ImageMasonry';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ImagePreview from './ImagePreview';
 import Modal from 'react-bootstrap/Modal';
 import sendButton from '../assets/SendButton.svg';
+import { closeSupportWindow } from '../redux/supportWindow/supportWindowSlice';
 
 const MessageWindow = ({ isNoHide }) => {
+  const dispatch = useDispatch();
+  const messageListRef = useRef(null);
+
   const [contextMenu, setContextMenu] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [newMessage, setNewMessage] = useState('');
@@ -169,6 +173,32 @@ const MessageWindow = ({ isNoHide }) => {
     input.click();
   };
 
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      console.log('event.key', event.key);
+      if (event.key === 'Escape') {
+        dispatch(closeSupportWindow());
+      }
+    };
+  
+    document.addEventListener('keydown', handleEscKey);
+  
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (messageListRef.current && (messages.length > 0 || isOpenSupportWindow)) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [messages, isOpenSupportWindow]);
+  
+  const handleImageDoubleClick = (image) => {
+    setSelectedImages([image]);
+    setPreviewMode(true);
+  };
+
   const handleClose = () => setShow(false);
 
   const handleAddToCustomLocation = () => {
@@ -197,9 +227,10 @@ const MessageWindow = ({ isNoHide }) => {
         <div className={styles.searchIcon}>
           <img src={serchIcon} alt='Search' />
         </div>
+        <button onClick={() => dispatch(closeSupportWindow())} className={styles.closeButton}>X</button>
       </div>
       <div className={styles.messageListWrapper}>
-        <div className={styles.messageList}>
+        <div className={styles.messageList} ref={messageListRef}>
           {messages.map((message) => (
             <>
               <div
@@ -215,6 +246,7 @@ const MessageWindow = ({ isNoHide }) => {
                     images={message.images}
                     onImageClick={handleImageClick}
                     selectedImages={selectedImages}
+                    onImageDoubleClick={handleImageDoubleClick}
                   />
                 )}
                 {message.text}

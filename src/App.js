@@ -67,13 +67,443 @@ function App() {
       <div className='App'>
         <AuthProvider>
           <ProductProvider>
-          <MobileMenu />
+            <MobileMenu />
+            <Routes>
+              <Route
+                path='/'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {renderElement(user)}
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/home'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <MainPage />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/stub'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <StubPage />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/signup'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <SignUpPage />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/signin'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <SignInPage />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/spasibo'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <Spasibo />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/politics'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <Politics />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/offer'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <PublicOffer />
+                  </React.Suspense>
+                }
+              />
+              ;
+              <Route
+                path='/instruction'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <Instructions />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/calculate'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {user?.subscription_status === null ? (
+                      <TariffsPage />
+                    ) : (
+                      <Calculate />
+                    )}
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/onboarding'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {user?.subscription_status === null ? (
+                      <TariffsPage />
+                    ) : (
+                      <Onboarding />
+                    )}
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/app'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <MainWidget />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/reset'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <RequestResetLink />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/confirmation/:email/:code'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <ConfirmationPage />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/restore/:email/:code'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <ResetPage />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/development/Page404'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <Page404 />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='*'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <Page404 />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/contacts'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <Contacts />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/after-payment'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <AfterPayment />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/tariffs'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <TariffsPage />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/subscription'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <Subscriptions />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/admin-panel'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <AdminPanel />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/userinfo'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <UserInfo />
+                  </React.Suspense>
+                }
+              />
+              {user.is_onboarded ? (
+                <>
+                  <Route
+                    path='/dashboard'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {user?.subscription_status === null ? (
+                          <TariffsPage />
+                        ) : (
+                          <DashboardPage />
+                        )}
+                      </React.Suspense>
+                    }
+                  />
+
+                  <Route
+                    path='/abc-data'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <AbcAnalysisPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/seo'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <SeoPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/monitoring'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <RequestMonitoringPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/ai-generator'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <AiDescriptionGeneratorPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/development/monitoring'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {" "}
+                        <Monitoring />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/development/supply'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {" "}
+                        <SupplyCount />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/stock-analysis'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {" "}
+                        <StockAnalysis />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/calculate'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <Calculate />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/orders-map'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {user?.subscription_status === null ? (
+                          <TariffsPage />
+                        ) : (
+                          <OrdersMap />
+                        )}
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/linked-shops'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {user?.subscription_status === null ? (
+                          <TariffsPage />
+                        ) : (
+                          <LinkedShops />
+                        )}
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/digitization'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {" "}
+                        <Digitization />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/contacts'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {" "}
+                        <Contacts />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/product/:id'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {" "}
+                        <StockAnalysisGlitter />
+                      </React.Suspense>
+                    }
+                  />
+                </>
+              ) : (
+                <>
+                  <Route
+                    path='/dashboard'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
+                      </React.Suspense>
+                    }
+                  />
+
+                  <Route
+                    path='/abc-data'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
+                      </React.Suspense>
+                    }
+                  />
+
+                  <Route
+                    path='/development/monitoring'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {" "}
+                        <Onboarding />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/development/supply'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {" "}
+                        <Onboarding />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/stock-analysis'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/calculate'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/orders-map'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/linked-shops'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
+                      </React.Suspense>
+                    }
+                  />
+                </>
+              )}
+              {/* <Route path='/development/settings' element={<Settings />} /> */}
+              {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
+            </Routes>
+          </ProductProvider>
+        </AuthProvider>
+      </div>
+    );
+  }
+
+  return (
+    <div className='App'>
+      <AuthProvider>
+        <ProductProvider>
           <Routes>
             <Route
               path='/'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {renderElement(user)}
+                  {" "}
+                  <MainPage />
                 </React.Suspense>
               }
             />
@@ -81,6 +511,7 @@ function App() {
               path='/home'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
                   <MainPage />
                 </React.Suspense>
               }
@@ -145,19 +576,7 @@ function App() {
               element={
                 <React.Suspense fallback={<LoaderPage />}>
                   {" "}
-                  <Instructions />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path='/calculate'
-              element={
-                <React.Suspense fallback={<LoaderPage />}>
-                  {user?.subscription_status === null ? (
-                    <TariffsPage />
-                  ) : (
-                    <Calculate />
-                  )}
+                  <SignInPage />
                 </React.Suspense>
               }
             />
@@ -165,11 +584,44 @@ function App() {
               path='/onboarding'
               element={
                 <React.Suspense fallback={<LoaderPage />}>
-                  {user?.subscription_status === null ? (
-                    <TariffsPage />
-                  ) : (
-                    <Onboarding />
-                  )}
+                  {" "}
+                  <SignInPage />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/dashboard'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <SignInPage />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/tariffs'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <SignInPage />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/development/monitoring'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <SignInPage />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/development/supply'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <SignInPage />
                 </React.Suspense>
               }
             />
@@ -179,6 +631,42 @@ function App() {
                 <React.Suspense fallback={<LoaderPage />}>
                   {" "}
                   <MainWidget />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/stock-analysis'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <SignInPage />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/calculate'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <SignInPage />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/orders-map'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <SignInPage />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/linked-shops'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <SignInPage />
                 </React.Suspense>
               }
             />
@@ -223,7 +711,7 @@ function App() {
               element={
                 <React.Suspense fallback={<LoaderPage />}>
                   {" "}
-                  <Page404 />
+                  <SignInPage />
                 </React.Suspense>
               }
             />
@@ -236,495 +724,7 @@ function App() {
                 </React.Suspense>
               }
             />
-            <Route
-              path='/after-payment'
-              element={
-                <React.Suspense fallback={<LoaderPage />}>
-                  {" "}
-                  <AfterPayment />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path='/tariffs'
-              element={
-                <React.Suspense fallback={<LoaderPage />}>
-                  {" "}
-                  <TariffsPage />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path='/subscription'
-              element={
-                <React.Suspense fallback={<LoaderPage />}>
-                  <Subscriptions />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path='/admin-panel'
-              element={
-                <React.Suspense fallback={<LoaderPage />}>
-                  <AdminPanel />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path='/userinfo'
-              element={
-                <React.Suspense fallback={<LoaderPage />}>
-                  <UserInfo />
-                </React.Suspense>
-              }
-            />
-            {user.is_onboarded ? (
-              <>
-                <Route
-                  path='/dashboard'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? (
-                        <TariffsPage />
-                      ) : (
-                        <DashboardPage />
-                      )}
-                    </React.Suspense>
-                  }
-                />
-
-                <Route
-                  path='/abc-data'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      <AbcAnalysisPage />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/seo'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      <SeoPage />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/monitoring'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      <RequestMonitoringPage />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/ai-generator'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      <AiDescriptionGeneratorPage />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/development/monitoring'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Monitoring />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/development/supply'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <SupplyCount />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/stock-analysis'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <StockAnalysis />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/calculate'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      <Calculate />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/orders-map'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? (
-                        <TariffsPage />
-                      ) : (
-                        <OrdersMap />
-                      )}
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/linked-shops'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? (
-                        <TariffsPage />
-                      ) : (
-                        <LinkedShops />
-                      )}
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/digitization'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Digitization />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/contacts'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Contacts />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/product/:id'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <StockAnalysisGlitter />
-                    </React.Suspense>
-                  }
-                />
-              </>
-            ) : (
-              <>
-                <Route
-                  path='/dashboard'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
-                    </React.Suspense>
-                  }
-                />
-
-                <Route
-                  path='/abc-data'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
-                    </React.Suspense>
-                  }
-                />
-
-                <Route
-                  path='/development/monitoring'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Onboarding />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/development/supply'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {" "}
-                      <Onboarding />
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/stock-analysis'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/calculate'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/orders-map'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
-                    </React.Suspense>
-                  }
-                />
-                <Route
-                  path='/linked-shops'
-                  element={
-                    <React.Suspense fallback={<LoaderPage />}>
-                      {user?.subscription_status === null ? <TariffsPage /> : <Onboarding />}
-                    </React.Suspense>
-                  }
-                />
-              </>
-            )}
-            {/* <Route path='/development/settings' element={<Settings />} /> */}
-            {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
-          </Routes>
-          </ProductProvider>
-        </AuthProvider>
-      </div>
-    );
-  }
-
-  return (
-    <div className='App'>
-      <AuthProvider>
-        <ProductProvider>
-        <Routes>
-          <Route
-            path='/'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <MainPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/home'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <MainPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/stub'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <StubPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/signup'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignUpPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/signin'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/spasibo'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <Spasibo />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/politics'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <Politics />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/offer'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <PublicOffer />
-              </React.Suspense>
-            }
-          />
-          ;
-          <Route
-            path='/instruction'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/onboarding'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/dashboard'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/tariffs'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/development/monitoring'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/development/supply'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/app'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <MainWidget />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/stock-analysis'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/calculate'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/orders-map'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/linked-shops'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/reset'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <RequestResetLink />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/confirmation/:email/:code'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <ConfirmationPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/restore/:email/:code'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <ResetPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/development/Page404'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <Page404 />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='*'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <SignInPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path='/contacts'
-            element={
-              <React.Suspense fallback={<LoaderPage />}>
-                {" "}
-                <Contacts />
-              </React.Suspense>
-            }
-          />
-          {/* <Route path='/' element={<MockUpPage />} />
+            {/* <Route path='/' element={<MockUpPage />} />
           <Route path='/development/home' element={<MainPage />} />
           <Route path='/stub' element={<StubPage />} />
           <Route path='/signup' element={<SignUpPage />} />
@@ -744,10 +744,10 @@ function App() {
           <Route path='/confirmation/:email/:code' element={<ConfirmationPage />} />
           <Route path='/restore/:email/:code' element={<ResetPage />} />
           <Route path='/reset' element={<RequestResetLink />} /> */}
-          {/* <Route path='/development/*' element={<Navigate to={'/signin'} replace />} /> */}
-          {/* <Route path='/development/settings' element={<Settings />} /> */}
-          {/* <Route path='*' element={<Navigate to={'/development/signin'} replace />} /> */}
-        </Routes>
+            {/* <Route path='/development/*' element={<Navigate to={'/signin'} replace />} /> */}
+            {/* <Route path='/development/settings' element={<Settings />} /> */}
+            {/* <Route path='*' element={<Navigate to={'/development/signin'} replace />} /> */}
+          </Routes>
         </ProductProvider>
       </AuthProvider>
     </div>

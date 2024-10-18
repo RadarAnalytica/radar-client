@@ -223,3 +223,18 @@
     flex-direction: column;
     height: 700px;
 }
+
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgba(140, 140, 140, 1);
+    margin-right: 20px;
+    transition: color 0.3s ease;
+  }
+  
+  .closeButton:hover {
+    color: rgba(26, 26, 26, 1);
+  }

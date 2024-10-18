@@ -22,6 +22,7 @@ import NoSubscriptionPage from "./NoSubscriptionPage";
 import SelfCostWarning from "../components/SelfCostWarning";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import { useNavigate } from "react-router-dom";
+import { URL } from '../service/config';
 
 const StockAnalysis = () => {
   const navigate = useNavigate();
@@ -192,6 +193,27 @@ const StockAnalysis = () => {
     return null; // or a loading indicator
   };
 
+  const getProdAnalyticXlsx = async (days, activeBrand, authToken) => { 
+    fetch(`${URL}/api/prod_analytic/download?period=${days}&shop=${activeBrand}`,
+      {
+        method: 'GET',
+        headers: {
+          authorization: 'JWT ' + authToken,
+        },
+      }
+    ).then((response) => {
+      return response.blob();
+    }).then((blob) => {
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `Товарная_аналитика.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    }).catch((e) => console.error(e));
+  };
+
   return (
     <>
       <div className='dashboard-page'>
@@ -248,11 +270,11 @@ const StockAnalysis = () => {
                           alt=''
                         />
                       </div>
-                      {/* <div>
+                      <div>
                         <DownloadButton
-                          handleDownload={() => getFileClickHandler(authToken, activeBrand)}
+                          handleDownload={() => getProdAnalyticXlsx(days, activeBrand, authToken)}
                         />
-                      </div> */}
+                      </div>
                     </div>
                   </div>
                 </div>
