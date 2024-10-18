@@ -14,6 +14,12 @@ import Modal from 'react-bootstrap/Modal';
 import AiDescriptionGeneratorTariffs from "../components/AiDescriptionGeneratorTariffs"
 import { redirect } from "react-router-dom"
 import { ProductContext } from "../service/ProductContext"
+import AddKeyImg from './images/addkeyword.svg'
+import {
+    getFileClickHandler,
+    saveFileClickHandler,
+} from '../service/getSaveFile';
+import DragDropFile from '../components/DragAndDropFiles';
 const AiDescriptionGeneratorPage = () => {
 
     const {
@@ -58,6 +64,8 @@ const AiDescriptionGeneratorPage = () => {
     const [isModalOpenNewGen, setIsModalOpenNewGen] = useState(false);
     const [amountGenerations, setAmountGenerations] = useState("")
     const [idGenerator, setIdGenerator] = useState(null)
+    const [modalIsShowKeywordsFile, setModalisShowKeywordsFile] = useState(false)
+    const [file, setFile] = useState();
 
 
     const handleNewGenerator = () => {
@@ -363,6 +371,24 @@ const AiDescriptionGeneratorPage = () => {
         fetchData();  // Call the function on component mount
     }, [authToken]);
 
+    const handleAddKeywordFile = () => {
+        setModalisShowKeywordsFile(true)
+    }
+    const handleCloseAddKeywordFile = () => {
+        setModalisShowKeywordsFile(false)
+    }
+    const handleSaveClick = async () => {
+        try {
+            const newKeywords = await saveFileClickHandler(file, authToken); // Отправляем файл и получаем ключевые слова
+            addKeywords(newKeywords); // Обновляем ключевые слова в контексте
+            setFile(null); // Сбрасываем состояние файла после отправки
+            handleCloseAddKeywordFile(); // Закрываем модалку
+        } catch (error) {
+            console.error("Ошибка при отправке файла:", error);
+        }
+    };
+
+
     return <div className='dashboard-page'>
         <SideNav />
         <div className={`${styles.generatorPage} dashboard-content pb-3 `}>
@@ -471,7 +497,14 @@ const AiDescriptionGeneratorPage = () => {
                         </div>
                         <div className={styles.aboutParag}>Ключевые слова</div>
 
-                        <div>Добавить ключевое слово</div>
+                        <div className={styles.addKeywordFileWrapper}>
+                            <div>Добавить ключевое слово</div>
+                            <div className={styles.addKeywordButtonWrapper}
+                                onClick={handleAddKeywordFile}>
+                                <div className={styles.addKeywordButtonWrapperImg}><img src={AddKeyImg} /></div>
+                                <div className={styles.addKeywordButtonWrapperText}>Загрузить ключевые слова</div>
+                            </div>
+                        </div>
                         <form className={styles.inputWrapperR}>
                             <input
                                 type="text"
@@ -489,7 +522,7 @@ const AiDescriptionGeneratorPage = () => {
                                     <div>{keyword}</div>
                                     <div className={styles.removeKeyword} onClick={() => handleRemoveKeyword(keyword)}>
                                         <img className={styles.closeBtn} src={closebtn} />
-                                    </div>
+                                    </div>x
                                 </div>
                             ))}
                         </div>
@@ -535,6 +568,88 @@ const AiDescriptionGeneratorPage = () => {
                 </div>
             }
         </div>
-    </div >
+        <Modal
+            show={modalIsShowKeywordsFile}
+            onHide={handleCloseAddKeywordFile}
+            className='add-token-modal'
+        >
+            <Modal.Header closeButton>
+                <div className='d-flex align-items-center gap-2'>
+                    <div style={{ width: '100%' }}>
+                        <div className='d-flex justify-content-between'>
+                            <h4 className='fw-bold mb-0'>Установка себестоимости товара</h4>
+                        </div>
+                    </div>
+                </div>
+            </Modal.Header>
+            <Modal.Body>
+                {file ? (
+                    <div>
+                        <div className='d-flex align-items-center justify-content-between w-100 mt-2 gap-2'>
+                            <div className='d-flex gap-2'>
+                                <svg
+                                    width='17'
+                                    height='23'
+                                    viewBox='0 0 17 23'
+                                    fill='none'
+                                    xmlns='http://www.w3.org/2000/svg'
+                                >
+                                    <path
+                                        d='M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z'
+                                        stroke='black'
+                                        strokeOpacity='0.5'
+                                        strokeWidth='1.5'
+                                    />
+                                </svg>
+                                <span>{file ? file.name : ''}</span>
+                            </div>
+                            <div>
+                                <a
+                                    href='#'
+                                    className='link'
+                                    onClick={() => setFile(null)}
+                                    style={{ color: 'red', cursor: 'pointer' }}
+                                >
+                                    Удалить
+                                </a>
+                            </div>
+                        </div>
+                        <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+                            <button
+                                // onClick={() => {
+                                //     saveFileClickHandler(file, authToken);
+                                //     setFile(null);
+                                //     handleCloseAddKeywordFile();
+                                // }}
+                                onClick={handleSaveClick}
+                                className='prime-btn'
+                                style={{ height: '52px' }}
+                            >
+                                Сохранить
+                            </button>
+                        </div>
+                        <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+                            <a href='#' className='link' onClick={handleCloseAddKeywordFile}>
+                                Отмена
+                            </a>
+                        </div>
+                    </div>
+                ) : (
+                    <div className='d-flex flex-column align-items-center justify-content-around w-100'>
+                        <DragDropFile files={file} setFiles={setFile} />
+                        <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+                            <a
+                                href='#'
+                                className='link'
+                                onClick={() => getFileClickHandler(authToken)}
+                            >
+                                Скачать шаблон
+                            </a>
+                        </div>
+                    </div>
+                )}
+            </Modal.Body>
+        </Modal>
+    </div>
 }
 export default AiDescriptionGeneratorPage

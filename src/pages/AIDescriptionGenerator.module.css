@@ -174,7 +174,7 @@ input::placeholder {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    max-height: 273px;
+    max-height: 245.5px;
     overflow-y: scroll;
     margin-bottom: 20px;
     margin-top: 20px;
@@ -404,4 +404,37 @@ input::placeholder {
     justify-content: center; /* Центрирует лоадер по горизонтали */
     align-items: center; /* Центрирует лоадер по вертикали */
     height: 100%; /* Заполняет оставшуюся высоту */
+}
+.addKeywordFileWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    
+}
+.addKeywordButtonWrapper{
+    background-color: #5329FF0D;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+
+}
+.addKeywordButtonWrapperImg{
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.addKeywordButtonWrapperImg img{
+    object-fit: contain;
+}
+.addKeywordButtonWrapperText{
+    color: #5329FF;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 25.6px;
 }

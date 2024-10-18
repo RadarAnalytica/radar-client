@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import defaultPhoto from "../pages/images/defaultPhotoUser.jpg";
 import arrow from "../pages/images/accordStr2.png";
 import Stars from "../pages/images/Stars";
@@ -44,45 +44,29 @@ const reviewsIP = [
 
 const Reviews = () => {
   const scrollRef = useRef(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
 
-  const scrollLeft = () => {
+  const scrollLeft = useCallback(() => {
     if (scrollRef.current) {
-      const scrollWidth = scrollRef.current.scrollWidth;
-      // Находим ширину элемента, который нужно прокрутить
-      const itemWidth = scrollWidth / reviewsIP.length; // Предполагается, что все элементы одинаковой ширины
-      // Прокручиваем на ширину элемента
+      const itemWidth = scrollRef.current.scrollWidth / reviewsIP.length;
       scrollRef.current.scrollBy({ left: -itemWidth, behavior: "smooth" });
-      setScrollPosition(scrollRef.current.scrollLeft);
     }
-  };
+  }, []);
 
-  const scrollRight = () => {
+  const scrollRight = useCallback(() => {
     if (scrollRef.current) {
-      const scrollWidth = scrollRef.current.scrollWidth; // Общая ширина контейнера
-      // Находим ширину элемента, который нужно прокрутить
-      const itemWidth = scrollWidth / reviewsIP.length; // Предполагается, что все элементы одинаковой ширины
-      // Прокручиваем на ширину элемента
+      const itemWidth = scrollRef.current.scrollWidth / reviewsIP.length;
       scrollRef.current.scrollBy({ left: itemWidth, behavior: "smooth" });
-      setScrollPosition(scrollRef.current.scrollLeft);
     }
-  };
+  }, []);
+
 
   return (
     <>
-      <div
-        ref={scrollRef}
-        className='scroll-container'
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          overflowX: "auto",
-        }}
-      >
+      <div ref={scrollRef} className='scroll-container' style={{ display: "flex", overflowX: "auto" }}>
         {reviewsIP.map((el, index) => (
           <div key={index} className='blockReviews'>
             <div className='blockReviewImage'>
-              <img src={el.photo} alt='userLogo' className='photoReviewUser' />
+              <img src={el.photo} alt='userLogo' className='photoReviewUser' width={100} height={100} />
             </div>
             <div className='blockReviewsContent'>
               <div style={{ marginBottom: "10px" }}>{el.stars}</div>
@@ -92,28 +76,12 @@ const Reviews = () => {
         ))}
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "10px",
-        }}
-      >
-        <img
-          className='arrowReviewsLeft'
-          onClick={scrollLeft}
-          src={arrow}
-          alt='arrow'
-        />
-
-        <img
-          onClick={scrollRight}
-          src={arrow}
-          alt='arrow'
-          className='arrowReviewsRight'
-        />
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
+        <img className='arrowReviewsLeft' onClick={scrollLeft} src={arrow} alt='arrow' />
+        <img onClick={scrollRight} src={arrow} alt='arrow' className='arrowReviewsRight' />
       </div>
     </>
+
   );
 };
 export default Reviews;
