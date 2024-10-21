@@ -1,10 +1,24 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
+import AuthContext from '../service/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import styles from './AdminPanel.module.css';
 import AdminSideNav from '../components/AdminSideNav';
 import TopNav from '../components/TopNav';
 import UserDataTable from '../components/UserDataTable';
 
 const AdminPanel = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user && user.role !== 'admin') {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (!user || user.role !== 'admin') {
+    return null;
+  }
+
   const data = [
     {
       id: 1,
@@ -201,6 +215,11 @@ const AdminPanel = () => {
       shopsConnected: 1,
     },
   ];
+
+  // const hasAccess = useAdminAccess();
+
+  // if (!hasAccess) return null;
+
   return (
     <div className={styles.pageWrapper}>
       <AdminSideNav />

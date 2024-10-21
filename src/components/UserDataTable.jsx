@@ -1,10 +1,17 @@
 import { useState, useCallback } from 'react';
 import styles from './UserDataTable.module.css';
 import SortArrows from './SortArrows';
+import { useNavigate } from 'react-router-dom';
+
 const UserDataTable = ({ data }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [dataTable, setDataTable] = useState(data);
-  console.log(dataTable);
+  const navigate = useNavigate();
+
+  const handleEmailClick = (email) => {
+    navigate(`/user/${encodeURIComponent(email)}`);
+  };
+
   const sortData = useCallback(
     (key) => {
       let direction = 'asc';
@@ -27,10 +34,6 @@ const UserDataTable = ({ data }) => {
   );
   const renderSortArrows = (columnKey) => {
     return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
-  };
-
-  const handleUserClick = (user) => {
-    console.log(user);
   };
 
   return (
@@ -80,7 +83,7 @@ const UserDataTable = ({ data }) => {
       </div>
       {dataTable.map((item) => (
         <div key={item.id} className={styles.tableRowItems}>
-          <span className={styles.tableCellItems} onClick={() => handleUserClick(item)}>{item.email}</span>
+          <span className={styles.tableCellItems} onClick={() => handleEmailClick(item.email)}>{item.email}</span>
           <span className={styles.tableCellItems}>{item.name}</span>
           <span className={styles.tableCellItems}>
             {item.isShopActive ? 'ДА' : 'НЕТ'}

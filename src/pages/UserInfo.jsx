@@ -1,3 +1,6 @@
+import { useContext, useEffect } from 'react';
+import AuthContext from '../service/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import styles from './UserInfo.module.css';
 import AdminSideNav from '../components/AdminSideNav';
 import TopNav from '../components/TopNav';
@@ -5,6 +8,18 @@ import radarIcon from '../assets/radarIconMessage.svg';
 import MessageWindow from '../components/MessageWindow';
 
 const UserInfo = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.role !== 'admin') {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (!user || user.role !== 'admin') {
+    return null;
+  }
   const data = [
     {
       id: 1,

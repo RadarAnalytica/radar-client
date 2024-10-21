@@ -55,7 +55,9 @@ function App() {
   console.log("user", user);
 
   const renderElement = (user) => {
-    if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
+    if (user?.role === 'admin') {
+      return <Navigate to="/admin-panel" replace />;
+    } else if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
       return <TariffsPage />;
     } else {
       return user?.is_onboarded ? <DashboardPage /> : <Onboarding />;
@@ -271,7 +273,7 @@ function App() {
                 }
               />
               <Route
-                path='/userinfo'
+                path='/user/:email'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
                     <UserInfo />
