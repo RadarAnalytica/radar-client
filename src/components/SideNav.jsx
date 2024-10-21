@@ -247,7 +247,7 @@ const SideNav = () => {
           {promotionShown ? (
             <div>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title submenu-item'
                 onClick={() => navigate("/ai-generator")}
 
                 style={{
@@ -267,11 +267,11 @@ const SideNav = () => {
                     <circle cx='4' cy='4' r='4' fill='#5329FF' />
                   </svg>
                 ) : null}
-                Генерация <br />описания
+                Генерация описания
                 <img src={aiGenerator} style={{ marginLeft: "5px" }} />
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title submenu-item'
                 onClick={() => navigate("/monitoring")}
                 style={
                   location === "monitoring"
@@ -291,10 +291,10 @@ const SideNav = () => {
                     <circle cx='4' cy='4' r='4' fill='#5329FF' />
                   </svg>
                 ) : null}
-                Мониторинг<br /> запросов
+                Мониторинг запросов
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title submenu-item'
                 onClick={() => navigate("/calculate")}
                 style={
                   location === "calculate"
@@ -317,7 +317,7 @@ const SideNav = () => {
                 Калькулятор unit-экономики товаров
               </p>
               <p
-                className='sidenav-title ps-4 submenu-item'
+                className='sidenav-title submenu-item'
                 onClick={() => navigate("/seo")}
                 style={
                   location === "seo"
@@ -446,19 +446,24 @@ const SideNav = () => {
       </div>
 
       <div
-        className='support-block'
-      
-        
+        className='support-block'      
       >
-        <a>
+        <a href='mailto:radar-analytica@inbox.ru'>
           <img 
             src={support} 
             alt='Call support window' 
             className='support-icon' 
-            style={{ cursor: "pointer" }}  
-            onClick={() => toggleOpenSupport()}
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              (window.location.href = "mailto:radar-analytica@inbox.ru")
+            }  
+            // onClick={() => toggleOpenSupport()}
           />
         </a>
+        <span className='support-block-text-box'>
+          <span className='support-block-text-title'>Поддержка</span>
+          <span className='support-block-text-subtitle'>Напишите нам</span>
+        </span>
         {/* <p className='fw-bold mb-0 p-0' style={{ fontSize: "1.8vh", marginLeft: "15px" }}>
           Обратиться в поддержку
         </p> */}
