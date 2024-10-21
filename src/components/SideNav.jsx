@@ -454,10 +454,10 @@ const SideNav = () => {
             alt='Call support window' 
             className='support-icon' 
             style={{ cursor: "pointer" }}
-            onClick={() =>
-              (window.location.href = "mailto:radar-analytica@inbox.ru")
-            }  
-            // onClick={() => toggleOpenSupport()}
+            // onClick={() =>
+            //   (window.location.href = "mailto:radar-analytica@inbox.ru")
+            // }  
+            onClick={() => toggleOpenSupport()}
           />
         </a>
         <span className='support-block-text-box'>

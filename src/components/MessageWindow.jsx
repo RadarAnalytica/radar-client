@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import styles from './MessageWindow.module.css';
 import radarIcon from '../assets/radarIconMessage.svg';
 import serchIcon from '../assets/searchIcon.svg';
@@ -9,10 +9,13 @@ import ImagePreview from './ImagePreview';
 import Modal from 'react-bootstrap/Modal';
 import sendButton from '../assets/SendButton.svg';
 import { closeSupportWindow } from '../redux/supportWindow/supportWindowSlice';
+import { ServiceFunctions } from '../service/serviceFunctions';
+import AuthContext from '../service/AuthContext';
 
 const MessageWindow = ({ isNoHide }) => {
   const dispatch = useDispatch();
   const messageListRef = useRef(null);
+  const { authToken, user } = useContext(AuthContext);
 
   const [contextMenu, setContextMenu] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -21,6 +24,7 @@ const MessageWindow = ({ isNoHide }) => {
   const [previewMode, setPreviewMode] = useState(false);
   const [show, setShow] = useState(false);
   const [error, setError] = useState('');
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   const handleImageClick = (image, event) => {
     if (event && event.type === 'contextmenu') {
@@ -73,31 +77,8 @@ const MessageWindow = ({ isNoHide }) => {
   const isOpenSupportWindow = useSelector(
     (state) => state.supportWindowSlice?.isOpenSupportWindow
   );
-  const url1 =
-    'https://images.unsplash.com/photo-1727294810027-220b285828e9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3fHx8ZW58MHx8fHx8';
-  const url2 =
-    'https://cdn.jpg.wtf/futurico/46/a0/1727335730-46a0a489235c7089de08802158ec6256.jpeg?w=700';
-  const url3 =
-    'https://cdn.jpg.wtf/futurico/75/67/1727331055-7567f0dd6bde2165d9d54ae61489dffb.jpeg?w=700';
-  const url4 =
-    'https://cdn.jpg.wtf/futurico/ca/d3/1727121512-cad341337e1018385ab54118e61ccbee.png';
-  const url5 =
-    'https://cdn.jpg.wtf/futurico/cb/67/1727121507-cb673c03d211b42140f13f267d6e0d3b.png';
-  const [messages, setMessages] = useState([
-    {
-      id: Date.now(),
-      text: 'Здравствуйте, чем я могу помочь?',
-      type: 'bot',
-      images: [`${url1}`],
-    },
-    {
-      id: Date.now(),
-      text: 'Hello, how can I help you today?',
-      type: 'user',
-      images: [`${url5}`, `${url2}`, `${url3}`, `${url4}`],
-    },
-    { id: Date.now(), text: 'Спасибо за обращение', type: 'bot', images: [] },
-  ]);
+
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     fetchMessages();
@@ -105,22 +86,56 @@ const MessageWindow = ({ isNoHide }) => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch('https://api.example.com/messages');
-      const data = await response.json();
-      setMessages(data);
+      const response = await ServiceFunctions.getSupportMessages(authToken);
+      setMessages(response);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
   };
 
-  const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      setMessages([
-        ...messages,
-        { id: Date.now(), text: newMessage, type: 'user' },
-      ]);
+  const handleSendMessage = async () => {
+    const formData = new FormData();
+  
+    const requestData = {
+      user: user.email,
+      sender: user.role === 'admin' ? 'admin' : 'client',
+      text: newMessage.trim(),
+      read: false
+    };
+  
+    formData.append('request', JSON.stringify(requestData));
+  
+    selectedImages.forEach((file, index) => {
+      if (index < 4) {
+        console.log(`Appending file_${index + 1}:`, file);
+        formData.append(`file_${index + 1}`, file);
+      }
+    });
+  
+    try {
+      const responseData = await ServiceFunctions.sendSupportMessage(authToken, formData);
+      
+      if (responseData) {
+        // Message sent successfully, now fetch updated messages
+        await fetchMessages();
+        
+        // Clear the input fields
+        setNewMessage('');
+        setSelectedImages([]);
+        setImagePreviews([]);
+      }
+  
       setNewMessage('');
+      setSelectedImages([]);
+  
+    } catch (error) {
+      console.error('Error sending message:', error);
     }
+  };
+
+  const removeImage = (index) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+    setImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleAttachClick = () => {
@@ -168,6 +183,7 @@ const MessageWindow = ({ isNoHide }) => {
       }
       if (validFiles.length > 0) {
         setSelectedImages(validFiles);
+        setImagePreviews(validFiles.map(file => URL.createObjectURL(file)));
       }
     };
     input.click();
@@ -236,14 +252,14 @@ const MessageWindow = ({ isNoHide }) => {
               <div
                 key={message.id}
                 className={
-                  message.type === 'user'
+                  message.sender === 'client'
                     ? styles.userMessage
                     : styles.supportMessage
                 }
               >
-                {message.images && message.images.length > 0 && (
+                {(message.image_1 || message.image_2 || message.image_3 || message.image_4) && (
                   <ImageMasonry
-                    images={message.images}
+                  images={[message.image_1, message.image_2, message.image_3, message.image_4].filter(Boolean)}
                     onImageClick={handleImageClick}
                     selectedImages={selectedImages}
                     onImageDoubleClick={handleImageDoubleClick}
@@ -253,18 +269,30 @@ const MessageWindow = ({ isNoHide }) => {
               </div>
               <span
                 className={
-                  message.type === 'user'
+                  message.sender === 'client'
                     ? styles.messageTimeUser
                     : styles.messageTimeBot
                 }
               >
-                {new Date().toLocaleTimeString([], {
+                {new Date(message.created_at).toLocaleTimeString([], {
                   hour: '2-digit',
                   minute: '2-digit',
                 })}
               </span>
             </>
           ))}
+          
+            {imagePreviews.length > 0 && (
+              <div className={styles.imagePreviews}>
+                {imagePreviews.map((preview, index) => (
+                  <div key={index} className={styles.imagePreviewItem}>
+                    <img src={preview} alt={`Preview ${index + 1}`} className={styles.previewImage} />
+                    <button onClick={() => removeImage(index)} className={styles.removeImageButton}>X</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          
         </div>
       </div>
       <div className={styles.inputArea}>

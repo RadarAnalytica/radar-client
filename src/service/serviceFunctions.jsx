@@ -351,5 +351,32 @@ export const ServiceFunctions = {
     );
 
     return res;
-  }
+  },
+
+  getSupportMessages: async (token) => {
+    const res = await fetch(
+      `${URL}/api/admin/support`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
+
+  sendSupportMessage: async (token, messageData) => {
+    console.log('messageData', messageData);
+    const response = await fetch(`${URL}/api/admin/support`, {
+      method: 'POST',
+      headers: {
+        Authorization: 'JWT ' + token,
+      },
+      body: messageData,
+    });
+    return response.json();
+  },
 }
