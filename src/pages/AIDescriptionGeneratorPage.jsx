@@ -18,7 +18,7 @@ import AddKeyImg from './images/addkeyword.svg'
 import {
     getFileClickHandler,
     saveFileClickHandler,
-} from '../service/getSaveFile';
+} from '../service/fileService';
 import DragDropFile from '../components/DragAndDropFiles';
 const AiDescriptionGeneratorPage = () => {
 
@@ -380,7 +380,7 @@ const AiDescriptionGeneratorPage = () => {
     const handleSaveClick = async () => {
         try {
             const newKeywords = await saveFileClickHandler(file, authToken); // Отправляем файл и получаем ключевые слова
-            addKeywords(newKeywords); // Обновляем ключевые слова в контексте
+            addKeyword(newKeywords); // Обновляем ключевые слова в контексте
             setFile(null); // Сбрасываем состояние файла после отправки
             handleCloseAddKeywordFile(); // Закрываем модалку
         } catch (error) {
@@ -522,7 +522,7 @@ const AiDescriptionGeneratorPage = () => {
                                     <div>{keyword}</div>
                                     <div className={styles.removeKeyword} onClick={() => handleRemoveKeyword(keyword)}>
                                         <img className={styles.closeBtn} src={closebtn} />
-                                    </div>x
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -577,7 +577,7 @@ const AiDescriptionGeneratorPage = () => {
                 <div className='d-flex align-items-center gap-2'>
                     <div style={{ width: '100%' }}>
                         <div className='d-flex justify-content-between'>
-                            <h4 className='fw-bold mb-0'>Установка себестоимости товара</h4>
+                            <h4 className='fw-bold mb-0'>Загрузить ключевые слова</h4>
                         </div>
                     </div>
                 </div>
@@ -637,14 +637,8 @@ const AiDescriptionGeneratorPage = () => {
                 ) : (
                     <div className='d-flex flex-column align-items-center justify-content-around w-100'>
                         <DragDropFile files={file} setFiles={setFile} />
-                        <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                            <a
-                                href='#'
-                                className='link'
-                                onClick={() => getFileClickHandler(authToken)}
-                            >
-                                Скачать шаблон
-                            </a>
+                        <div className={styles.fileDescription}>
+                            <div className={styles.fileDescriptionText}>Слова в файле расположить построчно в первой колонке первого листа.</div>
                         </div>
                     </div>
                 )}

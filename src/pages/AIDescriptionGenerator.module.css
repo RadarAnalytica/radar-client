@@ -438,3 +438,15 @@ input::placeholder {
     font-size: 16px;
     line-height: 25.6px;
 }
+.fileDescription{
+    margin-top: 10px;
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fileDescriptionText{
+    text-align: center;
+    font-weight: 600;
+
+}

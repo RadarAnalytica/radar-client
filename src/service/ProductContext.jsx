@@ -14,11 +14,11 @@ const ProductProvider = ({ children }) => {
 
     // Function to add a keyword
     const addKeyword = (keyword) => {
-        setKeywords(prevKeywords => [...prevKeywords, ...keyword]);
+        setKeywords(prevKeywords => [...keyword, ...prevKeywords]);
     };
 
     const addKeywords = (newKeywords) => {
-        setKeywords([newKeywords, ...keywords]);
+        setKeywords([newKeywords, ...keywords,]);
     };
 
     const removeAllKeywords = () => {

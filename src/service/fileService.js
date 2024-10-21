@@ -1,12 +1,15 @@
+import { URL } from "./config";
+
 export const saveFileClickHandler = async (file, token) => {
     const formData = new FormData(); 
-    formData.append("file", file);   
+    formData.append("file", file);  // Добавляем файл в formData
 
     try {
-        const res = await fetch('ТВОЙ_НОВЫЙ_ЭНДПОИНТ', {  
+        const res = await fetch(`${URL}/api/description-generator/get_keywords`, {  
             method: 'POST',                              
             headers: {
-                Authorization: `JWT ${token}`,           
+                authorization: "JWT " + token,
+              
             },
             body: formData,  
         });
@@ -16,7 +19,7 @@ export const saveFileClickHandler = async (file, token) => {
             console.log('Файл успешно загружен и ключевые слова получены');
             return keywords; // Возвращаем ключевые слова
         } else {
-            console.error('Ошибка при загрузке файла');
+            console.error('Ошибка при загрузке файла:', res.statusText);
             throw new Error('Ошибка при загрузке файла');
         }
     } catch (error) {
