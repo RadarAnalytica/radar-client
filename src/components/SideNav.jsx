@@ -446,9 +446,7 @@ const SideNav = () => {
       </div>
 
       <div
-        className='support-block'
-      
-        
+        className='support-block'        
       >
         <a href='mailto:radar-analytica@inbox.ru'>
           <img 
@@ -462,6 +460,10 @@ const SideNav = () => {
             // onClick={() => toggleOpenSupport()}
           />
         </a>
+        <span className='support-block-text-box'>
+            <span className='support-block-text-title'>Поддержка</span>
+            <span className='support-block-text-subtitle'>Напишите нам</span>
+          </span>
         {/* <p className='fw-bold mb-0 p-0' style={{ fontSize: "1.8vh", marginLeft: "15px" }}>
           Обратиться в поддержку
         </p> */}

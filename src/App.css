@@ -420,6 +420,7 @@ select {
   display: flex;
   flex-direction: column;
   background-color: white;
+  justify-content: space-between;
 }
 
 
@@ -457,9 +458,33 @@ select {
 }
 
 .support-block {
-  border-radius: 1rem;
-  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  border-radius: 16px;
+  padding: 8px;
   font-size: 1.25vw;
+  background: rgba(83, 41, 255, 0.04);
+}
+
+.support-block-text-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 16px;
+}
+
+.support-block-text-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17.5px;
+  color: rgba(26, 26, 26, 0.5);
+}
+
+.support-block-text-subtitle {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+  color: rgba(26, 26, 26, 1);
 }
 
 .support-icon {
