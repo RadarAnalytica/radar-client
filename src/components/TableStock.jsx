@@ -63,6 +63,9 @@ const TableStock = ({ dataTable, setDataTable }) => {
     navigate(`/product/${shop.sku}`);
   };
 
+  function formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+  }
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <div style={{ width: '3.5vw', height: '100%' }}></div>
@@ -337,7 +340,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.saleSum} ₽
+                      {formatNumber(row.saleSum)} ₽
                     </div>
                   ))}
                 </div>
@@ -403,7 +406,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.lessReturns} ₽
+                      {formatNumber(row.lessReturns)} ₽
                     </div>
                   ))}
                 </div>
@@ -430,7 +433,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.costGoodsSold} ₽
+                      {formatNumber(row.costGoodsSold)} ₽
                     </div>
                   ))}
                 </div>
@@ -477,7 +480,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.returnsSum} ₽
+                      {formatNumber(row.returnsSum)} ₽
                     </div>
                   ))}
                 </div>
@@ -536,7 +539,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.returnsCostSold} ₽
+                      {formatNumber(row.returnsCostSold)} ₽
                     </div>
                   ))}
                 </div>
@@ -574,7 +577,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.costPriceOne}
+                      {formatNumber(row.costPriceOne)}
                     </div>
                   ))}
                 </div>
@@ -601,7 +604,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '170px' }}
                     >
-                      {row.costOfProductStockToday} ₽
+                      {formatNumber(row.costOfProductStockToday)} ₽
                     </div>
                   ))}
                 </div>
@@ -647,7 +650,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.toClient}
+                      {formatNumber(row.toClient)}
                     </div>
                   ))}
                 </div>
@@ -725,7 +728,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.commissionWB} ₽
+                      {formatNumber(row.commissionWB)} ₽
                     </div>
                   ))}
                 </div>
@@ -835,7 +838,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.toPayoff} ₽
+                      {formatNumber(row.toPayoff)} ₽
                     </div>
                   ))}
                 </div>
@@ -861,7 +864,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.marginalProfit} ₽
+                      {formatNumber(row.marginalProfit)} ₽
                     </div>
                   ))}
                 </div>
@@ -886,7 +889,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.averageProfit} ₽
+                      {formatNumber(row.averageProfit)} ₽
                     </div>
                   ))}
                 </div>
@@ -991,7 +994,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.lostRevenue} ₽
+                      {formatNumber(row.lostRevenue)} ₽
                     </div>
                   ))}
                 </div>
@@ -1117,7 +1120,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.basic} ₽
+                      {formatNumber(row.basic)} ₽
                     </div>
                   ))}
                 </div>
@@ -1183,7 +1186,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.minDiscountPrice} ₽
+                      {formatNumber(row.minDiscountPrice)} ₽
                     </div>
                   ))}
                 </div>
@@ -1261,7 +1264,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.orderSum} ₽
+                      {formatNumber(row.orderSum)} ₽
                     </div>
                   ))}
                 </div>
@@ -1307,7 +1310,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.purchased}
+                      {formatNumber(row.purchased)}
                     </div>
                   ))}
                 </div>
@@ -1339,7 +1342,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '135px' }}
                     >
-                      {row.notPurchased}
+                      {formatNumber(row.notPurchased)}
                     </div>
                   ))}
                 </div>
@@ -1404,7 +1407,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.completed}
+                      {formatNumber(row.completed)}
                     </div>
                   ))}
                 </div>
@@ -1445,7 +1448,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.orderCountDay}
+                      {formatNumber(row.orderCountDay)}
                     </div>
                   ))}
                 </div>
@@ -1474,7 +1477,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       className='cell data-cell'
                       style={{ minWidth: '150px' }}
                     >
-                      {row.saleCountDay}
+                      {formatNumber(row.saleCountDay)}
                     </div>
                   ))}
                 </div>
@@ -1514,7 +1517,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {row.dataRadar}
+                      {formatNumber(row.dataRadar)}
                     </div>
                   ))}
                 </div>

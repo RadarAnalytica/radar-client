@@ -3,6 +3,7 @@ import { formatPrice } from "../service/utils";
 import SeeMoreButton from "./SeeMoreButton";
 import { MdWidthFull } from "react-icons/md";
 
+
 const WidePlate = ({
   title,
   titles,
@@ -11,6 +12,7 @@ const WidePlate = ({
   data,
   dataDashBoard,
 }) => {
+
   const sales = data
     ? Object.values(data)?.filter((array) => array?.totalSales)
     : [];
@@ -24,7 +26,13 @@ const WidePlate = ({
     ? Object.values(data)?.map((array) => array?.quantityPercentage)
     : [];
 
+
+  function formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+  }
+
   return (
+
     <div className='wide-plate w-100'>
       <div className='wide-plate-title-element'>
         <div className='wide-plate-title-element-div'>
@@ -57,7 +65,7 @@ const WidePlate = ({
           <>
             <div className={"col "}>
               <span className='me-2 medium-numbers'>
-                {dataDashBoard?.amountA + " ₽"}
+                {dataDashBoard ? formatNumber(dataDashBoard.amountA.toFixed(0)) + " ₽" : "0 ₽"}
               </span>
               <span
                 className='tiny-numbers'
@@ -66,8 +74,8 @@ const WidePlate = ({
                     ? { fontSize: "12px", color: "rgba(0, 182, 155, 1)" }
                     : dataDashBoard?.amountPercentA > 25 &&
                       dataDashBoard?.amountPercentA < 45
-                    ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
-                    : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
+                      ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
+                      : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
                 }
               >
                 {dataDashBoard?.amountPercentA
@@ -77,7 +85,7 @@ const WidePlate = ({
             </div>
             <div className={"col "}>
               <span className='me-2 medium-numbers'>
-                {dataDashBoard?.amountB + " ₽"}
+                {dataDashBoard ? formatNumber(dataDashBoard.amountB.toFixed(0)) + " ₽" : "0 ₽"}
               </span>
               <span
                 className='tiny-numbers'
@@ -86,8 +94,8 @@ const WidePlate = ({
                     ? { fontSize: "12px", color: "rgba(0, 182, 155, 1)" }
                     : dataDashBoard?.amountPercentB > 25 &&
                       dataDashBoard?.amountPercentB < 45
-                    ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
-                    : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
+                      ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
+                      : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
                 }
               >
                 {dataDashBoard?.amountPercentB
@@ -97,7 +105,7 @@ const WidePlate = ({
             </div>
             <div className={"col "}>
               <span className='me-2 medium-numbers'>
-                {dataDashBoard?.amountC + " ₽"}
+                {dataDashBoard ? formatNumber(dataDashBoard.amountC.toFixed(0)) + " ₽" : "0 ₽"}
               </span>
               <span
                 className='tiny-numbers'
@@ -106,8 +114,8 @@ const WidePlate = ({
                     ? { fontSize: "12px", color: "rgba(0, 182, 155, 1)" }
                     : dataDashBoard?.amountPercentC > 25 &&
                       dataDashBoard?.amountPercentC < 45
-                    ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
-                    : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
+                      ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
+                      : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
                 }
               >
                 {dataDashBoard?.amountPercentC
@@ -138,8 +146,8 @@ const WidePlate = ({
                     ? { fontSize: "12px", color: "rgba(0, 182, 155, 1)" }
                     : dataDashBoard?.countPercentA > 25 &&
                       dataDashBoard?.countPercentA < 45
-                    ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
-                    : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
+                      ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
+                      : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
                 }
               >
                 {dataDashBoard?.countPercentA
@@ -158,8 +166,8 @@ const WidePlate = ({
                     ? { fontSize: "12px", color: "rgba(0, 182, 155, 1)" }
                     : dataDashBoard?.countPercentB > 25 &&
                       dataDashBoard?.countPercentB < 45
-                    ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
-                    : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
+                      ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
+                      : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
                 }
               >
                 {dataDashBoard?.countPercentB
@@ -178,8 +186,8 @@ const WidePlate = ({
                     ? { fontSize: "12px", color: "rgba(0, 182, 155, 1)" }
                     : dataDashBoard?.countPercentC > 25 &&
                       dataDashBoard?.countPercentC < 45
-                    ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
-                    : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
+                      ? { fontSize: "12px", color: "rgba(240, 173, 0, 1)" }
+                      : { fontSize: "12px", color: "rgba(249, 60, 101, 1)" }
                 }
               >
                 {dataDashBoard?.countPercentC
