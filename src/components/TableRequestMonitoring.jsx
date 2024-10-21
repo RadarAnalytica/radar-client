@@ -106,33 +106,34 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
     };
 
     return (
-        <div class="table-wrapper-req-monitoring">
-            <div class="infoOfTable">
-                {/* tooltip */}
-                {/* <div class="attention-icon">
+        <div className="table-wrapper-req-monitoring">
+            <div className={styles.tableWrapperHeadder}>
+                <div className="infoOfTable">
+                    {/* tooltip */}
+                    {/* <div class="attention-icon">
                     <div class="exclamation-circle">!</div>
                 </div> */}
-                <div class="page-info">
-                    <div className="pagination">
-                        {page > 1 && (
-                            <button className="arrow left-arrow" onClick={goToPreviousPage}>
-                                &lang;
-                            </button>
-                        )}
+                    <div class="page-info">
+                        <div className="pagination">
+                            {page > 1 && (
+                                <button className="arrow left-arrow" onClick={goToPreviousPage}>
+                                    &lang;
+                                </button>
+                            )}
 
 
-                        <div className="page">
-                            <img src={pageIcon} alt="Page Icon" style={{ marginRight: "5px" }} />
-                            <span>{page}<span style={{ fontWeight: "400" }}> стр. из {totalPages}</span></span>
+                            <div className="page">
+                                <img src={pageIcon} alt="Page Icon" style={{ marginRight: "5px" }} />
+                                <span>{page}<span style={{ fontWeight: "400" }}> стр. из {totalPages}</span></span>
+                            </div>
+
+                            {page < totalPages && (
+                                <button className="arrow right-arrow" onClick={goToNextPage}>
+                                    &rang;
+                                </button>
+                            )}
                         </div>
-
-                        {page < totalPages && (
-                            <button className="arrow right-arrow" onClick={goToNextPage}>
-                                &rang;
-                            </button>
-                        )}
-                    </div>
-                    {/* <div style={{ marginLeft: "15px" }} class="rank">
+                        {/* <div style={{ marginLeft: "15px" }} class="rank">
                         <img src={rankIcon} />
                         <span style={{ marginLeft: "5px" }}>{totalTrueFlags} место</span>
                         <img
@@ -141,8 +142,42 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
                             style={{ width: '1.25vw', marginLeft: "5px" }}
                         />
                     </div> */}
+                    </div>
+
+                </div>
+                <div className={styles.infoAboutDigits}>
+                    <div className={styles.quantityWrapperInfo}>
+                        <div className="req-mon-td-quantity">1</div>
+                        <div style={{ marginLeft: "5px" }}>–</div>
+                        <div style={{ marginLeft: "10px" }}>страница выдачи</div>
+                    </div>
+                    <div className={styles.quantityWrapperInfo}>
+                        <div style={{ marginRight: "10px" }}>10</div>
+                        <div style={{ marginLeft: "5px" }}>–</div>
+                        <div style={{ marginLeft: "10px" }}>позиция товара</div>
+                    </div>
+                    <div className={styles.quantityWrapperInfo}>
+                        <div
+                            className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'
+                            style={{
+                                fontSize: '1.85vh',
+                                marginRight: '10px',
+                            }}
+                        >
+
+                            <img
+                                src={GreenArrow}
+                                alt=''
+                                style={{ width: '1.5vw' }}
+                            />
+                        </div>
+                        <div style={{ marginLeft: "5px" }}>–</div>
+                        <div style={{ marginLeft: "10px" }}>динамика позиции</div>
+                    </div>
                 </div>
             </div>
+
+
             <div className={styles.tableWrapper}>
                 <div className={styles.tableLeftMargin}></div>
                 <div className={styles.customTable}>
@@ -320,72 +355,6 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
                 </div>
                 <div className={styles.tableLeftMargin}></div>
             </div>
-
-
-
-            {/* <div className='table-wrapper-category-mon req-mon-table scrollable-table-monitoring-category'>
-                <div>
-                    <div className='req-mon-table-header'>
-                        <div className='req-mon-table-header-tr'>
-                            <div className='req-mon-table-header-th-first'>Запрос</div>
-                            <div className='req-mon-table-header-th' style={{ minWidth: "200px", display: 'flex', alignItems: "left", justifyContent: 'space-between' }}>
-                                <div>Кол-во запросов <br />в месяц {" "}</div>
-                                <div
-                                    className='icon-sort-wrap'
-                                    style={{ background: "transparent", marginLeft: "10px" }}
-                                    onClick={() => sortData("monthlyRequests")}
-                                >
-                                    <img
-                                        style={{
-                                            ...getIconStyle("monthlyRequests", "asc"),
-                                        }}
-                                        src={ArrowUp}
-                                        alt=''
-                                    />
-                                    <img
-                                        src={ArrowDown}
-                                        alt=''
-                                        style={{
-                                            ...getIconStyle("monthlyRequests", "desc"),
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            <div className='req-mon-table-header-th'>1.01</div>
-                            <div className='req-mon-table-header-th'>1.01</div>
-                            <div className='req-mon-table-header-th'>1.01</div>
-                            <div className='req-mon-table-header-th'>1.01</div>
-                            <div className='req-mon-table-header-th'>1.01</div>
-                            <div className='req-mon-table-header-th'>1.01</div>
-                            <div className='req-mon-table-header-th'>1.01</div>
-                            <div className='req-mon-table-header-th'>1.01</div>
-                            <div className='req-mon-table-header-th'>1.01</div>
-                            <div className='req-mon-table-header-th-last'>1.01</div>
-
-                        </div>
-                    </div>
-                    <div>
-                        <div className='req-mon-table-body'>
-                            {filteredData.map((item, index) => (
-                                <div className="req-mon-table-body-tr" key={index} >
-                                    <div className="category req-mon-table-body-td-first">{item.query}</div>
-                                    <div className='req-mon-table-body-td' style={{ minWidth: "200px" }}>{item.monthlyRequests}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.firstCol)}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.secondCol)}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.thirdCol)}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.fifthCol)}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.thirdCol)}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.fifthCol)}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.secondCol)}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.thirdCol)}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.fifthCol)}</div>
-                                    <div className='req-mon-table-body-td'>{renderTableCell(item.thirdCol)}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div> */}
         </div >
     )
 }

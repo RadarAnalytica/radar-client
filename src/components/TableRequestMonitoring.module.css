@@ -3,6 +3,7 @@
     flex-direction: row;
     /* margin-top: 21px; */
     width: 100%;
+    padding: 0px 15px;
 }
 
 .customTable {
@@ -80,6 +81,27 @@
     border-bottom-left-radius: 12px;
 }
 
+.tableWrapperHeadder{
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+}
+.infoAboutDigits{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: max-content;
+    margin:20px 20px 10px 20px;
+}
+.quantityWrapperInfo{
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin: 0px 20px 0px 20px;
+}
 .tableHeaderNotFirst {
     color: #8c8c8c;
     font-size: 16px;
