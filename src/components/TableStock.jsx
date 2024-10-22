@@ -64,6 +64,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
   };
 
   function formatNumber(num) {
+    if (num == null) return ''; // Return an empty string or any default value for null/undefined
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   }
   return (
