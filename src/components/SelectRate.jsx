@@ -902,7 +902,7 @@ const SelectRate = ({ redirect }) => {
                 }}
                 id='btnDop'
               >
-                {selectedPeriod === "6month " ? <Steps.Circle /> : <span></span>}
+                {selectedPeriod === "6month" ? <Steps.Circle /> : <span></span>}
                 <span>6 месяцев{" "}</span>
                 <span className='saleTextMobile'>
                   {!subscriptionDiscount ? "до -60%" : "-50%"}

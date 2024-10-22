@@ -449,21 +449,22 @@ const SideNav = () => {
         className='support-block'      
       >
         <a href='mailto:radar-analytica@inbox.ru'>
+        <a href='mailto:radar-analytica@inbox.ru'>
           <img 
             src={support} 
             alt='Call support window' 
             className='support-icon' 
-            style={{ cursor: "pointer" }}
-            // onClick={() =>
-            //   (window.location.href = "mailto:radar-analytica@inbox.ru")
-            // }  
-            onClick={() => toggleOpenSupport()}
+            style={{ cursor: "pointer" }}  
+            onClick={() =>
+              (window.location.href = "mailto:radar-analytica@inbox.ru")
+            }
+            // onClick={() => toggleOpenSupport()}
           />
         </a>
         <span className='support-block-text-box'>
-          <span className='support-block-text-title'>Поддержка</span>
-          <span className='support-block-text-subtitle'>Напишите нам</span>
-        </span>
+            <span className='support-block-text-title'>Поддержка</span>
+            <span className='support-block-text-subtitle'>Напишите нам</span>
+          </span>
         {/* <p className='fw-bold mb-0 p-0' style={{ fontSize: "1.8vh", marginLeft: "15px" }}>
           Обратиться в поддержку
         </p> */}
