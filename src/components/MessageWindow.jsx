@@ -12,7 +12,7 @@ import { closeSupportWindow } from '../redux/supportWindow/supportWindowSlice';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 
-const MessageWindow = ({ isNoHide }) => {
+const MessageWindow = ({ isNoHide, decodedEmail }) => {
   const dispatch = useDispatch();
   const messageListRef = useRef(null);
   const { authToken, user } = useContext(AuthContext);
@@ -25,6 +25,7 @@ const MessageWindow = ({ isNoHide }) => {
   const [show, setShow] = useState(false);
   const [error, setError] = useState('');
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [allMessages, setAllMessages] = useState([]);
 
   const handleImageClick = (image, event) => {
     if (event && event.type === 'contextmenu') {
@@ -42,6 +43,16 @@ const MessageWindow = ({ isNoHide }) => {
     }
   };
 
+  const getAllSupportMessages = async (authToken) => {
+    try {
+      const response = await ServiceFunctions.getAllSupportMessages(authToken);
+      const filteredMessages = response.filter(message => message.email === decodedEmail);
+      setAllMessages(filteredMessages);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (contextMenu && !event.target.closest('.contextMenu')) {
@@ -55,6 +66,14 @@ const MessageWindow = ({ isNoHide }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [contextMenu]);
+
+  useEffect(() => {
+    if (user.role === 'admin' && decodedEmail) {
+      getAllSupportMessages(authToken);
+    } else {
+      fetchMessages();
+    }
+  }, []);
 
   const handleDownloadImages = () => {
     selectedImages.forEach((imageUrl, index) => {
@@ -78,16 +97,10 @@ const MessageWindow = ({ isNoHide }) => {
     (state) => state.supportWindowSlice?.isOpenSupportWindow
   );
 
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    fetchMessages();
-  }, []);
-
   const fetchMessages = async () => {
     try {
       const response = await ServiceFunctions.getSupportMessages(authToken);
-      setMessages(response);
+      setAllMessages(response);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
@@ -97,10 +110,10 @@ const MessageWindow = ({ isNoHide }) => {
     const formData = new FormData();
   
     const requestData = {
-      user: user.email,
+      user_id: user.role === 'admin' ? allMessages[0].user_id : user.id,
       sender: user.role === 'admin' ? 'admin' : 'client',
       text: newMessage.trim(),
-      read: false
+      read: false,
     };
   
     formData.append('request', JSON.stringify(requestData));
@@ -117,8 +130,11 @@ const MessageWindow = ({ isNoHide }) => {
       
       if (responseData) {
         // Message sent successfully, now fetch updated messages
-        await fetchMessages();
-        
+        if (user.role === 'admin' && decodedEmail) {
+          getAllSupportMessages(authToken);
+        } else {
+          fetchMessages();
+        }
         // Clear the input fields
         setNewMessage('');
         setSelectedImages([]);
@@ -205,10 +221,10 @@ const MessageWindow = ({ isNoHide }) => {
   }, []);
 
   useEffect(() => {
-    if (messageListRef.current && (messages.length > 0 || isOpenSupportWindow)) {
+    if (messageListRef.current && allMessages.length > 0 ) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
-  }, [messages, isOpenSupportWindow]);
+  }, [allMessages, isOpenSupportWindow]);
   
   const handleImageDoubleClick = (image) => {
     setSelectedImages([image]);
@@ -243,11 +259,11 @@ const MessageWindow = ({ isNoHide }) => {
         <div className={styles.searchIcon}>
           <img src={serchIcon} alt='Search' />
         </div>
-        <button onClick={() => dispatch(closeSupportWindow())} className={styles.closeButton}>X</button>
+        {!isNoHide && <button onClick={() => dispatch(closeSupportWindow())} className={styles.closeButton}>X</button>}
       </div>
       <div className={styles.messageListWrapper}>
         <div className={styles.messageList} ref={messageListRef}>
-          {messages.map((message) => (
+          {allMessages.map((message) => (
             <>
               <div
                 key={message.id}

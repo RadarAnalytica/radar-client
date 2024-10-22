@@ -1,11 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import styles from './UserDataTable.module.css';
 import SortArrows from './SortArrows';
 import { useNavigate } from 'react-router-dom';
 
 const UserDataTable = ({ data }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  const [dataTable, setDataTable] = useState(data);
+  const [dataTable, setDataTable] = useState([]);
   const navigate = useNavigate();
 
   const handleEmailClick = (email) => {
@@ -32,6 +32,18 @@ const UserDataTable = ({ data }) => {
     },
     [dataTable, sortConfig]
   );
+
+  useEffect(() => {
+    const mappedData = data.map((email, index) => ({
+      id: index + 1,
+      email: email,
+      isShopActive: Math.random() < 0.5,
+      shopsConnected: Math.floor(Math.random() * 5) + 1,
+      supportMessges: []
+    }));
+    setDataTable(mappedData);
+  }, [data]);
+
   const renderSortArrows = (columnKey) => {
     return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
   };
@@ -81,10 +93,10 @@ const UserDataTable = ({ data }) => {
           </span>
         </span>
       </div>
-      {dataTable.map((item) => (
+      {dataTable.map((item, i) => (
         <div key={item.id} className={styles.tableRowItems}>
           <span className={styles.tableCellItems} onClick={() => handleEmailClick(item.email)}>{item.email}</span>
-          <span className={styles.tableCellItems}>{item.name}</span>
+          <span className={styles.tableCellItems}>{item[i]}</span>
           <span className={styles.tableCellItems}>
             {item.isShopActive ? 'ДА' : 'НЕТ'}
           </span>

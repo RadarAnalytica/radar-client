@@ -448,16 +448,17 @@ const SideNav = () => {
       <div
         className='support-block'      
       >
-        <a href='mailto:radar-analytica@inbox.ru'>
+        {/* <a href='mailto:radar-analytica@inbox.ru'> */}
+        <a>
           <img 
             src={support} 
             alt='Call support window' 
             className='support-icon' 
             style={{ cursor: "pointer" }}  
-            onClick={() =>
-              (window.location.href = "mailto:radar-analytica@inbox.ru")
-            }
-            // onClick={() => toggleOpenSupport()}
+            // onClick={() =>
+            //   (window.location.href = "mailto:radar-analytica@inbox.ru")
+            // }
+            onClick={() => toggleOpenSupport()}
           />
         </a>
         <span className='support-block-text-box'>

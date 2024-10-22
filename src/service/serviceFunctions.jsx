@@ -379,4 +379,19 @@ export const ServiceFunctions = {
     });
     return response.json();
   },
+
+  getAllSupportMessages: async (token) => {
+    const res = await fetch(
+      `${URL}/api/admin/support-all`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
 }

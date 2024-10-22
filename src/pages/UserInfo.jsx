@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import AuthContext from '../service/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './UserInfo.module.css';
 import AdminSideNav from '../components/AdminSideNav';
 import TopNav from '../components/TopNav';
@@ -10,6 +10,8 @@ import MessageWindow from '../components/MessageWindow';
 const UserInfo = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { email } = useParams();
+  const decodedEmail = email ? decodeURIComponent(email) : null;
 
   useEffect(() => {
     if (user && user.role !== 'admin') {
@@ -77,7 +79,7 @@ const UserInfo = () => {
             <div className={styles.userItemMainTitle}>Общая информация</div>
             <div className={styles.userItemWrapper}>
               <div className={styles.userItemTitle}>Почта</div>
-              <div>{data[0].email}</div>
+              <div>{decodedEmail}</div>
             </div>
             <div className={styles.userItemWrapper}>
               <div className={styles.userItemTitle}>Имя</div>
@@ -108,7 +110,7 @@ const UserInfo = () => {
           </div>
         </div>
         <div className={styles.containerBox}>
-        <MessageWindow isNoHide={true}/>
+        <MessageWindow isNoHide={true} decodedEmail={decodedEmail} />
         </div>
         </div>
       </div>
