@@ -449,7 +449,6 @@ const SideNav = () => {
         className='support-block'      
       >
         <a href='mailto:radar-analytica@inbox.ru'>
-        <a href='mailto:radar-analytica@inbox.ru'>
           <img 
             src={support} 
             alt='Call support window' 
