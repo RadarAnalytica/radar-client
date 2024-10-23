@@ -18,7 +18,7 @@ const TopNav = ({ title, children }) => {
   const [timeoutId, setTimeoutId] = useState(null);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
 
-  const messages = useSelector((state) => state.messagesSlice.messages);
+  const messages = useSelector((state) => state.messagesSlice.messages.messages);
 
   const handleMouseEnter = () => {
     clearTimeout(timeoutId);

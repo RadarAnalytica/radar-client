@@ -47,11 +47,31 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
     try {
       const response = await ServiceFunctions.getAllSupportMessages(authToken);
       const filteredMessages = response.filter(message => message.email === decodedEmail);
+        // Get userId directly from filtered messages
+      const userId = filteredMessages[0]?.user_id;
+       // Update state after getting userId
       setAllMessages(filteredMessages);
+       // Call patchMessages with the userId from filtered messages
+    if (userId) {
+      await patchMessages(authToken, true, userId);
+    }
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
   };
+
+  const patchMessages = async (authToken, isAdmin, userId) => {
+    try {
+
+      if (user.role === 'admin' && decodedEmail) {
+         await ServiceFunctions.patchSupportMessage(authToken, isAdmin, userId);
+      } else {
+        await ServiceFunctions.patchSupportMessage(authToken, isAdmin);
+      }
+    } catch (error) {
+      console.error('Error patching messages:', error);
+    }
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -70,10 +90,21 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
   useEffect(() => {
     if (user.role === 'admin' && decodedEmail) {
       getAllSupportMessages(authToken);
+      const interval = setInterval(() => {
+        getAllSupportMessages(authToken);
+      }, 60000);
+  
+      return () => clearInterval(interval);
     } else {
-      fetchMessages();
+      fetchMessages(authToken);
+      patchMessages(authToken, false);
+      const interval = setInterval(() => {
+        fetchMessages(authToken);
+      }, 60000);
+  
+      return () => clearInterval(interval);
     }
-  }, []);
+  }, [user.role, decodedEmail]);
 
   const handleDownloadImages = () => {
     selectedImages.forEach((imageUrl, index) => {
@@ -97,7 +128,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
     (state) => state.supportWindowSlice?.isOpenSupportWindow
   );
 
-  const fetchMessages = async () => {
+  const fetchMessages = async (authToken) => {
     try {
       const response = await ServiceFunctions.getSupportMessages(authToken);
       setAllMessages(response);
@@ -133,7 +164,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
         if (user.role === 'admin' && decodedEmail) {
           getAllSupportMessages(authToken);
         } else {
-          fetchMessages();
+          fetchMessages(authToken);
         }
         // Clear the input fields
         setNewMessage('');
@@ -221,7 +252,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
   }, []);
 
   useEffect(() => {
-    if (messageListRef.current && allMessages.length > 0 ) {
+    if (messageListRef.current && Array.isArray(allMessages) && allMessages.length > 0 ) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
   }, [allMessages, isOpenSupportWindow]);
@@ -263,15 +294,13 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
       </div>
       <div className={styles.messageListWrapper}>
         <div className={styles.messageList} ref={messageListRef}>
-          {allMessages.map((message) => (
-            <>
-              <div
-                key={message.id}
-                className={
-                  message.sender === 'client'
-                    ? styles.userMessage
-                    : styles.supportMessage
-                }
+          {allMessages?.length > 0 && allMessages.map((message) => (
+            <span key={message.id}  className={
+              message.sender === 'client'
+                ? styles.userMessage
+                : styles.supportMessage
+            }>
+              <div              
               >
                 {(message.image_1 || message.image_2 || message.image_3 || message.image_4) && (
                   <ImageMasonry
@@ -295,7 +324,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
                   minute: '2-digit',
                 })}
               </span>
-            </>
+            </span>
           ))}
           
             {imagePreviews.length > 0 && (

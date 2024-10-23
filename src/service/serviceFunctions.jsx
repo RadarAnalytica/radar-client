@@ -394,4 +394,19 @@ export const ServiceFunctions = {
     const data = await res.json();
     return data;
   },
+
+  patchSupportMessage: async (token, isAdmin, userId) => {
+    const res = await fetch(`${URL}/api/admin/support`, {
+      method: 'PATCH',
+      headers: {
+        "content-type": "application/json",
+        authorization: "JWT " + token,
+      },
+      body: JSON.stringify(
+        isAdmin ? {user_id: userId} : {}
+      ),
+    });
+    const data = await res.json();
+    return data;
+  },
 }

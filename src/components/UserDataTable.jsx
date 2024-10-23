@@ -34,12 +34,12 @@ const UserDataTable = ({ data }) => {
   );
 
   useEffect(() => {
-    const mappedData = data.map((email, index) => ({
+    const mappedData = data.map((item, index) => ({
       id: index + 1,
-      email: email,
+      email: item.email,
       isShopActive: Math.random() < 0.5,
       shopsConnected: Math.floor(Math.random() * 5) + 1,
-      supportMessges: []
+      supportMessges: item.unreadCount,
     }));
     setDataTable(mappedData);
   }, [data]);

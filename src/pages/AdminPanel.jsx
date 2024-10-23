@@ -12,10 +12,38 @@ const AdminPanel = () => {
   const navigate = useNavigate();
   const [allMessages, setAllMessages] = useState([]);
   const [uniqueEmails, setUniqueEmails] = useState([]);
-  console.log('uniqueEmails', uniqueEmails);
+  const [unreadMessageCounts, setUnreadMessageCounts] = useState({});
+  console.log('unreadMessageCounts', unreadMessageCounts);
+
+  const getAllSupportMessages = async (authToken) => {
+    try {
+      const response = await ServiceFunctions.getAllSupportMessages(authToken);
+      setAllMessages(response);
+      const emails = getUniqueEmails(response);
+      setUniqueEmails(emails);
+
+      // Calculate unread messages per user
+      const messageCounts = emails.reduce((acc, email) => {
+        const unreadCount = response.filter(
+          message => message.email === email && message.status === false
+        ).length;
+        return { ...acc, [email]: unreadCount };
+      }, {});
+      
+      setUnreadMessageCounts(messageCounts);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
+  const getUniqueEmails = (messages) => {
+    return [...new Set(messages.map(message => message.email))];
+  };
 
   useEffect(() => {
-    getAllSupportMessages(authToken);
+    if (user.role === 'admin') {
+      getAllSupportMessages(authToken);
+    }
  }, []);
 
   useEffect(() => {
@@ -26,22 +54,14 @@ const AdminPanel = () => {
 
   if (!user || user.role !== 'admin') {
     return null;
-  }
-
-  const getAllSupportMessages = async (authToken) => {
-    try {
-      const response = await ServiceFunctions.getAllSupportMessages(authToken);
-      setAllMessages(response);
-      const emails = getUniqueEmails(response);
-      setUniqueEmails(emails);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
   };
 
-  const getUniqueEmails = (messages) => {
-    return [...new Set(messages.map(message => message.email))];
-  };
+    // Create enhanced data for UserDataTable
+    const emailsWithUnreadCounts = uniqueEmails.map(email => ({
+      email,
+      unreadCount: unreadMessageCounts[email] || 0
+    }));
+
 
   return (
     <div className={styles.pageWrapper}>
@@ -49,7 +69,7 @@ const AdminPanel = () => {
       <div className={styles.scrollableContent}>
         <TopNav title={'Админ панель'} />
         <div className='container dash-container'>
-          <UserDataTable data={uniqueEmails} />
+          <UserDataTable data={emailsWithUnreadCounts} />
         </div>
       </div>
     </div>
