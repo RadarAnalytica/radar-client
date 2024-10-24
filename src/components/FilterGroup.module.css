@@ -1,0 +1,76 @@
+.filterGroup {
+  max-width: 200px;
+  height: 190px;
+  background: rgba(255, 255, 255, 1);
+  padding: 12px;
+  overflow-y: auto;
+  border-radius: 12px;
+}
+
+.filterGroup::-webkit-scrollbar {
+  background: #5329ff80;
+  border-radius: 6px;
+  width: 6px;
+  height: 10%;
+}
+
+.filterGroup::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.filterGroup::-webkit-scrollbar-thumb {
+  background: #5329ff80;
+  border-radius: 6px;
+}
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.filterHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: rgba(26, 26, 26, 0.5);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17.5px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.clearButton:hover {
+  text-decoration: underline;
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17.5px;
+}
+
+.checkbox {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}

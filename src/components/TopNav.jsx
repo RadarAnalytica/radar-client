@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { MessagesDropdown } from "./MessagesDropdown";
 import "../App.css";
 
-const TopNav = ({ title, children }) => {
+const TopNav = ({ title, children, subTitle }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const componentRef = useRef(null);
@@ -82,13 +82,27 @@ const TopNav = ({ title, children }) => {
               <span className='me-3'>{`${user?.firstName} ${user?.lastName}`}</span>
               <span>{user?.email}</span>
             </>
-          ) : (
+          ) : (<>
+            {subTitle && <p 
+              className='p-0' 
+              style={{
+                fontSize: "24px", 
+                lineHeight: "30px", 
+                color: 'rgba(26, 26, 26, 0.3)', 
+                fontWeight: 700, 
+                marginRight: '12px', 
+                marginBottom: '0'
+              }}
+            >
+              {subTitle}
+            </p>}
             <p
               style={{ fontSize: "2.75vh", fontWeight: 700 }}
               className='m-0 p-0 fw-bold'
             >
               {title}
             </p>
+            </>
           )}
         </div>
         {children}

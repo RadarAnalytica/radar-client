@@ -46,6 +46,7 @@ const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
 const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
+const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashboard"));
 
 const NoSubscriptionPage = React.lazy(() =>
   import("./pages/NoSubscriptionPage")
@@ -325,6 +326,14 @@ function App() {
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
                         <AiDescriptionGeneratorPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-dashboard"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportDashboard />
                       </React.Suspense>
                     }
                   />
