@@ -46,15 +46,17 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
   const getAllSupportMessages = async (authToken) => {
     try {
       const response = await ServiceFunctions.getAllSupportMessages(authToken);
-      const filteredMessages = response.filter(message => message.email === decodedEmail);
-        // Get userId directly from filtered messages
+      const filteredMessages = response.filter(
+        (message) => message.email === decodedEmail
+      );
+      // Get userId directly from filtered messages
       const userId = filteredMessages[0]?.user_id;
-       // Update state after getting userId
+      // Update state after getting userId
       setAllMessages(filteredMessages);
-       // Call patchMessages with the userId from filtered messages
-    if (userId) {
-      await patchMessages(authToken, true, userId);
-    }
+      // Call patchMessages with the userId from filtered messages
+      if (userId) {
+        await patchMessages(authToken, true, userId);
+      }
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
@@ -62,16 +64,15 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
 
   const patchMessages = async (authToken, isAdmin, userId) => {
     try {
-
       if (user.role === 'admin' && decodedEmail) {
-         await ServiceFunctions.patchSupportMessage(authToken, isAdmin, userId);
+        await ServiceFunctions.patchSupportMessage(authToken, isAdmin, userId);
       } else {
         await ServiceFunctions.patchSupportMessage(authToken, isAdmin);
       }
     } catch (error) {
       console.error('Error patching messages:', error);
     }
-  }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -93,7 +94,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
       const interval = setInterval(() => {
         getAllSupportMessages(authToken);
       }, 60000);
-  
+
       return () => clearInterval(interval);
     } else {
       fetchMessages(authToken);
@@ -101,7 +102,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
       const interval = setInterval(() => {
         fetchMessages(authToken);
       }, 60000);
-  
+
       return () => clearInterval(interval);
     }
   }, [user.role, decodedEmail]);
@@ -139,26 +140,29 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
 
   const handleSendMessage = async () => {
     const formData = new FormData();
-  
+
     const requestData = {
       user_id: user.role === 'admin' ? allMessages[0].user_id : user.id,
       sender: user.role === 'admin' ? 'admin' : 'client',
       text: newMessage.trim(),
       read: false,
     };
-  
+
     formData.append('request', JSON.stringify(requestData));
-  
+
     selectedImages.forEach((file, index) => {
       if (index < 4) {
         console.log(`Appending file_${index + 1}:`, file);
         formData.append(`file_${index + 1}`, file);
       }
     });
-  
+
     try {
-      const responseData = await ServiceFunctions.sendSupportMessage(authToken, formData);
-      
+      const responseData = await ServiceFunctions.sendSupportMessage(
+        authToken,
+        formData
+      );
+
       if (responseData) {
         // Message sent successfully, now fetch updated messages
         if (user.role === 'admin' && decodedEmail) {
@@ -171,18 +175,17 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
         setSelectedImages([]);
         setImagePreviews([]);
       }
-  
+
       setNewMessage('');
       setSelectedImages([]);
-  
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
 
   const removeImage = (index) => {
-    setSelectedImages(prev => prev.filter((_, i) => i !== index));
-    setImagePreviews(prev => prev.filter((_, i) => i !== index));
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleAttachClick = () => {
@@ -230,7 +233,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
       }
       if (validFiles.length > 0) {
         setSelectedImages(validFiles);
-        setImagePreviews(validFiles.map(file => URL.createObjectURL(file)));
+        setImagePreviews(validFiles.map((file) => URL.createObjectURL(file)));
       }
     };
     input.click();
@@ -243,20 +246,24 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
         dispatch(closeSupportWindow());
       }
     };
-  
+
     document.addEventListener('keydown', handleEscKey);
-  
+
     return () => {
       document.removeEventListener('keydown', handleEscKey);
     };
   }, []);
 
   useEffect(() => {
-    if (messageListRef.current && Array.isArray(allMessages) && allMessages.length > 0 ) {
+    if (
+      messageListRef.current &&
+      Array.isArray(allMessages) &&
+      allMessages.length > 0
+    ) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
   }, [allMessages, isOpenSupportWindow]);
-  
+
   const handleImageDoubleClick = (image) => {
     setSelectedImages([image]);
     setPreviewMode(true);
@@ -267,6 +274,13 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
   const handleAddToCustomLocation = () => {
     setContextMenu(null);
     setPreviewMode(true);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && newMessage.trim()) {
+      e.preventDefault();
+      handleSendMessage();
+    }
   };
 
   const warningIcon = require('../assets/warning.png');
@@ -290,54 +304,81 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
         <div className={styles.searchIcon}>
           <img src={serchIcon} alt='Search' />
         </div>
-        {!isNoHide && <button onClick={() => dispatch(closeSupportWindow())} className={styles.closeButton}>X</button>}
+        {!isNoHide && (
+          <button
+            onClick={() => dispatch(closeSupportWindow())}
+            className={styles.closeButton}
+          >
+            X
+          </button>
+        )}
       </div>
       <div className={styles.messageListWrapper}>
         <div className={styles.messageList} ref={messageListRef}>
-          {allMessages?.length > 0 && allMessages.map((message) => (
-            <span key={message.id}  className={
-              message.sender === 'client'
-                ? styles.userMessage
-                : styles.supportMessage
-            }>
-              <div              
-              >
-                {(message.image_1 || message.image_2 || message.image_3 || message.image_4) && (
-                  <ImageMasonry
-                  images={[message.image_1, message.image_2, message.image_3, message.image_4].filter(Boolean)}
-                    onImageClick={handleImageClick}
-                    selectedImages={selectedImages}
-                    onImageDoubleClick={handleImageDoubleClick}
-                  />
-                )}
-                {message.text}
-              </div>
+          {allMessages?.length > 0 &&
+            allMessages.map((message) => (
               <span
+                key={message.id}
                 className={
                   message.sender === 'client'
-                    ? styles.messageTimeUser
-                    : styles.messageTimeBot
+                    ? styles.userMessage
+                    : styles.supportMessage
                 }
               >
-                {new Date(message.created_at).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+                <div>
+                  {(message.image_1 ||
+                    message.image_2 ||
+                    message.image_3 ||
+                    message.image_4) && (
+                    <ImageMasonry
+                      images={[
+                        message.image_1,
+                        message.image_2,
+                        message.image_3,
+                        message.image_4,
+                      ].filter(Boolean)}
+                      onImageClick={handleImageClick}
+                      selectedImages={selectedImages}
+                      onImageDoubleClick={handleImageDoubleClick}
+                    />
+                  )}
+                  {message.text}
+                </div>
+                <span
+                  className={
+                    message.sender === 'client'
+                      ? styles.messageTimeUser
+                      : styles.messageTimeBot
+                  }
+                >
+                  {new Date(message.created_at + 'Z').toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                  })}
+                </span>
               </span>
-            </span>
-          ))}
-          
-            {imagePreviews.length > 0 && (
-              <div className={styles.imagePreviews}>
-                {imagePreviews.map((preview, index) => (
-                  <div key={index} className={styles.imagePreviewItem}>
-                    <img src={preview} alt={`Preview ${index + 1}`} className={styles.previewImage} />
-                    <button onClick={() => removeImage(index)} className={styles.removeImageButton}>X</button>
-                  </div>
-                ))}
-              </div>
-            )}
-          
+            ))}
+
+          {imagePreviews.length > 0 && (
+            <div className={styles.imagePreviews}>
+              {imagePreviews.map((preview, index) => (
+                <div key={index} className={styles.imagePreviewItem}>
+                  <img
+                    src={preview}
+                    alt={`Preview ${index + 1}`}
+                    className={styles.previewImage}
+                  />
+                  <button
+                    onClick={() => removeImage(index)}
+                    className={styles.removeImageButton}
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div className={styles.inputArea}>
@@ -351,6 +392,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
           type='text'
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
           className={styles.input}
           placeholder='Напишите сообщение'
         />
