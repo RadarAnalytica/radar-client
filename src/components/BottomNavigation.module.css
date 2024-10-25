@@ -1,0 +1,30 @@
+.bottomNavigation {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 1);
+    display: flex;
+    padding: 10px 0;
+    z-index: 10;
+}
+
+.navItem {
+    padding: 8px 0 8px 0;
+    color: rgba(26, 26, 26, 0.5);
+    cursor: pointer;
+}
+
+.navItem span {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 27px;
+    padding: 8px 12px;
+
+}
+
+.active {
+    background: rgba(83, 41, 255, 0.1);
+    border-radius: 8px;
+    color: rgba(26, 26, 26, 1);
+}

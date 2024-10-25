@@ -1,7 +1,9 @@
+import BottomNavigation from '../components/BottomNavigation';
 import FilterSection from '../components/FilterSection';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import styles from './WeeklyReportDashboard.module.css';
+import TooltipInfo from '../components/TooltipInfo';
 
 const WeeklyReportDashboard = () => {
   return (
@@ -18,7 +20,10 @@ const WeeklyReportDashboard = () => {
               <div className={styles.salesChartWrapper}>
                 <div className={styles.title}>Продажи</div>
                 <div className={styles.salesChartRow}>
-                  <div className={styles.titleInRow}>Выручка</div>
+                  <div className={styles.titleInRow}>
+                    Выручка
+                    <TooltipInfo text={'Выручка'} />
+                  </div>
                   <div className={styles.mumbersInRow}>
                     2 000 шт / 4 000 500 ₽{' '}
                   </div>
@@ -36,11 +41,17 @@ const WeeklyReportDashboard = () => {
                   </div>
                 </div>
                 <div className={styles.salesChartRow}>
-                  <div className={styles.titleInRow}>Средний чек</div>
+                  <div className={styles.titleInRow}>
+                    Средний чек
+                    <TooltipInfo text={'Средний чек'} />
+                  </div>
                   <div className={styles.mumbersInRow}>4 500 ₽ </div>
                 </div>
                 <div className={styles.salesChartRow}>
-                  <div className={styles.titleInRow}>Выкуп</div>
+                  <div className={styles.titleInRow}>
+                    Выкуп
+                    <TooltipInfo text={'Выкуп'} />
+                  </div>
                   <div className={styles.mumbersInRow}>40 % </div>
                 </div>
                 <div className={styles.salesChartRow}>
@@ -48,11 +59,17 @@ const WeeklyReportDashboard = () => {
                   <div className={styles.mumbersInRow}>20 % </div>
                 </div>
                 <div className={styles.salesChartRow}>
-                  <div className={styles.titleInRow}>Себестоимость</div>
+                  <div className={styles.titleInRow}>
+                    Себестоимость
+                    <TooltipInfo text={'Себестоимость'} />
+                  </div>
                   <div className={styles.mumbersInRow}>2 000 000 ₽</div>
                 </div>
                 <div className={styles.salesChartRow}>
-                  <div className={styles.titleInRow}>Доля себестоимости</div>
+                  <div className={styles.titleInRow}>
+                    Доля себестоимости
+                    <TooltipInfo text={'Доля себестоимости'} />
+                  </div>
                   <div className={styles.mumbersInRow}>20 % </div>
                 </div>
                 <div className={styles.salesChartRow}>
@@ -74,12 +91,16 @@ const WeeklyReportDashboard = () => {
                   <div className={styles.mumbersInRow}>400 500 ₽ </div>
                 </div>
                 <div className={styles.salesChartRow}>
-                  <div className={styles.titleInRow}>Маржинальность</div>
+                  <div className={styles.titleInRow}>
+                    Маржинальность
+                    <TooltipInfo text={'Маржинальность'} />
+                  </div>
                   <div className={styles.mumbersInRow}>10 %</div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>
                     Рентабельность инвестиций
+                    <TooltipInfo text={'Рентабельность инвестиций'} />
                   </div>
                   <div className={styles.mumbersInRow}>30 %</div>
                 </div>
@@ -214,6 +235,7 @@ const WeeklyReportDashboard = () => {
                     style={{ display: 'flex', alignItems: 'flex-end' }}
                   >
                     Компенсация брака
+                    <TooltipInfo text={'Компенсация брака'} />
                   </div>
                   <div className={styles.numbersBox}>
                     <div
@@ -230,7 +252,10 @@ const WeeklyReportDashboard = () => {
                   </div>
                 </div>
                 <div className={styles.salesChartRow}>
-                  <div className={styles.titleInRow}>Компенсация ущерба</div>
+                  <div className={styles.titleInRow}>
+                    Компенсация ущерба
+                    <TooltipInfo text={'Компенсация ущерба'} />
+                  </div>
                   <div className={styles.numbersBox}>
                     <div
                       className={`${styles.mumbersInRow} ${styles.widthHeader}`}
@@ -245,7 +270,10 @@ const WeeklyReportDashboard = () => {
                   </div>
                 </div>
                 <div className={styles.salesChartRow}>
-                  <div className={styles.titleInRow}>Штрафы</div>
+                  <div className={styles.titleInRow}>
+                    Штрафы
+                    <TooltipInfo text={'Штрафы'} />
+                  </div>
                   <div className={styles.numbersBox}>
                     <div
                       className={`${styles.mumbersInRow} ${styles.widthHeader}`}
@@ -314,7 +342,10 @@ const WeeklyReportDashboard = () => {
                   <div className={styles.titleInRow}>Налоговая база</div>
                   <div className={styles.mumbersInRow}>6 400 500 ₽ </div>
                 </div>
-                <div className={styles.salesChartRow}>
+                <div
+                  className={styles.salesChartRow}
+                  style={{ marginBottom: '45px' }}
+                >
                   <div className={styles.titleInRow}>Налог</div>
                   <div className={styles.mumbersInRow}>400 500 ₽ </div>
                 </div>
@@ -322,6 +353,7 @@ const WeeklyReportDashboard = () => {
             </div>
           </div>
         </div>
+        <BottomNavigation />
       </div>
     </div>
   );
