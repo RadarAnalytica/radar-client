@@ -1057,7 +1057,6 @@ const DashboardPage = () => {
             />
           )}
         </div>
-        <MessageWindow />
       </div>
     )
   );

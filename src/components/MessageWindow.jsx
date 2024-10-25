@@ -27,6 +27,10 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const [allMessages, setAllMessages] = useState([]);
 
+  const isOpenSupportWindow = useSelector(
+    (state) => state.supportWindowSlice?.isOpenSupportWindow
+  );
+
   const handleImageClick = (image, event) => {
     if (event && event.type === 'contextmenu') {
       event.preventDefault();
@@ -98,7 +102,6 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
       return () => clearInterval(interval);
     } else {
       fetchMessages(authToken);
-      patchMessages(authToken, false);
       const interval = setInterval(() => {
         fetchMessages(authToken);
       }, 60000);
@@ -124,10 +127,6 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
     });
     setContextMenu(null);
   };
-
-  const isOpenSupportWindow = useSelector(
-    (state) => state.supportWindowSlice?.isOpenSupportWindow
-  );
 
   const fetchMessages = async (authToken) => {
     try {
@@ -282,6 +281,12 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
       handleSendMessage();
     }
   };
+
+  useEffect(() => {
+    if (isOpenSupportWindow) {
+      patchMessages(authToken, false);
+    }
+  }, [isOpenSupportWindow]);
 
   const warningIcon = require('../assets/warning.png');
 
