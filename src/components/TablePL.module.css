@@ -1,0 +1,181 @@
+.tableWrapper {
+  margin-bottom: 60px;
+  margin-top: 21px;
+}
+
+.customTable {
+  height: calc(100vh - 150px);
+  overflow: auto;
+  position: relative;
+  border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+  will-change: transform;
+  -webkit-overflow-scrolling: touch;
+}
+
+.customTable::-webkit-scrollbar {
+  height: 6px;
+  border-radius: 6px;
+  width: 6px;
+}
+
+.customTable::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  margin-top: 85px;
+}
+
+.customTable::-webkit-scrollbar-thumb {
+  background: #5329ff80;
+  border-radius: 6px;
+}
+
+.tableLeftMargin {
+  width: 3.5vw;
+  height: 100%;
+}
+
+.tableContainer {
+  display: flex;
+  width: max-content;
+}
+
+.columnsWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.columnWidth {
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableHeader {
+  color: #8c8c8c;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  border: none;
+  padding-left: 16px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  background-color: rgba(255, 255, 255, 1);
+  z-index: 4;
+  height: 32px;
+  min-height: 32px;
+  box-sizing: border-box;
+  top: 16px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.tableHeaderNotFirst {
+  color: #8c8c8c;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  border: none;
+  background: #f7f6fe;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  z-index: 4;
+  height: 70px;
+  min-height: 70px;
+  box-sizing: border-box;
+  top: 16px;
+}
+
+.tableHeaderScrollable {
+  color: #8c8c8c;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  background: white;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  z-index: 1;
+  height: 32px;
+  min-height: 32px;
+  box-sizing: border-box;
+  top: 16px;
+}
+
+.tableOverHeader {
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  top: 0;
+  font-weight: bold;
+  position: sticky;
+  background: rgba(255, 255, 255, 1);
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  color: rgba(26, 26, 26, 1);
+  min-height: 16px;
+  border-bottom: none;
+  z-index: 4;
+}
+
+.tableRow {
+  height: 33px;
+  color: rgba(26, 26, 26, 1);
+  padding: 6px 0 6px 4px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  z-index: 0;
+}
+
+.whiteEnd {
+  width: 20px;
+  background: #fff;
+}
+
+.tableHeaderScrollablLast {
+  width: 10px;
+  height: 70px;
+  position: sticky;
+  z-index: 1;
+  top: 16px;
+  background: #f7f6fe;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.twoElements {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.columnWidthFirst {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.valueElement {
+  margin: 6px 0 6px 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  color: rgba(26, 26, 26, 1);
+}
+
+.percentageElement {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  color: rgba(26, 26, 26, 1);
+  margin-bottom: 6px;
+}

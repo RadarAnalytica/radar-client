@@ -1,21 +1,28 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './BottomNavigation.module.css';
 
 const BottomNavigation = () => {
+  const navigate = useNavigate();
   const currentUrl = window.location.href;
-  console.log(currentUrl);
+  const lastUrlPart = currentUrl.split('/').pop();
 
   let dahsboardActiveStyle = styles.navItem;
-  if (currentUrl.includes('weeklyreport-dashboard')) {
+  let dahsboardActiveStyle2 = styles.navItem;
+  if (lastUrlPart === 'weeklyreport-dashboard') {
     dahsboardActiveStyle = `${styles.navItem} ${styles.active}`;
   }
+  if (lastUrlPart === 'weeklyreport-pl') {
+    dahsboardActiveStyle2 = `${styles.navItem} ${styles.active}`;
+  }
+
   return (
     <div className={styles.bottomNavigation}>
       <div className={dahsboardActiveStyle} style={{ marginLeft: '54px' }}>
-        <span href='#'>Дашборд</span>
+        <span onClick={() => navigate('/weeklyreport-dashboard')}>Дашборд</span>
       </div>
-      <div className={styles.navItem}>
-        <span href='#'>P&L</span>
+      <div className={dahsboardActiveStyle2}>
+        <span onClick={() => navigate('/weeklyreport-pl')}>P&L</span>
       </div>
       <div className={styles.navItem}>
         <span href='#'>По месяцам</span>

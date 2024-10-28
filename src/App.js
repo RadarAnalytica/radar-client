@@ -15,6 +15,7 @@ import AiDescriptionGeneratorPage from "./pages/AIDescriptionGeneratorPage";
 import SeoPage from "./pages/SeoPage";
 import { ProductProvider } from "./service/ProductContext";
 import MessageWindow from "./components/MessageWindow";
+import WeeklyReportPL from "./pages/WeeklyReportPL";
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
@@ -334,6 +335,14 @@ function App() {
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
                         <WeeklyReportDashboard />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-pl"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportPL />
                       </React.Suspense>
                     }
                   />
