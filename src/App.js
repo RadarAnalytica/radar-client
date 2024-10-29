@@ -14,6 +14,7 @@ import RequestMonitoringPage from "./pages/RequestMonitoringPage";
 import AiDescriptionGeneratorPage from "./pages/AIDescriptionGeneratorPage";
 import SeoPage from "./pages/SeoPage";
 import { ProductProvider } from "./service/ProductContext";
+import MessageWindow from "./components/MessageWindow";
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
@@ -489,6 +490,7 @@ function App() {
               {/* <Route path='/development/settings' element={<Settings />} /> */}
               {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
             </Routes>
+            <MessageWindow />
           </ProductProvider>
         </AuthProvider>
       </div>

@@ -486,6 +486,13 @@ select {
   background: rgba(83, 41, 255, 0.04);
 }
 
+.support-block-text-writeus {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+  color: rgba(26, 26, 26, 1);
+}
+
 .support-block-text-box {
   display: flex;
   flex-direction: column;
@@ -2080,6 +2087,19 @@ select {
   align-items: center;
   top: -7px;
   right: -4px;
+  cursor: pointer;
+}
+
+.error-number-support {
+  font-size: 12px;
+  color: white;
+  background-color: red;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 

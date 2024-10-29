@@ -1,14 +1,48 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import styles from './AdminPanel.module.css';
 import AdminSideNav from '../components/AdminSideNav';
 import TopNav from '../components/TopNav';
 import UserDataTable from '../components/UserDataTable';
+import { ServiceFunctions } from '../service/serviceFunctions';
 
 const AdminPanel = () => {
-  const { user } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [uniqueEmails, setUniqueEmails] = useState([]);
+  const [unreadMessageCounts, setUnreadMessageCounts] = useState({});
+
+  const getAllSupportMessages = async (authToken) => {
+    try {
+      const response = await ServiceFunctions.getAllSupportMessages(authToken);
+      const emails = getUniqueEmails(response);
+      setUniqueEmails(emails);
+
+      // Calculate unread messages per user
+      const messageCounts = emails.reduce((acc, email) => {
+        const unreadCount = response.filter(
+          message => message.email === email && message.status === false
+        ).length;
+        return { ...acc, [email]: unreadCount };
+      }, {});
+      
+      setUnreadMessageCounts(messageCounts);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
+  const getUniqueEmails = (messages) => {
+    return [...new Set(messages.map(message => message.email))];
+  };
+
+  useEffect(() => {
+    if (user.role === 'admin') {
+      getAllSupportMessages(authToken);
+    }
+ }, []);
+
   useEffect(() => {
     if (user && user.role !== 'admin') {
       navigate('/dashboard', { replace: true });
@@ -17,208 +51,16 @@ const AdminPanel = () => {
 
   if (!user || user.role !== 'admin') {
     return null;
-  }
+  };
 
-  const data = [
-    {
-      id: 1,
-      email: 'test@radar.ru',
-      name: 'Test',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 3,
-      supportMessges: [
-        {
-          id: 1,
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc vitae nisl. Nullam euismod, nisl eget ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc vitae nisl.',
-          date: '01.01.2022',
-          isRead: true,
-        },
-        {
-          id: 2,
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc vitae nisl. Nullam euismod, nisl eget ultricies aliquam, nunc nisl aliquet nunc, vitae aliquam nisl nunc vitae nisl.',
-          date: '01.01.2022',
-          isRead: true,
-        },
-      ],
-    },
-    {
-      id: 2,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 3,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 4,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 5,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 6,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 7,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 8,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 9,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 10,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 11,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 12,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 13,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 14,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 15,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 16,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 17,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 18,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 19,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-    {
-      id: 20,
-      email: 'modinsv@yandex.ru',
-      name: 'Modin',
-      typeOfSubscribe: 'Smart',
-      dateOfSubscribe: '01.01.2022',
-      isShopActive: true,
-      shopsConnected: 1,
-    },
-  ];
+    // Create enhanced data for UserDataTable
+    const emailsWithUnreadCounts = uniqueEmails.map(email => ({
+      email,
+      unreadCount: unreadMessageCounts[email] || 0
+    }));
 
-  // const hasAccess = useAdminAccess();
+    console.log('emailsWithUnreadCounts', emailsWithUnreadCounts);
 
-  // if (!hasAccess) return null;
 
   return (
     <div className={styles.pageWrapper}>
@@ -226,7 +68,7 @@ const AdminPanel = () => {
       <div className={styles.scrollableContent}>
         <TopNav title={'Админ панель'} />
         <div className='container dash-container'>
-          <UserDataTable data={data} />
+          <UserDataTable data={emailsWithUnreadCounts} />
         </div>
       </div>
     </div>
