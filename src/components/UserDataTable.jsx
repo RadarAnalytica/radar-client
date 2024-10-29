@@ -44,10 +44,6 @@ const UserDataTable = ({ data }) => {
     setDataTable(mappedData);
   }, [data]);
 
-  const renderSortArrows = (columnKey) => {
-    return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
-  };
-
   return (
     <div className={styles['tableContainer']}>
       <div className={`${styles['tableRow']} ${styles['tableHeader']}`}>
@@ -56,53 +52,53 @@ const UserDataTable = ({ data }) => {
           onClick={() => sortData('email')}
         >
           Email
-          <span className={styles.arrows}> {renderSortArrows('email')}</span>
+          {/* <span className={styles.arrows}> {renderSortArrows('email')}</span> */}
         </span>
         <span
           className={`${styles['tableCell']} ${styles['tableHeaderCell']}`}
           onClick={() => sortData('name')}
         >
           Имя
-          <span className={styles.arrows}>{renderSortArrows('name')}</span>
+          {/* <span className={styles.arrows}>{renderSortArrows('name')}</span> */}
         </span>
         <span
           className={`${styles['tableCell']} ${styles['tableHeaderCell']}`}
           onClick={() => sortData('activeShop')}
         >
           Активный магазин
-          <span className={styles.arrows}>
+          {/* <span className={styles.arrows}>
             {renderSortArrows('activeShop')}
-          </span>
+          </span> */}
         </span>
         <span
           className={`${styles['tableCell']} ${styles['tableHeaderCell']}`}
           onClick={() => sortData('shopsQuantity')}
         >
           Кол-во магазинов
-          <span className={styles.arrows}>
+          {/* <span className={styles.arrows}>
             {renderSortArrows('shopsQuantity')}
-          </span>
+          </span> */}
         </span>
         <span
           className={`${styles['tableCell']} ${styles['tableHeaderCell']}`}
           onClick={() => sortData('messagesQuantity')}
         >
           Сообщения поддержки
-          <span className={styles.arrows}>
+          {/* <span className={styles.arrows}>
             {renderSortArrows('messagesQuantity')}
-          </span>
+          </span> */}
         </span>
       </div>
       {dataTable.map((item, i) => (
         <div key={item.id} className={styles.tableRowItems}>
-          <span className={styles.tableCellItems} onClick={() => handleEmailClick(item.email)}>{item.email}</span>
+          <span className={styles.tableCellItems} onClick={() => handleEmailClick(item.email)} style={{ cursor: 'pointer' }}>{item.email}</span>
           <span className={styles.tableCellItems}>{item[i]}</span>
           <span className={styles.tableCellItems}>
             {item.isShopActive ? 'ДА' : 'НЕТ'}
           </span>
           <span className={styles.tableCellItems}>{item.shopsConnected}</span>
           <span className={styles.tableCellItems}>
-            {item.supportMessges ? item.supportMessges.length : 0}
+            {item.supportMessges > 0 ? item.supportMessges : 0}
           </span>
         </div>
       ))}

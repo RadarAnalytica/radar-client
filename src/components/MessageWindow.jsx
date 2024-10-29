@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import styles from './MessageWindow.module.css';
 import radarIcon from '../assets/radarIconMessage.svg';
-import serchIcon from '../assets/searchIcon.svg';
 import attachFileIcon from '../assets/attachIcon.svg';
 import ImageMasonry from './ImageMasonry';
 import { useSelector, useDispatch } from 'react-redux';
@@ -144,14 +143,12 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
       user_id: user.role === 'admin' ? allMessages[0].user_id : user.id,
       sender: user.role === 'admin' ? 'admin' : 'client',
       text: newMessage.trim(),
-      read: false,
     };
 
     formData.append('request', JSON.stringify(requestData));
 
     selectedImages.forEach((file, index) => {
       if (index < 4) {
-        console.log(`Appending file_${index + 1}:`, file);
         formData.append(`file_${index + 1}`, file);
       }
     });
@@ -164,7 +161,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
 
       if (responseData) {
         // Message sent successfully, now fetch updated messages
-        if (user.role === 'admin' && decodedEmail) {
+        if (user.role === 'admin' ) {
           getAllSupportMessages(authToken);
         } else {
           fetchMessages(authToken);
@@ -240,7 +237,6 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
 
   useEffect(() => {
     const handleEscKey = (event) => {
-      console.log('event.key', event.key);
       if (event.key === 'Escape') {
         dispatch(closeSupportWindow());
       }
@@ -304,10 +300,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
         <img src={radarIcon} alt='Logo' className={styles.logo} />
         <div className={styles.headerText}>
           <span className={styles.title}>Поддержка Радара</span>
-          <span className={styles.subtitle}>Поддержим в любое время</span>
-        </div>
-        <div className={styles.searchIcon}>
-          <img src={serchIcon} alt='Search' />
+          <span className={styles.subtitle}>Поддержим в любое время<br/> c 10:00 до 20:00</span>
         </div>
         {!isNoHide && (
           <button
@@ -321,7 +314,9 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
       <div className={styles.messageListWrapper}>
         <div className={styles.messageList} ref={messageListRef}>
           {allMessages?.length > 0 &&
-            allMessages.map((message) => (
+            allMessages
+            .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+            .map((message) => (
               <span
                 key={message.id}
                 className={

@@ -10,15 +10,12 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 const AdminPanel = () => {
   const { user, authToken } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [allMessages, setAllMessages] = useState([]);
   const [uniqueEmails, setUniqueEmails] = useState([]);
   const [unreadMessageCounts, setUnreadMessageCounts] = useState({});
-  console.log('unreadMessageCounts', unreadMessageCounts);
 
   const getAllSupportMessages = async (authToken) => {
     try {
       const response = await ServiceFunctions.getAllSupportMessages(authToken);
-      setAllMessages(response);
       const emails = getUniqueEmails(response);
       setUniqueEmails(emails);
 
@@ -61,7 +58,6 @@ const AdminPanel = () => {
       email,
       unreadCount: unreadMessageCounts[email] || 0
     }));
-
 
   return (
     <div className={styles.pageWrapper}>

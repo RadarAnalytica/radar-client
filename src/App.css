@@ -466,6 +466,13 @@ select {
   background: rgba(83, 41, 255, 0.04);
 }
 
+.support-block-text-writeus {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+  color: rgba(26, 26, 26, 1);
+}
+
 .support-block-text-box {
   display: flex;
   flex-direction: column;
