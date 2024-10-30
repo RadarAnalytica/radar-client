@@ -73,6 +73,25 @@ const SideNav = () => {
               </span>
             </div>
           </div>
+          <div className='sidenav-el' onClick={() => navigate("/weeklyreport-dashboard")}>
+            <div className='d-flex align-items-center'>
+              <img
+                src={active === "weeklyreport-dashboard" || active === "weeklyreport-pl" ? purplegrow : greygrow}
+                alt=''
+                className='side-nav-icon'
+              />
+              <span
+                className='sidenav-title'
+                style={
+                  active === "weeklyreport-dashboard" || active === "weeklyreport-pl"
+                    ? { fontWeight: "bold", fontSize: "14px", color: "black" }
+                    : {}
+                }
+              >
+                Финансовые отчеты
+              </span>
+            </div>
+          </div>
           <div
             className='sidenav-el'
             onClick={() => setGoodsShown(!goodsShown)}
@@ -214,29 +233,6 @@ const SideNav = () => {
                   </svg>
                 ) : null}
                 Товарная аналитика
-              </p>
-              <p
-                className='sidenav-title padding-left submenu-item'
-                style={
-                  location === "weeklyreport-dashboard"
-                    ? { fontWeight: "bold", fontSize: "14px", whiteSpace: "nowrap" }
-                    : {}
-                }
-                onClick={() => navigate("/weeklyreport-dashboard")}
-              >
-                {location === "weeklyreport-dashboard" ? (
-                  <svg
-                    style={{ marginRight: "0.5vw" }}
-                    width='8'
-                    height='8'
-                    viewBox='0 0 8 8'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <circle cx='4' cy='4' r='4' fill='#5329FF' />
-                  </svg>
-                ) : null}
-                Еженедельные отчеты
               </p>
             </div>
           ) : null}

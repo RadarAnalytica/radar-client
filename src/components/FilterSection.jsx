@@ -89,8 +89,7 @@ const FilterSection = () => {
         className={styles.collapseButton}
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
-        Свернуть фильтры
-        {/* {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />} */}
+        {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
       </button>
 
       {!isCollapsed && (

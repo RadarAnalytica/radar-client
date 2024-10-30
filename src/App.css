@@ -421,6 +421,7 @@ select {
   flex-direction: column;
   background-color: white;
   justify-content: space-between;
+  z-index: 12;
 }
 
 
