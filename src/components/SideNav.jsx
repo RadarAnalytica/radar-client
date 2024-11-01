@@ -83,7 +83,7 @@ const SideNav = () => {
               <span
                 className='sidenav-title'
                 style={
-                  active === "weeklyreport-dashboard" || active === "weeklyreport-pl"
+                  active === "weeklyreport-dashboard" || active === "weeklyreport-pl" || active === "weeklyreport-month"
                     ? { fontWeight: "bold", fontSize: "14px", color: "black" }
                     : {}
                 }

@@ -5,6 +5,7 @@ import FilterDropdownReportPages from '../components/FilterDropdownReportPages';
 import FilterGroup from '../components/FilterGroup';
 import styles from './WeeklyReportByMonth.module.css';
 import SalesTable from '../components/SaleTable';
+import BottomNavigation from '../components/BottomNavigation';
 
 const WeeklyReportByMonth = () => {
   const [filterDataSet, setFilterDataSet] = useState({});
@@ -252,6 +253,7 @@ const WeeklyReportByMonth = () => {
         <div className='container dash-container'>
           <SalesTable />
         </div>
+        <BottomNavigation />
       </div>
     </div>
   );

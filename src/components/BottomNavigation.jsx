@@ -9,11 +9,15 @@ const BottomNavigation = () => {
 
   let dahsboardActiveStyle = styles.navItem;
   let dahsboardActiveStyle2 = styles.navItem;
+  let dahsboardActiveStyle3 = styles.navItem;
   if (lastUrlPart === 'weeklyreport-dashboard') {
     dahsboardActiveStyle = `${styles.navItem} ${styles.active}`;
   }
   if (lastUrlPart === 'weeklyreport-pl') {
     dahsboardActiveStyle2 = `${styles.navItem} ${styles.active}`;
+  }
+  if (lastUrlPart === 'weeklyreport-month') {
+    dahsboardActiveStyle3 = `${styles.navItem} ${styles.active}`;
   }
 
   return (
@@ -24,8 +28,8 @@ const BottomNavigation = () => {
       <div className={dahsboardActiveStyle2}>
         <span onClick={() => navigate('/weeklyreport-pl')}>P&L</span>
       </div>
-      <div className={styles.navItem}>
-        <span href='#'>По месяцам</span>
+      <div className={dahsboardActiveStyle3}>
+        <span onClick={() => navigate('/weeklyreport-month')}>По месяцам</span>
       </div>
       <div className={styles.navItem}>
         <span href='#'>По товарам</span>
