@@ -16,6 +16,7 @@ import SeoPage from "./pages/SeoPage";
 import { ProductProvider } from "./service/ProductContext";
 import MessageWindow from "./components/MessageWindow";
 import WeeklyReportPL from "./pages/WeeklyReportPL";
+import WeeklyReportByMonth from "./pages/WeeklyReportByMonth";
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
@@ -343,6 +344,14 @@ function App() {
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
                         <WeeklyReportPL />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-month"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportByMonth />
                       </React.Suspense>
                     }
                   />
