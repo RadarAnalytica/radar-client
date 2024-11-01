@@ -81,7 +81,7 @@ const SalesTable = () => {
             <div className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}>Хранение</div>
             <div className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}>Прочие удержания</div>
             <div className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}>Платная приёмка</div>
-            <div className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}>Все удержания WB</div>
+            <div className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`} style={{padding: '4px 0 0 0'}}>Все удержания WB</div>
           </div>
         </div>
         {/* outside debit Section */}
