@@ -17,6 +17,7 @@ import { ProductProvider } from "./service/ProductContext";
 import MessageWindow from "./components/MessageWindow";
 import WeeklyReportPL from "./pages/WeeklyReportPL";
 import WeeklyReportByMonth from "./pages/WeeklyReportByMonth";
+import ReportAbcAnalysis from "./pages/ReportAbcAnalysis";
 
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
@@ -283,6 +284,14 @@ function App() {
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
                   <Schedule/>
+                </React.Suspense>
+                }
+              />
+              <Route
+                path='/reports/abc-data'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                  <ReportAbcAnalysis/>
                 </React.Suspense>
                 }
               />
