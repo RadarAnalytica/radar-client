@@ -17,6 +17,7 @@ import { ProductProvider } from "./service/ProductContext";
 import MessageWindow from "./components/MessageWindow";
 import WeeklyReportPL from "./pages/WeeklyReportPL";
 
+
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
 const AbcAnalysisPage = React.lazy(() => import("./pages/AbcAnalysisPage"));
@@ -48,6 +49,7 @@ const Page404 = React.lazy(() => import("./pages/Page404"));
 const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashboard"));
+const Schedule = React.lazy(() => import("./pages/Schedule"));
 
 const NoSubscriptionPage = React.lazy(() =>
   import("./pages/NoSubscriptionPage")
@@ -273,6 +275,14 @@ function App() {
                   <React.Suspense fallback={<LoaderPage />}>
                     <AdminPanel />
                   </React.Suspense>
+                }
+              />
+              <Route
+                path='/schedule'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                  <Schedule/>
+                </React.Suspense>
                 }
               />
               <Route

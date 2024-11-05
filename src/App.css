@@ -3811,3 +3811,84 @@ font-weight: 500;
   align-items: center;
   margin-left: 35vw;
 }
+
+
+/* ScheduleBigChart */
+.chart-container {
+  width: 98%;
+  min-height: 400px;
+  /* max-width: 100%;  */
+  margin: 20px 0px 20px 0px;
+  padding: 20px;
+  background-color: white; /* Light background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  transition: transform 0.3s ease-in-out;
+
+}
+
+.chart-container:hover {
+  transform: scale(1.02); /* Slight zoom effect on hover */
+}
+
+.chart-title{
+  text-align: left;
+  color: #1A1A1A;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+canvas {
+  max-height: 400px; /* Set a max height for the chart */
+}
+
+.bar {
+  transition: background-color 0.2s ease-in-out; /* Smooth color change on hover */
+}
+
+.bar:hover {
+  background-color: rgba(255, 99, 132, 0.8); /* Change color on hover */
+}
+.roundedChartColor{
+  width: 20px;
+  height: 20px;
+  background-color: #F0AD00;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+.roundedChartColorPurple{
+  width: 20px;
+  height: 20px;
+  background-color: #5329FF;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+.chart-container-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.chart-container-colors-wrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.chart-header-wrapper{
+  display: flex;
+  gap: 15px;
+}
+.chart-header-wrapper-prof{
+  display: flex;
+  gap: 15px;
+  justify-content: end;
+}
+.chart-container-header-prof{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  
+}
