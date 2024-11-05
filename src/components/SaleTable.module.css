@@ -1,0 +1,237 @@
+.container {
+    width: 100%;
+    overflow: auto;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.08);
+    margin-top: 20px;
+    margin-bottom: 80px;
+}
+
+.container::-webkit-scrollbar {
+    height: 6px;
+    border-radius: 6px;
+    width: 6px;
+}
+.container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    margin-top: 85px;
+}
+.container::-webkit-scrollbar-thumb {
+    background: #5329ff80;
+    border-radius: 6px;
+}
+
+.borderBottom {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.row {
+    display: flex;
+    background: rgba(255, 255, 255, 1);
+}
+
+.row:hover {
+    background-color: #f9fafb;
+    cursor: pointer;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.header {
+    display: flex;
+    position: relative;
+}
+
+.headerSection {
+    flex: 1;
+}
+
+.headerText {
+    color: rgba(26, 26, 26, 1);
+    line-height: 22px;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 12px 12px 0 12px;
+}
+
+.cell {
+    padding: 0 0.5rem;
+}
+
+.flexContainer {
+    display: flex;
+    /* flex: 1; */
+}
+
+.weekCell {
+    min-width: 200px;
+    position: relative;
+}
+
+.yearToggle {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+    color: rgba(26, 26, 26, 1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.purchaseCell,
+.returnCell,
+.revenueCell,
+.salesCell,
+.avgPriceCell,
+.costCell,
+.deliveryCountCell,
+.commissionCell,
+.acquiringCell,
+.logisticsCell,
+.defectCompnesaitionCell,
+.defectQuantityCell,
+.damageCompensationCell,
+.damageQuantityCell,
+.finesCell,
+.payMoreCell {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+    padding: 4px 12px 0 12px;
+    width: 128px;
+    border-bottom: 1px solid rgba(232, 232, 232, 1);
+}
+
+.sppCell {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+    padding: 4px 12px 0 12px;
+    width: 68px;
+    border-bottom: 1px solid rgba(232, 232, 232, 1);
+}
+
+.buyoutCell {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+    padding: 4px 12px 0 12px;
+    width: 88px;
+    border-bottom: 1px solid rgba(232, 232, 232, 1);
+}
+
+.costPerUnitCell {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+    padding: 4px 12px 0 12px;
+    width: 136px;
+    border-bottom: 1px solid rgba(232, 232, 232, 1);
+}
+
+.costCell {
+    margin-right: 8px;
+}
+
+.smallText {
+    font-size: 16px;
+    color: rgba(26, 26, 26, 1);
+    font-weight: 500;
+    line-height: 20px;
+    margin: 4px 0 4px 0;
+}
+
+.dropdownArrow {
+    display: inline-block;
+    margin-right: 0.25rem;
+    transition: transform 0.2s;
+}
+
+.dropdownArrow img {
+    width: 12px;
+    height: 6px;
+}
+
+.dropdownArrowExpanded {
+    transform: rotate(180deg);
+}
+
+.fontSize14 {
+    font-size: 0.875rem;
+}
+
+.weekCellEmptyHeader {
+    width: 200px;
+    position: sticky;
+    background: white;
+    height: 96px;
+    left: 0;
+}
+
+.headerWeekText {
+    min-width: 200px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(140, 140, 140, 1);
+    padding: 15px 0 15px 16px;
+    border-right: 1px solid rgba(232, 232, 232, 1);
+}
+
+.weekCellYear {
+    width: 200px;
+    position: sticky;
+    left: 0;
+    padding: 0 0 0 16px;
+    border-right: 1px solid rgba(232, 232, 232, 1);
+}
+
+.headerOfMonth {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    position: sticky;
+    left: 0;
+    padding: 0 0 0 16px;
+    border-right: 1px solid rgba(232, 232, 232, 1);
+}
+
+.weekCellDate {
+    min-width: 200px;
+    position: sticky;
+    left: 0;
+    padding: 0 0 0 16px;
+    border-right: 1px solid rgba(232, 232, 232, 1);
+    background-color: inherit;
+}
+
+.headerTextMonth {
+    color: rgba(26, 26, 26, 1);
+    line-height: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.costContainer {
+    display: flex;
+}
+
+.greyColor {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(140, 140, 140, 1);
+    border-bottom: none;
+}
