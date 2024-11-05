@@ -3820,16 +3820,14 @@ font-weight: 500;
   /* max-width: 100%;  */
   margin: 20px 0px 20px 0px;
   padding: 20px;
-  background-color: white; /* Light background */
+  background-color: white;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   transition: transform 0.3s ease-in-out;
 
 }
 
-.chart-container:hover {
-  transform: scale(1.02); /* Slight zoom effect on hover */
-}
+
 
 .chart-title{
   text-align: left;
@@ -3839,15 +3837,15 @@ font-weight: 500;
 }
 
 canvas {
-  max-height: 400px; /* Set a max height for the chart */
+  max-height: 400px; 
 }
 
 .bar {
-  transition: background-color 0.2s ease-in-out; /* Smooth color change on hover */
+  transition: background-color 0.2s ease-in-out; 
 }
 
 .bar:hover {
-  background-color: rgba(255, 99, 132, 0.8); /* Change color on hover */
+  background-color: rgba(255, 99, 132, 0.8);
 }
 .roundedChartColor{
   width: 20px;
@@ -3890,5 +3888,4 @@ canvas {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  
 }

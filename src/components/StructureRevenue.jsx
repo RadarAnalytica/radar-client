@@ -2,7 +2,6 @@ import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
-// Register necessary Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const StructureRevenue = () => {
@@ -18,13 +17,13 @@ const StructureRevenue = () => {
                     '#9A81FF',
                 ],
                 borderColor: [
-                    '#FFFFFF', // Use white for segment spacing
+                    '#FFFFFF',
                     '#FFFFFF',
                     '#FFFFFF',
                 ],
-                borderWidth: 5, // Adjust border width for spacing effect
-                cutout: '85%', // Adjust this value to create space in the middle
-                borderRadius: 11, // Increased border radius for smoother edges
+                borderWidth: 5,
+                cutout: '85%',
+                borderRadius: 11,
             },
         ],
     };
@@ -36,20 +35,26 @@ const StructureRevenue = () => {
                 display: false,
             },
             tooltip: {
-                enabled: false,
-            },
-            // centerText: {
-            //     display: true,
-            //     // text: 'Структура выручки',
-            // },
+                enabled: true,
+                backgroundColor: '#FFFFFF',
+                borderColor: '#E0E0E0',
+                borderRadius: 8,
+                titleColor: '#8C8C8C',
+                bodyColor: '#1A1A1A',
+                callbacks: {
+                    label: function (tooltipItem) {
+                        const label = tooltipItem.label || '';
+                        const value = tooltipItem.raw || 0;
+                        return `${label}: ${value}%`;
+                    }
+                }
+            }
         },
         cutout: '85%',
         layout: {
-            padding: {
-                // right: 20,
-            },
+            padding: 20,
         },
-        displayCenterText: true, // Custom option to control text display
+        displayCenterText: true,
     };
 
     ChartJS.register({
@@ -63,12 +68,11 @@ const StructureRevenue = () => {
             const colors = dataset.backgroundColor;
 
             ctx.restore();
-            const fontSize = 14; // Set the font size for labels
+            const fontSize = 14;
             ctx.font = `${fontSize}px Arial`;
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#000';
 
-            // Starting Y position to center the text vertically
             const startY = height / 2 - ((labels.length - 1) * 30);
 
             labels.forEach((label, index) => {
@@ -76,16 +80,13 @@ const StructureRevenue = () => {
                 const labelText = label;
                 const valueText = `${value}%`;
 
-                // Calculate positions to center the text horizontally
-                const labelX = Math.round((width - ctx.measureText(labelText).width) / 2) + 15; // Shift right for circle
+                const labelX = Math.round((width - ctx.measureText(labelText).width) / 2) + 15;
                 const valueX = Math.round((width - ctx.measureText(valueText).width) / 2) + 15;
 
-                // Calculate Y position for each label and value pair
                 const labelY = startY + index * 50;
                 const valueY = labelY + 20;
 
-                // Draw color circle
-                const circleX = labelX - 10; // Position the circle slightly left of the label
+                const circleX = labelX - 10;
                 const circleY = labelY;
                 const circleRadius = 5;
 
@@ -94,15 +95,12 @@ const StructureRevenue = () => {
                 ctx.fillStyle = colors[index];
                 ctx.fill();
 
-                // Draw the label text
-                ctx.fillStyle = '#000'; // Set text color
+                ctx.fillStyle = '#000';
                 ctx.fillText(labelText, labelX, labelY);
 
-                // Make the value text bold
                 ctx.font = `bold ${fontSize}px Arial`;
                 ctx.fillText(valueText, valueX - 10, valueY);
 
-                // Reset font to regular for the next label
                 ctx.font = `${fontSize}px Arial`;
             });
 
@@ -114,7 +112,7 @@ const StructureRevenue = () => {
         <div className="chart-container" style={{ width: '30%', minHeight: "496px", display: "flex", flexDirection: "column" }}>
             <div className='chart-title'>Структура выручки</div>
             <Doughnut data={data} options={options} style={{ margin: "auto" }} />
-        </div >
+        </div>
     );
 };
 

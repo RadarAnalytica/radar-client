@@ -15,9 +15,9 @@ const RevenueStorageChart = () => {
                     const { ctx, chartArea } = chart;
                     if (!chartArea) return null;
 
-                    const gradient = ctx.createLinearGradient(chartArea.top, 0, 0, chartArea.bottom);
-                    gradient.addColorStop(0, '#5329FF');
-                    gradient.addColorStop(1, '#5329FF80');
+                    const gradient = ctx.createLinearGradient(0, 0, chartArea.right, 0);
+                    gradient.addColorStop(1, '#5329FF');
+                    gradient.addColorStop(0, '#5329FF80');
                     return gradient;
                 },
                 borderRadius: 3,
@@ -45,8 +45,10 @@ const RevenueStorageChart = () => {
                     return value.toLocaleString('ru-RU') + ' ₽';
                 },
                 font: {
-                    weight: 'bold'
-                }
+                    weight: 'bold',
+                    size: '12',
+                },
+                offset: 10,
             }
         },
         scales: {
@@ -73,7 +75,6 @@ const RevenueStorageChart = () => {
             }
         }
     };
-
 
     return (
         <div className="chart-container" style={{ width: "68%", maxHeight: "500px" }}>

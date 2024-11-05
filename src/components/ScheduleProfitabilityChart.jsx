@@ -11,7 +11,7 @@ const ScheduleProfitabilityChart = () => {
         datasets: [
             {
                 label: 'ROI, %',
-                data: [10, 20, -30, 10, -40, -20, -10, -40, -60, 20, -80, -140], // Sample data
+                data: [10, 20, -30, 10, -40, -20, -10, -40, -60, 20, -80, -140],
                 borderColor: '#5329FF',
                 borderWidth: 2,
                 fill: false,
@@ -21,28 +21,51 @@ const ScheduleProfitabilityChart = () => {
                 pointBorderColor: 'white',
                 pointRadius: 4,
                 pointBorderWidth: 1,
-                yAxisID: 'left-y', // Link to the left y-axis
+                yAxisID: 'left-y',
             },
             {
-                label: 'Маржинальность по прибыли, %',
+                label: 'Маржинальность по прибыли, % (Lower)',
                 data: [-50, -40, -30, -10, -80, -20, -10, -40, -60, -20, -80, -140],
-                backgroundColor: '#F0AD00',
+                backgroundColor: function (context) {
+                    const chart = context.chart;
+                    const { ctx, chartArea } = chart;
+                    if (!chartArea) {
+                        return null;
+                    }
+                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    gradient.addColorStop(0.3, '#F0AD0080');
+                    gradient.addColorStop(1, '#F0AD00');
+                    return gradient;
+                },
                 borderWidth: 0,
                 barPercentage: 0.3,
                 borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 3, bottomRight: 3 },
                 categoryPercentage: 1,
-                yAxisID: 'right-y', // Link to the right y-axis
+                yAxisID: 'right-y',
             },
             {
                 label: 'Маржинальность по прибыли, % (Upper)',
-                data: [50, 30, 50, 80, 70, 60, 40, 20, 10, 40, 30, 20], // Upper margin data
-                backgroundColor: '#F0AD00',
+                data: [50, 30, 50, 80, 70, 60, 40, 20, 10, 40, 30, 20],
+                backgroundColor: function (context) {
+                    const chart = context.chart;
+                    const { ctx, chartArea } = chart;
+                    if (!chartArea) {
+                        return null;
+                    }
+                    const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                    gradient.addColorStop(0, '#F0AD00');
+                    gradient.addColorStop(0.7, '#F0AD0080');
+
+                    return gradient;
+                },
                 borderWidth: 0,
                 barPercentage: 0.3,
                 borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 3, bottomRight: 3 },
                 categoryPercentage: 1,
-                yAxisID: 'right-y', // Link to the right y-axis
-            },
+                yAxisID: 'right-y',
+            }
+
+
         ],
     };
 
@@ -85,7 +108,7 @@ const ScheduleProfitabilityChart = () => {
                     }
                 }
             },
-            'left-y': { // Left y-axis
+            'left-y': {
                 min: -140,
                 max: 80,
                 stacked: true,
@@ -103,13 +126,13 @@ const ScheduleProfitabilityChart = () => {
                     color: '#8C8C8C',
                 }
             },
-            'right-y': { // Right y-axis mirroring the left y-axis
-                position: 'right', // Position on the right side
+            'right-y': {
+                position: 'right',
                 min: -140,
                 max: 80,
                 stacked: true,
                 grid: {
-                    display: true, // Show grid lines for the right y-axis
+                    display: true,
                     drawOnChartArea: true,
                     lineWidth: (context) => {
                         const tickValue = context.tick.value;

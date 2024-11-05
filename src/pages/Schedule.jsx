@@ -87,7 +87,7 @@ const Schedule = () => {
     };
 
     const handleClearBrand = () => {
-        // Убираем все отметки с чекбоксов
+
         const clearedBrands = Object.keys(selectedBrands).reduce((acc, brand) => {
             acc[brand] = false;
             return acc;
@@ -95,7 +95,7 @@ const Schedule = () => {
         setSelectedBrands(clearedBrands);
     };
     const handleClearYear = () => {
-        // Убираем все отметки с чекбоксов
+
         const clearedBrands = Object.keys(selectedYears).reduce((acc, brand) => {
             acc[brand] = false;
             return acc;
@@ -103,7 +103,7 @@ const Schedule = () => {
         setSelectedYears(clearedBrands);
     };
     const handleClearMonth = () => {
-        // Убираем все отметки с чекбоксов
+
         const clearedBrands = Object.keys(selectedMonths).reduce((acc, brand) => {
             acc[brand] = false;
             return acc;
@@ -111,7 +111,7 @@ const Schedule = () => {
         setSelectedMonths(clearedBrands);
     };
     const handleClearWeek = () => {
-        // Убираем все отметки с чекбоксов
+
         const clearedBrands = Object.keys(selectedWeeks).reduce((acc, brand) => {
             acc[brand] = false;
             return acc;
@@ -119,7 +119,7 @@ const Schedule = () => {
         setSelectedWeeks(clearedBrands);
     };
     const handleClearGroup = () => {
-        // Убираем все отметки с чекбоксов
+
         const clearedBrands = Object.keys(selectedGroups).reduce((acc, brand) => {
             acc[brand] = false;
             return acc;
@@ -127,7 +127,7 @@ const Schedule = () => {
         setSelectedGroups(clearedBrands);
     };
     const handleClearArticle = () => {
-        // Убираем все отметки с чекбоксов
+
         const clearedBrands = Object.keys(selectedArticles).reduce((acc, brand) => {
             acc[brand] = false;
             return acc;

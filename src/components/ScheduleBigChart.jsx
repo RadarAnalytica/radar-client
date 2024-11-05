@@ -21,7 +21,7 @@ const ScheduleBigChart = () => {
                         return null;
                     }
                     const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                    gradient.addColorStop(0, '#F0AD00');
+                    gradient.addColorStop(0.5, '#F0AD00');
                     gradient.addColorStop(1, '#F0AD0080');
                     return gradient;
                 },
@@ -75,7 +75,7 @@ const ScheduleBigChart = () => {
                         return fullMonthNames[index];
                     },
                     label: function (tooltipItem) {
-                        return `${tooltipItem.dataset.label} ${"    "} ${tooltipItem.raw.toLocaleString()}`;
+                        return `${tooltipItem.dataset.label} ${" "} ${tooltipItem.raw.toLocaleString()}`;
                     },
                     labelColor: function (tooltipItem) {
 
@@ -131,6 +131,9 @@ const ScheduleBigChart = () => {
         },
         barPercentage: 1,
         categoryPercentage: 0.7,
+        hover: {
+            mode: null,
+        }
     };
 
     return (
