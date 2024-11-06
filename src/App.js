@@ -288,7 +288,7 @@ function App() {
                 }
               />
               <Route
-                path='/reports/abc-data'
+                path='/abc-data-reports'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
                   <ReportAbcAnalysis/>

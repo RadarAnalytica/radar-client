@@ -10,6 +10,8 @@ const BottomNavigation = () => {
   let dahsboardActiveStyle = styles.navItem;
   let dahsboardActiveStyle2 = styles.navItem;
   let dahsboardActiveStyle3 = styles.navItem;
+  let dahsboardActiveStyle4 = styles.navItem;
+  let dahsboardActiveStyle5 = styles.navItem;
   if (lastUrlPart === 'weeklyreport-dashboard') {
     dahsboardActiveStyle = `${styles.navItem} ${styles.active}`;
   }
@@ -18,6 +20,12 @@ const BottomNavigation = () => {
   }
   if (lastUrlPart === 'weeklyreport-month') {
     dahsboardActiveStyle3 = `${styles.navItem} ${styles.active}`;
+  }
+  if (lastUrlPart === 'schedule') {
+    dahsboardActiveStyle4 = `${styles.navItem} ${styles.active}`;
+  }
+  if (lastUrlPart === 'abc-data-reports') {
+    dahsboardActiveStyle5 = `${styles.navItem} ${styles.active}`;
   }
 
   return (
@@ -34,20 +42,20 @@ const BottomNavigation = () => {
       <div className={styles.navItem}>
         <span href='#'>По товарам</span>
       </div>
-      <div className={styles.navItem}>
-        <span href='#'>ABC-анализ</span>
+      <div className={dahsboardActiveStyle5}>
+        <span h onClick={() => navigate('/abc-data-reports')}>ABC-анализ</span>
       </div>
       <div className={styles.navItem}>
         <span href='#'>Штрафы</span>
       </div>
-      <div className={styles.navItem}>
-        <span href='#'>Графики</span>
+      <div className={dahsboardActiveStyle4}>
+        <span onClick={() => navigate('/schedule')}>Графики</span>
       </div>
       <div className={styles.navItem}>
         <span href='#'>Внешние расходы</span>
       </div>
       {/* Add more nav items as needed */}
-    </div>
+    </div >
   );
 };
 
