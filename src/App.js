@@ -18,6 +18,7 @@ import MessageWindow from "./components/MessageWindow";
 import WeeklyReportPL from "./pages/WeeklyReportPL";
 import WeeklyReportByMonth from "./pages/WeeklyReportByMonth";
 import ReportAbcAnalysis from "./pages/ReportAbcAnalysis";
+import WeeklyReportByGoods from "./pages/WeeklyReportByGoods";
 
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
@@ -283,16 +284,16 @@ function App() {
                 path='/schedule'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
-                  <Schedule/>
-                </React.Suspense>
+                    <Schedule />
+                  </React.Suspense>
                 }
               />
               <Route
                 path='/abc-data-reports'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
-                  <ReportAbcAnalysis/>
-                </React.Suspense>
+                    <ReportAbcAnalysis />
+                  </React.Suspense>
                 }
               />
               <Route
@@ -371,6 +372,14 @@ function App() {
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
                         <WeeklyReportByMonth />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-goods"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportByGoods />
                       </React.Suspense>
                     }
                   />

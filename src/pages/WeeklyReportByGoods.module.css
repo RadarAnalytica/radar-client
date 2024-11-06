@@ -1,0 +1,13 @@
+.filteOpenClose {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    color: rgba(83, 41, 255, 1);
+    margin: 20px 0 16px 0;
+    cursor: pointer;
+  }
+
+  .filteWrapper {
+    display: flex;
+    gap: 20px
+  }
