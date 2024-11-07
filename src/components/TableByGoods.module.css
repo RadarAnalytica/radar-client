@@ -9,29 +9,45 @@
     margin-bottom: 70px;
 }
 
+.container::-webkit-scrollbar {
+    height: 6px;
+    border-radius: 6px;
+    width: 6px;
+  }
+  
+  .container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    margin-top: 85px;
+  }
+  
+  .container::-webkit-scrollbar-thumb {
+    background: #5329ff80;
+    border-radius: 6px;
+  }
+
 /* .header {
     border-bottom: 1px solid #eee;
   } */
 
 .topRow {
     display: flex;
-    width: 5190px;
+    width: 5366px;
 }
 
 .row {
     display: flex;
     border-bottom: 1px solid #f5f5f5;
     font-size: 14px;
-    width: 5190px;
+    width: 5366px;
 }
 
 .row:hover {
     background-color: #fafafa;
 }
 
-.childRow {
+/* .childRow {
     background-color: #f8f5ff;
-}
+} */
 
 /* Common cell styles */
 [class^="cell_"] {
@@ -72,11 +88,12 @@
     font-weight: 500;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
-    padding: 4px 0 4px 0;
+    padding: 4px 0 4px 12px;
 }
 
 .salesHeader {
     flex: 1;
+    padding: 0 0 0 12px;
 }
 
 .salesTitle {
@@ -124,11 +141,14 @@
     font-weight: 500;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
+    background: rgba(83, 41, 255, 0.05);
+    padding: 0 12px 0 12px;
 }
 
-/* .costHeader {
-    width: 192px;
-  } */
+.costHeader {
+    background: rgba(83, 41, 255, 0.05);
+    padding: 0 12px 0 12px;
+  }
 
 .costTitle {
     padding: 12px 12px 0 0;
@@ -141,7 +161,10 @@
 
 .costSubheader {
     display: flex;
-    color: #666;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: rgba(140, 140, 140, 1);
 }
 
 .cell_cost,
@@ -151,7 +174,7 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
-    color: rgba(26, 26, 26, 1);
+    /* color: rgba(26, 26, 26, 1); */
 }
 
 .logisticSection {
@@ -160,6 +183,7 @@
     font-weight: 500;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
+    padding: 0 12px 0 12px;
 }
 
 /* Utils */
@@ -197,7 +221,7 @@
     display: flex;
     border-top: 1px solid #eee;
     font-weight: 500;
-    width: 5190px;
+    width: 5366px;
 }
 
 .logisticSubheader {
@@ -211,6 +235,15 @@
     font-weight: 500;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
+    padding: 0 0 0 12px;
+}
+
+.damgeSection, .externalExpensesSection, .financeSection {
+    background: rgba(83, 41, 255, 0.05);
+}
+
+.externalExpensesSection, .taxSection, .financeSection {
+    padding: 0 0 0 12px;
 }
 
 .total {
@@ -265,4 +298,13 @@
 
 .dropdownArrowExpanded {
     transform: rotate(180deg);
+}
+
+.logosticHeader, .anotherKeeper  {
+    padding: 0 0 0 12px;
+}
+
+.compensationHeader {
+    background: rgba(83, 41, 255, 0.05);
+    padding: 0 0 0 12px;
 }

@@ -191,6 +191,11 @@ const TableByGoods = () => {
           taxSppWb: { taxSppWb: '0 ₽', total: '0 ₽' },
           taxTotal: { taxTotal: '200 000 ₽', total: '200 000 ₽' },
           taxTax: { taxTax: '10 000 ₽', total: '10 000 ₽' },
+          financePay: { financePay: '10 000 ₽', total: '10 000 ₽' },
+          financeTotal: { financeTotal: '200 000 ₽', total: '200 000 ₽' },
+          financeTotalPerUnit: { financePerUnit: '1 000 ₽', total: '1 000 ₽' },
+          financeMarginProfit: { marginProfit: '30 %', total: '30 %' },
+          financeRoi: { roi: '80 %', total: '80 %' },
         },
       ],
     },
@@ -283,6 +288,11 @@ const TableByGoods = () => {
       taxSppWb: { taxSppWb: '0 ₽', total: '0 ₽' },
       taxTotal: { taxTotal: '200 000 ₽', total: '200 000 ₽' },
       taxTax: { taxTax: '10 000 ₽', total: '10 000 ₽' },
+      financePay: { financePay: '10 000 ₽', total: '10 000 ₽' },
+      financeTotal: { financeTotal: '200 000 ₽', total: '200 000 ₽' },
+      financeTotalPerUnit: { financePerUnit: '1 000 ₽', total: '1 000 ₽' },
+      financeMarginProfit: { marginProfit: '30 %', total: '30 %' },
+      financeRoi: { roi: '80 %', total: '80 %' },
     },
   ];
 
@@ -426,7 +436,13 @@ const TableByGoods = () => {
               </div>
             </div>
           </div>
-          <div style={{ display: 'flex' }}>
+          <div
+            style={{
+              display: 'flex',
+              padding: '0 0 0 12px',
+              background: 'rgba(83, 41, 255, 0.05)',
+            }}
+          >
             <div className={styles.cell_costPerUnit}>
               {item.externalExpensesSelfBuy?.selfBuy}
             </div>
@@ -440,7 +456,7 @@ const TableByGoods = () => {
               {item.externalExpensesAll?.externalExpensesAll}
             </div>
           </div>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', padding: '0 0 0 12px' }}>
             <div className={styles.cell_costPerUnit}>
               {item.taxSppWb?.taxSppWb}
             </div>
@@ -449,7 +465,13 @@ const TableByGoods = () => {
             </div>
             <div className={styles.cell_costPerUnit}>{item.taxTax?.taxTax}</div>
           </div>
-          <div style={{ display: 'flex' }}>
+          <div
+            style={{
+              display: 'flex',
+              padding: '0 0 0 12px',
+              background: 'rgba(83, 41, 255, 0.05)',
+            }}
+          >
             <div className={styles.cell_costPerUnit}>
               {item.financePay?.financePay}
             </div>
@@ -501,7 +523,10 @@ const TableByGoods = () => {
             <div className={styles.costTitle}>Себестоимость</div>
             <div className={styles.costSubheader}>
               <div className={styles.cell_cost}>Себестоимость</div>
-              <div className={styles.cell_costPerUnit}>На единицу</div>
+              <div className={styles.cell_costPerUnit}>
+                Себестоимость
+                <br /> на единицу
+              </div>
             </div>
           </div>
           <div className={styles.logosticHeader}>
@@ -520,13 +545,16 @@ const TableByGoods = () => {
               </div>
             </div>
           </div>
-          <div className={styles.logosticHeader}>
+          <div className={styles.compensationHeader}>
             <div className={styles.costTitle}>Компенсации и штрафы/доплаты</div>
             <div className={styles.costSubheader}>
               <div className={styles.logisticSubheader}>Компенсации брака</div>
               <div className={styles.logisticSubheader}>Кол-во брака</div>
               <div className={styles.logisticSubheader}>Компенсации ущерба</div>
-              <div className={styles.logisticSubheader}>Кол-во ущерба</div>
+              <div className={styles.logisticSubheader}>
+                Кол-во
+                <br /> ущерба
+              </div>
               <div className={styles.logisticSubheader}>Штрафы</div>
               <div className={styles.logisticSubheader}>Доплаты</div>
             </div>
@@ -599,14 +627,18 @@ const TableByGoods = () => {
         <div className={`${styles.cell_product} ${styles.total}`}>
           Общий итог
         </div>
-        <div className={styles.salesSection}>
+        <div className={styles.salesSection} style={{ fontWeight: '700' }}>
           <div className={styles.cell_purchases}>
             <div>500 000 ₽</div>
-            <div className={styles.subtext}>50 шт</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              50 шт
+            </div>
           </div>
           <div className={styles.cell_returns}>
             <div>10 000 ₽</div>
-            <div className={styles.subtext}>2 шт</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              2 шт
+            </div>
           </div>
           <div className={styles.cell_sales}>50 шт</div>
           <div className={styles.cell_revenue}>100 000 ₽</div>
@@ -614,11 +646,147 @@ const TableByGoods = () => {
           <div className={styles.cell_spp}>20 %</div>
           <div className={styles.cell_buyout}>40 %</div>
         </div>
-        <div className={styles.costSection}>
+        <div
+          className={styles.logisticSection}
+          style={{
+            background: 'rgba(83, 41, 255, 0.05)',
+            padding: '0 12px 0 12px',
+          }}
+        >
           <div className={styles.cell_cost}>
-            <div>500 000 ₽</div>
-            <div className={styles.subtext}>20 %</div>
+            <div></div>
+            <div className={styles.subtext}></div>
           </div>
+          <div className={styles.cell_costPerUnit} />
+        </div>
+        <div
+          className={styles.logosticHeader}
+          style={{ margin: '0 0 0 12px', display: 'flex' }}
+        >
+          <div className={styles.cell_cost}>
+            <div style={{ fontWeight: '700' }}>100шт</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>50 000 ₽</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              20 %
+            </div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>1 000 ₽</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              0,1 %
+            </div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>15 000 ₽</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>2 000 ₽</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>20 000 ₽</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              9 %
+            </div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>200 ₽</div>
+          </div>
+        </div>
+        <div
+          className={styles.compensationHeader}
+          style={{ padding: '0 0 0 12px', display: 'flex' }}
+        >
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>100 ₽</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>1 шт</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>100 ₽</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>1 шт</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>200 ₽</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>100 ₽</div>
+          </div>
+        </div>
+        <div
+          className={styles.anotherKeeper}
+          style={{ padding: '0 0 0 12px', display: 'flex' }}
+        >
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>1 000 ₽</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              0,1 %
+            </div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>1 000 ₽</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              0,1 %
+            </div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>1 000 ₽</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              0,1 %
+            </div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>8 000 ₽</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              10 %
+            </div>
+          </div>
+        </div>
+        <div
+          className={styles.externalExpensesSection}
+          style={{ padding: '0 0 0 12px', display: 'flex' }}
+        >
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>0 ₽</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>25 000 ₽</div>
+            <div className={styles.subtext} style={{ fontWeight: '700' }}>
+              10 %
+            </div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>25 000 ₽</div>
+          </div>
+        </div>
+        <div
+          className={styles.taxSection}
+          style={{ padding: '0 0 0 12px', display: 'flex' }}
+        >
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>0 ₽</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>200 000 ₽</div>
+          </div>
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>10 000 ₽</div>
+          </div>
+        </div>
+        <div
+          className={styles.financeSection}
+          style={{ padding: '0 0 0 12px', display: 'flex' }}
+        >
+          <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
+            <div>200 000 ₽</div>
+          </div>
+          <div className={styles.cell_costPerUnit} />
+          <div className={styles.cell_costPerUnit} />
+          <div className={styles.cell_costPerUnit} />
           <div className={styles.cell_costPerUnit} />
         </div>
       </div>
