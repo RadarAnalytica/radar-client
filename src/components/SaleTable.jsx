@@ -19,7 +19,7 @@ const SalesTable = () => {
   return (
     <div className={styles.container}>
       {/* Header - Always visible */}
-      <div className={styles.header} style={{ width: '333%' }}>
+      <div className={styles.header} style={{ width: '417%' }}>
         <div className={styles.weekCellEmptyHeader}>
           <div className={styles.headerWeekText}>Неделя</div>
         </div>
@@ -166,6 +166,7 @@ const SalesTable = () => {
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
+              style={{ padding: '4px 0 0 0' }}
             >
               Всего внешних расходов
             </div>
@@ -198,6 +199,7 @@ const SalesTable = () => {
           <div className={styles.flexContainer}>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
+              style={{ padding: '4px 0 0 12px' }}
             >
               Оплата на Р/С
             </div>
@@ -208,8 +210,9 @@ const SalesTable = () => {
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
+              style={{ padding: '4px 0 0 0' }}
             >
-              Чистая прибыль на ед.
+              Чистая<br/> прибыль на ед.
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
@@ -227,7 +230,7 @@ const SalesTable = () => {
       </div>
 
       {/* Months Section - Controlled by year dropdown */}
-      <div style={{ width: '333%' }}>
+      <div style={{ width: '417%' }}>
         <div className={styles.weekCellYear} style={{ display: 'flex' }}>
           <div className={styles.yearToggle} onClick={() => toggleRow('2024')}>
             <span>2024</span>
