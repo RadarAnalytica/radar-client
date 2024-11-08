@@ -1,13 +1,21 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styles from './SeoPage.module.css';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import InfoSeoPlate from '../components/InfoSeoPlate';
 import SeoCompaire from '../components/SeoCompaire';
+import NoSubscriptionPage from './NoSubscriptionPage';
+import AuthContext from "../service/AuthContext";
 
 const SeoPage = () => {
   const [compaireData, setCompaireData] = useState({});
   const [linksToSend, setLinksToSend] = useState({});
+  const { user } = useContext(AuthContext);
+
+  if (user?.subscription_status === "expired") {
+    return <NoSubscriptionPage title={"Сравнение SEO"} />;
+  }
+
 
   return (
     <div className={styles.pageWrapper}>

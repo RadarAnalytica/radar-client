@@ -29,7 +29,8 @@ const StockAnalysis = () => {
   const stockAnalysisData = useAppSelector(
     (state) => state.stockAnalysisDataSlice.stockAnalysisData
   );
-  const hasSelfCostPrice = stockAnalysisData.every(product => product.costPriceOne !== null);
+  const dataStock = Array.isArray(stockAnalysisData) ? stockAnalysisData : [];
+  const hasSelfCostPrice = dataStock.every(product => product.costPriceOne !== null);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
