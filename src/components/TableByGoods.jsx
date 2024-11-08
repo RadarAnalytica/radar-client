@@ -659,10 +659,7 @@ const TableByGoods = () => {
           </div>
           <div className={styles.cell_costPerUnit} />
         </div>
-        <div
-          className={styles.logosticHeader}
-          style={{ margin: '0 0 0 12px', display: 'flex' }}
-        >
+        <div className={styles.logosticHeader} style={{ display: 'flex' }}>
           <div className={styles.cell_cost}>
             <div style={{ fontWeight: '700' }}>100шт</div>
           </div>

@@ -13,17 +13,17 @@
     height: 6px;
     border-radius: 6px;
     width: 6px;
-  }
-  
-  .container::-webkit-scrollbar-track {
+}
+
+.container::-webkit-scrollbar-track {
     background: #f1f1f1;
     margin-top: 85px;
-  }
-  
-  .container::-webkit-scrollbar-thumb {
+}
+
+.container::-webkit-scrollbar-thumb {
     background: #5329ff80;
     border-radius: 6px;
-  }
+}
 
 /* .header {
     border-bottom: 1px solid #eee;
@@ -148,7 +148,7 @@
 .costHeader {
     background: rgba(83, 41, 255, 0.05);
     padding: 0 12px 0 12px;
-  }
+}
 
 .costTitle {
     padding: 12px 12px 0 0;
@@ -183,7 +183,7 @@
     font-weight: 500;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
-    padding: 0 12px 0 12px;
+    padding: 0 0 0 12px;
 }
 
 /* Utils */
@@ -195,15 +195,13 @@
 }
 
 .toggleButton {
+    height: 100%;
+    display: flex;
     padding: 2px;
     border-radius: 4px;
     border: none;
     background: none;
     cursor: pointer;
-}
-
-.toggleButton:hover {
-    background-color: #f0f0f0;
 }
 
 .icon {
@@ -238,11 +236,15 @@
     padding: 0 0 0 12px;
 }
 
-.damgeSection, .externalExpensesSection, .financeSection {
+.damgeSection,
+.externalExpensesSection,
+.financeSection {
     background: rgba(83, 41, 255, 0.05);
 }
 
-.externalExpensesSection, .taxSection, .financeSection {
+.externalExpensesSection,
+.taxSection,
+.financeSection {
     padding: 0 0 0 12px;
 }
 
@@ -264,6 +266,12 @@
     font-weight: 500;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
+}
+
+.article span {
+    display: flex;
+    height: 100%;
+    padding-top: 4px;
 }
 
 .cellArticle {
@@ -300,7 +308,8 @@
     transform: rotate(180deg);
 }
 
-.logosticHeader, .anotherKeeper  {
+.logosticHeader,
+.anotherKeeper {
     padding: 0 0 0 12px;
 }
 
