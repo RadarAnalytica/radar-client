@@ -13,10 +13,12 @@
     border-radius: 6px;
     width: 6px;
 }
+
 .container::-webkit-scrollbar-track {
     background: #f1f1f1;
     margin-top: 85px;
 }
+
 .container::-webkit-scrollbar-thumb {
     background: #5329ff80;
     border-radius: 6px;
@@ -80,6 +82,12 @@
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    min-width: 200px;
+    position: sticky;
+    left: 0;
+    padding: 0 0 0 16px;
+    border-right: 1px solid rgba(232, 232, 232, 1);
+    background: white;
 }
 
 .purchaseCell,
@@ -172,7 +180,7 @@
     width: 200px;
     position: sticky;
     background: white;
-    height: 96px;
+    height: 98px;
     left: 0;
 }
 
@@ -190,17 +198,17 @@
 }
 
 .weekCellYear {
-    width: 200px;
-    position: sticky;
+    /* width: 200px; */
+    /* position: sticky;
     left: 0;
-    padding: 0 0 0 16px;
+    padding: 0 0 0 16px; */
     border-right: 1px solid rgba(232, 232, 232, 1);
 }
 
 .headerOfMonth {
     display: flex;
     justify-content: space-between;
-    width: 200px;
+    min-width: 200px;
     position: sticky;
     left: 0;
     padding: 0 0 0 16px;
@@ -234,4 +242,8 @@
     line-height: 20px;
     color: rgba(140, 140, 140, 1);
     border-bottom: none;
+}
+
+.diffBacckground {
+    background: rgba(83, 41, 255, 0.05);
 }

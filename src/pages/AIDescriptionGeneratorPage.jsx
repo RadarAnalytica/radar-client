@@ -20,6 +20,8 @@ import {
     saveFileClickHandler,
 } from '../service/fileService';
 import DragDropFile from '../components/DragAndDropFiles';
+import NoSubscriptionPage from "./NoSubscriptionPage"
+
 const AiDescriptionGeneratorPage = () => {
 
     const {
@@ -388,6 +390,9 @@ const AiDescriptionGeneratorPage = () => {
         }
     };
 
+    if (user?.subscription_status === "expired") {
+        return <NoSubscriptionPage title={"Генерация описания AI"} />;
+      }
 
     return <div className='dashboard-page'>
         <SideNav />

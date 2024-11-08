@@ -12,6 +12,7 @@ const BottomNavigation = () => {
   let dahsboardActiveStyle3 = styles.navItem;
   let dahsboardActiveStyle4 = styles.navItem;
   let dahsboardActiveStyle5 = styles.navItem;
+  let dahsboardActiveStyle6 = styles.navItem;
   if (lastUrlPart === 'weeklyreport-dashboard') {
     dahsboardActiveStyle = `${styles.navItem} ${styles.active}`;
   }
@@ -27,6 +28,9 @@ const BottomNavigation = () => {
   if (lastUrlPart === 'abc-data-reports') {
     dahsboardActiveStyle5 = `${styles.navItem} ${styles.active}`;
   }
+  if (lastUrlPart === 'weeklyreport-goods') {
+    dahsboardActiveStyle6 = `${styles.navItem} ${styles.active}`;
+  }
 
   return (
     <div className={styles.bottomNavigation}>
@@ -39,8 +43,8 @@ const BottomNavigation = () => {
       <div className={dahsboardActiveStyle3}>
         <span onClick={() => navigate('/weeklyreport-month')}>По месяцам</span>
       </div>
-      <div className={styles.navItem}>
-        <span href='#'>По товарам</span>
+      <div className={dahsboardActiveStyle6}>
+        <span onClick={() => navigate('/weeklyreport-goods')}>По товарам</span>
       </div>
       <div className={dahsboardActiveStyle5}>
         <span h onClick={() => navigate('/abc-data-reports')}>ABC-анализ</span>

@@ -19,7 +19,7 @@ const SalesTable = () => {
   return (
     <div className={styles.container}>
       {/* Header - Always visible */}
-      <div className={styles.header} style={{ width: '333%' }}>
+      <div className={styles.header} style={{ width: '417%' }}>
         <div className={styles.weekCellEmptyHeader}>
           <div className={styles.headerWeekText}>Неделя</div>
         </div>
@@ -94,7 +94,7 @@ const SalesTable = () => {
         </div>
 
         {/* Compensation Section */}
-        <div className={styles.headerSection}>
+        <div className={`${styles.headerSection} ${styles.diffBacckground}`}>
           <div className={styles.headerText}>Компенсации и штрафы/доплаты</div>
           <div className={styles.flexContainer}>
             <div
@@ -151,7 +151,7 @@ const SalesTable = () => {
           </div>
         </div>
         {/* outside debit Section */}
-        <div className={styles.headerSection}>
+        <div className={`${styles.headerSection} ${styles.diffBacckground}`}>
           <div className={styles.headerText}>Внешние расходы</div>
           <div className={styles.flexContainer}>
             <div
@@ -166,6 +166,7 @@ const SalesTable = () => {
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
+              style={{ padding: '4px 0 0 0' }}
             >
               Всего внешних расходов
             </div>
@@ -193,11 +194,12 @@ const SalesTable = () => {
           </div>
         </div>
         {/* Finance Section */}
-        <div className={styles.headerSection}>
+        <div className={`${styles.headerSection}  ${styles.diffBacckground}`}>
           <div className={styles.headerText}>Финансы</div>
           <div className={styles.flexContainer}>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
+              style={{ padding: '4px 0 0 12px' }}
             >
               Оплата на Р/С
             </div>
@@ -208,8 +210,9 @@ const SalesTable = () => {
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
+              style={{ padding: '4px 0 0 0' }}
             >
-              Чистая прибыль на ед.
+              Чистая<br/> прибыль на ед.
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
@@ -227,8 +230,8 @@ const SalesTable = () => {
       </div>
 
       {/* Months Section - Controlled by year dropdown */}
-      <div style={{ width: '333%' }}>
-        <div className={styles.weekCellYear}>
+      <div style={{ width: '417%' }}>
+        <div className={styles.weekCellYear} style={{ display: 'flex' }}>
           <div className={styles.yearToggle} onClick={() => toggleRow('2024')}>
             <span>2024</span>
             <span
@@ -239,23 +242,75 @@ const SalesTable = () => {
               <img src={arrowDown} alt='Dropdown Arrow' />
             </span>
           </div>
+          <div style={{ display: 'flex' }}>
+            <div style={{ width: '796px' }}></div>
+            <div
+              style={{ width: '272px', background: 'rgba(83, 41, 255, 0.05)' }}
+            ></div>
+            <div style={{ width: '896px' }}></div>
+            <div
+              style={{ width: '768px', background: 'rgba(83, 41, 255, 0.05)' }}
+            ></div>
+            <div style={{ width: '512px' }}></div>
+            <div
+              style={{ width: '384px', background: 'rgba(83, 41, 255, 0.05)' }}
+            ></div>
+            <div style={{ width: '384px' }}></div>
+            <div
+              style={{ width: '660px', background: 'rgba(83, 41, 255, 0.05)' }}
+            ></div>
+          </div>
         </div>
         {expandedRows['2024'] && (
           <div className={`${styles.fontSize14} ${styles.monthsContainer}`}>
             {/* September Section */}
-            <div className={styles.borderBottom}>
-              <div
-                className={`${styles.row} ${styles.clickable} ${styles.headerOfMonth}`}
-                onClick={() => toggleRow('Сентябрь')}
-              >
-                <span className={styles.headerTextMonth}>Сентябрь</span>
-                <span
-                  className={`${styles.dropdownArrow} ${
-                    expandedRows['Сентябрь'] ? styles.dropdownArrowExpanded : ''
-                  }`}
+            <div>
+              <div className={styles.borderBottom} style={{ display: 'flex' }}>
+                <div
+                  className={`${styles.row} ${styles.clickable} ${styles.headerOfMonth}`}
+                  onClick={() => toggleRow('Сентябрь')}
                 >
-                  <img src={arrowDown} alt='Dropdown Arrow' />
-                </span>
+                  <span className={styles.headerTextMonth}>Сентябрь</span>
+                  <span
+                    className={`${styles.dropdownArrow} ${
+                      expandedRows['Сентябрь']
+                        ? styles.dropdownArrowExpanded
+                        : ''
+                    }`}
+                  >
+                    <img src={arrowDown} alt='Dropdown Arrow' />
+                  </span>
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ width: '796px' }}></div>
+                  <div
+                    style={{
+                      width: '272px',
+                      background: 'rgba(83, 41, 255, 0.05)',
+                    }}
+                  ></div>
+                  <div style={{ width: '896px' }}></div>
+                  <div
+                    style={{
+                      width: '768px',
+                      background: 'rgba(83, 41, 255, 0.05)',
+                    }}
+                  ></div>
+                  <div style={{ width: '512px' }}></div>
+                  <div
+                    style={{
+                      width: '384px',
+                      background: 'rgba(83, 41, 255, 0.05)',
+                    }}
+                  ></div>
+                  <div style={{ width: '384px' }}></div>
+                  <div
+                    style={{
+                      width: '660px',
+                      background: 'rgba(83, 41, 255, 0.05)',
+                    }}
+                  ></div>
+                </div>
               </div>
 
               {expandedRows['Сентябрь'] && (
@@ -276,7 +331,10 @@ const SalesTable = () => {
                     <div className={styles.sppCell}>20 %</div>
                     <div className={styles.buyoutCell}>40 %</div>
                   </div>
-                  <div className={styles.flexContainer}>
+                  <div
+                    className={styles.flexContainer}
+                    style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                  >
                     <div className={styles.costCell}>
                       <div>50 000 ₽</div>
                       <div className={styles.smallText}>20 %</div>
@@ -301,7 +359,10 @@ const SalesTable = () => {
                     </div>
                     <div className={styles.logisticsCell}>400 ₽</div>
                   </div>
-                  <div className={styles.flexContainer}>
+                  <div
+                    className={styles.flexContainer}
+                    style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                  >
                     <div className={styles.defectCompnesaitionCell}>
                       <div>100 ₽</div>
                     </div>
@@ -339,7 +400,10 @@ const SalesTable = () => {
                       <div className={styles.smallText}>0.1 %</div>
                     </div>
                   </div>
-                  <div className={styles.flexContainer}>
+                  <div
+                    className={styles.flexContainer}
+                    style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                  >
                     <div className={styles.defectCompnesaitionCell}>
                       <div>0 ₽</div>
                     </div>
@@ -351,26 +415,93 @@ const SalesTable = () => {
                       <div>25 000 ₽</div>
                     </div>
                   </div>
+                  <div className={styles.flexContainer}>
+                    <div className={styles.defectCompnesaitionCell}>
+                      <div>1000 ₽</div>
+                    </div>
+                    <div className={styles.defectCompnesaitionCell}>
+                      <div>1000 ₽</div>
+                    </div>
+                    <div className={styles.defectCompnesaitionCell}>
+                      <div>1000 ₽</div>
+                    </div>
+                  </div>
+                  <div
+                    className={styles.flexContainer}
+                    style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                  >
+                    <div className={styles.defectCompnesaitionCell}>
+                      <div>1000 ₽</div>
+                    </div>
+                    <div className={styles.defectCompnesaitionCell}>
+                      <div>1000 ₽</div>
+                    </div>
+                    <div className={styles.defectCompnesaitionCell}>
+                      <div>1000 ₽</div>
+                    </div>
+                    <div className={styles.defectCompnesaitionCell}>
+                      <div>30 %</div>
+                    </div>
+                    <div className={styles.defectCompnesaitionCell}>
+                      <div>80 %</div>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
 
             {/* October Section */}
-            <div className={styles.borderBottom}>
-              <div
-                className={`${styles.row} ${styles.clickable} ${styles.headerOfMonth}`}
-                onClick={() => toggleRow('Октябрь')}
-              >
-                <span className={styles.headerTextMonth}>Октябрь</span>
-                <span
-                  className={`${styles.dropdownArrow} ${
-                    expandedRows['Октябрь'] ? styles.dropdownArrowExpanded : ''
-                  }`}
+            <div
+              className={styles.borderBottom}
+              style={{ display: 'flex', flexDirection: 'column' }}
+            >
+              <div style={{ display: 'flex' }}>
+                <div
+                  className={`${styles.row} ${styles.clickable} ${styles.headerOfMonth}`}
+                  onClick={() => toggleRow('Октябрь')}
                 >
-                  <img src={arrowDown} alt='Dropdown Arrow' />
-                </span>
+                  <span className={styles.headerTextMonth}>Октябрь</span>
+                  <span
+                    className={`${styles.dropdownArrow} ${
+                      expandedRows['Октябрь']
+                        ? styles.dropdownArrowExpanded
+                        : ''
+                    }`}
+                  >
+                    <img src={arrowDown} alt='Dropdown Arrow' />
+                  </span>
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ width: '796px' }}></div>
+                  <div
+                    style={{
+                      width: '272px',
+                      background: 'rgba(83, 41, 255, 0.05)',
+                    }}
+                  ></div>
+                  <div style={{ width: '896px' }}></div>
+                  <div
+                    style={{
+                      width: '768px',
+                      background: 'rgba(83, 41, 255, 0.05)',
+                    }}
+                  ></div>
+                  <div style={{ width: '512px' }}></div>
+                  <div
+                    style={{
+                      width: '384px',
+                      background: 'rgba(83, 41, 255, 0.05)',
+                    }}
+                  ></div>
+                  <div style={{ width: '384px' }}></div>
+                  <div
+                    style={{
+                      width: '660px',
+                      background: 'rgba(83, 41, 255, 0.05)',
+                    }}
+                  ></div>
+                </div>
               </div>
-
               {expandedRows['Октябрь'] && (
                 <>
                   {['07.10.24', '14.10.24', '21.10.24'].map((date) => (
@@ -391,7 +522,10 @@ const SalesTable = () => {
                         <div className={styles.sppCell}>20 %</div>
                         <div className={styles.buyoutCell}>40 %</div>
                       </div>
-                      <div className={styles.flexContainer}>
+                      <div
+                        className={styles.flexContainer}
+                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                      >
                         <div className={styles.costCell}>
                           <div>50 000 ₽</div>
                           <div className={styles.smallText}>20 %</div>
@@ -416,7 +550,10 @@ const SalesTable = () => {
                         </div>
                         <div className={styles.logisticsCell}>400 ₽</div>
                       </div>
-                      <div className={styles.flexContainer}>
+                      <div
+                        className={styles.flexContainer}
+                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                      >
                         <div className={styles.defectCompnesaitionCell}>
                           <div>100 ₽</div>
                         </div>
@@ -454,7 +591,10 @@ const SalesTable = () => {
                           <div className={styles.smallText}>0.1 %</div>
                         </div>
                       </div>
-                      <div className={styles.flexContainer}>
+                      <div
+                        className={styles.flexContainer}
+                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                      >
                         <div className={styles.defectCompnesaitionCell}>
                           <div>0 ₽</div>
                         </div>
@@ -478,7 +618,10 @@ const SalesTable = () => {
                           <div>10 000 ₽</div>
                         </div>
                       </div>
-                      <div className={styles.flexContainer}>
+                      <div
+                        className={styles.flexContainer}
+                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                      >
                         <div className={styles.defectCompnesaitionCell}>
                           <div>200 000 ₽</div>
                         </div>
