@@ -68,7 +68,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
   return (
     <div
       className='abcAnalysis dash-container table-content'
-      style={{ maxHeight: "700px" }}
+      style={{ maxHeight: "700px", margin: "22px 0 0 60px" }}
     >
       <div className='filter abc-filter-container dash-container d-flex'>
         <div className='filter-btn-p'>Выбрать вид: </div>

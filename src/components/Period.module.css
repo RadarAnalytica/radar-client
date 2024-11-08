@@ -1,0 +1,106 @@
+.calendarContainer {
+    position: relative;
+  }
+  
+  .calendarPopup {
+    position: absolute;
+    top: 100%;
+    z-index: 10;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 16px;
+  }
+  
+  .customDayPicker .rdp-caption {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 1em;
+    font-weight: bold;
+  }
+  
+  .customDayPicker .rdp-dropdown {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+  }
+  
+  .customDayPicker .rdp-head {
+    font-weight: 600;
+    color: #8c8c8c;
+  }
+  
+  .customDayPicker .rdp-day {
+    width: 2.5em;
+    height: 2.5em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  
+  .customDayPicker .rdp-day--selected {
+    background-color: #5329FF !important;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .customDayPicker .rdp-day--range-start,
+  .customDayPicker .rdp-day--range-end {
+    background-color: #5329FF !important;
+    color: white;
+  }
+  
+  .customDayPicker .rdp-day--outside {
+    color: rgba(140, 140, 140, 0.4);
+  }
+  
+  .customDayPicker .rdp-nav_button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #5329FF !important;
+    font-size: 1.5em;
+  }
+
+  :global(.customDayPicker .rdp-caption,
+  .customDayPicker .rdp-weekday) {
+    text-transform: capitalize;
+  }
+/* Period.module.css */
+
+:global(.rdp-range_start .rdp-day_button .rdp-selected) {
+    background-color: #5329FF !important;
+    border: 1px solid #5329FF !important;
+    color: white !important;
+}
+:global(.rdp-chevron){
+    fill:  #5329FF !important;
+}
+:global(.rdp-root) {
+    --rdp-accent-color: #5329FF !important;
+    --rdp-accent-background-color: #f0f0ff;
+    --rdp-day-height: 2.75rem;
+    --rdp-day-width: 2.75rem;
+
+    --rdp-selected-border: 2px solid var(--rdp-accent-color);
+
+    --rdp-today-color: var(--rdp-accent-color);
+
+    --rdp-range_middle-background-color: var(--rdp-accent-background-color);
+    --rdp-range_middle-foreground-color: white;
+    
+    --rdp-range_start-date-background-color: var(--rdp-accent-color);
+
+    --rdp-range_end-date-background-color: var(--rdp-accent-color);
+
+}
+:global(.rdp-day_button){
+    border-radius: 8px !important;
+    width: 40px !important;
+    height: 40px !important;
+    font-weight: 400 !important;
+}

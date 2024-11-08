@@ -4,7 +4,7 @@ import { ServiceFunctions } from "../service/serviceFunctions";
 import AuthContext from "../service/AuthContext";
 import { URL } from "../service/config";
 
-const DashboardFilter = ({
+const AbcAnalysisFilter = ({
   setActiveBrand,
   periodValue,
   setDays,
@@ -112,9 +112,8 @@ const DashboardFilter = ({
               }}
               className='form-control'
               id='store'
-              defaultValue={`${
-                activeShopId !== undefined ? activeShopId : shops?.[0]?.id
-              }`}
+              defaultValue={`${activeShopId !== undefined ? activeShopId : shops?.[0]?.id
+                }`}
               onChange={(e) => {
                 const firstValue = e.target.value.split("|")[0];
                 const secondValue = e.target.value.split("|")[1];
@@ -177,4 +176,4 @@ const DashboardFilter = ({
   );
 };
 
-export default DashboardFilter;
+export default AbcAnalysisFilter;

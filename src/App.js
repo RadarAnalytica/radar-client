@@ -52,6 +52,7 @@ const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashboard"));
 const Schedule = React.lazy(() => import("./pages/Schedule"));
+const Period = React.lazy(() => import("./components/Period"));
 
 const NoSubscriptionPage = React.lazy(() =>
   import("./pages/NoSubscriptionPage")
@@ -284,6 +285,14 @@ function App() {
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
                   <Schedule/>
+                </React.Suspense>
+                }
+              />
+              <Route
+                path='/period'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                  <Period />
                 </React.Suspense>
                 }
               />
