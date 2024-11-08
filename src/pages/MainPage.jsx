@@ -11,8 +11,10 @@ import blockApi3 from "./images/blockapi3.svg";
 import blockApi3Mobile from "./images/blockApi3Mobile.svg";
 import manyApi from "./images/manyApi.svg";
 import manyApiMobile from "./images/manyApiMobile.svg";
+import manyApiMedium from "../pages/images/blockApiMedium.svg";
 
 import apiBlock from "./images/apiblock2.svg";
+import apiBlockMedium from "./images/apiBlockMedium.svg";
 import startAnalitic from "./images/startAnalitic.svg";
 import arrowLink from "./images/arrowLink.svg";
 import BtnHomePage from "../components/BtnHomePage";
@@ -191,6 +193,7 @@ const MainPage = () => {
                 alt='logo'
                 style={{ borderRadius: "15px" }}
               />
+
             </div>
             <div className='widhead-container-block'>
               <div className='widhead-containe-img'>
@@ -224,9 +227,16 @@ const MainPage = () => {
                 alt='logo'
                 style={{ borderRadius: "15px" }}
               />
+              <img
+                className='manyApiLogoMedium'
+                src={manyApiMedium}
+                alt='logo'
+                style={{ borderRadius: "15px" }}
+              />
             </div>
             <div className='apiBlock'>
               <img className='apiBlockImg' src={apiBlock} alt='logo' />
+              <img className='apiBlockImgMedium' src={apiBlockMedium} alt='logo' />
             </div>
             <div
               className='blockBtn'

@@ -479,9 +479,9 @@ select {
 .thesesHome {
   display: flex;
   align-items: center;
-  /* border: 1px solid black; */
-  padding: 5px;
-  margin: 10px;
+  padding: 15px !important;
+  margin:10px 0px 10px 10px;
+  width: 539px;
   border-radius: 15px;
   font-size: 20px;
   background-color: rgba(255, 255, 255, 0.19);
@@ -489,11 +489,11 @@ select {
 }
 
 .thesesHome2 {
+  width: 539px;
   display: flex;
   align-items: center;
-  /* border: 1px solid black; */
-  padding: 5px;
-  margin: 10px;
+  padding: 15px !important;
+  margin: 10px 0px 10px 10px;
   border-radius: 15px;
   font-size: 20px;
   background-color: rgb(255, 255, 255);
@@ -1266,7 +1266,7 @@ button.accordion-button.collapsed::after {
   border: none;
 }
 .vertical-line {
-  height: calc((var(--activeIndex) + 1) * 20%);
+  height: calc((var(--activeIndex) + 1) * 21%);
 }
 @media (max-width: 768px) {
   .page-white {
@@ -1613,12 +1613,18 @@ button.accordion-button.collapsed::after {
 .widhead-container-img3-mini {
   display: none;
 }
+.apiBlockImgMedium{
+  display: none;
+}
 .widhead-container-img3-main {
   display: initial;
 }
 
 .manyApiLogo {
   display: block;
+}
+.manyApiLogoMedium{
+  display: none;
 }
 .manyApiLogoMobile {
   display: none;
@@ -2232,6 +2238,18 @@ button.accordion-button.collapsed::after {
 
 /*Responsive for 1680*/
 @media (min-width: 1300px) and (max-width: 1680px) {
+  .widhead-container-title{
+    font-size: 35px;
+  }
+  .secondary-btn{
+    font-size: 20px !important;
+  }
+  .prime-btn{
+    font-size: 20px !important;
+  }
+  .container-xlwidth{
+    max-width: 88%;
+  }
   .wid-solution-text-p {
     font-size: 35px;
   }
@@ -2272,10 +2290,33 @@ button.accordion-button.collapsed::after {
     font-size: 35px;
   }
   .landing-price-text {
-    font-size: 40px;
+    font-size: 37px;
+    font-weight: 700;
   }
   .landing-price-text span {
-    font-size: 40px;
+    font-size: 37px;
+    font-weight: 700;
+  }
+  .custom-accordion {
+    font-size: 20px;
+  }
+  .accordion{
+    font-size: 20px;
+  }
+  .YellowRadarPointBlock{
+    width: 80%;
+  }
+  .YellowRadarPointBlock >svg{
+   width: 120%;
+  }
+  .internal-analytics-btn{
+    font-size: 20px;
+  }
+  .external-analytics-btn{
+    font-size: 20px;
+  }
+  .headStartBsn>svg{
+    margin-bottom:10px;
   }
   .landing-price-text-main {
     font-size: 25px;
@@ -2352,6 +2393,256 @@ button.accordion-button.collapsed::after {
   .apiBlock img,
   .widhead-container-image img {
     width: revert-layer;
+  }
+}
+@media (min-width: 1300px) and (max-width: 1600px) {
+  .apiBlockImg{
+    display: none !important;
+  }
+  .apiBlockImgMedium{
+    display: block;
+  }
+  .manyApiLogo{
+    display: none;
+  }
+  .manyApiLogoMedium{
+    display: block;
+  }
+  .blockBtn{
+    width: -webkit-fill-available;
+    max-height: 300px;
+  }
+  .profitableStafText{
+    font-size: 16px;
+  }
+  .readyforStartText{
+    font-size: 26px;
+  }
+  
+}
+@media (min-width: 1300px) and (max-width: 1400px) {
+  .mainBlock-api {
+    width: 100%;
+  }
+}
+@media (min-width: 1520px) and (max-width: 1600px) {
+  .profitableStafText{
+    font-size: 20px !important;
+  }
+  .readyforStartText{
+    font-size: 30px !important;
+  }
+}
+@media (min-width: 1620px) and (max-width: 1680px) {
+  .profitableStafText{
+    font-size: 20px !important;
+  }
+  .readyforStartText{
+    font-size: 34px !important;
+  }
+}
+@media(min-width:1660px) and (max-width:1700px){
+  .thesesHome {
+    padding: 14.2px !important;
+  }
+  
+  .thesesHome2 {
+    padding: 14.2px !important;
+  }
+}
+@media(min-width:1630px) and (max-width:1660px){
+  .thesesHome {
+    padding: 12.5px !important;
+    width: 530px;
+  }
+  
+  .thesesHome2 {
+    width: 530px;
+    padding: 12.5px !important;
+  }
+}
+@media(min-width:1600px) and (max-width:1630px){
+  .thesesHome {
+    padding: 12px !important;
+    width: 520px;
+  }
+  
+  .thesesHome2 {
+    padding: 12px !important;
+    width: 520px;
+  }
+}
+@media(min-width:1580px) and (max-width:1600px){
+  .thesesHome {
+    padding: 11.5px !important;
+    width: 525px;
+  }
+  
+  .thesesHome2 {
+    width: 525px;
+    padding: 11.5px !important;
+  }
+}
+@media(min-width:1550px) and (max-width:1580px){
+  .thesesHome {
+    padding: 10px !important;
+    width: 510px;
+   
+  }
+  
+  .thesesHome2 {
+    padding: 10px !important;
+    width: 510px;
+   
+  }
+}
+@media(min-width:1500px) and (max-width:1550px){
+  .thesesHome {
+    width: 500px;
+    padding: 8.5px !important;
+   
+  }
+  
+  .thesesHome2 {
+    width: 500px;
+    padding: 8.5px !important;
+   
+  }
+}
+@media(min-width:1450px) and (max-width:1500px){
+  .thesesHome {
+    padding: 7.5px !important;
+    width: 490px;
+   
+  }
+  
+  .thesesHome2 {
+    width: 490px;
+    padding: 7.5px !important;
+   
+  }
+}
+@media(min-width:1400px) and (max-width:1450px){
+  .thesesHome {
+    padding: 5.5px !important;
+    width: 470px;
+   
+  }
+  
+  .thesesHome2 {
+    width: 470px;
+    padding: 5.5px !important;
+   
+  }
+}
+@media(min-width:1350px) and (max-width:1400px){
+  .thesesHome {
+    padding: 3px !important;
+    width: 450px;
+   
+  }
+  
+  .thesesHome2 {
+    padding: 3px !important;
+    width: 450px;
+   
+  }
+}
+@media(min-width:1300px) and (max-width:1350px){
+  .thesesHome {
+    padding: 2px !important;
+    width: 400px;
+   
+  }
+  
+  .thesesHome2 {
+    padding: 2px !important;
+    width: 400px;
+   
+  }
+}
+@media(min-width:1250px) and (max-width:1300px){
+  .thesesHome {
+    padding: 2px !important;
+    width: 390px;
+   
+  }
+  
+  .thesesHome2 {
+    padding: 2px !important;
+    width: 390px;
+  }
+  .thesesListText{
+    font-size: 15px;
+  }
+}
+@media(min-width:1200px) and (max-width:1250px){
+  .thesesHome {
+    padding: 1.5px !important;
+    width: 350px;
+   
+  }
+  
+  .thesesHome2 {
+    padding: 1.5px !important;
+    width: 350px;
+  }
+  .thesesListText{
+    font-size: 13px;
+  }
+}
+@media(min-width:1250px) and (max-width:1550px){
+  
+  .sol-description {
+    min-width: 500px !important;
+  }
+  .sol-label-btn>svg{
+    width: 90%;
+  }
+  .sales-increase-text{
+    font-size: 22px;
+    line-height: normal;
+  }
+}
+@media(min-width:1330px) and (max-width:1400px){
+  .sol-description {
+    min-width: 450px !important;
+  }
+  .sol-label-btn>svg{
+    width: 90%;
+  }
+  .sales-increase-text{
+    font-size: 20px;
+    line-height: normal;
+  }
+  .analyze-competitors-text{
+    font-size: 18px;
+  }
+}
+@media(min-width:1100px) and (max-width:1330px){
+  .sol-description {
+    min-width: 37% !important;
+  }
+  .sol-label-btn>svg{
+    width: 90%;
+  }
+  .sales-increase-text{
+    font-size: 18px;
+    line-height: normal;
+    margin-top: 10px;
+  }
+  .container-xlwidth{
+    max-width: 90%;
+  }
+  .yellow-radar-small-cont svg{
+    width: 80%;
+  }
+  .sol-description-label-container{
+    margin-bottom: 10px;
+  }
+  .analyze-competitors-text{
+    font-size: 14px;
+    margin: 8px 0 16px;
   }
 }
 .apiBlockImg {
