@@ -11,6 +11,7 @@ import ExtDemoSvg from "../components/ExtDemoSvg";
 import TopTgIcon from "./images/TopTgIcon";
 import LimitedFooter from "../components/LimitedFooter";
 // import { useNavigate } from 'react-router-dom'
+import FooterNewVersion from "../components/FooterNewVersion";
 
 const Spasibo = () => {
   // const navigate = useNavigate()
@@ -245,14 +246,8 @@ const Spasibo = () => {
                         </div>
                     </div> */}
         </div>
-        <div className='pt-4'>
-          <div className='footer-sps'>
-            <div className='footer-spasibo'>
-              <LimitedFooter />
-            </div>
-          </div>
-        </div>
       </div>
+      <FooterNewVersion />
     </div>
   );
 };

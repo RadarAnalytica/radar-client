@@ -12,6 +12,7 @@ import Free from './images/Free';
 import DesktopExtInfo from './images/DesktopExtInfo';
 import MiniDemo from './images/MiniDemo';
 import TopTgIcon from './images/TopTgIcon';
+import FooterNewVersion from '../components/FooterNewVersion';
 
 const Instructions = () => {
   return (
@@ -403,8 +404,8 @@ const Instructions = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
+      <FooterNewVersion />
     </div>
   );
 };

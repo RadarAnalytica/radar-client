@@ -36,6 +36,7 @@ import { useLocation } from 'react-router-dom';
 import { URL } from "../service/config";
 import lowResImage from './images/imageFon_comp.png'; //  the low-res image
 import highResImage from './images/imageFon.png'; //  the high-res image
+import FooterNewVersion from "../components/FooterNewVersion";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -110,7 +111,7 @@ const MainPage = () => {
   }, [highResImage]);
 
   return (
-    <div className='page-white'>
+    <div className='page-white' style={{display: "flex", flexDirection: "column", height: "100%"}}>
       <div className='container widbody-container container-xlwidth'>
         <NavbarMainHome />
         <div className='wid-solution' style={{ marginTop: "20px" }}>
@@ -300,10 +301,8 @@ const MainPage = () => {
             <TryProduct redirect={redirect} />
           </div>
         </div>
-        <LimitedFooter />
       </div>
-
-      {/* <Footer isWide /> */}
+      <FooterNewVersion />
     </div>
   );
 };

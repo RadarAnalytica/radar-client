@@ -1,0 +1,110 @@
+.footer {
+    background: rgba(247, 246, 253, 1);
+    padding: 50px 60px 50px 60px;
+    display: flex;
+    flex: 1 1;
+    justify-content: space-between;
+    flex-direction: row;
+    border-radius: 16px;
+    margin: 0 39.5px 40px 39.5px;
+}
+
+.section {
+    flex-basis: 25%;
+    text-align: left;
+}
+
+.sectionTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.text {
+    font-size: 14px;
+    color: #666;
+}
+
+.textFat {
+    font-size: 14px;
+    line-height: 18px;
+    color: rgba(26, 26, 26, 1);
+    font-weight: 700;
+    padding: 6px 0 6px 0;
+}
+
+.footerLogoText {
+    display: flex;
+    align-items: center;
+    padding-bottom: 18px;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.linkTextContainer {
+    margin: 18px 0 40px 0;
+}
+
+.linkText {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+    color: rgba(83, 41, 255, 1);
+    cursor: pointer;
+}
+
+.copyrightText {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.navLinks {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 22px;
+    color: rgba(26, 26, 26, 1);
+    padding: 12.5px 0 12.5px 0;
+    margin-bottom: 19px;
+}
+
+.navLinks span {
+    cursor: pointer;
+}
+
+.navLinks a {
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 22px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.contactSection {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    color: rgba(26, 26, 26, 0.5);
+    margin-top: 25px;
+}
+
+.line {
+    display: block;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+}

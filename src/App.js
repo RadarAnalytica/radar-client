@@ -46,6 +46,7 @@ const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
 const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
+const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 
 const NoSubscriptionPage = React.lazy(() =>
   import("./pages/NoSubscriptionPage")
@@ -278,6 +279,14 @@ function App() {
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
                     <UserInfo />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/how-to-connect-api'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <HowToConnectAPI />
                   </React.Suspense>
                 }
               />
@@ -725,6 +734,15 @@ function App() {
                 <React.Suspense fallback={<LoaderPage />}>
                   {" "}
                   <Contacts />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/how-to-connect-api'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <HowToConnectAPI />
                 </React.Suspense>
               }
             />
