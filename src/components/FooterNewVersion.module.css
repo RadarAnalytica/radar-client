@@ -2,7 +2,6 @@
     background: rgba(247, 246, 253, 1);
     padding: 50px 60px 50px 60px;
     display: flex;
-    flex: 1 1;
     justify-content: space-between;
     flex-direction: row;
     border-radius: 16px;
@@ -43,6 +42,14 @@
     padding: 6px 0 6px 0;
 }
 
+.textFatMobile {
+    font-size: 12px;
+    line-height: 15px;
+    color: rgba(26, 26, 26, 1);
+    font-weight: 700;
+    padding: 6px 0 6px 0;
+}
+
 .footerLogoText {
     display: flex;
     align-items: center;
@@ -50,14 +57,31 @@
     border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
 }
 
+.footerLogoTextMobile {
+  display: flex;
+  align-items: center;
+}
+
 .linkTextContainer {
     margin: 18px 0 40px 0;
+}
+
+.linkTextContainerMobile {
+    margin: 20px 0 20px 0;
 }
 
 .linkText {
     font-size: 18px;
     font-weight: 700;
     line-height: 22px;
+    color: rgba(83, 41, 255, 1);
+    cursor: pointer;
+}
+
+.linkTextMobile {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
     color: rgba(83, 41, 255, 1);
     cursor: pointer;
 }
@@ -94,6 +118,32 @@
     color: rgba(26, 26, 26, 1);
 }
 
+.navLinksMobile {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+    padding: 12.5px 0 12.5px 0;
+    margin-bottom: 19px;
+}
+
+.navLinksMobile span {
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+.navLinksMobile a {
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+    margin-bottom: 16px;
+}
+
 .contactSection {
     display: flex;
     flex-direction: column;
@@ -107,4 +157,27 @@
 .line {
     display: block;
     border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.footerHalves {
+    display: block;
+}
+
+.footerMobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 16px;
+        margin: 0 20px 20px 20px;
+    }
+
+    .footerMobile {
+        display: block;
+    }
+
+    .footerHalves {
+        display: none;
+    }
 }
