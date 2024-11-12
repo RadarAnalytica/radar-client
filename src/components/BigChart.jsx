@@ -43,6 +43,7 @@ const BigChart = ({
   setOrderLineOn,
   setSalesLineOn,
   dataDashBoard,
+  children
 }) => {
   const activeIcon = require('../assets/tick-active.png');
   const activeIconYellow = require('../assets/tick-active-yellow.png');
@@ -71,11 +72,14 @@ const BigChart = ({
 
   return (
     <div className='big-chart'>
-      <div className='d-flex justify-content-between align-items-center'>
-        <p className='fw-bold fs-4'>{name}</p>
+      <div className='d-flex justify-content-between' style={{ alignItems: "flex-start" }}>
+        <div className='d-flex flex-column'>
+          <div className='fw-bold fs-4' style={{ marginBottom: "5px", marginLeft: "5px", display: "flex", alignItems: "flex-start" }}>{name}</div>
+          <div style={{ marginBottom: "5px" }}>{children}</div>
+        </div>
         <div
           className='d-flex align-items-center'
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', paddingTop: "10px" }}
         >
           <div
             className='d-flex me-3 aligin-items-center'

@@ -3889,3 +3889,134 @@ canvas {
   justify-content: space-between;
   align-items: center;
 }
+/* Dashboard Modal */
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: white;
+  width: 80%;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modalBody {
+  margin: 20px 0;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.downloadButton {
+  background: #553bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* Dashboard Modal */
+
+.custom-tooltip {
+  /* max-width: 200px; */
+  min-width: 270px;
+  height: 341px;
+
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #1A1A1A;
+  position: absolute;
+ top:50%;
+  left: 50%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+.custom-tooltip-header{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+.tooltip-color{
+  background-color: #F0AD00;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-right: 10px;
+}
+.tooltip-title-period{
+  font-size: 16px;
+}
+.custom-tooltip-amount-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 1.5px solid #E8E8E8;
+}
+.custom-tooltip-amount-title{
+  font-size: 24px;
+  color: #8C8C8C;
+  font-weight: 700;
+}
+.custom-tooltip-period{
+  max-height: 200px;
+  overflow: auto;
+}
+.custom-tooltip-period::-webkit-scrollbar {
+  height: 6px;
+  /* background: #5329ff80; */
+  border-radius: 6px;
+  width: 6px;
+}
+
+.custom-tooltip-period::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  margin-left: 15px;
+}
+
+.custom-tooltip-period::-webkit-scrollbar-thumb {
+  background: #5329ff80;
+  border-radius: 6px;
+}
+
+.custom-tooltip-amount{
+  font-size: 24px;
+  color: #1A1A1A;
+  font-weight: 700;
+}
+.custom-tooltip div {
+  margin-bottom: 8px;
+}
+.custom-tooltip strong {
+  font-size: 16px;
+  color: #8C8C8C;
+}

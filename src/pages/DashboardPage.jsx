@@ -28,8 +28,16 @@ import { useSelector } from "react-redux";
 import NoSubscriptionPage from "./NoSubscriptionPage";
 import TooltipInfo from "../components/TooltipInfo";
 import MessageWindow from "../components/MessageWindow";
+import styles from "../pages/DashboardPage.module.css"
+import Period from "../components/Period"
+import DownloadButton from "../components/DownloadButton"
+import DetailChart from "../components/DetailChart";
+
 
 const DashboardPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   const navigate = useNavigate();
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
@@ -41,7 +49,7 @@ const DashboardPage = () => {
   const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [firstLoading ,setFirstLoading] = useState(true);
+  const [firstLoading, setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
   // const [shouldNavigate, setShouldNavigate] = useState(false);
   // console.log('shouldNavigate', shouldNavigate);
@@ -81,8 +89,8 @@ const DashboardPage = () => {
   const shouldDisplay = activeShop
     ? activeShop.is_primary_collect
     : oneShop
-    ? oneShop.is_primary_collect
-    : allShop;
+      ? oneShop.is_primary_collect
+      : allShop;
 
   useEffect(() => {
     console.log("useEffect [oneShop, activeBrand]");
@@ -97,10 +105,9 @@ const DashboardPage = () => {
         localStorage.setItem("activeShop", JSON.stringify(currentShop));
       }
       if (!isInitialLoading && (days === prevDays.current ||
-        activeBrand === prevActiveBrand.current)) 
-        {
-          console.log('updateDataDashbord when is primary collect is true'); 
-          updateDataDashBoard(days, activeBrand, authToken);
+        activeBrand === prevActiveBrand.current)) {
+        console.log('updateDataDashbord when is primary collect is true');
+        updateDataDashBoard(days, activeBrand, authToken);
       }
       // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
       clearInterval(intervalId);
@@ -118,6 +125,17 @@ const DashboardPage = () => {
     };
   }, [oneShop, activeBrand]);
 
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+  const handleDownload = () => {
+
+  }
+
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   useEffect(() => {
 
     const fetchInitialData = async () => {
@@ -139,7 +157,7 @@ const DashboardPage = () => {
     //     });
     //     await updateDataDashBoard(days, activeBrand, authToken);
     //   }
-      
+
     // }
 
     fetchInitialData();
@@ -192,8 +210,8 @@ const DashboardPage = () => {
     }
   }, [authToken]);
 
-   // Update dashboard data when necessary
-   useEffect(() => {
+  // Update dashboard data when necessary
+  useEffect(() => {
     if (
       days !== prevDays.current ||
       activeBrand !== prevActiveBrand.current
@@ -210,20 +228,20 @@ const DashboardPage = () => {
     const calculateNextEvenHourPlus30 = () => {
       const now = new Date();
       let targetTime = new Date(now);
-      
+
       // Set to the next half hour
       targetTime.setMinutes(targetTime.getMinutes() <= 30 ? 30 : 60, 0, 0);
-      
+
       // If we're already past an even hour + 30 minutes, move to the next even hour
       if (targetTime.getHours() % 2 !== 0 || (targetTime.getHours() % 2 === 0 && targetTime <= now)) {
         targetTime.setHours(targetTime.getHours() + 1);
       }
-      
+
       // Ensure we're on an even hour
       if (targetTime.getHours() % 2 !== 0) {
         targetTime.setHours(targetTime.getHours() + 1);
       }
-    
+
       return targetTime;
     };
 
@@ -281,10 +299,10 @@ const DashboardPage = () => {
   const selfCostArray =
     sales && state && state.initialCostsAndTax && state.initialCostsAndTax.data
       ? sales.map(
-          (item) =>
-            state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
-              ?.initialCosts
-        )
+        (item) =>
+          state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
+            ?.initialCosts
+      )
       : [];
 
   const selfCost =
@@ -332,13 +350,13 @@ const DashboardPage = () => {
 
   const stockAndCostsMatch =
     wbData &&
-    wbData.stocks &&
-    state &&
-    state.initialCostsAndTax &&
-    state.initialCostsAndTax.data
+      wbData.stocks &&
+      state &&
+      state.initialCostsAndTax &&
+      state.initialCostsAndTax.data
       ? wbData.stocks.data?.map((item) =>
-          state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
-        )
+        state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
+      )
       : [];
 
   // const fbo =
@@ -430,19 +448,19 @@ const DashboardPage = () => {
 
   const vp = sales
     ? sales.reduce((obj, item) => {
-        obj["amount"] =
-          sales.reduce(
-            (acc, el) =>
-              acc +
-              (el.finishedPrice -
-                state?.initialCostsAndTax?.data?.find(
-                  (item) => item.nmID === el.nmId
-                )?.initialCosts),
-            0
-          ) || 0;
-        obj["rate"] = content?.grossProfit?.percent || "0";
-        return obj;
-      }, {})
+      obj["amount"] =
+        sales.reduce(
+          (acc, el) =>
+            acc +
+            (el.finishedPrice -
+              state?.initialCostsAndTax?.data?.find(
+                (item) => item.nmID === el.nmId
+              )?.initialCosts),
+          0
+        ) || 0;
+      obj["rate"] = content?.grossProfit?.percent || "0";
+      return obj;
+    }, {})
     : null;
 
   const financeData = [
@@ -486,13 +504,13 @@ const DashboardPage = () => {
   const salesSelfCost =
     sales && sales
       ? sales.reduce(
-          (acc, el) =>
-            acc +
-            (state?.initialCostsAndTax?.data?.find(
-              (item) => item.nmID === el.nmId
-            )?.initialCosts || 0),
-          0
-        )
+        (acc, el) =>
+          acc +
+          (state?.initialCostsAndTax?.data?.find(
+            (item) => item.nmID === el.nmId
+          )?.initialCosts || 0),
+        0
+      )
       : 0;
 
   const profitabilityData = [
@@ -547,16 +565,16 @@ const DashboardPage = () => {
   const orderValuesRub =
     orders && orders.length
       ? orders?.map((i) => ({
-          price: i.finishedPrice,
-          date: new Date(i.date).toLocaleDateString(),
-        }))
+        price: i.finishedPrice,
+        date: new Date(i.date).toLocaleDateString(),
+      }))
       : [];
   const salesValuesRub =
     sales && sales.length
       ? sales?.map((i) => ({
-          price: i.finishedPrice,
-          date: new Date(i.date).toLocaleDateString(),
-        }))
+        price: i.finishedPrice,
+        date: new Date(i.date).toLocaleDateString(),
+      }))
       : [];
 
   const summedOrderRub = orderValuesRub.reduce((acc, curr) => {
@@ -653,129 +671,129 @@ const DashboardPage = () => {
       datasets: [
         orderLineOn
           ? {
-              label: "Заказы",
-              borderRadius: 8,
-              type: "line",
-              backgroundColor: "rgba(255, 219, 126, 1)",
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: "rgba(230, 230, 230, 0.8)",
-              borderColor: "rgba(255, 219, 126, 1)",
-              hoverBackgroundColor: "rgba(240, 173, 0, 7)",
-              yAxisID: "A",
-              data: dataDashBoard?.orderAmountList || [],
-              xAxisID: "x-1",
-            }
+            label: "Заказы",
+            borderRadius: 8,
+            type: "line",
+            backgroundColor: "rgba(255, 219, 126, 1)",
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: "rgba(230, 230, 230, 0.8)",
+            borderColor: "rgba(255, 219, 126, 1)",
+            hoverBackgroundColor: "rgba(240, 173, 0, 7)",
+            yAxisID: "A",
+            data: dataDashBoard?.orderAmountList || [],
+            xAxisID: "x-1",
+          }
           : {
-              label: "Заказы",
-              borderRadius: 8,
-              type: "line",
-              backgroundColor: "rgba(255, 219, 126, 1)",
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: "rgba(230, 230, 230, 0.8)",
-              borderColor: "rgba(255, 219, 126, 1)",
-              hoverBackgroundColor: "rgba(240, 173, 0, 7)",
-              yAxisID: "A",
-              data: [],
-            },
+            label: "Заказы",
+            borderRadius: 8,
+            type: "line",
+            backgroundColor: "rgba(255, 219, 126, 1)",
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: "rgba(230, 230, 230, 0.8)",
+            borderColor: "rgba(255, 219, 126, 1)",
+            hoverBackgroundColor: "rgba(240, 173, 0, 7)",
+            yAxisID: "A",
+            data: [],
+          },
         salesLineOn
           ? {
-              label: "Продажи",
-              borderRadius: 8,
-              type: "line",
-              backgroundColor: "rgba(154, 129, 255, 1)",
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: "rgba(230, 230, 230, 0.8)",
-              borderColor: "rgba(154, 129, 255, 1)",
-              hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
-              yAxisID: "A",
-              data: dataDashBoard?.saleAmountList || [],
-            }
+            label: "Продажи",
+            borderRadius: 8,
+            type: "line",
+            backgroundColor: "rgba(154, 129, 255, 1)",
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: "rgba(230, 230, 230, 0.8)",
+            borderColor: "rgba(154, 129, 255, 1)",
+            hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
+            yAxisID: "A",
+            data: dataDashBoard?.saleAmountList || [],
+          }
           : {
-              label: "Продажи",
-              borderRadius: 8,
-              type: "line",
-              backgroundColor: "rgba(154, 129, 255, 1)",
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: "rgba(230, 230, 230, 0.8)",
-              borderColor: "rgba(154, 129, 255, 1)",
-              hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
-              yAxisID: "A",
-              data: [],
-            },
+            label: "Продажи",
+            borderRadius: 8,
+            type: "line",
+            backgroundColor: "rgba(154, 129, 255, 1)",
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: "rgba(230, 230, 230, 0.8)",
+            borderColor: "rgba(154, 129, 255, 1)",
+            hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
+            yAxisID: "A",
+            data: [],
+          },
         orderOn
           ? {
-              label: "Заказы",
-              borderRadius: 8,
-              type: "bar",
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, "rgba(240, 173, 0, 1)");
-                gradient.addColorStop(0.5, "rgba(240, 173, 0, 0.9)");
-                gradient.addColorStop(1, "rgba(240, 173, 0, 0.5)");
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: "rgba(240, 173, 0, 7)",
-              yAxisID: "B",
-              data: dataDashBoard?.orderCountList || [],
-            }
-          : {
-              label: "Заказы",
-              borderRadius: 8,
-              type: "bar",
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, "rgba(240, 173, 0, 1)");
-                gradient.addColorStop(0.5, "rgba(240, 173, 0, 0.9)");
-                gradient.addColorStop(1, "rgba(240, 173, 0, 0.5)");
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: "rgba(240, 173, 0, 7)",
-              yAxisID: "B",
-              data: [],
+            label: "Заказы",
+            borderRadius: 8,
+            type: "bar",
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+              gradient.addColorStop(0, "rgba(240, 173, 0, 1)");
+              gradient.addColorStop(0.5, "rgba(240, 173, 0, 0.9)");
+              gradient.addColorStop(1, "rgba(240, 173, 0, 0.5)");
+              return gradient;
             },
+            borderWidth: 1,
+            hoverBackgroundColor: "rgba(240, 173, 0, 7)",
+            yAxisID: "B",
+            data: dataDashBoard?.orderCountList || [],
+          }
+          : {
+            label: "Заказы",
+            borderRadius: 8,
+            type: "bar",
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+              gradient.addColorStop(0, "rgba(240, 173, 0, 1)");
+              gradient.addColorStop(0.5, "rgba(240, 173, 0, 0.9)");
+              gradient.addColorStop(1, "rgba(240, 173, 0, 0.5)");
+              return gradient;
+            },
+            borderWidth: 1,
+            hoverBackgroundColor: "rgba(240, 173, 0, 7)",
+            yAxisID: "B",
+            data: [],
+          },
         salesOn
           ? {
-              label: "Продажи",
-              borderRadius: 8,
-              type: "bar",
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                gradient.addColorStop(0, "rgba(83, 41, 255, 1)");
-                gradient.addColorStop(0.5, "rgba(83, 41, 255, 0.9)");
-                gradient.addColorStop(1, "rgba(83, 41, 255, 0.5)");
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
-              yAxisID: "B",
-              data: dataDashBoard?.saleCountList || [],
-            }
-          : {
-              label: "Продажи",
-              borderRadius: 8,
-              type: "bar",
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                gradient.addColorStop(0, "rgba(83, 41, 255, 1)");
-                gradient.addColorStop(0.5, "rgba(83, 41, 255, 0.9)");
-                gradient.addColorStop(1, "rgba(83, 41, 255, 0.5)");
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
-              yAxisID: "B",
-              data: [],
+            label: "Продажи",
+            borderRadius: 8,
+            type: "bar",
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+              gradient.addColorStop(0, "rgba(83, 41, 255, 1)");
+              gradient.addColorStop(0.5, "rgba(83, 41, 255, 0.9)");
+              gradient.addColorStop(1, "rgba(83, 41, 255, 0.5)");
+              return gradient;
             },
+            borderWidth: 1,
+            hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
+            yAxisID: "B",
+            data: dataDashBoard?.saleCountList || [],
+          }
+          : {
+            label: "Продажи",
+            borderRadius: 8,
+            type: "bar",
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+              gradient.addColorStop(0, "rgba(83, 41, 255, 1)");
+              gradient.addColorStop(0.5, "rgba(83, 41, 255, 0.9)");
+              gradient.addColorStop(1, "rgba(83, 41, 255, 0.5)");
+              return gradient;
+            },
+            borderWidth: 1,
+            hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
+            yAxisID: "B",
+            data: [],
+          },
       ],
     };
   }, [orderLineOn, salesLineOn, orderOn, salesOn, dataDashBoard]);
@@ -821,14 +839,15 @@ const DashboardPage = () => {
         <div className='dashboard-content pb-3'>
           <TopNav title={"Сводка продаж"} />
           {!isInitialLoading &&
-          !dataDashBoard?.costPriceAmount &&
-          activeShopId !== 0 &&
-          shouldDisplay ? (
+            !dataDashBoard?.costPriceAmount &&
+            activeShopId !== 0 &&
+            shouldDisplay ? (
             <SelfCostWarning
               activeBrand={activeBrand}
               onUpdateDashboard={handleUpdateDashboard}
             />
           ) : null}
+
 
           {/* {wbData?.initialCostsAndTax === null ||
           wbData?.initialCostsAndTax?.data?.length === 0 ||
@@ -916,8 +935,57 @@ const DashboardPage = () => {
                     maxValue={maxValue}
                     maxAmount={maxAmount}
                     dataDashBoard={dataDashBoard}
-                  />
+                  >
+                    <div
+                      style={{
+                        backgroundColor: '#F0AD000D',
+                        padding: '5px 10px',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: '#F0AD00',
+                        fontWeight: '700',
+                        fontSize: '14px',
+                      }}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.5625 5.25012C9.5625 4.93946 9.31066 4.68762 9 4.68762C8.68934 4.68762 8.4375 4.93946 8.4375 5.25012V9.75012C8.4375 10.0608 8.68934 10.3126 9 10.3126H12C12.3107 10.3126 12.5625 10.0608 12.5625 9.75012C12.5625 9.43946 12.3107 9.18762 12 9.18762H9.5625V5.25012Z" fill="#F0AD00" />
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 9.00012C16.5 13.1423 13.1421 16.5001 9 16.5001C4.85786 16.5001 1.5 13.1423 1.5 9.00012C1.5 4.85799 4.85786 1.50012 9 1.50012C13.1421 1.50012 16.5 4.85799 16.5 9.00012ZM15.375 9.00012C15.375 12.5209 12.5208 15.3751 9 15.3751C5.47918 15.3751 2.625 12.5209 2.625 9.00012C2.625 5.47931 5.47918 2.62512 9 2.62512C12.5208 2.62512 15.375 5.47931 15.375 9.00012Z" fill="#F0AD00" />
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.25 9.00012C1.25 4.71991 4.71979 1.25012 9 1.25012C13.2802 1.25012 16.75 4.71991 16.75 9.00012C16.75 13.2803 13.2802 16.7501 9 16.7501C4.71979 16.7501 1.25 13.2803 1.25 9.00012ZM9 1.75012C4.99593 1.75012 1.75 4.99606 1.75 9.00012C1.75 13.0042 4.99593 16.2501 9 16.2501C13.0041 16.2501 16.25 13.0042 16.25 9.00012C16.25 4.99606 13.0041 1.75012 9 1.75012ZM2.375 9.00012C2.375 5.34124 5.34111 2.37512 9 2.37512C12.6589 2.37512 15.625 5.34124 15.625 9.00012C15.625 12.659 12.6589 15.6251 9 15.6251C5.34111 15.6251 2.375 12.659 2.375 9.00012ZM9 2.87512C5.61726 2.87512 2.875 5.61738 2.875 9.00012C2.875 12.3829 5.61726 15.1251 9 15.1251C12.3827 15.1251 15.125 12.3829 15.125 9.00012C15.125 5.61738 12.3827 2.87512 9 2.87512ZM9 4.93762C8.82741 4.93762 8.6875 5.07753 8.6875 5.25012V9.75012C8.6875 9.92271 8.82741 10.0626 9 10.0626H12C12.1726 10.0626 12.3125 9.92271 12.3125 9.75012C12.3125 9.57753 12.1726 9.43762 12 9.43762H9.5625C9.42443 9.43762 9.3125 9.32569 9.3125 9.18762V5.25012C9.3125 5.07753 9.17259 4.93762 9 4.93762ZM8.1875 5.25012C8.1875 4.80139 8.55127 4.43762 9 4.43762C9.44873 4.43762 9.8125 4.80139 9.8125 5.25012V8.93762H12C12.4487 8.93762 12.8125 9.30139 12.8125 9.75012C12.8125 10.1989 12.4487 10.5626 12 10.5626H9C8.55127 10.5626 8.1875 10.1989 8.1875 9.75012V5.25012Z" fill="#F0AD00" />
+                      </svg>
+                      <div style={{ marginLeft: "5px", cursor: "pointer" }} onClick={handleModalOpen}>Детализировать заказы по времени</div>
+                    </div>
+                  </BigChart>
+
                 </div>
+                {isModalOpen && (
+                  <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                      <div className={styles.modalHeader}>
+                        <div className={styles.modalHeaderTitle}>Детализация заказов по времени</div>
+                        <div className={styles.closeBtnModal} onClick={handleCloseModal}>
+                          <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 8.27813L17.7781 0.5L20 2.72187L12.2219 10.5L20 18.2781L17.7781 20.5L10 12.7219L2.22187 20.5L0 18.2781L7.77813 10.5L0 2.72187L2.22187 0.5L10 8.27813Z" fill="#1A1A1A" fill-opacity="0.5" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div className={styles.underHeader}>
+                        <div className={styles.period} style={{ position: "relative" }}>
+                          <Period />
+                        </div>
+                        <div style={{ marginTop: "35px" }}>
+                          <div className='download-button' onClick={() => handleDownload()}>
+                            <img src={downloadIcon} />
+                            Скачать детализаыию
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.modalBody}>
+                        <DetailChart />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'>
