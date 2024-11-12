@@ -401,7 +401,7 @@ const SelectRate = ({ redirect }) => {
                 Это то, что подойдет
                 <br />
                 именно
-                <span> Вам</span>
+                <span> Вам!</span>
               </p>
               <p className='landing-price-text-main'>
                 Мы предлагаем один тариф,
@@ -411,6 +411,9 @@ const SelectRate = ({ redirect }) => {
               <div className='landing-price-btn'>
                 <p className='landing-price-btn-text'>
                   Мы дарим тестовый доступ на 3 дня всего за
+                </p>
+                <p className='landing-price-btn-text-mobile'>
+                  Мы дарим тестовый доступ на 3 дня <br /><span> всего за</span>
                 </p>
                 <img src={OneRuble} alt='ruble'></img>
               </div>

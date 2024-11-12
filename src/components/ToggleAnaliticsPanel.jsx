@@ -76,7 +76,7 @@ const ToggleAnalyticsPanel = () => {
     if (!isImagesLoaded) {
       return (
         <img
-          style={{ width: "96%", marginLeft: "2%", marginTop: "1%" }}
+          className="blockInOnAnalyticsImage"
           src={lightImg}
           alt=''
         />
@@ -91,9 +91,8 @@ const ToggleAnalyticsPanel = () => {
     <div className='InOnAnalytics'>
       <div className='btnAnalytics'>
         <button
-          className={`btnAnalysticsInternalExternal ${
-            isActive ? "prime-btn" : "secondary-btn"
-          }`}
+          className={`btnAnalysticsInternalExternal ${isActive ? "prime-btn" : "secondary-btn"
+            }`}
           onClick={handleExternalClick}
         >
           <span className='secondary-btn-text internal-analytics-btn'>
@@ -101,9 +100,8 @@ const ToggleAnalyticsPanel = () => {
           </span>
         </button>
         <button
-          className={`btnAnalysticsInternalExternal ${
-            isActive ? "secondary-btn" : "prime-btn"
-          }`}
+          className={`btnAnalysticsInternalExternal ${isActive ? "secondary-btn" : "prime-btn"
+            }`}
           onClick={handleInternalClick}
         >
           <span className='secondary-btn-text external-analytics-btn'>
@@ -116,7 +114,7 @@ const ToggleAnalyticsPanel = () => {
         <div
           className='vertical-line'
           style={{ "--activeIndex": activeIndex }}
-          // style={{ height: `${(activeIndex + 1) * 20}%` }}
+        // style={{ height: `${(activeIndex + 1) * 20}%` }}
         ></div>
         <div
           className='blocks'
