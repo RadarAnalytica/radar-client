@@ -8,7 +8,7 @@ const FooterNewVersion = () => {
   };
   return (
     <footer className={styles.footer}>
-      <div style={{ width: '50%' }} className={styles.footerHalves}>
+      <div className={styles.footerHalvesLeft}>
         <div className={styles.footerLogoText}>
           <img src={faviconBig} alt='logo' className={styles.logo} />
           <div className={styles.textFat}>
@@ -25,7 +25,7 @@ const FooterNewVersion = () => {
           </span>
         </div>
       </div>
-      <div style={{ width: '50%' }} className={styles.footerHalves}>
+      <div className={styles.footerHalvesRight}>
         <div className={styles.navLinks}>
           <a href='https://t.me/SpyRadar_bot' style={{}}>Telegram-бот</a>
           <span onClick={() => handleOpenPage('offer')}>Публичная оферта</span>

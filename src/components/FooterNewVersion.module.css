@@ -159,12 +159,24 @@
     border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
 }
 
-.footerHalves {
+.footerHalvesLeft, .footerHalvesRight {
     display: block;
+    width: 50%;
 }
 
 .footerMobile {
     display: none;
+}
+
+@media screen and (max-width: 1470px) {
+    /* .footer {
+        padding: 32px;
+        margin: 0 20px 20px 20px;
+    } */
+    .footerHalvesRight {
+        width: 60%;
+    }
+    
 }
 
 @media (max-width: 768px) {
@@ -177,7 +189,7 @@
         display: block;
     }
 
-    .footerHalves {
+    .footerHalvesLeft, .footerHalvesRight {
         display: none;
     }
 }

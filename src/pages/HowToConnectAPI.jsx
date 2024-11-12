@@ -110,15 +110,13 @@ const HowToConnectAPI = () => {
               Продвижения, Вопросы и отзывы, Цены и скидки).
             </div>
             <div className={styles.stepTextImportant}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div className={styles.stepTextImportantBox}>
                 <img
                   src={exclamation}
                   alt='Exclamtion Mark'
                   style={{ margin: '0 16px 0 16px' }}
                 />
-                <span>
-                  Важно: галочка “Только на чтение” должна быть снята.
-                </span>
+                  Важно: галочка “Только на чтение” должна быть снята.        
               </div>
             </div>
           </div>
@@ -133,7 +131,7 @@ const HowToConnectAPI = () => {
               <p style={{ color: 'white' }}>{`Шаг 4`}</p>
             </div>
           </div>
-          <div className={styles.stepText}>Нажимаем кнопку «Сохранить»</div>
+          <div className={styles.stepText}>Нажимаем кнопку «Сохранить».</div>
           <img src={isHighResLoaded ? highResImage4 : step4v1} alt='step1' className={styles.step1Img} />
         </div>
       </div>
