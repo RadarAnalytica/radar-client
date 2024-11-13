@@ -47,10 +47,6 @@
     position: relative;
 }
 
-.headerSection {
-    flex: 1;
-}
-
 .headerText {
     color: rgba(26, 26, 26, 1);
     line-height: 22px;
@@ -194,14 +190,6 @@
     line-height: 20px;
     color: rgba(140, 140, 140, 1);
     padding: 15px 0 15px 16px;
-    border-right: 1px solid rgba(232, 232, 232, 1);
-}
-
-.weekCellYear {
-    /* width: 200px; */
-    /* position: sticky;
-    left: 0;
-    padding: 0 0 0 16px; */
     border-right: 1px solid rgba(232, 232, 232, 1);
 }
 
