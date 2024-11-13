@@ -7,6 +7,16 @@
   border-radius: 12px;
 }
 
+.filterGroupBig {
+  width: 100%;
+  max-width: 643px;
+  height: 190px;
+  background: rgba(255, 255, 255, 1);
+  padding: 12px;
+  overflow-y: auto;
+  border-radius: 12px;
+}
+
 .filterGroup::-webkit-scrollbar {
   background: #5329ff80;
   border-radius: 6px;
@@ -19,6 +29,22 @@
 }
 
 .filterGroup::-webkit-scrollbar-thumb {
+  background: #5329ff80;
+  border-radius: 6px;
+}
+
+.filterGroupBig::-webkit-scrollbar {
+  background: #5329ff80;
+  border-radius: 6px;
+  width: 6px;
+  height: 10%;
+}
+
+.filterGroupBig::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.filterGroupBig::-webkit-scrollbar-thumb {
   background: #5329ff80;
   border-radius: 6px;
 }

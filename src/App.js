@@ -19,6 +19,7 @@ import WeeklyReportPL from "./pages/WeeklyReportPL";
 import WeeklyReportByMonth from "./pages/WeeklyReportByMonth";
 import ReportAbcAnalysis from "./pages/ReportAbcAnalysis";
 import WeeklyReportByGoods from "./pages/WeeklyReportByGoods";
+import WeeklyReportPenaltiesPage from "./pages/WeeklyReportPenaltiesPage";
 
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
@@ -293,8 +294,8 @@ function App() {
                 path='/period'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
-                  <Period />
-                </React.Suspense>
+                    <Period />
+                  </React.Suspense>
                 }
               />
               <Route
@@ -389,6 +390,14 @@ function App() {
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
                         <WeeklyReportByGoods />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-penalties"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportPenaltiesPage />
                       </React.Suspense>
                     }
                   />
