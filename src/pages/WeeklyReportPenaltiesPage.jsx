@@ -4,8 +4,10 @@ import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import styles from './WeeklyReportPenaltiesPage.module.css';
 import LogisticsTable from '../components/LogisticsTable';
+import BottomNavigation from '../components/BottomNavigation';
 
 const WeeklyReportPenaltiesPage = () => {
+  const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [filterDataSet, setFilterDataSet] = useState({});
   const [selectedFilters, setSelectedFilters] = useState({
@@ -92,12 +94,14 @@ const WeeklyReportPenaltiesPage = () => {
     goods: [
       { id: '1', label: 'Куртка демисезонная с капюшоном осень 2024' },
       { id: '2', label: 'Куртка демисезонная с капюшоном осень 2024' },
-      { id: '3', label: 'Куртка демисезонная с капюшоном осень 2024 длинное название' },
+      {
+        id: '3',
+        label: 'Куртка демисезонная с капюшоном осень 2024 длинное название',
+      },
       { id: '4', label: 'Куртка демисезонная с капюшоном осень 2024' },
       {
         id: '5',
-        label:
-          'Куртка демисезонная с капюшоном осень 2024',
+        label: 'Куртка демисезонная с капюшоном осень 2024',
       },
       { id: '6', label: 'Куртка демисезонная с капюшоном осень 2024' },
       // ... more options
@@ -141,79 +145,91 @@ const WeeklyReportPenaltiesPage = () => {
       <div className='dashboard-content pb-3'>
         <TopNav title={'Штрафы'} subTitle={'Отчёт /'} />
         <div className='container dash-container'>
-        <div className={styles.filterContainer}>
-          <FilterGroup 
-            title='Год'
-            options={filterData.year}
-            selected={selectedFilters.year}
-            onSelect={(id) => handleSelect('year', id)}
-            onClearAll={() => handleClearAll('year')}
-          />
-          <FilterGroup
-          title='Месяц'
-          options={filterData.month}
-          selected={selectedFilters.month}
-          onSelect={(id) => handleSelect('month', id)}
-          onClearAll={() => handleClearAll('month')}
-        />
-        <FilterGroup
-        title='Неделя'
-        options={filterData.week}
-        selected={selectedFilters.week}
-        onSelect={(id) => handleSelect('week', id)}
-        onClearAll={() => handleClearAll('week')}
-        />
-        <FilterGroup
-        title='Артикул'
-        options={filterData.article}
-        selected={selectedFilters.article}
-        onSelect={(id) => handleSelect('article', id)}
-        onClearAll={() => handleClearAll('article')}
-        />
-        <FilterGroup
-        title='Размер'
-        options={filterData.size}
-        selected={selectedFilters.size}
-        onSelect={(id) => handleSelect('size', id)}
-        onClearAll={() => handleClearAll('size')}
-        />
-        <FilterGroup
-        title='Srid'
-        options={filterData.srid}
-        selected={selectedFilters.srid}
-        onSelect={(id) => handleSelect('srid', id)}
-        onClearAll={() => handleClearAll('srid')}
-        />
+          <div
+            className={styles.filteOpenClose}
+            onClick={() => setIsOpenFilters(!isOpenFilters)}
+          >
+            {isOpenFilters ? 'Развернуть фильтры' : 'Свернуть фильтры'}
+          </div>
         </div>
-        <div className={styles.filterContainer}>
-         <FilterGroup
-         title='Виды логистики, штрафов и доплат'
-         options={filterData.kindsOfLogistics}
-         selected={selectedFilters.kindsOfLogistics}
-         onSelect={(id) => handleSelect('kindsOfLogistics', id)}
-         onClearAll={() => handleClearAll('kindsOfLogistics')}
-         size='big'
-         />
-         <FilterGroup
-         title='Товар'
-         options={filterData.goods}
-         selected={selectedFilters.goods}
-         onSelect={(id) => handleSelect('goods', id)}
-         onClearAll={() => handleClearAll('goods')}
-         size='big'
-         />
-        </div >
-        <div className='container dash-container'>
-        <LogisticsTable />
-        </div>
-          {/* <FilterGroup
+        {!isOpenFilters && (
+          <div className='container dash-container'>
+            <div className={styles.filterContainer}>
+              <FilterGroup
+                title='Год'
+                options={filterData.year}
+                selected={selectedFilters.year}
+                onSelect={(id) => handleSelect('year', id)}
+                onClearAll={() => handleClearAll('year')}
+              />
+              <FilterGroup
+                title='Месяц'
+                options={filterData.month}
+                selected={selectedFilters.month}
+                onSelect={(id) => handleSelect('month', id)}
+                onClearAll={() => handleClearAll('month')}
+              />
+              <FilterGroup
+                title='Неделя'
+                options={filterData.week}
+                selected={selectedFilters.week}
+                onSelect={(id) => handleSelect('week', id)}
+                onClearAll={() => handleClearAll('week')}
+              />
+              <FilterGroup
+                title='Артикул'
+                options={filterData.article}
+                selected={selectedFilters.article}
+                onSelect={(id) => handleSelect('article', id)}
+                onClearAll={() => handleClearAll('article')}
+              />
+              <FilterGroup
+                title='Размер'
+                options={filterData.size}
+                selected={selectedFilters.size}
+                onSelect={(id) => handleSelect('size', id)}
+                onClearAll={() => handleClearAll('size')}
+              />
+              <FilterGroup
+                title='Srid'
+                options={filterData.srid}
+                selected={selectedFilters.srid}
+                onSelect={(id) => handleSelect('srid', id)}
+                onClearAll={() => handleClearAll('srid')}
+              />
+            </div>
+            <div className={styles.filterContainer}>
+              <FilterGroup
+                title='Виды логистики, штрафов и доплат'
+                options={filterData.kindsOfLogistics}
+                selected={selectedFilters.kindsOfLogistics}
+                onSelect={(id) => handleSelect('kindsOfLogistics', id)}
+                onClearAll={() => handleClearAll('kindsOfLogistics')}
+                size='big'
+              />
+              <FilterGroup
+                title='Товар'
+                options={filterData.goods}
+                selected={selectedFilters.goods}
+                onSelect={(id) => handleSelect('goods', id)}
+                onClearAll={() => handleClearAll('goods')}
+                size='big'
+              />
+            </div>
+
+            {/* <FilterGroup
             title='Склад'
             options={filterData.warehouse}
             selected={selectedFilters.warehouse}
             onSelect={(id) => handleSelect('warehouse', id)}
             onClearAll={() => handleClearAll('warehouse')}
           /> */}
+          </div>
+        )}
+        <div className='container dash-container'>
+          <LogisticsTable />
         </div>
+        <BottomNavigation />
       </div>
     </div>
   );
