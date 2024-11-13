@@ -70,10 +70,17 @@ const StepsTime = ({ redirect }) => {
         </div>
         <div className='helpEveryStepText'>
           поможет на каждом этапе вашего{" "}
-          <span style={{ color: "blue", fontWeight: "800" }}>
+          <span style={{ color: "#5329FF", fontWeight: "800" }}>
             развития на маркетплейсах
           </span>
         </div>
+        <div className='helpEveryStepTextMobile'>
+          поможет на каждом <br /> этапе вашего{" "}
+          <span style={{ color: "#5329FF", fontWeight: "800" }}>
+            развития <br />на маркетплейсах
+          </span>
+        </div>
+
       </div>
       <div className='stepsTimeItems'>
         {stepsContent.map((item, index) => renderStep(item, index))}
@@ -104,7 +111,7 @@ const StepsTime = ({ redirect }) => {
           </button>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 export default StepsTime;

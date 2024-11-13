@@ -36,7 +36,9 @@ import { useLocation } from 'react-router-dom';
 import { URL } from "../service/config";
 import lowResImage from './images/imageFon_comp.png'; //  the low-res image
 import highResImage from './images/imageFon.png'; //  the high-res image
-import FooterNewVersion from "../components/FooterNewVersion";
+import ligtning from './images/ligtningIcon.svg'
+import safety from './images/safety.svg'
+import bigData from './images/bigData.svg'
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -177,7 +179,7 @@ const MainPage = () => {
           <div className='widhead-container'>
             <div className='mainBlock-api'>
               <div className='personal-account-connect-text'>
-                Подключение личного кабинета
+                Подключение личного кабинета{" "}
                 <span style={{ color: "orange", fontWeight: "800" }}>
                   по API
                 </span>
@@ -194,29 +196,72 @@ const MainPage = () => {
                 alt='logo'
                 style={{ borderRadius: "15px" }}
               />
-
             </div>
+
             <div className='widhead-container-block'>
               <div className='widhead-containe-img'>
-                <img src={blockApi1} alt='logo' />
+                <div className="widhead-contain-icon">
+                  <img src={ligtning} />
+                </div>
+                <div className="widhead-contian-title">Быстро</div>
+                <div className="widhead-contain-parag">Не успеете выпить<br /> чашку кофе</div>
+                <div className="widhead-contain-check">
+                  <svg width="71" height="43" viewBox="0 0 71 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="70.772" height="42.3005" rx="21.1503" fill="#5329FF" />
+                    <rect x="32.5391" y="4.88086" width="32.5389" height="32.5389" rx="16.2694" fill="white" />
+                    <path d="M43 20.5L48 25.5L55.5 18" stroke="#5329FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+
               </div>
               <div className='widhead-containe-img'>
-                <img src={blockApi2} alt='logo' />
+                <div className="widhead-contain-icon">
+                  <img src={safety} />
+                </div>
+                <div className="widhead-contian-title">Безопасно</div>
+                <div className="widhead-contain-parag">Мы обо всем <br />позаботились</div>
+                <div className="widhead-contain-check">
+                  <svg width="71" height="43" viewBox="0 0 71 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="70.772" height="42.3005" rx="21.1503" fill="#5329FF" />
+                    <rect x="32.5391" y="4.88086" width="32.5389" height="32.5389" rx="16.2694" fill="white" />
+                    <path d="M43 20.5L48 25.5L55.5 18" stroke="#5329FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+
               </div>
-              <div
-                className='widhead-containe-img'
-                style={{ marginBottom: "0" }}
-              >
-                <img
-                  src={blockApi3}
-                  className='widhead-container-img3-main'
-                  alt='logo'
-                />
-                <img
-                  src={blockApi3Mobile}
-                  className='widhead-container-img3-mini'
-                  alt='logo'
-                />
+              <div className='widhead-containe-img'>
+                <div className="widhead-contain-icon">
+                  <img src={bigData} />
+                </div>
+                <div className="widhead-contian-title">Большой объем данных </div>
+                <div className="widhead-contain-parag">Важных данных</div>
+                <div className="widhead-contain-check">
+                  <svg width="71" height="43" viewBox="0 0 71 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="70.772" height="42.3005" rx="21.1503" fill="#5329FF" />
+                    <rect x="32.5391" y="4.88086" width="32.5389" height="32.5389" rx="16.2694" fill="white" />
+                    <path d="M43 20.5L48 25.5L55.5 18" stroke="#5329FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+
+              </div>
+            </div>
+            <div className='widhead-containe-img-mobile'>
+
+              <div className="widhead-contian-title-mobile">Большой объем данных </div>
+              <div className="widhead-contain-mobile">
+                <div style={{ margin: "10px 0 30px 0px" }}>
+                  <div className="widhead-contain-parag">Важных данных</div>
+                  <div className="widhead-contain-check">
+                    <svg width="71" height="43" viewBox="0 0 71 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="70.772" height="42.3005" rx="21.1503" fill="#5329FF" />
+                      <rect x="32.5391" y="4.88086" width="32.5389" height="32.5389" rx="16.2694" fill="white" />
+                      <path d="M43 20.5L48 25.5L55.5 18" stroke="#5329FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="widhead-contain-icon-mobile">
+                  <img src={bigData} />
+                </div>
               </div>
             </div>
           </div>
