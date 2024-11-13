@@ -1,8 +1,17 @@
 import styles from './FilterGroup.module.css';
 
-const FilterGroup = ({ title, options, selected, onSelect, onClearAll }) => {
+const FilterGroup = ({
+  title,
+  options,
+  selected,
+  onSelect,
+  onClearAll,
+  size,
+}) => {
   return (
-    <div className={styles.filterGroup}>
+    <div
+      className={size === 'big' ? styles.filterGroupBig : styles.filterGroup}
+    >
       <div className={styles.filterHeader}>
         <h3>{title}</h3>
         <button onClick={onClearAll} className={styles.clearButton}>

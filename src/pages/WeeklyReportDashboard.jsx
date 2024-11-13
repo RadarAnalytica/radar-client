@@ -344,7 +344,7 @@ const WeeklyReportDashboard = () => {
                 </div>
                 <div
                   className={styles.salesChartRow}
-                  style={{ marginBottom: '45px' }}
+                  style={{ marginBottom: '56px' }}
                 >
                   <div className={styles.titleInRow}>Налог</div>
                   <div className={styles.mumbersInRow}>400 500 ₽ </div>
