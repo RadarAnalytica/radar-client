@@ -39,6 +39,7 @@ import highResImage from './images/imageFon.png'; //  the high-res image
 import ligtning from './images/ligtningIcon.svg'
 import safety from './images/safety.svg'
 import bigData from './images/bigData.svg'
+import FooterNewVersion from '../components/FooterNewVersion'
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -113,7 +114,7 @@ const MainPage = () => {
   }, [highResImage]);
 
   return (
-    <div className='page-white' style={{display: "flex", flexDirection: "column", height: "100%"}}>
+    <div className='page-white' style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <div className='container widbody-container container-xlwidth'>
         <NavbarMainHome />
         <div className='wid-solution' style={{ marginTop: "20px" }}>
