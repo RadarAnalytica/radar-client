@@ -10,7 +10,7 @@ const FilterDropdownReportPages = ({
   };
 
   return (
-    <div className='filter container dash-container p-3 pb-4 pt-0 d-flex'>
+    <div className='filter container dash-container pb-4 pt-0 d-flex'>
       <div className='row'>
         {filterOptions.map((filter) => (
           <div key={filter.id} className='filter-item col'>

@@ -143,6 +143,7 @@
     color: rgba(26, 26, 26, 1);
     background: rgba(83, 41, 255, 0.05);
     padding: 0 12px 0 12px;
+    box-shadow: 0 1px 0 rgba(232, 232, 232, 1);
 }
 
 .costHeader {
@@ -217,7 +218,6 @@
 
 .totalRow {
     display: flex;
-    border-top: 1px solid #eee;
     font-weight: 500;
     width: 5366px;
 }
@@ -233,6 +233,7 @@
     font-weight: 500;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
+    box-shadow: 0 1px 0 rgba(232, 232, 232, 1);
     padding: 0 0 0 12px;
 }
 

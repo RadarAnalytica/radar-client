@@ -441,6 +441,7 @@ const TableByGoods = () => {
               display: 'flex',
               padding: '0 0 0 12px',
               background: 'rgba(83, 41, 255, 0.05)',
+              boxShadow: '0 1px 0 rgba(232, 232, 232, 1)'
             }}
           >
             <div className={styles.cell_costPerUnit}>
@@ -470,6 +471,7 @@ const TableByGoods = () => {
               display: 'flex',
               padding: '0 0 0 12px',
               background: 'rgba(83, 41, 255, 0.05)',
+              boxShadow: '0 1px 0 rgba(232, 232, 232, 1)'
             }}
           >
             <div className={styles.cell_costPerUnit}>
@@ -776,7 +778,7 @@ const TableByGoods = () => {
         </div>
         <div
           className={styles.financeSection}
-          style={{ padding: '0 0 0 12px', display: 'flex' }}
+          style={{ padding: '0 0 0 12px', display: 'flex', width: '100%' }}
         >
           <div className={styles.cell_cost} style={{ fontWeight: '700' }}>
             <div>200 000 ₽</div>
