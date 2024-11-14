@@ -248,6 +248,11 @@ const WeeklyReportByMonth = () => {
                 />
               </div>
             </div>
+            <div className='container dash-container'>
+          <div>
+            <button className={styles.applyButton}>Применить фильтры</button>
+          </div>
+        </div>
           </>
         )}
         <div className='container dash-container'>

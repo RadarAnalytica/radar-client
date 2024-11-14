@@ -4,6 +4,7 @@ import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import TablePL from '../components/TablePL';
 import BottomNavigation from '../components/BottomNavigation';
+import styles from './WeeklyReportPL.module.css';
 
 const WeeklyReportPL = () => {
   const data = {
@@ -220,6 +221,11 @@ const WeeklyReportPL = () => {
           activeFilters={activeFilters}
           onFilterChange={handleFilterChange}
         />
+        <div className='container dash-container'>
+          <div>
+            <button className={styles.applyButton}>Применить фильтры</button>
+          </div>
+        </div>
         <div className='container dash-container'>
           <TablePL data={data} />
         </div>
