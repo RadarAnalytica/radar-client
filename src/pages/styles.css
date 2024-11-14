@@ -1276,8 +1276,11 @@ button.accordion-button.collapsed::after {
 }
 .widhead-contain-check{
   margin-left: 30px;
+  margin-top: 25px;
+}
+.widhead-contain-check-last{
+  margin-left: 30px;
   margin-top: 15px;
-
 }
 .stepsTimeHeader {
   display: flex;
@@ -1367,7 +1370,7 @@ button.accordion-button.collapsed::after {
   line-height: 42px;
 }
 .sales-increse-text-span {
-  color: blue;
+  color: #5329FF;
   font-weight: 800;
 }
 .analyze-competitors-text {
@@ -1588,6 +1591,10 @@ button.accordion-button.collapsed::after {
   display: none;
 }
 
+.sales-increse-text-span{
+  color: #5329FF;
+
+}
 
 /*RESPONSIVE for MOBILE*/
 
@@ -1629,7 +1636,7 @@ button.accordion-button.collapsed::after {
     font-size: 20px;
   }
   .widhead-contain-parag{
-    font-size: 13px;
+    font-size: 12px;
   }
   .widhead-contain-icon{
     width: 65px;
@@ -1722,7 +1729,7 @@ button.accordion-button.collapsed::after {
     font-size: 25px;
     font-weight: 600;
     line-height: 39px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
   .landing-price-btn > .landing-price-btn-text {
     font-size: 24px;
@@ -1845,158 +1852,6 @@ button.accordion-button.collapsed::after {
 }
 
 
-@media(min-width:1660px) and (max-width:1700px){
-  .thesesHome {
-    padding: 14.2px !important;
-  }
-  
-  .thesesHome2 {
-    padding: 14.2px !important;
-  }
-}
-@media(min-width:1630px) and (max-width:1660px){
-  .thesesHome {
-    padding: 12.5px !important;
-    width: 530px;
-  }
-  
-  .thesesHome2 {
-    width: 530px;
-    padding: 12.5px !important;
-  }
-}
-@media(min-width:1600px) and (max-width:1630px){
-  .thesesHome {
-    padding: 12px !important;
-    width: 520px;
-  }
-  
-  .thesesHome2 {
-    padding: 12px !important;
-    width: 520px;
-  }
-}
-@media(min-width:1580px) and (max-width:1600px){
-  .thesesHome {
-    padding: 11.5px !important;
-    width: 525px;
-  }
-  
-  .thesesHome2 {
-    width: 525px;
-    padding: 11.5px !important;
-  }
-}
-@media(min-width:1550px) and (max-width:1580px){
-  .thesesHome {
-    padding: 10px !important;
-    width: 510px;
-   
-  }
-  
-  .thesesHome2 {
-    padding: 10px !important;
-    width: 510px;
-   
-  }
-}
-@media(min-width:1500px) and (max-width:1550px){
-  .thesesHome {
-    width: 500px;
-    padding: 8.5px !important;
-   
-  }
-  
-  .thesesHome2 {
-    width: 500px;
-    padding: 8.5px !important;
-   
-  }
-}
-@media(min-width:1450px) and (max-width:1500px){
-  .thesesHome {
-    padding: 7.5px !important;
-    width: 490px;
-   
-  }
-  
-  .thesesHome2 {
-    width: 490px;
-    padding: 7.5px !important;
-   
-  }
-}
-@media(min-width:1400px) and (max-width:1450px){
-  .thesesHome {
-    padding: 5.5px !important;
-    width: 470px;
-   
-  }
-  
-  .thesesHome2 {
-    width: 470px;
-    padding: 5.5px !important;
-   
-  }
-}
-@media(min-width:1350px) and (max-width:1400px){
-  .thesesHome {
-    padding: 3px !important;
-    width: 450px;
-   
-  }
-  
-  .thesesHome2 {
-    padding: 3px !important;
-    width: 450px;
-   
-  }
-}
-@media(min-width:1300px) and (max-width:1350px){
-  .thesesHome {
-    padding: 2px !important;
-    width: 400px;
-   
-  }
-  
-  .thesesHome2 {
-    padding: 2px !important;
-    width: 400px;
-   
-  }
-}
-@media(min-width:1250px) and (max-width:1300px){
-  .thesesHome {
-    padding: 2px !important;
-    width: 390px;
-   
-  }
-  
-  .thesesHome2 {
-    padding: 2px !important;
-    width: 390px;
-  }
-  .thesesListText{
-    font-size: 15px;
-
-  }
-}
-
-@media(min-width:1200px) and (max-width:1250px){
-  .thesesHome {
-    padding: 1.5px !important;
-    width: 350px;
-   
-  }
-  
-  .thesesHome2 {
-    padding: 1.5px !important;
-    width: 350px;
-  }
-  .thesesListText{
-    font-size: 13px;
-  }
-}
 
 @media(min-width:1250px) and (max-width:1550px){
 
@@ -2061,33 +1916,17 @@ button.accordion-button.collapsed::after {
 .OrangeLabel img {
   width: 100%;
 }
-@media (min-width: 350px) and (max-width: 420px) {
-  .vertical-line {
-    height: calc((var(--activeIndex) + 1) * 14%);
-  }
-}
-@media (min-width: 420px) and (max-width: 460px) {
-  .vertical-line {
-    height: calc((var(--activeIndex) + 1) * 13%);
-  }
-}
-@media (min-width: 460px) and (max-width: 480px) {
-  .vertical-line {
-    height: calc((var(--activeIndex) + 1) * 12%);
-  }
+
+.widhead-container-image-mob{
+  display: none;
+
 }
 
-@media (min-width: 480px) and (max-width: 520px) {
-  .vertical-line {
-    height: calc((var(--activeIndex) + 1) * 12%);
-  }
-}
-@media (min-width: 520px) and (max-width: 620px) {
-  .vertical-line {
-    height: calc((var(--activeIndex) + 1) * 11%);
-  }
-}
+
 @media (max-width: 768px) {
+  .widhead-container-image-mob{
+    display: block;
+  }
   .mobile-container {
     width: 100%;
     padding: 0 15px; 
@@ -2443,7 +2282,7 @@ button.accordion-button.collapsed::after {
     line-height: 32.63px;
   }
   .sales-increse-text-span {
-    color: blue;
+    color: #5329FF;
     font-weight: 800;
   }
   .analyze-competitors-text {
@@ -2559,7 +2398,7 @@ button.accordion-button.collapsed::after {
   font-size: 20px;
 }
 .widhead-contain-parag{
-  font-size: 13px;
+  font-size: 12px;
 }
   .widhead-contain-icon-mobile img{
     object-fit:contain;
@@ -2665,7 +2504,7 @@ button.accordion-button.collapsed::after {
     font-size: 20px;
     font-weight: 600;
     line-height: 30px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
   .landing-price-btn {
     width: 100%;
@@ -3028,155 +2867,311 @@ button.accordion-button.collapsed::after {
     font-size: 34px !important;
   }
 }
-@media(min-width:1660px) and (max-width:1700px){
-  .thesesHome {
-    padding: 14.2px !important;
+
+@media(min-width:1350px) and (max-width:1390px){
+  .blockBtn{
+    padding: 15px;
   }
-  
-  .thesesHome2 {
-    padding: 14.2px !important;
+  .widhead-contian-title   {  
+    font-size: 18px;
   }
+
 }
-@media(min-width:1630px) and (max-width:1660px){
+@media(min-width:1670px) and (max-width:1700px){
+ 
   .thesesHome {
     padding: 12.5px !important;
-    width: 530px;
+    height: 113px;
+    width: 430px;
   }
-  
   .thesesHome2 {
-    width: 530px;
     padding: 12.5px !important;
+    height: 113px;
+    width: 430px;
+  }
+  .vertical-line {
+    height: calc((var(--activeIndex) + 1) * 22%);
+    max-height: 90% !important;
+  }
+  .thesesListText{
+    font-size: 16px;
   }
 }
-@media(min-width:1600px) and (max-width:1630px){
+@media(min-width:1650px) and (max-width:1670px){
+  .thesesHome {
+    padding: 12.5px !important;
+    height: 113px;
+    width: 420px;
+  }
+  .thesesHome2 {
+    padding: 12.5px !important;
+    height: 113px;
+    width: 420px;
+  }
+  .vertical-line {
+    height: calc((var(--activeIndex) + 1) * 22%);
+    max-height: 90% !important;
+  }
+  .thesesListText{
+    font-size: 16px;
+  }
+}
+@media(min-width:1630px) and (max-width:1650px){
+  .thesesHome {
+    padding: 12.5px !important;
+    height: 111px;
+    width: 417px;
+  }
+  
+  .thesesHome2 {
+    height: 111px;
+    padding: 12.5px !important;
+    width: 417px;
+  }
+  .thesesListText{
+    font-size: 16px;
+  }
+}
+@media(min-width:1610px) and (max-width:1630px){
   .thesesHome {
     padding: 12px !important;
-    width: 520px;
+    height: 110px;
+    width: 411px;
   }
   
   .thesesHome2 {
+    height: 110px;
     padding: 12px !important;
-    width: 520px;
+    width: 411px;
+  }
+  .thesesListText{
+    font-size: 16px;
   }
 }
-@media(min-width:1580px) and (max-width:1600px){
+@media(min-width:1590px) and (max-width:1610px){
   .thesesHome {
-    padding: 11.5px !important;
-    width: 525px;
-  }
-  
-  .thesesHome2 {
-    width: 525px;
-    padding: 11.5px !important;
-  }
-}
-@media(min-width:1550px) and (max-width:1580px){
-  .thesesHome {
-    padding: 10px !important;
-    width: 510px;
-   
-  }
-  
-  .thesesHome2 {
-    padding: 10px !important;
-    width: 510px;
-   
-  }
-}
-@media(min-width:1500px) and (max-width:1550px){
-  .thesesHome {
-    width: 500px;
-    padding: 8.5px !important;
-   
-  }
-  
-  .thesesHome2 {
-    width: 500px;
-    padding: 8.5px !important;
-   
-  }
-}
-@media(min-width:1450px) and (max-width:1500px){
-  .thesesHome {
-    padding: 7.5px !important;
-    width: 490px;
-   
-  }
-  
-  .thesesHome2 {
-    width: 490px;
-    padding: 7.5px !important;
-   
-  }
-}
-@media(min-width:1400px) and (max-width:1450px){
-  .thesesHome {
-    padding: 5.5px !important;
-    width: 470px;
-   
-  }
-  
-  .thesesHome2 {
-    width: 470px;
-    padding: 5.5px !important;
-   
-  }
-}
-@media(min-width:1350px) and (max-width:1400px){
-  .thesesHome {
-    padding: 3px !important;
-    width: 450px;
-   
-  }
-  
-  .thesesHome2 {
-    padding: 3px !important;
-    width: 450px;
-   
-  }
-}
-@media(min-width:1300px) and (max-width:1350px){
-  .thesesHome {
-    padding: 2px !important;
+    padding: 12px !important;
+    height: 108px;
     width: 400px;
-   
   }
   
   .thesesHome2 {
-    padding: 2px !important;
+    height: 108px;
+    padding: 12px !important;
     width: 400px;
-   
+  }
+  .thesesListText{
+    font-size: 16px;
   }
 }
-@media(min-width:1250px) and (max-width:1300px){
+@media(min-width:1570px) and (max-width:1590px){
   .thesesHome {
-    padding: 2px !important;
-    width: 390px;
-   
+    padding: 12px !important;
+    height: 106px;
+    width: 400px;
   }
   
   .thesesHome2 {
-    padding: 2px !important;
+    height: 106px;
+    padding: 12px !important;
+    width: 400px;
+  }
+  .thesesListText{
+    font-size: 16px;
+  }
+}
+@media(min-width:1540px) and (max-width:1570px){
+  .thesesHome {
+    padding: 12px !important;
+    height: 104px;
     width: 390px;
+  }
+  
+  .thesesHome2 {
+    height: 104px;
+    padding: 12px !important;
+    width: 390px;
+  }
+  .thesesListText{
+    font-size: 16px;
+  }
+}
+@media(min-width:1500px) and (max-width:1540px){
+  .thesesHome {
+    padding: 12px !important;
+    height: 102px;
+    width: 380px;
+  }
+  
+  .thesesHome2 {
+    height: 102px;
+    padding: 12px !important;
+    width: 380px;
+  }
+  .thesesListText{
+    font-size: 16px;
+  }
+}
+@media(min-width:1470px) and (max-width:1500px){
+  .thesesHome {
+    padding: 12px !important;
+    height: 99px;
+    width: 370px;
+  }
+  
+  .thesesHome2 {
+    height: 99px;
+    padding: 12px !important;
+    width: 370px;
+  }
+  .thesesListText{
+    font-size: 16px;
+  }
+}
+@media(min-width:1450px) and (max-width:1470px){
+  .thesesHome {
+    padding: 12px !important;
+    height: 98px;
+    width: 360px;
+  }
+  
+  .thesesHome2 {
+    height: 98px;
+    padding: 12px !important;
+    width: 360px;
+  }
+  .thesesListText{
+    font-size: 16px;
+  }
+}
+@media(min-width:1430px) and (max-width:1450px){
+  .thesesHome {
+    padding: 12px !important;
+    height: 95px; width: 355px;
+  }
+  
+  .thesesHome2 {
+    height: 95px;
+    padding: 12px !important;
+    width: 355px;
   }
   .thesesListText{
     font-size: 15px;
   }
 }
-@media(min-width:1200px) and (max-width:1250px){
+@media(min-width:1400px) and (max-width:1430px){
   .thesesHome {
-    padding: 1.5px !important;
+    padding: 12px !important;
+    height: 94px;
     width: 350px;
-   
   }
   
   .thesesHome2 {
-    padding: 1.5px !important;
+    height: 94px;
+    padding: 12px !important;
     width: 350px;
   }
   .thesesListText{
-    font-size: 13px;
+    font-size: 15px;
   }
+}
+@media(min-width:1370px) and (max-width:1400px){
+  .thesesHome {
+    padding: 10px !important;
+    height: 90px;
+    width: 345px;
+  }
+  .thesesHome2 {
+    height: 90px;
+    padding: 10px !important;
+    width: 345px;
+  }
+  .thesesListText{
+    font-size: 15px;
+  }
+}
+@media(min-width:1350px) and (max-width:1370px){
+  .thesesHome {
+    padding: 10px !important;
+    height: 88px;
+    width: 340px;
+  }
+  
+  .thesesHome2 {
+    height:88px;
+    padding: 10px !important;
+    width: 340px;
+  }
+  .thesesListText{
+    font-size: 14px;
+  }
+}
+@media(min-width:1300px) and (max-width:1350px){
+  .thesesHome {
+    padding: 10px !important;
+    height: 88px;
+    width: 335px;
+  }
+  
+  .thesesHome2 {
+    height: 88px;
+    padding: 10px !important;
+    width: 335px;
+  }
+  .thesesListText{
+    font-size: 14px;
+  }
+}
+@media(min-width:1250px) and (max-width:1300px){
+  .thesesHome {
+    padding: 9px !important;
+    height: 85px;
+    width: 330px;
+  }
+  
+  .thesesHome2 {
+    height: 85px;
+    padding: 9px !important;
+    width: 330px;
+  }
+  .thesesListText{
+    font-size: 14px;
+  }
+}
+
+@media(min-width:1230px) and (max-width:1250px){
+  .thesesHome {
+    padding: 9px !important;
+    height: 82px;
+    width: 325px;
+  }
+  
+  .thesesHome2 {
+    height: 82px;
+    padding: 9px !important;
+    width: 325px;
+  }
+  .thesesListText{
+    font-size: 12px;
+  }
+
+}
+@media(min-width:1200px) and (max-width:1230px){
+  .thesesHome {
+    padding: 9px !important;
+    height: 80px;
+    width: 300px;
+  }
+  
+  .thesesHome2 {
+    height: 80px;
+    padding: 9px !important;
+    width: 300px;
+  }
+  .thesesListText{
+    font-size: 12px;
+  }
+
 }
 @media(min-width:1250px) and (max-width:1550px){
   
@@ -3205,6 +3200,7 @@ button.accordion-button.collapsed::after {
   .analyze-competitors-text{
     font-size: 18px;
   }
+
 }
 @media(min-width:1100px) and (max-width:1330px){
   .sol-description {
@@ -3238,32 +3234,155 @@ button.accordion-button.collapsed::after {
 .OrangeLabel img {
   width: 100%;
 }
-@media (min-width: 350px) and (max-width: 420px) {
+@media (min-width: 300px) and (max-width: 360px) {
   .vertical-line {
-    height: calc((var(--activeIndex) + 1) * 11%);
+    height: calc((var(--activeIndex) + 1) * 18%);
+  }
+  .thesesHome{
+    height: 135px;
+  }
+  .thesesHome2{
+    height: 135px;
+  }
+  .widhead-contain-parag {
+    font-size: 10px;
+}
+.widhead-contian-title,.widhead-contian-title-mobile {
+  font-size: 18px;
+}
+.headStartBsn >svg{
+  width: 200px;
+}
+.HeadCardProPlusBestDes{
+  width: 50%;
+  font-size: 12px;
+  
+}
+.TextBestDes{
+  margin-left: 5px;
+}
+.landing-price-btn-text-mobile{
+  font-size:15px;
+}
+
+}
+@media (min-width: 548px) and (max-width: 608px) {
+  .landing-price-btn-text-mobile{
+    font-size:17px;
   }
 }
-@media (min-width: 420px) and (max-width: 460px) {
+@media (min-width: 360px) and (max-width: 400px) {
   .vertical-line {
-    height: calc((var(--activeIndex) + 1) * 11.7%);
+    height: calc((var(--activeIndex) + 1) * 16.6%);
+  }
+  .thesesHome{
+    height: 115px;
+  }
+  .thesesHome2{
+    height: 115px;
   }
 }
-@media (min-width: 460px) and (max-width: 480px) {
+@media (min-width: 400px) and (max-width: 450px) {
   .vertical-line {
-    height: calc((var(--activeIndex) + 1) * 11.2%);
+    height: calc((var(--activeIndex) + 1) * 15.3%);
+  }
+  .thesesHome{
+    height: 95px;
+  }
+  .thesesHome2{
+    height: 95px;
+  }
+}
+@media (min-width: 450px) and (max-width: 480px) {
+  .vertical-line {
+    height: calc((var(--activeIndex) + 1) * 14.6%);
+  }
+  .thesesHome{
+    height: 93px;
+  }
+  .thesesHome2{
+    height: 93px;
+  }
+}
+@media (min-width: 480px) and (max-width: 500px) {
+  .vertical-line {
+    height: calc((var(--activeIndex) + 1) * 14.3%);
+  }
+  .thesesHome{
+    height: 86px;
+  }
+  .thesesHome2{
+    height: 86px;
   }
 }
 
-@media (min-width: 480px) and (max-width: 520px) {
+@media (min-width: 500px) and (max-width: 550px) {
   .vertical-line {
-    height: calc((var(--activeIndex) + 1) * 11%);
+    height: calc((var(--activeIndex) + 1) * 12.8%);
+  }
+  .thesesHome{
+    height: 76px;
+  }
+  .thesesHome2{
+    height: 76px;
   }
 }
-@media (min-width: 520px) and (max-width: 620px) {
+
+@media (min-width: 550px) and (max-width: 600px) {
+  .vertical-line {
+    height: calc((var(--activeIndex) + 1) * 12.1%);
+  }
+  .thesesHome{
+    height: 72px;
+  }
+  .thesesHome2{
+    height: 72px;
+  }
+}
+
+
+@media (min-width: 600px) and (max-width: 650px) {
+  .vertical-line {
+    height: calc((var(--activeIndex) + 1) * 11.4%);
+  }
+  .thesesHome{
+    height: 68px;
+  }
+  .thesesHome2{
+    height: 68px;
+  }
+}
+
+@media (min-width: 650px) and (max-width: 750px) {
+  .vertical-line {
+    height: calc((var(--activeIndex) + 1) * 10.3%);
+  }
+  .thesesHome{
+    height: 65px;
+    width: 100%;
+  }
+  .thesesHome2{
+    height: 65px;
+    width: 100%;
+  }
+}
+@media (min-width: 750px) and (max-width: 768px) {
   .vertical-line {
     height: calc((var(--activeIndex) + 1) * 10%);
   }
+  .thesesHome{
+    height: 65px;
+    width: 100%;
+  }
+  .thesesHome2{
+    height: 65px;
+    width: 100%;
+  }
 }
+
+
+
+
 @media screen and (max-width: 1048px) {
   .order-map-doughnut,
   .order-table-extended,

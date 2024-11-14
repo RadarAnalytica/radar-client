@@ -190,7 +190,7 @@ const MainPage = () => {
                 времени в одном месте
               </div>
             </div>
-            <div className='widhead-container-image'>
+            <div className='widhead-container-image widhead-container-image-mob'>
               <img
                 className='manyApiLogoMobile'
                 src={manyApiMobile}
@@ -236,7 +236,7 @@ const MainPage = () => {
                 </div>
                 <div className="widhead-contian-title">Большой объем данных </div>
                 <div className="widhead-contain-parag">Важных данных</div>
-                <div className="widhead-contain-check">
+                <div className="widhead-contain-check-last">
                   <svg width="71" height="43" viewBox="0 0 71 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="70.772" height="42.3005" rx="21.1503" fill="#5329FF" />
                     <rect x="32.5391" y="4.88086" width="32.5389" height="32.5389" rx="16.2694" fill="white" />
