@@ -81,7 +81,7 @@
 .optionsList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .optionLabel {
@@ -92,7 +92,8 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 17.5px;
-  color:rgba(26, 26, 26, 1)
+  color:rgba(26, 26, 26, 1);
+  padding: 2px 0 2px 0;
 }
 
 .optionLabel input[type="checkbox"] {

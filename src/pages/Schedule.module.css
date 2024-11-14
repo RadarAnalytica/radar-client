@@ -47,14 +47,17 @@
   }
   
   .title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #000;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
   }
   
   .clearButton {
     font-size: 14px;
-    color: #1A1A1A80;
+    font-weight: 500;
+    line-height: 17.5px;
+    color: rgba(26, 26, 26, 0.5);
     background: none;
     border: none;
     cursor: pointer;
@@ -63,7 +66,7 @@
   .list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 4px;
     align-items: flex-start;
     max-height: 180px;
     overflow-y: auto;
@@ -87,6 +90,7 @@
   .brandItem{
     display: flex;
     align-items: center;
+    padding: 2px 0 2px 0;
   }
   /* Внешний контейнер для кастомного чекбокса */
   .checkboxContainer {
@@ -147,8 +151,10 @@
   
   /* Название бренда */
   .brandName {
-    font-size: 16px;
-    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17.5px;
+    color: rgba(26, 26, 26, 1);
   }
   .ScheduleBody{
     max-width: 100%;
