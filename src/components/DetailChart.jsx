@@ -65,7 +65,7 @@ const DetailChart = () => {
             <div
                 className="custom-tooltip"
                 style={{
-                    left: xPosition,
+                    // left: xPosition,
                     transform: 'translateX(50%)',
                     top: "9%"
                 }}
