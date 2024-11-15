@@ -6,8 +6,8 @@ import SolLabelStartBsn from "../pages/images/SolLabelStartBsn";
 import YellowRadarPoint from "../pages/images/YellowRadarPoint";
 import CustomButton from "./utilsComponents/CustomButton";
 import AuthContext from "../service/AuthContext";
-import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // Import the low-res image
-import highResImage from '../pages/images/imageFonStartBsn.png'; // Import the high-res image
+import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-res image
+import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
 
 
 const TryProduct = ({ redirect }) => {

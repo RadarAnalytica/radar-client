@@ -1540,9 +1540,7 @@ button.accordion-button.collapsed::after {
   font-size: 34px;
   font-weight: 700;
 }
-.wid-solutionMainText {
-  font-size: 22px;
-}
+
 .footer-col-a {
   text-decoration: none;
   color: black;
