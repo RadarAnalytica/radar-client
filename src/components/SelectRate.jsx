@@ -18,6 +18,9 @@ import SolLabelStartBsn from "../pages/images/SolLabelStartBsn";
 import YellowRadarPoint from "../pages/images/YellowRadarPoint";
 import CustomButton from "./utilsComponents/CustomButton";
 import { URL } from "../service/config";
+import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-res image
+import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
+
 
 const SelectRate = ({ redirect }) => {
   const { user, authToken } = useContext(AuthContext);
@@ -43,6 +46,17 @@ const SelectRate = ({ redirect }) => {
   const userIdInvoiceHardCode = "radar-51-20240807-161128";
 
   const currentPath = window.location.pathname;
+  const [isHighResLoaded, setHighResLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = highResImage;
+
+    img.onload = () => {
+      // When high-res image is fully loaded, change 
+      setHighResLoaded(true);
+    };
+  }, [highResImage]);
 
   const refreshUserToken = async () => {
     try {
@@ -410,7 +424,7 @@ const SelectRate = ({ redirect }) => {
               </p>
               <div className='landing-price-btn'>
                 <p className='landing-price-btn-text'>
-                  Мы дарим тестовый доступ на 3 дня всего за
+                  Мы дарим тестовый доступ на 3 дня <br /><span> всего за</span>
                 </p>
                 <p className='landing-price-btn-text-mobile'>
                   Мы дарим тестовый доступ на 3 дня <br /><span> всего за</span>
@@ -918,7 +932,9 @@ const SelectRate = ({ redirect }) => {
       {currentPath === "/tariffs" && (
         <>
           <ReviewsUsers />
-          <div className='wid-solutionMain'>
+          <div className='wid-solutionMain'
+            style={{ backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage})` }}
+          >
 
             <div className='sol-description col' style={{ padding: 0 }}>
               <div className='headStartBsn'>
