@@ -35,7 +35,7 @@
     box-shadow: 0px 0px 20px 0px #0000000A;
     border: none;
     min-height: 250px;
-    min-width: 200px;
+    min-width: calc(100% / 6 - 10px);
     max-height: 250px;
   }
   
@@ -47,13 +47,13 @@
   }
   
   .title {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     color: #000;
   }
   
   .clearButton {
-    font-size: 14px;
+    font-size: 12px;
     color: #1A1A1A80;
     background: none;
     border: none;
@@ -147,7 +147,7 @@
   
   /* Название бренда */
   .brandName {
-    font-size: 16px;
+    font-size: 15px;
     color: #000;
   }
   .ScheduleBody{

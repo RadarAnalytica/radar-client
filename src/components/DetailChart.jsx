@@ -55,22 +55,31 @@ const DetailChart = () => {
     const renderCustomTooltip = () => {
         if (clickedIndex === null) return null;
 
-        // Example data for the tooltip
-        const times = ['6:00', '6:05', '6:12', '6:22', '6:29', '6:44', '6:45', '6:50', '6:51', '6:53'];
-        const counts = [60, 1, 1, 10, 10, 10, 10, 10, 10, 10];
+        // Example data based on clicked column (clickedIndex)
+        const times = Array.from({ length: 10 }, (_, i) => `${clickedIndex}:${i * 5}`);
+        const counts = Array.from({ length: 10 }, () => Math.floor(Math.random() * 20) + 1);
         const total = counts.reduce((sum, count) => sum + count, 0);
 
+
         return (
-            <div className="custom-tooltip">
+            <div
+                className="custom-tooltip"
+                style={{
+                    left: xPosition,
+                    transform: 'translateX(50%)',
+                    top: "9%"
+                }}
+            >
                 <div className='custom-tooltip-header'>
                     <div className='tooltip-color'></div>
                     <div className='tooltip-title-period'>
-                        Заказы с 6:00 до 7:00, шт
+                        {`Заказы с ${clickedIndex}:00 до ${1 + clickedIndex}:00, шт`}
                     </div>
                 </div>
                 <div className='custom-tooltip-amount-wrapper'>
                     <div className='custom-tooltip-amount-title'>Всего</div>
-                    <div className='custom-tooltip-amount' style={{ fontWeight: "700" }}>100</div></div>
+                    <div className='custom-tooltip-amount' style={{ fontWeight: "700" }}>{total}</div>
+                </div>
                 <div className='custom-tooltip-period'>
                     {times.map((time, i) => (
                         <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>

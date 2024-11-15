@@ -3944,17 +3944,13 @@ canvas {
 /* Dashboard Modal */
 
 .custom-tooltip {
-  /* max-width: 200px; */
   min-width: 270px;
   height: 341px;
-
   font-family: Arial, sans-serif;
   font-size: 14px;
   color: #1A1A1A;
   position: absolute;
- top:50%;
-  left: 50%;
-  background-color: white;
+  background-color: #fff;
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
