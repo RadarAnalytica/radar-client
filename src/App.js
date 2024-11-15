@@ -55,6 +55,7 @@ const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashboard"));
 const Schedule = React.lazy(() => import("./pages/Schedule"));
 const Period = React.lazy(() => import("./components/Period"));
+const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 
 const NoSubscriptionPage = React.lazy(() =>
   import("./pages/NoSubscriptionPage")
@@ -311,6 +312,14 @@ function App() {
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
                     <UserInfo />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/how-to-connect-api'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <HowToConnectAPI />
                   </React.Suspense>
                 }
               />
@@ -798,6 +807,14 @@ function App() {
                 <React.Suspense fallback={<LoaderPage />}>
                   {" "}
                   <Contacts />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/how-to-connect-api'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  <HowToConnectAPI />
                 </React.Suspense>
               }
             />
