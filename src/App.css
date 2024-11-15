@@ -3810,3 +3810,8 @@ font-weight: 500;
   align-items: center;
   margin-left: 35vw;
 }
+
+.no-translate {
+  -webkit-translate: none;
+  translate: none;
+}
