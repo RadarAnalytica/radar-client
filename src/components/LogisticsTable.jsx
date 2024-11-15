@@ -120,7 +120,7 @@ const LogisticsTable = () => {
     return (
       <React.Fragment key={item.id}>
         <div className={`${styles.row} ${item.isChild ? styles.childRow : ''}`}>
-          <div className={`${styles.cellId} ${styles.article}`}>
+          <div className={`${styles.cellId} ${styles.article} ${item.isChild ? styles.noBorder : ''}`}>
             <span>{item.id}</span>
             {hasChildren ? (
               <button
@@ -143,19 +143,15 @@ const LogisticsTable = () => {
               <div className={styles.indent} />
             )}
           </div>
-          <div className={styles.cell_srid}>{item.srid}</div>
-          {/* <div className={styles.salesSection}> */}
-          <div className={styles.cell_article}>
+          <div className={`${styles.cell_srid} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>{item.srid}</div>
+          <div className={`${styles.cell_article} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>
             <div>{item.article}</div>
-            {/* <div className={styles.subtext}>{item.purchases.quantity}</div> */}
           </div>
-          <div className={styles.cell_goods}>
+          <div className={`${styles.cell_goods} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>
             <div>{item.product}</div>
-            {/* <div className={styles.subtext}>{item.returns.quantity}</div> */}
           </div>
-          <div className={styles.cell_size}>{item.size}</div>
-          <div className={styles.cell_total}>{item.total}</div>
-          {/* </div> */}
+          <div className={`${styles.cell_size} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>{item.size}</div>
+          <div className={`${styles.cell_total} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>{item.total}</div>
         </div>
         {isExpanded &&
           item.children &&

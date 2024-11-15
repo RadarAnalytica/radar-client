@@ -175,3 +175,11 @@
   .dropdownArrowExpanded {
     transform: rotate(180deg);
   }
+
+  .noBorder {
+    border-bottom: none;
+  }
+
+  .borderBottom {
+    border-bottom: 1px solid #f5f5f5;
+  }
