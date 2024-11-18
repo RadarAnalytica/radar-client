@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 240px;
+    width: 220px;
   }
   
   .calendarPopup {
@@ -15,6 +15,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 16px;
   }
+  
   
   .customDayPicker .rdp-caption {
     display: flex;
@@ -108,6 +109,62 @@
     height: 40px !important;
     font-weight: 400 !important;
 }
+
+
+.dropdownWrapper {
+  width: 100%;
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 1vh 1.5vh;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.selectedOption {
+  font-size: 14px;
+  color: #000;
+  margin-left: 5px;
+ 
+}
+
+.arrowIcon {
+  margin-left: 5px;
+}
+
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0 8px;
+  text-align: left;
+}
+
+.dropdownMenu li {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.customDateOption {
+  color: #5329FF;
+  font-weight: 600;
+  border: none !important;
+  padding: 0 8px;
+  cursor: pointer;
+}
+
 .selectWrapper {
   position: relative;
   width: 100%;
@@ -115,13 +172,27 @@
 
 .selectWrapper select {
   width: 100%;
-  padding-right: 2rem; /* Adjust to make room for the SVG */
+  padding-right: 2rem; 
+  padding-bottom: 20px;
 }
 
-.selectArrow {
-  position: absolute;
-  top: 50%;
-  right: 1rem;
-  transform: translateY(-50%);
-  pointer-events: none; /* Prevent the icon from blocking clicks */
+.dateSelectors {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.monthSelector, .yearSelector {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.monthSelector {
+  width: 45%;
+}
+
+.yearSelector {
+  width: 45%;
 }

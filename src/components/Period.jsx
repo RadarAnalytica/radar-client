@@ -4,26 +4,68 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import styles from './Period.module.css';
 
+
 const Period = () => {
     const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
+    const [selectedOption, setSelectedOption] = useState("7");
 
-    const handleSelect = (range) => {
-        setSelectedRange(range);
+    const predefinedRanges = {
+        "7": { from: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), to: new Date() },
+        "14": { from: new Date(Date.now() - 13 * 24 * 60 * 60 * 1000), to: new Date() },
+        "30": { from: new Date(Date.now() - 29 * 24 * 60 * 60 * 1000), to: new Date() },
+        "90": { from: new Date(Date.now() - 89 * 24 * 60 * 60 * 1000), to: new Date() },
     };
 
-    const toggleCalendar = (value) => {
-        setIsCalendarOpen(value === "");
-        if (value !== "") {
+
+    const customRuLocale = {
+        ...ru,
+        localize: {
+            ...ru.localize,
+            month: (n, options) => {
+                const monthName = ru.localize.month(n, options);
+                return monthName.charAt(0).toUpperCase() + monthName.slice(1);
+            },
+        },
+    };
+
+    const toggleCalendar = () => {
+        setIsCalendarOpen(!isCalendarOpen);
+        setIsDropdownOpen(false);
+    };
+
+    const selectOption = (value) => {
+        if (value === "") {
+            setSelectedOption("");
             setSelectedRange({ from: null, to: null });
+            toggleCalendar();
+        } else {
+            setSelectedOption(value);
+            setSelectedRange(predefinedRanges[value]);
+            setIsCalendarOpen(false);
+        }
+        setIsDropdownOpen(false);
+    };
+
+    const handleDayClick = (day) => {
+        if (!selectedRange.from || (selectedRange.from && selectedRange.to)) {
+
+            setSelectedRange({ from: day, to: null });
+            setIsCalendarOpen(true);
+        } else if (selectedRange.from && !selectedRange.to) {
+
+            const { from } = selectedRange;
+            const newRange =
+                day < from
+                    ? { from: day, to: from }
+                    : { from, to: day };
+
+            setSelectedRange(newRange);
+            setIsCalendarOpen(false);
         }
     };
-
-    const handleMonthChange = (selectedMonth) => {
-        setMonth(selectedMonth);
-    };
-
     const formatDateRange = (range) => {
         if (range.from && range.to) {
             const fromDate = range.from.toLocaleDateString("ru-RU");
@@ -33,74 +75,54 @@ const Period = () => {
         return "Произвольные даты";
     };
 
-    const customLocale = {
-        ...ru,
-        localize: {
-            ...ru.localize,
-            month: (n) => {
-                const months = [
-                    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-                    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-                ];
-                return months[n];
-            },
-            day: (n) => {
-                const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-                return days[n];
-            },
-        },
-    };
-
     return (
         <div className={styles.calendarContainer}>
-            <label style={{ fontWeight: 600, marginBottom: '4px', display: 'block' }} htmlFor="period">
+            <label style={{ fontWeight: 500, marginBottom: '4px', display: 'block' }} htmlFor="period">
                 Период:
             </label>
-            <div className={styles.selectWrapper}>
-                <select
-                    style={{
-                        width: '100%',
-                        padding: '1vh 1.75vh',
-                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                        borderRadius: '8px',
-                        appearance: 'none',
-                        cursor: 'pointer',
-                    }}
-                    id="period"
-                    onChange={(e) => toggleCalendar(e.target.value)}
-                    value={selectedRange.from && selectedRange.to ? "" : "7"}
-                >
-                    <option value="7">7 дней</option>
-                    <option value="14">14 дней</option>
-                    <option value="30">30 дней</option>
-                    <option value="90">90 дней</option>
-                    <option value="">{formatDateRange(selectedRange)}</option>
-                </select>
+            <div
+                className={styles.dropdownWrapper}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+                <div className={styles.selectedOption}>
+                    {selectedOption ? `${selectedOption} дней` : formatDateRange(selectedRange)}
+                </div>
                 <svg
                     width="14"
                     height="9"
                     viewBox="0 0 14 9"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={styles.selectArrow}
+                    className={styles.arrowIcon}
                 >
                     <path d="M1 1.5L7 7.5L13 1.5" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                 </svg>
             </div>
+            {isDropdownOpen && (
+                <ul className={styles.dropdownMenu}>
+                    <li onClick={() => selectOption("7")}>7 дней</li>
+                    <li onClick={() => selectOption("14")}>14 дней</li>
+                    <li onClick={() => selectOption("30")}>30 дней</li>
+                    <li onClick={() => selectOption("90")}>90 дней</li>
+                    <li onClick={() => selectOption("")} className={styles.customDateOption}>
+                        Произвольные даты
+                    </li>
+                </ul>
+            )}
 
             {isCalendarOpen && (
                 <div className={styles.calendarPopup}>
                     <DayPicker
                         mode="range"
                         selected={selectedRange}
-                        onSelect={handleSelect}
                         month={month}
-                        onMonthChange={handleMonthChange}
+                        onMonthChange={setMonth}
                         captionLayout="dropdown"
                         fromYear={2022}
                         toYear={2024}
                         className={styles.customDayPicker}
-                        locale={customLocale}
+                        locale={customRuLocale}
+                        onDayClick={handleDayClick}
                     />
                 </div>
             )}

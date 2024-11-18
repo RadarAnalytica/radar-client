@@ -3960,6 +3960,7 @@ canvas {
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
+  margin-bottom: 0px !important;
 }
 .tooltip-color{
   background-color: #F0AD00;
@@ -3984,7 +3985,7 @@ canvas {
   font-weight: 700;
 }
 .custom-tooltip-period{
-  max-height: 200px;
+  max-height: 225px;
   overflow: auto;
 }
 .custom-tooltip-period::-webkit-scrollbar {
@@ -4010,7 +4011,7 @@ canvas {
   font-weight: 700;
 }
 .custom-tooltip div {
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 .custom-tooltip strong {
   font-size: 16px;
