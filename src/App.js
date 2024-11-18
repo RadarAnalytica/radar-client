@@ -20,6 +20,7 @@ import WeeklyReportByMonth from "./pages/WeeklyReportByMonth";
 import ReportAbcAnalysis from "./pages/ReportAbcAnalysis";
 import WeeklyReportByGoods from "./pages/WeeklyReportByGoods";
 import WeeklyReportPenaltiesPage from "./pages/WeeklyReportPenaltiesPage";
+import TestPeriodTariffPage from "./pages/TestPeriodTariffPage";
 
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
@@ -267,6 +268,16 @@ function App() {
                   </React.Suspense>
                 }
               />
+              <Route
+                path='/test-period-tariff'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <TestPeriodTariffPage />
+                  </React.Suspense>
+                }
+              />
+
               <Route
                 path='/subscription'
                 element={
