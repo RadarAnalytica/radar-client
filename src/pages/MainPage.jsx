@@ -335,7 +335,7 @@ const MainPage = () => {
             <StepsTime redirect={redirect} />
           </div>
           <div style={{ marginTop: "100px" }}>
-            <SelectRate redirect={redirect} />
+            <SelectRate redirect={redirect} isShowText={false}/>
           </div>
           <div style={{ marginTop: "100px" }}>
             <ReviewsUsers />

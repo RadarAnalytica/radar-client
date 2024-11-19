@@ -96,7 +96,7 @@ const TariffsPage = () => {
         <NavbarMainHome onlyLogo />
 
         <div className='tariffs'>
-          <SelectRate redirect={redirect} />
+          <SelectRate redirect={redirect} isShowText={true} />
         </div>
       </div>
       <FooterNewVersion />

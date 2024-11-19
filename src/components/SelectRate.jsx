@@ -24,7 +24,7 @@ import styles from '../pages/TariffsPage.module.css';
 import thumbup from '../pages/images/thumbup.png';
 
 
-const SelectRate = ({ redirect }) => {
+const SelectRate = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
   console.log("SelectRate user:", user);
   const [selectedPeriod, setSelectedPeriod] = useState("1month");
@@ -314,7 +314,7 @@ const SelectRate = ({ redirect }) => {
 
   return (
     <>
-    <div className={styles.upBlockWrapper}>
+    { isShowText && (<><div className={styles.upBlockWrapper}>
             <div className={styles.leftBlock}>
               <div className={styles.imageBox}>
                 <img src={thumbup} alt='thumbup' />
@@ -376,7 +376,9 @@ const SelectRate = ({ redirect }) => {
               действительно заинтересован в тестировании аналитики. Оплата
               доступна всеми возможными способами и занимает не более 45 секунд.
             </div>
-          </div>
+          </div> 
+          </>)
+          }
       <div
         style={{
           display: "flex",
