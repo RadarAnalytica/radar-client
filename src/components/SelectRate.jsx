@@ -20,6 +20,8 @@ import CustomButton from "./utilsComponents/CustomButton";
 import { URL } from "../service/config";
 import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-res image
 import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
+import styles from '../pages/TariffsPage.module.css';
+import thumbup from '../pages/images/thumbup.png';
 
 
 const SelectRate = ({ redirect }) => {
@@ -312,6 +314,69 @@ const SelectRate = ({ redirect }) => {
 
   return (
     <>
+    <div className={styles.upBlockWrapper}>
+            <div className={styles.leftBlock}>
+              <div className={styles.imageBox}>
+                <img src={thumbup} alt='thumbup' />
+                <div className={styles.imageText}>
+                  Спасибо
+                  <br /> за регистрацию
+                  <br /> в сервисе Radar!
+                </div>
+              </div>
+              <div className={styles.downTextblock}>
+                <span className={styles.downText}>
+                  Желаем вам успехов и надеемся, что вы останетесь довольны
+                  нашим сервисом!
+                </span>
+              </div>
+            </div>
+            <div className={styles.rightBlock}>
+              <div className={styles.blockBackground}>
+                <div className={styles.accessTitle}>
+                  <span className={styles.activateAccess}>
+                    На этой странице вы можете активировать тестовый доступ на 3
+                    дня
+                  </span>
+                </div>
+                <div className={styles.accessPrice}>
+                  <div
+                    className={styles.accessPeriod}
+                    style={{ marginRight: '24px' }}
+                  >
+                    Доступ:
+                    <span className={styles.accessPeriodBold}>3 дня</span>
+                  </div>
+                  <div className={styles.accessPeriod}>
+                    Стоимость:
+                    <span className={styles.accessPeriodBold}>1 ₽</span>
+                  </div>
+                </div>
+                <div className={styles.accessButton}>
+                  <button
+                    onClick={() => {
+                      pay(user.id, selectedPeriod, trialExpired)
+                    }}
+                  >
+                    Активировать тестовый период за 1₽
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.infoBlockWrapper}>
+            <div className={styles.infoBlockTitle}>
+              Почему активация тестового периода стоит 1₽?
+            </div>
+            <div className={styles.infoBlockTextSimple}>
+              Предоставление тестового доступа без ограничений по функционалу
+              требует затрат со стороны сервиса. Поэтому мы взимаем
+              символическую плату в размере 1₽ за активацию тестового периода,
+              чтобы наши ресурсы расходовались только на тех продавцов, кто
+              действительно заинтересован в тестировании аналитики. Оплата
+              доступна всеми возможными способами и занимает не более 45 секунд.
+            </div>
+          </div>
       <div
         style={{
           display: "flex",
@@ -826,7 +891,7 @@ const SelectRate = ({ redirect }) => {
                     }
                   }}
                 >
-                  Начать работать
+                  Активировать сервис
                 </button>
               </div>
               <div className='bodyCardProPlus'>
@@ -951,7 +1016,7 @@ const SelectRate = ({ redirect }) => {
 
               <div className='d-flex flex-column gap-3'>
                 <CustomButton
-                  text={"Начать работать"}
+                  text={"Активировать сервис"}
                   action={() => {
                     pay(user.id, selectedPeriod, trialExpired);
                   }}
