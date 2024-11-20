@@ -263,8 +263,11 @@ function App() {
                 path='/tariffs'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
-                    {" "}
-                    <TariffsPage />
+                    {!user.is_test_used ? (
+                      <Navigate to="/test-period-tariff" replace />
+                    ) : (
+                      <TariffsPage />
+                    )}
                   </React.Suspense>
                 }
               />
@@ -272,8 +275,11 @@ function App() {
                 path='/test-period-tariff'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
-                    {" "}
-                    <TestPeriodTariffPage />
+                    {user.is_test_used ? (
+                      <Navigate to="/tariffs" replace />
+                    ) : (
+                      <TestPeriodTariffPage />
+                    )}
                   </React.Suspense>
                 }
               />
