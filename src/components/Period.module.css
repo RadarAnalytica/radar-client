@@ -196,3 +196,47 @@
 .yearSelector {
   width: 45%;
 }
+
+
+
+.captionWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.selectMonth,
+.selectYear {
+  appearance: none;
+  background-color: #f4f4f4;
+  border: 1px solid #d1d1d1;
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  margin: 0 5px;
+  width: auto;
+}
+
+.selectWrapper {
+  position: relative;
+}
+
+.selectWrapper::after {
+  content: "▼";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #666;
+  font-size: 10px;
+}
+
+.selectMonth:focus,
+.selectYear:focus {
+  border-color: #007bff;
+}

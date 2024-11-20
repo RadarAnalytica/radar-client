@@ -51,6 +51,10 @@ const DashboardPage = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [firstLoading, setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
+
+  const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
+  const [detailChartLabels, setDetailChartLabels] = useState([]);
+  const [detailChartData, setDetailChartData] = useState([]);
   // const [shouldNavigate, setShouldNavigate] = useState(false);
   // console.log('shouldNavigate', shouldNavigate);
   const dispatch = useAppDispatch();
@@ -125,6 +129,20 @@ const DashboardPage = () => {
     };
   }, [oneShop, activeBrand]);
 
+
+
+
+  useEffect(() => {
+    console.log(selectedRange, 'selectedRange')
+    const updateChartData = async () => {
+      const data = await ServiceFunctions.getChartDetailData(
+        authToken
+      );
+      setDetailChartLabels()
+      setDetailChartData(data)
+    }
+    updateChartData()
+  }, [selectedRange])
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
@@ -971,7 +989,10 @@ const DashboardPage = () => {
                       </div>
                       <div className={styles.underHeader}>
                         <div className={styles.period} style={{ position: "relative" }}>
-                          <Period />
+                          <Period
+                            selectedRange={selectedRange}
+                            setSelectedRange={setSelectedRange}
+                          />
                         </div>
                         <div style={{ marginTop: "35px" }}>
                           <div className='download-button' onClick={() => handleDownload()}>
@@ -981,7 +1002,10 @@ const DashboardPage = () => {
                         </div>
                       </div>
                       <div className={styles.modalBody}>
-                        <DetailChart />
+                        <DetailChart
+                          labels={detailChartLabels}
+                          chartData={detailChartData}
+                        />
                       </div>
                     </div>
                   </div>

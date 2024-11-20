@@ -8,3 +8,4 @@ export const fetchAllShops = createAsyncThunk('all/shops', async (days) => {
   });
   return response.data;
 });
+

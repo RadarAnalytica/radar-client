@@ -5,18 +5,17 @@ import { ru } from 'date-fns/locale';
 import styles from './Period.module.css';
 
 
-const Period = () => {
-    const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
+const Period = ({ selectedRange, setSelectedRange }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
     const [selectedOption, setSelectedOption] = useState("7");
 
     const predefinedRanges = {
-        "7": { from: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), to: new Date() },
-        "14": { from: new Date(Date.now() - 13 * 24 * 60 * 60 * 1000), to: new Date() },
-        "30": { from: new Date(Date.now() - 29 * 24 * 60 * 60 * 1000), to: new Date() },
-        "90": { from: new Date(Date.now() - 89 * 24 * 60 * 60 * 1000), to: new Date() },
+        "7": 7,
+        "14": 14,
+        "30": 30,
+        "90": 90,
     };
 
 

@@ -4,7 +4,7 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const DetailChart = () => {
+const DetailChart = ({ labels, chartData }) => {
     const chartRef = useRef(null);
     const containerRef = useRef(null);
     const [clickedIndex, setClickedIndex] = useState(null);
@@ -15,7 +15,7 @@ const DetailChart = () => {
         datasets: [
             {
                 label: 'Заказы',
-                data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 2, 4, 1, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3],
+                data: chartData,
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;

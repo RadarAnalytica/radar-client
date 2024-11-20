@@ -403,10 +403,29 @@ export const ServiceFunctions = {
         authorization: "JWT " + token,
       },
       body: JSON.stringify(
-        isAdmin ? {user_id: userId} : {}
+        isAdmin ? { user_id: userId } : {}
       ),
     });
     const data = await res.json();
     return data;
+  },
+
+  getChartDetailData: async (token) => {
+    // const res = await fetch(
+    //   `${URL}/api/dashboard/?period=${day}&shop=${idShop}`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "content-type": "application/json",
+    //       authorization: "JWT " + token,
+    //     },
+    //   }
+    // );
+
+    // const data = await res.json();
+
+    // return data;
+
+    return Array.from({ length: 24 }, () => Math.floor(Math.random() * 9.5) + 1);
   },
 }
