@@ -1,4 +1,6 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useContext } from 'react';
+import { URL } from '../service/config';
+import AuthContext from '../service/AuthContext';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import cursor from './images/cursor.svg';
@@ -7,12 +9,11 @@ import sucessround from './images/sucessround.svg';
 import sucesscheck from './images/sucesscheck.svg';
 import trashalt from './images/trash-alt.svg';
 import styles from './ReportMain.module.css';
-import { fr } from 'date-fns/locale';
 
 const ReportMain = () => {
+  const { authToken } = useContext(AuthContext);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
-
   const [selectedRows, setSelectedRows] = useState([]);
   console.log('selectedRows', selectedRows);
 
@@ -64,6 +65,31 @@ const ReportMain = () => {
     },
   ];
 
+  const handleFileUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch(`${URL}/api/report/upload`, {
+        method: 'POST',
+        headers: {
+          authorization: 'JWT ' + authToken,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Handle successful upload
+        console.log('Upload successful:', data);
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+
   const handleDragOver = (e) => {
     e.preventDefault();
   };
@@ -77,6 +103,12 @@ const ReportMain = () => {
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files);
     setSelectedFile(files[0]);
+  };
+
+  const uploadFile = () => {
+    // Add upload logic here
+    handleFileUpload(selectedFile);
+    setSelectedFile(null);
   };
   return (
     <div className='dashboard-page'>
@@ -196,13 +228,26 @@ const ReportMain = () => {
           >
             <div className={styles.uploadWrapper}>
               <div className={styles.uploadTitle}>Загрузить отчеты</div>
-              <div className={styles.uploadIcon}>
-                <img src={upload} alt='upload' />
-              </div>
+              {!selectedFile && (
+                <div className={styles.uploadIcon}>
+                  <img src={upload} alt='upload' />
+                </div>
+              )}
               <div className={styles.uploadTextWrapper}>
                 <div className={styles.uploadText}>
                   {selectedFile ? (
-                    <span>Выбран файл: {selectedFile.name}</span>
+                    <>
+                      <span>{selectedFile.name}</span>
+                      <div className={styles.uploadButtonWrapper}>
+                        <button className={styles.deleteButton}>Удалить</button>
+                        <button
+                          className={styles.uploadButton}
+                          onClick={uploadFile}
+                        >
+                          Загрузить
+                        </button>
+                      </div>
+                    </>
                   ) : (
                     <>
                       Перетащи мышкой файл или

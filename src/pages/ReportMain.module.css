@@ -131,6 +131,7 @@
     line-height: 25px;
     color: rgba(26, 26, 26, 1);
     margin-top: 24px;
+    margin-bottom: 16px;
 }
 
 .uploadIcon {
@@ -282,6 +283,18 @@
     background: rgba(83, 41, 255, 0.1);
 }
 
+.uploadButton {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 25.5px;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px 8px 16px;
+    background-color: rgba(83, 41, 255, 1);
+    margin-left: 16px;
+    color: rgba(255, 255, 255, 1);
+}
+
 .deleteButton img {
     margin-right: 8px;
 }
@@ -298,4 +311,10 @@
     font-weight: 500;
     line-height: 25.5px;
     color: rgba(26, 26, 26, 1);
+}
+
+.uploadButtonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
 }
