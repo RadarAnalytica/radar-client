@@ -21,6 +21,7 @@ import ReportAbcAnalysis from "./pages/ReportAbcAnalysis";
 import WeeklyReportByGoods from "./pages/WeeklyReportByGoods";
 import WeeklyReportPenaltiesPage from "./pages/WeeklyReportPenaltiesPage";
 import TestPeriodTariffPage from "./pages/TestPeriodTariffPage";
+import ReportMain from "./pages/ReportMain";
 
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
@@ -384,6 +385,14 @@ function App() {
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
                         <AiDescriptionGeneratorPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/report-main'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <ReportMain />
                       </React.Suspense>
                     }
                   />
