@@ -7,6 +7,10 @@ import cursor from './images/cursor.svg';
 import upload from './images/upload.svg';
 import sucessround from './images/sucessround.svg';
 import sucesscheck from './images/sucesscheck.svg';
+import failcheck from './images/failcheck.svg';
+import failgreycheck from './images/failgreycheck.svg';
+import orangeround from './images/orangeround.svg';
+import failround from './images/failround.svg';
 import trashalt from './images/trash-alt.svg';
 import trashIcon from './images/trash-icon.svg';
 import styles from './ReportMain.module.css';
@@ -36,13 +40,13 @@ const ReportMain = () => {
 
   const getListOfReports = async () => {
     try {
-      const result = await ServiceFunctions.getListOfReports(authToken); 
+      const result = await ServiceFunctions.getListOfReports(authToken);
       setData(result);
       console.log('result', result);
     } catch (error) {
       console.error('Error fetching data:', error);
-    }  
-  }
+    }
+  };
   useEffect(() => {
     getListOfReports();
   }, []);
@@ -93,6 +97,22 @@ const ReportMain = () => {
     setSelectedFile(null);
     getListOfReports();
   };
+
+  const getIdResultIcon = (main_report_status, storage_report_status) => {
+    if (main_report_status === 'Done' && storage_report_status === 'Done') {
+      return sucesscheck;
+    }
+    if (main_report_status === 'Done' && storage_report_status === null) {
+      return orangeround;
+    }
+    if (main_report_status === 'Fail' || storage_report_status === 'Fail') {
+      return failround;
+    }
+    if (main_report_status === null || storage_report_status === 'Done') {
+      return orangeround;
+    }
+  };
+
   return (
     <div className='dashboard-page'>
       <SideNav />
@@ -259,18 +279,24 @@ const ReportMain = () => {
           <div className={styles.uploadTableContainer}>
             <div>
               <div className={styles.tableTitle}>Загруженные отчеты</div>
-                <div className={` ${selectedRows.length <= 0 ?  styles.deleteSectionShow : styles.deleteSection}`}>
-                  <span className={styles.deleteSectionText}>
-                    Выбрано: {selectedRows.length}
-                  </span>
-                  <button
-                    className={styles.deleteButton}
-                    onClick={handleDeleteSelected}
-                  >
-                    <img src={trashalt} alt='Delete' />
-                    Удалить
-                  </button>
-                </div>
+              <div
+                className={` ${
+                  selectedRows.length <= 0
+                    ? styles.deleteSectionShow
+                    : styles.deleteSection
+                }`}
+              >
+                <span className={styles.deleteSectionText}>
+                  Выбрано: {selectedRows.length}
+                </span>
+                <button
+                  className={styles.deleteButton}
+                  onClick={handleDeleteSelected}
+                >
+                  <img src={trashalt} alt='Delete' />
+                  Удалить
+                </button>
+              </div>
               <div></div>
             </div>
             <div className={styles.uploadTable}>
@@ -298,26 +324,51 @@ const ReportMain = () => {
                       />
                     </div>
                     <span className={styles.idResult}>
-                      <img src={sucessround} alt='Sucess' />
+                      <img
+                        src={getIdResultIcon(
+                          row.main_report_status,
+                          row.storage_report_status
+                        )}
+                        alt='Status Icon'
+                      />
                     </span>
                     <span className={styles.idText}>{row.report_number}</span>
                   </div>
                   <div className={styles.reports}>
                     <div className={styles.reportRow}>
-                    <span className={styles.reportResult}>
-                          {row.main_report_status === 'success' && (
-                            <img src={sucesscheck} alt='Sucess' />
-                          )}
-                        </span>
-                        <span className={styles.reportText}>{row.main_report_name}</span>
+                      <span className={styles.reportResult}>
+                        {row.main_report_status === 'Done' && (
+                          <img src={sucesscheck} alt='Sucess' />
+                        )}
+                        {row.main_report_status === 'Fail' && (
+                          <img src={failcheck} alt='Fail' />
+                        )}
+                      </span>
+                      <span className={styles.reportText}>
+                        {row.main_report_name}
+                      </span>
                     </div>
                     <div className={styles.reportRow}>
-                    <span className={styles.reportResult}>
-                          {row.storage_report_status === 'success' && (
-                            <img src={sucesscheck} alt='Sucess' />
-                          )}
-                        </span>
-                        <span className={styles.reportText}>{row.storage_report_name}</span>
+                      <span className={styles.reportResult}>
+                        {row.storage_report_status === 'Done' && (
+                          <img src={sucesscheck} alt='Sucess' />
+                        )}
+                        {row.storage_report_status === 'Fail' && (
+                          <img src={failcheck} alt='Fail' />
+                        )}
+                        {row.storage_report_status === null && (
+                          <img src={failgreycheck} alt='Fail' />
+                        )}
+                      </span>
+                      <span className={styles.reportText}>
+                        {row.storage_report_name === null ? (
+                          <span className={styles.failGrey}>
+                            Отчет по платному хранению
+                          </span>
+                        ) : (
+                          row.storage_report_name
+                        )}
+                      </span>
                     </div>
                   </div>
                   <div className={styles.startDate}>{row.start_date}</div>

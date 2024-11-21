@@ -363,3 +363,7 @@
     visibility: hidden;
     opacity: 0;
 }
+
+.failGrey {
+    color: rgba(0, 0, 0, 0.2);
+}
