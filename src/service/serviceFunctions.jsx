@@ -428,4 +428,19 @@ export const ServiceFunctions = {
 
     return Array.from({ length: 24 }, () => Math.floor(Math.random() * 9.5) + 1);
   },
+
+  getListOfReports: async (token) => {
+    const res = await fetch(
+      `${URL}/api/report/`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  }
 }

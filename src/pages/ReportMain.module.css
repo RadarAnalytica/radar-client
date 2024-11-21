@@ -307,6 +307,9 @@
     align-items: center;
     margin-top: 4px;
     margin-bottom: 4px;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .deleteButton {
@@ -354,4 +357,9 @@
     display: flex;
     justify-content: center;
     margin-top: 16px;
+}
+
+.deleteSectionShow {
+    visibility: hidden;
+    opacity: 0;
 }

@@ -1,4 +1,4 @@
-import { useRef, useState, useContext } from 'react';
+import { useRef, useState, useContext, useEffect } from 'react';
 import { URL } from '../service/config';
 import AuthContext from '../service/AuthContext';
 import SideNav from '../components/SideNav';
@@ -10,6 +10,7 @@ import sucesscheck from './images/sucesscheck.svg';
 import trashalt from './images/trash-alt.svg';
 import trashIcon from './images/trash-icon.svg';
 import styles from './ReportMain.module.css';
+import { ServiceFunctions } from '../service/serviceFunctions';
 import BottomNavigation from '../components/BottomNavigation';
 
 const ReportMain = () => {
@@ -17,6 +18,7 @@ const ReportMain = () => {
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [data, setData] = useState([]);
   console.log('selectedRows', selectedRows);
 
   const handleCheckboxChange = (id) => {
@@ -32,40 +34,18 @@ const ReportMain = () => {
     setSelectedRows([]);
   };
 
-  const data = [
-    {
-      id: 1,
-      idUpload: '123456789',
-      reports: [
-        {
-          dilivery: 'success',
-          doc: 'Детализация еженедельного отчета',
-        },
-        {
-          dilivery: 'success',
-          doc: 'Отчет по платному хранению',
-        },
-      ],
-      startDate: '01.10.2024',
-      endDate: '10.10.2024',
-    },
-    {
-      id: 2,
-      idUpload: '1234565677687',
-      reports: [
-        {
-          dilivery: 'success',
-          doc: 'Детализация еженедельного отчета',
-        },
-        {
-          dilivery: 'success',
-          doc: 'Отчет по платному хранению',
-        },
-      ],
-      startDate: '05.10.2024',
-      endDate: '15.10.2024',
-    },
-  ];
+  const getListOfReports = async () => {
+    try {
+      const result = await ServiceFunctions.getListOfReports(authToken); 
+      setData(result);
+      console.log('result', result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }  
+  }
+  useEffect(() => {
+    getListOfReports();
+  }, []);
 
   const handleFileUpload = async (file) => {
     const formData = new FormData();
@@ -111,6 +91,7 @@ const ReportMain = () => {
     // Add upload logic here
     handleFileUpload(selectedFile);
     setSelectedFile(null);
+    getListOfReports();
   };
   return (
     <div className='dashboard-page'>
@@ -278,8 +259,7 @@ const ReportMain = () => {
           <div className={styles.uploadTableContainer}>
             <div>
               <div className={styles.tableTitle}>Загруженные отчеты</div>
-              {selectedRows.length > 0 && (
-                <div className={styles.deleteSection}>
+                <div className={` ${selectedRows.length <= 0 ?  styles.deleteSectionShow : styles.deleteSection}`}>
                   <span className={styles.deleteSectionText}>
                     Выбрано: {selectedRows.length}
                   </span>
@@ -291,7 +271,6 @@ const ReportMain = () => {
                     Удалить
                   </button>
                 </div>
-              )}
               <div></div>
             </div>
             <div className={styles.uploadTable}>
@@ -321,22 +300,28 @@ const ReportMain = () => {
                     <span className={styles.idResult}>
                       <img src={sucessround} alt='Sucess' />
                     </span>
-                    <span className={styles.idText}>{row.idUpload}</span>
+                    <span className={styles.idText}>{row.report_number}</span>
                   </div>
                   <div className={styles.reports}>
-                    {row.reports.map((report, index) => (
-                      <div key={index} className={styles.reportRow}>
-                        <span className={styles.reportResult}>
-                          {report.dilivery === 'success' && (
+                    <div className={styles.reportRow}>
+                    <span className={styles.reportResult}>
+                          {row.main_report_status === 'success' && (
                             <img src={sucesscheck} alt='Sucess' />
                           )}
                         </span>
-                        <span className={styles.reportText}>{report.doc}</span>
-                      </div>
-                    ))}
+                        <span className={styles.reportText}>{row.main_report_name}</span>
+                    </div>
+                    <div className={styles.reportRow}>
+                    <span className={styles.reportResult}>
+                          {row.storage_report_status === 'success' && (
+                            <img src={sucesscheck} alt='Sucess' />
+                          )}
+                        </span>
+                        <span className={styles.reportText}>{row.storage_report_name}</span>
+                    </div>
                   </div>
-                  <div className={styles.startDate}>{row.startDate}</div>
-                  <div className={styles.endDate}>{row.endDate}</div>
+                  <div className={styles.startDate}>{row.start_date}</div>
+                  <div className={styles.endDate}>{row.end_date}</div>
                   <div className={styles.emptyTitle}>
                     <img src={trashIcon} alt='Delete icon' />
                   </div>
