@@ -165,7 +165,27 @@
     border-radius: 16px;
     padding: 12px 0 0 12px;
     margin-top: 32px;
+    overflow: auto;
+    margin-bottom: 80px;
+    width: auto;
 }
+
+.uploadTableContainer::-webkit-scrollbar {
+    height: 6px;
+    border-radius: 6px;
+    width: 6px;
+}
+
+.uploadTableContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    margin-top: 85px;
+}
+
+.uploadTableContainer::-webkit-scrollbar-thumb {
+    background: #5329ff80;
+    border-radius: 6px;
+}
+
 
 .uploadTableHeader {
     display: flex;
@@ -193,7 +213,7 @@
 .startDate {
     display: flex;
     align-items: center;
-    min-width: 200px;
+    min-width: 150px;
     margin-right: 8px;
     font-size: 16px;
     font-weight: 500;
@@ -202,14 +222,14 @@
 }
 
 .startDateHead {
-    min-width: 200px;
+    min-width: 150px;
     margin-right: 8px;
 }
 
 .endDate {
     display: flex;
     align-items: center;
-    min-width: 235px;
+    min-width: 150px;
     margin-right: 8px;
     font-size: 16px;
     font-weight: 500;
@@ -217,9 +237,25 @@
     color: rgba(26, 26, 26, 1);
 }
 
-.endDateHead {
-    min-width: 235px;
+.emptyTitle {
     margin-right: 8px;
+    min-width: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.emptyTitle img {
+    cursor: pointer;
+}
+
+.endDateHead {
+    min-width: 150px;
+    margin-right: 8px;
+}
+
+.emptyTitleHead {
+    min-width: 25px;
+    min-height: 20px;
 }
 
 .tableTitle {
@@ -237,9 +273,10 @@
     border-bottom: 1px solid #e5e7eb;
 }
 
+/* 
 .uploadTableRow:hover {
     background-color: #f9fafb;
-}
+} */
 
 .checkbox {
     display: flex;

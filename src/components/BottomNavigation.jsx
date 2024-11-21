@@ -14,6 +14,7 @@ const BottomNavigation = () => {
   let dahsboardActiveStyle5 = styles.navItem;
   let dahsboardActiveStyle6 = styles.navItem;
   let dahsboardActiveStyle7 = styles.navItem;
+  let dahsboardActiveStyle8 = styles.navItem;
   if (lastUrlPart === 'weeklyreport-dashboard') {
     dahsboardActiveStyle = `${styles.navItem} ${styles.active}`;
   }
@@ -35,10 +36,16 @@ const BottomNavigation = () => {
   if (lastUrlPart === 'weeklyreport-penalties') {
     dahsboardActiveStyle7 = `${styles.navItem} ${styles.active}`;
   }
+  if (lastUrlPart === 'report-main') {
+    dahsboardActiveStyle8 = `${styles.navItem} ${styles.active}`;
+  }
 
   return (
     <div className={styles.bottomNavigation}>
-      <div className={dahsboardActiveStyle} style={{ marginLeft: '54px' }}>
+      <div className={dahsboardActiveStyle8} style={{ marginLeft: '54px' }}>
+        <span onClick={() => navigate('/report-main')}>Главная</span>
+      </div>
+      <div className={dahsboardActiveStyle}>
         <span onClick={() => navigate('/weeklyreport-dashboard')}>Дашборд</span>
       </div>
       <div className={dahsboardActiveStyle2}>

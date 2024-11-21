@@ -8,7 +8,9 @@ import upload from './images/upload.svg';
 import sucessround from './images/sucessround.svg';
 import sucesscheck from './images/sucesscheck.svg';
 import trashalt from './images/trash-alt.svg';
+import trashIcon from './images/trash-icon.svg';
 import styles from './ReportMain.module.css';
+import BottomNavigation from '../components/BottomNavigation';
 
 const ReportMain = () => {
   const { authToken } = useContext(AuthContext);
@@ -298,6 +300,7 @@ const ReportMain = () => {
                 <div className={styles.reports}>Отчеты</div>
                 <div className={styles.startDateHead}>Дата начала</div>
                 <div className={styles.endDateHead}>Дата конца</div>
+                <div className={styles.emptyTitleHead}></div>
               </div>
               {/* Add the data rows */}
               {data.map((row) => (
@@ -334,11 +337,15 @@ const ReportMain = () => {
                   </div>
                   <div className={styles.startDate}>{row.startDate}</div>
                   <div className={styles.endDate}>{row.endDate}</div>
+                  <div className={styles.emptyTitle}>
+                    <img src={trashIcon} alt='Delete icon' />
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
+        <BottomNavigation />
       </div>
     </div>
   );
