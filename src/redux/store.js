@@ -8,6 +8,7 @@ import messagesSlice from './messages/messagesSlice';
 import stockAnalysisDataSlice from './stockAnalysis/stockAnalysisDataSlice';
 import supportWindowSlice from './supportWindow/supportWindowSlice';
 import filtersDataSlice from './filters/filtersDataSlice';
+import dashboardReportSlice from './dashboardReport/dashboardReportSlice';
 
 const storeOptions = {
   reducer: {
@@ -19,6 +20,7 @@ const storeOptions = {
     stockAnalysisDataSlice,
     supportWindowSlice,
     filtersDataSlice,
+    dashboardReportSlice,
   },
 };
 

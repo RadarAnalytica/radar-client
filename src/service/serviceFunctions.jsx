@@ -497,5 +497,21 @@ deleteReport: async (token, reportNumber) => {
   return await response.json();
 },
 
+postDashboardFilters: async (token, filterData) => {
+  console.log('filterData => postDashboardFilters:', filterData);
+  const response = await fetch(`${URL}/api/report/get-dashboard`, {
+    method: 'POST',
+    headers: {
+      "content-type": "application/json",
+      authorization: "JWT " + token,
+    },
+    body: JSON.stringify(filterData)
+  });
 
+  if (!response.ok) {
+    throw new Error('Failed to fetch dashboard report');
+  }
+
+  return await response.json();
+},
 }

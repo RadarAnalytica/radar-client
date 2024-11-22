@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthContext from '../service/AuthContext';
 import { fetchDashboardFilters } from '../redux/filters/filtersDataActions';
+import { fetchDashboardReport } from '../redux/dashboardReport/dashboardReportActions';
 import styles from './FilterSection.module.css';
 import FilterGroup from './FilterGroup';
 
@@ -44,44 +45,24 @@ const FilterSection = () => {
     return [];
   };
 
-  const processDateFilterData = (dateData) => {
-    if (!dateData) return [];
-
-    const { years, months, weekdays } = dateData;
-
-    const weekdayNames = {
-      1: 'Понедельник',
-      2: 'Вторник',
-      3: 'Среда',
-      4: 'Четверг',
-      5: 'Пятница',
-      6: 'Суббота',
-      0: 'Воскресенье',
+  const handleApplyFilters = async () => {
+    const filterPayload = {
+      delivery_company_filter: selectedFilters.delivery_company_filter,
+      brand_name_filter: selectedFilters.brand_name_filter,
+      action_type_filter: selectedFilters.action_type_filter,
+      country_filter: selectedFilters.country_filter,
+      warehouse_name_filter: selectedFilters.warehouse_name_filter,
+      groups_filter: selectedFilters.groups_filter,
+      date_sale_filter: {
+        years: selectedFilters.date_sale_filter.years,
+        months: selectedFilters.date_sale_filter.months,
+        weekdays: selectedFilters.date_sale_filter.weekdays,
+      },
     };
 
-    const customWeekdaySort = (a, b) => {
-      if (a === '0') return 1;
-      if (b === '0') return -1;
-      return a - b;
-    };
-
-    return {
-      years:
-        years?.map((year, index) => ({
-          id: `year-${index}`,
-          label: year,
-        })) || [],
-      months:
-        months?.map((month, index) => ({
-          id: `month-${index}`,
-          label: month,
-        })) || [],
-      weekdays:
-        [...(weekdays || [])]?.sort(customWeekdaySort)?.map((day) => ({
-          id: `day-${day}`,
-          label: `${weekdayNames[day]}`,
-        })) || [],
-    };
+    dispatch(
+      fetchDashboardReport({ token: authToken, filterData: filterPayload })
+    );
   };
 
   const handleSelectDate = (category, id) => {
@@ -120,27 +101,27 @@ const FilterSection = () => {
 
   const handleClearAll = (category) => {
     const [parentKey, childKey] = category.split('.');
-    
+
     if (category === 'date_sale_filter_weekday') {
       setSelectedFilters((prev) => ({
         ...prev,
         date_sale_filter: {
           ...prev.date_sale_filter,
-          weekdays: []
-        }
+          weekdays: [],
+        },
       }));
     } else if (childKey) {
       setSelectedFilters((prev) => ({
         ...prev,
         [parentKey]: {
           ...prev[parentKey],
-          [childKey]: []
-        }
+          [childKey]: [],
+        },
       }));
     } else {
       setSelectedFilters((prev) => ({
         ...prev,
-        [category]: []
+        [category]: [],
       }));
     }
   };
@@ -157,7 +138,7 @@ const FilterSection = () => {
     9: 'Сентябрь',
     10: 'Октябрь',
     11: 'Ноябрь',
-    12: 'Декабрь'
+    12: 'Декабрь',
   };
 
   return (
@@ -208,24 +189,12 @@ const FilterSection = () => {
             />
             <FilterGroup
               title='Неделя'
-              options={
-                Array.isArray(filterData?.date_sale_filter?.weekdays)
-                  ? [...filterData.date_sale_filter.weekdays]
-                      .sort((a, b) => (a === '0' ? 1 : b === '0' ? -1 : a - b))
-                      .map((weekday) => ({
-                        id: weekday,
-                        label: {
-                          0: 'Воскресенье',
-                          1: 'Понедельник',
-                          2: 'Вторник',
-                          3: 'Среда',
-                          4: 'Четверг',
-                          5: 'Пятница',
-                          6: 'Суббота',
-                        }[weekday],
-                      }))
-                  : []
-              }
+              options={filterData?.date_sale_filter?.weekdays.map(
+                (weekday) => ({
+                  id: weekday,
+                  label: weekday,
+                })
+              )}
               selected={selectedFilters.date_sale_filter?.weekdays || []}
               onSelect={(id) => handleSelect('date_sale_filter_weekday', id)}
               onClearAll={() => handleClearAll('date_sale_filter_weekday')}
@@ -240,7 +209,12 @@ const FilterSection = () => {
           </div>
           <div className='container dash-container'>
             <div>
-              <button className={styles.applyButton}>Применить фильтры</button>
+              <button
+                className={styles.applyButton}
+                onClick={() => handleApplyFilters()}
+              >
+                Применить фильтры
+              </button>
             </div>
           </div>
         </>
