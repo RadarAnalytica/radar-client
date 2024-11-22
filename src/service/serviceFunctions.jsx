@@ -442,5 +442,43 @@ export const ServiceFunctions = {
     );
     const data = await res.json();
     return data;
-  }
+  },
+
+   getPLFilters: async (token) => {
+    const response = await fetch(`${URL}/api/report/p_l/filters`, {
+        method: 'GET',
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch P&L filters');
+    }
+
+    const data = await response.json();
+    
+    return {
+        filterOptions: [
+            {
+                id: 'brand',
+                label: 'Бренд',
+                options: data.brand_filter.map(brand => ({
+                    value: brand || '0',
+                    label: brand || 'Все'
+                }))
+            },
+            {
+                id: 'group',
+                label: 'Группа',
+                options: data.group_filter.map(group => ({
+                    value: group,
+                    label: group
+                }))
+            }
+        ]
+    };
+}
+
 }

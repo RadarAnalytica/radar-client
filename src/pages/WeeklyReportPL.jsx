@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import AuthContext from '../service/AuthContext';
+import { ServiceFunctions } from '../service/serviceFunctions';
 import FilterDropdownReportPages from '../components/FilterDropdownReportPages';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
@@ -7,6 +9,33 @@ import BottomNavigation from '../components/BottomNavigation';
 import styles from './WeeklyReportPL.module.css';
 
 const WeeklyReportPL = () => {
+  const {authToken} = useContext(AuthContext);  
+  const [activeFilters, setActiveFilters] = useState({
+    brand: '',
+    group: ''
+  });
+  const [filterOptions, setFilterOptions] = useState([]);
+
+  useEffect(() => {
+    const loadFilters = async () => {
+        try {
+            const filters = await ServiceFunctions.getPLFilters(authToken);
+            setFilterOptions(filters.filterOptions);
+           // Set initial active filters based on first available options
+           if (filters.filterOptions && filters.filterOptions.length > 0) {
+            setActiveFilters({
+                brand: filters.filterOptions[0]?.options[0]?.value || 'пусто',
+                group: filters.filterOptions[1]?.options[0]?.value || '0'
+            });
+        }
+        } catch (error) {
+            console.error('Error loading filters:', error);
+        }
+    };
+    
+    loadFilters();
+}, []);
+    
   const data = {
     dates: [
       '15.07.2024',
@@ -175,42 +204,20 @@ const WeeklyReportPL = () => {
       // ... add other rows
     ],
   };
-  const shops = [];
-  const filterOptions = [
-    {
-      id: 'brand',
-      label: 'Бренд',
-      options: [
-        { value: '7', label: '7 дней' },
-        { value: '14', label: '14 дней' },
-        { value: '30', label: '30 дней' },
-        { value: '90', label: '90 дней' },
-      ],
-    },
-    {
-      id: 'group',
-      label: 'Группа',
-      options: [
-        { value: '0', label: 'Все' },
-        ...shops.map((brand) => ({
-          value: brand.id,
-          label: brand.brand_name,
-        })),
-      ],
-    },
-  ];
+ 
 
-  const [activeFilters, setActiveFilters] = useState({
-    period: '30',
-    store: '0',
-  });
 
   const handleFilterChange = (filterId, value) => {
-    setActiveFilters((prevFilters) => ({
-      ...prevFilters,
-      [filterId]: value,
-    }));
-  };
+    setActiveFilters(prevFilters => {
+        const newFilters = {
+            ...prevFilters,
+            [filterId]: value
+        };
+
+        return newFilters;
+    });
+};
+
   return (
     <div className='dashboard-page'>
       <SideNav />
