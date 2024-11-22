@@ -176,7 +176,7 @@ const ReportMain = () => {
                       С помощью нашего сервиса вы сможете{' '}
                       <span className={styles.blockCoverTextBold}>
                         анализировать данные за каждую неделю,
-                      </span>{' '}
+                      </span>
                       для которой Wildberries предоставляет отчёты, что делает
                       работу с бизнес-показателями удобной и эффективной.
                     </span>
@@ -203,7 +203,7 @@ const ReportMain = () => {
                       <li className={styles.rightListText}>
                         <span className={styles.rightListTextBold}>
                           Детализация еженедельного отчёта:
-                        </span>{' '}
+                        </span>
                         документ в формате ZIP, скачанный из кабинета
                         Wildberries. Файл не нужно изменять, просто загрузите
                         его в исходном виде.
@@ -211,7 +211,7 @@ const ReportMain = () => {
                       <li className={styles.rightListText}>
                         <span className={styles.rightListTextBold}>
                           Отчёт по платному хранению:
-                        </span>{' '}
+                        </span>
                         документ за тот же период, что и детализация
                         еженедельного отчёта.
                       </li>
@@ -242,7 +242,12 @@ const ReportMain = () => {
                     <>
                       <span>{selectedFile.name}</span>
                       <div className={styles.uploadButtonWrapper}>
-                        <button className={styles.deleteButton}>Удалить</button>
+                        <button 
+                          className={styles.deleteButton} 
+                          onClick={() => setSelectedFile(null)}
+                        >
+                          Удалить
+                        </button>
                         <button
                           className={styles.uploadButton}
                           onClick={uploadFile}

@@ -18,6 +18,7 @@ const FilterSection = () => {
     country_filter: [],
     delivery_company_filter: [],
     action_type_filter: [],
+    groups_filter: [],
     date_order_filter: [],
     date_sale_filter: {
       years: [],
@@ -118,10 +119,45 @@ const FilterSection = () => {
   };
 
   const handleClearAll = (category) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [category]: [],
-    }));
+    const [parentKey, childKey] = category.split('.');
+    
+    if (category === 'date_sale_filter_weekday') {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        date_sale_filter: {
+          ...prev.date_sale_filter,
+          weekdays: []
+        }
+      }));
+    } else if (childKey) {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        [parentKey]: {
+          ...prev[parentKey],
+          [childKey]: []
+        }
+      }));
+    } else {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        [category]: []
+      }));
+    }
+  };
+
+  const monthNames = {
+    1: 'Январь',
+    2: 'Февраль',
+    3: 'Март',
+    4: 'Апрель',
+    5: 'Май',
+    6: 'Июнь',
+    7: 'Июль',
+    8: 'Август',
+    9: 'Сентябрь',
+    10: 'Октябрь',
+    11: 'Ноябрь',
+    12: 'Декабрь'
   };
 
   return (
@@ -164,7 +200,7 @@ const FilterSection = () => {
               title='Месяц'
               options={filterData?.date_sale_filter?.months.map((month) => ({
                 id: month,
-                label: month,
+                label: monthNames[month] || month,
               }))}
               selected={selectedFilters.date_sale_filter?.months || []}
               onSelect={(id) => handleSelectDate('date_sale_filter.months', id)}
@@ -195,11 +231,11 @@ const FilterSection = () => {
               onClearAll={() => handleClearAll('date_sale_filter_weekday')}
             />
             <FilterGroup
-              title='Тип действия'
-              options={processFilterData(filterData?.action_type_filter)}
-              selected={selectedFilters.action_type_filter}
-              onSelect={(id) => handleSelect('action_type_filter', id)}
-              onClearAll={() => handleClearAll('action_type_filter')}
+              title='Группа'
+              options={processFilterData(filterData?.groups_filter)}
+              selected={selectedFilters.groups_filter || []}
+              onSelect={(id) => handleSelect('groups_filter', id)}
+              onClearAll={() => handleClearAll('groups_filter')}
             />
           </div>
           <div className='container dash-container'>
