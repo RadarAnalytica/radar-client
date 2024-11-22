@@ -240,7 +240,10 @@ const ReportMain = () => {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
-            <div className={styles.uploadWrapper}>
+            <div 
+              className={styles.uploadWrapper}
+              onClick={() => fileInputRef.current.click()}
+              >
               <div className={styles.uploadTitle}>Загрузить отчеты</div>
               {!selectedFile && (
                 <div className={styles.uploadIcon}>
@@ -272,7 +275,6 @@ const ReportMain = () => {
                       Перетащи мышкой файл или
                       <span
                         className={styles.uploadTextBlue}
-                        onClick={() => fileInputRef.current.click()}
                         style={{ cursor: 'pointer' }}
                       >
                         загрузи с компьютера
@@ -295,25 +297,6 @@ const ReportMain = () => {
           <div className={styles.uploadTableContainer}>
             <div>
               <div className={styles.tableTitle}>Загруженные отчеты</div>
-              <div
-                className={` ${
-                  selectedRows.length <= 0
-                    ? styles.deleteSectionShow
-                    : styles.deleteSection
-                }`}
-              >
-                <span className={styles.deleteSectionText}>
-                  Выбрано: {selectedRows.length}
-                </span>
-                <button
-                  className={styles.deleteButton}
-                  onClick={handleDeleteSelected}
-                >
-                  <img src={trashalt} alt='Delete' />
-                  Удалить
-                </button>
-              </div>
-              <div></div>
             </div>
             <div className={styles.uploadTable}>
               <div className={styles.uploadTableHeader}>
