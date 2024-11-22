@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { chart } from 'highcharts';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const DetailChart = ({ labels, chartData }) => {
+const DetailChart = ({ labels, chartData, averages }) => {
     const chartRef = useRef(null);
     const containerRef = useRef(null);
     const [clickedIndex, setClickedIndex] = useState(null);
@@ -15,7 +16,7 @@ const DetailChart = ({ labels, chartData }) => {
         datasets: [
             {
                 label: 'Заказы',
-                data: chartData,
+                data: averages,
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
@@ -84,10 +85,9 @@ const DetailChart = ({ labels, chartData }) => {
 
     const renderCustomTooltip = () => {
         if (clickedIndex === null) return null;
-
-        const times = Array.from({ length: 10 }, (_, i) => `${clickedIndex}:${i * 5}`);
-        const counts = Array.from({ length: 10 }, () => Math.floor(Math.random() * 20) + 1);
-        const total = counts.reduce((sum, count) => sum + count, 0);
+        console.log(chartData)
+        console.log(clickedIndex)
+        const total = chartData[clickedIndex]
 
         const isLeftSide = clickedIndex > 11;
         const tooltipStyle = {
@@ -117,10 +117,10 @@ const DetailChart = ({ labels, chartData }) => {
                     <div className="custom-tooltip-amount" style={{ fontWeight: '700' }}>{total}</div>
                 </div>
                 <div className="custom-tooltip-period">
-                    {times.map((time, i) => (
+                    {labels[clickedIndex.toString()].map((time, i) => (
                         <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ marginLeft: '5px' }}>{time}</span>
-                            <span style={{ marginRight: '5px' }}>{counts[i]}</span>
+                            <span style={{ marginLeft: '5px' }}>{labels[clickedIndex.toString()][i]['time']}</span>
+                            <span style={{ marginRight: '5px' }}>{labels[clickedIndex.toString()][i]['count']}</span>
                         </div>
                     ))}
                 </div>

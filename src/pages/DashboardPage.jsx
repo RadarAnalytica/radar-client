@@ -55,6 +55,7 @@ const DashboardPage = () => {
   const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
   const [detailChartLabels, setDetailChartLabels] = useState([]);
   const [detailChartData, setDetailChartData] = useState([]);
+  const [detailChartAverages, setDetailChartAverages] = useState([]);
   // const [shouldNavigate, setShouldNavigate] = useState(false);
   // console.log('shouldNavigate', shouldNavigate);
   const dispatch = useAppDispatch();
@@ -136,10 +137,13 @@ const DashboardPage = () => {
     console.log(selectedRange, 'selectedRange')
     const updateChartData = async () => {
       const data = await ServiceFunctions.getChartDetailData(
-        authToken
+        authToken,
+        selectedRange
       );
-      setDetailChartLabels()
-      setDetailChartData(data)
+      setDetailChartLabels(data.result)
+      setDetailChartData(data.counts)
+      setDetailChartAverages(data.averages)
+
     }
     updateChartData()
   }, [selectedRange])
@@ -997,7 +1001,7 @@ const DashboardPage = () => {
                         <div style={{ marginTop: "35px" }}>
                           <div className='download-button' onClick={() => handleDownload()}>
                             <img src={downloadIcon} />
-                            Скачать детализаыию
+                            Скачать детализацию
                           </div>
                         </div>
                       </div>
@@ -1005,6 +1009,7 @@ const DashboardPage = () => {
                         <DetailChart
                           labels={detailChartLabels}
                           chartData={detailChartData}
+                          averages={detailChartAverages}
                         />
                       </div>
                     </div>
