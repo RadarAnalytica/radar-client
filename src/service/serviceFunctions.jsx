@@ -479,6 +479,23 @@ export const ServiceFunctions = {
             }
         ]
     };
-}
+},
+
+deleteReport: async (token, reportNumber) => {
+  const response = await fetch(`${URL}/api/report/?report_number=${reportNumber}`, {
+    method: 'DELETE',
+    headers: {
+      'accept': 'application/json',
+      'Authorization': 'JWT ' + token
+    }
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to delete report');
+  }
+  
+  return await response.json();
+},
+
 
 }

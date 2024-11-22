@@ -1,6 +1,7 @@
 import { useRef, useState, useContext, useEffect } from 'react';
 import { URL } from '../service/config';
 import AuthContext from '../service/AuthContext';
+import { formatFullDate } from '../service/utils';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import cursor from './images/cursor.svg';
@@ -16,6 +17,7 @@ import trashIcon from './images/trash-icon.svg';
 import styles from './ReportMain.module.css';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import BottomNavigation from '../components/BottomNavigation';
+import Modal from 'react-bootstrap/Modal';
 
 const ReportMain = () => {
   const { authToken } = useContext(AuthContext);
@@ -23,7 +25,8 @@ const ReportMain = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
   const [data, setData] = useState([]);
-  console.log('selectedRows', selectedRows);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
 
   const handleCheckboxChange = (id) => {
     if (selectedRows.includes(id)) {
@@ -98,9 +101,17 @@ const ReportMain = () => {
     getListOfReports();
   };
 
+  const handleDelete = async (id) => {
+    try {
+        await ServiceFunctions.deleteReport(authToken, id);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   const getIdResultIcon = (main_report_status, storage_report_status) => {
     if (main_report_status === 'Done' && storage_report_status === 'Done') {
-      return sucesscheck;
+      return sucessround;
     }
     if (main_report_status === 'Done' && storage_report_status === null) {
       return orangeround;
@@ -242,8 +253,8 @@ const ReportMain = () => {
                     <>
                       <span>{selectedFile.name}</span>
                       <div className={styles.uploadButtonWrapper}>
-                        <button 
-                          className={styles.deleteButton} 
+                        <button
+                          className={styles.deleteButton}
                           onClick={() => setSelectedFile(null)}
                         >
                           Удалить
@@ -376,10 +387,21 @@ const ReportMain = () => {
                       </span>
                     </div>
                   </div>
-                  <div className={styles.startDate}>{row.start_date}</div>
-                  <div className={styles.endDate}>{row.end_date}</div>
+                  <div className={styles.startDate}>
+                    {formatFullDate(row.start_date)}
+                  </div>
+                  <div className={styles.endDate}>
+                    {formatFullDate(row.end_date)}
+                  </div>
                   <div className={styles.emptyTitle}>
-                    <img src={trashIcon} alt='Delete icon' />
+                    <img
+                      src={trashIcon}
+                      alt='Delete icon'
+                      onClick={() => {
+                        setSelectedRowId(row.report_number);
+                        setOpenModal(true);
+                      }}
+                    />
                   </div>
                 </div>
               ))}
@@ -388,6 +410,47 @@ const ReportMain = () => {
         </div>
         <BottomNavigation />
       </div>
+      <Modal
+        show={openModal}
+        onHide={() => setOpenModal(false)}
+        size='lg'
+        aria-labelledby='contained-modal-title-vcenter'
+        centered
+      >
+        <Modal.Header closeButton>
+          <div className='d-flex align-items-center gap-2'>
+            <div style={{ width: '100%' }}>
+              <div className='d-flex justify-content-between'>
+                <span className='cancel-subscription-modal'>
+                  Вы уверены, что хотите удалить отчет?
+                </span>
+              </div>
+            </div>
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <span className='cancel-subscription-modal-text'>
+              Ваши данные могут быть удалены
+            </span>
+            <div className='button-box'>
+              <div className='button-stay' onClick={() => setOpenModal(false)}>
+                Не удалять
+              </div>
+              <div
+                className='button-cancel'
+                onClick={() => {
+                  handleDelete(selectedRowId);
+                  getListOfReports();
+                  setOpenModal(false);
+                }}
+              >
+                Удалить
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
