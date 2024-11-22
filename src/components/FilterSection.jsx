@@ -1,87 +1,145 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthContext from '../service/AuthContext';
+import { fetchDashboardFilters } from '../redux/filters/filtersDataActions';
+import { fetchDashboardReport } from '../redux/dashboardReport/dashboardReportActions';
 import styles from './FilterSection.module.css';
 import FilterGroup from './FilterGroup';
 
 const FilterSection = () => {
+  const dispatch = useDispatch();
+  const { user, authToken } = useContext(AuthContext);
+  const { data: filterData, loading } = useSelector(
+    (state) => state.filtersDataSlice
+  );
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [filterDataSet, setFilterDataSet] = useState({});
   const [selectedFilters, setSelectedFilters] = useState({
-    warehouse: [],
-    brand: [],
-    year: [],
-    month: [],
-    week: [],
-    group: [],
+    warehouse_name_filter: [],
+    brand_name_filter: [],
+    country_filter: [],
+    delivery_company_filter: [],
+    action_type_filter: [],
+    groups_filter: [],
+    date_order_filter: [],
+    date_sale_filter: {
+      years: [],
+      months: [],
+      weekdays: [],
+    },
   });
 
-  // Example data structure (will be replaced with API data)
-  const filterData = {
-    warehouse: [
-      { id: '1', label: 'СЦ Кузнецк' },
-      { id: '2', label: 'Длинное название склада lkbbbbbbbbbbbbbb' },
-      { id: '3', label: 'Длинное название склада' },
-      { id: '4', label: 'Длинное название склада ' },
-      { id: '5', label: 'Длинное название склада' },
-      { id: '6', label: 'Длинное название склада' },
-      // ... more options
-    ],
-    brand: [
-      { id: '1', label: 'Название бренда' },
-      { id: '2', label: 'Название 2' },
-      // ... more options
-    ],
-    year: [
-      { id: '1', label: '2023' },
-      { id: '2', label: '2022' },
-      // ... more options
-    ],
-    month: [
-      { id: '1', label: 'Январь' },
-      { id: '2', label: 'Февраль' },
-      // ... more options
-    ],
-    week: [
-      { id: '1', label: 'Понедельник' },
-      { id: '2', label: 'Вторник' },
-      // ... more options
-    ],
-    group: [
-      { id: '1', label: 'Группа 1' },
-      { id: '2', label: 'Группа 2' },
-      // ... more options
-    ],
-    // ... other filter categories
+  useEffect(() => {
+    dispatch(fetchDashboardFilters(authToken));
+  }, [dispatch, authToken]);
+
+  const processFilterData = (data, key) => {
+    if (!data) return [];
+    if (Array.isArray(data)) {
+      return data
+        .filter((item) => item !== '0')
+        .map((item, index) => ({
+          id: index.toString(),
+          label: item,
+        }));
+    }
+    return [];
   };
 
-  const handleSelect = (category, id) => {
+  const handleApplyFilters = async () => {
+    const filterPayload = {
+      delivery_company_filter: selectedFilters.delivery_company_filter,
+      brand_name_filter: selectedFilters.brand_name_filter,
+      action_type_filter: selectedFilters.action_type_filter,
+      country_filter: selectedFilters.country_filter,
+      warehouse_name_filter: selectedFilters.warehouse_name_filter,
+      groups_filter: selectedFilters.groups_filter,
+      date_sale_filter: {
+        years: selectedFilters.date_sale_filter.years,
+        months: selectedFilters.date_sale_filter.months,
+        weekdays: selectedFilters.date_sale_filter.weekdays,
+      },
+    };
+
+    dispatch(
+      fetchDashboardReport({ token: authToken, filterData: filterPayload })
+    );
+  };
+
+  const handleSelectDate = (category, id) => {
+    const [parentKey, childKey] = category.split('.');
+
     setSelectedFilters((prev) => ({
       ...prev,
-      [category]: prev[category].includes(id)
-        ? prev[category].filter((item) => item !== id)
-        : [...prev[category], id],
+      [parentKey]: {
+        ...prev[parentKey],
+        [childKey]: prev[parentKey]?.[childKey]?.includes(id)
+          ? prev[parentKey][childKey].filter((item) => item !== id)
+          : [...(prev[parentKey]?.[childKey] || []), id],
+      },
     }));
+  };
+  const handleSelect = (category, id) => {
+    if (category === 'date_sale_filter_weekday') {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        date_sale_filter: {
+          ...prev.date_sale_filter,
+          weekdays: prev.date_sale_filter?.weekdays?.includes(id)
+            ? prev.date_sale_filter.weekdays.filter((item) => item !== id)
+            : [...(prev.date_sale_filter?.weekdays || []), id],
+        },
+      }));
+    } else {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        [category]: prev[category].includes(id)
+          ? prev[category].filter((item) => item !== id)
+          : [...prev[category], id],
+      }));
+    }
   };
 
   const handleClearAll = (category) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [category]: [],
-    }));
+    const [parentKey, childKey] = category.split('.');
+
+    if (category === 'date_sale_filter_weekday') {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        date_sale_filter: {
+          ...prev.date_sale_filter,
+          weekdays: [],
+        },
+      }));
+    } else if (childKey) {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        [parentKey]: {
+          ...prev[parentKey],
+          [childKey]: [],
+        },
+      }));
+    } else {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        [category]: [],
+      }));
+    }
   };
 
-  useEffect(() => {
-    const fetchFilterOptions = async () => {
-      try {
-        const response = await fetch('/api/filter-options');
-        const data = await response.json();
-        setFilterDataSet(data);
-      } catch (error) {
-        console.error('Failed to fetch filter options:', error);
-      }
-    };
-
-    fetchFilterOptions();
-  }, []);
+  const monthNames = {
+    1: 'Январь',
+    2: 'Февраль',
+    3: 'Март',
+    4: 'Апрель',
+    5: 'Май',
+    6: 'Июнь',
+    7: 'Июль',
+    8: 'Август',
+    9: 'Сентябрь',
+    10: 'Октябрь',
+    11: 'Ноябрь',
+    12: 'Декабрь',
+  };
 
   return (
     <div className={styles.filterContainer}>
@@ -94,56 +152,71 @@ const FilterSection = () => {
 
       {!isCollapsed && (
         <>
-        <div className={styles.filterGrid}>
-          <FilterGroup
-            title='Склад'
-            options={filterData.warehouse}
-            selected={selectedFilters.warehouse}
-            onSelect={(id) => handleSelect('warehouse', id)}
-            onClearAll={() => handleClearAll('warehouse')}
-          />
-          <FilterGroup
-            title='Бренд'
-            options={filterData.brand}
-            selected={selectedFilters.brand}
-            onSelect={(id) => handleSelect('brand', id)}
-            onClearAll={() => handleClearAll('brand')}
-          />
-          <FilterGroup
-            title='Год'
-            options={filterData.year}
-            selected={selectedFilters.year}
-            onSelect={(id) => handleSelect('year', id)}
-            onClearAll={() => handleClearAll('year')}
-          />
-          <FilterGroup
-            title='Месяц'
-            options={filterData.month}
-            selected={selectedFilters.month}
-            onSelect={(id) => handleSelect('month', id)}
-            onClearAll={() => handleClearAll('month')}
-          />
-          <FilterGroup
-            title='Неделя'
-            options={filterData.week}
-            selected={selectedFilters.week}
-            onSelect={(id) => handleSelect('week', id)}
-            onClearAll={() => handleClearAll('week')}
-          />
-          <FilterGroup
-            title='Группа'
-            options={filterData.group}
-            selected={selectedFilters.group}
-            onSelect={(id) => handleSelect('group', id)}
-            onClearAll={() => handleClearAll('group')}
-          />
-          {/* Add other FilterGroups similarly */}
-        </div>
-        <div className='container dash-container'>
-          <div>
-            <button className={styles.applyButton}>Применить фильтры</button>
+          <div className={styles.filterGrid}>
+            <FilterGroup
+              title='Склад'
+              options={processFilterData(filterData?.warehouse_name_filter)}
+              selected={selectedFilters.warehouse_name_filter || []}
+              onSelect={(id) => handleSelect('warehouse_name_filter', id)}
+              onClearAll={() => handleClearAll('warehouse_name_filter')}
+            />
+            <FilterGroup
+              title='Бренд'
+              options={processFilterData(filterData?.brand_name_filter)}
+              selected={selectedFilters.brand_name_filter || []}
+              onSelect={(id) => handleSelect('brand_name_filter', id)}
+              onClearAll={() => handleClearAll('brand_name_filter')}
+            />
+            <FilterGroup
+              title='Год'
+              options={filterData?.date_sale_filter?.years.map((year) => ({
+                id: year,
+                label: year,
+              }))}
+              selected={selectedFilters?.date_sale_filter?.years || []}
+              onSelect={(id) => handleSelectDate('date_sale_filter.years', id)}
+              onClearAll={() => handleClearAll('date_sale_filter.years')}
+            />
+            <FilterGroup
+              title='Месяц'
+              options={filterData?.date_sale_filter?.months.map((month) => ({
+                id: month,
+                label: monthNames[month] || month,
+              }))}
+              selected={selectedFilters.date_sale_filter?.months || []}
+              onSelect={(id) => handleSelectDate('date_sale_filter.months', id)}
+              onClearAll={() => handleClearAll('date_sale_filter.months')}
+            />
+            <FilterGroup
+              title='Неделя'
+              options={filterData?.date_sale_filter?.weekdays.map(
+                (weekday) => ({
+                  id: weekday,
+                  label: weekday,
+                })
+              )}
+              selected={selectedFilters.date_sale_filter?.weekdays || []}
+              onSelect={(id) => handleSelect('date_sale_filter_weekday', id)}
+              onClearAll={() => handleClearAll('date_sale_filter_weekday')}
+            />
+            <FilterGroup
+              title='Группа'
+              options={processFilterData(filterData?.groups_filter)}
+              selected={selectedFilters.groups_filter || []}
+              onSelect={(id) => handleSelect('groups_filter', id)}
+              onClearAll={() => handleClearAll('groups_filter')}
+            />
           </div>
-        </div>
+          <div className='container dash-container'>
+            <div>
+              <button
+                className={styles.applyButton}
+                onClick={() => handleApplyFilters()}
+              >
+                Применить фильтры
+              </button>
+            </div>
+          </div>
         </>
       )}
     </div>

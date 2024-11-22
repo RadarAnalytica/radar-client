@@ -490,4 +490,90 @@ export const ServiceFunctions = {
     };
 
   },
+
+  getListOfReports: async (token) => {
+    const res = await fetch(
+      `${URL}/api/report/`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  },
+
+   getPLFilters: async (token) => {
+    const response = await fetch(`${URL}/api/report/p_l/filters`, {
+        method: 'GET',
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch P&L filters');
+    }
+
+    const data = await response.json();
+    
+    return {
+        filterOptions: [
+            {
+                id: 'brand',
+                label: 'Бренд',
+                options: data.brand_filter.map(brand => ({
+                    value: brand || '0',
+                    label: brand || 'Все'
+                }))
+            },
+            {
+                id: 'group',
+                label: 'Группа',
+                options: data.group_filter.map(group => ({
+                    value: group,
+                    label: group
+                }))
+            }
+        ]
+    };
+},
+
+deleteReport: async (token, reportNumber) => {
+  const response = await fetch(`${URL}/api/report/?report_number=${reportNumber}`, {
+    method: 'DELETE',
+    headers: {
+      'accept': 'application/json',
+      'Authorization': 'JWT ' + token
+    }
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to delete report');
+  }
+  
+  return await response.json();
+},
+
+postDashboardFilters: async (token, filterData) => {
+  console.log('filterData => postDashboardFilters:', filterData);
+  const response = await fetch(`${URL}/api/report/get-dashboard`, {
+    method: 'POST',
+    headers: {
+      "content-type": "application/json",
+      authorization: "JWT " + token,
+    },
+    body: JSON.stringify(filterData)
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch dashboard report');
+  }
+
+  return await response.json();
+},
 }

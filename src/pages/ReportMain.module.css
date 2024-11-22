@@ -1,0 +1,369 @@
+.instructionWrapper {
+    padding: 24px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);
+    border-radius: 16px;
+}
+
+.instructionTop {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.instructionColsWrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    grid-gap: 40px;
+    width: 100%;
+}
+
+.topTextTitle {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.blockLeft {
+    margin-top: 16px;
+}
+
+.blockLeftText {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 28.5px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.blockLeftTextBold {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 28.5px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.blockCover {
+    background: rgba(247, 247, 247, 1);
+    border-radius: 12px;
+    margin-top: 24px;
+    padding: 20px;
+}
+
+.blockCoverText {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 25.5px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.blockCoverTextBold {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 25.5px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.blockCoverBottom {
+    margin-top: 24px;
+}
+
+.blockCoverBottomBoldText {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 25.5px;
+    color: rgba(26, 26, 26, 1);
+    margin-top: 24px;
+}
+
+.blockRightText {
+    background: rgba(83, 41, 255, 0.05);
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.blockRightTextTop {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 25.5px;
+    color: rgba(26, 26, 26, 1);
+    margin-bottom: 8px;
+}
+
+.rightListText {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 25.5px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.rightListTextBold {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 25.5px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.uploadContainer {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.uploadWrapper {
+    max-width: 640px;
+    width: 100%;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);
+    border-radius: 16px;
+}
+
+.uploadTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 25px;
+    color: rgba(26, 26, 26, 1);
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+.uploadIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 22.5px 0 22.5px 0;
+}
+
+.uploadText {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 25.5px;
+    color: rgba(26, 26, 26, 0.5);
+}
+
+.uploadTextWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.uploadTextBlue {
+    margin-left: 5px;
+    color: rgba(83, 41, 255, 1);
+}
+
+.uploadTableContainer {
+    background: rgba(255, 255, 255, 1);
+    border-radius: 16px;
+    padding: 12px 0 0 12px;
+    margin-top: 32px;
+    overflow: auto;
+    margin-bottom: 80px;
+    width: auto;
+}
+
+.uploadTableContainer::-webkit-scrollbar {
+    height: 6px;
+    border-radius: 6px;
+    width: 6px;
+}
+
+.uploadTableContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    margin-top: 85px;
+}
+
+.uploadTableContainer::-webkit-scrollbar-thumb {
+    background: #5329ff80;
+    border-radius: 6px;
+}
+
+
+.uploadTableHeader {
+    display: flex;
+    align-items: center;
+    padding-bottom: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(140, 140, 140, 1);
+}
+
+.id {
+    min-width: 200px;
+    padding-left: 4px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.reports {
+    min-width: 620px;
+    margin-right: 8px;
+}
+
+.startDate {
+    display: flex;
+    align-items: center;
+    min-width: 150px;
+    margin-right: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.startDateHead {
+    min-width: 150px;
+    margin-right: 8px;
+}
+
+.endDate {
+    display: flex;
+    align-items: center;
+    min-width: 150px;
+    margin-right: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.emptyTitle {
+    margin-right: 8px;
+    min-width: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.emptyTitle img {
+    cursor: pointer;
+}
+
+.endDateHead {
+    min-width: 150px;
+    margin-right: 8px;
+}
+
+.emptyTitleHead {
+    min-width: 25px;
+    min-height: 20px;
+}
+
+.tableTitle {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22.5px;
+    color: rgba(26, 26, 26, 1);
+    margin-left: 4px;
+    margin-bottom: 9px;
+}
+
+.uploadTableRow {
+    display: flex;
+    padding: 11px 0 11px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* 
+.uploadTableRow:hover {
+    background-color: #f9fafb;
+} */
+
+.checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.idResult {
+    margin-right: 8px;
+}
+
+.reportResult {
+    margin-right: 8px;
+}
+
+.reportRow {
+    padding: 3px 0 3px 0;
+}
+
+.deleteSectionText {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 25.5px;
+    margin-right: 12px;
+}
+
+.deleteSection {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.deleteButton {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 25.5px;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px 8px 16px;
+    color: rgba(83, 41, 255, 1);
+    background: rgba(83, 41, 255, 0.1);
+}
+
+.uploadButton {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 25.5px;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px 8px 16px;
+    background-color: rgba(83, 41, 255, 1);
+    margin-left: 16px;
+    color: rgba(255, 255, 255, 1);
+}
+
+.deleteButton img {
+    margin-right: 8px;
+}
+
+.idText {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.reportText {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 25.5px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.uploadButtonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.deleteSectionShow {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.failGrey {
+    color: rgba(0, 0, 0, 0.2);
+}

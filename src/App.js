@@ -21,6 +21,7 @@ import ReportAbcAnalysis from "./pages/ReportAbcAnalysis";
 import WeeklyReportByGoods from "./pages/WeeklyReportByGoods";
 import WeeklyReportPenaltiesPage from "./pages/WeeklyReportPenaltiesPage";
 import TestPeriodTariffPage from "./pages/TestPeriodTariffPage";
+import ReportMain from "./pages/ReportMain";
 
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
@@ -263,8 +264,11 @@ function App() {
                 path='/tariffs'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
-                    {" "}
-                    <TariffsPage />
+                    {!user.is_test_used ? (
+                      <Navigate to="/test-period-tariff" replace />
+                    ) : (
+                      <TariffsPage />
+                    )}
                   </React.Suspense>
                 }
               />
@@ -272,8 +276,11 @@ function App() {
                 path='/test-period-tariff'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
-                    {" "}
-                    <TestPeriodTariffPage />
+                    {user.is_test_used ? (
+                      <Navigate to="/tariffs" replace />
+                    ) : (
+                      <TestPeriodTariffPage />
+                    )}
                   </React.Suspense>
                 }
               />
@@ -378,6 +385,14 @@ function App() {
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
                         <AiDescriptionGeneratorPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/report-main'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <ReportMain />
                       </React.Suspense>
                     }
                   />

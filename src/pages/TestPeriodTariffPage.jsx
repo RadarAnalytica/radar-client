@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import AuthContext from '../service/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { URL } from '../service/config';
 import NavbarMainHome from '../components/NavbarMainHome';
 import LimitedFooter from '../components/LimitedFooter';
 import SelectRate from '../components/SelectRate';

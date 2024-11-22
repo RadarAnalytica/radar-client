@@ -45,14 +45,6 @@ const SelectRate = ({ redirect }) => {
   };
   const userIdInvoiceHardCode = "radar-51-20240807-161128";
 
-  useEffect(() => {
-    if (user?.is_test_used === false) {
-      navigate("/test-period-tariff");
-    } else {
-      navigate("/tariffs");
-    }
-  }, [user?.is_test_used, navigate]);
-
   const currentPath = window.location.pathname;
   const [isHighResLoaded, setHighResLoaded] = useState(false);
 
