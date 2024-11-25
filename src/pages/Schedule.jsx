@@ -9,6 +9,16 @@ import StructureRevenue from '../components/StructureRevenue';
 import RevenueStorageChart from '../components/RevenueStorageChart';
 import BottomNavigation from '../components/BottomNavigation';
 const Schedule = () => {
+  //data for charts
+  const [dataRevenueStorage, setDataRevenueStorage] = useState([2000000, 1400000, 2000000, 2000000, 3000000, 2000000, 5000000, 6000000, 2000000, 2000000, 6500000, 6000000],)
+  const [dataStructureRevenue, setDataStructureRevenue] = useState([51, 29, 20])
+  const [dataProfitability, setDataProfitability] = useState([10, 20, -30, 10, -40, -20, -10, -40, -60, 20, -80, -140])
+  const [dataProfitMinus, setDataProfitMinus] = useState([-50, -40, -30, -10, -80, -20, -10, -40, -60, -20, -80, -140])
+  const [dataProfitPlus, setDataProfitPlus] = useState([50, 30, 50, 80, 70, 60, 40, 20, 10, 40, 30, 20])
+  const [dataRevenue, setDataRevenues] = useState([2000000, 4500000, 5000000, 2500000, 3200000, 1000000, 2700000, 2400000, 1500000, 0, 1500000, 2500000])
+  const [dataNetProfit, setDataNetProfit] = useState([2100000, 2100000, 2500000, 1800000, 1300000, 500000, 2300000, 1600000, 5000000, -500000, 1000000, 1500000])
+
+  //data for filters
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [allSelectedProducts, setAllSelectedProducts] = useState(false);
   const [allSelectedArticles, setAllSelectedArticles] = useState(false);
@@ -65,6 +75,8 @@ const Schedule = () => {
     'Куртка демисезонная с капюшоном осень 2024 длинное название 3': false,
     'Куртка демисезонная с капюшоном осень 2024 длинное название 4': false,
   });
+
+
   const toggleCheckboxBrands = (brand) => {
     setSelectedBrands((prevState) => ({
       ...prevState,
@@ -111,12 +123,13 @@ const Schedule = () => {
   const handleBrand = () => {
     const newSelectedBrands = {};
     const newAllSelected = !allSelectedBrands;
-    Object.keys(selectedMonths).forEach((brand) => {
+    Object.keys(selectedBrands).forEach((brand) => {
       newSelectedBrands[brand] = newAllSelected;
     });
     setSelectedBrands(newSelectedBrands);
     setAllSelectedBrands(newAllSelected);
   };
+
   const handleYear = () => {
     const newSelectedYears = {};
     const newAllSelected = !allSelectedYears;
@@ -162,7 +175,7 @@ const Schedule = () => {
     setSelectedArticles(newSelectedArticles);
     setAllSelectedArticles(newAllSelected);
   };
-  const handleCheckProduct = () => {
+  const handleProduct = () => {
     const newSelectedProducts = {};
     const newAllSelected = !allSelectedProducts;
 
@@ -173,41 +186,41 @@ const Schedule = () => {
     setSelectedProducts(newSelectedProducts);
     setAllSelectedProducts(newAllSelected);
   };
-  const handleFiltersCollapse = () => {
-    const clearedBrands = Object.keys(selectedBrands).reduce((acc, brand) => {
-      acc[brand] = false;
-      return acc;
-    }, {});
-    setSelectedBrands(clearedBrands);
-    const clearedYears = Object.keys(selectedYears).reduce((acc, brand) => {
-      acc[brand] = false;
-      return acc;
-    }, {});
-    setSelectedYears(clearedYears);
-    const clearedMonths = Object.keys(selectedMonths).reduce((acc, brand) => {
-      acc[brand] = false;
-      return acc;
-    }, {});
-    setSelectedMonths(clearedMonths);
-    const clearedWeeks = Object.keys(selectedWeeks).reduce((acc, brand) => {
-      acc[brand] = false;
-      return acc;
-    }, {});
-    setSelectedWeeks(clearedWeeks);
-    const clearedGroups = Object.keys(selectedGroups).reduce((acc, brand) => {
-      acc[brand] = false;
-      return acc;
-    }, {});
-    setSelectedGroups(clearedGroups);
-    const clearedArticles = Object.keys(selectedArticles).reduce(
-      (acc, brand) => {
-        acc[brand] = false;
-        return acc;
-      },
-      {}
-    );
-    setSelectedArticles(clearedArticles);
-  };
+  // const handleFiltersCollapse = () => {
+  //   const clearedBrands = Object.keys(selectedBrands).reduce((acc, brand) => {
+  //     acc[brand] = false;
+  //     return acc;
+  //   }, {});
+  //   setSelectedBrands(clearedBrands);
+  //   const clearedYears = Object.keys(selectedYears).reduce((acc, brand) => {
+  //     acc[brand] = false;
+  //     return acc;
+  //   }, {});
+  //   setSelectedYears(clearedYears);
+  //   const clearedMonths = Object.keys(selectedMonths).reduce((acc, brand) => {
+  //     acc[brand] = false;
+  //     return acc;
+  //   }, {});
+  //   setSelectedMonths(clearedMonths);
+  //   const clearedWeeks = Object.keys(selectedWeeks).reduce((acc, brand) => {
+  //     acc[brand] = false;
+  //     return acc;
+  //   }, {});
+  //   setSelectedWeeks(clearedWeeks);
+  //   const clearedGroups = Object.keys(selectedGroups).reduce((acc, brand) => {
+  //     acc[brand] = false;
+  //     return acc;
+  //   }, {});
+  //   setSelectedGroups(clearedGroups);
+  //   const clearedArticles = Object.keys(selectedArticles).reduce(
+  //     (acc, brand) => {
+  //       acc[brand] = false;
+  //       return acc;
+  //     },
+  //     {}
+  //   );
+  //   setSelectedArticles(clearedArticles);
+  // };
   return (
     <div className='dashboard-page'>
       <SideNav />
@@ -229,177 +242,177 @@ const Schedule = () => {
         </div>
         {/* <div className={`${styles.filterCollapse}`} onClick={handleFiltersCollapse}>Свернуть фильтры</div> */}
         {!isOpenFilters && (
-            <>
-          <div className={`${styles.ScheduleHeader} dash-container container`}>
-            <div className={styles.container}>
-              <div className={styles.header}>
-                <span className={styles.title}>Бренд</span>
-                <button className={styles.clearButton} onClick={handleBrand}>
-                  {allSelectedBrands ? 'Снять все' : 'Выбрать все'}
-                </button>
+          <>
+            <div className={`${styles.ScheduleHeader} dash-container container`}>
+              <div className={styles.container}>
+                <div className={styles.header}>
+                  <span className={styles.title}>Бренд</span>
+                  <button className={styles.clearButton} onClick={handleBrand}>
+                    {allSelectedBrands ? 'Снять все' : 'Выбрать все'}
+                  </button>
+                </div>
+                <div className={styles.list}>
+                  {Object.keys(selectedBrands).map((brand, index) => (
+                    <div className={styles.brandItem} key={index}>
+                      <label className={styles.checkboxContainer}>
+                        <input
+                          type='checkbox'
+                          checked={selectedBrands[brand]}
+                          onChange={() => toggleCheckboxBrands(brand)}
+                          className={styles.checkboxInput}
+                        />
+                        <span className={styles.customCheckbox}></span>
+                      </label>
+                      <span className={styles.brandName}>{brand}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className={styles.list}>
-                {Object.keys(selectedBrands).map((brand, index) => (
-                  <div className={styles.brandItem} key={index}>
-                    <label className={styles.checkboxContainer}>
-                      <input
-                        type='checkbox'
-                        checked={selectedBrands[brand]}
-                        onChange={() => toggleCheckboxBrands(brand)}
-                        className={styles.checkboxInput}
-                      />
-                      <span className={styles.customCheckbox}></span>
-                    </label>
-                    <span className={styles.brandName}>{brand}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            <div className={styles.container}>
-              <div className={styles.header}>
-                <span className={styles.title}>Год</span>
-                <button className={styles.clearButton} onClick={handleYear}>
-                  {allSelectedYears ? 'Снять все' : 'Выбрать все'}
-                </button>
+              <div className={styles.container}>
+                <div className={styles.header}>
+                  <span className={styles.title}>Год</span>
+                  <button className={styles.clearButton} onClick={handleYear}>
+                    {allSelectedYears ? 'Снять все' : 'Выбрать все'}
+                  </button>
+                </div>
+                <div className={styles.list}>
+                  {Object.keys(selectedYears).map((year, index) => (
+                    <div className={styles.brandItem} key={index}>
+                      <label className={styles.checkboxContainer}>
+                        <input
+                          type='checkbox'
+                          checked={selectedYears[year]}
+                          onChange={() => toggleCheckboxYear(year)}
+                          className={styles.checkboxInput}
+                        />
+                        <span className={styles.customCheckbox}></span>
+                      </label>
+                      <span className={styles.brandName}>{year}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className={styles.list}>
-                {Object.keys(selectedYears).map((year, index) => (
-                  <div className={styles.brandItem} key={index}>
-                    <label className={styles.checkboxContainer}>
-                      <input
-                        type='checkbox'
-                        checked={selectedYears[year]}
-                        onChange={() => toggleCheckboxYear(year)}
-                        className={styles.checkboxInput}
-                      />
-                      <span className={styles.customCheckbox}></span>
-                    </label>
-                    <span className={styles.brandName}>{year}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            <div className={styles.container}>
-              <div className={styles.header}>
-                <span className={styles.title}>Месяц</span>
-                <button className={styles.clearButton} onClick={handleMonth}>
-                  {allSelectedMonths ? 'Снять все' : 'Выбрать все'}
-                </button>
+              <div className={styles.container}>
+                <div className={styles.header}>
+                  <span className={styles.title}>Месяц</span>
+                  <button className={styles.clearButton} onClick={handleMonth}>
+                    {allSelectedMonths ? 'Снять все' : 'Выбрать все'}
+                  </button>
+                </div>
+                <div className={styles.list}>
+                  {Object.keys(selectedMonths).map((brand, index) => (
+                    <div className={styles.brandItem} key={index}>
+                      <label className={styles.checkboxContainer}>
+                        <input
+                          type='checkbox'
+                          checked={selectedMonths[brand]}
+                          onChange={() => toggleCheckboxMonth(brand)}
+                          className={styles.checkboxInput}
+                        />
+                        <span className={styles.customCheckbox}></span>
+                      </label>
+                      <span className={styles.brandName}>{brand}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className={styles.list}>
-                {Object.keys(selectedMonths).map((brand, index) => (
-                  <div className={styles.brandItem} key={index}>
-                    <label className={styles.checkboxContainer}>
-                      <input
-                        type='checkbox'
-                        checked={selectedMonths[brand]}
-                        onChange={() => toggleCheckboxMonth(brand)}
-                        className={styles.checkboxInput}
-                      />
-                      <span className={styles.customCheckbox}></span>
-                    </label>
-                    <span className={styles.brandName}>{brand}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            <div className={styles.container}>
-              <div className={styles.header}>
-                <span className={styles.title}>Неделя</span>
-                <button className={styles.clearButton} onClick={handleWeek}>
-                  {allSelectedWeeks ? 'Снять все' : 'Выбрать все'}
-                </button>
+              <div className={styles.container}>
+                <div className={styles.header}>
+                  <span className={styles.title}>Неделя</span>
+                  <button className={styles.clearButton} onClick={handleWeek}>
+                    {allSelectedWeeks ? 'Снять все' : 'Выбрать все'}
+                  </button>
+                </div>
+                <div className={styles.list}>
+                  {Object.keys(selectedWeeks).map((brand, index) => (
+                    <div className={styles.brandItem} key={index}>
+                      <label className={styles.checkboxContainer}>
+                        <input
+                          type='checkbox'
+                          checked={selectedWeeks[brand]}
+                          onChange={() => toggleCheckboxWeek(brand)}
+                          className={styles.checkboxInput}
+                        />
+                        <span className={styles.customCheckbox}></span>
+                      </label>
+                      <span className={styles.brandName}>{brand}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className={styles.list}>
-                {Object.keys(selectedWeeks).map((brand, index) => (
-                  <div className={styles.brandItem} key={index}>
-                    <label className={styles.checkboxContainer}>
-                      <input
-                        type='checkbox'
-                        checked={selectedWeeks[brand]}
-                        onChange={() => toggleCheckboxWeek(brand)}
-                        className={styles.checkboxInput}
-                      />
-                      <span className={styles.customCheckbox}></span>
-                    </label>
-                    <span className={styles.brandName}>{brand}</span>
-                  </div>
-                ))}
+              <div className={styles.container}>
+                <div className={styles.header}>
+                  <span className={styles.title}>Группа</span>
+                  <button className={styles.clearButton} onClick={handleGroup}>
+                    {allSelectedGroups ? 'Снять все' : 'Выбрать все'}
+                  </button>
+                </div>
+                <div className={styles.list}>
+                  {Object.keys(selectedGroups).map((brand, index) => (
+                    <div className={styles.brandItem} key={index}>
+                      <label className={styles.checkboxContainer}>
+                        <input
+                          type='checkbox'
+                          checked={selectedGroups[brand]}
+                          onChange={() => toggleCheckboxGroup(brand)}
+                          className={styles.checkboxInput}
+                        />
+                        <span className={styles.customCheckbox}></span>
+                      </label>
+                      <span className={styles.brandName}>{brand}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className={styles.container}>
-              <div className={styles.header}>
-                <span className={styles.title}>Группа</span>
-                <button className={styles.clearButton} onClick={handleGroup}>
-                  {allSelectedGroups ? 'Снять все' : 'Выбрать все'}
-                </button>
-              </div>
-              <div className={styles.list}>
-                {Object.keys(selectedGroups).map((brand, index) => (
-                  <div className={styles.brandItem} key={index}>
-                    <label className={styles.checkboxContainer}>
-                      <input
-                        type='checkbox'
-                        checked={selectedGroups[brand]}
-                        onChange={() => toggleCheckboxGroup(brand)}
-                        className={styles.checkboxInput}
-                      />
-                      <span className={styles.customCheckbox}></span>
-                    </label>
-                    <span className={styles.brandName}>{brand}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            <div className={styles.container}>
-              <div className={styles.header}>
-                <span className={styles.title}>Артикул</span>
-                <button className={styles.clearButton} onClick={handleArticle}>
-                  {allSelectedArticles ? 'Снять все' : 'Выбрать все'}
-                </button>
-              </div>
-              <div className={styles.list}>
-                {Object.keys(selectedArticles).map((brand, index) => (
-                  <div className={styles.brandItem} key={index}>
-                    <label className={styles.checkboxContainer}>
-                      <input
-                        type='checkbox'
-                        checked={selectedArticles[brand]}
-                        onChange={() => toggleCheckboxArticle(brand)}
-                        className={styles.checkboxInput}
-                      />
-                      <span className={styles.customCheckbox}></span>
-                    </label>
-                    <span className={styles.brandName}>{brand}</span>
-                  </div>
-                ))}
+              <div className={styles.container}>
+                <div className={styles.header}>
+                  <span className={styles.title}>Артикул</span>
+                  <button className={styles.clearButton} onClick={handleArticle}>
+                    {allSelectedArticles ? 'Снять все' : 'Выбрать все'}
+                  </button>
+                </div>
+                <div className={styles.list}>
+                  {Object.keys(selectedArticles).map((brand, index) => (
+                    <div className={styles.brandItem} key={index}>
+                      <label className={styles.checkboxContainer}>
+                        <input
+                          type='checkbox'
+                          checked={selectedArticles[brand]}
+                          onChange={() => toggleCheckboxArticle(brand)}
+                          className={styles.checkboxInput}
+                        />
+                        <span className={styles.customCheckbox}></span>
+                      </label>
+                      <span className={styles.brandName}>{brand}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-          <div className='container dash-container'>
-           <div>
-             <button className={styles.applyButton}>
-               Применить фильтры
-             </button>
-           </div>
-         </div>
+            <div className='container dash-container'>
+              <div>
+                <button className={styles.applyButton}>
+                  Применить фильтры
+                </button>
+              </div>
+            </div>
           </>
         )}
         <div className={`${styles.ScheduleBody} dash-container container`}>
           <div className='container dash-container '>
-            <ScheduleBigChart />
+            <ScheduleBigChart dataRevenue={dataRevenue} dataNetProfit={dataNetProfit} />
           </div>
           <div className='container dash-container '>
-            <ScheduleProfitabilityBigChart />
+            <ScheduleProfitabilityBigChart dataProfitability={dataProfitability} dataProfitMinus={dataProfitMinus} dataProfitPlus={dataProfitPlus} />
           </div>
         </div>
         <div className={`${styles.ScheduleFooter} dash-container container`}>
-          <StructureRevenue />
-          <RevenueStorageChart />
+          <StructureRevenue dataStructureRevenue={dataStructureRevenue} />
+          <RevenueStorageChart dataRevenueStorage={dataRevenueStorage} />
         </div>
         <BottomNavigation />
       </div>

@@ -3816,7 +3816,8 @@ font-weight: 500;
 /* ScheduleBigChart */
 .chart-container {
   width: 98%;
-  min-height: 400px;
+  min-height: 355px;
+  max-height: 380px;
   /* max-width: 100%;  */
   margin: 20px 0px 20px 0px;
   padding: 20px;
@@ -3833,7 +3834,7 @@ font-weight: 500;
   text-align: left;
   color: #1A1A1A;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 canvas {
@@ -3848,18 +3849,18 @@ canvas {
   background-color: rgba(255, 99, 132, 0.8);
 }
 .roundedChartColor{
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
   background-color: #F0AD00;
   border-radius: 3px;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 .roundedChartColorPurple{
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
   background-color: #5329FF;
   border-radius: 3px;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 .chart-container-header{
   display: flex;
@@ -3876,7 +3877,7 @@ canvas {
 }
 .chart-header-wrapper{
   display: flex;
-  gap: 15px;
+  gap: 10px;
 }
 .chart-header-wrapper-prof{
   display: flex;

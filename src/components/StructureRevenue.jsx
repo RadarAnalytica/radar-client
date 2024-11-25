@@ -4,13 +4,13 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const StructureRevenue = () => {
+const StructureRevenue = ({ dataStructureRevenue }) => {
     const data = {
         labels: ['Все удержания', 'Всего внешних расходов', 'Налог'],
         datasets: [
             {
                 label: 'Структура выручки',
-                data: [61, 20, 19],
+                data: dataStructureRevenue,
                 backgroundColor: [
                     '#81ACFF',
                     '#FF9972',
@@ -109,7 +109,7 @@ const StructureRevenue = () => {
     });
 
     return (
-        <div className="chart-container" style={{ width: '30%', minHeight: "496px", display: "flex", flexDirection: "column" }}>
+        <div className="chart-container" style={{ width: '30%', minHeight: "470px", display: "flex", flexDirection: "column" }}>
             <div className='chart-title'>Структура выручки</div>
             <Doughnut data={data} options={options} style={{ margin: "auto" }} />
         </div>

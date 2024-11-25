@@ -3,13 +3,13 @@ import { Bar } from 'react-chartjs-2';
 
 
 
-const RevenueStorageChart = () => {
+const RevenueStorageChart = ({ dataRevenueStorage }) => {
     const data = {
         labels: ['Коледино', 'Тула', 'Казань', 'Санкт-Петербург Уткина Заводь', 'Невинномысск', 'Екатеринбург-Перспективный', 'Астана', 'Атакент', 'СЦ Кузнецк', 'Пушкино', 'Обухово 2', 'Вёшки'],
         datasets: [
             {
                 label: 'Выручка по складам',
-                data: [2000000, 1400000, 2000000, 2000000, 3000000, 2000000, 5000000, 6000000, 2000000, 2000000, 6500000, 6000000],
+                data: dataRevenueStorage,
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
@@ -77,7 +77,7 @@ const RevenueStorageChart = () => {
     };
 
     return (
-        <div className="chart-container" style={{ width: "68%", maxHeight: "500px" }}>
+        <div className="chart-container" style={{ width: "68%", minHeight: "470px" }}>
             <div className='chart-container-header'>
                 <div>
                     <div className='chart-title'>Выручка по складам</div>

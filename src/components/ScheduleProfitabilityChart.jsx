@@ -5,13 +5,13 @@ import roi from '../assets/roi.svg';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const ScheduleProfitabilityChart = () => {
+const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus }) => {
     const data = {
         labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'],
         datasets: [
             {
                 label: 'ROI, %',
-                data: [10, 20, -30, 10, -40, -20, -10, -40, -60, 20, -80, -140],
+                data: dataProfitability,
                 borderColor: '#5329FF',
                 borderWidth: 2,
                 fill: false,
@@ -153,7 +153,7 @@ const ScheduleProfitabilityChart = () => {
     };
 
     return (
-        <div className="chart-container" style={{ marginLeft: "8px", minWidth: "620px" }}>
+        <div className="chart-container" style={{ marginLeft: "8px", minWidth: "50%" }}>
             <div className='chart-container-header-prof'>
                 <div>
                     <div className='chart-title'>Рентабельность и маржинальность</div>

@@ -6,13 +6,13 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const ScheduleBigChart = () => {
+const ScheduleBigChart = ({ dataRevenue, dataNetProfit }) => {
     const data = {
         labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'],
         datasets: [
             {
                 label: 'Выручка, ₽',
-                data: [2000000, 4500000, 5000000, 2500000, 3200000, 1000000, 2700000, 2400000, 1500000, 0, 1500000, 2500000],
+                data: dataRevenue,
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
@@ -33,7 +33,7 @@ const ScheduleBigChart = () => {
             },
             {
                 label: 'Чистая прибыль, ₽',
-                data: [2100000, 2100000, 2500000, 1800000, 1300000, 500000, 2300000, 1600000, 5000000, -500000, 1000000, 1500000],
+                data: dataNetProfit,
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
@@ -137,7 +137,7 @@ const ScheduleBigChart = () => {
     };
 
     return (
-        <div className="chart-container" style={{ marginRight: "10px", minWidth: "630px" }}>
+        <div className="chart-container" style={{ marginRight: "10px", minWidth: "50%" }}>
             <div className='chart-container-header'>
                 <div>
                     <div className='chart-title'>Продажи и прибыль</div>
