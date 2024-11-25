@@ -522,24 +522,24 @@ export const ServiceFunctions = {
     const data = await response.json();
 
     return {
-      filterOptions: [
-        {
-          id: 'brand',
-          label: 'Бренд',
-          options: data.brand_filter.map(brand => ({
-            value: brand || '0',
-            label: brand || 'Все'
-          }))
-        },
-        {
-          id: 'group',
-          label: 'Группа',
-          options: data.group_filter.map(group => ({
-            value: group,
-            label: group
-          }))
-        }
-      ]
+        filterOptions: [
+            {
+                id: 'brand',
+                label: 'Бренд',
+                options: data.brand_filter.map(brand => ({
+                    value: brand,
+                    label: brand
+                }))
+            },
+            {
+                id: 'group',
+                label: 'Группа',
+                options: data.group_filter.map(group => ({
+                    value: group,
+                    label: group
+                }))
+            }
+        ]
     };
   },
 
