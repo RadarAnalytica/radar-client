@@ -658,6 +658,41 @@ const TableStock = ({ dataTable, setDataTable }) => {
                 <div className='column'>
                   <div
                     className='cell header-cell'
+                    style={{
+                      minWidth: '150px',
+                      borderRight: 'none',
+                      borderBottom: 'none',
+                      borderTop: 'none',
+                    }}
+                  >
+                  </div>
+                  <div
+                    className='cell cell-header'
+                    style={{
+                      minWidth: '150px',
+                      minHeight: '70px',
+                      borderRight: 'none',
+                      borderBottom: 'none',
+                      borderTop: 'none',
+                    }}
+                  >
+                    Сумма
+                  </div>
+                  {dataTable.map((row, index) => (
+                    <div
+                      key={index}
+                      className='cell data-cell'
+                      style={{
+                        minWidth: '150px',
+                      }}
+                    >
+                      {formatNumber(row.to_client_sum || '0')} ₽
+                    </div>
+                  ))}
+                </div>
+                <div className='column'>
+                  <div
+                    className='cell header-cell'
                     style={{ minWidth: '150px', border: 'none' }}
                   ></div>
                   <div
@@ -684,6 +719,31 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       style={{ minWidth: '150px' }}
                     >
                       {row.fromClient}
+                    </div>
+                  ))}
+                </div>
+                <div className='column'>
+                  <div
+                    className='cell header-cell'
+                    style={{ minWidth: '150px', border: 'none' }}
+                  ></div>
+                  <div
+                    className='cell cell-header'
+                    style={{
+                      minWidth: '150px',
+                      minHeight: '70px',
+                      border: 'none',
+                    }}
+                  >
+                    Сумма
+                  </div>
+                  {dataTable.map((row, index) => (
+                    <div
+                      key={index}
+                      className='cell data-cell'
+                      style={{ minWidth: '150px' }}
+                    >
+                      {formatNumber(row.from_client_sum || '0')} ₽
                     </div>
                   ))}
                 </div>
