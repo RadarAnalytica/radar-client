@@ -1,4 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import BottomNavigation from '../components/BottomNavigation';
 import FilterSection from '../components/FilterSection';
 import SideNav from '../components/SideNav';
@@ -7,7 +8,23 @@ import styles from './WeeklyReportDashboard.module.css';
 import TooltipInfo from '../components/TooltipInfo';
 
 const WeeklyReportDashboard = () => {
-  const dashboardData = useSelector((state) => state?.dashboardReportSlice?.data);
+  const dashboardData = useSelector(
+    (state) => state?.dashboardReportSlice?.data
+  );
+  const [isEditing, setIsEditing] = useState(false);
+  const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
+  const handleTaxRateChange = (e) => {
+    setTaxRate(e.target.value);
+  };
+
+  const handleTaxRateSubmit = () => {
+    const updatedFilterData = {
+      taxRate: taxRate,
+    };
+
+    // dispatch(fetchDashboardReport({ authToken, filterData: updatedFilterData }));
+    setIsEditing(false);
+  };
   return (
     <div className='dashboard-page'>
       <SideNav />
@@ -27,19 +44,22 @@ const WeeklyReportDashboard = () => {
                     <TooltipInfo text={'Выручка'} />
                   </div>
                   <div className={styles.mumbersInRow}>
-                   {dashboardData?.total_revenue?.quantity} шт / {dashboardData?.total_revenue?.rub} ₽
+                    {dashboardData?.total_revenue?.quantity} шт /
+                    {dashboardData?.total_revenue?.rub} ₽
                   </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Выкупы</div>
                   <div className={styles.mumbersInRow}>
-                    {dashboardData?.total_purchases?.quantity} шт / {dashboardData?.total_purchases?.rub} ₽
+                    {dashboardData?.total_purchases?.quantity} шт /
+                    {dashboardData?.total_purchases?.rub} ₽
                   </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Возвраты</div>
                   <div className={styles.mumbersInRow}>
-                    {dashboardData?.total_return?.quantity} шт / {dashboardData?.total_return?.rub} ₽
+                    {dashboardData?.total_return?.quantity} шт /
+                    {dashboardData?.total_return?.rub} ₽
                   </div>
                 </div>
                 <div className={styles.salesChartRow}>
@@ -56,7 +76,9 @@ const WeeklyReportDashboard = () => {
                     Выкуп
                     <TooltipInfo text={'Выкуп'} />
                   </div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_purchases.rub} % </div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_purchases.rub} %
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>СПП</div>
@@ -69,18 +91,24 @@ const WeeklyReportDashboard = () => {
                     Себестоимость
                     <TooltipInfo text={'Себестоимость'} />
                   </div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_cost_price} ₽</div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_cost_price} ₽
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>
                     Доля себестоимости
                     <TooltipInfo text={'Доля себестоимости'} />
                   </div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_cost_price_percent} % </div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_cost_price_percent} %
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Кол-во доставок</div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_deliveries} шт</div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_deliveries} шт
+                  </div>
                 </div>
               </div>
               <div
@@ -90,25 +118,33 @@ const WeeklyReportDashboard = () => {
                 <div className={styles.title}>Финансы</div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Оплата на Р/С</div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_payment} ₽</div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_payment} ₽
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Чистая прибыль</div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_profit} ₽ </div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_profit} ₽
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>
                     Маржинальность
                     <TooltipInfo text={'Маржинальность'} />
                   </div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_marginality} %</div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_marginality} %
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>
                     Рентабельность инвестиций
                     <TooltipInfo text={'Рентабельность инвестиций'} />
                   </div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_return_on_investment} %</div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_return_on_investment} %
+                  </div>
                 </div>
               </div>
               <div
@@ -118,21 +154,29 @@ const WeeklyReportDashboard = () => {
                 <div className={styles.title}>Внешние расходы</div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Всего расходов</div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_expenses} ₽</div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_expenses} ₽
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Внешние расходы</div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_external_expenses} ₽</div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_external_expenses} ₽
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Затраты на самовыкупы</div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_self_purchase_costs} ₽</div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_self_purchase_costs} ₽
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>
                     Расходов в % от выручки
                   </div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_expenses_percent} %</div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_expenses_percent} %
+                  </div>
                 </div>
               </div>
             </div>
@@ -156,7 +200,8 @@ const WeeklyReportDashboard = () => {
                     <div
                       className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                     >
-                      <div className={styles.headerInRow}>₽</div>{dashboardData?.total_wb_commission?.rub}
+                      <div className={styles.headerInRow}>₽</div>
+                      {dashboardData?.total_wb_commission?.rub}
                     </div>
                   </div>
                 </div>
@@ -211,7 +256,9 @@ const WeeklyReportDashboard = () => {
                     <div
                       className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                     >
-                      <div>{dashboardData?.total_other_retentions?.percent}</div>
+                      <div>
+                        {dashboardData?.total_other_retentions?.percent}
+                      </div>
                     </div>
                     <div
                       className={`${styles.mumbersInRow} ${styles.widthHeader}`}
@@ -248,12 +295,15 @@ const WeeklyReportDashboard = () => {
                       className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                     >
                       <div className={styles.headerInRow}>Штук</div>
-                      <div>{dashboardData?.total_compensation_defects.quantity}</div>
+                      <div>
+                        {dashboardData?.total_compensation_defects.quantity}
+                      </div>
                     </div>
                     <div
                       className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                     >
-                      <div className={styles.headerInRow}>₽</div>{dashboardData?.total_compensation_defects.rub}
+                      <div className={styles.headerInRow}>₽</div>
+                      {dashboardData?.total_compensation_defects.rub}
                     </div>
                   </div>
                 </div>
@@ -266,7 +316,9 @@ const WeeklyReportDashboard = () => {
                     <div
                       className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                     >
-                      <div>{dashboardData?.total_compensation_damage.quantity}</div>
+                      <div>
+                        {dashboardData?.total_compensation_damage.quantity}
+                      </div>
                     </div>
                     <div
                       className={`${styles.mumbersInRow} ${styles.widthHeader}`}
@@ -311,8 +363,13 @@ const WeeklyReportDashboard = () => {
                 <div className={styles.totalBox}>
                   <div>Итого от выручки</div>
                   <div className={styles.totalNumbers}>
-                    <div> {dashboardData?.total_compensation_penalties.rub} ₽</div>
-                    <div>{dashboardData?.total_compensation_penalties.percent} %</div>
+                    <div>
+                      {' '}
+                      {dashboardData?.total_compensation_penalties.rub} ₽
+                    </div>
+                    <div>
+                      {dashboardData?.total_compensation_penalties.percent} %
+                    </div>
                   </div>
                 </div>
               </div>
@@ -339,23 +396,44 @@ const WeeklyReportDashboard = () => {
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Ставка налога</div>
                   <div className={styles.mumbersInRow}>
-                    {dashboardData?.tax_rate} %
+                    {isEditing ? (
+                      <div className={styles.editTaxRate}>
+                        <input
+                          type='number'
+                          value={taxRate}
+                          onChange={handleTaxRateChange}
+                          className={styles.taxRateInput}
+                        />
+                        <button onClick={handleTaxRateSubmit}>✓</button>
+                        <button onClick={() => setIsEditing(false)}>✕</button>
+                      </div>
+                    ) : (
+                      <div onClick={() => setIsEditing(true)}>
+                        {dashboardData?.tax_rate} %
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>WB реализовал</div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_sold_by_wb} ₽ </div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_sold_by_wb} ₽
+                  </div>
                 </div>
                 <div className={styles.salesChartRow}>
                   <div className={styles.titleInRow}>Налоговая база</div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_tax_base} ₽ </div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_tax_base} ₽
+                  </div>
                 </div>
                 <div
                   className={styles.salesChartRow}
                   style={{ marginBottom: '56px' }}
                 >
                   <div className={styles.titleInRow}>Налог</div>
-                  <div className={styles.mumbersInRow}>{dashboardData?.total_tax} ₽ </div>
+                  <div className={styles.mumbersInRow}>
+                    {dashboardData?.total_tax} ₽
+                  </div>
                 </div>
               </div>
             </div>

@@ -527,8 +527,8 @@ export const ServiceFunctions = {
                 id: 'brand',
                 label: 'Бренд',
                 options: data.brand_filter.map(brand => ({
-                    value: brand || '0',
-                    label: brand || 'Все'
+                    value: brand,
+                    label: brand
                 }))
             },
             {
