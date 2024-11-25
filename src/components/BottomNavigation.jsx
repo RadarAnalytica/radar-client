@@ -15,6 +15,7 @@ const BottomNavigation = () => {
   let dahsboardActiveStyle6 = styles.navItem;
   let dahsboardActiveStyle7 = styles.navItem;
   let dahsboardActiveStyle8 = styles.navItem;
+  let dahsboardActiveStyle9 = styles.navItem;
   if (lastUrlPart === 'weeklyreport-dashboard') {
     dahsboardActiveStyle = `${styles.navItem} ${styles.active}`;
   }
@@ -38,6 +39,9 @@ const BottomNavigation = () => {
   }
   if (lastUrlPart === 'report-main') {
     dahsboardActiveStyle8 = `${styles.navItem} ${styles.active}`;
+  }
+  if (lastUrlPart === 'prime-cost') {
+    dahsboardActiveStyle9 = `${styles.navItem} ${styles.active}`;
   }
 
   return (
@@ -65,6 +69,9 @@ const BottomNavigation = () => {
       </div>
       <div className={dahsboardActiveStyle4}>
         <span onClick={() => navigate('/schedule')}>Графики</span>
+      </div>
+      <div className={dahsboardActiveStyle9}>
+        <span onClick={() => navigate('/prime-cost')}>Себестоимость</span>
       </div>
       <div className={styles.navItem}>
         <span href='#'>Внешние расходы</span>
