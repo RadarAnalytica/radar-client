@@ -6,9 +6,9 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const ScheduleBigChart = ({ dataRevenue, dataNetProfit }) => {
+const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit }) => {
     const data = {
-        labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'],
+        labels: labels,
         datasets: [
             {
                 label: 'Выручка, ₽',

@@ -522,24 +522,24 @@ export const ServiceFunctions = {
     const data = await response.json();
 
     return {
-        filterOptions: [
-            {
-                id: 'brand',
-                label: 'Бренд',
-                options: data.brand_filter.map(brand => ({
-                    value: brand,
-                    label: brand
-                }))
-            },
-            {
-                id: 'group',
-                label: 'Группа',
-                options: data.group_filter.map(group => ({
-                    value: group,
-                    label: group
-                }))
-            }
-        ]
+      filterOptions: [
+        {
+          id: 'brand',
+          label: 'Бренд',
+          options: data.brand_filter.map(brand => ({
+            value: brand,
+            label: brand
+          }))
+        },
+        {
+          id: 'group',
+          label: 'Группа',
+          options: data.group_filter.map(group => ({
+            value: group,
+            label: group
+          }))
+        }
+      ]
     };
   },
 
@@ -575,6 +575,52 @@ export const ServiceFunctions = {
     }
 
     return await response.json();
+  },
+
+  scheduleFilterFields: async (token) => {
+    const response = await fetch(`${URL}/api/report/get-charts-filters`, {
+      method: 'GET',
+      headers: {
+        "content-type": "application/json",
+        authorization: "JWT " + token,
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch dashboard report');
+    }
+
+    return await response.json();
+  },
+
+  scheduleFilterChartData: async (token, filter) => {
+    // const response = await fetch(`${URL}/api/report/get-charts`, {
+    //   method: 'POST',
+    //   headers: {
+    //     "content-type": "application/json",
+    //     authorization: "JWT " + token,
+    //   },
+    //   body: JSON.stringify(filter)
+    // });
+
+    // if (!response.ok) {
+    //   throw new Error('Failed to fetch Schedule filter chart data');
+    // }
+
+    // return await response.json();
+
+    return {
+      "revenue_and_profit": {},
+      "roi_and_marginality": {},
+      "structure": {
+        "tax_percent": 0.0,
+        "external_expenses_percent": 0,
+        "cost_percent": 0,
+        "profit_percent": 0.0,
+        "all_retentions_percent": 0
+      },
+      "revenue_by_warehouse": {}
+    };
   },
 
 }
