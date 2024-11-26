@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { ServiceFunctions } from '../service/serviceFunctions';
 import SideNav from '../components/SideNav';
 import AuthContext from '../service/AuthContext';
 import TopNav from '../components/TopNav';
@@ -10,26 +11,42 @@ import styles from './PrimeCost.module.css';
 
 const PrimeCost = () => {
   const [file, setFile] = useState();
-
+  const { authToken } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   const handleCostPriceShow = () => {
     handleClose();
     setCostPriceShow(true);
   };
   const handleCostPriceClose = () => {
     setCostPriceShow(false);
-    //   onUpdateDashboard();
   };
 
-  const handleCostPriceSave = () => {
-    //   saveFileClickHandler(file, authToken, activeBrand);
-    setFile(null);
-    //   onUpdateDashboard();
-    setCostPriceShow(false);
+  const handleTemplateDownload = async () => {
+    const response = await ServiceFunctions.getCostTemplate(authToken);
+    const blob = await response.blob();
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = 'Себестоимость.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
+
+  const handleCostPriceSave = async () => {
+    try {
+      await ServiceFunctions.postCostUpdate(authToken, file);
+      setFile(null);
+      setCostPriceShow(false);
+    } catch (error) {
+      console.error('Error updating cost:', error);
+    }
+  };
+
   return (
     <div className='dashboard-page'>
       <SideNav />
@@ -103,7 +120,7 @@ const PrimeCost = () => {
               </div>
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
                 <button
-                  //   onClick={handleCostPriceSave}
+                  onClick={handleCostPriceSave}
                   className='prime-btn'
                   style={{ height: '52px' }}
                 >
@@ -133,11 +150,7 @@ const PrimeCost = () => {
                                 </div> */}
               <DragDropFile files={file} setFiles={setFile} />
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                <a
-                  href='#'
-                  className='link'
-                  //   onClick={() => getFileClickHandler(authToken, activeBrand)}
-                >
+                <a href='#' className='link' onClick={handleTemplateDownload}>
                   Скачать шаблон
                 </a>
               </div>
