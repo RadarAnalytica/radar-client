@@ -110,14 +110,14 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit }) => {
             },
             y: {
                 beginAtZero: true,
-                min: -1000000,
-                max: 5000000,
+                min: 0,
+                max: 100000,
                 grid: {
                     display: true,
                     drawOnChartArea: true,
                 },
                 ticks: {
-                    stepSize: 1000000,
+                    stepSize: 5000,
                     color: '#8C8C8C',
                     callback: function (value) {
                         return value.toLocaleString();

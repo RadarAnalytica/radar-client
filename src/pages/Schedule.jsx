@@ -15,16 +15,16 @@ const Schedule = () => {
   const { user, authToken, logout } = useContext(AuthContext);
 
   //data for charts
-  const [dataRevenueStorage, setDataRevenueStorage] = useState([2000000, 1400000, 2000000, 2000000, 3000000, 2000000, 5000000, 6000000, 2000000, 2000000, 6500000, 6000000],)
+  const [dataRevenueStorage, setDataRevenueStorage] = useState([])
   const [dataStructureRevenue, setDataStructureRevenue] = useState()
   const [dataProfitability, setDataProfitability] = useState([10, 20, -30, 10, -40, -20, -10, -40, -60, 20, -80, -140])
   const [dataProfitMinus, setDataProfitMinus] = useState([-50, -40, -30, -10, -80, -20, -10, -40, -60, -20, -80, -140])
   const [dataProfitPlus, setDataProfitPlus] = useState([50, 30, 50, 80, 70, 60, 40, 20, 10, 40, 30, 20])
-  const [dataRevenue, setDataRevenues] = useState([2000000, 4500000, 5000000, 2500000, 3200000, 1000000, 2700000, 2400000, 1500000, 0, 1500000, 2500000])
-  const [dataNetProfit, setDataNetProfit] = useState([2100000, 2100000, 2500000, 1800000, 1300000, 500000, 2300000, 1600000, 5000000, -500000, 1000000, 1500000])
+  const [dataRevenue, setDataRevenues] = useState([])
+  const [dataNetProfit, setDataNetProfit] = useState([])
 
   const [bigChartLabels, setBigChartLabels] = useState(['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'])
-
+  const [dataRevenueStorageLabels, setDataRevenueStorageLabels] = useState([])
   //data for filters
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [allSelectedProducts, setAllSelectedProducts] = useState(false);
@@ -34,54 +34,13 @@ const Schedule = () => {
   const [allSelectedMonths, setAllSelectedMonths] = useState(false);
   const [allSelectedYears, setAllSelectedYears] = useState(false);
   const [allSelectedBrands, setAllSelectedBrands] = useState(false);
-  const [selectedBrands, setSelectedBrands] = useState({
-    'Бренда 1': true,
-    'Бренда 2': false,
-  });
-  const [selectedYears, setSelectedYears] = useState({
-    2024: true,
-    2023: false,
-    2022: false,
-  });
-  const [selectedMonths, setSelectedMonths] = useState({
-    Январь: true,
-    Февраль: false,
-    Март: false,
-    Апрель: false,
-    Май: false,
-    Июнь: false,
-    Август: false,
-  });
-  const [selectedWeeks, setSelectedWeeks] = useState({
-    '09.09.2024': true,
-    '16.09.2024': false,
-    '23.09.2024': false,
-    '30.09.2024': false,
-  });
-  const [selectedGroups, setSelectedGroups] = useState({
-    124356664: true,
-    124356634: false,
-    124356645: false,
-    124353664: false,
-  });
-  const [selectedArticles, setSelectedArticles] = useState({
-    1243564: true,
-    1253664: false,
-    1243664: false,
-    1243536: false,
-    1243546: false,
-    1243539: false,
-    1243531: false,
-  });
-  const [selectedProducts, setSelectedProducts] = useState({
-    'Куртка демисезонная с капюшоном осень 2024': true,
-    'Куртка демисезонная с капюшоном осень 2023': false,
-    'Куртка демисезонная с капюшоном осень 2022': false,
-    'Куртка демисезонная с капюшоном осень 2024 длинное название 1': false,
-    'Куртка демисезонная с капюшоном осень 2024 длинное название 2': false,
-    'Куртка демисезонная с капюшоном осень 2024 длинное название 3': false,
-    'Куртка демисезонная с капюшоном осень 2024 длинное название 4': false,
-  });
+  const [selectedBrands, setSelectedBrands] = useState({});
+  const [selectedYears, setSelectedYears] = useState({});
+  const [selectedMonths, setSelectedMonths] = useState({});
+  const [selectedWeeks, setSelectedWeeks] = useState({});
+  const [selectedGroups, setSelectedGroups] = useState({});
+  const [selectedArticles, setSelectedArticles] = useState({});
+  const [selectedProducts, setSelectedProducts] = useState({});
 
 
   const transformFilters = (data) => {
@@ -98,14 +57,12 @@ const Schedule = () => {
 
   useEffect(() => {
     updateFilterFields()
-    updateScheduleChartData()
   }, [])
 
   const updateFilterFields = async () => {
     const data = await ServiceFunctions.scheduleFilterFields(authToken);
     const transformedFilters = transformFilters(data);
 
-    // Assuming these are setters
     setSelectedBrands(transformedFilters.setSelectedBrands);
     setSelectedArticles(transformedFilters.setSelectedArticles);
     setSelectedGroups(transformedFilters.setSelectedGroups);
@@ -117,6 +74,7 @@ const Schedule = () => {
 
   const updateScheduleChartData = async () => {
 
+
     const filter = {
       "brand_name_filter": Object.keys(selectedBrands).filter(key => selectedBrands[key]),
       "wb_id_filter": Object.keys(selectedArticles).filter(key => selectedArticles[key]),
@@ -127,36 +85,84 @@ const Schedule = () => {
         "weekdays": Object.keys(selectedWeeks).filter(key => selectedWeeks[key])
       }
     };
+
     const data = await ServiceFunctions.scheduleFilterChartData(authToken, filter);
-    if (filter.date_sale_filter.months.length === 1 && filter.date_sale_filter.years.length === 1 && filter.date_sale_filter.weekdays.length === 1) {
-      const weekDays = [];
 
-      const start = new Date(filter.date_sale_filter.weekdays[0]);
+    setDataStructureRevenue([
+      data?.structure?.all_retentions_percent || 0,
+      data?.structure?.external_expenses_percent || 0,
+      data?.structure?.tax_percent || 0,
+      data?.structure?.profit_percent || 0,
+      data?.structure?.cost_percent || 0,
+    ])
 
-      for (let i = 0; i < 7; i++) {
-        const nextDate = new Date(start);
-        nextDate.setDate(start.getDate() + i);
-        weekDays.push(nextDate.toISOString().split('T')[0]); // Format as YYYY-MM-DD
+
+    if (
+      filter.date_sale_filter.months.length === 1 &&
+      filter.date_sale_filter.years.length === 1 &&
+      filter.date_sale_filter.weekdays.length === 1
+    ) {
+
+      const dailyRevenueArray = [];
+      const dailyProfitArray = [];
+      const dayTitlesArray = [];
+
+
+      const year = Object.keys(data.revenue_and_profit)[0];
+      const months = data.revenue_and_profit[year];
+      const selectedWeekdayNames = filter.date_sale_filter.weekdays;
+
+      for (const month in months) {
+        const weeks = months[month].weeks;
+
+
+        for (const week in weeks) {
+          if (selectedWeekdayNames.includes(week)) {
+            const days = weeks[week].days;
+
+            for (const day in days) {
+              const dayData = days[day];
+
+
+              dayTitlesArray.push(day);
+              dailyRevenueArray.push(dayData.revenue || 0);
+              dailyProfitArray.push(dayData.profit || 0);
+            }
+          }
+        }
       }
-      setBigChartLabels(weekDays)
+
+      setDataRevenues(dailyRevenueArray)
+      setDataNetProfit(dailyProfitArray)
+      setBigChartLabels(dayTitlesArray)
     }
-    else if (filter.date_sale_filter.months.length === 1 && filter.date_sale_filter.years.length === 1 && filter.date_sale_filter.weekdays.length !== 1) {
+    else if (
+      filter.date_sale_filter.months.length === 1 &&
+      filter.date_sale_filter.years.length === 1 &&
+      filter.date_sale_filter.weekdays.length > 1
+    ) {
       const weekRevenueArray = [];
       const weekProfitArray = [];
       const weekDatesArray = [];
 
-      // Assuming only one year and one month is selected
-      const year = Object.keys(data)[0]; // Get the single year
-      const months = data[year];
-      const month = Object.keys(months)[0]; // Get the single month
-      const weeks = months[month]?.weeks; // Access weeks within the month
 
-      if (weeks) {
-        for (const week in weeks) {
-          const weekData = weeks[week]; // Get the week data
-          weekDatesArray.push(week); // Add week key (date) to the array
-          weekRevenueArray.push(weekData.total_week_revenue || 0); // Add weekly revenue
-          weekProfitArray.push(weekData.total_week_profit || 0); // Add weekly profit
+      const year = Object.keys(data.revenue_and_profit)[0];
+      const months = data.revenue_and_profit[year];
+
+      for (const month in months) {
+        const weeks = months[month]?.weeks;
+
+        if (weeks) {
+          for (const week in weeks) {
+
+            if (filter.date_sale_filter.weekdays.includes(week)) {
+              const weekData = weeks[week];
+
+              weekDatesArray.push(week);
+              weekRevenueArray.push(weekData.total_week_revenue || 0);
+              weekProfitArray.push(weekData.total_week_profit || 0);
+            }
+          }
         }
       }
       setDataRevenues(weekRevenueArray)
@@ -188,7 +194,7 @@ const Schedule = () => {
           const monthData = months[month];
           revenueArray.push(monthData.total_month_revenue || 0);
           profitArray.push(monthData.total_month_profit || 0);
-          monthNamesArray.push(monthNameMap[month] || month); // Map to short version
+          monthNamesArray.push(monthNameMap[month] || month);
         }
 
       }
@@ -198,11 +204,10 @@ const Schedule = () => {
     }
 
 
-    setDataStructureRevenue([
-      data.structure.all_retentions_percent,
-      data.structure.external_expenses_percent,
-      data.structure.tax_percent
-    ])
+    setDataRevenueStorage(Object.values(data.revenue_by_warehouse))
+    setDataRevenueStorageLabels(Object.keys(data.revenue_by_warehouse))
+
+
   }
 
 
@@ -508,7 +513,7 @@ const Schedule = () => {
         </div>
         <div className={`${styles.ScheduleFooter} dash-container container`}>
           <StructureRevenue dataStructureRevenue={dataStructureRevenue} />
-          <RevenueStorageChart dataRevenueStorage={dataRevenueStorage} />
+          <RevenueStorageChart dataRevenueStorage={dataRevenueStorage} labels={dataRevenueStorageLabels} />
         </div>
         <BottomNavigation />
       </div>

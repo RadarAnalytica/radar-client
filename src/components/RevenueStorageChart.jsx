@@ -3,9 +3,9 @@ import { Bar } from 'react-chartjs-2';
 
 
 
-const RevenueStorageChart = ({ dataRevenueStorage }) => {
+const RevenueStorageChart = ({ dataRevenueStorage, labels }) => {
     const data = {
-        labels: ['Коледино', 'Тула', 'Казань', 'Санкт-Петербург Уткина Заводь', 'Невинномысск', 'Екатеринбург-Перспективный', 'Астана', 'Атакент', 'СЦ Кузнецк', 'Пушкино', 'Обухово 2', 'Вёшки'],
+        labels: labels,
         datasets: [
             {
                 label: 'Выручка по складам',
@@ -61,7 +61,7 @@ const RevenueStorageChart = ({ dataRevenueStorage }) => {
             x: {
                 beginAtZero: true,
                 min: 0,
-                max: 7000000,
+                max: 70000,
                 grid: {
                     display: true
                 },
@@ -77,7 +77,7 @@ const RevenueStorageChart = ({ dataRevenueStorage }) => {
     };
 
     return (
-        <div className="chart-container" style={{ width: "68%", minHeight: "470px" }}>
+        <div className="chart-container" style={{ width: "68%", minHeight: "500px" }}>
             <div className='chart-container-header'>
                 <div>
                     <div className='chart-title'>Выручка по складам</div>

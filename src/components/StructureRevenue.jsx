@@ -6,7 +6,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const StructureRevenue = ({ dataStructureRevenue }) => {
     const data = {
-        labels: ['Все удержания', 'Всего внешних расходов', 'Налог'],
+        labels: ['Все удержания', 'Всего внешних расходов', 'Налог', "Доход", "Себестоимость"],
         datasets: [
             {
                 label: 'Структура выручки',
@@ -15,14 +15,19 @@ const StructureRevenue = ({ dataStructureRevenue }) => {
                     '#81ACFF',
                     '#FF9972',
                     '#9A81FF',
+                    '#FFD166',
+                    '#4AD991',
+
                 ],
                 borderColor: [
                     '#FFFFFF',
                     '#FFFFFF',
                     '#FFFFFF',
+                    '#FFFFFF',
+                    '#FFFFFF',
                 ],
                 borderWidth: 5,
-                cutout: '85%',
+                cutout: '90%',
                 borderRadius: 11,
             },
         ],
@@ -52,7 +57,7 @@ const StructureRevenue = ({ dataStructureRevenue }) => {
         },
         cutout: '85%',
         layout: {
-            padding: 20,
+            padding: 0,
         },
         displayCenterText: true,
     };
@@ -68,12 +73,12 @@ const StructureRevenue = ({ dataStructureRevenue }) => {
             const colors = dataset.backgroundColor;
 
             ctx.restore();
-            const fontSize = 14;
+            const fontSize = 12;
             ctx.font = `${fontSize}px Arial`;
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#000';
 
-            const startY = height / 2 - ((labels.length - 1) * 30);
+            const startY = height / 2 - ((labels.length - 1) * 30) + 15;
 
             labels.forEach((label, index) => {
                 const value = dataset.data[index];
@@ -109,7 +114,7 @@ const StructureRevenue = ({ dataStructureRevenue }) => {
     });
 
     return (
-        <div className="chart-container" style={{ width: '30%', minHeight: "470px", display: "flex", flexDirection: "column" }}>
+        <div className="chart-container" style={{ width: '30%', minHeight: "500px", display: "flex", flexDirection: "column" }}>
             <div className='chart-title'>Структура выручки</div>
             <Doughnut data={data} options={options} style={{ margin: "auto" }} />
         </div>
