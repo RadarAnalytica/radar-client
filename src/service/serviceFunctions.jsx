@@ -598,33 +598,20 @@ export const ServiceFunctions = {
   },
 
   scheduleFilterChartData: async (token, filter) => {
-    // const response = await fetch(`${URL}/api/report/get-charts`, {
-    //   method: 'POST',
-    //   headers: {
-    //     "content-type": "application/json",
-    //     authorization: "JWT " + token,
-    //   },
-    //   body: JSON.stringify(filter)
-    // });
-
-    // if (!response.ok) {
-    //   throw new Error('Failed to fetch Schedule filter chart data');
-    // }
-
-    // return await response.json();
-
-    return {
-      revenue_and_profit: {},
-      roi_and_marginality: {},
-      structure: {
-        tax_percent: 0.0,
-        external_expenses_percent: 0,
-        cost_percent: 0,
-        profit_percent: 0.0,
-        all_retentions_percent: 0,
+    const response = await fetch(`${URL}/api/report/get-charts`, {
+      method: 'POST',
+      headers: {
+        "content-type": "application/json",
+        authorization: "JWT " + token,
       },
-      revenue_by_warehouse: {},
-    };
+      body: JSON.stringify(filter)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch Schedule filter chart data');
+    }
+
+    return await response.json();
   },
 
   getMonthProductFilters: async (token) => {
