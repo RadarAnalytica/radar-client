@@ -1,0 +1,190 @@
+/* ExpenseTracker.module.css */
+.container {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    padding: 12px;
+  }
+  
+  .table {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .headerRow,
+  .dataRow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .headerRow {
+    font-size: 14px;
+    color: rgba(140, 140, 140, 1);
+    font-weight: 500;
+    line-height: 17.5px;
+  }
+  
+  .yearCell {
+    width: 100px;
+  }
+  
+  .monthCell {
+    width: 130px;
+  }
+  
+  .articleCell {
+    width: 160px;
+  }
+
+  .articleCell input{
+    width: 160px;
+  }
+  
+  .expenseCell {
+    width: 130px;
+  }
+  
+  .totalCell {
+    width: 130px;
+    text-align: right;
+  }
+
+  .inputWrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .input {
+    padding: 6px 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    width: 130px;
+    background: white;
+  }
+  
+  .rubSign {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    color: #ccc;
+    font-size: 16px;
+    pointer-events: none;
+    transition: color 0.3s;
+  }
+  
+  .input.active,
+  .rubSign.active {
+    color: #000;
+  }
+  
+  .expense {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 4px;
+    padding: 6px 8px;
+    background-color: white;
+  }
+  
+  .currency {
+    margin-left: 4px;
+    color: #666;
+  }
+  
+  .addButton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 9px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .addButton::after {
+    content: "Добавить строку";
+    position: absolute;
+    bottom: 9%;
+    left: 300%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(140, 140, 140, 1);
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+
+  }
+  
+  .addButton:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .addButton:hover {
+    color: #333;
+  }
+  
+  .plusIcon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Add hover states */
+  .select:hover,
+  .input:hover,
+  .expense:hover {
+    border-color: #bbb;
+  }
+  
+  /* Add focus states */
+  .input:focus {
+    outline: none;
+    border-color: #999;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .select {
+    /* width: 100%; */
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  .select option {
+    color: #000000; /* Set default option text color to black */
+  }
+
+  .textInSelect {
+    color: #000000; /* Set default option text color to black */
+  }
+
+  .selected {
+    color: #000000; /* Set the text color of the selected option to black */
+  }
+ 
+  .expense {
+    position: relative;
+  }
+  
+  .expense::after {
+    content: '₽';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }

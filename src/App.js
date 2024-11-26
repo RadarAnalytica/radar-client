@@ -23,6 +23,7 @@ import WeeklyReportPenaltiesPage from "./pages/WeeklyReportPenaltiesPage";
 import TestPeriodTariffPage from "./pages/TestPeriodTariffPage";
 import ReportMain from "./pages/ReportMain";
 import PrimeCost from "./pages/PrimeCost";
+import ExternalExpensesPage from "./pages/ExternalExpensesPage";
 
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
@@ -442,6 +443,14 @@ function App() {
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
                         <PrimeCost />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/external-expenses"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <ExternalExpensesPage />
                       </React.Suspense>
                     }
                   />
