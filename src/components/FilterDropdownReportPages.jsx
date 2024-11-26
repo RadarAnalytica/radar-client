@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const FilterDropdownReportPages = ({
   filterOptions,
@@ -12,7 +12,7 @@ const FilterDropdownReportPages = ({
   return (
     <div className='filter container dash-container pb-4 pt-0 d-flex'>
       <div className='row'>
-        {filterOptions.map((filter) => (
+        {filterOptions?.map((filter) => (
           <div key={filter.id} className='filter-item col'>
             <label
               style={{ fontWeight: 600, marginBottom: '4px ' }}
