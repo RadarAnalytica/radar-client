@@ -1,0 +1,51 @@
+.primeCost {
+    margin-top: 8px;
+}
+
+.primeCostBox {
+    display: flex;
+}
+
+.primeCostBoxText {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.lastDownlaod {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(140, 140, 140, 1);
+    margin-top: 8px;
+}
+
+.primeCostBoxButton {
+  margin-top: 68px;
+}
+
+.primeCostBoxButton button {
+    background: rgba(83, 41, 255, 1);
+    border-radius: 8px;
+    padding: 20px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 25px;
+    color: rgba(255, 255, 255, 1);
+    border: none;
+}
+
+.primeCost {
+    max-width: 644px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+    padding: 24px 32px;
+}
