@@ -5,6 +5,7 @@ import { fetchDashboardFilters } from '../redux/filters/filtersDataActions';
 import { fetchDashboardReport } from '../redux/dashboardReport/dashboardReportActions';
 import styles from './FilterSection.module.css';
 import FilterGroup from './FilterGroup';
+import { monthNames } from '../service/utils';
 
 const FilterSection = () => {
   const dispatch = useDispatch();
@@ -124,21 +125,6 @@ const FilterSection = () => {
         [category]: [],
       }));
     }
-  };
-
-  const monthNames = {
-    1: 'Январь',
-    2: 'Февраль',
-    3: 'Март',
-    4: 'Апрель',
-    5: 'Май',
-    6: 'Июнь',
-    7: 'Июль',
-    8: 'Август',
-    9: 'Сентябрь',
-    10: 'Октябрь',
-    11: 'Ноябрь',
-    12: 'Декабрь',
   };
 
   return (

@@ -623,4 +623,118 @@ export const ServiceFunctions = {
     };
   },
 
+  getMonthProductFilters: async (token) => {
+    const response = await fetch(`${URL}/api/report/get-month-product-filters`, {
+      method: 'GET',
+      headers: {
+        'accept': 'application/json',
+        'Authorization': token
+      }
+    });
+  
+    const data = await response.json();
+
+    const dropdownFilters = [
+      {
+        id: 'size',
+        label: 'Размер',
+        options: data.size_name_filter.map(size => ({
+          value: size,
+          label: size
+        }))
+      },
+      {
+        id: 'article',
+        label: 'Артикул поставщика',
+        options: data.vendor_code_filter.map(code => ({
+          value: code,
+          label: code
+        }))
+      },
+      {
+        id: 'good',
+        label: 'Товар',
+        options: data.wb_id_filter.map(good => ({
+          value: good,
+          label: good
+        }))
+      },
+      {
+        id: 'groups',
+        label: 'Группа',
+        options: data.groups_filter.map(group => ({
+          value: group,
+          label: group
+        }))
+      },
+      {
+        id: 'brand',
+        label: 'Бренд',
+        options: data.brand_name_filter.map(brand => ({
+          value: brand,
+          label: brand
+        }))
+      },
+      {
+        id: 'country',
+        label: 'Страна',
+        options: data.country_filter.map(country => ({
+          value: country,
+          label: country
+        }))
+      },
+      {
+        id: 'wb_id',
+        label: 'WB ID',
+        options: data.wb_id_filter.map(id => ({
+          value: id,
+          label: id
+        }))
+      },
+      {
+        id: 'subject',
+        label: 'Предмет',
+        options: data.subject_name_filter.map(subject => ({
+          value: subject,
+          label: subject
+        }))
+      },
+      {
+        id: 'srid',
+        label: 'SRID',
+        options: data.srid_filter.map(srid => ({
+          value: srid,
+          label: srid
+        }))
+      }
+    ];
+
+    const groupFilters = {
+      dateFilters: {
+        title: 'Фильтр по датам',
+        options: [
+          {
+            id: 'years',
+            label: 'Год',
+            values: data.date_sale_filter.years
+          },
+          {
+            id: 'months',
+            label: 'Месяц',
+            values: data.date_sale_filter.months
+          },
+          {
+            id: 'weeks',
+            label: 'Неделя',
+            values: data.date_sale_filter.weekdays
+          }
+        ]
+      }
+    };
+
+    return {
+      dropdownFilters,
+      groupFilters
+    };
+},
 }

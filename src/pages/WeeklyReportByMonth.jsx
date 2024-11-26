@@ -1,4 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchReportByMonth } from '../redux/reportByMonth/reportByMonthActions';
+import AuthContext from '../service/AuthContext';
+import { ServiceFunctions } from '../service/serviceFunctions';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import FilterDropdownReportPages from '../components/FilterDropdownReportPages';
@@ -6,70 +10,52 @@ import FilterGroup from '../components/FilterGroup';
 import styles from './WeeklyReportByMonth.module.css';
 import SalesTable from '../components/SaleTable';
 import BottomNavigation from '../components/BottomNavigation';
+import { monthNames } from '../service/utils';
 
 const WeeklyReportByMonth = () => {
-  const [filterDataSet, setFilterDataSet] = useState({});
+  const { authToken } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  // const { weeklyData, loading, error } = useSelector((state) => state.weeklyReportSlice);
+  const [filterOptions, setFilterOptions] = useState([]);
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
-    warehouse: [],
-    brand: [],
     year: [],
     month: [],
     week: [],
-    group: [],
   });
-  const filterData = {
-    warehouse: [
-      { id: '1', label: 'СЦ Кузнецк' },
-      { id: '2', label: 'Длинное название склада lkbbbbbbbbbbbbbb' },
-      { id: '3', label: 'Длинное название склада' },
-      { id: '4', label: 'Длинное название склада ' },
-      { id: '5', label: 'Длинное название склада' },
-      { id: '6', label: 'Длинное название склада' },
-      // ... more options
-    ],
-    brand: [
-      { id: '1', label: 'Название бренда' },
-      { id: '2', label: 'Название 2' },
-      // ... more options
-    ],
-    year: [
-      { id: '1', label: '2023' },
-      { id: '2', label: '2022' },
-      // ... more options
-    ],
-    month: [
-      { id: '1', label: 'Январь' },
-      { id: '2', label: 'Февраль' },
-      { id: '3', label: 'Март' },
-      { id: '4', label: 'Апрель' },
-      { id: '5', label: 'Май' },
-      { id: '6', label: 'Июнь' },
-      { id: '7', label: 'Июль' },
-      { id: '8', label: 'Август' },
-      { id: '9', label: 'Сентябрь' },
-      { id: '10', label: 'Октябрь' },
-      { id: '11', label: 'Ноябрь' },
-      { id: '12', label: 'Декабрь' },
-      // ... more options
-    ],
-    week: [
-      { id: '1', label: 'Понедельник' },
-      { id: '2', label: 'Вторник' },
-      { id: '3', label: 'Среда' },
-      { id: '4', label: 'Четверг' },
-      { id: '5', label: 'Пятница' },
-      { id: '6', label: 'Суббота' },
-      { id: '7', label: 'Воскресенье' },
-      // ... more options
-    ],
-    group: [
-      { id: '1', label: 'Группа 1' },
-      { id: '2', label: 'Группа 2' },
-      // ... more options
-    ],
-    // ... other filter categories
-  };
+
+  const [activeFilters, setActiveFilters] = useState({});
+
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const filters = await ServiceFunctions.getMonthProductFilters(
+          authToken
+        );
+        console.log('filterOptions', filterOptions);
+        setFilterOptions(filters);
+      } catch (error) {
+        console.error('Failed to fetch filter options:', error);
+      }
+    };
+
+    fetchFilters();
+  }, []);
+
+  useEffect(() => {
+    if (filterOptions?.dropdownFilters?.length > 0) {
+      const initialActiveFilters = filterOptions.dropdownFilters.reduce(
+        (acc, filter) => {
+          // Set the first option as default value for each filter
+          acc[filter.id] = filter.options[0]?.value || '';
+          return acc;
+        },
+        {}
+      );
+
+      setActiveFilters(initialActiveFilters);
+    }
+  }, [filterOptions]);
 
   const handleSelect = (category, id) => {
     setSelectedFilters((prev) => ({
@@ -87,118 +73,40 @@ const WeeklyReportByMonth = () => {
     }));
   };
 
-  useEffect(() => {
-    const fetchFilterOptions = async () => {
-      try {
-        const response = await fetch('/api/filter-options');
-        const data = await response.json();
-        setFilterDataSet(data);
-      } catch (error) {
-        console.error('Failed to fetch filter options:', error);
-      }
-    };
-
-    fetchFilterOptions();
-  }, []);
-  const shops = [];
-  const filterOptions = [
-    {
-      id: 'yuridical_lic',
-      label: 'Юридическое лицо',
-      options: [
-        { value: '7', label: '7 дней' },
-        { value: '14', label: '14 дней' },
-        { value: '30', label: '30 дней' },
-        { value: '90', label: '90 дней' },
-      ],
-    },
-    {
-      id: 'size',
-      label: 'Размер',
-      options: [
-        { value: '0', label: 'Все' },
-        ...shops.map((brand) => ({
-          value: brand.id,
-          label: brand.brand_name,
-        })),
-      ],
-    },
-    {
-      id: 'articool',
-      label: 'Артикул поставщика',
-      options: [
-        { value: '745664455', label: '745664455' },
-        { value: '145456565465', label: '145456565465' },
-      ],
-    },
-    {
-      id: 'goods',
-      label: 'Товар',
-      options: [
-        { value: '745664455', label: '745664455' },
-        { value: '145456565465', label: '145456565465' },
-      ],
-    },
-    {
-      id: 'group',
-      label: 'Группа',
-      options: [
-        { value: '745664455', label: '745664455' },
-        { value: '145456565465', label: '145456565465' },
-      ],
-    },
-    {
-      id: 'filter-self-buy',
-      label: 'Фильтр самовыкупов',
-      options: [
-        { value: '745664455', label: '745664455' },
-        { value: '145456565465', label: '145456565465' },
-      ],
-    },
-    {
-      id: 'brand',
-      label: 'Бренд',
-      options: [
-        { value: '745664455', label: '745664455' },
-        { value: '145456565465', label: '145456565465' },
-      ],
-    },
-    {
-      id: 'item-type',
-      label: 'Предмет',
-      options: [
-        { value: '745664455', label: '745664455' },
-        { value: '145456565465', label: '145456565465' },
-      ],
-    },
-    {
-      id: 'country',
-      label: 'Страна',
-      options: [
-        { value: '745664455', label: '745664455' },
-        { value: '145456565465', label: '145456565465' },
-      ],
-    },
-    {
-      id: 'srid',
-      label: 'Srid',
-      options: [
-        { value: '745664455', label: '745664455' },
-        { value: '145456565465', label: '145456565465' },
-      ],
-    },
-  ];
-
-  const [activeFilters, setActiveFilters] = useState({
-    period: '30',
-    store: '0',
-  });
-
   const handleFilterChange = (filterId, value) => {
     setActiveFilters((prevFilters) => ({
       ...prevFilters,
       [filterId]: value,
     }));
+  };
+
+  const prepareFilterData = () => {
+    const filterData = {
+      vendor_code_filter: activeFilters.vendor_code || [],
+      size_name_filter: activeFilters.size || [],
+      brand_name_filter: activeFilters.brand || [],
+      country_filter: activeFilters.country || [],
+      wb_id_filter: activeFilters.wb_id || [],
+      subject_name_filter: activeFilters.subject || [],
+      srid_filter: activeFilters.srid || [],
+      groups_filter: activeFilters.groups || [],
+      date_sale_filter: {
+        years: selectedFilters.year || [],
+        months: selectedFilters.month || [],
+        weekdays: selectedFilters.week || [],
+      },
+    };
+
+    return filterData;
+  };
+
+  const handleFetchReport = (filters) => {
+    dispatch(
+      fetchReportByMonth({
+        authToken: authToken,
+        filters,
+      })
+    );
   };
 
   return (
@@ -218,7 +126,7 @@ const WeeklyReportByMonth = () => {
           <>
             <div className='container dash-container'>
               <FilterDropdownReportPages
-                filterOptions={filterOptions}
+                filterOptions={filterOptions?.dropdownFilters}
                 activeFilters={activeFilters}
                 onFilterChange={handleFilterChange}
               />
@@ -227,21 +135,36 @@ const WeeklyReportByMonth = () => {
               <div className={styles.filteWrapper}>
                 <FilterGroup
                   title='Год'
-                  options={filterData.year}
+                  options={filterOptions.groupFilters?.dateFilters?.options
+                    ?.find((filter) => filter.id === 'years')
+                    ?.values?.map((value) => ({
+                      id: value,
+                      label: value,
+                    }))}
                   selected={selectedFilters.year}
                   onSelect={(id) => handleSelect('year', id)}
                   onClearAll={() => handleClearAll('year')}
                 />
                 <FilterGroup
                   title='Месяц'
-                  options={filterData.month}
+                  options={filterOptions.groupFilters?.dateFilters?.options
+                    ?.find((filter) => filter.id === 'months')
+                    ?.values.map((value) => ({
+                      id: value,
+                      label: monthNames[value] || value,
+                    }))}
                   selected={selectedFilters.month}
-                  onSelect={(id) => handleSelect('month', id)}
+                  onSelect={(value) => handleSelect('month', value)}
                   onClearAll={() => handleClearAll('month')}
                 />
                 <FilterGroup
                   title='Неделя'
-                  options={filterData.week}
+                  options={filterOptions.groupFilters?.dateFilters?.options
+                    ?.find((filter) => filter.id === 'weeks')
+                    ?.values.map((value) => ({
+                      id: value,
+                      label: value,
+                    }))}
                   selected={selectedFilters.week}
                   onSelect={(id) => handleSelect('week', id)}
                   onClearAll={() => handleClearAll('week')}
@@ -249,10 +172,19 @@ const WeeklyReportByMonth = () => {
               </div>
             </div>
             <div className='container dash-container'>
-          <div>
-            <button className={styles.applyButton}>Применить фильтры</button>
-          </div>
-        </div>
+              <div>
+                <button
+                  className={styles.applyButton}
+                  onClick={() => {
+                    const filterData = prepareFilterData();
+                    handleFetchReport(filterData);
+                    console.log('Filter data to send:', filterData);
+                  }}
+                >
+                  Применить фильтры
+                </button>
+              </div>
+            </div>
           </>
         )}
         <div className='container dash-container'>

@@ -9,6 +9,7 @@ import stockAnalysisDataSlice from './stockAnalysis/stockAnalysisDataSlice';
 import supportWindowSlice from './supportWindow/supportWindowSlice';
 import filtersDataSlice from './filters/filtersDataSlice';
 import dashboardReportSlice from './dashboardReport/dashboardReportSlice';
+import reportByMonthSlice from './reportByMonth/reportByMonthSlice';
 
 const storeOptions = {
   reducer: {
@@ -21,6 +22,7 @@ const storeOptions = {
     supportWindowSlice,
     filtersDataSlice,
     dashboardReportSlice,
+    reportByMonthSlice
   },
 };
 
