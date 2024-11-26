@@ -10,6 +10,7 @@ import supportWindowSlice from './supportWindow/supportWindowSlice';
 import filtersDataSlice from './filters/filtersDataSlice';
 import dashboardReportSlice from './dashboardReport/dashboardReportSlice';
 import reportByMonthSlice from './reportByMonth/reportByMonthSlice';
+import reportByGoodsSlice from './reportByGoods/reportByGoodsSlice';
 
 const storeOptions = {
   reducer: {
@@ -22,7 +23,8 @@ const storeOptions = {
     supportWindowSlice,
     filtersDataSlice,
     dashboardReportSlice,
-    reportByMonthSlice
+    reportByMonthSlice,
+    reportByGoodsSlice
   },
 };
 
