@@ -77,7 +77,7 @@ const WeeklyReportDashboard = () => {
                     <TooltipInfo text={'Выкуп'} />
                   </div>
                   <div className={styles.mumbersInRow}>
-                    {dashboardData?.total_purchases.rub} %
+                    {dashboardData?.total_purchase_percent} %
                   </div>
                 </div>
                 <div className={styles.salesChartRow}>
