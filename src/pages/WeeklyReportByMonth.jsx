@@ -5,17 +5,18 @@ import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import FilterDropdownReportPages from '../components/FilterDropdownReportPages';
 import FilterGroup from '../components/FilterGroup';
 import styles from './WeeklyReportByMonth.module.css';
 import SalesTable from '../components/SaleTable';
 import BottomNavigation from '../components/BottomNavigation';
-import { monthNames } from '../service/utils';
+import { monthNames, getMonthNumbers } from '../service/utils';
 
 const WeeklyReportByMonth = () => {
   const { authToken } = useContext(AuthContext);
   const dispatch = useDispatch();
-  // const { weeklyData, loading, error } = useSelector((state) => state.weeklyReportSlice);
+  const { weeklyData, loading, error } = useSelector(
+    (state) => state.reportByMonthSlice
+  );
   const [filterOptions, setFilterOptions] = useState([]);
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -92,7 +93,7 @@ const WeeklyReportByMonth = () => {
       groups_filter: activeFilters.groups || [],
       date_sale_filter: {
         years: selectedFilters.year || [],
-        months: selectedFilters.month || [],
+        months: getMonthNumbers(selectedFilters.month) || [],
         weekdays: selectedFilters.week || [],
       },
     };
@@ -124,12 +125,43 @@ const WeeklyReportByMonth = () => {
         </div>
         {!isOpenFilters && (
           <>
-            <div className='container dash-container'>
-              <FilterDropdownReportPages
-                filterOptions={filterOptions?.dropdownFilters}
-                activeFilters={activeFilters}
-                onFilterChange={handleFilterChange}
-              />
+            <div
+              className='container dash-container'
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '20px',
+                marginBottom: '20px',
+              }}
+            >
+              {filterOptions?.dropdownFilters?.map((filter) => (
+                <FilterGroup
+                  key={filter.id}
+                  title={filter.label}
+                  options={filter.options.map((option) => ({
+                    id: option.value,
+                    label: option.label,
+                  }))}
+                  selected={
+                    Array.isArray(activeFilters[filter.id])
+                      ? activeFilters[filter.id]
+                      : []
+                  }
+                  onSelect={(value) => {
+                    const currentValues = Array.isArray(
+                      activeFilters[filter.id]
+                    )
+                      ? activeFilters[filter.id]
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange(filter.id, newValues);
+                  }}
+                  onClearAll={() => handleFilterChange(filter.id, [])}
+                />
+              ))}
             </div>
             <div className='container dash-container'>
               <div className={styles.filteWrapper}>
@@ -188,7 +220,7 @@ const WeeklyReportByMonth = () => {
           </>
         )}
         <div className='container dash-container'>
-          <SalesTable />
+          <SalesTable tableData={weeklyData} />
         </div>
         <BottomNavigation />
       </div>

@@ -9,33 +9,33 @@ import BottomNavigation from '../components/BottomNavigation';
 import styles from './WeeklyReportPL.module.css';
 
 const WeeklyReportPL = () => {
-  const {authToken} = useContext(AuthContext);  
+  const { authToken } = useContext(AuthContext);
   const [activeFilters, setActiveFilters] = useState({
     brand: '',
-    group: ''
+    group: '',
   });
   const [filterOptions, setFilterOptions] = useState([]);
 
   useEffect(() => {
     const loadFilters = async () => {
-        try {
-            const filters = await ServiceFunctions.getPLFilters(authToken);
-            setFilterOptions(filters.filterOptions);
-           // Set initial active filters based on first available options
-           if (filters.filterOptions && filters.filterOptions.length > 0) {
-            setActiveFilters({
-                brand: filters.filterOptions[0]?.options[0]?.value || 'пусто',
-                group: filters.filterOptions[1]?.options[0]?.value || '0'
-            });
+      try {
+        const filters = await ServiceFunctions.getPLFilters(authToken);
+        setFilterOptions(filters.filterOptions);
+        // Set initial active filters based on first available options
+        if (filters.filterOptions && filters.filterOptions.length > 0) {
+          setActiveFilters({
+            brand: filters.filterOptions[0]?.options[0]?.value,
+            group: filters.filterOptions[1]?.options[0]?.value,
+          });
         }
-        } catch (error) {
-            console.error('Error loading filters:', error);
-        }
+      } catch (error) {
+        console.error('Error loading filters:', error);
+      }
     };
-    
+
     loadFilters();
-}, []);
-    
+  }, []);
+
   const data = {
     dates: [
       '15.07.2024',
@@ -204,19 +204,17 @@ const WeeklyReportPL = () => {
       // ... add other rows
     ],
   };
- 
-
 
   const handleFilterChange = (filterId, value) => {
-    setActiveFilters(prevFilters => {
-        const newFilters = {
-            ...prevFilters,
-            [filterId]: value
-        };
+    setActiveFilters((prevFilters) => {
+      const newFilters = {
+        ...prevFilters,
+        [filterId]: value,
+      };
 
-        return newFilters;
+      return newFilters;
     });
-};
+  };
 
   return (
     <div className='dashboard-page'>

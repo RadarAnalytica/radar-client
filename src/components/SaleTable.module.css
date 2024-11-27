@@ -117,7 +117,7 @@
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
     padding: 4px 12px 0 12px;
-    width: 68px;
+    width: 80px;
     border-bottom: 1px solid rgba(232, 232, 232, 1);
 }
 
@@ -235,3 +235,22 @@
 .diffBacckground {
     background: rgba(83, 41, 255, 0.05);
 }
+
+.weekDetails {
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #eee;
+  }
+  
+  .detailRow {
+    padding: 8px;
+  }
+  
+  .dropdownArrow {
+    margin-left: 8px;
+    transition: transform 0.2s ease;
+  }
+  
+  .dropdownArrowExpanded {
+    transform: rotate(180deg);
+  }

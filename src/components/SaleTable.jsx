@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 import styles from './SaleTable.module.css';
 import arrowDown from '../assets/arrow-down.svg';
+import { formatPrice } from '../service/utils';
 
-const SalesTable = () => {
-  const [expandedRows, setExpandedRows] = useState({
-    2024: true,
-    Октябрь: true,
-    Сентябрь: false,
+const SalesTable = ({ tableData }) => {
+  const [expandedRows, setExpandedRows] = useState(() => {
+    const initialState = {};
+
+    // Dynamically set all years and their weeks to expanded
+    Object.entries(tableData).forEach(([year, yearData]) => {
+      initialState[year] = true; // Set year to expanded
+      Object.entries(yearData).forEach(([date]) => {
+        initialState[`week-${date}`] = true;
+      });
+    });
+
+    return initialState;
   });
+
+  console.log('expandedRows', expandedRows);
 
   const toggleRow = (key) => {
     setExpandedRows((prev) => ({
@@ -16,10 +27,273 @@ const SalesTable = () => {
     }));
   };
 
+  const renderWeekRow = (date, data) => (
+    <div key={date}>
+      <div className={styles.row} onClick={() => toggleRow(`week-${date}`)}>
+        <div
+          className={styles.weekCellDate}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          {date}
+          <span
+            className={`${styles.dropdownArrow} ${
+              expandedRows[`week-${date}`] ? styles.dropdownArrowExpanded : ''
+            }`}
+          >
+            <img src={arrowDown} alt='Dropdown Arrow' />
+          </span>
+        </div>
+        {expandedRows[`week-${date}`] && (
+          <div key={date} className={styles.row}>
+            {/* Sales Section */}
+            <div className={styles.flexContainer}>
+              <div className={styles.purchaseCell}>
+                <div>{formatPrice(data.purchases.rub)} ₽</div>
+                <div className={styles.smallText}>
+                  {data.purchases.quantity} шт
+                </div>
+              </div>
+              <div className={styles.returnCell}>
+                <div>{formatPrice(data.return.rub) || '0'} ₽</div>
+                <div className={styles.smallText}>
+                  {data.return.quantity} шт
+                </div>
+              </div>
+              <div className={styles.salesCell}>{data.revenue.quantity} шт</div>
+              <div className={styles.revenueCell}>
+                {formatPrice(data.revenue.rub)} ₽
+              </div>
+              <div className={styles.avgPriceCell}>
+                {formatPrice(data.avg_check)} ₽
+              </div>
+              <div className={styles.sppCell}>
+                {formatPrice(data.avg_spp)} %
+              </div>
+              <div className={styles.buyoutCell}>{data.purchase_percent} %</div>
+            </div>
+            {/* Self Cost Section */}
+            <div
+              className={styles.flexContainer}
+              style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+            >
+              <div className={styles.costCell}>
+                <div>
+                  {data.cost_price !== '-'
+                    ? formatPrice(data.cost_price) + ' ₽'
+                    : '-'}
+                </div>
+                <div className={styles.smallText}>
+                  {data.cost_price_percent !== '-'
+                    ? data.cost_price_percent + ' %'
+                    : '-'}
+                </div>
+              </div>
+              <div className={styles.costPerUnitCell}>
+                {data.cost_price !== '-'
+                  ? formatPrice(data.cost_price / data.revenue.quantity) + ' ₽'
+                  : '-'}
+              </div>
+            </div>
+            {/* Commision & Logisitc Section */}
+            <div className={styles.flexContainer}>
+              <div className={styles.deliveryCountCell}>
+                {data.deliveries} шт
+              </div>
+              <div className={styles.commissionCell}>
+                <div>{formatPrice(data.wb_commission.rub)} ₽</div>
+                <div className={styles.smallText}>
+                  {formatPrice(data.wb_commission.percent)} %
+                </div>
+              </div>
+              <div className={styles.acquiringCell}>
+                <div>{formatPrice(data.acquiring.rub)} ₽</div>
+                <div className={styles.smallText}>
+                  {data.acquiring.percent.toFixed(1)} %
+                </div>
+              </div>
+              <div className={styles.logisticsCell}>
+                {formatPrice(data.logistics_straight.rub)} ₽
+              </div>
+              <div className={styles.logisticsCell}>
+                {formatPrice(data.logistics_reverse.rub)} ₽
+              </div>
+              <div className={styles.logisticsCell}>
+                <div>{formatPrice(data.logistics_total.rub)} ₽</div>
+                <div className={styles.smallText}>
+                  {data.logistics_total.percent.toFixed(1)} %
+                </div>
+              </div>
+              <div className={styles.logisticsCell}>
+                {formatPrice(data.logistics_per_product)} ₽
+              </div>
+            </div>
+            {/* Compensation and Penalties Section */}
+            <div
+              className={styles.flexContainer}
+              style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+            >
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.compensation_defects.rub) || '0'} ₽
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.compensation_defects.quantity) || '0'} шт
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.compensation_damage.rub) || '0'} ₽
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.compensation_damage.quantity) || '0'} шт
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.compensation_penalties.rub) || '0'} ₽
+              </div>
+              {/* ?????? */}
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.compensation_penalties.rub) || '0'} ₽
+              </div>
+            </div>
+            {/* Another Keep Section */}
+            <div className={styles.flexContainer}>
+              <div className={styles.defectCompnesaitionCell}>
+                <div>{formatPrice(data.storage.rub) || '0'} ₽</div>
+                <div>{formatPrice(data.storage.percent) || '0'} %</div>
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                <div>{formatPrice(data.other_retentions.rub) || '0'} ₽</div>
+                <div>{formatPrice(data.other_retentions.percent) || '0'} %</div>
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                <div>{formatPrice(data.acceptance.rub) || '0'} ₽</div>
+                <div>{formatPrice(data.acceptance.percent) || '0'} %</div>
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                <div>{formatPrice(data.wb_commission.rub) || '0'} ₽</div>
+                <div>{formatPrice(data.wb_commission.percent) || '0'} %</div>
+              </div>
+            </div>
+            {/* External Expenses Section */}
+            <div
+              className={styles.flexContainer}
+              style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+            >
+              <div className={styles.defectCompnesaitionCell}>
+                {data.external_expenses !== '-'
+                  ? formatPrice(data.self_purchase_costs) + ' ₽'
+                  : '0 ₽'}
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                <div>
+                  {data.self_purchase_costs !== '-'
+                    ? formatPrice(data.external_expenses) + ' ₽'
+                    : '0 ₽'}
+                </div>
+                <div>
+                  {data.self_purchase_costs !== '-'
+                    ? formatPrice(data.expenses_percent) + ' ₽'
+                    : '0 %'}
+                </div>
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {data.external_expenses !== '-'
+                  ? formatPrice(data.expenses) + ' ₽'
+                  : '0 ₽'}
+              </div>
+            </div>
+            {/* Tax Section */}
+            <div className={styles.flexContainer}>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.sold_by_wb) || '0'} ₽
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.tax_base) || '0'} ₽
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.tax) || '0'} ₽
+              </div>
+            </div>
+            {/* Finance Section */}
+            <div
+              className={styles.flexContainer}
+              style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+            >
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.payment) || '0'} ₽
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.profit) || '0'} ₽
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.profit) || '0'} ₽
+              </div>
+              <div
+                className={styles.defectCompnesaitionCell}
+                style={{ width: '148px' }}
+              >
+                {formatPrice(data.profit) || '0'} ₽
+              </div>
+              <div className={styles.defectCompnesaitionCell}>
+                {formatPrice(data.profit) || '0'} ₽
+              </div>
+            </div>
+          </div>
+        )}
+        {/* Existing row content */}
+      </div>
+    </div>
+  );
+
+  const renderYearData = () => {
+    return Object.entries(tableData).map(([year, yearData]) => (
+      <div key={year}>
+        <div className={styles.weekCellYear} style={{ display: 'flex' }}>
+          <div className={styles.yearToggle} onClick={() => toggleRow(year)}>
+            <span>{year}</span>
+            <span
+              className={`${styles.dropdownArrow} ${
+                expandedRows[year] ? styles.dropdownArrowExpanded : ''
+              }`}
+            >
+              <img src={arrowDown} alt='Dropdown Arrow' />
+            </span>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <div style={{ width: '808px' }}></div>
+            <div
+              style={{ width: '272px', background: 'rgba(83, 41, 255, 0.05)' }}
+            ></div>
+            <div style={{ width: '896px' }}></div>
+            <div
+              style={{ width: '768px', background: 'rgba(83, 41, 255, 0.05)' }}
+            ></div>
+            <div style={{ width: '512px' }}></div>
+            <div
+              style={{ width: '384px', background: 'rgba(83, 41, 255, 0.05)' }}
+            ></div>
+            <div style={{ width: '384px' }}></div>
+            <div
+              style={{ width: '660px', background: 'rgba(83, 41, 255, 0.05)' }}
+            ></div>
+          </div>
+        </div>
+        {expandedRows[year] && (
+          <div className={`${styles.fontSize14} ${styles.monthsContainer}`}>
+            {Object.entries(yearData).map(([date, weekData]) =>
+              renderWeekRow(date, weekData.data)
+            )}
+          </div>
+        )}
+      </div>
+    ));
+  };
+
   return (
     <div className={styles.container}>
       {/* Header - Always visible */}
-      <div className={styles.header} style={{ width: '333%' }}>
+      <div className={styles.header} style={{ width: '334%' }}>
         <div className={styles.weekCellEmptyHeader}>
           <div className={styles.headerWeekText}>Неделя</div>
         </div>
@@ -212,7 +486,8 @@ const SalesTable = () => {
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
               style={{ padding: '4px 0 0 0' }}
             >
-              Чистая<br/> прибыль на ед.
+              Чистая
+              <br /> прибыль на ед.
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
@@ -229,426 +504,7 @@ const SalesTable = () => {
         </div>
       </div>
 
-      {/* Months Section - Controlled by year dropdown */}
-      <div style={{ width: '333%' }}>
-        <div className={styles.weekCellYear} style={{ display: 'flex' }}>
-          <div className={styles.yearToggle} onClick={() => toggleRow('2024')}>
-            <span>2024</span>
-            <span
-              className={`${styles.dropdownArrow} ${
-                expandedRows['2024'] ? styles.dropdownArrowExpanded : ''
-              }`}
-            >
-              <img src={arrowDown} alt='Dropdown Arrow' />
-            </span>
-          </div>
-          <div style={{ display: 'flex' }}>
-            <div style={{ width: '796px' }}></div>
-            <div
-              style={{ width: '272px', background: 'rgba(83, 41, 255, 0.05)' }}
-            ></div>
-            <div style={{ width: '896px' }}></div>
-            <div
-              style={{ width: '768px', background: 'rgba(83, 41, 255, 0.05)' }}
-            ></div>
-            <div style={{ width: '512px' }}></div>
-            <div
-              style={{ width: '384px', background: 'rgba(83, 41, 255, 0.05)' }}
-            ></div>
-            <div style={{ width: '384px' }}></div>
-            <div
-              style={{ width: '660px', background: 'rgba(83, 41, 255, 0.05)' }}
-            ></div>
-          </div>
-        </div>
-        {expandedRows['2024'] && (
-          <div className={`${styles.fontSize14} ${styles.monthsContainer}`}>
-            {/* September Section */}
-            <div>
-              <div className={styles.borderBottom} style={{ display: 'flex' }}>
-                <div
-                  className={`${styles.row} ${styles.clickable} ${styles.headerOfMonth}`}
-                  onClick={() => toggleRow('Сентябрь')}
-                >
-                  <span className={styles.headerTextMonth}>Сентябрь</span>
-                  <span
-                    className={`${styles.dropdownArrow} ${
-                      expandedRows['Сентябрь']
-                        ? styles.dropdownArrowExpanded
-                        : ''
-                    }`}
-                  >
-                    <img src={arrowDown} alt='Dropdown Arrow' />
-                  </span>
-                </div>
-                <div style={{ display: 'flex' }}>
-                  <div style={{ width: '796px' }}></div>
-                  <div
-                    style={{
-                      width: '272px',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                    }}
-                  ></div>
-                  <div style={{ width: '896px' }}></div>
-                  <div
-                    style={{
-                      width: '768px',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                    }}
-                  ></div>
-                  <div style={{ width: '512px' }}></div>
-                  <div
-                    style={{
-                      width: '384px',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                    }}
-                  ></div>
-                  <div style={{ width: '384px' }}></div>
-                  <div
-                    style={{
-                      width: '660px',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                    }}
-                  ></div>
-                </div>
-              </div>
-
-              {expandedRows['Сентябрь'] && (
-                <div className={styles.row}>
-                  <div className={styles.weekCellDate}>30.10.24</div>
-                  <div className={styles.flexContainer}>
-                    <div className={styles.purchaseCell}>
-                      <div>500 000 ₽</div>
-                      <div className={styles.smallText}>50 шт</div>
-                    </div>
-                    <div className={styles.returnCell}>
-                      <div>10 000 ₽</div>
-                      <div className={styles.smallText}>2 шт</div>
-                    </div>
-                    <div className={styles.salesCell}>50 шт</div>
-                    <div className={styles.revenueCell}>100 000 ₽</div>
-                    <div className={styles.avgPriceCell}>5 000 ₽</div>
-                    <div className={styles.sppCell}>20 %</div>
-                    <div className={styles.buyoutCell}>40 %</div>
-                  </div>
-                  <div
-                    className={styles.flexContainer}
-                    style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                  >
-                    <div className={styles.costCell}>
-                      <div>50 000 ₽</div>
-                      <div className={styles.smallText}>20 %</div>
-                    </div>
-                    <div className={styles.costPerUnitCell}>1 000 ₽</div>
-                  </div>
-                  <div className={styles.flexContainer}>
-                    <div className={styles.deliveryCountCell}>100 шт</div>
-                    <div className={styles.commissionCell}>
-                      <div>50 000 ₽</div>
-                      <div className={styles.smallText}>20 %</div>
-                    </div>
-                    <div className={styles.acquiringCell}>
-                      <div>1 000 ₽</div>
-                      <div className={styles.smallText}>0.1 %</div>
-                    </div>
-                    <div className={styles.logisticsCell}>15 000 ₽</div>
-                    <div className={styles.logisticsCell}>2 000 ₽</div>
-                    <div className={styles.logisticsCell}>
-                      <div>20 000 ₽</div>
-                      <div className={styles.smallText}>9 %</div>
-                    </div>
-                    <div className={styles.logisticsCell}>400 ₽</div>
-                  </div>
-                  <div
-                    className={styles.flexContainer}
-                    style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                  >
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>100 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>100 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>100 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>100 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>100 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>100 ₽</div>
-                    </div>
-                  </div>
-                  <div className={styles.flexContainer}>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                      <div className={styles.smallText}>0.1 %</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                      <div className={styles.smallText}>0.1 %</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                      <div className={styles.smallText}>0.1 %</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                      <div className={styles.smallText}>0.1 %</div>
-                    </div>
-                  </div>
-                  <div
-                    className={styles.flexContainer}
-                    style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                  >
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>0 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>25 000 ₽</div>
-                      <div className={styles.smallText}>10 %</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>25 000 ₽</div>
-                    </div>
-                  </div>
-                  <div className={styles.flexContainer}>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                    </div>
-                  </div>
-                  <div
-                    className={styles.flexContainer}
-                    style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                  >
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>1000 ₽</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>30 %</div>
-                    </div>
-                    <div className={styles.defectCompnesaitionCell}>
-                      <div>80 %</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* October Section */}
-            <div
-              className={styles.borderBottom}
-              style={{ display: 'flex', flexDirection: 'column' }}
-            >
-              <div style={{ display: 'flex' }}>
-                <div
-                  className={`${styles.row} ${styles.clickable} ${styles.headerOfMonth}`}
-                  onClick={() => toggleRow('Октябрь')}
-                >
-                  <span className={styles.headerTextMonth}>Октябрь</span>
-                  <span
-                    className={`${styles.dropdownArrow} ${
-                      expandedRows['Октябрь']
-                        ? styles.dropdownArrowExpanded
-                        : ''
-                    }`}
-                  >
-                    <img src={arrowDown} alt='Dropdown Arrow' />
-                  </span>
-                </div>
-                <div style={{ display: 'flex' }}>
-                  <div style={{ width: '796px' }}></div>
-                  <div
-                    style={{
-                      width: '272px',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                    }}
-                  ></div>
-                  <div style={{ width: '896px' }}></div>
-                  <div
-                    style={{
-                      width: '768px',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                    }}
-                  ></div>
-                  <div style={{ width: '512px' }}></div>
-                  <div
-                    style={{
-                      width: '384px',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                    }}
-                  ></div>
-                  <div style={{ width: '384px' }}></div>
-                  <div
-                    style={{
-                      width: '660px',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                    }}
-                  ></div>
-                </div>
-              </div>
-              {expandedRows['Октябрь'] && (
-                <>
-                  {['07.10.24', '14.10.24', '21.10.24'].map((date) => (
-                    <div key={date} className={styles.row}>
-                      <div className={styles.weekCellDate}>{date}</div>
-                      <div className={styles.flexContainer}>
-                        <div className={styles.purchaseCell}>
-                          <div>500 000 ₽</div>
-                          <div className={styles.smallText}>50 шт</div>
-                        </div>
-                        <div className={styles.returnCell}>
-                          <div>10 000 ₽</div>
-                          <div className={styles.smallText}>2 шт</div>
-                        </div>
-                        <div className={styles.salesCell}>50 шт</div>
-                        <div className={styles.revenueCell}>100 000 ₽</div>
-                        <div className={styles.avgPriceCell}>5 000 ₽</div>
-                        <div className={styles.sppCell}>20 %</div>
-                        <div className={styles.buyoutCell}>40 %</div>
-                      </div>
-                      <div
-                        className={styles.flexContainer}
-                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                      >
-                        <div className={styles.costCell}>
-                          <div>50 000 ₽</div>
-                          <div className={styles.smallText}>20 %</div>
-                        </div>
-                        <div className={styles.costPerUnitCell}>1 000 ₽</div>
-                      </div>
-                      <div className={styles.flexContainer}>
-                        <div className={styles.deliveryCountCell}>100 шт</div>
-                        <div className={styles.commissionCell}>
-                          <div>50 000 ₽</div>
-                          <div className={styles.smallText}>20 %</div>
-                        </div>
-                        <div className={styles.acquiringCell}>
-                          <div>1 000 ₽</div>
-                          <div className={styles.smallText}>0.1 %</div>
-                        </div>
-                        <div className={styles.logisticsCell}>15 000 ₽</div>
-                        <div className={styles.logisticsCell}>2 000 ₽</div>
-                        <div className={styles.logisticsCell}>
-                          <div>20 000 ₽</div>
-                          <div className={styles.smallText}>9 %</div>
-                        </div>
-                        <div className={styles.logisticsCell}>400 ₽</div>
-                      </div>
-                      <div
-                        className={styles.flexContainer}
-                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                      >
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>100 ₽</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>100 ₽</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>100 ₽</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>100 ₽</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>100 ₽</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>100 ₽</div>
-                        </div>
-                      </div>
-                      <div className={styles.flexContainer}>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>1000 ₽</div>
-                          <div className={styles.smallText}>0.1 %</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>1000 ₽</div>
-                          <div className={styles.smallText}>0.1 %</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>1000 ₽</div>
-                          <div className={styles.smallText}>0.1 %</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>1000 ₽</div>
-                          <div className={styles.smallText}>0.1 %</div>
-                        </div>
-                      </div>
-                      <div
-                        className={styles.flexContainer}
-                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                      >
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>0 ₽</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>25 000 ₽</div>
-                          <div className={styles.smallText}>10 %</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>25 000 ₽</div>
-                        </div>
-                      </div>
-                      <div className={styles.flexContainer}>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>0 ₽</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>200 000 ₽</div>
-                          <div className={styles.smallText}>10 %</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>10 000 ₽</div>
-                        </div>
-                      </div>
-                      <div
-                        className={styles.flexContainer}
-                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                      >
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>200 000 ₽</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>70 000 ₽</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>1 000 ₽</div>
-                        </div>
-                        <div
-                          className={styles.defectCompnesaitionCell}
-                          style={{ width: '148px' }}
-                        >
-                          <div>30 %</div>
-                        </div>
-                        <div className={styles.defectCompnesaitionCell}>
-                          <div>80 %</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+      <div style={{ width: '334%' }}>{tableData && renderYearData()}</div>
     </div>
   );
 };
