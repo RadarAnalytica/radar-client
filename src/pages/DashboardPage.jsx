@@ -1,33 +1,33 @@
-import React, { useContext, useEffect, useMemo, useState, useRef } from "react";
-import SideNav from "../components/SideNav";
-import TopNav from "../components/TopNav";
-import AuthContext from "../service/AuthContext";
-import DashboardFilter from "../components/DashboardFilter";
-import MediumPlate from "../components/MediumPlate";
-import SmallPlate from "../components/SmallPlate";
-import BigChart from "../components/BigChart";
-import FinanceTable from "../components/FinanceTable";
-import StorageTable from "../components/StorageTable";
-import ChartTable from "../components/ChartTable";
-import WidePlate from "../components/WidePlate";
+import React, { useContext, useEffect, useMemo, useState, useRef } from 'react';
+import SideNav from '../components/SideNav';
+import TopNav from '../components/TopNav';
+import AuthContext from '../service/AuthContext';
+import DashboardFilter from '../components/DashboardFilter';
+import MediumPlate from '../components/MediumPlate';
+import SmallPlate from '../components/SmallPlate';
+import BigChart from '../components/BigChart';
+import FinanceTable from '../components/FinanceTable';
+import StorageTable from '../components/StorageTable';
+import ChartTable from '../components/ChartTable';
+import WidePlate from '../components/WidePlate';
 import {
   abcAnalysis,
   filterArrays,
   formatDate,
   generateDateList,
-} from "../service/utils";
-import { ServiceFunctions } from "../service/serviceFunctions";
-import SelfCostWarning from "../components/SelfCostWarning";
-import DataCollectionNotification from "../components/DataCollectionNotification";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { fetchAllShops } from "../redux/dashboard/dashboardActions";
-import { fetchShops } from "../redux/shops/shopsActions";
-import downloadIcon from "../pages/images/Download.svg";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import NoSubscriptionPage from "./NoSubscriptionPage";
-import TooltipInfo from "../components/TooltipInfo";
-import MessageWindow from "../components/MessageWindow";
+} from '../service/utils';
+import { ServiceFunctions } from '../service/serviceFunctions';
+import SelfCostWarning from '../components/SelfCostWarning';
+import DataCollectionNotification from '../components/DataCollectionNotification';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { fetchAllShops } from '../redux/dashboard/dashboardActions';
+import { fetchShops } from '../redux/shops/shopsActions';
+import downloadIcon from '../pages/images/Download.svg';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import NoSubscriptionPage from './NoSubscriptionPage';
+import TooltipInfo from '../components/TooltipInfo';
+import MessageWindow from '../components/MessageWindow';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -41,19 +41,19 @@ const DashboardPage = () => {
   const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [firstLoading ,setFirstLoading] = useState(true);
+  const [firstLoading, setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
   // const [shouldNavigate, setShouldNavigate] = useState(false);
   // console.log('shouldNavigate', shouldNavigate);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-  const storedActiveShop = localStorage.getItem("activeShop");
+  const storedActiveShop = localStorage.getItem('activeShop');
   let activeShop;
-  if (storedActiveShop && typeof storedActiveShop === "string") {
+  if (storedActiveShop && typeof storedActiveShop === 'string') {
     try {
       activeShop = JSON.parse(storedActiveShop);
     } catch (error) {
-      console.error("Error parsing storedActiveShop:", error);
+      console.error('Error parsing storedActiveShop:', error);
       activeShop = null;
     }
   }
@@ -72,7 +72,7 @@ const DashboardPage = () => {
 
   const plugForAllStores = {
     id: 0,
-    brand_name: "Все",
+    brand_name: 'Все',
     is_active: true,
     is_primary_collect: allShop,
     is_valid: true,
@@ -85,7 +85,7 @@ const DashboardPage = () => {
     : allShop;
 
   useEffect(() => {
-    console.log("useEffect [oneShop, activeBrand]");
+    console.log('useEffect [oneShop, activeBrand]');
     let intervalId = null;
 
     if (
@@ -94,13 +94,14 @@ const DashboardPage = () => {
     ) {
       const currentShop = shops?.find((item) => item.id == activeShopId);
       if (currentShop) {
-        localStorage.setItem("activeShop", JSON.stringify(currentShop));
+        localStorage.setItem('activeShop', JSON.stringify(currentShop));
       }
-      if (!isInitialLoading && (days === prevDays.current ||
-        activeBrand === prevActiveBrand.current)) 
-        {
-          console.log('updateDataDashbord when is primary collect is true'); 
-          updateDataDashBoard(days, activeBrand, authToken);
+      if (
+        !isInitialLoading &&
+        (days === prevDays.current || activeBrand === prevActiveBrand.current)
+      ) {
+        console.log('updateDataDashbord when is primary collect is true');
+        updateDataDashBoard(days, activeBrand, authToken);
       }
       // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
       clearInterval(intervalId);
@@ -119,7 +120,6 @@ const DashboardPage = () => {
   }, [oneShop, activeBrand]);
 
   useEffect(() => {
-
     const fetchInitialData = async () => {
       try {
         await dispatch(fetchShops(authToken));
@@ -127,7 +127,7 @@ const DashboardPage = () => {
           await updateDataDashBoard(days, activeBrand, authToken);
         }
       } catch (error) {
-        console.error("Error fetching initial data:", error);
+        console.error('Error fetching initial data:', error);
       } finally {
         setFirstLoading(false);
         setIsInitialLoading(false);
@@ -139,7 +139,7 @@ const DashboardPage = () => {
     //     });
     //     await updateDataDashBoard(days, activeBrand, authToken);
     //   }
-      
+
     // }
 
     fetchInitialData();
@@ -147,7 +147,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (shops.length === 0 && !firstLoading) {
-      navigate("/onboarding");
+      navigate('/onboarding');
     }
   }, [firstLoading, shops.length]);
 
@@ -156,7 +156,7 @@ const DashboardPage = () => {
       let id;
       if (activeShopId == undefined) {
         id = shops?.[0].id;
-        localStorage.setItem("activeShop", JSON.stringify(shops?.[0]));
+        localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
       } else {
         id = activeShopId;
       }
@@ -178,10 +178,10 @@ const DashboardPage = () => {
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
     if (currentShop) {
-      localStorage.setItem("activeShop", JSON.stringify(currentShop));
+      localStorage.setItem('activeShop', JSON.stringify(currentShop));
     }
-    if (shopId === "0") {
-      localStorage.setItem("activeShop", JSON.stringify(plugForAllStores));
+    if (shopId === '0') {
+      localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
     }
     setActiveBrand(shopId);
   };
@@ -192,12 +192,9 @@ const DashboardPage = () => {
     }
   }, [authToken]);
 
-   // Update dashboard data when necessary
-   useEffect(() => {
-    if (
-      days !== prevDays.current ||
-      activeBrand !== prevActiveBrand.current
-    ) {
+  // Update dashboard data when necessary
+  useEffect(() => {
+    if (days !== prevDays.current || activeBrand !== prevActiveBrand.current) {
       if (activeBrand !== undefined) {
         updateDataDashBoard(days, activeBrand, authToken);
       }
@@ -210,20 +207,23 @@ const DashboardPage = () => {
     const calculateNextEvenHourPlus30 = () => {
       const now = new Date();
       let targetTime = new Date(now);
-      
+
       // Set to the next half hour
       targetTime.setMinutes(targetTime.getMinutes() <= 30 ? 30 : 60, 0, 0);
-      
+
       // If we're already past an even hour + 30 minutes, move to the next even hour
-      if (targetTime.getHours() % 2 !== 0 || (targetTime.getHours() % 2 === 0 && targetTime <= now)) {
+      if (
+        targetTime.getHours() % 2 !== 0 ||
+        (targetTime.getHours() % 2 === 0 && targetTime <= now)
+      ) {
         targetTime.setHours(targetTime.getHours() + 1);
       }
-      
+
       // Ensure we're on an even hour
       if (targetTime.getHours() % 2 !== 0) {
         targetTime.setHours(targetTime.getHours() + 1);
       }
-    
+
       return targetTime;
     };
 
@@ -258,10 +258,10 @@ const DashboardPage = () => {
 
   const checkIdQueryParam = () => {
     const searchParams = new URLSearchParams(location.search);
-    const idQueryParam = searchParams.get("id");
+    const idQueryParam = searchParams.get('id');
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
       logout();
-      navigate("/signin");
+      navigate('/signin');
     } else {
       return;
     }
@@ -366,25 +366,25 @@ const DashboardPage = () => {
 
   const storeData = [
     {
-      name: "FBO",
-      initialPrice: dataDashBoard?.fbo ? dataDashBoard?.fbo?.cost_amount : "0",
-      salesPrice: dataDashBoard?.fbo ? dataDashBoard.fbo?.retail_amount : "0",
-      quantity: dataDashBoard?.fbo ? dataDashBoard.fbo?.count : "0",
+      name: 'FBO',
+      initialPrice: dataDashBoard?.fbo ? dataDashBoard?.fbo?.cost_amount : '0',
+      salesPrice: dataDashBoard?.fbo ? dataDashBoard.fbo?.retail_amount : '0',
+      quantity: dataDashBoard?.fbo ? dataDashBoard.fbo?.count : '0',
     },
     {
-      name: "FBS",
+      name: 'FBS',
       initialPrice: dataDashBoard?.fbs?.cost_amount,
       salesPrice: dataDashBoard?.fbs?.retail_amount,
       quantity: dataDashBoard?.fbs?.count || 0,
     },
     {
-      name: "Едет к клиенту",
+      name: 'Едет к клиенту',
       initialPrice: dataDashBoard?.toClient?.cost_amount,
       salesPrice: dataDashBoard?.toClient?.retail_amount,
       quantity: dataDashBoard?.toClient?.count || 0,
     },
     {
-      name: "Едет от клиента",
+      name: 'Едет от клиента',
       initialPrice: dataDashBoard?.fromClient?.cost_amount,
       salesPrice: dataDashBoard?.fromClient?.retail_amount,
       quantity: dataDashBoard?.fromClient?.count || 0,
@@ -406,31 +406,31 @@ const DashboardPage = () => {
 
   const costsData = [
     {
-      name: "Реклама (ДРР (общий))",
-      amount: dataDashBoard?.advertAmount || "0",
-      percent: dataDashBoard?.advertAmountCompare || "0",
-      percentRate: dataDashBoard?.advertPercent || "0",
-      percentRate2: dataDashBoard?.advertPercentCompare || "0",
+      name: 'Реклама (ДРР (общий))',
+      amount: dataDashBoard?.advertAmount || '0',
+      percent: dataDashBoard?.advertAmountCompare || '0',
+      percentRate: dataDashBoard?.advertPercent || '0',
+      percentRate2: dataDashBoard?.advertPercentCompare || '0',
     },
     {
-      name: "Комиссия (от выручки)",
-      amount: dataDashBoard?.commissionWB || "0",
-      percent: dataDashBoard?.commissionWBPercent || "0",
-      percentRate: dataDashBoard?.commissionWBCompare || "0",
-      percentRate2: dataDashBoard?.commissionWBPercentCompare || "0",
+      name: 'Комиссия (от выручки)',
+      amount: dataDashBoard?.commissionWB || '0',
+      percent: dataDashBoard?.commissionWBPercent || '0',
+      percentRate: dataDashBoard?.commissionWBCompare || '0',
+      percentRate2: dataDashBoard?.commissionWBPercentCompare || '0',
     },
     {
-      name: "Логистика (от выручки)",
-      amount: dataDashBoard?.logistics || "0",
-      percent: dataDashBoard?.logisticsPercent || "0",
-      percentRate: dataDashBoard?.logisticsCompare || "0",
-      percentRate2: dataDashBoard?.logisticsPercentCompare || "0",
+      name: 'Логистика (от выручки)',
+      amount: dataDashBoard?.logistics || '0',
+      percent: dataDashBoard?.logisticsPercent || '0',
+      percentRate: dataDashBoard?.logisticsCompare || '0',
+      percentRate2: dataDashBoard?.logisticsPercentCompare || '0',
     },
   ];
 
   const vp = sales
     ? sales.reduce((obj, item) => {
-        obj["amount"] =
+        obj['amount'] =
           sales.reduce(
             (acc, el) =>
               acc +
@@ -440,31 +440,31 @@ const DashboardPage = () => {
                 )?.initialCosts),
             0
           ) || 0;
-        obj["rate"] = content?.grossProfit?.percent || "0";
+        obj['rate'] = content?.grossProfit?.percent || '0';
         return obj;
       }, {})
     : null;
 
   const financeData = [
     {
-      name: "Выручка",
-      amount: dataDashBoard?.proceeds || "0",
-      rate: dataDashBoard?.proceedsCompare || "0",
+      name: 'Выручка',
+      amount: dataDashBoard?.proceeds || '0',
+      rate: dataDashBoard?.proceedsCompare || '0',
     },
     {
-      name: "Себестоимость продаж",
-      amount: dataDashBoard?.costPriceAmount || "0",
+      name: 'Себестоимость продаж',
+      amount: dataDashBoard?.costPriceAmount || '0',
       rate: dataDashBoard?.costPriceAmountCompare,
     },
     {
-      name: "Маржинальная стоимость",
-      amount: dataDashBoard?.marginalProfit || "0",
-      rate: dataDashBoard?.marginalProfitCompare || "0",
+      name: 'Маржинальная стоимость',
+      amount: dataDashBoard?.marginalProfit || '0',
+      rate: dataDashBoard?.marginalProfitCompare || '0',
     },
     {
-      name: "Валовая прибыль",
-      amount: dataDashBoard?.grossProfit || "0",
-      rate: dataDashBoard?.grossProfitCompare || "0",
+      name: 'Валовая прибыль',
+      amount: dataDashBoard?.grossProfit || '0',
+      rate: dataDashBoard?.grossProfitCompare || '0',
     },
     // {
     //   name: "Налог",
@@ -472,9 +472,9 @@ const DashboardPage = () => {
     //   rate: dataDashBoard?.taxCompare || "0",
     // },
     {
-      name: "Чистая прибыль",
-      amount: dataDashBoard?.netProfit || "0",
-      rate: dataDashBoard?.netProfitCompare || "0",
+      name: 'Чистая прибыль',
+      amount: dataDashBoard?.netProfit || '0',
+      rate: dataDashBoard?.netProfitCompare || '0',
     },
     // {
     //   name: "Средняя прибыль",
@@ -497,20 +497,20 @@ const DashboardPage = () => {
 
   const profitabilityData = [
     {
-      name: "Процент выкупа",
-      value: dataDashBoard?.buyoutPercent || "0",
+      name: 'Процент выкупа',
+      value: dataDashBoard?.buyoutPercent || '0',
     },
     {
-      name: "ROI",
-      value: dataDashBoard?.roi || "0",
+      name: 'ROI',
+      value: dataDashBoard?.roi || '0',
     },
     {
-      name: "Рентабельность ВП",
-      value: dataDashBoard?.grossProfitAbility || "0",
+      name: 'Рентабельность ВП',
+      value: dataDashBoard?.grossProfitAbility || '0',
     },
     {
-      name: "Рентабельность ОП",
-      value: dataDashBoard?.operatingProfitAbility || "0",
+      name: 'Рентабельность ОП',
+      value: dataDashBoard?.operatingProfitAbility || '0',
     },
   ];
 
@@ -623,20 +623,20 @@ const DashboardPage = () => {
 
     for (let i = 0; i < number; i++) {
       const pastDate = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
-      const day = pastDate.getDate().toString().padStart(2, "0");
+      const day = pastDate.getDate().toString().padStart(2, '0');
       const monthNames = [
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря",
+        'января',
+        'февраля',
+        'марта',
+        'апреля',
+        'мая',
+        'июня',
+        'июля',
+        'августа',
+        'сентября',
+        'октября',
+        'ноября',
+        'декабря',
       ];
       const month = monthNames[pastDate.getMonth()];
 
@@ -653,127 +653,127 @@ const DashboardPage = () => {
       datasets: [
         orderLineOn
           ? {
-              label: "Заказы",
+              label: 'Заказы',
               borderRadius: 8,
-              type: "line",
-              backgroundColor: "rgba(255, 219, 126, 1)",
+              type: 'line',
+              backgroundColor: 'rgba(255, 219, 126, 1)',
               borderWidth: 2,
               pointRadius: 5,
-              pointBorderColor: "rgba(230, 230, 230, 0.8)",
-              borderColor: "rgba(255, 219, 126, 1)",
-              hoverBackgroundColor: "rgba(240, 173, 0, 7)",
-              yAxisID: "A",
+              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+              borderColor: 'rgba(255, 219, 126, 1)',
+              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+              yAxisID: 'A',
               data: dataDashBoard?.orderAmountList || [],
-              xAxisID: "x-1",
+              xAxisID: 'x-1',
             }
           : {
-              label: "Заказы",
+              label: 'Заказы',
               borderRadius: 8,
-              type: "line",
-              backgroundColor: "rgba(255, 219, 126, 1)",
+              type: 'line',
+              backgroundColor: 'rgba(255, 219, 126, 1)',
               borderWidth: 2,
               pointRadius: 5,
-              pointBorderColor: "rgba(230, 230, 230, 0.8)",
-              borderColor: "rgba(255, 219, 126, 1)",
-              hoverBackgroundColor: "rgba(240, 173, 0, 7)",
-              yAxisID: "A",
+              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+              borderColor: 'rgba(255, 219, 126, 1)',
+              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+              yAxisID: 'A',
               data: [],
             },
         salesLineOn
           ? {
-              label: "Продажи",
+              label: 'Продажи',
               borderRadius: 8,
-              type: "line",
-              backgroundColor: "rgba(154, 129, 255, 1)",
+              type: 'line',
+              backgroundColor: 'rgba(154, 129, 255, 1)',
               borderWidth: 2,
               pointRadius: 5,
-              pointBorderColor: "rgba(230, 230, 230, 0.8)",
-              borderColor: "rgba(154, 129, 255, 1)",
-              hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
-              yAxisID: "A",
+              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+              borderColor: 'rgba(154, 129, 255, 1)',
+              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+              yAxisID: 'A',
               data: dataDashBoard?.saleAmountList || [],
             }
           : {
-              label: "Продажи",
+              label: 'Продажи',
               borderRadius: 8,
-              type: "line",
-              backgroundColor: "rgba(154, 129, 255, 1)",
+              type: 'line',
+              backgroundColor: 'rgba(154, 129, 255, 1)',
               borderWidth: 2,
               pointRadius: 5,
-              pointBorderColor: "rgba(230, 230, 230, 0.8)",
-              borderColor: "rgba(154, 129, 255, 1)",
-              hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
-              yAxisID: "A",
+              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+              borderColor: 'rgba(154, 129, 255, 1)',
+              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+              yAxisID: 'A',
               data: [],
             },
         orderOn
           ? {
-              label: "Заказы",
+              label: 'Заказы',
               borderRadius: 8,
-              type: "bar",
+              type: 'bar',
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
                 const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, "rgba(240, 173, 0, 1)");
-                gradient.addColorStop(0.5, "rgba(240, 173, 0, 0.9)");
-                gradient.addColorStop(1, "rgba(240, 173, 0, 0.5)");
+                gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+                gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+                gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
                 return gradient;
               },
               borderWidth: 1,
-              hoverBackgroundColor: "rgba(240, 173, 0, 7)",
-              yAxisID: "B",
+              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+              yAxisID: 'B',
               data: dataDashBoard?.orderCountList || [],
             }
           : {
-              label: "Заказы",
+              label: 'Заказы',
               borderRadius: 8,
-              type: "bar",
+              type: 'bar',
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
                 const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, "rgba(240, 173, 0, 1)");
-                gradient.addColorStop(0.5, "rgba(240, 173, 0, 0.9)");
-                gradient.addColorStop(1, "rgba(240, 173, 0, 0.5)");
+                gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+                gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+                gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
                 return gradient;
               },
               borderWidth: 1,
-              hoverBackgroundColor: "rgba(240, 173, 0, 7)",
-              yAxisID: "B",
+              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+              yAxisID: 'B',
               data: [],
             },
         salesOn
           ? {
-              label: "Продажи",
+              label: 'Продажи',
               borderRadius: 8,
-              type: "bar",
+              type: 'bar',
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
                 const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                gradient.addColorStop(0, "rgba(83, 41, 255, 1)");
-                gradient.addColorStop(0.5, "rgba(83, 41, 255, 0.9)");
-                gradient.addColorStop(1, "rgba(83, 41, 255, 0.5)");
+                gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+                gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+                gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
                 return gradient;
               },
               borderWidth: 1,
-              hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
-              yAxisID: "B",
+              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+              yAxisID: 'B',
               data: dataDashBoard?.saleCountList || [],
             }
           : {
-              label: "Продажи",
+              label: 'Продажи',
               borderRadius: 8,
-              type: "bar",
+              type: 'bar',
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
                 const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                gradient.addColorStop(0, "rgba(83, 41, 255, 1)");
-                gradient.addColorStop(0.5, "rgba(83, 41, 255, 0.9)");
-                gradient.addColorStop(1, "rgba(83, 41, 255, 0.5)");
+                gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+                gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+                gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
                 return gradient;
               },
               borderWidth: 1,
-              hoverBackgroundColor: "rgba(83, 41, 255, 0.7)",
-              yAxisID: "B",
+              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+              yAxisID: 'B',
               data: [],
             },
       ],
@@ -791,7 +791,7 @@ const DashboardPage = () => {
   //   sortedValuesArray && sortedValuesArray.length
   //     ? sortedValuesArray.filter((item) => typeof item === "number")[0]
   //     : 50;
-  const bar = chartData?.datasets?.filter((item) => item?.type === "bar");
+  const bar = chartData?.datasets?.filter((item) => item?.type === 'bar');
   const maxAmount = bar
     ?.map((arr) => arr?.data)
     ?.flat(1)
@@ -806,8 +806,8 @@ const DashboardPage = () => {
   let oneDaySaleAmount = dataDashBoard?.saleAmount;
   let oneDaySaleCount = dataDashBoard?.saleCount;
 
-  if (user?.subscription_status === "expired") {
-    return <NoSubscriptionPage title={"Сводка продаж"} />;
+  if (user?.subscription_status === 'expired') {
+    return <NoSubscriptionPage title={'Сводка продаж'} />;
   }
 
   if (!shops || shops.length === 0) {
@@ -819,7 +819,7 @@ const DashboardPage = () => {
       <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
-          <TopNav title={"Сводка продаж"} />
+          <TopNav title={'Сводка продаж'} />
           {!isInitialLoading &&
           !dataDashBoard?.costPriceAmount &&
           activeShopId !== 0 &&
@@ -851,7 +851,7 @@ const DashboardPage = () => {
             <div>
               <div className='container dash-container p-3 pt-0 d-flex gap-3'>
                 <MediumPlate
-                  name={"Заказы"}
+                  name={'Заказы'}
                   text={oneDayOrderAmount / days}
                   text2={oneDayOrderCount / days}
                   dataDashBoard={dataDashBoard?.orderAmount}
@@ -860,7 +860,7 @@ const DashboardPage = () => {
                   percent2={dataDashBoard?.orderCountCompare}
                 />
                 <MediumPlate
-                  name={"Продажи"}
+                  name={'Продажи'}
                   text={oneDaySaleAmount / days}
                   text2={oneDaySaleCount / days}
                   dataDashBoard={dataDashBoard?.saleAmount}
@@ -869,26 +869,26 @@ const DashboardPage = () => {
                   percent2={dataDashBoard?.saleCountCompare}
                 />
                 <MediumPlate
-                  name={"Возвраты"}
+                  name={'Возвраты'}
                   dataDashBoard={dataDashBoard?.returnAmount}
                   quantity={dataDashBoard?.returnCount}
                   percent={dataDashBoard?.returnAmountCompare}
                   percent2={dataDashBoard?.returnCountCompare}
                 />
-                <div className='col d-flex flex-column' style={{ gap: "2vh" }}>
-                  <div className='' style={{ height: "11vh" }}>
+                <div className='col d-flex flex-column' style={{ gap: '2vh' }}>
+                  <div className='' style={{ height: '11vh' }}>
                     <SmallPlate
-                      name={"Процент выкупа"}
+                      name={'Процент выкупа'}
                       dataDashBoard={dataDashBoard?.buyoutPercent}
-                      type={"percent"}
-                      percent={dataDashBoard?.buyoutPercentCompare || "0"}
+                      type={'percent'}
+                      percent={dataDashBoard?.buyoutPercentCompare || '0'}
                     />
                   </div>
-                  <div className='' style={{ height: "11vh" }}>
+                  <div className='' style={{ height: '11vh' }}>
                     <SmallPlate
-                      name={"Средний чек"}
+                      name={'Средний чек'}
                       dataDashBoard={dataDashBoard?.averageBill}
-                      type={"price"}
+                      type={'price'}
                       percent={curOrders?.periodComparison?.avgPriceRubDynamics}
                     />
                   </div>
@@ -897,7 +897,7 @@ const DashboardPage = () => {
               <div className='container dash-container p-3 pt-0 pb-3 d-flex gap-3'>
                 <div className='col chart-wrapper'>
                   <BigChart
-                    name={"Заказы и продажи"}
+                    name={'Заказы и продажи'}
                     data={chartData}
                     orderOn={orderOn}
                     salesOn={salesOn}
@@ -921,76 +921,77 @@ const DashboardPage = () => {
               </div>
 
               <div className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'>
-                <div className='col' style={{ height: "14vh" }}>
+                <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    name={"Себестоимость проданных товаров"}
+                    name={'Себестоимость проданных товаров'}
                     nochart={false}
-                    type={"price"}
+                    type={'price'}
                     quantity={curOrders?.selectedPeriod?.buyoutsCount}
                     dataDashBoard={dataDashBoard?.costPriceAmount}
                     percent={dataDashBoard?.costPriceAmountCompare}
                     pieces={dataDashBoard?.saleCount}
                   />
                 </div>
-                <div className='col' style={{ height: "14vh" }}>
+                <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
                     nochart={false}
-                    name={"Возвраты"}
+                    name={'Возвраты'}
                     quantity={curOrders?.selectedPeriod?.cancelCount}
-                    type={"price"}
+                    type={'price'}
                     dataDashBoard={dataDashBoard?.returnAmount}
                     percent={dataDashBoard?.returnAmountCompare}
                     pieces={dataDashBoard?.returnCount}
                   />
                 </div>
-                <div className='col' style={{ height: "14vh" }}>
+                <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
                     smallText={true}
-                    name={"Штрафы WB"}
-                    type={"price"}
+                    name={'Штрафы WB'}
+                    type={'price'}
                     nochart={true}
                     dataDashBoard={dataDashBoard?.penalty}
+                    allProps={dataDashBoard}
                   />
                 </div>
-                <div className='col' style={{ height: "14vh" }}>
+                <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    name={"Доплаты WB"}
-                    type={"price"}
+                    name={'Доплаты WB'}
+                    type={'price'}
                     nochart={true}
                     dataDashBoard={dataDashBoard?.additional}
                   />
                 </div>
               </div>
               <div className='container dash-container p-4 pt-0 d-flex gap-3'>
-                <div className='col' style={{ height: "14vh" }}>
+                <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    name={"Комиссия WB"}
-                    type={"price"}
+                    name={'Комиссия WB'}
+                    type={'price'}
                     dataDashBoard={dataDashBoard?.commissionWB}
                     persent={dataDashBoard?.commissionWBCompare}
                   />
                 </div>
-                <div className='col' style={{ height: "14vh" }}>
+                <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    name={"Расходы на логистику"}
-                    type={"price"}
+                    name={'Расходы на логистику'}
+                    type={'price'}
                     dataDashBoard={dataDashBoard?.logistics}
                     percent={dataDashBoard?.logisticsCompare}
                   />
                 </div>
-                <div className='col' style={{ height: "14vh" }}>
+                <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
-                    name={"Хранение"}
-                    type={"price"}
+                    name={'Хранение'}
+                    type={'price'}
                     dataDashBoard={dataDashBoard?.storageData}
                     percent={dataDashBoard?.storageDataCompare}
                   />
                 </div>
-                <div className='col' style={{ height: "14vh" }}>
+                <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
                     nochart={false}
-                    name={"Упущенные продажи"}
-                    type={"price"}
+                    name={'Упущенные продажи'}
+                    type={'price'}
                     quantity={curOrders?.selectedPeriod?.cancelCount}
                     dataDashBoard={dataDashBoard?.lostSalesAmount}
                     pieces={dataDashBoard?.lostSalesCount}
@@ -1000,11 +1001,11 @@ const DashboardPage = () => {
 
               <div
                 className='container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3'
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               >
                 <div className='wrapper'>
                   <FinanceTable
-                    title={"Финансы"}
+                    title={'Финансы'}
                     data={financeData}
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
@@ -1012,25 +1013,25 @@ const DashboardPage = () => {
                   />
                   <StorageTable
                     wbData={wbData}
-                    title={"Склад"}
+                    title={'Склад'}
                     data={storeData}
-                    titles={["Где товар", "Капитализация", "", "Остатки"]}
-                    subtitles={["", "Себестоимость", "Розница", ""]}
+                    titles={['Где товар', 'Капитализация', '', 'Остатки']}
+                    subtitles={['', 'Себестоимость', 'Розница', '']}
                     dataDashBoard={dataDashBoard}
                   />
                 </div>
                 <div className='wrapper'>
                   <FinanceTable
-                    title={"Прибыльность"}
+                    title={'Прибыльность'}
                     data={profitabilityData}
-                    sign={" %"}
+                    sign={' %'}
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
                     tableType={1}
                   />
 
                   <ChartTable
-                    title={"Расходы"}
+                    title={'Расходы'}
                     data={costsData}
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
@@ -1039,11 +1040,11 @@ const DashboardPage = () => {
               </div>
               <div
                 className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               >
                 <WidePlate
-                  title={"ABC-анализ"}
-                  titles={["Группа А", "Группа В", "Группа С"]}
+                  title={'ABC-анализ'}
+                  titles={['Группа А', 'Группа В', 'Группа С']}
                   data={
                     wbData && wbData.sales ? abcAnalysis(wbData.sales.data) : []
                   }
@@ -1053,7 +1054,7 @@ const DashboardPage = () => {
             </div>
           ) : (
             <DataCollectionNotification
-              title={"Ваши данные еще формируются и обрабатываются."}
+              title={'Ваши данные еще формируются и обрабатываются.'}
             />
           )}
         </div>
