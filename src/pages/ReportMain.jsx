@@ -244,6 +244,7 @@ const ReportMain = () => {
             <div
               className={styles.uploadWrapper}
               onClick={() => fileInputRef.current.click()}
+              style={{ cursor: 'pointer' }}
             >
               <div className={styles.uploadTitle}>Загрузить отчеты</div>
               {!selectedFile && (
@@ -274,10 +275,7 @@ const ReportMain = () => {
                   ) : (
                     <>
                       Перетащи мышкой файл или
-                      <span
-                        className={styles.uploadTextBlue}
-                        style={{ cursor: 'pointer' }}
-                      >
+                      <span className={styles.uploadTextBlue}>
                         загрузи с компьютера
                       </span>
                     </>
