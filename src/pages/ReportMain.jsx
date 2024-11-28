@@ -36,11 +36,6 @@ const ReportMain = () => {
     }
   };
 
-  const handleDeleteSelected = () => {
-    // Add delete logic here
-    setSelectedRows([]);
-  };
-
   const getListOfReports = async () => {
     try {
       const result = await ServiceFunctions.getListOfReports(authToken);
@@ -68,9 +63,9 @@ const ReportMain = () => {
       });
 
       if (response.ok) {
+        await getListOfReports();
         const data = await response.json();
         // Handle successful upload
-        console.log('Upload successful:', data);
       } else {
         throw new Error('Upload failed');
       }
@@ -94,16 +89,22 @@ const ReportMain = () => {
     setSelectedFile(files[0]);
   };
 
-  const uploadFile = () => {
+  const uploadFile = (e) => {
     // Add upload logic here
+    e.stopPropagation();
     handleFileUpload(selectedFile);
     setSelectedFile(null);
-    getListOfReports();
+  };
+
+  const deleteFile = (e) => {
+    e.stopPropagation();
+    setSelectedFile(null);
   };
 
   const handleDelete = async (id) => {
     try {
-        await ServiceFunctions.deleteReport(authToken, id);
+      await ServiceFunctions.deleteReport(authToken, id);
+      await getListOfReports();
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -240,10 +241,10 @@ const ReportMain = () => {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
-            <div 
+            <div
               className={styles.uploadWrapper}
               onClick={() => fileInputRef.current.click()}
-              >
+            >
               <div className={styles.uploadTitle}>Загрузить отчеты</div>
               {!selectedFile && (
                 <div className={styles.uploadIcon}>
@@ -258,13 +259,13 @@ const ReportMain = () => {
                       <div className={styles.uploadButtonWrapper}>
                         <button
                           className={styles.deleteButton}
-                          onClick={() => setSelectedFile(null)}
+                          onClick={(e) => deleteFile(e)}
                         >
                           Удалить
                         </button>
                         <button
                           className={styles.uploadButton}
-                          onClick={uploadFile}
+                          onClick={(e) => uploadFile(e)}
                         >
                           Загрузить
                         </button>
@@ -424,7 +425,6 @@ const ReportMain = () => {
                 className='button-cancel'
                 onClick={() => {
                   handleDelete(selectedRowId);
-                  getListOfReports();
                   setOpenModal(false);
                 }}
               >

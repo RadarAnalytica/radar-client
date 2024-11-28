@@ -534,3 +534,12 @@ export const monthNames = {
   11: 'Ноябрь',
   12: 'Декабрь',
 };
+
+export const getMonthNumbers = (monthArray) => {
+  const monthNamesReverse = {};
+  for (const [num, name] of Object.entries(monthNames)) {
+    monthNamesReverse[name] = num;
+  }
+
+  return monthArray.map(monthName => monthNamesReverse[monthName]);
+};

@@ -5,7 +5,7 @@ import { fetchDashboardFilters } from '../redux/filters/filtersDataActions';
 import { fetchDashboardReport } from '../redux/dashboardReport/dashboardReportActions';
 import styles from './FilterSection.module.css';
 import FilterGroup from './FilterGroup';
-import { monthNames } from '../service/utils';
+import { monthNames, getMonthNumbers } from '../service/utils';
 
 const FilterSection = () => {
   const dispatch = useDispatch();
@@ -36,12 +36,10 @@ const FilterSection = () => {
   const processFilterData = (data, key) => {
     if (!data) return [];
     if (Array.isArray(data)) {
-      return data
-        .filter((item) => item !== '0')
-        .map((item, index) => ({
-          id: index.toString(),
-          label: item,
-        }));
+      return data.map((item, index) => ({
+        id: index.toString(),
+        label: item,
+      }));
     }
     return [];
   };
@@ -56,7 +54,7 @@ const FilterSection = () => {
       groups_filter: selectedFilters.groups_filter,
       date_sale_filter: {
         years: selectedFilters.date_sale_filter.years,
-        months: selectedFilters.date_sale_filter.months,
+        months: getMonthNumbers(selectedFilters.date_sale_filter.months),
         weekdays: selectedFilters.date_sale_filter.weekdays,
       },
     };

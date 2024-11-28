@@ -31,8 +31,8 @@ const FilterGroup = ({
           <label key={option.id} className={styles.optionLabel}>
             <input
               type='checkbox'
-              checked={isSelected(option.id)}
-              onChange={() => onSelect(option.id)}
+              checked={isSelected(option.label)}
+              onChange={() => onSelect(option.label)}
               className={styles.checkbox}
             />
             <span>{option.label}</span>
