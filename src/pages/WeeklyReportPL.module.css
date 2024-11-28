@@ -15,3 +15,8 @@
     border-radius: 8px;
     background-color: rgba(83, 41, 255, 0.1);
   }
+
+  .filterContainer {
+    display: flex;
+    gap: 20px;
+  }

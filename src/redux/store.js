@@ -11,6 +11,7 @@ import filtersDataSlice from './filters/filtersDataSlice';
 import dashboardReportSlice from './dashboardReport/dashboardReportSlice';
 import reportByMonthSlice from './reportByMonth/reportByMonthSlice';
 import reportByGoodsSlice from './reportByGoods/reportByGoodsSlice';
+import plReportSlice from './reportPL/plReportSlice';
 
 const storeOptions = {
   reducer: {
@@ -24,7 +25,8 @@ const storeOptions = {
     filtersDataSlice,
     dashboardReportSlice,
     reportByMonthSlice,
-    reportByGoodsSlice
+    reportByGoodsSlice,
+    plReportSlice,
   },
 };
 

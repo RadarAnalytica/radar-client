@@ -1,31 +1,48 @@
 import { useState, useContext, useEffect } from 'react';
 import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
-import FilterDropdownReportPages from '../components/FilterDropdownReportPages';
+import FilterGroup from '../components/FilterGroup';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import TablePL from '../components/TablePL';
 import BottomNavigation from '../components/BottomNavigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPLReport } from '../redux/reportPL/plReportActions';
 import styles from './WeeklyReportPL.module.css';
 
 const WeeklyReportPL = () => {
   const { authToken } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const { plData, isLoading } = useSelector((state) => state?.plReportSlice);
   const [activeFilters, setActiveFilters] = useState({
-    brand: '',
-    group: '',
+    brand: [],
+    group: [],
   });
+  console.log('activeFilters', activeFilters);
   const [filterOptions, setFilterOptions] = useState([]);
 
+  const handleApplyFilters = () => {
+    const brandFilter = activeFilters.brand.join(',');
+    const groupFilter = activeFilters.group.join(',');
+
+    dispatch(
+      fetchPLReport({
+        brandFilter,
+        groupFilter,
+        token: authToken,
+      })
+    );
+  };
   useEffect(() => {
     const loadFilters = async () => {
       try {
         const filters = await ServiceFunctions.getPLFilters(authToken);
         setFilterOptions(filters.filterOptions);
-        // Set initial active filters based on first available options
+        // Set initial active filters as arrays
         if (filters.filterOptions && filters.filterOptions.length > 0) {
           setActiveFilters({
-            brand: filters.filterOptions[0]?.options[0]?.value,
-            group: filters.filterOptions[1]?.options[0]?.value,
+            brand: [],
+            group: [],
           });
         }
       } catch (error) {
@@ -207,13 +224,23 @@ const WeeklyReportPL = () => {
 
   const handleFilterChange = (filterId, value) => {
     setActiveFilters((prevFilters) => {
-      const newFilters = {
-        ...prevFilters,
-        [filterId]: value,
-      };
+      const currentValues = prevFilters[filterId] || [];
+      const newValues = currentValues.includes(value)
+        ? currentValues.filter((item) => item !== value)
+        : [...currentValues, value];
 
-      return newFilters;
+      return {
+        ...prevFilters,
+        [filterId]: newValues,
+      };
     });
+  };
+
+  const handleClearAll = (filterId) => {
+    setActiveFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterId]: [],
+    }));
   };
 
   return (
@@ -221,18 +248,32 @@ const WeeklyReportPL = () => {
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'P&L'} subTitle={'Отчёт /'} />
-        <FilterDropdownReportPages
-          filterOptions={filterOptions}
-          activeFilters={activeFilters}
-          onFilterChange={handleFilterChange}
-        />
         <div className='container dash-container'>
-          <div>
-            <button className={styles.applyButton}>Применить фильтры</button>
+          <div className={styles.filterContainer}>
+            {filterOptions.map((filter) => (
+              <FilterGroup
+                key={filter.id}
+                title={filter.label}
+                options={filter.options.map((opt) => ({
+                  id: opt.value,
+                  label: opt.label,
+                }))}
+                selected={activeFilters[filter.id]}
+                onSelect={(value) => handleFilterChange(filter.id, value)}
+                onClearAll={() => handleClearAll(filter.id)}
+              />
+            ))}
           </div>
         </div>
         <div className='container dash-container'>
-          <TablePL data={data} />
+          <div>
+            <button className={styles.applyButton} onClick={handleApplyFilters}>
+              Применить фильтры
+            </button>
+          </div>
+        </div>
+        <div className='container dash-container'>
+          <TablePL plData={plData} />
         </div>
         <BottomNavigation />
       </div>
