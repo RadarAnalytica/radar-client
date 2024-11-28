@@ -16,6 +16,8 @@ const BottomNavigation = () => {
   let dahsboardActiveStyle7 = styles.navItem;
   let dahsboardActiveStyle8 = styles.navItem;
   let dahsboardActiveStyle9 = styles.navItem;
+  let dahsboardActiveStyle10 = styles.navItem;
+  let dahsboardActiveStyle11 = styles.navItem;
   if (lastUrlPart === 'weeklyreport-dashboard') {
     dahsboardActiveStyle = `${styles.navItem} ${styles.active}`;
   }
@@ -43,10 +45,16 @@ const BottomNavigation = () => {
   if (lastUrlPart === 'prime-cost') {
     dahsboardActiveStyle9 = `${styles.navItem} ${styles.active}`;
   }
+  if (lastUrlPart === 'external-expenses') {
+    dahsboardActiveStyle10 = `${styles.navItem} ${styles.active}`;
+  }
+  if (lastUrlPart === 'buy-back') {
+    dahsboardActiveStyle11 = `${styles.navItem} ${styles.active}`;
+  }
 
   return (
     <div className={styles.bottomNavigation}>
-      <div className={dahsboardActiveStyle8} style={{ marginLeft: '54px' }}>
+      <div className={`${dahsboardActiveStyle8} ${styles.marginFirstElement}`}>
         <span onClick={() => navigate('/report-main')}>Главная</span>
       </div>
       <div className={dahsboardActiveStyle}>
@@ -73,8 +81,13 @@ const BottomNavigation = () => {
       <div className={dahsboardActiveStyle9}>
         <span onClick={() => navigate('/prime-cost')}>Себестоимость</span>
       </div>
-      <div className={styles.navItem}>
-        <span href='#'>Внешние расходы</span>
+      <div className={dahsboardActiveStyle10}>
+        <span onClick={() => navigate('/external-expenses')}>
+          Внешние расходы
+        </span>
+      </div>
+      <div className={dahsboardActiveStyle11}>
+        <span onClick={() => navigate('/buy-back')}>Самовыкуп</span>
       </div>
     </div>
   );

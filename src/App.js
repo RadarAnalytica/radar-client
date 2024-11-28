@@ -24,6 +24,7 @@ import TestPeriodTariffPage from "./pages/TestPeriodTariffPage";
 import ReportMain from "./pages/ReportMain";
 import PrimeCost from "./pages/PrimeCost";
 import ExternalExpensesPage from "./pages/ExternalExpensesPage";
+import ReportBuyBack from "./pages/ReportBuyBack";
 
 
 // import DataCollectionNotification from './components/DataCollectionNotification';
@@ -451,6 +452,14 @@ function App() {
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
                         <ExternalExpensesPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/buy-back"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <ReportBuyBack />
                       </React.Suspense>
                     }
                   />
