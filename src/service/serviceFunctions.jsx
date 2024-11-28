@@ -807,4 +807,31 @@ export const ServiceFunctions = {
     });
     return await response.json();
   },
+
+  getSelfBuyoutTemplate: async (token) => {
+    const res = await fetch(`${URL}/api/report/self-buyout/get-template`, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: token,
+      },
+    });
+    return res;
+  },
+
+  // Add to ServiceFunctions object
+  postSelfBuyoutUpdate: async (token, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${URL}/api/report/self-buyout/update`, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        Authorization: token,
+      },
+      body: formData,
+    });
+    return await response.json();
+  },
 };
