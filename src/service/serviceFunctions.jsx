@@ -601,10 +601,10 @@ export const ServiceFunctions = {
     const response = await fetch(`${URL}/api/report/get-charts`, {
       method: 'POST',
       headers: {
-        "content-type": "application/json",
-        authorization: "JWT " + token,
+        'content-type': 'application/json',
+        authorization: 'JWT ' + token,
       },
-      body: JSON.stringify(filter)
+      body: JSON.stringify(filter),
     });
 
     if (!response.ok) {
@@ -762,7 +762,6 @@ export const ServiceFunctions = {
     return await response.json();
   },
 
-
   getAbcReportsFilters: async (token) => {
     const response = await fetch(`${URL}/api/report/abc/filters`, {
       method: 'GET',
@@ -783,10 +782,10 @@ export const ServiceFunctions = {
     const response = await fetch(`${URL}/api/report/abc/data`, {
       method: 'POST',
       headers: {
-        "content-type": "application/json",
-        authorization: "JWT " + token,
+        'content-type': 'application/json',
+        authorization: 'JWT ' + token,
       },
-      body: JSON.stringify(filter)
+      body: JSON.stringify(filter),
     });
 
     if (!response.ok) {
@@ -796,5 +795,16 @@ export const ServiceFunctions = {
     return await response.json();
   },
 
-
+  postExternalExpensesUpdate: async (token, payload) => {
+    const response = await fetch(`${URL}/api/report/external-expenses/update`, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        Authorization: token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    return await response.json();
+  },
 };
