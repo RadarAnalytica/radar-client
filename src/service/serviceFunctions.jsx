@@ -761,4 +761,21 @@ export const ServiceFunctions = {
 
     return await response.json();
   },
+
+
+  getAbcReportsFilters: async (token) => {
+    const response = await fetch(`${URL}/api/report/abc/filters`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        authorization: 'JWT ' + token,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch dashboard report');
+    }
+
+    return await response.json();
+  },
 };

@@ -1,12 +1,19 @@
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import styles from './ReportAbcAnalysis.module.css';
 import upArrow from '../assets/up.svg';
 import downArrow from '../assets/down.svg';
 import BottomNavigation from '../components/BottomNavigation';
+import AuthContext from "../service/AuthContext";
+import { ServiceFunctions } from "../service/serviceFunctions";
 
 const ReportAbcAnalysis = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [isRevenueLoading, setIsRevenueLoading] = useState(false)
+
+  const [error, setError] = useState(null);
+  const { user, authToken, logout } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState('revenue'); // default active tab
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const handleTabClick = (tab) => {
@@ -117,6 +124,7 @@ const ReportAbcAnalysis = () => {
       mainCategory: ['AC', 'AB', 'AC'],
     },
   ];
+
   const [expandedRows, setExpandedRows] = useState({});
 
   const toggleRow = (id) => {
@@ -178,6 +186,91 @@ const ReportAbcAnalysis = () => {
     'Куртка демисезонная с капюшоном осень 2024 длинное название 3': false,
     'Куртка демисезонная с капюшоном осень 2024 длинное название 4': false,
   });
+
+  //useEffect
+
+  const monthNames = [
+    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+  ];
+
+
+  const transformFilters = (data) => {
+
+    return {
+      setSelectedBrands: Object.fromEntries(data.brand_filter.map((brand) => [brand, false])),
+      setSelectedArticles: Object.fromEntries(data.article_filter.map((id) => [id, false])),
+      setSelectedGroups: Object.fromEntries(data.group_filter.map((group) => [group, false])),
+      setSelectedYears: Object.fromEntries(data.year_filter.map((year) => [year, false])),
+      setSelectedMonths: Object.fromEntries(data.month_filter.map((month) => [month, false])),
+      setSelectedWeeks: Object.fromEntries(data.week_filter.map((weekday) => [weekday, false])),
+      setSelectedProducts: Object.fromEntries(data.product_filter.map((product) => [product, false]))
+    };
+  };
+  useEffect(() => {
+    updateFilterFields()
+  }, [])
+
+  const updateFilterFields = async () => {
+    setIsLoading(true);
+    try {
+      const data = await ServiceFunctions.getAbcReportsFilters(authToken);
+      const transformedFilters = transformFilters(data);
+
+      console.log(data, "data")
+      setSelectedBrands(transformedFilters.setSelectedBrands);
+      setSelectedArticles(transformedFilters.setSelectedArticles);
+      setSelectedGroups(transformedFilters.setSelectedGroups);
+      setSelectedYears(transformedFilters.setSelectedYears);
+      setSelectedMonths(transformedFilters.setSelectedMonths);
+      setSelectedWeeks(transformedFilters.setSelectedWeeks);
+      setSelectedProducts(transformedFilters.setSelectedProducts);
+
+    } catch (error) {
+      console.error('Ошибка при загрузке данных:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const updateData = async () => {
+    setIsRevenueLoading(true);
+    setError(null);
+
+    try {
+      const filter = {
+        "brand_name_filter": Object.keys(selectedBrands).filter(key => selectedBrands[key]),
+        "wb_id_filter": Object.keys(selectedArticles).filter(key => selectedArticles[key]),
+        "groups_filter": Object.keys(selectedGroups).filter(key => selectedGroups[key]),
+        "date_sale_filter": {
+          "years": Object.keys(selectedYears).filter(key => selectedYears[key]),
+          "months": Object.keys(selectedMonths).filter(key => selectedMonths[key]),
+          "weekdays": Object.keys(selectedWeeks).filter(key => selectedWeeks[key])
+        }
+      };
+
+      const data = await ServiceFunctions.scheduleFilterChartData(authToken, filter);
+
+      // setDataStructureRevenue([
+      //   data?.structure?.all_retentions_percent || 0,
+      //   data?.structure?.external_expenses_percent || 0,
+      //   data?.structure?.tax_percent || 0,
+      //   data?.structure?.profit_percent || 0,
+      //   data?.structure?.cost_percent || 0,
+      // ]);
+
+      // revenueAndProfit(data, filter);
+      // roiAndMarginality(data, filter);
+
+
+      setIsRevenueLoading(false);
+    } catch (err) {
+      setError("Failed to load data");
+      setIsRevenueLoading(false);
+    }
+  };
+
+
   const toggleCheckboxBrands = (brand) => {
     setSelectedBrands((prevState) => ({
       ...prevState,
@@ -347,6 +440,7 @@ const ReportAbcAnalysis = () => {
             <div
               className={`${styles.ScheduleHeader} dash-container container`}
             >
+
               <div className={styles.container}>
                 <div className={styles.header}>
                   <span className={styles.title}>Бренд</span>
@@ -354,23 +448,35 @@ const ReportAbcAnalysis = () => {
                     {allSelectedBrands ? 'Снять все' : 'Выбрать все'}
                   </button>
                 </div>
-                <div className={styles.list}>
-                  {Object.keys(selectedBrands).map((brand, index) => (
-                    <div className={styles.brandItem} key={index}>
-                      <label className={styles.checkboxContainer}>
-                        <input
-                          type='checkbox'
-                          checked={selectedBrands[brand]}
-                          onChange={() => toggleCheckboxBrands(brand)}
-                          className={styles.checkboxInput}
-                        />
-                        <span className={styles.customCheckbox}></span>
-                      </label>
-                      <span className={styles.brandName}>{brand}</span>
-                    </div>
-                  ))}
-                </div>
+                {isLoading ? (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100px', marginTop: '40px' }}
+                  >
+                    <span className="loader"></span>
+                  </div>
+                ) : (
+                  <div className={styles.list}>
+                    {Object.keys(selectedBrands)
+                      .filter((brand) => brand !== 'пусто')
+                      .map((brand, index) => (
+                        <div className={styles.brandItem} key={index}>
+                          <label className={styles.checkboxContainer}>
+                            <input
+                              type="checkbox"
+                              checked={selectedBrands[brand]}
+                              onChange={() => toggleCheckboxBrands(brand)}
+                              className={styles.checkboxInput}
+                            />
+                            <span className={styles.customCheckbox}></span>
+                          </label>
+                          <span className={styles.brandName}>{brand}</span>
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
+
 
               <div className={styles.container}>
                 <div className={styles.header}>
@@ -379,22 +485,31 @@ const ReportAbcAnalysis = () => {
                     {allSelectedYears ? 'Снять все' : 'Выбрать все'}
                   </button>
                 </div>
-                <div className={styles.list}>
-                  {Object.keys(selectedYears).map((year, index) => (
-                    <div className={styles.brandItem} key={index}>
-                      <label className={styles.checkboxContainer}>
-                        <input
-                          type='checkbox'
-                          checked={selectedYears[year]}
-                          onChange={() => toggleCheckboxYear(year)}
-                          className={styles.checkboxInput}
-                        />
-                        <span className={styles.customCheckbox}></span>
-                      </label>
-                      <span className={styles.brandName}>{year}</span>
-                    </div>
-                  ))}
-                </div>
+                {isLoading ? (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100px', marginTop: '40px' }}
+                  >
+                    <span className="loader"></span>
+                  </div>
+                ) : (
+                  <div className={styles.list}>
+                    {Object.keys(selectedYears).map((year, index) => (
+                      <div className={styles.brandItem} key={index}>
+                        <label className={styles.checkboxContainer}>
+                          <input
+                            type='checkbox'
+                            checked={selectedYears[year]}
+                            onChange={() => toggleCheckboxYear(year)}
+                            className={styles.checkboxInput}
+                          />
+                          <span className={styles.customCheckbox}></span>
+                        </label>
+                        <span className={styles.brandName}>{year}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className={styles.container}>
@@ -404,22 +519,31 @@ const ReportAbcAnalysis = () => {
                     {allSelectedMonths ? 'Снять все' : 'Выбрать все'}
                   </button>
                 </div>
-                <div className={styles.list}>
-                  {Object.keys(selectedMonths).map((brand, index) => (
-                    <div className={styles.brandItem} key={index}>
-                      <label className={styles.checkboxContainer}>
-                        <input
-                          type='checkbox'
-                          checked={selectedMonths[brand]}
-                          onChange={() => toggleCheckboxMonth(brand)}
-                          className={styles.checkboxInput}
-                        />
-                        <span className={styles.customCheckbox}></span>
-                      </label>
-                      <span className={styles.brandName}>{brand}</span>
-                    </div>
-                  ))}
-                </div>
+                {isLoading ? (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100px', marginTop: '40px' }}
+                  >
+                    <span className="loader"></span>
+                  </div>
+                ) : (
+                  <div className={styles.list}>
+                    {Object.keys(selectedMonths).map((brand, index) => (
+                      <div className={styles.brandItem} key={index}>
+                        <label className={styles.checkboxContainer}>
+                          <input
+                            type='checkbox'
+                            checked={selectedMonths[brand]}
+                            onChange={() => toggleCheckboxMonth(brand)}
+                            className={styles.checkboxInput}
+                          />
+                          <span className={styles.customCheckbox}></span>
+                        </label>
+                        <span className={styles.brandName}>{brand}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className={styles.container}>
@@ -429,22 +553,31 @@ const ReportAbcAnalysis = () => {
                     {allSelectedWeeks ? 'Снять все' : 'Выбрать все'}
                   </button>
                 </div>
-                <div className={styles.list}>
-                  {Object.keys(selectedWeeks).map((brand, index) => (
-                    <div className={styles.brandItem} key={index}>
-                      <label className={styles.checkboxContainer}>
-                        <input
-                          type='checkbox'
-                          checked={selectedWeeks[brand]}
-                          onChange={() => toggleCheckboxWeek(brand)}
-                          className={styles.checkboxInput}
-                        />
-                        <span className={styles.customCheckbox}></span>
-                      </label>
-                      <span className={styles.brandName}>{brand}</span>
-                    </div>
-                  ))}
-                </div>
+                {isLoading ? (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100px', marginTop: '40px' }}
+                  >
+                    <span className="loader"></span>
+                  </div>
+                ) : (
+                  <div className={styles.list}>
+                    {Object.keys(selectedWeeks).map((brand, index) => (
+                      <div className={styles.brandItem} key={index}>
+                        <label className={styles.checkboxContainer}>
+                          <input
+                            type='checkbox'
+                            checked={selectedWeeks[brand]}
+                            onChange={() => toggleCheckboxWeek(brand)}
+                            className={styles.checkboxInput}
+                          />
+                          <span className={styles.customCheckbox}></span>
+                        </label>
+                        <span className={styles.brandName}>{brand}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className={styles.container}>
@@ -454,23 +587,35 @@ const ReportAbcAnalysis = () => {
                     {allSelectedGroups ? 'Снять все' : 'Выбрать все'}
                   </button>
                 </div>
-                <div className={styles.list}>
-                  {Object.keys(selectedGroups).map((brand, index) => (
-                    <div className={styles.brandItem} key={index}>
-                      <label className={styles.checkboxContainer}>
-                        <input
-                          type='checkbox'
-                          checked={selectedGroups[brand]}
-                          onChange={() => toggleCheckboxGroup(brand)}
-                          className={styles.checkboxInput}
-                        />
-                        <span className={styles.customCheckbox}></span>
-                      </label>
-                      <span className={styles.brandName}>{brand}</span>
-                    </div>
-                  ))}
-                </div>
+                {isLoading ? (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100px', marginTop: '40px' }}
+                  >
+                    <span className="loader"></span>
+                  </div>
+                ) : (
+                  <div className={styles.list}>
+                    {Object.keys(selectedGroups)
+                      .filter((group) => group !== 'пусто') // Исключаем группу "пусто"
+                      .map((group, index) => (
+                        <div className={styles.brandItem} key={index}>
+                          <label className={styles.checkboxContainer}>
+                            <input
+                              type="checkbox"
+                              checked={selectedGroups[group]}
+                              onChange={() => toggleCheckboxGroup(group)}
+                              className={styles.checkboxInput}
+                            />
+                            <span className={styles.customCheckbox}></span>
+                          </label>
+                          <span className={styles.brandName}>{group}</span>
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
+
 
               <div className={styles.container}>
                 <div className={styles.header}>
@@ -482,29 +627,42 @@ const ReportAbcAnalysis = () => {
                     {allSelectedArticles ? 'Снять все' : 'Выбрать все'}
                   </button>
                 </div>
-                <div className={styles.list}>
-                  {Object.keys(selectedArticles).map((brand, index) => (
-                    <div className={styles.brandItem} key={index}>
-                      <label className={styles.checkboxContainer}>
-                        <input
-                          type='checkbox'
-                          checked={selectedArticles[brand]}
-                          onChange={() => toggleCheckboxArticle(brand)}
-                          className={styles.checkboxInput}
-                        />
-                        <span className={styles.customCheckbox}></span>
-                      </label>
-                      <span className={styles.brandName}>{brand}</span>
-                    </div>
-                  ))}
-                </div>
+                {isLoading ? (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100px', marginTop: '40px' }}
+                  >
+                    <span className="loader"></span>
+                  </div>
+                ) : (
+                  <div className={styles.list}>
+                    {Object.keys(selectedArticles)
+                      .filter((article) => article !== '0')
+                      .map((article, index) => (
+                        <div className={styles.brandItem} key={index}>
+                          <label className={styles.checkboxContainer}>
+                            <input
+                              type="checkbox"
+                              checked={selectedArticles[article]}
+                              onChange={() => toggleCheckboxArticle(article)}
+                              className={styles.checkboxInput}
+                            />
+                            <span className={styles.customCheckbox}></span>
+                          </label>
+                          <span className={styles.brandName}>{article}</span>
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
+
             </div>
 
             <div
               className={`${styles.ScheduleBody} dash-container container`}
               style={{ marginTop: '20px' }}
             >
+
               <div className={styles.containerProduct}>
                 <div className={styles.header}>
                   <span className={styles.title}>Товар</span>
@@ -515,27 +673,39 @@ const ReportAbcAnalysis = () => {
                     {allSelectedProducts ? 'Снять все' : 'Выбрать все'}
                   </button>
                 </div>
-                <div className={styles.list}>
-                  {Object.keys(selectedProducts).map((brand, index) => (
-                    <div className={styles.brandItem} key={index}>
-                      <label className={styles.checkboxContainer}>
-                        <input
-                          type='checkbox'
-                          checked={selectedProducts[brand]}
-                          onChange={() => toggleCheckboxProduct(brand)}
-                          className={styles.checkboxInput}
-                        />
-                        <span className={styles.customCheckbox}></span>
-                      </label>
-                      <span className={styles.brandName}>{brand}</span>
-                    </div>
-                  ))}
-                </div>
+                {isLoading ? (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100px', marginTop: '40px' }}
+                  >
+                    <span className="loader"></span>
+                  </div>
+                ) : (
+                  <div className={styles.list}>
+                    {Object.keys(selectedProducts)
+                      .filter((product) => product !== 'пусто')
+                      .map((product, index) => (
+                        <div className={styles.brandItem} key={index}>
+                          <label className={styles.checkboxContainer}>
+                            <input
+                              type="checkbox"
+                              checked={selectedProducts[product]}
+                              onChange={() => toggleCheckboxProduct(product)}
+                              className={styles.checkboxInput}
+                            />
+                            <span className={styles.customCheckbox}></span>
+                          </label>
+                          <span className={styles.brandName}>{product}</span>
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
+
             </div>
             <div className='container dash-container'>
               <div>
-                <button className={styles.applyButton}>
+                <button className={styles.applyButton} onClick={updateData}>
                   Применить фильтры
                 </button>
               </div>
@@ -546,17 +716,15 @@ const ReportAbcAnalysis = () => {
         <div className={`${styles.ScheduleFooter} dash-container container`}>
           <div className={styles.tabs}>
             <button
-              className={`${styles.tab} ${
-                activeTab === 'revenue' ? styles.active : ''
-              }`}
+              className={`${styles.tab} ${activeTab === 'revenue' ? styles.active : ''
+                }`}
               onClick={() => handleTabClick('revenue')}
             >
               По выручке
             </button>
             <button
-              className={`${styles.tab} ${
-                activeTab === 'profit' ? styles.active : ''
-              }`}
+              className={`${styles.tab} ${activeTab === 'profit' ? styles.active : ''
+                }`}
               onClick={() => handleTabClick('profit')}
             >
               По прибыли

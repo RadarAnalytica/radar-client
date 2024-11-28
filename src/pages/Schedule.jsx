@@ -600,6 +600,7 @@ const Schedule = () => {
         {!isOpenFilters && (
           <>
             <div className={`${styles.ScheduleHeader} dash-container container`}>
+
               <div className={styles.container}>
                 <div className={styles.header}>
                   <span className={styles.title}>Бренд</span>
@@ -775,6 +776,7 @@ const Schedule = () => {
                   </div>
                 )}
               </div>
+
               <div className={styles.container}>
                 <div className={styles.header}>
                   <span className={styles.title}>Артикул</span>
