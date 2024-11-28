@@ -5,9 +5,9 @@ import roi from '../assets/roi.svg';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus }) => {
+const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels }) => {
     const data = {
-        labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'],
+        labels: labels,
         datasets: [
             {
                 label: 'ROI, %',
@@ -25,7 +25,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
             },
             {
                 label: 'Маржинальность по прибыли, % (Lower)',
-                data: [-50, -40, -30, -10, -80, -20, -10, -40, -60, -20, -80, -140],
+                data: dataProfitMinus,
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
@@ -45,7 +45,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
             },
             {
                 label: 'Маржинальность по прибыли, % (Upper)',
-                data: [50, 30, 50, 80, 70, 60, 40, 20, 10, 40, 30, 20],
+                data: dataProfitPlus,
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
@@ -85,12 +85,12 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 callbacks: {
                     title: function (tooltipItems) {
                         const index = tooltipItems[0].dataIndex;
-                        const fullMonthNames = [
-                            'Январь', 'Февраль', 'Март', 'Апрель',
-                            'Май', 'Июнь', 'Июль', 'Август',
-                            'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-                        ];
-                        return fullMonthNames[index];
+                        // const fullMonthNames = [
+                        //     'Январь', 'Февраль', 'Март', 'Апрель',
+                        //     'Май', 'Июнь', 'Июль', 'Август',
+                        //     'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+                        // ];
+                        return labels[index];
                     },
                 },
             },
@@ -169,7 +169,16 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                     <div>ROI, %</div>
                 </div>
             </div>
-            <Bar data={data} options={options} />
+            {isLoading ? (
+                <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100%', marginTop: "140px" }}
+                >
+                    <span className="loader"></span>
+                </div>
+            ) : (
+                <Bar data={data} options={options} />
+            )}
         </div>
     );
 };

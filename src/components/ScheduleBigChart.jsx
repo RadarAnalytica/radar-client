@@ -6,7 +6,7 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit }) => {
+const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, maxDataRevenue, stepSizeRevenue, isLoading }) => {
     const data = {
         labels: labels,
         datasets: [
@@ -71,8 +71,8 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit }) => {
                     title: function (tooltipItems) {
 
                         const index = tooltipItems[0].dataIndex;
-                        const fullMonthNames = ['Январь 2024', 'Февраль 2024', 'Март 2024', 'Апрель 2024', 'Май 2024', 'Июнь 2024', 'Июль 2024', 'Август 2024', 'Сентябрь 2024', 'Октябрь 2024', 'Ноябрь 2024', 'Декабрь 2024'];
-                        return fullMonthNames[index];
+                        // const fullMonthNames = ['Январь 2024', 'Февраль 2024', 'Март 2024', 'Апрель 2024', 'Май 2024', 'Июнь 2024', 'Июль 2024', 'Август 2024', 'Сентябрь 2024', 'Октябрь 2024', 'Ноябрь 2024', 'Декабрь 2024'];
+                        return labels[index];
                     },
                     label: function (tooltipItem) {
                         return `${tooltipItem.dataset.label} ${" "} ${tooltipItem.raw.toLocaleString()}`;
@@ -110,14 +110,14 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit }) => {
             },
             y: {
                 beginAtZero: true,
-                min: 0,
-                max: 100000,
+                min: minDataRevenue,
+                max: maxDataRevenue,
                 grid: {
                     display: true,
                     drawOnChartArea: true,
                 },
                 ticks: {
-                    stepSize: 5000,
+                    stepSize: stepSizeRevenue,
                     color: '#8C8C8C',
                     callback: function (value) {
                         return value.toLocaleString();
@@ -153,7 +153,16 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit }) => {
                     </div>
                 </div>
             </div>
-            <Bar data={data} options={options} />
+            {isLoading ? (
+                <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100%', marginTop: "140px" }}
+                >
+                    <span className="loader"></span>
+                </div>
+            ) : (
+                <Bar data={data} options={options} />
+            )}
         </div>
     );
 };

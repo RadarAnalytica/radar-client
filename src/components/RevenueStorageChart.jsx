@@ -1,9 +1,8 @@
+import { max } from 'moment/moment';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-
-
-const RevenueStorageChart = ({ dataRevenueStorage, labels }) => {
+const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => {
     const data = {
         labels: labels,
         datasets: [
@@ -25,6 +24,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels }) => {
             }
         ]
     };
+
     const options = {
         indexAxis: 'y',
         responsive: true,
@@ -49,6 +49,14 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels }) => {
                     size: '12',
                 },
                 offset: 10,
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        const value = context.raw;
+                        return value.toLocaleString('ru-RU') + ' ₽';
+                    }
+                }
             }
         },
         scales: {
@@ -61,7 +69,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels }) => {
             x: {
                 beginAtZero: true,
                 min: 0,
-                max: 70000,
+                max: max,
                 grid: {
                     display: true
                 },
@@ -82,9 +90,17 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels }) => {
                 <div>
                     <div className='chart-title'>Выручка по складам</div>
                 </div>
-
             </div>
-            <Bar data={data} options={options} />
+            {isLoading ? (
+                <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100%', marginTop: "200px" }}
+                >
+                    <span className="loader"></span>
+                </div>
+            ) : (
+                <Bar data={data} options={options} />
+            )}
         </div>
     );
 };

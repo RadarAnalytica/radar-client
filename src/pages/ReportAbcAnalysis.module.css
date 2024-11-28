@@ -292,7 +292,7 @@
     width: 13%;
   }
   .category {
-    width: 17%;
+    width: 18%;
   }
   .generalCategory {
     width: 15%;
@@ -316,12 +316,14 @@
   }
   
   .row > div {
+    font-size: 15px;
     padding: 0 8px;
     text-align: left;
 
   }
   
   .rowHeader > div {
+ 
     padding: 0 8px;
     text-align: left;
   }

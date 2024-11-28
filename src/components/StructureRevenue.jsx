@@ -4,7 +4,7 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const StructureRevenue = ({ dataStructureRevenue }) => {
+const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
     const data = {
         labels: ['Все удержания', 'Всего внешних расходов', 'Налог', "Доход", "Себестоимость"],
         datasets: [
@@ -116,7 +116,16 @@ const StructureRevenue = ({ dataStructureRevenue }) => {
     return (
         <div className="chart-container" style={{ width: '30%', minHeight: "500px", display: "flex", flexDirection: "column" }}>
             <div className='chart-title'>Структура выручки</div>
-            <Doughnut data={data} options={options} style={{ margin: "auto" }} />
+            {isLoading ? (
+                <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '100%', marginTop: "200px" }}
+                >
+                    <span className="loader"></span>
+                </div>
+            ) : (
+                <Doughnut data={data} options={options} style={{ margin: "auto" }} />
+            )}
         </div>
     );
 };
