@@ -3,7 +3,7 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import SideNav from '../components/SideNav';
 import AuthContext from '../service/AuthContext';
 import TopNav from '../components/TopNav';
-import primeCost from './images/prime-cost.svg';
+import buyback from './images/buyBackIcon.svg';
 import Modal from 'react-bootstrap/Modal';
 import DragDropFile from '../components/DragAndDropFiles';
 import BottomNavigation from '../components/BottomNavigation';
@@ -55,9 +55,9 @@ const ReportBuyBack = () => {
         <div className='container dash-container'>
           <div className={styles.primeCost}>
             <div className={styles.primeCostBox}>
-              <img src={primeCost} alt='primeCost' />
+              <img src={buyback} alt='buyback' />
               <div className={styles.primeCostBoxText}>
-                <span className={styles.title}>Самовыкуп</span>
+                <span className={styles.title}>Самовыкупы</span>
                 {/* <span className={styles.lastDownlaod}>Последняя загрузка</span> */}
               </div>
             </div>

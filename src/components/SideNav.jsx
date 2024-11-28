@@ -1,31 +1,39 @@
-import React, { useEffect, useState } from "react";
-import logo from "../assets/logo.png";
-import greygrow from "../assets/grey-grow.png";
-import purplegrow from "../assets/purple-grow.png";
-import goods from "../assets/mygoods.png";
-import lightning from "../assets/Lightning 1.png";
-import magic from "../assets/magic.png";
-import support from "../assets/support.png";
-import { useNavigate } from "react-router-dom";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import React, { useEffect, useState } from 'react';
+import logo from '../assets/logo.png';
+import greygrow from '../assets/grey-grow.png';
+import purplegrow from '../assets/purple-grow.png';
+import financeIcon from '../assets/financeIcon.svg';
+import goods from '../assets/mygoods.png';
+import lightning from '../assets/Lightning 1.png';
+import magic from '../assets/magic.png';
+import support from '../assets/support.png';
+import { useNavigate } from 'react-router-dom';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { useSelector, useDispatch } from 'react-redux';
-import { openSupportWindow, closeSupportWindow } from '../redux/supportWindow/supportWindowSlice';
-import aiGenerator from "../assets/aiGenerator.svg"
+import {
+  openSupportWindow,
+  closeSupportWindow,
+} from '../redux/supportWindow/supportWindowSlice';
+import aiGenerator from '../assets/aiGenerator.svg';
 
 const SideNav = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const url = document.location.href;
-  const chunkArray = url ? url.split("/").reverse() : null;
+  const chunkArray = url ? url.split('/').reverse() : null;
   const productUrl = chunkArray ? chunkArray.includes('product') : false;
   const location = chunkArray ? chunkArray[0] : null;
-  const linkPlagin = "https://chromewebstore.google.com/";
-  const isOpenSupportWindow = useSelector((state) => state.supportWindowSlice?.isOpenSupportWindow);
-  const messages = useSelector((state) => state.messagesSlice.messages.support_messages_count);
+  const linkPlagin = 'https://chromewebstore.google.com/';
+  const isOpenSupportWindow = useSelector(
+    (state) => state.supportWindowSlice?.isOpenSupportWindow
+  );
+  const messages = useSelector(
+    (state) => state.messagesSlice.messages.support_messages_count
+  );
 
   const [messagesShown, setMessagesShown] = useState(messages);
 
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState('');
   useEffect(() => {
     setActive(location);
   }, [location]);
@@ -46,26 +54,26 @@ const SideNav = () => {
     } else {
       dispatch(openSupportWindow());
     }
-  }
+  };
 
   return (
     <div className='side-nav'>
       <div>
-        <img src={logo} alt='' style={{ maxWidth: "160px" }} />
+        <img src={logo} alt='' style={{ maxWidth: '160px' }} />
 
         <div className='mt-4'>
-          <div className='sidenav-el' onClick={() => navigate("/dashboard")}>
+          <div className='sidenav-el' onClick={() => navigate('/dashboard')}>
             <div className='d-flex align-items-center'>
               <img
-                src={active === "dashboard" ? purplegrow : greygrow}
+                src={active === 'dashboard' ? purplegrow : greygrow}
                 alt=''
                 className='side-nav-icon'
               />
               <span
                 className='sidenav-title'
                 style={
-                  active === "dashboard"
-                    ? { fontWeight: "bold", fontSize: "14px", color: "black" }
+                  active === 'dashboard'
+                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
                     : {}
                 }
               >
@@ -73,18 +81,123 @@ const SideNav = () => {
               </span>
             </div>
           </div>
-          <div className='sidenav-el' onClick={() => navigate("/weeklyreport-dashboard")}>
+          <div className='sidenav-el' onClick={() => navigate('/report-main')}>
             <div className='d-flex align-items-center'>
-              <img
-                src={active === "weeklyreport-dashboard" || active === "weeklyreport-pl" ? purplegrow : greygrow}
+              <svg
+                width='18'
+                height='20'
+                viewBox='0 0 18 20'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+                className='side-nav-icon'
+              >
+                <path
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  d='M1 1C1 0.447715 1.44772 0 2 0H16C16.5523 0 17 0.447715 17 1V19C17 19.3905 16.7727 19.7453 16.4179 19.9085C16.0631 20.0717 15.6457 20.0134 15.3492 19.7593L14.3175 18.8749C13.943 18.5539 13.3904 18.5539 13.0159 18.8749L11.9841 19.7593C11.6096 20.0802 11.057 20.0802 10.6825 19.7593L9.65079 18.8749C9.2763 18.5539 8.7237 18.5539 8.34921 18.8749L7.31746 19.7593C6.94297 20.0802 6.39036 20.0802 6.01588 19.7593L4.98412 18.8749C4.60963 18.5539 4.05703 18.5539 3.68254 18.8749L2.65079 19.7593C2.35428 20.0134 1.93694 20.0717 1.58214 19.9085C1.22734 19.7453 1 19.3905 1 19V1ZM3 2V16.9463C4.05673 16.4217 5.3547 16.5584 6.28571 17.3564L6.66667 17.6829L7.04763 17.3564C8.17109 16.3934 9.82891 16.3934 10.9524 17.3564L11.3333 17.6829L11.7143 17.3564C12.6453 16.5584 13.9433 16.4217 15 16.9463V2H3Z'
+                  fill={
+                    active === 'weeklyreport-dashboard' ||
+                    active === 'weeklyreport-pl' ||
+                    active === 'weeklyreport-month' ||
+                    active === 'report-main' ||
+                    active === 'weeklyreport-goods' ||
+                    active === 'abc-data-reports' ||
+                    active === 'weeklyreport-penalties' ||
+                    active === 'schedule' ||
+                    active === 'prime-cost' ||
+                    active === 'external-expenses' ||
+                    active === 'buy-back'
+                      ? '#5329FF'
+                      : '#808080'
+                  }
+                />
+                <path
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  d='M5 5C5 4.44772 5.44772 4 6 4L12 4C12.5523 4 13 4.44772 13 5C13 5.55228 12.5523 6 12 6L6 6C5.44772 6 5 5.55228 5 5Z'
+                  fill={
+                    active === 'weeklyreport-dashboard' ||
+                    active === 'weeklyreport-pl' ||
+                    active === 'weeklyreport-month' ||
+                    active === 'report-main' ||
+                    active === 'weeklyreport-goods' ||
+                    active === 'abc-data-reports' ||
+                    active === 'weeklyreport-penalties' ||
+                    active === 'schedule' ||
+                    active === 'prime-cost' ||
+                    active === 'external-expenses' ||
+                    active === 'buy-back'
+                      ? '#5329FF'
+                      : '#808080'
+                  }
+                />
+                <path
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  d='M5 9C5 8.44772 5.44772 8 6 8L12 8C12.5523 8 13 8.44772 13 9C13 9.55228 12.5523 10 12 10L6 10C5.44772 10 5 9.55228 5 9Z'
+                  fill={
+                    active === 'weeklyreport-dashboard' ||
+                    active === 'weeklyreport-pl' ||
+                    active === 'weeklyreport-month' ||
+                    active === 'report-main' ||
+                    active === 'weeklyreport-goods' ||
+                    active === 'abc-data-reports' ||
+                    active === 'weeklyreport-penalties' ||
+                    active === 'schedule' ||
+                    active === 'prime-cost' ||
+                    active === 'external-expenses' ||
+                    active === 'buy-back'
+                      ? '#5329FF'
+                      : '#808080'
+                  }
+                />
+                <path
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  d='M7 13C7 12.4477 7.44772 12 8 12L12 12C12.5523 12 13 12.4477 13 13C13 13.5523 12.5523 14 12 14L8 14C7.44772 14 7 13.5523 7 13Z'
+                  fill={
+                    active === 'weeklyreport-dashboard' ||
+                    active === 'weeklyreport-pl' ||
+                    active === 'weeklyreport-month' ||
+                    active === 'report-main' ||
+                    active === 'weeklyreport-goods' ||
+                    active === 'abc-data-reports' ||
+                    active === 'weeklyreport-penalties' ||
+                    active === 'schedule' ||
+                    active === 'prime-cost' ||
+                    active === 'external-expenses' ||
+                    active === 'buy-back'
+                      ? '#5329FF'
+                      : '#808080'
+                  }
+                />
+              </svg>
+              {/* <img
+                src={
+                  active === 'weeklyreport-dashboard' ||
+                  active === 'weeklyreport-pl'
+                    ? financeIcon
+                    : financeIcon
+                }
                 alt=''
                 className='side-nav-icon'
-              />
+                style={{}}
+              /> */}
               <span
                 className='sidenav-title'
                 style={
-                  active === "weeklyreport-dashboard" || active === "weeklyreport-pl" || active === "weeklyreport-month"
-                    ? { fontWeight: "bold", fontSize: "14px", color: "black" }
+                  active === 'weeklyreport-dashboard' ||
+                  active === 'weeklyreport-pl' ||
+                  active === 'weeklyreport-month' ||
+                  active === 'report-main' ||
+                  active === 'weeklyreport-goods' ||
+                  active === 'abc-data-reports' ||
+                  active === 'weeklyreport-penalties' ||
+                  active === 'schedule' ||
+                  active === 'prime-cost' ||
+                  active === 'external-expenses' ||
+                  active === 'buy-back'
+                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
                     : {}
                 }
               >
@@ -97,9 +210,9 @@ const SideNav = () => {
             onClick={() => setGoodsShown(!goodsShown)}
           >
             <div className='d-flex align-items-center'>
-              {location === "orders-map" ||
-                location === "supply" ||
-                location === "stock-analysis" ? (
+              {location === 'orders-map' ||
+              location === 'supply' ||
+              location === 'stock-analysis' ? (
                 <svg
                   width='18'
                   height='18'
@@ -118,11 +231,11 @@ const SideNav = () => {
               <span
                 className='sidenav-title'
                 style={
-                  location === "orders-map" ||
-                    location === "supply" ||
-                    location === "abc-data" ||
-                    location === "stock-analysis"
-                    ? { fontWeight: "bold", fontSize: "14px", color: "black" }
+                  location === 'orders-map' ||
+                  location === 'supply' ||
+                  location === 'abc-data' ||
+                  location === 'stock-analysis'
+                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
                     : {}
                 }
               >
@@ -136,15 +249,15 @@ const SideNav = () => {
               <p
                 className='sidenav-title ps-4 submenu-item'
                 style={
-                  location === "supply"
-                    ? { fontWeight: "bold", fontSize: "14px", display: "none" }
-                    : { display: "none" }
+                  location === 'supply'
+                    ? { fontWeight: 'bold', fontSize: '14px', display: 'none' }
+                    : { display: 'none' }
                 }
-                onClick={() => navigate("/development/supply")}
+                onClick={() => navigate('/development/supply')}
               >
-                {location === "supply" ? (
+                {location === 'supply' ? (
                   <svg
-                    style={{ marginRight: "0.5vw" }}
+                    style={{ marginRight: '0.5vw' }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -159,15 +272,15 @@ const SideNav = () => {
               <p
                 className='sidenav-title padding-left submenu-item'
                 style={
-                  location === "orders-map"
-                    ? { fontWeight: "bold", fontSize: "14px" }
+                  location === 'orders-map'
+                    ? { fontWeight: 'bold', fontSize: '14px' }
                     : {}
                 }
-                onClick={() => navigate("/orders-map")}
+                onClick={() => navigate('/orders-map')}
               >
-                {location === "orders-map" ? (
+                {location === 'orders-map' ? (
                   <svg
-                    style={{ marginRight: "0.5vw" }}
+                    style={{ marginRight: '0.5vw' }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -183,22 +296,22 @@ const SideNav = () => {
                 className='sidenav-title padding-left submenu-item'
                 style={
                   // <<<<<<< HEAD
-                  location === "abc-data"
-                    ? { fontWeight: "bold", fontSize: "14px" }
+                  location === 'abc-data'
+                    ? { fontWeight: 'bold', fontSize: '14px' }
                     : {}
                 }
-                onClick={() => navigate("/abc-data")}
-              // =======
-              //                   location === 'stock-analysis'
-              //                     ? { fontWeight: 'bold', fontSize: '14px' }
-              //                     : {}
-              //                 }
-              //                 onClick={() => navigate('/stock-analysis')}
-              // >>>>>>> stockAnlysis
+                onClick={() => navigate('/abc-data')}
+                // =======
+                //                   location === 'stock-analysis'
+                //                     ? { fontWeight: 'bold', fontSize: '14px' }
+                //                     : {}
+                //                 }
+                //                 onClick={() => navigate('/stock-analysis')}
+                // >>>>>>> stockAnlysis
               >
-                {location === "abc-data" ? (
+                {location === 'abc-data' ? (
                   <svg
-                    style={{ marginRight: "0.5vw" }}
+                    style={{ marginRight: '0.5vw' }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -214,15 +327,19 @@ const SideNav = () => {
               <p
                 className='sidenav-title padding-left submenu-item'
                 style={
-                  location === "stock-analysis" || productUrl
-                    ? { fontWeight: "bold", fontSize: "14px", whiteSpace: "nowrap" }
+                  location === 'stock-analysis' || productUrl
+                    ? {
+                        fontWeight: 'bold',
+                        fontSize: '14px',
+                        whiteSpace: 'nowrap',
+                      }
                     : {}
                 }
-                onClick={() => navigate("/stock-analysis")}
+                onClick={() => navigate('/stock-analysis')}
               >
-                {location === "stock-analysis" || productUrl ? (
+                {location === 'stock-analysis' || productUrl ? (
                   <svg
-                    style={{ marginRight: "0.5vw" }}
+                    style={{ marginRight: '0.5vw' }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -241,7 +358,9 @@ const SideNav = () => {
             onClick={() => setPromotionShown(!promotionShown)}
           >
             <div className='d-flex align-items-center'>
-              {location === "calculate" || location === "monitoring" || location === "ai-generator" ? (
+              {location === 'calculate' ||
+              location === 'monitoring' ||
+              location === 'ai-generator' ? (
                 <svg
                   width='20'
                   height='20'
@@ -260,8 +379,10 @@ const SideNav = () => {
               <span
                 className='sidenav-title'
                 style={
-                  location === "calculate" || location === "monitoring" || location === "ai-generator"
-                    ? { fontWeight: "bold", fontSize: "14px", color: "black" }
+                  location === 'calculate' ||
+                  location === 'monitoring' ||
+                  location === 'ai-generator'
+                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
                     : {}
                 }
               >
@@ -276,16 +397,18 @@ const SideNav = () => {
             <div>
               <p
                 className='sidenav-title submenu-item'
-                onClick={() => navigate("/ai-generator")}
-
+                onClick={() => navigate('/ai-generator')}
                 style={{
-                  whiteSpace: "nowrap",
-                  ...(location === "ai-generator" && { fontWeight: "bold", fontSize: "14px" })
+                  whiteSpace: 'nowrap',
+                  ...(location === 'ai-generator' && {
+                    fontWeight: 'bold',
+                    fontSize: '14px',
+                  }),
                 }}
               >
-                {location === "ai-generator" ? (
+                {location === 'ai-generator' ? (
                   <svg
-                    style={{ marginRight: "0.5vw" }}
+                    style={{ marginRight: '0.5vw' }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -296,20 +419,20 @@ const SideNav = () => {
                   </svg>
                 ) : null}
                 Генерация описания
-                <img src={aiGenerator} style={{ marginLeft: "5px" }} />
+                <img src={aiGenerator} style={{ marginLeft: '5px' }} />
               </p>
               <p
                 className='sidenav-title submenu-item'
-                onClick={() => navigate("/monitoring")}
+                onClick={() => navigate('/monitoring')}
                 style={
-                  location === "monitoring"
-                    ? { fontWeight: "bold", fontSize: "14px" }
+                  location === 'monitoring'
+                    ? { fontWeight: 'bold', fontSize: '14px' }
                     : {}
                 }
               >
-                {location === "monitoring" ? (
+                {location === 'monitoring' ? (
                   <svg
-                    style={{ marginRight: "0.5vw" }}
+                    style={{ marginRight: '0.5vw' }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -323,16 +446,16 @@ const SideNav = () => {
               </p>
               <p
                 className='sidenav-title submenu-item'
-                onClick={() => navigate("/calculate")}
+                onClick={() => navigate('/calculate')}
                 style={
-                  location === "calculate"
-                    ? { fontWeight: "bold", fontSize: "14px" }
+                  location === 'calculate'
+                    ? { fontWeight: 'bold', fontSize: '14px' }
                     : {}
                 }
               >
-                {location === "calculate" ? (
+                {location === 'calculate' ? (
                   <svg
-                    style={{ marginRight: "0.5vw" }}
+                    style={{ marginRight: '0.5vw' }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -346,16 +469,16 @@ const SideNav = () => {
               </p>
               <p
                 className='sidenav-title submenu-item'
-                onClick={() => navigate("/seo")}
+                onClick={() => navigate('/seo')}
                 style={
-                  location === "seo"
-                    ? { fontWeight: "bold", fontSize: "14px" }
+                  location === 'seo'
+                    ? { fontWeight: 'bold', fontSize: '14px' }
                     : {}
                 }
               >
-                {location === "seo" ? (
+                {location === 'seo' ? (
                   <svg
-                    style={{ marginRight: "0.5vw" }}
+                    style={{ marginRight: '0.5vw' }}
                     width='8'
                     height='8'
                     viewBox='0 0 8 8'
@@ -370,8 +493,9 @@ const SideNav = () => {
             </div>
           ) : null}
           <div
-            className={`sidenav-el additional-tools ${additionalTools ? "expanded" : ""
-              }`}
+            className={`sidenav-el additional-tools ${
+              additionalTools ? 'expanded' : ''
+            }`}
             onClick={() => setAdditionalTools(!additionalTools)}
           >
             <div className='d-flex align-items-center'>
@@ -395,13 +519,13 @@ const SideNav = () => {
               <span
                 className='sidenav-title'
                 style={
-                  location === "abc-data"
-                    ? { fontWeight: "", fontSize: "14px", color: "#F0AD00" }
+                  location === 'abc-data'
+                    ? { fontWeight: '', fontSize: '14px', color: '#F0AD00' }
                     : {
-                      fontWeight: "",
-                      fontSize: "14px",
-                      color: "#F0AD00",
-                    }
+                        fontWeight: '',
+                        fontSize: '14px',
+                        color: '#F0AD00',
+                      }
                 }
               >
                 Дополнительные
@@ -421,26 +545,26 @@ const SideNav = () => {
           {additionalTools ? (
             <div
               style={{
-                background: "#F0AD000D",
-                borderBottomLeftRadius: "16px",
-                borderBottomRightRadius: "16px",
-                padding: "5px",
+                background: '#F0AD000D',
+                borderBottomLeftRadius: '16px',
+                borderBottomRightRadius: '16px',
+                padding: '5px',
               }}
             >
               <p
                 className='sidenav-title ps-4 submenu-item'
                 style={
-                  location === "plagin"
-                    ? { fontWeight: "bold", fontSize: "14px" }
+                  location === 'plagin'
+                    ? { fontWeight: 'bold', fontSize: '14px' }
                     : {}
                 }
-                onClick={() => navigate("")}
+                onClick={() => navigate('')}
               >
                 <a
                   href='https://chromewebstore.google.com/detail/radar-%E2%80%93-%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D0%B0%D1%8F-%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D1%82/haelmohfdnapjehnhgncjdnjmchdahhb'
                   target='_blank'
                   rel='noopener noreferrer'
-                  style={{ textDecoration: "none", color: "black" }}
+                  style={{ textDecoration: 'none', color: 'black' }}
                 >
                   Radar – плагин в браузер
                 </a>
@@ -473,33 +597,34 @@ const SideNav = () => {
         </div>
       </div>
 
-      <div
-        className='support-block'      
-      >
-        <a href="https://t.me/red_roadd" target="_blank">
-          <img 
-            src={support} 
-            alt='Call support window' 
-            className='support-icon' 
-            style={{ cursor: "pointer" }}  
+      <div className='support-block'>
+        <a href='https://t.me/red_roadd' target='_blank'>
+          <img
+            src={support}
+            alt='Call support window'
+            className='support-icon'
+            style={{ cursor: 'pointer' }}
             // onClick={() => toggleOpenSupport()}
           />
         </a>
         <span className='support-block-text-box'>
-            <span className='support-block-text-title'>Поддержка</span>
-            <span className='support-block-text-writeus'>Напишите нам</span>
-          </span>
-          <span className='error-notification' style={{display: 'flex', alignItems: 'center', marginLeft: '10px'}}>
+          <span className='support-block-text-title'>Поддержка</span>
+          <span className='support-block-text-writeus'>Напишите нам</span>
+        </span>
+        <span
+          className='error-notification'
+          style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}
+        >
           <span>
-              {messagesShown <= 0 || messagesShown === undefined ? (
-                ""
-              ) : (
-                <span className='error-number-support'>{messagesShown}</span>
-              )}
-            </span>
-            </span>
+            {messagesShown <= 0 || messagesShown === undefined ? (
+              ''
+            ) : (
+              <span className='error-number-support'>{messagesShown}</span>
+            )}
+          </span>
+        </span>
       </div>
-    </div >
+    </div>
   );
 };
 
