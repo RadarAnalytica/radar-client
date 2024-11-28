@@ -1,300 +1,164 @@
 import React, { useState } from 'react';
 import arrowDown from '../assets/arrow-down.svg';
 import styles from './TableByGoods.module.css';
+import { formatPrice } from '../service/utils';
 
-const TableByGoods = () => {
-  const [expandedRows, setExpandedRows] = useState(new Set(['345678909']));
+const TableByGoods = ({ data }) => {
+  const [expandedRows, setExpandedRows] = useState(new Set());
 
-  const data = [
-    {
-      id: '345678909',
-      product: 'Куртка демисезонная с капюшоном осень 2024',
-      purchases: {
-        amount: '500 000 ₽',
-        quantity: '50 шт',
-      },
-      returns: {
-        amount: '10 000 ₽',
-        quantity: '2 шт',
-      },
-      sales: '50 шт',
-      revenue: '100 000 ₽',
-      avgPrice: '5 000 ₽',
-      spp: '20 %',
-      buyout: '40 %',
-      cost: {
-        total: '50 000 ₽',
-        percentage: '20 %',
-        perUnit: '1 000 ₽',
-      },
-      logisticQnty: '100 шт',
-      logisticCommission: {
-        comission: '50 000 ₽',
-        percentage: '20 %',
-        total: '50 000 ₽',
-        totalPercentage: '20 %',
-      },
-      logisticEquiring: {
-        equiring: '50 000 ₽',
-        percentage: '0,1 %',
-        total: '50 000 ₽',
-        totalPercentage: '0,1 %',
-      },
-      logisticOfDeliever: { ofDeliver: '15 000 ₽', total: '15 000 ₽' },
-      logisticOfReturn: { ofReturn: '5 000 ₽', total: '5 000 ₽' },
-      logisticOfTotal: {
-        ofTotal: '21 000 ₽',
-        percentage: '9 %',
-        totalPercentage: '9 %',
-        total: '21 000 ₽',
-      },
-      logisitcPerUnit: { perUnit: '4 000 ₽', total: '4 000 ₽' },
-      defectCompensation: { compensation: '1 000 ₽', total: '1 000 ₽' },
-      defectQnty: { quantity: '10 шт', total: '10 000 ₽' },
-      defectCompensationDamage: {
-        compensationDamage: '1 000 ₽',
-        total: '1 000 ₽',
-      },
-      defectCompensationDamageQnty: { damage: '10 шт', total: '10 000 ₽' },
-      defectFines: { fines: '1 000 ₽', total: '1 000 ₽' },
-      defectFinesMore: { finesMore: '1 000 ₽', total: '1 000 ₽' },
-      anotherKeeper: {
-        anotherKeeper: '1 000 ₽',
-        percentage: '0,2 %',
-        total: '1 000 ₽',
-        totalPercentage: '0,2 %',
-      },
-      anotherKeeperOtherDeduction: {
-        deduction: '10 000 ₽',
-        percentage: '5 %',
-        total: '10 000 ₽',
-        totalPercentage: '5 %',
-      },
-      anotherKeeperPaidAcceptance: {
-        paidAcceptance: '10 000 ₽',
-        percentage: '5 %',
-        total: '10 000 ₽',
-        totalPercentage: '5 %',
-      },
-      anotherKeeperWbDeduction: {
-        wbDeduction: '10 000 ₽',
-        percentage: '5 %',
-        total: '10 000 ₽',
-        totalPercentage: '5 %',
-      },
-      externalExpensesSelfBuy: { selfBuy: '10 000 ₽', total: '10 000 ₽' },
-      externalExpenses: {
-        externalExpenses: '0 ₽',
-        percentage: '0,1 %',
-        total: '0 ₽',
-      },
-      externalExpensesAll: {
-        externalExpensesAll: '25 000 ₽',
-        total: '25 000 ₽',
-      },
-      taxSppWb: { taxSppWb: '0 ₽', total: '0 ₽' },
-      taxTotal: { taxTotal: '200 000 ₽', total: '200 000 ₽' },
-      taxTax: { taxTax: '10 000 ₽', total: '10 000 ₽' },
-      financePay: { financePay: '10 000 ₽', total: '10 000 ₽' },
-      financeTotal: { financeTotal: '200 000 ₽', total: '200 000 ₽' },
-      financeTotalPerUnit: { financePerUnit: '1 000 ₽', total: '1 000 ₽' },
-      financeMarginProfit: { marginProfit: '30 %', total: '30 %' },
-      financeRoi: { roi: '80 %', total: '80 %' },
-      children: [
-        {
-          id: '345678909-1',
-          isChild: true,
-          product: 'Куртка демисезонная с капюшоном осень 2024',
-          purchases: {
-            amount: '500 000 ₽',
-            quantity: '50 шт',
-          },
-          returns: {
-            amount: '10 000 ₽',
-            quantity: '2 шт',
-          },
-          sales: '50 шт',
-          revenue: '100 000 ₽',
-          avgPrice: '5 000 ₽',
-          spp: '20 %',
-          buyout: '40 %',
-          cost: {
-            total: '50 000 ₽',
-            percentage: '20 %',
-            perUnit: '1 000 ₽',
-          },
-          logisticQnty: '100 шт',
-          logisticCommission: {
-            comission: '50 000 ₽',
-            percentage: '20 %',
-            total: '50 000 ₽',
-            totalPercentage: '20 %',
-          },
-          logisticEquiring: {
-            equiring: '50 000 ₽',
-            percentage: '0,1 %',
-            total: '50 000 ₽',
-            totalPercentage: '0,1 %',
-          },
-          logisticOfDeliever: { ofDeliver: '15 000 ₽', total: '15 000 ₽' },
-          logisticOfReturn: { ofReturn: '5 000 ₽', total: '5 000 ₽' },
-          logisticOfTotal: {
-            ofTotal: '21 000 ₽',
-            percentage: '9 %',
-            totalPercentage: '9 %',
-            total: '21 000 ₽',
-          },
-          logisitcPerUnit: { perUnit: '4 000 ₽', total: '4 000 ₽' },
-          defectCompensation: { compensation: '1 000 ₽', total: '1 000 ₽' },
-          defectQnty: { quantity: '10 шт', total: '10 000 ₽' },
-          defectCompensationDamage: {
-            compensationDamage: '1 000 ₽',
-            total: '1 000 ₽',
-          },
-          defectCompensationDamageQnty: { damage: '10 шт', total: '10 000 ₽' },
-          defectFines: { fines: '1 000 ₽', total: '1 000 ₽' },
-          defectFinesMore: { finesMore: '1 000 ₽', total: '1 000 ₽' },
-          anotherKeeper: {
-            anotherKeeper: '1 000 ₽',
-            percentage: '0,2 %',
-            total: '1 000 ₽',
-            totalPercentage: '0,2 %',
-          },
-          anotherKeeperOtherDeduction: {
-            deduction: '10 000 ₽',
-            percentage: '5 %',
-            total: '10 000 ₽',
-            totalPercentage: '5 %',
-          },
-          anotherKeeperPaidAcceptance: {
-            paidAcceptance: '10 000 ₽',
-            percentage: '5 %',
-            total: '10 000 ₽',
-            totalPercentage: '5 %',
-          },
-          anotherKeeperWbDeduction: {
-            wbDeduction: '10 000 ₽',
-            percentage: '5 %',
-            total: '10 000 ₽',
-            totalPercentage: '5 %',
-          },
-          externalExpensesSelfBuy: { selfBuy: '10 000 ₽', total: '10 000 ₽' },
-          externalExpenses: {
-            externalExpenses: '0 ₽',
-            percentage: '0,1 %',
-            total: '0 ₽',
-          },
-          externalExpensesAll: {
-            externalExpensesAll: '25 000 ₽',
-            total: '25 000 ₽',
-          },
-          taxSppWb: { taxSppWb: '0 ₽', total: '0 ₽' },
-          taxTotal: { taxTotal: '200 000 ₽', total: '200 000 ₽' },
-          taxTax: { taxTax: '10 000 ₽', total: '10 000 ₽' },
-          financePay: { financePay: '10 000 ₽', total: '10 000 ₽' },
-          financeTotal: { financeTotal: '200 000 ₽', total: '200 000 ₽' },
-          financeTotalPerUnit: { financePerUnit: '1 000 ₽', total: '1 000 ₽' },
-          financeMarginProfit: { marginProfit: '30 %', total: '30 %' },
-          financeRoi: { roi: '80 %', total: '80 %' },
+  const renderTableData = () => {
+    const items = Object.entries(data || {})
+      .filter(([key]) => key !== 'total')
+      .map(([id, item]) => ({
+        id,
+        product: item.name,
+        purchases: {
+          amount: `${formatPrice(item?.data?.purchases?.rub) || '0'} ₽`,
+          quantity: `${formatPrice(item?.data?.purchases?.quantity) || '0'} шт`,
         },
-      ],
-    },
-    {
-      id: '3456789456',
-      product: 'Куртка демисезонная с капюшоном осень 2024',
-      purchases: {
-        amount: '500 000 ₽',
-        quantity: '50 шт',
-      },
-      returns: {
-        amount: '10 000 ₽',
-        quantity: '2 шт',
-      },
-      sales: '50 шт',
-      revenue: '100 000 ₽',
-      avgPrice: '5 000 ₽',
-      spp: '20 %',
-      buyout: '40 %',
-      cost: {
-        total: '50 000 ₽',
-        percentage: '20 %',
-        perUnit: '1 000 ₽',
-      },
-      logisticQnty: '100 шт',
-      logisticCommission: {
-        comission: '50 000 ₽',
-        percentage: '20 %',
-        total: '50 000 ₽',
-        totalPercentage: '20 %',
-      },
-      logisticEquiring: {
-        equiring: '50 000 ₽',
-        percentage: '0,1 %',
-        total: '50 000 ₽',
-        totalPercentage: '0,1 %',
-      },
-      logisticOfDeliever: { ofDeliver: '15 000 ₽', total: '15 000 ₽' },
-      logisticOfReturn: { ofReturn: '5 000 ₽', total: '5 000 ₽' },
-      logisticOfTotal: {
-        ofTotal: '21 000 ₽',
-        percentage: '9 %',
-        totalPercentage: '9 %',
-        total: '21 000 ₽',
-      },
-      logisitcPerUnit: { perUnit: '4 000 ₽', total: '4 000 ₽' },
-      defectCompensation: { compensation: '1 000 ₽', total: '1 000 ₽' },
-      defectQnty: { quantity: '10 шт', total: '10 000 ₽' },
-      defectCompensationDamage: {
-        compensationDamage: '1 000 ₽',
-        total: '1 000 ₽',
-      },
-      defectCompensationDamageQnty: { damage: '10 шт', total: '10 000 ₽' },
-      defectFines: { fines: '1 000 ₽', total: '1 000 ₽' },
-      defectFinesMore: { finesMore: '1 000 ₽', total: '1 000 ₽' },
-      anotherKeeper: {
-        anotherKeeper: '1 000 ₽',
-        percentage: '0,2 %',
-        total: '1 000 ₽',
-        totalPercentage: '0,2 %',
-      },
-      anotherKeeperOtherDeduction: {
-        deduction: '10 000 ₽',
-        percentage: '5 %',
-        total: '10 000 ₽',
-        totalPercentage: '5 %',
-      },
-      anotherKeeperPaidAcceptance: {
-        paidAcceptance: '10 000 ₽',
-        percentage: '5 %',
-        total: '10 000 ₽',
-        totalPercentage: '5 %',
-      },
-      anotherKeeperWbDeduction: {
-        wbDeduction: '10 000 ₽',
-        percentage: '5 %',
-        total: '10 000 ₽',
-        totalPercentage: '5 %',
-      },
-      externalExpensesSelfBuy: { selfBuy: '10 000 ₽', total: '10 000 ₽' },
-      externalExpenses: {
-        externalExpenses: '0 ₽',
-        percentage: '0,1 %',
-        total: '0 ₽',
-      },
-      externalExpensesAll: {
-        externalExpensesAll: '25 000 ₽',
-        total: '25 000 ₽',
-      },
-      taxSppWb: { taxSppWb: '0 ₽', total: '0 ₽' },
-      taxTotal: { taxTotal: '200 000 ₽', total: '200 000 ₽' },
-      taxTax: { taxTax: '10 000 ₽', total: '10 000 ₽' },
-      financePay: { financePay: '10 000 ₽', total: '10 000 ₽' },
-      financeTotal: { financeTotal: '200 000 ₽', total: '200 000 ₽' },
-      financeTotalPerUnit: { financePerUnit: '1 000 ₽', total: '1 000 ₽' },
-      financeMarginProfit: { marginProfit: '30 %', total: '30 %' },
-      financeRoi: { roi: '80 %', total: '80 %' },
-    },
-  ];
+        returns: {
+          amount: `${formatPrice(item?.data?.return?.rub) || '0'} ₽`,
+          quantity: `${formatPrice(item?.data?.return?.quantity) || '0'} шт`,
+        },
+        sales: `${formatPrice(item?.data?.revenue?.quantity) || '0'} шт`,
+        revenue: `${formatPrice(item?.data?.revenue?.rub) || '0'} ₽`,
+        avgPrice: `${formatPrice(item?.data?.avg_check) || '0'} ₽`,
+        spp: `${formatPrice(item?.data?.avg_spp) || '0'} %`,
+        buyout: `${formatPrice(item?.data?.purchase_percent) || '0'} %`,
+        cost: {
+          total: formatPrice(item?.data?.cost_price) || '0',
+          percentage: formatPrice(item?.data?.cost_price_percent) || '0',
+          perUnit: formatPrice(item?.data?.cost_price) || '0',
+        },
+        logisticQnty: `${formatPrice(item?.data?.deliveries) || '0'} шт`,
+        logisticCommission: {
+          comission: `${formatPrice(item?.data?.wb_commission?.rub) || '0'} ₽`,
+          percentage: `${
+            formatPrice(item?.data?.wb_commission?.percent) || '0'
+          } %`,
+        },
+        logisticEquiring: {
+          equiring: `${formatPrice(item?.data?.acquiring?.rub) || '0'} ₽`,
+          percentage: `${formatPrice(item?.data?.acquiring?.percent) || '0'} %`,
+        },
+        logisticOfDeliever: {
+          ofDeliver: `${
+            formatPrice(item?.data?.logistics_straight?.rub) || '0'
+          } ₽`,
+        },
+        logisticOfReturn: {
+          ofReturn: `${
+            formatPrice(item?.data?.logistics_reverse?.rub) || '0'
+          } ₽`,
+        },
+        logisticOfTotal: {
+          ofTotal: `${formatPrice(item?.data?.logistics_total?.rub) || '0'} ₽`,
+          percentage: `${
+            formatPrice(item?.data?.logistics_total?.percent) || '0'
+          } %`,
+        },
+        logisitcPerUnit: {
+          perUnit: `${formatPrice(item?.data?.logistics_per_product) || '0'} ₽`,
+        },
+        defectCompensation: {
+          compensation: `${
+            formatPrice(item?.data?.compensation_defects?.rub) || '0'
+          } ₽`,
+        },
+        defectQnty: {
+          quantity: `${
+            formatPrice(item?.data?.compensation_defects?.quantity) || '0'
+          } шт`,
+        },
+        defectCompensationDamage: {
+          compensationDamage: `${
+            formatPrice(item?.data?.compensation_damage?.rub) || '0'
+          } ₽`,
+        },
+        defectCompensationDamageQnty: {
+          damage: `${
+            formatPrice(item?.data?.compensation_damage?.quantity) || '0'
+          } шт`,
+        },
+        defectFines: {
+          fines: `${formatPrice(item?.data?.penalties) || '0'} ₽`,
+        },
+        defectFinesMore: {
+          finesMore: `${formatPrice(item?.data?.additional_payments) || '0'} ₽`,
+        },
+        anotherKeeper: {
+          anotherKeeper: `${formatPrice(item?.data?.storage?.rub) || '0'} ₽`,
+          percentage: `${formatPrice(item?.data?.storage?.percent) || '0'} %`,
+        },
+        anotherKeeperOtherDeduction: {
+          deduction: `${
+            formatPrice(item?.data?.other_retentions?.rub) || '0'
+          } ₽`,
+          percentage: `${
+            formatPrice(item?.data?.other_retentions?.percent) || '0'
+          } %`,
+        },
+        anotherKeeperPaidAcceptance: {
+          paidAcceptance: `${
+            formatPrice(item?.data?.acceptance?.rub) || '0'
+          } ₽`,
+          percentage: `${
+            formatPrice(item?.data?.acceptance?.percent) || '0'
+          } %`,
+        },
+        anotherKeeperWbDeduction: {
+          wbDeduction: `${
+            formatPrice(item?.data?.compensation_penalties?.rub) || '0'
+          } ₽`,
+          percentage: `${
+            formatPrice(item?.data?.compensation_penalties?.percent) || '0'
+          } %`,
+        },
+        externalExpensesSelfBuy: {
+          selfBuy: `${formatPrice(item?.data?.self_purchase_costs) || '0'} ₽`,
+        },
+        externalExpenses: {
+          externalExpenses: `${
+            formatPrice(item?.data?.external_expenses) || '0'
+          } ₽`,
+          percentage: `${formatPrice(item?.data?.expenses_percent) || '0'} %`,
+        },
+        externalExpensesAll: {
+          externalExpensesAll: `${formatPrice(item?.data?.expenses) || '0'} ₽`,
+        },
+        taxSppWb: {
+          taxSppWb: `${formatPrice(item?.data?.sold_by_wb) || '0'} ₽`,
+        },
+        taxTotal: {
+          taxTotal: `${formatPrice(item?.data?.tax_base) || '0'} ₽`,
+        },
+        taxTax: {
+          taxTax: `${formatPrice(item?.data?.tax) || '0'} ₽`,
+        },
+        financePay: {
+          financePay: `${formatPrice(item?.data?.payment) || '0'} ₽`,
+        },
+        financeTotal: {
+          financeTotal: `${formatPrice(item?.data?.profit) || '0'} ₽`,
+        },
+        financeTotalPerUnit: {
+          financeTotalPerUnit: `${
+            formatPrice(item?.data?.financeTotalPerUnit) || '0'
+          } ₽`,
+        },
+        financeMarginProfit: {
+          financeMarginProfit: `${
+            formatPrice(item?.data?.financeMarginProfit) || '0'
+          } %`,
+        },
+        financeRoi: {
+          financeRoi: `${formatPrice(item?.data?.financeRoi) || '0'} %`,
+        },
+      }));
+
+    return items;
+  };
+  const tableData = renderTableData();
 
   const toggleRow = (id) => {
     setExpandedRows((prev) => {
@@ -339,6 +203,7 @@ const TableByGoods = () => {
             )}
           </div>
           <div className={styles.cell_product}>{item.product}</div>
+          {/* Sales Section */}
           <div className={styles.salesSection}>
             <div className={styles.cell_purchases}>
               <div>{item.purchases.amount}</div>
@@ -354,6 +219,7 @@ const TableByGoods = () => {
             <div className={styles.cell_spp}>{item.spp}</div>
             <div className={styles.cell_buyout}>{item.buyout}</div>
           </div>
+          {/* Cost Section  */}
           <div className={styles.costSection}>
             <div className={styles.cell_cost}>
               <div>{item.cost.total}</div>
@@ -361,6 +227,7 @@ const TableByGoods = () => {
             </div>
             <div className={styles.cell_costPerUnit}>{item.cost.perUnit}</div>
           </div>
+          {/* Logistic Section  */}
           <div className={styles.logisticSection}>
             <div className={styles.logisticSubheader}>
               <div>{item.logisticQnty}</div>
@@ -390,6 +257,7 @@ const TableByGoods = () => {
               {item.logisitcPerUnit?.perUnit}
             </div>
           </div>
+          {/* Compensation and Fines Section  */}
           <div className={styles.damgeSection}>
             <div className={styles.cell_costPerUnit}>
               {item.defectCompensation?.compensation}
@@ -410,6 +278,7 @@ const TableByGoods = () => {
               {item.defectFinesMore?.finesMore}
             </div>
           </div>
+          {/* Deduction Section  */}
           <div className={styles.deductionSection}>
             <div className={styles.cell_costPerUnit}>
               <div>{item.anotherKeeper?.anotherKeeper}</div>
@@ -436,12 +305,13 @@ const TableByGoods = () => {
               </div>
             </div>
           </div>
+          {/* External Expenses Section  */}
           <div
             style={{
               display: 'flex',
               padding: '0 0 0 12px',
               background: 'rgba(83, 41, 255, 0.05)',
-              boxShadow: '0 1px 0 rgba(232, 232, 232, 1)'
+              boxShadow: '0 1px 0 rgba(232, 232, 232, 1)',
             }}
           >
             <div className={styles.cell_costPerUnit}>
@@ -457,6 +327,7 @@ const TableByGoods = () => {
               {item.externalExpensesAll?.externalExpensesAll}
             </div>
           </div>
+          {/* Tax Section  */}
           <div style={{ display: 'flex', padding: '0 0 0 12px' }}>
             <div className={styles.cell_costPerUnit}>
               {item.taxSppWb?.taxSppWb}
@@ -466,12 +337,13 @@ const TableByGoods = () => {
             </div>
             <div className={styles.cell_costPerUnit}>{item.taxTax?.taxTax}</div>
           </div>
+          {/* Finance Section  */}
           <div
             style={{
               display: 'flex',
               padding: '0 0 0 12px',
               background: 'rgba(83, 41, 255, 0.05)',
-              boxShadow: '0 1px 0 rgba(232, 232, 232, 1)'
+              boxShadow: '0 1px 0 rgba(232, 232, 232, 1)',
             }}
           >
             <div className={styles.cell_costPerUnit}>
@@ -481,13 +353,13 @@ const TableByGoods = () => {
               {item.financeTotal?.financeTotal}
             </div>
             <div className={styles.cell_costPerUnit}>
-              {item.financeTotalPerUnit?.financePerUnit}
+              {item.financeTotalPerUnit?.financeTotalPerUnit}
             </div>
             <div style={{ width: '148px' }}>
-              {item.financeMarginProfit?.marginProfit}
+              {item.financeMarginProfit?.financeMarginProfit}
             </div>
             <div className={styles.cell_costPerUnit}>
-              {item.financeRoi?.roi}
+              {item.financeRoi?.financeRoi}
             </div>
           </div>
         </div>
@@ -621,10 +493,10 @@ const TableByGoods = () => {
       </div>
 
       {/* Data Rows */}
-      {data.map((item) => renderRow(item))}
+      {tableData.map((item) => renderRow(item))}
 
       {/* Total Row */}
-      <div className={styles.totalRow}>
+      {/* <div className={styles.totalRow}>
         <div className={styles.cell_id}></div>
         <div className={`${styles.cell_product} ${styles.total}`}>
           Общий итог
@@ -788,7 +660,7 @@ const TableByGoods = () => {
           <div className={styles.cell_costPerUnit} />
           <div className={styles.cell_costPerUnit} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
