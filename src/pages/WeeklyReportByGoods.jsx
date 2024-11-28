@@ -10,11 +10,14 @@ import FilterGroup from '../components/FilterGroup';
 import styles from './WeeklyReportByGoods.module.css';
 import TableByGoods from '../components/TableByGoods';
 import BottomNavigation from '../components/BottomNavigation';
-import { monthNames } from '../service/utils';
+import { monthNames, getMonthNumbers } from '../service/utils';
 
 const WeeklyReportByGoods = () => {
   const { authToken } = useContext(AuthContext);
   const dispatch = useDispatch();
+  const { weeklyData, loading, error } = useSelector(
+    (state) => state.reportByGoodsSlice
+  );
   const [filterOptions, setFilterOptions] = useState([]);
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -88,7 +91,7 @@ const WeeklyReportByGoods = () => {
       groups_filter: activeFilters.groups || [],
       date_sale_filter: {
         years: selectedFilters.year || [],
-        months: selectedFilters.month || [],
+        months: getMonthNumbers(selectedFilters.month) || [],
         weekdays: selectedFilters.week || [],
       },
     };
@@ -118,11 +121,44 @@ const WeeklyReportByGoods = () => {
         {!isOpenFilters && (
           <>
             <div className='container dash-container'>
-              <FilterDropdownReportPages
-                filterOptions={filterOptions?.dropdownFilters}
-                activeFilters={activeFilters}
-                onFilterChange={handleFilterChange}
-              />
+              <div
+                className='container dash-container'
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '20px',
+                  marginBottom: '20px',
+                }}
+              >
+                {filterOptions?.dropdownFilters?.map((filter) => (
+                  <FilterGroup
+                    key={filter.id}
+                    title={filter.label}
+                    options={filter.options.map((option) => ({
+                      id: option.value,
+                      label: option.label,
+                    }))}
+                    selected={
+                      Array.isArray(activeFilters[filter.id])
+                        ? activeFilters[filter.id]
+                        : []
+                    }
+                    onSelect={(value) => {
+                      const currentValues = Array.isArray(
+                        activeFilters[filter.id]
+                      )
+                        ? activeFilters[filter.id]
+                        : [];
+                      const newValues = currentValues.includes(value)
+                        ? currentValues.filter((v) => v !== value)
+                        : [...currentValues, value];
+                      handleFilterChange(filter.id, newValues);
+                    }}
+                    onClearAll={() => handleFilterChange(filter.id, [])}
+                  />
+                ))}
+              </div>
             </div>
             <div className='container dash-container'>
               <div className={styles.filteWrapper}>
@@ -181,7 +217,7 @@ const WeeklyReportByGoods = () => {
           </>
         )}
         <div className='container dash-container'>
-          <TableByGoods />
+          <TableByGoods data={weeklyData} />
         </div>
         <BottomNavigation />
       </div>
