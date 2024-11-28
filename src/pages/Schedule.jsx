@@ -17,8 +17,11 @@ const Schedule = () => {
   const [isChartsLoading, setIsChartsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [maxWarehouse, setMaxWarehouse] = useState(0);
+  const [minProfitability, setMinProfitability] = useState(0)
+  const [maxProfitability, setMaxProfitability] = useState(0)
   //data for charts
   const [dataRevenueStorage, setDataRevenueStorage] = useState([0, 10000, 20000, 30000, 40000, 50000, 60000, 70000,])
+
   const [dataStructureRevenue, setDataStructureRevenue] = useState([0, 0, 0, 0, 0])
   const [dataProfitability, setDataProfitability] = useState([])
   const [dataProfitMinus, setDataProfitMinus] = useState([])
@@ -309,7 +312,6 @@ const Schedule = () => {
         }
       }
 
-
       // const min = Math.floor(Math.min(Math.min(...dailyRevenueArray), Math.min(...dailyProfitArray)) / 1000) * 1000
       // const max = Math.ceil(Math.max(Math.max(...marginalityHigh), Math.max(...dailyProfitArray)) / 1000) * 1000
       // setMinDataRevenue(min)
@@ -449,7 +451,9 @@ const Schedule = () => {
       roiAndMarginality(data, filter);
       if (data?.revenue_by_warehouse) {
         setDataRevenueStorage(Object.values(data.revenue_by_warehouse));
-        setDataRevenueStorageLabels(Object.keys(data.revenue_by_warehouse));
+        const filteredKeys = Object.keys(data.revenue_by_warehouse).filter(key => key !== "null");
+        setDataRevenueStorageLabels(filteredKeys);
+        // setDataRevenueStorageLabels(Object.keys(data.revenue_by_warehouse));
 
         const revenueValues = Object.values(data.revenue_by_warehouse);
         const maxRevenue = Math.max(...revenueValues);
@@ -843,6 +847,8 @@ const Schedule = () => {
               isLoading={isChartsLoading}
               dataProfitPlus={dataProfitPlus}
               labels={bigChartLabels}
+              min={minProfitability}
+              max={maxProfitability}
             />
 
           </div>

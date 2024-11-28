@@ -778,4 +778,23 @@ export const ServiceFunctions = {
 
     return await response.json();
   },
+
+  postAbcReportsData: async (token, filter) => {
+    const response = await fetch(`${URL}/api/report/abc/data`, {
+      method: 'POST',
+      headers: {
+        "content-type": "application/json",
+        authorization: "JWT " + token,
+      },
+      body: JSON.stringify(filter)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch Schedule filter chart data');
+    }
+
+    return await response.json();
+  },
+
+
 };

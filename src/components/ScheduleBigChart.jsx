@@ -117,7 +117,7 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
                     drawOnChartArea: true,
                 },
                 ticks: {
-                    stepSize: stepSizeRevenue,
+                    // stepSize: stepSizeRevenue,
                     color: '#8C8C8C',
                     callback: function (value) {
                         return value.toLocaleString();

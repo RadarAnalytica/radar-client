@@ -5,7 +5,7 @@ import roi from '../assets/roi.svg';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels }) => {
+const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels, min, max }) => {
     const data = {
         labels: labels,
         datasets: [
@@ -109,6 +109,8 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 }
             },
             'left-y': {
+                // min: min,
+                // max: max,
                 min: -140,
                 max: 80,
                 stacked: true,
@@ -128,6 +130,8 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
             },
             'right-y': {
                 position: 'right',
+                // min: min,
+                // max: max,
                 min: -140,
                 max: 80,
                 stacked: true,

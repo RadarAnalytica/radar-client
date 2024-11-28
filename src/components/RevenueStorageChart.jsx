@@ -1,4 +1,4 @@
-import { max } from 'moment/moment';
+
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
@@ -70,13 +70,16 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
                 beginAtZero: true,
                 min: 0,
                 max: max,
+
                 grid: {
                     display: true
                 },
                 ticks: {
+
                     callback: function (value) {
                         return value.toLocaleString('ru-RU') + '₽';
                     },
+
                     maxRotation: 0,
                     minRotation: 0
                 }

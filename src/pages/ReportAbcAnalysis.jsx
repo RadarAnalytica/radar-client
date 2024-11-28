@@ -16,6 +16,8 @@ const ReportAbcAnalysis = () => {
   const { user, authToken, logout } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState('revenue'); // default active tab
   const [isOpenFilters, setIsOpenFilters] = useState(false);
+  const [dataRevenue, setDataRevenue] = useState([])
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -24,56 +26,7 @@ const ReportAbcAnalysis = () => {
     B: '#F0AD0033',
     C: '#FB450033',
   };
-  const dataRevenue = [
-    {
-      id: '325678909',
-      name: [
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-      ],
-      revenue: ['200 000 ₽', '200 000 ₽', '200 000 ₽'],
-      revenueShare: ['20%', '10%', '30%'],
-      revenueCategory: ['A', 'B', 'C'],
-      mainCategory: ['AC', 'AB', 'AC'],
-    },
-    {
-      id: '325678909',
-      name: [
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-      ],
-      revenue: ['200 000 ₽', '200 000 ₽', '200 000 ₽'],
-      revenueShare: ['20%', '10%', '30%'],
-      revenueCategory: ['A', 'B', 'C'],
-      mainCategory: ['AC', 'AB', 'AC'],
-    },
-    {
-      id: '325678909',
-      name: [
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-      ],
-      revenue: ['200 000 ₽', '200 000 ₽', '200 000 ₽'],
-      revenueShare: ['20%', '10%', '30%'],
-      revenueCategory: ['A', 'B', 'C'],
-      mainCategory: ['AC', 'AB', 'AC'],
-    },
-    {
-      id: '325678909',
-      name: [
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-      ],
-      revenue: ['200 000 ₽', '200 000 ₽', '200 000 ₽'],
-      revenueShare: ['20%', '10%', '30%'],
-      revenueCategory: ['A', 'B', 'C'],
-      mainCategory: ['AC', 'AB', 'AC'],
-    },
-  ];
+
   const dataProfit = [
     {
       id: '325678909',
@@ -85,44 +38,11 @@ const ReportAbcAnalysis = () => {
       profit: ['200 000 ₽', '200 000 ₽', '200 000 ₽'],
       profitShare: ['20%', '10%', '30%'],
       profitCategory: ['A', 'B', 'C'],
+      revenue: ['200 000 ₽', '200 000 ₽', '200 000 ₽'],
+      revenueShare: ['20%', '10%', '30%'],
+      revenueCategory: ['A', 'B', 'C'],
       mainCategory: ['AC', 'AB', 'AC'],
-    },
-    {
-      id: '325678909',
-      name: [
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-      ],
-      profit: ['200 000 ₽', '200 000 ₽', '200 000 ₽'],
-      profitShare: ['20%', '10%', '30%'],
-      profitCategory: ['A', 'B', 'C'],
-      mainCategory: ['AC', 'AB', 'AC'],
-    },
-    {
-      id: '325678909',
-      name: [
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-      ],
-      profit: ['200 000 ₽', '200 000 ₽', '200 000 ₽'],
-      profitShare: ['20%', '10%', '30%'],
-      profitCategory: ['A', 'B', 'C'],
-      mainCategory: ['AC', 'AB', 'AC'],
-    },
-    {
-      id: '325678909',
-      name: [
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-        'Куртка демисезонная с капюшоном осень 2024',
-      ],
-      profit: ['200 000 ₽', '200 000 ₽', '200 000 ₽'],
-      profitShare: ['20%', '10%', '30%'],
-      profitCategory: ['A', 'B', 'C'],
-      mainCategory: ['AC', 'AB', 'AC'],
-    },
+    }
   ];
 
   const [expandedRows, setExpandedRows] = useState({});
@@ -138,54 +58,15 @@ const ReportAbcAnalysis = () => {
   const [allSelectedMonths, setAllSelectedMonths] = useState(false);
   const [allSelectedYears, setAllSelectedYears] = useState(false);
   const [allSelectedBrands, setAllSelectedBrands] = useState(false);
-  const [selectedBrands, setSelectedBrands] = useState({
-    'Бренда 1': true,
-    'Бренда 2': false,
-  });
-  const [selectedYears, setSelectedYears] = useState({
-    2024: true,
-    2023: false,
-    2022: false,
-  });
-  const [selectedMonths, setSelectedMonths] = useState({
-    Январь: true,
-    Февраль: false,
-    Март: false,
-    Апрель: false,
-    Май: false,
-    Июнь: false,
-    Август: false,
-  });
-  const [selectedWeeks, setSelectedWeeks] = useState({
-    '09.09.2024': true,
-    '16.09.2024': false,
-    '23.09.2024': false,
-    '30.09.2024': false,
-  });
-  const [selectedGroups, setSelectedGroups] = useState({
-    124356664: true,
-    124356634: false,
-    124356645: false,
-    124353664: false,
-  });
-  const [selectedArticles, setSelectedArticles] = useState({
-    1243564: true,
-    1253664: false,
-    1243664: false,
-    1243536: false,
-    1243546: false,
-    1243539: false,
-    1243531: false,
-  });
-  const [selectedProducts, setSelectedProducts] = useState({
-    'Куртка демисезонная с капюшоном осень 2024': true,
-    'Куртка демисезонная с капюшоном осень 2023': false,
-    'Куртка демисезонная с капюшоном осень 2022': false,
-    'Куртка демисезонная с капюшоном осень 2024 длинное название 1': false,
-    'Куртка демисезонная с капюшоном осень 2024 длинное название 2': false,
-    'Куртка демисезонная с капюшоном осень 2024 длинное название 3': false,
-    'Куртка демисезонная с капюшоном осень 2024 длинное название 4': false,
-  });
+
+
+  const [selectedBrands, setSelectedBrands] = useState({});
+  const [selectedYears, setSelectedYears] = useState({});
+  const [selectedMonths, setSelectedMonths] = useState({});
+  const [selectedWeeks, setSelectedWeeks] = useState({});
+  const [selectedGroups, setSelectedGroups] = useState({});
+  const [selectedArticles, setSelectedArticles] = useState({});
+  const [selectedProducts, setSelectedProducts] = useState({});
 
   //useEffect
 
@@ -218,6 +99,8 @@ const ReportAbcAnalysis = () => {
       const transformedFilters = transformFilters(data);
 
       console.log(data, "data")
+
+
       setSelectedBrands(transformedFilters.setSelectedBrands);
       setSelectedArticles(transformedFilters.setSelectedArticles);
       setSelectedGroups(transformedFilters.setSelectedGroups);
@@ -232,6 +115,33 @@ const ReportAbcAnalysis = () => {
       setIsLoading(false);
     }
   }
+  function transformData(inputData) {
+    return inputData.map((product) => {
+      // Safeguard against missing or empty `items`
+      const transformedItems = (product.items || []).map((item) => ({
+        name: item.title || "",
+        profit: item.profit ? `${item.profit.toLocaleString()} ₽` : "0 ₽",
+        profitShare: item.profit_percent ? `${item.profit_percent}%` : "0%",
+        profitCategory: item.profit_abc || "N/A",
+        revenue: item.proceeds ? `${item.proceeds.toLocaleString()} ₽` : "0 ₽",
+        revenueShare: item.proceeds_percent ? `${item.proceeds_percent}%` : "0%",
+        revenueCategory: item.proceed_abc || "N/A",
+        mainCategory: item.common_abc || "N/A",
+      }));
+
+      return {
+        id: product.wb_id?.toString() || "Unknown",
+        name: transformedItems.map((item) => item.name),
+        profit: transformedItems.map((item) => item.profit),
+        profitShare: transformedItems.map((item) => item.profitShare),
+        profitCategory: transformedItems.map((item) => item.profitCategory),
+        revenue: transformedItems.map((item) => item.revenue),
+        revenueShare: transformedItems.map((item) => item.revenueShare),
+        revenueCategory: transformedItems.map((item) => item.revenueCategory),
+        mainCategory: transformedItems.map((item) => item.mainCategory),
+      };
+    });
+  }
 
   const updateData = async () => {
     setIsRevenueLoading(true);
@@ -239,30 +149,20 @@ const ReportAbcAnalysis = () => {
 
     try {
       const filter = {
-        "brand_name_filter": Object.keys(selectedBrands).filter(key => selectedBrands[key]),
-        "wb_id_filter": Object.keys(selectedArticles).filter(key => selectedArticles[key]),
-        "groups_filter": Object.keys(selectedGroups).filter(key => selectedGroups[key]),
-        "date_sale_filter": {
-          "years": Object.keys(selectedYears).filter(key => selectedYears[key]),
-          "months": Object.keys(selectedMonths).filter(key => selectedMonths[key]),
-          "weekdays": Object.keys(selectedWeeks).filter(key => selectedWeeks[key])
-        }
+        "article_filter_list": Object.keys(selectedArticles).filter(key => selectedArticles[key]),
+        "brand_filter_list": Object.keys(selectedBrands).filter(key => selectedBrands[key]),
+        "group_filter_list": Object.keys(selectedGroups).filter(key => selectedGroups[key]),
+        "month_filter_list": Object.keys(selectedMonths).filter(key => selectedMonths[key]),
+        "year_filter_list": Object.keys(selectedYears).filter(key => selectedYears[key]),
+        "week_filter_list": Object.keys(selectedWeeks).filter(key => selectedWeeks[key]),
+        "product_filter_list": Object.keys(selectedProducts).filter(key => selectedWeeks[key])
       };
 
-      const data = await ServiceFunctions.scheduleFilterChartData(authToken, filter);
+      const data = await ServiceFunctions.postAbcReportsData(authToken, filter);
+      const tableData = transformData(data)
+      console.log(tableData, "transformedData")
 
-      // setDataStructureRevenue([
-      //   data?.structure?.all_retentions_percent || 0,
-      //   data?.structure?.external_expenses_percent || 0,
-      //   data?.structure?.tax_percent || 0,
-      //   data?.structure?.profit_percent || 0,
-      //   data?.structure?.cost_percent || 0,
-      // ]);
-
-      // revenueAndProfit(data, filter);
-      // roiAndMarginality(data, filter);
-
-
+      setDataRevenue(tableData)
       setIsRevenueLoading(false);
     } catch (err) {
       setError("Failed to load data");
@@ -889,7 +789,7 @@ const ReportAbcAnalysis = () => {
                 </div>
               </div>
 
-              {dataProfit.map((item, index) => (
+              {dataRevenue.map((item, index) => (
                 <div key={index} className={styles.row}>
                   <div className={styles.article}>
                     <span
