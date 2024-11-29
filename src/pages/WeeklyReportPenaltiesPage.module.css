@@ -1,6 +1,12 @@
 .filterContainer {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.filterContainerTwo {
+    display: flex;
     margin-bottom: 20px;
     gap: 20px;
 }

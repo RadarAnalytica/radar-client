@@ -82,7 +82,7 @@ const TablePL = ({ plData }) => {
                   className={styles.tableRow}
                   style={{
                     paddingLeft: '17px',
-                    padding: '6px 0 6px 4px',
+                    padding: '6px 0 6px 17px',
                     fontWeight: '700',
                     color: 'rgba(26, 26, 26, 1)',
                   }}

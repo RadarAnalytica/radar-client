@@ -26,9 +26,11 @@ const WeeklyReportByGoods = () => {
     week: [],
   });
   const [activeFilters, setActiveFilters] = useState({});
+  const [filterIsLoading, setFilterIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchFilters = async () => {
+      setFilterIsLoading(true);
       try {
         const filters = await ServiceFunctions.getMonthProductFilters(
           authToken
@@ -37,6 +39,8 @@ const WeeklyReportByGoods = () => {
         setFilterOptions(filters);
       } catch (error) {
         console.error('Failed to fetch filter options:', error);
+      } finally {
+        setFilterIsLoading(false);
       }
     };
     fetchFilters();
@@ -95,6 +99,7 @@ const WeeklyReportByGoods = () => {
         weekdays: selectedFilters.week || [],
       },
     };
+
     return filterData;
   };
   const handleFetchReport = (filters) => {
@@ -130,75 +135,336 @@ const WeeklyReportByGoods = () => {
                   marginBottom: '20px',
                 }}
               >
-                {filterOptions?.dropdownFilters?.map((filter) => (
-                  <FilterGroup
-                    key={filter.id}
-                    title={filter.label}
-                    options={filter.options.map((option) => ({
+                <FilterGroup
+                  title='Размер'
+                  options={filterOptions.dropdownFilters
+                    ?.find((filter) => filter.id === 'size')
+                    ?.options?.map((option) => ({
                       id: option.value,
                       label: option.label,
                     }))}
-                    selected={
-                      Array.isArray(activeFilters[filter.id])
-                        ? activeFilters[filter.id]
-                        : []
+                  selected={
+                    Array.isArray(activeFilters['size'])
+                      ? activeFilters['size']
+                      : []
+                  }
+                  onSelect={(value) => {
+                    // If value is an array (from select all), use it directly
+                    if (Array.isArray(value)) {
+                      handleFilterChange('size', value);
+                      return;
                     }
-                    onSelect={(value) => {
-                      const currentValues = Array.isArray(
-                        activeFilters[filter.id]
-                      )
-                        ? activeFilters[filter.id]
-                        : [];
-                      const newValues = currentValues.includes(value)
-                        ? currentValues.filter((v) => v !== value)
-                        : [...currentValues, value];
-                      handleFilterChange(filter.id, newValues);
-                    }}
-                    onClearAll={() => handleFilterChange(filter.id, [])}
-                  />
-                ))}
-                <div className={styles.filteWrapper}>
-                  <FilterGroup
-                    title='Год'
-                    options={filterOptions.groupFilters?.dateFilters?.options
-                      ?.find((filter) => filter.id === 'years')
-                      ?.values?.map((value) => ({
-                        id: value,
-                        label: value,
-                      }))}
-                    selected={selectedFilters.year}
-                    onSelect={(id) => handleSelect('year', id)}
-                    onClearAll={() => handleClearAll('year')}
-                  />
-                  <FilterGroup
-                    title='Месяц'
-                    options={filterOptions.groupFilters?.dateFilters?.options
-                      ?.find((filter) => filter.id === 'months')
-                      ?.values.map((value) => ({
-                        id: value,
-                        label: monthNames[value] || value,
-                      }))}
-                    selected={selectedFilters.month}
-                    onSelect={(id) => handleSelect('month', id)}
-                    onClearAll={() => handleClearAll('month')}
-                  />
-                  <FilterGroup
-                    title='Неделя'
-                    options={filterOptions.groupFilters?.dateFilters?.options
-                      ?.find((filter) => filter.id === 'weeks')
-                      ?.values.map((value) => ({
-                        id: value,
-                        label: value,
-                      }))}
-                    selected={selectedFilters.week}
-                    onSelect={(id) => handleSelect('week', id)}
-                    onClearAll={() => handleClearAll('week')}
-                  />
-                </div>
-              </div>
-            </div>
-            {/* <div className='container dash-container'>
-              <div className={styles.filteWrapper}>
+                    // Otherwise handle single selection
+                    const currentValues = Array.isArray(activeFilters['size'])
+                      ? activeFilters['size']
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange('size', newValues);
+                  }}
+                  onClearAll={() => {
+                    const allValues = filterOptions.dropdownFilters
+                      ?.find((filter) => filter.id === 'size')
+                      ?.options?.map((option) => option.label);
+                    handleFilterChange('size', allValues || []);
+                  }}
+                  filterLoading={filterIsLoading}
+                />
+                <FilterGroup
+                  title='Артикул'
+                  options={filterOptions.dropdownFilters
+                    ?.find((filter) => filter.id === 'article')
+                    ?.options?.map((option) => ({
+                      id: option.value,
+                      label: option.label,
+                    }))}
+                  selected={
+                    Array.isArray(activeFilters['article'])
+                      ? activeFilters['article']
+                      : []
+                  }
+                  onSelect={(value) => {
+                    // If value is an array (from select all), use it directly
+                    if (Array.isArray(value)) {
+                      handleFilterChange('article', value);
+                      return;
+                    }
+                    // Otherwise handle single selection
+                    const currentValues = Array.isArray(
+                      activeFilters['article']
+                    )
+                      ? activeFilters['article']
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange('article', newValues);
+                  }}
+                  onClearAll={() => {
+                    const allValues = filterOptions.dropdownFilters
+                      ?.find((filter) => filter.id === 'article')
+                      ?.options?.map((option) => option.label);
+                    handleFilterChange('article', allValues || []);
+                  }}
+                  filterLoading={filterIsLoading}
+                />
+                <FilterGroup
+                  title='Товар'
+                  options={filterOptions.dropdownFilters
+                    ?.find((filter) => filter.id === 'good')
+                    ?.options?.map((option) => ({
+                      id: option.value,
+                      label: option.label,
+                    }))}
+                  selected={
+                    Array.isArray(activeFilters['good'])
+                      ? activeFilters['good']
+                      : []
+                  }
+                  onSelect={(value) => {
+                    // If value is an array (from select all), use it directly
+                    if (Array.isArray(value)) {
+                      handleFilterChange('good', value);
+                      return;
+                    }
+                    // Otherwise handle single selection
+                    const currentValues = Array.isArray(activeFilters['good'])
+                      ? activeFilters['good']
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange('good', newValues);
+                  }}
+                  onClearAll={() => {
+                    const allValues = filterOptions.dropdownFilters
+                      ?.find((filter) => filter.id === 'good')
+                      ?.options?.map((option) => option.label);
+                    handleFilterChange('good', allValues || []);
+                  }}
+                  filterLoading={filterIsLoading}
+                />
+                <FilterGroup
+                  title='Группа'
+                  options={filterOptions.dropdownFilters
+                    ?.find((filter) => filter.id === 'groups')
+                    ?.options?.map((option) => ({
+                      id: option.value,
+                      label: option.label,
+                    }))}
+                  selected={
+                    Array.isArray(activeFilters['groups'])
+                      ? activeFilters['groups']
+                      : []
+                  }
+                  onSelect={(value) => {
+                    // If value is an array (from select all), use it directly
+                    if (Array.isArray(value)) {
+                      handleFilterChange('groups', value);
+                      return;
+                    }
+                    // Otherwise handle single selection
+                    const currentValues = Array.isArray(activeFilters['groups'])
+                      ? activeFilters['groups']
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange('groups', newValues);
+                  }}
+                  onClearAll={() => {
+                    const allValues = filterOptions.dropdownFilters
+                      ?.find((filter) => filter.id === 'groups')
+                      ?.options?.map((option) => option.label);
+                    handleFilterChange('groups', allValues || []);
+                  }}
+                  filterLoading={filterIsLoading}
+                />
+                <FilterGroup
+                  title='Бренд'
+                  options={filterOptions.dropdownFilters
+                    ?.find((filter) => filter.id === 'brand')
+                    ?.options?.map((option) => ({
+                      id: option.value,
+                      label: option.label,
+                    }))}
+                  selected={
+                    Array.isArray(activeFilters['brand'])
+                      ? activeFilters['brand']
+                      : []
+                  }
+                  onSelect={(value) => {
+                    // If value is an array (from select all), use it directly
+                    if (Array.isArray(value)) {
+                      handleFilterChange('brand', value);
+                      return;
+                    }
+                    // Otherwise handle single selection
+                    const currentValues = Array.isArray(activeFilters['brand'])
+                      ? activeFilters['brand']
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange('brand', newValues);
+                  }}
+                  onClearAll={() => {
+                    const allValues = filterOptions.dropdownFilters
+                      ?.find((filter) => filter.id === 'brand')
+                      ?.options?.map((option) => option.label);
+                    handleFilterChange('brand', allValues || []);
+                  }}
+                  filterLoading={filterIsLoading}
+                />
+                <FilterGroup
+                  title='Страна'
+                  options={filterOptions.dropdownFilters
+                    ?.find((filter) => filter.id === 'country')
+                    ?.options?.map((option) => ({
+                      id: option.value,
+                      label: option.label,
+                    }))}
+                  selected={
+                    Array.isArray(activeFilters['country'])
+                      ? activeFilters['country']
+                      : []
+                  }
+                  onSelect={(value) => {
+                    // If value is an array (from select all), use it directly
+                    if (Array.isArray(value)) {
+                      handleFilterChange('country', value);
+                      return;
+                    }
+                    // Otherwise handle single selection
+                    const currentValues = Array.isArray(
+                      activeFilters['country']
+                    )
+                      ? activeFilters['country']
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange('country', newValues);
+                  }}
+                  onClearAll={() => {
+                    const allValues = filterOptions.dropdownFilters
+                      ?.find((filter) => filter.id === 'country')
+                      ?.options?.map((option) => option.label);
+                    handleFilterChange('country', allValues || []);
+                  }}
+                  filterLoading={filterIsLoading}
+                />
+                <FilterGroup
+                  title='WB ID'
+                  options={filterOptions.dropdownFilters
+                    ?.find((filter) => filter.id === 'wb_id')
+                    ?.options?.map((option) => ({
+                      id: option.value,
+                      label: option.label,
+                    }))}
+                  selected={
+                    Array.isArray(activeFilters['wb_id'])
+                      ? activeFilters['wb_id']
+                      : []
+                  }
+                  onSelect={(value) => {
+                    // If value is an array (from select all), use it directly
+                    if (Array.isArray(value)) {
+                      handleFilterChange('wb_id', value);
+                      return;
+                    }
+                    // Otherwise handle single selection
+                    const currentValues = Array.isArray(activeFilters['wb_id'])
+                      ? activeFilters['wb_id']
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange('wb_id', newValues);
+                  }}
+                  onClearAll={() => {
+                    const allValues = filterOptions.dropdownFilters
+                      ?.find((filter) => filter.id === 'wb_id')
+                      ?.options?.map((option) => option.label);
+                    handleFilterChange('wb_id', allValues || []);
+                  }}
+                  filterLoading={filterIsLoading}
+                />
+                <FilterGroup
+                  title='Предмет'
+                  options={filterOptions.dropdownFilters
+                    ?.find((filter) => filter.id === 'subject')
+                    ?.options?.map((option) => ({
+                      id: option.value,
+                      label: option.label,
+                    }))}
+                  selected={
+                    Array.isArray(activeFilters['subject'])
+                      ? activeFilters['subject']
+                      : []
+                  }
+                  onSelect={(value) => {
+                    // If value is an array (from select all), use it directly
+                    if (Array.isArray(value)) {
+                      handleFilterChange('subject', value);
+                      return;
+                    }
+                    // Otherwise handle single selection
+                    const currentValues = Array.isArray(
+                      activeFilters['subject']
+                    )
+                      ? activeFilters['subject']
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange('subject', newValues);
+                  }}
+                  onClearAll={() => {
+                    const allValues = filterOptions.dropdownFilters
+                      ?.find((filter) => filter.id === 'subject')
+                      ?.options?.map((option) => option.label);
+                    handleFilterChange('subject', allValues || []);
+                  }}
+                  filterLoading={filterIsLoading}
+                />
+                <FilterGroup
+                  title='SRID'
+                  options={filterOptions.dropdownFilters
+                    ?.find((filter) => filter.id === 'srid')
+                    ?.options?.map((option) => ({
+                      id: option.value,
+                      label: option.label,
+                    }))}
+                  selected={
+                    Array.isArray(activeFilters['srid'])
+                      ? activeFilters['srid']
+                      : []
+                  }
+                  onSelect={(value) => {
+                    // If value is an array (from select all), use it directly
+                    if (Array.isArray(value)) {
+                      handleFilterChange('srid', value);
+                      return;
+                    }
+                    // Otherwise handle single selection
+                    const currentValues = Array.isArray(activeFilters['srid'])
+                      ? activeFilters['srid']
+                      : [];
+                    const newValues = currentValues.includes(value)
+                      ? currentValues.filter((v) => v !== value)
+                      : [...currentValues, value];
+                    handleFilterChange('srid', newValues);
+                  }}
+                  onClearAll={() => {
+                    const allValues = filterOptions.dropdownFilters
+                      ?.find((filter) => filter.id === 'srid')
+                      ?.options?.map((option) => option.label);
+                    handleFilterChange('srid', allValues || []);
+                  }}
+                  filterLoading={filterIsLoading}
+                />
                 <FilterGroup
                   title='Год'
                   options={filterOptions.groupFilters?.dateFilters?.options
@@ -208,9 +474,29 @@ const WeeklyReportByGoods = () => {
                       label: value,
                     }))}
                   selected={selectedFilters.year}
-                  onSelect={(id) => handleSelect('year', id)}
-                  onClearAll={() => handleClearAll('year')}
+                  onSelect={(value) => {
+                    if (Array.isArray(value)) {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        year: value,
+                      }));
+                    } else {
+                      handleSelect('year', value);
+                    }
+                  }}
+                  onClearAll={() => {
+                    const allYears =
+                      filterOptions.groupFilters?.dateFilters?.options?.find(
+                        (filter) => filter.id === 'years'
+                      )?.values || [];
+                    setSelectedFilters((prev) => ({
+                      ...prev,
+                      year: allYears,
+                    }));
+                  }}
+                  filterLoading={filterIsLoading}
                 />
+
                 <FilterGroup
                   title='Месяц'
                   options={filterOptions.groupFilters?.dateFilters?.options
@@ -220,9 +506,32 @@ const WeeklyReportByGoods = () => {
                       label: monthNames[value] || value,
                     }))}
                   selected={selectedFilters.month}
-                  onSelect={(id) => handleSelect('month', id)}
-                  onClearAll={() => handleClearAll('month')}
+                  onSelect={(value) => {
+                    if (Array.isArray(value)) {
+                      // Handle "Select All" case
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        month: value,
+                      }));
+                    } else {
+                      // Handle individual selection
+                      handleSelect('month', value);
+                    }
+                  }}
+                  onClearAll={() => {
+                    // Get all month values and pass them to onSelect
+                    const allMonths =
+                      filterOptions.groupFilters?.dateFilters?.options
+                        ?.find((filter) => filter.id === 'months')
+                        ?.values.map((value) => value);
+                    setSelectedFilters((prev) => ({
+                      ...prev,
+                      month: allMonths || [],
+                    }));
+                  }}
+                  filterLoading={filterIsLoading}
                 />
+
                 <FilterGroup
                   title='Неделя'
                   options={filterOptions.groupFilters?.dateFilters?.options
@@ -232,11 +541,30 @@ const WeeklyReportByGoods = () => {
                       label: value,
                     }))}
                   selected={selectedFilters.week}
-                  onSelect={(id) => handleSelect('week', id)}
-                  onClearAll={() => handleClearAll('week')}
+                  onSelect={(value) => {
+                    if (Array.isArray(value)) {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        week: value,
+                      }));
+                    } else {
+                      handleSelect('week', value);
+                    }
+                  }}
+                  onClearAll={() => {
+                    const allWeeks =
+                      filterOptions.groupFilters?.dateFilters?.options?.find(
+                        (filter) => filter.id === 'weeks'
+                      )?.values || [];
+                    setSelectedFilters((prev) => ({
+                      ...prev,
+                      week: allWeeks,
+                    }));
+                  }}
+                  filterLoading={filterIsLoading}
                 />
               </div>
-            </div> */}
+            </div>
             <div className='container dash-container'>
               <div>
                 <button

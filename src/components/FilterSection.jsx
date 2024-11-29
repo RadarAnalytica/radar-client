@@ -67,6 +67,19 @@ const FilterSection = () => {
   const handleSelectDate = (category, id) => {
     const [parentKey, childKey] = category.split('.');
 
+    // Handle select all case
+    if (Array.isArray(id)) {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        [parentKey]: {
+          ...prev[parentKey],
+          [childKey]: id,
+        },
+      }));
+      return;
+    }
+
+    // Handle individual selection
     setSelectedFilters((prev) => ({
       ...prev,
       [parentKey]: {
@@ -77,7 +90,17 @@ const FilterSection = () => {
       },
     }));
   };
+
   const handleSelect = (category, id) => {
+    if (Array.isArray(id)) {
+      // Handle select all case
+      setSelectedFilters((prev) => ({
+        ...prev,
+        [category]: id,
+      }));
+      return;
+    }
+
     if (category === 'date_sale_filter_weekday') {
       setSelectedFilters((prev) => ({
         ...prev,
@@ -143,6 +166,7 @@ const FilterSection = () => {
               selected={selectedFilters.warehouse_name_filter || []}
               onSelect={(id) => handleSelect('warehouse_name_filter', id)}
               onClearAll={() => handleClearAll('warehouse_name_filter')}
+              filterLoading={loading}
             />
             <FilterGroup
               title='Бренд'
@@ -150,6 +174,7 @@ const FilterSection = () => {
               selected={selectedFilters.brand_name_filter || []}
               onSelect={(id) => handleSelect('brand_name_filter', id)}
               onClearAll={() => handleClearAll('brand_name_filter')}
+              filterLoading={loading}
             />
             <FilterGroup
               title='Год'
@@ -160,6 +185,7 @@ const FilterSection = () => {
               selected={selectedFilters?.date_sale_filter?.years || []}
               onSelect={(id) => handleSelectDate('date_sale_filter.years', id)}
               onClearAll={() => handleClearAll('date_sale_filter.years')}
+              filterLoading={loading}
             />
             <FilterGroup
               title='Месяц'
@@ -170,6 +196,7 @@ const FilterSection = () => {
               selected={selectedFilters.date_sale_filter?.months || []}
               onSelect={(id) => handleSelectDate('date_sale_filter.months', id)}
               onClearAll={() => handleClearAll('date_sale_filter.months')}
+              filterLoading={loading}
             />
             <FilterGroup
               title='Неделя'
@@ -180,8 +207,11 @@ const FilterSection = () => {
                 })
               )}
               selected={selectedFilters.date_sale_filter?.weekdays || []}
-              onSelect={(id) => handleSelect('date_sale_filter_weekday', id)}
-              onClearAll={() => handleClearAll('date_sale_filter_weekday')}
+              onSelect={(id) =>
+                handleSelectDate('date_sale_filter.weekdays', id)
+              }
+              onClearAll={() => handleClearAll('date_sale_filter.weekdays')}
+              filterLoading={loading}
             />
             <FilterGroup
               title='Группа'
@@ -189,6 +219,7 @@ const FilterSection = () => {
               selected={selectedFilters.groups_filter || []}
               onSelect={(id) => handleSelect('groups_filter', id)}
               onClearAll={() => handleClearAll('groups_filter')}
+              filterLoading={loading}
             />
           </div>
           <div className='container dash-container'>

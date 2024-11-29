@@ -29,6 +29,7 @@ const WeeklyReportPenaltiesPage = () => {
     kindsOfLogistics: [],
     goods: [],
   });
+  const [filterIsLoading, setFilterIsLoading] = useState(false);
 
   const handleApplyFilters = () => {
     dispatch(
@@ -56,12 +57,15 @@ const WeeklyReportPenaltiesPage = () => {
   };
 
   useEffect(() => {
+    setFilterIsLoading(true);
     const fetchFilterOptions = async () => {
       try {
         const data = await ServiceFunctions.getPenaltiesFilters(authToken);
         setFilterDataSet(data);
       } catch (error) {
         console.error('Failed to fetch filter options:', error);
+      } finally {
+        setFilterIsLoading(false);
       }
     };
 
@@ -94,8 +98,20 @@ const WeeklyReportPenaltiesPage = () => {
                     })) || []
                   }
                   selected={selectedFilters.year}
-                  onSelect={(id) => handleSelect('year', id)}
-                  onClearAll={() => handleClearAll('year')}
+                  onSelect={(value) => {
+                    // If the value is a single year, toggle it
+                    if (typeof value === 'string') {
+                      handleSelect('year', value);
+                    }
+                    // If it's an array (from select all), use it directly
+                    else {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        year: value,
+                      }));
+                    }
+                  }}
+                  filterLoading={filterIsLoading}
                 />
                 <FilterGroup
                   title='Месяц'
@@ -106,8 +122,17 @@ const WeeklyReportPenaltiesPage = () => {
                     })) || []
                   }
                   selected={selectedFilters.month}
-                  onSelect={(id) => handleSelect('month', id)}
-                  onClearAll={() => handleClearAll('month')}
+                  onSelect={(value) => {
+                    if (typeof value === 'string') {
+                      handleSelect('month', value);
+                    } else {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        month: value,
+                      }));
+                    }
+                  }}
+                  filterLoading={filterIsLoading}
                 />
                 <FilterGroup
                   title='Неделя'
@@ -118,8 +143,17 @@ const WeeklyReportPenaltiesPage = () => {
                     })) || []
                   }
                   selected={selectedFilters.week}
-                  onSelect={(id) => handleSelect('week', id)}
-                  onClearAll={() => handleClearAll('week')}
+                  onSelect={(value) => {
+                    if (typeof value === 'string') {
+                      handleSelect('week', value);
+                    } else {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        week: value,
+                      }));
+                    }
+                  }}
+                  filterLoading={filterIsLoading}
                 />
                 <FilterGroup
                   title='Артикул'
@@ -130,8 +164,17 @@ const WeeklyReportPenaltiesPage = () => {
                     })) || []
                   }
                   selected={selectedFilters.article}
-                  onSelect={(id) => handleSelect('article', id)}
-                  onClearAll={() => handleClearAll('article')}
+                  onSelect={(value) => {
+                    if (typeof value === 'string') {
+                      handleSelect('article', value);
+                    } else {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        article: value,
+                      }));
+                    }
+                  }}
+                  filterLoading={filterIsLoading}
                 />
                 <FilterGroup
                   title='Размер'
@@ -142,8 +185,17 @@ const WeeklyReportPenaltiesPage = () => {
                     })) || []
                   }
                   selected={selectedFilters.size}
-                  onSelect={(id) => handleSelect('size', id)}
-                  onClearAll={() => handleClearAll('size')}
+                  onSelect={(value) => {
+                    if (typeof value === 'string') {
+                      handleSelect('size', value);
+                    } else {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        size: value,
+                      }));
+                    }
+                  }}
+                  filterLoading={filterIsLoading}
                 />
                 <FilterGroup
                   title='Srid'
@@ -154,11 +206,20 @@ const WeeklyReportPenaltiesPage = () => {
                     })) || []
                   }
                   selected={selectedFilters.srid}
-                  onSelect={(id) => handleSelect('srid', id)}
-                  onClearAll={() => handleClearAll('srid')}
+                  onSelect={(value) => {
+                    if (typeof value === 'string') {
+                      handleSelect('srid', value);
+                    } else {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        srid: value,
+                      }));
+                    }
+                  }}
+                  filterLoading={filterIsLoading}
                 />
               </div>
-              <div className={styles.filterContainer}>
+              <div className={styles.filterContainerTwo}>
                 <FilterGroup
                   title='Виды логистики, штрафов и доплат'
                   options={
@@ -168,8 +229,17 @@ const WeeklyReportPenaltiesPage = () => {
                     })) || []
                   }
                   selected={selectedFilters.kindsOfLogistics}
-                  onSelect={(id) => handleSelect('kindsOfLogistics', id)}
-                  onClearAll={() => handleClearAll('kindsOfLogistics')}
+                  onSelect={(value) => {
+                    if (typeof value === 'string') {
+                      handleSelect('kindsOfLogistics', value);
+                    } else {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        kindsOfLogistics: value,
+                      }));
+                    }
+                  }}
+                  filterLoading={filterIsLoading}
                   size='big'
                 />
                 <FilterGroup
@@ -181,8 +251,17 @@ const WeeklyReportPenaltiesPage = () => {
                     })) || []
                   }
                   selected={selectedFilters.goods}
-                  onSelect={(id) => handleSelect('goods', id)}
-                  onClearAll={() => handleClearAll('goods')}
+                  onSelect={(value) => {
+                    if (typeof value === 'string') {
+                      handleSelect('goods', value);
+                    } else {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        goods: value,
+                      }));
+                    }
+                  }}
+                  filterLoading={filterIsLoading}
                   size='big'
                 />
               </div>

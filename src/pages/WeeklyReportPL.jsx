@@ -20,6 +20,7 @@ const WeeklyReportPL = () => {
   });
   console.log('activeFilters', activeFilters);
   const [filterOptions, setFilterOptions] = useState([]);
+  const [isLoadingFilters, setIsLoadingFilters] = useState(false);
 
   const handleApplyFilters = () => {
     const brandFilter = activeFilters.brand.join(',');
@@ -35,6 +36,7 @@ const WeeklyReportPL = () => {
   };
   useEffect(() => {
     const loadFilters = async () => {
+      setIsLoadingFilters(true);
       try {
         const filters = await ServiceFunctions.getPLFilters(authToken);
         setFilterOptions(filters.filterOptions);
@@ -47,183 +49,25 @@ const WeeklyReportPL = () => {
         }
       } catch (error) {
         console.error('Error loading filters:', error);
+      } finally {
+        setIsLoadingFilters(false);
       }
     };
 
     loadFilters();
   }, []);
 
-  const data = {
-    dates: [
-      '15.07.2024',
-      '22.07.2024',
-      '29.07.2024',
-      '05.08.2024',
-      '12.08.2024',
-      '19.08.2024',
-      '26.08.2024',
-      '02.09.2024',
-      '09.09.2024',
-    ],
-    rows: [
-      {
-        label: 'Выручка',
-        values: {
-          '15.07.2024': { value: 34000, percentage: null },
-          '22.07.2024': { value: 34000, percentage: null },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Средний чек',
-        values: {
-          '15.07.2024': { value: 4000, percentage: null },
-          '22.07.2024': { value: 4000, percentage: null },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'СПП',
-        values: {
-          '15.07.2024': { percentage: 50 },
-          '22.07.2024': { percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Выкуп',
-        values: {
-          '15.07.2024': { percentage: 20 },
-          '22.07.2024': { percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Себестоимость',
-        values: {
-          '15.07.2024': { value: 300, percentage: 20 },
-          '22.07.2024': { value: 300, percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Все удержания WB',
-        values: {
-          '15.07.2024': { value: 300, percentage: 20 },
-          '22.07.2024': { value: 300, percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Комиссия',
-        values: {
-          '15.07.2024': { value: 300, percentage: 20 },
-          '22.07.2024': { value: 300, percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Эквайринг',
-        values: {
-          '15.07.2024': { value: 300, percentage: 20 },
-          '22.07.2024': { value: 300, percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Логистика',
-        values: {
-          '15.07.2024': { value: 300, percentage: 20 },
-          '22.07.2024': { value: 300, percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Хранение',
-        values: {
-          '15.07.2024': { value: 300, percentage: 20 },
-          '22.07.2024': { value: 300, percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Прочие удержания',
-        values: {
-          '15.07.2024': { value: 300, percentage: 20 },
-          '22.07.2024': { value: 300, percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Платная приемка',
-        values: {
-          '15.07.2024': { value: 300, percentage: 20 },
-          '22.07.2024': { value: 300, percentage: 20 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Оплата на Р/С',
-        values: {
-          '15.07.2024': { value: 300 },
-          '22.07.2024': { value: 300 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Налог',
-        values: {
-          '15.07.2024': { value: 300 },
-          '22.07.2024': { value: 300 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Всего внешних расходов',
-        values: {
-          '15.07.2024': { value: 300 },
-          '22.07.2024': { value: 300 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Внешние расходы',
-        values: {
-          '15.07.2024': { value: 300 },
-          '22.07.2024': { value: 300 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Чистая прибыль',
-        values: {
-          '15.07.2024': { value: 300 },
-          '22.07.2024': { value: 300 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'Маржинальность прибыли',
-        values: {
-          '15.07.2024': { value: 300 },
-          '22.07.2024': { value: 300 },
-          // ... add other dates
-        },
-      },
-      {
-        label: 'ROI',
-        values: {
-          '15.07.2024': { value: 300 },
-          '22.07.2024': { value: 300 },
-          // ... add other dates
-        },
-      },
-      // ... add other rows
-    ],
-  };
-
   const handleFilterChange = (filterId, value) => {
     setActiveFilters((prevFilters) => {
+      // If value is an array (select all case), directly set it
+      if (Array.isArray(value)) {
+        return {
+          ...prevFilters,
+          [filterId]: value,
+        };
+      }
+
+      // For individual selections
       const currentValues = prevFilters[filterId] || [];
       const newValues = currentValues.includes(value)
         ? currentValues.filter((item) => item !== value)
@@ -243,6 +87,26 @@ const WeeklyReportPL = () => {
     }));
   };
 
+  const handleSelectAll = (filterId) => {
+    setActiveFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterId]: filterOptions
+        .find((filter) => filter.id === filterId)
+        .options.map((opt) => opt.value),
+    }));
+  };
+
+  const processFilterData = (data, key) => {
+    if (!data) return [];
+    if (Array.isArray(data)) {
+      return data.map((item, index) => ({
+        id: index.toString(),
+        label: item,
+      }));
+    }
+    return [];
+  };
+
   return (
     <div className='dashboard-page'>
       <SideNav />
@@ -250,19 +114,38 @@ const WeeklyReportPL = () => {
         <TopNav title={'P&L'} subTitle={'Отчёт /'} />
         <div className='container dash-container'>
           <div className={styles.filterContainer}>
-            {filterOptions.map((filter) => (
+            <div className={styles.filterContainer}>
               <FilterGroup
-                key={filter.id}
-                title={filter.label}
-                options={filter.options.map((opt) => ({
-                  id: opt.value,
-                  label: opt.label,
-                }))}
-                selected={activeFilters[filter.id]}
-                onSelect={(value) => handleFilterChange(filter.id, value)}
-                onClearAll={() => handleClearAll(filter.id)}
+                title='Бренд'
+                options={
+                  filterOptions
+                    .find((filter) => filter.id === 'brand')
+                    ?.options.map((opt) => ({
+                      id: opt.value,
+                      label: opt.label,
+                    })) || []
+                }
+                selected={activeFilters.brand}
+                onSelect={(value) => handleFilterChange('brand', value)}
+                filterLoading={isLoadingFilters}
               />
-            ))}
+              <FilterGroup
+                title='Группа'
+                options={
+                  filterOptions
+                    .find((filter) => filter.id === 'group')
+                    ?.options.map((opt) => ({
+                      id: opt.value,
+                      label: opt.label,
+                    })) || []
+                }
+                selected={activeFilters['group']}
+                onSelect={(value) => handleFilterChange('group', value)}
+                onClearAll={() => handleClearAll('group')}
+                onSelectAll={() => handleSelectAll('group')}
+                filterLoading={isLoadingFilters}
+              />
+            </div>
           </div>
         </div>
         <div className='container dash-container'>

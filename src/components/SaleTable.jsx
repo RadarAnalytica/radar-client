@@ -233,10 +233,10 @@ const SalesTable = ({ tableData }) => {
                 className={styles.defectCompnesaitionCell}
                 style={{ width: '148px' }}
               >
-                {formatPrice(data.profit) || '0'} ₽
+                {formatPrice(data.marginality) || '0'} ₽
               </div>
               <div className={styles.defectCompnesaitionCell}>
-                {formatPrice(data.profit) || '0'} ₽
+                {formatPrice(data.return_on_investment) || '0'} ₽
               </div>
             </div>
           </div>
