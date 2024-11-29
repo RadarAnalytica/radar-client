@@ -28,14 +28,6 @@ const ReportMain = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
 
-  const handleCheckboxChange = (id) => {
-    if (selectedRows.includes(id)) {
-      setSelectedRows(selectedRows.filter((rowId) => rowId !== id));
-    } else {
-      setSelectedRows([...selectedRows, id]);
-    }
-  };
-
   const getListOfReports = async () => {
     try {
       const result = await ServiceFunctions.getListOfReports(authToken);
@@ -246,7 +238,7 @@ const ReportMain = () => {
               onClick={() => fileInputRef.current.click()}
               style={{ cursor: 'pointer' }}
             >
-              <div className={styles.uploadTitle}>Загрузить отчеты</div>
+              <div className={styles.uploadTitle}>Загрузите отчеты</div>
               {!selectedFile && (
                 <div className={styles.uploadIcon}>
                   <img src={upload} alt='upload' />
@@ -274,9 +266,9 @@ const ReportMain = () => {
                     </>
                   ) : (
                     <>
-                      Перетащи мышкой файл или
+                      Перетащите мышкой файл или
                       <span className={styles.uploadTextBlue}>
-                        загрузи с компьютера
+                        загрузите с компьютера
                       </span>
                     </>
                   )}
@@ -309,18 +301,6 @@ const ReportMain = () => {
               {data.map((row) => (
                 <div key={row.id} className={styles.uploadTableRow}>
                   <div className={styles.id}>
-                    <div className={styles.checkbox}>
-                      <input
-                        type='checkbox'
-                        checked={selectedRows.includes(row.id)}
-                        onChange={() => handleCheckboxChange(row.id)}
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          marginRight: '8px',
-                        }}
-                      />
-                    </div>
                     <span className={styles.idResult}>
                       <img
                         src={getIdResultIcon(

@@ -125,7 +125,6 @@ const WeeklyReportByGoods = () => {
                 className='container dash-container'
                 style={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   flexWrap: 'wrap',
                   gap: '20px',
                   marginBottom: '20px',
@@ -158,9 +157,47 @@ const WeeklyReportByGoods = () => {
                     onClearAll={() => handleFilterChange(filter.id, [])}
                   />
                 ))}
+                <div className={styles.filteWrapper}>
+                  <FilterGroup
+                    title='Год'
+                    options={filterOptions.groupFilters?.dateFilters?.options
+                      ?.find((filter) => filter.id === 'years')
+                      ?.values?.map((value) => ({
+                        id: value,
+                        label: value,
+                      }))}
+                    selected={selectedFilters.year}
+                    onSelect={(id) => handleSelect('year', id)}
+                    onClearAll={() => handleClearAll('year')}
+                  />
+                  <FilterGroup
+                    title='Месяц'
+                    options={filterOptions.groupFilters?.dateFilters?.options
+                      ?.find((filter) => filter.id === 'months')
+                      ?.values.map((value) => ({
+                        id: value,
+                        label: monthNames[value] || value,
+                      }))}
+                    selected={selectedFilters.month}
+                    onSelect={(id) => handleSelect('month', id)}
+                    onClearAll={() => handleClearAll('month')}
+                  />
+                  <FilterGroup
+                    title='Неделя'
+                    options={filterOptions.groupFilters?.dateFilters?.options
+                      ?.find((filter) => filter.id === 'weeks')
+                      ?.values.map((value) => ({
+                        id: value,
+                        label: value,
+                      }))}
+                    selected={selectedFilters.week}
+                    onSelect={(id) => handleSelect('week', id)}
+                    onClearAll={() => handleClearAll('week')}
+                  />
+                </div>
               </div>
             </div>
-            <div className='container dash-container'>
+            {/* <div className='container dash-container'>
               <div className={styles.filteWrapper}>
                 <FilterGroup
                   title='Год'
@@ -199,7 +236,7 @@ const WeeklyReportByGoods = () => {
                   onClearAll={() => handleClearAll('week')}
                 />
               </div>
-            </div>
+            </div> */}
             <div className='container dash-container'>
               <div>
                 <button
