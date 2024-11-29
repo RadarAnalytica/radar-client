@@ -237,10 +237,17 @@ const Schedule = () => {
       for (const year in rev_profit) {
         const months = rev_profit[year];
         for (const month in months) {
-          const monthData = months[month];
-          revenueArray.push(monthData.total_month_revenue || 0);
-          profitArray.push(monthData.total_month_profit || 0);
-          monthNamesArray.push(monthNameMap[month] || month);
+          const index = monthNames.indexOf(month);
+          const monthIndex = index !== -1 ? index + 1 : null;
+          if (
+            filter.date_sale_filter.months.length === 0 ||
+            filter.date_sale_filter.months.includes(monthIndex.toString())
+          ) {
+            const monthData = months[month];
+            revenueArray.push(monthData.total_month_revenue || 0);
+            profitArray.push(monthData.total_month_profit || 0);
+            monthNamesArray.push(monthNameMap[month] || month);
+          }
         }
 
       }
@@ -399,15 +406,23 @@ const Schedule = () => {
         "Ноябрь": "Ноя",
         "Декабрь": "Дек"
       };
-      const rev_profit = data.revenue_and_profit
+      const rev_profit = data.roi_and_marginality
       for (const year in rev_profit) {
         const months = rev_profit[year];
         for (const month in months) {
-          const monthData = months[month];
-          marginalityLow.push(monthData.min_month_marginality || 0);
-          marginalityHigh.push(monthData.max_month_roi || 0);
-          roiArray.push(monthData.average_month_roi || 0);
-          monthNamesArray.push(monthNameMap[month] || month);
+          const index = monthNames.indexOf(month);
+          const monthIndex = index !== -1 ? index + 1 : null;
+          if (
+            filter.date_sale_filter.months.length === 0 ||
+            filter.date_sale_filter.months.includes(monthIndex.toString())
+          ) {
+            const monthData = months[month];
+
+            marginalityLow.push(monthData.min_month_marginality || 0);
+            marginalityHigh.push(monthData.max_month_roi || 0);
+            roiArray.push(monthData.average_month_roi || 0);
+            monthNamesArray.push(monthNameMap[month] || month);
+          }
         }
       }
       // const min = Math.floor(Math.min(Math.min(...revenueArray), Math.min(...profitArray)) / 1000) * 1000
@@ -415,6 +430,7 @@ const Schedule = () => {
       // setMinDataRevenue(min)
       // setMaxDataRevenue(max)
       // setStepSizeRevenue(calculateSize(min, max))
+      console.log(marginalityHigh, marginalityLow)
       setDataProfitMinus(marginalityLow)
       setDataProfitPlus(marginalityHigh)
       setDataProfitability(roiArray)
@@ -622,7 +638,7 @@ const Schedule = () => {
                 ) : (
                   <div className={styles.list}>{
                     Object.keys(selectedBrands)
-                      .filter((brand) => brand !== '0')
+                      .filter((brand) => brand !== 'пусто')
                       .map((brand, index) => (
                         <div className={styles.brandItem} key={index}>
                           <label className={styles.checkboxContainer}>
@@ -798,7 +814,7 @@ const Schedule = () => {
                 ) : (
                   <div className={styles.list}>
                     {Object.keys(selectedArticles)
-                      .filter((article) => article !== '0') // Фильтруем артикулы с именем "0"
+                      .filter((article) => article !== 'пусто')
                       .map((article, index) => (
                         <div className={styles.brandItem} key={index}>
                           <label className={styles.checkboxContainer}>
