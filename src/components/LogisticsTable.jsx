@@ -2,104 +2,29 @@ import React, { useState } from 'react';
 import arrowDown from '../assets/arrow-down.svg';
 import styles from './LogisticsTable.module.css';
 
-const LogisticsTable = () => {
+const LogisticsTable = ({ data }) => {
   const [expandedRows, setExpandedRows] = useState(new Set(['']));
+  const formatTableData = (penaltiesData) => {
+    return Object.entries(penaltiesData || {}).map(([actionType, items]) => ({
+      id: actionType,
+      srid: '',
+      article: '',
+      product: '',
+      size: '',
+      total: items.reduce((sum, item) => sum + item.penalty_total, 0) + ' ₽',
+      children: items.map((item) => ({
+        id: '',
+        isChild: true,
+        srid: item.srid,
+        article: item.wb_id,
+        product: item.title,
+        size: item.size,
+        total: item.penalty_total + ' ₽',
+      })),
+    }));
+  };
 
-  const data = [
-    {
-      id: 'Возврат (к продавцу)',
-      srid: '33404238099123.0.0',
-      article: '123456789',
-      product: 'Куртка демисезонная с капюшоном осень 2024',
-      size: '42',
-      total: '100 000 ₽',
-      children: [
-        {
-          id: '',
-          isChild: true,
-          srid: '33404238099123.0.0',
-          article: '123456789',
-          product: 'Куртка демисезонная с капюшоном осень 2024',
-          size: '42',
-          total: '100 000 ₽',
-        },
-        {
-          id: '',
-          isChild: true,
-          srid: '33404238099123.0.0',
-          article: '123456789',
-          product: 'Куртка демисезонная с капюшоном осень 2024',
-          size: '42',
-          total: '100 000 ₽',
-        },
-        {
-          id: '',
-          isChild: true,
-          srid: '33404238099123.0.0',
-          article: '123456789',
-          product: 'Куртка демисезонная с капюшоном осень 2024',
-          size: '42',
-          total: '100 000 ₽',
-        },
-      ],
-    },
-    {
-      id: 'Возврат (от продавца при отмене)',
-      srid: '33404238099123.0.0',
-      article: '123456789',
-      product: 'Куртка демисезонная с капюшоном осень 2024',
-      size: '42',
-      total: '100 000 ₽',
-      children: [
-        {
-          id: '',
-          isChild: true,
-          srid: '33404238099123.0.0',
-          article: '123456789',
-          product: 'Куртка демисезонная с капюшоном осень 2024',
-          size: '42',
-          total: '100 000 ₽',
-        },
-        {
-          id: '',
-          isChild: true,
-          srid: '33404238099123.0.0',
-          article: '123456789',
-          product: 'Куртка демисезонная с капюшоном осень 2024',
-          size: '42',
-          total: '100 000 ₽',
-        },
-      ],
-    },
-    {
-      id: 'Возврат брака (к продавцу)',
-      srid: '33404238099123.0.0',
-      article: '123456789',
-      product: 'Куртка демисезонная с капюшоном осень 2024',
-      size: '42',
-      total: '100 000 ₽',
-      children: [
-        {
-          id: '',
-          isChild: true,
-          srid: '33404238099123.0.0',
-          article: '123456789',
-          product: 'Куртка демисезонная с капюшоном осень 2024',
-          size: '42',
-          total: '100 000 ₽',
-        },
-        {
-          id: '',
-          isChild: true,
-          srid: '33404238099123.0.0',
-          article: '123456789',
-          product: 'Куртка демисезонная с капюшоном осень 2024',
-          size: '42',
-          total: '100 000 ₽',
-        },
-      ],
-    },
-  ];
+  const tableData = formatTableData(data);
 
   const toggleRow = (id) => {
     setExpandedRows((prev) => {
@@ -120,7 +45,11 @@ const LogisticsTable = () => {
     return (
       <React.Fragment key={item.id}>
         <div className={`${styles.row} ${item.isChild ? styles.childRow : ''}`}>
-          <div className={`${styles.cellId} ${styles.article} ${item.isChild ? styles.noBorder : ''}`}>
+          <div
+            className={`${styles.cellId} ${styles.article} ${
+              item.isChild ? styles.noBorder : ''
+            }`}
+          >
             <span>{item.id}</span>
             {hasChildren ? (
               <button
@@ -143,15 +72,41 @@ const LogisticsTable = () => {
               <div className={styles.indent} />
             )}
           </div>
-          <div className={`${styles.cell_srid} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>{item.srid}</div>
-          <div className={`${styles.cell_article} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>
+          <div
+            className={`${styles.cell_srid} ${
+              item.isChild ? styles.noBorder : styles.borderBottom
+            }`}
+          >
+            {item.srid}
+          </div>
+          <div
+            className={`${styles.cell_article} ${
+              item.isChild ? styles.noBorder : styles.borderBottom
+            }`}
+          >
             <div>{item.article}</div>
           </div>
-          <div className={`${styles.cell_goods} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>
+          <div
+            className={`${styles.cell_goods} ${
+              item.isChild ? styles.noBorder : styles.borderBottom
+            }`}
+          >
             <div>{item.product}</div>
           </div>
-          <div className={`${styles.cell_size} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>{item.size}</div>
-          <div className={`${styles.cell_total} ${item.isChild ? styles.noBorder : styles.borderBottom}`}>{item.total}</div>
+          <div
+            className={`${styles.cell_size} ${
+              item.isChild ? styles.noBorder : styles.borderBottom
+            }`}
+          >
+            {item.size}
+          </div>
+          <div
+            className={`${styles.cell_total} ${
+              item.isChild ? styles.noBorder : styles.borderBottom
+            }`}
+          >
+            {item.total}
+          </div>
         </div>
         {isExpanded &&
           item.children &&
@@ -186,7 +141,7 @@ const LogisticsTable = () => {
       </div>
 
       {/* Data Rows */}
-      {data.map((item) => renderRow(item))}
+      {tableData.map((item) => renderRow(item))}
     </div>
   );
 };
