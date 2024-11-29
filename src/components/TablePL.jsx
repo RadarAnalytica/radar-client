@@ -54,7 +54,7 @@ const TablePL = ({ plData }) => {
       <div className={styles.tableLeftMargin}></div>
       <div className={styles.customTable}>
         <div className={styles.tableContainer}>
-          {transformedData?.length === 0 && (
+          {/* {transformedData?.length === 0 && (
             <div
               className='d-flex flex-column align-items-center justify-content-center'
               style={{
@@ -66,366 +66,354 @@ const TablePL = ({ plData }) => {
             >
               <span className='loader'></span>
             </div>
-          )}
-          {transformedData?.length > 0 && (
-            <div className={styles.columnsWrapper}>
-              {/* Fixed columns */}
-              <div
-                className={`fixed-columns ${
-                  isScrolled ? 'fixed-columns-shadow' : ''
-                }`}
-              >
-                <div className={styles.columnWidthFirst}>
-                  <div className={styles.tableOverHeader}></div>
-                  <div className={styles.tableHeader}>Значение</div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      padding: '6px 0 6px 4px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                    }}
-                  >
-                    Выручка
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{ marginLeft: '17px' }}
-                  >
-                    Средний чек
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{ marginLeft: '17px' }}
-                  >
-                    СПП
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{ marginLeft: '17px' }}
-                  >
-                    Выкуп
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{ marginLeft: '17px', minHeight: '58px' }}
-                  >
-                    Себестоимость
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      minHeight: '58px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                    }}
-                  >
-                    Все удержания WB
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      minHeight: '58px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                    }}
-                  >
-                    Комиссия
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      minHeight: '58px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                    }}
-                  >
-                    Эквайринг
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      minHeight: '58px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                    }}
-                  >
-                    Логистика
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      minHeight: '58px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                    }}
-                  >
-                    Хранение
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      minHeight: '58px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                    }}
-                  >
-                    Прочие удержания
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      minHeight: '58px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                    }}
-                  >
-                    Платная приемка
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    Оплата на Р/С
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{ marginLeft: '17px' }}
-                  >
-                    Налог
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{ marginLeft: '17px' }}
-                  >
-                    Всего внешних расходов
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{ marginLeft: '17px' }}
-                  >
-                    Внешние расходы
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    Чистая прибыль
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    Маржинальность прибыли
-                  </div>
-                  <div
-                    className={styles.tableRow}
-                    style={{
-                      marginLeft: '17px',
-                      fontWeight: '700',
-                      color: 'rgba(26, 26, 26, 1)',
-                      background: 'rgba(83, 41, 255, 0.05)',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    ROI
-                  </div>
+          )} */}
+          {/* {transformedData?.length > 0 && ( */}
+          <div className={styles.columnsWrapper}>
+            {/* Fixed columns */}
+            <div
+              className={`fixed-columns ${
+                isScrolled ? 'fixed-columns-shadow' : ''
+              }`}
+            >
+              <div className={styles.columnWidthFirst}>
+                <div className={styles.tableOverHeader}></div>
+                <div className={styles.tableHeader}>Значение</div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    padding: '6px 0 6px 4px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                  }}
+                >
+                  Выручка
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{ paddingLeft: '17px' }}
+                >
+                  Средний чек
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{ paddingLeft: '17px' }}
+                >
+                  СПП
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{ paddingLeft: '17px' }}
+                >
+                  Выкуп
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{ paddingLeft: '17px', minHeight: '58px' }}
+                >
+                  Себестоимость
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    minHeight: '58px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                  }}
+                >
+                  Все удержания WB
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    minHeight: '58px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                  }}
+                >
+                  Комиссия
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    minHeight: '58px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                  }}
+                >
+                  Эквайринг
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    minHeight: '58px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                  }}
+                >
+                  Логистика
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    minHeight: '58px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                  }}
+                >
+                  Хранение
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    minHeight: '58px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                  }}
+                >
+                  Прочие удержания
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    minHeight: '58px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                  }}
+                >
+                  Платная приемка
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                    background: 'rgba(83, 41, 255, 0.05)',
+                    borderRadius: '4px',
+                  }}
+                >
+                  Оплата на Р/С
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{ paddingLeft: '17px' }}
+                >
+                  Налог
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                    background: 'rgba(83, 41, 255, 0.05)',
+                    borderRadius: '4px',
+                  }}
+                >
+                  Чистая прибыль
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                    background: 'rgba(83, 41, 255, 0.05)',
+                    borderRadius: '4px',
+                  }}
+                >
+                  Маржинальность прибыли
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{
+                    paddingLeft: '17px',
+                    fontWeight: '700',
+                    color: 'rgba(26, 26, 26, 1)',
+                    background: 'rgba(83, 41, 255, 0.05)',
+                    borderRadius: '4px',
+                  }}
+                >
+                  ROI
                 </div>
               </div>
-              {/* Scrollable columns */}
-              <div className='scrollable-columns'>
-                {transformedData.map((item) => {
-                  return (
-                    <div className={styles.columnWidth}>
-                      <div className={styles.tableOverHeader}></div>
-                      <div className={styles.tableHeaderScrollable}>
-                        {item.date}
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{
-                          fontWeight: '700',
-                          color: 'rgba(26, 26, 26, 1)',
-                        }}
-                      >
-                        {item.profit.value} ₽
-                      </div>
-                      <div className={styles.tableRow}>
-                        {item.averageBill.value} ₽
-                      </div>
-                      <div className={styles.tableRow}>
-                        {item.spp.percentage} ₽
-                      </div>
-                      <div className={styles.tableRow}>
-                        {item.soldOut.percentage} ₽
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ minHeight: '58px' }}
-                      >
-                        <span className={styles.twoElements}>
-                          <span className={styles.valueElement}>
-                            {item.costPrice.value} ₽
-                          </span>
-                          {/* <span className={styles.percentageElement}>
+            </div>
+            {/* Scrollable columns */}
+            <div className='scrollable-columns'>
+              {transformedData?.map((item) => {
+                return (
+                  <div className={styles.columnWidth}>
+                    <div className={styles.tableOverHeader}></div>
+                    <div className={styles.tableHeaderScrollable}>
+                      {item.date}
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{
+                        fontWeight: '700',
+                        color: 'rgba(26, 26, 26, 1)',
+                      }}
+                    >
+                      {item.profit.value} ₽
+                    </div>
+                    <div className={styles.tableRow}>
+                      {item.averageBill.value} ₽
+                    </div>
+                    <div className={styles.tableRow}>
+                      {item.spp.percentage} %
+                    </div>
+                    <div className={styles.tableRow}>
+                      {item.soldOut.percentage} ₽
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ minHeight: '58px' }}
+                    >
+                      <span className={styles.twoElements}>
+                        <span className={styles.valueElement}>
+                          {item.costPrice.value} ₽
+                        </span>
+                        {/* <span className={styles.percentageElement}>
                             {item.costPrice.percentage} %
                           </span> */}
+                      </span>
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ minHeight: '58px' }}
+                    >
+                      <span className={styles.twoElements}>
+                        <span className={styles.valueElement}>
+                          {item.keppWb.value} ₽
                         </span>
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ minHeight: '58px' }}
-                      >
-                        <span className={styles.twoElements}>
-                          <span className={styles.valueElement}>
-                            {item.keppWb.value} ₽
-                          </span>
-                          {/* <span className={styles.percentageElement}>
+                        {/* <span className={styles.percentageElement}>
                             {item.keppWb.percentage}
                           </span> */}
+                      </span>
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ minHeight: '58px' }}
+                    >
+                      <span className={styles.twoElements}>
+                        <span className={styles.valueElement}>
+                          {item.commission.value} ₽
                         </span>
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ minHeight: '58px' }}
-                      >
-                        <span className={styles.twoElements}>
-                          <span className={styles.valueElement}>
-                            {item.commission.value} ₽
-                          </span>
-                          {/* <span className={styles.percentageElement}>
+                        {/* <span className={styles.percentageElement}>
                             {item.commission.percentage}
                           </span> */}
+                      </span>
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ minHeight: '58px' }}
+                    >
+                      <span className={styles.twoElements}>
+                        <span className={styles.valueElement}>
+                          {item.equiring.value} ₽
                         </span>
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ minHeight: '58px' }}
-                      >
-                        <span className={styles.twoElements}>
-                          <span className={styles.valueElement}>
-                            {item.equiring.value} ₽
-                          </span>
-                          {/* <span className={styles.percentageElement}>
+                        {/* <span className={styles.percentageElement}>
                             {item.equiring.percentage}
                           </span> */}
+                      </span>
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ minHeight: '58px' }}
+                    >
+                      <span className={styles.twoElements}>
+                        <span className={styles.valueElement}>
+                          {item.logistic.value} ₽
                         </span>
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ minHeight: '58px' }}
-                      >
-                        <span className={styles.twoElements}>
-                          <span className={styles.valueElement}>
-                            {item.logistic.value} ₽
-                          </span>
-                          {/* <span className={styles.percentageElement}>
+                        {/* <span className={styles.percentageElement}>
                             {item.logistic.percentage}
                           </span> */}
+                      </span>
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ minHeight: '58px' }}
+                    >
+                      <span className={styles.twoElements}>
+                        <span className={styles.valueElement}>
+                          {item.storage.value} ₽
                         </span>
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ minHeight: '58px' }}
-                      >
-                        <span className={styles.twoElements}>
-                          <span className={styles.valueElement}>
-                            {item.storage.value} ₽
-                          </span>
-                          {/* <span className={styles.percentageElement}>
+                        {/* <span className={styles.percentageElement}>
                             {item.storage.percentage}
                           </span> */}
+                      </span>
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ minHeight: '58px' }}
+                    >
+                      <span className={styles.twoElements}>
+                        <span className={styles.valueElement}>
+                          {item.anotherSum.value} ₽
                         </span>
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ minHeight: '58px' }}
-                      >
-                        <span className={styles.twoElements}>
-                          <span className={styles.valueElement}>
-                            {item.anotherSum.value} ₽
-                          </span>
-                          {/* <span className={styles.percentageElement}>
+                        {/* <span className={styles.percentageElement}>
                             {item.anotherSum.percentage}
                           </span> */}
+                      </span>
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ minHeight: '58px' }}
+                    >
+                      <span className={styles.twoElements}>
+                        <span className={styles.valueElement}>
+                          {item.payForEnter.value} ₽
                         </span>
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ minHeight: '58px' }}
-                      >
-                        <span className={styles.twoElements}>
-                          <span className={styles.valueElement}>
-                            {item.payForEnter.value} ₽
-                          </span>
-                          {/* <span className={styles.percentageElement}>
+                        {/* <span className={styles.percentageElement}>
                             {item.payForEnter.percentage}
                           </span> */}
-                        </span>
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                      >
-                        {item.payRC.value} ₽
-                      </div>
-                      <div className={styles.tableRow}>{item.tax.value} %</div>
-                      <div className={styles.tableRow}>
-                        {item.allTotalOut.value} ₽
-                      </div>
-                      <div className={styles.tableRow}>
-                        {item.totalOut.percentage} ₽
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                      >
-                        {item.netProfit.value} ₽
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                      >
-                        {item.marginalProfit.percentage} ₽
-                      </div>
-                      <div
-                        className={styles.tableRow}
-                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                      >
-                        {item.roi.percentage} %
-                      </div>
+                      </span>
                     </div>
-                  );
-                })}
-              </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                    >
+                      {item.payRC.value} ₽
+                    </div>
+                    <div className={styles.tableRow}>{item.tax.value} %</div>
+                    {/* <div className={styles.tableRow}>
+                      {item.allTotalOut.value} ₽
+                    </div>
+                    <div className={styles.tableRow}>
+                      {item.totalOut.percentage} ₽
+                    </div> */}
+                    <div
+                      className={styles.tableRow}
+                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                    >
+                      {item.netProfit.value} ₽
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                    >
+                      {item.marginalProfit.percentage} ₽
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                    >
+                      {item.roi.percentage} %
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          )}
+          </div>
+          {/* )} */}
         </div>
       </div>
       <div className={styles.tableLeftMargin}></div>

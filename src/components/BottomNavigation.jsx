@@ -81,13 +81,13 @@ const BottomNavigation = () => {
       <div className={dahsboardActiveStyle9}>
         <span onClick={() => navigate('/prime-cost')}>Себестоимость</span>
       </div>
+      <div className={dahsboardActiveStyle11}>
+        <span onClick={() => navigate('/buy-back')}>Самовыкупы</span>
+      </div>
       <div className={dahsboardActiveStyle10}>
         <span onClick={() => navigate('/external-expenses')}>
           Внешние расходы
         </span>
-      </div>
-      <div className={dahsboardActiveStyle11}>
-        <span onClick={() => navigate('/buy-back')}>Самовыкуп</span>
       </div>
     </div>
   );

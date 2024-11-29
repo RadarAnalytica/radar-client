@@ -12,6 +12,7 @@ import dashboardReportSlice from './dashboardReport/dashboardReportSlice';
 import reportByMonthSlice from './reportByMonth/reportByMonthSlice';
 import reportByGoodsSlice from './reportByGoods/reportByGoodsSlice';
 import plReportSlice from './reportPL/plReportSlice';
+import externalExpensesSlice from './externalExpenses/externalExpensesSlice';
 
 const storeOptions = {
   reducer: {
@@ -27,6 +28,7 @@ const storeOptions = {
     reportByMonthSlice,
     reportByGoodsSlice,
     plReportSlice,
+    externalExpensesSlice,
   },
 };
 

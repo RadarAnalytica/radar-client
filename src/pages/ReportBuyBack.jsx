@@ -26,12 +26,12 @@ const ReportBuyBack = () => {
   };
 
   const handleTemplateDownload = async () => {
-    const response = await ServiceFunctions.getCostTemplate(authToken);
+    const response = await ServiceFunctions.getSelfBuyoutTemplate(authToken);
     const blob = await response.blob();
     const downloadUrl = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = downloadUrl;
-    link.download = 'Себестоимость.xlsx';
+    link.download = 'Самовыкуп_шаблон.xlsx';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -39,11 +39,11 @@ const ReportBuyBack = () => {
 
   const handleCostPriceSave = async () => {
     try {
-      await ServiceFunctions.postCostUpdate(authToken, file);
+      await ServiceFunctions.postSelfBuyoutUpdate(authToken, file);
       setFile(null);
       setCostPriceShow(false);
     } catch (error) {
-      console.error('Error updating cost:', error);
+      console.error('Error uploading file:', error);
     }
   };
 
@@ -63,7 +63,7 @@ const ReportBuyBack = () => {
             </div>
             <div className={styles.primeCostBoxButton}>
               <button onClick={() => handleCostPriceShow()}>
-                Загрузить самовыкуп
+                Загрузить самовыкупы
               </button>
             </div>
           </div>
@@ -79,7 +79,7 @@ const ReportBuyBack = () => {
           <div className='d-flex align-items-center gap-2'>
             <div style={{ width: '100%' }}>
               <div className='d-flex justify-content-between'>
-                <h4 className='fw-bold mb-0'>Установка себестоимости товара</h4>
+                <h4 className='fw-bold mb-0'>Установка самовыкупов</h4>
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@ const ReportBuyBack = () => {
               </div>
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
                 <button
-                  //   onClick={handleCostPriceSave}
+                  onClick={handleCostPriceSave}
                   className='prime-btn'
                   style={{ height: '52px' }}
                 >

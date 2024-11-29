@@ -408,7 +408,14 @@ const WeeklyReportDashboard = () => {
                         <button onClick={() => setIsEditing(false)}>✕</button>
                       </div>
                     ) : (
-                      <div onClick={() => setIsEditing(true)}>
+                      <div
+                        onClick={() => setIsEditing(true)}
+                        style={{
+                          cursor: 'pointer',
+                          minWidth: '50px',
+                          // textAlign: 'right',
+                        }}
+                      >
                         {dashboardData?.tax_rate} %
                       </div>
                     )}

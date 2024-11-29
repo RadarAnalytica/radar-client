@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import crossAdd from '../pages/images/cross-add.png';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthContext from '../service/AuthContext';
+import { fetchExternalExpenses } from '../redux/externalExpenses/externalExpensesActions';
+import { ServiceFunctions } from '../service/serviceFunctions';
 import styles from './ExpenseTracker.module.css';
 
 const ExpenseTracker = () => {
+  const dispatch = useDispatch();
+  const { data, loading } = useSelector((state) => state.externalExpensesSlice);
+  const { authToken } = useContext(AuthContext);
   const currentYear = new Date().getFullYear();
-  const years = Array.from({length: 5}, (_, i) => String(currentYear - i));
+  const years = Array.from({ length: currentYear - 2009 }, (_, i) =>
+    String(2010 + i)
+  );
   const months = [
     'Январь',
     'Февраль',
@@ -23,12 +32,89 @@ const ExpenseTracker = () => {
 
   console.log('rows', rows);
 
+  useEffect(() => {
+    dispatch(fetchExternalExpenses(authToken));
+  }, [dispatch, authToken]);
+
+  // Effect to set the initial rows when data is received
+  useEffect(() => {
+    if (data) {
+      const formattedRows = data.map((item) => ({
+        id: item.id,
+        year: String(item.year),
+        month: months[item.month - 1], // Convert numeric month to name
+        article: item.vendor_code,
+        expenses: [
+          Number(item.expense_1 || 0),
+          Number(item.expense_2 || 0),
+          Number(item.expense_3 || 0),
+          Number(item.expense_4 || 0),
+          Number(item.expense_5 || 0),
+        ],
+      }));
+      setRows(formattedRows);
+    }
+  }, [data]);
+
+  const sendRowData = async (row) => {
+    const monthNumber = months.indexOf(row.month) + 1;
+    if (!row.month) {
+      return;
+    }
+    const payload = {
+      year: parseInt(row.year),
+      month: monthNumber,
+      vendor_code: row.article,
+      expense_1: row.expenses[0],
+      expense_2: row.expenses[1],
+      expense_3: row.expenses[2],
+      expense_4: row.expenses[3],
+      expense_5: row.expenses[4],
+    };
+
+    // Only include id if it's from backend (not a newly created row)
+    if (row.id <= rows.length) {
+      payload.id = row.id;
+
+      const response = await ServiceFunctions.postExternalExpensesUpdate(
+        authToken,
+        payload
+      );
+      console.log('Update successful:', response);
+      // Refresh data
+      dispatch(fetchExternalExpenses(authToken));
+    }
+  };
+
+  const createRow = async () => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+
+    const payload = {
+      year: currentYear,
+      month: currentMonth,
+      vendor_code: '',
+      expense_1: 0,
+      expense_2: 0,
+      expense_3: 0,
+      expense_4: 0,
+      expense_5: 0,
+    };
+
+    await ServiceFunctions.postExternalExpensesUpdate(authToken, payload);
+    dispatch(fetchExternalExpenses(authToken));
+  };
+
   const handleYearChange = (rowId, selectedYear) => {
     setRows(
       rows.map((row) =>
         row.id === rowId ? { ...row, year: selectedYear } : row
       )
     );
+    const updatedRow = rows.find((row) => row.id === rowId);
+    if (updatedRow) {
+      sendRowData({ ...updatedRow, year: selectedYear });
+    }
   };
 
   const handleMonthChange = (rowId, selectedMonth) => {
@@ -37,6 +123,10 @@ const ExpenseTracker = () => {
         row.id === rowId ? { ...row, month: selectedMonth } : row
       )
     );
+    const updatedRow = rows.find((row) => row.id === rowId);
+    if (updatedRow) {
+      sendRowData({ ...updatedRow, month: selectedMonth });
+    }
   };
 
   const handleArticleChange = (rowId, value) => {
@@ -107,19 +197,11 @@ const ExpenseTracker = () => {
           <div key={row.id} className={styles.dataRow}>
             <div className={styles.yearCell}>
               <select
-                value={row.year}
+                value={row.year || ''}
                 onChange={(e) => handleYearChange(row.id, e.target.value)}
                 className={styles.select}
-                placeholder=''
               >
-                <option
-                  value=''
-                  className={`${styles.textInSelect} ${
-                    row.year === 'Выбрать' ? styles.selected : ''
-                  }`}
-                >
-                  Выбрать
-                </option>
+                <option value=''>Выбрать</option>
                 {years.map((year) => (
                   <option
                     key={year}
@@ -155,6 +237,13 @@ const ExpenseTracker = () => {
                 value={row.article}
                 className={styles.input}
                 onChange={(e) => handleArticleChange(row.id, e.target.value)}
+                onBlur={() => sendRowData(row)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.target.blur();
+                    sendRowData(row);
+                  }
+                }}
               />
             </div>
 
@@ -163,14 +252,21 @@ const ExpenseTracker = () => {
                 <div className={styles.inputWrapper}>
                   <input
                     type='text'
-                    value={expense || ''}
+                    value={expense}
                     onChange={(e) =>
                       handleExpenseChange(row.id, index, e.target.value)
                     }
+                    onBlur={() => sendRowData(row)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.target.blur();
+                        sendRowData(row);
+                      }
+                    }}
                     className={`${styles.input} ${
                       expense ? styles.active : ''
                     }`}
-                    placeholder=''
+                    placeholder='0'
                   />
                   <span
                     className={`${styles.rubSign} ${
@@ -185,8 +281,8 @@ const ExpenseTracker = () => {
           </div>
         ))}
       </div>
-      <button onClick={addRow} className={styles.addButton} >
-        <img src={crossAdd} alt='Добавить строку' />
+      <button onClick={addRow} className={styles.addButton}>
+        <img src={crossAdd} alt='Добавить строку' onClick={createRow} />
       </button>
     </div>
   );
