@@ -32,7 +32,10 @@ const ReportAbcAnalysis = () => {
   const [expandedRows, setExpandedRows] = useState({});
 
   const toggleRow = (id) => {
-    setExpandedRows((prev) => ({ ...prev, [id]: !prev[id] }));
+    setExpandedRows(prevState => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
   };
 
   const [allSelectedProducts, setAllSelectedProducts] = useState(false);
@@ -95,33 +98,33 @@ const ReportAbcAnalysis = () => {
       setIsLoading(false);
     }
   }
-  function transformData(inputData) {
-    return inputData.map((product) => {
+  // function transformData(inputData) {
+  //   return inputData.map((product) => {
 
-      const transformedItems = (product.items || []).map((item) => ({
-        name: item.title || "",
-        profit: item.profit ? `${item.profit.toLocaleString()} ₽` : "0 ₽",
-        profitShare: item.profit_percent ? `${item.profit_percent}%` : "0%",
-        profitCategory: item.profit_abc || "N/A",
-        revenue: item.proceeds ? `${item.proceeds.toLocaleString()} ₽` : "0 ₽",
-        revenueShare: item.proceeds_percent ? `${item.proceeds_percent}%` : "0%",
-        revenueCategory: item.proceed_abc || "N/A",
-        mainCategory: item.common_abc || "N/A",
-      }));
+  //     const transformedItems = (product.items || []).map((item) => ({
+  //       name: item.title || "",
+  //       profit: item.profit ? `${item.profit.toLocaleString()} ₽` : "0 ₽",
+  //       profitShare: item.profit_percent ? `${item.profit_percent}%` : "0%",
+  //       profitCategory: item.profit_abc || "N/A",
+  //       revenue: item.proceeds ? `${item.proceeds.toLocaleString()} ₽` : "0 ₽",
+  //       revenueShare: item.proceeds_percent ? `${item.proceeds_percent}%` : "0%",
+  //       revenueCategory: item.proceed_abc || "N/A",
+  //       mainCategory: item.common_abc || "N/A",
+  //     }));
 
-      return {
-        id: product.wb_id?.toString() || "Unknown",
-        name: transformedItems.map((item) => item.name),
-        profit: transformedItems.map((item) => item.profit),
-        profitShare: transformedItems.map((item) => item.profitShare),
-        profitCategory: transformedItems.map((item) => item.profitCategory),
-        revenue: transformedItems.map((item) => item.revenue),
-        revenueShare: transformedItems.map((item) => item.revenueShare),
-        revenueCategory: transformedItems.map((item) => item.revenueCategory),
-        mainCategory: transformedItems.map((item) => item.mainCategory),
-      };
-    });
-  }
+  //     return {
+  //       id: product.wb_id?.toString() || "Unknown",
+  //       name: transformedItems.map((item) => item.name),
+  //       profit: transformedItems.map((item) => item.profit),
+  //       profitShare: transformedItems.map((item) => item.profitShare),
+  //       profitCategory: transformedItems.map((item) => item.profitCategory),
+  //       revenue: transformedItems.map((item) => item.revenue),
+  //       revenueShare: transformedItems.map((item) => item.revenueShare),
+  //       revenueCategory: transformedItems.map((item) => item.revenueCategory),
+  //       mainCategory: transformedItems.map((item) => item.mainCategory),
+  //     };
+  //   });
+  // }
 
   const updateData = async () => {
     setIsRevenueLoading(true);
@@ -139,8 +142,8 @@ const ReportAbcAnalysis = () => {
       };
 
       const data = await ServiceFunctions.postAbcReportsData(authToken, filter);
-      const tableData = transformData(data)
-      setDataRevenue(tableData)
+      // const tableData = transformData(data)
+      setDataRevenue(data)
       setIsRevenueLoading(false);
     } catch (err) {
       setError("Failed to load data");
@@ -636,7 +639,6 @@ const ReportAbcAnalysis = () => {
                   Общая категория
                 </div>
               </div>
-
               {isRevenueLoading ? (
                 <div
                   className="d-flex flex-column align-items-center justify-content-center"
@@ -647,20 +649,22 @@ const ReportAbcAnalysis = () => {
               ) : (
                 dataRevenue.map((item, index) => (
                   <div key={index} className={styles.row}>
+                    {/* Parent Row */}
                     <div className={styles.article}>
                       <span
-                        onClick={() => toggleRow(item.id)}
+                        onClick={() => toggleRow(item.wb_id)}
                         style={{
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           padding: '8px 0',
+                          fontWeight: "700"
                         }}
                       >
-                        {item.id}
+                        {item.wb_id}
                         <img
-                          src={expandedRows[item.id] ? upArrow : downArrow}
-                          alt={expandedRows[item.id] ? 'Collapse' : 'Expand'}
+                          src={expandedRows[item.wb_id] ? upArrow : downArrow}
+                          alt={expandedRows[item.wb_id] ? 'Collapse' : 'Expand'}
                           style={{
                             marginLeft: '8px',
                             width: '16px',
@@ -668,67 +672,119 @@ const ReportAbcAnalysis = () => {
                           }}
                         />
                       </span>
+                      {/* Add Barcode under wb_id */}
+                      {expandedRows[item.wb_id] &&
+                        item.items.map((product, i) => (
+                          <div key={i} style={{ padding: "8px 0 " }}>
+                            {product.barcode}
+                          </div>
+                        ))}
                     </div>
 
                     <div className={styles.product}>
-                      {expandedRows[item.id] ? (
-                        item.name.map((productName, i) => <div key={i}>{productName}</div>)
+                      {expandedRows[item.wb_id] ? (
+                        <>
+                          <div>{item.title}</div> {/* Parent Title */}
+                          {/* Expanded Items */}
+                          {item.items.map((product, i) => (
+                            <div key={i}>
+                              {product.title}
+                            </div>
+                          ))}
+                        </>
                       ) : (
-                        <div>{item.name[0]}</div>
+                        <div>{item.title}</div>
                       )}
                     </div>
 
                     <div className={styles.profit}>
-                      {expandedRows[item.id] ? (
-                        item.revenue.map((revenueValue, i) => <div key={i}>{revenueValue}</div>)
+                      {expandedRows[item.wb_id] ? (
+                        <>
+                          <div>{item.proceeds.toLocaleString()} ₽</div> {/* Parent Proceed */}
+                          {/* Expanded Item Proceeds */}
+                          {item.items.map((product, i) => (
+                            <div key={i}>
+                              {product.proceeds.toLocaleString()} ₽
+                            </div>
+                          ))}
+                        </>
                       ) : (
-                        <div>{item.revenue[0]}</div>
+                        <div>{item.proceeds.toLocaleString()} ₽</div> // Only show parent row if not expanded
                       )}
                     </div>
 
                     <div className={styles.profitAmount}>
-                      {expandedRows[item.id] ? (
-                        item.revenueShare.map((shareValue, i) => <div key={i}>{shareValue}</div>)
+                      {expandedRows[item.wb_id] ? (
+                        <>
+                          <div>{item.proceeds_percent}%</div> {/* Parent Profit Percent */}
+                          {/* Expanded Item Profit Percent */}
+                          {item.items.map((product, i) => (
+                            <div key={i}>
+                              {product.proceeds_percent}%
+                            </div>
+                          ))}
+                        </>
                       ) : (
-                        <div>{item.revenueShare[0]}</div>
+                        <div>{item.proceeds_percent}%</div> // Only show parent row if not expanded
                       )}
                     </div>
 
                     <div className={styles.category}>
-                      {expandedRows[item.id] ? (
-                        item.revenueCategory.map((categoryValue, i) => (
-                          <div key={i} style={{ width: '23%', padding: '4px 0' }}>
-                            <div
-                              style={{
-                                backgroundColor: colorMap[categoryValue] || 'transparent',
-                                padding: '4px 16px',
-                                borderRadius: '8px',
-                              }}
-                            >
-                              {categoryValue}
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div style={{ width: '23%', padding: '4px 0' }}>
+                      {expandedRows[item.wb_id] ? (
+                        <>
                           <div
                             style={{
-                              backgroundColor: colorMap[item.revenueCategory[0]] || 'transparent',
+                              backgroundColor: colorMap[item.proceed_abc] || 'transparent',
                               padding: '4px 16px',
                               borderRadius: '8px',
+                              marginRight: "75%"
                             }}
                           >
-                            {item.revenueCategory[0]}
-                          </div>
+                            {item.proceed_abc}
+                          </div> {/* Parent Category */}
+                          {/* Expanded Item Categories */}
+                          {item.items.map((product, i) => (
+                            <div key={i} style={{ padding: "6px 0" }}>
+                              <div
+                                style={{
+                                  backgroundColor: colorMap[product.proceed_abc] || 'transparent',
+                                  padding: '4px 16px',
+                                  borderRadius: '8px',
+                                  marginRight: "75%"
+                                }}
+                              >
+                                {product.proceed_abc}
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      ) : (
+                        <div
+                          style={{
+                            backgroundColor: colorMap[item.proceed_abc] || 'transparent',
+                            padding: '4px 16px',
+                            borderRadius: '8px',
+                            marginRight: "75%"
+                          }}
+                        >
+                          {item.proceed_abc}
                         </div>
                       )}
                     </div>
 
                     <div className={styles.generalCategory}>
-                      {expandedRows[item.id] ? (
-                        item.mainCategory.map((mainCategoryValue, i) => <div key={i}>{mainCategoryValue}</div>)
+                      {expandedRows[item.wb_id] ? (
+                        <>
+                          <div>{item.common_abc}</div> {/* Parent Common Category */}
+                          {/* Expanded Item Common Categories */}
+                          {item.items.map((product, i) => (
+                            <div key={i}>
+                              {product.common_abc}
+                            </div>
+                          ))}
+                        </>
                       ) : (
-                        <div>{item.mainCategory[0]}</div>
+                        <div>{item.common_abc}</div>
                       )}
                     </div>
                   </div>
@@ -775,20 +831,22 @@ const ReportAbcAnalysis = () => {
               ) : (
                 dataRevenue.map((item, index) => (
                   <div key={index} className={styles.row}>
+                    {/* Parent Row */}
                     <div className={styles.article}>
                       <span
-                        onClick={() => toggleRow(item.id)}
+                        onClick={() => toggleRow(item.wb_id)}
                         style={{
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           padding: '8px 0',
+                          fontWeight: "700"
                         }}
                       >
-                        {item.id}
+                        {item.wb_id}
                         <img
-                          src={expandedRows[item.id] ? upArrow : downArrow}
-                          alt={expandedRows[item.id] ? 'Collapse' : 'Expand'}
+                          src={expandedRows[item.wb_id] ? upArrow : downArrow}
+                          alt={expandedRows[item.wb_id] ? 'Collapse' : 'Expand'}
                           style={{
                             marginLeft: '8px',
                             width: '16px',
@@ -796,70 +854,119 @@ const ReportAbcAnalysis = () => {
                           }}
                         />
                       </span>
+                      {/* Add Barcode under wb_id */}
+                      {expandedRows[item.wb_id] &&
+                        item.items.map((product, i) => (
+                          <div key={i} style={{ padding: "8px 0 " }}>
+                            {product.barcode}
+                          </div>
+                        ))}
                     </div>
 
                     <div className={styles.product}>
-                      {expandedRows[item.id] ? (
-                        item.name.map((productName, i) => <div key={i}>{productName}</div>)
+                      {expandedRows[item.wb_id] ? (
+                        <>
+                          <div>{item.title}</div> {/* Parent Title */}
+                          {/* Expanded Items */}
+                          {item.items.map((product, i) => (
+                            <div key={i}>
+                              {product.title}
+                            </div>
+                          ))}
+                        </>
                       ) : (
-                        <div>{item.name[0]}</div>
+                        <div>{item.title}</div>
                       )}
                     </div>
 
                     <div className={styles.profit}>
-                      {expandedRows[item.id] ? (
-                        item.profit.map((profitValue, i) => <div key={i}>{profitValue}</div>)
+                      {expandedRows[item.wb_id] ? (
+                        <>
+                          <div>{item.profit.toLocaleString()} ₽</div> {/* Parent Proceed */}
+                          {/* Expanded Item Proceeds */}
+                          {item.items.map((product, i) => (
+                            <div key={i}>
+                              {product.profit.toLocaleString()} ₽
+                            </div>
+                          ))}
+                        </>
                       ) : (
-                        <div>{item.profit[0]}</div>
+                        <div>{item.profit.toLocaleString()} ₽</div> // Only show parent row if not expanded
                       )}
                     </div>
 
                     <div className={styles.profitAmount}>
-                      {expandedRows[item.id] ? (
-                        item.profitShare.map((shareValue, i) => <div key={i}>{shareValue}</div>)
+                      {expandedRows[item.wb_id] ? (
+                        <>
+                          <div>{item.profit_percent}%</div> {/* Parent Profit Percent */}
+                          {/* Expanded Item Profit Percent */}
+                          {item.items.map((product, i) => (
+                            <div key={i}>
+                              {product.profit_percent}%
+                            </div>
+                          ))}
+                        </>
                       ) : (
-                        <div>{item.profitShare[0]}</div>
+                        <div>{item.profit_percent}%</div> // Only show parent row if not expanded
                       )}
                     </div>
 
                     <div className={styles.category}>
-                      {expandedRows[item.id] ? (
-                        item.profitCategory.map((categoryValue, i) => (
-                          <div key={i} style={{ width: '23%', padding: '4px 0' }}>
-                            <div
-                              style={{
-                                backgroundColor: colorMap[categoryValue] || 'transparent',
-                                padding: '4px 16px',
-                                borderRadius: '8px',
-                              }}
-                            >
-                              {categoryValue}
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div style={{ width: '23%', padding: '4px 0' }}>
+                      {expandedRows[item.wb_id] ? (
+                        <>
                           <div
                             style={{
-                              backgroundColor:
-                                colorMap[item.profitCategory[0]] || 'transparent',
+                              backgroundColor: colorMap[item.profit_abc] || 'transparent',
                               padding: '4px 16px',
                               borderRadius: '8px',
+                              marginRight: "75%"
                             }}
                           >
-                            {item.profitCategory[0]}
-                          </div>
+                            {item.profit_abc}
+                          </div> {/* Parent Category */}
+                          {/* Expanded Item Categories */}
+                          {item.items.map((product, i) => (
+                            <div key={i} style={{ padding: "6px 0" }}>
+                              <div
+                                style={{
+                                  backgroundColor: colorMap[product.proceed_abc] || 'transparent',
+                                  padding: '4px 16px',
+                                  borderRadius: '8px',
+                                  marginRight: "75%"
+                                }}
+                              >
+                                {product.profit_abc}
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      ) : (
+                        <div
+                          style={{
+                            backgroundColor: colorMap[item.proceed_abc] || 'transparent',
+                            padding: '4px 16px',
+                            borderRadius: '8px',
+                            marginRight: "75%"
+                          }}
+                        >
+                          {item.profit_abc}
                         </div>
                       )}
                     </div>
 
                     <div className={styles.generalCategory}>
-                      {expandedRows[item.id] ? (
-                        item.mainCategory.map((mainCategoryValue, i) => (
-                          <div key={i}>{mainCategoryValue}</div>
-                        ))
+                      {expandedRows[item.wb_id] ? (
+                        <>
+                          <div>{item.common_abc}</div> {/* Parent Common Category */}
+                          {/* Expanded Item Common Categories */}
+                          {item.items.map((product, i) => (
+                            <div key={i}>
+                              {product.common_abc}
+                            </div>
+                          ))}
+                        </>
                       ) : (
-                        <div>{item.mainCategory[0]}</div>
+                        <div>{item.common_abc}</div>
                       )}
                     </div>
                   </div>
