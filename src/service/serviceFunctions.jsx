@@ -834,4 +834,20 @@ export const ServiceFunctions = {
     });
     return await response.json();
   },
+
+  getPenaltiesFilters: async (token) => {
+    const response = await fetch(`${URL}/api/report/get-penalties-filters`, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: token,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch penalties filters');
+    }
+
+    return await response.json();
+  },
 };
