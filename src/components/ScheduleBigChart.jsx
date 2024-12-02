@@ -11,7 +11,7 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
         labels: labels,
         datasets: [
             {
-                label: 'Выручка, ₽',
+                label: 'Выручка',
                 data: dataRevenue,
                 backgroundColor: function (context) {
                     const chart = context.chart;
@@ -32,7 +32,7 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
 
             },
             {
-                label: 'Чистая прибыль, ₽',
+                label: 'Чистая прибыль',
                 data: dataNetProfit,
                 backgroundColor: function (context) {
                     const chart = context.chart;
@@ -75,18 +75,17 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
                         return labels[index];
                     },
                     label: function (tooltipItem) {
-                        return `${tooltipItem.dataset.label} ${" "} ${tooltipItem.raw.toLocaleString()}`;
+                        return `${tooltipItem.dataset.label}: ${" "} ${tooltipItem.raw.toLocaleString()}₽`;
                     },
                     labelColor: function (tooltipItem) {
-
-                        if (tooltipItem.dataset.label === 'Выручка, ₽') {
+                        if (tooltipItem.dataset.label === 'Выручка') {
                             return {
                                 backgroundColor: '#F0AD00',
                                 borderColor: 'transparent',
                                 borderWidth: 0,
                                 borderRadius: 3
                             };
-                        } else if (tooltipItem.dataset.label === 'Чистая прибыль, ₽') {
+                        } else if (tooltipItem.dataset.label === 'Чистая прибыль') {
                             return {
                                 backgroundColor: '#5329FF',
                                 borderColor: 'transparent',

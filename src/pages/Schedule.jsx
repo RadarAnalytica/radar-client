@@ -40,13 +40,14 @@ const Schedule = () => {
   const [stepSizeRevenue, setStepSizeRevenue] = useState(10000)
   //data for filters
   const [isOpenFilters, setIsOpenFilters] = useState(false);
-  const [allSelectedProducts, setAllSelectedProducts] = useState(false);
-  const [allSelectedArticles, setAllSelectedArticles] = useState(false);
-  const [allSelectedGroups, setAllSelectedGroups] = useState(false);
-  const [allSelectedWeeks, setAllSelectedWeeks] = useState(false);
-  const [allSelectedMonths, setAllSelectedMonths] = useState(false);
-  const [allSelectedYears, setAllSelectedYears] = useState(false);
-  const [allSelectedBrands, setAllSelectedBrands] = useState(false);
+  const [allSelectedProducts, setAllSelectedProducts] = useState(true);
+  const [allSelectedArticles, setAllSelectedArticles] = useState(true);
+  const [allSelectedGroups, setAllSelectedGroups] = useState(true);
+  const [allSelectedWeeks, setAllSelectedWeeks] = useState(true);
+  const [allSelectedMonths, setAllSelectedMonths] = useState(true);
+  const [allSelectedYears, setAllSelectedYears] = useState(true);
+  const [allSelectedBrands, setAllSelectedBrands] = useState(true);
+
   const [selectedBrands, setSelectedBrands] = useState({});
   const [selectedYears, setSelectedYears] = useState({});
   const [selectedMonths, setSelectedMonths] = useState({});
@@ -64,18 +65,19 @@ const Schedule = () => {
   const transformFilters = (data) => {
 
     return {
-      setSelectedBrands: Object.fromEntries(data.brand_name_filter.map((brand) => [brand, false])),
-      setSelectedArticles: Object.fromEntries(data.wb_id_filter.map((id) => [id, false])),
-      setSelectedGroups: Object.fromEntries(data.groups_filter.map((group) => [group, false])),
-      setSelectedYears: Object.fromEntries(data.date_sale_filter.years.map((year) => [year, false])),
-      setSelectedMonths: Object.fromEntries(data.date_sale_filter.months.map((month) => [month, false])),
-      setSelectedWeeks: Object.fromEntries(data.date_sale_filter.weekdays.map((weekday) => [weekday, false]))
+      setSelectedBrands: Object.fromEntries(data.brand_name_filter.map((brand) => [brand, true])),
+      setSelectedArticles: Object.fromEntries(data.wb_id_filter.map((id) => [id, true])),
+      setSelectedGroups: Object.fromEntries(data.groups_filter.map((group) => [group, true])),
+      setSelectedYears: Object.fromEntries(data.date_sale_filter.years.map((year) => [year, true])),
+      setSelectedMonths: Object.fromEntries(data.date_sale_filter.months.map((month) => [month, true])),
+      setSelectedWeeks: Object.fromEntries(data.date_sale_filter.weekdays.map((weekday) => [weekday, true]))
     };
   };
 
 
   useEffect(() => {
-    updateFilterFields()
+    updateFilterFields();
+    updateScheduleChartData();
   }, [])
 
   const updateFilterFields = async () => {
@@ -470,14 +472,11 @@ const Schedule = () => {
         const filteredKeys = Object.keys(data.revenue_by_warehouse).filter(key => key !== "null");
         setDataRevenueStorageLabels(filteredKeys);
         // setDataRevenueStorageLabels(Object.keys(data.revenue_by_warehouse));
-
         const revenueValues = Object.values(data.revenue_by_warehouse);
         const maxRevenue = Math.max(...revenueValues);
         const roundedStepSize = Math.ceil(maxRevenue / 1000) * 1000;
         setMaxWarehouse(roundedStepSize);
         console.log(roundedStepSize)
-
-
       }
 
       setIsChartsLoading(false);
@@ -650,7 +649,7 @@ const Schedule = () => {
                             />
                             <span className={styles.customCheckbox}></span>
                           </label>
-                          <span className={styles.brandName}>{brand}</span>
+                          <span className={styles.brandName} title={brand}>{brand}</span>
                         </div>
                       ))}
                   </div>
@@ -685,7 +684,7 @@ const Schedule = () => {
                           />
                           <span className={styles.customCheckbox}></span>
                         </label>
-                        <span className={styles.brandName}>{year}</span>
+                        <span className={styles.brandName} title={year}>{year}</span>
                       </div>
                     ))}
                   </div>
@@ -720,7 +719,7 @@ const Schedule = () => {
                           <span className={styles.customCheckbox}></span>
                         </label>
                         {/* Преобразуем ключ месяца в название месяца */}
-                        <span className={styles.brandName}>{monthNames[parseInt(monthKey, 10) - 1]}</span>
+                        <span className={styles.brandName} title={monthNames[parseInt(monthKey, 10) - 1]}>{monthNames[parseInt(monthKey, 10) - 1]}</span>
                       </div>
                     ))}
                   </div>
@@ -754,7 +753,7 @@ const Schedule = () => {
                           />
                           <span className={styles.customCheckbox}></span>
                         </label>
-                        <span className={styles.brandName}>{brand}</span>
+                        <span className={styles.brandName} title={brand}>{brand}</span>
                       </div>
                     ))}
                   </div>
@@ -790,7 +789,7 @@ const Schedule = () => {
                             />
                             <span className={styles.customCheckbox}></span>
                           </label>
-                          <span className={styles.brandName}>{brand}</span>
+                          <span className={styles.brandName} title={brand}>{brand}</span>
                         </div>
                       ))}
                   </div>
@@ -826,7 +825,7 @@ const Schedule = () => {
                             />
                             <span className={styles.customCheckbox}></span>
                           </label>
-                          <span className={styles.brandName}>{article}</span>
+                          <span className={styles.brandName} title={article}>{article}</span>
                         </div>
                       ))}
                   </div>
@@ -875,7 +874,7 @@ const Schedule = () => {
         </div>
         <BottomNavigation />
       </div>
-    </div>
+    </div >
   );
 };
 export default Schedule;

@@ -92,6 +92,7 @@
     align-items: center;
     padding: 2px 0 2px 0;
   }
+
   /* Внешний контейнер для кастомного чекбокса */
   .checkboxContainer {
     position: relative;
@@ -155,7 +156,17 @@
     font-weight: 500;
     line-height: 17.5px;
     color: rgba(26, 26, 26, 1);
-  }
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 17.5px;
+    }
+  
   .ScheduleBody{
     max-width: 100%;
     display: flex;

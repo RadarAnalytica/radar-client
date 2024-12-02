@@ -24,7 +24,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 yAxisID: 'left-y',
             },
             {
-                label: 'Маржинальность по прибыли, % (Lower)',
+                label: 'Маржинальность по прибыли,(Lower)',
                 data: dataProfitMinus,
                 backgroundColor: function (context) {
                     const chart = context.chart;
@@ -44,7 +44,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 yAxisID: 'right-y',
             },
             {
-                label: 'Маржинальность по прибыли, % (Upper)',
+                label: 'Маржинальность по прибыли,(Upper)',
                 data: dataProfitPlus,
                 backgroundColor: function (context) {
                     const chart = context.chart;
@@ -82,17 +82,44 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 padding: 16,
                 titleColor: '#8C8C8C',
                 bodyColor: '#1A1A1A',
+                position: 'average',
                 callbacks: {
                     title: function (tooltipItems) {
                         const index = tooltipItems[0].dataIndex;
-                        // const fullMonthNames = [
-                        //     'Январь', 'Февраль', 'Март', 'Апрель',
-                        //     'Май', 'Июнь', 'Июль', 'Август',
-                        //     'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-                        // ];
                         return labels[index];
                     },
+                    label: function (tooltipItem) {
+                        const datasetLabel = tooltipItem.dataset.label || '';
+                        const value = tooltipItem.raw;
+
+                        if (datasetLabel.includes('(Lower)')) {
+                            return [`Маржинальность по прибыли,`, `(Lower): ${value}%`];
+                        } else if (datasetLabel.includes('(Upper)')) {
+                            return [`Маржинальность по прибыли,`, `(Upper): ${value}%`];
+                        } else {
+                            return `${datasetLabel}: ${value}%`;
+                        }
+                    },
+
                 },
+
+                external: function (context) {
+                    const tooltipEl = document.getElementById('custom-tooltip');
+                    if (!tooltipEl) {
+                        return;
+                    }
+
+                    const tooltipModel = context.tooltip;
+                    if (tooltipModel.opacity === 0) {
+                        tooltipEl.style.opacity = 0;
+                        return;
+                    }
+
+                    const { offsetX, offsetY } = context.chart.canvas.getBoundingClientRect();
+
+                    tooltipEl.style.left = `${tooltipModel.x + offsetX + 10}px`;
+                    tooltipEl.style.top = `${tooltipModel.y + offsetY - 30}px`;
+                }
             },
         },
         scales: {
