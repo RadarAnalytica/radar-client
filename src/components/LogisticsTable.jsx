@@ -11,20 +11,25 @@ const LogisticsTable = ({ data }) => {
       article: '',
       product: '',
       size: '',
-      total: items.reduce((sum, item) => sum + item.penalty_total, 0) + ' ₽',
-      children: items.map((item) => ({
-        id: '',
-        isChild: true,
-        srid: item.srid,
-        article: item.wb_id,
-        product: item.title,
-        size: item.size,
-        total: item.penalty_total + ' ₽',
-      })),
+      total: Array.isArray(items)
+        ? items.reduce((sum, item) => sum + item.penalty_total, 0) + ' ₽'
+        : '0 ₽',
+      children: Array.isArray(items)
+        ? items.map((item) => ({
+            id: '',
+            isChild: true,
+            srid: item.srid,
+            article: item.wb_id,
+            product: item.title,
+            size: item.size,
+            total: item.penalty_total + ' ₽',
+          }))
+        : [],
     }));
   };
 
   const tableData = formatTableData(data);
+  console.log('tableData', tableData);
 
   const toggleRow = (id) => {
     setExpandedRows((prev) => {
@@ -141,7 +146,25 @@ const LogisticsTable = ({ data }) => {
       </div>
 
       {/* Data Rows */}
-      {tableData.map((item) => renderRow(item))}
+      {!tableData || tableData.length === 0 ? (
+        <div className={styles.row}>
+          <div
+            className={styles.emptyMessage}
+            style={{
+              gridColumn: '1 / -1',
+              textAlign: 'center',
+              padding: '20px',
+              fontSize: '16px',
+              fontWeight: '700',
+              lineHeight: '24px',
+            }}
+          >
+            Штрафы отсутствуют
+          </div>
+        </div>
+      ) : (
+        tableData.map((item) => renderRow(item))
+      )}
     </div>
   );
 };

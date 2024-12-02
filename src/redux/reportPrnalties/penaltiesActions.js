@@ -10,18 +10,7 @@ export const fetchPenaltiesData = createAsyncThunk(
                 'Content-Type': 'application/json',
                 'Authorization': token
             },
-            body: JSON.stringify({
-                size_name_filter: filters.size || [],
-                wb_id_filter: filters.article || [],
-                srid_filter: filters.srid || [],
-                title_filter: filters.goods || [],
-                action_type_filter: filters.kindsOfLogistics || [],
-                date_sale_filter: {
-                    years: filters.year || [],
-                    months: filters.month || [],
-                    weekdays: filters.week || []
-                }
-            })
+            body: JSON.stringify(filters)
         });
         return await response.json();
     }

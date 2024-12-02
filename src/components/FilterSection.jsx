@@ -33,6 +33,28 @@ const FilterSection = () => {
     dispatch(fetchDashboardFilters(authToken));
   }, [dispatch, authToken]);
 
+  useEffect(() => {
+    if (filterData) {
+      setSelectedFilters({
+        warehouse_name_filter: filterData.warehouse_name_filter || [],
+        brand_name_filter: filterData.brand_name_filter || [],
+        country_filter: filterData.country_filter || [],
+        delivery_company_filter: filterData.delivery_company_filter || [],
+        action_type_filter: filterData.action_type_filter || [],
+        groups_filter: filterData.groups_filter || [],
+        date_order_filter: filterData.date_order_filter || [],
+        date_sale_filter: {
+          years: filterData.date_sale_filter?.years || [],
+          months:
+            filterData.date_sale_filter?.months.map(
+              (value) => monthNames[value] || value
+            ) || [],
+          weekdays: filterData.date_sale_filter?.weekdays || [],
+        },
+      });
+    }
+  }, [filterData]);
+
   const processFilterData = (data, key) => {
     if (!data) return [];
     if (Array.isArray(data)) {

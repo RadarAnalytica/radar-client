@@ -34,18 +34,27 @@ const WeeklyReportPL = () => {
       })
     );
   };
+
   useEffect(() => {
     const loadFilters = async () => {
       setIsLoadingFilters(true);
       try {
         const filters = await ServiceFunctions.getPLFilters(authToken);
         setFilterOptions(filters.filterOptions);
-        // Set initial active filters as arrays
+
+        // Set all filters as selected initially
         if (filters.filterOptions && filters.filterOptions.length > 0) {
-          setActiveFilters({
-            brand: [],
-            group: [],
-          });
+          const initialFilters = {
+            brand:
+              filters.filterOptions
+                .find((filter) => filter.id === 'brand')
+                ?.options.map((opt) => opt.value) || [],
+            group:
+              filters.filterOptions
+                .find((filter) => filter.id === 'group')
+                ?.options.map((opt) => opt.value) || [],
+          };
+          setActiveFilters(initialFilters);
         }
       } catch (error) {
         console.error('Error loading filters:', error);

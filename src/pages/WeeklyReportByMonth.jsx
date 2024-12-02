@@ -49,16 +49,28 @@ const WeeklyReportByMonth = () => {
 
   useEffect(() => {
     if (filterOptions?.dropdownFilters?.length > 0) {
+      // Set all dropdown filters
       const initialActiveFilters = filterOptions.dropdownFilters.reduce(
         (acc, filter) => {
-          // Set the first option as default value for each filter
-          acc[filter.id] = [];
+          acc[filter.id] = filter.options.map((opt) => opt.value);
           return acc;
         },
         {}
       );
 
       setActiveFilters(initialActiveFilters);
+
+      // Set all date filters
+      if (filterOptions.groupFilters?.dateFilters?.options) {
+        const dateFilters = filterOptions.groupFilters.dateFilters.options;
+        const monthValues =
+          dateFilters.find((f) => f.id === 'months')?.values || [];
+        setSelectedFilters({
+          year: dateFilters.find((f) => f.id === 'years')?.values || [],
+          month: monthValues.map((value) => monthNames[value] || value),
+          week: dateFilters.find((f) => f.id === 'weeks')?.values || [],
+        });
+      }
     }
   }, [filterOptions]);
 
@@ -193,7 +205,7 @@ const WeeklyReportByMonth = () => {
               />
               {/* <div className={styles.filteWrapper}> */}
               <FilterGroup
-                title='Артикул'
+                title='Артикул поставщика'
                 options={filterOptions.dropdownFilters
                   ?.find((filter) => filter.id === 'article')
                   ?.options?.map((option) => ({
@@ -373,7 +385,7 @@ const WeeklyReportByMonth = () => {
                 filterLoading={filterIsLoading}
               />
               <FilterGroup
-                title='WB ID'
+                title='Артикул'
                 options={filterOptions.dropdownFilters
                   ?.find((filter) => filter.id === 'wb_id')
                   ?.options?.map((option) => ({

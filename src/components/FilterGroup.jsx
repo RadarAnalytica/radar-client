@@ -9,6 +9,14 @@ const FilterGroup = ({
   size,
   filterLoading,
 }) => {
+  const handleTitleDisplay = (e) => {
+    const span = e.currentTarget;
+    if (span.scrollWidth > span.clientWidth) {
+      span.parentElement.setAttribute('title', span.textContent);
+    } else {
+      span.parentElement.removeAttribute('title');
+    }
+  };
   // Add safety check to ensure options is an array
   const safeOptions = Array.isArray(options) ? options : [];
 
@@ -47,14 +55,22 @@ const FilterGroup = ({
       ) : (
         <div className={styles.optionsList}>
           {safeOptions.map((option) => (
-            <label key={option.id} className={styles.optionLabel}>
+            <label
+              key={option.id}
+              className={styles.optionLabel}
+              title={option.label}
+            >
               <input
                 type='checkbox'
                 checked={isSelected(option.label)}
                 onChange={() => onSelect(option.label)}
                 className={styles.checkbox}
               />
-              <span>{option.label}</span>
+              <span
+                ref={(el) => el && handleTitleDisplay({ currentTarget: el })}
+              >
+                {option.label}
+              </span>
             </label>
           ))}
         </div>
