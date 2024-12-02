@@ -62,7 +62,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     outline: none;
-    width: 130px;
+    width: 100%;
+    max-width: 130px;
     background: white;
   }
   
@@ -188,3 +189,25 @@
     transform: translateY(-50%);
     pointer-events: none;
   }
+
+  .deleteIcon {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .deleteIcon img {
+    height: 22px;
+    width: 22px;
+  }
+
+  .saveIcon img {
+    filter: brightness(0) saturate(100%) invert(55%) sepia(9%) saturate(13%) hue-rotate(201deg) brightness(94%) contrast(91%);
+    cursor: pointer;
+}
+  
+.saveIconActive {
+    filter: brightness(0) saturate(100%) invert(48%) sepia(95%) saturate(389%) hue-rotate(134deg) brightness(97%) contrast(101%);
+    cursor: pointer;
+}

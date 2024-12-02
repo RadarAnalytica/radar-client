@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
-import crossAdd from '../pages/images/cross-add.png';
+import trashIcon from '../pages/images/trash-icon.svg';
+import crossGrey from '../assets/cross-grey.svg';
+import saveIcon from '../assets/save.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthContext from '../service/AuthContext';
 import { fetchExternalExpenses } from '../redux/externalExpenses/externalExpensesActions';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import styles from './ExpenseTracker.module.css';
+import { URL } from '../service/config';
 
 const ExpenseTracker = () => {
   const dispatch = useDispatch();
+  const [hasChanges, setHasChanges] = useState({});
   const { data, loading } = useSelector((state) => state.externalExpensesSlice);
   const { authToken } = useContext(AuthContext);
   const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: currentYear - 2009 }, (_, i) =>
-    String(2010 + i)
+  const years = Array.from({ length: currentYear - 2020 }, (_, i) =>
+    String(2021 + i)
   );
   const months = [
     'Январь',
@@ -29,8 +33,6 @@ const ExpenseTracker = () => {
     'Декабрь',
   ];
   const [rows, setRows] = useState([]);
-
-  console.log('rows', rows);
 
   useEffect(() => {
     dispatch(fetchExternalExpenses(authToken));
@@ -73,7 +75,7 @@ const ExpenseTracker = () => {
     };
 
     // Only include id if it's from backend (not a newly created row)
-    if (row.id <= rows.length) {
+    if (!row.isNew) {
       payload.id = row.id;
 
       const response = await ServiceFunctions.postExternalExpensesUpdate(
@@ -106,41 +108,37 @@ const ExpenseTracker = () => {
   };
 
   const handleYearChange = (rowId, selectedYear) => {
+    setHasChanges({ ...hasChanges, [rowId]: true });
     setRows(
       rows.map((row) =>
         row.id === rowId ? { ...row, year: selectedYear } : row
       )
     );
-    const updatedRow = rows.find((row) => row.id === rowId);
-    if (updatedRow) {
-      sendRowData({ ...updatedRow, year: selectedYear });
-    }
   };
 
   const handleMonthChange = (rowId, selectedMonth) => {
+    setHasChanges({ ...hasChanges, [rowId]: true });
     setRows(
       rows.map((row) =>
         row.id === rowId ? { ...row, month: selectedMonth } : row
       )
     );
-    const updatedRow = rows.find((row) => row.id === rowId);
-    if (updatedRow) {
-      sendRowData({ ...updatedRow, month: selectedMonth });
-    }
   };
 
   const handleArticleChange = (rowId, value) => {
+    setHasChanges({ ...hasChanges, [rowId]: true });
     setRows(
       rows.map((row) => (row.id === rowId ? { ...row, article: value } : row))
     );
   };
 
   const handleExpenseChange = (rowId, expenseIndex, value) => {
+    setHasChanges({ ...hasChanges, [rowId]: true });
     setRows(
       rows.map((row) => {
         if (row.id === rowId) {
           const newExpenses = [...row.expenses];
-          newExpenses[expenseIndex] = value === '' ? 0 : Number(value);
+          newExpenses[expenseIndex] = value === '' ? '' : Number(value);
           return { ...row, expenses: newExpenses };
         }
         return row;
@@ -148,11 +146,19 @@ const ExpenseTracker = () => {
     );
   };
 
+  const handleSave = (row) => {
+    if (hasChanges[row.id]) {
+      sendRowData(row);
+      setHasChanges({ ...hasChanges, [row.id]: false });
+    }
+  };
+
   const addRow = () => {
     setRows([
       ...rows,
       {
         id: rows.length + 1,
+        isNew: true,
         year: '',
         month: '',
         article: '',
@@ -161,128 +167,147 @@ const ExpenseTracker = () => {
     ]);
   };
 
-  const handleSubmit = () => {
-    const dataToSend = rows.map((row) => ({
-      id: row.id,
-      year: row.year,
-      month: row.month,
-      article: row.article,
-      expenses: row.expenses,
-    }));
-    console.log('Data ready to send:', dataToSend);
-    // add your API call to send data to backend
+  const handleDeleteRow = async (id) => {
+    try {
+      const response = await fetch(
+        `${URL}/api/report/external-expenses/delete?id_=${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            accept: 'application/json',
+            Authorization: authToken,
+          },
+        }
+      );
+
+      if (response.ok) {
+        // Refresh the data after successful deletion
+        dispatch(fetchExternalExpenses(authToken));
+      }
+    } catch (error) {
+      console.error('Error deleting row:', error);
+    }
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.table}>
-        {/* Header Row */}
-        <div className={styles.headerRow}>
-          <div className={styles.yearCell}>Год</div>
-          <div className={styles.monthCell}>Месяц</div>
-          <div className={styles.articleCell}>Артикул поставщика</div>
-          {[1, 2, 3, 4, 5].map((num) => (
-            <div
-              key={num}
-              className={styles.expenseCell}
-            >{`Расход №${num}`}</div>
-          ))}
-          {/* <div className={styles.totalCell}>Итого Общих</div>
+      {!loading ? (
+        <div className={styles.table}>
+          {/* Header Row */}
+          <div className={styles.headerRow}>
+            <div className={styles.yearCell}>Год</div>
+            <div className={styles.monthCell}>Месяц</div>
+            <div className={styles.articleCell}>Артикул поставщика</div>
+            {[1, 2, 3, 4, 5].map((num) => (
+              <div
+                key={num}
+                className={styles.expenseCell}
+              >{`Расход №${num}`}</div>
+            ))}
+            {/* <div className={styles.totalCell}>Итого Общих</div>
           <div className={styles.totalCell}>Поартикульных</div>
           <div className={styles.totalCell}>Расходов</div> */}
-        </div>
-
-        {/* Data Rows */}
-        {rows.map((row) => (
-          <div key={row.id} className={styles.dataRow}>
-            <div className={styles.yearCell}>
-              <select
-                value={row.year || ''}
-                onChange={(e) => handleYearChange(row.id, e.target.value)}
-                className={styles.select}
-              >
-                <option value=''>Выбрать</option>
-                {years.map((year) => (
-                  <option
-                    key={year}
-                    value={year}
-                    className={`${styles.textInSelect} ${
-                      row.year === year ? styles.selected : ''
-                    }`}
-                  >
-                    {year}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.monthCell}>
-              <select
-                value={row.month}
-                onChange={(e) => handleMonthChange(row.id, e.target.value)}
-                className={styles.select}
-              >
-                <option value=''>Выбрать</option>
-                {months.map((month) => (
-                  <option key={month} value={month}>
-                    {month}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.articleCell}>
-              <input
-                type='text'
-                value={row.article}
-                className={styles.input}
-                onChange={(e) => handleArticleChange(row.id, e.target.value)}
-                onBlur={() => sendRowData(row)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.target.blur();
-                    sendRowData(row);
-                  }
-                }}
-              />
-            </div>
-
-            {row.expenses.map((expense, index) => (
-              <div key={index} className={styles.expenseCell}>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type='text'
-                    value={expense}
-                    onChange={(e) =>
-                      handleExpenseChange(row.id, index, e.target.value)
-                    }
-                    onBlur={() => sendRowData(row)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.target.blur();
-                        sendRowData(row);
-                      }
-                    }}
-                    className={`${styles.input} ${
-                      expense ? styles.active : ''
-                    }`}
-                    placeholder='0'
-                  />
-                  <span
-                    className={`${styles.rubSign} ${
-                      expense ? styles.active : ''
-                    }`}
-                  >
-                    ₽
-                  </span>
-                </div>
-              </div>
-            ))}
           </div>
-        ))}
-      </div>
+
+          {/* Data Rows */}
+          {rows.map((row) => (
+            <div key={row.id} className={styles.dataRow}>
+              <div className={styles.yearCell}>
+                <select
+                  value={row.year || ''}
+                  onChange={(e) => handleYearChange(row.id, e.target.value)}
+                  className={styles.select}
+                >
+                  <option value=''>Выбрать</option>
+                  {years.map((year) => (
+                    <option
+                      key={year}
+                      value={year}
+                      className={`${styles.textInSelect} ${
+                        row.year === year ? styles.selected : ''
+                      }`}
+                    >
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.monthCell}>
+                <select
+                  value={row.month}
+                  onChange={(e) => handleMonthChange(row.id, e.target.value)}
+                  className={styles.select}
+                >
+                  <option value=''>Выбрать</option>
+                  {months.map((month) => (
+                    <option key={month} value={month}>
+                      {month}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.articleCell}>
+                <input
+                  type='text'
+                  value={row.article}
+                  className={styles.input}
+                  onChange={(e) => handleArticleChange(row.id, e.target.value)}
+                />
+              </div>
+
+              {row.expenses.map((expense, index) => (
+                <div key={index} className={styles.expenseCell}>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      type='number'
+                      value={expense === 0 ? '' : expense}
+                      onChange={(e) =>
+                        handleExpenseChange(row.id, index, e.target.value)
+                      }
+                      className={`${styles.input} ${
+                        expense ? styles.active : ''
+                      }`}
+                      placeholder='0'
+                    />
+                    <span
+                      className={`${styles.rubSign} ${
+                        expense ? styles.active : ''
+                      }`}
+                    >
+                      ₽
+                    </span>
+                  </div>
+                </div>
+              ))}
+              <span
+                className={`${styles.saveIcon} ${
+                  hasChanges[row.id] ? styles.saveIconActive : ''
+                }`}
+                onClick={() => handleSave(row)}
+              >
+                <img src={saveIcon} alt='Save Row' />
+              </span>
+              <span
+                className={styles.deleteIcon}
+                onClick={() => handleDeleteRow(row.id)}
+              >
+                <img src={trashIcon} alt='Delete Row' />
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div
+          className='d-flex flex-column align-items-center justify-content-center'
+          style={{ height: '200px' }}
+        >
+          <span className='loader'></span>
+        </div>
+      )}
       <button onClick={addRow} className={styles.addButton}>
-        <img src={crossAdd} alt='Добавить строку' onClick={createRow} />
+        <img src={crossGrey} alt='Добавить строку' onClick={createRow} />
       </button>
     </div>
   );

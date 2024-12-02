@@ -27,6 +27,7 @@ const ReportMain = () => {
   const [data, setData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
+  const [openBlock, setOpenBlock] = useState(true);
 
   const getListOfReports = async () => {
     try {
@@ -117,6 +118,10 @@ const ReportMain = () => {
     }
   };
 
+  const handleOpenClose = () => {
+    setOpenBlock(!openBlock);
+  };
+
   return (
     <div className='dashboard-page'>
       <SideNav />
@@ -133,98 +138,109 @@ const ReportMain = () => {
                 />
                 Инструкция
               </div>
-              <div>-</div>
-            </div>
-            <div className={styles.instructionColsWrapper}>
-              <div className={styles.blockLeft}>
-                <div>
-                  <div className={styles.blockLeftText}>
-                    В этом разделе вы можете загрузить отчёты Wildberries в нашу
-                    систему. После обработки данных алгоритм распределит
-                    информацию по интуитивно понятным вкладкам, что позволит вам
-                    проанализировать следующие показатели вашего бизнеса:
-                  </div>
-                  <div>
-                    <ul className={styles.blockLeftText}>
-                      <li>все виды расходов,</li>
-                      <li>доходы,</li>
-                      <li>оборот,</li>
-                      <li>маржинальность.</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <span className={styles.blockLeftTextBold}>
-                      Кроме того, вы сможете детализировать эти показатели по
-                      каждому артикулу, а также учитывать и добавлять внешние
-                      расходы.
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.blockCover}>
-                  <div>
-                    <span className={styles.blockCoverText}>
-                      Особенностью алгоритма является то, что он не использует
-                      данные по API (как это реализовано в других разделах
-                      нашего сервиса), а опирается исключительно на информацию
-                      из отчётов Wildberries. Это гарантирует максимальную
-                      точность расчётов —{' '}
-                      <span className={styles.blockCoverTextBold}>
-                        вплоть до копейки.
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.blockCoverBottom}>
-                  <div>
-                    <span className={styles.blockCoverText}>
-                      С помощью нашего сервиса вы сможете{' '}
-                      <span className={styles.blockCoverTextBold}>
-                        анализировать данные за каждую неделю,
-                      </span>
-                      для которой Wildberries предоставляет отчёты, что делает
-                      работу с бизнес-показателями удобной и эффективной.
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.blockCoverBottomBoldText}>
-                  <span>Удачи в использовании сервиса!</span>
-                </div>
-              </div>
-              <div className={styles.blockRight}>
-                <div className={styles.blockRightText}>
-                  <div className={styles.blockRightTextTop}>
-                    Для начала работы:
-                  </div>
-                  <div>
-                    1. Ознакомьтесь с короткой видеоинструкцией.
-                    <br />
-                    2. Загрузите в систему два отчёта (важно загружать их в том
-                    виде, в котором они были скачаны из личного кабинета
-                    Wildberries):
-                  </div>
-                  <div>
-                    <ul>
-                      <li className={styles.rightListText}>
-                        <span className={styles.rightListTextBold}>
-                          Детализация еженедельного отчёта:
-                        </span>
-                        документ в формате ZIP, скачанный из кабинета
-                        Wildberries. Файл не нужно изменять, просто загрузите
-                        его в исходном виде.
-                      </li>
-                      <li className={styles.rightListText}>
-                        <span className={styles.rightListTextBold}>
-                          Отчёт по платному хранению:
-                        </span>
-                        документ за тот же период, что и детализация
-                        еженедельного отчёта.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div style={{ height: '300px', background: 'grey' }}></div>
+              <div
+                className={styles.lineWrapper}
+                onClick={() => handleOpenClose()}
+              >
+                <span
+                  className={`${styles.line} ${
+                    openBlock ? styles.open : styles.closed
+                  }`}
+                ></span>
               </div>
             </div>
+            {openBlock && (
+              <div className={styles.instructionColsWrapper}>
+                <div className={styles.blockLeft}>
+                  <div>
+                    <div className={styles.blockLeftText}>
+                      В этом разделе вы можете загрузить отчёты Wildberries в
+                      нашу систему. После обработки данных алгоритм распределит
+                      информацию по интуитивно понятным вкладкам, что позволит
+                      вам проанализировать следующие показатели вашего бизнеса:
+                    </div>
+                    <div>
+                      <ul className={styles.blockLeftText}>
+                        <li>все виды расходов,</li>
+                        <li>доходы,</li>
+                        <li>оборот,</li>
+                        <li>маржинальность.</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <span className={styles.blockLeftTextBold}>
+                        Кроме того, вы сможете детализировать эти показатели по
+                        каждому артикулу, а также учитывать и добавлять внешние
+                        расходы.
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.blockCover}>
+                    <div>
+                      <span className={styles.blockCoverText}>
+                        Особенностью алгоритма является то, что он не использует
+                        данные по API (как это реализовано в других разделах
+                        нашего сервиса), а опирается исключительно на информацию
+                        из отчётов Wildberries. Это гарантирует максимальную
+                        точность расчётов —{' '}
+                        <span className={styles.blockCoverTextBold}>
+                          вплоть до копейки.
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.blockCoverBottom}>
+                    <div>
+                      <span className={styles.blockCoverText}>
+                        С помощью нашего сервиса вы сможете{' '}
+                        <span className={styles.blockCoverTextBold}>
+                          анализировать данные за каждую неделю,
+                        </span>
+                        для которой Wildberries предоставляет отчёты, что делает
+                        работу с бизнес-показателями удобной и эффективной.
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.blockCoverBottomBoldText}>
+                    <span>Удачи в использовании сервиса!</span>
+                  </div>
+                </div>
+                <div className={styles.blockRight}>
+                  <div className={styles.blockRightText}>
+                    <div className={styles.blockRightTextTop}>
+                      Для начала работы:
+                    </div>
+                    <div>
+                      1. Ознакомьтесь с короткой видеоинструкцией.
+                      <br />
+                      2. Загрузите в систему два отчёта (важно загружать их в
+                      том виде, в котором они были скачаны из личного кабинета
+                      Wildberries):
+                    </div>
+                    <div>
+                      <ul>
+                        <li className={styles.rightListText}>
+                          <span className={styles.rightListTextBold}>
+                            Детализация еженедельного отчёта:
+                          </span>
+                          документ в формате ZIP, скачанный из кабинета
+                          Wildberries. Файл не нужно изменять, просто загрузите
+                          его в исходном виде.
+                        </li>
+                        <li className={styles.rightListText}>
+                          <span className={styles.rightListTextBold}>
+                            Отчёт по платному хранению:
+                          </span>
+                          документ за тот же период, что и детализация
+                          еженедельного отчёта.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div style={{ height: '300px', background: 'grey' }}></div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className='container dash-container'>

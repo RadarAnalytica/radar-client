@@ -79,6 +79,7 @@
 .blockRightText {
     background: rgba(83, 41, 255, 0.05);
     padding: 16px;
+    margin-top: 16px;
     border-radius: 12px;
     margin-bottom: 12px;
 }
@@ -367,3 +368,43 @@
 .failGrey {
     color: rgba(0, 0, 0, 0.2);
 }
+
+.lineWrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.line {
+    position: relative;
+    width: 23px;
+    height: 2px;
+    background-color: rgba(83, 41, 255, 1);
+    transition: transform 0.3s ease;
+  }
+  
+  .line::after {
+    content: '';
+    position: absolute;
+    width: 23px;
+    height: 2px;
+    background-color: rgba(83, 41, 255, 1);
+    left: 0;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Add these classes and toggle them based on state */
+  .line.open {
+    transform: rotate(0deg);
+  }
+  
+  .line.open::after {
+    transform: rotate(0deg);
+  }
+  
+  .line.closed {
+    transform: rotate(90deg);
+  }
+  
+  .line.closed::after {
+    transform: rotate(90deg);
+  }
