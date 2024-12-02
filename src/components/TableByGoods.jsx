@@ -26,9 +26,9 @@ const TableByGoods = ({ data }) => {
         spp: `${formatPrice(item?.data?.avg_spp) || '0'} %`,
         buyout: `${formatPrice(item?.data?.purchase_percent) || '0'} %`,
         cost: {
-          total: formatPrice(item?.data?.cost_price) || '0',
-          percentage: formatPrice(item?.data?.cost_price_percent) || '0',
-          perUnit: formatPrice(item?.data?.cost_price) || '0',
+          total: `${formatPrice(item?.data?.cost_price) || '0'} ₽`,
+          percentage: `${formatPrice(item?.data?.cost_price_percent) || '0'} %`,
+          perUnit: `${formatPrice(item?.data?.cost_price) || '0'} ₽`,
         },
         logisticQnty: `${formatPrice(item?.data?.deliveries) || '0'} шт`,
         logisticCommission: {

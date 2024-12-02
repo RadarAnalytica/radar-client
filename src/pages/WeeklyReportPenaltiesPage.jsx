@@ -9,13 +9,13 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPenaltiesData } from '../redux/reportPrnalties/penaltiesActions';
+import { monthNames, getMonthNumbers } from '../service/utils';
 
 const WeeklyReportPenaltiesPage = () => {
   const dispatch = useDispatch();
   const { penaltiesData, loading } = useSelector(
     (state) => state.penaltiesSlice
   );
-  console.log('penaltiesData => WeeklyReportPenaltiesPage:', penaltiesData);
   const { authToken } = useContext(AuthContext);
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [filterDataSet, setFilterDataSet] = useState({});
@@ -32,9 +32,23 @@ const WeeklyReportPenaltiesPage = () => {
   const [filterIsLoading, setFilterIsLoading] = useState(false);
 
   const handleApplyFilters = () => {
+    const monthNumbers = getMonthNumbers(selectedFilters.month);
+
+    const filters = {
+      size_name_filter: selectedFilters.size,
+      wb_id_filter: selectedFilters.article,
+      srid_filter: selectedFilters.srid,
+      title_filter: selectedFilters.goods,
+      action_type_filter: selectedFilters.kindsOfLogistics,
+      date_sale_filter: {
+        years: selectedFilters.year,
+        months: monthNumbers,
+        weekdays: selectedFilters.week,
+      },
+    };
     dispatch(
       fetchPenaltiesData({
-        filters: selectedFilters,
+        filters,
         token: authToken,
       })
     );
@@ -61,6 +75,23 @@ const WeeklyReportPenaltiesPage = () => {
     const fetchFilterOptions = async () => {
       try {
         const data = await ServiceFunctions.getPenaltiesFilters(authToken);
+        // Convert months to their name representations using monthNames
+        const monthValues = data.date_sale_filter?.months || [];
+        const monthsWithNames = monthValues.map(
+          (value) => monthNames[value] || value
+        );
+        // Set all filters initially selected
+
+        setSelectedFilters({
+          year: data.date_sale_filter?.years || [],
+          month: monthsWithNames,
+          week: data.date_sale_filter?.weekdays || [],
+          article: data.wb_id_filter || [],
+          size: data.size_name_filter || [],
+          srid: data.srid_filter || [],
+          kindsOfLogistics: data.action_type_filter || [],
+          goods: data.title_filter || [],
+        });
         setFilterDataSet(data);
       } catch (error) {
         console.error('Failed to fetch filter options:', error);
@@ -118,7 +149,7 @@ const WeeklyReportPenaltiesPage = () => {
                   options={
                     filterDataSet.date_sale_filter?.months.map((month) => ({
                       id: month,
-                      label: month,
+                      label: monthNames[month] || month,
                     })) || []
                   }
                   selected={selectedFilters.month}

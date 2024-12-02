@@ -84,12 +84,11 @@ const SideNav = () => {
           <div className='sidenav-el' onClick={() => navigate('/report-main')}>
             <div className='d-flex align-items-center'>
               <svg
-                width='18'
-                height='20'
+                width='18px'
+                height='18px'
                 viewBox='0 0 18 20'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
-                className='side-nav-icon'
               >
                 <path
                   fillRule='evenodd'
