@@ -60,41 +60,79 @@ const Schedule = () => {
     "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
     "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
   ];
+  const filterKeys = [
+    "selectedYears",
+    "selectedMonths",
+    "selectedArticles",
+    "selectedBrands",
+    "selectedGroups",
+    "selectedWeeks"
+  ];
 
 
   const transformFilters = (data) => {
 
     return {
-      setSelectedBrands: Object.fromEntries(data.brand_name_filter.map((brand) => [brand, true])),
-      setSelectedArticles: Object.fromEntries(data.wb_id_filter.map((id) => [id, true])),
-      setSelectedGroups: Object.fromEntries(data.groups_filter.map((group) => [group, true])),
-      setSelectedYears: Object.fromEntries(data.date_sale_filter.years.map((year) => [year, true])),
-      setSelectedMonths: Object.fromEntries(data.date_sale_filter.months.map((month) => [month, true])),
-      setSelectedWeeks: Object.fromEntries(data.date_sale_filter.weekdays.map((weekday) => [weekday, true]))
+      selectedBrands: Object.fromEntries(data.brand_name_filter.map((brand) => [brand, true])),
+      selectedArticles: Object.fromEntries(data.wb_id_filter.map((id) => [id, true])),
+      selectedGroups: Object.fromEntries(data.groups_filter.map((group) => [group, true])),
+      selectedYears: Object.fromEntries(data.date_sale_filter.years.map((year) => [year, true])),
+      selectedMonths: Object.fromEntries(data.date_sale_filter.months.map((month) => [month, true])),
+      selectedWeeks: Object.fromEntries(data.date_sale_filter.weekdays.map((weekday) => [weekday, true]))
     };
   };
 
 
   useEffect(() => {
-    updateFilterFields();
-    updateScheduleChartData();
-  }, [])
+    const fetchData = async () => {
+      await updateFilterFields(); // Load filters and data
+      updateScheduleChartData(); // Load chart data
+    };
+    fetchData();
+  }, []);
 
   const updateFilterFields = async () => {
     setIsLoading(true);
     try {
+      // Fetch and transform filter data
       const data = await ServiceFunctions.scheduleFilterFields(authToken);
       const transformedFilters = transformFilters(data);
 
-      setSelectedBrands(transformedFilters.setSelectedBrands);
-      setSelectedArticles(transformedFilters.setSelectedArticles);
-      setSelectedGroups(transformedFilters.setSelectedGroups);
-      setSelectedYears(transformedFilters.setSelectedYears);
-      setSelectedMonths(transformedFilters.setSelectedMonths);
-      setSelectedWeeks(transformedFilters.setSelectedWeeks);
+      // Mapping of filter keys to their corresponding setters
+      const setters = {
+        selectedYears: setSelectedYears,
+        selectedMonths: setSelectedMonths,
+        selectedArticles: setSelectedArticles,
+        selectedBrands: setSelectedBrands,
+        selectedGroups: setSelectedGroups,
+        selectedWeeks: setSelectedWeeks,
+      };
 
+      // Automatically update the state for each filter key
+      filterKeys.forEach((key) => {
+
+        const transformedValue = transformedFilters[key];
+        const storedValue = localStorage.getItem(key);
+
+        if (storedValue) {
+          const parsedStoredValue = JSON.parse(storedValue);
+
+          // Merge stored data with transformed data if both exist
+          if (Object.keys(parsedStoredValue).length > 0) {
+            // Call the setter function dynamically
+            setters[key]({
+              ...transformedValue,
+              ...parsedStoredValue,
+            });
+          } else {
+            setters[key](transformedValue);
+          }
+        } else {
+          setters[key](transformedValue);
+        }
+      });
     } catch (error) {
-      console.error('Ошибка при загрузке данных:', error);
+      console.error("Ошибка при загрузке данных:", error);
     } finally {
       setIsLoading(false);
     }
@@ -321,14 +359,22 @@ const Schedule = () => {
         }
       }
 
-      // const min = Math.floor(Math.min(Math.min(...dailyRevenueArray), Math.min(...dailyProfitArray)) / 1000) * 1000
-      // const max = Math.ceil(Math.max(Math.max(...marginalityHigh), Math.max(...dailyProfitArray)) / 1000) * 1000
-      // setMinDataRevenue(min)
-      // setMaxDataRevenue(max)
+      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray]
+      const minVal = Math.min(...arr);
+      const maxVal = Math.max(...arr);
+      const min = Math.floor(minVal * 100) / 100;
+      const max = Math.ceil(maxVal * 100) / 100;
+      setMinProfitability(min)
+      setMaxProfitability(max)
+
+
+      //setMaxforROI
       // setStepSizeRevenue(calculateSize(min, max))
       setDataProfitMinus(marginalityLow)
       setDataProfitPlus(marginalityHigh)
       setDataProfitability(roiArray)
+
+
     }
     else if (
       (
@@ -379,9 +425,16 @@ const Schedule = () => {
           }
         }
       }
+      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray]
+      const minVal = Math.min(...arr);
+      const maxVal = Math.max(...arr);
+      const min = Math.floor(minVal * 100) / 100;
+      const max = Math.ceil(maxVal * 100) / 100;
+      setMinProfitability(min)
+      setMaxProfitability(max)
 
 
-
+      //setMaxforROI
       setDataProfitMinus(marginalityLow)
       setDataProfitPlus(marginalityHigh)
       setDataProfitability(roiArray)
@@ -427,12 +480,20 @@ const Schedule = () => {
           }
         }
       }
-      // const min = Math.floor(Math.min(Math.min(...revenueArray), Math.min(...profitArray)) / 1000) * 1000
-      // const max = Math.ceil(Math.max(Math.max(...revenueArray), Math.max(...profitArray)) / 1000) * 1000
+      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray]
+      const minVal = Math.min(...arr);
+      const maxVal = Math.max(...arr);
+      const min = Math.floor(minVal * 100) / 100;
+      const max = Math.ceil(maxVal * 100) / 100;
+      setMinProfitability(min)
+      setMaxProfitability(max)
+
+
+      //setMaxforROI
       // setMinDataRevenue(min)
       // setMaxDataRevenue(max)
       // setStepSizeRevenue(calculateSize(min, max))
-      console.log(marginalityHigh, marginalityLow)
+      console.log(arr, max, min)
       setDataProfitMinus(marginalityLow)
       setDataProfitPlus(marginalityHigh)
       setDataProfitability(roiArray)
@@ -486,12 +547,42 @@ const Schedule = () => {
     }
   };
 
+
+  useEffect(() => {
+    if (Object.keys(selectedYears).length > 0) {
+      localStorage.setItem("selectedYears", JSON.stringify(selectedYears));
+    }
+    if (Object.keys(selectedArticles).length > 0) {
+      localStorage.setItem("selectedArticles", JSON.stringify(selectedArticles));
+    }
+    if (Object.keys(selectedBrands).length > 0) {
+      localStorage.setItem("selectedBrands", JSON.stringify(selectedBrands));
+    }
+    if (Object.keys(selectedGroups).length > 0) {
+      localStorage.setItem("selectedGroups", JSON.stringify(selectedGroups));
+    }
+    if (Object.keys(selectedMonths).length > 0) {
+      localStorage.setItem("selectedMonths", JSON.stringify(selectedMonths));
+    }
+    if (Object.keys(selectedWeeks).length > 0) {
+      localStorage.setItem("selectedWeeks", JSON.stringify(selectedWeeks));
+    }
+  }, [
+    selectedYears,
+    selectedMonths,
+    selectedArticles,
+    selectedBrands,
+    selectedGroups,
+    selectedWeeks,
+  ]);
+
   const toggleCheckboxBrands = (brand) => {
     setSelectedBrands((prevState) => ({
       ...prevState,
       [brand]: !prevState[brand],
     }));
   };
+
   const toggleCheckboxYear = (year) => {
     setSelectedYears((prevState) => ({
       ...prevState,
@@ -848,7 +939,6 @@ const Schedule = () => {
               dataRevenue={dataRevenue}
               dataNetProfit={dataNetProfit}
               labels={bigChartLabels}
-
               stepSizeRevenue={stepSizeRevenue}
               minDataRevenue={minDataRevenue}
               maxDataRevenue={maxDataRevenue}

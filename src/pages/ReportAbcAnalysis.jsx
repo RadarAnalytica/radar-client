@@ -64,15 +64,26 @@ const ReportAbcAnalysis = () => {
   ];
 
 
+  const filterKeys = [
+    "selectedYearsABC",
+    "selectedMonthsABC",
+    "selectedArticlesABC",
+    "selectedBrandsABC",
+    "selectedGroupsABC",
+    "selectedWeeksABC",
+    "selectedProductsABC"
+  ];
+
+
   const transformFilters = (data) => {
     return {
-      setSelectedBrands: Object.fromEntries(data.brand_filter.map((brand) => [brand, true])),
-      setSelectedArticles: Object.fromEntries(data.article_filter.map((id) => [id, true])),
-      setSelectedGroups: Object.fromEntries(data.group_filter.map((group) => [group, true])),
-      setSelectedYears: Object.fromEntries(data.year_filter.map((year) => [year, true])),
-      setSelectedMonths: Object.fromEntries(data.month_filter.map((month) => [month, true])),
-      setSelectedWeeks: Object.fromEntries(data.week_filter.map((weekday) => [weekday, true])),
-      setSelectedProducts: Object.fromEntries(data.product_filter.map((product) => [product, true]))
+      selectedBrandsABC: Object.fromEntries(data.brand_filter.map((brand) => [brand, true])),
+      selectedArticlesABC: Object.fromEntries(data.article_filter.map((id) => [id, true])),
+      selectedGroupsABC: Object.fromEntries(data.group_filter.map((group) => [group, true])),
+      selectedYearsABC: Object.fromEntries(data.year_filter.map((year) => [year, true])),
+      selectedMonthsABC: Object.fromEntries(data.month_filter.map((month) => [month, true])),
+      selectedWeeksABC: Object.fromEntries(data.week_filter.map((weekday) => [weekday, true])),
+      selectedProductsABC: Object.fromEntries(data.product_filter.map((product) => [product, true]))
     };
   };
 
@@ -88,10 +99,6 @@ const ReportAbcAnalysis = () => {
     };
 
     initializeFiltersAndData();
-
-    // console.log(localStorage.getItem("selectedYears"), JSON.parse(localStorage.getItem("selectedYears")))
-
-    // setSelectedYears(JSON.parse(localStorage.getItem("selectedYears")))
   }, []);
 
   useEffect(() => {
@@ -106,13 +113,39 @@ const ReportAbcAnalysis = () => {
       const data = await ServiceFunctions.getAbcReportsFilters(authToken);
       const transformedFilters = transformFilters(data);
 
-      setSelectedBrands(transformedFilters.setSelectedBrands);
-      setSelectedArticles(transformedFilters.setSelectedArticles);
-      setSelectedGroups(transformedFilters.setSelectedGroups);
-      setSelectedYears(transformedFilters.setSelectedYears);
-      setSelectedMonths(transformedFilters.setSelectedMonths);
-      setSelectedWeeks(transformedFilters.setSelectedWeeks);
-      setSelectedProducts(transformedFilters.setSelectedProducts);
+      // Mapping of filter keys to their corresponding setters
+      const setters = {
+        selectedYearsABC: setSelectedYears,
+        selectedMonthsABC: setSelectedMonths,
+        selectedArticlesABC: setSelectedArticles,
+        selectedBrandsABC: setSelectedBrands,
+        selectedGroupsABC: setSelectedGroups,
+        selectedWeeksABC: setSelectedWeeks,
+        selectedProductsABC: setSelectedProducts,
+      };
+
+      // Automatically update the state for each filter key
+      filterKeys.forEach((key) => {
+        const transformedValue = transformedFilters[key];
+        const storedValue = localStorage.getItem(key);
+
+        if (storedValue) {
+          const parsedStoredValue = JSON.parse(storedValue);
+
+          // Merge stored data with transformed data if both exist
+          if (Object.keys(parsedStoredValue).length > 0) {
+            // Call the setter function dynamically
+            setters[key]({
+              ...transformedValue,
+              ...parsedStoredValue,
+            });
+          } else {
+            setters[key](transformedValue);
+          }
+        } else {
+          setters[key](transformedValue);
+        }
+      });
     } catch (error) {
       console.error('Ошибка при загрузке фильтров:', error);
     } finally {
@@ -144,10 +177,36 @@ const ReportAbcAnalysis = () => {
     }
   };
 
-  // useEffect(() => {
-  //   localStorage.setItem("selectedYears", JSON.stringify(selectedYears));
 
-  // }, [selectedYears])
+  useEffect(() => {
+    if (Object.keys(selectedYears).length > 0) {
+      localStorage.setItem("selectedYearsABC", JSON.stringify(selectedYears));
+    }
+    if (Object.keys(selectedArticles).length > 0) {
+      localStorage.setItem("selectedArticlesABC", JSON.stringify(selectedArticles));
+    }
+    if (Object.keys(selectedBrands).length > 0) {
+      localStorage.setItem("selectedBrandsABC", JSON.stringify(selectedBrands));
+    }
+    if (Object.keys(selectedGroups).length > 0) {
+      localStorage.setItem("selectedGroupsABC", JSON.stringify(selectedGroups));
+    }
+    if (Object.keys(selectedMonths).length > 0) {
+      localStorage.setItem("selectedMonthsABC", JSON.stringify(selectedMonths));
+    }
+    if (Object.keys(selectedWeeks).length > 0) {
+      localStorage.setItem("selectedWeeksABC", JSON.stringify(selectedWeeks));
+    }
+  }, [
+    selectedYears,
+    selectedMonths,
+    selectedArticles,
+    selectedBrands,
+    selectedGroups,
+    selectedWeeks,
+  ]);
+
+
   const toggleCheckboxBrands = (brand) => {
     setSelectedBrands((prevState) => ({
       ...prevState,

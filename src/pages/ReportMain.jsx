@@ -143,9 +143,8 @@ const ReportMain = () => {
                 onClick={() => handleOpenClose()}
               >
                 <span
-                  className={`${styles.line} ${
-                    openBlock ? styles.open : styles.closed
-                  }`}
+                  className={`${styles.line} ${openBlock ? styles.open : styles.closed
+                    }`}
                 ></span>
               </div>
             </div>
@@ -237,7 +236,9 @@ const ReportMain = () => {
                       </ul>
                     </div>
                   </div>
-                  <div style={{ height: '300px', background: 'grey' }}></div>
+                  <div style={{ height: '300px', background: 'grey' }}>
+                    <iframe width="430" height="300" src="https://play.boomstream.com/P2UCApCi" frameborder="0" scrolling="no" allowfullscreen="" ></iframe>
+                  </div>
                 </div>
               </div>
             )}

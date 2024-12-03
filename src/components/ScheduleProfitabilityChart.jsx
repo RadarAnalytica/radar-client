@@ -6,11 +6,12 @@ import roi from '../assets/roi.svg';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels, min, max }) => {
+    console.log(max, 'max', min)
     const data = {
         labels: labels,
         datasets: [
             {
-                label: 'ROI, %',
+                label: 'ROI',
                 data: dataProfitability,
                 borderColor: '#5329FF',
                 borderWidth: 2,
@@ -81,46 +82,59 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 borderRadius: 8,
                 padding: 16,
                 titleColor: '#8C8C8C',
-                bodyColor: '#1A1A1A',
-                position: 'average',
+                bodyColor: "#1A1A1A",
                 callbacks: {
                     title: function (tooltipItems) {
                         const index = tooltipItems[0].dataIndex;
                         return labels[index];
                     },
                     label: function (tooltipItem) {
-                        const datasetLabel = tooltipItem.dataset.label || '';
-                        const value = tooltipItem.raw;
+                        const datasetLabel = tooltipItem.dataset.label;
+                        const value = tooltipItem.raw.toLocaleString();
 
-                        if (datasetLabel.includes('(Lower)')) {
-                            return [`Маржинальность по прибыли,`, `(Lower): ${value}%`];
-                        } else if (datasetLabel.includes('(Upper)')) {
-                            return [`Маржинальность по прибыли,`, `(Upper): ${value}%`];
-                        } else {
-                            return `${datasetLabel}: ${value}%`;
+
+                        if (datasetLabel === 'ROI') {
+                            return `ROI: ${value}%`;
+                        }
+
+
+                        if (datasetLabel.includes('Маржинальность по прибыли,(Lower)')) {
+
+                            const lowerValue = tooltipItem.chart.data.datasets.find(ds => ds.label === 'Маржинальность по прибыли,(Lower)').data[tooltipItem.dataIndex] || '0';
+                            const upperValue = tooltipItem.chart.data.datasets.find(ds => ds.label === 'Маржинальность по прибыли,(Upper)').data[tooltipItem.dataIndex] || '0';
+                            return `Маржинальность: ${lowerValue}% .. - ${upperValue}%`;
+                        }
+                        if (datasetLabel.includes('Маржинальность по прибыли,(Upper)')) {
+
+                            return ``;
+                        }
+
+
+                        return `${datasetLabel}: ${value}%`;
+                    },
+                    labelColor: function (tooltipItem) {
+                        const datasetLabel = tooltipItem.dataset.label;
+                        if (datasetLabel === 'ROI') {
+                            return {
+                                backgroundColor: '#5329FF', // Purple color for ROI
+                                borderColor: 'transparent',
+                                borderWidth: 0,
+                                borderRadius: 3
+                            };
+                        } else if (datasetLabel.includes('Маржинальность')) {
+                            return {
+                                backgroundColor: '#F0AD00', // Yellow color for Маржинальность
+                                borderColor: 'transparent',
+                                borderWidth: 0,
+                                borderRadius: 3
+                            };
                         }
                     },
-
-                },
-
-                external: function (context) {
-                    const tooltipEl = document.getElementById('custom-tooltip');
-                    if (!tooltipEl) {
-                        return;
-                    }
-
-                    const tooltipModel = context.tooltip;
-                    if (tooltipModel.opacity === 0) {
-                        tooltipEl.style.opacity = 0;
-                        return;
-                    }
-
-                    const { offsetX, offsetY } = context.chart.canvas.getBoundingClientRect();
-
-                    tooltipEl.style.left = `${tooltipModel.x + offsetX + 10}px`;
-                    tooltipEl.style.top = `${tooltipModel.y + offsetY - 30}px`;
                 }
-            },
+            }
+
+
+
         },
         scales: {
             x: {
@@ -157,10 +171,10 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
             },
             'right-y': {
                 position: 'right',
-                // min: min,
-                // max: max,
                 min: -140,
                 max: 80,
+                // min: min,
+                // max: max,
                 stacked: true,
                 grid: {
                     display: true,
