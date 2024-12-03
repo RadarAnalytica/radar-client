@@ -1,4 +1,10 @@
-import { createContext, useState, useEffect, useMemo, useCallback  } from 'react';
+import {
+  createContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react';
 import { URL } from './config';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
@@ -8,43 +14,36 @@ const AuthContext = createContext();
 
 export default AuthContext;
 
-export const AuthProvider = ({ children }) => { 
+export const AuthProvider = ({ children }) => {
   const decode = (token) => {
-  try {
-    if (!!token) {
-      return jwtDecode(token);
+    try {
+      if (!!token) {
+        return jwtDecode(token);
+      }
+      return;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      // deleteCookie('radar');
+      return null;
     }
-    return
-    
-  } catch (error) {
-    console.error('Error decoding token:', error);
-    // deleteCookie('radar');
-    return null;
-  }
-};
+  };
 
   const [value, deleteCookie] = useCookie('radar');
   const [authToken, setAuthToken] = useState();
-   
+
   let prevToken = authToken;
-  console.log('authToken', authToken);
+
   const [user, setUser] = useState(decode(value));
-  console.log('user', user);
- 
 
+  if (value && value !== prevToken) {
+    setAuthToken(value);
+    setUser(decode(value));
+  } else {
+    console.log('No token found');
+  }
 
-
-console.log('Raw token value:', value);
-if (value && value !== prevToken) {
-  console.log('Decoded token:', decode(value));
-  setAuthToken(value);
-  setUser(decode(value));
-} else {
-  console.log('No token found');
-}
-
-// To delete the cookie:
-// deleteCookie();
+  // To delete the cookie:
+  // deleteCookie();
   // const decodedValue = useCookie('radar');
 
   // console.log('decodedValue', decodedValue);
@@ -59,7 +58,7 @@ if (value && value !== prevToken) {
       setError('Введите корректное значение для всех полей');
       return;
     }
-    
+
     try {
       const response = await fetch(URL + '/api/user/signin', {
         method: 'POST',
@@ -68,9 +67,9 @@ if (value && value !== prevToken) {
         },
         body: JSON.stringify({ email: email, password: password }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.status === 303) {
         window.location = data.redirect;
         return;
@@ -80,13 +79,13 @@ if (value && value !== prevToken) {
         setShow(true);
         return;
       }
-  
-      if (data?.token === "undefined") {
+
+      if (data?.token === 'undefined') {
         setError('Неверный логин или пароль');
         setShow(true);
         return;
       }
-  
+
       setAuthToken(value);
       setUser(decode(value));
     } catch (error) {
@@ -94,20 +93,20 @@ if (value && value !== prevToken) {
       setShow(true);
     }
   };
-// const target = localStorage.getItem('authToken');
-//   useEffect(() => {    if (target && target !== "undefined") {
-//       setAuthToken(target);
-//       try {
-//         const decodedUser = jwtDecode(target);
-//         setUser(decodedUser);
-//       } catch (error) {
-//         console.error("Error decoding token:", error);
-//         // Handle the error appropriately, e.g., clear the invalid token
-//         localStorage.removeItem('authToken');
-//         localStorage.removeItem('activeShop');
-//       }
-//     }
-//   }, [target]);
+  // const target = localStorage.getItem('authToken');
+  //   useEffect(() => {    if (target && target !== "undefined") {
+  //       setAuthToken(target);
+  //       try {
+  //         const decodedUser = jwtDecode(target);
+  //         setUser(decodedUser);
+  //       } catch (error) {
+  //         console.error("Error decoding token:", error);
+  //         // Handle the error appropriately, e.g., clear the invalid token
+  //         localStorage.removeItem('authToken');
+  //         localStorage.removeItem('activeShop');
+  //       }
+  //     }
+  //   }, [target]);
 
   const register = async (object) => {
     const res = await fetch(`${URL}/api/user/signup`, {

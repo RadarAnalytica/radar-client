@@ -5,19 +5,21 @@ import styles from './ReportAbcAnalysis.module.css';
 import upArrow from '../assets/up.svg';
 import downArrow from '../assets/down.svg';
 import BottomNavigation from '../components/BottomNavigation';
-import AuthContext from "../service/AuthContext";
-import { ServiceFunctions } from "../service/serviceFunctions";
+import AuthContext from '../service/AuthContext';
+import { ServiceFunctions } from '../service/serviceFunctions';
 import SelectField from '../components/SelectField';
+import abcFake from '../pages/images/abc_fake.png';
+import DemonstrationSection from '../components/DemonstrationSection';
 
 const ReportAbcAnalysis = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isRevenueLoading, setIsRevenueLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRevenueLoading, setIsRevenueLoading] = useState(false);
 
   const [error, setError] = useState(null);
-  const { user, authToken, logout } = useContext(AuthContext);
+  const { authToken, user } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState('revenue');
   const [isOpenFilters, setIsOpenFilters] = useState(false);
-  const [dataRevenue, setDataRevenue] = useState([])
+  const [dataRevenue, setDataRevenue] = useState([]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -28,12 +30,10 @@ const ReportAbcAnalysis = () => {
     C: '#FB450033',
   };
 
-
-
   const [expandedRows, setExpandedRows] = useState({});
 
   const toggleRow = (id) => {
-    setExpandedRows(prevState => ({
+    setExpandedRows((prevState) => ({
       ...prevState,
       [id]: !prevState[id],
     }));
@@ -47,7 +47,6 @@ const ReportAbcAnalysis = () => {
   const [allSelectedYears, setAllSelectedYears] = useState(true);
   const [allSelectedBrands, setAllSelectedBrands] = useState(true);
 
-
   const [selectedBrands, setSelectedBrands] = useState({});
   const [selectedYears, setSelectedYears] = useState({});
   const [selectedMonths, setSelectedMonths] = useState({});
@@ -59,23 +58,45 @@ const ReportAbcAnalysis = () => {
   const [filtersInitialized, setFiltersInitialized] = useState();
 
   const monthNames = [
-    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'Ноябрь',
+    'Декабрь',
   ];
-
 
   const transformFilters = (data) => {
     return {
-      setSelectedBrands: Object.fromEntries(data.brand_filter.map((brand) => [brand, true])),
-      setSelectedArticles: Object.fromEntries(data.article_filter.map((id) => [id, true])),
-      setSelectedGroups: Object.fromEntries(data.group_filter.map((group) => [group, true])),
-      setSelectedYears: Object.fromEntries(data.year_filter.map((year) => [year, true])),
-      setSelectedMonths: Object.fromEntries(data.month_filter.map((month) => [month, true])),
-      setSelectedWeeks: Object.fromEntries(data.week_filter.map((weekday) => [weekday, true])),
-      setSelectedProducts: Object.fromEntries(data.product_filter.map((product) => [product, true]))
+      setSelectedBrands: Object.fromEntries(
+        data.brand_filter.map((brand) => [brand, true])
+      ),
+      setSelectedArticles: Object.fromEntries(
+        data.article_filter.map((id) => [id, true])
+      ),
+      setSelectedGroups: Object.fromEntries(
+        data.group_filter.map((group) => [group, true])
+      ),
+      setSelectedYears: Object.fromEntries(
+        data.year_filter.map((year) => [year, true])
+      ),
+      setSelectedMonths: Object.fromEntries(
+        data.month_filter.map((month) => [month, true])
+      ),
+      setSelectedWeeks: Object.fromEntries(
+        data.week_filter.map((weekday) => [weekday, true])
+      ),
+      setSelectedProducts: Object.fromEntries(
+        data.product_filter.map((product) => [product, true])
+      ),
     };
   };
-
 
   useEffect(() => {
     const initializeFiltersAndData = async () => {
@@ -126,19 +147,33 @@ const ReportAbcAnalysis = () => {
 
     try {
       const filter = {
-        "article_filter_list": Object.keys(selectedArticles).filter(key => selectedArticles[key]),
-        "brand_filter_list": Object.keys(selectedBrands).filter(key => selectedBrands[key]),
-        "group_filter_list": Object.keys(selectedGroups).filter(key => selectedGroups[key]),
-        "month_filter_list": Object.keys(selectedMonths).filter(key => selectedMonths[key]),
-        "year_filter_list": Object.keys(selectedYears).filter(key => selectedYears[key]),
-        "week_filter_list": Object.keys(selectedWeeks).filter(key => selectedWeeks[key]),
-        "product_filter_list": Object.keys(selectedProducts).filter(key => selectedProducts[key]),
+        article_filter_list: Object.keys(selectedArticles).filter(
+          (key) => selectedArticles[key]
+        ),
+        brand_filter_list: Object.keys(selectedBrands).filter(
+          (key) => selectedBrands[key]
+        ),
+        group_filter_list: Object.keys(selectedGroups).filter(
+          (key) => selectedGroups[key]
+        ),
+        month_filter_list: Object.keys(selectedMonths).filter(
+          (key) => selectedMonths[key]
+        ),
+        year_filter_list: Object.keys(selectedYears).filter(
+          (key) => selectedYears[key]
+        ),
+        week_filter_list: Object.keys(selectedWeeks).filter(
+          (key) => selectedWeeks[key]
+        ),
+        product_filter_list: Object.keys(selectedProducts).filter(
+          (key) => selectedProducts[key]
+        ),
       };
 
       const data = await ServiceFunctions.postAbcReportsData(authToken, filter);
       setDataRevenue(data);
     } catch (err) {
-      setError("Failed to load data");
+      setError('Failed to load data');
     } finally {
       setIsRevenueLoading(false);
     }
@@ -304,685 +339,822 @@ const ReportAbcAnalysis = () => {
             </>
           }
         />
-        <div className='container dash-container'>
-          <div
-            className={styles.filteOpenClose}
-            onClick={() => setIsOpenFilters(!isOpenFilters)}
-          >
-            {isOpenFilters ? 'Развернуть фильтры' : 'Свернуть фильтры'}
-          </div>
-        </div>
-        {!isOpenFilters && (
+        {user.is_report_downloaded ? (
           <>
-            <div
-              className={`${styles.ScheduleHeader} dash-container container`}
-            >
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Бренд</span>
-                  <button className={styles.clearButton} onClick={handleBrand}>
-                    {allSelectedBrands ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: '40px' }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedBrands)
-                      .filter((brand) => brand !== 'пусто')
-                      .map((brand, index) => (
-                        <div className={styles.brandItem} key={index}>
-                          <label className={styles.checkboxContainer}>
-                            <input
-                              type="checkbox"
-                              checked={selectedBrands[brand]}
-                              onChange={() => toggleCheckboxBrands(brand)}
-                              className={styles.checkboxInput}
-                            />
-                            <span className={styles.customCheckbox}></span>
-                          </label>
-                          <span className={styles.brandName} title={brand}>{brand}</span>
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </div>
-
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Год</span>
-                  <button className={styles.clearButton} onClick={handleYear}>
-                    {allSelectedYears ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: '40px' }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedYears).map((year, index) => (
-                      <div className={styles.brandItem} key={index}>
-                        <label className={styles.checkboxContainer}>
-                          <input
-                            type='checkbox'
-                            checked={selectedYears[year]}
-                            onChange={() => toggleCheckboxYear(year)}
-                            className={styles.checkboxInput}
-                          />
-                          <span className={styles.customCheckbox}></span>
-                        </label>
-                        <span className={styles.brandName} title={year}>{year}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Месяц</span>
-                  <button className={styles.clearButton} onClick={handleMonth}>
-                    {allSelectedMonths ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: '40px' }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedMonths).map((month, index) => (
-                      <div className={styles.brandItem} key={index}>
-                        <label className={styles.checkboxContainer}>
-                          <input
-                            type='checkbox'
-                            checked={selectedMonths[month]}
-                            onChange={() => toggleCheckboxMonth(month)}
-                            className={styles.checkboxInput}
-                          />
-                          <span className={styles.customCheckbox}></span>
-                        </label>
-                        <span className={styles.brandName} title={monthNames[parseInt(month, 10) - 1]}>
-                          {monthNames[parseInt(month, 10) - 1]}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Неделя</span>
-                  <button className={styles.clearButton} onClick={handleWeek}>
-                    {allSelectedWeeks ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: '40px' }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedWeeks).map((week, index) => (
-                      <div className={styles.brandItem} key={index}>
-                        <label className={styles.checkboxContainer}>
-                          <input
-                            type='checkbox'
-                            checked={selectedWeeks[week]}
-                            onChange={() => toggleCheckboxWeek(week)}
-                            className={styles.checkboxInput}
-                          />
-                          <span className={styles.customCheckbox}></span>
-                        </label>
-                        <span className={styles.brandName} title={week}>{week}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Группа</span>
-                  <button className={styles.clearButton} onClick={handleGroup}>
-                    {allSelectedGroups ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: '40px' }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedGroups)
-                      .filter((group) => group !== 'пусто')
-                      .map((group, index) => (
-                        <div className={styles.brandItem} key={index}>
-                          <label className={styles.checkboxContainer}>
-                            <input
-                              type="checkbox"
-                              checked={selectedGroups[group]}
-                              onChange={() => toggleCheckboxGroup(group)}
-                              className={styles.checkboxInput}
-                            />
-                            <span className={styles.customCheckbox}></span>
-                          </label>
-                          <span className={styles.brandName} title={group}>{group}</span>
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </div>
-
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Артикул</span>
-                  <button
-                    className={styles.clearButton}
-                    onClick={handleArticle}
-                  >
-                    {allSelectedArticles ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: '40px' }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedArticles)
-                      .filter((article) => article !== '0')
-                      .map((article, index) => (
-                        <div className={styles.brandItem} key={index}>
-                          <label className={styles.checkboxContainer}>
-                            <input
-                              type="checkbox"
-                              checked={selectedArticles[article]}
-                              onChange={() => toggleCheckboxArticle(article)}
-                              className={styles.checkboxInput}
-                            />
-                            <span className={styles.customCheckbox}></span>
-                          </label>
-                          <span className={styles.brandName} title={article}>{article}</span>
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </div>
-
-            </div>
-
-            <div
-              className={`${styles.ScheduleBody} dash-container container`}
-              style={{ marginTop: '20px' }}
-            >
-
-              <div className={styles.containerProduct}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Товар</span>
-                  <button
-                    className={styles.clearButton}
-                    onClick={handleCheckProduct}
-                  >
-                    {allSelectedProducts ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: '40px' }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedProducts)
-                      .filter((product) => product !== 'пусто')
-                      .map((product, index) => (
-                        <div className={styles.brandItem} key={index}>
-                          <label className={styles.checkboxContainer}>
-                            <input
-                              type="checkbox"
-                              checked={selectedProducts[product]}
-                              onChange={() => toggleCheckboxProduct(product)}
-                              className={styles.checkboxInput}
-                            />
-                            <span className={styles.customCheckbox}></span>
-                          </label>
-                          <span className={styles.brandName} title={product}>{product}</span>
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </div>
-
-            </div>
+            {' '}
             <div className='container dash-container'>
-              <div>
-                <button className={styles.applyButton} onClick={updateData}>
-                  Применить фильтры
+              <div
+                className={styles.filteOpenClose}
+                onClick={() => setIsOpenFilters(!isOpenFilters)}
+              >
+                {isOpenFilters ? 'Развернуть фильтры' : 'Свернуть фильтры'}
+              </div>
+            </div>
+            {!isOpenFilters && (
+              <>
+                <div
+                  className={`${styles.ScheduleHeader} dash-container container`}
+                >
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Бренд</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleBrand}
+                      >
+                        {allSelectedBrands ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedBrands)
+                          .filter((brand) => brand !== 'пусто')
+                          .map((brand, index) => (
+                            <div className={styles.brandItem} key={index}>
+                              <label className={styles.checkboxContainer}>
+                                <input
+                                  type='checkbox'
+                                  checked={selectedBrands[brand]}
+                                  onChange={() => toggleCheckboxBrands(brand)}
+                                  className={styles.checkboxInput}
+                                />
+                                <span className={styles.customCheckbox}></span>
+                              </label>
+                              <span className={styles.brandName} title={brand}>
+                                {brand}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Год</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleYear}
+                      >
+                        {allSelectedYears ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedYears).map((year, index) => (
+                          <div className={styles.brandItem} key={index}>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type='checkbox'
+                                checked={selectedYears[year]}
+                                onChange={() => toggleCheckboxYear(year)}
+                                className={styles.checkboxInput}
+                              />
+                              <span className={styles.customCheckbox}></span>
+                            </label>
+                            <span className={styles.brandName} title={year}>
+                              {year}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Месяц</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleMonth}
+                      >
+                        {allSelectedMonths ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedMonths).map((month, index) => (
+                          <div className={styles.brandItem} key={index}>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type='checkbox'
+                                checked={selectedMonths[month]}
+                                onChange={() => toggleCheckboxMonth(month)}
+                                className={styles.checkboxInput}
+                              />
+                              <span className={styles.customCheckbox}></span>
+                            </label>
+                            <span
+                              className={styles.brandName}
+                              title={monthNames[parseInt(month, 10) - 1]}
+                            >
+                              {monthNames[parseInt(month, 10) - 1]}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Неделя</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleWeek}
+                      >
+                        {allSelectedWeeks ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedWeeks).map((week, index) => (
+                          <div className={styles.brandItem} key={index}>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type='checkbox'
+                                checked={selectedWeeks[week]}
+                                onChange={() => toggleCheckboxWeek(week)}
+                                className={styles.checkboxInput}
+                              />
+                              <span className={styles.customCheckbox}></span>
+                            </label>
+                            <span className={styles.brandName} title={week}>
+                              {week}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Группа</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleGroup}
+                      >
+                        {allSelectedGroups ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedGroups)
+                          .filter((group) => group !== 'пусто')
+                          .map((group, index) => (
+                            <div className={styles.brandItem} key={index}>
+                              <label className={styles.checkboxContainer}>
+                                <input
+                                  type='checkbox'
+                                  checked={selectedGroups[group]}
+                                  onChange={() => toggleCheckboxGroup(group)}
+                                  className={styles.checkboxInput}
+                                />
+                                <span className={styles.customCheckbox}></span>
+                              </label>
+                              <span className={styles.brandName} title={group}>
+                                {group}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Артикул</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleArticle}
+                      >
+                        {allSelectedArticles ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedArticles)
+                          .filter((article) => article !== '0')
+                          .map((article, index) => (
+                            <div className={styles.brandItem} key={index}>
+                              <label className={styles.checkboxContainer}>
+                                <input
+                                  type='checkbox'
+                                  checked={selectedArticles[article]}
+                                  onChange={() =>
+                                    toggleCheckboxArticle(article)
+                                  }
+                                  className={styles.checkboxInput}
+                                />
+                                <span className={styles.customCheckbox}></span>
+                              </label>
+                              <span
+                                className={styles.brandName}
+                                title={article}
+                              >
+                                {article}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div
+                  className={`${styles.ScheduleBody} dash-container container`}
+                  style={{ marginTop: '20px' }}
+                >
+                  <div className={styles.containerProduct}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Товар</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleCheckProduct}
+                      >
+                        {allSelectedProducts ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedProducts)
+                          .filter((product) => product !== 'пусто')
+                          .map((product, index) => (
+                            <div className={styles.brandItem} key={index}>
+                              <label className={styles.checkboxContainer}>
+                                <input
+                                  type='checkbox'
+                                  checked={selectedProducts[product]}
+                                  onChange={() =>
+                                    toggleCheckboxProduct(product)
+                                  }
+                                  className={styles.checkboxInput}
+                                />
+                                <span className={styles.customCheckbox}></span>
+                              </label>
+                              <span
+                                className={styles.brandName}
+                                title={product}
+                              >
+                                {product}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className='container dash-container'>
+                  <div>
+                    <button className={styles.applyButton} onClick={updateData}>
+                      Применить фильтры
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+            <div
+              className={`${styles.ScheduleFooter} dash-container container`}
+            >
+              <div className={styles.tabs}>
+                <button
+                  className={`${styles.tab} ${
+                    activeTab === 'revenue' ? styles.active : ''
+                  }`}
+                  onClick={() => handleTabClick('revenue')}
+                >
+                  По выручке
+                </button>
+                <button
+                  className={`${styles.tab} ${
+                    activeTab === 'profit' ? styles.active : ''
+                  }`}
+                  onClick={() => handleTabClick('profit')}
+                >
+                  По прибыли
                 </button>
               </div>
+              {activeTab === 'revenue' && (
+                <div
+                  className={`${styles.containerRevenue} ${
+                    isOpenFilters ? styles.expanded : ''
+                  }`}
+                >
+                  <div className={styles.rowHeader}>
+                    <div
+                      className={styles.article}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Артикул
+                    </div>
+                    <div
+                      className={styles.product}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Товар
+                    </div>
+                    <div className={styles.profit} style={{ color: '#8C8C8C' }}>
+                      Выручка
+                    </div>
+                    <div
+                      className={styles.profitAmount}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Доля выручки
+                    </div>
+                    <div
+                      className={styles.category}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Категория по выручке
+                    </div>
+                    <div
+                      className={styles.generalCategory}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Общая категория
+                    </div>
+                  </div>
+                  {isRevenueLoading ? (
+                    <div
+                      className='d-flex flex-column align-items-center justify-content-center'
+                      style={{ height: '100px', marginTop: '40px' }}
+                    >
+                      <span className='loader'></span>
+                    </div>
+                  ) : (
+                    <div
+                      className={`${styles.rowsWrapper} ${
+                        isOpenFilters ? styles.expanded : ''
+                      }`}
+                    >
+                      {dataRevenue.map((item, index) => (
+                        <div key={index} className={styles.row}>
+                          {/* Parent Row */}
+                          <div className={styles.article}>
+                            <span
+                              onClick={() => toggleRow(item.wb_id)}
+                              style={{
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '8px 0',
+                                fontWeight: '700',
+                              }}
+                            >
+                              {item.wb_id}
+                              <img
+                                src={
+                                  expandedRows[item.wb_id] ? upArrow : downArrow
+                                }
+                                alt={
+                                  expandedRows[item.wb_id]
+                                    ? 'Collapse'
+                                    : 'Expand'
+                                }
+                                style={{
+                                  marginLeft: '8px',
+                                  width: '16px',
+                                  height: '16px',
+                                }}
+                              />
+                            </span>
+                            {/* Add Barcode under wb_id */}
+                            {expandedRows[item.wb_id] &&
+                              item.items.map((product, i) => (
+                                <div key={i} style={{ padding: '8px 0 ' }}>
+                                  {product.barcode}
+                                </div>
+                              ))}
+                          </div>
+
+                          <div className={styles.product}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  className={styles.productName}
+                                  title={item.title}
+                                >
+                                  {item.title}
+                                </div>{' '}
+                                {/* Parent Title */}
+                                {/* Expanded Items */}
+                                {item.items.map((product, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.productName}
+                                    title={product.title}
+                                  >
+                                    {product.title}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div
+                                className={styles.productName}
+                                title={item.title}
+                              >
+                                {item.title}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className={styles.profit}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.proceeds.toLocaleString()} ₽</div>{' '}
+                                {/* Parent Proceed */}
+                                {/* Expanded Item Proceeds */}
+                                {item.items.map((product, i) => (
+                                  <div key={i}>
+                                    {product.proceeds.toLocaleString()} ₽
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.proceeds.toLocaleString()} ₽</div> // Only show parent row if not expanded
+                            )}
+                          </div>
+
+                          <div className={styles.profitAmount}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.proceeds_percent}%</div>{' '}
+                                {/* Parent Profit Percent */}
+                                {/* Expanded Item Profit Percent */}
+                                {item.items.map((product, i) => (
+                                  <div key={i}>{product.proceeds_percent}%</div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.proceeds_percent}%</div> // Only show parent row if not expanded
+                            )}
+                          </div>
+
+                          <div className={styles.category}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  style={{
+                                    backgroundColor:
+                                      colorMap[item.proceed_abc] ||
+                                      'transparent',
+                                    padding: '4px 16px',
+                                    borderRadius: '8px',
+                                    marginRight: '75%',
+                                  }}
+                                >
+                                  {item.proceed_abc}
+                                </div>{' '}
+                                {/* Parent Category */}
+                                {/* Expanded Item Categories */}
+                                {item.items.map((product, i) => (
+                                  <div key={i} style={{ padding: '6px 0' }}>
+                                    <div
+                                      style={{
+                                        backgroundColor:
+                                          colorMap[product.proceed_abc] ||
+                                          'transparent',
+                                        padding: '4px 16px',
+                                        borderRadius: '8px',
+                                        marginRight: '75%',
+                                      }}
+                                    >
+                                      {product.proceed_abc}
+                                    </div>
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div
+                                style={{
+                                  backgroundColor:
+                                    colorMap[item.proceed_abc] || 'transparent',
+                                  padding: '4px 16px',
+                                  borderRadius: '8px',
+                                  marginRight: '75%',
+                                }}
+                              >
+                                {item.proceed_abc}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className={styles.generalCategory}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.common_abc}</div>{' '}
+                                {/* Parent Common Category */}
+                                {/* Expanded Item Common Categories */}
+                                {item.items.map((product, i) => (
+                                  <div key={i}>{product.common_abc}</div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.common_abc}</div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+              {activeTab === 'profit' && (
+                <div
+                  className={`${styles.containerProfit} ${
+                    isOpenFilters ? styles.expanded : ''
+                  }`}
+                >
+                  <div className={styles.rowHeader}>
+                    <div
+                      className={styles.article}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Артикул
+                    </div>
+                    <div
+                      className={styles.product}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Товар
+                    </div>
+                    <div className={styles.profit} style={{ color: '#8C8C8C' }}>
+                      Прибыль
+                    </div>
+                    <div
+                      className={styles.profitAmount}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Доля прибыли
+                    </div>
+                    <div
+                      className={styles.category}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Категория по выручке
+                    </div>
+                    <div
+                      className={styles.generalCategory}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Общая категория
+                    </div>
+                  </div>
+                  {isRevenueLoading ? (
+                    <div
+                      className='d-flex flex-column align-items-center justify-content-center'
+                      style={{ height: '100px', marginTop: '40px' }}
+                    >
+                      <span className='loader'></span>
+                    </div>
+                  ) : (
+                    <div
+                      className={`${styles.rowsWrapper} ${
+                        isOpenFilters ? styles.expanded : ''
+                      }`}
+                    >
+                      {dataRevenue.map((item, index) => (
+                        <div key={index} className={styles.row}>
+                          {/* Parent Row */}
+                          <div className={styles.article}>
+                            <span
+                              onClick={() => toggleRow(item.wb_id)}
+                              style={{
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '8px 0',
+                                fontWeight: '700',
+                              }}
+                            >
+                              {item.wb_id}
+                              <img
+                                src={
+                                  expandedRows[item.wb_id] ? upArrow : downArrow
+                                }
+                                alt={
+                                  expandedRows[item.wb_id]
+                                    ? 'Collapse'
+                                    : 'Expand'
+                                }
+                                style={{
+                                  marginLeft: '8px',
+                                  width: '16px',
+                                  height: '16px',
+                                }}
+                              />
+                            </span>
+                            {/* Add Barcode under wb_id */}
+                            {expandedRows[item.wb_id] &&
+                              item.items.map((product, i) => (
+                                <div key={i} style={{ padding: '8px 0 ' }}>
+                                  {product.barcode}
+                                </div>
+                              ))}
+                          </div>
+
+                          <div className={styles.product}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  className={styles.productName}
+                                  title={item.title}
+                                >
+                                  {item.title}
+                                </div>{' '}
+                                {/* Parent Title */}
+                                {/* Expanded Items */}
+                                {item.items.map((product, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.productName}
+                                    title={product.title}
+                                  >
+                                    {product.title}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div
+                                className={styles.productName}
+                                title={item.title}
+                              >
+                                {item.title}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className={styles.profit}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.profit.toLocaleString()} ₽</div>{' '}
+                                {/* Parent Proceed */}
+                                {/* Expanded Item Proceeds */}
+                                {item.items.map((product, i) => (
+                                  <div key={i}>
+                                    {product.profit.toLocaleString()} ₽
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.profit.toLocaleString()} ₽</div> // Only show parent row if not expanded
+                            )}
+                          </div>
+
+                          <div className={styles.profitAmount}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.profit_percent}%</div>{' '}
+                                {/* Parent Profit Percent */}
+                                {/* Expanded Item Profit Percent */}
+                                {item.items.map((product, i) => (
+                                  <div key={i}>{product.profit_percent}%</div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.profit_percent}%</div> // Only show parent row if not expanded
+                            )}
+                          </div>
+
+                          <div className={styles.category}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  style={{
+                                    backgroundColor:
+                                      colorMap[item.profit_abc] ||
+                                      'transparent',
+                                    padding: '4px 16px',
+                                    borderRadius: '8px',
+                                    marginRight: '75%',
+                                  }}
+                                >
+                                  {item.profit_abc}
+                                </div>{' '}
+                                {/* Parent Category */}
+                                {/* Expanded Item Categories */}
+                                {item.items.map((product, i) => (
+                                  <div key={i} style={{ padding: '6px 0' }}>
+                                    <div
+                                      style={{
+                                        backgroundColor:
+                                          colorMap[product.proceed_abc] ||
+                                          'transparent',
+                                        padding: '4px 16px',
+                                        borderRadius: '8px',
+                                        marginRight: '75%',
+                                      }}
+                                    >
+                                      {product.profit_abc}
+                                    </div>
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div
+                                style={{
+                                  backgroundColor:
+                                    colorMap[item.proceed_abc] || 'transparent',
+                                  padding: '4px 16px',
+                                  borderRadius: '8px',
+                                  marginRight: '75%',
+                                }}
+                              >
+                                {item.profit_abc}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className={styles.generalCategory}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div>{item.common_abc}</div>{' '}
+                                {/* Parent Common Category */}
+                                {/* Expanded Item Common Categories */}
+                                {item.items.map((product, i) => (
+                                  <div key={i}>{product.common_abc}</div>
+                                ))}
+                              </>
+                            ) : (
+                              <div>{item.common_abc}</div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </>
+        ) : (
+          <>
+            <div className='container dash-container'>
+              <DemonstrationSection />
+            </div>
+            <span className={styles.responsiveImageWrapper}>
+              <img
+                src={abcFake}
+                alt='fakePL'
+                className={styles.responsiveImage}
+              />
+            </span>
+          </>
         )}
-
-        <div className={`${styles.ScheduleFooter} dash-container container`}>
-          <div className={styles.tabs}>
-            <button
-              className={`${styles.tab} ${activeTab === 'revenue' ? styles.active : ''
-                }`}
-              onClick={() => handleTabClick('revenue')}
-            >
-              По выручке
-            </button>
-            <button
-              className={`${styles.tab} ${activeTab === 'profit' ? styles.active : ''
-                }`}
-              onClick={() => handleTabClick('profit')}
-            >
-              По прибыли
-            </button>
-          </div>
-          {activeTab === 'revenue' && (
-            <div className={`${styles.containerRevenue} ${isOpenFilters ? styles.expanded : ''}`}>
-              <div className={styles.rowHeader}>
-                <div className={styles.article} style={{ color: '#8C8C8C' }}>
-                  Артикул
-                </div>
-                <div className={styles.product} style={{ color: '#8C8C8C' }}>
-                  Товар
-                </div>
-                <div className={styles.profit} style={{ color: '#8C8C8C' }}>
-                  Выручка
-                </div>
-                <div
-                  className={styles.profitAmount}
-                  style={{ color: '#8C8C8C' }}
-                >
-                  Доля выручки
-                </div>
-                <div className={styles.category} style={{ color: '#8C8C8C' }}>
-                  Категория по выручке
-                </div>
-                <div
-                  className={styles.generalCategory}
-                  style={{ color: '#8C8C8C' }}
-                >
-                  Общая категория
-                </div>
-              </div>
-              {isRevenueLoading ? (
-                <div
-                  className="d-flex flex-column align-items-center justify-content-center"
-                  style={{ height: '100px', marginTop: '40px' }}
-                >
-                  <span className="loader"></span>
-                </div>
-              ) : (
-
-                <div className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''}`} >
-                  {dataRevenue.map((item, index) => (
-                    <div key={index} className={styles.row}>
-                      {/* Parent Row */}
-                      <div className={styles.article}>
-                        <span
-                          onClick={() => toggleRow(item.wb_id)}
-                          style={{
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '8px 0',
-                            fontWeight: "700"
-                          }}
-                        >
-                          {item.wb_id}
-                          <img
-                            src={expandedRows[item.wb_id] ? upArrow : downArrow}
-                            alt={expandedRows[item.wb_id] ? 'Collapse' : 'Expand'}
-                            style={{
-                              marginLeft: '8px',
-                              width: '16px',
-                              height: '16px',
-                            }}
-                          />
-                        </span>
-                        {/* Add Barcode under wb_id */}
-                        {expandedRows[item.wb_id] &&
-                          item.items.map((product, i) => (
-                            <div key={i} style={{ padding: "8px 0 " }}>
-                              {product.barcode}
-                            </div>
-                          ))}
-                      </div>
-
-                      <div className={styles.product}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div className={styles.productName} title={item.title}>{item.title}</div> {/* Parent Title */}
-                            {/* Expanded Items */}
-                            {item.items.map((product, i) => (
-                              <div key={i} className={styles.productName} title={product.title}>
-                                {product.title}
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div className={styles.productName} title={item.title}>{item.title}</div>
-                        )}
-                      </div>
-
-                      <div className={styles.profit}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.proceeds.toLocaleString()} ₽</div> {/* Parent Proceed */}
-                            {/* Expanded Item Proceeds */}
-                            {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.proceeds.toLocaleString()} ₽
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.proceeds.toLocaleString()} ₽</div> // Only show parent row if not expanded
-                        )}
-                      </div>
-
-                      <div className={styles.profitAmount}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.proceeds_percent}%</div> {/* Parent Profit Percent */}
-                            {/* Expanded Item Profit Percent */}
-                            {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.proceeds_percent}%
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.proceeds_percent}%</div> // Only show parent row if not expanded
-                        )}
-                      </div>
-
-                      <div className={styles.category}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div
-                              style={{
-                                backgroundColor: colorMap[item.proceed_abc] || 'transparent',
-                                padding: '4px 16px',
-                                borderRadius: '8px',
-                                marginRight: "75%"
-                              }}
-                            >
-                              {item.proceed_abc}
-                            </div> {/* Parent Category */}
-                            {/* Expanded Item Categories */}
-                            {item.items.map((product, i) => (
-                              <div key={i} style={{ padding: "6px 0" }}>
-                                <div
-                                  style={{
-                                    backgroundColor: colorMap[product.proceed_abc] || 'transparent',
-                                    padding: '4px 16px',
-                                    borderRadius: '8px',
-                                    marginRight: "75%"
-                                  }}
-                                >
-                                  {product.proceed_abc}
-                                </div>
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div
-                            style={{
-                              backgroundColor: colorMap[item.proceed_abc] || 'transparent',
-                              padding: '4px 16px',
-                              borderRadius: '8px',
-                              marginRight: "75%"
-                            }}
-                          >
-                            {item.proceed_abc}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className={styles.generalCategory}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.common_abc}</div> {/* Parent Common Category */}
-                            {/* Expanded Item Common Categories */}
-                            {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.common_abc}
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.common_abc}</div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-            </div>
-          )}
-          {activeTab === 'profit' && (
-            <div className={`${styles.containerProfit} ${isOpenFilters ? styles.expanded : ''}`}>
-              <div className={styles.rowHeader}>
-                <div className={styles.article} style={{ color: '#8C8C8C' }}>
-                  Артикул
-                </div>
-                <div className={styles.product} style={{ color: '#8C8C8C' }}>
-                  Товар
-                </div>
-                <div className={styles.profit} style={{ color: '#8C8C8C' }}>
-                  Прибыль
-                </div>
-                <div
-                  className={styles.profitAmount}
-                  style={{ color: '#8C8C8C' }}
-                >
-                  Доля прибыли
-                </div>
-                <div className={styles.category} style={{ color: '#8C8C8C' }}>
-                  Категория по выручке
-                </div>
-                <div
-                  className={styles.generalCategory}
-                  style={{ color: '#8C8C8C' }}
-                >
-                  Общая категория
-                </div>
-              </div>
-              {isRevenueLoading ? (
-                <div
-                  className="d-flex flex-column align-items-center justify-content-center"
-                  style={{ height: '100px', marginTop: '40px' }}
-                >
-                  <span className="loader"></span>
-                </div>
-              ) : (
-                <div className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''}`} >{
-                  dataRevenue.map((item, index) => (
-                    <div key={index} className={styles.row}>
-                      {/* Parent Row */}
-                      <div className={styles.article}>
-                        <span
-                          onClick={() => toggleRow(item.wb_id)}
-                          style={{
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '8px 0',
-                            fontWeight: "700"
-                          }}
-                        >
-                          {item.wb_id}
-                          <img
-                            src={expandedRows[item.wb_id] ? upArrow : downArrow}
-                            alt={expandedRows[item.wb_id] ? 'Collapse' : 'Expand'}
-                            style={{
-                              marginLeft: '8px',
-                              width: '16px',
-                              height: '16px',
-                            }}
-                          />
-                        </span>
-                        {/* Add Barcode under wb_id */}
-                        {expandedRows[item.wb_id] &&
-                          item.items.map((product, i) => (
-                            <div key={i} style={{ padding: "8px 0 " }}>
-                              {product.barcode}
-                            </div>
-                          ))}
-                      </div>
-
-                      <div className={styles.product}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div className={styles.productName} title={item.title}>{item.title}</div> {/* Parent Title */}
-                            {/* Expanded Items */}
-                            {item.items.map((product, i) => (
-                              <div key={i} className={styles.productName} title={product.title}>
-                                {product.title}
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div className={styles.productName} title={item.title}>{item.title}</div>
-                        )}
-                      </div>
-
-                      <div className={styles.profit}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.profit.toLocaleString()} ₽</div> {/* Parent Proceed */}
-                            {/* Expanded Item Proceeds */}
-                            {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.profit.toLocaleString()} ₽
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.profit.toLocaleString()} ₽</div> // Only show parent row if not expanded
-                        )}
-                      </div>
-
-                      <div className={styles.profitAmount}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.profit_percent}%</div> {/* Parent Profit Percent */}
-                            {/* Expanded Item Profit Percent */}
-                            {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.profit_percent}%
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.profit_percent}%</div> // Only show parent row if not expanded
-                        )}
-                      </div>
-
-                      <div className={styles.category}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div
-                              style={{
-                                backgroundColor: colorMap[item.profit_abc] || 'transparent',
-                                padding: '4px 16px',
-                                borderRadius: '8px',
-                                marginRight: "75%"
-                              }}
-                            >
-                              {item.profit_abc}
-                            </div> {/* Parent Category */}
-                            {/* Expanded Item Categories */}
-                            {item.items.map((product, i) => (
-                              <div key={i} style={{ padding: "6px 0" }}>
-                                <div
-                                  style={{
-                                    backgroundColor: colorMap[product.proceed_abc] || 'transparent',
-                                    padding: '4px 16px',
-                                    borderRadius: '8px',
-                                    marginRight: "75%"
-                                  }}
-                                >
-                                  {product.profit_abc}
-                                </div>
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div
-                            style={{
-                              backgroundColor: colorMap[item.proceed_abc] || 'transparent',
-                              padding: '4px 16px',
-                              borderRadius: '8px',
-                              marginRight: "75%"
-                            }}
-                          >
-                            {item.profit_abc}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className={styles.generalCategory}>
-                        {expandedRows[item.wb_id] ? (
-                          <>
-                            <div>{item.common_abc}</div> {/* Parent Common Category */}
-                            {/* Expanded Item Common Categories */}
-                            {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.common_abc}
-                              </div>
-                            ))}
-                          </>
-                        ) : (
-                          <div>{item.common_abc}</div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-            </div>
-          )}
-        </div>
         <BottomNavigation />
       </div>
-    </div >
+    </div>
   );
 };
 export default ReportAbcAnalysis;

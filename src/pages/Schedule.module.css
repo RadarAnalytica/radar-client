@@ -206,3 +206,14 @@
     border-radius: 8px;
     background-color: rgba(83, 41, 255, 0.1);
   }
+
+  .responsiveImage {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .responsiveImageWrapper {
+    margin-right: 20px;
+  }
