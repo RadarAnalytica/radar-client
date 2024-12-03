@@ -178,7 +178,10 @@ const WeeklyReportDashboard = () => {
                         {dashboardData?.total_self_purchase_costs} ₽
                       </div>
                     </div>
-                    <div className={styles.salesChartRow}>
+                    <div
+                      className={styles.salesChartRow}
+                      style={{ marginBottom: '8px' }}
+                    >
                       <div className={styles.titleInRow}>
                         Расходов в % от выручки
                       </div>
@@ -450,10 +453,7 @@ const WeeklyReportDashboard = () => {
                         {dashboardData?.total_tax_base} ₽
                       </div>
                     </div>
-                    <div
-                      className={styles.salesChartRow}
-                      style={{ marginBottom: '56px' }}
-                    >
+                    <div className={styles.salesChartRow}>
                       <div className={styles.titleInRow}>Налог</div>
                       <div className={styles.mumbersInRow}>
                         {dashboardData?.total_tax} ₽

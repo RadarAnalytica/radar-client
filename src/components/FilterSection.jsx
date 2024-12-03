@@ -9,7 +9,7 @@ import { monthNames, getMonthNumbers } from '../service/utils';
 
 const FilterSection = () => {
   const dispatch = useDispatch();
-  const { user, authToken } = useContext(AuthContext);
+  const { authToken } = useContext(AuthContext);
   const { data: filterData, loading } = useSelector(
     (state) => state.filtersDataSlice
   );
@@ -52,6 +52,7 @@ const FilterSection = () => {
           weekdays: filterData.date_sale_filter?.weekdays || [],
         },
       });
+      handleApplyFilters();
     }
   }, [filterData]);
 
