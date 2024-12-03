@@ -112,3 +112,14 @@
 .editTaxRate button:hover {
   background: #e0e0e0;
 }
+
+.responsiveImage {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.responsiveImageWrapper {
+  margin-right: 20px;
+}

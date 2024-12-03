@@ -8,17 +8,19 @@ import ScheduleProfitabilityBigChart from '../components/ScheduleProfitabilityCh
 import StructureRevenue from '../components/StructureRevenue';
 import RevenueStorageChart from '../components/RevenueStorageChart';
 import BottomNavigation from '../components/BottomNavigation';
-import { ServiceFunctions } from "../service/serviceFunctions";
-import AuthContext from "../service/AuthContext";
+import { ServiceFunctions } from '../service/serviceFunctions';
+import AuthContext from '../service/AuthContext';
+import DemonstrationSection from '../components/DemonstrationSection';
+import plFake from '../pages/images/schedule-fake.png';
 
 const Schedule = () => {
-  const { user, authToken, logout } = useContext(AuthContext);
+  const { authToken, user } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isChartsLoading, setIsChartsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [maxWarehouse, setMaxWarehouse] = useState(0);
-  const [minProfitability, setMinProfitability] = useState(0)
-  const [maxProfitability, setMaxProfitability] = useState(0)
+  const [minProfitability, setMinProfitability] = useState(0);
+  const [maxProfitability, setMaxProfitability] = useState(0);
   //data for charts
   const [dataRevenueStorage, setDataRevenueStorage] = useState([0, 10000, 20000, 30000, 40000, 50000, 60000, 70000,])
 
@@ -57,8 +59,18 @@ const Schedule = () => {
   const [selectedProducts, setSelectedProducts] = useState({});
 
   const monthNames = [
-    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'Ноябрь',
+    'Декабрь',
   ];
   const filterKeys = [
     "selectedYears",
@@ -69,16 +81,26 @@ const Schedule = () => {
     "selectedWeeks"
   ];
 
-
   const transformFilters = (data) => {
-
     return {
-      selectedBrands: Object.fromEntries(data.brand_name_filter.map((brand) => [brand, true])),
-      selectedArticles: Object.fromEntries(data.wb_id_filter.map((id) => [id, true])),
-      selectedGroups: Object.fromEntries(data.groups_filter.map((group) => [group, true])),
-      selectedYears: Object.fromEntries(data.date_sale_filter.years.map((year) => [year, true])),
-      selectedMonths: Object.fromEntries(data.date_sale_filter.months.map((month) => [month, true])),
-      selectedWeeks: Object.fromEntries(data.date_sale_filter.weekdays.map((weekday) => [weekday, true]))
+      setSelectedBrands: Object.fromEntries(
+        data.brand_name_filter.map((brand) => [brand, true])
+      ),
+      setSelectedArticles: Object.fromEntries(
+        data.wb_id_filter.map((id) => [id, true])
+      ),
+      setSelectedGroups: Object.fromEntries(
+        data.groups_filter.map((group) => [group, true])
+      ),
+      setSelectedYears: Object.fromEntries(
+        data.date_sale_filter.years.map((year) => [year, true])
+      ),
+      setSelectedMonths: Object.fromEntries(
+        data.date_sale_filter.months.map((month) => [month, true])
+      ),
+      setSelectedWeeks: Object.fromEntries(
+        data.date_sale_filter.weekdays.map((weekday) => [weekday, true])
+      ),
     };
   };
 
@@ -136,12 +158,12 @@ const Schedule = () => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   const calculateSize = (min, max) => {
-    let range = Math.abs(max - min)
-    return Math.ceil(range / 5 / 500) * 500
-  }
+    let range = Math.abs(max - min);
+    return Math.ceil(range / 5 / 500) * 500;
+  };
 
   const revenueAndProfit = (data, filter) => {
     if (
@@ -169,7 +191,6 @@ const Schedule = () => {
       const dailyRevenueArray = [];
       const dailyProfitArray = [];
       const dayTitlesArray = [];
-
 
       const year = Object.keys(data.revenue_and_profit)[0];
       const months = data.revenue_and_profit[year];
@@ -218,7 +239,6 @@ const Schedule = () => {
       const weekProfitArray = [];
       const weekDatesArray = [];
 
-
       const year = Object.keys(data.revenue_and_profit)[0];
       const months = data.revenue_and_profit[year];
 
@@ -226,15 +246,15 @@ const Schedule = () => {
         const index = monthNames.indexOf(month);
         const monthIndex = index !== -1 ? index + 1 : null;
         const weeks = months[month]?.weeks;
-        if (weeks &&
-          (
-            filter.date_sale_filter.months.includes(monthIndex.toString()) ||
-            filter.date_sale_filter.months.length === 0
-          )
+        if (
+          weeks &&
+          (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
+            filter.date_sale_filter.months.length === 0)
         ) {
           for (const week in weeks) {
             if (
-              (filter.date_sale_filter.weekdays.includes(week) && filter.date_sale_filter.weekdays.length > 0) ||
+              (filter.date_sale_filter.weekdays.includes(week) &&
+                filter.date_sale_filter.weekdays.length > 0) ||
               filter.date_sale_filter.weekdays.length === 0
             ) {
               const weekData = weeks[week];
@@ -248,32 +268,32 @@ const Schedule = () => {
       const min = Math.floor(Math.min(Math.min(...weekRevenueArray), Math.min(...weekProfitArray)) / 1000) * 1000
       const max = Math.ceil(Math.max(Math.max(...weekRevenueArray), Math.max(...weekProfitArray)) / 1000) * 1000
       // console.log(min, max, weekProfitArray, weekRevenueArray, weekDatesArray)
-      setMinDataRevenue(min)
-      setMaxDataRevenue(max)
-      setStepSizeRevenue(calculateSize(min, max))
-      setDataRevenues(weekRevenueArray)
-      setDataNetProfit(weekProfitArray)
-      setBigChartLabels(weekDatesArray)
+      setMinDataRevenue(min);
+      setMaxDataRevenue(max);
+      setStepSizeRevenue(calculateSize(min, max));
+      setDataRevenues(weekRevenueArray);
+      setDataNetProfit(weekProfitArray);
+      setBigChartLabels(weekDatesArray);
     } else {
       const revenueArray = [];
       const profitArray = [];
       const monthNamesArray = [];
 
       const monthNameMap = {
-        "Январь": "Янв",
-        "Февраль": "Фев",
-        "Март": "Мар",
-        "Апрель": "Апр",
-        "Май": "Май",
-        "Июнь": "Июн",
-        "Июль": "Июл",
-        "Август": "Авг",
-        "Сентябрь": "Сен",
-        "Октябрь": "Окт",
-        "Ноябрь": "Ноя",
-        "Декабрь": "Дек"
+        Январь: 'Янв',
+        Февраль: 'Фев',
+        Март: 'Мар',
+        Апрель: 'Апр',
+        Май: 'Май',
+        Июнь: 'Июн',
+        Июль: 'Июл',
+        Август: 'Авг',
+        Сентябрь: 'Сен',
+        Октябрь: 'Окт',
+        Ноябрь: 'Ноя',
+        Декабрь: 'Дек',
       };
-      const rev_profit = data.revenue_and_profit
+      const rev_profit = data.revenue_and_profit;
       for (const year in rev_profit) {
         const months = rev_profit[year];
         for (const month in months) {
@@ -289,7 +309,6 @@ const Schedule = () => {
             monthNamesArray.push(monthNameMap[month] || month);
           }
         }
-
       }
       const min = Math.floor(Math.min(Math.min(...revenueArray), Math.min(...profitArray)) / 1000) * 1000
       const max = Math.ceil(Math.max(Math.max(...revenueArray), Math.max(...profitArray)) / 1000) * 1000
@@ -300,11 +319,9 @@ const Schedule = () => {
       setDataNetProfit(profitArray)
       setBigChartLabels(monthNamesArray)
     }
-
-  }
+  };
 
   const roiAndMarginality = (data, filter) => {
-
     if (
       (
         filter.date_sale_filter.months.length === 1 &&
@@ -327,12 +344,10 @@ const Schedule = () => {
         filter.date_sale_filter.weekdays.length === 1
       )
     ) {
-
       const roiArray = [];
       const marginalityHigh = [];
       const marginalityLow = [];
       const dayTitlesArray = [];
-
 
       const year = Object.keys(data.roi_and_marginality)[0];
       const months = data.roi_and_marginality[year];
@@ -370,29 +385,18 @@ const Schedule = () => {
 
       //setMaxforROI
       // setStepSizeRevenue(calculateSize(min, max))
-      setDataProfitMinus(marginalityLow)
-      setDataProfitPlus(marginalityHigh)
-      setDataProfitability(roiArray)
-
-
-    }
-    else if (
-      (
-        filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 1
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 0
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 0 &&
+      setDataProfitMinus(marginalityLow);
+      setDataProfitPlus(marginalityHigh);
+      setDataProfitability(roiArray);
+    } else if (
+      (filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.years.length === 1) ||
+      (filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.years.length === 0) ||
+      (filter.date_sale_filter.months.length === 0 &&
         filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length > 0
-      )
+        filter.date_sale_filter.weekdays.length > 0)
     ) {
-
-
       const roiArray = [];
       const marginalityHigh = [];
       const marginalityLow = [];
@@ -404,23 +408,23 @@ const Schedule = () => {
         const index = monthNames.indexOf(month);
         const monthIndex = index !== -1 ? index + 1 : null;
         const weeks = months[month]?.weeks;
-        if (weeks &&
-          (
-            filter.date_sale_filter.months.includes(monthIndex.toString()) ||
-            filter.date_sale_filter.months.length === 0
-          )
+        if (
+          weeks &&
+          (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
+            filter.date_sale_filter.months.length === 0)
         ) {
           for (const week in weeks) {
             if (
-              (filter.date_sale_filter.weekdays.includes(week) && filter.date_sale_filter.weekdays.length > 0) ||
+              (filter.date_sale_filter.weekdays.includes(week) &&
+                filter.date_sale_filter.weekdays.length > 0) ||
               filter.date_sale_filter.weekdays.length === 0
             ) {
               const weekData = weeks[week];
               marginalityLow.push(weekData.min_week_marginality || 0);
               marginalityHigh.push(weekData.max_week_marginality || 0);
               roiArray.push(weekData.average_week_roi || 0);
-              console.log(weekData.min_week_marginality, "low")
-              console.log(weekData.max_week_marginality, "high")
+              console.log(weekData.min_week_marginality, 'low');
+              console.log(weekData.max_week_marginality, 'high');
             }
           }
         }
@@ -439,29 +443,26 @@ const Schedule = () => {
       setDataProfitPlus(marginalityHigh)
       setDataProfitability(roiArray)
     } else {
-
-
       const monthNamesArray = [];
       const roiArray = [];
       const marginalityHigh = [];
       const marginalityLow = [];
 
-
       const monthNameMap = {
-        "Январь": "Янв",
-        "Февраль": "Фев",
-        "Март": "Мар",
-        "Апрель": "Апр",
-        "Май": "Май",
-        "Июнь": "Июн",
-        "Июль": "Июл",
-        "Август": "Авг",
-        "Сентябрь": "Сен",
-        "Октябрь": "Окт",
-        "Ноябрь": "Ноя",
-        "Декабрь": "Дек"
+        Январь: 'Янв',
+        Февраль: 'Фев',
+        Март: 'Мар',
+        Апрель: 'Апр',
+        Май: 'Май',
+        Июнь: 'Июн',
+        Июль: 'Июл',
+        Август: 'Авг',
+        Сентябрь: 'Сен',
+        Октябрь: 'Окт',
+        Ноябрь: 'Ноя',
+        Декабрь: 'Дек',
       };
-      const rev_profit = data.roi_and_marginality
+      const rev_profit = data.roi_and_marginality;
       for (const year in rev_profit) {
         const months = rev_profit[year];
         for (const month in months) {
@@ -498,7 +499,7 @@ const Schedule = () => {
       setDataProfitPlus(marginalityHigh)
       setDataProfitability(roiArray)
     }
-  }
+  };
 
   const updateScheduleChartData = async () => {
     setIsChartsLoading(true);
@@ -506,17 +507,30 @@ const Schedule = () => {
 
     try {
       const filter = {
-        "brand_name_filter": Object.keys(selectedBrands).filter(key => selectedBrands[key]),
-        "wb_id_filter": Object.keys(selectedArticles).filter(key => selectedArticles[key]),
-        "groups_filter": Object.keys(selectedGroups).filter(key => selectedGroups[key]),
-        "date_sale_filter": {
-          "years": Object.keys(selectedYears).filter(key => selectedYears[key]),
-          "months": Object.keys(selectedMonths).filter(key => selectedMonths[key]),
-          "weekdays": Object.keys(selectedWeeks).filter(key => selectedWeeks[key])
-        }
+        brand_name_filter: Object.keys(selectedBrands).filter(
+          (key) => selectedBrands[key]
+        ),
+        wb_id_filter: Object.keys(selectedArticles).filter(
+          (key) => selectedArticles[key]
+        ),
+        groups_filter: Object.keys(selectedGroups).filter(
+          (key) => selectedGroups[key]
+        ),
+        date_sale_filter: {
+          years: Object.keys(selectedYears).filter((key) => selectedYears[key]),
+          months: Object.keys(selectedMonths).filter(
+            (key) => selectedMonths[key]
+          ),
+          weekdays: Object.keys(selectedWeeks).filter(
+            (key) => selectedWeeks[key]
+          ),
+        },
       };
 
-      const data = await ServiceFunctions.scheduleFilterChartData(authToken, filter);
+      const data = await ServiceFunctions.scheduleFilterChartData(
+        authToken,
+        filter
+      );
 
       setDataStructureRevenue([
         data?.structure?.all_retentions_percent || 0,
@@ -530,19 +544,21 @@ const Schedule = () => {
       roiAndMarginality(data, filter);
       if (data?.revenue_by_warehouse) {
         setDataRevenueStorage(Object.values(data.revenue_by_warehouse));
-        const filteredKeys = Object.keys(data.revenue_by_warehouse).filter(key => key !== "null");
+        const filteredKeys = Object.keys(data.revenue_by_warehouse).filter(
+          (key) => key !== 'null'
+        );
         setDataRevenueStorageLabels(filteredKeys);
         // setDataRevenueStorageLabels(Object.keys(data.revenue_by_warehouse));
         const revenueValues = Object.values(data.revenue_by_warehouse);
         const maxRevenue = Math.max(...revenueValues);
         const roundedStepSize = Math.ceil(maxRevenue / 1000) * 1000;
         setMaxWarehouse(roundedStepSize);
-        console.log(roundedStepSize)
+        console.log(roundedStepSize);
       }
 
       setIsChartsLoading(false);
     } catch (err) {
-      setError("Failed to load data");
+      setError('Failed to load data');
       setIsChartsLoading(false);
     }
   };
@@ -582,7 +598,6 @@ const Schedule = () => {
       [brand]: !prevState[brand],
     }));
   };
-
   const toggleCheckboxYear = (year) => {
     setSelectedYears((prevState) => ({
       ...prevState,
@@ -698,239 +713,340 @@ const Schedule = () => {
             </>
           }
         />
-        <div className='container dash-container'>
-          <div
-            className={styles.filteOpenClose}
-            onClick={() => setIsOpenFilters(!isOpenFilters)}
-          >
-            {isOpenFilters ? 'Развернуть фильтры' : 'Свернуть фильтры'}
-          </div>
-        </div>
-        {/* <div className={`${styles.filterCollapse}`} onClick={handleFiltersCollapse}>Свернуть фильтры</div> */}
-        {!isOpenFilters && (
+        {user.is_report_downloaded ? (
           <>
-            <div className={`${styles.ScheduleHeader} dash-container container`}>
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Бренд</span>
-                  <button className={styles.clearButton} onClick={handleBrand}>
-                    {allSelectedBrands ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: "40px" }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>{
-                    Object.keys(selectedBrands)
-                      .filter((brand) => brand !== 'пусто')
-                      .map((brand, index) => (
-                        <div className={styles.brandItem} key={index}>
-                          <label className={styles.checkboxContainer}>
-                            <input
-                              type="checkbox"
-                              checked={selectedBrands[brand]}
-                              onChange={() => toggleCheckboxBrands(brand)}
-                              className={styles.checkboxInput}
-                            />
-                            <span className={styles.customCheckbox}></span>
-                          </label>
-                          <span className={styles.brandName} title={brand}>{brand}</span>
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </div>
-
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Год</span>
-                  <button className={styles.clearButton} onClick={handleYear}>
-                    {allSelectedYears ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: "40px" }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedYears).map((year, index) => (
-                      <div className={styles.brandItem} key={index}>
-                        <label className={styles.checkboxContainer}>
-                          <input
-                            type='checkbox'
-                            checked={selectedYears[year]}
-                            onChange={() => toggleCheckboxYear(year)}
-                            className={styles.checkboxInput}
-                          />
-                          <span className={styles.customCheckbox}></span>
-                        </label>
-                        <span className={styles.brandName} title={year}>{year}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Месяц</span>
-                  <button className={styles.clearButton} onClick={handleMonth}>
-                    {allSelectedMonths ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: "40px" }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list} style={{ justifyContent: "flex-end", flexDirection: "column-reverse" }}>
-                    {Object.keys(selectedMonths).map((monthKey, index) => (
-                      <div className={styles.brandItem} key={index}>
-                        <label className={styles.checkboxContainer}>
-                          <input
-                            type="checkbox"
-                            checked={selectedMonths[monthKey]}
-                            onChange={() => toggleCheckboxMonth(monthKey)}
-                            className={styles.checkboxInput}
-                          />
-                          <span className={styles.customCheckbox}></span>
-                        </label>
-                        {/* Преобразуем ключ месяца в название месяца */}
-                        <span className={styles.brandName} title={monthNames[parseInt(monthKey, 10) - 1]}>{monthNames[parseInt(monthKey, 10) - 1]}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Неделя</span>
-                  <button className={styles.clearButton} onClick={handleWeek}>
-                    {allSelectedWeeks ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: "40px" }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedWeeks).map((brand, index) => (
-                      <div className={styles.brandItem} key={index}>
-                        <label className={styles.checkboxContainer}>
-                          <input
-                            type='checkbox'
-                            checked={selectedWeeks[brand]}
-                            onChange={() => toggleCheckboxWeek(brand)}
-                            className={styles.checkboxInput}
-                          />
-                          <span className={styles.customCheckbox}></span>
-                        </label>
-                        <span className={styles.brandName} title={brand}>{brand}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Группа</span>
-                  <button className={styles.clearButton} onClick={handleGroup}>
-                    {allSelectedGroups ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: "40px" }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedGroups)
-                      .filter((groupName) => groupName !== "пусто")
-                      .map((brand, index) => (
-                        <div className={styles.brandItem} key={index}>
-                          <label className={styles.checkboxContainer}>
-                            <input
-                              type="checkbox"
-                              checked={selectedGroups[brand]}
-                              onChange={() => toggleCheckboxGroup(brand)}
-                              className={styles.checkboxInput}
-                            />
-                            <span className={styles.customCheckbox}></span>
-                          </label>
-                          <span className={styles.brandName} title={brand}>{brand}</span>
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <span className={styles.title}>Артикул</span>
-                  <button className={styles.clearButton} onClick={handleArticle}>
-                    {allSelectedArticles ? 'Снять все' : 'Выбрать все'}
-                  </button>
-                </div>
-                {isLoading ? (
-                  <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100px', marginTop: "40px" }}
-                  >
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <div className={styles.list}>
-                    {Object.keys(selectedArticles)
-                      .filter((article) => article !== 'пусто')
-                      .map((article, index) => (
-                        <div className={styles.brandItem} key={index}>
-                          <label className={styles.checkboxContainer}>
-                            <input
-                              type="checkbox"
-                              checked={selectedArticles[article]}
-                              onChange={() => toggleCheckboxArticle(article)}
-                              className={styles.checkboxInput}
-                            />
-                            <span className={styles.customCheckbox}></span>
-                          </label>
-                          <span className={styles.brandName} title={article}>{article}</span>
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </div>
-
-            </div>
             <div className='container dash-container'>
-              <div>
-                <button className={styles.applyButton} onClick={updateScheduleChartData}>
-                  Применить фильтры
-                </button>
+              <div
+                className={styles.filteOpenClose}
+                onClick={() => setIsOpenFilters(!isOpenFilters)}
+              >
+                {isOpenFilters ? 'Развернуть фильтры' : 'Свернуть фильтры'}
               </div>
             </div>
+            {/* <div className={`${styles.filterCollapse}`} onClick={handleFiltersCollapse}>Свернуть фильтры</div> */}
+            {!isOpenFilters && (
+              <>
+                <div
+                  className={`${styles.ScheduleHeader} dash-container container`}
+                >
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Бренд</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleBrand}
+                      >
+                        {allSelectedBrands ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedBrands)
+                          .filter((brand) => brand !== 'пусто')
+                          .map((brand, index) => (
+                            <div className={styles.brandItem} key={index}>
+                              <label className={styles.checkboxContainer}>
+                                <input
+                                  type='checkbox'
+                                  checked={selectedBrands[brand]}
+                                  onChange={() => toggleCheckboxBrands(brand)}
+                                  className={styles.checkboxInput}
+                                />
+                                <span className={styles.customCheckbox}></span>
+                              </label>
+                              <span className={styles.brandName} title={brand}>
+                                {brand}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Год</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleYear}
+                      >
+                        {allSelectedYears ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedYears).map((year, index) => (
+                          <div className={styles.brandItem} key={index}>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type='checkbox'
+                                checked={selectedYears[year]}
+                                onChange={() => toggleCheckboxYear(year)}
+                                className={styles.checkboxInput}
+                              />
+                              <span className={styles.customCheckbox}></span>
+                            </label>
+                            <span className={styles.brandName} title={year}>
+                              {year}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Месяц</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleMonth}
+                      >
+                        {allSelectedMonths ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div
+                        className={styles.list}
+                        style={{
+                          justifyContent: 'flex-end',
+                          flexDirection: 'column-reverse',
+                        }}
+                      >
+                        {Object.keys(selectedMonths).map((monthKey, index) => (
+                          <div className={styles.brandItem} key={index}>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type='checkbox'
+                                checked={selectedMonths[monthKey]}
+                                onChange={() => toggleCheckboxMonth(monthKey)}
+                                className={styles.checkboxInput}
+                              />
+                              <span className={styles.customCheckbox}></span>
+                            </label>
+                            {/* Преобразуем ключ месяца в название месяца */}
+                            <span
+                              className={styles.brandName}
+                              title={monthNames[parseInt(monthKey, 10) - 1]}
+                            >
+                              {monthNames[parseInt(monthKey, 10) - 1]}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Неделя</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleWeek}
+                      >
+                        {allSelectedWeeks ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedWeeks).map((brand, index) => (
+                          <div className={styles.brandItem} key={index}>
+                            <label className={styles.checkboxContainer}>
+                              <input
+                                type='checkbox'
+                                checked={selectedWeeks[brand]}
+                                onChange={() => toggleCheckboxWeek(brand)}
+                                className={styles.checkboxInput}
+                              />
+                              <span className={styles.customCheckbox}></span>
+                            </label>
+                            <span className={styles.brandName} title={brand}>
+                              {brand}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Группа</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleGroup}
+                      >
+                        {allSelectedGroups ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedGroups)
+                          .filter((groupName) => groupName !== 'пусто')
+                          .map((brand, index) => (
+                            <div className={styles.brandItem} key={index}>
+                              <label className={styles.checkboxContainer}>
+                                <input
+                                  type='checkbox'
+                                  checked={selectedGroups[brand]}
+                                  onChange={() => toggleCheckboxGroup(brand)}
+                                  className={styles.checkboxInput}
+                                />
+                                <span className={styles.customCheckbox}></span>
+                              </label>
+                              <span className={styles.brandName} title={brand}>
+                                {brand}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.container}>
+                    <div className={styles.header}>
+                      <span className={styles.title}>Артикул</span>
+                      <button
+                        className={styles.clearButton}
+                        onClick={handleArticle}
+                      >
+                        {allSelectedArticles ? 'Снять все' : 'Выбрать все'}
+                      </button>
+                    </div>
+                    {isLoading ? (
+                      <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100px', marginTop: '40px' }}
+                      >
+                        <span className='loader'></span>
+                      </div>
+                    ) : (
+                      <div className={styles.list}>
+                        {Object.keys(selectedArticles)
+                          .filter((article) => article !== 'пусто')
+                          .map((article, index) => (
+                            <div className={styles.brandItem} key={index}>
+                              <label className={styles.checkboxContainer}>
+                                <input
+                                  type='checkbox'
+                                  checked={selectedArticles[article]}
+                                  onChange={() =>
+                                    toggleCheckboxArticle(article)
+                                  }
+                                  className={styles.checkboxInput}
+                                />
+                                <span className={styles.customCheckbox}></span>
+                              </label>
+                              <span
+                                className={styles.brandName}
+                                title={article}
+                              >
+                                {article}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className='container dash-container'>
+                  <div>
+                    <button
+                      className={styles.applyButton}
+                      onClick={updateScheduleChartData}
+                    >
+                      Применить фильтры
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+            <div className={`${styles.ScheduleBody} dash-container container`}>
+              <div className='container dash-container '>
+                <ScheduleBigChart
+                  dataRevenue={dataRevenue}
+                  dataNetProfit={dataNetProfit}
+                  labels={bigChartLabels}
+                  stepSizeRevenue={stepSizeRevenue}
+                  minDataRevenue={minDataRevenue}
+                  maxDataRevenue={maxDataRevenue}
+                  isLoading={isChartsLoading}
+                />
+              </div>
+              <div className='container dash-container '>
+                <ScheduleProfitabilityBigChart
+                  dataProfitability={dataProfitability}
+                  dataProfitMinus={dataProfitMinus}
+                  isLoading={isChartsLoading}
+                  dataProfitPlus={dataProfitPlus}
+                  labels={bigChartLabels}
+                  min={minProfitability}
+                  max={maxProfitability}
+                />
+              </div>
+            </div>
+            <div
+              className={`${styles.ScheduleFooter} dash-container container`}
+            >
+              <StructureRevenue
+                dataStructureRevenue={dataStructureRevenue}
+                isLoading={isChartsLoading}
+              />
+              <RevenueStorageChart
+                dataRevenueStorage={dataRevenueStorage}
+                labels={dataRevenueStorageLabels}
+                isLoading={isChartsLoading}
+                max={maxWarehouse}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className='container dash-container'>
+              <DemonstrationSection />
+            </div>
+            <span className={styles.responsiveImageWrapper}>
+              <img
+                src={plFake}
+                alt='fakePL'
+                className={styles.responsiveImage}
+              />
+            </span>
           </>
         )}
         <div className={`${styles.ScheduleBody} dash-container container`}>
@@ -964,7 +1080,7 @@ const Schedule = () => {
         </div>
         <BottomNavigation />
       </div>
-    </div >
+    </div>
   );
 };
 export default Schedule;

@@ -33,7 +33,6 @@ const ReportMain = () => {
     try {
       const result = await ServiceFunctions.getListOfReports(authToken);
       setData(result);
-      console.log('result', result);
     } catch (error) {
       console.error('Error fetching data:', error);
     }

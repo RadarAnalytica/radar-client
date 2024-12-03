@@ -9,9 +9,11 @@ import BottomNavigation from '../components/BottomNavigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPLReport } from '../redux/reportPL/plReportActions';
 import styles from './WeeklyReportPL.module.css';
+import DemonstrationSection from '../components/DemonstrationSection';
+import plFake from '../pages/images/goods-fake.png';
 
 const WeeklyReportPL = () => {
-  const { authToken } = useContext(AuthContext);
+  const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const { plData, isLoading } = useSelector((state) => state?.plReportSlice);
   const [activeFilters, setActiveFilters] = useState({
@@ -115,58 +117,79 @@ const WeeklyReportPL = () => {
     }
     return [];
   };
+  console.log('user.is_report_downloaded ', user.is_report_downloaded);
 
   return (
     <div className='dashboard-page'>
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'P&L'} subTitle={'Отчёт /'} />
-        <div className='container dash-container'>
-          <div className={styles.filterContainer}>
-            <div className={styles.filterContainer}>
-              <FilterGroup
-                title='Бренд'
-                options={
-                  filterOptions
-                    .find((filter) => filter.id === 'brand')
-                    ?.options.map((opt) => ({
-                      id: opt.value,
-                      label: opt.label,
-                    })) || []
-                }
-                selected={activeFilters.brand}
-                onSelect={(value) => handleFilterChange('brand', value)}
-                filterLoading={isLoadingFilters}
-              />
-              <FilterGroup
-                title='Группа'
-                options={
-                  filterOptions
-                    .find((filter) => filter.id === 'group')
-                    ?.options.map((opt) => ({
-                      id: opt.value,
-                      label: opt.label,
-                    })) || []
-                }
-                selected={activeFilters['group']}
-                onSelect={(value) => handleFilterChange('group', value)}
-                onClearAll={() => handleClearAll('group')}
-                onSelectAll={() => handleSelectAll('group')}
-                filterLoading={isLoadingFilters}
-              />
+        {user.is_report_downloaded ? (
+          <>
+            <div className='container dash-container'>
+              <div className={styles.filterContainer}>
+                <div className={styles.filterContainer}>
+                  <FilterGroup
+                    title='Бренд'
+                    options={
+                      filterOptions
+                        .find((filter) => filter.id === 'brand')
+                        ?.options.map((opt) => ({
+                          id: opt.value,
+                          label: opt.label,
+                        })) || []
+                    }
+                    selected={activeFilters.brand}
+                    onSelect={(value) => handleFilterChange('brand', value)}
+                    filterLoading={isLoadingFilters}
+                  />
+                  <FilterGroup
+                    title='Группа'
+                    options={
+                      filterOptions
+                        .find((filter) => filter.id === 'group')
+                        ?.options.map((opt) => ({
+                          id: opt.value,
+                          label: opt.label,
+                        })) || []
+                    }
+                    selected={activeFilters['group']}
+                    onSelect={(value) => handleFilterChange('group', value)}
+                    onClearAll={() => handleClearAll('group')}
+                    onSelectAll={() => handleSelectAll('group')}
+                    filterLoading={isLoadingFilters}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className='container dash-container'>
-          <div>
-            <button className={styles.applyButton} onClick={handleApplyFilters}>
-              Применить фильтры
-            </button>
-          </div>
-        </div>
-        <div className='container dash-container'>
-          <TablePL plData={plData} />
-        </div>
+            <div className='container dash-container'>
+              <div>
+                <button
+                  className={styles.applyButton}
+                  onClick={handleApplyFilters}
+                >
+                  Применить фильтры
+                </button>
+              </div>
+            </div>
+            <div className='container dash-container'>
+              <TablePL plData={plData} />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className='container dash-container'>
+              <DemonstrationSection />
+            </div>
+            <span className={styles.responsiveImageWrapper}>
+              <img
+                src={plFake}
+                alt='fakePL'
+                className={styles.responsiveImage}
+              />
+            </span>
+          </>
+        )}
         <BottomNavigation />
       </div>
     </div>
