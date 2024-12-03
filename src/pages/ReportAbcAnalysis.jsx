@@ -38,6 +38,14 @@ const ReportAbcAnalysis = () => {
       [id]: !prevState[id],
     }));
   };
+  const filterKeys = [
+    "selectedYears",
+    "selectedMonths",
+    "selectedArticles",
+    "selectedBrands",
+    "selectedGroups",
+    "selectedWeeks"
+  ];
 
   const [allSelectedProducts, setAllSelectedProducts] = useState(true);
   const [allSelectedArticles, setAllSelectedArticles] = useState(true);
@@ -720,17 +728,15 @@ const ReportAbcAnalysis = () => {
             >
               <div className={styles.tabs}>
                 <button
-                  className={`${styles.tab} ${
-                    activeTab === 'revenue' ? styles.active : ''
-                  }`}
+                  className={`${styles.tab} ${activeTab === 'revenue' ? styles.active : ''
+                    }`}
                   onClick={() => handleTabClick('revenue')}
                 >
                   По выручке
                 </button>
                 <button
-                  className={`${styles.tab} ${
-                    activeTab === 'profit' ? styles.active : ''
-                  }`}
+                  className={`${styles.tab} ${activeTab === 'profit' ? styles.active : ''
+                    }`}
                   onClick={() => handleTabClick('profit')}
                 >
                   По прибыли
@@ -738,9 +744,8 @@ const ReportAbcAnalysis = () => {
               </div>
               {activeTab === 'revenue' && (
                 <div
-                  className={`${styles.containerRevenue} ${
-                    isOpenFilters ? styles.expanded : ''
-                  }`}
+                  className={`${styles.containerRevenue} ${isOpenFilters ? styles.expanded : ''
+                    }`}
                 >
                   <div className={styles.rowHeader}>
                     <div
@@ -786,9 +791,8 @@ const ReportAbcAnalysis = () => {
                     </div>
                   ) : (
                     <div
-                      className={`${styles.rowsWrapper} ${
-                        isOpenFilters ? styles.expanded : ''
-                      }`}
+                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
+                        }`}
                     >
                       {dataRevenue.map((item, index) => (
                         <div key={index} className={styles.row}>
@@ -964,9 +968,8 @@ const ReportAbcAnalysis = () => {
               )}
               {activeTab === 'profit' && (
                 <div
-                  className={`${styles.containerProfit} ${
-                    isOpenFilters ? styles.expanded : ''
-                  }`}
+                  className={`${styles.containerProfit} ${isOpenFilters ? styles.expanded : ''
+                    }`}
                 >
                   <div className={styles.rowHeader}>
                     <div
@@ -1012,9 +1015,8 @@ const ReportAbcAnalysis = () => {
                     </div>
                   ) : (
                     <div
-                      className={`${styles.rowsWrapper} ${
-                        isOpenFilters ? styles.expanded : ''
-                      }`}
+                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
+                        }`}
                     >
                       {dataRevenue.map((item, index) => (
                         <div key={index} className={styles.row}>
