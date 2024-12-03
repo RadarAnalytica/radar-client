@@ -15,12 +15,14 @@ import plFake from '../pages/images/schedule-fake.png';
 
 const Schedule = () => {
   const { authToken, user } = useContext(AuthContext);
+
   const [isLoading, setIsLoading] = useState(false);
   const [isChartsLoading, setIsChartsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [maxWarehouse, setMaxWarehouse] = useState(0);
   const [minProfitability, setMinProfitability] = useState(0);
   const [maxProfitability, setMaxProfitability] = useState(0);
+  const [stepProfitability, setStepProfitability] = useState(0);
   //data for charts
   const [dataRevenueStorage, setDataRevenueStorage] = useState([
     0, 10000, 20000, 30000, 40000, 50000, 60000, 70000,
@@ -78,9 +80,9 @@ const Schedule = () => {
   const [allSelectedBrands, setAllSelectedBrands] = useState(true);
 
   const [selectedBrands, setSelectedBrands] = useState({});
-  console.log('selectedBrands', selectedBrands);
+
   const [selectedYears, setSelectedYears] = useState({});
-  console.log('selectedYears', selectedYears);
+
   const [selectedMonths, setSelectedMonths] = useState({});
   const [selectedWeeks, setSelectedWeeks] = useState({});
   const [selectedGroups, setSelectedGroups] = useState({});
@@ -453,12 +455,14 @@ const Schedule = () => {
       }
 
       const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
+
       const minVal = Math.min(...arr);
       const maxVal = Math.max(...arr);
-      const min = Math.floor(minVal * 100) / 100;
-      const max = Math.ceil(maxVal * 100) / 100;
+      const min = Math.floor(minVal / 100) * 100;
+      const max = Math.ceil(maxVal / 100) * 100;
       setMinProfitability(min);
       setMaxProfitability(max);
+      setStepProfitability(calculateSize(min, max));
 
       //setMaxforROI
       // setStepSizeRevenue(calculateSize(min, max))
@@ -500,8 +504,6 @@ const Schedule = () => {
               marginalityLow.push(weekData.min_week_marginality || 0);
               marginalityHigh.push(weekData.max_week_marginality || 0);
               roiArray.push(weekData.average_week_roi || 0);
-              console.log(weekData.min_week_marginality, 'low');
-              console.log(weekData.max_week_marginality, 'high');
             }
           }
         }
@@ -509,11 +511,11 @@ const Schedule = () => {
       const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
       const minVal = Math.min(...arr);
       const maxVal = Math.max(...arr);
-      const min = Math.floor(minVal * 100) / 100;
-      const max = Math.ceil(maxVal * 100) / 100;
+      const min = Math.floor(minVal / 100) * 100;
+      const max = Math.ceil(maxVal / 100) * 100;
       setMinProfitability(min);
       setMaxProfitability(max);
-
+      setStepProfitability(calculateSize(min, max));
       //setMaxforROI
       setDataProfitMinus(marginalityLow);
       setDataProfitPlus(marginalityHigh);
@@ -560,16 +562,17 @@ const Schedule = () => {
       const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
       const minVal = Math.min(...arr);
       const maxVal = Math.max(...arr);
-      const min = Math.floor(minVal * 100) / 100;
-      const max = Math.ceil(maxVal * 100) / 100;
+      const min = Math.floor(minVal / 100) * 100;
+      const max = Math.ceil(maxVal / 100) * 100;
+
       setMinProfitability(min);
       setMaxProfitability(max);
-
+      setStepProfitability(calculateSize(min, max));
       //setMaxforROI
       // setMinDataRevenue(min)
       // setMaxDataRevenue(max)
       // setStepSizeRevenue(calculateSize(min, max))
-      console.log(arr, max, min);
+
       setDataProfitMinus(marginalityLow);
       setDataProfitPlus(marginalityHigh);
       setDataProfitability(roiArray);
@@ -628,7 +631,7 @@ const Schedule = () => {
         const maxRevenue = Math.max(...revenueValues);
         const roundedStepSize = Math.ceil(maxRevenue / 1000) * 1000;
         setMaxWarehouse(roundedStepSize);
-        console.log(roundedStepSize);
+
       }
 
       setIsChartsLoading(false);
@@ -1174,8 +1177,9 @@ const Schedule = () => {
                   isLoading={isChartsLoading}
                   dataProfitPlus={dataProfitPlus}
                   labels={bigChartLabels}
-                  min={minProfitability}
-                  max={maxProfitability}
+                  minValue={minProfitability}
+                  maxValue={maxProfitability}
+                  step={stepProfitability}
                 />
               </div>
             </div>
@@ -1208,7 +1212,8 @@ const Schedule = () => {
             </span>
           </>
         )}
-        <div className={`${styles.ScheduleBody} dash-container container`}>
+
+        {/* <div className={`${styles.ScheduleBody} dash-container container`}>
           <div className='container dash-container '>
             <ScheduleBigChart
               dataRevenue={dataRevenue}
@@ -1243,7 +1248,7 @@ const Schedule = () => {
             isLoading={isChartsLoading}
             max={maxWarehouse}
           />
-        </div>
+        </div> */}
         <BottomNavigation />
       </div>
     </div>

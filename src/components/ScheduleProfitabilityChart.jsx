@@ -5,8 +5,13 @@ import roi from '../assets/roi.svg';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels, min, max }) => {
-    console.log(max, 'max', min)
+const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels, step, minValue, maxValue }) => {
+    const min = minValue
+    const max = maxValue
+    if (Math.abs(min) + Math.abs(max) < 300) {
+        step = 20
+    }
+    console.log(step)
     const data = {
         labels: labels,
         datasets: [
@@ -150,43 +155,35 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 }
             },
             'left-y': {
-                // min: min,
-                // max: max,
-                min: -140,
-                max: 80,
+                min: min,
+                max: max,
+                // min: -140,
+                // max: 80,
                 stacked: true,
                 grid: {
                     display: true,
                     drawOnChartArea: true,
-                    lineWidth: (context) => {
-                        const tickValue = context.tick.value;
-                        const specificValues = [60, 20, -20, -60, -100, -140];
-                        return specificValues.includes(tickValue) ? 1 : 0;
-                    }
+
                 },
                 ticks: {
-                    stepSize: 20,
+                    stepSize: step,
                     color: '#8C8C8C',
                 }
             },
             'right-y': {
                 position: 'right',
-                min: -140,
-                max: 80,
-                // min: min,
-                // max: max,
+                // min: -140,
+                // max: 80,
+                min: min,
+                max: max,
                 stacked: true,
                 grid: {
                     display: true,
                     drawOnChartArea: true,
-                    lineWidth: (context) => {
-                        const tickValue = context.tick.value;
-                        const specificValues = [60, 20, -20, -60, -100, -140];
-                        return specificValues.includes(tickValue) ? 1 : 0;
-                    }
+
                 },
                 ticks: {
-                    stepSize: 20,
+                    stepSize: step,
                     color: '#8C8C8C',
                 },
             }
