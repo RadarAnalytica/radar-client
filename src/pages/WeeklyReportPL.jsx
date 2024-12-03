@@ -188,6 +188,7 @@ const WeeklyReportPL = () => {
                 className={styles.responsiveImage}
               />
             </span>
+            <span></span>
           </>
         )}
         <BottomNavigation />

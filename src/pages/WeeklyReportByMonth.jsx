@@ -638,6 +638,7 @@ const WeeklyReportByMonth = () => {
                 alt='fakePL'
                 className={styles.responsiveImage}
               />
+              <span></span>
             </span>
           </>
         )}

@@ -625,6 +625,7 @@ const WeeklyReportByGoods = () => {
                 alt='fakePL'
                 className={styles.responsiveImage}
               />
+              <span className={styles.marginRight}></span>
             </span>
           </>
         )}

@@ -475,6 +475,7 @@ const WeeklyReportDashboard = () => {
                 alt='fakeDashboard'
                 className={styles.responsiveImage}
               />
+              <span></span>
             </span>
           </>
         )}

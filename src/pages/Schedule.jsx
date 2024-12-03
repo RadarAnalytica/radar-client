@@ -15,7 +15,6 @@ import plFake from '../pages/images/schedule-fake.png';
 
 const Schedule = () => {
   const { authToken, user } = useContext(AuthContext);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isChartsLoading, setIsChartsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -631,7 +630,6 @@ const Schedule = () => {
         const maxRevenue = Math.max(...revenueValues);
         const roundedStepSize = Math.ceil(maxRevenue / 1000) * 1000;
         setMaxWarehouse(roundedStepSize);
-
       }
 
       setIsChartsLoading(false);
@@ -1209,6 +1207,7 @@ const Schedule = () => {
                 alt='fakePL'
                 className={styles.responsiveImage}
               />
+              <span></span>
             </span>
           </>
         )}

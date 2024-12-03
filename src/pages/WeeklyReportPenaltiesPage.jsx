@@ -330,6 +330,7 @@ const WeeklyReportPenaltiesPage = () => {
                 alt='fakePL'
                 className={styles.responsiveImage}
               />
+              <span></span>
             </span>
           </>
         )}
