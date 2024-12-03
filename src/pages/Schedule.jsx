@@ -22,24 +22,51 @@ const Schedule = () => {
   const [minProfitability, setMinProfitability] = useState(0);
   const [maxProfitability, setMaxProfitability] = useState(0);
   //data for charts
-  const [dataRevenueStorage, setDataRevenueStorage] = useState([0, 10000, 20000, 30000, 40000, 50000, 60000, 70000,])
+  const [dataRevenueStorage, setDataRevenueStorage] = useState([
+    0, 10000, 20000, 30000, 40000, 50000, 60000, 70000,
+  ]);
 
-  const [dataStructureRevenue, setDataStructureRevenue] = useState([0, 0, 0, 0, 0])
-  const [dataProfitability, setDataProfitability] = useState([])
-  const [dataProfitMinus, setDataProfitMinus] = useState([])
-  const [dataProfitPlus, setDataProfitPlus] = useState([])
-  const [dataRevenue, setDataRevenues] = useState([])
-  const [dataNetProfit, setDataNetProfit] = useState([])
+  const [dataStructureRevenue, setDataStructureRevenue] = useState([
+    0, 0, 0, 0, 0,
+  ]);
+  const [dataProfitability, setDataProfitability] = useState([]);
+  const [dataProfitMinus, setDataProfitMinus] = useState([]);
+  const [dataProfitPlus, setDataProfitPlus] = useState([]);
+  const [dataRevenue, setDataRevenues] = useState([]);
+  const [dataNetProfit, setDataNetProfit] = useState([]);
 
-  const [bigChartLabels, setBigChartLabels] = useState(['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'])
-  const [dataRevenueStorageLabels, setDataRevenueStorageLabels] = useState(
-    ["Коледино", 'Тула', 'Казань', 'Санкт-Петербург Уткина Заводь', 'Невинномысск', 'Екатеринбург-Перспективный', 'Астана', 'Атакент', 'СЦ Кузнецк', 'Пушкино', 'Обухово 2', 'Вёшки']
-  )
+  const [bigChartLabels, setBigChartLabels] = useState([
+    'Янв',
+    'Фев',
+    'Мар',
+    'Апр',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Авг',
+    'Сент',
+    'Окт',
+    'Ноя',
+    'Дек',
+  ]);
+  const [dataRevenueStorageLabels, setDataRevenueStorageLabels] = useState([
+    'Коледино',
+    'Тула',
+    'Казань',
+    'Санкт-Петербург Уткина Заводь',
+    'Невинномысск',
+    'Екатеринбург-Перспективный',
+    'Астана',
+    'Атакент',
+    'СЦ Кузнецк',
+    'Пушкино',
+    'Обухово 2',
+    'Вёшки',
+  ]);
 
-
-  const [minDataRevenue, setMinDataRevenue] = useState(10000)
-  const [maxDataRevenue, setMaxDataRevenue] = useState(50000)
-  const [stepSizeRevenue, setStepSizeRevenue] = useState(10000)
+  const [minDataRevenue, setMinDataRevenue] = useState(10000);
+  const [maxDataRevenue, setMaxDataRevenue] = useState(50000);
+  const [stepSizeRevenue, setStepSizeRevenue] = useState(10000);
   //data for filters
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [allSelectedProducts, setAllSelectedProducts] = useState(true);
@@ -51,7 +78,9 @@ const Schedule = () => {
   const [allSelectedBrands, setAllSelectedBrands] = useState(true);
 
   const [selectedBrands, setSelectedBrands] = useState({});
+  console.log('selectedBrands', selectedBrands);
   const [selectedYears, setSelectedYears] = useState({});
+  console.log('selectedYears', selectedYears);
   const [selectedMonths, setSelectedMonths] = useState({});
   const [selectedWeeks, setSelectedWeeks] = useState({});
   const [selectedGroups, setSelectedGroups] = useState({});
@@ -73,12 +102,12 @@ const Schedule = () => {
     'Декабрь',
   ];
   const filterKeys = [
-    "selectedYears",
-    "selectedMonths",
-    "selectedArticles",
-    "selectedBrands",
-    "selectedGroups",
-    "selectedWeeks"
+    'selectedYears',
+    'selectedMonths',
+    'selectedArticles',
+    'selectedBrands',
+    'selectedGroups',
+    'selectedWeeks',
   ];
 
   const transformFilters = (data) => {
@@ -104,7 +133,6 @@ const Schedule = () => {
     };
   };
 
-
   useEffect(() => {
     const fetchData = async () => {
       await updateFilterFields(); // Load filters and data
@@ -116,11 +144,18 @@ const Schedule = () => {
   const updateFilterFields = async () => {
     setIsLoading(true);
     try {
-      // Fetch and transform filter data
       const data = await ServiceFunctions.scheduleFilterFields(authToken);
       const transformedFilters = transformFilters(data);
 
-      // Mapping of filter keys to their corresponding setters
+      const setterKeyMap = {
+        selectedBrands: 'setSelectedBrands',
+        selectedYears: 'setSelectedYears',
+        selectedMonths: 'setSelectedMonths',
+        selectedArticles: 'setSelectedArticles',
+        selectedGroups: 'setSelectedGroups',
+        selectedWeeks: 'setSelectedWeeks',
+      };
+
       const setters = {
         selectedYears: setSelectedYears,
         selectedMonths: setSelectedMonths,
@@ -130,35 +165,71 @@ const Schedule = () => {
         selectedWeeks: setSelectedWeeks,
       };
 
-      // Automatically update the state for each filter key
       filterKeys.forEach((key) => {
-
-        const transformedValue = transformedFilters[key];
+        const transformedValue = transformedFilters[setterKeyMap[key]];
         const storedValue = localStorage.getItem(key);
+        const parsedStoredValue = storedValue ? JSON.parse(storedValue) : {};
 
-        if (storedValue) {
-          const parsedStoredValue = JSON.parse(storedValue);
-
-          // Merge stored data with transformed data if both exist
-          if (Object.keys(parsedStoredValue).length > 0) {
-            // Call the setter function dynamically
-            setters[key]({
-              ...transformedValue,
-              ...parsedStoredValue,
-            });
-          } else {
-            setters[key](transformedValue);
-          }
-        } else {
-          setters[key](transformedValue);
-        }
+        setters[key](
+          Object.keys(parsedStoredValue).length > 0
+            ? { ...transformedValue, ...parsedStoredValue }
+            : transformedValue
+        );
       });
     } catch (error) {
-      console.error("Ошибка при загрузке данных:", error);
+      console.error('Ошибка при загрузке данных:', error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // const updateFilterFields = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     // Fetch and transform filter data
+  //     const data = await ServiceFunctions.scheduleFilterFields(authToken);
+  //     console.log('data', data);
+  //     const transformedFilters = transformFilters(data);
+  //     console.log('transformedFilters', transformedFilters);
+
+  //     // Mapping of filter keys to their corresponding setters
+  //     const setters = {
+  //       selectedYears: setSelectedYears,
+  //       selectedMonths: setSelectedMonths,
+  //       selectedArticles: setSelectedArticles,
+  //       selectedBrands: setSelectedBrands,
+  //       selectedGroups: setSelectedGroups,
+  //       selectedWeeks: setSelectedWeeks,
+  //     };
+
+  //     // Automatically update the state for each filter key
+  //     filterKeys.forEach((key) => {
+  //       const transformedValue = transformedFilters[key];
+  //       const storedValue = localStorage.getItem(key);
+
+  //       if (storedValue) {
+  //         const parsedStoredValue = JSON.parse(storedValue);
+
+  //         // Merge stored data with transformed data if both exist
+  //         if (Object.keys(parsedStoredValue).length > 0) {
+  //           // Call the setter function dynamically
+  //           setters[key]({
+  //             ...transformedValue,
+  //             ...parsedStoredValue,
+  //           });
+  //         } else {
+  //           setters[key](transformedValue);
+  //         }
+  //       } else {
+  //         setters[key](transformedValue);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error('Ошибка при загрузке данных:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const calculateSize = (min, max) => {
     let range = Math.abs(max - min);
@@ -167,26 +238,18 @@ const Schedule = () => {
 
   const revenueAndProfit = (data, filter) => {
     if (
-      (
-        filter.date_sale_filter.months.length === 1 &&
+      (filter.date_sale_filter.months.length === 1 &&
         filter.date_sale_filter.years.length === 1 &&
-        filter.date_sale_filter.weekdays.length === 1
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.weekdays.length === 1) ||
+      (filter.date_sale_filter.months.length === 1 &&
         filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length === 1
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 0 &&
+        filter.date_sale_filter.weekdays.length === 1) ||
+      (filter.date_sale_filter.months.length === 0 &&
         filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length === 1
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 0 &&
+        filter.date_sale_filter.weekdays.length === 1) ||
+      (filter.date_sale_filter.months.length === 0 &&
         filter.date_sale_filter.years.length === 1 &&
-        filter.date_sale_filter.weekdays.length === 1
-      )
+        filter.date_sale_filter.weekdays.length === 1)
     ) {
       const dailyRevenueArray = [];
       const dailyProfitArray = [];
@@ -211,29 +274,34 @@ const Schedule = () => {
         }
       }
 
-      const min = Math.floor(Math.min(Math.min(...dailyRevenueArray), Math.min(...dailyProfitArray)) / 1000) * 1000
-      const max = Math.ceil(Math.max(Math.max(...dailyRevenueArray), Math.max(...dailyProfitArray)) / 1000) * 1000
-      setMinDataRevenue(min)
-      setMaxDataRevenue(max)
-      setStepSizeRevenue(calculateSize(min, max))
-      setDataRevenues(dailyRevenueArray)
-      setDataNetProfit(dailyProfitArray)
-      setBigChartLabels(dayTitlesArray)
-    }
-    else if (
-      (
-        filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 1
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 0
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 0 &&
+      const min =
+        Math.floor(
+          Math.min(
+            Math.min(...dailyRevenueArray),
+            Math.min(...dailyProfitArray)
+          ) / 1000
+        ) * 1000;
+      const max =
+        Math.ceil(
+          Math.max(
+            Math.max(...dailyRevenueArray),
+            Math.max(...dailyProfitArray)
+          ) / 1000
+        ) * 1000;
+      setMinDataRevenue(min);
+      setMaxDataRevenue(max);
+      setStepSizeRevenue(calculateSize(min, max));
+      setDataRevenues(dailyRevenueArray);
+      setDataNetProfit(dailyProfitArray);
+      setBigChartLabels(dayTitlesArray);
+    } else if (
+      (filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.years.length === 1) ||
+      (filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.years.length === 0) ||
+      (filter.date_sale_filter.months.length === 0 &&
         filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length > 0
-      )
+        filter.date_sale_filter.weekdays.length > 0)
     ) {
       const weekRevenueArray = [];
       const weekProfitArray = [];
@@ -265,8 +333,20 @@ const Schedule = () => {
           }
         }
       }
-      const min = Math.floor(Math.min(Math.min(...weekRevenueArray), Math.min(...weekProfitArray)) / 1000) * 1000
-      const max = Math.ceil(Math.max(Math.max(...weekRevenueArray), Math.max(...weekProfitArray)) / 1000) * 1000
+      const min =
+        Math.floor(
+          Math.min(
+            Math.min(...weekRevenueArray),
+            Math.min(...weekProfitArray)
+          ) / 1000
+        ) * 1000;
+      const max =
+        Math.ceil(
+          Math.max(
+            Math.max(...weekRevenueArray),
+            Math.max(...weekProfitArray)
+          ) / 1000
+        ) * 1000;
       // console.log(min, max, weekProfitArray, weekRevenueArray, weekDatesArray)
       setMinDataRevenue(min);
       setMaxDataRevenue(max);
@@ -310,39 +390,37 @@ const Schedule = () => {
           }
         }
       }
-      const min = Math.floor(Math.min(Math.min(...revenueArray), Math.min(...profitArray)) / 1000) * 1000
-      const max = Math.ceil(Math.max(Math.max(...revenueArray), Math.max(...profitArray)) / 1000) * 1000
-      setMinDataRevenue(min)
-      setMaxDataRevenue(max)
-      setStepSizeRevenue(calculateSize(min, max))
-      setDataRevenues(revenueArray)
-      setDataNetProfit(profitArray)
-      setBigChartLabels(monthNamesArray)
+      const min =
+        Math.floor(
+          Math.min(Math.min(...revenueArray), Math.min(...profitArray)) / 1000
+        ) * 1000;
+      const max =
+        Math.ceil(
+          Math.max(Math.max(...revenueArray), Math.max(...profitArray)) / 1000
+        ) * 1000;
+      setMinDataRevenue(min);
+      setMaxDataRevenue(max);
+      setStepSizeRevenue(calculateSize(min, max));
+      setDataRevenues(revenueArray);
+      setDataNetProfit(profitArray);
+      setBigChartLabels(monthNamesArray);
     }
   };
 
   const roiAndMarginality = (data, filter) => {
     if (
-      (
-        filter.date_sale_filter.months.length === 1 &&
+      (filter.date_sale_filter.months.length === 1 &&
         filter.date_sale_filter.years.length === 1 &&
-        filter.date_sale_filter.weekdays.length === 1
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.weekdays.length === 1) ||
+      (filter.date_sale_filter.months.length === 1 &&
         filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length === 1
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 0 &&
+        filter.date_sale_filter.weekdays.length === 1) ||
+      (filter.date_sale_filter.months.length === 0 &&
         filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length === 1
-      ) ||
-      (
-        filter.date_sale_filter.months.length === 0 &&
+        filter.date_sale_filter.weekdays.length === 1) ||
+      (filter.date_sale_filter.months.length === 0 &&
         filter.date_sale_filter.years.length === 1 &&
-        filter.date_sale_filter.weekdays.length === 1
-      )
+        filter.date_sale_filter.weekdays.length === 1)
     ) {
       const roiArray = [];
       const marginalityHigh = [];
@@ -374,14 +452,13 @@ const Schedule = () => {
         }
       }
 
-      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray]
+      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
       const minVal = Math.min(...arr);
       const maxVal = Math.max(...arr);
       const min = Math.floor(minVal * 100) / 100;
       const max = Math.ceil(maxVal * 100) / 100;
-      setMinProfitability(min)
-      setMaxProfitability(max)
-
+      setMinProfitability(min);
+      setMaxProfitability(max);
 
       //setMaxforROI
       // setStepSizeRevenue(calculateSize(min, max))
@@ -429,19 +506,18 @@ const Schedule = () => {
           }
         }
       }
-      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray]
+      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
       const minVal = Math.min(...arr);
       const maxVal = Math.max(...arr);
       const min = Math.floor(minVal * 100) / 100;
       const max = Math.ceil(maxVal * 100) / 100;
-      setMinProfitability(min)
-      setMaxProfitability(max)
-
+      setMinProfitability(min);
+      setMaxProfitability(max);
 
       //setMaxforROI
-      setDataProfitMinus(marginalityLow)
-      setDataProfitPlus(marginalityHigh)
-      setDataProfitability(roiArray)
+      setDataProfitMinus(marginalityLow);
+      setDataProfitPlus(marginalityHigh);
+      setDataProfitability(roiArray);
     } else {
       const monthNamesArray = [];
       const roiArray = [];
@@ -481,23 +557,22 @@ const Schedule = () => {
           }
         }
       }
-      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray]
+      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
       const minVal = Math.min(...arr);
       const maxVal = Math.max(...arr);
       const min = Math.floor(minVal * 100) / 100;
       const max = Math.ceil(maxVal * 100) / 100;
-      setMinProfitability(min)
-      setMaxProfitability(max)
-
+      setMinProfitability(min);
+      setMaxProfitability(max);
 
       //setMaxforROI
       // setMinDataRevenue(min)
       // setMaxDataRevenue(max)
       // setStepSizeRevenue(calculateSize(min, max))
-      console.log(arr, max, min)
-      setDataProfitMinus(marginalityLow)
-      setDataProfitPlus(marginalityHigh)
-      setDataProfitability(roiArray)
+      console.log(arr, max, min);
+      setDataProfitMinus(marginalityLow);
+      setDataProfitPlus(marginalityHigh);
+      setDataProfitability(roiArray);
     }
   };
 
@@ -563,25 +638,27 @@ const Schedule = () => {
     }
   };
 
-
   useEffect(() => {
-    if (Object.keys(selectedYears).length > 0) {
-      localStorage.setItem("selectedYears", JSON.stringify(selectedYears));
+    if (Object.keys(selectedYears ?? {}).length > 0) {
+      localStorage.setItem('selectedYears', JSON.stringify(selectedYears));
     }
-    if (Object.keys(selectedArticles).length > 0) {
-      localStorage.setItem("selectedArticles", JSON.stringify(selectedArticles));
+    if (Object.keys(selectedArticles ?? {}).length > 0) {
+      localStorage.setItem(
+        'selectedArticles',
+        JSON.stringify(selectedArticles)
+      );
     }
-    if (Object.keys(selectedBrands).length > 0) {
-      localStorage.setItem("selectedBrands", JSON.stringify(selectedBrands));
+    if (Object.keys(selectedBrands ?? {}).length > 0) {
+      localStorage.setItem('selectedBrands', JSON.stringify(selectedBrands));
     }
-    if (Object.keys(selectedGroups).length > 0) {
-      localStorage.setItem("selectedGroups", JSON.stringify(selectedGroups));
+    if (Object.keys(selectedGroups ?? {}).length > 0) {
+      localStorage.setItem('selectedGroups', JSON.stringify(selectedGroups));
     }
-    if (Object.keys(selectedMonths).length > 0) {
-      localStorage.setItem("selectedMonths", JSON.stringify(selectedMonths));
+    if (Object.keys(selectedMonths ?? {}).length > 0) {
+      localStorage.setItem('selectedMonths', JSON.stringify(selectedMonths));
     }
-    if (Object.keys(selectedWeeks).length > 0) {
-      localStorage.setItem("selectedWeeks", JSON.stringify(selectedWeeks));
+    if (Object.keys(selectedWeeks ?? {}).length > 0) {
+      localStorage.setItem('selectedWeeks', JSON.stringify(selectedWeeks));
     }
   }, [
     selectedYears,
@@ -636,60 +713,138 @@ const Schedule = () => {
   };
 
   const handleBrand = () => {
+    const currentBrands = selectedBrands ?? {};
     const newSelectedBrands = {};
     const newAllSelected = !allSelectedBrands;
-    Object.keys(selectedBrands).forEach((brand) => {
+
+    Object.keys(currentBrands).forEach((brand) => {
       newSelectedBrands[brand] = newAllSelected;
     });
     setSelectedBrands(newSelectedBrands);
     setAllSelectedBrands(newAllSelected);
   };
 
+  // const handleBrand = () => {
+  //   const newSelectedBrands = {};
+  //   const newAllSelected = !allSelectedBrands;
+  //   Object.keys(selectedBrands).forEach((brand) => {
+  //     newSelectedBrands[brand] = newAllSelected;
+  //   });
+  //   setSelectedBrands(newSelectedBrands);
+  //   setAllSelectedBrands(newAllSelected);
+  // };
+
   const handleYear = () => {
+    const currentYears = selectedYears ?? {};
     const newSelectedYears = {};
     const newAllSelected = !allSelectedYears;
-    Object.keys(selectedYears).forEach((year) => {
+
+    Object.keys(currentYears).forEach((year) => {
       newSelectedYears[year] = newAllSelected;
     });
+
     setSelectedYears(newSelectedYears);
     setAllSelectedYears(newAllSelected);
   };
+
+  // const handleYear = () => {
+  //   const newSelectedYears = {};
+  //   const newAllSelected = !allSelectedYears;
+  //   Object.keys(selectedYears).forEach((year) => {
+  //     newSelectedYears[year] = newAllSelected;
+  //   });
+  //   setSelectedYears(newSelectedYears);
+  //   setAllSelectedYears(newAllSelected);
+  // };
+
   const handleMonth = () => {
+    const currentMonths = selectedMonths ?? {};
     const newSelectedMonths = {};
     const newAllSelected = !allSelectedMonths;
-    Object.keys(selectedMonths).forEach((month) => {
+
+    Object.keys(currentMonths).forEach((month) => {
       newSelectedMonths[month] = newAllSelected;
     });
+
     setSelectedMonths(newSelectedMonths);
     setAllSelectedMonths(newAllSelected);
   };
+
+  // const handleMonth = () => {
+  //   const newSelectedMonths = {};
+  //   const newAllSelected = !allSelectedMonths;
+  //   Object.keys(selectedMonths).forEach((month) => {
+  //     newSelectedMonths[month] = newAllSelected;
+  //   });
+  //   setSelectedMonths(newSelectedMonths);
+  //   setAllSelectedMonths(newAllSelected);
+  // };
   const handleWeek = () => {
+    const currentWeeks = selectedWeeks ?? {};
     const newSelectedWeeks = {};
     const newAllSelected = !allSelectedWeeks;
-    Object.keys(selectedWeeks).forEach((product) => {
+
+    Object.keys(currentWeeks).forEach((product) => {
       newSelectedWeeks[product] = newAllSelected;
     });
+
     setSelectedWeeks(newSelectedWeeks);
     setAllSelectedWeeks(newAllSelected);
   };
+
+  // const handleWeek = () => {
+  //   const newSelectedWeeks = {};
+  //   const newAllSelected = !allSelectedWeeks;
+  //   Object.keys(selectedWeeks).forEach((product) => {
+  //     newSelectedWeeks[product] = newAllSelected;
+  //   });
+  //   setSelectedWeeks(newSelectedWeeks);
+  //   setAllSelectedWeeks(newAllSelected);
+  // };
   const handleGroup = () => {
+    const currentGroups = selectedGroups ?? {};
     const newSelectedGroups = {};
     const newAllSelected = !allSelectedGroups;
-    Object.keys(selectedGroups).forEach((product) => {
+
+    Object.keys(currentGroups).forEach((product) => {
       newSelectedGroups[product] = newAllSelected;
     });
+
     setSelectedGroups(newSelectedGroups);
     setAllSelectedGroups(newAllSelected);
   };
+
+  // const handleGroup = () => {
+  //   const newSelectedGroups = {};
+  //   const newAllSelected = !allSelectedGroups;
+  //   Object.keys(selectedGroups).forEach((product) => {
+  //     newSelectedGroups[product] = newAllSelected;
+  //   });
+  //   setSelectedGroups(newSelectedGroups);
+  //   setAllSelectedGroups(newAllSelected);
+  // };
   const handleArticle = () => {
+    const currentArticles = selectedArticles ?? {};
     const newSelectedArticles = {};
     const newAllSelected = !allSelectedArticles;
-    Object.keys(selectedArticles).forEach((product) => {
+
+    Object.keys(currentArticles).forEach((product) => {
       newSelectedArticles[product] = newAllSelected;
     });
+
     setSelectedArticles(newSelectedArticles);
     setAllSelectedArticles(newAllSelected);
   };
+
+  // const handleArticle = () => {
+  //   const newSelectedArticles = {};
+  //   const newAllSelected = !allSelectedArticles;
+  //   Object.keys(selectedArticles).forEach((product) => {
+  //     newSelectedArticles[product] = newAllSelected;
+  //   });
+  //   setSelectedArticles(newSelectedArticles);
+  //   setAllSelectedArticles(newAllSelected);
+  // };
   const handleProduct = () => {
     const newSelectedProducts = {};
     const newAllSelected = !allSelectedProducts;
@@ -748,7 +903,7 @@ const Schedule = () => {
                       </div>
                     ) : (
                       <div className={styles.list}>
-                        {Object.keys(selectedBrands)
+                        {Object.keys(selectedBrands ?? {})
                           .filter((brand) => brand !== 'пусто')
                           .map((brand, index) => (
                             <div className={styles.brandItem} key={index}>
@@ -789,7 +944,7 @@ const Schedule = () => {
                       </div>
                     ) : (
                       <div className={styles.list}>
-                        {Object.keys(selectedYears).map((year, index) => (
+                        {Object.keys(selectedYears ?? {}).map((year, index) => (
                           <div className={styles.brandItem} key={index}>
                             <label className={styles.checkboxContainer}>
                               <input
@@ -834,26 +989,28 @@ const Schedule = () => {
                           flexDirection: 'column-reverse',
                         }}
                       >
-                        {Object.keys(selectedMonths).map((monthKey, index) => (
-                          <div className={styles.brandItem} key={index}>
-                            <label className={styles.checkboxContainer}>
-                              <input
-                                type='checkbox'
-                                checked={selectedMonths[monthKey]}
-                                onChange={() => toggleCheckboxMonth(monthKey)}
-                                className={styles.checkboxInput}
-                              />
-                              <span className={styles.customCheckbox}></span>
-                            </label>
-                            {/* Преобразуем ключ месяца в название месяца */}
-                            <span
-                              className={styles.brandName}
-                              title={monthNames[parseInt(monthKey, 10) - 1]}
-                            >
-                              {monthNames[parseInt(monthKey, 10) - 1]}
-                            </span>
-                          </div>
-                        ))}
+                        {Object.keys(selectedMonths ?? {}).map(
+                          (monthKey, index) => (
+                            <div className={styles.brandItem} key={index}>
+                              <label className={styles.checkboxContainer}>
+                                <input
+                                  type='checkbox'
+                                  checked={selectedMonths[monthKey]}
+                                  onChange={() => toggleCheckboxMonth(monthKey)}
+                                  className={styles.checkboxInput}
+                                />
+                                <span className={styles.customCheckbox}></span>
+                              </label>
+                              {/* Преобразуем ключ месяца в название месяца */}
+                              <span
+                                className={styles.brandName}
+                                title={monthNames[parseInt(monthKey, 10) - 1]}
+                              >
+                                {monthNames[parseInt(monthKey, 10) - 1]}
+                              </span>
+                            </div>
+                          )
+                        )}
                       </div>
                     )}
                   </div>
@@ -877,22 +1034,24 @@ const Schedule = () => {
                       </div>
                     ) : (
                       <div className={styles.list}>
-                        {Object.keys(selectedWeeks).map((brand, index) => (
-                          <div className={styles.brandItem} key={index}>
-                            <label className={styles.checkboxContainer}>
-                              <input
-                                type='checkbox'
-                                checked={selectedWeeks[brand]}
-                                onChange={() => toggleCheckboxWeek(brand)}
-                                className={styles.checkboxInput}
-                              />
-                              <span className={styles.customCheckbox}></span>
-                            </label>
-                            <span className={styles.brandName} title={brand}>
-                              {brand}
-                            </span>
-                          </div>
-                        ))}
+                        {Object.keys(selectedWeeks ?? {}).map(
+                          (brand, index) => (
+                            <div className={styles.brandItem} key={index}>
+                              <label className={styles.checkboxContainer}>
+                                <input
+                                  type='checkbox'
+                                  checked={selectedWeeks[brand]}
+                                  onChange={() => toggleCheckboxWeek(brand)}
+                                  className={styles.checkboxInput}
+                                />
+                                <span className={styles.customCheckbox}></span>
+                              </label>
+                              <span className={styles.brandName} title={brand}>
+                                {brand}
+                              </span>
+                            </div>
+                          )
+                        )}
                       </div>
                     )}
                   </div>
@@ -916,7 +1075,7 @@ const Schedule = () => {
                       </div>
                     ) : (
                       <div className={styles.list}>
-                        {Object.keys(selectedGroups)
+                        {Object.keys(selectedGroups ?? {})
                           .filter((groupName) => groupName !== 'пусто')
                           .map((brand, index) => (
                             <div className={styles.brandItem} key={index}>
@@ -957,7 +1116,7 @@ const Schedule = () => {
                       </div>
                     ) : (
                       <div className={styles.list}>
-                        {Object.keys(selectedArticles)
+                        {Object.keys(selectedArticles ?? {})
                           .filter((article) => article !== 'пусто')
                           .map((article, index) => (
                             <div className={styles.brandItem} key={index}>
@@ -1058,8 +1217,8 @@ const Schedule = () => {
               stepSizeRevenue={stepSizeRevenue}
               minDataRevenue={minDataRevenue}
               maxDataRevenue={maxDataRevenue}
-              isLoading={isChartsLoading} />
-
+              isLoading={isChartsLoading}
+            />
           </div>
           <div className='container dash-container '>
             <ScheduleProfitabilityBigChart
@@ -1071,12 +1230,19 @@ const Schedule = () => {
               min={minProfitability}
               max={maxProfitability}
             />
-
           </div>
         </div>
         <div className={`${styles.ScheduleFooter} dash-container container`}>
-          <StructureRevenue dataStructureRevenue={dataStructureRevenue} isLoading={isChartsLoading} />
-          <RevenueStorageChart dataRevenueStorage={dataRevenueStorage} labels={dataRevenueStorageLabels} isLoading={isChartsLoading} max={maxWarehouse} />
+          <StructureRevenue
+            dataStructureRevenue={dataStructureRevenue}
+            isLoading={isChartsLoading}
+          />
+          <RevenueStorageChart
+            dataRevenueStorage={dataRevenueStorage}
+            labels={dataRevenueStorageLabels}
+            isLoading={isChartsLoading}
+            max={maxWarehouse}
+          />
         </div>
         <BottomNavigation />
       </div>

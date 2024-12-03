@@ -39,12 +39,12 @@ const ReportAbcAnalysis = () => {
     }));
   };
   const filterKeys = [
-    "selectedYears",
-    "selectedMonths",
-    "selectedArticles",
-    "selectedBrands",
-    "selectedGroups",
-    "selectedWeeks"
+    'selectedYears',
+    'selectedMonths',
+    'selectedArticles',
+    'selectedBrands',
+    'selectedGroups',
+    'selectedWeeks',
   ];
 
   const [allSelectedProducts, setAllSelectedProducts] = useState(true);
@@ -56,7 +56,9 @@ const ReportAbcAnalysis = () => {
   const [allSelectedBrands, setAllSelectedBrands] = useState(true);
 
   const [selectedBrands, setSelectedBrands] = useState({});
+  console.log('selectedBrands', selectedBrands);
   const [selectedYears, setSelectedYears] = useState({});
+  console.log('selectedYears', selectedYears);
   const [selectedMonths, setSelectedMonths] = useState({});
   const [selectedWeeks, setSelectedWeeks] = useState({});
   const [selectedGroups, setSelectedGroups] = useState({});
@@ -86,16 +88,16 @@ const ReportAbcAnalysis = () => {
         data.brand_filter.map((brand) => [brand, true])
       ),
       setSelectedArticles: Object.fromEntries(
-        data.article_filter.map((id) => [id, true])
+        data.article_filter.map((id) => [id.toString(), true])
       ),
       setSelectedGroups: Object.fromEntries(
         data.group_filter.map((group) => [group, true])
       ),
       setSelectedYears: Object.fromEntries(
-        data.year_filter.map((year) => [year, true])
+        data.year_filter.map((year) => [year.toString(), true])
       ),
       setSelectedMonths: Object.fromEntries(
-        data.month_filter.map((month) => [month, true])
+        data.month_filter.map((month) => [month.toString(), true])
       ),
       setSelectedWeeks: Object.fromEntries(
         data.week_filter.map((weekday) => [weekday, true])
@@ -128,44 +130,62 @@ const ReportAbcAnalysis = () => {
       updateData();
     }
   }, [filtersInitialized]);
-
   const updateFilterFields = async () => {
     setIsLoading(true);
     try {
       const data = await ServiceFunctions.getAbcReportsFilters(authToken);
       const transformedFilters = transformFilters(data);
 
-      // Mapping of filter keys to their corresponding setters
-      const setters = {
-        selectedYearsABC: setSelectedYears,
-        selectedMonthsABC: setSelectedMonths,
-        selectedArticlesABC: setSelectedArticles,
-        selectedBrandsABC: setSelectedBrands,
-        selectedGroupsABC: setSelectedGroups,
-        selectedWeeksABC: setSelectedWeeks,
-        selectedProductsABC: setSelectedProducts,
+      // Map transformed data to corresponding state setters
+      const filterMapping = {
+        setSelectedBrands: {
+          setter: setSelectedBrands,
+          storageKey: 'selectedBrandsABC',
+          value: transformedFilters.setSelectedBrands,
+        },
+        setSelectedArticles: {
+          setter: setSelectedArticles,
+          storageKey: 'selectedArticlesABC',
+          value: transformedFilters.setSelectedArticles,
+        },
+        setSelectedGroups: {
+          setter: setSelectedGroups,
+          storageKey: 'selectedGroupsABC',
+          value: transformedFilters.setSelectedGroups,
+        },
+        setSelectedYears: {
+          setter: setSelectedYears,
+          storageKey: 'selectedYearsABC',
+          value: transformedFilters.setSelectedYears,
+        },
+        setSelectedMonths: {
+          setter: setSelectedMonths,
+          storageKey: 'selectedMonthsABC',
+          value: transformedFilters.setSelectedMonths,
+        },
+        setSelectedWeeks: {
+          setter: setSelectedWeeks,
+          storageKey: 'selectedWeeksABC',
+          value: transformedFilters.setSelectedWeeks,
+        },
+        setSelectedProducts: {
+          setter: setSelectedProducts,
+          storageKey: 'selectedProductsABC',
+          value: transformedFilters.setSelectedProducts,
+        },
       };
 
-      // Automatically update the state for each filter key
-      filterKeys.forEach((key) => {
-        const transformedValue = transformedFilters[key];
-        const storedValue = localStorage.getItem(key);
-
+      Object.values(filterMapping).forEach(({ setter, storageKey, value }) => {
+        const storedValue = localStorage.getItem(storageKey);
         if (storedValue) {
           const parsedStoredValue = JSON.parse(storedValue);
-
-          // Merge stored data with transformed data if both exist
-          if (Object.keys(parsedStoredValue).length > 0) {
-            // Call the setter function dynamically
-            setters[key]({
-              ...transformedValue,
-              ...parsedStoredValue,
-            });
-          } else {
-            setters[key](transformedValue);
-          }
+          setter(
+            Object.keys(parsedStoredValue).length > 0
+              ? { ...value, ...parsedStoredValue }
+              : value
+          );
         } else {
-          setters[key](transformedValue);
+          setter(value);
         }
       });
     } catch (error) {
@@ -174,6 +194,54 @@ const ReportAbcAnalysis = () => {
       setIsLoading(false);
     }
   };
+
+  // const updateFilterFields = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const data = await ServiceFunctions.getAbcReportsFilters(authToken);
+  //     console.log('API Response:', data);
+  //     const transformedFilters = transformFilters(data);
+  //     console.log('transformedFilters', transformedFilters);
+
+  //     // Mapping of filter keys to their corresponding setters
+  //     const setters = {
+  //       selectedYearsABC: setSelectedYears,
+  //       selectedMonthsABC: setSelectedMonths,
+  //       selectedArticlesABC: setSelectedArticles,
+  //       selectedBrandsABC: setSelectedBrands,
+  //       selectedGroupsABC: setSelectedGroups,
+  //       selectedWeeksABC: setSelectedWeeks,
+  //       selectedProductsABC: setSelectedProducts,
+  //     };
+
+  //     // Automatically update the state for each filter key
+  //     filterKeys.forEach((key) => {
+  //       const transformedValue = transformedFilters[key];
+  //       const storedValue = localStorage.getItem(key);
+
+  //       if (storedValue) {
+  //         const parsedStoredValue = JSON.parse(storedValue);
+
+  //         // Merge stored data with transformed data if both exist
+  //         if (Object.keys(parsedStoredValue).length > 0) {
+  //           // Call the setter function dynamically
+  //           setters[key]({
+  //             ...transformedValue,
+  //             ...parsedStoredValue,
+  //           });
+  //         } else {
+  //           setters[key](transformedValue);
+  //         }
+  //       } else {
+  //         setters[key](transformedValue);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error('Ошибка при загрузке фильтров:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const updateData = async () => {
     setIsRevenueLoading(true);
@@ -213,25 +281,27 @@ const ReportAbcAnalysis = () => {
     }
   };
 
-
   useEffect(() => {
     if (Object.keys(selectedYears).length > 0) {
-      localStorage.setItem("selectedYearsABC", JSON.stringify(selectedYears));
+      localStorage.setItem('selectedYearsABC', JSON.stringify(selectedYears));
     }
     if (Object.keys(selectedArticles).length > 0) {
-      localStorage.setItem("selectedArticlesABC", JSON.stringify(selectedArticles));
+      localStorage.setItem(
+        'selectedArticlesABC',
+        JSON.stringify(selectedArticles)
+      );
     }
     if (Object.keys(selectedBrands).length > 0) {
-      localStorage.setItem("selectedBrandsABC", JSON.stringify(selectedBrands));
+      localStorage.setItem('selectedBrandsABC', JSON.stringify(selectedBrands));
     }
     if (Object.keys(selectedGroups).length > 0) {
-      localStorage.setItem("selectedGroupsABC", JSON.stringify(selectedGroups));
+      localStorage.setItem('selectedGroupsABC', JSON.stringify(selectedGroups));
     }
     if (Object.keys(selectedMonths).length > 0) {
-      localStorage.setItem("selectedMonthsABC", JSON.stringify(selectedMonths));
+      localStorage.setItem('selectedMonthsABC', JSON.stringify(selectedMonths));
     }
     if (Object.keys(selectedWeeks).length > 0) {
-      localStorage.setItem("selectedWeeksABC", JSON.stringify(selectedWeeks));
+      localStorage.setItem('selectedWeeksABC', JSON.stringify(selectedWeeks));
     }
   }, [
     selectedYears,
@@ -241,7 +311,6 @@ const ReportAbcAnalysis = () => {
     selectedGroups,
     selectedWeeks,
   ]);
-
 
   const toggleCheckboxBrands = (brand) => {
     setSelectedBrands((prevState) => ({
@@ -728,15 +797,17 @@ const ReportAbcAnalysis = () => {
             >
               <div className={styles.tabs}>
                 <button
-                  className={`${styles.tab} ${activeTab === 'revenue' ? styles.active : ''
-                    }`}
+                  className={`${styles.tab} ${
+                    activeTab === 'revenue' ? styles.active : ''
+                  }`}
                   onClick={() => handleTabClick('revenue')}
                 >
                   По выручке
                 </button>
                 <button
-                  className={`${styles.tab} ${activeTab === 'profit' ? styles.active : ''
-                    }`}
+                  className={`${styles.tab} ${
+                    activeTab === 'profit' ? styles.active : ''
+                  }`}
                   onClick={() => handleTabClick('profit')}
                 >
                   По прибыли
@@ -744,8 +815,9 @@ const ReportAbcAnalysis = () => {
               </div>
               {activeTab === 'revenue' && (
                 <div
-                  className={`${styles.containerRevenue} ${isOpenFilters ? styles.expanded : ''
-                    }`}
+                  className={`${styles.containerRevenue} ${
+                    isOpenFilters ? styles.expanded : ''
+                  }`}
                 >
                   <div className={styles.rowHeader}>
                     <div
@@ -791,8 +863,9 @@ const ReportAbcAnalysis = () => {
                     </div>
                   ) : (
                     <div
-                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
-                        }`}
+                      className={`${styles.rowsWrapper} ${
+                        isOpenFilters ? styles.expanded : ''
+                      }`}
                     >
                       {dataRevenue.map((item, index) => (
                         <div key={index} className={styles.row}>
@@ -968,8 +1041,9 @@ const ReportAbcAnalysis = () => {
               )}
               {activeTab === 'profit' && (
                 <div
-                  className={`${styles.containerProfit} ${isOpenFilters ? styles.expanded : ''
-                    }`}
+                  className={`${styles.containerProfit} ${
+                    isOpenFilters ? styles.expanded : ''
+                  }`}
                 >
                   <div className={styles.rowHeader}>
                     <div
@@ -1015,8 +1089,9 @@ const ReportAbcAnalysis = () => {
                     </div>
                   ) : (
                     <div
-                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
-                        }`}
+                      className={`${styles.rowsWrapper} ${
+                        isOpenFilters ? styles.expanded : ''
+                      }`}
                     >
                       {dataRevenue.map((item, index) => (
                         <div key={index} className={styles.row}>
@@ -1210,22 +1285,28 @@ const ReportAbcAnalysis = () => {
         <div className={`${styles.ScheduleFooter} dash-container container`}>
           <div className={styles.tabs}>
             <button
-              className={`${styles.tab} ${activeTab === 'revenue' ? styles.active : ''
-                }`}
+              className={`${styles.tab} ${
+                activeTab === 'revenue' ? styles.active : ''
+              }`}
               onClick={() => handleTabClick('revenue')}
             >
               По выручке
             </button>
             <button
-              className={`${styles.tab} ${activeTab === 'profit' ? styles.active : ''
-                }`}
+              className={`${styles.tab} ${
+                activeTab === 'profit' ? styles.active : ''
+              }`}
               onClick={() => handleTabClick('profit')}
             >
               По прибыли
             </button>
           </div>
           {activeTab === 'revenue' && (
-            <div className={`${styles.containerRevenue} ${isOpenFilters ? styles.expanded : ''}`}>
+            <div
+              className={`${styles.containerRevenue} ${
+                isOpenFilters ? styles.expanded : ''
+              }`}
+            >
               <div className={styles.rowHeader}>
                 <div className={styles.article} style={{ color: '#8C8C8C' }}>
                   Артикул
@@ -1254,14 +1335,17 @@ const ReportAbcAnalysis = () => {
               </div>
               {isRevenueLoading ? (
                 <div
-                  className="d-flex flex-column align-items-center justify-content-center"
+                  className='d-flex flex-column align-items-center justify-content-center'
                   style={{ height: '100px', marginTop: '40px' }}
                 >
-                  <span className="loader"></span>
+                  <span className='loader'></span>
                 </div>
               ) : (
-
-                <div className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''}`} >
+                <div
+                  className={`${styles.rowsWrapper} ${
+                    isOpenFilters ? styles.expanded : ''
+                  }`}
+                >
                   {dataRevenue.map((item, index) => (
                     <div key={index} className={styles.row}>
                       {/* Parent Row */}
@@ -1273,13 +1357,15 @@ const ReportAbcAnalysis = () => {
                             display: 'flex',
                             alignItems: 'center',
                             padding: '8px 0',
-                            fontWeight: "700"
+                            fontWeight: '700',
                           }}
                         >
                           {item.wb_id}
                           <img
                             src={expandedRows[item.wb_id] ? upArrow : downArrow}
-                            alt={expandedRows[item.wb_id] ? 'Collapse' : 'Expand'}
+                            alt={
+                              expandedRows[item.wb_id] ? 'Collapse' : 'Expand'
+                            }
                             style={{
                               marginLeft: '8px',
                               width: '16px',
@@ -1290,7 +1376,7 @@ const ReportAbcAnalysis = () => {
                         {/* Add Barcode under wb_id */}
                         {expandedRows[item.wb_id] &&
                           item.items.map((product, i) => (
-                            <div key={i} style={{ padding: "8px 0 " }}>
+                            <div key={i} style={{ padding: '8px 0 ' }}>
                               {product.barcode}
                             </div>
                           ))}
@@ -1299,23 +1385,39 @@ const ReportAbcAnalysis = () => {
                       <div className={styles.product}>
                         {expandedRows[item.wb_id] ? (
                           <>
-                            <div className={styles.productName} title={item.title}>{item.title}</div> {/* Parent Title */}
+                            <div
+                              className={styles.productName}
+                              title={item.title}
+                            >
+                              {item.title}
+                            </div>{' '}
+                            {/* Parent Title */}
                             {/* Expanded Items */}
                             {item.items.map((product, i) => (
-                              <div key={i} className={styles.productName} title={product.title}>
+                              <div
+                                key={i}
+                                className={styles.productName}
+                                title={product.title}
+                              >
                                 {product.title}
                               </div>
                             ))}
                           </>
                         ) : (
-                          <div className={styles.productName} title={item.title}>{item.title}</div>
+                          <div
+                            className={styles.productName}
+                            title={item.title}
+                          >
+                            {item.title}
+                          </div>
                         )}
                       </div>
 
                       <div className={styles.profit}>
                         {expandedRows[item.wb_id] ? (
                           <>
-                            <div>{item.proceeds.toLocaleString()} ₽</div> {/* Parent Proceed */}
+                            <div>{item.proceeds.toLocaleString()} ₽</div>{' '}
+                            {/* Parent Proceed */}
                             {/* Expanded Item Proceeds */}
                             {item.items.map((product, i) => (
                               <div key={i}>
@@ -1331,12 +1433,11 @@ const ReportAbcAnalysis = () => {
                       <div className={styles.profitAmount}>
                         {expandedRows[item.wb_id] ? (
                           <>
-                            <div>{item.proceeds_percent}%</div> {/* Parent Profit Percent */}
+                            <div>{item.proceeds_percent}%</div>{' '}
+                            {/* Parent Profit Percent */}
                             {/* Expanded Item Profit Percent */}
                             {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.proceeds_percent}%
-                              </div>
+                              <div key={i}>{product.proceeds_percent}%</div>
                             ))}
                           </>
                         ) : (
@@ -1349,23 +1450,27 @@ const ReportAbcAnalysis = () => {
                           <>
                             <div
                               style={{
-                                backgroundColor: colorMap[item.proceed_abc] || 'transparent',
+                                backgroundColor:
+                                  colorMap[item.proceed_abc] || 'transparent',
                                 padding: '4px 16px',
                                 borderRadius: '8px',
-                                marginRight: "75%"
+                                marginRight: '75%',
                               }}
                             >
                               {item.proceed_abc}
-                            </div> {/* Parent Category */}
+                            </div>{' '}
+                            {/* Parent Category */}
                             {/* Expanded Item Categories */}
                             {item.items.map((product, i) => (
-                              <div key={i} style={{ padding: "6px 0" }}>
+                              <div key={i} style={{ padding: '6px 0' }}>
                                 <div
                                   style={{
-                                    backgroundColor: colorMap[product.proceed_abc] || 'transparent',
+                                    backgroundColor:
+                                      colorMap[product.proceed_abc] ||
+                                      'transparent',
                                     padding: '4px 16px',
                                     borderRadius: '8px',
-                                    marginRight: "75%"
+                                    marginRight: '75%',
                                   }}
                                 >
                                   {product.proceed_abc}
@@ -1376,10 +1481,11 @@ const ReportAbcAnalysis = () => {
                         ) : (
                           <div
                             style={{
-                              backgroundColor: colorMap[item.proceed_abc] || 'transparent',
+                              backgroundColor:
+                                colorMap[item.proceed_abc] || 'transparent',
                               padding: '4px 16px',
                               borderRadius: '8px',
-                              marginRight: "75%"
+                              marginRight: '75%',
                             }}
                           >
                             {item.proceed_abc}
@@ -1390,12 +1496,11 @@ const ReportAbcAnalysis = () => {
                       <div className={styles.generalCategory}>
                         {expandedRows[item.wb_id] ? (
                           <>
-                            <div>{item.common_abc}</div> {/* Parent Common Category */}
+                            <div>{item.common_abc}</div>{' '}
+                            {/* Parent Common Category */}
                             {/* Expanded Item Common Categories */}
                             {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.common_abc}
-                              </div>
+                              <div key={i}>{product.common_abc}</div>
                             ))}
                           </>
                         ) : (
@@ -1406,11 +1511,14 @@ const ReportAbcAnalysis = () => {
                   ))}
                 </div>
               )}
-
             </div>
           )}
           {activeTab === 'profit' && (
-            <div className={`${styles.containerProfit} ${isOpenFilters ? styles.expanded : ''}`}>
+            <div
+              className={`${styles.containerProfit} ${
+                isOpenFilters ? styles.expanded : ''
+              }`}
+            >
               <div className={styles.rowHeader}>
                 <div className={styles.article} style={{ color: '#8C8C8C' }}>
                   Артикул
@@ -1439,14 +1547,18 @@ const ReportAbcAnalysis = () => {
               </div>
               {isRevenueLoading ? (
                 <div
-                  className="d-flex flex-column align-items-center justify-content-center"
+                  className='d-flex flex-column align-items-center justify-content-center'
                   style={{ height: '100px', marginTop: '40px' }}
                 >
-                  <span className="loader"></span>
+                  <span className='loader'></span>
                 </div>
               ) : (
-                <div className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''}`} >{
-                  dataRevenue.map((item, index) => (
+                <div
+                  className={`${styles.rowsWrapper} ${
+                    isOpenFilters ? styles.expanded : ''
+                  }`}
+                >
+                  {dataRevenue.map((item, index) => (
                     <div key={index} className={styles.row}>
                       {/* Parent Row */}
                       <div className={styles.article}>
@@ -1457,13 +1569,15 @@ const ReportAbcAnalysis = () => {
                             display: 'flex',
                             alignItems: 'center',
                             padding: '8px 0',
-                            fontWeight: "700"
+                            fontWeight: '700',
                           }}
                         >
                           {item.wb_id}
                           <img
                             src={expandedRows[item.wb_id] ? upArrow : downArrow}
-                            alt={expandedRows[item.wb_id] ? 'Collapse' : 'Expand'}
+                            alt={
+                              expandedRows[item.wb_id] ? 'Collapse' : 'Expand'
+                            }
                             style={{
                               marginLeft: '8px',
                               width: '16px',
@@ -1474,7 +1588,7 @@ const ReportAbcAnalysis = () => {
                         {/* Add Barcode under wb_id */}
                         {expandedRows[item.wb_id] &&
                           item.items.map((product, i) => (
-                            <div key={i} style={{ padding: "8px 0 " }}>
+                            <div key={i} style={{ padding: '8px 0 ' }}>
                               {product.barcode}
                             </div>
                           ))}
@@ -1483,23 +1597,39 @@ const ReportAbcAnalysis = () => {
                       <div className={styles.product}>
                         {expandedRows[item.wb_id] ? (
                           <>
-                            <div className={styles.productName} title={item.title}>{item.title}</div> {/* Parent Title */}
+                            <div
+                              className={styles.productName}
+                              title={item.title}
+                            >
+                              {item.title}
+                            </div>{' '}
+                            {/* Parent Title */}
                             {/* Expanded Items */}
                             {item.items.map((product, i) => (
-                              <div key={i} className={styles.productName} title={product.title}>
+                              <div
+                                key={i}
+                                className={styles.productName}
+                                title={product.title}
+                              >
                                 {product.title}
                               </div>
                             ))}
                           </>
                         ) : (
-                          <div className={styles.productName} title={item.title}>{item.title}</div>
+                          <div
+                            className={styles.productName}
+                            title={item.title}
+                          >
+                            {item.title}
+                          </div>
                         )}
                       </div>
 
                       <div className={styles.profit}>
                         {expandedRows[item.wb_id] ? (
                           <>
-                            <div>{item.profit.toLocaleString()} ₽</div> {/* Parent Proceed */}
+                            <div>{item.profit.toLocaleString()} ₽</div>{' '}
+                            {/* Parent Proceed */}
                             {/* Expanded Item Proceeds */}
                             {item.items.map((product, i) => (
                               <div key={i}>
@@ -1515,12 +1645,11 @@ const ReportAbcAnalysis = () => {
                       <div className={styles.profitAmount}>
                         {expandedRows[item.wb_id] ? (
                           <>
-                            <div>{item.profit_percent}%</div> {/* Parent Profit Percent */}
+                            <div>{item.profit_percent}%</div>{' '}
+                            {/* Parent Profit Percent */}
                             {/* Expanded Item Profit Percent */}
                             {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.profit_percent}%
-                              </div>
+                              <div key={i}>{product.profit_percent}%</div>
                             ))}
                           </>
                         ) : (
@@ -1533,23 +1662,27 @@ const ReportAbcAnalysis = () => {
                           <>
                             <div
                               style={{
-                                backgroundColor: colorMap[item.profit_abc] || 'transparent',
+                                backgroundColor:
+                                  colorMap[item.profit_abc] || 'transparent',
                                 padding: '4px 16px',
                                 borderRadius: '8px',
-                                marginRight: "75%"
+                                marginRight: '75%',
                               }}
                             >
                               {item.profit_abc}
-                            </div> {/* Parent Category */}
+                            </div>{' '}
+                            {/* Parent Category */}
                             {/* Expanded Item Categories */}
                             {item.items.map((product, i) => (
-                              <div key={i} style={{ padding: "6px 0" }}>
+                              <div key={i} style={{ padding: '6px 0' }}>
                                 <div
                                   style={{
-                                    backgroundColor: colorMap[product.proceed_abc] || 'transparent',
+                                    backgroundColor:
+                                      colorMap[product.proceed_abc] ||
+                                      'transparent',
                                     padding: '4px 16px',
                                     borderRadius: '8px',
-                                    marginRight: "75%"
+                                    marginRight: '75%',
                                   }}
                                 >
                                   {product.profit_abc}
@@ -1560,10 +1693,11 @@ const ReportAbcAnalysis = () => {
                         ) : (
                           <div
                             style={{
-                              backgroundColor: colorMap[item.proceed_abc] || 'transparent',
+                              backgroundColor:
+                                colorMap[item.proceed_abc] || 'transparent',
                               padding: '4px 16px',
                               borderRadius: '8px',
-                              marginRight: "75%"
+                              marginRight: '75%',
                             }}
                           >
                             {item.profit_abc}
@@ -1574,12 +1708,11 @@ const ReportAbcAnalysis = () => {
                       <div className={styles.generalCategory}>
                         {expandedRows[item.wb_id] ? (
                           <>
-                            <div>{item.common_abc}</div> {/* Parent Common Category */}
+                            <div>{item.common_abc}</div>{' '}
+                            {/* Parent Common Category */}
                             {/* Expanded Item Common Categories */}
                             {item.items.map((product, i) => (
-                              <div key={i}>
-                                {product.common_abc}
-                              </div>
+                              <div key={i}>{product.common_abc}</div>
                             ))}
                           </>
                         ) : (
@@ -1590,7 +1723,6 @@ const ReportAbcAnalysis = () => {
                   ))}
                 </div>
               )}
-
             </div>
           )}
         </div>
