@@ -1,7 +1,7 @@
 import styles from './Schedule.module.css';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import BigChart from '../components/BigChart';
 import ScheduleBigChart from '../components/ScheduleBigChart';
 import ScheduleProfitabilityBigChart from '../components/ScheduleProfitabilityChart';
@@ -16,6 +16,16 @@ import plFake from '../pages/images/schedule-fake.png';
 const Schedule = () => {
   const { authToken, user } = useContext(AuthContext);
 
+  // const user = {
+  //   id: 2,
+  //   role: 'admin',
+  //   is_confirmed: true,
+  //   is_onboarded: true,
+  //   is_test_used: false,
+  //   email: 'modinsv@yandex.ru',
+  //   subscription_status: 'Smart',
+  //   is_report_downloaded: !null,
+  // };
   const [isLoading, setIsLoading] = useState(false);
   const [isChartsLoading, setIsChartsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -134,11 +144,37 @@ const Schedule = () => {
       ),
     };
   };
+  const maxRows = useMemo(() => {
+    const datasets = [
+      selectedBrands,
+      selectedYears,
+      selectedMonths,
+      selectedWeeks,
+      selectedGroups,
+      selectedArticles,
+    ];
+    return Math.max(
+      ...datasets.map((dataset) =>
+        Object.keys(dataset).filter((key) => dataset[key] !== 'пусто' && key !== '0').length
+      )
+    );
+  }, [
+    selectedBrands,
+    selectedYears,
+    selectedMonths,
+    selectedWeeks,
+    selectedGroups,
+    selectedArticles,
+  ]);
+  const rowHeight = 30;
+  const maxVisibleRows = 5;
+  const containerHeight = Math.min(maxRows, maxVisibleRows) * rowHeight;
+
 
   useEffect(() => {
     const fetchData = async () => {
-      await updateFilterFields(); // Load filters and data
-      updateScheduleChartData(); // Load chart data
+      await updateFilterFields();
+      updateScheduleChartData();
     };
     fetchData();
   }, []);
@@ -905,7 +941,7 @@ const Schedule = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedBrands ?? {})
                           .filter((brand) => brand !== 'пусто')
                           .map((brand, index) => (
@@ -946,7 +982,7 @@ const Schedule = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedYears ?? {}).map((year, index) => (
                           <div className={styles.brandItem} key={index}>
                             <label className={styles.checkboxContainer}>
@@ -990,6 +1026,7 @@ const Schedule = () => {
                         style={{
                           justifyContent: 'flex-end',
                           flexDirection: 'column-reverse',
+                          height: containerHeight,
                         }}
                       >
                         {Object.keys(selectedMonths ?? {}).map(
@@ -1036,7 +1073,7 @@ const Schedule = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedWeeks ?? {}).map(
                           (brand, index) => (
                             <div className={styles.brandItem} key={index}>
@@ -1077,7 +1114,7 @@ const Schedule = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedGroups ?? {})
                           .filter((groupName) => groupName !== 'пусто')
                           .map((brand, index) => (
@@ -1118,7 +1155,7 @@ const Schedule = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedArticles ?? {})
                           .filter((article) => article !== 'пусто')
                           .map((article, index) => (

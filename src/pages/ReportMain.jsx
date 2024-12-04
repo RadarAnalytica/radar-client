@@ -235,9 +235,18 @@ const ReportMain = () => {
                       </ul>
                     </div>
                   </div>
-                  <div style={{ height: '300px', background: 'grey' }}>
-                    <iframe width="430" height="300" src="https://play.boomstream.com/P2UCApCi" frameborder="0" scrolling="no" allowfullscreen="" ></iframe>
+                  <div style={{ background: "black", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <div style={{ position: "relative", width: "100%", maxWidth: "800px", paddingBottom: "56.25%" }}>
+                      <iframe
+                        style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+                        src="https://play.boomstream.com/cx149c1B?title=0&start=1"
+                        frameBorder="0"
+                        scrolling="no"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
                   </div>
+
                 </div>
               </div>
             )}

@@ -1,6 +1,6 @@
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useMemo } from 'react';
 import styles from './ReportAbcAnalysis.module.css';
 import upArrow from '../assets/up.svg';
 import downArrow from '../assets/down.svg';
@@ -14,6 +14,16 @@ import DemonstrationSection from '../components/DemonstrationSection';
 const ReportAbcAnalysis = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRevenueLoading, setIsRevenueLoading] = useState(false);
+  // const user = {
+  //   id: 2,
+  //   role: 'admin',
+  //   is_confirmed: true,
+  //   is_onboarded: true,
+  //   is_test_used: false,
+  //   email: 'modinsv@yandex.ru',
+  //   subscription_status: 'Smart',
+  //   is_report_downloaded: !null,
+  // };
 
   const [error, setError] = useState(null);
   const { authToken, user } = useContext(AuthContext);
@@ -80,6 +90,36 @@ const ReportAbcAnalysis = () => {
     'Ноябрь',
     'Декабрь',
   ];
+
+  const maxRows = useMemo(() => {
+    const datasets = [
+      selectedBrands,
+      selectedYears,
+      selectedMonths,
+      selectedWeeks,
+      selectedGroups,
+      selectedArticles,
+    ];
+    return Math.max(
+      ...datasets.map((dataset) =>
+        Object.keys(dataset).filter((key) => dataset[key] !== 'пусто' && key !== '0').length
+      )
+    );
+  }, [
+    selectedBrands,
+    selectedYears,
+    selectedMonths,
+    selectedWeeks,
+    selectedGroups,
+    selectedArticles,
+  ]);
+  const maxRowsProduct = useMemo(() => {
+    return Object.keys(selectedProducts).filter((key) => key !== 'пусто').length;
+  }, [selectedProducts]);
+  const rowHeight = 30;
+  const maxVisibleRows = 5;
+  const containerHeightProduct = Math.min(maxRowsProduct, maxVisibleRows) * rowHeight;
+  const containerHeight = Math.min(maxRows, maxVisibleRows) * rowHeight;
 
   const transformFilters = (data) => {
     return {
@@ -194,53 +234,7 @@ const ReportAbcAnalysis = () => {
     }
   };
 
-  // const updateFilterFields = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const data = await ServiceFunctions.getAbcReportsFilters(authToken);
-  //     console.log('API Response:', data);
-  //     const transformedFilters = transformFilters(data);
-  //     console.log('transformedFilters', transformedFilters);
 
-  //     // Mapping of filter keys to their corresponding setters
-  //     const setters = {
-  //       selectedYearsABC: setSelectedYears,
-  //       selectedMonthsABC: setSelectedMonths,
-  //       selectedArticlesABC: setSelectedArticles,
-  //       selectedBrandsABC: setSelectedBrands,
-  //       selectedGroupsABC: setSelectedGroups,
-  //       selectedWeeksABC: setSelectedWeeks,
-  //       selectedProductsABC: setSelectedProducts,
-  //     };
-
-  //     // Automatically update the state for each filter key
-  //     filterKeys.forEach((key) => {
-  //       const transformedValue = transformedFilters[key];
-  //       const storedValue = localStorage.getItem(key);
-
-  //       if (storedValue) {
-  //         const parsedStoredValue = JSON.parse(storedValue);
-
-  //         // Merge stored data with transformed data if both exist
-  //         if (Object.keys(parsedStoredValue).length > 0) {
-  //           // Call the setter function dynamically
-  //           setters[key]({
-  //             ...transformedValue,
-  //             ...parsedStoredValue,
-  //           });
-  //         } else {
-  //           setters[key](transformedValue);
-  //         }
-  //       } else {
-  //         setters[key](transformedValue);
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.error('Ошибка при загрузке фильтров:', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const updateData = async () => {
     setIsRevenueLoading(true);
@@ -481,9 +475,9 @@ const ReportAbcAnalysis = () => {
             {!isOpenFilters && (
               <>
                 <div
-                  className={`${styles.ScheduleHeader} dash-container container`}
+                  className={`${styles.ScheduleHeader} dash-container container `}
                 >
-                  <div className={styles.container}>
+                  <div className={styles.container} >
                     <div className={styles.header}>
                       <span className={styles.title}>Бренд</span>
                       <button
@@ -501,7 +495,7 @@ const ReportAbcAnalysis = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedBrands)
                           .filter((brand) => brand !== 'пусто')
                           .map((brand, index) => (
@@ -542,7 +536,7 @@ const ReportAbcAnalysis = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedYears).map((year, index) => (
                           <div className={styles.brandItem} key={index}>
                             <label className={styles.checkboxContainer}>
@@ -563,7 +557,7 @@ const ReportAbcAnalysis = () => {
                     )}
                   </div>
 
-                  <div className={styles.container}>
+                  <div className={styles.container} >
                     <div className={styles.header}>
                       <span className={styles.title}>Месяц</span>
                       <button
@@ -581,7 +575,7 @@ const ReportAbcAnalysis = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedMonths).map((month, index) => (
                           <div className={styles.brandItem} key={index}>
                             <label className={styles.checkboxContainer}>
@@ -623,7 +617,7 @@ const ReportAbcAnalysis = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedWeeks).map((week, index) => (
                           <div className={styles.brandItem} key={index}>
                             <label className={styles.checkboxContainer}>
@@ -662,7 +656,7 @@ const ReportAbcAnalysis = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }}>
                         {Object.keys(selectedGroups)
                           .filter((group) => group !== 'пусто')
                           .map((group, index) => (
@@ -685,7 +679,7 @@ const ReportAbcAnalysis = () => {
                     )}
                   </div>
 
-                  <div className={styles.container}>
+                  <div className={styles.container} >
                     <div className={styles.header}>
                       <span className={styles.title}>Артикул</span>
                       <button
@@ -703,7 +697,7 @@ const ReportAbcAnalysis = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeight }} >
                         {Object.keys(selectedArticles)
                           .filter((article) => article !== '0')
                           .map((article, index) => (
@@ -754,7 +748,7 @@ const ReportAbcAnalysis = () => {
                         <span className='loader'></span>
                       </div>
                     ) : (
-                      <div className={styles.list}>
+                      <div className={styles.list} style={{ height: containerHeightProduct }}>
                         {Object.keys(selectedProducts)
                           .filter((product) => product !== 'пусто')
                           .map((product, index) => (
