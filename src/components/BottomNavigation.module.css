@@ -35,7 +35,7 @@
 
 @media screen and (max-width: 1680px) {
     .marginFirstElement {
-        margin-left: 10px;
+        margin-left: 0px;
     }
 
     .navItem span {
