@@ -20,7 +20,6 @@ const WeeklyReportPL = () => {
     brand: [],
     group: [],
   });
-  console.log('activeFilters', activeFilters);
   const [filterOptions, setFilterOptions] = useState([]);
   const [isLoadingFilters, setIsLoadingFilters] = useState(false);
 

@@ -1,6 +1,6 @@
 .filterGroup {
   width: 200px;
-  height: 190px;
+  max-height: 190px;
   background: rgba(255, 255, 255, 1);
   padding: 12px;
   overflow-y: auto;
