@@ -1,4 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
+import {
+  useState,
+  useEffect,
+  useContext,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthContext from '../service/AuthContext';
 import { fetchDashboardFilters } from '../redux/filters/filtersDataActions';
@@ -7,7 +13,7 @@ import styles from './FilterSection.module.css';
 import FilterGroup from './FilterGroup';
 import { monthNames, getMonthNumbers } from '../service/utils';
 
-const FilterSection = () => {
+const FilterSection = forwardRef((props, ref) => {
   const dispatch = useDispatch();
   const { authToken } = useContext(AuthContext);
   const { data: filterData, loading } = useSelector(
@@ -28,6 +34,10 @@ const FilterSection = () => {
       weekdays: [],
     },
   });
+
+  useImperativeHandle(ref, () => ({
+    handleApplyFilters,
+  }));
 
   useEffect(() => {
     dispatch(fetchDashboardFilters(authToken));
@@ -259,6 +269,6 @@ const FilterSection = () => {
       )}
     </div>
   );
-};
-
+});
+FilterSection.displayName = 'FilterSection';
 export default FilterSection;

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import BottomNavigation from '../components/BottomNavigation';
 import FilterSection from '../components/FilterSection';
@@ -9,26 +9,30 @@ import TooltipInfo from '../components/TooltipInfo';
 import DemonstrationSection from '../components/DemonstrationSection';
 import AuthContext from '../service/AuthContext';
 import fakeDashboard from '../pages/images/report-dashboard-fake.png';
+import { ServiceFunctions } from '../service/serviceFunctions';
 
 const WeeklyReportDashboard = () => {
-  const { user } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const dashboardData = useSelector(
     (state) => state?.dashboardReportSlice?.data
   );
   const [isEditing, setIsEditing] = useState(false);
   const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
+  const filterSectionRef = useRef();
   const handleTaxRateChange = (e) => {
     setTaxRate(e.target.value);
   };
 
-  const handleTaxRateSubmit = () => {
-    const updatedFilterData = {
-      taxRate: taxRate,
-    };
-
-    // dispatch(fetchDashboardReport({ authToken, filterData: updatedFilterData }));
-    setIsEditing(false);
+  const handleTaxRateSubmit = async () => {
+    try {
+      await ServiceFunctions.postTaxRateUpdate(authToken, Number(taxRate));
+      filterSectionRef.current?.handleApplyFilters();
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating tax rate:', error);
+    }
   };
+
   return (
     <div className='dashboard-page'>
       <SideNav />
@@ -37,7 +41,7 @@ const WeeklyReportDashboard = () => {
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
-              <FilterSection />
+              <FilterSection ref={filterSectionRef} />
             </div>
             <div className='container dash-container'>
               <div className={styles.blockWrapper}>
@@ -418,7 +422,7 @@ const WeeklyReportDashboard = () => {
                           <div className={styles.editTaxRate}>
                             <input
                               type='number'
-                              value={taxRate}
+                              value={taxRate || dashboardData?.tax_rate}
                               onChange={handleTaxRateChange}
                               className={styles.taxRateInput}
                             />
