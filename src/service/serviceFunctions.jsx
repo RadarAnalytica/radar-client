@@ -850,4 +850,17 @@ export const ServiceFunctions = {
 
     return await response.json();
   },
+
+  postTaxRateUpdate: async (token, taxRate) => {
+    const response = await fetch(`${URL}/api/report/tax-rate/update`, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        Authorization: token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ tax_rate: taxRate }),
+    });
+    return await response.json();
+  },
 };

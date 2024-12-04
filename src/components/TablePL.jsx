@@ -12,17 +12,29 @@ const TablePL = ({ plData }) => {
     averageBill: { value: item.avg_check },
     spp: { percentage: item.spp },
     soldOut: { percentage: item.purchased_percent },
-    costPrice: { value: item.self_cost },
-    keppWb: { value: item.wb_retentions },
-    commission: { value: item.commission },
-    equiring: { value: item.acquiring },
-    logistic: { value: item.logistic },
-    storage: { value: item.storage },
-    anotherSum: { value: item.other_retentions },
-    payForEnter: { value: item.paid_acceptance },
+    costPrice: { value: item.self_cost, percentage: item.self_cost_percent },
+    keppWb: {
+      value: item.wb_retentions,
+      percentage: item.wb_retentions_percent,
+    },
+    commission: { value: item.commission, percentage: item.commission_percent },
+    equiring: { value: item.acquiring, percentage: item.acquiring_percent },
+    logistic: { value: item.logistic, percentage: item.logistic_percent },
+    storage: { value: item.storage, percentage: item.storage_percent },
+    anotherSum: {
+      value: item.other_retentions,
+      percentage: item.other_retentions_percent,
+    },
+    payForEnter: {
+      value: item.paid_acceptance,
+      percentage: item.paid_acceptance_percent,
+    },
     payRC: { value: item.payment_to_seller },
     tax: { value: item.tax },
-    allTotalOut: { value: item.external_expenses_amount },
+    allTotalOut: {
+      value: item.external_expenses_amount,
+      percentage: item.external_expenses_percent,
+    },
     totalOut: { percentage: item.external_expenses_percent },
     netProfit: { value: item.net_profit },
     marginalProfit: { percentage: item.profit_margin },
@@ -210,6 +222,18 @@ const TablePL = ({ plData }) => {
                 </div>
                 <div
                   className={styles.tableRow}
+                  style={{ paddingLeft: '17px' }}
+                >
+                  Всего внешних расходов
+                </div>
+                <div
+                  className={styles.tableRow}
+                  style={{ paddingLeft: '17px' }}
+                >
+                  Внешние расходы
+                </div>
+                <div
+                  className={styles.tableRow}
                   style={{
                     paddingLeft: '17px',
                     fontWeight: '700',
@@ -262,16 +286,16 @@ const TablePL = ({ plData }) => {
                         color: 'rgba(26, 26, 26, 1)',
                       }}
                     >
-                      {item.profit.value} ₽
+                      {formatPrice(item.profit.value) || '0'} ₽
                     </div>
                     <div className={styles.tableRow}>
-                      {item.averageBill.value} ₽
+                      {formatPrice(item.averageBill.value) || '0'} ₽
                     </div>
                     <div className={styles.tableRow}>
                       {item.spp.percentage} %
                     </div>
                     <div className={styles.tableRow}>
-                      {item.soldOut.percentage} ₽
+                      {item.soldOut.percentage} %
                     </div>
                     <div
                       className={styles.tableRow}
@@ -279,11 +303,11 @@ const TablePL = ({ plData }) => {
                     >
                       <span className={styles.twoElements}>
                         <span className={styles.valueElement}>
-                          {item.costPrice.value} ₽
+                          {formatPrice(item.costPrice.value)} ₽
                         </span>
-                        {/* <span className={styles.percentageElement}>
-                            {item.costPrice.percentage} %
-                          </span> */}
+                        <span className={styles.percentageElement}>
+                          {item.costPrice.percentage} %
+                        </span>
                       </span>
                     </div>
                     <div
@@ -292,11 +316,11 @@ const TablePL = ({ plData }) => {
                     >
                       <span className={styles.twoElements}>
                         <span className={styles.valueElement}>
-                          {item.keppWb.value} ₽
+                          {formatPrice(item.keppWb.value) || '0'} ₽
                         </span>
-                        {/* <span className={styles.percentageElement}>
-                            {item.keppWb.percentage}
-                          </span> */}
+                        <span className={styles.percentageElement}>
+                          {item.keppWb.percentage} %
+                        </span>
                       </span>
                     </div>
                     <div
@@ -305,11 +329,11 @@ const TablePL = ({ plData }) => {
                     >
                       <span className={styles.twoElements}>
                         <span className={styles.valueElement}>
-                          {item.commission.value} ₽
+                          {formatPrice(item.commission.value)} ₽
                         </span>
-                        {/* <span className={styles.percentageElement}>
-                            {item.commission.percentage}
-                          </span> */}
+                        <span className={styles.percentageElement}>
+                          {item.commission.percentage} %
+                        </span>
                       </span>
                     </div>
                     <div
@@ -318,11 +342,11 @@ const TablePL = ({ plData }) => {
                     >
                       <span className={styles.twoElements}>
                         <span className={styles.valueElement}>
-                          {item.equiring.value} ₽
+                          {formatPrice(item.equiring.value) || '0'} ₽
                         </span>
-                        {/* <span className={styles.percentageElement}>
-                            {item.equiring.percentage}
-                          </span> */}
+                        <span className={styles.percentageElement}>
+                          {item.equiring.percentage} %
+                        </span>
                       </span>
                     </div>
                     <div
@@ -331,11 +355,11 @@ const TablePL = ({ plData }) => {
                     >
                       <span className={styles.twoElements}>
                         <span className={styles.valueElement}>
-                          {item.logistic.value} ₽
+                          {formatPrice(item.logistic.value)} ₽
                         </span>
-                        {/* <span className={styles.percentageElement}>
-                            {item.logistic.percentage}
-                          </span> */}
+                        <span className={styles.percentageElement}>
+                          {item.logistic.percentage} %
+                        </span>
                       </span>
                     </div>
                     <div
@@ -344,11 +368,11 @@ const TablePL = ({ plData }) => {
                     >
                       <span className={styles.twoElements}>
                         <span className={styles.valueElement}>
-                          {item.storage.value} ₽
+                          {formatPrice(item.storage.value) || '0'} ₽
                         </span>
-                        {/* <span className={styles.percentageElement}>
-                            {item.storage.percentage}
-                          </span> */}
+                        <span className={styles.percentageElement}>
+                          {item.storage.percentage} %
+                        </span>
                       </span>
                     </div>
                     <div
@@ -357,11 +381,11 @@ const TablePL = ({ plData }) => {
                     >
                       <span className={styles.twoElements}>
                         <span className={styles.valueElement}>
-                          {item.anotherSum.value} ₽
+                          {formatPrice(item.anotherSum.value) || '0'} ₽
                         </span>
-                        {/* <span className={styles.percentageElement}>
-                            {item.anotherSum.percentage}
-                          </span> */}
+                        <span className={styles.percentageElement}>
+                          {item.anotherSum.percentage} %
+                        </span>
                       </span>
                     </div>
                     <div
@@ -370,37 +394,39 @@ const TablePL = ({ plData }) => {
                     >
                       <span className={styles.twoElements}>
                         <span className={styles.valueElement}>
-                          {item.payForEnter.value} ₽
+                          {formatPrice(item.payForEnter.value) || '0'} ₽
                         </span>
-                        {/* <span className={styles.percentageElement}>
-                            {item.payForEnter.percentage}
-                          </span> */}
+                        <span className={styles.percentageElement}>
+                          {item.payForEnter.percentage} %
+                        </span>
                       </span>
                     </div>
                     <div
                       className={styles.tableRow}
                       style={{ background: 'rgba(83, 41, 255, 0.05)' }}
                     >
-                      {item.payRC.value} ₽
-                    </div>
-                    <div className={styles.tableRow}>{item.tax.value} %</div>
-                    {/* <div className={styles.tableRow}>
-                      {item.allTotalOut.value} ₽
+                      {formatPrice(item.payRC.value) || '0'} ₽
                     </div>
                     <div className={styles.tableRow}>
-                      {item.totalOut.percentage} ₽
-                    </div> */}
-                    <div
-                      className={styles.tableRow}
-                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                    >
-                      {item.netProfit.value} ₽
+                      {formatPrice(item.tax.value) || '0'} ₽
+                    </div>
+                    <div className={styles.tableRow}>
+                      {formatPrice(item.allTotalOut.value) || '0'} ₽
+                    </div>
+                    <div className={styles.tableRow}>
+                      {item.allTotalOut.percentage || '0'} %
                     </div>
                     <div
                       className={styles.tableRow}
                       style={{ background: 'rgba(83, 41, 255, 0.05)' }}
                     >
-                      {item.marginalProfit.percentage} ₽
+                      {formatPrice(item.netProfit.value) || '0'} ₽
+                    </div>
+                    <div
+                      className={styles.tableRow}
+                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                    >
+                      {item.marginalProfit.percentage} %
                     </div>
                     <div
                       className={styles.tableRow}

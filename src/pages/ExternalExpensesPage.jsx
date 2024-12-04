@@ -31,6 +31,7 @@ const ExternalExpensesPage = () => {
                 alt='fakePL'
                 className={styles.responsiveImage}
               />
+              <span></span>
             </span>
           </>
         )}

@@ -37,7 +37,6 @@ const WeeklyReportByMonth = () => {
         const filters = await ServiceFunctions.getMonthProductFilters(
           authToken
         );
-        console.log('filterOptions', filterOptions);
         setFilterOptions(filters);
       } catch (error) {
         console.error('Failed to fetch filter options:', error);
@@ -74,7 +73,79 @@ const WeeklyReportByMonth = () => {
         });
       }
     }
+    const filterData = prepareFilterData();
+    handleFetchReport(filterData);
   }, [filterOptions]);
+
+  useEffect(() => {
+    if (filterOptions?.dropdownFilters?.length > 0) {
+      const savedFilters = localStorage.getItem('monthlyReportFilters');
+      if (savedFilters) {
+        const {
+          activeFilters: savedActiveFilters,
+          selectedFilters: savedSelectedFilters,
+        } = JSON.parse(savedFilters);
+        setActiveFilters(savedActiveFilters);
+        setSelectedFilters(savedSelectedFilters);
+      } else {
+        // Set all dropdown filters
+        const initialActiveFilters = filterOptions.dropdownFilters.reduce(
+          (acc, filter) => {
+            acc[filter.id] = filter.options.map((opt) => opt.value);
+            return acc;
+          },
+          {}
+        );
+
+        // Set all date filters
+        const initialSelectedFilters = {
+          year:
+            filterOptions.groupFilters?.dateFilters?.options?.find(
+              (f) => f.id === 'years'
+            )?.values || [],
+          month:
+            filterOptions.groupFilters?.dateFilters?.options
+              ?.find((f) => f.id === 'months')
+              ?.values.map((value) => monthNames[value] || value) || [],
+          week:
+            filterOptions.groupFilters?.dateFilters?.options?.find(
+              (f) => f.id === 'weeks'
+            )?.values || [],
+        };
+
+        setActiveFilters(initialActiveFilters);
+        setSelectedFilters(initialSelectedFilters);
+
+        // Save initial full selection to localStorage
+        localStorage.setItem(
+          'monthlyReportFilters',
+          JSON.stringify({
+            activeFilters: initialActiveFilters,
+            selectedFilters: initialSelectedFilters,
+          })
+        );
+      }
+      const filterData = prepareFilterData();
+      handleFetchReport(filterData);
+    }
+  }, [filterOptions]);
+
+  // Keep the saving effect
+  useEffect(() => {
+    const hasSelectedFilters =
+      Object.values(activeFilters).some((filters) => filters.length > 0) ||
+      Object.values(selectedFilters).some((filters) => filters.length > 0);
+
+    if (hasSelectedFilters) {
+      localStorage.setItem(
+        'monthlyReportFilters',
+        JSON.stringify({
+          activeFilters,
+          selectedFilters,
+        })
+      );
+    }
+  }, [activeFilters, selectedFilters]);
 
   const handleSelect = (category, id) => {
     setSelectedFilters((prev) => ({
@@ -614,7 +685,6 @@ const WeeklyReportByMonth = () => {
                       onClick={() => {
                         const filterData = prepareFilterData();
                         handleFetchReport(filterData);
-                        console.log('Filter data to send:', filterData);
                       }}
                     >
                       Применить фильтры
@@ -638,6 +708,7 @@ const WeeklyReportByMonth = () => {
                 alt='fakePL'
                 className={styles.responsiveImage}
               />
+              <span></span>
             </span>
           </>
         )}

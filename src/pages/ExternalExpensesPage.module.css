@@ -6,6 +6,8 @@
   }
   
   .responsiveImageWrapper {
-    margin-right: 20px;
+    display: flex;
+    flex-direction: row;
+    margin-right: 30px;
   }
 

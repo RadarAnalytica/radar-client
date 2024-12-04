@@ -25,8 +25,12 @@ const WeeklyReportPL = () => {
   const [isLoadingFilters, setIsLoadingFilters] = useState(false);
 
   const handleApplyFilters = () => {
-    const brandFilter = activeFilters.brand.join(',');
-    const groupFilter = activeFilters.group.join(',');
+    // Get the current active filters directly
+    const currentFilters =
+      JSON.parse(localStorage.getItem('plReportFilters')) || activeFilters;
+
+    const brandFilter = currentFilters.brand.join(',');
+    const groupFilter = currentFilters.group.join(',');
 
     dispatch(
       fetchPLReport({
@@ -67,6 +71,64 @@ const WeeklyReportPL = () => {
 
     loadFilters();
   }, []);
+
+  useEffect(() => {
+    if (filterOptions.length > 0) {
+      const savedFilters = localStorage.getItem('plReportFilters');
+      console.log('savedFilters', savedFilters);
+      if (savedFilters) {
+        setActiveFilters(JSON.parse(savedFilters));
+        handleApplyFilters(); // Move handleApplyFilters here
+      } else {
+        const initialFilters = {
+          brand:
+            filterOptions
+              .find((filter) => filter.id === 'brand')
+              ?.options.map((opt) => opt.value) || [],
+          group:
+            filterOptions
+              .find((filter) => filter.id === 'group')
+              ?.options.map((opt) => opt.value) || [],
+        };
+        setActiveFilters(initialFilters);
+        handleApplyFilters(); // And here
+      }
+    }
+  }, [filterOptions]);
+
+  // Check for saved filters first
+  useEffect(() => {
+    if (filterOptions.length > 0) {
+      const savedFilters = localStorage.getItem('plReportFilters');
+      if (savedFilters) {
+        setActiveFilters(JSON.parse(savedFilters));
+      } else {
+        const initialFilters = {
+          brand:
+            filterOptions
+              .find((filter) => filter.id === 'brand')
+              ?.options.map((opt) => opt.value) || [],
+          group:
+            filterOptions
+              .find((filter) => filter.id === 'group')
+              ?.options.map((opt) => opt.value) || [],
+        };
+        setActiveFilters(initialFilters);
+      }
+      handleApplyFilters();
+    }
+  }, [filterOptions]);
+
+  // Handle saving selections
+  useEffect(() => {
+    const hasSelectedFilters = Object.values(activeFilters).some(
+      (filters) => filters.length > 0
+    );
+
+    if (hasSelectedFilters) {
+      localStorage.setItem('plReportFilters', JSON.stringify(activeFilters));
+    }
+  }, [activeFilters]);
 
   const handleFilterChange = (filterId, value) => {
     setActiveFilters((prevFilters) => {
@@ -117,7 +179,6 @@ const WeeklyReportPL = () => {
     }
     return [];
   };
-  console.log('user.is_report_downloaded ', user.is_report_downloaded);
 
   return (
     <div className='dashboard-page'>
@@ -188,6 +249,7 @@ const WeeklyReportPL = () => {
                 className={styles.responsiveImage}
               />
             </span>
+            <span></span>
           </>
         )}
         <BottomNavigation />

@@ -261,8 +261,14 @@ const ExpenseTracker = () => {
                 <div key={index} className={styles.expenseCell}>
                   <div className={styles.inputWrapper}>
                     <input
-                      type='number'
-                      value={expense === 0 ? '' : expense}
+                      type='text'
+                      value={
+                        expense === undefined
+                          ? '-'
+                          : expense === 0
+                          ? ''
+                          : expense
+                      }
                       onChange={(e) =>
                         handleExpenseChange(row.id, index, e.target.value)
                       }

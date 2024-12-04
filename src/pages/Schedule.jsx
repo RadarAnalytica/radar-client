@@ -667,7 +667,6 @@ const Schedule = () => {
         const maxRevenue = Math.max(...revenueValues);
         const roundedStepSize = Math.ceil(maxRevenue / 1000) * 1000;
         setMaxWarehouse(roundedStepSize);
-
       }
 
       setIsChartsLoading(false);
@@ -1246,6 +1245,7 @@ const Schedule = () => {
                 alt='fakePL'
                 className={styles.responsiveImage}
               />
+              <span></span>
             </span>
           </>
         )}

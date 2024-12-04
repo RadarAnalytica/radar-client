@@ -84,7 +84,7 @@ const WeeklyReportPenaltiesPage = () => {
         );
         // Set all filters initially selected
 
-        setSelectedFilters({
+        const initialFilters = {
           year: data.date_sale_filter?.years || [],
           month: monthsWithNames,
           week: data.date_sale_filter?.weekdays || [],
@@ -93,8 +93,32 @@ const WeeklyReportPenaltiesPage = () => {
           srid: data.srid_filter || [],
           kindsOfLogistics: data.action_type_filter || [],
           goods: data.title_filter || [],
-        });
+        };
+
+        setSelectedFilters(initialFilters);
         setFilterDataSet(data);
+
+        // Prepare and dispatch the initial filters
+        const monthNumbers = getMonthNumbers(monthsWithNames);
+        const filters = {
+          size_name_filter: initialFilters.size,
+          wb_id_filter: initialFilters.article,
+          srid_filter: initialFilters.srid,
+          title_filter: initialFilters.goods,
+          action_type_filter: initialFilters.kindsOfLogistics,
+          date_sale_filter: {
+            years: initialFilters.year,
+            months: monthNumbers,
+            weekdays: initialFilters.week,
+          },
+        };
+
+        dispatch(
+          fetchPenaltiesData({
+            filters,
+            token: authToken,
+          })
+        );
       } catch (error) {
         console.error('Failed to fetch filter options:', error);
       } finally {
@@ -104,6 +128,52 @@ const WeeklyReportPenaltiesPage = () => {
 
     fetchFilterOptions();
   }, []);
+
+  useEffect(() => {
+    if (filterDataSet && Object.keys(filterDataSet).length > 0) {
+      const savedFilters = localStorage.getItem('penaltiesReportFilters');
+      if (savedFilters) {
+        const parsedFilters = JSON.parse(savedFilters);
+        setSelectedFilters(parsedFilters);
+
+        // Prepare and dispatch filters
+        const monthNumbers = getMonthNumbers(parsedFilters.month);
+        const filters = {
+          size_name_filter: parsedFilters.size,
+          wb_id_filter: parsedFilters.article,
+          srid_filter: parsedFilters.srid,
+          title_filter: parsedFilters.goods,
+          action_type_filter: parsedFilters.kindsOfLogistics,
+          date_sale_filter: {
+            years: parsedFilters.year,
+            months: monthNumbers,
+            weekdays: parsedFilters.week,
+          },
+        };
+
+        dispatch(
+          fetchPenaltiesData({
+            filters,
+            token: authToken,
+          })
+        );
+      }
+    }
+  }, [filterDataSet]);
+
+  // Add effect to save filters when they change
+  useEffect(() => {
+    const hasSelectedFilters = Object.values(selectedFilters).some(
+      (filters) => filters.length > 0
+    );
+
+    if (hasSelectedFilters) {
+      localStorage.setItem(
+        'penaltiesReportFilters',
+        JSON.stringify(selectedFilters)
+      );
+    }
+  }, [selectedFilters]);
 
   return (
     <div className='dashboard-page'>
@@ -330,6 +400,7 @@ const WeeklyReportPenaltiesPage = () => {
                 alt='fakePL'
                 className={styles.responsiveImage}
               />
+              <span></span>
             </span>
           </>
         )}

@@ -175,7 +175,6 @@ const ReportAbcAnalysis = () => {
       const data = await ServiceFunctions.getAbcReportsFilters(authToken);
       const transformedFilters = transformFilters(data);
 
-
       const filterMapping = {
         setSelectedBrands: {
           setter: setSelectedBrands,
@@ -790,15 +789,17 @@ const ReportAbcAnalysis = () => {
             >
               <div className={styles.tabs}>
                 <button
-                  className={`${styles.tab} ${activeTab === 'revenue' ? styles.active : ''
-                    }`}
+                  className={`${styles.tab} ${
+                    activeTab === 'revenue' ? styles.active : ''
+                  }`}
                   onClick={() => handleTabClick('revenue')}
                 >
                   По выручке
                 </button>
                 <button
-                  className={`${styles.tab} ${activeTab === 'profit' ? styles.active : ''
-                    }`}
+                  className={`${styles.tab} ${
+                    activeTab === 'profit' ? styles.active : ''
+                  }`}
                   onClick={() => handleTabClick('profit')}
                 >
                   По прибыли
@@ -806,8 +807,9 @@ const ReportAbcAnalysis = () => {
               </div>
               {activeTab === 'revenue' && (
                 <div
-                  className={`${styles.containerRevenue} ${isOpenFilters ? styles.expanded : ''
-                    }`}
+                  className={`${styles.containerRevenue} ${
+                    isOpenFilters ? styles.expanded : ''
+                  }`}
                 >
                   <div className={styles.rowHeader}>
                     <div
@@ -853,8 +855,9 @@ const ReportAbcAnalysis = () => {
                     </div>
                   ) : (
                     <div
-                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
-                        }`}
+                      className={`${styles.rowsWrapper} ${
+                        isOpenFilters ? styles.expanded : ''
+                      }`}
                     >
                       {dataRevenue.map((item, index) => (
                         <div key={index} className={styles.row}>
@@ -887,7 +890,6 @@ const ReportAbcAnalysis = () => {
                               />
                             </span>
 
-
                             {expandedRows[item.wb_id] &&
                               item.items.map((product, i) => (
                                 <div key={i} style={{ padding: '8px 0 ' }}>
@@ -905,8 +907,6 @@ const ReportAbcAnalysis = () => {
                                 >
                                   {item.title}
                                 </div>{' '}
-
-
                                 {item.items.map((product, i) => (
                                   <div
                                     key={i}
@@ -931,8 +931,6 @@ const ReportAbcAnalysis = () => {
                             {expandedRows[item.wb_id] ? (
                               <>
                                 <div>{item.proceeds.toLocaleString()} ₽</div>{' '}
-
-
                                 {item.items.map((product, i) => (
                                   <div key={i}>
                                     {product.proceeds.toLocaleString()} ₽
@@ -948,8 +946,6 @@ const ReportAbcAnalysis = () => {
                             {expandedRows[item.wb_id] ? (
                               <>
                                 <div>{item.proceeds_percent}%</div>{' '}
-
-
                                 {item.items.map((product, i) => (
                                   <div key={i}>{product.proceeds_percent}%</div>
                                 ))}
@@ -974,8 +970,6 @@ const ReportAbcAnalysis = () => {
                                 >
                                   {item.proceed_abc}
                                 </div>{' '}
-
-
                                 {item.items.map((product, i) => (
                                   <div key={i} style={{ padding: '6px 0' }}>
                                     <div
@@ -1012,8 +1006,6 @@ const ReportAbcAnalysis = () => {
                             {expandedRows[item.wb_id] ? (
                               <>
                                 <div>{item.common_abc}</div>{' '}
-
-
                                 {item.items.map((product, i) => (
                                   <div key={i}>{product.common_abc}</div>
                                 ))}
@@ -1030,8 +1022,9 @@ const ReportAbcAnalysis = () => {
               )}
               {activeTab === 'profit' && (
                 <div
-                  className={`${styles.containerProfit} ${isOpenFilters ? styles.expanded : ''
-                    }`}
+                  className={`${styles.containerProfit} ${
+                    isOpenFilters ? styles.expanded : ''
+                  }`}
                 >
                   <div className={styles.rowHeader}>
                     <div
@@ -1077,13 +1070,12 @@ const ReportAbcAnalysis = () => {
                     </div>
                   ) : (
                     <div
-                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
-                        }`}
+                      className={`${styles.rowsWrapper} ${
+                        isOpenFilters ? styles.expanded : ''
+                      }`}
                     >
                       {dataRevenue.map((item, index) => (
                         <div key={index} className={styles.row}>
-
-
                           <div className={styles.article}>
                             <span
                               onClick={() => toggleRow(item.wb_id)}
@@ -1193,7 +1185,6 @@ const ReportAbcAnalysis = () => {
                                 >
                                   {item.profit_abc}
                                 </div>{' '}
-
                                 {item.items.map((product, i) => (
                                   <div key={i} style={{ padding: '6px 0' }}>
                                     <div
@@ -1258,6 +1249,7 @@ const ReportAbcAnalysis = () => {
                 alt='fakePL'
                 className={styles.responsiveImage}
               />
+              <span></span>
             </span>
           </>
         )}

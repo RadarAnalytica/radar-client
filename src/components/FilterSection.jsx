@@ -1,4 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
+import {
+  useState,
+  useEffect,
+  useContext,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthContext from '../service/AuthContext';
 import { fetchDashboardFilters } from '../redux/filters/filtersDataActions';
@@ -7,7 +13,7 @@ import styles from './FilterSection.module.css';
 import FilterGroup from './FilterGroup';
 import { monthNames, getMonthNumbers } from '../service/utils';
 
-const FilterSection = () => {
+const FilterSection = forwardRef((props, ref) => {
   const dispatch = useDispatch();
   const { authToken } = useContext(AuthContext);
   const { data: filterData, loading } = useSelector(
@@ -28,6 +34,10 @@ const FilterSection = () => {
       weekdays: [],
     },
   });
+
+  useImperativeHandle(ref, () => ({
+    handleApplyFilters,
+  }));
 
   useEffect(() => {
     dispatch(fetchDashboardFilters(authToken));
@@ -55,6 +65,54 @@ const FilterSection = () => {
       handleApplyFilters();
     }
   }, [filterData]);
+
+  //  Check for saved filters first
+  useEffect(() => {
+    if (filterData) {
+      const savedFilters = localStorage.getItem('dashboardFilters');
+      const newFilters = {
+        warehouse_name_filter: filterData.warehouse_name_filter || [],
+        brand_name_filter: filterData.brand_name_filter || [],
+        country_filter: filterData.country_filter || [],
+        delivery_company_filter: filterData.delivery_company_filter || [],
+        action_type_filter: filterData.action_type_filter || [],
+        groups_filter: filterData.groups_filter || [],
+        date_order_filter: filterData.date_order_filter || [],
+        date_sale_filter: {
+          years: filterData.date_sale_filter?.years || [],
+          months:
+            filterData.date_sale_filter?.months.map(
+              (value) => monthNames[value] || value
+            ) || [],
+          weekdays: filterData.date_sale_filter?.weekdays || [],
+        },
+      };
+
+      if (savedFilters) {
+        setSelectedFilters(JSON.parse(savedFilters));
+      } else {
+        setSelectedFilters(newFilters);
+        localStorage.setItem('dashboardFilters', JSON.stringify(newFilters));
+      }
+      handleApplyFilters();
+    }
+  }, [filterData]);
+
+  //  Handle saving selections
+  useEffect(() => {
+    const hasSelectedFilters = Object.entries(selectedFilters).some(
+      ([key, value]) => {
+        if (key === 'date_sale_filter') {
+          return Object.values(value).some((arr) => arr.length > 0);
+        }
+        return Array.isArray(value) && value.length > 0;
+      }
+    );
+
+    if (hasSelectedFilters) {
+      localStorage.setItem('dashboardFilters', JSON.stringify(selectedFilters));
+    }
+  }, [selectedFilters]);
 
   const processFilterData = (data, key) => {
     if (!data) return [];
@@ -259,6 +317,6 @@ const FilterSection = () => {
       )}
     </div>
   );
-};
-
+});
+FilterSection.displayName = 'FilterSection';
 export default FilterSection;
