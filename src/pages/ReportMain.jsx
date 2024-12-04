@@ -18,12 +18,14 @@ import styles from './ReportMain.module.css';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import BottomNavigation from '../components/BottomNavigation';
 import Modal from 'react-bootstrap/Modal';
+import warningIcon from '../assets/warning.png';
 
 const ReportMain = () => {
   const { authToken } = useContext(AuthContext);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [show, setShow] = useState(false);
+  const [error, setError] = useState('');
   const [data, setData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -53,12 +55,12 @@ const ReportMain = () => {
         },
         body: formData,
       });
-
+      const data = await response.json();
       if (response.ok) {
         await getListOfReports();
-        const data = await response.json();
-        // Handle successful upload
       } else {
+        setError(data.message);
+        setShow(true);
         throw new Error('Upload failed');
       }
     } catch (error) {
@@ -121,6 +123,8 @@ const ReportMain = () => {
     setOpenBlock(!openBlock);
   };
 
+  const handleClose = () => setShow(false);
+
   return (
     <div className='dashboard-page'>
       <SideNav />
@@ -142,8 +146,9 @@ const ReportMain = () => {
                 onClick={() => handleOpenClose()}
               >
                 <span
-                  className={`${styles.line} ${openBlock ? styles.open : styles.closed
-                    }`}
+                  className={`${styles.line} ${
+                    openBlock ? styles.open : styles.closed
+                  }`}
                 ></span>
               </div>
             </div>
@@ -235,18 +240,37 @@ const ReportMain = () => {
                       </ul>
                     </div>
                   </div>
-                  <div style={{ background: "black", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <div style={{ position: "relative", width: "100%", maxWidth: "800px", paddingBottom: "56.25%" }}>
+                  <div
+                    style={{
+                      background: 'black',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        maxWidth: '800px',
+                        paddingBottom: '56.25%',
+                      }}
+                    >
                       <iframe
-                        style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-                        src="https://play.boomstream.com/cx149c1B?title=0&start=1"
-                        frameBorder="0"
-                        scrolling="no"
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                        }}
+                        src='https://play.boomstream.com/cx149c1B?title=0&start=1'
+                        frameBorder='0'
+                        scrolling='no'
                         allowFullScreen
                       ></iframe>
                     </div>
                   </div>
-
                 </div>
               </div>
             )}
@@ -436,6 +460,19 @@ const ReportMain = () => {
             </div>
           </div>
         </Modal.Body>
+      </Modal>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <div>
+            <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
+              <img src={warningIcon} alt='' style={{ height: '3vh' }} />
+              <p className='fw-bold mb-0'>Ошибка!</p>
+            </div>
+            <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>
+              {error}
+            </p>
+          </div>
+        </Modal.Header>
       </Modal>
     </div>
   );
