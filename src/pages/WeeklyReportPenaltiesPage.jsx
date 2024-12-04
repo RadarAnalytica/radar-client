@@ -84,7 +84,7 @@ const WeeklyReportPenaltiesPage = () => {
         );
         // Set all filters initially selected
 
-        setSelectedFilters({
+        const initialFilters = {
           year: data.date_sale_filter?.years || [],
           month: monthsWithNames,
           week: data.date_sale_filter?.weekdays || [],
@@ -93,8 +93,32 @@ const WeeklyReportPenaltiesPage = () => {
           srid: data.srid_filter || [],
           kindsOfLogistics: data.action_type_filter || [],
           goods: data.title_filter || [],
-        });
+        };
+
+        setSelectedFilters(initialFilters);
         setFilterDataSet(data);
+
+        // Prepare and dispatch the initial filters
+        const monthNumbers = getMonthNumbers(monthsWithNames);
+        const filters = {
+          size_name_filter: initialFilters.size,
+          wb_id_filter: initialFilters.article,
+          srid_filter: initialFilters.srid,
+          title_filter: initialFilters.goods,
+          action_type_filter: initialFilters.kindsOfLogistics,
+          date_sale_filter: {
+            years: initialFilters.year,
+            months: monthNumbers,
+            weekdays: initialFilters.week,
+          },
+        };
+
+        dispatch(
+          fetchPenaltiesData({
+            filters,
+            token: authToken,
+          })
+        );
       } catch (error) {
         console.error('Failed to fetch filter options:', error);
       } finally {

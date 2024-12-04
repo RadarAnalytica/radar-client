@@ -37,7 +37,6 @@ const WeeklyReportByGoods = () => {
         const filters = await ServiceFunctions.getMonthProductFilters(
           authToken
         );
-        console.log('filterOptions', filterOptions);
         setFilterOptions(filters);
       } catch (error) {
         console.error('Failed to fetch filter options:', error);
@@ -73,6 +72,8 @@ const WeeklyReportByGoods = () => {
         });
       }
     }
+    const filterData = prepareFilterData();
+    handleFetchReport(filterData);
   }, [filterOptions]);
 
   const handleSelect = (category, id) => {
@@ -601,7 +602,6 @@ const WeeklyReportByGoods = () => {
                       onClick={() => {
                         const filterData = prepareFilterData();
                         handleFetchReport(filterData);
-                        console.log('Filter data to send:', filterData);
                       }}
                     >
                       Применить фильтры

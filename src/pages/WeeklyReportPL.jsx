@@ -20,7 +20,6 @@ const WeeklyReportPL = () => {
     brand: [],
     group: [],
   });
-  console.log('activeFilters', activeFilters);
   const [filterOptions, setFilterOptions] = useState([]);
   const [isLoadingFilters, setIsLoadingFilters] = useState(false);
 
@@ -67,6 +66,12 @@ const WeeklyReportPL = () => {
 
     loadFilters();
   }, []);
+
+  useEffect(() => {
+    if (filterOptions.length > 0) {
+      handleApplyFilters();
+    }
+  }, [filterOptions]);
 
   const handleFilterChange = (filterId, value) => {
     setActiveFilters((prevFilters) => {
@@ -117,7 +122,6 @@ const WeeklyReportPL = () => {
     }
     return [];
   };
-  console.log('user.is_report_downloaded ', user.is_report_downloaded);
 
   return (
     <div className='dashboard-page'>
