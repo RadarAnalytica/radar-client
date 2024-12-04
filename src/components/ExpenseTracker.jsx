@@ -249,12 +249,16 @@ const ExpenseTracker = () => {
               </div>
 
               <div className={styles.articleCell}>
-                <input
-                  type='text'
-                  value={row.article}
-                  className={styles.input}
-                  onChange={(e) => handleArticleChange(row.id, e.target.value)}
-                />
+                <div className={styles.inputWrapper}>
+                  <input
+                    type='text'
+                    value={row.article}
+                    className={styles.input}
+                    onChange={(e) =>
+                      handleArticleChange(row.id, e.target.value)
+                    }
+                  />
+                </div>
               </div>
 
               {row.expenses.map((expense, index) => (
