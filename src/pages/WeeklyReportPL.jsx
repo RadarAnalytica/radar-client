@@ -73,6 +73,40 @@ const WeeklyReportPL = () => {
     }
   }, [filterOptions]);
 
+  // Check for saved filters first
+  useEffect(() => {
+    if (filterOptions.length > 0) {
+      const savedFilters = localStorage.getItem('plReportFilters');
+      if (savedFilters) {
+        setActiveFilters(JSON.parse(savedFilters));
+      } else {
+        const initialFilters = {
+          brand:
+            filterOptions
+              .find((filter) => filter.id === 'brand')
+              ?.options.map((opt) => opt.value) || [],
+          group:
+            filterOptions
+              .find((filter) => filter.id === 'group')
+              ?.options.map((opt) => opt.value) || [],
+        };
+        setActiveFilters(initialFilters);
+      }
+      handleApplyFilters();
+    }
+  }, [filterOptions]);
+
+  // Handle saving selections
+  useEffect(() => {
+    const hasSelectedFilters = Object.values(activeFilters).some(
+      (filters) => filters.length > 0
+    );
+
+    if (hasSelectedFilters) {
+      localStorage.setItem('plReportFilters', JSON.stringify(activeFilters));
+    }
+  }, [activeFilters]);
+
   const handleFilterChange = (filterId, value) => {
     setActiveFilters((prevFilters) => {
       // If value is an array (select all case), directly set it

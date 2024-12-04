@@ -5,7 +5,6 @@ import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import FilterDropdownReportPages from '../components/FilterDropdownReportPages';
 import FilterGroup from '../components/FilterGroup';
 import styles from './WeeklyReportByGoods.module.css';
 import TableByGoods from '../components/TableByGoods';
@@ -49,32 +48,72 @@ const WeeklyReportByGoods = () => {
 
   useEffect(() => {
     if (filterOptions?.dropdownFilters?.length > 0) {
-      // Set all dropdown filters
-      const initialActiveFilters = filterOptions.dropdownFilters.reduce(
-        (acc, filter) => {
-          acc[filter.id] = filter.options.map((opt) => opt.value);
-          return acc;
-        },
-        {}
-      );
+      const savedFilters = localStorage.getItem('goodsReportFilters');
+      if (savedFilters) {
+        const {
+          activeFilters: savedActiveFilters,
+          selectedFilters: savedSelectedFilters,
+        } = JSON.parse(savedFilters);
+        setActiveFilters(savedActiveFilters);
+        setSelectedFilters(savedSelectedFilters);
+      } else {
+        // Set all dropdown filters
+        const initialActiveFilters = filterOptions.dropdownFilters.reduce(
+          (acc, filter) => {
+            acc[filter.id] = filter.options.map((opt) => opt.value);
+            return acc;
+          },
+          {}
+        );
 
-      setActiveFilters(initialActiveFilters);
+        // Set all date filters
+        const initialSelectedFilters = {
+          year:
+            filterOptions.groupFilters?.dateFilters?.options?.find(
+              (f) => f.id === 'years'
+            )?.values || [],
+          month:
+            filterOptions.groupFilters?.dateFilters?.options
+              ?.find((f) => f.id === 'months')
+              ?.values.map((value) => monthNames[value] || value) || [],
+          week:
+            filterOptions.groupFilters?.dateFilters?.options?.find(
+              (f) => f.id === 'weeks'
+            )?.values || [],
+        };
 
-      // Set all date filters
-      if (filterOptions.groupFilters?.dateFilters?.options) {
-        const dateFilters = filterOptions.groupFilters.dateFilters.options;
-        const monthValues =
-          dateFilters.find((f) => f.id === 'months')?.values || [];
-        setSelectedFilters({
-          year: dateFilters.find((f) => f.id === 'years')?.values || [],
-          month: monthValues.map((value) => monthNames[value] || value),
-          week: dateFilters.find((f) => f.id === 'weeks')?.values || [],
-        });
+        setActiveFilters(initialActiveFilters);
+        setSelectedFilters(initialSelectedFilters);
+
+        // Save initial full selection to localStorage
+        localStorage.setItem(
+          'goodsReportFilters',
+          JSON.stringify({
+            activeFilters: initialActiveFilters,
+            selectedFilters: initialSelectedFilters,
+          })
+        );
       }
+      const filterData = prepareFilterData();
+      handleFetchReport(filterData);
     }
-    const filterData = prepareFilterData();
-    handleFetchReport(filterData);
   }, [filterOptions]);
+
+  useEffect(() => {
+    const hasSelectedFilters =
+      Object.values(activeFilters).some((filters) => filters.length > 0) ||
+      Object.values(selectedFilters).some((filters) => filters.length > 0);
+
+    if (hasSelectedFilters) {
+      localStorage.setItem(
+        'goodsReportFilters',
+        JSON.stringify({
+          activeFilters,
+          selectedFilters,
+        })
+      );
+    }
+  }, [activeFilters, selectedFilters]);
 
   const handleSelect = (category, id) => {
     setSelectedFilters((prev) => ({

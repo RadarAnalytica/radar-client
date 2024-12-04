@@ -66,6 +66,54 @@ const FilterSection = forwardRef((props, ref) => {
     }
   }, [filterData]);
 
+  //  Check for saved filters first
+  useEffect(() => {
+    if (filterData) {
+      const savedFilters = localStorage.getItem('dashboardFilters');
+      const newFilters = {
+        warehouse_name_filter: filterData.warehouse_name_filter || [],
+        brand_name_filter: filterData.brand_name_filter || [],
+        country_filter: filterData.country_filter || [],
+        delivery_company_filter: filterData.delivery_company_filter || [],
+        action_type_filter: filterData.action_type_filter || [],
+        groups_filter: filterData.groups_filter || [],
+        date_order_filter: filterData.date_order_filter || [],
+        date_sale_filter: {
+          years: filterData.date_sale_filter?.years || [],
+          months:
+            filterData.date_sale_filter?.months.map(
+              (value) => monthNames[value] || value
+            ) || [],
+          weekdays: filterData.date_sale_filter?.weekdays || [],
+        },
+      };
+
+      if (savedFilters) {
+        setSelectedFilters(JSON.parse(savedFilters));
+      } else {
+        setSelectedFilters(newFilters);
+        localStorage.setItem('dashboardFilters', JSON.stringify(newFilters));
+      }
+      handleApplyFilters();
+    }
+  }, [filterData]);
+
+  //  Handle saving selections
+  useEffect(() => {
+    const hasSelectedFilters = Object.entries(selectedFilters).some(
+      ([key, value]) => {
+        if (key === 'date_sale_filter') {
+          return Object.values(value).some((arr) => arr.length > 0);
+        }
+        return Array.isArray(value) && value.length > 0;
+      }
+    );
+
+    if (hasSelectedFilters) {
+      localStorage.setItem('dashboardFilters', JSON.stringify(selectedFilters));
+    }
+  }, [selectedFilters]);
+
   const processFilterData = (data, key) => {
     if (!data) return [];
     if (Array.isArray(data)) {
