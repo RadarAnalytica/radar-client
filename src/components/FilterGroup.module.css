@@ -1,5 +1,5 @@
 .filterGroup {
-  width: 200px;
+  width: 220px;
   max-height: 190px;
   background: rgba(255, 255, 255, 1);
   padding: 12px;
@@ -71,7 +71,8 @@
   font-weight: 600;
   line-height: 17.5px;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 4px 4px;
+  min-width: 100px;
 }
 
 .clearButton:hover {
