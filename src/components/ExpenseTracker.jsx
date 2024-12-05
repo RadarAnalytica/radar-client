@@ -67,11 +67,11 @@ const ExpenseTracker = () => {
       year: parseInt(row.year),
       month: monthNumber,
       vendor_code: row.article,
-      expense_1: row.expenses[0],
-      expense_2: row.expenses[1],
-      expense_3: row.expenses[2],
-      expense_4: row.expenses[3],
-      expense_5: row.expenses[4],
+      expense_1: Number(row.expenses[0]),
+      expense_2: Number(row.expenses[1]),
+      expense_3: Number(row.expenses[2]),
+      expense_4: Number(row.expenses[3]),
+      expense_5: Number(row.expenses[4]),
     };
 
     // Only include id if it's from backend (not a newly created row)
@@ -265,14 +265,8 @@ const ExpenseTracker = () => {
                 <div key={index} className={styles.expenseCell}>
                   <div className={styles.inputWrapper}>
                     <input
-                      type='text'
-                      value={
-                        expense === undefined
-                          ? '-'
-                          : expense === 0
-                          ? ''
-                          : expense
-                      }
+                      type='number'
+                      value={expense === undefined ? '-' : expense || ''}
                       onChange={(e) =>
                         handleExpenseChange(row.id, index, e.target.value)
                       }

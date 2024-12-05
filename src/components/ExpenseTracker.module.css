@@ -222,8 +222,13 @@
 }
   
 .saveIconActive {
-    filter: brightness(0) saturate(100%) invert(48%) sepia(95%) saturate(389%) hue-rotate(134deg) brightness(97%) contrast(101%);
-    cursor: pointer;
+  opacity: 1;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.saveIconActive img {
+  filter: brightness(0) saturate(100%) invert(23%) sepia(98%) saturate(2268%) hue-rotate(208deg) brightness(95%) contrast(101%);
 }
 
 @media screen and (max-width: 1590px) {
