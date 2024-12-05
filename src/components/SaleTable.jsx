@@ -56,31 +56,33 @@ const SalesTable = ({ tableData }) => {
               {/* Sales Section */}
               <div className={styles.flexContainer}>
                 <div className={styles.purchaseCell}>
-                  <div>{formatPrice(data?.purchases.rub)} ₽</div>
+                  <div>{formatPrice(data?.purchases.rub) || '0'} ₽</div>
                   <div className={styles.smallText}>
-                    {data?.purchases.quantity} шт
+                    {data?.purchases.quantity || '0'} шт
                   </div>
                 </div>
                 <div className={styles.returnCell}>
                   <div>{formatPrice(data.return.rub) || '0'} ₽</div>
                   <div className={styles.smallText}>
-                    {data.return.quantity} шт
+                    {data.return.quantity || '0'} шт
                   </div>
                 </div>
                 <div className={styles.salesCell}>
-                  {data.revenue.quantity} шт
+                  {data.revenue.quantity || '0'} шт
                 </div>
                 <div className={styles.revenueCell}>
-                  {formatPrice(data.revenue.rub)} ₽
+                  {formatPrice(data.revenue.rub) || '0'} ₽
                 </div>
                 <div className={styles.avgPriceCell}>
-                  {formatPrice(data.avg_check)} ₽
+                  {formatPrice(data.avg_check) || '0'} ₽
                 </div>
                 <div className={styles.sppCell}>
-                  {formatPrice(data.avg_spp)} %
+                  <span>{data.avg_spp}</span>
+                  <span style={{ marginLeft: '4px' }}>%</span>
                 </div>
+                {/* <div className={styles.sppCell}>{data.avg_spp} %</div> */}
                 <div className={styles.buyoutCell}>
-                  {data.purchase_percent} %
+                  {data.purchase_percent || '0'} %
                 </div>
               </div>
               {/* Self Cost Section */}
@@ -113,31 +115,31 @@ const SalesTable = ({ tableData }) => {
                   {data.deliveries} шт
                 </div>
                 <div className={styles.commissionCell}>
-                  <div>{formatPrice(data.wb_commission.rub)} ₽</div>
+                  <div>{formatPrice(data.wb_commission.rub) || '0'} ₽</div>
                   <div className={styles.smallText}>
                     {formatPrice(data.wb_commission.percent)} %
                   </div>
                 </div>
                 <div className={styles.acquiringCell}>
-                  <div>{formatPrice(data.acquiring.rub)} ₽</div>
+                  <div>{formatPrice(data.acquiring.rub) || '0'} ₽</div>
                   <div className={styles.smallText}>
                     {data.acquiring.percent.toFixed(1)} %
                   </div>
                 </div>
                 <div className={styles.logisticsCell}>
-                  {formatPrice(data.logistics_straight.rub)} ₽
+                  {formatPrice(data.logistics_straight.rub) || '0'} ₽
                 </div>
                 <div className={styles.logisticsCell}>
-                  {formatPrice(data.logistics_reverse.rub)} ₽
+                  {formatPrice(data.logistics_reverse.rub) || '0'} ₽
                 </div>
                 <div className={styles.logisticsCell}>
-                  <div>{formatPrice(data.logistics_total.rub)} ₽</div>
+                  <div>{formatPrice(data.logistics_total.rub) || '0'} ₽</div>
                   <div className={styles.smallText}>
                     {data.logistics_total.percent.toFixed(1)} %
                   </div>
                 </div>
                 <div className={styles.logisticsCell}>
-                  {formatPrice(data.logistics_per_product)} ₽
+                  {formatPrice(data.logistics_per_product) || '0'} ₽
                 </div>
               </div>
               {/* Compensation and Penalties Section */}
@@ -169,21 +171,19 @@ const SalesTable = ({ tableData }) => {
               <div className={styles.flexContainer}>
                 <div className={styles.defectCompnesaitionCell}>
                   <div>{formatPrice(data.storage.rub) || '0'} ₽</div>
-                  <div>{formatPrice(data.storage.percent) || '0'} %</div>
+                  <div>{data.storage.percent || '0'} %</div>
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
                   <div>{formatPrice(data.other_retentions.rub) || '0'} ₽</div>
-                  <div>
-                    {formatPrice(data.other_retentions.percent) || '0'} %
-                  </div>
+                  <div>{data.other_retentions.percent || '0'} %</div>
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
                   <div>{formatPrice(data.acceptance.rub) || '0'} ₽</div>
-                  <div>{formatPrice(data.acceptance.percent) || '0'} %</div>
+                  <div>{data.acceptance.percent || '0'} %</div>
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
                   <div>{formatPrice(data.wb_commission.rub) || '0'} ₽</div>
-                  <div>{formatPrice(data.wb_commission.percent) || '0'} %</div>
+                  <div>{data.wb_commission.percent || '0'} %</div>
                 </div>
               </div>
               {/* External Expenses Section */}
@@ -192,26 +192,14 @@ const SalesTable = ({ tableData }) => {
                 style={{ background: 'rgba(83, 41, 255, 0.05)' }}
               >
                 <div className={styles.defectCompnesaitionCell}>
-                  {data.external_expenses !== '-'
-                    ? formatPrice(data.self_purchase_costs) + ' ₽'
-                    : '0 ₽'}
+                  {formatPrice(data.self_purchase_costs) || '0'} ₽
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  <div>
-                    {data.self_purchase_costs !== '-'
-                      ? formatPrice(data.external_expenses) + ' ₽'
-                      : '0 ₽'}
-                  </div>
-                  <div>
-                    {data.self_purchase_costs !== '-'
-                      ? formatPrice(data.expenses_percent) + ' ₽'
-                      : '0 %'}
-                  </div>
+                  <div>{formatPrice(data.external_expenses) || '0'} ₽</div>
+                  <div>{data.expenses_percent || '0'} %</div>
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  {data.external_expenses !== '-'
-                    ? formatPrice(data.expenses) + ' ₽'
-                    : '0 ₽'}
+                  {formatPrice(data.expenses) || '0'} ₽
                 </div>
               </div>
               {/* Tax Section */}
@@ -247,7 +235,7 @@ const SalesTable = ({ tableData }) => {
                   {formatPrice(data.marginality) || '0'} ₽
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.return_on_investment) || '0'} ₽
+                  {data.return_on_investment || '0'} %
                 </div>
               </div>
             </div>
