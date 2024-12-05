@@ -213,7 +213,7 @@ const ReportMain = () => {
                     <div className={styles.blockRightTextTop}>
                       Для начала работы:
                     </div>
-                    <div>
+                    <div style={{ marginBottom: '5px' }}>
                       1. Ознакомьтесь с короткой видеоинструкцией.
                       <br />
                       2. Загрузите в систему два отчёта (важно загружать их в
@@ -222,9 +222,12 @@ const ReportMain = () => {
                     </div>
                     <div>
                       <ul>
-                        <li className={styles.rightListText}>
+                        <li
+                          className={styles.rightListText}
+                          style={{ marginBottom: '5px' }}
+                        >
                           <span className={styles.rightListTextBold}>
-                            Детализация еженедельного отчёта:
+                            Детализация еженедельного отчёта:{' '}
                           </span>
                           документ в формате ZIP, скачанный из кабинета
                           Wildberries. Файл не нужно изменять, просто загрузите
@@ -232,7 +235,7 @@ const ReportMain = () => {
                         </li>
                         <li className={styles.rightListText}>
                           <span className={styles.rightListTextBold}>
-                            Отчёт по платному хранению:
+                            Отчёт по платному хранению:{' '}
                           </span>
                           документ за тот же период, что и детализация
                           еженедельного отчёта.

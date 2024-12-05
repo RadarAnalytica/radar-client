@@ -13,146 +13,130 @@ const TableByGoods = ({ data }) => {
         id,
         product: item.name,
         purchases: {
-          amount: `${formatPrice(item?.data?.purchases?.rub) || '0'} ₽`,
-          quantity: `${formatPrice(item?.data?.purchases?.quantity) || '0'} шт`,
+          amount: `${formatPrice(item?.purchases?.rub) || '0'} ₽`,
+          quantity: `${formatPrice(item?.purchases?.quantity) || '0'} шт`,
         },
         returns: {
-          amount: `${formatPrice(item?.data?.return?.rub) || '0'} ₽`,
-          quantity: `${formatPrice(item?.data?.return?.quantity) || '0'} шт`,
+          amount: `${formatPrice(item?.return?.rub) || '0'} ₽`,
+          quantity: `${formatPrice(item?.return?.quantity) || '0'} шт`,
         },
-        sales: `${formatPrice(item?.data?.revenue?.quantity) || '0'} шт`,
-        revenue: `${formatPrice(item?.data?.revenue?.rub) || '0'} ₽`,
-        avgPrice: `${formatPrice(item?.data?.avg_check) || '0'} ₽`,
-        spp: `${formatPrice(item?.data?.avg_spp) || '0'} %`,
-        buyout: `${formatPrice(item?.data?.purchase_percent) || '0'} %`,
+        sales: `${formatPrice(item?.revenue?.quantity) || '0'} шт`,
+        revenue: `${formatPrice(item?.revenue?.rub) || '0'} ₽`,
+        avgPrice: `${formatPrice(item?.avg_check) || '0'} ₽`,
+        spp: `${formatPrice(item?.avg_spp) || '0'} %`,
+        buyout: `${formatPrice(item?.purchase_percent) || '0'} %`,
         cost: {
-          total: `${formatPrice(item?.data?.cost_price) || '0'} ₽`,
-          percentage: `${formatPrice(item?.data?.cost_price_percent) || '0'} %`,
-          perUnit: `${formatPrice(item?.data?.cost_price) || '0'} ₽`,
+          total: `${formatPrice(item?.cost_price) || '0'} ₽`,
+          percentage: `${formatPrice(item?.cost_price_percent) || '0'} %`,
+          perUnit: `${formatPrice(item?.cost_price) || '0'} ₽`,
         },
-        logisticQnty: `${formatPrice(item?.data?.deliveries) || '0'} шт`,
+        logisticQnty: `${formatPrice(item?.deliveries) || '0'} шт`,
         logisticCommission: {
-          comission: `${formatPrice(item?.data?.wb_commission?.rub) || '0'} ₽`,
-          percentage: `${
-            formatPrice(item?.data?.wb_commission?.percent) || '0'
-          } %`,
+          comission: `${formatPrice(item?.wb_commission?.rub) || '0'} ₽`,
+          percentage: `${formatPrice(item?.wb_commission?.percent) || '0'} %`,
         },
         logisticEquiring: {
-          equiring: `${formatPrice(item?.data?.acquiring?.rub) || '0'} ₽`,
-          percentage: `${formatPrice(item?.data?.acquiring?.percent) || '0'} %`,
+          equiring: `${formatPrice(item?.acquiring?.rub) || '0'} ₽`,
+          percentage: `${formatPrice(item?.acquiring?.percent) || '0'} %`,
         },
         logisticOfDeliever: {
-          ofDeliver: `${
-            formatPrice(item?.data?.logistics_straight?.rub) || '0'
-          } ₽`,
+          ofDeliver: `${formatPrice(item?.logistics_straight?.rub) || '0'} ₽`,
         },
         logisticOfReturn: {
-          ofReturn: `${
-            formatPrice(item?.data?.logistics_reverse?.rub) || '0'
-          } ₽`,
+          ofReturn: `${formatPrice(item?.logistics_reverse?.rub) || '0'} ₽`,
         },
         logisticOfTotal: {
-          ofTotal: `${formatPrice(item?.data?.logistics_total?.rub) || '0'} ₽`,
-          percentage: `${
-            formatPrice(item?.data?.logistics_total?.percent) || '0'
-          } %`,
+          ofTotal: `${formatPrice(item?.logistics_total?.rub) || '0'} ₽`,
+          percentage: `${formatPrice(item?.logistics_total?.percent) || '0'} %`,
         },
         logisitcPerUnit: {
-          perUnit: `${formatPrice(item?.data?.logistics_per_product) || '0'} ₽`,
+          perUnit: `${formatPrice(item?.logistics_per_product) || '0'} ₽`,
         },
         defectCompensation: {
           compensation: `${
-            formatPrice(item?.data?.compensation_defects?.rub) || '0'
+            formatPrice(item?.compensation_defects?.rub) || '0'
           } ₽`,
         },
         defectQnty: {
           quantity: `${
-            formatPrice(item?.data?.compensation_defects?.quantity) || '0'
+            formatPrice(item?.compensation_defects?.quantity) || '0'
           } шт`,
         },
         defectCompensationDamage: {
           compensationDamage: `${
-            formatPrice(item?.data?.compensation_damage?.rub) || '0'
+            formatPrice(item?.compensation_damage?.rub) || '0'
           } ₽`,
         },
         defectCompensationDamageQnty: {
           damage: `${
-            formatPrice(item?.data?.compensation_damage?.quantity) || '0'
+            formatPrice(item?.compensation_damage?.quantity) || '0'
           } шт`,
         },
         defectFines: {
-          fines: `${formatPrice(item?.data?.penalties) || '0'} ₽`,
+          fines: `${formatPrice(item?.penalties) || '0'} ₽`,
         },
         defectFinesMore: {
-          finesMore: `${formatPrice(item?.data?.additional_payments) || '0'} ₽`,
+          finesMore: `${formatPrice(item?.additional_payments) || '0'} ₽`,
         },
         anotherKeeper: {
-          anotherKeeper: `${formatPrice(item?.data?.storage?.rub) || '0'} ₽`,
-          percentage: `${formatPrice(item?.data?.storage?.percent) || '0'} %`,
+          anotherKeeper: `${formatPrice(item?.storage?.rub) || '0'} ₽`,
+          percentage: `${formatPrice(item?.storage?.percent) || '0'} %`,
         },
         anotherKeeperOtherDeduction: {
-          deduction: `${
-            formatPrice(item?.data?.other_retentions?.rub) || '0'
-          } ₽`,
+          deduction: `${formatPrice(item?.other_retentions?.rub) || '0'} ₽`,
           percentage: `${
-            formatPrice(item?.data?.other_retentions?.percent) || '0'
+            formatPrice(item?.other_retentions?.percent) || '0'
           } %`,
         },
         anotherKeeperPaidAcceptance: {
-          paidAcceptance: `${
-            formatPrice(item?.data?.acceptance?.rub) || '0'
-          } ₽`,
-          percentage: `${
-            formatPrice(item?.data?.acceptance?.percent) || '0'
-          } %`,
+          paidAcceptance: `${formatPrice(item?.acceptance?.rub) || '0'} ₽`,
+          percentage: `${formatPrice(item?.acceptance?.percent) || '0'} %`,
         },
         anotherKeeperWbDeduction: {
           wbDeduction: `${
-            formatPrice(item?.data?.compensation_penalties?.rub) || '0'
+            formatPrice(item?.compensation_penalties?.rub) || '0'
           } ₽`,
           percentage: `${
-            formatPrice(item?.data?.compensation_penalties?.percent) || '0'
+            formatPrice(item?.compensation_penalties?.percent) || '0'
           } %`,
         },
         externalExpensesSelfBuy: {
-          selfBuy: `${formatPrice(item?.data?.self_purchase_costs) || '0'} ₽`,
+          selfBuy: `${formatPrice(item?.self_purchase_costs) || '0'} ₽`,
         },
         externalExpenses: {
-          externalExpenses: `${
-            formatPrice(item?.data?.external_expenses) || '0'
-          } ₽`,
-          percentage: `${formatPrice(item?.data?.expenses_percent) || '0'} %`,
+          externalExpenses: `${formatPrice(item?.external_expenses) || '0'} ₽`,
+          percentage: `${formatPrice(item?.expenses_percent) || '0'} %`,
         },
         externalExpensesAll: {
-          externalExpensesAll: `${formatPrice(item?.data?.expenses) || '0'} ₽`,
+          externalExpensesAll: `${formatPrice(item?.expenses) || '0'} ₽`,
         },
         taxSppWb: {
-          taxSppWb: `${formatPrice(item?.data?.sold_by_wb) || '0'} ₽`,
+          taxSppWb: `${formatPrice(item?.sold_by_wb) || '0'} ₽`,
         },
         taxTotal: {
-          taxTotal: `${formatPrice(item?.data?.tax_base) || '0'} ₽`,
+          taxTotal: `${formatPrice(item?.tax_base) || '0'} ₽`,
         },
         taxTax: {
-          taxTax: `${formatPrice(item?.data?.tax) || '0'} ₽`,
+          taxTax: `${formatPrice(item?.tax) || '0'} ₽`,
         },
         financePay: {
-          financePay: `${formatPrice(item?.data?.payment) || '0'} ₽`,
+          financePay: `${formatPrice(item?.payment) || '0'} ₽`,
         },
         financeTotal: {
-          financeTotal: `${formatPrice(item?.data?.profit) || '0'} ₽`,
+          financeTotal: `${formatPrice(item?.profit) || '0'} ₽`,
         },
         financeTotalPerUnit: {
           financeTotalPerUnit: `${
-            formatPrice(item?.data?.financeTotalPerUnit) || '0'
+            formatPrice(item?.financeTotalPerUnit) || '0'
           } ₽`,
         },
         financeMarginProfit: {
           financeMarginProfit: `${
-            formatPrice(item?.data?.financeMarginProfit) || '0'
+            formatPrice(item?.financeMarginProfit) || '0'
           } %`,
         },
         financeRoi: {
-          financeRoi: `${formatPrice(item?.data?.financeRoi) || '0'} %`,
+          financeRoi: `${formatPrice(item?.financeRoi) || '0'} %`,
         },
       }));
 
