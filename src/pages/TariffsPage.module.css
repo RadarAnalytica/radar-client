@@ -1,0 +1,259 @@
+.upBlockWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 36px;
+}
+
+.imageBox {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 28.8px;
+}
+
+.imageBox img {
+    height: 168px;
+    width: 168px;
+    margin-right: 28px;
+}
+
+.imageText {
+    font-size: 43.2px;
+    font-weight: 700;
+    line-height: 54px;
+}
+
+.downText {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 30px;
+    color: rgba(0, 0, 0, 1);
+}
+
+.blockBackground {
+    padding: 28.8px;
+    background: rgba(247, 247, 247, 1);
+    border-radius: 21.6px;
+    margin-left: 24px;
+}
+
+.accessPrice {
+    display: flex;
+    margin-bottom: 24px;
+}
+
+.activateAccess {
+    font-size: 28.8px;
+    font-weight: 700;
+    line-height: 36px;
+    color: rgba(0, 105, 255, 1);
+}
+
+.accessTitle {
+    margin-bottom: 24px;
+}
+
+.accessPeriod {
+    font-size: 19.2px;
+    font-weight: 600;
+    line-height: 28.8px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.accessPeriodBold {
+    margin-left: 9.6px;
+    font-size: 19.2px;
+    font-weight: 800;
+    line-height: 28.8px;
+    color: rgba(0, 105, 255, 1);
+}
+
+.accessButton {
+    width: 100%;
+}
+
+.accessButton button {
+    width: 100%;
+    padding: 24px 0 24px 0;
+    background: rgba(26, 26, 26, 1);
+    border-radius: 9.6px;
+    font-size: 21.6px;
+    font-weight: 600;
+    line-height: 27px;
+    color: rgba(255, 255, 255, 1);
+    border: none;
+    cursor: pointer;
+}
+
+.infoBlockWrapper {
+    padding: 28.8px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 21.6px;
+}
+
+.infoBlockTitle {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 37.5px;
+    color: rgba(0, 0, 0, 1);
+    margin-bottom: 14.4px;
+}
+
+.infoBlockTextSimple {
+    font-size: 19.2px;
+    font-weight: 600;
+    line-height: 28.8px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 1680px) {
+    .imageBox img {
+        height: 140px;
+        width: 140px;
+    }
+
+    .imageText {
+        font-size: 36px;
+        line-height: 45px;
+        font-weight: 700;
+    }
+
+    .downText {
+        font-size: 20px;
+        line-height: 25px;
+        font-weight: 500;
+    }
+
+    .activateAccess {
+        font-size: 24px;
+        line-height: 30px;
+        font-weight: 700;
+    }
+
+    .accessPeriod {
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 600;
+    }
+
+    .accessPeriodBold {
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 800;
+    }
+
+    .accessButton button {
+        font-size: 18px;
+        line-height: 22.5px;
+        font-weight: 600;
+        padding: 20px 0 20px 0;
+    }
+
+    .infoBlockTitle {
+        font-size: 25px;
+        line-height: 30px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .infoBlockTextSimple {
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 600;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .upBlockWrapper {
+        grid-template-columns: 1fr;
+        padding: 18px;
+    }
+
+    .imageBox {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .imageBox img {
+        height: 100px;
+        width: 100px;
+    }
+
+    .imageText {
+        font-size: 28px;
+        line-height: 35px;
+        font-weight: 700;
+    }
+
+    .downTextblock {
+        width: 100%;
+    }
+
+    .downText {
+        width: 100%;
+    }
+
+    .blockBackground {
+        margin-left: 0;
+        margin-top: 24px;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .upBlockWrapper {
+        padding: 0;
+    }
+
+    .imageBox img {
+        height: 90px;
+        width: 90px;
+    }
+
+    .imageText {
+        font-size: 25px;
+        line-height: 31px;
+        font-weight: 700;
+    }
+
+    .downText {
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 500;
+    }
+
+    .activateAccess {
+        font-size: 20px;
+        line-height: 25px;
+        font-weight: 700;
+    }
+
+    .accessPeriod {
+        font-size: 14px;
+        line-height: 21px;
+        font-weight: 600;
+    }
+
+    .accessPeriodBold {
+        font-size: 14px;
+        line-height: 21px;
+        font-weight: 800;
+    }
+
+    .accessButton button {
+        font-size: 14.5px;
+        line-height: 18px;
+        font-weight: 600;
+    }
+
+    .infoBlockTitle {
+        font-size: 20px;
+        line-height: 25px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .infoBlockTextSimple {
+        font-size: 14px;
+        line-height: 21px;
+        font-weight: 600;
+    }
+}

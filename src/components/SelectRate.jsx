@@ -1,31 +1,32 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import OrangeLabelSelect from "../pages/images/OrangeLabelSelect";
-import logoStart from "../pages/images/logoForCardStart.png";
-import logoPro from "../pages/images/logoForCardPro.png";
-import logoProPlus from "../pages/images/logoForCardProPlus.png";
-import Steps from "../pages/images/Steps";
-import OneRuble from "../pages/images/OneRuble.svg";
-import BlueSwich from "../pages/images/BlueSwich.svg";
-import StartLogo from "../assets/startlogo.svg";
-import FireLogo from "../assets/firelogo.svg";
-import AuthContext from "../service/AuthContext";
-import axios from "axios";
-import ReviewsUsers from "../components/ReviewsUsers";
-import BlockImg_x2 from "../pages/images/Dashboard_x2.png";
-import SolLabelStartBsn from "../pages/images/SolLabelStartBsn";
-import YellowRadarPoint from "../pages/images/YellowRadarPoint";
-import CustomButton from "./utilsComponents/CustomButton";
-import { URL } from "../service/config";
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import OrangeLabelSelect from '../pages/images/OrangeLabelSelect';
+import logoStart from '../pages/images/logoForCardStart.png';
+import logoPro from '../pages/images/logoForCardPro.png';
+import logoProPlus from '../pages/images/logoForCardProPlus.png';
+import Steps from '../pages/images/Steps';
+import OneRuble from '../pages/images/OneRuble.svg';
+import BlueSwich from '../pages/images/BlueSwich.svg';
+import StartLogo from '../assets/startlogo.svg';
+import FireLogo from '../assets/firelogo.svg';
+import AuthContext from '../service/AuthContext';
+import axios from 'axios';
+import ReviewsUsers from '../components/ReviewsUsers';
+import BlockImg_x2 from '../pages/images/Dashboard_x2.png';
+import SolLabelStartBsn from '../pages/images/SolLabelStartBsn';
+import YellowRadarPoint from '../pages/images/YellowRadarPoint';
+import CustomButton from './utilsComponents/CustomButton';
+import { URL } from '../service/config';
 import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-res image
 import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
+import styles from '../pages/TariffsPage.module.css';
+import thumbup from '../pages/images/thumbup.png';
 
-
-const SelectRate = ({ redirect }) => {
+const SelectRate = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
-  console.log("SelectRate user:", user);
-  const [selectedPeriod, setSelectedPeriod] = useState("1month");
+  console.log('SelectRate user:', user);
+  const [selectedPeriod, setSelectedPeriod] = useState('1month');
   const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
   const [subscriptionDiscount, setSubscriptionDiscount] = useState(
     user?.is_subscription_discount
@@ -43,7 +44,7 @@ const SelectRate = ({ redirect }) => {
   const handlePeriodChange = (period) => {
     setSelectedPeriod(period);
   };
-  const userIdInvoiceHardCode = "radar-51-20240807-161128";
+  const userIdInvoiceHardCode = 'radar-51-20240807-161128';
 
   const currentPath = window.location.pathname;
   const [isHighResLoaded, setHighResLoaded] = useState(false);
@@ -53,7 +54,7 @@ const SelectRate = ({ redirect }) => {
     img.src = highResImage;
 
     img.onload = () => {
-      // When high-res image is fully loaded, change 
+      // When high-res image is fully loaded, change
       setHighResLoaded(true);
     };
   }, [highResImage]);
@@ -62,13 +63,13 @@ const SelectRate = ({ redirect }) => {
     try {
       // const authToken = localStorage.getItem("authToken");
       const response = await fetch(`${URL}/api/user/refresh`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-          authorization: "JWT " + authToken,
+          'Content-Type': 'application/json',
+          authorization: 'JWT ' + authToken,
         },
       });
-      console.log("response", response);
+      console.log('response', response);
 
       if (response.status === 200) {
         const data = await response.json();
@@ -84,11 +85,11 @@ const SelectRate = ({ redirect }) => {
 
   const pay = async (_user, _period, _trial) => {
     const refresh_result = await refreshUserToken();
-    console.log("refresh_result", refresh_result);
+    console.log('refresh_result', refresh_result);
 
     // localStorage.setItem("authToken", refresh_result);
     const decodedUser = jwtDecode(refresh_result);
-    console.log("decodedUser:", decodedUser);
+    console.log('decodedUser:', decodedUser);
     let newTrialExpired;
     if (decodedUser.is_test_used) {
       setTrialExpired(true);
@@ -98,30 +99,30 @@ const SelectRate = ({ redirect }) => {
       newTrialExpired = false;
     }
 
-    console.log("user.email", user);
-    console.log("selectedPeriod", selectedPeriod);
-    console.log("trialExpired", trialExpired);
-    console.log("newTrialExpired", newTrialExpired);
+    console.log('user.email', user);
+    console.log('selectedPeriod', selectedPeriod);
+    console.log('trialExpired', trialExpired);
+    console.log('newTrialExpired', newTrialExpired);
 
-    let periodSubscribe = "";
+    let periodSubscribe = '';
     let amountSubscribe = 0;
     let firstAmount = 0;
-    let startDateSubscribe = "";
+    let startDateSubscribe = '';
     const options = {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
     };
     const invoiceId = `radar-${user.id}-${new Date()
-      .toLocaleString("ru", options)
-      .replaceAll(".", "")
-      .replaceAll(", ", "-")
-      .replaceAll(":", "")}`;
+      .toLocaleString('ru', options)
+      .replaceAll('.', '')
+      .replaceAll(', ', '-')
+      .replaceAll(':', '')}`;
 
-    if (selectedPeriod === "1month") {
+    if (selectedPeriod === '1month') {
       amountSubscribe = 2990;
       firstAmount = newTrialExpired ? 2990 : 10;
       periodSubscribe = 1;
@@ -135,7 +136,7 @@ const SelectRate = ({ redirect }) => {
         startDateSubscribe.setDate(startDateSubscribe.getDate() + 3);
         startDateSubscribe.setUTCHours(7, 0, 0, 0);
       }
-    } else if (selectedPeriod === "3month") {
+    } else if (selectedPeriod === '3month') {
       amountSubscribe = 8073;
       firstAmount = !subscriptionDiscount ? 8073 : 4485;
       periodSubscribe = 3;
@@ -143,7 +144,7 @@ const SelectRate = ({ redirect }) => {
       startDateSubscribe.setMonth(
         startDateSubscribe.getMonth() + periodSubscribe
       );
-    } else if (selectedPeriod === "6month") {
+    } else if (selectedPeriod === '6month') {
       amountSubscribe = 10764;
       firstAmount = !subscriptionDiscount ? 10764 : 5382;
       periodSubscribe = 6;
@@ -152,18 +153,18 @@ const SelectRate = ({ redirect }) => {
         startDateSubscribe.getMonth() + periodSubscribe
       );
     }
-    console.log("periodSubscribe", periodSubscribe);
-    console.log("firstAmount", firstAmount);
-    console.log("amountSubscribe", amountSubscribe);
+    console.log('periodSubscribe', periodSubscribe);
+    console.log('firstAmount', firstAmount);
+    console.log('amountSubscribe', amountSubscribe);
     console.log(
-      "startDateSubscribe",
-      startDateSubscribe.toISOString().split("T")[0]
+      'startDateSubscribe',
+      startDateSubscribe.toISOString().split('T')[0]
     );
-    startDateSubscribe = startDateSubscribe.toISOString().split("T")[0];
+    startDateSubscribe = startDateSubscribe.toISOString().split('T')[0];
 
     // eslint-disable-next-line no-undef
     var widget = new cp.CloudPayments({
-      language: "ru-RU",
+      language: 'ru-RU',
       email: user.email,
       applePaySupport: false,
       googlePaySupport: false,
@@ -179,7 +180,7 @@ const SelectRate = ({ redirect }) => {
       Items: [
         //товарные позиции
         {
-          label: "Подписка Радар Аналитика", //наименование товара
+          label: 'Подписка Радар Аналитика', //наименование товара
           price: amountSubscribe, //цена
           quantity: 1.0, //количество
           amount: amountSubscribe, //сумма
@@ -189,7 +190,7 @@ const SelectRate = ({ redirect }) => {
         },
       ],
       email: user.email, //e-mail покупателя, если нужно отправить письмо с чеком
-      phone: "", //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
+      phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
       isBso: false, //чек является бланком строгой отчетности
       amounts: {
         electronic: amountSubscribe, // Сумма оплаты электронными деньгами
@@ -203,7 +204,7 @@ const SelectRate = ({ redirect }) => {
     data.CloudPayments = {
       CustomerReceipt: receipt, //чек для первого платежа
       recurrent: {
-        interval: "Month",
+        interval: 'Month',
         period: periodSubscribe,
         startDate: startDateSubscribe,
         amount: amountSubscribe,
@@ -214,10 +215,10 @@ const SelectRate = ({ redirect }) => {
     widget.charge(
       {
         // options
-        publicId: "pk_1359b4923cc282c6f76e05d9f138a", //id из личного кабинета
-        description: "Оплата подписки в Radar Analityca", //назначение
+        publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
+        description: 'Оплата подписки в Radar Analityca', //назначение
         amount: firstAmount, //сумма
-        currency: "RUB", //валюта
+        currency: 'RUB', //валюта
         invoiceId: invoiceId, //номер заказа  (необязательно)
         email: user.email,
         accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
@@ -232,14 +233,14 @@ const SelectRate = ({ redirect }) => {
         // Helper function to map selectedPeriod to the correct string
         const mapPeriodToStatus = (period) => {
           switch (period) {
-            case "test":
-              return "Test";
-            case "1month":
-              return "Month 1";
-            case "3months":
-              return "Month 3";
-            case "6months":
-              return "Month 6";
+            case 'test':
+              return 'Test';
+            case '1month':
+              return 'Month 1';
+            case '3months':
+              return 'Month 3';
+            case '6months':
+              return 'Month 6';
             default:
               return period; // fallback to original value if no match
           }
@@ -248,35 +249,35 @@ const SelectRate = ({ redirect }) => {
         // Prepare the update data
         const updateData = {
           subscription_status: [mapPeriodToStatus(selectedPeriod)],
-          subscription_start_date: new Date().toISOString().split("T")[0],
+          subscription_start_date: new Date().toISOString().split('T')[0],
           invoice_id: invoiceId,
         };
 
         // Add is_test_used only if it's a test period
-        if (selectedPeriod === "1month") {
+        if (selectedPeriod === '1month') {
           updateData.is_test_used = true;
         }
         // Send PATCH request
         axios
           .post(`${URL}/api/user/subscription`, updateData, {
             headers: {
-              "content-type": "application/json",
-              authorization: "JWT " + authToken,
+              'content-type': 'application/json',
+              authorization: 'JWT ' + authToken,
             },
           })
           .then((res) => {
-            console.log("patch /api/user", res.data);
-            localStorage.setItem("authToken", res.data.auth_token);
-            navigate("/after-payment", { state: { paymentStatus: "success" } });
+            console.log('patch /api/user', res.data);
+            localStorage.setItem('authToken', res.data.auth_token);
+            navigate('/after-payment', { state: { paymentStatus: 'success' } });
           })
-          .catch((err) => console.log("patch /api/user", err));
-        console.log("Payment success:", "options", options);
+          .catch((err) => console.log('patch /api/user', err));
+        console.log('Payment success:', 'options', options);
       },
 
       function (reason, options) {
         // fail
         //действие при неуспешной оплате
-        console.log("Payment fail:", "reason", reason, "options", options);
+        console.log('Payment fail:', 'reason', reason, 'options', options);
       }
     );
 
@@ -312,11 +313,78 @@ const SelectRate = ({ redirect }) => {
 
   return (
     <>
+      {isShowText && (
+        <>
+          <div className={styles.upBlockWrapper}>
+            <div className={styles.leftBlock}>
+              <div className={styles.imageBox}>
+                <img src={thumbup} alt='thumbup' />
+                <div className={styles.imageText}>
+                  Спасибо
+                  <br /> за регистрацию
+                  <br /> в сервисе Radar!
+                </div>
+              </div>
+              <div className={styles.downTextblock}>
+                <span className={styles.downText}>
+                  Желаем вам успехов и надеемся, что вы останетесь довольны
+                  нашим сервисом!
+                </span>
+              </div>
+            </div>
+            <div className={styles.rightBlock}>
+              <div className={styles.blockBackground}>
+                <div className={styles.accessTitle}>
+                  <span className={styles.activateAccess}>
+                    На этой странице вы можете активировать тестовый доступ на 3
+                    дня
+                  </span>
+                </div>
+                <div className={styles.accessPrice}>
+                  <div
+                    className={styles.accessPeriod}
+                    style={{ marginRight: '24px' }}
+                  >
+                    Доступ:
+                    <span className={styles.accessPeriodBold}>3 дня</span>
+                  </div>
+                  <div className={styles.accessPeriod}>
+                    Стоимость:
+                    <span className={styles.accessPeriodBold}>1 ₽</span>
+                  </div>
+                </div>
+                <div className={styles.accessButton}>
+                  <button
+                    onClick={() => {
+                      pay(user.id, selectedPeriod, trialExpired);
+                    }}
+                  >
+                    Активировать тестовый период за 1₽
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.infoBlockWrapper}>
+            <div className={styles.infoBlockTitle}>
+              Почему активация тестового периода стоит 1₽?
+            </div>
+            <div className={styles.infoBlockTextSimple}>
+              Предоставление тестового доступа без ограничений по функционалу
+              требует затрат со стороны сервиса. Поэтому мы взимаем
+              символическую плату в размере 1₽ за активацию тестового периода,
+              чтобы наши ресурсы расходовались только на тех продавцов, кто
+              действительно заинтересован в тестировании аналитики. Оплата
+              доступна всеми возможными способами и занимает не более 45 секунд.
+            </div>
+          </div>
+        </>
+      )}
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          marginBottom: "10px",
+          display: 'flex',
+          flexDirection: 'column',
+          marginBottom: '10px',
         }}
       >
         {/* <div className='doughnut-content'>
@@ -424,10 +492,12 @@ const SelectRate = ({ redirect }) => {
               </p>
               <div className='landing-price-btn'>
                 <p className='landing-price-btn-text'>
-                  Мы дарим тестовый доступ на 3 дня <br /><span> всего за</span>
+                  Мы дарим тестовый доступ на 3 дня <br />
+                  <span> всего за</span>
                 </p>
                 <p className='landing-price-btn-text-mobile'>
-                  Мы дарим тестовый доступ на 3 дня <br /><span> всего за</span>
+                  Мы дарим тестовый доступ на 3 дня <br />
+                  <span> всего за</span>
                 </p>
                 <img src={OneRuble} alt='ruble'></img>
               </div>
@@ -685,54 +755,54 @@ const SelectRate = ({ redirect }) => {
                   </div>
                 </div>
                 <div className='selectPrice'>
-                  {selectedPeriod === "1month" && (
+                  {selectedPeriod === '1month' && (
                     <>
                       {subscriptionDiscount ? (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? "10 ₽" : "1 495 ₽"}
+                            {!trialExpired ? '10 ₽' : '1 495 ₽'}
                           </span>
                           <span
                             style={{
-                              marginLeft: "10px",
-                              textDecoration: "line-through",
+                              marginLeft: '10px',
+                              textDecoration: 'line-through',
                             }}
                           >
                             2 990 ₽
                           </span>
                           <span
                             style={{
-                              marginLeft: "10px",
-                              color: "#5329FF",
-                              backgroundColor: "#5329FF1A",
-                              fontWeight: "700",
+                              marginLeft: '10px',
+                              color: '#5329FF',
+                              backgroundColor: '#5329FF1A',
+                              fontWeight: '700',
                             }}
                           >
-                            {!trialExpired ? "-99%" : "-50%"}
+                            {!trialExpired ? '-99%' : '-50%'}
                           </span>
                           <div>За месяц</div>
                         </>
                       ) : (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? "10 ₽" : "2 990 ₽"}
+                            {!trialExpired ? '10 ₽' : '2 990 ₽'}
                           </span>
                           {!trialExpired && (
                             <>
                               <span
                                 style={{
-                                  marginLeft: "10px",
-                                  textDecoration: "line-through",
+                                  marginLeft: '10px',
+                                  textDecoration: 'line-through',
                                 }}
                               >
                                 2 990 ₽
                               </span>
                               <span
                                 style={{
-                                  marginLeft: "10px",
-                                  color: "#5329FF",
-                                  backgroundColor: "#5329FF1A",
-                                  fontWeight: "700",
+                                  marginLeft: '10px',
+                                  color: '#5329FF',
+                                  backgroundColor: '#5329FF1A',
+                                  fontWeight: '700',
                                 }}
                               >
                                 -99%
@@ -741,64 +811,64 @@ const SelectRate = ({ redirect }) => {
                           )}
                           <div>
                             {!trialExpired
-                              ? "Тестовый доступ на 3 дня"
-                              : "За месяц"}
+                              ? 'Тестовый доступ на 3 дня'
+                              : 'За месяц'}
                           </div>
                         </>
                       )}
                     </>
                   )}
-                  {selectedPeriod === "3month" && (
+                  {selectedPeriod === '3month' && (
                     <>
-                      <span style={{ display: "flex", alignItems: "center" }}>
+                      <span style={{ display: 'flex', alignItems: 'center' }}>
                         <span className='priceCardOne'>
-                          {!subscriptionDiscount ? "8 073 ₽" : "4 485 ₽"}
+                          {!subscriptionDiscount ? '8 073 ₽' : '4 485 ₽'}
                         </span>
                         <span
                           style={{
-                            marginLeft: "10px",
-                            textDecoration: "line-through",
+                            marginLeft: '10px',
+                            textDecoration: 'line-through',
                           }}
                         >
-                          {!subscriptionDiscount ? "8 970 ₽" : "8 073 ₽"}
+                          {!subscriptionDiscount ? '8 970 ₽' : '8 073 ₽'}
                         </span>
                         <span
                           style={{
-                            marginLeft: "10px",
-                            color: "#5329FF",
-                            backgroundColor: "#5329FF1A",
-                            fontWeight: "700",
+                            marginLeft: '10px',
+                            color: '#5329FF',
+                            backgroundColor: '#5329FF1A',
+                            fontWeight: '700',
                           }}
                         >
-                          {!subscriptionDiscount ? "-10%" : "-50%"}
+                          {!subscriptionDiscount ? '-10%' : '-50%'}
                         </span>
                       </span>
                       <div>За 3 месяцев</div>
                     </>
                   )}
-                  {selectedPeriod === "6month" && (
+                  {selectedPeriod === '6month' && (
                     <>
-                      <span style={{ display: "flex", alignItems: "center" }}>
+                      <span style={{ display: 'flex', alignItems: 'center' }}>
                         <span className='priceCardOne'>
-                          {!subscriptionDiscount ? "10 764 ₽" : "5 382 ₽"}
+                          {!subscriptionDiscount ? '10 764 ₽' : '5 382 ₽'}
                         </span>
                         <span
                           style={{
-                            marginLeft: "10px",
-                            textDecoration: "line-through",
+                            marginLeft: '10px',
+                            textDecoration: 'line-through',
                           }}
                         >
-                          {!subscriptionDiscount ? "17 940 ₽" : "10 764 ₽"}
+                          {!subscriptionDiscount ? '17 940 ₽' : '10 764 ₽'}
                         </span>
                         <span
                           style={{
-                            marginLeft: "10px",
-                            color: "#5329FF",
-                            backgroundColor: "#5329FF1A",
-                            fontWeight: "700",
+                            marginLeft: '10px',
+                            color: '#5329FF',
+                            backgroundColor: '#5329FF1A',
+                            fontWeight: '700',
                           }}
                         >
-                          {!subscriptionDiscount ? "-40%" : "-50%"}
+                          {!subscriptionDiscount ? '-40%' : '-50%'}
                         </span>
                       </span>
                       <div>За 6 месяцев</div>
@@ -809,42 +879,42 @@ const SelectRate = ({ redirect }) => {
                 <button
                   className='btn-black'
                   style={{
-                    minHeight: "64px",
-                    fontSize: "18px",
-                    marginTop: "15px",
+                    minHeight: '64px',
+                    fontSize: '18px',
+                    marginTop: '15px',
                   }}
                   onClick={() => {
-                    if (currentPath === "/") {
+                    if (currentPath === '/') {
                       if (user) {
-                        window.open("/tariffs", "_blank");
+                        window.open('/tariffs', '_blank');
                       }
                       if (!user) {
-                        navigate("/signup");
+                        navigate('/signup');
                       }
                     } else {
                       pay(user.id, selectedPeriod, trialExpired);
                     }
                   }}
                 >
-                  Начать работать
+                  Активировать сервис
                 </button>
               </div>
               <div className='bodyCardProPlus'>
                 <div className='labelCard'>
                   <p>Оборот селлера:</p>
-                  <div style={{ fontSize: "20px", fontWeight: "500" }}>
+                  <div style={{ fontSize: '20px', fontWeight: '500' }}>
                     Любой. Без лимитов и ограничений
                   </div>
                 </div>
                 <div className='labelCard'>
                   <p>Функционал</p>
-                  <div style={{ fontSize: "20px", fontWeight: "500" }}>
+                  <div style={{ fontSize: '20px', fontWeight: '500' }}>
                     Полный доступ. Без ограничений
                   </div>
                 </div>
                 <div className='labelCard'>
                   <p>Количество магазинов:</p>
-                  <div style={{ fontSize: "20px", fontWeight: "500" }}>
+                  <div style={{ fontSize: '20px', fontWeight: '500' }}>
                     Можно подключить одновременно до 20 магазинов
                   </div>
                 </div>
@@ -852,17 +922,17 @@ const SelectRate = ({ redirect }) => {
                   Бонус:
                   <div
                     style={{
-                      fontSize: "20px",
-                      fontWeight: "500",
+                      fontSize: '20px',
+                      fontWeight: '500',
                     }}
                   >
                     <div>
                       <Steps.CircleOkWhite />
-                      <span style={{ marginLeft: "5px" }}>личный менеджер</span>
+                      <span style={{ marginLeft: '5px' }}>личный менеджер</span>
                     </div>
                     <div>
                       <Steps.CircleOkWhite />
-                      <span style={{ marginLeft: "5px" }}>
+                      <span style={{ marginLeft: '5px' }}>
                         приоритетная поддержка
                       </span>
                     </div>
@@ -872,70 +942,77 @@ const SelectRate = ({ redirect }) => {
             </div>
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                backgroundColor: "#1A1A1A08",
-                padding: "5px",
-                borderRadius: "10px",
-                marginTop: "20px",
+                display: 'flex',
+                justifyContent: 'space-between',
+                backgroundColor: '#1A1A1A08',
+                padding: '5px',
+                borderRadius: '10px',
+                marginTop: '20px',
               }}
             >
               <button
-                onClick={() => handlePeriodChange("1month")}
-                className={` ${selectedPeriod === "1month" ? "prime-btn" : "secondary-btn"
-                  }`}
+                onClick={() => handlePeriodChange('1month')}
+                className={` ${
+                  selectedPeriod === '1month' ? 'prime-btn' : 'secondary-btn'
+                }`}
                 style={{
-                  fontSize: window.innerWidth < 768 ? "15px" : "18px", // Динамический размер шрифта
+                  fontSize: window.innerWidth < 768 ? '15px' : '18px', // Динамический размер шрифта
                 }}
                 id='btnDop'
               >
-                {selectedPeriod === "1month" ? <Steps.Circle /> : <span></span>}
-                1 месяц{" "}
+                {selectedPeriod === '1month' ? <Steps.Circle /> : <span></span>}
+                1 месяц{' '}
                 <span className='saleTextMobile'>
-                  {!subscriptionDiscount ? "" : "-50%"}
+                  {!subscriptionDiscount ? '' : '-50%'}
                 </span>
               </button>
               <button
-                onClick={() => handlePeriodChange("3month")}
-                className={`monthesText ${selectedPeriod === "3month" ? "prime-btn" : "secondary-btn"
-                  }`}
+                onClick={() => handlePeriodChange('3month')}
+                className={`monthesText ${
+                  selectedPeriod === '3month' ? 'prime-btn' : 'secondary-btn'
+                }`}
                 style={{
-                  fontSize: window.innerWidth < 768 ? "15px" : "18px", // Динамический размер шрифта
+                  fontSize: window.innerWidth < 768 ? '15px' : '18px', // Динамический размер шрифта
                 }}
                 id='btnDop'
               >
-                {selectedPeriod === "3month" ? <Steps.Circle /> : <span></span>}
-                3 месяца{" "}
+                {selectedPeriod === '3month' ? <Steps.Circle /> : <span></span>}
+                3 месяца{' '}
                 <span className='saleTextMobile'>
-                  {!subscriptionDiscount ? "-10%" : "-50%"}
+                  {!subscriptionDiscount ? '-10%' : '-50%'}
                 </span>
               </button>
               <button
-                onClick={() => handlePeriodChange("6month")}
-                className={`monthesTextBtn ${selectedPeriod === "6month" ? "prime-btn" : "secondary-btn"
-                  }`}
+                onClick={() => handlePeriodChange('6month')}
+                className={`monthesTextBtn ${
+                  selectedPeriod === '6month' ? 'prime-btn' : 'secondary-btn'
+                }`}
                 style={{
-                  fontSize: window.innerWidth < 768 ? "15px" : "18px",
+                  fontSize: window.innerWidth < 768 ? '15px' : '18px',
                 }}
                 id='btnDop'
               >
-                {selectedPeriod === "6month" ? <Steps.Circle /> : <span></span>}
-                <span>6 месяцев{" "}</span>
+                {selectedPeriod === '6month' ? <Steps.Circle /> : <span></span>}
+                <span>6 месяцев </span>
                 <span className='saleTextMobile'>
-                  {!subscriptionDiscount ? "до -60%" : "-50%"}
+                  {!subscriptionDiscount ? 'до -60%' : '-50%'}
                 </span>
               </button>
             </div>
           </div>
         </div>
       </div>
-      {currentPath === "/tariffs" && (
+      {currentPath === '/tariffs' && (
         <>
           <ReviewsUsers />
-          <div className='wid-solutionMain'
-            style={{ backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage})` }}
+          <div
+            className='wid-solutionMain'
+            style={{
+              backgroundImage: `url(${
+                isHighResLoaded ? highResImage : lowResImage
+              })`,
+            }}
           >
-
             <div className='sol-description col' style={{ padding: 0 }}>
               <div className='headStartBsn'>
                 <SolLabelStartBsn />
@@ -944,18 +1021,18 @@ const SelectRate = ({ redirect }) => {
                   Найдите прибыльные товары на маркетплейсе и развивайте свой
                   бизнес.
                 </div>
-                <div className='YellowRadarPoint' style={{ marginTop: "20px" }}>
+                <div className='YellowRadarPoint' style={{ marginTop: '20px' }}>
                   <YellowRadarPoint />
                 </div>
               </div>
 
               <div className='d-flex flex-column gap-3'>
                 <CustomButton
-                  text={"Начать работать"}
+                  text={'Активировать сервис'}
                   action={() => {
                     pay(user.id, selectedPeriod, trialExpired);
                   }}
-                  className={"white-btn"}
+                  className={'white-btn'}
                 />
               </div>
             </div>

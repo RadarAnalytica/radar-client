@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './HowToConnectAPI.module.css';
 import NavbarMainHome from '../components/NavbarMainHome';
 import step1v1 from './images/step1-1.jpg';
@@ -11,35 +11,35 @@ import step4v1 from './images/step4-1.jpg';
 import highResImage4 from './images/highResStep4-1.png';
 import Steps from '../pages/images/Steps';
 import exclamation from './images/ExlamationMark.svg';
-// import FooterNewVersion from '../components/FooterNewVersion';
+import FooterNewVersion from '../components/FooterNewVersion';
 
 const HowToConnectAPI = () => {
-    const [isHighResLoaded, setHighResLoaded] = useState({
-        image1: false,
-        image2: false,
-        image3: false,
-        image4: false,
-      });
-      
-      useEffect(() => {
-        const images = [
-          { high: highResImage1, key: 'image1' },
-          { high: highResImage2, key: 'image2' },
-          { high: highResImage3, key: 'image3' },
-          { high: highResImage4, key: 'image4' },
-        ];
-      
-        images.forEach(({high, key}) => {
-          const img = new Image();
-          img.src = high;
-          img.onload = () => {
-            setHighResLoaded(prev => ({
-              ...prev,
-              [key]: true
-            }));
-          };
-        });
-      }, []);
+  const [isHighResLoaded, setHighResLoaded] = useState({
+    image1: false,
+    image2: false,
+    image3: false,
+    image4: false,
+  });
+
+  useEffect(() => {
+    const images = [
+      { high: highResImage1, key: 'image1' },
+      { high: highResImage2, key: 'image2' },
+      { high: highResImage3, key: 'image3' },
+      { high: highResImage4, key: 'image4' },
+    ];
+
+    images.forEach(({ high, key }) => {
+      const img = new Image();
+      img.src = high;
+      img.onload = () => {
+        setHighResLoaded((prev) => ({
+          ...prev,
+          [key]: true,
+        }));
+      };
+    });
+  }, []);
   return (
     <div
       className='page-white'
@@ -62,8 +62,16 @@ const HowToConnectAPI = () => {
             В личном кабинете нажимаем на “шестеренку” и выбираем раздел
             “подключенные магазины”.
           </div>
-          <img src={isHighResLoaded ? highResImage1 : step1v1} alt='step1' className={styles.step1Img} />
-          <img src={isHighResLoaded ? highResImage2 : step1v2} alt='step2' className={styles.step1Img} />
+          <img
+            src={isHighResLoaded ? highResImage1 : step1v1}
+            alt='step1'
+            className={styles.step1Img}
+          />
+          <img
+            src={isHighResLoaded ? highResImage2 : step1v2}
+            alt='step2'
+            className={styles.step1Img}
+          />
         </div>
         <div className={styles.stepContainer}>
           <div>
@@ -78,7 +86,11 @@ const HowToConnectAPI = () => {
           <div className={styles.stepText}>
             На странице “подключенные магазины” выбираем вариант “Подключить”. 
           </div>
-          <img src={isHighResLoaded ? highResImage3 : step2v1} alt='step1' className={styles.step1Img} />
+          <img
+            src={isHighResLoaded ? highResImage3 : step2v1}
+            alt='step1'
+            className={styles.step1Img}
+          />
         </div>
         <div className={styles.stepContainer}>
           <div>
@@ -110,15 +122,13 @@ const HowToConnectAPI = () => {
               Продвижения, Вопросы и отзывы, Цены и скидки).
             </div>
             <div className={styles.stepTextImportant}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div className={styles.stepTextImportantBox}>
                 <img
                   src={exclamation}
                   alt='Exclamtion Mark'
                   style={{ margin: '0 16px 0 16px' }}
                 />
-                <span>
-                  Важно: галочка “Только на чтение” должна быть снята.
-                </span>
+                Важно: галочка “Только на чтение” должна быть снята.
               </div>
             </div>
           </div>
@@ -133,11 +143,15 @@ const HowToConnectAPI = () => {
               <p style={{ color: 'white' }}>{`Шаг 4`}</p>
             </div>
           </div>
-          <div className={styles.stepText}>Нажимаем кнопку «Сохранить»</div>
-          <img src={isHighResLoaded ? highResImage4 : step4v1} alt='step1' className={styles.step1Img} />
+          <div className={styles.stepText}>Нажимаем кнопку «Сохранить».</div>
+          <img
+            src={isHighResLoaded ? highResImage4 : step4v1}
+            alt='step1'
+            className={styles.step1Img}
+          />
         </div>
       </div>
-      {/* <FooterNewVersion /> */}
+      <FooterNewVersion />
     </div>
   );
 };

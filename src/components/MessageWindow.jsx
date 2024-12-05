@@ -161,7 +161,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
 
       if (responseData) {
         // Message sent successfully, now fetch updated messages
-        if (user.role === 'admin' ) {
+        if (user.role === 'admin') {
           getAllSupportMessages(authToken);
         } else {
           fetchMessages(authToken);
@@ -300,7 +300,10 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
         <img src={radarIcon} alt='Logo' className={styles.logo} />
         <div className={styles.headerText}>
           <span className={styles.title}>Поддержка Радара</span>
-          <span className={styles.subtitle}>Поддержим в любое время<br/> c 10:00 до 20:00</span>
+          <span className={styles.subtitle}>
+            Поддержим в любое время
+            <br /> c 10:00 до 20:00
+          </span>
         </div>
         {!isNoHide && (
           <button
@@ -315,50 +318,50 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
         <div className={styles.messageList} ref={messageListRef}>
           {allMessages?.length > 0 &&
             allMessages
-            .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-            .map((message) => (
-              <span
-                key={message.id}
-                className={
-                  message.sender === 'client'
-                    ? styles.userMessage
-                    : styles.supportMessage
-                }
-              >
-                <div>
-                  {(message.image_1 ||
-                    message.image_2 ||
-                    message.image_3 ||
-                    message.image_4) && (
-                    <ImageMasonry
-                      images={[
-                        message.image_1,
-                        message.image_2,
-                        message.image_3,
-                        message.image_4,
-                      ].filter(Boolean)}
-                      onImageClick={handleImageClick}
-                      selectedImages={selectedImages}
-                      onImageDoubleClick={handleImageDoubleClick}
-                    />
-                  )}
-                  {message.text}
-                </div>
+              .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+              .map((message) => (
                 <span
+                  key={message.id}
                   className={
                     message.sender === 'client'
-                      ? styles.messageTimeUser
-                      : styles.messageTimeBot
+                      ? styles.userMessage
+                      : styles.supportMessage
                   }
                 >
-                  {new Date(message.created_at + 'Z').toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                  })}
+                  <div>
+                    {(message.image_1 ||
+                      message.image_2 ||
+                      message.image_3 ||
+                      message.image_4) && (
+                      <ImageMasonry
+                        images={[
+                          message.image_1,
+                          message.image_2,
+                          message.image_3,
+                          message.image_4,
+                        ].filter(Boolean)}
+                        onImageClick={handleImageClick}
+                        selectedImages={selectedImages}
+                        onImageDoubleClick={handleImageDoubleClick}
+                      />
+                    )}
+                    {message.text}
+                  </div>
+                  <span
+                    className={
+                      message.sender === 'client'
+                        ? styles.messageTimeUser
+                        : styles.messageTimeBot
+                    }
+                  >
+                    {new Date(message.created_at + 'Z').toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false,
+                    })}
+                  </span>
                 </span>
-              </span>
-            ))}
+              ))}
 
           {imagePreviews.length > 0 && (
             <div className={styles.imagePreviews}>

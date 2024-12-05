@@ -2,6 +2,7 @@ import React from 'react';
 import './styles.css';
 import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
+import FooterNewVersion from '../components/FooterNewVersion';
 
 const PublicOffer = () => {
   return (
@@ -601,8 +602,8 @@ const PublicOffer = () => {
             <br />
           </span>
         </div>
-        <LimitedFooter />
       </div>
+      <FooterNewVersion />
     </div>
   );
 };

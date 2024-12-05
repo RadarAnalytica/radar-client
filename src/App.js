@@ -344,6 +344,14 @@ function App() {
                   </React.Suspense>
                 }
               />
+              <Route
+                path='/how-to-connect-api'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <HowToConnectAPI />
+                  </React.Suspense>
+                }
+              />
               {user.is_onboarded ? (
                 <>
                   <Route
