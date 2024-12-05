@@ -1,6 +1,6 @@
-import React from "react";
-import { formatPrice } from "../service/utils";
-import TooltipInfo from "./TooltipInfo";
+import React from 'react';
+import { formatPrice } from '../service/utils';
+import TooltipInfo from './TooltipInfo';
 
 const SmallPlate = ({
   name,
@@ -10,10 +10,11 @@ const SmallPlate = ({
   nochart,
   dataDashBoard,
   pieces,
+  allProps,
 }) => {
   const rateUp = (
     <svg
-      style={{ width: "16px", height: "12px", marginRight: "10px" }}
+      style={{ width: '16px', height: '12px', marginRight: '10px' }}
       width='20'
       height='12'
       viewBox='0 0 20 12'
@@ -28,7 +29,7 @@ const SmallPlate = ({
   );
   const rateDown = (
     <svg
-      style={{ width: "16px", height: "12px", marginRight: "10px" }}
+      style={{ width: '16px', height: '12px', marginRight: '10px' }}
       width='20'
       height='12'
       viewBox='0 0 20 12'
@@ -42,44 +43,81 @@ const SmallPlate = ({
     </svg>
   );
 
+  const getTooltipContent = (allProps) => {
+    const fineTypes = {
+      self_buy: 'Самовыкупы',
+      incorrect_attachments: 'Подмена товара',
+      goods_labeling: 'Маркировка товара',
+      characteristics_change: 'Смена характеристик',
+      acceptance: 'Платная приемка',
+    };
+
+    const activeLines = Object.entries(fineTypes)
+      .filter(([key]) => allProps[key] > 0)
+      .map(([key, label]) => `${label}: ${formatPrice(allProps[key])}<br/>`)
+      .join('');
+
+    return (
+      activeLines ||
+      'В выбранном периоде штрафов и расходов на платную приемку нет'
+    );
+  };
+
   return (
-    <div className='small-plate' style={{ height: "100%" }}>
+    <div className='small-plate' style={{ height: '100%' }}>
       {dataDashBoard === null || dataDashBoard === undefined ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
         >
           <span className='loader'></span>
         </div>
       ) : (
         <div
           className='d-flex flex-column justify-content-between'
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
         >
           <p
             className='p-0 m-0  clue-text small-title'
-            style={{ fontSize: "1.65vh" }}
+            style={{ fontSize: '1.65vh' }}
           >
             {name}
 
-            {name === "Комиссия WB" && (
+            {name === 'Комиссия WB' && (
               <TooltipInfo text='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries' />
             )}
-            {name === "Расходы на логистику" && (
+            {name === 'Расходы на логистику' && (
               <TooltipInfo text='Суммарные расходы на логистику, определяются расчетным способом от количества заказов' />
             )}
-            {name === "Хранение" && (
+            {name === 'Хранение' && (
               <TooltipInfo text='Суммарные расходы на хранение товаров на складах WB и на платную приемку' />
             )}
-            {name === "Упущенные продажи" && (
+            {name === 'Упущенные продажи' && (
               <TooltipInfo text='Расчетная величина, определенная как произведение средней скорости продаж на количество дней, в которых товар отсутствовал на полках магазина или на складе' />
+            )}
+            {name === 'Штрафы WB' && (
+              <TooltipInfo
+                text={
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: getTooltipContent(allProps),
+                    }}
+                  />
+                }
+              />
             )}
           </p>
 
-          <div className={dataDashBoard > 1000000 ? 'd-flex flex-column align-items-start' : 'd-flex justify-content-between align-items-end'}>
+          <div
+            className={
+              dataDashBoard > 1000000
+                ? 'd-flex flex-column align-items-start'
+                : 'd-flex justify-content-between align-items-end'
+            }
+          >
             <p className='p-0 m-0 fw-bold numbers'>
               {dataDashBoard ? formatPrice(dataDashBoard) : 0}
-              {type === "price" ? " ₽" : " %"}
+              {type === 'price' ? ' ₽' : ' %'}
             </p>
             {!quantity ? (
               <div>
@@ -90,8 +128,8 @@ const SmallPlate = ({
                       className='m-0 p-0 tiny-numbers'
                       style={
                         percent > 0
-                          ? { color: "rgba(0, 182, 155, 1)" }
-                          : { color: "rgba(249, 60, 101, 1)" }
+                          ? { color: 'rgba(0, 182, 155, 1)' }
+                          : { color: 'rgba(249, 60, 101, 1)' }
                       }
                     >
                       {formatPrice(percent) || 0}%
@@ -114,5 +152,4 @@ const SmallPlate = ({
     </div>
   );
 };
-
 export default SmallPlate;

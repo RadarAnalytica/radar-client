@@ -91,7 +91,13 @@ const UserDataTable = ({ data }) => {
       </div>
       {dataTable.map((item, i) => (
         <div key={item.id} className={styles.tableRowItems}>
-          <span className={styles.tableCellItems} onClick={() => handleEmailClick(item.email)} style={{ cursor: 'pointer' }}>{item.email}</span>
+          <span
+            className={styles.tableCellItems}
+            onClick={() => handleEmailClick(item.email)}
+            style={{ cursor: 'pointer' }}
+          >
+            {item.email}
+          </span>
           <span className={styles.tableCellItems}>{item[i]}</span>
           <span className={styles.tableCellItems}>
             {item.isShopActive ? 'ДА' : 'НЕТ'}

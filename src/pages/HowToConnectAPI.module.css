@@ -41,3 +41,14 @@
     max-width: 603px;
     border-radius: 8.1px;
 }
+
+.stepTextImportantBox {
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .stepTextImportantBox {
+        display: flow;
+        padding: 0 0 0 5px;
+    }
+ }

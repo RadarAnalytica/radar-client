@@ -1,13 +1,14 @@
-import React, { useContext, useEffect } from "react";
-import "./styles.css";
-import NavbarMainHome from "../components/NavbarMainHome";
-import LimitedFooter from "../components/LimitedFooter";
-import { useNavigate, useLocation } from "react-router-dom";
-import SelectRate from "../components/SelectRate";
-import AuthContext from "../service/AuthContext";
-import { URL } from "../service/config";
-import { useAppDispatch } from "../redux/hooks";
-import { fetchMessages } from "../redux/messages/messagesSlice";
+import React, { useContext, useEffect } from 'react';
+import './styles.css';
+import NavbarMainHome from '../components/NavbarMainHome';
+import LimitedFooter from '../components/LimitedFooter';
+import { useNavigate, useLocation } from 'react-router-dom';
+import SelectRate from '../components/SelectRate';
+import AuthContext from '../service/AuthContext';
+import { URL } from '../service/config';
+import { useAppDispatch } from '../redux/hooks';
+import { fetchMessages } from '../redux/messages/messagesSlice';
+import FooterNewVersion from '../components/FooterNewVersion';
 
 const TariffsPage = () => {
   const navigate = useNavigate();
@@ -17,14 +18,14 @@ const TariffsPage = () => {
 
   const redirect = () => {
     if (!user) {
-      navigate("/signup");
+      navigate('/signup');
     } else {
       if (user?.is_onboarded) {
-        user?.subscription_status === "expired"
-          ? navigate("/tariffs")
-          : navigate("/dashboard");
+        user?.subscription_status === 'expired'
+          ? navigate('/tariffs')
+          : navigate('/dashboard');
       } else {
-        navigate("/onboarding");
+        navigate('/onboarding');
       }
     }
   };
@@ -34,10 +35,10 @@ const TariffsPage = () => {
 
   const checkIdQueryParam = () => {
     const searchParams = new URLSearchParams(location.search);
-    const idQueryParam = searchParams.get("id");
+    const idQueryParam = searchParams.get('id');
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
       logout();
-      navigate("/signin");
+      navigate('/signin');
     } else {
       return;
     }
@@ -63,10 +64,10 @@ const TariffsPage = () => {
   const refreshUserToken = async () => {
     try {
       const response = await fetch(`${URL}/api/user/refresh`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-          authorization: "JWT " + authToken,
+          'Content-Type': 'application/json',
+          authorization: 'JWT ' + authToken,
         },
       });
 
@@ -87,15 +88,18 @@ const TariffsPage = () => {
   }, [location.search]);
 
   return (
-    <div className='page-white'>
+    <div
+      className='page-white'
+      style={{ display: 'flex', flexDirection: 'column' }}
+    >
       <div className='container widbody-container container-xlwidth '>
         <NavbarMainHome onlyLogo />
 
         <div className='tariffs'>
-          <SelectRate redirect={redirect} />
+          <SelectRate redirect={redirect} isShowText={true} />
         </div>
-        <LimitedFooter />
       </div>
+      <FooterNewVersion />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import './styles.css';
 import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
+import FooterNewVersion from '../components/FooterNewVersion';
 
 const Politics = () => {
   return (
@@ -525,8 +526,8 @@ const Politics = () => {
             расположена в сети Интернет по адресу https://radar-analytica.ru.
           </span>
         </div>
-        <LimitedFooter />
       </div>
+      <FooterNewVersion />
     </div>
   );
 };

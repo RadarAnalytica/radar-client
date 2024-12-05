@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import styles from './AdminPanel.module.css';
@@ -22,11 +22,11 @@ const AdminPanel = () => {
       // Calculate unread messages per user
       const messageCounts = emails.reduce((acc, email) => {
         const unreadCount = response.filter(
-          message => message.email === email && message.status === false
+          (message) => message.email === email && message.status === false
         ).length;
         return { ...acc, [email]: unreadCount };
       }, {});
-      
+
       setUnreadMessageCounts(messageCounts);
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -34,14 +34,14 @@ const AdminPanel = () => {
   };
 
   const getUniqueEmails = (messages) => {
-    return [...new Set(messages.map(message => message.email))];
+    return [...new Set(messages.map((message) => message.email))];
   };
 
   useEffect(() => {
     if (user.role === 'admin') {
       getAllSupportMessages(authToken);
     }
- }, []);
+  }, []);
 
   useEffect(() => {
     if (user && user.role !== 'admin') {
@@ -51,13 +51,13 @@ const AdminPanel = () => {
 
   if (!user || user.role !== 'admin') {
     return null;
-  };
+  }
 
-    // Create enhanced data for UserDataTable
-    const emailsWithUnreadCounts = uniqueEmails.map(email => ({
-      email,
-      unreadCount: unreadMessageCounts[email] || 0
-    }));
+  // Create enhanced data for UserDataTable
+  const emailsWithUnreadCounts = uniqueEmails.map((email) => ({
+    email,
+    unreadCount: unreadMessageCounts[email] || 0,
+  }));
 
   return (
     <div className={styles.pageWrapper}>
