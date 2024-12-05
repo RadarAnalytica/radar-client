@@ -231,7 +231,16 @@
   filter: brightness(0) saturate(100%) invert(23%) sepia(98%) saturate(2268%) hue-rotate(208deg) brightness(95%) contrast(101%);
 }
 
+.articleText {
+  display: inline-block;
+}
+
 @media screen and (max-width: 1590px) {
+  .articleText {
+    white-space: pre-line;
+    line-height: 1.2;
+  }
+
   .yearCell {
     width: 90px;
   }

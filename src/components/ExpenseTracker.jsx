@@ -197,7 +197,11 @@ const ExpenseTracker = () => {
           <div className={styles.headerRow}>
             <div className={styles.yearCell}>Год</div>
             <div className={styles.monthCell}>Месяц</div>
-            <div className={styles.articleCell}>Артикул поставщика</div>
+            <div className={styles.articleCell}>
+              <span className={styles.articleText}>
+                Артикул{'\n'}поставщика
+              </span>
+            </div>
             {[1, 2, 3, 4, 5].map((num) => (
               <div
                 key={num}
