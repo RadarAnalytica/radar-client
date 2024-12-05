@@ -146,7 +146,7 @@ const LogisticsTable = ({ data }) => {
       </div>
 
       {/* Data Rows */}
-      {!tableData || tableData.length === 0 ? (
+      {!tableData || tableData.length === 0 || tableData[0].id === 'Ошибка' ? (
         <div className={styles.row}>
           <div
             className={styles.emptyMessage}
