@@ -9,9 +9,8 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
     const min = minValue
     const max = maxValue
     if (Math.abs(min) + Math.abs(max) < 300) {
-        step = 20
+        step = 25
     }
-    console.log(step)
     const data = {
         labels: labels,
         datasets: [

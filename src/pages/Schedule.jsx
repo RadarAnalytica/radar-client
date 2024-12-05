@@ -179,6 +179,7 @@ const Schedule = () => {
     fetchData();
   }, []);
 
+
   const updateFilterFields = async () => {
     setIsLoading(true);
     try {
@@ -208,11 +209,20 @@ const Schedule = () => {
         const storedValue = localStorage.getItem(key);
         const parsedStoredValue = storedValue ? JSON.parse(storedValue) : {};
 
-        setters[key](
-          Object.keys(parsedStoredValue).length > 0
-            ? { ...transformedValue, ...parsedStoredValue }
-            : transformedValue
-        );
+        if (transformedValue) {
+          // Filter out keys from parsedStoredValue that are not in transformedValue
+          const filteredStoredValue = Object.keys(parsedStoredValue).reduce((acc, k) => {
+            if (transformedValue.hasOwnProperty(k)) {
+              acc[k] = parsedStoredValue[k];
+            }
+            return acc;
+          }, {});
+
+          // Merge transformedValue and filteredStoredValue
+          setters[key]({ ...transformedValue, ...filteredStoredValue });
+        } else if (Object.keys(parsedStoredValue).length > 0) {
+          setters[key]({});
+        }
       });
     } catch (error) {
       console.error('Ошибка при загрузке данных:', error);
@@ -589,7 +599,7 @@ const Schedule = () => {
             const monthData = months[month];
 
             marginalityLow.push(monthData.min_month_marginality || 0);
-            marginalityHigh.push(monthData.max_month_roi || 0);
+            marginalityHigh.push(monthData.max_month_marginality || 0);
             roiArray.push(monthData.average_month_roi || 0);
             monthNamesArray.push(monthNameMap[month] || month);
           }

@@ -215,17 +215,30 @@ const ReportAbcAnalysis = () => {
 
       Object.values(filterMapping).forEach(({ setter, storageKey, value }) => {
         const storedValue = localStorage.getItem(storageKey);
-        if (storedValue) {
-          const parsedStoredValue = JSON.parse(storedValue);
-          setter(
-            Object.keys(parsedStoredValue).length > 0
-              ? { ...value, ...parsedStoredValue }
-              : value
-          );
+
+        if (Object.keys(value).length > 0) {
+          if (storedValue) {
+            const parsedStoredValue = JSON.parse(storedValue);
+
+            const filteredStoredValue = Object.keys(parsedStoredValue).reduce((acc, k) => {
+              if (value.hasOwnProperty(k)) {
+                acc[k] = parsedStoredValue[k];
+              }
+              return acc;
+            }, {});
+
+            // Merge value with filteredStoredValue
+            setter({ ...value, ...filteredStoredValue });
+          } else {
+            setter(value);
+          }
         } else {
+          // If value is empty, don't proceed
           setter(value);
         }
       });
+
+
     } catch (error) {
       console.error('Ошибка при загрузке фильтров:', error);
     } finally {
@@ -789,17 +802,15 @@ const ReportAbcAnalysis = () => {
             >
               <div className={styles.tabs}>
                 <button
-                  className={`${styles.tab} ${
-                    activeTab === 'revenue' ? styles.active : ''
-                  }`}
+                  className={`${styles.tab} ${activeTab === 'revenue' ? styles.active : ''
+                    }`}
                   onClick={() => handleTabClick('revenue')}
                 >
                   По выручке
                 </button>
                 <button
-                  className={`${styles.tab} ${
-                    activeTab === 'profit' ? styles.active : ''
-                  }`}
+                  className={`${styles.tab} ${activeTab === 'profit' ? styles.active : ''
+                    }`}
                   onClick={() => handleTabClick('profit')}
                 >
                   По прибыли
@@ -807,9 +818,8 @@ const ReportAbcAnalysis = () => {
               </div>
               {activeTab === 'revenue' && (
                 <div
-                  className={`${styles.containerRevenue} ${
-                    isOpenFilters ? styles.expanded : ''
-                  }`}
+                  className={`${styles.containerRevenue} ${isOpenFilters ? styles.expanded : ''
+                    }`}
                 >
                   <div className={styles.rowHeader}>
                     <div
@@ -855,9 +865,8 @@ const ReportAbcAnalysis = () => {
                     </div>
                   ) : (
                     <div
-                      className={`${styles.rowsWrapper} ${
-                        isOpenFilters ? styles.expanded : ''
-                      }`}
+                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
+                        }`}
                     >
                       {dataRevenue.map((item, index) => (
                         <div key={index} className={styles.row}>
@@ -1022,9 +1031,8 @@ const ReportAbcAnalysis = () => {
               )}
               {activeTab === 'profit' && (
                 <div
-                  className={`${styles.containerProfit} ${
-                    isOpenFilters ? styles.expanded : ''
-                  }`}
+                  className={`${styles.containerProfit} ${isOpenFilters ? styles.expanded : ''
+                    }`}
                 >
                   <div className={styles.rowHeader}>
                     <div
@@ -1070,9 +1078,8 @@ const ReportAbcAnalysis = () => {
                     </div>
                   ) : (
                     <div
-                      className={`${styles.rowsWrapper} ${
-                        isOpenFilters ? styles.expanded : ''
-                      }`}
+                      className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
+                        }`}
                     >
                       {dataRevenue.map((item, index) => (
                         <div key={index} className={styles.row}>
