@@ -18,7 +18,7 @@ const TopNav = ({ title, children, subTitle }) => {
   const [timeoutId, setTimeoutId] = useState(null);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
 
-  const messages = useSelector((state) => state.messagesSlice.messages.messages);
+  const messages = useSelector((state) => state.messagesSlice.messages);
 
   const handleMouseEnter = () => {
     clearTimeout(timeoutId);
@@ -128,7 +128,7 @@ const TopNav = ({ title, children, subTitle }) => {
                   </clipPath>
                 </defs>
               </svg>
-              {messages?.length <= 0 ? (
+              {messages?.length <= 0 || messages === undefined ? (
                 ""
               ) : (
                 <span className='error-number'>{messages?.length}</span>

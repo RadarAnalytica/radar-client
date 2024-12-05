@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import '../App.css';
 
 export const MessagesDropdown = () => {
-  const messages = useSelector((state) => state.messagesSlice.messages.messages);
+  const messages = useSelector((state) => state.messagesSlice.messages);
   const { authToken } = useContext(AuthContext);
 
   const dispatch = useAppDispatch();
