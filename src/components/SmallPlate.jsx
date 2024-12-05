@@ -53,7 +53,7 @@ const SmallPlate = ({
     };
 
     const activeLines = Object.entries(fineTypes)
-      .filter(([key]) => allProps[key] > 0)
+      .filter(([key]) => allProps[key] !== 0)
       .map(([key, label]) => `${label}: ${formatPrice(allProps[key])}<br/>`)
       .join('');
 
@@ -90,7 +90,7 @@ const SmallPlate = ({
               <TooltipInfo text='Суммарные расходы на логистику, определяются расчетным способом от количества заказов' />
             )}
             {name === 'Хранение' && (
-              <TooltipInfo text='Суммарные расходы на хранение товаров на складах WB и на платную приемку' />
+              <TooltipInfo text='Расходы на хранение товаров на складах WB' />
             )}
             {name === 'Упущенные продажи' && (
               <TooltipInfo text='Расчетная величина, определенная как произведение средней скорости продаж на количество дней, в которых товар отсутствовал на полках магазина или на складе' />

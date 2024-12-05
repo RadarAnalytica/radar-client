@@ -14,7 +14,7 @@ const ReviewsUsers = () => {
 
         <h4 className='fw-bold text-center userReviewsBlocks mobile-version'>
           Более 6 000 предпринимателей уже используют Radar Analytica
-          для началаи развития бизнеса на маркетплейсах
+          для начала и развития бизнеса на маркетплейсах
         </h4>
       </div>
       <div className='ReviewsUsersIP'>

@@ -518,13 +518,15 @@ const SideNav = () => {
         </div>
       </div>
 
-      <div className='support-block'>
-        <a href='https://t.me/red_roadd' target='_blank'>
-          <img
-            src={support}
-            alt='Call support window'
-            className='support-icon'
-            style={{ cursor: 'pointer' }}
+      <div
+        className='support-block'      
+      >
+        <a href="https://t.me/radar_analytica_support" target="_blank">
+          <img 
+            src={support} 
+            alt='Call support window' 
+            className='support-icon' 
+            style={{ cursor: "pointer" }}  
             // onClick={() => toggleOpenSupport()}
           />
         </a>
