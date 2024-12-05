@@ -1,23 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './SaleTable.module.css';
 import arrowDown from '../assets/arrow-down.svg';
 import { formatPrice } from '../service/utils';
 
 const SalesTable = ({ tableData }) => {
+  console.log('tableData:', tableData);
+  let firstRender = false
   const [expandedRows, setExpandedRows] = useState(() => {
     const initialState = {};
-
+    console.log('Initial State', initialState)
+    console.log('tableData:', tableData);
     // Dynamically set all years and their weeks to expanded
     Object.entries(tableData).forEach(([year, yearData]) => {
       initialState[year] = true; // Set year to expanded
+      console.log('Initial State', initialState)
       Object.entries(yearData).forEach(([date]) => {
         initialState[`week-${date}`] = true;
+        console.log('Initial State', initialState)
       });
-      console.log('initialState:', initialState)
     });
-
+    console.log('Initial State', initialState)
     return initialState;
   });
+
+  useEffect(() => {
+    if (!firstRender && tableData) {
+      Object.entries(tableData).forEach(([year, yearData]) => {
+        setExpandedRows((prev) => ({
+          ...prev,
+          [year]: true
+        }))
+        Object.entries(yearData).forEach(([date]) => {
+          setExpandedRows((prev) => ({
+            ...prev,
+            [`week-${date}`]: true
+          }))
+        });
+      });
+      firstRender = true
+    }
+  }, [tableData])
 
   console.log('expandedRows', expandedRows);
 
@@ -93,18 +115,18 @@ const SalesTable = ({ tableData }) => {
               >
                 <div className={styles.costCell}>
                   <div>
-                    {data.cost_price !== '-'
+                    {!!data.cost_price && data.cost_price !== '-'
                       ? formatPrice(data.cost_price) + ' ₽'
                       : '-'}
                   </div>
                   <div className={styles.smallText}>
-                    {data.cost_price_percent !== '-'
+                    {!!data.cost_price_percent && data.cost_price_percent !== '-'
                       ? data.cost_price_percent + ' %'
                       : '-'}
                   </div>
                 </div>
                 <div className={styles.costPerUnitCell}>
-                  {data.cost_price !== '-'
+                  {!!data.cost_price && data.cost_price !== '-'
                     ? formatPrice(data.cost_price / data.revenue.quantity) +
                       ' ₽'
                     : '-'}

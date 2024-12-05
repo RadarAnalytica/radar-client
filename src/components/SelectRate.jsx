@@ -332,7 +332,11 @@ const SelectRate = ({ redirect, isShowText }) => {
                 </span>
               </div>
             </div>
-            <div className={styles.rightBlock}>
+            {user.is_test_used ? (
+              <div></div>
+            ) : (
+              
+              <div className={styles.rightBlock}>
               <div className={styles.blockBackground}>
                 <div className={styles.accessTitle}>
                   <span className={styles.activateAccess}>
@@ -364,20 +368,28 @@ const SelectRate = ({ redirect, isShowText }) => {
                 </div>
               </div>
             </div>
+            )}
+            
           </div>
-          <div className={styles.infoBlockWrapper}>
-            <div className={styles.infoBlockTitle}>
-              Почему активация тестового периода стоит 1₽?
+          {user.is_test_used ? (
+            <div></div>
+          ): (
+            
+            <div className={styles.infoBlockWrapper}>
+              <div className={styles.infoBlockTitle}>
+                Почему активация тестового периода стоит 1₽?
+              </div>
+              <div className={styles.infoBlockTextSimple}>
+                Предоставление тестового доступа без ограничений по функционалу
+                требует затрат со стороны сервиса. Поэтому мы взимаем
+                символическую плату в размере 1₽ за активацию тестового периода,
+                чтобы наши ресурсы расходовались только на тех продавцов, кто
+                действительно заинтересован в тестировании аналитики. Оплата
+                доступна всеми возможными способами и занимает не более 45 секунд.
+              </div>
             </div>
-            <div className={styles.infoBlockTextSimple}>
-              Предоставление тестового доступа без ограничений по функционалу
-              требует затрат со стороны сервиса. Поэтому мы взимаем
-              символическую плату в размере 1₽ за активацию тестового периода,
-              чтобы наши ресурсы расходовались только на тех продавцов, кто
-              действительно заинтересован в тестировании аналитики. Оплата
-              доступна всеми возможными способами и занимает не более 45 секунд.
-            </div>
-          </div>
+          )}
+          
         </>
       )}
       <div

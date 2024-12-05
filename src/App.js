@@ -267,15 +267,20 @@ function App() {
                 path='/tariffs'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
-                    {!user.is_test_used ? (
-                      <Navigate to="/test-period-tariff" replace />
-                    ) : (
-                      <TariffsPage />
-                    )}
+                    {" "}
+                    <TariffsPage />
                   </React.Suspense>
+
+                  // <React.Suspense fallback={<LoaderPage />}>
+                  //   {!user.is_test_used ? (
+                  //     <Navigate to="/test-period-tariff" replace />
+                  //   ) : (
+                  //     <TariffsPage />
+                  //   )}
+                  // </React.Suspense>
                 }
               />
-              <Route
+              {/* <Route
                 path='/test-period-tariff'
                 element={
                   <React.Suspense fallback={<LoaderPage />}>
@@ -286,7 +291,7 @@ function App() {
                     )}
                   </React.Suspense>
                 }
-              />
+              /> */}
 
               <Route
                 path='/subscription'
