@@ -3129,6 +3129,12 @@ button.accordion-button.collapsed::after {
     justify-content: center !important;
     padding: 20px 40px 20px 40px;
   }
+
+  .blockBtn img,
+  .apiBlock img,
+  .widhead-container-image img {
+    width: 100%;
+  }
 }
 @media (min-width: 1480px) {
   .page-container.container,
@@ -3814,3 +3820,13 @@ button.accordion-button.collapsed::after {
     .page-container.container-xxl {
         max-width: 1480px;
     }}
+  
+    
+  
+  @media (max-width: 768px) {
+    .blockBtn img,
+    .apiBlock img,
+    .widhead-container-image img {
+      width: 100%;
+    }
+  }

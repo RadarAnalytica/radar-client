@@ -124,7 +124,7 @@ const SelectRate = ({ redirect, isShowText }) => {
 
     if (selectedPeriod === '1month') {
       amountSubscribe = 2990;
-      firstAmount = newTrialExpired ? 2990 : 10;
+      firstAmount = newTrialExpired ? 2990 : 1;
       periodSubscribe = 1;
       startDateSubscribe = new Date();
       if (!!newTrialExpired) {
@@ -760,7 +760,7 @@ const SelectRate = ({ redirect, isShowText }) => {
                       {subscriptionDiscount ? (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? '10 ₽' : '1 495 ₽'}
+                            {!trialExpired ? '1 ₽' : '1 495 ₽'}
                           </span>
                           <span
                             style={{
@@ -785,7 +785,7 @@ const SelectRate = ({ redirect, isShowText }) => {
                       ) : (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? '10 ₽' : '2 990 ₽'}
+                            {!trialExpired ? '1 ₽' : '2 990 ₽'}
                           </span>
                           {!trialExpired && (
                             <>

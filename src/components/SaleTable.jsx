@@ -13,6 +13,7 @@ const SalesTable = ({ tableData }) => {
       Object.entries(yearData).forEach(([date]) => {
         initialState[`week-${date}`] = true;
       });
+      console.log('initialState:', initialState)
     });
 
     return initialState;

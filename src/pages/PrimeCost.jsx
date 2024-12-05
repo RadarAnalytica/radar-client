@@ -58,9 +58,9 @@ const PrimeCost = () => {
               <img src={primeCost} alt='primeCost' />
               <div className={styles.primeCostBoxText}>
                 <span className={styles.title}>Себестоимость</span>
-                <span className={styles.lastDownlaod}>
+                {/* <span className={styles.lastDownlaod}>
                   Последняя загрузка 01.01.2024
-                </span>
+                </span> */}
               </div>
             </div>
             <div className={styles.primeCostBoxButton}>
