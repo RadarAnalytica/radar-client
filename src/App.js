@@ -575,7 +575,30 @@ function App() {
                       </React.Suspense>
                     }
                   />
-
+                  <Route
+                    path='/seo'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <SeoPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/monitoring'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <RequestMonitoringPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path='/ai-generator'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <AiDescriptionGeneratorPage />
+                      </React.Suspense>
+                    }
+                  />
                   <Route
                     path='/development/monitoring'
                     element={
