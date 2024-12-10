@@ -18,6 +18,7 @@ const WeeklyReportDashboard = () => {
     (state) => state?.dashboardReportSlice?.data
   );
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedValue, setSelectedValue] = useState()
   const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
   const filterSectionRef = useRef();
   const handleTaxRateChange = (e) => {
@@ -26,7 +27,14 @@ const WeeklyReportDashboard = () => {
 
   const handleTaxRateSubmit = async () => {
     try {
-      await ServiceFunctions.postTaxRateUpdate(authToken, Number(taxRate));
+
+      const selectedTaxType = selectedValue;
+
+      await ServiceFunctions.postTaxRateUpdate(authToken, {
+        tax_rate: Number(taxRate) || dashboardData?.tax_rate,
+        tax_type: selectedTaxType,
+      });
+
       filterSectionRef.current?.handleApplyFilters();
       setIsEditing(false);
     } catch (error) {
@@ -429,18 +437,19 @@ const WeeklyReportDashboard = () => {
                         Тип налогообложения
                       </div>
                       <div className={styles.numbersBox}>
-                        {/* <div
-                      className={`${styles.mumbersInRow} ${styles.widthHeader}`}
-                    >
-                      <div></div>
-                    </div> */}
-                        <div
-                          className={`${styles.mumbersInRow} ${styles.widthHeader}`}
+                        <select
+                          className={styles.customSelect}
+                          value={selectedValue}
+                          onChange={(e) => setSelectedValue(e.target.value)}
                         >
-                          {dashboardData?.tax_type}
-                        </div>
+                          <option value="УСН-доходы">УСН-доходы</option>
+                          <option value="УСН Д-Р">УСН Д-Р</option>
+                          <option value="Не считать налог">Не считать налог</option>
+                          <option value="Считать от РС">Считать от РС</option>
+                        </select>
                       </div>
                     </div>
+
                     <div className={styles.salesChartRow}>
                       <div className={styles.titleInRow}>Ставка налога</div>
                       <div className={styles.mumbersInRow}>
