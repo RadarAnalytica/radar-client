@@ -13,20 +13,47 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import { formatPrice } from '../service/utils';
 
 const WeeklyReportDashboard = () => {
-  const { user, authToken } = useContext(AuthContext);
+  const { authToken, user } = useContext(AuthContext);
+  // const user = {
+  //   id: 2,
+  //   role: 'admin',
+  //   is_confirmed: true,
+  //   is_onboarded: true,
+  //   is_test_used: false,
+  //   email: 'modinsv@yandex.ru',
+  //   subscription_status: 'Smart',
+  //   is_report_downloaded: !null,
+  // };
   const dashboardData = useSelector(
     (state) => state?.dashboardReportSlice?.data
   );
   const [isEditing, setIsEditing] = useState(false);
   const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
+  const [selectedValue, setSelectedValue] = useState('');
   const filterSectionRef = useRef();
   const handleTaxRateChange = (e) => {
     setTaxRate(e.target.value);
   };
 
+  // const handleTaxRateSubmit = async () => {
+  //   try {
+  //     await ServiceFunctions.postTaxRateUpdate(authToken, Number(taxRate));
+  //     filterSectionRef.current?.handleApplyFilters();
+  //     setIsEditing(false);
+  //   } catch (error) {
+  //     console.error('Error updating tax rate:', error);
+  //   }
+  // };
   const handleTaxRateSubmit = async () => {
     try {
-      await ServiceFunctions.postTaxRateUpdate(authToken, Number(taxRate));
+
+      const selectedTaxType = selectedValue;
+
+      await ServiceFunctions.postTaxRateUpdate(authToken, {
+        tax_rate: Number(taxRate),
+        tax_type: selectedTaxType,
+      });
+
       filterSectionRef.current?.handleApplyFilters();
       setIsEditing(false);
     } catch (error) {
@@ -434,11 +461,18 @@ const WeeklyReportDashboard = () => {
                     >
                       <div></div>
                     </div> */}
-                        <div
-                          className={`${styles.mumbersInRow} ${styles.widthHeader}`}
+                        <select
+                          className={styles.customSelect}
+
+                          value={selectedValue}
+                          onChange={(e) => setSelectedValue(e.target.value)}
                         >
-                          {dashboardData?.tax_type}
-                        </div>
+                          <option value="УСН-доходы">УСН-доходы</option>
+                          <option value="УСН Д-Р">УСН Д-Р</option>
+                          <option value="Не считать налог">Не считать налог</option>
+                          <option value="Считать от РС">Считать от РС</option>
+                        </select>
+
                       </div>
                     </div>
                     <div className={styles.salesChartRow}>
@@ -452,7 +486,9 @@ const WeeklyReportDashboard = () => {
                               onChange={handleTaxRateChange}
                               className={styles.taxRateInput}
                             />
-                            <button onClick={handleTaxRateSubmit}>✓</button>
+                            <button onClick={handleTaxRateSubmit}>
+                              ✓
+                            </button>
                             <button onClick={() => setIsEditing(false)}>
                               ✕
                             </button>

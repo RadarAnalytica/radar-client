@@ -7,81 +7,118 @@ import User2 from "../pages/images/User2.JPG";
 import User3 from "../pages/images/User3.JPG";
 import User4 from "../pages/images/User4.JPG";
 import User5 from "../pages/images/User5.JPG";
-
 const reviewsIP = [
   {
-    photo: User1 || defaultPhoto,
-    stars: <Stars />,
-    text: `Около года пользовалась умной таблицей от Радар аналитики и когда менеджер сообщила, 
-    что теперь доступна полноценная онлайн аналитика сразу купила доступ на три месяца, даже без пробного периода;). 
-    За первые три недели использования проблем нет, отдельно отмечу скорость обновления данных, показатели более точные, чем в аналитиках за 15.000₽. Рекомендую!`,
-  },
-  {
-    photo: User2 || defaultPhoto,
-    stars: <Stars />,
-    text: `Удобный сервис. Раньше не встречал, но однозначно буду рекомендовать, понравилось, 
-    что нет нагромождения лишними функциями и разобраться просто. География продаж очень удобная.`,
-  },
-  {
-    photo: User3 || defaultPhoto,
-    stars: <Stars />,
-    text: `Работаю менеджером, ведем с командой около 17 кабинетов. 
-    Больше года пользуюсь уже и ботом от Radara и таблицей, теперь и аналитика появилась. Пока тестирую, все устраивает. 
-    То, что можно сколько угодно кабинетов подключать без доплаты - это прямо огонь.`,
-  },
-  {
-    photo: User4 || defaultPhoto,
-    stars: <Stars />,
-    text: `Все работает быстро и быстро подключилась. Все было понятно. Очень удобный дашборд и в дополнение в браузер.`,
-  },
-  {
-    photo: User5 || defaultPhoto,
-    stars: <Stars />,
-    text: `Работала с разными аналитиками, брала складчины, ваша сильно удобнее, данные даже более точные, 
-    порекомендовала в чате выпускников по обучению, спасибо за сервис!`,
-  },
-];
+    video: (
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://play.boomstream.com/P2UCApCi?size=auto"
+        frameBorder="0"
+        scrolling="no"
+        allowFullScreen
+        title="Review Video 1"
+      ></iframe>
+    ),
 
+  },
+  {
+    video: (
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://play.boomstream.com/cx149c1B?size=cover"
+        frameBorder="0"
+        scrolling="no"
+        allowFullScreen
+        title="Review Video 2"
+      ></iframe>
+    ),
+
+  },
+  {
+    video: (
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://play.boomstream.com/P2UCApCi?size=cover"
+        frameBorder="0"
+        scrolling="no"
+        allowFullScreen
+        title="Review Video 1"
+      ></iframe>
+    ),
+  },
+  {
+    video: (
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://play.boomstream.com/P2UCApCi?size=cover"
+        frameBorder="0"
+        scrolling="no"
+        allowFullScreen
+        title="Review Video 1"
+      ></iframe>
+    ),
+  },
+  {
+    video: (
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://play.boomstream.com/P2UCApCi?size=cover"
+        frameBorder="0"
+        scrolling="no"
+        allowFullScreen
+        title="Review Video 1"
+      ></iframe>
+    ),
+  },
+  // Add more reviews with iframe if necessary...
+];
 const Reviews = () => {
-  const scrollRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(2); // Start with the 3rd div as active
 
   const scrollLeft = useCallback(() => {
-    if (scrollRef.current) {
-      const itemWidth = scrollRef.current.scrollWidth / reviewsIP.length;
-      scrollRef.current.scrollBy({ left: -itemWidth, behavior: "smooth" });
-    }
+    setActiveIndex((prevIndex) => (prevIndex - 1 + reviewsIP.length) % reviewsIP.length);
   }, []);
 
   const scrollRight = useCallback(() => {
-    if (scrollRef.current) {
-      const itemWidth = scrollRef.current.scrollWidth / reviewsIP.length;
-      scrollRef.current.scrollBy({ left: itemWidth, behavior: "smooth" });
-    }
+    setActiveIndex((prevIndex) => (prevIndex + 1) % reviewsIP.length);
   }, []);
 
+  // Calculate displayed items based on activeIndex
+  const getDisplayedItems = () => {
+    const startIndex = activeIndex - 2;
+    return reviewsIP.map((_, i) => {
+      const index = (startIndex + i + reviewsIP.length) % reviewsIP.length;
+      return reviewsIP[index];
+    });
+  };
 
   return (
     <>
-      <div ref={scrollRef} className='scroll-container' style={{ display: "flex", overflowX: "auto" }}>
-        {reviewsIP.map((el, index) => (
-          <div key={index} className='blockReviews'>
-            <div className='blockReviewImage'>
-              <img src={el.photo} alt='userLogo' className='photoReviewUser' width={100} height={100} />
+      <div className="scroll-container">
+        {getDisplayedItems().map((el, index) => (
+          <div
+            key={index}
+            className={`blockReviewsVideos ${index === 2 ? "active" : ""}`}
+          >
+            <div className="video-container">
+              {el.video} {/* Render the iframe here */}
             </div>
-            <div className='blockReviewsContent'>
-              <div style={{ marginBottom: "10px" }}>{el.stars}</div>
-              <div className='blockReviewsText'>{el.text}</div>
-            </div>
+
           </div>
         ))}
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
-        <img className='arrowReviewsLeft' onClick={scrollLeft} src={arrow} alt='arrow' />
-        <img onClick={scrollRight} src={arrow} alt='arrow' className='arrowReviewsRight' />
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px", width: "100%" }}>
+        <img className="arrowReviewsLeft" onClick={scrollLeft} src={arrow} alt="arrow" />
+        <img className="arrowReviewsRight" onClick={scrollRight} src={arrow} alt="arrow" />
       </div>
     </>
-
   );
 };
+
 export default Reviews;

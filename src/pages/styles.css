@@ -726,6 +726,59 @@ select {
   margin-right: 10px;
 }
 
+
+.scroll-container {
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 20px;
+}
+
+.blockReviewsVideos {
+  width: 250px;
+  height: 350px;
+  background: #d9d9d98e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  margin-right: 40px;
+  overflow: hidden; 
+  position: relative;
+}
+
+.blockReviewsVideos.active {
+  transform: scale(1.2);
+  z-index: 1;
+}
+
+.video-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  object-fit: cover;
+  position: absolute; 
+  top: 0;
+  left: 0;
+}
+
+.arrowReviewsLeft,
+.arrowReviewsRight {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+
 .photoReviewUser {
   width: 130px;
   height: 130px;
@@ -1413,13 +1466,13 @@ button.accordion-button.collapsed::after {
   display: none;
 }
 .arrowReviewsRight {
-  width: 3%;
+
   transform: rotate(-90deg);
   cursor: pointer;
 }
 
 .arrowReviewsLeft {
-  width: 3%;
+
   transform: rotate(90deg);
   cursor: pointer;
 }
@@ -2811,10 +2864,10 @@ button.accordion-button.collapsed::after {
   .searchTextDiv {
     font-size: 20px;
   }
-  .arrowReviewsRight,
+  /* .arrowReviewsRight,
   .arrowReviewsLeft {
     width: 10%;
-  }
+  } */
   .sol-label-btn svg {
     width: 90%;
   }

@@ -17,7 +17,7 @@ const ReviewsUsers = () => {
           для началаи развития бизнеса на маркетплейсах
         </h4>
       </div>
-      <div className='ReviewsUsersIP'>
+      <div className='ReviewsUsersIP' style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Reviews />
       </div>
     </div>
