@@ -12,6 +12,7 @@ import blockApi3Mobile from './images/blockApi3Mobile.svg';
 import manyApi from './images/manyApi.svg';
 import manyApiMobile from './images/manyApiMobile.svg';
 import manyApiMedium from '../pages/images/blockApiMedium.svg';
+import wbLogo from './images/wb_icon.svg'
 
 import apiBlock from './images/apiblock2.svg';
 import apiBlockMedium from './images/apiBlockMedium.svg';
@@ -166,6 +167,14 @@ const MainPage = () => {
               lightImageSrc={BlockImg_x1}
             />
           </div>
+        </div>
+
+        <div className='authorized-service-container'>
+          <div className='authorized-service-logo-wrapper'>
+            <div className='wb-logo-wrapper'><img src={wbLogo} alt="WB Logo" /></div>
+            <div className='wb-text-wrapper'>Официальный <br /> авторизованный сервис</div>
+          </div>
+          <div className='authorized-service-text-wrapper'>Наш сервис успешно прошел проверку Wildberries, подтвердив соответствие всем стандартам, включая требования по информационной безопасности.</div>
         </div>
 
         <div className='wid-solution-text'>
@@ -396,9 +405,8 @@ const MainPage = () => {
             <div
               className='blockBtn'
               style={{
-                backgroundImage: `url(${
-                  isHighResLoaded ? highResImage : lowResImage
-                })`,
+                backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
+                  })`,
               }}
             >
               <div className='blockBtnContainer'>
@@ -461,7 +469,7 @@ const MainPage = () => {
         </div>
       </div>
       <FooterNewVersion />
-    </div>
+    </div >
   );
 };
 export default MainPage;
