@@ -249,7 +249,7 @@ const SalesTable = ({ tableData }) => {
                   {formatPrice(data.profit) || '0'} ₽
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.profit) || '0'} ₽
+                  {formatPrice(data.profit_per_one) || '0'} ₽
                 </div>
                 <div
                   className={styles.defectCompnesaitionCell}

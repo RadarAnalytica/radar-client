@@ -949,7 +949,7 @@ const DashboardPage = () => {
                     maxAmount={maxAmount}
                     dataDashBoard={dataDashBoard}
                   >
-                    <div
+                    {/* <div
                       style={{
                         backgroundColor: '#F0AD000D',
                         padding: '5px 10px',
@@ -990,8 +990,8 @@ const DashboardPage = () => {
                         onClick={handleModalOpen}
                       >
                         Детализировать заказы по времени
-                      </div>
-                    </div>
+                      </div> 
+                    </div> */}
                   </BigChart>
                 </div>
                 {isModalOpen && (

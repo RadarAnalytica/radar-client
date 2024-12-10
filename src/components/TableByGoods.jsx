@@ -127,16 +127,16 @@ const TableByGoods = ({ data }) => {
         },
         financeTotalPerUnit: {
           financeTotalPerUnit: `${
-            formatPrice(item?.financeTotalPerUnit) || '0'
+            formatPrice(item?.profit_per_one) || '0'
           } ₽`,
         },
         financeMarginProfit: {
           financeMarginProfit: `${
-            formatPrice(item?.financeMarginProfit) || '0'
+            formatPrice(item?.marginality) || '0'
           } %`,
         },
         financeRoi: {
-          financeRoi: `${formatPrice(item?.financeRoi) || '0'} %`,
+          financeRoi: `${formatPrice(item?.return_on_investment) || '0'} %`,
         },
       }));
 

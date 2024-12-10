@@ -349,6 +349,7 @@ function App() {
                   </React.Suspense>
                 }
               />
+              
               {user.is_onboarded ? (
                 <>
                   <Route
@@ -625,7 +626,80 @@ function App() {
                       </React.Suspense>
                     }
                   />
+                  <Route
+                    path='/report-main'
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <ReportMain />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-dashboard"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportDashboard />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-pl"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportPL />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-month"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportByMonth />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-goods"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportByGoods />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/weeklyreport-penalties"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <WeeklyReportPenaltiesPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/prime-cost"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <PrimeCost />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/external-expenses"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <ExternalExpensesPage />
+                      </React.Suspense>
+                    }
+                  />
+                  <Route
+                    path="/buy-back"
+                    element={
+                      <React.Suspense fallback={<LoaderPage />}>
+                        <ReportBuyBack />
+                      </React.Suspense>
+                    }
+                  />
                 </>
+                
               )}
               {/* <Route path='/development/settings' element={<Settings />} /> */}
               {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}

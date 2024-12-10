@@ -104,19 +104,14 @@ const ReportMain = () => {
     }
   };
 
-  const getIdResultIcon = (main_report_status, storage_report_status) => {
-    if (main_report_status === 'Done' && storage_report_status === 'Done') {
+  const getIdResultIcon = (main_report_status, storage_report_status, foreign_country_report_status) => {
+    if (main_report_status === 'Done' && storage_report_status === 'Done' && (foreign_country_report_status === null || foreign_country_report_status === 'Done')) {
       return sucessround;
     }
-    if (main_report_status === 'Done' && storage_report_status === null) {
-      return orangeround;
-    }
-    if (main_report_status === 'Fail' || storage_report_status === 'Fail') {
+    if (main_report_status === 'Fail' || storage_report_status === 'Fail' || foreign_country_report_status === 'Fail') {
       return failround;
     }
-    if (main_report_status === null || storage_report_status === 'Done') {
-      return orangeround;
-    }
+    return orangeround;
   };
 
   const handleOpenClose = () => {
@@ -266,12 +261,11 @@ const ReportMain = () => {
                           left: 0,
                           width: '100%',
                           height: '100%',
-                          backgroundColor: '#CACACA',
                         }}
-                        // src='https://play.boomstream.com/cx149c1B?title=0&start=1'
-                        // frameBorder='0'
-                        // scrolling='no'
-                        // allowFullScreen
+                        src='https://play.boomstream.com/ebiWkmCg?title=0&start=1'
+                        frameBorder='0'
+                        scrolling='no'
+                        allowFullScreen
                       ></iframe>
                     </div>
                   </div>
@@ -358,7 +352,8 @@ const ReportMain = () => {
                       <img
                         src={getIdResultIcon(
                           row.main_report_status,
-                          row.storage_report_status
+                          row.storage_report_status,
+                          row.foreign_country_report_status
                         )}
                         alt='Status Icon'
                       />
@@ -379,6 +374,20 @@ const ReportMain = () => {
                         {row.main_report_name}
                       </span>
                     </div>
+                    {row.foreign_country_report_name && ( 
+                    <div className={styles.reportRow}>
+                      <span className={styles.reportResult}>
+                        {row.foreign_country_report_status === 'Done' && (
+                          <img src={sucesscheck} alt='Sucess' />
+                        )}
+                        {row.foreign_country_report_status === 'Fail' && (
+                          <img src={failcheck} alt='Fail' />
+                        )}
+                      </span>
+                      <span className={styles.reportText}>
+                        {row.foreign_country_report_name}
+                      </span>
+                    </div>)}
                     <div className={styles.reportRow}>
                       <span className={styles.reportResult}>
                         {row.storage_report_status === 'Done' && (

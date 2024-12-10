@@ -142,9 +142,9 @@ const TableStock = ({ dataTable, setDataTable }) => {
                           WebkitLineClamp: 2,
                           WebkitBoxOrient: 'vertical',
                           textOverflow: 'ellipsis',
-                          cursor: 'pointer',
+                          // cursor: 'pointer',
                         }}
-                        onClick={() => handleClickProductName(row)}
+                        // onClick={() => handleClickProductName(row)}
                       >
                         {row.productName}
                       </span>
