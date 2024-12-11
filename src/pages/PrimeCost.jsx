@@ -8,12 +8,15 @@ import Modal from 'react-bootstrap/Modal';
 import DragDropFile from '../components/DragAndDropFiles';
 import BottomNavigation from '../components/BottomNavigation';
 import styles from './PrimeCost.module.css';
+import doneIcon from "../assets/tick-active.png"
 
 const PrimeCost = () => {
   const [file, setFile] = useState();
   const { authToken } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -42,6 +45,10 @@ const PrimeCost = () => {
       await ServiceFunctions.postCostUpdate(authToken, file);
       setFile(null);
       setCostPriceShow(false);
+      setShowSuccessPopup(true);
+
+
+      setTimeout(() => setShowSuccessPopup(false), 3000);
     } catch (error) {
       console.error('Error updating cost:', error);
     }
@@ -126,12 +133,15 @@ const PrimeCost = () => {
                 >
                   Сохранить
                 </button>
+
+
               </div>
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
                 <a href='#' className='link' onClick={handleCostPriceClose}>
                   Отмена
                 </a>
               </div>
+
             </div>
           ) : (
             <div className='d-flex flex-column align-items-center justify-content-around w-100'>
@@ -157,6 +167,19 @@ const PrimeCost = () => {
             </div>
           )}
         </Modal.Body>
+      </Modal>
+      <Modal
+        show={showSuccessPopup}
+        className="custom-modal-success"
+      >
+        <Modal.Header style={{ borderBottom: "none" }}>
+          <div>
+            <div className='d-flex gap-2 mb-2 mt-2 align-items-center'>
+              <img src={doneIcon} alt='' style={{ height: '3vh' }} />
+              <p className='fw-bold mb-0'> Файл успешно загружен!</p>
+            </div>
+          </div>
+        </Modal.Header>
       </Modal>
     </div>
   );

@@ -732,19 +732,19 @@ select {
   margin-top: 50px;
   margin-bottom: 50px;
   padding: 20px;
+  gap: 20px;
 }
 
 .blockReviewsVideos {
   width: 250px;
   height: 350px;
-  background: #d9d9d98e;
+  background: black;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 20px;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  margin-right: 40px;
   overflow: hidden; 
   position: relative;
 }
@@ -752,6 +752,8 @@ select {
 .blockReviewsVideos.active {
   transform: scale(1.2);
   z-index: 1;
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .video-container {
@@ -1913,7 +1915,7 @@ button.accordion-button.collapsed::after {
     width: 100%;
   }
   .blockBtn img,
-  .apiBlock img,
+  /* .apiBlock img, */
   .widhead-container-image img {
     width: revert-layer;
   }
@@ -3303,7 +3305,7 @@ button.accordion-button.collapsed::after {
     width: 100%;
   }
   .blockBtn img,
-  .apiBlock img,
+  /* .apiBlock img, */
   .widhead-container-image img {
     width: revert-layer;
   }

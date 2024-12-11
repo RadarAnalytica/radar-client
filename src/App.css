@@ -4030,3 +4030,6 @@ canvas {
   font-size: 16px;
   color: #8C8C8C;
 }
+.custom-modal-success .modal-content {
+  box-shadow: none !important; 
+}

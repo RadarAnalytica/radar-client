@@ -8,10 +8,15 @@ import { fetchExternalExpenses } from '../redux/externalExpenses/externalExpense
 import { ServiceFunctions } from '../service/serviceFunctions';
 import styles from './ExpenseTracker.module.css';
 import { URL } from '../service/config';
+import CustomDayPicker from './CustomDayPicker';
 
 const ExpenseTracker = () => {
   const dispatch = useDispatch();
   const [hasChanges, setHasChanges] = useState({});
+  const [selectedRanges, setSelectedRanges] = useState({
+  });
+
+
   const { data, loading } = useSelector((state) => state.externalExpensesSlice);
   const { authToken } = useContext(AuthContext);
   const currentYear = new Date().getFullYear();
@@ -125,6 +130,12 @@ const ExpenseTracker = () => {
     );
   };
 
+  const handleRangeChange = (id, range) => {
+    setSelectedRanges({
+      ...selectedRanges,
+      [id]: range,
+    });
+  };
   const handleArticleChange = (rowId, value) => {
     setHasChanges({ ...hasChanges, [rowId]: true });
     setRows(
@@ -152,6 +163,7 @@ const ExpenseTracker = () => {
       setHasChanges({ ...hasChanges, [row.id]: false });
     }
   };
+
 
   const addRow = () => {
     setRows([
@@ -195,8 +207,8 @@ const ExpenseTracker = () => {
         <div className={styles.table}>
           {/* Header Row */}
           <div className={styles.headerRow}>
-            <div className={styles.yearCell}>Год</div>
-            <div className={styles.monthCell}>Месяц</div>
+            <div className={styles.yearCell}>Дата</div>
+            {/* <div className={styles.monthCell}>Месяц</div> */}
             <div className={styles.articleCell}>
               <span className={styles.articleText}>
                 Артикул{'\n'}поставщика
@@ -216,7 +228,7 @@ const ExpenseTracker = () => {
           {/* Data Rows */}
           {rows.map((row) => (
             <div key={row.id} className={styles.dataRow}>
-              <div className={styles.yearCell}>
+              {/* <div className={styles.yearCell}>
                 <select
                   value={row.year || ''}
                   onChange={(e) => handleYearChange(row.id, e.target.value)}
@@ -235,9 +247,18 @@ const ExpenseTracker = () => {
                     </option>
                   ))}
                 </select>
+              </div> */}
+
+              <div className={styles.yearCell}>
+                <div className={styles.inputWrapper}>
+                  <CustomDayPicker
+                    selectedRange={selectedRanges[row.id] || { from: null, to: null }}
+                    setSelectedRange={(range) => handleRangeChange(row.id, range)}
+                  />
+                </div>
               </div>
 
-              <div className={styles.monthCell}>
+              {/* <div className={styles.monthCell}>
                 <select
                   value={row.month}
                   onChange={(e) => handleMonthChange(row.id, e.target.value)}
@@ -250,7 +271,7 @@ const ExpenseTracker = () => {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
 
               <div className={styles.articleCell}>
                 <div className={styles.inputWrapper}>
@@ -274,15 +295,13 @@ const ExpenseTracker = () => {
                       onChange={(e) =>
                         handleExpenseChange(row.id, index, e.target.value)
                       }
-                      className={`${styles.input} ${
-                        expense ? styles.active : ''
-                      }`}
+                      className={`${styles.input} ${expense ? styles.active : ''
+                        }`}
                       placeholder='0'
                     />
                     <span
-                      className={`${styles.rubSign} ${
-                        expense ? styles.active : ''
-                      }`}
+                      className={`${styles.rubSign} ${expense ? styles.active : ''
+                        }`}
                     >
                       ₽
                     </span>
@@ -290,9 +309,8 @@ const ExpenseTracker = () => {
                 </div>
               ))}
               <span
-                className={`${styles.saveIcon} ${
-                  hasChanges[row.id] ? styles.saveIconActive : ''
-                }`}
+                className={`${styles.saveIcon} ${hasChanges[row.id] ? styles.saveIconActive : ''
+                  }`}
                 onClick={() => handleSave(row)}
               >
                 <img src={saveIcon} alt='Save Row' />

@@ -1,84 +1,26 @@
-import React, { useState, useRef, useCallback } from "react";
-import defaultPhoto from "../pages/images/defaultPhotoUser.jpg";
+import React, { useState, useCallback } from "react";
 import arrow from "../pages/images/accordStr2.png";
-import Stars from "../pages/images/Stars";
-import User1 from "../pages/images/User1.JPG";
-import User2 from "../pages/images/User2.JPG";
-import User3 from "../pages/images/User3.JPG";
-import User4 from "../pages/images/User4.JPG";
-import User5 from "../pages/images/User5.JPG";
+
 const reviewsIP = [
   {
-    video: (
-      <iframe
-        width="100%"
-        height="100%"
-        src="https://play.boomstream.com/P2UCApCi?size=auto"
-        frameBorder="0"
-        scrolling="no"
-        allowFullScreen
-        title="Review Video 1"
-      ></iframe>
-    ),
-
+    videoSrc: "https://play.boomstream.com/gKgcdLiT?color=transparent&title=0",
   },
   {
-    video: (
-      <iframe
-        width="100%"
-        height="100%"
-        src="https://play.boomstream.com/cx149c1B?size=cover"
-        frameBorder="0"
-        scrolling="no"
-        allowFullScreen
-        title="Review Video 2"
-      ></iframe>
-    ),
-
+    videoSrc: "https://play.boomstream.com/MRKkbSYL?color=transparent&title=0",
   },
   {
-    video: (
-      <iframe
-        width="100%"
-        height="100%"
-        src="https://play.boomstream.com/P2UCApCi?size=cover"
-        frameBorder="0"
-        scrolling="no"
-        allowFullScreen
-        title="Review Video 1"
-      ></iframe>
-    ),
+    videoSrc: "https://play.boomstream.com/6pVJWEgn?color=transparent&title=0",
   },
   {
-    video: (
-      <iframe
-        width="100%"
-        height="100%"
-        src="https://play.boomstream.com/P2UCApCi?size=cover"
-        frameBorder="0"
-        scrolling="no"
-        allowFullScreen
-        title="Review Video 1"
-      ></iframe>
-    ),
+    videoSrc: "https://play.boomstream.com/wDxNUSog?color=transparent&title=0",
   },
   {
-    video: (
-      <iframe
-        width="100%"
-        height="100%"
-        src="https://play.boomstream.com/P2UCApCi?size=cover"
-        frameBorder="0"
-        scrolling="no"
-        allowFullScreen
-        title="Review Video 1"
-      ></iframe>
-    ),
+    videoSrc: "https://play.boomstream.com/YdvSIQ0U?color=transparent&title=0",
   },
-  // Add more reviews with iframe if necessary...
 ];
+
 const Reviews = () => {
-  const [activeIndex, setActiveIndex] = useState(2); // Start with the 3rd div as active
+  const [activeIndex, setActiveIndex] = useState(2);
 
   const scrollLeft = useCallback(() => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + reviewsIP.length) % reviewsIP.length);
@@ -88,7 +30,6 @@ const Reviews = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % reviewsIP.length);
   }, []);
 
-  // Calculate displayed items based on activeIndex
   const getDisplayedItems = () => {
     const startIndex = activeIndex - 2;
     return reviewsIP.map((_, i) => {
@@ -104,11 +45,21 @@ const Reviews = () => {
           <div
             key={index}
             className={`blockReviewsVideos ${index === 2 ? "active" : ""}`}
+            style={{
+              pointerEvents: index === 2 ? "auto" : "none",
+              opacity: index === 2 ? 1 : 0.5,
+            }}
           >
             <div className="video-container">
-              {el.video} {/* Render the iframe here */}
+              <iframe
+                width="100%"
+                height="100%"
+                src={el.videoSrc}
+                frameBorder="0"
+                scrolling="no"
+                allowFullScreen
+              ></iframe>
             </div>
-
           </div>
         ))}
       </div>

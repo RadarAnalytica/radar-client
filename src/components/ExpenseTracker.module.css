@@ -17,7 +17,7 @@
 .headerRow,
 .dataRow {
     display: grid;
-    grid-template-columns: minmax(80px, 100px) minmax(100px, 130px) minmax(120px, 160px) repeat(5, minmax(100px, 130px)) minmax(24px, 30px) minmax(24px, 30px);
+    grid-template-columns: minmax(210px, 230px) minmax(120px, 160px) repeat(5, minmax(100px, 130px)) minmax(24px, 30px) minmax(24px, 30px);
     gap: clamp(4px, 1vw, 16px);
     align-items: center;
     padding: 8px 12px;
@@ -31,12 +31,12 @@
   }
   
   .yearCell {
-    width: 100px;
+    width: 230px;
   }
   
-  .monthCell {
+  /* .monthCell {
     width: 130px;
-  }
+  } */
   
   .articleCell {
     width: 160px;
@@ -242,13 +242,13 @@
   }
 
   .yearCell {
-    width: 90px;
+    width: 210px;
   }
   
-  .monthCell {
+  /* .monthCell {
     width: 120px;
   }
-  
+   */
   .articleCell {
     width: 150px;
   }
