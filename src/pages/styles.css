@@ -715,6 +715,82 @@ select {
   width: 100%;
 }
 
+.scroll-wrapper {
+  width: 100%;
+  overflow: hidden;
+  /* position: relative; */
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+}
+
+.scroll-container {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.6s;
+  will-change: transform;
+}
+
+
+.blockReviewsVideos {
+  width: 250px;
+  height: 350px;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  flex-shrink: 0;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.blockReviewsVideos.active {
+  transform: scale(1.2);
+  z-index: 1;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+
+.video-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.arrow {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+.arrow-left{
+  transform: rotate(90deg);
+}
+.arrow-right{
+  transform: rotate(-90deg);
+}
+
+/* 
 .blockReviews {
   display: flex;
   justify-content: space-between;
@@ -733,6 +809,8 @@ select {
   margin-bottom: 50px;
   padding: 20px;
   gap: 20px;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+
 }
 
 .blockReviewsVideos {
@@ -744,13 +822,14 @@ select {
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+
   overflow: hidden; 
   position: relative;
 }
 
 .blockReviewsVideos.active {
   transform: scale(1.2);
+
   z-index: 1;
   margin-right: 20px;
   margin-left: 20px;
@@ -779,7 +858,7 @@ iframe {
   cursor: pointer;
   width: 30px;
   height: 30px;
-}
+} */
 
 .photoReviewUser {
   width: 130px;
@@ -1747,6 +1826,7 @@ button.accordion-button.collapsed::after {
     width: 30% !important;
   }
 }
+
 /*Responsive for 1680*/
 
 @media (min-width: 1300px) and (max-width: 1680px) {
