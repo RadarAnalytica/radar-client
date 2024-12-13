@@ -43,12 +43,12 @@ const ExpenseTracker = () => {
     dispatch(fetchExternalExpenses(authToken));
   }, [dispatch, authToken]);
 
-  // Effect to set the initial rows when data is received
   useEffect(() => {
     if (data) {
       const formattedRows = data.map((item) => ({
+
         id: item.id,
-        date: item.date, // Преобразуем в Date
+        date: new Date(item.date),
         article: item.vendor_code,
         expenses: [
           Number(item.expense_1 || 0),
@@ -63,12 +63,14 @@ const ExpenseTracker = () => {
   }, [data]);
 
   const sendRowData = async (row) => {
-    if (!row.isNew) {
-      // Ensure the date is formatted as 'yyyy-mm-dd'
-      const formattedDate = row.date ? row.date.toISOString().split('T')[0] : null;
+    try {
+
+      const formattedDate = row.date
+        ? `${row.date.getFullYear()}-${String(row.date.getMonth() + 1).padStart(2, '0')}-${String(row.date.getDate()).padStart(2, '0')}`
+        : null;
 
       const payload = {
-        date: formattedDate, // Date formatted as yyyy-mm-dd
+        date: formattedDate,
         vendor_code: row.article,
         expense_1: Number(row.expenses[0]),
         expense_2: Number(row.expenses[1]),
@@ -77,17 +79,19 @@ const ExpenseTracker = () => {
         expense_5: Number(row.expenses[4]),
       };
 
-      // Only include id if it's from backend (not a newly created row)
+      if (!row.isNew) {
+        payload.id = row.id;
+      }
 
-      payload.id = row.id;
+      const response = row.isNew
+        ? await ServiceFunctions.postExternalExpensesUpdate(authToken, payload)
+        : await ServiceFunctions.postExternalExpensesUpdate(authToken, payload);
 
-      const response = await ServiceFunctions.postExternalExpensesUpdate(
-        authToken,
-        payload
-      );
-      console.log('Update successful:', response);
-      // Refresh data
+      console.log('Operation successful:', response);
+
       dispatch(fetchExternalExpenses(authToken));
+    } catch (error) {
+      console.error('Error sending row data:', error);
     }
   };
 
@@ -135,7 +139,7 @@ const ExpenseTracker = () => {
         row.id === rowId ? { ...row, date: selectedDate } : row
       )
     );
-    console.log('Selected Date:', selectedDate); // Check if date is correctly selected
+    // console.log('Selected Date:', selectedDate); 
   };
 
   const handleArticleChange = (rowId, value) => {
@@ -172,7 +176,7 @@ const ExpenseTracker = () => {
       {
         id: rows.length + 1,
         isNew: true,
-        date: new Date(), // Устанавливаем текущую дату
+        date: new Date(),
         article: '',
         expenses: [0, 0, 0, 0, 0],
       },
@@ -251,8 +255,13 @@ const ExpenseTracker = () => {
               <div className={styles.yearCell}>
                 <div className={styles.inputWrapper}>
                   <CustomDayPicker
-                    selectedDate={{ from: row.date }}
-                    setSelectedDate={(range) => handleDateChange(row.id, range.from)}
+                    selectedDate={{ from: row.date || new Date() }}
+                    setSelectedDate={(range) => {
+                      console.log('Selected range:', range);
+                      if (range?.from) {
+                        handleDateChange(row.id, new Date(range.from));
+                      }
+                    }}
                   />
                 </div>
               </div>
