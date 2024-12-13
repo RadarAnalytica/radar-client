@@ -61,10 +61,8 @@ const ExpenseTracker = () => {
       setRows(formattedRows);
     }
   }, [data]);
-
   const sendRowData = async (row) => {
     try {
-
       const formattedDate = row.date
         ? `${row.date.getFullYear()}-${String(row.date.getMonth() + 1).padStart(2, '0')}-${String(row.date.getDate()).padStart(2, '0')}`
         : null;
@@ -80,21 +78,21 @@ const ExpenseTracker = () => {
       };
 
       if (!row.isNew) {
-        payload.id = row.id;
+        payload.id = row.id; // Добавляем ID, если строка уже существует
       }
 
-      const response = row.isNew
-        ? await ServiceFunctions.postExternalExpensesUpdate(authToken, payload)
-        : await ServiceFunctions.postExternalExpensesUpdate(authToken, payload);
+      const response = await ServiceFunctions.postExternalExpensesUpdate(authToken, payload);
 
-      console.log('Operation successful:', response);
-
-      dispatch(fetchExternalExpenses(authToken));
+      if (response && response.success) { // Проверяем успешность операции
+        console.log('Операция выполнена успешно:', response);
+        dispatch(fetchExternalExpenses(authToken)); // Обновляем данные
+      } else {
+        console.error('Ошибка на сервере:', response);
+      }
     } catch (error) {
-      console.error('Error sending row data:', error);
+      console.error('Ошибка при отправке данных:', error);
     }
   };
-
   const createRow = async () => {
     // const currentYear = new Date().getFullYear();
     // const currentMonth = new Date().getMonth() + 1;
@@ -163,10 +161,19 @@ const ExpenseTracker = () => {
     );
   };
 
-  const handleSave = (row) => {
+  const handleSave = async (row) => {
     if (hasChanges[row.id]) {
-      sendRowData(row);
-      setHasChanges({ ...hasChanges, [row.id]: false });
+      try {
+        await sendRowData(row); // Отправляем данные на сервер
+
+        // После успешного сохранения обновляем локальное состояние
+        setHasChanges((prevChanges) => ({
+          ...prevChanges,
+          [row.id]: false,
+        }));
+      } catch (error) {
+        console.error('Ошибка при сохранении строки:', error);
+      }
     }
   };
   const addRow = async () => {
@@ -217,15 +224,16 @@ const ExpenseTracker = () => {
   };
 
 
-
   const handleDeleteRow = async (id) => {
     try {
+      // Сохраняем строки с несохраненными данными перед удалением
       const unsavedRows = rows.filter((row) => hasChanges[row.id]);
-
-      for (const row of unsavedRows) {
-        await sendRowData(row);
+      if (unsavedRows.length > 0) {
+        const savePromises = unsavedRows.map((row) => sendRowData(row));
+        await Promise.all(savePromises);
       }
 
+      // Удаляем строку с сервера
       const response = await fetch(
         `${URL}/api/report/external-expenses/delete?id_=${id}`,
         {
@@ -238,18 +246,21 @@ const ExpenseTracker = () => {
       );
 
       if (response.ok) {
-
-        setRows((prevRows) => {
-          const updatedRows = prevRows.filter((row) => row.id !== id);
-          return updatedRows;
+        // Обновляем локальное состояние только после успешного удаления
+        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+        // Сбрасываем изменения для удаленной строки
+        setHasChanges((prevChanges) => {
+          const updatedChanges = { ...prevChanges };
+          delete updatedChanges[id];
+          return updatedChanges;
         });
 
-        dispatch(fetchExternalExpenses(authToken));
+        console.log(`Row with ID ${id} successfully deleted.`);
       } else {
-        console.error('Failed to delete row on server');
+        console.error('Ошибка удаления строки на сервере');
       }
     } catch (error) {
-      console.error('Error deleting row:', error);
+      console.error('Ошибка при удалении строки:', error);
     }
   };
 
