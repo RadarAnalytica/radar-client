@@ -14,17 +14,14 @@ const Reviews = () => {
 
   const scrollLeft = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? reviewsIP.length - 1 : prevIndex - 1
+      prevIndex === 0 ? reviewsIP.length : prevIndex - 1
     );
   };
 
   const scrollRight = () => {
     setActiveIndex((prevIndex) =>
       (prevIndex + 1) % reviewsIP.length
-
     );
-
-
   };
 
   return (
@@ -33,7 +30,8 @@ const Reviews = () => {
         <div
           className="scroll-container container"
           style={{
-            transform: `translateX(-${(activeIndex + 4) * 255}px)`,
+            transform: `translateX(-${(activeIndex + 3) * 250}px)`,
+
           }}
         >
           {[...reviewsIP, ...reviewsIP, ...reviewsIP].map((el, index) => {

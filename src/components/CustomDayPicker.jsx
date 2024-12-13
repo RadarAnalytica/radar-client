@@ -2,18 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
-import styles from './DayPicker.module.css';
+import styles from './CustomDayPicker.module.css';
 
-const CustomDayPicker = ({ selectedRange, setSelectedRange }) => {
+const CustomDayPicker = ({ selectedDate, setSelectedDate }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
 
     const today = new Date();
-    const minDate = new Date(today);
-    const maxDate = new Date(today);
+    const maxDate = today;
 
-    minDate.setDate(today.getDate() - 90);
-    maxDate.setDate(today.getDate() + 90);
+
+    const minDate = new Date(2021, 1, 1);
+
     const customRuLocale = {
         ...ru,
         localize: {
@@ -30,33 +30,18 @@ const CustomDayPicker = ({ selectedRange, setSelectedRange }) => {
     };
 
     const handleDayClick = (day) => {
-        if (day < minDate || day > maxDate) return;
+        if (day > maxDate) return;
 
-        if (!selectedRange.from || (selectedRange.from && selectedRange.to)) {
-            setSelectedRange({ from: day, to: null });
-        } else if (selectedRange.from && !selectedRange.to) {
-            const { from } = selectedRange;
-            const rangeLength = Math.abs((day - from) / (1000 * 60 * 60 * 24)) + 1;
-
-            if (rangeLength > 90) return;
-
-            const newRange =
-                day < from
-                    ? { from: day, to: from }
-                    : { from, to: day };
-
-            setSelectedRange(newRange);
-            setIsCalendarOpen(false);
-        }
+        setSelectedDate({ from: day });
+        setIsCalendarOpen(false);
     };
 
     const formatDateRange = (range) => {
-        if (range.from && range.to) {
-            const fromDate = range.from.toLocaleDateString("ru-RU");
-            const toDate = range.to.toLocaleDateString("ru-RU");
-            return `${fromDate} - ${toDate}`;
+        if (range.from) {
+            return range.from.toLocaleDateString("ru-RU");
         }
-        return "Выбрать дату:";
+
+        return today.toLocaleDateString("ru-RU");
     };
 
     const periodRef = useRef(null);
@@ -81,7 +66,7 @@ const CustomDayPicker = ({ selectedRange, setSelectedRange }) => {
                 onClick={toggleCalendar}
             >
                 <div className={styles.selectedOption}>
-                    {formatDateRange(selectedRange)}
+                    {formatDateRange(selectedDate)}
                 </div>
                 <svg
                     width="14"
@@ -98,12 +83,12 @@ const CustomDayPicker = ({ selectedRange, setSelectedRange }) => {
             {isCalendarOpen && (
                 <div className={styles.calendarPopup}>
                     <DayPicker
-                        mode="range"
-                        selected={selectedRange}
+                        mode="single"
+                        selected={selectedDate.from}
                         month={month}
                         onMonthChange={setMonth}
                         captionLayout="dropdown"
-                        fromYear={2024}
+                        fromYear={2021}
                         toYear={2025}
                         className={styles.customDayPicker}
                         locale={customRuLocale}
@@ -111,7 +96,6 @@ const CustomDayPicker = ({ selectedRange, setSelectedRange }) => {
                         fromDate={minDate}
                         toDate={maxDate}
                         disabled={[
-                            { before: minDate },
                             { after: maxDate },
                         ]}
                     />
