@@ -10,7 +10,16 @@ import plFake from '../pages/images/external-fake.png';
 
 const ExternalExpensesPage = () => {
   const { user } = useContext(AuthContext);
-
+  // const user = {
+  //   id: 2,
+  //   role: 'admin',
+  //   is_confirmed: true,
+  //   is_onboarded: true,
+  //   is_test_used: false,
+  //   email: 'modinsv@yandex.ru',
+  //   subscription_status: 'Smart',
+  //   is_report_downloaded: !null,
+  // };
 
   return (
     <div className='dashboard-page'>

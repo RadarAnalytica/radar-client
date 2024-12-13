@@ -169,21 +169,63 @@ const ExpenseTracker = () => {
       setHasChanges({ ...hasChanges, [row.id]: false });
     }
   };
+  const addRow = async () => {
+    // Сначала сохраняем все строки с несохраненными данными
+    const unsavedRows = rows.filter((row) => hasChanges[row.id]);
 
-  const addRow = () => {
-    setRows([
-      ...rows,
-      {
+    if (unsavedRows.length > 0) {
+      try {
+        // Сохраняем все несохраненные строки одновременно
+        const savePromises = unsavedRows.map((row) => sendRowData(row));
+        await Promise.all(savePromises);
+
+        // После сохранения добавляем новую строку
+        const newRow = {
+          id: rows.length + 1,
+          isNew: true,
+          date: new Date(),
+          article: '',
+          expenses: [0, 0, 0, 0, 0],
+        };
+
+        // Добавляем новую строку 
+        setRows((prevRows) => [...prevRows, newRow]);
+
+        // Сбросим отслеживание изменений после добавления строки
+        setHasChanges({});
+
+        // Сразу отправляем данные о новой строке на сервер
+        await sendRowData(newRow);
+      } catch (error) {
+        console.error('Ошибка при сохранении строк:', error);
+      }
+    } else {
+      // Если нет несохраненных данных, сразу добавляем новую строку
+      const newRow = {
         id: rows.length + 1,
         isNew: true,
         date: new Date(),
         article: '',
         expenses: [0, 0, 0, 0, 0],
-      },
-    ]);
+      };
+
+      setRows((prevRows) => [...prevRows, newRow]);
+
+      // Сразу отправляем данные о новой строке
+      await sendRowData(newRow);
+    }
   };
+
+
+
   const handleDeleteRow = async (id) => {
     try {
+      const unsavedRows = rows.filter((row) => hasChanges[row.id]);
+
+      for (const row of unsavedRows) {
+        await sendRowData(row);
+      }
+
       const response = await fetch(
         `${URL}/api/report/external-expenses/delete?id_=${id}`,
         {
@@ -196,8 +238,15 @@ const ExpenseTracker = () => {
       );
 
       if (response.ok) {
-        // Refresh the data after successful deletion
+
+        setRows((prevRows) => {
+          const updatedRows = prevRows.filter((row) => row.id !== id);
+          return updatedRows;
+        });
+
         dispatch(fetchExternalExpenses(authToken));
+      } else {
+        console.error('Failed to delete row on server');
       }
     } catch (error) {
       console.error('Error deleting row:', error);
