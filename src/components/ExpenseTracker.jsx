@@ -58,6 +58,7 @@ const ExpenseTracker = () => {
           Number(item.expense_5 || 0),
         ],
       }));
+      formattedRows.sort((a, b) => +new Date(a.date) - +new Date(b.date));
       setRows(formattedRows);
     }
   }, [data]);
@@ -77,15 +78,18 @@ const ExpenseTracker = () => {
         expense_5: Number(row.expenses[4]),
       };
 
-      if (!row.isNew) {
+      if (!row.isNew || row.id > 0) {
         payload.id = row.id; // Добавляем ID, если строка уже существует
       }
 
       const response = await ServiceFunctions.postExternalExpensesUpdate(authToken, payload);
-
-      if (response && response.success) { // Проверяем успешность операции
+      console.log('response', response);
+      
+      if (response && response.id) { // Проверяем успешность операции
+        console.log('Response in sendRowData:', response)
+        row.id = response.id
         console.log('Операция выполнена успешно:', response);
-        dispatch(fetchExternalExpenses(authToken)); // Обновляем данные
+        // dispatch(fetchExternalExpenses(authToken)); // Обновляем данные
       } else {
         console.error('Ошибка на сервере:', response);
       }
@@ -132,6 +136,7 @@ const ExpenseTracker = () => {
   };
 
   const handleDateChange = (rowId, selectedDate) => {
+    setHasChanges({ ...hasChanges, [rowId]: true });
     setRows(
       rows.map((row) =>
         row.id === rowId ? { ...row, date: selectedDate } : row
@@ -171,6 +176,8 @@ const ExpenseTracker = () => {
           ...prevChanges,
           [row.id]: false,
         }));
+        rows.sort((a, b) => +new Date(a.date) - +new Date(b.date));
+        setRows(rows)
       } catch (error) {
         console.error('Ошибка при сохранении строки:', error);
       }
@@ -180,15 +187,15 @@ const ExpenseTracker = () => {
     // Сначала сохраняем все строки с несохраненными данными
     const unsavedRows = rows.filter((row) => hasChanges[row.id]);
 
-    if (unsavedRows.length > 0) {
+    if (rows.length > 0) {
       try {
         // Сохраняем все несохраненные строки одновременно
-        const savePromises = unsavedRows.map((row) => sendRowData(row));
-        await Promise.all(savePromises);
+        // const savePromises = unsavedRows.map((row) => sendRowData(row));
+        // await Promise.all(savePromises);
 
         // После сохранения добавляем новую строку
         const newRow = {
-          id: rows.length + 1,
+          id: -rows.length,
           isNew: true,
           date: new Date(),
           article: '',
@@ -199,32 +206,43 @@ const ExpenseTracker = () => {
         setRows((prevRows) => [...prevRows, newRow]);
 
         // Сбросим отслеживание изменений после добавления строки
-        setHasChanges({});
+        // setHasChanges({});
+        setHasChanges({ ...hasChanges, [newRow.id]: true });
 
         // Сразу отправляем данные о новой строке на сервер
-        await sendRowData(newRow);
+        // await sendRowData(newRow);
       } catch (error) {
         console.error('Ошибка при сохранении строк:', error);
       }
     } else {
       // Если нет несохраненных данных, сразу добавляем новую строку
       const newRow = {
-        id: rows.length + 1,
+        id: -rows.length,
         isNew: true,
         date: new Date(),
         article: '',
         expenses: [0, 0, 0, 0, 0],
       };
 
+      setHasChanges({ ...hasChanges, [newRow.id]: true });
       setRows((prevRows) => [...prevRows, newRow]);
-
       // Сразу отправляем данные о новой строке
-      await sendRowData(newRow);
+      // await sendRowData(newRow);
     }
   };
 
 
   const handleDeleteRow = async (id) => {
+    console.log('Delete row:', id)
+    if (id < 0) {
+      setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+      setHasChanges((prevChanges) => {
+        const updatedChanges = { ...prevChanges };
+        delete updatedChanges[id];
+        return updatedChanges;
+      });
+      return
+    }
     try {
       // Сохраняем строки с несохраненными данными перед удалением
       const unsavedRows = rows.filter((row) => hasChanges[row.id]);
@@ -335,7 +353,7 @@ const ExpenseTracker = () => {
                   <option value=''>Выбрать</option>
                   {months.map((month) => (
                     <option key={month} value={month}>
-                      {month}
+                      {month}handleExpenseChange(row.id, index, e.target.value)
                     </option>
                   ))}
                 </select>
