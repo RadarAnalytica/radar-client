@@ -111,6 +111,7 @@
     border: none;
     cursor: pointer;
     border-radius: 4px;
+    background-color: #1A1A1A0D;
   }
 
   .addButton::after {
@@ -119,7 +120,7 @@
     bottom: 9%;
     left: 300%;
     transform: translateX(-50%);
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 1); 
     color: rgba(140, 140, 140, 1);
     padding: 4px;
     border-radius: 4px;
