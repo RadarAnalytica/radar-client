@@ -33,43 +33,53 @@ const WeeklyReportDashboard = () => {
   const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
   const [selectedValue, setSelectedValue] = useState('');
   const filterSectionRef = useRef();
-  const handleTaxRateChange = (e) => {
-    setTaxRate(e.target.value);
-  };
 
-  // const handleTaxRateSubmit = async () => {
-  //   try {
-  //     await ServiceFunctions.postTaxRateUpdate(authToken, Number(taxRate));
-  //     filterSectionRef.current?.handleApplyFilters();
-  //     setIsEditing(false);
-  //   } catch (error) {
-  //     console.error('Error updating tax rate:', error);
-  //   }
-  // };
-  const handleTaxRateSubmit = async () => {
+
+  const handleTaxSubmit = async ({ taxType, submit } = {}) => {
+    const currentTaxType = taxType || selectedValue;
+    const currentTaxRate =
+      taxType === "Не считать налог" ? 0 : taxRate;
+
     try {
+      if (taxType) {
+        // Сценарий: выбор нового типа в <select>
+        setSelectedValue(taxType);
 
-      const selectedTaxType = selectedValue;
+        await ServiceFunctions.postTaxRateUpdate(authToken, {
+          tax_rate: Number(currentTaxRate),
+          tax_type: taxType,
+        });
 
-      await ServiceFunctions.postTaxRateUpdate(authToken, {
-        tax_rate: Number(taxRate),
-        tax_type: selectedTaxType,
-      });
+        filterSectionRef.current?.handleApplyFilters();
 
-      filterSectionRef.current?.handleApplyFilters();
-      setIsEditing(false);
+        if (taxType === "Не считать налог") {
+          setTaxRate(0);
+          setIsEditing(false);
+        }
+      }
+
+      if (submit) {
+        // Сценарий: подтверждение изменения ставки налога
+        await ServiceFunctions.postTaxRateUpdate(authToken, {
+          tax_rate: Number(currentTaxRate),
+          tax_type: currentTaxType,
+        });
+
+        filterSectionRef.current?.handleApplyFilters();
+        setIsEditing(false);
+      }
     } catch (error) {
-      console.error('Error updating tax rate:', error);
+      console.error("Ошибка при обновлении налоговой ставки:", error);
     }
   };
 
   return (
     <div className='dashboard-page'>
-      
+
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'Дашборд'} subTitle={'Отчёт /'} />
-        
+
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
@@ -461,16 +471,10 @@ const WeeklyReportDashboard = () => {
                         Тип налогообложения
                       </div>
                       <div className={styles.numbersBox}>
-                        {/* <div
-                      className={`${styles.mumbersInRow} ${styles.widthHeader}`}
-                    >
-                      <div></div>
-                    </div> */}
                         <select
                           className={styles.customSelect}
-
                           value={selectedValue}
-                          onChange={(e) => setSelectedValue(e.target.value)}
+                          onChange={(e) => handleTaxSubmit({ taxType: e.target.value })}
                         >
                           <option value="УСН-доходы">УСН-доходы</option>
                           <option value="УСН Д-Р">УСН Д-Р</option>
@@ -486,28 +490,31 @@ const WeeklyReportDashboard = () => {
                         {isEditing ? (
                           <div className={styles.editTaxRate}>
                             <input
-                              type='number'
-                              value={taxRate || dashboardData?.tax_rate}
-                              onChange={handleTaxRateChange}
+                              type="number"
+                              value={taxRate}
+                              onChange={(e) => setTaxRate(e.target.value)}
                               className={styles.taxRateInput}
+                              disabled={selectedValue === "Не считать налог"}
                             />
-                            <button onClick={handleTaxRateSubmit}>
+                            <button
+                              onClick={() => handleTaxSubmit({ submit: true })}
+                              disabled={selectedValue === "Не считать налог"}
+                            >
                               ✓
                             </button>
-                            <button onClick={() => setIsEditing(false)}>
-                              ✕
-                            </button>
+                            <button onClick={() => setIsEditing(false)}>✕</button>
                           </div>
                         ) : (
                           <div
-                            onClick={() => setIsEditing(true)}
-                            style={{
-                              cursor: 'pointer',
-                              minWidth: '50px',
-                              // textAlign: 'right',
+                            onClick={() => {
+                              if (selectedValue !== "Не считать налог") {
+                                setTaxRate(dashboardData?.tax_rate || 0); // Устанавливаем начальное значение
+                                setIsEditing(true);
+                              }
                             }}
+                            className={styles.taxRateWrapper}
                           >
-                            {dashboardData?.tax_rate} %
+                            {dashboardData?.tax_rate || 0} %
                           </div>
                         )}
                       </div>

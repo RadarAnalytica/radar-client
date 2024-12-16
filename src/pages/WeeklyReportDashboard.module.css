@@ -130,7 +130,7 @@
   appearance: none;       
   -webkit-appearance: none;
   -moz-appearance: none;
-
+  min-width: 170px;
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -145,4 +145,15 @@
   background-repeat: no-repeat;
   background-position: right 5px center;
   background-size: 25px; 
+}
+.taxRateWrapper{
+  cursor: pointer;
+  min-width:170px;
+  background-color: #f9f9f9;
+  padding: 8px 32px 8px 12px;
+  border-radius: 4px;
+  /* background-size: 25px; */
+  border: 1px solid rgba(232, 232, 232, 1);
+  text-align: right;
+
 }
