@@ -12,6 +12,7 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
+  margin-bottom: 16px;
 }
   
 .headerRow,
@@ -106,8 +107,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 16px;
-    padding: 9px;
+    margin-left: 12px;
+    padding: 9px ;
     border: none;
     cursor: pointer;
     border-radius: 4px;

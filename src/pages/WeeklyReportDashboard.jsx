@@ -11,6 +11,8 @@ import AuthContext from '../service/AuthContext';
 import fakeDashboard from '../pages/images/report-dashboard-fake.png';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import { formatPrice } from '../service/utils';
+import NewFilterGroup from '../components/finReport/FilterGroup'
+
 
 const WeeklyReportDashboard = () => {
   const { authToken, user } = useContext(AuthContext);
@@ -63,12 +65,15 @@ const WeeklyReportDashboard = () => {
 
   return (
     <div className='dashboard-page'>
+      
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'Дашборд'} subTitle={'Отчёт /'} />
+        
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
+              <NewFilterGroup pageIdent='dashboard' />
               <FilterSection ref={filterSectionRef} />
             </div>
             <div className='container dash-container'>
