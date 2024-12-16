@@ -1,0 +1,82 @@
+.FinStateContainer{
+    width: 100%;
+    background-color: rgba(247, 246, 254, 1);
+    border-radius: 16px;
+}
+.finStatesHeaderTitle{
+    padding: 20px 45px 0px 45px;
+    font-size: 44px;
+    font-weight: 700;
+    color: #5329FF;
+}
+.finStateParagraph{
+    padding:5px 45px 10px 45px;
+    margin-bottom: 15px;
+    font-size: 25px;
+    color: rgba(0, 0, 0, 1);
+    font-weight: 600;
+}
+.finLogoMain{
+    width: 100%;
+}
+.finLogoMain img{
+    width: 100%;
+}
+.finLogo{
+    display: none;
+}
+.finLogoMobile{ display: none;}
+@media (min-width: 780px) and (max-width: 1680px) {
+    .finStatesHeaderTitle{
+        padding: 20px 30px 0px 30px;
+        font-size: 35px;
+        font-weight: 700;
+        color: #5329FF;
+    }
+    .finStateParagraph{
+        padding:5px 0px 10px 30px;
+        margin-bottom: 15px;
+        font-size: 20px;
+        color: rgba(0, 0, 0, 1);
+        font-weight: 600;
+    }
+    .finLogoMain{
+        display: none;
+
+    }
+    .finLogo{
+        display: block;
+        width: 100%;
+    }
+    .finLogo img{
+        width: 100%;
+    }
+}
+@media (min-width: 300px) and (max-width: 780px) {
+    .finStatesHeaderTitle{
+        white-space: normal;
+        width: 100%;
+        display: block;
+        font-size: 25px;
+        padding: 20px 20px 0px 20px;
+        font-weight: 700;
+        color: #5329FF;
+    }
+    .finStateParagraph{
+        font-size: 16px;
+        font-weight: 700;
+        padding:5px 20px 10px 20px;
+    }
+    .finLogo{
+        display: none;
+
+    }
+    .finLogoMobile{
+        display: block;
+        width: 100%;
+    }
+    .finLogoMobile img{
+        width: 100%;
+    }
+
+}
