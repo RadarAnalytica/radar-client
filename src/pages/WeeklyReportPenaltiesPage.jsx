@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import FilterGroup from '../components/FilterGroup';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
@@ -12,6 +12,8 @@ import { fetchPenaltiesData } from '../redux/reportPrnalties/penaltiesActions';
 import { monthNames, getMonthNumbers } from '../service/utils';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/penalties-fake.png';
+import NewFilterGroup from '../components/finReport/FilterGroup'
+
 
 const WeeklyReportPenaltiesPage = () => {
   const dispatch = useDispatch();
@@ -33,19 +35,23 @@ const WeeklyReportPenaltiesPage = () => {
   });
   const [filterIsLoading, setFilterIsLoading] = useState(false);
 
-  const handleApplyFilters = () => {
-    const monthNumbers = getMonthNumbers(selectedFilters.month);
+  const handleApplyFilters = useCallback(() => {
+    // const monthNumbers = getMonthNumbers(selectedFilters.month);
+    const storageItem = localStorage.getItem('penalty')
+    let currentPageData = JSON.parse(storageItem)
+    currentPageData = currentPageData ? currentPageData : {}  
+    console.log('currentPageData', currentPageData);
 
     const filters = {
-      size_name_filter: selectedFilters.size,
-      wb_id_filter: selectedFilters.article,
-      srid_filter: selectedFilters.srid,
-      title_filter: selectedFilters.goods,
-      action_type_filter: selectedFilters.kindsOfLogistics,
+      size_name_filter: currentPageData.size,
+      wb_id_filter: currentPageData.wbId,
+      srid_filter: currentPageData.srid,
+      title_filter: currentPageData.product,
+      action_type_filter: currentPageData.types,
       date_sale_filter: {
-        years: selectedFilters.year,
-        months: monthNumbers,
-        weekdays: selectedFilters.week,
+        years: currentPageData.year,
+        months: currentPageData.month,
+        weekdays: currentPageData.week,
       },
     };
     dispatch(
@@ -54,7 +60,7 @@ const WeeklyReportPenaltiesPage = () => {
         token: authToken,
       })
     );
-  };
+  }, [authToken, dispatch]);
 
   const handleSelect = (category, id) => {
     setSelectedFilters((prev) => ({
@@ -182,7 +188,10 @@ const WeeklyReportPenaltiesPage = () => {
         <TopNav title={'Штрафы'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <>
-            <div className='container dash-container'>
+          <div className='container dash-container'>
+              <NewFilterGroup pageIdent='penalty' getData={handleApplyFilters} />
+          </div>
+            {/* <div className='container dash-container'>
               <div
                 className={styles.filteOpenClose}
                 onClick={() => setIsOpenFilters(!isOpenFilters)}
@@ -261,12 +270,36 @@ const WeeklyReportPenaltiesPage = () => {
                         }
                       }}
                       filterLoading={filterIsLoading}
-                    />
-                    <FilterGroup
-                      title='Артикул'
-                      options={
-                        filterDataSet.wb_id_filter?.map((id) => ({
-                          id: id,
+                    />fect(() => {
+  //   if (Object.keys(selectedYears ?? {}).length > 0) {
+  //     localStorage.setItem('selectedYears', JSON.stringify(selectedYears));
+  //   }
+  //   if (Object.keys(selectedArticles ?? {}).length > 0) {
+  //     localStorage.setItem(
+  //       'selectedArticles',
+  //       JSON.stringify(selectedArticles)
+  //     );
+  //   }
+  //   if (Object.keys(selectedBrands ?? {}).length > 0) {
+  //     localStorage.setItem('selectedBrands', JSON.stringify(selectedBrands));
+  //   }
+  //   if (Object.keys(selectedGroups ?? {}).length > 0) {
+  //     localStorage.setItem('selectedGroups', JSON.stringify(selectedGroups));
+  //   }
+  //   if (Object.keys(selectedMonths ?? {}).length > 0) {
+  //     localStorage.setItem('selectedMonths', JSON.stringify(selectedMonths));
+  //   }
+  //   if (Object.keys(selectedWeeks ?? {}).length > 0) {
+  //     localStorage.setItem('selectedWeeks', JSON.stringify(selectedWeeks));
+  //   }
+  // }, [
+  //   selectedYears,
+  //   selectedMonths,
+  //   selectedArticles,
+  //   selectedBrands,
+  //   selectedGroups,
+  //   selectedWeeks,
+  // ]);
                           label: id,
                         })) || []
                       }
@@ -384,7 +417,7 @@ const WeeklyReportPenaltiesPage = () => {
                   </div>
                 </div>
               </>
-            )}
+            )} */}
             <div className='container dash-container'>
               <LogisticsTable data={penaltiesData} />
             </div>

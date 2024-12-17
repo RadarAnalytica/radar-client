@@ -11,6 +11,7 @@ export const fetchReportByGoods = createAsyncThunk(
             brand_name_filter: Array.isArray(filters.brand_name_filter) ? filters.brand_name_filter : [filters.brand_name_filter],
             country_filter: Array.isArray(filters.country_filter) ? filters.country_filter : [filters.country_filter],
             wb_id_filter: Array.isArray(filters.wb_id_filter) ? filters.wb_id_filter : [filters.wb_id_filter],
+            title_filter: Array.isArray(filters.title_filter) ? filters.title_filter : [filters.title_filter],
             subject_name_filter: Array.isArray(filters.subject_name_filter) ? filters.subject_name_filter : [filters.subject_name_filter],
             srid_filter: Array.isArray(filters.srid_filter) ? filters.srid_filter : [filters.srid_filter],
             groups_filter: Array.isArray(filters.groups_filter) ? filters.groups_filter : [filters.groups_filter],

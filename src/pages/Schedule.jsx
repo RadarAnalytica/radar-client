@@ -1,7 +1,7 @@
 import styles from './Schedule.module.css';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import { useState, useEffect, useContext, useMemo } from 'react';
+import { useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import BigChart from '../components/BigChart';
 import ScheduleBigChart from '../components/ScheduleBigChart';
 import ScheduleProfitabilityBigChart from '../components/ScheduleProfitabilityChart';
@@ -12,6 +12,8 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/schedule-fake.png';
+import NewFilterGroup from '../components/finReport/FilterGroup'
+
 
 const Schedule = () => {
   const { authToken, user } = useContext(AuthContext);
@@ -625,30 +627,44 @@ const Schedule = () => {
     }
   };
 
-  const updateScheduleChartData = async () => {
+  const updateScheduleChartData = useCallback(async () => {
     setIsChartsLoading(true);
     setError(null);
 
     try {
+
+      const storageItem = localStorage.getItem('charts')
+      let currentPageData = JSON.parse(storageItem)
+      currentPageData = currentPageData ? currentPageData : {}  
+      console.log('currentPageData', currentPageData);
+
       const filter = {
-        brand_name_filter: Object.keys(selectedBrands).filter(
-          (key) => selectedBrands[key]
-        ),
-        wb_id_filter: Object.keys(selectedArticles).filter(
-          (key) => selectedArticles[key]
-        ),
-        groups_filter: Object.keys(selectedGroups).filter(
-          (key) => selectedGroups[key]
-        ),
+        brand_name_filter: currentPageData.brand,
+        wb_id_filter: currentPageData.wbId,
+        groups_filter: currentPageData.group,
         date_sale_filter: {
-          years: Object.keys(selectedYears).filter((key) => selectedYears[key]),
-          months: Object.keys(selectedMonths).filter(
-            (key) => selectedMonths[key]
-          ),
-          weekdays: Object.keys(selectedWeeks).filter(
-            (key) => selectedWeeks[key]
-          ),
+          years: currentPageData.year,
+          months: currentPageData.month,
+          weekdays: currentPageData.week,
         },
+        // brand_name_filter: Object.keys(selectedBrands).filter(
+        //   (key) => selectedBrands[key]
+        // ),
+        // wb_id_filter: Object.keys(selectedArticles).filter(
+        //   (key) => selectedArticles[key]
+        // ),
+        // groups_filter: Object.keys(selectedGroups).filter(
+        //   (key) => selectedGroups[key]
+        // ),
+        // date_sale_filter: {
+        //   years: Object.keys(selectedYears).filter((key) => selectedYears[key]),
+        //   months: Object.keys(selectedMonths).filter(
+        //     (key) => selectedMonths[key]
+        //   ),
+        //   weekdays: Object.keys(selectedWeeks).filter(
+        //     (key) => selectedWeeks[key]
+        //   ),
+        // },
       };
 
       const data = await ServiceFunctions.scheduleFilterChartData(
@@ -684,38 +700,38 @@ const Schedule = () => {
       setError('Failed to load data');
       setIsChartsLoading(false);
     }
-  };
+  }, [authToken]);
 
-  useEffect(() => {
-    if (Object.keys(selectedYears ?? {}).length > 0) {
-      localStorage.setItem('selectedYears', JSON.stringify(selectedYears));
-    }
-    if (Object.keys(selectedArticles ?? {}).length > 0) {
-      localStorage.setItem(
-        'selectedArticles',
-        JSON.stringify(selectedArticles)
-      );
-    }
-    if (Object.keys(selectedBrands ?? {}).length > 0) {
-      localStorage.setItem('selectedBrands', JSON.stringify(selectedBrands));
-    }
-    if (Object.keys(selectedGroups ?? {}).length > 0) {
-      localStorage.setItem('selectedGroups', JSON.stringify(selectedGroups));
-    }
-    if (Object.keys(selectedMonths ?? {}).length > 0) {
-      localStorage.setItem('selectedMonths', JSON.stringify(selectedMonths));
-    }
-    if (Object.keys(selectedWeeks ?? {}).length > 0) {
-      localStorage.setItem('selectedWeeks', JSON.stringify(selectedWeeks));
-    }
-  }, [
-    selectedYears,
-    selectedMonths,
-    selectedArticles,
-    selectedBrands,
-    selectedGroups,
-    selectedWeeks,
-  ]);
+  // useEffect(() => {
+  //   if (Object.keys(selectedYears ?? {}).length > 0) {
+  //     localStorage.setItem('selectedYears', JSON.stringify(selectedYears));
+  //   }
+  //   if (Object.keys(selectedArticles ?? {}).length > 0) {
+  //     localStorage.setItem(
+  //       'selectedArticles',
+  //       JSON.stringify(selectedArticles)
+  //     );e
+  //   }
+  //   if (Object.keys(selectedBrands ?? {}).length > 0) {
+  //     localStorage.setItem('selectedBrands', JSON.stringify(selectedBrands));
+  //   }
+  //   if (Object.keys(selectedGroups ?? {}).length > 0) {
+  //     localStorage.setItem('selectedGroups', JSON.stringify(selectedGroups));
+  //   }
+  //   if (Object.keys(selectedMonths ?? {}).length > 0) {
+  //     localStorage.setItem('selectedMonths', JSON.stringify(selectedMonths));
+  //   }
+  //   if (Object.keys(selectedWeeks ?? {}).length > 0) {
+  //     localStorage.setItem('selectedWeeks', JSON.stringify(selectedWeeks));
+  //   }
+  // }, [
+  //   selectedYears,
+  //   selectedMonths,
+  //   selectedArticles,
+  //   selectedBrands,
+  //   selectedGroups,
+  //   selectedWeeks,
+  // ]);
 
   const toggleCheckboxBrands = (brand) => {
     setSelectedBrands((prevState) => ({
@@ -918,292 +934,10 @@ const Schedule = () => {
         />
         {user.is_report_downloaded ? (
           <>
-            <div className='container dash-container'>
-              <div
-                className={styles.filteOpenClose}
-                onClick={() => setIsOpenFilters(!isOpenFilters)}
-              >
-                {isOpenFilters ? 'Развернуть фильтры' : 'Свернуть фильтры'}
-              </div>
-            </div>
-            {/* <div className={`${styles.filterCollapse}`} onClick={handleFiltersCollapse}>Свернуть фильтры</div> */}
-            {!isOpenFilters && (
-              <>
-                <div
-                  className={`${styles.ScheduleHeader} dash-container container`}
-                >
-                  <div className={styles.container}>
-                    <div className={styles.header}>
-                      <span className={styles.title}>Бренд</span>
-                      <button
-                        className={styles.clearButton}
-                        onClick={handleBrand}
-                      >
-                        {allSelectedBrands ? 'Снять все' : 'Выбрать все'}
-                      </button>
-                    </div>
-                    {isLoading ? (
-                      <div
-                        className='d-flex flex-column align-items-center justify-content-center'
-                        style={{ height: '100px', marginTop: '40px' }}
-                      >
-                        <span className='loader'></span>
-                      </div>
-                    ) : (
-                      <div className={styles.list} style={{ height: containerHeight }}>
-                        {Object.keys(selectedBrands ?? {})
-                          .filter((brand) => brand !== 'пусто')
-                          .map((brand, index) => (
-                            <div className={styles.brandItem} key={index}>
-                              <label className={styles.checkboxContainer}>
-                                <input
-                                  type='checkbox'
-                                  checked={selectedBrands[brand]}
-                                  onChange={() => toggleCheckboxBrands(brand)}
-                                  className={styles.checkboxInput}
-                                />
-                                <span className={styles.customCheckbox}></span>
-                              </label>
-                              <span className={styles.brandName} title={brand}>
-                                {brand}
-                              </span>
-                            </div>
-                          ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className={styles.container}>
-                    <div className={styles.header}>
-                      <span className={styles.title}>Год</span>
-                      <button
-                        className={styles.clearButton}
-                        onClick={handleYear}
-                      >
-                        {allSelectedYears ? 'Снять все' : 'Выбрать все'}
-                      </button>
-                    </div>
-                    {isLoading ? (
-                      <div
-                        className='d-flex flex-column align-items-center justify-content-center'
-                        style={{ height: '100px', marginTop: '40px' }}
-                      >
-                        <span className='loader'></span>
-                      </div>
-                    ) : (
-                      <div className={styles.list} style={{ height: containerHeight }}>
-                        {Object.keys(selectedYears ?? {}).map((year, index) => (
-                          <div className={styles.brandItem} key={index}>
-                            <label className={styles.checkboxContainer}>
-                              <input
-                                type='checkbox'
-                                checked={selectedYears[year]}
-                                onChange={() => toggleCheckboxYear(year)}
-                                className={styles.checkboxInput}
-                              />
-                              <span className={styles.customCheckbox}></span>
-                            </label>
-                            <span className={styles.brandName} title={year}>
-                              {year}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className={styles.container}>
-                    <div className={styles.header}>
-                      <span className={styles.title}>Месяц</span>
-                      <button
-                        className={styles.clearButton}
-                        onClick={handleMonth}
-                      >
-                        {allSelectedMonths ? 'Снять все' : 'Выбрать все'}
-                      </button>
-                    </div>
-                    {isLoading ? (
-                      <div
-                        className='d-flex flex-column align-items-center justify-content-center'
-                        style={{ height: '100px', marginTop: '40px' }}
-                      >
-                        <span className='loader'></span>
-                      </div>
-                    ) : (
-                      <div
-                        className={styles.list}
-                        style={{
-                          justifyContent: 'flex-end',
-                          flexDirection: 'column-reverse',
-                          height: containerHeight,
-                        }}
-                      >
-                        {Object.keys(selectedMonths ?? {}).map(
-                          (monthKey, index) => (
-                            <div className={styles.brandItem} key={index}>
-                              <label className={styles.checkboxContainer}>
-                                <input
-                                  type='checkbox'
-                                  checked={selectedMonths[monthKey]}
-                                  onChange={() => toggleCheckboxMonth(monthKey)}
-                                  className={styles.checkboxInput}
-                                />
-                                <span className={styles.customCheckbox}></span>
-                              </label>
-                              {/* Преобразуем ключ месяца в название месяца */}
-                              <span
-                                className={styles.brandName}
-                                title={monthNames[parseInt(monthKey, 10) - 1]}
-                              >
-                                {monthNames[parseInt(monthKey, 10) - 1]}
-                              </span>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className={styles.container}>
-                    <div className={styles.header}>
-                      <span className={styles.title}>Неделя</span>
-                      <button
-                        className={styles.clearButton}
-                        onClick={handleWeek}
-                      >
-                        {allSelectedWeeks ? 'Снять все' : 'Выбрать все'}
-                      </button>
-                    </div>
-                    {isLoading ? (
-                      <div
-                        className='d-flex flex-column align-items-center justify-content-center'
-                        style={{ height: '100px', marginTop: '40px' }}
-                      >
-                        <span className='loader'></span>
-                      </div>
-                    ) : (
-                      <div className={styles.list} style={{ height: containerHeight }}>
-                        {Object.keys(selectedWeeks ?? {}).map(
-                          (brand, index) => (
-                            <div className={styles.brandItem} key={index}>
-                              <label className={styles.checkboxContainer}>
-                                <input
-                                  type='checkbox'
-                                  checked={selectedWeeks[brand]}
-                                  onChange={() => toggleCheckboxWeek(brand)}
-                                  className={styles.checkboxInput}
-                                />
-                                <span className={styles.customCheckbox}></span>
-                              </label>
-                              <span className={styles.brandName} title={brand}>
-                                {brand}
-                              </span>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className={styles.container}>
-                    <div className={styles.header}>
-                      <span className={styles.title}>Группа</span>
-                      <button
-                        className={styles.clearButton}
-                        onClick={handleGroup}
-                      >
-                        {allSelectedGroups ? 'Снять все' : 'Выбрать все'}
-                      </button>
-                    </div>
-                    {isLoading ? (
-                      <div
-                        className='d-flex flex-column align-items-center justify-content-center'
-                        style={{ height: '100px', marginTop: '40px' }}
-                      >
-                        <span className='loader'></span>
-                      </div>
-                    ) : (
-                      <div className={styles.list} style={{ height: containerHeight }}>
-                        {Object.keys(selectedGroups ?? {})
-                          .filter((groupName) => groupName !== 'пусто')
-                          .map((brand, index) => (
-                            <div className={styles.brandItem} key={index}>
-                              <label className={styles.checkboxContainer}>
-                                <input
-                                  type='checkbox'
-                                  checked={selectedGroups[brand]}
-                                  onChange={() => toggleCheckboxGroup(brand)}
-                                  className={styles.checkboxInput}
-                                />
-                                <span className={styles.customCheckbox}></span>
-                              </label>
-                              <span className={styles.brandName} title={brand}>
-                                {brand}
-                              </span>
-                            </div>
-                          ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className={styles.container}>
-                    <div className={styles.header}>
-                      <span className={styles.title}>Артикул</span>
-                      <button
-                        className={styles.clearButton}
-                        onClick={handleArticle}
-                      >
-                        {allSelectedArticles ? 'Снять все' : 'Выбрать все'}
-                      </button>
-                    </div>
-                    {isLoading ? (
-                      <div
-                        className='d-flex flex-column align-items-center justify-content-center'
-                        style={{ height: '100px', marginTop: '40px' }}
-                      >
-                        <span className='loader'></span>
-                      </div>
-                    ) : (
-                      <div className={styles.list} style={{ height: containerHeight }}>
-                        {Object.keys(selectedArticles ?? {})
-                          .filter((article) => article !== 'пусто')
-                          .map((article, index) => (
-                            <div className={styles.brandItem} key={index}>
-                              <label className={styles.checkboxContainer}>
-                                <input
-                                  type='checkbox'
-                                  checked={selectedArticles[article]}
-                                  onChange={() =>
-                                    toggleCheckboxArticle(article)
-                                  }
-                                  className={styles.checkboxInput}
-                                />
-                                <span className={styles.customCheckbox}></span>
-                              </label>
-                              <span
-                                className={styles.brandName}
-                                title={article}
-                              >
-                                {article}
-                              </span>
-                            </div>
-                          ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className='container dash-container'>
-                  <div>
-                    <button
-                      className={styles.applyButton}
-                      onClick={updateScheduleChartData}
-                    >
-                      Применить фильтры
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
+          <div className='container dash-container'>
+              <NewFilterGroup pageIdent='charts' getData={updateScheduleChartData} />
+          </div>
+    
             <div className={`${styles.ScheduleBody} dash-container container`}>
               <div className='container dash-container '>
                 <ScheduleBigChart
