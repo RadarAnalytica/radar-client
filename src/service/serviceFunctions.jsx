@@ -1,4 +1,5 @@
 import { URL } from './config';
+import { formatFromIsoDate } from './utils'
 
 export const ServiceFunctions = {
   register: async (object) => {
@@ -732,6 +733,21 @@ export const ServiceFunctions = {
     };
   },
 
+  getCostPriceStatus: async(token) => {
+    const res = await fetch(`${URL}/api/report/cost/status`, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        authorization: 'JWT ' + token,
+      },
+    });
+    const data = await res.json()
+    data.updated_at = data.updated_at === '' ? null : `Последняя загрузка ${formatFromIsoDate(data.updated_at)}г.`
+    console.log(data);
+    
+    return data;
+  },
+
   getCostTemplate: async (token) => {
     const res = await fetch(`${URL}/api/report/cost/get-template`, {
       method: 'GET',
@@ -808,6 +824,19 @@ export const ServiceFunctions = {
     return await response.json();
   },
 
+  getSelfBuyoutStatus: async(token) => {
+    const res = await fetch(`${URL}/api/report/self-buyout/status`, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        authorization: 'JWT ' + token,
+      },
+    });
+    const data = await res.json()
+        
+    return data.status;
+  },
+
   getSelfBuyoutTemplate: async (token) => {
     const res = await fetch(`${URL}/api/report/self-buyout/get-template`, {
       method: 'GET',
@@ -863,4 +892,6 @@ export const ServiceFunctions = {
     });
     return await response.json();
   },
+
+  
 };

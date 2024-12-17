@@ -4,6 +4,7 @@
 
 .primeCostBox {
     display: flex;
+    align-items: flex-start;
 }
 
 .primeCostBoxText {
