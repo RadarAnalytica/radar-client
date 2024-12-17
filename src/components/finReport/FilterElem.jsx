@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import styles from './FilterElem.module.css';
+import { monthNames } from '../../service/reportConfig'
 
-const FilterElem = ({title, pageIdent, filterIdent, items, isLoading}) => {
+const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData, changeWeekFilter}) => {
   const [isAllSelected, setIsAllSelected] = useState((false));
   const [options, setOptions] = useState([]);
   // const [isLoading, setIsLoading] = useState(startLoading);
@@ -9,6 +10,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading}) => {
   useEffect(() => {
     const current = []
     const storageItem = localStorage.getItem(pageIdent)
+    
     let currentPageData = JSON.parse(storageItem)
     currentPageData = currentPageData ? currentPageData : {}
     let currentFilterData = currentPageData[filterIdent] ? currentPageData[filterIdent] : []
@@ -20,8 +22,11 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading}) => {
         isSelected: currentFilterData.includes(elem)
       })
     }
+    if (filterIdent === 'year' || filterIdent === 'month') {
+      changeWeekFilter();
+    }
     setOptions(current)
-  }, [items, filterIdent, pageIdent])
+  }, [items, filterIdent, pageIdent, changeWeekFilter])
 
   const changeSelectOption = (optionElem) => {
     const updatedList = options.map((elem) => (
@@ -31,14 +36,14 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading}) => {
     ));
     console.log('pageIdent', pageIdent);
     
-    const storageItem = localStorage.getItem(pageIdent)
-    let currentPageData = JSON.parse(storageItem)
+    const storageItem = localStorage.getItem(pageIdent);
+    let currentPageData = JSON.parse(storageItem);
     currentPageData = currentPageData ? currentPageData : {}
     let currentFilterData = currentPageData[filterIdent] ? currentPageData[filterIdent] : []
     if (currentFilterData.includes(optionElem.value)) {
       currentFilterData = currentFilterData.filter((el) => el !== optionElem.value);
     } else {
-      currentFilterData.push(optionElem.value)
+      currentFilterData.push(optionElem.value);
     }
     console.log('currentFilterData', currentFilterData);
     
@@ -46,34 +51,56 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading}) => {
     console.log('currentPageData', currentPageData);
     
     localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
+    if (filterIdent === 'year' || filterIdent === 'month') {
+      changeWeekFilter();
+    }
     setOptions(updatedList)
   }
 
   useEffect(() =>  {
     const selectList = options.map(x => x.isSelected ? 1 : 0)
     const res = (selectList.reduce((acc, num) => acc + num, 0)) === options.length
-    setIsAllSelected(res)
-  }, [options])
+    setIsAllSelected(res);
+    if (filterIdent === 'year' || filterIdent === 'month') {
+      changeWeekFilter();
+    }
+  }, [options, changeWeekFilter, filterIdent])
 
 
   const handleSelectAll = () => {
+    const storageItem = localStorage.getItem(pageIdent);
+    let currentPageData = JSON.parse(storageItem);
+    currentPageData = currentPageData ? currentPageData : {}
+    
     if (isAllSelected) {
       setIsAllSelected(false)
       setOptions((list) => {
         return list.map((elem) => ({...elem, isSelected: false}))
       })
+      currentPageData[filterIdent] = []
     } else {
       setIsAllSelected(true)
       setOptions((list) => {
         return list.map((elem) => ({...elem, isSelected: true}))
       })
+      currentPageData[filterIdent] = options.map((elem) => elem.value)
     }
+    localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
   }
+  const handleTitleDisplay = (e) => {
+    const span = e.currentTarget;
+    if (span.scrollWidth > span.clientWidth) {
+      span.parentElement.setAttribute('title', span.textContent);
+    } else {
+      span.parentElement.removeAttribute('title');
+    }
+  };
 
 
   return (
       <div
         className={styles.filterGroup}
+        style={{width: widthData ? widthData : '220px'}}
       >
         <div className={styles.filterHeader}>
           <h3>{title}</h3>
@@ -101,8 +128,12 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading}) => {
                   onChange={() => {changeSelectOption(option)}}
                   className={styles.checkbox}
                 />
-                <span>
-                  {option.value}
+                <span 
+                style={{maxWidth: widthData ? '600px' : '180px'}}
+                ref={(el) => el && handleTitleDisplay({ currentTarget: el })}
+                >
+                  {filterIdent === 'month' ? monthNames[option.value] : option.value}
+                  
                 </span>
               </label>
             ))}

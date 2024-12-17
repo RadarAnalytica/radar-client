@@ -1,5 +1,6 @@
-import React, { useState, useContext, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useContext, useRef, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDashboardReport } from '../redux/dashboardReport/dashboardReportActions';
 import BottomNavigation from '../components/BottomNavigation';
 import FilterSection from '../components/FilterSection';
 import SideNav from '../components/SideNav';
@@ -16,6 +17,7 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 
 const WeeklyReportDashboard = () => {
   const { authToken, user } = useContext(AuthContext);
+  const dispatch = useDispatch();
   // const user = {
   //   id: 2,
   //   role: 'admin',
@@ -65,13 +67,39 @@ const WeeklyReportDashboard = () => {
           tax_type: currentTaxType,
         });
 
-        filterSectionRef.current?.handleApplyFilters();
+        // filterSectionRef.current?.handleApplyFilters();
+        handleApplyFilters()
         setIsEditing(false);
       }
+      // filterSectionRef.current?.handleApplyFilters();
+      
+      // setIsEditing(false);
     } catch (error) {
       console.error("Ошибка при обновлении налоговой ставки:", error);
     }
   };
+
+  const handleApplyFilters = useCallback(async () => {
+    const storageItem = localStorage.getItem('dashboard')
+    let currentPageData = JSON.parse(storageItem)
+    currentPageData = currentPageData ? currentPageData : {}  
+    console.log(currentPageData);
+    
+    const filterPayload = {
+      warehouse_name_filter: currentPageData.wh ? currentPageData.wh : [],
+      brand_name_filter: currentPageData.brand ? currentPageData.brand : [],
+      groups_filter: currentPageData.group ? currentPageData.group : [],
+      date_sale_filter: {
+        years: currentPageData.year ? currentPageData.year : [],
+        months: currentPageData.month ? currentPageData.month : [],
+        weekdays: currentPageData.week ? currentPageData.week : [],
+      },
+    };
+  
+      dispatch(
+        fetchDashboardReport({ token: authToken, filterData: filterPayload })
+      );
+    }, [authToken, dispatch])
 
   return (
     <div className='dashboard-page'>
@@ -83,8 +111,8 @@ const WeeklyReportDashboard = () => {
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
-              <NewFilterGroup pageIdent='dashboard' />
-              <FilterSection ref={filterSectionRef} />
+              <NewFilterGroup pageIdent='dashboard' getData={handleApplyFilters} />
+              {/* <FilterSection ref={filterSectionRef} /> */}
             </div>
             <div className='container dash-container'>
               <div className={styles.blockWrapper}>

@@ -1,6 +1,6 @@
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import { useState, useContext, useEffect, useMemo } from 'react';
+import { useState, useContext, useEffect, useMemo, useCallback } from 'react';
 import styles from './ReportAbcAnalysis.module.css';
 import upArrow from '../assets/up.svg';
 import downArrow from '../assets/down.svg';
@@ -10,6 +10,8 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import SelectField from '../components/SelectField';
 import abcFake from '../pages/images/abc_fake.png';
 import DemonstrationSection from '../components/DemonstrationSection';
+import NewFilterGroup from '../components/finReport/FilterGroup'
+
 
 const ReportAbcAnalysis = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -147,28 +149,29 @@ const ReportAbcAnalysis = () => {
     };
   };
 
-  useEffect(() => {
-    const initializeFiltersAndData = async () => {
-      try {
-        await updateFilterFields();
-        setFiltersInitialized(true);
-      } catch (error) {
-        console.error('Ошибка при инициализации фильтров:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const initializeFiltersAndData = async () => {
+  //     try {
+  //       await updateFilterFields();
+  //       setFiltersInitialized(true);
+  //     } catch (error) {
+  //       console.error('Ошибка при инициализации фильтров:', error);
+  //     }
+  //   };
 
-    initializeFiltersAndData();
+  //   initializeFiltersAndData();
 
-    // console.log(localStorage.getItem("selectedYears"), JSON.parse(localStorage.getItem("selectedYears")))
+  //   // console.log(localStorage.getItem("selectedYears"), JSON.parse(localStorage.getItem("selectedYears")))
 
-    // setSelectedYears(JSON.parse(localStorage.getItem("selectedYears")))
-  }, []);
+  //   // setSelectedYears(JSON.parse(localStorage.getItem("selectedYears")))
+  // }, []);
 
-  useEffect(() => {
-    if (filtersInitialized) {
-      updateData();
-    }
-  }, [filtersInitialized]);
+  // useEffect(() => {
+  //   if (filtersInitialized) {
+  //     updateData();
+  //   }
+  // }, [filtersInitialized]);
+
   const updateFilterFields = async () => {
     setIsLoading(true);
     try {
@@ -246,7 +249,34 @@ const ReportAbcAnalysis = () => {
     }
   };
 
+  const applyFilters = useCallback(async () => {
+    setIsRevenueLoading(true);
+    setError(null);
 
+    try {
+      const storageItem = localStorage.getItem('abc')
+      let currentPageData = JSON.parse(storageItem)
+      currentPageData = currentPageData ? currentPageData : {}  
+      console.log('currentPageData', currentPageData);
+
+      const filters = {
+        article_filter_list: currentPageData.wbId || [],
+        brand_filter_list: currentPageData.brand || [],
+        group_filter_list: currentPageData.group || [],
+        month_filter_list: currentPageData.month || [],
+        product_filter_list: currentPageData.product || [],
+        year_filter_list: currentPageData.year || [],
+        week_filter_list: currentPageData.week || [],
+      }
+      const data = await ServiceFunctions.postAbcReportsData(authToken, filters);
+      setDataRevenue(data);
+    } catch (err) {
+      setError('Failed to load data');
+    } finally {
+      setIsRevenueLoading(false);
+    }
+
+  }, [authToken])
 
   const updateData = async () => {
     setIsRevenueLoading(true);
@@ -286,36 +316,36 @@ const ReportAbcAnalysis = () => {
     }
   };
 
-  useEffect(() => {
-    if (Object.keys(selectedYears).length > 0) {
-      localStorage.setItem('selectedYearsABC', JSON.stringify(selectedYears));
-    }
-    if (Object.keys(selectedArticles).length > 0) {
-      localStorage.setItem(
-        'selectedArticlesABC',
-        JSON.stringify(selectedArticles)
-      );
-    }
-    if (Object.keys(selectedBrands).length > 0) {
-      localStorage.setItem('selectedBrandsABC', JSON.stringify(selectedBrands));
-    }
-    if (Object.keys(selectedGroups).length > 0) {
-      localStorage.setItem('selectedGroupsABC', JSON.stringify(selectedGroups));
-    }
-    if (Object.keys(selectedMonths).length > 0) {
-      localStorage.setItem('selectedMonthsABC', JSON.stringify(selectedMonths));
-    }
-    if (Object.keys(selectedWeeks).length > 0) {
-      localStorage.setItem('selectedWeeksABC', JSON.stringify(selectedWeeks));
-    }
-  }, [
-    selectedYears,
-    selectedMonths,
-    selectedArticles,
-    selectedBrands,
-    selectedGroups,
-    selectedWeeks,
-  ]);
+  // useEffect(() => {
+  //   if (Object.keys(selectedYears).length > 0) {
+  //     localStorage.setItem('selectedYearsABC', JSON.stringify(selectedYears));
+  //   }
+  //   if (Object.keys(selectedArticles).length > 0) {
+  //     localStorage.setItem(
+  //       'selectedArticlesABC',
+  //       JSON.stringify(selectedArticles)
+  //     );
+  //   }
+  //   if (Object.keys(selectedBrands).length > 0) {
+  //     localStorage.setItem('selectedBrandsABC', JSON.stringify(selectedBrands));
+  //   }
+  //   if (Object.keys(selectedGroups).length > 0) {
+  //     localStorage.setItem('selectedGroupsABC', JSON.stringify(selectedGroups));
+  //   }
+  //   if (Object.keys(selectedMonths).length > 0) {
+  //     localStorage.setItem('selectedMonthsABC', JSON.stringify(selectedMonths));
+  //   }
+  //   if (Object.keys(selectedWeeks).length > 0) {
+  //     localStorage.setItem('selectedWeeksABC', JSON.stringify(selectedWeeks));
+  //   }
+  // }, [
+  //   selectedYears,
+  //   selectedMonths,
+  //   selectedArticles,
+  //   selectedBrands,
+  //   selectedGroups,
+  //   selectedWeeks,
+  // ]);
 
   const toggleCheckboxBrands = (brand) => {
     setSelectedBrands((prevState) => ({
@@ -475,7 +505,10 @@ const ReportAbcAnalysis = () => {
         />
         {user.is_report_downloaded ? (
           <>
-            {' '}
+            <div className='container dash-container'>
+              <NewFilterGroup pageIdent='abc' getData={applyFilters} />
+            </div>
+            {/* {' '}
             <div className='container dash-container'>
               <div
                 className={styles.filteOpenClose}
@@ -796,7 +829,7 @@ const ReportAbcAnalysis = () => {
                   </div>
                 </div>
               </>
-            )}
+            )} */}
             <div
               className={`${styles.ScheduleFooter} dash-container container`}
             >
