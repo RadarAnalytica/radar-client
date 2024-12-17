@@ -327,6 +327,19 @@ export const getDifference = (data, key, days) => {
   }
 };
 
+export const formatFromIsoDate = (dateString) => {
+  const dateCurrent = new Date(dateString);
+  function addLeadZero(val) {
+    if (+val < 10) return '0' + val;
+    return val;
+  };
+  return [
+    addLeadZero(dateCurrent.getDate()),
+    addLeadZero(dateCurrent.getMonth() + 1),
+    dateCurrent.getFullYear()
+  ].join('.')
+}
+
 export const calculateReturns = (data, days) => {
   const currentDate = new Date();
   const previousDate = new Date(currentDate);

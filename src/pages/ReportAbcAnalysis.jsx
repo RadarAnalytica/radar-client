@@ -867,6 +867,12 @@ const ReportAbcAnalysis = () => {
                     >
                       Товар
                     </div>
+                    <div
+                      className={styles.size}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Размер
+                    </div>
                     <div className={styles.profit} style={{ color: '#8C8C8C' }}>
                       Выручка
                     </div>
@@ -880,7 +886,7 @@ const ReportAbcAnalysis = () => {
                       className={styles.category}
                       style={{ color: '#8C8C8C' }}
                     >
-                      Категория по выручке
+                      Категория<br></br> по выручке
                     </div>
                     <div
                       className={styles.generalCategory}
@@ -965,6 +971,38 @@ const ReportAbcAnalysis = () => {
                                 title={item.title}
                               >
                                 {item.title}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className={styles.size}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  className={styles.size}
+                                  title={item.size}
+                                  style={{width: '90%'}}
+                                >
+                                  {item.size}
+                                </div>{' '}
+                                {item.items.map((product, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.size}
+                                    title={product.size}
+                                    style={{width: '90%'}}
+                                  >
+                                    {product.size}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div
+                                className={styles.size}
+                                title={item.size}
+                                style={{width: '90%'}}
+                              >
+                                {item.size}
                               </div>
                             )}
                           </div>
@@ -1080,6 +1118,12 @@ const ReportAbcAnalysis = () => {
                     >
                       Товар
                     </div>
+                    <div
+                      className={styles.size}
+                      style={{ color: '#8C8C8C' }}
+                    >
+                      Размер
+                    </div>
                     <div className={styles.profit} style={{ color: '#8C8C8C' }}>
                       Прибыль
                     </div>
@@ -1093,7 +1137,7 @@ const ReportAbcAnalysis = () => {
                       className={styles.category}
                       style={{ color: '#8C8C8C' }}
                     >
-                      Категория по выручке
+                      Категория<br></br>по прибыли
                     </div>
                     <div
                       className={styles.generalCategory}
@@ -1177,6 +1221,38 @@ const ReportAbcAnalysis = () => {
                                 title={item.title}
                               >
                                 {item.title}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className={styles.size}>
+                            {expandedRows[item.wb_id] ? (
+                              <>
+                                <div
+                                  className={styles.size}
+                                  title={item.size}
+                                  style={{width: '90%'}}
+                                >
+                                  {item.size}
+                                </div>{' '}
+                                {item.items.map((product, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.size}
+                                    title={product.size}
+                                    style={{width: '90%'}}
+                                  >
+                                    {product.size}
+                                  </div>
+                                ))}
+                              </>
+                            ) : (
+                              <div
+                                className={styles.size}
+                                title={item.size}
+                                style={{width: '90%'}}
+                              >
+                                {item.size}
                               </div>
                             )}
                           </div>
