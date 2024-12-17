@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import arrow from "../pages/images/accordStr2.png";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 const reviewsIP = [
   { videoSrc: "https://play.boomstream.com/gKgcdLiT?color=transparent&title=0" },
@@ -9,75 +12,72 @@ const reviewsIP = [
   { videoSrc: "https://play.boomstream.com/YdvSIQ0U?color=transparent&title=0" },
 ];
 
+
 const Reviews = () => {
-  const [activeIndex, setActiveIndex] = useState(2);
-
-  const scrollLeft = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? reviewsIP.length : prevIndex - 1
-    );
-  };
-
-  const scrollRight = () => {
-    setActiveIndex((prevIndex) =>
-      (prevIndex + 1) % reviewsIP.length
-    );
+  const settings = {
+    // dots: true,
+    infinite: true,
+    speed: 600,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    nextArrow: <ImageArrow type="next" />,
+    prevArrow: <ImageArrow type="prev" />,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 470,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
     <>
-      <div className="scroll-wrapper container">
-        <div
-          className="scroll-container container"
-          style={{
-            transform: `translateX(-${(activeIndex + 3) * 250}px)`,
-
-          }}
-        >
-          {[...reviewsIP, ...reviewsIP, ...reviewsIP].map((el, index) => {
-            const isActive = index % reviewsIP.length === activeIndex;
-            return (
-              <div
-                key={index}
-                className={`blockReviewsVideos ${isActive ? "active" : ""}`}
-                style={{
-                  opacity: isActive ? 1 : 0.5,
-                  pointerEvents: isActive ? "auto" : "none",
-                }}
-              >
-                <div className="video-container">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={el.videoSrc}
-                    frameBorder="0"
-                    scrolling="no"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="controls">
-        <img
-          className="arrow arrow-left"
-          onClick={scrollLeft}
-          src={arrow}
-          alt="arrow left"
-        />
-
-        <img
-          className="arrow arrow-right"
-          onClick={scrollRight}
-          src={arrow}
-          alt="arrow right"
-        />
+      <div className="slider-container">
+        <Slider {...settings}>
+          {reviewsIP.map((el, index) => (
+            <div key={index} className="slider-item">
+              <iframe
+                width="100%"
+                height="100%"
+                src={el.videoSrc}
+                frameBorder="0"
+                scrolling="no"
+                allowFullScreen
+                title={`review-${index}`}
+              ></iframe>
+            </div>
+          ))}
+        </Slider>
       </div>
     </>
   );
 };
-
+function ImageArrow({ type, onClick }) {
+  return (
+    <img
+      className={`arrow ${type === "next" ? "arrow-right" : "arrow-left"}`}
+      onClick={onClick}
+      src={arrow}
+      alt={`arrow ${type}`}
+    />
+  );
+}
 export default Reviews;
+
