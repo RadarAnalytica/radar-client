@@ -738,34 +738,36 @@ select {
   border-radius: 10px;
   font-size: 22px;
 }
+
 .slider-container {
   width:100%;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   text-align: center;
-  gap: 20px;
+}
+.slick-track {
+  display: flex !important; /* Use Flexbox */
+  align-items: center;
+  justify-content: space-between;
+}
+
+.slick-slide {
+  padding: 5px !important; /* Remove default padding */
 }
 
 .slider-item {
-  margin-left: 20px !important;
-  width: 340px !important;
-  height: 600px !important;
+  width: 320px !important;
+  height: 567px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center!important;
   border-radius: 15px;
 }
-@media (min-width: 1300px) and (max-width: 1400px) {
+
+@media (min-width: 1600px) and (max-width: 1690px) {
   
   .slider-item {
-    width: 270px !important;
-    height:480px !important;
-    border-radius: 15px;
-  }
-}
-@media (min-width: 1600px) and (max-width: 1690px) {
-  .slider-item {
-    width: 320px !important;
-    height: 568px !important;
+    width: 310px !important;
+    height: 546px !important;
     border-radius: 15px;
   }
 }
@@ -820,209 +822,154 @@ select {
   }
 }
 
-@media (min-width: 700px) and (max-width: 768px) {
+@media (min-width: 750px) and (max-width: 768px) {
   .slider-item {
-    margin-left: 20px!important;
     width: 200px !important;
     height: 355px !important;
     border-radius: 15px;
   }
 }
-@media (min-width: 650px) and (max-width: 700px) {
+@media (min-width: 710px) and (max-width: 750px) {
   .slider-item {
-    margin-left: 20px!important;
     width: 180px !important;
     height: 320px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 650px) and (max-width: 710px) {
+  .slider-item {
+    width: 160px !important;
+    height: 278px !important;
     border-radius: 15px;
   }
 }
 @media (min-width: 620px) and (max-width:  650px) {
   .slider-item {
-    margin-left:10px!important;
-    width: 180px !important;
-    height: 320px !important;
+    width: 160px !important;
+    height: 278px !important;
     border-radius: 15px;
   }
 }
 @media (min-width: 600px) and (max-width:  620px) {
   .slider-item {
-    margin-left:5px!important;
-    width: 180px !important;
-    height: 320px !important;
+    width: 140px !important;
+    height: 243px !important;
     border-radius: 15px;
   }
 }
 @media (min-width: 570px) and (max-width:  600px) {
   .slider-item {
-    margin-left:30px!important;
-    width: 220px !important;
-    height: 391px !important;
+    width: 200px !important;
+    height: 355px !important;
     border-radius: 15px;
   }
 }
 @media (min-width: 550px) and (max-width:  570px) {
   .slider-item {
-    margin-left:25px!important;
-    width: 220px !important;
-    height: 391px !important;
+    width: 190px !important;
+    height: 330px !important;
     border-radius: 15px;
   }
 }
 @media (min-width: 510px) and (max-width:  550px) {
   .slider-item {
-    margin-left:15px!important;
-    width: 220px !important;
-    height: 391px !important;
+    width: 180px !important;
+    height: 320px !important;
     border-radius: 15px;
   }
 }
-@media (min-width: 490px) and (max-width:  510px) {
+@media (min-width: 480px) and (max-width:  510px) {
   .slider-item {
-    margin-left:20px!important;
-    width: 200px !important;
-    height: 355px !important;
+    width: 170px !important;
+    height: 297px !important;
     border-radius: 15px;
   }
 }
-@media (min-width: 470px) and (max-width:  490px) {
+@media (min-width: 460px) and (max-width:  480px) {
   .slider-item {
-    margin-left: 30px!important;
-    width: 200px !important;
-    height: 355px !important;
+    width: 310px !important;
+    height: 541px !important;
     border-radius: 15px;
   }
 }
-@media (min-width: 460px) and (max-width:  470px) {
-  .slider-item {
-    margin-left: 45px !important;
-    width: 340px !important;
-    height: 591px !important;
-    border-radius: 15px;
-  }
-}
+
 @media (min-width: 440px) and (max-width:  460px) {
   .slider-item {
-    margin-left: 35px !important;
-    width: 340px !important;
-    height: 591px !important;
-    border-radius: 15px;
-  }
-}
-@media (min-width: 420px) and (max-width:  440px) {
-  .slider-item {
-    margin-left: 30px !important;
-    width: 340px !important;
-    height: 591px !important;
-    border-radius: 15px;
-  }
-}
-@media (min-width: 400px) and (max-width:  420px) {
-  .slider-item {
-    margin-left: 25px !important;
-    width: 340px !important;
-    height: 591px !important;
-    border-radius: 15px;
-  }
-}
-@media (min-width: 380px) and (max-width:  400px) {
-  .slider-item {
-    margin-left: 9px !important;
-    width: 340px !important;
-    height: 591px !important;
-    border-radius: 15px;
-  }
-}
-@media (min-width: 365px) and (max-width:  380px) {
-  .slider-item {
-    margin-left: 5px!important;
-    width: 320px !important;
-    height: 556px !important;
-    border-radius: 15px;
-  }
-}
-@media (min-width: 350px) and (max-width:  365px) {
-  .slider-item {
-    margin-left: 20px!important;
     width: 300px !important;
     height: 521px !important;
     border-radius: 15px;
   }
 }
-@media (min-width: 345px) and (max-width:  365px) {
+@media (min-width: 420px) and (max-width:  440px) {
   .slider-item {
-    margin-left: 20px!important;
     width: 280px !important;
     height: 491px !important;
     border-radius: 15px;
   }
 }
-@media (min-width: 330px) and (max-width:  345px) {
+@media (min-width: 400px) and (max-width:  420px) {
   .slider-item {
-    margin-left: 12px!important;
-    width: 280px !important;
-    height: 491px !important;
+    width: 260px !important;
+    height: 451px !important;
     border-radius: 15px;
   }
 }
-@media (min-width: 320px) and (max-width:  330px) {
+@media (min-width: 390px) and (max-width:  400px) {
   .slider-item {
-    margin-left: 25px!important;
     width: 250px !important;
     height: 434px !important;
     border-radius: 15px;
   }
 }
-@media (min-width: 310px) and (max-width:  320px) {
+@media (min-width: 380px) and (max-width:  390px) {
   .slider-item {
-    margin-left: 20px!important;
-    width: 250px !important;
-    height: 434px !important;
-    border-radius: 15px;
-  }
-}
-@media (min-width: 300px) and (max-width:  310px) {
-  .slider-item {
-    margin-left: 15px!important;
-    width: 250px !important;
-    height: 434px !important;
-    border-radius: 15px;
-  }
-}
-@media (min-width: 280px) and (max-width:  300px) {
-  .slider-item {
-    margin-left: 10px!important;
-    width: 250px !important;
-    height: 434px !important;
+    width: 240px !important;
+    height: 414px !important;
     border-radius: 15px;
   }
 }
 
-
-@media (min-width: 200px) and (max-width:  280px) {
+@media (min-width: 370px) and (max-width:  380px) {
   .slider-item {
-    margin-left: 30px!important;
+    width: 230px !important;
+    height: 399px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 325px) and (max-width:  370px) {
+  .slider-item {
     width: 180px !important;
     height:320px !important;
     border-radius: 15px;
   }
 }
-@media (min-width: 250px) and (max-width:  270px) {
-  .slider-item {
-    margin-left: 25px!important;
 
+@media (min-width: 300px) and (max-width:  325px) {
+  .slider-item {
+    width: 150px !important;
+    height:260px !important;
+    border-radius: 15px;
   }
 }
-@media (min-width: 220px) and (max-width:  250px) {
-  .slider-item {
-    margin-left: 8px!important;
 
-  }
-}
-@media (min-width: 200px) and (max-width:  220px) {
+
+@media (min-width: 250px) and (max-width:  300px) {
   .slider-item {
-    margin-left: 10px!important;
-  }
+    width: 130px !important;
+    height:225px !important;
+    border-radius: 15px;}
+
 }
+
+@media (min-width: 200px) and (max-width:  250px) {
+  .slider-item {
+    width: 110px !important;
+    height:191px !important;
+    border-radius: 15px;}
+
+}
+
+
 @media (min-width: 300px) and (max-width:  780px) {
   .userReviewsHeaderTitle{
     font-size: 25px;
@@ -1037,15 +984,24 @@ select {
     display: none;
   }
 }
+@media (min-width: 200px) and (max-width: 300px) {
+  .userReviewsHeaderTitle{
+    font-size: 20px;
+    line-height: 23px;
+  }
+  .userReviewsHeaderParag{
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+  .yellowLogoSpan{
+    display: none;
+  }
+}
 iframe {
-  object-fit: cover;
-  /* width: 320px !important;
-  height: 569px !important; */
   width: 100%;
   height: 100%;
-  border: none;
   border-radius: 15px;
-  margin-right: 5px;
 }
 .arrow {
   position: absolute;

@@ -19,15 +19,15 @@
     justify-content: space-between;
 }
 .wrapper,.wrapperSecond,.wrapperThird{
-    width: calc(100% / 3 - 20px);
+    width: calc(100% / 3 - 10px);
     max-height: 270px;
     min-height: 270px;
     background-color: #000000;
     border-radius: 12.15px;
     padding: 24px;
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-between; */
 }
 .wrapperSecond{ background-color:#0069FF}
 .wrapperThird {background-color: #1A1A1A0D;}
@@ -37,17 +37,22 @@
     align-items: center;
 }
 .logoContainer{
-    width: 70px;
-    height: 70px;
+    min-width: 75px;
+    min-height: 75px;
     background-color: white;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+.logoContainer img{
+    width: 60px;
+    height: 60px;
+
+}
 .headerTitle,.headerTitleThird{
     color: #FFFFFF;
-    font-size: 26px;
+    font-size: 25px;
     font-weight: 700;
     margin-left: 20px;
 }
@@ -55,16 +60,38 @@
     color: black;
 }
 .wrapperMain,.wrapperMainThird{
-    /* margin-top: 10px; */
+    margin-top: 5px;
     color: white;
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 500;
 }
 .wrapperMainThird{
     color: black;
 }
-.buttonTry,.buttonTrySecond,.buttonTryThird{
-    /* margin-top: 30px; */
+.buttonTry{
+    margin-top: 30px;
+    width: max-content;
+    background-color: #0069FF;
+    padding: 15px 20px;
+    border-radius: 6.5px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+}
+.buttonTrySecond{
+    margin-top: 30px;
+    width: max-content;
+    background-color: #0069FF;
+    padding: 15px 20px;
+    border-radius: 6.5px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+}
+.buttonTryThird{
+    margin-top: 30px;
     width: max-content;
     background-color: #0069FF;
     padding: 15px 20px;
@@ -80,6 +107,7 @@
     color: black;
 }
 .buttonTryThird{
+    margin-top: 30px;
     background-color: #000000;
 }
 @media (min-width: 300px) and (max-width: 780px) {
@@ -99,13 +127,16 @@
     .wrapper,.wrapperSecond,.wrapperThird{
         width: 100%;
         max-height: 270px;
-        min-height: 270px;
+        min-height: 240px;
         background-color: #000000;
         border-radius: 12.15px;
         padding: 24px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+    }
+    .wrapperMain{
+        font-size: 18px;
     }
     .wrapperSecond{
          background-color:#0069FF;
@@ -128,18 +159,18 @@
         font-size: 25px;
     }
     .logoContainer{
-        width: 50px;
-        height: 50px;
+        min-width: 60px;
+       min-height: 60px;
         background-color: white;
         border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px;
+        padding:0;
     }
     .logoContainer img{
-        width: 45px;
-        height: 45px;
+        width: 50px;
+        height: 50px;
     }
     .buttonTry,.buttonTrySecond,.buttonTryThird{
         cursor: pointer;
@@ -153,6 +184,7 @@
         color: white;
         font-weight: 500;
         font-size: 15px;
+        margin-top: 20px;
     }
     .buttonTrySecond{
         background-color: white;

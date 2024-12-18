@@ -19,6 +19,7 @@ const Reviews = () => {
     infinite: true,
     speed: 600,
     slidesToShow: 4,
+    centerMode: true,
     slidesToScroll: 1,
     nextArrow: <ImageArrow type="next" />,
     prevArrow: <ImageArrow type="prev" />,
@@ -28,6 +29,10 @@ const Reviews = () => {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
+          swipeToSlide: true,
+          swipe: true,
+          centerMode: true,
+          arrows: false,
         },
       },
       {
@@ -35,13 +40,21 @@ const Reviews = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          swipeToSlide: true,
+          swipe: true,
+          centerMode: true,
+          arrows: false,
         },
       },
       {
-        breakpoint: 470,
+        breakpoint: 480,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          swipeToSlide: true,
+          swipe: true,
+          centerMode: true,
+          arrows: false,
         },
       },
     ],
@@ -60,7 +73,6 @@ const Reviews = () => {
                 frameBorder="0"
                 scrolling="no"
                 allowFullScreen
-                title={`review-${index}`}
               ></iframe>
             </div>
           ))}

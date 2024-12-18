@@ -1,8 +1,8 @@
 
 import styles from "../components/FinancialStatements.module.css"
-import finLogo from "../assets/FinancialStatementLogo.svg"
-import finLogoMain from "../assets/finStateLogoMain.svg"
-import finLogoMobile from "../assets/finStateLogoMobile.svg"
+import finLogo from "../assets/FinancialStatementsLogo.svg"
+import finLogoMain from "../assets/FinancialStatementsLogo.svg"
+import finLogoMobile from "../assets/FinancialStatementsMobile.svg"
 
 
 const FinancialStatements = () => {
