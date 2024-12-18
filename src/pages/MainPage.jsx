@@ -43,6 +43,7 @@ import ligtning from './images/ligtningIcon.svg';
 import safety from './images/safety.svg';
 import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
+import ApiBlockContainer from "../components/ApiBlockContainer"
 
 
 const MainPage = () => {
@@ -400,12 +401,13 @@ const MainPage = () => {
               />
             </div>
             <div className='apiBlock'>
+              <ApiBlockContainer />
               <img className='apiBlockImg' src={apiBlock} alt='logo' />
-              <img
+              {/* <img
                 className='apiBlockImgMedium'
                 src={apiBlockMedium}
                 alt='logo'
-              />
+              /> */}
             </div>
             <div
               className='blockBtn'
