@@ -39,9 +39,9 @@ import { useLocation } from 'react-router-dom';
 import { URL } from '../service/config';
 import lowResImage from './images/imageFon_comp.png'; //  the low-res image
 import highResImage from './images/imageFon.png'; //  the high-res image
-import ligtning from './images/ligtningIcon.svg';
-import safety from './images/safety.svg';
-import bigData from './images/bigData.svg';
+import ligtning from './images/lightning-png.png';
+import safety from './images/safty-png.png';
+import bigData from './images/data-png.png';
 import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
@@ -191,9 +191,11 @@ const MainPage = () => {
         </div>
         <ToggleAnaliticsPanel />
 
-        <div style={{ marginTop: '100px' }}><FinancialStatements /></div>
+        <div className='wid-solution-block-margin'>
+          <FinancialStatements />
+        </div>
 
-        <div style={{ marginTop: '100px' }}>
+        <div>
           <div className='widhead-container'>
             <div className='mainBlock-api'>
               <div className='personal-account-connect-text'>
@@ -461,19 +463,19 @@ const MainPage = () => {
           <div>
             <StepsTime redirect={redirect} />
           </div>
-          <div style={{ marginTop: '100px' }}>
+          <div className='wid-solution-block-margin'>
             <SelectRate redirect={redirect} isShowText={false} />
           </div>
-          <div style={{ marginTop: '100px' }}>
+          <div >
             <ReviewsUsers />
           </div>
-          <div style={{ marginBottom: '100px' }}>
+          <div className='wid-solution-block-margin'>
             <AccordionMain />
           </div>
-          <div style={{ marginBottom: '100px' }}>
+          <div className='wid-solution-block-margin'>
             <TryProduct redirect={redirect} />
           </div>
-          <div style={{ marginBottom: '100px' }}>
+          <div className='wid-solution-block-margin'>
             <AnalyzeWildberries />
           </div>
         </div>

@@ -58,6 +58,8 @@ const Reviews = () => {
         },
       },
     ],
+    draggable: true,
+    swipeToSlide: true
   };
 
   return (
@@ -65,8 +67,13 @@ const Reviews = () => {
       <div className="slider-container">
         <Slider {...settings}>
           {reviewsIP.map((el, index) => (
-            <div key={index} className="slider-item">
-              <iframe
+            <div 
+            key={index} 
+            className="slider-item"
+            >
+               <div className="video-wrapper">
+               <div className="drag-overlay"></div>
+                 <iframe
                 width="100%"
                 height="100%"
                 src={el.videoSrc}
@@ -74,6 +81,7 @@ const Reviews = () => {
                 scrolling="no"
                 allowFullScreen
               ></iframe>
+               </div>            
             </div>
           ))}
         </Slider>

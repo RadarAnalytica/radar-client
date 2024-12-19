@@ -25,7 +25,6 @@ import thumbup from '../pages/images/thumbup.png';
 
 const SelectRate = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
-  console.log('SelectRate user:', user);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
   const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
   const [subscriptionDiscount, setSubscriptionDiscount] = useState(

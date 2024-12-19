@@ -55,11 +55,7 @@ const StepsTime = ({ redirect }) => {
   };
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        marginTop: "50px",
-      }}
+    className="steps-time-container"
     >
       <div className='stepsTimeHeader' style={{}}>
         <div style={{ marginRight: "20px" }} className='hide-on-mobile'>
