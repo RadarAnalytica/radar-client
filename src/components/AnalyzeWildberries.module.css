@@ -1,0 +1,196 @@
+.analyzeContainer{
+    width: 100%;
+}
+.headerText{
+    width: 100%;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 50px;
+    color: #000000;
+    margin-bottom: 20px;
+}
+.headerTextMoblie{
+    display: none;
+
+}
+.containerWildberries{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.wrapper,.wrapperSecond,.wrapperThird{
+    width: calc(100% / 3 - 10px);
+    max-height: 270px;
+    min-height: 270px;
+    background-color: #000000;
+    border-radius: 12.15px;
+    padding: 24px;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: space-between; */
+}
+.wrapperSecond{ background-color:#0069FF}
+.wrapperThird {background-color: #1A1A1A0D;}
+.wrapperHeader{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.logoContainer{
+    min-width: 75px;
+    min-height: 75px;
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.logoContainer img{
+    width: 60px;
+    height: 60px;
+
+}
+.headerTitle,.headerTitleThird{
+    color: #FFFFFF;
+    font-size: 25px;
+    font-weight: 700;
+    margin-left: 20px;
+}
+.headerTitleThird{
+    color: black;
+}
+.wrapperMain,.wrapperMainThird{
+    margin-top: 5px;
+    color: white;
+    font-size: 19px;
+    font-weight: 500;
+}
+.wrapperMainThird{
+    color: black;
+}
+.buttonTry{
+    margin-top: 30px;
+    width: max-content;
+    background-color: #0069FF;
+    padding: 15px 20px;
+    border-radius: 6.5px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+}
+.buttonTrySecond{
+    margin-top: 30px;
+    width: max-content;
+    background-color: #0069FF;
+    padding: 15px 20px;
+    border-radius: 6.5px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+}
+.buttonTryThird{
+    margin-top: 30px;
+    width: max-content;
+    background-color: #0069FF;
+    padding: 15px 20px;
+    border-radius: 6.5px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.buttonTrySecond{
+    background-color: white;
+    color: black;
+}
+.buttonTryThird{
+    margin-top: 30px;
+    background-color: #000000;
+}
+@media (min-width: 300px) and (max-width: 780px) {
+    .headerTextMoblie{
+        display: block;
+        font-size: 25px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    .containerWildberries{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .wrapper,.wrapperSecond,.wrapperThird{
+        width: 100%;
+        max-height: 270px;
+        min-height: 240px;
+        background-color: #000000;
+        border-radius: 12.15px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .wrapperMain{
+        font-size: 18px;
+    }
+    .wrapperSecond{
+         background-color:#0069FF;
+         margin-top:10px;
+    }
+    .wrapperThird {background-color: #1A1A1A0D;  margin-top:10px;}
+    .headerTitle,.headerTitleThird{
+        color: #FFFFFF;
+        font-size: 20px;
+        font-weight: 700;
+        margin-left: 20px;
+    }
+    .headerTitleThird{
+        color: black;
+    }
+    .headerText{
+        display: none;
+    }
+    .headerText{
+        font-size: 25px;
+    }
+    .logoContainer{
+        min-width: 60px;
+       min-height: 60px;
+        background-color: white;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding:0;
+    }
+    .logoContainer img{
+        width: 50px;
+        height: 50px;
+    }
+    .buttonTry,.buttonTrySecond,.buttonTryThird{
+        cursor: pointer;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0069FF;
+        padding: 15px 20px;
+        border-radius: 6.5px;
+        color: white;
+        font-weight: 500;
+        font-size: 15px;
+        margin-top: 20px;
+    }
+    .buttonTrySecond{
+        background-color: white;
+        color: black;
+    }
+    .buttonTryThird{
+        background-color: #000000;
+    }
+}

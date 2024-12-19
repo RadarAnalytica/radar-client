@@ -1,87 +1,95 @@
-import React, { useState, useRef, useCallback } from "react";
-import defaultPhoto from "../pages/images/defaultPhotoUser.jpg";
+import React, { useState } from "react";
 import arrow from "../pages/images/accordStr2.png";
-import Stars from "../pages/images/Stars";
-import User1 from "../pages/images/User1.JPG";
-import User2 from "../pages/images/User2.JPG";
-import User3 from "../pages/images/User3.JPG";
-import User4 from "../pages/images/User4.JPG";
-import User5 from "../pages/images/User5.JPG";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 const reviewsIP = [
-  {
-    photo: User1 || defaultPhoto,
-    stars: <Stars />,
-    text: `Около года пользовалась умной таблицей от Радар аналитики и когда менеджер сообщила, 
-    что теперь доступна полноценная онлайн аналитика сразу купила доступ на три месяца, даже без пробного периода;). 
-    За первые три недели использования проблем нет, отдельно отмечу скорость обновления данных, показатели более точные, чем в аналитиках за 15.000₽. Рекомендую!`,
-  },
-  {
-    photo: User2 || defaultPhoto,
-    stars: <Stars />,
-    text: `Удобный сервис. Раньше не встречал, но однозначно буду рекомендовать, понравилось, 
-    что нет нагромождения лишними функциями и разобраться просто. География продаж очень удобная.`,
-  },
-  {
-    photo: User3 || defaultPhoto,
-    stars: <Stars />,
-    text: `Работаю менеджером, ведем с командой около 17 кабинетов. 
-    Больше года пользуюсь уже и ботом от Radara и таблицей, теперь и аналитика появилась. Пока тестирую, все устраивает. 
-    То, что можно сколько угодно кабинетов подключать без доплаты - это прямо огонь.`,
-  },
-  {
-    photo: User4 || defaultPhoto,
-    stars: <Stars />,
-    text: `Все работает быстро и быстро подключилась. Все было понятно. Очень удобный дашборд и в дополнение в браузер.`,
-  },
-  {
-    photo: User5 || defaultPhoto,
-    stars: <Stars />,
-    text: `Работала с разными аналитиками, брала складчины, ваша сильно удобнее, данные даже более точные, 
-    порекомендовала в чате выпускников по обучению, спасибо за сервис!`,
-  },
+  { videoSrc: "https://play.boomstream.com/gKgcdLiT?color=transparent&title=0" },
+  { videoSrc: "https://play.boomstream.com/MRKkbSYL?color=transparent&title=0" },
+  { videoSrc: "https://play.boomstream.com/6pVJWEgn?color=transparent&title=0" },
+  { videoSrc: "https://play.boomstream.com/wDxNUSog?color=transparent&title=0" },
+  { videoSrc: "https://play.boomstream.com/YdvSIQ0U?color=transparent&title=0" },
 ];
 
+
 const Reviews = () => {
-  const scrollRef = useRef(null);
-
-  const scrollLeft = useCallback(() => {
-    if (scrollRef.current) {
-      const itemWidth = scrollRef.current.scrollWidth / reviewsIP.length;
-      scrollRef.current.scrollBy({ left: -itemWidth, behavior: "smooth" });
-    }
-  }, []);
-
-  const scrollRight = useCallback(() => {
-    if (scrollRef.current) {
-      const itemWidth = scrollRef.current.scrollWidth / reviewsIP.length;
-      scrollRef.current.scrollBy({ left: itemWidth, behavior: "smooth" });
-    }
-  }, []);
-
+  const settings = {
+    // dots: true,
+    infinite: true,
+    speed: 600,
+    slidesToShow: 4,
+    centerMode: true,
+    slidesToScroll: 1,
+    nextArrow: <ImageArrow type="next" />,
+    prevArrow: <ImageArrow type="prev" />,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          swipeToSlide: true,
+          swipe: true,
+          centerMode: true,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          swipeToSlide: true,
+          swipe: true,
+          centerMode: true,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          swipeToSlide: true,
+          swipe: true,
+          centerMode: true,
+          arrows: false,
+        },
+      },
+    ],
+  };
 
   return (
     <>
-      <div ref={scrollRef} className='scroll-container' style={{ display: "flex", overflowX: "auto" }}>
-        {reviewsIP.map((el, index) => (
-          <div key={index} className='blockReviews'>
-            <div className='blockReviewImage'>
-              <img src={el.photo} alt='userLogo' className='photoReviewUser' width={100} height={100} />
+      <div className="slider-container">
+        <Slider {...settings}>
+          {reviewsIP.map((el, index) => (
+            <div key={index} className="slider-item">
+              <iframe
+                width="100%"
+                height="100%"
+                src={el.videoSrc}
+                frameBorder="0"
+                scrolling="no"
+                allowFullScreen
+              ></iframe>
             </div>
-            <div className='blockReviewsContent'>
-              <div style={{ marginBottom: "10px" }}>{el.stars}</div>
-              <div className='blockReviewsText'>{el.text}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
-        <img className='arrowReviewsLeft' onClick={scrollLeft} src={arrow} alt='arrow' />
-        <img onClick={scrollRight} src={arrow} alt='arrow' className='arrowReviewsRight' />
+          ))}
+        </Slider>
       </div>
     </>
-
   );
 };
+function ImageArrow({ type, onClick }) {
+  return (
+    <img
+      className={`arrow ${type === "next" ? "arrow-right" : "arrow-left"}`}
+      onClick={onClick}
+      src={arrow}
+      alt={`arrow ${type}`}
+    />
+  );
+}
 export default Reviews;
+

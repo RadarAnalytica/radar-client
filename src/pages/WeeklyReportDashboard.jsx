@@ -1,5 +1,6 @@
-import React, { useState, useContext, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useContext, useRef, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDashboardReport } from '../redux/dashboardReport/dashboardReportActions';
 import BottomNavigation from '../components/BottomNavigation';
 import FilterSection from '../components/FilterSection';
 import SideNav from '../components/SideNav';
@@ -11,46 +12,118 @@ import AuthContext from '../service/AuthContext';
 import fakeDashboard from '../pages/images/report-dashboard-fake.png';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import { formatPrice } from '../service/utils';
+import NewFilterGroup from '../components/finReport/FilterGroup'
+
 
 const WeeklyReportDashboard = () => {
-  const { user, authToken } = useContext(AuthContext);
+  const { authToken, user } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  // const user = {
+  //   id: 2,
+  //   role: 'admin',
+  //   is_confirmed: true,
+  //   is_onboarded: true,
+  //   is_test_used: false,
+  //   email: 'modinsv@yandex.ru',
+  //   subscription_status: 'Smart',
+  //   is_report_downloaded: !null,
+  // };
   const dashboardData = useSelector(
     (state) => state?.dashboardReportSlice?.data
   );
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedValue, setSelectedValue] = useState()
-  const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
+  const [taxRate, setTaxRate] = useState();
+  const [selectedValue, setSelectedValue] = useState(dashboardData?.tax_type);
   const filterSectionRef = useRef();
-  const handleTaxRateChange = (e) => {
-    setTaxRate(e.target.value);
-  };
+  console.log('dashboardData', taxRate);
+  
 
-  const handleTaxRateSubmit = async () => {
+  const handleTaxSubmit = async ({ taxType, submit } = {}) => {
+    const currentTaxType = taxType || selectedValue;
+    console.log('taxRate', taxRate);
+    
+    const currentTaxRate =
+      taxType === "Не считать налог" ? 0 : taxRate;
+
     try {
+      if (taxType) {
+        // Сценарий: выбор нового типа в <select>
+        setSelectedValue(taxType);
 
-      const selectedTaxType = selectedValue;
+        await ServiceFunctions.postTaxRateUpdate(authToken, {
+          tax_rate: Number(currentTaxRate),
+          tax_type: taxType,
+        });
 
-      await ServiceFunctions.postTaxRateUpdate(authToken, {
-        tax_rate: Number(taxRate) || dashboardData?.tax_rate,
-        tax_type: selectedTaxType,
-      });
+        // filterSectionRef.current?.handleApplyFilters();
 
-      filterSectionRef.current?.handleApplyFilters();
-      setIsEditing(false);
+        if (taxType === "Не считать налог") {
+          setTaxRate(0);
+          setIsEditing(false);
+        }
+        handleApplyFilters()
+        setTaxRate(dashboardData?.tax_rate)
+      }
+
+      if (submit) {
+        // Сценарий: подтверждение изменения ставки налога
+        await ServiceFunctions.postTaxRateUpdate(authToken, {
+          tax_rate: Number(currentTaxRate),
+          tax_type: currentTaxType,
+        });
+
+        // filterSectionRef.current?.handleApplyFilters();
+        handleApplyFilters()
+        setIsEditing(false);
+        setTaxRate(dashboardData?.tax_rate)
+      }
+      // filterSectionRef.current?.handleApplyFilters();
+      
+      // setIsEditing(false);
     } catch (error) {
-      console.error('Error updating tax rate:', error);
+      console.error("Ошибка при обновлении налоговой ставки:", error);
     }
   };
 
+  const handleApplyFilters = useCallback(async () => {
+    const storageItem = localStorage.getItem('dashboard')
+    let currentPageData = JSON.parse(storageItem)
+    currentPageData = currentPageData ? currentPageData : {}  
+    
+    const filterPayload = {
+      warehouse_name_filter: currentPageData.wh ? currentPageData.wh : [],
+      brand_name_filter: currentPageData.brand ? currentPageData.brand : [],
+      groups_filter: currentPageData.group ? currentPageData.group : [],
+      date_sale_filter: {
+        years: currentPageData.year ? currentPageData.year : [],
+        months: currentPageData.month ? currentPageData.month : [],
+        weekdays: currentPageData.week ? currentPageData.week : [],
+      },
+    };
+  
+      dispatch(
+        fetchDashboardReport({ token: authToken, filterData: filterPayload })
+      );
+      
+      
+    }, [authToken, dispatch])
+  
+    useEffect(() => {
+      setTaxRate(dashboardData?.taxType)
+    }, [dashboardData])
+
   return (
     <div className='dashboard-page'>
+
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'Дашборд'} subTitle={'Отчёт /'} />
+
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
-              <FilterSection ref={filterSectionRef} />
+              <NewFilterGroup pageIdent='dashboard' getData={handleApplyFilters} />
+              {/* <FilterSection ref={filterSectionRef} /> */}
             </div>
             <div className='container dash-container'>
               <div className={styles.blockWrapper}>
@@ -429,7 +502,7 @@ const WeeklyReportDashboard = () => {
                   </div>
                   <div
                     className={styles.salesChartWrapper}
-                    style={{ marginTop: '20px' }}
+                    style={{ marginTop: '28px' }}
                   >
                     <div className={styles.title}>Налог</div>
                     <div className={styles.salesChartRow}>
@@ -440,42 +513,47 @@ const WeeklyReportDashboard = () => {
                         <select
                           className={styles.customSelect}
                           value={selectedValue}
-                          onChange={(e) => setSelectedValue(e.target.value)}
+                          onChange={(e) => handleTaxSubmit({ taxType: e.target.value })}
                         >
                           <option value="УСН-доходы">УСН-доходы</option>
                           <option value="УСН Д-Р">УСН Д-Р</option>
                           <option value="Не считать налог">Не считать налог</option>
                           <option value="Считать от РС">Считать от РС</option>
                         </select>
+
                       </div>
                     </div>
-
                     <div className={styles.salesChartRow}>
                       <div className={styles.titleInRow}>Ставка налога</div>
                       <div className={styles.mumbersInRow}>
                         {isEditing ? (
                           <div className={styles.editTaxRate}>
                             <input
-                              type='number'
-                              value={taxRate || dashboardData?.tax_rate}
-                              onChange={handleTaxRateChange}
+                              type="number"
+                              value={taxRate}
+                              onChange={(e) => setTaxRate(e.target.value)}
                               className={styles.taxRateInput}
+                              disabled={selectedValue === "Не считать налог"}
                             />
-                            <button onClick={handleTaxRateSubmit}>✓</button>
-                            <button onClick={() => setIsEditing(false)}>
-                              ✕
+                            <button
+                              onClick={() => handleTaxSubmit({ submit: true })}
+                              disabled={selectedValue === "Не считать налог"}
+                            >
+                              ✓
                             </button>
+                            <button onClick={() => setIsEditing(false)}>✕</button>
                           </div>
                         ) : (
                           <div
-                            onClick={() => setIsEditing(true)}
-                            style={{
-                              cursor: 'pointer',
-                              minWidth: '50px',
-                              // textAlign: 'right',
+                            onClick={() => {
+                              if (selectedValue !== "Не считать налог") {
+                                setTaxRate(dashboardData?.tax_rate || 0); // Устанавливаем начальное значение
+                                setIsEditing(true);
+                              }
                             }}
+                            className={styles.taxRateWrapper}
                           >
-                            {dashboardData?.tax_rate} %
+                            {dashboardData?.tax_rate || 0} %
                           </div>
                         )}
                       </div>

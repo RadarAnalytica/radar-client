@@ -4,12 +4,9 @@ import arrowDown from '../assets/arrow-down.svg';
 import { formatPrice } from '../service/utils';
 
 const SalesTable = ({ tableData }) => {
-  console.log('tableData:', tableData);
   let firstRender = false
   const [expandedRows, setExpandedRows] = useState(() => {
     const initialState = {};
-    console.log('Initial State', initialState)
-    console.log('tableData:', tableData);
     // Dynamically set all years and their weeks to expanded
     Object.entries(tableData).forEach(([year, yearData]) => {
       initialState[year] = true; // Set year to expanded
@@ -19,7 +16,6 @@ const SalesTable = ({ tableData }) => {
         console.log('Initial State', initialState)
       });
     });
-    console.log('Initial State', initialState)
     return initialState;
   });
 
@@ -249,7 +245,7 @@ const SalesTable = ({ tableData }) => {
                   {formatPrice(data.profit) || '0'} ₽
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.profit_per_one) || '0'} ₽
+                  {formatPrice(data.profit) || '0'} ₽
                 </div>
                 <div
                   className={styles.defectCompnesaitionCell}

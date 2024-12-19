@@ -4,6 +4,10 @@ import { URL } from '../../service/config';
 export const fetchPLReport = createAsyncThunk(
     'plReport/fetchData',
     async ({ brandFilter, groupFilter, token }) => {
+        console.log('brandFilter', brandFilter);
+        console.log('groupFilter', groupFilter);
+        
+        
         const res = await fetch(
             `${URL}/api/report/p_l/data?brand_filter=${brandFilter}&group_filter=${groupFilter}`,
             {

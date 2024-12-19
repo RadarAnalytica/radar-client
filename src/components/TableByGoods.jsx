@@ -28,7 +28,7 @@ const TableByGoods = ({ data }) => {
         cost: {
           total: `${formatPrice(item?.cost_price) || '0'} ₽`,
           percentage: `${formatPrice(item?.cost_price_percent) || '0'} %`,
-          perUnit: `${formatPrice(item?.cost_price) || '0'} ₽`,
+          perUnit: `${formatPrice(item?.cost_price_per_one) || '0'} ₽`,
         },
         logisticQnty: `${formatPrice(item?.deliveries) || '0'} шт`,
         logisticCommission: {

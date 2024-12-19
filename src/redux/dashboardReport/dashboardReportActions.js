@@ -6,6 +6,8 @@ export const fetchDashboardReport = createAsyncThunk(
     async ({ token, filterData }) => {
         console.log('filterData:', filterData);
         const response = await ServiceFunctions.postDashboardFilters(token, filterData);
+        console.log('response', response);
+        
         return response;
     }
 );

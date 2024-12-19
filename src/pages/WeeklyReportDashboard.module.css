@@ -49,7 +49,7 @@
 .mumbersInRow {
   font-weight: 700;
   font-size: 17px;
-  line-height: 21px;
+  line-height: 17px;
   color: rgba(26, 26, 26, 1);
   margin-bottom: 6.5px;
   cursor: pointer;
@@ -85,7 +85,7 @@
 .totalNumbers {
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .editTaxRate {
@@ -130,7 +130,7 @@
   appearance: none;       
   -webkit-appearance: none;
   -moz-appearance: none;
-
+  min-width: 170px;
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -139,10 +139,19 @@
   color: #333;
   text-align: center; 
   cursor: pointer;
-
-  
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
   background-repeat: no-repeat;
   background-position: right 5px center;
   background-size: 25px; 
+}
+.taxRateWrapper{
+  cursor: pointer;
+  min-width:170px;
+  background-color: #f9f9f9;
+  padding: 8px 32px 8px 12px;
+  border-radius: 4px;
+  /* background-size: 25px; */
+  border: 1px solid rgba(232, 232, 232, 1);
+  text-align: right;
+
 }

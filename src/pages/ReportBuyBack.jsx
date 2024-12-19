@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import SideNav from '../components/SideNav';
 import AuthContext from '../service/AuthContext';
@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import DragDropFile from '../components/DragAndDropFiles';
 import BottomNavigation from '../components/BottomNavigation';
 import styles from './PrimeCost.module.css';
+import doneIcon from "../assets/tick-active.png"
 
 const ReportBuyBack = () => {
   const [file, setFile] = useState();
@@ -16,6 +17,9 @@ const ReportBuyBack = () => {
   const [costPriceShow, setCostPriceShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [selfBuyoutStatus, setselfBuyoutStatus] = useState();
+
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleCostPriceShow = () => {
     handleClose();
@@ -42,10 +46,29 @@ const ReportBuyBack = () => {
       await ServiceFunctions.postSelfBuyoutUpdate(authToken, file);
       setFile(null);
       setCostPriceShow(false);
+      setShowSuccessPopup(true);
+
+      setTimeout(() => setShowSuccessPopup(false), 3000);
+      getselfBuyoutStatus()
     } catch (error) {
       console.error('Error uploading file:', error);
     }
   };
+
+  const getselfBuyoutStatus = async () => {
+    try {
+      const status = await ServiceFunctions.getSelfBuyoutStatus(
+        authToken
+      );
+      setselfBuyoutStatus(status);
+    } catch (error) {
+      console.error('Failed to fetch Self Buyout Status', error);
+    }
+  };
+
+  useEffect(() => {
+    getselfBuyoutStatus();
+  }, []);
 
   return (
     <div className='dashboard-page'>
@@ -58,6 +81,11 @@ const ReportBuyBack = () => {
               <img src={buyback} alt='buyback' />
               <div className={styles.primeCostBoxText}>
                 <span className={styles.title}>Самовыкупы</span>
+                {selfBuyoutStatus && (
+                  <span className={styles.lastDownlaod}>
+                    {selfBuyoutStatus}
+                  </span>
+                )}
                 {/* <span className={styles.lastDownlaod}>Последняя загрузка</span> */}
               </div>
             </div>
@@ -155,6 +183,19 @@ const ReportBuyBack = () => {
             </div>
           )}
         </Modal.Body>
+      </Modal>
+      <Modal
+        show={showSuccessPopup}
+        className="custom-modal-success"
+      >
+        <Modal.Header style={{ borderBottom: "none" }}>
+          <div>
+            <div className='d-flex gap-2 mb-2 mt-2 align-items-center'>
+              <img src={doneIcon} alt='' style={{ height: '3vh' }} />
+              <p className='fw-bold mb-0'> Файл успешно загружен!</p>
+            </div>
+          </div>
+        </Modal.Header>
       </Modal>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import SideNav from '../components/SideNav';
 import AuthContext from '../service/AuthContext';
@@ -8,12 +8,17 @@ import Modal from 'react-bootstrap/Modal';
 import DragDropFile from '../components/DragAndDropFiles';
 import BottomNavigation from '../components/BottomNavigation';
 import styles from './PrimeCost.module.css';
+import doneIcon from "../assets/tick-active.png"
 
 const PrimeCost = () => {
   const [file, setFile] = useState();
   const { authToken } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [costPriceStatus, setCostPriceStatus] = useState();
+  const [costPriceUpdated, setCostPriceUpdated] = useState();
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -42,10 +47,31 @@ const PrimeCost = () => {
       await ServiceFunctions.postCostUpdate(authToken, file);
       setFile(null);
       setCostPriceShow(false);
+      setShowSuccessPopup(true);
+
+
+      setTimeout(() => setShowSuccessPopup(false), 3000);
+      getCostPiceStatus()
     } catch (error) {
       console.error('Error updating cost:', error);
     }
   };
+
+  const getCostPiceStatus = async () => {
+    try {
+      const status = await ServiceFunctions.getCostPriceStatus(
+        authToken
+      );
+      setCostPriceStatus(status.status);
+      setCostPriceUpdated(status.updated_at);
+    } catch (error) {
+      console.error('Failed to fetch Cost Price Status', error);
+    }
+  };
+
+  useEffect(() => {
+    getCostPiceStatus();
+  }, []);
 
   return (
     <div className='dashboard-page'>
@@ -58,9 +84,16 @@ const PrimeCost = () => {
               <img src={primeCost} alt='primeCost' />
               <div className={styles.primeCostBoxText}>
                 <span className={styles.title}>Себестоимость</span>
-                {/* <span className={styles.lastDownlaod}>
-                  Последняя загрузка 01.01.2024
-                </span> */}
+                {costPriceStatus && (
+                  <span className={styles.lastDownlaod}>
+                    {costPriceStatus}
+                  </span>
+                )}
+                {costPriceUpdated && (
+                  <span className={styles.lastDownlaod}>
+                    {costPriceUpdated}
+                  </span>
+                )}
               </div>
             </div>
             <div className={styles.primeCostBoxButton}>
@@ -126,12 +159,15 @@ const PrimeCost = () => {
                 >
                   Сохранить
                 </button>
+
+
               </div>
               <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
                 <a href='#' className='link' onClick={handleCostPriceClose}>
                   Отмена
                 </a>
               </div>
+
             </div>
           ) : (
             <div className='d-flex flex-column align-items-center justify-content-around w-100'>
@@ -157,6 +193,19 @@ const PrimeCost = () => {
             </div>
           )}
         </Modal.Body>
+      </Modal>
+      <Modal
+        show={showSuccessPopup}
+        className="custom-modal-success"
+      >
+        <Modal.Header style={{ borderBottom: "none" }}>
+          <div>
+            <div className='d-flex gap-2 mb-2 mt-2 align-items-center'>
+              <img src={doneIcon} alt='' style={{ height: '3vh' }} />
+              <p className='fw-bold mb-0'> Файл успешно загружен!</p>
+            </div>
+          </div>
+        </Modal.Header>
       </Modal>
     </div>
   );

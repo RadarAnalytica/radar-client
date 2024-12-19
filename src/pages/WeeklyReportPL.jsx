@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import FilterGroup from '../components/FilterGroup';
@@ -11,6 +11,7 @@ import { fetchPLReport } from '../redux/reportPL/plReportActions';
 import styles from './WeeklyReportPL.module.css';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/goods-fake.png';
+import NewFilterGroup from '../components/finReport/FilterGroup'
 
 const WeeklyReportPL = () => {
   const { authToken, user } = useContext(AuthContext);
@@ -23,14 +24,18 @@ const WeeklyReportPL = () => {
   const [filterOptions, setFilterOptions] = useState([]);
   const [isLoadingFilters, setIsLoadingFilters] = useState(false);
 
-  const handleApplyFilters = () => {
+  const handleApplyFilters = useCallback(() => {
     // Get the current active filters directly
-    const currentFilters =
-      JSON.parse(localStorage.getItem('plReportFilters')) || activeFilters;
+    const storageItem = localStorage.getItem('pl')
+    let currentPageData = JSON.parse(storageItem)
+    currentPageData = currentPageData ? currentPageData : {}  
+    console.log('currentPageData', currentPageData);
 
-    const brandFilter = currentFilters.brand.join(',');
-    const groupFilter = currentFilters.group.join(',');
-
+    const brandFilter = currentPageData.brand.join(',');
+    const groupFilter = currentPageData.group.join(',');
+    console.log('brandFilterList', brandFilter);
+    console.log('groupFilterList', groupFilter);
+    
     dispatch(
       fetchPLReport({
         brandFilter,
@@ -38,96 +43,96 @@ const WeeklyReportPL = () => {
         token: authToken,
       })
     );
-  };
+  }, [authToken, dispatch]);
 
-  useEffect(() => {
-    const loadFilters = async () => {
-      setIsLoadingFilters(true);
-      try {
-        const filters = await ServiceFunctions.getPLFilters(authToken);
-        setFilterOptions(filters.filterOptions);
+  // useEffect(() => {
+  //   const loadFilters = async () => {
+  //     setIsLoadingFilters(true);
+  //     try {
+  //       const filters = await ServiceFunctions.getPLFilters(authToken);
+  //       setFilterOptions(filters.filterOptions);
 
-        // Set all filters as selected initially
-        if (filters.filterOptions && filters.filterOptions.length > 0) {
-          const initialFilters = {
-            brand:
-              filters.filterOptions
-                .find((filter) => filter.id === 'brand')
-                ?.options.map((opt) => opt.value) || [],
-            group:
-              filters.filterOptions
-                .find((filter) => filter.id === 'group')
-                ?.options.map((opt) => opt.value) || [],
-          };
-          setActiveFilters(initialFilters);
-        }
-      } catch (error) {
-        console.error('Error loading filters:', error);
-      } finally {
-        setIsLoadingFilters(false);
-      }
-    };
+  //       // Set all filters as selected initially
+  //       if (filters.filterOptions && filters.filterOptions.length > 0) {
+  //         const initialFilters = {
+  //           brand:
+  //             filters.filterOptions
+  //               .find((filter) => filter.id === 'brand')
+  //               ?.options.map((opt) => opt.value) || [],
+  //           group:
+  //             filters.filterOptions
+  //               .find((filter) => filter.id === 'group')
+  //               ?.options.map((opt) => opt.value) || [],
+  //         };
+  //         setActiveFilters(initialFilters);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error loading filters:', error);
+  //     } finally {
+  //       setIsLoadingFilters(false);
+  //     }
+  //   };
 
-    loadFilters();
-  }, []);
+  //   loadFilters();
+  // }, []);
 
-  useEffect(() => {
-    if (filterOptions.length > 0) {
-      const savedFilters = localStorage.getItem('plReportFilters');
-      console.log('savedFilters', savedFilters);
-      if (savedFilters) {
-        setActiveFilters(JSON.parse(savedFilters));
-        handleApplyFilters(); // Move handleApplyFilters here
-      } else {
-        const initialFilters = {
-          brand:
-            filterOptions
-              .find((filter) => filter.id === 'brand')
-              ?.options.map((opt) => opt.value) || [],
-          group:
-            filterOptions
-              .find((filter) => filter.id === 'group')
-              ?.options.map((opt) => opt.value) || [],
-        };
-        setActiveFilters(initialFilters);
-        handleApplyFilters(); // And here
-      }
-    }
-  }, [filterOptions]);
+  // useEffect(() => {
+  //   if (filterOptions.length > 0) {
+  //     const savedFilters = localStorage.getItem('plReportFilters');
+  //     console.log('savedFilters', savedFilters);
+  //     if (savedFilters) {
+  //       setActiveFilters(JSON.parse(savedFilters));
+  //       handleApplyFilters(); // Move handleApplyFilters here
+  //     } else {
+  //       const initialFilters = {
+  //         brand:
+  //           filterOptions
+  //             .find((filter) => filter.id === 'brand')
+  //             ?.options.map((opt) => opt.value) || [],
+  //         group:
+  //           filterOptions
+  //             .find((filter) => filter.id === 'group')
+  //             ?.options.map((opt) => opt.value) || [],
+  //       };
+  //       setActiveFilters(initialFilters);
+  //       handleApplyFilters(); // And here
+  //     }
+  //   }
+  // }, [filterOptions]);
 
   // Check for saved filters first
-  useEffect(() => {
-    if (filterOptions.length > 0) {
-      const savedFilters = localStorage.getItem('plReportFilters');
-      if (savedFilters) {
-        setActiveFilters(JSON.parse(savedFilters));
-      } else {
-        const initialFilters = {
-          brand:
-            filterOptions
-              .find((filter) => filter.id === 'brand')
-              ?.options.map((opt) => opt.value) || [],
-          group:
-            filterOptions
-              .find((filter) => filter.id === 'group')
-              ?.options.map((opt) => opt.value) || [],
-        };
-        setActiveFilters(initialFilters);
-      }
-      handleApplyFilters();
-    }
-  }, [filterOptions]);
+  // useEffect(() => {
+  //   if (filterOptions.length > 0) {
+  //     const savedFilters = localStorage.getItem('plReportFilters');
+  //     if (savedFilters) {
+  //       setActiveFilters(JSON.parse(savedFilters));
+  //     } else {
+  //       const initialFilters = {
+  //         brand:
+  //           filterOptions
+  //             .find((filter) => filter.id === 'brand')
+  //             ?.options.map((opt) => opt.value) || [],
+  //         group:
+  //           filterOptions
+  //             .find((filter) => filter.id === 'group')
+  //             ?.options.map((opt) => opt.value) || [],
+  //       };
+  //       setActiveFilters(initialFilters);
+  //     }
+  //     handleApplyFilters();
+  //   }
+  // }, [filterOptions]);
 
   // Handle saving selections
-  useEffect(() => {
-    const hasSelectedFilters = Object.values(activeFilters).some(
-      (filters) => filters.length > 0
-    );
+  // useEffect(() => {
+  //   const hasSelectedFilters = Object.values(activeFilters).some(
+  //     (filters) => filters.length > 0
+  //   );
 
-    if (hasSelectedFilters) {
-      localStorage.setItem('plReportFilters', JSON.stringify(activeFilters));
-    }
-  }, [activeFilters]);
+  //   if (hasSelectedFilters) {
+  //     localStorage.setItem('plReportFilters', JSON.stringify(activeFilters));
+  //   }
+  // }, [activeFilters]);
 
   const handleFilterChange = (filterId, value) => {
     setActiveFilters((prevFilters) => {
@@ -186,7 +191,7 @@ const WeeklyReportPL = () => {
         <TopNav title={'P&L'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <>
-            <div className='container dash-container'>
+            {/* <div className='container dash-container'>
               <div className={styles.filterContainer}>
                 <div className={styles.filterContainer}>
                   <FilterGroup
@@ -231,6 +236,9 @@ const WeeklyReportPL = () => {
                   Применить фильтры
                 </button>
               </div>
+            </div> */}
+            <div className='container dash-container'>
+              <NewFilterGroup pageIdent='pl' getData={handleApplyFilters} />
             </div>
             <div className='container dash-container'>
               <TablePL plData={plData} />

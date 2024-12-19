@@ -14,6 +14,7 @@ import manyApiMobile from './images/manyApiMobile.svg';
 import manyApiMedium from '../pages/images/blockApiMedium.svg';
 import wbLogo from './images/wb_icon.svg'
 
+import FinancialStatements from '../components/FinancialStatements';
 import apiBlock from './images/apiblock2.svg';
 import apiBlockMedium from './images/apiBlockMedium.svg';
 import startAnalitic from './images/startAnalitic.svg';
@@ -25,6 +26,7 @@ import SolLabelStartBsn from './images/SolLabelStartBsn';
 import YellowRadarPoint from './images/YellowRadarPoint';
 import YellowRadarSmall from './images/YelowRadarSmall';
 import NavbarMainHome from '../components/NavbarMainHome';
+import AnalyzeWildberries from "../components/AnalyzeWildberries"
 import Reviews from '../components/Reviews';
 import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -41,6 +43,8 @@ import ligtning from './images/ligtningIcon.svg';
 import safety from './images/safety.svg';
 import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
+import ApiBlockContainer from "../components/ApiBlockContainer"
+
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -168,6 +172,7 @@ const MainPage = () => {
             />
           </div>
         </div>
+
         <div className='authorized-service-container'>
           <div className='authorized-service-logo-wrapper'>
             <div className='wb-logo-wrapper'><img src={wbLogo} alt="WB Logo" /></div>
@@ -185,6 +190,8 @@ const MainPage = () => {
           </p>
         </div>
         <ToggleAnaliticsPanel />
+
+        <div style={{ marginTop: '100px' }}><FinancialStatements /></div>
 
         <div style={{ marginTop: '100px' }}>
           <div className='widhead-container'>
@@ -205,7 +212,7 @@ const MainPage = () => {
                 className='manyApiLogoMobile'
                 src={manyApiMobile}
                 alt='logo'
-                style={{ borderRadius: '15px' }}
+                style={{ borderRadius: '15px', width: "100%" }}
               />
             </div>
 
@@ -394,19 +401,19 @@ const MainPage = () => {
               />
             </div>
             <div className='apiBlock'>
+              <ApiBlockContainer />
               <img className='apiBlockImg' src={apiBlock} alt='logo' />
-              <img
+              {/* <img
                 className='apiBlockImgMedium'
                 src={apiBlockMedium}
                 alt='logo'
-              />
+              /> */}
             </div>
             <div
               className='blockBtn'
               style={{
-                backgroundImage: `url(${
-                  isHighResLoaded ? highResImage : lowResImage
-                })`,
+                backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
+                  })`,
               }}
             >
               <div className='blockBtnContainer'>
@@ -466,10 +473,13 @@ const MainPage = () => {
           <div style={{ marginBottom: '100px' }}>
             <TryProduct redirect={redirect} />
           </div>
+          <div style={{ marginBottom: '100px' }}>
+            <AnalyzeWildberries />
+          </div>
         </div>
       </div>
       <FooterNewVersion />
-    </div>
+    </div >
   );
 };
 export default MainPage;

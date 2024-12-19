@@ -339,6 +339,9 @@
   .product {
     width: 35%;
   }
+  .size {
+    width: 10%
+  }
   .profit {
     width: 10%;
   }
@@ -346,10 +349,10 @@
     width: 13%;
   }
   .category {
-    width: 18%;
+    width: 10%;
   }
   .generalCategory {
-    width: 15%;
+    width: 10%;
   }
   
   .row {
