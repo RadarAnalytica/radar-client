@@ -72,7 +72,6 @@ const Reviews = () => {
             className="slider-item"
             >
                <div className="video-wrapper">
-               <div className="drag-overlay"></div>
                  <iframe
                 width="100%"
                 height="100%"
