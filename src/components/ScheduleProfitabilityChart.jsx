@@ -6,6 +6,7 @@ import roi from '../assets/roi.svg';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels, step, minValue, maxValue }) => {
+    console.log('dataProfitability', dataProfitability)
     const min = minValue
     const max = maxValue
     if (Math.abs(min) + Math.abs(max) < 300) {

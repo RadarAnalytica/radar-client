@@ -287,124 +287,134 @@ const Schedule = () => {
   };
 
   const revenueAndProfit = (data, filter) => {
-    if (
-      (filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 1 &&
-        filter.date_sale_filter.weekdays.length === 1) ||
-      (filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length === 1) ||
-      (filter.date_sale_filter.months.length === 0 &&
-        filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length === 1) ||
-      (filter.date_sale_filter.months.length === 0 &&
-        filter.date_sale_filter.years.length === 1 &&
-        filter.date_sale_filter.weekdays.length === 1)
-    ) {
-      const dailyRevenueArray = [];
-      const dailyProfitArray = [];
-      const dayTitlesArray = [];
+    console.log('filter.date_sale_filter.months.length', filter.date_sale_filter.months.length);
+    console.log('filter.date_sale_filter.years.length', filter.date_sale_filter.years.length);
+    console.log('filter.date_sale_filter.weekdays.length', filter.date_sale_filter.weekdays.length);
+    console.log();
+    
+    // if (
+    //   (filter.date_sale_filter.months.length === 1 &&
+    //     filter.date_sale_filter.years.length === 1 &&
+    //     filter.date_sale_filter.weekdays.length === 1) ||
+    //   (filter.date_sale_filter.months.length === 1 &&
+    //     filter.date_sale_filter.years.length === 0 &&
+    //     filter.date_sale_filter.weekdays.length === 1) ||
+    //   (filter.date_sale_filter.months.length === 0 &&
+    //     filter.date_sale_filter.years.length === 0 &&
+    //     filter.date_sale_filter.weekdays.length === 1) ||
+    //   (filter.date_sale_filter.months.length === 0 &&
+    //     filter.date_sale_filter.years.length === 1 &&
+    //     filter.date_sale_filter.weekdays.length === 1)
+    // ) {
+    //   console.log('First Variant');
+      
+    //   const dailyRevenueArray = [];
+    //   const dailyProfitArray = [];
+    //   const dayTitlesArray = [];
 
-      const year = Object.keys(data.revenue_and_profit)[0];
-      const months = data.revenue_and_profit[year];
-      const selectedWeekdayNames = filter.date_sale_filter.weekdays;
+    //   const year = Object.keys(data.revenue_and_profit)[0];
+    //   const months = data.revenue_and_profit[year];
+    //   const selectedWeekdayNames = filter.date_sale_filter.weekdays;
 
-      for (const month in months) {
-        const weeks = months[month].weeks;
-        for (const week in weeks) {
-          if (selectedWeekdayNames.includes(week)) {
-            const days = weeks[week].days;
-            for (const day in days) {
-              const dayData = days[day];
-              dayTitlesArray.push(day);
-              dailyRevenueArray.push(dayData.revenue || 0);
-              dailyProfitArray.push(dayData.profit || 0);
-            }
-          }
-        }
-      }
+    //   for (const month in months) {
+    //     const weeks = months[month].weeks;
+    //     for (const week in weeks) {
+    //       if (selectedWeekdayNames.includes(week)) {
+    //         const days = weeks[week].days;
+    //         for (const day in days) {
+    //           const dayData = days[day];
+    //           dayTitlesArray.push(day);
+    //           dailyRevenueArray.push(dayData.revenue || 0);
+    //           dailyProfitArray.push(dayData.profit || 0);
+    //         }
+    //       }
+    //     }
+    //   }
 
-      const min =
-        Math.floor(
-          Math.min(
-            Math.min(...dailyRevenueArray),
-            Math.min(...dailyProfitArray)
-          ) / 1000
-        ) * 1000;
-      const max =
-        Math.ceil(
-          Math.max(
-            Math.max(...dailyRevenueArray),
-            Math.max(...dailyProfitArray)
-          ) / 1000
-        ) * 1000;
-      setMinDataRevenue(min);
-      setMaxDataRevenue(max);
-      setStepSizeRevenue(calculateSize(min, max));
-      setDataRevenues(dailyRevenueArray);
-      setDataNetProfit(dailyProfitArray);
-      setBigChartLabels(dayTitlesArray);
-    } else if (
-      (filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 1) ||
-      (filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 0) ||
-      (filter.date_sale_filter.months.length === 0 &&
-        filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length > 0)
-    ) {
-      const weekRevenueArray = [];
-      const weekProfitArray = [];
-      const weekDatesArray = [];
+    //   const min =
+    //     Math.floor(
+    //       Math.min(
+    //         Math.min(...dailyRevenueArray),
+    //         Math.min(...dailyProfitArray)
+    //       ) / 1000
+    //     ) * 1000;
+    //   const max =
+    //     Math.ceil(
+    //       Math.max(
+    //         Math.max(...dailyRevenueArray),
+    //         Math.max(...dailyProfitArray)
+    //       ) / 1000
+    //     ) * 1000;
+    //   setMinDataRevenue(min);
+    //   setMaxDataRevenue(max);
+    //   setStepSizeRevenue(calculateSize(min, max));
+    //   setDataRevenues(dailyRevenueArray);
+    //   setDataNetProfit(dailyProfitArray);
+    //   setBigChartLabels(dayTitlesArray);
+    // } else if (
+    //   (filter.date_sale_filter.months.length === 1 &&
+    //     filter.date_sale_filter.years.length === 1) ||
+    //   (filter.date_sale_filter.months.length === 1 &&
+    //     filter.date_sale_filter.years.length === 0) ||
+    //   (filter.date_sale_filter.months.length === 0 &&
+    //     filter.date_sale_filter.years.length === 0 &&
+    //     filter.date_sale_filter.weekdays.length > 0)
+    // ) {
+    //   console.log('Second variant');
+      
+    //   const weekRevenueArray = [];
+    //   const weekProfitArray = [];
+    //   const weekDatesArray = [];
 
-      const year = Object.keys(data.revenue_and_profit)[0];
-      const months = data.revenue_and_profit[year];
+    //   const year = Object.keys(data.revenue_and_profit)[0];
+    //   const months = data.revenue_and_profit[year];
 
-      for (const month in months) {
-        const index = monthNames.indexOf(month);
-        const monthIndex = index !== -1 ? index + 1 : null;
-        const weeks = months[month]?.weeks;
-        if (
-          weeks &&
-          (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
-            filter.date_sale_filter.months.length === 0)
-        ) {
-          for (const week in weeks) {
-            if (
-              (filter.date_sale_filter.weekdays.includes(week) &&
-                filter.date_sale_filter.weekdays.length > 0) ||
-              filter.date_sale_filter.weekdays.length === 0
-            ) {
-              const weekData = weeks[week];
-              weekDatesArray.push(week);
-              weekRevenueArray.push(weekData.total_week_revenue || 0);
-              weekProfitArray.push(weekData.total_week_profit || 0);
-            }
-          }
-        }
-      }
-      const min =
-        Math.floor(
-          Math.min(
-            Math.min(...weekRevenueArray),
-            Math.min(...weekProfitArray)
-          ) / 1000
-        ) * 1000;
-      const max =
-        Math.ceil(
-          Math.max(
-            Math.max(...weekRevenueArray),
-            Math.max(...weekProfitArray)
-          ) / 1000
-        ) * 1000;
-      // console.log(min, max, weekProfitArray, weekRevenueArray, weekDatesArray)
-      setMinDataRevenue(min);
-      setMaxDataRevenue(max);
-      setStepSizeRevenue(calculateSize(min, max));
-      setDataRevenues(weekRevenueArray);
-      setDataNetProfit(weekProfitArray);
-      setBigChartLabels(weekDatesArray);
-    } else {
+    //   for (const month in months) {
+    //     const index = monthNames.indexOf(month);
+    //     const monthIndex = index !== -1 ? index + 1 : null;
+    //     const weeks = months[month]?.weeks;
+    //     if (
+    //       weeks &&
+    //       (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
+    //         filter.date_sale_filter.months.length === 0)
+    //     ) {
+    //       for (const week in weeks) {
+    //         if (
+    //           (filter.date_sale_filter.weekdays.includes(week) &&
+    //             filter.date_sale_filter.weekdays.length > 0) ||
+    //           filter.date_sale_filter.weekdays.length === 0
+    //         ) {
+    //           const weekData = weeks[week];
+    //           weekDatesArray.push(week);
+    //           weekRevenueArray.push(weekData.total_week_revenue || 0);
+    //           weekProfitArray.push(weekData.total_week_profit || 0);
+    //         }
+    //       }
+    //     }
+    //   }
+    //   const min =
+    //     Math.floor(
+    //       Math.min(
+    //         Math.min(...weekRevenueArray),
+    //         Math.min(...weekProfitArray)
+    //       ) / 1000
+    //     ) * 1000;
+    //   const max =
+    //     Math.ceil(
+    //       Math.max(
+    //         Math.max(...weekRevenueArray),
+    //         Math.max(...weekProfitArray)
+    //       ) / 1000
+    //     ) * 1000;
+    //   // console.log(min, max, weekProfitArray, weekRevenueArray, weekDatesArray)
+    //   setMinDataRevenue(min);
+    //   setMaxDataRevenue(max);
+    //   setStepSizeRevenue(calculateSize(min, max));
+    //   setDataRevenues(weekRevenueArray);
+    //   setDataNetProfit(weekProfitArray);
+    //   setBigChartLabels(weekDatesArray);
+    // } else {
+      console.log('Third variant');
       const revenueArray = [];
       const profitArray = [];
       const monthNamesArray = [];
@@ -454,121 +464,123 @@ const Schedule = () => {
       setDataRevenues(revenueArray);
       setDataNetProfit(profitArray);
       setBigChartLabels(monthNamesArray);
-    }
+    // }
   };
 
   const roiAndMarginality = (data, filter) => {
-    if (
-      (filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 1 &&
-        filter.date_sale_filter.weekdays.length === 1) ||
-      (filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length === 1) ||
-      (filter.date_sale_filter.months.length === 0 &&
-        filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length === 1) ||
-      (filter.date_sale_filter.months.length === 0 &&
-        filter.date_sale_filter.years.length === 1 &&
-        filter.date_sale_filter.weekdays.length === 1)
-    ) {
-      const roiArray = [];
-      const marginalityHigh = [];
-      const marginalityLow = [];
-      const dayTitlesArray = [];
+    console.log('data in roiAndMarginality', data);
+    
+    // if (
+    //   (filter.date_sale_filter.months.length === 1 &&
+    //     filter.date_sale_filter.years.length === 1 &&
+    //     filter.date_sale_filter.weekdays.length === 1) ||
+    //   (filter.date_sale_filter.months.length === 1 &&
+    //     filter.date_sale_filter.years.length === 0 &&
+    //     filter.date_sale_filter.weekdays.length === 1) ||
+    //   (filter.date_sale_filter.months.length === 0 &&
+    //     filter.date_sale_filter.years.length === 0 &&
+    //     filter.date_sale_filter.weekdays.length === 1) ||
+    //   (filter.date_sale_filter.months.length === 0 &&
+    //     filter.date_sale_filter.years.length === 1 &&
+    //     filter.date_sale_filter.weekdays.length === 1)
+    // ) {
+    //   const roiArray = [];
+    //   const marginalityHigh = [];
+    //   const marginalityLow = [];
+    //   const dayTitlesArray = [];
 
-      const year = Object.keys(data.roi_and_marginality)[0];
-      const months = data.roi_and_marginality[year];
-      const selectedWeekdayNames = filter.date_sale_filter.weekdays;
+    //   const year = Object.keys(data.roi_and_marginality)[0];
+    //   const months = data.roi_and_marginality[year];
+    //   const selectedWeekdayNames = filter.date_sale_filter.weekdays;
 
-      for (const month in months) {
-        const weeks = months[month].weeks;
-        for (const week in weeks) {
-          if (selectedWeekdayNames.includes(week)) {
-            const days = weeks[week].days;
-            for (const day in days) {
-              const dayData = days[day];
-              dayTitlesArray.push(day);
-              if (dayData.marginality > 0) {
-                marginalityHigh.push(dayData.marginality || 0);
-                marginalityLow.push(0);
-              } else {
-                marginalityHigh.push(0);
-                marginalityLow.push(dayData.marginality || 0);
-              }
-              roiArray.push(dayData.roi || 0);
-            }
-          }
-        }
-      }
+    //   for (const month in months) {
+    //     const weeks = months[month].weeks;
+    //     for (const week in weeks) {
+    //       if (selectedWeekdayNames.includes(week)) {
+    //         const days = weeks[week].days;
+    //         for (const day in days) {
+    //           const dayData = days[day];
+    //           dayTitlesArray.push(day);
+    //           if (dayData.marginality > 0) {
+    //             marginalityHigh.push(dayData.marginality || 0);
+    //             marginalityLow.push(0);
+    //           } else {
+    //             marginalityHigh.push(0);
+    //             marginalityLow.push(dayData.marginality || 0);
+    //           }
+    //           roiArray.push(dayData.roi || 0);
+    //         }
+    //       }
+    //     }
+    //   }
 
-      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
+    //   const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
 
-      const minVal = Math.min(...arr);
-      const maxVal = Math.max(...arr);
-      const min = Math.floor(minVal / 100) * 100;
-      const max = Math.ceil(maxVal / 100) * 100;
-      setMinProfitability(min);
-      setMaxProfitability(max);
-      setStepProfitability(calculateSize(min, max));
+    //   const minVal = Math.min(...arr);
+    //   const maxVal = Math.max(...arr);
+    //   const min = Math.floor(minVal / 100) * 100;
+    //   const max = Math.ceil(maxVal / 100) * 100;
+    //   setMinProfitability(min);
+    //   setMaxProfitability(max);
+    //   setStepProfitability(calculateSize(min, max));
 
-      //setMaxforROI
-      // setStepSizeRevenue(calculateSize(min, max))
-      setDataProfitMinus(marginalityLow);
-      setDataProfitPlus(marginalityHigh);
-      setDataProfitability(roiArray);
-    } else if (
-      (filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 1) ||
-      (filter.date_sale_filter.months.length === 1 &&
-        filter.date_sale_filter.years.length === 0) ||
-      (filter.date_sale_filter.months.length === 0 &&
-        filter.date_sale_filter.years.length === 0 &&
-        filter.date_sale_filter.weekdays.length > 0)
-    ) {
-      const roiArray = [];
-      const marginalityHigh = [];
-      const marginalityLow = [];
+    //   //setMaxforROI
+    //   // setStepSizeRevenue(calculateSize(min, max))
+    //   setDataProfitMinus(marginalityLow);
+    //   setDataProfitPlus(marginalityHigh);
+    //   setDataProfitability(roiArray);
+    // } else if (
+    //   (filter.date_sale_filter.months.length === 1 &&
+    //     filter.date_sale_filter.years.length === 1) ||
+    //   (filter.date_sale_filter.months.length === 1 &&
+    //     filter.date_sale_filter.years.length === 0) ||
+    //   (filter.date_sale_filter.months.length === 0 &&
+    //     filter.date_sale_filter.years.length === 0 &&
+    //     filter.date_sale_filter.weekdays.length > 0)
+    // ) {
+    //   const roiArray = [];
+    //   const marginalityHigh = [];
+    //   const marginalityLow = [];
 
-      const year = Object.keys(data.roi_and_marginality)[0];
-      const months = data.roi_and_marginality[year];
+    //   const year = Object.keys(data.roi_and_marginality)[0];
+    //   const months = data.roi_and_marginality[year];
 
-      for (const month in months) {
-        const index = monthNames.indexOf(month);
-        const monthIndex = index !== -1 ? index + 1 : null;
-        const weeks = months[month]?.weeks;
-        if (
-          weeks &&
-          (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
-            filter.date_sale_filter.months.length === 0)
-        ) {
-          for (const week in weeks) {
-            if (
-              (filter.date_sale_filter.weekdays.includes(week) &&
-                filter.date_sale_filter.weekdays.length > 0) ||
-              filter.date_sale_filter.weekdays.length === 0
-            ) {
-              const weekData = weeks[week];
-              marginalityLow.push(weekData.min_week_marginality || 0);
-              marginalityHigh.push(weekData.max_week_marginality || 0);
-              roiArray.push(weekData.average_week_roi || 0);
-            }
-          }
-        }
-      }
-      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
-      const minVal = Math.min(...arr);
-      const maxVal = Math.max(...arr);
-      const min = Math.floor(minVal / 100) * 100;
-      const max = Math.ceil(maxVal / 100) * 100;
-      setMinProfitability(min);
-      setMaxProfitability(max);
-      setStepProfitability(calculateSize(min, max));
-      //setMaxforROI
-      setDataProfitMinus(marginalityLow);
-      setDataProfitPlus(marginalityHigh);
-      setDataProfitability(roiArray);
-    } else {
+    //   for (const month in months) {
+    //     const index = monthNames.indexOf(month);
+    //     const monthIndex = index !== -1 ? index + 1 : null;
+    //     const weeks = months[month]?.weeks;
+    //     if (
+    //       weeks &&
+    //       (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
+    //         filter.date_sale_filter.months.length === 0)
+    //     ) {
+    //       for (const week in weeks) {
+    //         if (
+    //           (filter.date_sale_filter.weekdays.includes(week) &&
+    //             filter.date_sale_filter.weekdays.length > 0) ||
+    //           filter.date_sale_filter.weekdays.length === 0
+    //         ) {
+    //           const weekData = weeks[week];
+    //           marginalityLow.push(weekData.min_week_marginality || 0);
+    //           marginalityHigh.push(weekData.max_week_marginality || 0);
+    //           roiArray.push(weekData.average_week_roi || 0);
+    //         }
+    //       }
+    //     }
+    //   }
+    //   const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
+    //   const minVal = Math.min(...arr);
+    //   const maxVal = Math.max(...arr);
+    //   const min = Math.floor(minVal / 100) * 100;
+    //   const max = Math.ceil(maxVal / 100) * 100;
+    //   setMinProfitability(min);
+    //   setMaxProfitability(max);
+    //   setStepProfitability(calculateSize(min, max));
+    //   //setMaxforROI
+    //   setDataProfitMinus(marginalityLow);
+    //   setDataProfitPlus(marginalityHigh);
+    //   setDataProfitability(roiArray);
+    // } else {
       const monthNamesArray = [];
       const roiArray = [];
       const marginalityHigh = [];
@@ -624,7 +636,7 @@ const Schedule = () => {
       setDataProfitMinus(marginalityLow);
       setDataProfitPlus(marginalityHigh);
       setDataProfitability(roiArray);
-    }
+    // }
   };
 
   const updateScheduleChartData = useCallback(async () => {

@@ -7,6 +7,8 @@ import { Bar } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, maxDataRevenue, stepSizeRevenue, isLoading }) => {
+    console.log('dataRevenue', dataRevenue);
+    
     const data = {
         labels: labels,
         datasets: [
