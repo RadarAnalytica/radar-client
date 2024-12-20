@@ -22,6 +22,10 @@
 }
 .finLogoMain img{
     width: 100%;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
 }
 .finLogo{
     display: none;
@@ -56,6 +60,10 @@
     }
     .finLogo img{
         width: 100%;
+        -webkit-transform: translateZ(0);
+       transform: translateZ(0);
+       image-rendering: -webkit-optimize-contrast;
+       image-rendering: crisp-edges;
     }
 }
 @media (min-width: 780px) and (max-width: 1250px) {
@@ -84,6 +92,10 @@
     }
     .finLogo img{
         width: 100%;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
     }
 }
 @media (min-width: 300px) and (max-width: 780px) {
@@ -115,6 +127,10 @@
     }
     .finLogoMobile img{
         width: 100%;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
     }
 
 }

@@ -1114,6 +1114,7 @@ select {
   .userReviewsHeaderTitle{
     font-size: 25px;
     line-height: 27px;
+    margin-bottom: 8px;
   }
   .userReviewsHeaderParag{
     font-size: 14px;
@@ -1128,6 +1129,7 @@ select {
   .userReviewsHeaderTitle{
     font-size: 20px;
     line-height: 23px;
+    margin-bottom: 8px;
   }
   .userReviewsHeaderParag{
     font-size: 12px;
@@ -4488,3 +4490,19 @@ button.accordion-button.collapsed::after {
     .page-container.container-xxl {
         max-width: 1480px;
     }}
+@media (min-width: 475px) and (max-width: 501px) {
+  .widhead-container-title {
+    width: 70%;
+  }
+}
+@media (min-width: 413px) and (max-width: 462px) {
+  .widhead-container-title {
+    width: 87%;
+  }
+}
+
+@media (min-width: 462px) and (max-width: 475px) {
+  .widhead-container-title {
+    width: 84%;
+  }
+}
