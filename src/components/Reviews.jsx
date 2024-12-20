@@ -32,7 +32,7 @@ const Reviews = () => {
           swipeToSlide: true,
           swipe: true,
           centerMode: true,
-          arrows: false,
+          arrows: true,
         },
       },
       {
@@ -43,7 +43,7 @@ const Reviews = () => {
           swipeToSlide: true,
           swipe: true,
           centerMode: true,
-          arrows: false,
+          arrows: true,
         },
       },
       {
@@ -54,7 +54,7 @@ const Reviews = () => {
           swipeToSlide: true,
           swipe: true,
           centerMode: true,
-          arrows: false,
+          arrows: true,
         },
       },
     ],

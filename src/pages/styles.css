@@ -696,7 +696,11 @@ select {
   }
 }
 
-
+@media (max-width: 1520px) and (min-width: 1375px) {
+  .userReviewsHeaderParag .yellowLogoSpan {
+    display: block;
+  }
+}
 
 
 @media (min-width: 1580px) and (max-width: 1601px) {
@@ -846,6 +850,7 @@ select {
   padding: 10px 20px;
   border-radius: 10px;
   font-size: 22px;
+  width: fit-content;
 }
 
 .slider-container {
