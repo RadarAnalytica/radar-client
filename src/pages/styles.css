@@ -696,7 +696,13 @@ select {
   }
 }
 
-@media (max-width: 1520px) and (min-width: 1375px) {
+@media (max-width: 1520px) and (min-width: 1352px) {
+  .userReviewsHeaderParag .yellowLogoSpan {
+    display: block;
+  }
+}
+
+@media (max-width: 1330px) and (min-width: 1329px) {
   .userReviewsHeaderParag .yellowLogoSpan {
     display: block;
   }
