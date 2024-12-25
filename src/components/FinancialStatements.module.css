@@ -22,6 +22,9 @@
 }
 .finLogoMain img{
     width: 100%;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 .finLogo{
     display: none;
@@ -56,6 +59,9 @@
     }
     .finLogo img{
         width: 100%;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        backface-visibility: hidden;
     }
 }
 @media (min-width: 780px) and (max-width: 1250px) {
@@ -84,6 +90,9 @@
     }
     .finLogo img{
         width: 100%;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        backface-visibility: hidden;
     }
 }
 @media (min-width: 300px) and (max-width: 780px) {
