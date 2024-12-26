@@ -1,7 +1,7 @@
 
 import styles from "../components/FinancialStatements.module.css"
-import finLogo from "../assets/FinancialStatementsLogo2.svg"
-import finLogoMain from "../assets/FinancialStatementsLogo2.svg"
+import finLogo from "../assets/FinancialStatementsLogo3.svg"
+import finLogoMain from "../assets/FinancialStatementsLogo3.svg"
 import finLogoMobile from "../assets/FinancialStatementsMobile.svg"
 
 
