@@ -31,8 +31,8 @@ const WeeklyReportPL = () => {
     currentPageData = currentPageData ? currentPageData : {}  
     console.log('currentPageData', currentPageData);
 
-    const brandFilter = currentPageData.brand.join(',');
-    const groupFilter = currentPageData.group.join(',');
+    const brandFilter = currentPageData.brand;
+    const groupFilter = currentPageData.group;
     console.log('brandFilterList', brandFilter);
     console.log('groupFilterList', groupFilter);
     

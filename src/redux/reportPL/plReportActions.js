@@ -9,13 +9,17 @@ export const fetchPLReport = createAsyncThunk(
         
         
         const res = await fetch(
-            `${URL}/api/report/p_l/data?brand_filter=${brandFilter}&group_filter=${groupFilter}`,
+            `${URL}/api/report/p_l/data`,
             {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'accept': 'application/json',
                     'Authorization': token
-                }
+                },
+                body: JSON.stringify({
+                    brand_filter: brandFilter,
+                    group_filter: groupFilter
+                })
             }
         );
         return await res.json();

@@ -135,11 +135,9 @@ const NewFilterGroup = ({pageIdent, getData}) => {
         currentPageData = JSON.parse(plStorage)
         const plPageData = currentPageData ? currentPageData : {}  
 
-        const brandFilter = plPageData.brand.join(',');
-        const groupFilter = plPageData.group.join(',');
         resultFilters['pl'] = {
-            'brand_filter': brandFilter,
-            'group_filter': groupFilter
+            'brand_filter': plPageData.brand ? plPageData.brand : [],
+            'group_filter': plPageData.group ? plPageData.group : []
         }
 
         // Report By Month
