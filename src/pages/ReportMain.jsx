@@ -19,9 +19,10 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import BottomNavigation from '../components/BottomNavigation';
 import Modal from 'react-bootstrap/Modal';
 import warningIcon from '../assets/warning.png';
+import NoSubscriptionPage from './NoSubscriptionPage';
 
 const ReportMain = () => {
-  const { authToken } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [show, setShow] = useState(false);
@@ -119,6 +120,10 @@ const ReportMain = () => {
   };
 
   const handleClose = () => setShow(false);
+
+  if (user?.subscription_status === 'expired') {
+    return <NoSubscriptionPage title={'Финансовые отчеты'} />;;
+  }
 
   return (
     <div className='dashboard-page'>
@@ -233,7 +238,9 @@ const ReportMain = () => {
                             Отчёт по платному хранению:{' '}
                           </span>
                           документ за тот же период, что и детализация
-                          еженедельного отчёта.
+                          еженедельного отчёта. В личном кабинете селлера вкладка «Аналитика», 
+                          далее вкладка «Отчёты», в отчётах выбрать «Платное хранение», далее 
+                          выбрать «Отчёт по номенклатурам», после выгружаем отчёт в Excel.
                         </li>
                       </ul>
                     </div>

@@ -10,7 +10,7 @@ const ChartTableRow = ({ object }) => {
 
   return (
     <div className='chart-table-row '>
-      <p className='clue-text mb-2' style={{ fontSize: "14px" }}>
+      <div className='clue-text mb-2' style={{ fontSize: "14px" }}>
         {object.name}
         {object.name === "Реклама (ДРР (общий))" && (
           <TooltipInfo text='Отношение суммарных расходов на рекламу к выручке' />
@@ -21,7 +21,7 @@ const ChartTableRow = ({ object }) => {
         {object.name === "Логистика (от выручки)" && (
           <TooltipInfo text='Отношение суммарных расходов на логистику к выручке' />
         )}
-      </p>
+      </div>
 
       <div className='d-flex justify-content-between'>
         <div className='container d-flex justify-content-between'>

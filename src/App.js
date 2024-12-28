@@ -68,7 +68,6 @@ const NoSubscriptionPage = React.lazy(() =>
 
 function App() {
   const { user } = useContext(AuthContext);
-  console.log("user", user);
 
   const renderElement = (user) => {
     if (user?.role === 'admin') {

@@ -96,7 +96,6 @@ const DashboardPage = () => {
     : allShop;
 
   useEffect(() => {
-    console.log('useEffect [oneShop, activeBrand]');
     let intervalId = null;
 
     if (
@@ -111,14 +110,12 @@ const DashboardPage = () => {
         !isInitialLoading &&
         (days === prevDays.current || activeBrand === prevActiveBrand.current)
       ) {
-        console.log('updateDataDashbord when is primary collect is true');
         updateDataDashBoard(days, activeBrand, authToken);
       }
       // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
       clearInterval(intervalId);
     }
     if (!oneShop?.is_primary_collect && activeBrand !== 0) {
-      console.log('Starting interval to fetch shops...');
       intervalId = setInterval(() => {
         dispatch(fetchShops(authToken));
       }, 30000);
@@ -131,7 +128,6 @@ const DashboardPage = () => {
   }, [oneShop, activeBrand]);
 
   useEffect(() => {
-    console.log(selectedRange, 'selectedRange');
     const updateChartData = async () => {
       const data = await ServiceFunctions.getChartDetailData(
         authToken,

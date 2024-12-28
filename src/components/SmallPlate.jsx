@@ -77,7 +77,7 @@ const SmallPlate = ({
           className='d-flex flex-column justify-content-between'
           style={{ height: '100%' }}
         >
-          <p
+          <div
             className='p-0 m-0  clue-text small-title'
             style={{ fontSize: '1.65vh' }}
           >
@@ -106,7 +106,7 @@ const SmallPlate = ({
                 }
               />
             )}
-          </p>
+          </div>
 
           <div
             className={
