@@ -14,6 +14,7 @@ export const fetchPLReport = createAsyncThunk(
                 method: 'POST',
                 headers: {
                     'accept': 'application/json',
+                    'content-type': 'application/json',
                     'Authorization': token
                 },
                 body: JSON.stringify({
