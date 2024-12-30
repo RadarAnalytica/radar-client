@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import sortArrow from "../assets/sortarrow.svg";
+// import sortArrow from "../assets/sortarrow.svg";
 import ArrowUp from "../assets/ArrowUp.svg";
 import ArrowDown from "../assets/ArrowDown.svg";
 import "../App.css";

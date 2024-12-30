@@ -3,7 +3,6 @@ import {
   useState,
   useEffect,
   useMemo,
-  useCallback,
 } from 'react';
 import { URL } from './config';
 import { jwtDecode } from 'jwt-decode';
@@ -39,6 +38,7 @@ export const AuthProvider = ({ children }) => {
     setAuthToken(value);
     setUser(decode(value));
   } else {
+    console.log('user', user)
     console.log('No token found');
   }
 

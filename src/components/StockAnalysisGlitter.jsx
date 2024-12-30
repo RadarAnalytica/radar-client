@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import SideNav from './SideNav';
 import TopNav from './TopNav';
-import product from '../pages/images/product.svg';
+// import product from '../pages/images/product.svg';
 import glitterStar from '../pages/images/glitterstar.svg';
 import glityellow from '../pages/images/glityellow.svg';
 import glitFile from '../pages/images/glitfile.svg';

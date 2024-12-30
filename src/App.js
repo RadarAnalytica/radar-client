@@ -3,45 +3,46 @@ import * as React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import AuthContext, { AuthProvider } from "./service/AuthContext";
 import { useContext } from "react";
-import MobileMenu from "./components/MobileMenu";
+// import MobileMenu from "./components/MobileMenu";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Digitization from "./pages/Digitization";
-import Contacts from "./components/Contacts";
-import StockAnalysisGlitter from "./components/StockAnalysisGlitter";
-import LoaderPage from "./pages/LoaderPage";
-import Subscriptions from "./pages/Subscriptions";
-import RequestMonitoringPage from "./pages/RequestMonitoringPage";
-import AiDescriptionGeneratorPage from "./pages/AIDescriptionGeneratorPage";
-import SeoPage from "./pages/SeoPage";
+// import Digitization from "./pages/Digitization";
 import { ProductProvider } from "./service/ProductContext";
+import LoaderPage from "./pages/LoaderPage";
 import MessageWindow from "./components/MessageWindow";
-import WeeklyReportPL from "./pages/WeeklyReportPL";
-import WeeklyReportByMonth from "./pages/WeeklyReportByMonth";
-import ReportAbcAnalysis from "./pages/ReportAbcAnalysis";
-import WeeklyReportByGoods from "./pages/WeeklyReportByGoods";
-import WeeklyReportPenaltiesPage from "./pages/WeeklyReportPenaltiesPage";
-import TestPeriodTariffPage from "./pages/TestPeriodTariffPage";
-import ReportMain from "./pages/ReportMain";
-import PrimeCost from "./pages/PrimeCost";
-import ExternalExpensesPage from "./pages/ExternalExpensesPage";
-import ReportBuyBack from "./pages/ReportBuyBack";
-
-
+// import TestPeriodTariffPage from "./pages/TestPeriodTariffPage";
+// import { OnboardingProtectedRoute, SubscriptionProtectedRoute } from "./RouteGuards";
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
+
+const Contacts = React.lazy(() => import("./components/Contacts"));
+const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
+const Subscriptions = React.lazy(() => import("./pages/Subscriptions"));
+const RequestMonitoringPage = React.lazy(() => import("./pages/RequestMonitoringPage"));
+const AiDescriptionGeneratorPage = React.lazy(() => import("./pages/AIDescriptionGeneratorPage"));
+const SeoPage = React.lazy(() => import("./pages/SeoPage"));
+const WeeklyReportPL = React.lazy(() => import("./pages/WeeklyReportPL"));
+const WeeklyReportByMonth = React.lazy(() => import("./pages/WeeklyReportByMonth"));
+const ReportAbcAnalysis = React.lazy(() => import("./pages/ReportAbcAnalysis"));
+const WeeklyReportByGoods = React.lazy(() => import("./pages/WeeklyReportByGoods"));
+const WeeklyReportPenaltiesPage = React.lazy(() => import("./pages/WeeklyReportPenaltiesPage"));
+const ReportMain = React.lazy(() => import("./pages/ReportMain"));
+const PrimeCost = React.lazy(() => import("./pages/PrimeCost"));
+const ExternalExpensesPage = React.lazy(() => import("./pages/ExternalExpensesPage"));
+const ReportBuyBack = React.lazy(() => import("./pages/ReportBuyBack"));
+const MobileMenu = React.lazy(() => import("./components/MobileMenu"));
 const AbcAnalysisPage = React.lazy(() => import("./pages/AbcAnalysisPage"));
 const SignUpPage = React.lazy(() => import("./pages/SignUpPage"));
 const SignInPage = React.lazy(() => import("./pages/SignInPage"));
 const Onboarding = React.lazy(() => import("./pages/Onboarding"));
 const ConfirmationPage = React.lazy(() => import("./pages/ConfirmationPage"));
 const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
-const MockUpPage = React.lazy(() => import("./pages/MockUpPage"));
+// const MockUpPage = React.lazy(() => import("./pages/MockUpPage"));
 const ResetPage = React.lazy(() => import("./pages/ResetPage"));
 const RequestResetLink = React.lazy(() => import("./pages/RequestResetLink"));
 const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
 const Calculate = React.lazy(() => import("./pages/Calculate"));
 const OrdersMap = React.lazy(() => import("./pages/OrdersMap"));
-const Settings = React.lazy(() => import("./pages/Settings"));
+// const Settings = React.lazy(() => import("./pages/Settings"));
 const Spasibo = React.lazy(() => import("./pages/Spasibo"));
 const Instructions = React.lazy(() => import("./pages/Instructions"));
 const Monitoring = React.lazy(() => import("./pages/Monitoring"));
@@ -62,14 +63,15 @@ const Schedule = React.lazy(() => import("./pages/Schedule"));
 const Period = React.lazy(() => import("./components/Period"));
 const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 
-const NoSubscriptionPage = React.lazy(() =>
-  import("./pages/NoSubscriptionPage")
-);
+// const NoSubscriptionPage = React.lazy(() =>
+//   import("./pages/NoSubscriptionPage")
+// );
 
 function App() {
   const { user } = useContext(AuthContext);
 
   const renderElement = (user) => {
+
     if (user?.role === 'admin') {
       return <Navigate to="/admin-panel" replace />;
     } else if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
@@ -78,6 +80,86 @@ function App() {
       return user?.is_onboarded ? <DashboardPage /> : <Onboarding />;
     }
   };
+  // return (
+  //   <AuthProvider>
+  //     <MobileMenu />
+  //     <Routes>
+  //       <Route 
+  //         path="/"
+  //         element={
+  //           <OnboardingProtectedRoute user={user} >
+  //             <React.Suspense fallback={<LoaderPage />}>
+  //               <MainPage />
+  //             </React.Suspense>
+  //           </OnboardingProtectedRoute>
+  //         }
+  //       />
+
+  //       <Route 
+  //         path='/calculate'
+  //         element={
+  //           <SubscriptionProtectedRoute user={user} >
+  //             <React.Suspense fallback={<LoaderPage />}>
+  //               <Calculate />
+  //             </React.Suspense>
+  //           </SubscriptionProtectedRoute>
+  //         }
+  //       />
+
+  //       <Route 
+  //         path='/onboarding'
+  //         element={
+  //           <SubscriptionProtectedRoute user={user} >
+  //             <React.Suspense fallback={<LoaderPage />}>
+  //               <Onboarding />
+  //             </React.Suspense>
+  //           </SubscriptionProtectedRoute>
+  //         }
+  //       />
+  //       <Route 
+  //         path='/linked-shops'
+  //         element={
+  //           <OnboardingProtectedRoute user={user} >
+  //             <React.Suspense fallback={<LoaderPage />}>
+  //               <LinkedShops />
+  //             </React.Suspense>
+  //           </OnboardingProtectedRoute>
+  //         }
+  //       />
+
+  //       <Route
+  //         path='/signup'
+  //         element={
+  //           <React.Suspense fallback={<LoaderPage />}>
+  //             {" "}
+  //             <SignUpPage />
+  //           </React.Suspense>
+  //         }
+  //       />
+
+  //       <Route
+  //         path='/signin'
+  //         element={
+  //           <React.Suspense fallback={<LoaderPage />}>
+  //             {" "}
+  //             <SignInPage />
+  //           </React.Suspense>
+  //         }
+  //       />
+
+  //       <Route
+  //         path='*'
+  //         element={
+  //           <React.Suspense fallback={<LoaderPage />}>
+  //             {" "}
+  //             <Page404 />
+  //           </React.Suspense>
+  //         }
+  //       />
+        
+  //     </Routes>
+  //   </AuthProvider>
+  // )
 
   if (user) {
     return (
@@ -527,7 +609,7 @@ function App() {
                       </React.Suspense>
                     }
                   />
-                  <Route
+                  {/* <Route
                     path='/digitization'
                     element={
                       <React.Suspense fallback={<LoaderPage />}>
@@ -535,7 +617,7 @@ function App() {
                         <Digitization />
                       </React.Suspense>
                     }
-                  />
+                  /> */}
                   <Route
                     path='/contacts'
                     element={
@@ -972,29 +1054,7 @@ function App() {
                 </React.Suspense>
               }
             />
-            {/* <Route path='/' element={<MockUpPage />} />
-          <Route path='/development/home' element={<MainPage />} />
-          <Route path='/stub' element={<StubPage />} />
-          <Route path='/signup' element={<SignUpPage />} />
-          <Route path='/signin' element={<SignInPage />} />
-          <Route path='/spasibo' element={<Spasibo />} />
-          <Route path='/politics' element={<Politics />} />
-          <Route path='/instruction' element={<Instructions />} />
-          <Route path='/development/onboarding' element={<Onboarding />} />
-          <Route path='/development/dashboard' element={<DashboardPage />} />
-          <Route path='/development/monitoring' element={<Monitoring />} />
-          <Route path='/development/supply' element={<SupplyCount />} />
-          <Route path='/app' element={<MainWidget />} />
-          <Route path='/development/linked-shops' element={<LinkedShops />} />
-          <Route path='/development/stock-analysis' element={<StockAnalysis />} />
-          <Route path='/development/calculate' element={<Calculate />} />
-          <Route path='/development/orders-map' element={<OrdersMap />} />
-          <Route path='/confirmation/:email/:code' element={<ConfirmationPage />} />
-          <Route path='/restore/:email/:code' element={<ResetPage />} />
-          <Route path='/reset' element={<RequestResetLink />} /> */}
-            {/* <Route path='/development/*' element={<Navigate to={'/signin'} replace />} /> */}
-            {/* <Route path='/development/settings' element={<Settings />} /> */}
-            {/* <Route path='*' element={<Navigate to={'/development/signin'} replace />} /> */}
+            
           </Routes>
         </ProductProvider>
       </AuthProvider>

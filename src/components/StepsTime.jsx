@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Steps from "../pages/images/Steps";
-import YellowRadar from "../pages/images/YellowRadarLarge";
+// import YellowRadar from "../pages/images/YellowRadarLarge";
 import time from "../pages/images/time.png";
 import YellowRadarLarge from "../pages/images/YellowRadarLarge";
 import AuthContext from "../service/AuthContext";
