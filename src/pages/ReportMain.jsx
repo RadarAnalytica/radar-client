@@ -268,12 +268,12 @@ const ReportMain = () => {
                           left: 0,
                           width: '100%',
                           height: '100%',
-                          border: '1px solid #C4C4C4',
+                          // border: '1px solid #C4C4C4',
                         }}
-                        // src='https://play.boomstream.com/cx149c1B?title=0&start=1'
-                        // frameBorder='0'
-                        // scrolling='no'
-                        // allowFullScreen
+                        src='https://play.boomstream.com/ebiWkmCg?title=0&start=1'
+                        frameBorder='0'
+                        scrolling='no'
+                        allowFullScreen
                       ></iframe>
                     </div>
                   </div>

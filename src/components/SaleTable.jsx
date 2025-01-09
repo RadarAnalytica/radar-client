@@ -179,11 +179,11 @@ const SalesTable = ({ tableData }) => {
                   {formatPrice(data.compensation_damage.quantity) || '0'} шт
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_penalties.rub) || '0'} ₽
+                  {formatPrice(data.penalties) || '0'} ₽
                 </div>
                 {/* ?????? */}
                 <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_penalties.rub) || '0'} ₽
+                  {formatPrice(data.additional_payments) || '0'} ₽
                 </div>
               </div>
               {/* Another Keep Section */}
@@ -201,8 +201,8 @@ const SalesTable = ({ tableData }) => {
                   <div>{data.acceptance.percent || '0'} %</div>
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.wb_commission.rub) || '0'} ₽</div>
-                  <div>{data.wb_commission.percent || '0'} %</div>
+                  <div>{formatPrice(data.compensation_penalties.rub) || '0'} ₽</div>
+                  <div>{data.compensation_penalties.percent || '0'} %</div>
                 </div>
               </div>
               {/* External Expenses Section */}
@@ -214,11 +214,11 @@ const SalesTable = ({ tableData }) => {
                   {formatPrice(data.self_purchase_costs) || '0'} ₽
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.external_expenses) || '0'} ₽</div>
+                  <div>{formatPrice(data.expenses) || '0'} ₽</div>
                   <div>{data.expenses_percent || '0'} %</div>
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.expenses) || '0'} ₽
+                  {formatPrice(data.external_expenses) || '0'} ₽
                 </div>
               </div>
               {/* Tax Section */}
@@ -245,7 +245,7 @@ const SalesTable = ({ tableData }) => {
                   {formatPrice(data.profit) || '0'} ₽
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.profit) || '0'} ₽
+                  {formatPrice(data.profit_per_one) || '0'} ₽
                 </div>
                 <div
                   className={styles.defectCompnesaitionCell}

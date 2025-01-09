@@ -41,7 +41,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
       current.push({
         key: `${filterIdent}${items.indexOf(elem)}`,
         value: elem,
-        isSelected: currentFilterData.includes(elem)
+        isSelected: currentFilterData ? currentFilterData.includes(elem) : false
       })
     }
     if (filterIdent === 'year' || filterIdent === 'month') {

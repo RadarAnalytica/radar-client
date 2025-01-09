@@ -72,7 +72,8 @@ const NewFilterGroup = ({pageIdent, getData}) => {
 
         if (monthSelectList.length > 0) {
             for (let _month of monthSelectList) {
-                currentWeekFilter = currentWeekFilter.concat(yearFilteredList.filter(el => el.includes(`-${_month}-`)))
+                const month_val = _month.length === 2 ? _month : `0${_month}`
+                currentWeekFilter = currentWeekFilter.concat(yearFilteredList.filter(el => el.includes(`-${month_val}-`)))
             }
         } else {
             currentWeekFilter = [...yearFilteredList]
@@ -93,6 +94,7 @@ const NewFilterGroup = ({pageIdent, getData}) => {
             method: 'POST',
             headers: {
               authorization: 'JWT ' + authToken,
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify(filters)
           }
@@ -244,7 +246,7 @@ const NewFilterGroup = ({pageIdent, getData}) => {
                 >
                     {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
                 </button>
-                {/* <DownloadButton handleDownload={handleDownload}/> */}
+                <DownloadButton handleDownload={handleDownload}/>
             </div>
             
             {!isCollapsed && (

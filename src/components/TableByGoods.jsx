@@ -223,7 +223,10 @@ const TableByGoods = ({ data }) => {
               </div>
             </div>
             <div className={styles.cell_costPerUnit}>
-              {item.logisticCommission?.percentage}
+              <div>{item.logisticEquiring?.equiring}</div>
+              <div className={styles.subtext}>
+                {item.logisticEquiring?.percentage}
+              </div>
             </div>
             <div className={styles.cell_costPerUnit}>
               {item.logisticOfDeliever?.ofDeliver}
