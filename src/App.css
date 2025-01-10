@@ -3829,7 +3829,7 @@ font-weight: 500;
 .chart-container {
   width: 98%;
   min-height: 355px;
-  max-height: 380px;
+  max-height:max-content;
   /* max-width: 100%;  */
   margin: 20px 0px 20px 0px;
   padding: 20px;
