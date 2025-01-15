@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import './styles.css';
 import styles from './HowToConnectAPI.module.css';
 import NavbarMainHome from '../components/NavbarMainHome';
 import step1v1 from './images/step1-1.jpg';

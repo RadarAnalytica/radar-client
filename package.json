@@ -37,7 +37,7 @@
     "webpack": "^5.91.0"
   },
   "scripts": {
-    "start": "set HOST=10.0.0.112 PORT=3001 && react-scripts start",
+    "start": "set PORT=3001 && react-scripts start",
     "build": "set PORT=3001 && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
