@@ -1,46 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './styles.css';
 import styles from './HowToConnectAPI.module.css';
 import NavbarMainHome from '../components/NavbarMainHome';
-import step1v1 from './images/step1-1.jpg';
-import highResImage1 from './images/highResStep1-1.png';
-import step1v2 from './images/step1-2.jpg';
-import highResImage2 from './images/highResStep1-2.png';
-import step2v1 from './images/step2-1.jpg';
-import highResImage3 from './images/highResStep2-1.png';
-import step4v1 from './images/step4-1.jpg';
-import highResImage4 from './images/highResStep4-1.png';
+
+import step1img1 from '../assets/step1-img1.svg';
+import step1img2 from '../assets/step1-img2.svg';
+import step2img1 from '../assets/step2-img1.svg';
+import step4img1 from '../assets/step4-img1.svg';
+
+import step1img1PNG from '../assets/step1-img1-png.png';
+import step1img2PNG from '../assets/step1-img2-png.png';
+import step2img1PNG from '../assets/step2-img1-png.png';
+import step4img1PNG from '../assets/step4-img1-png.png';
+
+import step1img1PNGLow from '../assets/step1-img1-png-low.png';
+import step1img2PNGLow from '../assets/step1-img2-png-low.png';
+import step2img1PNGLow from '../assets/step2-img1-png-low.png';
+import step4img1PNGLow from '../assets/step4-img1-png-low.png';
+
 import Steps from '../pages/images/Steps';
 import exclamation from './images/ExlamationMark.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
 
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 const HowToConnectAPI = () => {
-  const [isHighResLoaded, setHighResLoaded] = useState({
-    image1: false,
-    image2: false,
-    image3: false,
-    image4: false,
-  });
 
-  useEffect(() => {
-    const images = [
-      { high: highResImage1, key: 'image1' },
-      { high: highResImage2, key: 'image2' },
-      { high: highResImage3, key: 'image3' },
-      { high: highResImage4, key: 'image4' },
-    ];
+  const [highResLoaded, setHighResLoaded] = useState(false);
 
-    images.forEach(({ high, key }) => {
-      const img = new Image();
-      img.src = high;
-      img.onload = () => {
-        setHighResLoaded((prev) => ({
-          ...prev,
-          [key]: true,
-        }));
-      };
-    });
-  }, []);
+  const handleImageLoad = () => {
+      setHighResLoaded(true);
+  };
+
   return (
     <div
       className='page-white'
@@ -64,12 +55,14 @@ const HowToConnectAPI = () => {
             “подключенные магазины”.
           </div>
           <img
-            src={isHighResLoaded ? highResImage1 : step1v1}
+            src={isSafari ? (highResLoaded ? step1img1PNG : step1img1PNGLow) : step1img1}
+            onLoad={handleImageLoad}
             alt='step1'
             className={styles.step1Img}
           />
           <img
-            src={isHighResLoaded ? highResImage2 : step1v2}
+            src={isSafari ? (highResLoaded ? step1img2PNG : step1img2PNGLow) : step1img2}
+            onLoad={handleImageLoad}
             alt='step2'
             className={styles.step1Img}
           />
@@ -88,7 +81,8 @@ const HowToConnectAPI = () => {
             На странице “подключенные магазины” выбираем вариант “Подключить”. 
           </div>
           <img
-            src={isHighResLoaded ? highResImage3 : step2v1}
+            src={isSafari ? (highResLoaded ? step2img1PNG : step2img1PNGLow) : step2img1}
+            onLoad={handleImageLoad}
             alt='step1'
             className={styles.step1Img}
           />
@@ -146,7 +140,8 @@ const HowToConnectAPI = () => {
           </div>
           <div className={styles.stepText}>Нажимаем кнопку «Сохранить».</div>
           <img
-            src={isHighResLoaded ? highResImage4 : step4v1}
+            src={isSafari ? (highResLoaded ? step4img1PNG : step4img1PNGLow) : step4img1}
+            onLoad={handleImageLoad}
             alt='step1'
             className={styles.step1Img}
           />
