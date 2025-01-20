@@ -37,14 +37,16 @@ import ReviewsUsers from '../components/ReviewsUsers';
 import TryProduct from '../components/TryProduct';
 import { useLocation } from 'react-router-dom';
 import { URL } from '../service/config';
-import lowResImage from './images/imageFon_comp.png'; //  the low-res image
-import highResImage from './images/imageFon.png'; //  the high-res image
+import lowResImage from './images/imageFon_comp.png';
+import highResImage from './images/imageFon.png';
 import ligtning from './images/ligtningIcon.svg';
 import safety from './images/safety.svg';
 import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
+import lowQualityVideo from "../assets/video/LowQuality.webm";
+import highQualityVideo from "../assets/video/WebMBig.webm";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -167,8 +169,9 @@ const MainPage = () => {
           </div>
           <div className='sol-screenshot col-7'>
             <ImageComponent
-              heavyImageSrc={BlockImg_x3}
-              lightImageSrc={BlockImg_x1}
+              highQualitySrc={highQualityVideo}
+              lowQualitySrc={lowQualityVideo}
+              style={{ width: "100%", height: "auto" }}
             />
           </div>
         </div>
