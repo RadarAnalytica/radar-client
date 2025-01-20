@@ -18,7 +18,8 @@ const ImageComponent = ({ highQualitySrc, lowQualitySrc, style }) => {
           autoPlay
           loop
           muted
-          style={style}
+          playsInline
+          style={{ ...style, objectFit: "cover" }}
         />
       ) : (
         <video
@@ -26,7 +27,8 @@ const ImageComponent = ({ highQualitySrc, lowQualitySrc, style }) => {
           autoPlay
           loop
           muted
-          style={style}
+          playsInline
+          style={{ ...style, objectFit: "cover" }}
         />
       )}
     </div>
