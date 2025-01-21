@@ -32,7 +32,7 @@ const Reviews = () => {
           swipeToSlide: true,
           swipe: true,
           centerMode: true,
-          arrows: false,
+          arrows: true,
         },
       },
       {
@@ -43,7 +43,7 @@ const Reviews = () => {
           swipeToSlide: true,
           swipe: true,
           centerMode: true,
-          arrows: false,
+          arrows: true,
         },
       },
       {
@@ -54,10 +54,12 @@ const Reviews = () => {
           swipeToSlide: true,
           swipe: true,
           centerMode: true,
-          arrows: false,
+          arrows: true,
         },
       },
     ],
+    draggable: true,
+    swipeToSlide: true
   };
 
   return (
@@ -65,15 +67,20 @@ const Reviews = () => {
       <div className="slider-container">
         <Slider {...settings}>
           {reviewsIP.map((el, index) => (
-            <div key={index} className="slider-item">
-              <iframe
-                width="100%"
-                height="100%"
-                src={el.videoSrc}
-                frameBorder="0"
-                scrolling="no"
-                allowFullScreen
-              ></iframe>
+            <div
+              key={index}
+              className="slider-item"
+            >
+              <div className="video-wrapper">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={el.videoSrc}
+                  frameBorder="0"
+                  scrolling="no"
+                  allowFullScreen
+                ></iframe>
+              </div>
             </div>
           ))}
         </Slider>
@@ -92,4 +99,3 @@ function ImageArrow({ type, onClick }) {
   );
 }
 export default Reviews;
-
