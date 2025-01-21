@@ -61,6 +61,8 @@ const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashb
 const Schedule = React.lazy(() => import("./pages/Schedule"));
 const Period = React.lazy(() => import("./components/Period"));
 const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
+const Blog = React.lazy(() => import("./pages/Blog"));
+const BlogArticle = React.lazy(() => import("./pages/BlogArticle"));
 
 const NoSubscriptionPage = React.lazy(() =>
   import("./pages/NoSubscriptionPage")
@@ -344,6 +346,22 @@ function App() {
                   </React.Suspense>
                 }
               />
+              <Route
+              path='/blog'
+              element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <Blog />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/blog/:articleId'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <BlogArticle />
+                  </React.Suspense>
+                }
+              />              
               {user.is_onboarded ? (
                 <>
                   <Route
@@ -622,8 +640,6 @@ function App() {
                   />
                 </>
               )}
-              {/* <Route path='/development/settings' element={<Settings />} /> */}
-              {/* <Route path='*' element={<Navigate to={'/development/dashboard'} replace />} /> */}
             </Routes>
             <MessageWindow />
           </ProductProvider>
@@ -871,29 +887,22 @@ function App() {
                 </React.Suspense>
               }
             />
-            {/* <Route path='/' element={<MockUpPage />} />
-          <Route path='/development/home' element={<MainPage />} />
-          <Route path='/stub' element={<StubPage />} />
-          <Route path='/signup' element={<SignUpPage />} />
-          <Route path='/signin' element={<SignInPage />} />
-          <Route path='/spasibo' element={<Spasibo />} />
-          <Route path='/politics' element={<Politics />} />
-          <Route path='/instruction' element={<Instructions />} />
-          <Route path='/development/onboarding' element={<Onboarding />} />
-          <Route path='/development/dashboard' element={<DashboardPage />} />
-          <Route path='/development/monitoring' element={<Monitoring />} />
-          <Route path='/development/supply' element={<SupplyCount />} />
-          <Route path='/app' element={<MainWidget />} />
-          <Route path='/development/linked-shops' element={<LinkedShops />} />
-          <Route path='/development/stock-analysis' element={<StockAnalysis />} />
-          <Route path='/development/calculate' element={<Calculate />} />
-          <Route path='/development/orders-map' element={<OrdersMap />} />
-          <Route path='/confirmation/:email/:code' element={<ConfirmationPage />} />
-          <Route path='/restore/:email/:code' element={<ResetPage />} />
-          <Route path='/reset' element={<RequestResetLink />} /> */}
-            {/* <Route path='/development/*' element={<Navigate to={'/signin'} replace />} /> */}
-            {/* <Route path='/development/settings' element={<Settings />} /> */}
-            {/* <Route path='*' element={<Navigate to={'/development/signin'} replace />} /> */}
+            <Route 
+              path='/blog'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  <Blog />
+                </React.Suspense>
+              }
+            />
+              <Route
+                path='/blog/:articleId'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    <BlogArticle />
+                  </React.Suspense>
+                }
+              /> 
           </Routes>
         </ProductProvider>
       </AuthProvider>

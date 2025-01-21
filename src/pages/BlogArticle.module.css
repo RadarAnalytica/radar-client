@@ -1,0 +1,237 @@
+.blogContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.blogNavWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.blogNavTitle {
+    padding: 10px;
+    font-family: "Mulish", sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 32px;
+    color: rgba(26, 26, 26, 1);
+}
+
+.contextContentBox {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background-color: rgba(248, 248, 248, 1);
+    border-radius: 16px;
+    width: 100%;
+    min-width: 632px;
+    margin-bottom: 20px;
+}
+
+.contextContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.contextTtile {
+    font-family: "Mulish", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 30.8px;
+    color: rgba(26, 26, 26, 1);
+    margin-bottom: 12px;
+}
+
+.contextContent {
+    font-family: "Mulish", sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 1);
+}
+
+.contextContent span {
+    margin-bottom: 12px;
+}
+
+.contextText {
+    font-family: "Mulish", sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    color: rgba(0, 0, 0, 1);
+    margin-bottom: 24px;
+}
+
+.contextTextLong {
+    font-family: "Mulish", sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    color: rgba(0, 0, 0, 1);
+}
+
+.blogTextBox {
+    margin-bottom: 117px;
+}
+
+.blogTextBox h3 {
+    font-family: "Mulish", sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 37.6px;
+    color: rgba(26, 26, 26, 1);
+    margin-bottom: 24px;
+}
+
+.contextTextQuote {
+    font-family: "Mulish", sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    color: rgba(0, 0, 0, 1);
+    margin-bottom: 24px;
+    padding: 12px;
+    background-color: rgba(83, 41, 255, 0.05);
+    padding: 19px;
+    border-radius: 19px;
+}
+
+.contextImageDrr {
+    width: 100%;
+    max-width: 757px;
+    margin-bottom: 10px;
+}
+
+.textUnderDrr {
+    font-family: "Mulish", sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 23px;
+}
+
+.imgPlusTextBox {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 23px;
+}
+
+.contextTitleWithDotBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.contextTitleWithDotBoxLong {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.contextTitleWithDotBoxLong span {
+    font-family: "Mulish", sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    color: rgba(0, 0, 0, 1);
+}
+
+.contextTitleWithDotBox span {
+    font-family: "Mulish", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+    color: rgba(0, 0, 0, 1);
+}
+
+.dot {
+   min-width: 9.59px;
+   height: 9.59px;
+   border-radius: 119.92px;
+   background-color: rgba(83, 41, 255, 1);
+   margin-right: 9.59px;
+}
+
+.blogNavTitleBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 20px;
+}
+
+.openCloseNavButton {
+    display: none;
+}
+
+@media (min-width: 780px) and (max-width: 1680px) {
+    .contextTtile {
+        font-size: 18px;
+        line-height: 25.2px;
+    }
+    
+    .contextContent {
+        font-size: 16px;
+        line-height: 22.4px;
+    }
+    
+    .contextText {
+        font-size: 18px;
+        line-height: 27px;
+    }
+
+    .blogTextBox h3 {
+        font-size: 26px;
+        line-height: 32.6px;
+    }
+
+    .contextTitleWithDotBox span {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .textUnderDrr {
+        font-size: 18px;
+        line-height: 27px;
+    }
+}
+
+@media (min-width: 300px) and (max-width: 780px) {
+    .blogNavWrapper{
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .blogNavList {
+        border-right: none;
+        margin: 0;
+    }
+
+    .contextContentBox {
+        min-width: 100%;
+    }
+
+    .openCloseNavButton {
+        display: block;
+    }
+
+    .contextTtile {
+        font-size: 18px;
+        line-height: 25.2px;
+    }
+
+    .contextContent {
+        font-size: 16px;
+        line-height: 22.4px;
+    }
+
+    .textUnderDrr {
+        font-size: 18px;
+        line-height: 27px;
+    }
+}
