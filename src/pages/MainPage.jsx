@@ -45,8 +45,8 @@ import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
-import lowQualityVideo from "../assets/video/LowQuality.webm";
-import highQualityVideo from "../assets/video/WebMBig.webm";
+import lowQualityVideo from "../assets/video/Webm_low.webm";
+import highQualityVideo from "../assets/video/Webm_high.webm";
 
 const MainPage = () => {
   const navigate = useNavigate();
