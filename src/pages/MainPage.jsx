@@ -32,7 +32,7 @@ import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LimitedFooter from '../components/LimitedFooter';
 import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
-import ImageComponent from '../components/utilsComponents/ImageComponent ';
+// import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import ReviewsUsers from '../components/ReviewsUsers';
 import TryProduct from '../components/TryProduct';
 import { useLocation } from 'react-router-dom';
@@ -45,8 +45,9 @@ import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
-import lowQualityVideo from "../assets/video/Webm_low.webm";
+
 import highQualityVideo from "../assets/video/Webm_high.webm";
+
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -168,10 +169,13 @@ const MainPage = () => {
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            <ImageComponent
-              highQualitySrc={highQualityVideo}
-              lowQualitySrc={lowQualityVideo}
-              style={{ width: "100%", height: "auto" }}
+            <video
+              src={highQualityVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
           </div>
         </div>
