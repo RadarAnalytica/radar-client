@@ -17,6 +17,7 @@ import AuthContext from "../service/AuthContext";
 import MessageWindow from '../components/MessageWindow';
 import warningIcon from "../assets/warning.png"
 import Modal from 'react-bootstrap/Modal';
+import NoSubscriptionPage from './NoSubscriptionPage';
 
 const RequestMonitoringPage = () => {
 
@@ -107,6 +108,10 @@ const RequestMonitoringPage = () => {
             setIsLoading(false);
         }
     };
+
+    if (user?.subscription_status === 'expired') {
+        return <NoSubscriptionPage title={'Мониторинг запросов'} />;
+      }
 
 
     return <div className='dashboard-page'>
