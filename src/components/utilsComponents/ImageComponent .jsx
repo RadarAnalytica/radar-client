@@ -1,36 +1,21 @@
 import React, { useEffect, useState } from "react";
 
-const ImageComponent = ({ highQualitySrc, lowQualitySrc, style }) => {
-  const [highQualityLoaded, setHighQualityLoaded] = useState(false);
+const ImageComponent = ({ heavyImageSrc, lightImageSrc, style }) => {
+  const [heavyImageLoaded, setHeavyImageLoaded] = useState(false);
 
   useEffect(() => {
-    const video = document.createElement("video");
-    video.src = highQualitySrc;
-    video.oncanplaythrough = () => setHighQualityLoaded(true);
-  }, [highQualitySrc]);
-
+    const img = new Image();
+    img.src = heavyImageSrc;
+    img.onload = () => setHeavyImageLoaded(true);
+  }, [heavyImageSrc]);
 
   return (
     <div>
-      {highQualityLoaded ? (
-        <video
-          src={highQualitySrc}
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{ ...style, objectFit: "cover" }}
-        />
-      ) : (
-        <video
-          src={lowQualitySrc}
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{ ...style, objectFit: "cover" }}
-        />
-      )}
+      <img
+        src={heavyImageLoaded ? heavyImageSrc : lightImageSrc}
+        alt='dynamic-icon'
+        style={style}
+      />
     </div>
   );
 };

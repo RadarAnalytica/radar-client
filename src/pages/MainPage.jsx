@@ -32,7 +32,7 @@ import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LimitedFooter from '../components/LimitedFooter';
 import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
-// import ImageComponent from '../components/utilsComponents/ImageComponent ';
+import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import ReviewsUsers from '../components/ReviewsUsers';
 import TryProduct from '../components/TryProduct';
 import { useLocation } from 'react-router-dom';
@@ -46,7 +46,7 @@ import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
 
-import highQualityVideo from "../assets/video/Webm_high.webm";
+import highQualityVideo from "../assets/video/videoChart.webm";
 
 
 const MainPage = () => {
@@ -110,6 +110,7 @@ const MainPage = () => {
     }
     return null;
   };
+
   useEffect(() => {
     const img = new Image();
     img.src = highResImage;
@@ -175,6 +176,7 @@ const MainPage = () => {
               loop
               muted
               playsInline
+              preload="auto"
               style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
           </div>
