@@ -2,9 +2,14 @@ import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../service/AuthContext';
+const MainPage = lazy(() => import( '../pages/MainPage'));
 
 const RootComponent = () => {
     const { user } = useContext(AuthContext);
+
+    if (!user) {
+      return <MainPage />;
+    }
     
     if (user?.role === 'admin') {
       return <Navigate to="/admin-panel" replace />;
