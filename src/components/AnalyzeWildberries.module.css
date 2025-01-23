@@ -33,7 +33,7 @@
 .wrapperThird {background-color: #1A1A1A0D;}
 .wrapperHeader{
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
 }
 .logoContainer{

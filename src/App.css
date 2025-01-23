@@ -2725,7 +2725,7 @@ select {
   width: 138px;
   background-color: #D3D3D3;
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
   border-radius: 3px;
   margin: 8px 0 0 8px;
@@ -3115,7 +3115,7 @@ select {
 .productInfo-nav {
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: flex-end;
   margin-left: 10px;
   margin-top: 24px;
   margin-bottom: 0;
@@ -3894,7 +3894,7 @@ canvas {
 .chart-header-wrapper-prof{
   display: flex;
   gap: 15px;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .chart-container-header-prof{
   display: flex;
