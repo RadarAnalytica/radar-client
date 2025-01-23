@@ -3387,7 +3387,7 @@ button.accordion-button.collapsed::after {
   .sol-description-top {
     padding: 20px;
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     justify-content: left;
   }
 
