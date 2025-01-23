@@ -46,8 +46,7 @@ import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
 
-import highQualityVideo from "../assets/video/videoChart.webm";
-
+import highQualityVideo from "../assets/video/videoChartmp4.mp4";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -175,6 +174,8 @@ const MainPage = () => {
               autoPlay
               loop
               muted
+              webkit-playsinline="true"
+              x5-playsinline="true"
               playsInline
               preload="auto"
               style={{ width: "100%", height: "auto", objectFit: "cover" }}

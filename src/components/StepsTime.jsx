@@ -36,7 +36,7 @@ const StepsTime = ({ redirect }) => {
   ];
   const renderStep = (stepData, index) => {
     return (
-      <div className={`steps ${"steps-time" + (index + 1)}`}>
+      <div key={index} className={`steps ${"steps-time" + (index + 1)}`}>
         <div>
           <div className='steps-container'>
             <Steps.StepsBlue />
