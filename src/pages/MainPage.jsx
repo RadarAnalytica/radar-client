@@ -170,16 +170,14 @@ const MainPage = () => {
           </div>
           <div className='sol-screenshot col-7'>
             <video
-              src={highQualityVideo}
               autoPlay
-              loop
-              muted
-              webkit-playsinline="true"
-              x5-playsinline="true"
               playsInline
-              preload="auto"
-              style={{ width: "100%", height: "auto", objectFit: "cover" }}
-            />
+              muted
+              control="false"
+              style={{ width: "100%", height: "100%" }}
+            >
+              <source src={highQualityVideo} type="video/mp4" />
+            </video>
           </div>
         </div>
 
