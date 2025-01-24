@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -55,22 +55,16 @@ const MainPage = () => {
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
 
+  const videoRef = useRef(null);
+
   useEffect(() => {
-    const videoElement = document.querySelector("video");
+    const videoElement = videoRef.current;
 
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible" && videoElement) {
-        videoElement.play().catch(() => {
-          console.log("Failed to autoplay");
-        });
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
+    if (videoElement) {
+      videoElement.play().catch(() => {
+        console.log("Failed to autoplay");
+      });
+    }
   }, []);
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
