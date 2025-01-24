@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -45,8 +45,7 @@ import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
-
-import highQualityVideo from "../assets/video/videoChartmp4.mp4";
+import highQualityVideo from "../assets/video/videoChart.webm";
 import preview from "../assets/video/firstShot.jpg"
 
 const MainPage = () => {
@@ -55,17 +54,7 @@ const MainPage = () => {
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
 
-  const videoRef = useRef(null);
 
-  useEffect(() => {
-    const videoElement = videoRef.current;
-
-    if (videoElement) {
-      videoElement.play().catch(() => {
-        console.log("Failed to autoplay");
-      });
-    }
-  }, []);
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const referral = searchParams.get('referral') || searchParams.get('radar');
@@ -182,6 +171,7 @@ const MainPage = () => {
           </div>
           <div className='sol-screenshot col-7'>
             <video
+              src={highQualityVideo}
               autoPlay
               playsInline
               loop
@@ -189,9 +179,7 @@ const MainPage = () => {
               preload="auto"
               poster={preview}
               style={{ width: "100%", height: "100%" }}
-            >
-              <source src={highQualityVideo} type="video/mp4" />
-            </video>
+            />
           </div>
         </div>
 
