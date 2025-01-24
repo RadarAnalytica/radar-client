@@ -47,6 +47,7 @@ import ApiBlockContainer from "../components/ApiBlockContainer"
 
 
 import highQualityVideo from "../assets/video/videoChartmp4.mp4";
+import preview from "../assets/video/firstShot.jpg"
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -174,7 +175,8 @@ const MainPage = () => {
               playsInline
               loop
               muted
-              control="false"
+              preload="auto"
+              poster={preview}
               style={{ width: "100%", height: "100%" }}
             >
               <source src={highQualityVideo} type="video/mp4" />
