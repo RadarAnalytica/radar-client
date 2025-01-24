@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -45,15 +45,22 @@ import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
-import highQualityVideo from "../assets/video/videoChart.webm";
+import highQualityVideo from "../assets/video/videoChartmp4.mp4";
 import preview from "../assets/video/firstShot.jpg"
 
 const MainPage = () => {
+  const videoRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
 
+  useLayoutEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play().catch(e => console.log('Video playback error:', e));
+    }
+  }, []);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -171,15 +178,20 @@ const MainPage = () => {
           </div>
           <div className='sol-screenshot col-7'>
             <video
+              preview={preview}
+              ref={videoRef}
               src={highQualityVideo}
               autoPlay
-              playsInline
               loop
               muted
-              preload="auto"
-              poster={preview}
-              style={{ width: "100%", height: "100%" }}
-            />
+              playsInline
+              playsinline="true"
+              webkit-playsinline="true"
+              preload="metadata"
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            >
+              <source src={highQualityVideo} type="video/mp4" />
+            </video>
           </div>
         </div>
 
