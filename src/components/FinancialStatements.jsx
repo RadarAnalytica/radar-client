@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styles from "../components/FinancialStatements.module.css";
-import finLogo from "../assets/FinancialStatementsLogo3.svg";
-import finLogoMain from "../assets/FinancialStatementsLogo3.svg";
-import finLogoMobile from "../assets/FinancialStatementsMobile.svg";
+import finLogo from "../assets/optimized/FinancialStatementsLogo3.svg";
+import finLogoMain from "../assets/optimized/FinancialStatementsLogo3.svg";
+import finLogoMobile from "../assets/optimized/FinancialStatementsMobile.svg";
 import finLogoPNG from "../assets/finState.png";
 import finLogoMainPNG from "../assets/finState.png";
 import finLogoMobilePNG from "../assets/FinStateMob.png";

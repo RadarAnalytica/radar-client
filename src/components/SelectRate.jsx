@@ -6,8 +6,8 @@ import logoStart from '../pages/images/logoForCardStart.png';
 import logoPro from '../pages/images/logoForCardPro.png';
 import logoProPlus from '../pages/images/logoForCardProPlus.png';
 import Steps from '../pages/images/Steps';
-import OneRuble from '../pages/images/OneRuble.svg';
-import BlueSwich from '../pages/images/BlueSwich.svg';
+import OneRuble from '../pages/optimized/OneRuble.svg';
+import BlueSwich from '../pages/optimized/BlueSwich.svg';
 import StartLogo from '../assets/startlogo.svg';
 import FireLogo from '../assets/firelogo.svg';
 import AuthContext from '../service/AuthContext';
@@ -952,9 +952,8 @@ const SelectRate = ({ redirect, isShowText }) => {
             >
               <button
                 onClick={() => handlePeriodChange('1month')}
-                className={` ${
-                  selectedPeriod === '1month' ? 'prime-btn' : 'secondary-btn'
-                }`}
+                className={` ${selectedPeriod === '1month' ? 'prime-btn' : 'secondary-btn'
+                  }`}
                 style={{
                   fontSize: window.innerWidth < 768 ? '15px' : '18px', // Динамический размер шрифта
                 }}
@@ -968,9 +967,8 @@ const SelectRate = ({ redirect, isShowText }) => {
               </button>
               <button
                 onClick={() => handlePeriodChange('3month')}
-                className={`monthesText ${
-                  selectedPeriod === '3month' ? 'prime-btn' : 'secondary-btn'
-                }`}
+                className={`monthesText ${selectedPeriod === '3month' ? 'prime-btn' : 'secondary-btn'
+                  }`}
                 style={{
                   fontSize: window.innerWidth < 768 ? '15px' : '18px', // Динамический размер шрифта
                 }}
@@ -984,9 +982,8 @@ const SelectRate = ({ redirect, isShowText }) => {
               </button>
               <button
                 onClick={() => handlePeriodChange('6month')}
-                className={`monthesTextBtn ${
-                  selectedPeriod === '6month' ? 'prime-btn' : 'secondary-btn'
-                }`}
+                className={`monthesTextBtn ${selectedPeriod === '6month' ? 'prime-btn' : 'secondary-btn'
+                  }`}
                 style={{
                   fontSize: window.innerWidth < 768 ? '15px' : '18px',
                 }}
@@ -1008,9 +1005,8 @@ const SelectRate = ({ redirect, isShowText }) => {
           <div
             className='wid-solutionMain'
             style={{
-              backgroundImage: `url(${
-                isHighResLoaded ? highResImage : lowResImage
-              })`,
+              backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
+                })`,
             }}
           >
             <div className='sol-description col' style={{ padding: 0 }}>
