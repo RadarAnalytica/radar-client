@@ -56,6 +56,23 @@ const MainPage = () => {
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
 
   useEffect(() => {
+    const videoElement = document.querySelector("video");
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && videoElement) {
+        videoElement.play().catch(() => {
+          console.log("Failed to autoplay");
+        });
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+  useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const referral = searchParams.get('referral') || searchParams.get('radar');
     if (referral) {
