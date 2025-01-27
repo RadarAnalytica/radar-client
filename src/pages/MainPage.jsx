@@ -48,7 +48,7 @@ import ApiBlockContainer from "../components/ApiBlockContainer"
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";
 import highQualityVideo from "../assets/video/WebmHigh.webm";
-// import preview from "../assets/video/firstShot.jpg"
+import preview from "../assets/video/firstShot.jpg"
 
 const MainPage = () => {
 
@@ -57,7 +57,45 @@ const MainPage = () => {
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
 
+  const [loading, setLoading] = useState(true);
+  const resources = [
+    "../assets/video/WebmHigh.webm",
+    "../pages/images/blockApiMedium.svg",
+    "./images/manyApiMobile.svg",
+    "../pages/images/BlueSwich.svg",
+    "../pages/images/imageFonStartBsn.png",
+    "../pages/images/Dashboard_x2.png"
 
+  ];
+
+  useEffect(() => {
+    const loadResources = async () => {
+      const promises = resources.map((resource) => {
+        if (resource.endsWith(".mp4")) {
+          // Видео
+          return new Promise((resolve) => {
+            const video = document.createElement("video");
+            video.src = resource;
+            video.oncanplaythrough = resolve;
+            video.onerror = resolve;
+          });
+        } else {
+          // Изображения
+          return new Promise((resolve) => {
+            const img = new Image();
+            img.src = resource;
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        }
+      });
+
+      await Promise.all(promises); // Ждём загрузки всех ресурсов
+      setLoading(false); // Выключаем индикатор загрузки
+    };
+
+    loadResources();
+  }, [resources]);
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const referral = searchParams.get('referral') || searchParams.get('radar');
@@ -119,10 +157,9 @@ const MainPage = () => {
     img.src = highResImage;
 
     img.onload = () => {
-      // When high-res image is fully loaded, change the state
       setHighResLoaded(true);
     };
-  }, [highResImage]);
+  }, []);
 
   return (
     <div
@@ -176,6 +213,7 @@ const MainPage = () => {
             <VideoComponent
               heavyVideoSrc={highQualityVideo}
               lightVideoSrc={lowQualityVideo}
+              preview={preview}
               style={{ width: "100%", height: "auto" }}
             />
           </div>
@@ -418,11 +456,7 @@ const MainPage = () => {
               /> */}
             </div>
             <div
-              className='blockBtn'
-              style={{
-                backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
-                  })`,
-              }}
+              className={`blockBtn ${isHighResLoaded ? 'highResMainSmallBlock' : 'lowResMainSmallBlock'}`}
             >
               <div className='blockBtnContainer'>
                 <div className='blockBtnContainerHeader'>
