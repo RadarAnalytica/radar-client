@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -49,18 +49,12 @@ import highQualityVideo from "../assets/video/videoChartmp4.mp4";
 import preview from "../assets/video/firstShot.jpg"
 
 const MainPage = () => {
-  const videoRef = useRef(null);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
 
-  useLayoutEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load();
-      videoRef.current.play().catch(e => console.log('Video playback error:', e));
-    }
-  }, []);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -177,21 +171,11 @@ const MainPage = () => {
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            <video
-              preview={preview}
-              ref={videoRef}
-              src={highQualityVideo}
-              autoPlay
-              loop
-              muted
-              playsInline
-              playsinline="true"
-              webkit-playsinline="true"
-              preload="metadata"
-              style={{ width: "100%", height: "auto", objectFit: "cover" }}
-            >
-              <source src={highQualityVideo} type="video/mp4" />
-            </video>
+            <ImageComponent
+              heavyImageSrc={BlockImg_x3}
+              lightImageSrc={BlockImg_x1}
+              style={{ width: "100%", height: "auto" }}
+            />
           </div>
         </div>
 
