@@ -45,8 +45,10 @@ import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
-import highQualityVideo from "../assets/video/videoChartmp4.mp4";
-import preview from "../assets/video/firstShot.jpg"
+import VideoComponent from '../components/utilsComponents/VideoComponent';
+import lowQualityVideo from "../assets/video/WebmLow.webm";
+import highQualityVideo from "../assets/video/WebmHigh.webm";
+// import preview from "../assets/video/firstShot.jpg"
 
 const MainPage = () => {
 
@@ -171,9 +173,9 @@ const MainPage = () => {
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            <ImageComponent
-              heavyImageSrc={BlockImg_x3}
-              lightImageSrc={BlockImg_x1}
+            <VideoComponent
+              heavyVideoSrc={highQualityVideo}
+              lightVideoSrc={lowQualityVideo}
               style={{ width: "100%", height: "auto" }}
             />
           </div>

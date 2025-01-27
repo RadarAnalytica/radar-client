@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../pages/styles.css";
+import BlockImg_x1 from "../pages/images/Dashboard_x1.png";
 import BlockImg_x2 from "../pages/images/Dashboard_x2.png";
 import SolLabelStartBsn from "../pages/images/SolLabelStartBsn";
 import YellowRadarPoint from "../pages/images/YellowRadarPoint";
@@ -8,6 +9,7 @@ import CustomButton from "./utilsComponents/CustomButton";
 import AuthContext from "../service/AuthContext";
 import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-res image
 import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
+import ImageComponent from "./utilsComponents/ImageComponent ";
 
 
 const TryProduct = ({ redirect }) => {
@@ -21,15 +23,15 @@ const TryProduct = ({ redirect }) => {
     img.src = highResImage;
 
     img.onload = () => {
-      // When high-res image is fully loaded, change the state
-      setHighResLoaded(true);
+      setHighResLoaded(true); // High-res image is fully loaded
     };
-  }, [highResImage]);
+  }, []);
+
 
   return (
     <>
-      <div className='wid-solutionMain'
-        style={{ backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage})` }}
+      <div
+        className={`wid-solutionMain ${isHighResLoaded ? 'highResMain' : 'lowResMain'}`}
       >
         <div className='sol-description col' style={{ padding: 0 }}>
           <div className='headStartBsn'>
@@ -66,7 +68,11 @@ const TryProduct = ({ redirect }) => {
           </div>
         </div>
         <div className='sol-screenshot sol-screenshot_bottom'>
-          <img src={BlockImg_x2} alt='' />
+          {/* <img src={BlockImg_x2} alt='' /> */}
+          <ImageComponent
+            heavyImageSrc={BlockImg_x2}
+            lightImageSrc={BlockImg_x1}
+          />
         </div>
       </div>
     </>

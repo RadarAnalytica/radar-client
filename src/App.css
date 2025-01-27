@@ -4033,3 +4033,12 @@ canvas {
 .custom-modal-success .modal-content {
   box-shadow: none !important; 
 }
+
+
+.lowResMain {
+  background-image: url('./pages/images/imageFonStartBsn_comp.png'); /* Low-res image */
+}
+
+.highResMain {
+  background-image: url('./pages/images/imageFonStartBsn.png'); /* High-res image */
+}
