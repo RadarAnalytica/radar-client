@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 
-const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, style }) => {
-    const videoRef = useRef(null); // Reference to the video element
+const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
+    const videoRef = useRef(null);
     const [useHeavyVideo, setUseHeavyVideo] = useState(false);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, style }) => {
 
     useEffect(() => {
         if (useHeavyVideo && videoRef.current) {
-            // Synchronize the currentTime of the heavy video
+
             const currentTime = videoRef.current.currentTime;
             videoRef.current.src = heavyVideoSrc; // Switch source
             videoRef.current.currentTime = currentTime; // Sync playback time
@@ -27,6 +27,7 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, style }) => {
     return (
         <div>
             <video
+                poster={preview}
                 ref={videoRef}
                 src={useHeavyVideo ? heavyVideoSrc : lightVideoSrc}
                 style={style}
