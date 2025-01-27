@@ -10,10 +10,17 @@ import supportWindowSlice from './supportWindow/supportWindowSlice';
 import filtersDataSlice from './filters/filtersDataSlice';
 import dashboardReportSlice from './dashboardReport/dashboardReportSlice';
 import reportByMonthSlice from './reportByMonth/reportByMonthSlice';
+import byMonthFiltersSlice from './reportByMonth/byMonthFiltersSlice';
+import dashboardFiltersSlice from './dashboardReport/dashboardFiltersSlice';
 import reportByGoodsSlice from './reportByGoods/reportByGoodsSlice';
+import byGoodsFiltersSlice from './reportByGoods/byGoodsFiltersSlice';
 import plReportSlice from './reportPL/plReportSlice';
+import abcFiltersSlice from './reportABC/abcFiltersSlice';
+import plFiltersSlice from './reportPL/plFiltersSlice';
 import externalExpensesSlice from './externalExpenses/externalExpensesSlice';
 import penaltiesSlice from './reportPrnalties/penaltiesSlice';
+import penaltyFiltersSlice from './reportPrnalties/penaltyFiltersSlice';
+import chartsFiltersSlice from './reportCharts/chartsFiltersSlice';
 
 const storeOptions = {
   reducer: {
@@ -26,11 +33,18 @@ const storeOptions = {
     supportWindowSlice,
     filtersDataSlice,
     dashboardReportSlice,
+    dashboardFiltersSlice,
     reportByMonthSlice,
+    byMonthFiltersSlice,
     reportByGoodsSlice,
+    byGoodsFiltersSlice,
     plReportSlice,
+    plFiltersSlice,
+    abcFiltersSlice,
     externalExpensesSlice,
     penaltiesSlice,
+    penaltyFiltersSlice,
+    chartsFiltersSlice,
   },
 };
 

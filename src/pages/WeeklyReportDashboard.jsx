@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardReport } from '../redux/dashboardReport/dashboardReportActions';
+import { fetchDashboardFilters } from '../redux/dashboardReport/dashboardFiltersAction';
 import BottomNavigation from '../components/BottomNavigation';
 import FilterSection from '../components/FilterSection';
 import SideNav from '../components/SideNav';
@@ -31,17 +32,22 @@ const WeeklyReportDashboard = () => {
   const dashboardData = useSelector(
     (state) => state?.dashboardReportSlice?.data
   );
+  const { dashboardFilters, isFiltersLoading } = useSelector((state) => state?.dashboardFiltersSlice);
   const [isEditing, setIsEditing] = useState(false);
-  const [taxRate, setTaxRate] = useState();
-  const [selectedValue, setSelectedValue] = useState(dashboardData?.tax_type);
+  const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
+  const [selectedValue, setSelectedValue] = useState('');
   const filterSectionRef = useRef();
-  console.log('dashboardData', taxRate);
-  
+
+  useEffect(() => {
+      
+      dispatch(fetchDashboardFilters(
+        authToken
+      ))
+      
+    }, [authToken, dispatch])
 
   const handleTaxSubmit = async ({ taxType, submit } = {}) => {
     const currentTaxType = taxType || selectedValue;
-    console.log('taxRate', taxRate);
-    
     const currentTaxRate =
       taxType === "Не считать налог" ? 0 : taxRate;
 
@@ -55,14 +61,12 @@ const WeeklyReportDashboard = () => {
           tax_type: taxType,
         });
 
-        // filterSectionRef.current?.handleApplyFilters();
+        filterSectionRef.current?.handleApplyFilters();
 
         if (taxType === "Не считать налог") {
           setTaxRate(0);
           setIsEditing(false);
         }
-        handleApplyFilters()
-        setTaxRate(dashboardData?.tax_rate)
       }
 
       if (submit) {
@@ -75,7 +79,6 @@ const WeeklyReportDashboard = () => {
         // filterSectionRef.current?.handleApplyFilters();
         handleApplyFilters()
         setIsEditing(false);
-        setTaxRate(dashboardData?.tax_rate)
       }
       // filterSectionRef.current?.handleApplyFilters();
       
@@ -86,31 +89,26 @@ const WeeklyReportDashboard = () => {
   };
 
   const handleApplyFilters = useCallback(async () => {
-    const storageItem = localStorage.getItem('dashboard')
-    let currentPageData = JSON.parse(storageItem)
-    currentPageData = currentPageData ? currentPageData : {}  
+    // const storageItem = localStorage.getItem('dashboard')
+    // let currentPageData = JSON.parse(storageItem)
+    // currentPageData = currentPageData ? currentPageData : {}
+    // console.log(currentPageData);
     
-    const filterPayload = {
-      warehouse_name_filter: currentPageData.wh ? currentPageData.wh : [],
-      brand_name_filter: currentPageData.brand ? currentPageData.brand : [],
-      groups_filter: currentPageData.group ? currentPageData.group : [],
-      date_sale_filter: {
-        years: currentPageData.year ? currentPageData.year : [],
-        months: currentPageData.month ? currentPageData.month : [],
-        weekdays: currentPageData.week ? currentPageData.week : [],
-      },
-    };
+    // const filterPayload = {
+    //   warehouse_name_filter: currentPageData.wh ? currentPageData.wh : [],
+    //   brand_name_filter: currentPageData.brand ? currentPageData.brand : [],
+    //   groups_filter: currentPageData.group ? currentPageData.group : [],
+    //   date_sale_filter: {
+    //     years: currentPageData.year ? currentPageData.year : [],
+    //     months: currentPageData.month ? currentPageData.month : [],
+    //     weekdays: currentPageData.week ? currentPageData.week : [],
+    //   },
+    // };
   
       dispatch(
-        fetchDashboardReport({ token: authToken, filterData: filterPayload })
+        fetchDashboardReport({ token: authToken })
       );
-      
-      
-    }, [authToken, dispatch])
-  
-    useEffect(() => {
-      setTaxRate(dashboardData?.taxType)
-    }, [dashboardData])
+    }, [authToken, dispatch, isFiltersLoading])
 
   return (
     <div className='dashboard-page'>
@@ -122,7 +120,7 @@ const WeeklyReportDashboard = () => {
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
-              <NewFilterGroup pageIdent='dashboard' getData={handleApplyFilters} />
+              <NewFilterGroup pageIdent='dashboard' filtersData={dashboardFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
               {/* <FilterSection ref={filterSectionRef} /> */}
             </div>
             <div className='container dash-container'>
@@ -411,8 +409,7 @@ const WeeklyReportDashboard = () => {
                         >
                           <div className={styles.headerInRow}>Штук</div>
                           <div>
-                            {dashboardData?.total_compensation_defects
-                              .quantity || '0'}
+                            {dashboardData?.total_compensation_defects?.quantity || '0'}
                           </div>
                         </div>
                         <div
@@ -420,7 +417,7 @@ const WeeklyReportDashboard = () => {
                         >
                           <div className={styles.headerInRow}>₽</div>
                           {formatPrice(
-                            dashboardData?.total_compensation_defects.rub
+                            dashboardData?.total_compensation_defects?.rub
                           ) || '0'}
                         </div>
                       </div>
@@ -435,15 +432,14 @@ const WeeklyReportDashboard = () => {
                           className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                         >
                           <div>
-                            {dashboardData?.total_compensation_damage
-                              .quantity || '0'}
+                            {dashboardData?.total_compensation_damage?.quantity || '0'}
                           </div>
                         </div>
                         <div
                           className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                         >
                           {formatPrice(
-                            dashboardData?.total_compensation_damage.rub
+                            dashboardData?.total_compensation_damage?.rub
                           ) || '0'}
                         </div>
                       </div>
@@ -489,12 +485,12 @@ const WeeklyReportDashboard = () => {
                         <div>
                           {' '}
                           {formatPrice(
-                            dashboardData?.total_compensation_penalties.rub
+                            dashboardData?.total_compensation_penalties?.rub
                           ) || '0'}{' '}
                           ₽
                         </div>
                         <div>
-                          {dashboardData?.total_compensation_penalties.percent}{' '}
+                          {dashboardData?.total_compensation_penalties?.percent}{' '}
                           %
                         </div>
                       </div>
@@ -502,7 +498,7 @@ const WeeklyReportDashboard = () => {
                   </div>
                   <div
                     className={styles.salesChartWrapper}
-                    style={{ marginTop: '28px' }}
+                    style={{ marginTop: '20px' }}
                   >
                     <div className={styles.title}>Налог</div>
                     <div className={styles.salesChartRow}>

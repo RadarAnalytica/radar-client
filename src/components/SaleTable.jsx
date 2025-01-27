@@ -10,10 +10,8 @@ const SalesTable = ({ tableData }) => {
     // Dynamically set all years and their weeks to expanded
     Object.entries(tableData).forEach(([year, yearData]) => {
       initialState[year] = true; // Set year to expanded
-      console.log('Initial State', initialState)
       Object.entries(yearData).forEach(([date]) => {
         initialState[`week-${date}`] = true;
-        console.log('Initial State', initialState)
       });
     });
     return initialState;
@@ -251,7 +249,7 @@ const SalesTable = ({ tableData }) => {
                   className={styles.defectCompnesaitionCell}
                   style={{ width: '148px' }}
                 >
-                  {formatPrice(data.marginality) || '0'} ₽
+                  {formatPrice(data.marginality) || '0'} %
                 </div>
                 <div className={styles.defectCompnesaitionCell}>
                   {data.return_on_investment || '0'} %

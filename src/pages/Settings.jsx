@@ -75,8 +75,6 @@ const Settings = () => {
         }
     }
 
-    console.log(tax);
-
     return (
         <div className='dashboard-page'>
             <SideNav />

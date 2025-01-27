@@ -8,6 +8,7 @@ import TablePL from '../components/TablePL';
 import BottomNavigation from '../components/BottomNavigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPLReport } from '../redux/reportPL/plReportActions';
+import { fetchPLFilters } from '../redux/reportPL/plFiltersAction';
 import styles from './WeeklyReportPL.module.css';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/goods-fake.png';
@@ -17,6 +18,7 @@ const WeeklyReportPL = () => {
   const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const { plData, isLoading } = useSelector((state) => state?.plReportSlice);
+  const { plFilters, isFiltersLoading } = useSelector((state) => state?.plFiltersSlice);
   const [activeFilters, setActiveFilters] = useState({
     brand: [],
     group: [],
@@ -24,26 +26,68 @@ const WeeklyReportPL = () => {
   const [filterOptions, setFilterOptions] = useState([]);
   const [isLoadingFilters, setIsLoadingFilters] = useState(false);
 
+  useEffect(() => {
+    dispatch(fetchPLFilters(
+      authToken
+    ))
+    
+  }, [authToken, dispatch])
+
+  // const getPLFilters = useCallback((token) => {
+       
+  //   dispatch(
+  //     fetchPLFilters({
+  //       token: token,
+  //     })
+  //   );
+  //   console.log('plFilters', plFilters);
+    
+  // })
+
   const handleApplyFilters = useCallback(() => {
     // Get the current active filters directly
-    const storageItem = localStorage.getItem('pl')
-    let currentPageData = JSON.parse(storageItem)
-    currentPageData = currentPageData ? currentPageData : {}  
-    console.log('currentPageData', currentPageData);
+    // const storageItem = localStorage.getItem('pl')
+    // let currentPageData = JSON.parse(storageItem)
+    // currentPageData = currentPageData ? currentPageData : {}  
+    // console.log('currentPageData', currentPageData);
 
-    const brandFilter = currentPageData.brand;
-    const groupFilter = currentPageData.group;
-    console.log('brandFilterList', brandFilter);
-    console.log('groupFilterList', groupFilter);
-    
+    // const brandFilter = currentPageData.brand;
+    // const groupFilter = currentPageData.group;
     dispatch(
-      fetchPLReport({
-        brandFilter,
-        groupFilter,
-        token: authToken,
-      })
+      fetchPLReport({token: authToken}
+      )
     );
-  }, [authToken, dispatch]);
+    
+    return
+    
+    if (isFiltersLoading === false) {
+      console.log('plFilters in get PL data', plFilters);
+      // console.log('==DATA== in get PL data', data);
+      
+      
+      const brandFilter = []
+      const groupFilter = []
+      console.log('brandFilterList', brandFilter);
+      console.log('groupFilterList', groupFilter);
+      if (!!plFilters.brand && Object.keys(plFilters.brand).length > 0) {
+        for (let _key of Object.keys(plFilters.brand)) {
+          if (!!plFilters.brand[_key]) {
+            brandFilter.push(_key)
+          }
+        }
+      }
+      if (!!plFilters.group && Object.keys(plFilters.group).length > 0) {
+        for (let _key of Object.keys(plFilters.group)) {
+          if (!!plFilters.group[_key]) {
+            groupFilter.push(_key)
+          }
+        }
+      }
+      
+      
+    }
+    
+  }, [authToken, dispatch, isFiltersLoading]);
 
   // useEffect(() => {
   //   const loadFilters = async () => {
@@ -238,7 +282,7 @@ const WeeklyReportPL = () => {
               </div>
             </div> */}
             <div className='container dash-container'>
-              <NewFilterGroup pageIdent='pl' getData={handleApplyFilters} />
+              <NewFilterGroup pageIdent='pl' filtersData={plFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
             </div>
             <div className='container dash-container'>
               <TablePL plData={plData} />

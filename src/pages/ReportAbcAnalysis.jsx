@@ -1,12 +1,14 @@
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import { useState, useContext, useEffect, useMemo, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './ReportAbcAnalysis.module.css';
 import upArrow from '../assets/up.svg';
 import downArrow from '../assets/down.svg';
 import BottomNavigation from '../components/BottomNavigation';
 import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
+import { fetchABCFilters } from '../redux/reportABC/abcFiltersActions'
 import SelectField from '../components/SelectField';
 import abcFake from '../pages/images/abc_fake.png';
 import DemonstrationSection from '../components/DemonstrationSection';
@@ -16,16 +18,8 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 const ReportAbcAnalysis = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRevenueLoading, setIsRevenueLoading] = useState(false);
-  // const user = {
-  //   id: 2,
-  //   role: 'admin',
-  //   is_confirmed: true,
-  //   is_onboarded: true,
-  //   is_test_used: false,
-  //   email: 'modinsv@yandex.ru',
-  //   subscription_status: 'Smart',
-  //   is_report_downloaded: !null,
-  // };
+  const dispatch = useDispatch();
+  const { abcFilters, isFiltersLoading } = useSelector((state) => state?.abcFiltersSlice);
 
   const [error, setError] = useState(null);
   const { authToken, user } = useContext(AuthContext);
@@ -43,11 +37,8 @@ const ReportAbcAnalysis = () => {
   };
 
   const [expandedRows, setExpandedRows] = useState({});
-  const [firstRender, setFirstRender] = useState(true)
-  
+
   const toggleRow = (id) => {
-    console.log('id ib toggle row', id);
-    
     setExpandedRows((prevState) => ({
       ...prevState,
       [id]: !prevState[id],
@@ -151,6 +142,26 @@ const ReportAbcAnalysis = () => {
       ),
     };
   };
+
+  useEffect(() => {
+    // if (Object.keys(abcFilters).length === 0) {
+      dispatch(fetchABCFilters(
+        authToken
+      ))
+
+    // }
+            
+
+      // const getData = async () => {
+      //   return await ServiceFunctions.postAbcReportsData(authToken);
+      // }
+      // const data = getData()
+
+      // console.log('!!!DATA ABC', data)
+      
+    }, [authToken, dispatch])
+
+
 
   // useEffect(() => {
   //   const initializeFiltersAndData = async () => {
@@ -257,47 +268,43 @@ const ReportAbcAnalysis = () => {
     setError(null);
 
     try {
-      const storageItem = localStorage.getItem('abc')
-      let currentPageData = JSON.parse(storageItem)
-      currentPageData = currentPageData ? currentPageData : {}  
-      console.log('currentPageData', currentPageData);
+      // const storageItem = localStorage.getItem('abc')
+      // let currentPageData = JSON.parse(storageItem)
+      // currentPageData = currentPageData ? currentPageData : {}  
+      // console.log('currentPageData', currentPageData);
 
-      const filters = {
-        article_filter_list: currentPageData.wbId || [],
-        brand_filter_list: currentPageData.brand || [],
-        group_filter_list: currentPageData.group || [],
-        month_filter_list: currentPageData.month || [],
-        product_filter_list: currentPageData.product || [],
-        year_filter_list: currentPageData.year || [],
-        week_filter_list: currentPageData.week || [],
-      }
-      const data = await ServiceFunctions.postAbcReportsData(authToken, filters);
+      // const filters = {
+      //   article_filter_list: currentPageData.wbId || [],
+      //   brand_filter_list: currentPageData.brand || [],
+      //   group_filter_list: currentPageData.group || [],
+      //   month_filter_list: currentPageData.month || [],
+      //   product_filter_list: currentPageData.product || [],
+      //   year_filter_list: currentPageData.year || [],
+      //   week_filter_list: currentPageData.week || [],
+      // }
+      const data = await ServiceFunctions.postAbcReportsData(authToken);
       setDataRevenue(data);
-      console.log('data', data);
-      
-      console.log('expandedRows', expandedRows);
-      
-      if (!!firstRender && data) {
-        const result = {}
-        for (let item of data) {
-          console.log('item.wb_id', item.wb_id);
-          
-          result[item.wb_id] = true
-          console.log('result', result);
-          
-        }
-        console.log('result', result);
-        
-        setExpandedRows(result)
-        setFirstRender(false)
-      }
     } catch (err) {
       setError('Failed to load data');
     } finally {
       setIsRevenueLoading(false);
     }
 
-  }, [authToken])
+  }, [authToken, isFiltersLoading])
+
+  // useEffect(() => {
+  //   console.log('Настройка получения данных');
+    
+  //   setIsRevenueLoading(true);
+  //   setError(null);
+  //   const getData = async () => {
+  //     return await ServiceFunctions.postAbcReportsData(authToken);
+  //   }
+  //   const data = getData()
+    
+  //   setDataRevenue(data || []);
+  //   setIsRevenueLoading(false);
+  // }, [authToken, isFiltersLoading]);
 
   const updateData = async () => {
     setIsRevenueLoading(true);
@@ -457,6 +464,7 @@ const ReportAbcAnalysis = () => {
     setSelectedGroups(newSelectedGroups);
     setAllSelectedGroups(newAllSelected);
   };
+
   const handleArticle = () => {
     const newSelectedArticles = {};
     const newAllSelected = !allSelectedArticles;
@@ -477,6 +485,7 @@ const ReportAbcAnalysis = () => {
     setSelectedProducts(newSelectedProducts);
     setAllSelectedProducts(newAllSelected);
   };
+
   const handleFiltersCollapse = () => {
     const clearedBrands = Object.keys(selectedBrands).reduce((acc, brand) => {
       acc[brand] = false;
@@ -527,7 +536,7 @@ const ReportAbcAnalysis = () => {
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
-              <NewFilterGroup pageIdent='abc' getData={applyFilters} />
+              <NewFilterGroup pageIdent='abc' filtersData={abcFilters} isLoading={isFiltersLoading} getData={applyFilters} />
             </div>
             {/* {' '}
             <div className='container dash-container'>
@@ -1481,7 +1490,7 @@ const ReportAbcAnalysis = () => {
                               height: '16px',
                             }}
                           />
-                        </span>setDataRevenue
+                        </span>
                        
                         {expandedRows[item.wb_id] &&
                           item.items.map((product, i) => (

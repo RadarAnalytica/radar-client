@@ -102,7 +102,7 @@ const DashboardPage = () => {
       oneShop?.is_primary_collect &&
       oneShop?.is_primary_collect === allShop
     ) {
-      const currentShop = shops?.find((item) => item.id == activeShopId);
+      const currentShop = shops?.find((item) => item.id === activeShopId);
       if (currentShop) {
         localStorage.setItem('activeShop', JSON.stringify(currentShop));
       }
@@ -270,6 +270,12 @@ const DashboardPage = () => {
   const updateDataDashBoard = async (days, activeBrand, authToken) => {
     setLoading(true);
     try {
+      const controlValue = shops.filter(el => el.id === activeShopId).length
+      if (shops.length > 0 && controlValue !== 1) {
+        localStorage.removeItem('activeShop')
+        window.location.reload()
+      }
+      
       const data = await ServiceFunctions.getDashBoard(
         authToken,
         days,
@@ -986,7 +992,7 @@ const DashboardPage = () => {
                         onClick={handleModalOpen}
                       >
                         Детализировать заказы по времени
-                      </div> 
+                      </div>
                     </div> */}
                   </BigChart>
                 </div>

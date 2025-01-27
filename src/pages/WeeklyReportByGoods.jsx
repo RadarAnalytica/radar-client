@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchReportByGoods } from '../redux/reportByGoods/reportByGoodsActions';
+import { fetchByGoodsFilters } from '../redux/reportByGoods/byGoodsFiltersAction';
+
 import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import SideNav from '../components/SideNav';
@@ -21,6 +23,7 @@ const WeeklyReportByGoods = () => {
   const { weeklyData, loading, error } = useSelector(
     (state) => state.reportByGoodsSlice
   );
+  const { byGoodsFilters, isFiltersLoading } = useSelector((state) => state?.byGoodsFiltersSlice);
   const [filterOptions, setFilterOptions] = useState([]);
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -31,6 +34,13 @@ const WeeklyReportByGoods = () => {
   const [activeFilters, setActiveFilters] = useState({});
   const [filterIsLoading, setFilterIsLoading] = useState(false);
 
+  useEffect(() => {
+          
+    dispatch(fetchByGoodsFilters(
+      authToken
+    ))
+    
+  }, [authToken, dispatch])
   // useEffect(() => {
   //   const fetchFilters = async () => {
   //     setFilterIsLoading(true);
@@ -161,34 +171,13 @@ const WeeklyReportByGoods = () => {
   };
 
   const handleFetchReport = useCallback(() => {
-    const storageItem = localStorage.getItem('goods')
-    let currentPageData = JSON.parse(storageItem)
-    currentPageData = currentPageData ? currentPageData : {}  
-    console.log('currentPageData', currentPageData);
-
-    const filters = {
-      vendor_code_filter: currentPageData.vendorCode || [],
-      size_name_filter: currentPageData.size || [],
-      brand_name_filter: currentPageData.brand || [],
-      country_filter: currentPageData.country || [],
-      wb_id_filter: currentPageData.wbId || [],
-      title_filter: currentPageData.product || [],
-      subject_name_filter: currentPageData.subject || [],
-      srid_filter: currentPageData.srid || [],
-      groups_filter: currentPageData.group || [],
-      date_sale_filter: {
-        years: currentPageData.year || [],
-        months: currentPageData.month || [],
-        weekdays: currentPageData.week || [],
-      },
-    }
+    
     dispatch(
       fetchReportByGoods({
         authToken: authToken,
-        filters,
       })
     );
-  }, [authToken, dispatch]);
+  }, [authToken, dispatch, isFiltersLoading]);
 
   return (
     <div className='dashboard-page'>
@@ -198,7 +187,7 @@ const WeeklyReportByGoods = () => {
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
-              <NewFilterGroup pageIdent='goods' getData={handleFetchReport} />
+              <NewFilterGroup pageIdent='goods' filtersData={byGoodsFilters} isLoading={isFiltersLoading} getData={handleFetchReport} />
             </div>
             {/* <div className='container dash-container'>
               <div

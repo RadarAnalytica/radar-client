@@ -1,94 +1,174 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import styles from './FilterElem.module.css';
 import { monthNames } from '../../service/reportConfig'
+import { switchPLFilter, switchAllPLFilter } from '../../redux/reportPL/plFiltersSlice'
+import { switchDashboardFilter, switchAllDashboardFilter } from '../../redux/dashboardReport/dashboardFiltersSlice'
+import { switchByMonthFilter, switchAllByMonthFilter } from '../../redux/reportByMonth/byMonthFiltersSlice'
+import { switchByGoodsFilter, switchAllByGoodsFilter } from '../../redux/reportByGoods/byGoodsFiltersSlice'
+import { switchABCFilter, switchAllABCFilter } from '../../redux/reportABC/abcFiltersSlice'
+import { switchPenaltyFilter, switchAllPenaltyFilter } from '../../redux/reportPrnalties/penaltyFiltersSlice'
+import { switchChartsFilter, switchAllChartsFilter } from '../../redux/reportCharts/chartsFiltersSlice'
 
 const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData, changeWeekFilter}) => {
   const [isAllSelected, setIsAllSelected] = useState((false));
   const [options, setOptions] = useState([]);
+  const dispatch = useDispatch()
   // const [isLoading, setIsLoading] = useState(startLoading);
-
-  const handleSelectAll = useCallback(() => {
-    const storageItem = localStorage.getItem(pageIdent);
-    let currentPageData = JSON.parse(storageItem);
-    currentPageData = currentPageData ? currentPageData : {}
-    
-    if (isAllSelected) {
-      setIsAllSelected(false)
-      setOptions((list) => {
-        return list.map((elem) => ({...elem, isSelected: false}))
-      })
-      currentPageData[filterIdent] = []
-    } else {
-      setIsAllSelected(true)
-      setOptions((list) => {
-        return list.map((elem) => ({...elem, isSelected: true}))
-      })
-      currentPageData[filterIdent] = options.map((elem) => elem.value)
-    }
-    localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
-  }, [filterIdent, isAllSelected, options, pageIdent]);
-
+  
   useEffect(() => {
     const current = []
-    const storageItem = localStorage.getItem(pageIdent)
+    // const storageItem = localStorage.getItem(pageIdent)
     
-    let currentPageData = JSON.parse(storageItem)
-    currentPageData = currentPageData ? currentPageData : {}
-    
-    let currentFilterData = currentPageData[filterIdent]
-    
-    for (let elem of items) {
+    // let currentPageData = JSON.parse(storageItem)
+    // currentPageData = currentPageData ? currentPageData : {}
+    // let currentFilterData = currentPageData[filterIdent] ? currentPageData[filterIdent] : []
+    let counter = 0
+    for (let elem of items ? Object.keys(items) : []) {
+      
       current.push({
-        key: `${filterIdent}${items.indexOf(elem)}`,
+        key: `${filterIdent}${counter}`,
         value: elem,
-        isSelected: currentFilterData ? currentFilterData.includes(elem) : false
+        isSelected: items[elem]// currentFilterData.includes(elem)
       })
+      counter++
     }
-    if (filterIdent === 'year' || filterIdent === 'month') {
-      changeWeekFilter();
-    }
+    // if (filterIdent === 'year' || filterIdent === 'month') {
+    //   changeWeekFilter();
+    // }
     setOptions(current)
-    // handleSelectAll()
-  }, [items])
+  }, [items, filterIdent, pageIdent])
 
   const changeSelectOption = (optionElem) => {
-    const updatedList = options.map((elem) => (
-      elem.value === optionElem.value
-        ? { ...elem, isSelected: !elem.isSelected }
-        : elem
-    ));
-    console.log('pageIdent', pageIdent);
+    switch (pageIdent) {
+            case 'dashboard':
+              dispatch(switchDashboardFilter(
+                { ident: filterIdent, elem: optionElem.value }
+              ))
+                return 
+            case 'pl':
+                dispatch(switchPLFilter(
+                      { ident: filterIdent, elem: optionElem.value }
+                    ))
+                return
+            case 'month':
+              dispatch(switchByMonthFilter(
+                { ident: filterIdent, elem: optionElem.value }
+              ))
+              return
+            case 'goods':
+              dispatch(switchByGoodsFilter(
+                { ident: filterIdent, elem: optionElem.value }
+              ))
+              return
+            case 'abc':
+              dispatch(switchABCFilter(
+                { ident: filterIdent, elem: optionElem.value }
+              ))
+              return
+            case 'penalty':
+              dispatch(switchPenaltyFilter(
+                { ident: filterIdent, elem: optionElem.value }
+              ))
+              return 
+            case 'charts':
+              dispatch(switchChartsFilter(
+                { ident: filterIdent, elem: optionElem.value }
+              ))
+              return 
+            default:
+                break;
+        }
+    // const updatedList = options.map((elem) => (
+    //   elem.value === optionElem.value
+    //     ? { ...elem, isSelected: !elem.isSelected }
+    //     : elem
+    // ));
     
-    const storageItem = localStorage.getItem(pageIdent);
-    let currentPageData = JSON.parse(storageItem);
-    currentPageData = currentPageData ? currentPageData : {}
-    let currentFilterData = currentPageData[filterIdent] ? currentPageData[filterIdent] : []
-    if (currentFilterData.includes(optionElem.value)) {
-      currentFilterData = currentFilterData.filter((el) => el !== optionElem.value);
-    } else {
-      currentFilterData.push(optionElem.value);
-    }
-    console.log('currentFilterData', currentFilterData);
+    // const storageItem = localStorage.getItem(pageIdent);
+    // let currentPageData = JSON.parse(storageItem);
+    // currentPageData = currentPageData ? currentPageData : {}
+    // let currentFilterData = currentPageData[filterIdent] ? currentPageData[filterIdent] : []
+    // if (currentFilterData.includes(optionElem.value)) {
+    //   currentFilterData = currentFilterData.filter((el) => el !== optionElem.value);
+    // } else {
+    //   currentFilterData.push(optionElem.value);
+    // }
+    // console.log('currentFilterData', currentFilterData);
     
-    currentPageData[filterIdent] = currentFilterData
-    console.log('currentPageData', currentPageData);
+    // currentPageData[filterIdent] = currentFilterData
+    // console.log('currentPageData', currentPageData);
     
-    localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
-    if (filterIdent === 'year' || filterIdent === 'month') {
-      changeWeekFilter();
-    }
-    setOptions(updatedList)
+    // localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
+    // if (filterIdent === 'year' || filterIdent === 'month') {
+    //   changeWeekFilter();
+    // }
+    // setOptions(updatedList)
   }
 
   useEffect(() =>  {
     const selectList = options.map(x => x.isSelected ? 1 : 0)
     const res = (selectList.reduce((acc, num) => acc + num, 0)) === options.length
     setIsAllSelected(res);
-    if (filterIdent === 'year' || filterIdent === 'month') {
-      changeWeekFilter();
-    }
-  }, [options, changeWeekFilter, filterIdent])
+    // if (filterIdent === 'year' || filterIdent === 'month') {
+    //   changeWeekFilter();
+    // }
+  }, [options, filterIdent])
 
+
+  const handleSelectAll = () => {
+    // const storageItem = localStorage.getItem(pageIdent);
+    // let currentPageData = JSON.parse(storageItem);
+    // currentPageData = currentPageData ? currentPageData : {}
+    let isAllValue = true
+    if (isAllSelected) {
+      isAllValue = false
+      
+      // currentPageData[filterIdent] = []
+    } 
+    setIsAllSelected(isAllValue)
+    switch (pageIdent) {
+      case 'dashboard':
+        dispatch(switchAllDashboardFilter(
+          { ident: filterIdent, value: isAllValue }
+        ))
+        return 
+      case 'pl':
+        dispatch(switchAllPLFilter(
+          { ident: filterIdent, value: isAllValue }
+        ))
+        return
+      case 'month':
+        dispatch(switchAllByMonthFilter(
+          { ident: filterIdent, value: isAllValue }
+        ))
+        return 
+      case 'goods':
+        dispatch(switchAllByGoodsFilter(
+          { ident: filterIdent, value: isAllValue }
+        ))
+        return 
+      case 'abc':
+        dispatch(switchAllABCFilter(
+          { ident: filterIdent, value: isAllValue }
+        ))
+        return 
+      case 'penalty':
+        dispatch(switchAllPenaltyFilter(
+          { ident: filterIdent, value: isAllValue }
+        ))
+        return 
+      case 'charts':
+        dispatch(switchAllChartsFilter(
+          { ident: filterIdent, value: isAllValue }
+        ))
+        return 
+      default:
+          break;
+  }
+    // localStorage.setItem(pageIdent, JSON.stringify(currentPageData))
+  }
   const handleTitleDisplay = (e) => {
     const span = e.currentTarget;
     if (span.scrollWidth > span.clientWidth) {

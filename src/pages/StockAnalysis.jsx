@@ -35,10 +35,18 @@ const StockAnalysis = () => {
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const storedActiveShop = localStorage.getItem('activeShop');
+  const storedActiveShopObject = JSON.parse(storedActiveShop);
+
   let activeShop;
   if (storedActiveShop && typeof storedActiveShop === 'string') {
     try {
-      activeShop = JSON.parse(storedActiveShop);
+      const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
+      if (shops.length > 0 && controlValue !== 1) {
+        localStorage.removeItem('activeShop')
+        window.location.reload()
+      }
+
+      activeShop = storedActiveShopObject;
     } catch (error) {
       console.error('Error parsing storedActiveShop:', error);
       activeShop = null;

@@ -126,7 +126,7 @@ const ReportMain = () => {
   }
 
   return (
-    <div className='dashboard-page'>
+    <div className='dashboard-page notranslate'>
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'Главная'} subTitle={'Отчёт /'} />

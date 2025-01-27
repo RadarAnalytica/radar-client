@@ -9,6 +9,8 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPenaltiesData } from '../redux/reportPrnalties/penaltiesActions';
+import { fetchPenaltyFilters } from '../redux/reportPrnalties/penaltyFiltersActions';
+
 import { monthNames, getMonthNumbers } from '../service/utils';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/penalties-fake.png';
@@ -20,166 +22,172 @@ const WeeklyReportPenaltiesPage = () => {
   const { penaltiesData, loading } = useSelector(
     (state) => state.penaltiesSlice
   );
+  const { penaltyFilters, isFiltersLoading } = useSelector((state) => state?.penaltyFiltersSlice);
   const { authToken, user } = useContext(AuthContext);
-  const [isOpenFilters, setIsOpenFilters] = useState(false);
-  const [filterDataSet, setFilterDataSet] = useState({});
-  const [selectedFilters, setSelectedFilters] = useState({
-    year: [],
-    month: [],
-    week: [],
-    article: [],
-    size: [],
-    srid: [],
-    kindsOfLogistics: [],
-    goods: [],
-  });
-  const [filterIsLoading, setFilterIsLoading] = useState(false);
+  // const [isOpenFilters, setIsOpenFilters] = useState(false);
+  // const [filterDataSet, setFilterDataSet] = useState({});
+  // const [selectedFilters, setSelectedFilters] = useState({
+  //   year: [],
+  //   month: [],
+  //   week: [],
+  //   article: [],
+  //   size: [],
+  //   srid: [],
+  //   kindsOfLogistics: [],
+  //   goods: [],
+  // });
+  // const [filterIsLoading, setFilterIsLoading] = useState(false);
+
+  useEffect(() => {
+      dispatch(fetchPenaltyFilters(
+        authToken
+      ))
+    }, [authToken, dispatch])
 
   const handleApplyFilters = useCallback(() => {
     // const monthNumbers = getMonthNumbers(selectedFilters.month);
-    const storageItem = localStorage.getItem('penalty')
-    let currentPageData = JSON.parse(storageItem)
-    currentPageData = currentPageData ? currentPageData : {}  
-    console.log('currentPageData', currentPageData);
+    // const storageItem = localStorage.getItem('penalty')
+    // let currentPageData = JSON.parse(storageItem)
+    // currentPageData = currentPageData ? currentPageData : {}  
+    // console.log('currentPageData', currentPageData);
 
-    const filters = {
-      size_name_filter: currentPageData.size,
-      wb_id_filter: currentPageData.wbId,
-      srid_filter: currentPageData.srid,
-      title_filter: currentPageData.product,
-      action_type_filter: currentPageData.types,
-      date_sale_filter: {
-        years: currentPageData.year,
-        months: currentPageData.month,
-        weekdays: currentPageData.week,
-      },
-    };
+    // const filters = {
+    //   size_name_filter: currentPageData.size,
+    //   wb_id_filter: currentPageData.wbId,
+    //   srid_filter: currentPageData.srid,
+    //   title_filter: currentPageData.product,
+    //   action_type_filter: currentPageData.types,
+    //   date_sale_filter: {
+    //     years: currentPageData.year,
+    //     months: currentPageData.month,
+    //     weekdays: currentPageData.week,
+    //   },
+    // };
     dispatch(
       fetchPenaltiesData({
-        filters,
         token: authToken,
       })
     );
-  }, [authToken, dispatch]);
+  }, [authToken, dispatch, isFiltersLoading]);
 
-  const handleSelect = (category, id) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [category]: prev[category].includes(id)
-        ? prev[category].filter((item) => item !== id)
-        : [...prev[category], id],
-    }));
-  };
+  // const handleSelect = (category, id) => {
+  //   setSelectedFilters((prev) => ({
+  //     ...prev,
+  //     [category]: prev[category].includes(id)
+  //       ? prev[category].filter((item) => item !== id)
+  //       : [...prev[category], id],
+  //   }));
+  // };
 
-  const handleClearAll = (category) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [category]: [],
-    }));
-  };
+  // const handleClearAll = (category) => {
+  //   setSelectedFilters((prev) => ({
+  //     ...prev,
+  //     [category]: [],
+  //   }));
+  // };
 
-  useEffect(() => {
-    setFilterIsLoading(true);
-    const fetchFilterOptions = async () => {
-      try {
-        const data = await ServiceFunctions.getPenaltiesFilters(authToken);
-        // Convert months to their name representations using monthNames
-        const monthValues = data.date_sale_filter?.months || [];
-        const monthsWithNames = monthValues.map(
-          (value) => monthNames[value] || value
-        );
-        // Set all filters initially selected
+  // useEffect(() => {
+  //   setFilterIsLoading(true);
+  //   const fetchFilterOptions = async () => {
+  //     try {
+  //       const data = await ServiceFunctions.getPenaltiesFilters(authToken);
+  //       // Convert months to their name representations using monthNames
+  //       const monthValues = data.date_sale_filter?.months || [];
+  //       const monthsWithNames = monthValues.map(
+  //         (value) => monthNames[value] || value
+  //       );
+  //       // Set all filters initially selected
 
-        const initialFilters = {
-          year: data.date_sale_filter?.years || [],
-          month: monthsWithNames,
-          week: data.date_sale_filter?.weekdays || [],
-          article: data.wb_id_filter || [],
-          size: data.size_name_filter || [],
-          srid: data.srid_filter || [],
-          kindsOfLogistics: data.action_type_filter || [],
-          goods: data.title_filter || [],
-        };
+  //       const initialFilters = {
+  //         year: data.date_sale_filter?.years || [],
+  //         month: monthsWithNames,
+  //         week: data.date_sale_filter?.weekdays || [],
+  //         article: data.wb_id_filter || [],
+  //         size: data.size_name_filter || [],
+  //         srid: data.srid_filter || [],
+  //         kindsOfLogistics: data.action_type_filter || [],
+  //         goods: data.title_filter || [],
+  //       };
 
-        setSelectedFilters(initialFilters);
-        setFilterDataSet(data);
+  //       setSelectedFilters(initialFilters);
+  //       setFilterDataSet(data);
 
-        // Prepare and dispatch the initial filters
-        const monthNumbers = getMonthNumbers(monthsWithNames);
-        const filters = {
-          size_name_filter: initialFilters.size,
-          wb_id_filter: initialFilters.article,
-          srid_filter: initialFilters.srid,
-          title_filter: initialFilters.goods,
-          action_type_filter: initialFilters.kindsOfLogistics,
-          date_sale_filter: {
-            years: initialFilters.year,
-            months: monthNumbers,
-            weekdays: initialFilters.week,
-          },
-        };
+  //       // Prepare and dispatch the initial filters
+  //       const monthNumbers = getMonthNumbers(monthsWithNames);
+  //       const filters = {
+  //         size_name_filter: initialFilters.size,
+  //         wb_id_filter: initialFilters.article,
+  //         srid_filter: initialFilters.srid,
+  //         title_filter: initialFilters.goods,
+  //         action_type_filter: initialFilters.kindsOfLogistics,
+  //         date_sale_filter: {
+  //           years: initialFilters.year,
+  //           months: monthNumbers,
+  //           weekdays: initialFilters.week,
+  //         },
+  //       };
 
-        dispatch(
-          fetchPenaltiesData({
-            filters,
-            token: authToken,
-          })
-        );
-      } catch (error) {
-        console.error('Failed to fetch filter options:', error);
-      } finally {
-        setFilterIsLoading(false);
-      }
-    };
+  //       dispatch(
+  //         fetchPenaltiesData({
+  //           filters,
+  //           token: authToken,
+  //         })
+  //       );
+  //     } catch (error) {
+  //       console.error('Failed to fetch filter options:', error);
+  //     } finally {
+  //       setFilterIsLoading(false);
+  //     }
+  //   };
 
-    fetchFilterOptions();
-  }, []);
+  //   fetchFilterOptions();
+  // }, []);
 
-  useEffect(() => {
-    if (filterDataSet && Object.keys(filterDataSet).length > 0) {
-      const savedFilters = localStorage.getItem('penaltiesReportFilters');
-      if (savedFilters) {
-        const parsedFilters = JSON.parse(savedFilters);
-        setSelectedFilters(parsedFilters);
+  // useEffect(() => {
+  //   if (filterDataSet && Object.keys(filterDataSet).length > 0) {
+  //     const savedFilters = localStorage.getItem('penaltiesReportFilters');
+  //     if (savedFilters) {
+  //       const parsedFilters = JSON.parse(savedFilters);
+  //       setSelectedFilters(parsedFilters);
 
-        // Prepare and dispatch filters
-        const monthNumbers = getMonthNumbers(parsedFilters.month);
-        const filters = {
-          size_name_filter: parsedFilters.size,
-          wb_id_filter: parsedFilters.article,
-          srid_filter: parsedFilters.srid,
-          title_filter: parsedFilters.goods,
-          action_type_filter: parsedFilters.kindsOfLogistics,
-          date_sale_filter: {
-            years: parsedFilters.year,
-            months: monthNumbers,
-            weekdays: parsedFilters.week,
-          },
-        };
+  //       // Prepare and dispatch filters
+  //       const monthNumbers = getMonthNumbers(parsedFilters.month);
+  //       const filters = {
+  //         size_name_filter: parsedFilters.size,
+  //         wb_id_filter: parsedFilters.article,
+  //         srid_filter: parsedFilters.srid,
+  //         title_filter: parsedFilters.goods,
+  //         action_type_filter: parsedFilters.kindsOfLogistics,
+  //         date_sale_filter: {
+  //           years: parsedFilters.year,
+  //           months: monthNumbers,
+  //           weekdays: parsedFilters.week,
+  //         },
+  //       };
 
-        dispatch(
-          fetchPenaltiesData({
-            filters,
-            token: authToken,
-          })
-        );
-      }
-    }
-  }, [filterDataSet]);
+  //       dispatch(
+  //         fetchPenaltiesData({
+  //           // filters,
+  //           token: authToken,
+  //         })
+  //       );
+  //     }
+  //   }
+  // }, [filterDataSet]);
 
   // Add effect to save filters when they change
-  useEffect(() => {
-    const hasSelectedFilters = Object.values(selectedFilters).some(
-      (filters) => filters.length > 0
-    );
+  // useEffect(() => {
+  //   const hasSelectedFilters = Object.values(selectedFilters).some(
+  //     (filters) => filters.length > 0
+  //   );
 
-    if (hasSelectedFilters) {
-      localStorage.setItem(
-        'penaltiesReportFilters',
-        JSON.stringify(selectedFilters)
-      );
-    }
-  }, [selectedFilters]);
+  //   if (hasSelectedFilters) {
+  //     localStorage.setItem(
+  //       'penaltiesReportFilters',
+  //       JSON.stringify(selectedFilters)
+  //     );
+  //   }
+  // }, [selectedFilters]);
 
   return (
     <div className='dashboard-page'>
@@ -189,7 +197,7 @@ const WeeklyReportPenaltiesPage = () => {
         {user.is_report_downloaded ? (
           <>
           <div className='container dash-container'>
-              <NewFilterGroup pageIdent='penalty' getData={handleApplyFilters} />
+              <NewFilterGroup pageIdent='penalty' filtersData={penaltyFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
           </div>
             {/* <div className='container dash-container'>
               <div

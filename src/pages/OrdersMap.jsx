@@ -31,7 +31,17 @@ const OrdersMap = () => {
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const storedActiveShop = localStorage.getItem('activeShop');
   let activeShop;
-  if (storedActiveShop) activeShop = JSON.parse(storedActiveShop);
+  if (storedActiveShop) {
+    const storedActiveShopObject = JSON.parse(storedActiveShop)
+
+    const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
+    if (shops.length > 0 && controlValue !== 1) {
+      localStorage.removeItem('activeShop')
+      window.location.reload()
+    }
+    
+    activeShop = JSON.parse(storedActiveShop)
+  };
   const activeShopId = activeShop?.id;
 
   const [byRegions, setByRegions] = useState(true);

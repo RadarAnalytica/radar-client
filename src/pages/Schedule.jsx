@@ -1,3 +1,5 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchChartsFilters } from '../redux/reportCharts/chartsFiltersActions';
 import styles from './Schedule.module.css';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
@@ -17,17 +19,9 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 
 const Schedule = () => {
   const { authToken, user } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const { chartsFilters, isFiltersLoading } = useSelector((state) => state?.chartsFiltersSlice);
 
-  // const user = {
-  //   id: 2,
-  //   role: 'admin',
-  //   is_confirmed: true,
-  //   is_onboarded: true,
-  //   is_test_used: false,
-  //   email: 'modinsv@yandex.ru',
-  //   subscription_status: 'Smart',
-  //   is_report_downloaded: !null,
-  // };
   const [isLoading, setIsLoading] = useState(false);
   const [isChartsLoading, setIsChartsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -124,6 +118,13 @@ const Schedule = () => {
     'selectedWeeks',
   ];
 
+  useEffect(() => {
+    dispatch(fetchChartsFilters(
+      authToken
+    ))
+    
+  }, [authToken, dispatch])
+
   const transformFilters = (data) => {
     return {
       setSelectedBrands: Object.fromEntries(
@@ -175,7 +176,7 @@ const Schedule = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await updateFilterFields();
+      // await updateFilterFields();
       updateScheduleChartData();
     };
     fetchData();
@@ -286,301 +287,444 @@ const Schedule = () => {
     return Math.ceil(range / 5 / 500) * 500;
   };
 
+  // const revenueAndProfit = (data, filter) => {
+  //   if (
+  //     (filter.date_sale_filter.months.length === 1 &&
+  //       filter.date_sale_filter.years.length === 1 &&
+  //       filter.date_sale_filter.weekdays.length === 1) ||
+  //     (filter.date_sale_filter.months.length === 1 &&
+  //       filter.date_sale_filter.years.length === 0 &&
+  //       filter.date_sale_filter.weekdays.length === 1) ||
+  //     (filter.date_sale_filter.months.length === 0 &&
+  //       filter.date_sale_filter.years.length === 0 &&
+  //       filter.date_sale_filter.weekdays.length === 1) ||
+  //     (filter.date_sale_filter.months.length === 0 &&
+  //       filter.date_sale_filter.years.length === 1 &&
+  //       filter.date_sale_filter.weekdays.length === 1)
+  //   ) {
+  //     const dailyRevenueArray = [];
+  //     const dailyProfitArray = [];
+  //     const dayTitlesArray = [];
+
+  //     const year = Object.keys(data.revenue_and_profit)[0];
+  //     const months = data.revenue_and_profit[year];
+  //     const selectedWeekdayNames = filter.date_sale_filter.weekdays;
+
+  //     for (const month in months) {
+  //       const weeks = months[month].weeks;
+  //       for (const week in weeks) {
+  //         if (selectedWeekdayNames.includes(week)) {
+  //           const days = weeks[week].days;
+  //           for (const day in days) {
+  //             const dayData = days[day];
+  //             dayTitlesArray.push(day);
+  //             dailyRevenueArray.push(dayData.revenue || 0);
+  //             dailyProfitArray.push(dayData.profit || 0);
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     const min =
+  //       Math.floor(
+  //         Math.min(
+  //           Math.min(...dailyRevenueArray),
+  //           Math.min(...dailyProfitArray)
+  //         ) / 1000
+  //       ) * 1000;
+  //     const max =
+  //       Math.ceil(
+  //         Math.max(
+  //           Math.max(...dailyRevenueArray),
+  //           Math.max(...dailyProfitArray)
+  //         ) / 1000
+  //       ) * 1000;
+  //     setMinDataRevenue(min);
+  //     setMaxDataRevenue(max);
+  //     setStepSizeRevenue(calculateSize(min, max));
+  //     setDataRevenues(dailyRevenueArray);
+  //     setDataNetProfit(dailyProfitArray);
+  //     setBigChartLabels(dayTitlesArray);
+  //   } else if (
+  //     (filter.date_sale_filter.months.length === 1 &&
+  //       filter.date_sale_filter.years.length === 1) ||
+  //     (filter.date_sale_filter.months.length === 1 &&
+  //       filter.date_sale_filter.years.length === 0) ||
+  //     (filter.date_sale_filter.months.length === 0 &&
+  //       filter.date_sale_filter.years.length === 0 &&
+  //       filter.date_sale_filter.weekdays.length > 0)
+  //   ) {
+  //     const weekRevenueArray = [];
+  //     const weekProfitArray = [];
+  //     const weekDatesArray = [];
+
+  //     const year = Object.keys(data.revenue_and_profit)[0];
+  //     const months = data.revenue_and_profit[year];
+
+  //     for (const month in months) {
+  //       const index = monthNames.indexOf(month);
+  //       const monthIndex = index !== -1 ? index + 1 : null;
+  //       const weeks = months[month]?.weeks;
+  //       if (
+  //         weeks &&
+  //         (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
+  //           filter.date_sale_filter.months.length === 0)
+  //       ) {
+  //         for (const week in weeks) {
+  //           if (
+  //             (filter.date_sale_filter.weekdays.includes(week) &&
+  //               filter.date_sale_filter.weekdays.length > 0) ||
+  //             filter.date_sale_filter.weekdays.length === 0
+  //           ) {
+  //             const weekData = weeks[week];
+  //             weekDatesArray.push(week);
+  //             weekRevenueArray.push(weekData.total_week_revenue || 0);
+  //             weekProfitArray.push(weekData.total_week_profit || 0);
+  //           }
+  //         }
+  //       }
+  //     }
+  //     const min =
+  //       Math.floor(
+  //         Math.min(
+  //           Math.min(...weekRevenueArray),
+  //           Math.min(...weekProfitArray)
+  //         ) / 1000
+  //       ) * 1000;
+  //     const max =
+  //       Math.ceil(
+  //         Math.max(
+  //           Math.max(...weekRevenueArray),
+  //           Math.max(...weekProfitArray)
+  //         ) / 1000
+  //       ) * 1000;
+  //     // console.log(min, max, weekProfitArray, weekRevenueArray, weekDatesArray)
+  //     setMinDataRevenue(min);
+  //     setMaxDataRevenue(max);
+  //     setStepSizeRevenue(calculateSize(min, max));
+  //     setDataRevenues(weekRevenueArray);
+  //     setDataNetProfit(weekProfitArray);
+  //     setBigChartLabels(weekDatesArray);
+  //   } else {
+  //     const revenueArray = [];
+  //     const profitArray = [];
+  //     const monthNamesArray = [];
+
+  //     const monthNameMap = {
+  //       Январь: 'Янв',
+  //       Февраль: 'Фев',
+  //       Март: 'Мар',
+  //       Апрель: 'Апр',
+  //       Май: 'Май',
+  //       Июнь: 'Июн',
+  //       Июль: 'Июл',
+  //       Август: 'Авг',
+  //       Сентябрь: 'Сен',
+  //       Октябрь: 'Окт',
+  //       Ноябрь: 'Ноя',
+  //       Декабрь: 'Дек',
+  //     };
+  //     const rev_profit = data.revenue_and_profit;
+  //     for (const year in rev_profit) {
+  //       const months = rev_profit[year];
+  //       for (const month in months) {
+  //         const index = monthNames.indexOf(month);
+  //         const monthIndex = index !== -1 ? index + 1 : null;
+  //         if (
+  //           filter.date_sale_filter.months.length === 0 ||
+  //           filter.date_sale_filter.months.includes(monthIndex.toString())
+  //         ) {
+  //           const monthData = months[month];
+  //           revenueArray.push(monthData.total_month_revenue || 0);
+  //           profitArray.push(monthData.total_month_profit || 0);
+  //           monthNamesArray.push(monthNameMap[month] || month);
+  //         }
+  //       }
+  //     }
+  //     const min =
+  //       Math.floor(
+  //         Math.min(Math.min(...revenueArray), Math.min(...profitArray)) / 1000
+  //       ) * 1000;
+  //     const max =
+  //       Math.ceil(
+  //         Math.max(Math.max(...revenueArray), Math.max(...profitArray)) / 1000
+  //       ) * 1000;
+  //     setMinDataRevenue(min);
+  //     setMaxDataRevenue(max);
+  //     setStepSizeRevenue(calculateSize(min, max));
+  //     setDataRevenues(revenueArray);
+  //     setDataNetProfit(profitArray);
+  //     setBigChartLabels(monthNamesArray);
+  //   }
+  // };
   const revenueAndProfit = (data, filter) => {
-    console.log('filter.date_sale_filter.months.length', filter.date_sale_filter.months.length);
-    console.log('filter.date_sale_filter.years.length', filter.date_sale_filter.years.length);
-    console.log('filter.date_sale_filter.weekdays.length', filter.date_sale_filter.weekdays.length);
-    console.log();
-    
-    // if (
-    //   (filter.date_sale_filter.months.length === 1 &&
-    //     filter.date_sale_filter.years.length === 1 &&
-    //     filter.date_sale_filter.weekdays.length === 1) ||
-    //   (filter.date_sale_filter.months.length === 1 &&
-    //     filter.date_sale_filter.years.length === 0 &&
-    //     filter.date_sale_filter.weekdays.length === 1) ||
-    //   (filter.date_sale_filter.months.length === 0 &&
-    //     filter.date_sale_filter.years.length === 0 &&
-    //     filter.date_sale_filter.weekdays.length === 1) ||
-    //   (filter.date_sale_filter.months.length === 0 &&
-    //     filter.date_sale_filter.years.length === 1 &&
-    //     filter.date_sale_filter.weekdays.length === 1)
-    // ) {
-    //   console.log('First Variant');
-      
-    //   const dailyRevenueArray = [];
-    //   const dailyProfitArray = [];
-    //   const dayTitlesArray = [];
+    const monthNames = [
+      "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+      "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+    ];
 
-    //   const year = Object.keys(data.revenue_and_profit)[0];
-    //   const months = data.revenue_and_profit[year];
-    //   const selectedWeekdayNames = filter.date_sale_filter.weekdays;
+    const monthNameMap = {
+      Январь: "Янв",
+      Февраль: "Фев",
+      Март: "Мар",
+      Апрель: "Апр",
+      Май: "Май",
+      Июнь: "Июн",
+      Июль: "Июл",
+      Август: "Авг",
+      Сентябрь: "Сен",
+      Октябрь: "Окт",
+      Ноябрь: "Ноя",
+      Декабрь: "Дек",
+    };
 
-    //   for (const month in months) {
-    //     const weeks = months[month].weeks;
-    //     for (const week in weeks) {
-    //       if (selectedWeekdayNames.includes(week)) {
-    //         const days = weeks[week].days;
-    //         for (const day in days) {
-    //           const dayData = days[day];
-    //           dayTitlesArray.push(day);
-    //           dailyRevenueArray.push(dayData.revenue || 0);
-    //           dailyProfitArray.push(dayData.profit || 0);
-    //         }
-    //       }
-    //     }
-    //   }
+    const { years, months, weekdays } = filter.date_sale_filter;
 
-    //   const min =
-    //     Math.floor(
-    //       Math.min(
-    //         Math.min(...dailyRevenueArray),
-    //         Math.min(...dailyProfitArray)
-    //       ) / 1000
-    //     ) * 1000;
-    //   const max =
-    //     Math.ceil(
-    //       Math.max(
-    //         Math.max(...dailyRevenueArray),
-    //         Math.max(...dailyProfitArray)
-    //       ) / 1000
-    //     ) * 1000;
-    //   setMinDataRevenue(min);
-    //   setMaxDataRevenue(max);
-    //   setStepSizeRevenue(calculateSize(min, max));
-    //   setDataRevenues(dailyRevenueArray);
-    //   setDataNetProfit(dailyProfitArray);
-    //   setBigChartLabels(dayTitlesArray);
-    // } else if (
-    //   (filter.date_sale_filter.months.length === 1 &&
-    //     filter.date_sale_filter.years.length === 1) ||
-    //   (filter.date_sale_filter.months.length === 1 &&
-    //     filter.date_sale_filter.years.length === 0) ||
-    //   (filter.date_sale_filter.months.length === 0 &&
-    //     filter.date_sale_filter.years.length === 0 &&
-    //     filter.date_sale_filter.weekdays.length > 0)
-    // ) {
-    //   console.log('Second variant');
-      
-    //   const weekRevenueArray = [];
-    //   const weekProfitArray = [];
-    //   const weekDatesArray = [];
+    let revenueArray = [];
+    let profitArray = [];
+    let labelsArray = [];
 
-    //   const year = Object.keys(data.revenue_and_profit)[0];
-    //   const months = data.revenue_and_profit[year];
+    const rev_profit = data.revenue_and_profit;
 
-    //   for (const month in months) {
-    //     const index = monthNames.indexOf(month);
-    //     const monthIndex = index !== -1 ? index + 1 : null;
-    //     const weeks = months[month]?.weeks;
-    //     if (
-    //       weeks &&
-    //       (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
-    //         filter.date_sale_filter.months.length === 0)
-    //     ) {
-    //       for (const week in weeks) {
-    //         if (
-    //           (filter.date_sale_filter.weekdays.includes(week) &&
-    //             filter.date_sale_filter.weekdays.length > 0) ||
-    //           filter.date_sale_filter.weekdays.length === 0
-    //         ) {
-    //           const weekData = weeks[week];
-    //           weekDatesArray.push(week);
-    //           weekRevenueArray.push(weekData.total_week_revenue || 0);
-    //           weekProfitArray.push(weekData.total_week_profit || 0);
-    //         }
-    //       }
-    //     }
-    //   }
-    //   const min =
-    //     Math.floor(
-    //       Math.min(
-    //         Math.min(...weekRevenueArray),
-    //         Math.min(...weekProfitArray)
-    //       ) / 1000
-    //     ) * 1000;
-    //   const max =
-    //     Math.ceil(
-    //       Math.max(
-    //         Math.max(...weekRevenueArray),
-    //         Math.max(...weekProfitArray)
-    //       ) / 1000
-    //     ) * 1000;
-    //   // console.log(min, max, weekProfitArray, weekRevenueArray, weekDatesArray)
-    //   setMinDataRevenue(min);
-    //   setMaxDataRevenue(max);
-    //   setStepSizeRevenue(calculateSize(min, max));
-    //   setDataRevenues(weekRevenueArray);
-    //   setDataNetProfit(weekProfitArray);
-    //   setBigChartLabels(weekDatesArray);
-    // } else {
-      console.log('Third variant');
-      const revenueArray = [];
-      const profitArray = [];
-      const monthNamesArray = [];
-
-      const monthNameMap = {
-        Январь: 'Янв',
-        Февраль: 'Фев',
-        Март: 'Мар',
-        Апрель: 'Апр',
-        Май: 'Май',
-        Июнь: 'Июн',
-        Июль: 'Июл',
-        Август: 'Авг',
-        Сентябрь: 'Сен',
-        Октябрь: 'Окт',
-        Ноябрь: 'Ноя',
-        Декабрь: 'Дек',
-      };
-      const rev_profit = data.revenue_and_profit;
+    // 1. Если ничего не выбрано, показываем все месяцы
+    if (years.length === 0 && months.length === 0 && weekdays.length === 0) {
       for (const year in rev_profit) {
-        const months = rev_profit[year];
-        for (const month in months) {
-          const index = monthNames.indexOf(month);
-          const monthIndex = index !== -1 ? index + 1 : null;
-          if (
-            filter.date_sale_filter.months.length === 0 ||
-            filter.date_sale_filter.months.includes(monthIndex.toString())
-          ) {
-            const monthData = months[month];
+        const monthsData = rev_profit[year];
+        for (const month in monthsData) {
+          const monthData = monthsData[month];
+          revenueArray.push(monthData.total_month_revenue || 0);
+          profitArray.push(monthData.total_month_profit || 0);
+          labelsArray.push(monthNameMap[month] || month);
+        }
+      }
+    }
+
+    // 2. Если выбран только год, показываем все месяцы этого года
+    else if (years.length === 1 && months.length === 0 && weekdays.length === 0) {
+      const selectedYear = years[0];
+      const monthsData = rev_profit[selectedYear] || {}; // Проверяем наличие данных за выбранный год
+      for (const month in monthsData) {
+        const monthData = monthsData[month];
+        revenueArray.push(monthData.total_month_revenue || 0);
+        profitArray.push(monthData.total_month_profit || 0);
+        labelsArray.push(monthNameMap[month] || month);
+      }
+    }
+
+    // 3. Если выбран год и месяц, показываем этот месяц
+    else if (years.length === 1 && months.length === 1) {
+      const selectedYear = years[0];
+      const selectedMonthIndex = parseInt(months[0]) - 1;
+      const selectedMonthName = monthNames[selectedMonthIndex];
+      const monthData =
+        rev_profit[selectedYear]?.[selectedMonthName] || {};
+
+      revenueArray = [monthData.total_month_revenue || 0];
+      profitArray = [monthData.total_month_profit || 0];
+      labelsArray = [selectedMonthName];
+    }
+
+    // 4. Если выбран год и несколько месяцев, показываем эти месяцы
+    else if (years.length === 1 && months.length > 1) {
+      const selectedYear = years[0];
+      const monthsData = rev_profit[selectedYear] || {};
+      months.forEach((monthIndex) => {
+        const monthName = monthNames[parseInt(monthIndex) - 1];
+        const monthData = monthsData[monthName] || {};
+        revenueArray.push(monthData.total_month_revenue || 0);
+        profitArray.push(monthData.total_month_profit || 0);
+        labelsArray.push(monthNameMap[monthName] || monthName);
+      });
+    }
+
+    // 5. Если год не выбран, но выбраны месяцы
+    else if (years.length === 0 && months.length > 0) {
+      for (const year in rev_profit) {
+        const monthsData = rev_profit[year];
+        months.forEach((monthIndex) => {
+          const monthName = monthNames[parseInt(monthIndex) - 1];
+          const monthData = monthsData[monthName] || {};
+          revenueArray.push(monthData.total_month_revenue || 0);
+          profitArray.push(monthData.total_month_profit || 0);
+          labelsArray.push(monthNameMap[monthName] || monthName);
+        });
+      }
+    }
+
+    // 6. Если выбран год и неделя, показываем месяц этой недели
+    else if (years.length === 1 && weekdays.length > 0) {
+      const selectedYear = years[0];
+      const monthsData = rev_profit[selectedYear] || {};
+      const selectedWeeks = weekdays; // Список выбранных недель
+
+      // Ищем месяц для каждой выбранной недели
+      selectedWeeks.forEach((week) => {
+        for (const month in monthsData) {
+          const monthData = monthsData[month];
+          const weekData = monthData.weeks[week]; // Данные по неделе
+          if (weekData) {
             revenueArray.push(monthData.total_month_revenue || 0);
             profitArray.push(monthData.total_month_profit || 0);
-            monthNamesArray.push(monthNameMap[month] || month);
+            labelsArray.push(monthNameMap[month] || month);
+          }
+        }
+      });
+    }
+
+    // 7. Если выбран только месяц, показываем один месяц
+    else if (years.length === 0 && months.length === 1) {
+      const selectedMonthIndex = parseInt(months[0]) - 1;
+      const selectedMonthName = monthNames[selectedMonthIndex];
+      for (const year in rev_profit) {
+        const monthsData = rev_profit[year];
+        const monthData = monthsData[selectedMonthName] || {};
+        revenueArray.push(monthData.total_month_revenue || 0);
+        profitArray.push(monthData.total_month_profit || 0);
+        labelsArray.push(monthNameMap[selectedMonthName] || selectedMonthName);
+      }
+    }
+
+    else if (years.length === 0 && months.length === 0 && weekdays.length > 0) {
+      const selectedWeeks = weekdays; // Список выбранных недель
+      const monthNames = selectedWeeks.map(date => {
+        const monthIndex = new Date(date).getMonth(); // Get month index (0-11)
+        const months = [
+          'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+          'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+        ];
+        return months[monthIndex];
+      });
+      for (const year in rev_profit) {
+        const monthsData = rev_profit[year];
+        for (const month in monthsData) {
+          const monthData = monthsData[month];
+          if (monthNames.includes(month)) {
+            revenueArray.push(monthData.total_month_revenue || 0);
+            profitArray.push(monthData.total_month_profit || 0);
+            labelsArray.push(monthNameMap[month] || month);
           }
         }
       }
-      const min =
-        Math.floor(
-          Math.min(Math.min(...revenueArray), Math.min(...profitArray)) / 1000
-        ) * 1000;
-      const max =
-        Math.ceil(
-          Math.max(Math.max(...revenueArray), Math.max(...profitArray)) / 1000
-        ) * 1000;
-      setMinDataRevenue(min);
-      setMaxDataRevenue(max);
-      setStepSizeRevenue(calculateSize(min, max));
-      setDataRevenues(revenueArray);
-      setDataNetProfit(profitArray);
-      setBigChartLabels(monthNamesArray);
-    // }
+    }
+
+
+    // Расчет min, max, и обновление графика
+    const min = Math.floor(
+      Math.min(...revenueArray, ...profitArray) / 1000
+    ) * 1000;
+    const max = Math.ceil(
+      Math.max(...revenueArray, ...profitArray) / 1000
+    ) * 1000;
+
+    setMinDataRevenue(min);
+    setMaxDataRevenue(max);
+    setStepSizeRevenue(calculateSize(min, max));
+    setDataRevenues(revenueArray);
+    setDataNetProfit(profitArray);
+    setBigChartLabels(labelsArray);
   };
 
+
   const roiAndMarginality = (data, filter) => {
-    console.log('data in roiAndMarginality', data);
-    
-    // if (
-    //   (filter.date_sale_filter.months.length === 1 &&
-    //     filter.date_sale_filter.years.length === 1 &&
-    //     filter.date_sale_filter.weekdays.length === 1) ||
-    //   (filter.date_sale_filter.months.length === 1 &&
-    //     filter.date_sale_filter.years.length === 0 &&
-    //     filter.date_sale_filter.weekdays.length === 1) ||
-    //   (filter.date_sale_filter.months.length === 0 &&
-    //     filter.date_sale_filter.years.length === 0 &&
-    //     filter.date_sale_filter.weekdays.length === 1) ||
-    //   (filter.date_sale_filter.months.length === 0 &&
-    //     filter.date_sale_filter.years.length === 1 &&
-    //     filter.date_sale_filter.weekdays.length === 1)
-    // ) {
-    //   const roiArray = [];
-    //   const marginalityHigh = [];
-    //   const marginalityLow = [];
-    //   const dayTitlesArray = [];
 
-    //   const year = Object.keys(data.roi_and_marginality)[0];
-    //   const months = data.roi_and_marginality[year];
-    //   const selectedWeekdayNames = filter.date_sale_filter.weekdays;
+    if (
+      (filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.years.length === 1 &&
+        filter.date_sale_filter.weekdays.length === 1) ||
+      (filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.years.length === 0 &&
+        filter.date_sale_filter.weekdays.length === 1) ||
+      (filter.date_sale_filter.months.length === 0 &&
+        filter.date_sale_filter.years.length === 0 &&
+        filter.date_sale_filter.weekdays.length === 1) ||
+      (filter.date_sale_filter.months.length === 0 &&
+        filter.date_sale_filter.years.length === 1 &&
+        filter.date_sale_filter.weekdays.length === 1)
+    ) {
+      const roiArray = [];
+      const marginalityHigh = [];
+      const marginalityLow = [];
+      const monthNamesArray = [];
 
-    //   for (const month in months) {
-    //     const weeks = months[month].weeks;
-    //     for (const week in weeks) {
-    //       if (selectedWeekdayNames.includes(week)) {
-    //         const days = weeks[week].days;
-    //         for (const day in days) {
-    //           const dayData = days[day];
-    //           dayTitlesArray.push(day);
-    //           if (dayData.marginality > 0) {
-    //             marginalityHigh.push(dayData.marginality || 0);
-    //             marginalityLow.push(0);
-    //           } else {
-    //             marginalityHigh.push(0);
-    //             marginalityLow.push(dayData.marginality || 0);
-    //           }
-    //           roiArray.push(dayData.roi || 0);
-    //         }
-    //       }
-    //     }
-    //   }
+      const year = Object.keys(data.roi_and_marginality)[0];
+      const months = data.roi_and_marginality[year];
+      const selectedWeekdayNames = filter.date_sale_filter.weekdays;
 
-    //   const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
 
-    //   const minVal = Math.min(...arr);
-    //   const maxVal = Math.max(...arr);
-    //   const min = Math.floor(minVal / 100) * 100;
-    //   const max = Math.ceil(maxVal / 100) * 100;
-    //   setMinProfitability(min);
-    //   setMaxProfitability(max);
-    //   setStepProfitability(calculateSize(min, max));
+      for (const month in months) {
+        const monthData = months[month];
 
-    //   //setMaxforROI
-    //   // setStepSizeRevenue(calculateSize(min, max))
-    //   setDataProfitMinus(marginalityLow);
-    //   setDataProfitPlus(marginalityHigh);
-    //   setDataProfitability(roiArray);
-    // } else if (
-    //   (filter.date_sale_filter.months.length === 1 &&
-    //     filter.date_sale_filter.years.length === 1) ||
-    //   (filter.date_sale_filter.months.length === 1 &&
-    //     filter.date_sale_filter.years.length === 0) ||
-    //   (filter.date_sale_filter.months.length === 0 &&
-    //     filter.date_sale_filter.years.length === 0 &&
-    //     filter.date_sale_filter.weekdays.length > 0)
-    // ) {
-    //   const roiArray = [];
-    //   const marginalityHigh = [];
-    //   const marginalityLow = [];
+        if (
+          (filter.date_sale_filter.months.includes(monthNames.indexOf(month) + 1) ||
+            filter.date_sale_filter.months.length === 0)
+        ) {
+          marginalityLow.push(monthData.min_month_marginality || 0);
+          marginalityHigh.push(monthData.max_month_marginality || 0);
+          roiArray.push(monthData.average_month_roi || 0);
+          monthNamesArray.push(month);
+        }
+      }
 
-    //   const year = Object.keys(data.roi_and_marginality)[0];
-    //   const months = data.roi_and_marginality[year];
+      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
+      const minVal = Math.min(...arr);
+      const maxVal = Math.max(...arr);
+      const min = Math.floor(minVal / 100) * 100;
+      const max = Math.ceil(maxVal / 100) * 100;
 
-    //   for (const month in months) {
-    //     const index = monthNames.indexOf(month);
-    //     const monthIndex = index !== -1 ? index + 1 : null;
-    //     const weeks = months[month]?.weeks;
-    //     if (
-    //       weeks &&
-    //       (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
-    //         filter.date_sale_filter.months.length === 0)
-    //     ) {
-    //       for (const week in weeks) {
-    //         if (
-    //           (filter.date_sale_filter.weekdays.includes(week) &&
-    //             filter.date_sale_filter.weekdays.length > 0) ||
-    //           filter.date_sale_filter.weekdays.length === 0
-    //         ) {
-    //           const weekData = weeks[week];
-    //           marginalityLow.push(weekData.min_week_marginality || 0);
-    //           marginalityHigh.push(weekData.max_week_marginality || 0);
-    //           roiArray.push(weekData.average_week_roi || 0);
-    //         }
-    //       }
-    //     }
-    //   }
-    //   const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
-    //   const minVal = Math.min(...arr);
-    //   const maxVal = Math.max(...arr);
-    //   const min = Math.floor(minVal / 100) * 100;
-    //   const max = Math.ceil(maxVal / 100) * 100;
-    //   setMinProfitability(min);
-    //   setMaxProfitability(max);
-    //   setStepProfitability(calculateSize(min, max));
-    //   //setMaxforROI
-    //   setDataProfitMinus(marginalityLow);
-    //   setDataProfitPlus(marginalityHigh);
-    //   setDataProfitability(roiArray);
-    // } else {
+      setMinProfitability(min);
+      setMaxProfitability(max);
+      setStepProfitability(calculateSize(min, max));
+
+      setDataProfitMinus(marginalityLow);
+      setDataProfitPlus(marginalityHigh);
+      setDataProfitability(roiArray);
+    } else if (
+      (filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.years.length === 1) ||
+      (filter.date_sale_filter.months.length === 1 &&
+        filter.date_sale_filter.years.length === 0) ||
+      (filter.date_sale_filter.months.length === 0 &&
+        filter.date_sale_filter.years.length === 0 &&
+        filter.date_sale_filter.weekdays.length > 0)
+    ) {
+      const roiArray = [];
+      const marginalityHigh = [];
+      const marginalityLow = [];
+      const monthNamesArray = [];
+
+      const year = Object.keys(data.roi_and_marginality)[0];
+      const months = data.roi_and_marginality[year];
+
+      // Loop through months and extract data for selected filters
+      for (const month in months) {
+        const monthData = months[month];
+        const index = monthNames.indexOf(month);
+        const monthIndex = index !== -1 ? index + 1 : null;
+        if (
+          (filter.date_sale_filter.months.includes(monthIndex.toString()) ||
+            filter.date_sale_filter.months.length === 0)
+        ) {
+          marginalityLow.push(monthData.min_month_marginality || 0);
+          marginalityHigh.push(monthData.max_month_marginality || 0);
+          roiArray.push(monthData.average_month_roi || 0);
+          monthNamesArray.push(month);
+        }
+      }
+
+      const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
+      const minVal = Math.min(...arr);
+      const maxVal = Math.max(...arr);
+      const min = Math.floor(minVal / 100) * 100;
+      const max = Math.ceil(maxVal / 100) * 100;
+
+      setMinProfitability(min);
+      setMaxProfitability(max);
+      setStepProfitability(calculateSize(min, max));
+
+      setDataProfitMinus(marginalityLow);
+      setDataProfitPlus(marginalityHigh);
+      setDataProfitability(roiArray);
+    } else {
       const monthNamesArray = [];
       const roiArray = [];
       const marginalityHigh = [];
@@ -601,6 +745,8 @@ const Schedule = () => {
         Декабрь: 'Дек',
       };
       const rev_profit = data.roi_and_marginality;
+
+      // Loop through months and extract data for no filter or selected months
       for (const year in rev_profit) {
         const months = rev_profit[year];
         for (const month in months) {
@@ -611,7 +757,6 @@ const Schedule = () => {
             filter.date_sale_filter.months.includes(monthIndex.toString())
           ) {
             const monthData = months[month];
-
             marginalityLow.push(monthData.min_month_marginality || 0);
             marginalityHigh.push(monthData.max_month_marginality || 0);
             roiArray.push(monthData.average_month_roi || 0);
@@ -619,6 +764,7 @@ const Schedule = () => {
           }
         }
       }
+
       const arr = [...marginalityLow, ...marginalityHigh, ...roiArray];
       const minVal = Math.min(...arr);
       const maxVal = Math.max(...arr);
@@ -628,37 +774,34 @@ const Schedule = () => {
       setMinProfitability(min);
       setMaxProfitability(max);
       setStepProfitability(calculateSize(min, max));
-      //setMaxforROI
-      // setMinDataRevenue(min)
-      // setMaxDataRevenue(max)
-      // setStepSizeRevenue(calculateSize(min, max))
 
       setDataProfitMinus(marginalityLow);
       setDataProfitPlus(marginalityHigh);
       setDataProfitability(roiArray);
-    // }
+    }
   };
+
 
   const updateScheduleChartData = useCallback(async () => {
     setIsChartsLoading(true);
     setError(null);
-
+    
     try {
 
-      const storageItem = localStorage.getItem('charts')
-      let currentPageData = JSON.parse(storageItem)
-      currentPageData = currentPageData ? currentPageData : {}  
-      console.log('currentPageData', currentPageData);
+      // const storageItem = localStorage.getItem('charts')
+      // let currentPageData = JSON.parse(storageItem)
+      // currentPageData = currentPageData ? currentPageData : {}
+      // console.log('currentPageData', currentPageData);
 
-      const filter = {
-        brand_name_filter: currentPageData.brand,
-        wb_id_filter: currentPageData.wbId,
-        groups_filter: currentPageData.group,
-        date_sale_filter: {
-          years: currentPageData.year,
-          months: currentPageData.month,
-          weekdays: currentPageData.week,
-        },
+      // const filter = {
+      //   brand_name_filter: currentPageData.brand,
+      //   wb_id_filter: currentPageData.wbId,
+      //   groups_filter: currentPageData.group,
+      //   date_sale_filter: {
+      //     years: currentPageData.year,
+      //     months: currentPageData.month,
+      //     weekdays: currentPageData.week,
+      //   },
         // brand_name_filter: Object.keys(selectedBrands).filter(
         //   (key) => selectedBrands[key]
         // ),
@@ -677,11 +820,11 @@ const Schedule = () => {
         //     (key) => selectedWeeks[key]
         //   ),
         // },
-      };
+      // };
 
-      const data = await ServiceFunctions.scheduleFilterChartData(
+      const {data, filter} = await ServiceFunctions.scheduleFilterChartData(
         authToken,
-        filter
+        
       );
 
       setDataStructureRevenue([
@@ -712,38 +855,7 @@ const Schedule = () => {
       setError('Failed to load data');
       setIsChartsLoading(false);
     }
-  }, [authToken]);
-
-  // useEffect(() => {
-  //   if (Object.keys(selectedYears ?? {}).length > 0) {
-  //     localStorage.setItem('selectedYears', JSON.stringify(selectedYears));
-  //   }
-  //   if (Object.keys(selectedArticles ?? {}).length > 0) {
-  //     localStorage.setItem(
-  //       'selectedArticles',
-  //       JSON.stringify(selectedArticles)
-  //     );e
-  //   }
-  //   if (Object.keys(selectedBrands ?? {}).length > 0) {
-  //     localStorage.setItem('selectedBrands', JSON.stringify(selectedBrands));
-  //   }
-  //   if (Object.keys(selectedGroups ?? {}).length > 0) {
-  //     localStorage.setItem('selectedGroups', JSON.stringify(selectedGroups));
-  //   }
-  //   if (Object.keys(selectedMonths ?? {}).length > 0) {
-  //     localStorage.setItem('selectedMonths', JSON.stringify(selectedMonths));
-  //   }
-  //   if (Object.keys(selectedWeeks ?? {}).length > 0) {
-  //     localStorage.setItem('selectedWeeks', JSON.stringify(selectedWeeks));
-  //   }
-  // }, [
-  //   selectedYears,
-  //   selectedMonths,
-  //   selectedArticles,
-  //   selectedBrands,
-  //   selectedGroups,
-  //   selectedWeeks,
-  // ]);
+  }, [authToken, isFiltersLoading]);
 
   const toggleCheckboxBrands = (brand) => {
     setSelectedBrands((prevState) => ({
@@ -800,15 +912,7 @@ const Schedule = () => {
     setAllSelectedBrands(newAllSelected);
   };
 
-  // const handleBrand = () => {
-  //   const newSelectedBrands = {};
-  //   const newAllSelected = !allSelectedBrands;
-  //   Object.keys(selectedBrands).forEach((brand) => {
-  //     newSelectedBrands[brand] = newAllSelected;
-  //   });
-  //   setSelectedBrands(newSelectedBrands);
-  //   setAllSelectedBrands(newAllSelected);
-  // };
+
 
   const handleYear = () => {
     const currentYears = selectedYears ?? {};
@@ -823,15 +927,6 @@ const Schedule = () => {
     setAllSelectedYears(newAllSelected);
   };
 
-  // const handleYear = () => {
-  //   const newSelectedYears = {};
-  //   const newAllSelected = !allSelectedYears;
-  //   Object.keys(selectedYears).forEach((year) => {
-  //     newSelectedYears[year] = newAllSelected;
-  //   });
-  //   setSelectedYears(newSelectedYears);
-  //   setAllSelectedYears(newAllSelected);
-  // };
 
   const handleMonth = () => {
     const currentMonths = selectedMonths ?? {};
@@ -846,15 +941,7 @@ const Schedule = () => {
     setAllSelectedMonths(newAllSelected);
   };
 
-  // const handleMonth = () => {
-  //   const newSelectedMonths = {};
-  //   const newAllSelected = !allSelectedMonths;
-  //   Object.keys(selectedMonths).forEach((month) => {
-  //     newSelectedMonths[month] = newAllSelected;
-  //   });
-  //   setSelectedMonths(newSelectedMonths);
-  //   setAllSelectedMonths(newAllSelected);
-  // };
+
   const handleWeek = () => {
     const currentWeeks = selectedWeeks ?? {};
     const newSelectedWeeks = {};
@@ -868,15 +955,7 @@ const Schedule = () => {
     setAllSelectedWeeks(newAllSelected);
   };
 
-  // const handleWeek = () => {
-  //   const newSelectedWeeks = {};
-  //   const newAllSelected = !allSelectedWeeks;
-  //   Object.keys(selectedWeeks).forEach((product) => {
-  //     newSelectedWeeks[product] = newAllSelected;
-  //   });
-  //   setSelectedWeeks(newSelectedWeeks);
-  //   setAllSelectedWeeks(newAllSelected);
-  // };
+
   const handleGroup = () => {
     const currentGroups = selectedGroups ?? {};
     const newSelectedGroups = {};
@@ -890,15 +969,6 @@ const Schedule = () => {
     setAllSelectedGroups(newAllSelected);
   };
 
-  // const handleGroup = () => {
-  //   const newSelectedGroups = {};
-  //   const newAllSelected = !allSelectedGroups;
-  //   Object.keys(selectedGroups).forEach((product) => {
-  //     newSelectedGroups[product] = newAllSelected;
-  //   });
-  //   setSelectedGroups(newSelectedGroups);
-  //   setAllSelectedGroups(newAllSelected);
-  // };
   const handleArticle = () => {
     const currentArticles = selectedArticles ?? {};
     const newSelectedArticles = {};
@@ -912,15 +982,7 @@ const Schedule = () => {
     setAllSelectedArticles(newAllSelected);
   };
 
-  // const handleArticle = () => {
-  //   const newSelectedArticles = {};
-  //   const newAllSelected = !allSelectedArticles;
-  //   Object.keys(selectedArticles).forEach((product) => {
-  //     newSelectedArticles[product] = newAllSelected;
-  //   });
-  //   setSelectedArticles(newSelectedArticles);
-  //   setAllSelectedArticles(newAllSelected);
-  // };
+
   const handleProduct = () => {
     const newSelectedProducts = {};
     const newAllSelected = !allSelectedProducts;
@@ -946,10 +1008,10 @@ const Schedule = () => {
         />
         {user.is_report_downloaded ? (
           <>
-          <div className='container dash-container'>
-              <NewFilterGroup pageIdent='charts' getData={updateScheduleChartData} />
-          </div>
-    
+            <div className='container dash-container'>
+              <NewFilterGroup pageIdent='charts' filtersData={chartsFilters} isLoading={isFiltersLoading} getData={updateScheduleChartData} />
+            </div>
+
             <div className={`${styles.ScheduleBody} dash-container container`}>
               <div className='container dash-container '>
                 <ScheduleBigChart

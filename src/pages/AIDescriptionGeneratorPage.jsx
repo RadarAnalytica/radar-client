@@ -39,10 +39,6 @@ const AiDescriptionGeneratorPage = () => {
     removeAllKeywords,
   } = useContext(ProductContext);
 
-  console.log('Product Name');
-  console.log(productName);
-  console.log('Keywords');
-  console.log(keywords);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingNext, setIsLoadingNext] = useState(false);
@@ -78,7 +74,6 @@ const AiDescriptionGeneratorPage = () => {
 
       if (data) {
         setAmountGenerations(data);
-        console.log(amountGenerations);
       }
     } catch (e) {
       console.error(e);

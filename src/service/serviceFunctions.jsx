@@ -1,5 +1,6 @@
 import { URL } from './config';
 import { formatFromIsoDate } from './utils'
+import { store } from '../redux/store'
 
 export const ServiceFunctions = {
   register: async (object) => {
@@ -234,7 +235,6 @@ export const ServiceFunctions = {
     return data;
   },
   postAiDescriptionGeneratorKeywords: async (token, competitorsLinks) => {
-    console.log('competitorsLinks:', competitorsLinks);
 
     const res = await fetch(`${URL}/api/description-generator/keywords`, {
       method: 'POST',
@@ -357,7 +357,6 @@ export const ServiceFunctions = {
   },
 
   sendSupportMessage: async (token, messageData) => {
-    console.log('messageData', messageData);
     const response = await fetch(`${URL}/api/admin/support`, {
       method: 'POST',
       headers: {
@@ -565,7 +564,6 @@ export const ServiceFunctions = {
   },
 
   postDashboardFilters: async (token, filterData) => {
-    console.log('filterData => postDashboardFilters:', filterData);
     const response = await fetch(`${URL}/api/report/get-dashboard`, {
       method: 'POST',
       headers: {
@@ -598,7 +596,81 @@ export const ServiceFunctions = {
     return await response.json();
   },
 
-  scheduleFilterChartData: async (token, filter) => {
+  scheduleFilterChartData: async (token) => {
+    const storeFilterData = store.getState().chartsFiltersSlice.chartsFilters
+                   
+    if (Object.keys(storeFilterData).length === 0) {
+        return {}
+    }
+
+    const brandFilterData = storeFilterData.brand
+    const wbIdFilterData = storeFilterData.wbId
+    const groupFilterData = storeFilterData.group
+    const yearFilterData = storeFilterData.year
+    const monthFilterData = storeFilterData.month
+    const weekFilterData = storeFilterData.week
+
+    const groupFilter = []
+    const brandFilter = []
+    const wbIdFilter = []
+    const yearFilter = []
+    const monthFilter = []
+    const weekFilter = []
+
+    if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
+        for (let _key of Object.keys(groupFilterData)) {
+            if (!!groupFilterData[_key]) {
+                groupFilter.push(_key)
+            }
+        }
+    }
+    if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
+        for (let _key of Object.keys(brandFilterData)) {
+            if (!!brandFilterData[_key]) {
+                brandFilter.push(_key)
+            }
+        }
+    }
+    if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
+      for (let _key of Object.keys(wbIdFilterData)) {
+          if (!!wbIdFilterData[_key]) {
+              wbIdFilter.push(_key)
+          }
+      }
+    }
+    if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
+        for (let _key of Object.keys(yearFilterData)) {
+            if (!!yearFilterData[_key]) {
+                yearFilter.push(_key)
+            }
+        }
+    }
+    if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
+        for (let _key of Object.keys(monthFilterData)) {
+            if (!!monthFilterData[_key]) {
+                monthFilter.push(_key)
+            }
+        }
+    }
+    if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
+        for (let _key of Object.keys(weekFilterData)) {
+            if (!!weekFilterData[_key]) {
+                weekFilter.push(_key)
+            }
+        }
+    }
+
+    const filter = {
+      brand_name_filter: brandFilter,
+      wb_id_filter: wbIdFilter,
+      groups_filter: groupFilter,
+      date_sale_filter: {
+        years: yearFilter,
+        months: monthFilter,
+        weekdays: weekFilter,
+      },
+    }
+
     const response = await fetch(`${URL}/api/report/get-charts`, {
       method: 'POST',
       headers: {
@@ -612,7 +684,9 @@ export const ServiceFunctions = {
       throw new Error('Failed to fetch Schedule filter chart data');
     }
 
-    return await response.json();
+    const data = await response.json();
+    
+    return {data, filter}
   },
 
   getMonthProductFilters: async (token) => {
@@ -743,7 +817,6 @@ export const ServiceFunctions = {
     });
     const data = await res.json()
     data.updated_at = data.updated_at === '' ? null : `Последняя загрузка ${formatFromIsoDate(data.updated_at)}г.`
-    console.log(data);
     
     return data;
   },
@@ -794,7 +867,88 @@ export const ServiceFunctions = {
     return await response.json();
   },
 
-  postAbcReportsData: async (token, filter) => {
+  postAbcReportsData: async (token) => {
+    const storeFilterData = store.getState().abcFiltersSlice.abcFilters
+                    
+    if (Object.keys(storeFilterData).length === 0) {
+        return []
+    }
+    const brandFilterData = storeFilterData.brand
+    const wbIdFilterData = storeFilterData.wbId
+    const groupFilterData = storeFilterData.group
+    const productFilterData = storeFilterData.product
+    const yearFilterData = storeFilterData.year
+    const monthFilterData = storeFilterData.month
+    const weekFilterData = storeFilterData.week
+
+    const productFilter = []
+    const groupFilter = []
+    const brandFilter = []
+    const wbIdFilter = []
+    const yearFilter = []
+    const monthFilter = []
+    const weekFilter = []
+
+    if (!!productFilterData && Object.keys(productFilterData).length > 0) {
+        for (let _key of Object.keys(productFilterData)) {
+            if (!!productFilterData[_key]) {
+                productFilter.push(_key)
+            }
+        }
+    }
+    if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
+        for (let _key of Object.keys(groupFilterData)) {
+            if (!!groupFilterData[_key]) {
+                groupFilter.push(_key)
+            }
+        }
+    }
+    if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
+        for (let _key of Object.keys(brandFilterData)) {
+            if (!!brandFilterData[_key]) {
+                brandFilter.push(_key)
+            }
+        }
+    }
+    if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
+      for (let _key of Object.keys(wbIdFilterData)) {
+          if (!!wbIdFilterData[_key]) {
+              wbIdFilter.push(_key)
+          }
+      }
+    }
+    if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
+        for (let _key of Object.keys(yearFilterData)) {
+            if (!!yearFilterData[_key]) {
+                yearFilter.push(_key)
+            }
+        }
+    }
+    if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
+        for (let _key of Object.keys(monthFilterData)) {
+            if (!!monthFilterData[_key]) {
+                monthFilter.push(_key)
+            }
+        }
+    }
+    if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
+        for (let _key of Object.keys(weekFilterData)) {
+            if (!!weekFilterData[_key]) {
+                weekFilter.push(_key)
+            }
+        }
+    }
+
+    const filter = {
+      article_filter_list: wbIdFilter,
+      brand_filter_list: brandFilter,
+      group_filter_list: groupFilter,
+      month_filter_list: monthFilter,
+      product_filter_list: productFilter,
+      year_filter_list: yearFilter,
+      week_filter_list: weekFilter
+    }
+
     const response = await fetch(`${URL}/api/report/abc/data`, {
       method: 'POST',
       headers: {

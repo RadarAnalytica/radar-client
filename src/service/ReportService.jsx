@@ -1,4 +1,7 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { URL } from './config';
+import { switchPLFilter } from '../redux/reportPL/plFiltersSlice'
+
 
 export const getFilterData = async (pageIdent, authToken) => {
 
@@ -22,8 +25,33 @@ export const getFilterData = async (pageIdent, authToken) => {
     }
 }
 
+export const useSwitchFilterElem = async (pageIdent, filterIdent, filterElem) => {
+    const dispatch = useDispatch();
+    switch (pageIdent) {
+        case 'dashboard':
+            return await getDashboardFilters();
+        case 'pl':
+            dispatch(switchPLFilter(
+                  filterIdent, filterElem
+                ))
+            return
+        case 'month':
+            return await getMonthFilters();
+        case 'goods':
+            return await getGoodsFilters();
+        case 'abc':
+            return await getABCFilters();
+        case 'penalty':
+            return await getPenaltyFilters();
+        case 'charts':
+            return await getChartsFilters();
+        default:
+            break;
+    }
+}
+
 const getDashboardFilters = async (authToken) => {
-    const response = await fetch(`${URL}/api/report/get-dashboard-filters`, {
+    const response = await fetch(`${URL}/api/report/v2/get-dashboard-filters`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -43,7 +71,7 @@ const getDashboardFilters = async (authToken) => {
 
 
 const getPLFilters = async (authToken) => {
-    const response = await fetch(`${URL}/api/report/p_l/filters`, {
+    const response = await fetch(`${URL}/api/report/v2/p_l/filters`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -51,7 +79,6 @@ const getPLFilters = async (authToken) => {
         },
     });
     const data = await response.json();
-    console.log('getFilter data', data)
     return {
         'brand': data.brand_filter,
         'group': data.group_filter,
@@ -59,7 +86,7 @@ const getPLFilters = async (authToken) => {
 }
 
 const getMonthFilters = async (authToken) => {
-    const response = await fetch(`${URL}/api/report/get-month-product-filters`, {
+    const response = await fetch(`${URL}/api/report/v2/get-month-product-filters`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -67,7 +94,6 @@ const getMonthFilters = async (authToken) => {
         },
     });
     const data = await response.json();
-    console.log('getFilter data', data)
     return {
         'size': data.size_name_filter,
         'vendorCode': data.vendor_code_filter,
@@ -85,7 +111,7 @@ const getMonthFilters = async (authToken) => {
 }
 
 const getGoodsFilters = async (authToken) => {
-    const response = await fetch(`${URL}/api/report/get-month-product-filters`, {
+    const response = await fetch(`${URL}/api/report/v2/get-month-product-filters`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -93,7 +119,6 @@ const getGoodsFilters = async (authToken) => {
         },
     });
     const data = await response.json();
-    console.log('getFilter data', data)
     return {
         'size': data.size_name_filter,
         'vendorCode': data.vendor_code_filter,
@@ -111,7 +136,7 @@ const getGoodsFilters = async (authToken) => {
 }
 
 const getABCFilters = async (authToken) => {
-    const response = await fetch(`${URL}/api/report/abc/filters`, {
+    const response = await fetch(`${URL}/api/report/v2/abc/filters`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -119,7 +144,6 @@ const getABCFilters = async (authToken) => {
         },
     });
     const data = await response.json();
-    console.log('getFilter data', data)
     return {
         'brand': data.brand_filter,
         'year': data.year_filter,
@@ -132,7 +156,7 @@ const getABCFilters = async (authToken) => {
 }
 
 const getPenaltyFilters = async (authToken) => {
-    const response = await fetch(`${URL}/api/report/get-penalties-filters`, {
+    const response = await fetch(`${URL}/api/report/v2/get-penalties-filters`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -140,7 +164,6 @@ const getPenaltyFilters = async (authToken) => {
         },
     });
     const data = await response.json();
-    console.log('getFilter data', data)
     return {
         'year': data.date_sale_filter?.years || [],
         'month': data.date_sale_filter?.months || [],
@@ -154,7 +177,7 @@ const getPenaltyFilters = async (authToken) => {
 }
 
 const getChartsFilters = async (authToken) => {
-    const response = await fetch(`${URL}/api/report/get-charts-filters`, {
+    const response = await fetch(`${URL}/api/report/v2/get-charts-filters`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -162,7 +185,6 @@ const getChartsFilters = async (authToken) => {
         },
     });
     const data = await response.json();
-    console.log('getFilter data', data)
     return {
         'brand': data.brand_name_filter,
         'year': data.date_sale_filter?.years || [],

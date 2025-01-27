@@ -22,7 +22,6 @@ const ConfirmationPage = () => {
             axios.patch(`${URL}/api/user/confirm`, postData)
                 .then(response => {
                     if (response.status === 200) {
-                        console.log('Успешно подтверждено', response.data);
                         navigate('/signin')
                     }
                 })
