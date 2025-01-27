@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 
-const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
+const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, style }) => {
     const videoRef = useRef(null); // Reference to the video element
     const [useHeavyVideo, setUseHeavyVideo] = useState(false);
 
@@ -27,7 +27,6 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
     return (
         <div>
             <video
-                poster={preview}
                 ref={videoRef}
                 src={useHeavyVideo ? heavyVideoSrc : lightVideoSrc}
                 style={style}

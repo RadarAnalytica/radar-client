@@ -4042,13 +4042,3 @@ canvas {
 .highResMain {
   background-image: url('./pages/images/imageFonStartBsn.png'); /* High-res image */
 }
-
-
-.lowResMainSmallBlock {
-  background-image: url('./pages/images/imageFon_comp.png'); /* Low-res image */
-}
-
-.highResMainSmallBlock {
-  background-image: url('./pages/images/imageFon.png'); /* High-res image */
-}
-
