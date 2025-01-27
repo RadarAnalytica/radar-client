@@ -3,7 +3,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import LogoNavbarSelect from "../pages/images/LogoNavbarSelect";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../service/AuthContext";
-import RadarAnaliticaMedium from "../pages/optimized/RadarAnaliticaMedium.svg";
+import RadarAnaliticaMedium from "../pages/images/RadarAnaliticaMedium.svg";
 import Steps from "../pages/images/Steps";
 import menu from "../assets/menu.png";
 import closebtn from "../assets/closebtn.png";

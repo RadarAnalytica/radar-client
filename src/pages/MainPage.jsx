@@ -5,20 +5,20 @@ import BlockImg_x1 from './images/Dashboard_x1.png';
 import BlockImg_x2 from './images/Dashboard_x2.png';
 import BlockImg_x3 from './images/Dashboard_x3.png';
 import AccordionMain from '../components/AccordionMain';
-import blockApi1 from './optimized/blockapi1.svg';
-import blockApi2 from './optimized/blockapi2.svg';
-import blockApi3 from './optimized/blockapi3.svg';
+import blockApi1 from './images/blockapi1.svg';
+import blockApi2 from './images/blockapi2.svg';
+import blockApi3 from './images/blockapi3.svg';
 import blockApi3Mobile from './images/blockApi3Mobile.svg';
-import manyApi from './optimized/manyApi.svg';
-import manyApiMobile from './optimized/manyApiMobile.svg';
-import manyApiMedium from '../pages/optimized/blockApiMedium.svg';
-import wbLogo from './optimized/wb_icon.svg'
+import manyApi from './images/manyApi.svg';
+import manyApiMobile from './images/manyApiMobile.svg';
+import manyApiMedium from '../pages/images/blockApiMedium.svg';
+import wbLogo from './images/wb_icon.svg'
 
 import FinancialStatements from '../components/FinancialStatements';
-import apiBlock from './optimized/apiblock2.svg';
-import apiBlockMedium from './optimized/apiBlockMedium.svg';
-import startAnalitic from './optimized/startAnalitic.svg';
-import arrowLink from './optimized/arrowLink.svg';
+import apiBlock from './images/apiblock2.svg';
+import apiBlockMedium from './images/apiBlockMedium.svg';
+import startAnalitic from './images/startAnalitic.svg';
+import arrowLink from './images/arrowLink.svg';
 import BtnHomePage from '../components/BtnHomePage';
 import StepsTime from '../components/StepsTime';
 import SelectRate from '../components/SelectRate';
@@ -39,9 +39,9 @@ import { useLocation } from 'react-router-dom';
 import { URL } from '../service/config';
 import lowResImage from './images/imageFon_comp.png';
 import highResImage from './images/imageFon.png';
-import ligtning from './optimized/ligtningIcon.svg';
-import safety from './optimized/safety.svg';
-import bigData from './optimized/bigData.svg';
+import ligtning from './images/ligtningIcon.svg';
+import safety from './images/safety.svg';
+import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
 
@@ -49,11 +49,18 @@ import highQualityVideo from "../assets/video/videoChartmp4.mp4";
 import preview from "../assets/video/firstShot.jpg"
 
 const MainPage = () => {
+  const videoRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
 
+  useLayoutEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play().catch(e => console.log('Video playback error:', e));
+    }
+  }, []);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -172,14 +179,19 @@ const MainPage = () => {
           <div className='sol-screenshot col-7'>
             <video
               preview={preview}
+              ref={videoRef}
               src={highQualityVideo}
               autoPlay
               loop
               muted
               playsInline
-              preload="auto"
-              style={{ width: "100%", height: "100%" }}
-            />
+              playsinline="true"
+              webkit-playsinline="true"
+              preload="metadata"
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            >
+              <source src={highQualityVideo} type="video/mp4" />
+            </video>
           </div>
         </div>
 
@@ -200,7 +212,6 @@ const MainPage = () => {
           </p>
         </div>
         <ToggleAnaliticsPanel />
-
 
         <div style={{ marginTop: '100px' }}><FinancialStatements /></div>
 
