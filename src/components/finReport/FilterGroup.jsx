@@ -10,9 +10,10 @@ import { URL } from '../../service/config'
 const NewFilterGroup = ({pageIdent, getData}) => {
     const { authToken } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState(true);
-    const [isCollapsed, setIsCollapsed] = useState(false)
-    const [filters, setFilters] = useState(reportFilters[pageIdent])
-    const [weekOriginFilter, setWeekOriginFilter] = useState([])
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [filters, setFilters] = useState(reportFilters[pageIdent]);
+    const [weekOriginFilter, setWeekOriginFilter] = useState([]);
+    const [excelIsLoading, setExcelIsLoading] = useState(false);
 
     useEffect(() => {
         const storageItem = localStorage.getItem(pageIdent)
@@ -83,7 +84,7 @@ const NewFilterGroup = ({pageIdent, getData}) => {
     }, [weekOriginFilter, pageIdent])
 
     const handleDownload = async () => {
-        const filters = getFiltersByLocalStorage()
+        setExcelIsLoading(true);
         fetch(
           `${URL}/api/report/download`,
           {
@@ -91,7 +92,6 @@ const NewFilterGroup = ({pageIdent, getData}) => {
             headers: {
               authorization: 'JWT ' + authToken,
             },
-            body: JSON.stringify(filters)
           }
         )
           .then((response) => {
@@ -106,7 +106,8 @@ const NewFilterGroup = ({pageIdent, getData}) => {
             link.click();
             link.parentNode.removeChild(link);
           })
-          .catch((e) => console.error(e));
+          .catch((e) => console.error(e))
+          .finally(() => setExcelIsLoading(false));
       };
 
     const getFiltersByLocalStorage = () => {
@@ -139,7 +140,7 @@ const NewFilterGroup = ({pageIdent, getData}) => {
                 >
                     {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
                 </button>
-                <DownloadButton handleDownload={handleDownload}/>
+                <DownloadButton handleDownload={handleDownload} isLoading={excelIsLoading} />
             </div>
             
             {!isCollapsed && (
