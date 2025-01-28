@@ -61,6 +61,7 @@
 
 .flexContainer {
     display: flex;
+    height: 52px;
     /* flex: 1; */
 }
 
@@ -253,4 +254,43 @@
   
   .dropdownArrowExpanded {
     transform: rotate(180deg);
+  }
+
+  .monthHeader {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 100%;
+    position: sticky;
+    left: 0;
+  }
+  
+  .monthHeader .dropdownArrow {
+    margin-left: 8px;
+    transition: transform 0.2s;
+  }
+  
+  .monthHeader .dropdownArrow.expanded {
+    transform: rotate(180deg);
+  }
+
+  .weekCellDateMonth {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 200px;
+    position: sticky;
+    left: 0;
+    padding: 0 0 0 16px;
+    border-right: 1px solid rgba(232, 232, 232, 1);
+    background-color: white;
+    z-index: 100;
+  }
+
+  .weekCellDateMonthText {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1);
   }

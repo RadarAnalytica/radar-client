@@ -1,24 +1,127 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './SaleTable.module.css';
 import arrowDown from '../assets/arrow-down.svg';
-import { formatPrice } from '../service/utils';
+import TableSections from './SaleTableSections';
+import TableSectionsEmpty from './SaleTableSectionsEmpty';
 
 const SalesTable = ({ tableData }) => {
-  const [expandedRows, setExpandedRows] = useState(() => {
-    const initialState = {};
 
-    // Dynamically set all years and their weeks to expanded
-    Object.entries(tableData).forEach(([year, yearData]) => {
-      initialState[year] = true; // Set year to expanded
-      Object.entries(yearData).forEach(([date]) => {
-        initialState[`week-${date}`] = true;
+  const [expandedRows, setExpandedRows] = useState({});
+
+  const calculateMonthTotals = (weeks) => {
+    // For demo purposes, returning structured fake data
+    return {
+      purchases: {
+        rub: 1250000,
+        quantity: 500,
+      },
+      return: {
+        rub: 125000,
+        quantity: 50,
+      },
+      revenue: {
+        quantity: 450,
+        rub: 1125000,
+      },
+      avg_check: 2500,
+      avg_spp: 85,
+      purchase_percent: 90,
+      cost_price: 562500,
+      cost_price_percent: 50,
+      deliveries: 475,
+      wb_commission: {
+        rub: 168750,
+        percent: 15,
+      },
+      acquiring: {
+        rub: 22500,
+        percent: 2,
+      },
+      logistics_straight: {
+        rub: 71250,
+      },
+      logistics_reverse: {
+        rub: 7125,
+      },
+      logistics_total: {
+        rub: 78375,
+        percent: 7,
+      },
+      logistics_per_product: 174,
+      compensation_defects: {
+        rub: 11250,
+        quantity: 5,
+      },
+      compensation_damage: {
+        rub: 5625,
+        quantity: 3,
+      },
+      compensation_penalties: {
+        rub: 11250,
+      },
+      storage: {
+        rub: 33750,
+        percent: 3,
+      },
+      other_retentions: {
+        rub: 22500,
+        percent: 2,
+      },
+      acceptance: {
+        rub: 11250,
+        percent: 1,
+      },
+      self_purchase_costs: 25000,
+      external_expenses: 56250,
+      expenses_percent: 5,
+      expenses: 81250,
+      sold_by_wb: 1125000,
+      tax_base: 843750,
+      tax: 50625,
+      payment: 793125,
+      profit: 168750,
+      marginality: 15,
+      return_on_investment: 30,
+    };
+  };
+
+  const calculateYearTotals = (yearData) => {
+    // Convert yearData object into array of week data
+    const allWeeksData = Object.values(yearData).map(weekData => weekData.data);
+    
+    // Use the same calculation logic as calculateMonthTotals
+    return calculateMonthTotals(allWeeksData);
+  };
+  
+
+  useEffect(() => {
+    if (tableData && Object.keys(tableData).length > 0) {
+      const newState = {};
+      Object.entries(tableData).forEach(([year, yearData]) => {
+        newState[year] = true;
+        Object.entries(yearData).forEach(([date, weekData]) => {
+          const month = weekData.months[0];
+          newState[`month-${year}-${month}`] = true;
+          newState[`week-${date}`] = true;
+        });
       });
+      setExpandedRows(newState);
+    }
+  }, [tableData]);
+
+  const groupWeeksByMonth = (yearData) => {
+    const monthGroups = {};
+
+    Object.entries(yearData).forEach(([date, weekData]) => {
+      const month = weekData.months[0];
+      if (!monthGroups[month]) {
+        monthGroups[month] = [];
+      }
+      monthGroups[month].push({ date, data: weekData.data });
     });
 
-    return initialState;
-  });
-
-  console.log('expandedRows', expandedRows);
+    return monthGroups;
+  };
 
   const toggleRow = (key) => {
     setExpandedRows((prev) => ({
@@ -26,6 +129,7 @@ const SalesTable = ({ tableData }) => {
       [key]: !prev[key],
     }));
   };
+  
 
   const renderWeekRow = (date, data) => {
     if (!data) {
@@ -53,194 +157,9 @@ const SalesTable = ({ tableData }) => {
           </div>
           {expandedRows[`week-${date}`] && (
             <div key={date} className={styles.row}>
-              {/* Sales Section */}
-              <div className={styles.flexContainer}>
-                <div className={styles.purchaseCell}>
-                  <div>{formatPrice(data?.purchases.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {data?.purchases.quantity || '0'} шт
-                  </div>
-                </div>
-                <div className={styles.returnCell}>
-                  <div>{formatPrice(data.return.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {data.return.quantity || '0'} шт
-                  </div>
-                </div>
-                <div className={styles.salesCell}>
-                  {data.revenue.quantity || '0'} шт
-                </div>
-                <div className={styles.revenueCell}>
-                  {formatPrice(data.revenue.rub) || '0'} ₽
-                </div>
-                <div className={styles.avgPriceCell}>
-                  {formatPrice(data.avg_check) || '0'} ₽
-                </div>
-                <div className={styles.sppCell}>
-                  <span>{data.avg_spp}</span>
-                  <span style={{ marginLeft: '4px' }}>%</span>
-                </div>
-                {/* <div className={styles.sppCell}>{data.avg_spp} %</div> */}
-                <div className={styles.buyoutCell}>
-                  {data.purchase_percent || '0'} %
-                </div>
-              </div>
-              {/* Self Cost Section */}
-              <div
-                className={styles.flexContainer}
-                style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-              >
-                <div className={styles.costCell}>
-                  <div>
-                    {data.cost_price !== '-'
-                      ? formatPrice(data.cost_price) + ' ₽'
-                      : '-'}
-                  </div>
-                  <div className={styles.smallText}>
-                    {data.cost_price_percent !== '-'
-                      ? data.cost_price_percent + ' %'
-                      : '-'}
-                  </div>
-                </div>
-                <div className={styles.costPerUnitCell}>
-                  {data.cost_price !== '-'
-                    ? formatPrice(data.cost_price / data.revenue.quantity) +
-                      ' ₽'
-                    : '-'}
-                </div>
-              </div>
-              {/* Commision & Logisitc Section */}
-              <div className={styles.flexContainer}>
-                <div className={styles.deliveryCountCell}>
-                  {data.deliveries} шт
-                </div>
-                <div className={styles.commissionCell}>
-                  <div>{formatPrice(data.wb_commission.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {formatPrice(data.wb_commission.percent)} %
-                  </div>
-                </div>
-                <div className={styles.acquiringCell}>
-                  <div>{formatPrice(data.acquiring.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {data.acquiring.percent.toFixed(1)} %
-                  </div>
-                </div>
-                <div className={styles.logisticsCell}>
-                  {formatPrice(data.logistics_straight.rub) || '0'} ₽
-                </div>
-                <div className={styles.logisticsCell}>
-                  {formatPrice(data.logistics_reverse.rub) || '0'} ₽
-                </div>
-                <div className={styles.logisticsCell}>
-                  <div>{formatPrice(data.logistics_total.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {data.logistics_total.percent.toFixed(1)} %
-                  </div>
-                </div>
-                <div className={styles.logisticsCell}>
-                  {formatPrice(data.logistics_per_product) || '0'} ₽
-                </div>
-              </div>
-              {/* Compensation and Penalties Section */}
-              <div
-                className={styles.flexContainer}
-                style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-              >
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_defects.rub) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_defects.quantity) || '0'} шт
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_damage.rub) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_damage.quantity) || '0'} шт
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_penalties.rub) || '0'} ₽
-                </div>
-                {/* ?????? */}
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_penalties.rub) || '0'} ₽
-                </div>
-              </div>
-              {/* Another Keep Section */}
-              <div className={styles.flexContainer}>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.storage.rub) || '0'} ₽</div>
-                  <div>{data.storage.percent || '0'} %</div>
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.other_retentions.rub) || '0'} ₽</div>
-                  <div>{data.other_retentions.percent || '0'} %</div>
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.acceptance.rub) || '0'} ₽</div>
-                  <div>{data.acceptance.percent || '0'} %</div>
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.wb_commission.rub) || '0'} ₽</div>
-                  <div>{data.wb_commission.percent || '0'} %</div>
-                </div>
-              </div>
-              {/* External Expenses Section */}
-              <div
-                className={styles.flexContainer}
-                style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-              >
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.self_purchase_costs) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.external_expenses) || '0'} ₽</div>
-                  <div>{data.expenses_percent || '0'} %</div>
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.expenses) || '0'} ₽
-                </div>
-              </div>
-              {/* Tax Section */}
-              <div className={styles.flexContainer}>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.sold_by_wb) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.tax_base) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.tax) || '0'} ₽
-                </div>
-              </div>
-              {/* Finance Section */}
-              <div
-                className={styles.flexContainer}
-                style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-              >
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.payment) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.profit) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.profit) || '0'} ₽
-                </div>
-                <div
-                  className={styles.defectCompnesaitionCell}
-                  style={{ width: '148px' }}
-                >
-                  {formatPrice(data.marginality) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {data.return_on_investment || '0'} %
-                </div>
-              </div>
+              <TableSections data={data}/>
             </div>
           )}
-          {/* Existing row content */}
         </div>
       </div>
     );
@@ -250,7 +169,13 @@ const SalesTable = ({ tableData }) => {
     return Object.entries(tableData).map(([year, yearData]) => (
       <div key={year}>
         <div className={styles.weekCellYear} style={{ display: 'flex' }}>
-          <div className={styles.yearToggle} onClick={() => toggleRow(year)}>
+          <div
+            className={styles.yearToggle}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleRow(year);
+            }}
+          >
             <span>{year}</span>
             <span
               className={`${styles.dropdownArrow} ${
@@ -260,6 +185,9 @@ const SalesTable = ({ tableData }) => {
               <img src={arrowDown} alt='Dropdown Arrow' />
             </span>
           </div>
+          {!expandedRows[year] && (
+          <TableSections data={calculateYearTotals(yearData)} isYearTotal={true}/>
+        )}
           <div style={{ display: 'flex' }}>
             <div style={{ width: '808px' }}></div>
             <div
@@ -280,9 +208,43 @@ const SalesTable = ({ tableData }) => {
           </div>
         </div>
         {expandedRows[year] && (
-          <div className={`${styles.fontSize14} ${styles.monthsContainer}`}>
-            {Object.entries(yearData).map(([date, weekData]) =>
-              renderWeekRow(date, weekData.data)
+          <div>
+            {Object.entries(groupWeeksByMonth(yearData)).map(
+              ([month, weeks]) => {
+                const monthTotals = calculateMonthTotals(weeks);
+                return (
+                  <div key={`${year}-${month}`}>
+                    {/* Month header */}
+                    <div key={month} className={styles.row}>
+                      <div
+                        className={styles.monthHeader}
+                        onClick={() => toggleRow(`month-${year}-${month}`)}
+                      >
+                        <div className={styles.weekCellDateMonth} >
+                          <span className={styles.weekCellDateMonthText}>{month}</span>
+                          <span className={styles.dropdownArrow}>
+                            <img src={arrowDown} alt='Dropdown Arrow' />
+                          </span>
+                        </div>
+                        {!expandedRows[`month-${year}-${month}`] && (
+                          <TableSections data={monthTotals} isMonthTotal={true}/>
+                        )}
+                        {expandedRows[`month-${year}-${month}`] && (
+                          <TableSectionsEmpty />
+                        )}
+                      </div>
+                    </div>
+                    {/* Weeks for this month */}
+                    {expandedRows[`month-${year}-${month}`] && (
+                      <div>
+                        {weeks.map(({ date, data }) =>
+                          renderWeekRow(date, data)
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
             )}
           </div>
         )}
