@@ -174,7 +174,7 @@ const MainPage = () => {
           </div>
           <div className='sol-screenshot col-7'>
             <VideoComponent
-
+              preview={preview}
               heavyVideoSrc={highQualityVideo}
               lightVideoSrc={lowQualityVideo}
               style={{ width: '100%', maxWidth: '1200px' }}
