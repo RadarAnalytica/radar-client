@@ -91,6 +91,7 @@ const NewFilterGroup = ({pageIdent, getData}) => {
             method: 'POST',
             headers: {
               authorization: 'JWT ' + authToken,
+              'Content-Type': 'application/json',
             },
           }
         )
@@ -110,7 +111,8 @@ const NewFilterGroup = ({pageIdent, getData}) => {
           .finally(() => setExcelIsLoading(false));
       };
 
-    const getFiltersByLocalStorage = () => {
+      const getFiltersByLocalStorage = () => {
+        // Dashboard
         const resultFilters = {}
         const dashboardStorage = localStorage.getItem('dashboard')
         let currentPageData = JSON.parse(dashboardStorage)
@@ -126,9 +128,122 @@ const NewFilterGroup = ({pageIdent, getData}) => {
                 weekdays: dashboardPageData.week ? dashboardPageData.week : [],
             },
         };
+        console.log('resultFilters', resultFilters);
+        
 
+        // P&L
+        const plStorage = localStorage.getItem('pl')
+        currentPageData = JSON.parse(plStorage)
+        const plPageData = currentPageData ? currentPageData : {}  
+
+        const brandFilter = plPageData.brand.join(',');
+        const groupFilter = plPageData.group.join(',');
+        resultFilters['pl'] = {
+            'brand_filter': brandFilter,
+            'group_filter': groupFilter
+        }
+        console.log('resultFilters', resultFilters);
+
+        // Report By Month
+        const monthStorage = localStorage.getItem('month')
+        currentPageData = JSON.parse(monthStorage)
+        const monthPageData = currentPageData ? currentPageData : {}  
+
+        resultFilters['month'] = {
+            vendor_code_filter: monthPageData.vendorCode || [],
+            size_name_filter: monthPageData.size || [],
+            brand_name_filter: monthPageData.brand || [],
+            country_filter: monthPageData.country || [],
+            wb_id_filter: monthPageData.wbId || [],
+            title_filter: monthPageData.product || [],
+            subject_name_filter: monthPageData.subject || [],
+            srid_filter: monthPageData.srid || [],
+            groups_filter: monthPageData.group || [],
+            date_sale_filter: {
+                years: monthPageData.year || [],
+                months: monthPageData.month || [],
+                weekdays: monthPageData.week || [],
+            },
+        }
+        console.log('resultFilters', resultFilters);
+
+        // Report By Goods
+        const goodsStorage = localStorage.getItem('goods')
+        currentPageData = JSON.parse(goodsStorage)
+        const goodsPageData = currentPageData ? currentPageData : {}  
+
+        resultFilters['goods'] = {
+            vendor_code_filter: goodsPageData.vendorCode || [],
+            size_name_filter: goodsPageData.size || [],
+            brand_name_filter: goodsPageData.brand || [],
+            country_filter: goodsPageData.country || [],
+            wb_id_filter: goodsPageData.wbId || [],
+            title_filter: goodsPageData.product || [],
+            subject_name_filter: goodsPageData.subject || [],
+            srid_filter: goodsPageData.srid || [],
+            groups_filter: goodsPageData.group || [],
+            date_sale_filter: {
+                years: goodsPageData.year || [],
+                months: goodsPageData.month || [],
+                weekdays: goodsPageData.week || [],
+            },
+        }
+        console.log('resultFilters', resultFilters);
+
+        // ABC
+        const abcStorage = localStorage.getItem('abc')
+        currentPageData = JSON.parse(abcStorage)
+        const abcPageData = currentPageData ? currentPageData : {}  
+        resultFilters['abc'] = {
+            article_filter_list: abcPageData.wbId || [],
+            brand_filter_list: abcPageData.brand || [],
+            group_filter_list: abcPageData.group || [],
+            month_filter_list: abcPageData.month || [],
+            product_filter_list: abcPageData.product || [],
+            year_filter_list: abcPageData.year || [],
+            week_filter_list: abcPageData.week || [],
+          }
+        console.log('resultFilters', resultFilters);
+
+        // Penalty
+        const penaltyStorage = localStorage.getItem('penalty')
+        currentPageData = JSON.parse(penaltyStorage)
+        const penaltyPageData = currentPageData ? currentPageData : {}  
+
+        resultFilters['penalty'] = {
+            size_name_filter: penaltyPageData.size,
+            wb_id_filter: penaltyPageData.wbId,
+            srid_filter: penaltyPageData.srid,
+            title_filter: penaltyPageData.product,
+            action_type_filter: penaltyPageData.types,
+            date_sale_filter: {
+                years: penaltyPageData.year,
+                months: penaltyPageData.month,
+                weekdays: penaltyPageData.week,
+            }
+        };
+        console.log('resultFilters', resultFilters);
+        
+        // Charts
+        const chartsStorage = localStorage.getItem('charts')
+        currentPageData = JSON.parse(chartsStorage)
+        const chartsPageData = currentPageData ? currentPageData : {}  
+
+        resultFilters['charts'] = {
+            brand_name_filter: chartsPageData.brand,
+            wb_id_filter: chartsPageData.wbId,
+            groups_filter: chartsPageData.group,
+            date_sale_filter: {
+                years: chartsPageData.year,
+                months: chartsPageData.month,
+                weekdays: chartsPageData.week,
+            }
+        }
+        console.log('resultFilters', resultFilters);
+        
         return resultFilters
     }
+
 
     return (
         
