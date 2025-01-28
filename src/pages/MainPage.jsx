@@ -174,10 +174,14 @@ const MainPage = () => {
           </div>
           <div className='sol-screenshot col-7'>
             <VideoComponent
-              preview={preview}
+
               heavyVideoSrc={highQualityVideo}
               lightVideoSrc={lowQualityVideo}
-              style={{ width: "100%", height: "auto" }}
+              style={{ width: '100%', maxWidth: '1200px' }}
+              priority="high"
+              onError={(error) => console.error('Video error:', error)}
+              onLoad={() => console.log('Video loaded successfully')}
+
             />
           </div>
         </div>
