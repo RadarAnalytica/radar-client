@@ -47,7 +47,7 @@ import ApiBlockContainer from "../components/ApiBlockContainer"
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";
-import highQualityVideo from "../assets/video/WebmHigh.webm";
+import highQualityVideo from "../assets/video/videoChartmp4.mp4";
 import preview from "../assets/video/firstShot.jpg"
 
 const MainPage = () => {
@@ -174,6 +174,7 @@ const MainPage = () => {
           </div>
           <div className='sol-screenshot col-7'>
             <VideoComponent
+              preview={preview}
               heavyVideoSrc={highQualityVideo}
               lightVideoSrc={lowQualityVideo}
               style={{ width: "100%", height: "auto" }}
