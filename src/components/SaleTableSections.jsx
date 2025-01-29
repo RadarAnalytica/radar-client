@@ -4,7 +4,6 @@ import { formatPrice } from '../service/utils';
 const TableSections = ({ data }) => {
   return (
     <>
-
         {/* Sales Section */}
         <div className={styles.flexContainer}>
           <div className={styles.purchaseCell}>

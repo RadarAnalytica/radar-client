@@ -211,6 +211,13 @@
     padding: 0 0 0 16px;
     border-right: 1px solid rgba(232, 232, 232, 1);
     background-color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: rgba(26, 26, 26, 1)
 }
 
 .headerTextMonth {

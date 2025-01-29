@@ -8,89 +8,9 @@ const SalesTable = ({ tableData }) => {
 
   const [expandedRows, setExpandedRows] = useState({});
 
-  const calculateMonthTotals = (weeks) => {
-    // For demo purposes, returning structured fake data
-    return {
-      purchases: {
-        rub: 1250000,
-        quantity: 500,
-      },
-      return: {
-        rub: 125000,
-        quantity: 50,
-      },
-      revenue: {
-        quantity: 450,
-        rub: 1125000,
-      },
-      avg_check: 2500,
-      avg_spp: 85,
-      purchase_percent: 90,
-      cost_price: 562500,
-      cost_price_percent: 50,
-      deliveries: 475,
-      wb_commission: {
-        rub: 168750,
-        percent: 15,
-      },
-      acquiring: {
-        rub: 22500,
-        percent: 2,
-      },
-      logistics_straight: {
-        rub: 71250,
-      },
-      logistics_reverse: {
-        rub: 7125,
-      },
-      logistics_total: {
-        rub: 78375,
-        percent: 7,
-      },
-      logistics_per_product: 174,
-      compensation_defects: {
-        rub: 11250,
-        quantity: 5,
-      },
-      compensation_damage: {
-        rub: 5625,
-        quantity: 3,
-      },
-      compensation_penalties: {
-        rub: 11250,
-      },
-      storage: {
-        rub: 33750,
-        percent: 3,
-      },
-      other_retentions: {
-        rub: 22500,
-        percent: 2,
-      },
-      acceptance: {
-        rub: 11250,
-        percent: 1,
-      },
-      self_purchase_costs: 25000,
-      external_expenses: 56250,
-      expenses_percent: 5,
-      expenses: 81250,
-      sold_by_wb: 1125000,
-      tax_base: 843750,
-      tax: 50625,
-      payment: 793125,
-      profit: 168750,
-      marginality: 15,
-      return_on_investment: 30,
-    };
-  };
-
   const calculateYearTotals = (yearData) => {
-    // Convert yearData object into array of week data
-    const allWeeksData = Object.values(yearData).map(weekData => weekData.data);
-    
-    // Use the same calculation logic as calculateMonthTotals
-    return calculateMonthTotals(allWeeksData);
+  
+    return yearData.total;
   };
   
 
@@ -99,28 +19,26 @@ const SalesTable = ({ tableData }) => {
       const newState = {};
       Object.entries(tableData).forEach(([year, yearData]) => {
         newState[year] = true;
-        Object.entries(yearData).forEach(([date, weekData]) => {
-          const month = weekData.months[0];
-          newState[`month-${year}-${month}`] = true;
-          newState[`week-${date}`] = true;
-        });
+        // Handle months data
+        if (yearData.months) {
+          Object.entries(yearData.months).forEach(([month, monthData]) => {
+            newState[`month-${year}-${month}`] = true;
+            // Handle weeks data
+            if (monthData.weeks) {
+              Object.entries(monthData.weeks).forEach(([date, weekData]) => {
+                newState[`week-${date}`] = true;
+              });
+            }
+          });
+        }
       });
       setExpandedRows(newState);
     }
   }, [tableData]);
 
   const groupWeeksByMonth = (yearData) => {
-    const monthGroups = {};
 
-    Object.entries(yearData).forEach(([date, weekData]) => {
-      const month = weekData.months[0];
-      if (!monthGroups[month]) {
-        monthGroups[month] = [];
-      }
-      monthGroups[month].push({ date, data: weekData.data });
-    });
-
-    return monthGroups;
+    return yearData.months;
   };
 
   const toggleRow = (key) => {
@@ -135,18 +53,29 @@ const SalesTable = ({ tableData }) => {
     if (!data) {
       return null;
     }
+
+    const formatDate = (dateStr) => {
+      const date = new Date(dateStr);
+      
+      // Check for invalid date
+      if (isNaN(date.getTime())) {
+        return 'Invalid Date';
+      }
+    
+      // Extract UTC components to avoid timezone issues
+      const day = String(date.getUTCDate()).padStart(2, '0');
+      const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+      const year = String(date.getUTCFullYear()).slice(-2); // Get last two digits of the year
+    
+      return `${day}.${month}.${year}`;
+    };
     return (
       <div key={date}>
         <div className={styles.row} onClick={() => toggleRow(`week-${date}`)}>
           <div
             className={styles.weekCellDate}
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
           >
-            {date}
+            {formatDate(date)}
             <span
               className={`${styles.dropdownArrow} ${
                 expandedRows[`week-${date}`] ? styles.dropdownArrowExpanded : ''
@@ -210,8 +139,8 @@ const SalesTable = ({ tableData }) => {
         {expandedRows[year] && (
           <div>
             {Object.entries(groupWeeksByMonth(yearData)).map(
-              ([month, weeks]) => {
-                const monthTotals = calculateMonthTotals(weeks);
+              ([month, monthData]) => {
+               
                 return (
                   <div key={`${year}-${month}`}>
                     {/* Month header */}
@@ -227,7 +156,7 @@ const SalesTable = ({ tableData }) => {
                           </span>
                         </div>
                         {!expandedRows[`month-${year}-${month}`] && (
-                          <TableSections data={monthTotals} isMonthTotal={true}/>
+                          <TableSections data={monthData.total} isMonthTotal={true}/>
                         )}
                         {expandedRows[`month-${year}-${month}`] && (
                           <TableSectionsEmpty />
@@ -237,9 +166,9 @@ const SalesTable = ({ tableData }) => {
                     {/* Weeks for this month */}
                     {expandedRows[`month-${year}-${month}`] && (
                       <div>
-                        {weeks.map(({ date, data }) =>
-                          renderWeekRow(date, data)
-                        )}
+                        {Object.entries(monthData.weeks).map(([date, weekData]) =>
+                      renderWeekRow(date, weekData.data)
+                    )}
                       </div>
                     )}
                   </div>
