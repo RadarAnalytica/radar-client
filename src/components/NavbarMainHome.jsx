@@ -7,6 +7,7 @@ import RadarAnaliticaMedium from "../pages/images/RadarAnaliticaMedium.svg";
 import Steps from "../pages/images/Steps";
 import menu from "../assets/menu.png";
 import closebtn from "../assets/closebtn.png";
+import '../App.css';
 
 const NavbarMainHome = ({ onlyLogo }) => {
   const { user } = useContext(AuthContext);

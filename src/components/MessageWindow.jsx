@@ -67,7 +67,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
 
   const patchMessages = async (authToken, isAdmin, userId) => {
     try {
-      if (user.role === 'admin' && decodedEmail) {
+      if (user?.role === 'admin' && decodedEmail) {
         await ServiceFunctions.patchSupportMessage(authToken, isAdmin, userId);
       } else {
         await ServiceFunctions.patchSupportMessage(authToken, isAdmin);
@@ -92,7 +92,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
   }, [contextMenu]);
 
   useEffect(() => {
-    if (user.role === 'admin' && decodedEmail) {
+    if (user?.role === 'admin' && decodedEmail) {
       getAllSupportMessages(authToken);
       const interval = setInterval(() => {
         getAllSupportMessages(authToken);
@@ -107,7 +107,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
 
       return () => clearInterval(interval);
     }
-  }, [user.role, decodedEmail]);
+  }, [user?.role, decodedEmail]);
 
   const handleDownloadImages = () => {
     selectedImages.forEach((imageUrl, index) => {
@@ -140,8 +140,8 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
     const formData = new FormData();
 
     const requestData = {
-      user_id: user.role === 'admin' ? allMessages[0].user_id : user.id,
-      sender: user.role === 'admin' ? 'admin' : 'client',
+      user_id: user?.role === 'admin' ? allMessages[0].user_id : user.id,
+      sender: user?.role === 'admin' ? 'admin' : 'client',
       text: newMessage.trim(),
     };
 
@@ -161,7 +161,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
 
       if (responseData) {
         // Message sent successfully, now fetch updated messages
-        if (user.role === 'admin') {
+        if (user?.role === 'admin') {
           getAllSupportMessages(authToken);
         } else {
           fetchMessages(authToken);

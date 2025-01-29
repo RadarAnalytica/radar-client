@@ -19,10 +19,10 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import BottomNavigation from '../components/BottomNavigation';
 import Modal from 'react-bootstrap/Modal';
 import warningIcon from '../assets/warning.png';
-import { fi } from 'date-fns/locale';
+import NoSubscriptionPage from './NoSubscriptionPage';
 
 const ReportMain = () => {
-  const { authToken } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [show, setShow] = useState(false);
@@ -123,6 +123,10 @@ const ReportMain = () => {
   };
 
   const handleClose = () => setShow(false);
+
+  if (user?.subscription_status === 'expired') {
+    return <NoSubscriptionPage title={'Финансовые отчеты'} />;
+  }
 
   return (
     <div className='dashboard-page notranslate'>
