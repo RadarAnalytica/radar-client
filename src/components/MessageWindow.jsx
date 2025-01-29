@@ -92,22 +92,23 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
   }, [contextMenu]);
 
   useEffect(() => {
-    if (user.role === 'admin' && decodedEmail) {
+    if (user?.role === 'admin' && decodedEmail) {
       getAllSupportMessages(authToken);
       const interval = setInterval(() => {
         getAllSupportMessages(authToken);
       }, 60000);
-
-      return () => clearInterval(interval);
     } else {
       fetchMessages(authToken);
       const interval = setInterval(() => {
         fetchMessages(authToken);
       }, 60000);
 
-      return () => clearInterval(interval);
-    }
-  }, [user.role, decodedEmail]);
+      return () => {
+        if (interval) {
+          clearInterval(interval);
+        }
+    }}
+  }, [user?.role, decodedEmail]);
 
   const handleDownloadImages = () => {
     selectedImages.forEach((imageUrl, index) => {

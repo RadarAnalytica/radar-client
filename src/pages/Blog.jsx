@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Blog.module.css';
+import './styles.css';
 import NavbarMainHome from '../components/NavbarMainHome';
 import marketing from '../assets/marketing-icon.svg';
 import goods from '../assets/goods-icon.svg';
