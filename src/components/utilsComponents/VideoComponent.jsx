@@ -1,46 +1,75 @@
 import React, { useRef, useState, useEffect } from "react";
 
 const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
-    const videoRef = useRef(null);
-    const [useHeavyVideo, setUseHeavyVideo] = useState(false);
+    const lightVideoRef = useRef(null);
+    const heavyVideoRef = useRef(null);
+    const [isHeavyLoaded, setIsHeavyLoaded] = useState(false);
+    const [isUserInteracted, setIsUserInteracted] = useState(false);
+
+    const handleUserInteraction = () => {
+        setIsUserInteracted(true);
+
+        if (lightVideoRef.current) {
+            lightVideoRef.current.muted = true;
+            lightVideoRef.current.play().catch(() => { });
+        }
+        if (heavyVideoRef.current && isHeavyLoaded) {
+            heavyVideoRef.current.muted = true;
+            heavyVideoRef.current.play().catch(() => { });
+        }
+    };
 
     useEffect(() => {
+        const heavyVideo = heavyVideoRef.current;
 
-        const preloadVideo = document.createElement("video");
-        preloadVideo.src = heavyVideoSrc;
-        preloadVideo.preload = "auto";
+        if (heavyVideo) {
+            heavyVideo.preload = "auto";
 
-        preloadVideo.oncanplaythrough = () => {
-            setUseHeavyVideo(true);
-        };
+            const handleCanPlayThrough = () => {
+                setIsHeavyLoaded(true);
 
-        preloadVideo.load();
-    }, [heavyVideoSrc]);
+                if (lightVideoRef.current && isUserInteracted) {
+                    heavyVideo.currentTime = lightVideoRef.current.currentTime; // Sync time
+                    heavyVideo.muted = true; // Ensure muted before playing
+                    heavyVideo.play().catch(() => { });
+                }
+            };
 
-    useEffect(() => {
-        if (useHeavyVideo && videoRef.current) {
-            const videoElement = videoRef.current;
-            const currentTime = videoElement.currentTime;
+            heavyVideo.addEventListener("canplaythrough", handleCanPlayThrough);
 
-            videoElement.pause();
-            videoElement.src = heavyVideoSrc;
-            videoElement.muted = true;
-            videoElement.load();
-
-            videoElement.onloadeddata = () => {
-                videoElement.currentTime = currentTime;
-                videoElement.play();
+            return () => {
+                heavyVideo.removeEventListener("canplaythrough", handleCanPlayThrough);
             };
         }
-    }, [useHeavyVideo, heavyVideoSrc]);
+    }, [heavyVideoSrc, isUserInteracted]);
 
     return (
-        <div>
+        <div style={{ width: "100%", height: "100%", ...style }} onClick={handleUserInteraction}>
+            {/* Low-quality video (starts immediately) */}
             <video
-                poster={preview}
-                ref={videoRef}
+                ref={lightVideoRef}
                 src={lightVideoSrc}
-                style={style}
+                poster={preview}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    display: isHeavyLoaded ? "none" : "block",
+                }}
+                autoPlay
+                loop
+                muted
+                playsInline
+            />
+
+            {/* High-quality video (hidden initially, appears when ready) */}
+            <video
+                ref={heavyVideoRef}
+                src={heavyVideoSrc}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    display: isHeavyLoaded ? "block" : "none",
+                }}
                 autoPlay
                 loop
                 muted
