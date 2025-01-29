@@ -177,11 +177,7 @@ const MainPage = () => {
               preview={preview}
               heavyVideoSrc={highQualityVideo}
               lightVideoSrc={lowQualityVideo}
-              style={{ width: '100%', maxWidth: '1200px' }}
-              priority="high"
-              onError={(error) => console.error('Video error:', error)}
-              onLoad={() => console.log('Video loaded successfully')}
-
+              style={{ width: '100%', height: "auto" }}
             />
           </div>
         </div>
