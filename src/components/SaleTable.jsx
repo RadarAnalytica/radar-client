@@ -76,19 +76,10 @@ const SalesTable = ({ tableData }) => {
             className={styles.weekCellDate}
           >
             {formatDate(date)}
-            <span
-              className={`${styles.dropdownArrow} ${
-                expandedRows[`week-${date}`] ? styles.dropdownArrowExpanded : ''
-              }`}
-            >
-              <img src={arrowDown} alt='Dropdown Arrow' />
-            </span>
           </div>
-          {expandedRows[`week-${date}`] && (
             <div key={date} className={styles.row}>
               <TableSections data={data}/>
             </div>
-          )}
         </div>
       </div>
     );
@@ -151,7 +142,11 @@ const SalesTable = ({ tableData }) => {
                       >
                         <div className={styles.weekCellDateMonth} >
                           <span className={styles.weekCellDateMonthText}>{month}</span>
-                          <span className={styles.dropdownArrow}>
+                          <span
+                            className={`${styles.dropdownArrow} ${
+                              expandedRows[`month-${year}-${month}`] ? styles.dropdownArrowExpanded : ''
+                            }`}
+                          >
                             <img src={arrowDown} alt='Dropdown Arrow' />
                           </span>
                         </div>

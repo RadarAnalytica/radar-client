@@ -3,7 +3,7 @@ import arrowDown from '../assets/arrow-down.svg';
 import styles from './LogisticsTable.module.css';
 
 const LogisticsTable = ({ data }) => {
-  const [expandedRows, setExpandedRows] = useState(new Set(['']));
+  const [expandedRows, setExpandedRows] = useState(new Set());
   const formatTableData = (penaltiesData) => {
     return Object.entries(penaltiesData || {}).map(([actionType, items]) => ({
       id: actionType,
@@ -29,7 +29,6 @@ const LogisticsTable = ({ data }) => {
   };
 
   const tableData = formatTableData(data);
-  console.log('tableData', tableData);
 
   const toggleRow = (id) => {
     setExpandedRows((prev) => {
@@ -81,15 +80,19 @@ const LogisticsTable = ({ data }) => {
             className={`${styles.cell_srid} ${
               item.isChild ? styles.noBorder : styles.borderBottom
             }`}
+            title={item.srid}
           >
-            {item.srid}
+            <span className={styles.truncatedText}>
+              {item.srid}
+            </span>
           </div>
           <div
             className={`${styles.cell_article} ${
               item.isChild ? styles.noBorder : styles.borderBottom
             }`}
+            title={item.article}
           >
-            <div>{item.article}</div>
+            <span className={styles.truncatedText}>{item.article}</span>
           </div>
           <div
             className={`${styles.cell_goods} ${
