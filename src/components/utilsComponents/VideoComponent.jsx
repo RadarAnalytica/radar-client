@@ -4,48 +4,96 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
     const lightVideoRef = useRef(null);
     const heavyVideoRef = useRef(null);
     const [isHeavyLoaded, setIsHeavyLoaded] = useState(false);
-    const [isUserInteracted, setIsUserInteracted] = useState(false);
+    const [isInViewport, setIsInViewport] = useState(false);
 
-    const handleUserInteraction = () => {
-        setIsUserInteracted(true);
 
-        if (lightVideoRef.current) {
-            lightVideoRef.current.muted = true;
-            lightVideoRef.current.play().catch(() => { });
-        }
-        if (heavyVideoRef.current && isHeavyLoaded) {
-            heavyVideoRef.current.muted = true;
-            heavyVideoRef.current.play().catch(() => { });
+    const playVideo = async (videoElement) => {
+        if (!videoElement) return;
+
+        try {
+            videoElement.muted = true;
+            videoElement.playsInline = true;
+            videoElement.setAttribute('playsinline', '');
+            videoElement.setAttribute('webkit-playsinline', '');
+
+            videoElement.loop = true;
+
+            if (isInViewport) {
+                await videoElement.play();
+            }
+        } catch (error) {
+            console.log("Autoplay failed:", error);
         }
     };
 
     useEffect(() => {
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                setIsInViewport(entry.isIntersecting);
+            });
+        }, options);
+
+        const lightVideo = lightVideoRef.current;
         const heavyVideo = heavyVideoRef.current;
 
+        if (lightVideo) observer.observe(lightVideo);
+        if (heavyVideo) observer.observe(heavyVideo);
+
+        return () => {
+            if (lightVideo) observer.unobserve(lightVideo);
+            if (heavyVideo) observer.unobserve(heavyVideo);
+        };
+    }, []);
+
+
+    useEffect(() => {
+        const lightVideo = lightVideoRef.current;
+        if (lightVideo && isInViewport) {
+            playVideo(lightVideo);
+        }
+    }, [isInViewport]);
+
+    useEffect(() => {
+        const heavyVideo = heavyVideoRef.current;
         if (heavyVideo) {
             heavyVideo.preload = "auto";
 
             const handleCanPlayThrough = () => {
                 setIsHeavyLoaded(true);
-
-                if (lightVideoRef.current && isUserInteracted) {
-                    heavyVideo.currentTime = lightVideoRef.current.currentTime; // Sync time
-                    heavyVideo.muted = true; // Ensure muted before playing
-                    heavyVideo.play().catch(() => { });
+                if (isInViewport) {
+                    playVideo(heavyVideo);
                 }
             };
 
             heavyVideo.addEventListener("canplaythrough", handleCanPlayThrough);
-
             return () => {
                 heavyVideo.removeEventListener("canplaythrough", handleCanPlayThrough);
             };
         }
-    }, [heavyVideoSrc, isUserInteracted]);
+    }, [heavyVideoSrc, isInViewport]);
+
+
+    useEffect(() => {
+        const lightVideo = lightVideoRef.current;
+        const heavyVideo = heavyVideoRef.current;
+
+        if (!isInViewport) {
+            if (lightVideo) lightVideo.pause();
+            if (heavyVideo) heavyVideo.pause();
+        } else {
+            if (!isHeavyLoaded && lightVideo) playVideo(lightVideo);
+            if (isHeavyLoaded && heavyVideo) playVideo(heavyVideo);
+        }
+    }, [isInViewport, isHeavyLoaded]);
 
     return (
-        <div style={{ width: "100%", height: "100%", ...style }} onClick={handleUserInteraction}>
-            {/* Low-quality video (starts immediately) */}
+        <div style={{ width: "100%", height: "100%", ...style }}>
             <video
                 ref={lightVideoRef}
                 src={lightVideoSrc}
@@ -54,14 +102,12 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
                     width: "100%",
                     height: "100%",
                     display: isHeavyLoaded ? "none" : "block",
+                    objectFit: "cover",
                 }}
-                autoPlay
-                loop
                 muted
                 playsInline
+                preload="auto"
             />
-
-            {/* High-quality video (hidden initially, appears when ready) */}
             <video
                 ref={heavyVideoRef}
                 src={heavyVideoSrc}
@@ -69,11 +115,11 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
                     width: "100%",
                     height: "100%",
                     display: isHeavyLoaded ? "block" : "none",
+                    objectFit: "cover",
                 }}
-                autoPlay
-                loop
                 muted
                 playsInline
+                preload="auto"
             />
         </div>
     );
