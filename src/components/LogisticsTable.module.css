@@ -82,14 +82,27 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .truncatedText {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .cell_article {
     min-width: 94px;
-    padding: 0 0 4px 0;
+    padding: 0 0 4px 8px;
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
+    display: flex;
+    align-items: center;
   }
   
   .cell_goods {
