@@ -14,6 +14,7 @@ import reportByGoodsSlice from './reportByGoods/reportByGoodsSlice';
 import plReportSlice from './reportPL/plReportSlice';
 import externalExpensesSlice from './externalExpenses/externalExpensesSlice';
 import penaltiesSlice from './reportPrnalties/penaltiesSlice';
+import downloadReducer from './download/downloadSlice';
 
 const storeOptions = {
   reducer: {
@@ -31,6 +32,7 @@ const storeOptions = {
     plReportSlice,
     externalExpensesSlice,
     penaltiesSlice,
+    downloadReducer,
   },
 };
 

@@ -6,14 +6,17 @@ import { getFilterData } from '../../service/ReportService'
 import { reportFilters } from '../../service/reportConfig'
 import DownloadButton from '../DownloadButton';
 import { URL } from '../../service/config'
+import { useSelector, useDispatch } from 'react-redux';
+import { setDownloadLoading } from '../../redux/download/downloadSlice';
 
 const NewFilterGroup = ({pageIdent, getData}) => {
     const { authToken } = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const isDownloading = useSelector((state) => state.downloadReducer?.isDownloading);
     const [isLoading, setIsLoading] = useState(true);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [filters, setFilters] = useState(reportFilters[pageIdent]);
     const [weekOriginFilter, setWeekOriginFilter] = useState([]);
-    const [excelIsLoading, setExcelIsLoading] = useState(false);
 
     useEffect(() => {
         const storageItem = localStorage.getItem(pageIdent)
@@ -84,7 +87,7 @@ const NewFilterGroup = ({pageIdent, getData}) => {
     }, [weekOriginFilter, pageIdent])
 
     const handleDownload = async () => {
-        setExcelIsLoading(true);
+        dispatch(setDownloadLoading(true));
         fetch(
           `${URL}/api/report/download`,
           {
@@ -108,7 +111,7 @@ const NewFilterGroup = ({pageIdent, getData}) => {
             link.parentNode.removeChild(link);
           })
           .catch((e) => console.error(e))
-          .finally(() => setExcelIsLoading(false));
+          .finally(() => dispatch(setDownloadLoading(false)));
       };
 
       const getFiltersByLocalStorage = () => {
@@ -128,7 +131,6 @@ const NewFilterGroup = ({pageIdent, getData}) => {
                 weekdays: dashboardPageData.week ? dashboardPageData.week : [],
             },
         };
-        console.log('resultFilters', resultFilters);
         
 
         // P&L
@@ -142,7 +144,6 @@ const NewFilterGroup = ({pageIdent, getData}) => {
             'brand_filter': brandFilter,
             'group_filter': groupFilter
         }
-        console.log('resultFilters', resultFilters);
 
         // Report By Month
         const monthStorage = localStorage.getItem('month')
@@ -165,7 +166,6 @@ const NewFilterGroup = ({pageIdent, getData}) => {
                 weekdays: monthPageData.week || [],
             },
         }
-        console.log('resultFilters', resultFilters);
 
         // Report By Goods
         const goodsStorage = localStorage.getItem('goods')
@@ -188,7 +188,6 @@ const NewFilterGroup = ({pageIdent, getData}) => {
                 weekdays: goodsPageData.week || [],
             },
         }
-        console.log('resultFilters', resultFilters);
 
         // ABC
         const abcStorage = localStorage.getItem('abc')
@@ -203,7 +202,6 @@ const NewFilterGroup = ({pageIdent, getData}) => {
             year_filter_list: abcPageData.year || [],
             week_filter_list: abcPageData.week || [],
           }
-        console.log('resultFilters', resultFilters);
 
         // Penalty
         const penaltyStorage = localStorage.getItem('penalty')
@@ -222,7 +220,6 @@ const NewFilterGroup = ({pageIdent, getData}) => {
                 weekdays: penaltyPageData.week,
             }
         };
-        console.log('resultFilters', resultFilters);
         
         // Charts
         const chartsStorage = localStorage.getItem('charts')
@@ -239,7 +236,6 @@ const NewFilterGroup = ({pageIdent, getData}) => {
                 weekdays: chartsPageData.week,
             }
         }
-        console.log('resultFilters', resultFilters);
         
         return resultFilters
     }
@@ -255,7 +251,7 @@ const NewFilterGroup = ({pageIdent, getData}) => {
                 >
                     {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
                 </button>
-                <DownloadButton handleDownload={handleDownload} isLoading={excelIsLoading} />
+                <DownloadButton handleDownload={handleDownload} isLoading={isDownloading} />
             </div>
             
             {!isCollapsed && (

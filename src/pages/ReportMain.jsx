@@ -293,8 +293,8 @@ const ReportMain = () => {
           >
             <div
               className={styles.uploadWrapper}
-              onClick={() => fileInputRef.current.click()}
-              style={{ cursor: 'pointer' }}
+              onClick={() => !uploadingFile && fileInputRef.current.click()}
+              style={{ cursor: uploadingFile ? 'not-allowed' : 'pointer' }}
             >
               <div className={styles.uploadTitle}>Загрузите отчеты</div>
               {!uploadingFile ? (
