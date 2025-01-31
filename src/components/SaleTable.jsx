@@ -1,263 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import styles from './SaleTable.module.css';
 import arrowDown from '../assets/arrow-down.svg';
-import { formatPrice } from '../service/utils';
+import TableSections from './SaleTableSections';
+import TableSectionsEmpty from './SaleTableSectionsEmpty';
 
 const SalesTable = ({ tableData }) => {
-  let firstRender = false
-  const [expandedRows, setExpandedRows] = useState(() => {
-    const initialState = {};
-    // Dynamically set all years and their weeks to expanded
-    Object.entries(tableData).forEach(([year, yearData]) => {
-      initialState[year] = true; // Set year to expanded
-      Object.entries(yearData).forEach(([date]) => {
-        initialState[`week-${date}`] = true;
-      });
-    });
-    return initialState;
-  });
+  const [expandedRows, setExpandedRows] = useState({});
+
+  const calculateYearTotals = (yearData) => {
+    return yearData.total;
+  };
 
   useEffect(() => {
-    if (!firstRender && tableData) {
+    if (tableData && Object.keys(tableData).length > 0) {
+      const newState = {};
       Object.entries(tableData).forEach(([year, yearData]) => {
-        setExpandedRows((prev) => ({
-          ...prev,
-          [year]: true
-        }))
-        Object.entries(yearData).forEach(([date]) => {
-          setExpandedRows((prev) => ({
-            ...prev,
-            [`week-${date}`]: true
-          }))
-        });
+        newState[year] = true;
+        // Handle months data
+        if (yearData.months) {
+          Object.entries(yearData.months).forEach(([month, monthData]) => {
+            newState[`month-${year}-${month}`] = true;
+            // Handle weeks data
+            if (monthData.weeks) {
+              Object.entries(monthData.weeks).forEach(([date, weekData]) => {
+                newState[`week-${date}`] = true;
+              });
+            }
+          });
+        }
       });
-      firstRender = true
+      setExpandedRows(newState);
     }
-  }, [tableData])
+  }, [tableData]);
 
-  console.log('expandedRows', expandedRows);
+  const groupWeeksByMonth = (yearData) => {
+    return yearData.months;
+  };
 
   const toggleRow = (key) => {
     setExpandedRows((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
-  };
+  }; 
 
   const renderWeekRow = (date, data) => {
     if (!data) {
       return null;
     }
+
+    const formatDate = (dateStr) => {
+      const date = new Date(dateStr);
+      
+      // Check for invalid date
+      if (isNaN(date.getTime())) {
+        return 'Invalid Date';
+      }
+    
+      // Extract UTC components to avoid timezone issues
+      const day = String(date.getUTCDate()).padStart(2, '0');
+      const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+      const year = String(date.getUTCFullYear()).slice(-2); // Get last two digits of the year
+    
+      return `${day}.${month}.${year}`;
+    };
     return (
       <div key={date}>
         <div className={styles.row} onClick={() => toggleRow(`week-${date}`)}>
           <div
             className={styles.weekCellDate}
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
           >
-            {date}
-            <span
-              className={`${styles.dropdownArrow} ${
-                expandedRows[`week-${date}`] ? styles.dropdownArrowExpanded : ''
-              }`}
-            >
-              <img src={arrowDown} alt='Dropdown Arrow' />
-            </span>
+            {formatDate(date)}
           </div>
-          {expandedRows[`week-${date}`] && (
             <div key={date} className={styles.row}>
-              {/* Sales Section */}
-              <div className={styles.flexContainer}>
-                <div className={styles.purchaseCell}>
-                  <div>{formatPrice(data?.purchases.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {data?.purchases.quantity || '0'} шт
-                  </div>
-                </div>
-                <div className={styles.returnCell}>
-                  <div>{formatPrice(data.return.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {data.return.quantity || '0'} шт
-                  </div>
-                </div>
-                <div className={styles.salesCell}>
-                  {data.revenue.quantity || '0'} шт
-                </div>
-                <div className={styles.revenueCell}>
-                  {formatPrice(data.revenue.rub) || '0'} ₽
-                </div>
-                <div className={styles.avgPriceCell}>
-                  {formatPrice(data.avg_check) || '0'} ₽
-                </div>
-                <div className={styles.sppCell}>
-                  <span>{data.avg_spp}</span>
-                  <span style={{ marginLeft: '4px' }}>%</span>
-                </div>
-                {/* <div className={styles.sppCell}>{data.avg_spp} %</div> */}
-                <div className={styles.buyoutCell}>
-                  {data.purchase_percent || '0'} %
-                </div>
-              </div>
-              {/* Self Cost Section */}
-              <div
-                className={styles.flexContainer}
-                style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-              >
-                <div className={styles.costCell}>
-                  <div>
-                    {!!data.cost_price && data.cost_price !== '-'
-                      ? formatPrice(data.cost_price) + ' ₽'
-                      : '-'}
-                  </div>
-                  <div className={styles.smallText}>
-                    {!!data.cost_price_percent && data.cost_price_percent !== '-'
-                      ? data.cost_price_percent + ' %'
-                      : '-'}
-                  </div>
-                </div>
-                <div className={styles.costPerUnitCell}>
-                  {!!data.cost_price && data.cost_price !== '-'
-                    ? formatPrice(data.cost_price / data.revenue.quantity) +
-                      ' ₽'
-                    : '-'}
-                </div>
-              </div>
-              {/* Commision & Logisitc Section */}
-              <div className={styles.flexContainer}>
-                <div className={styles.deliveryCountCell}>
-                  {data.deliveries} шт
-                </div>
-                <div className={styles.commissionCell}>
-                  <div>{formatPrice(data.wb_commission.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {formatPrice(data.wb_commission.percent)} %
-                  </div>
-                </div>
-                <div className={styles.acquiringCell}>
-                  <div>{formatPrice(data.acquiring.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {data.acquiring.percent.toFixed(1)} %
-                  </div>
-                </div>
-                <div className={styles.logisticsCell}>
-                  {formatPrice(data.logistics_straight.rub) || '0'} ₽
-                </div>
-                <div className={styles.logisticsCell}>
-                  {formatPrice(data.logistics_reverse.rub) || '0'} ₽
-                </div>
-                <div className={styles.logisticsCell}>
-                  <div>{formatPrice(data.logistics_total.rub) || '0'} ₽</div>
-                  <div className={styles.smallText}>
-                    {data.logistics_total.percent.toFixed(1)} %
-                  </div>
-                </div>
-                <div className={styles.logisticsCell}>
-                  {formatPrice(data.logistics_per_product) || '0'} ₽
-                </div>
-              </div>
-              {/* Compensation and Penalties Section */}
-              <div
-                className={styles.flexContainer}
-                style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-              >
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_defects.rub) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_defects.quantity) || '0'} шт
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_damage.rub) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.compensation_damage.quantity) || '0'} шт
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.penalties) || '0'} ₽
-                </div>
-                {/* ?????? */}
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.additional_payments) || '0'} ₽
-                </div>
-              </div>
-              {/* Another Keep Section */}
-              <div className={styles.flexContainer}>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.storage.rub) || '0'} ₽</div>
-                  <div>{data.storage.percent || '0'} %</div>
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.other_retentions.rub) || '0'} ₽</div>
-                  <div>{data.other_retentions.percent || '0'} %</div>
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.acceptance.rub) || '0'} ₽</div>
-                  <div>{data.acceptance.percent || '0'} %</div>
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.compensation_penalties.rub) || '0'} ₽</div>
-                  <div>{data.compensation_penalties.percent || '0'} %</div>
-                </div>
-              </div>
-              {/* External Expenses Section */}
-              <div
-                className={styles.flexContainer}
-                style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-              >
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.self_purchase_costs) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  <div>{formatPrice(data.expenses) || '0'} ₽</div>
-                  <div>{data.expenses_percent || '0'} %</div>
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.external_expenses) || '0'} ₽
-                </div>
-              </div>
-              {/* Tax Section */}
-              <div className={styles.flexContainer}>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.sold_by_wb) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.tax_base) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.tax) || '0'} ₽
-                </div>
-              </div>
-              {/* Finance Section */}
-              <div
-                className={styles.flexContainer}
-                style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-              >
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.payment) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.profit) || '0'} ₽
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {formatPrice(data.profit_per_one) || '0'} ₽
-                </div>
-                <div
-                  className={styles.defectCompnesaitionCell}
-                  style={{ width: '148px' }}
-                >
-                  {formatPrice(data.marginality) || '0'} %
-                </div>
-                <div className={styles.defectCompnesaitionCell}>
-                  {data.return_on_investment || '0'} %
-                </div>
-              </div>
+              <TableSections data={data}/>
             </div>
-          )}
-          {/* Existing row content */}
         </div>
       </div>
     );
@@ -267,7 +84,13 @@ const SalesTable = ({ tableData }) => {
     return Object.entries(tableData).map(([year, yearData]) => (
       <div key={year}>
         <div className={styles.weekCellYear} style={{ display: 'flex' }}>
-          <div className={styles.yearToggle} onClick={() => toggleRow(year)}>
+          <div
+            className={styles.yearToggle}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleRow(year);
+            }}
+          >
             <span>{year}</span>
             <span
               className={`${styles.dropdownArrow} ${
@@ -277,7 +100,10 @@ const SalesTable = ({ tableData }) => {
               <img src={arrowDown} alt='Dropdown Arrow' />
             </span>
           </div>
-          <div style={{ display: 'flex' }}>
+          {!expandedRows[year] ? (
+          <TableSections data={calculateYearTotals(yearData)} isYearTotal={true}/>
+        ) : (
+           <div style={{ display: 'flex' }}>
             <div style={{ width: '808px' }}></div>
             <div
               style={{ width: '272px', background: 'rgba(83, 41, 255, 0.05)' }}
@@ -295,11 +121,49 @@ const SalesTable = ({ tableData }) => {
               style={{ width: '660px', background: 'rgba(83, 41, 255, 0.05)' }}
             ></div>
           </div>
+        )}
         </div>
         {expandedRows[year] && (
-          <div className={`${styles.fontSize14} ${styles.monthsContainer}`}>
-            {Object.entries(yearData).map(([date, weekData]) =>
-              renderWeekRow(date, weekData.data)
+          <div>
+            {Object.entries(groupWeeksByMonth(yearData)).map(
+              ([month, monthData]) => {              
+                return (
+                  <div key={`${year}-${month}`}>
+                    {/* Month header */}
+                    <div key={month} className={styles.row}>
+                      <div
+                        className={styles.monthHeader}
+                        onClick={() => toggleRow(`month-${year}-${month}`)}
+                      >
+                        <div className={styles.weekCellDateMonth} >
+                          <span className={styles.weekCellDateMonthText}>{month}</span>
+                          <span
+                            className={`${styles.dropdownArrow} ${
+                              expandedRows[`month-${year}-${month}`] ? styles.dropdownArrowExpanded : ''
+                            }`}
+                          >
+                            <img src={arrowDown} alt='Dropdown Arrow' />
+                          </span>
+                        </div>
+                        {!expandedRows[`month-${year}-${month}`] && (
+                          <TableSections data={monthData.total} isMonthTotal={true}/>
+                        )}
+                        {expandedRows[`month-${year}-${month}`] && (
+                          <TableSectionsEmpty />
+                        )}
+                      </div>
+                    </div>
+                    {/* Weeks for this month */}
+                    {expandedRows[`month-${year}-${month}`] && (
+                      <div>
+                        {Object.entries(monthData.weeks).map(([date, weekData]) =>
+                      renderWeekRow(date, weekData.data)
+                    )}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
             )}
           </div>
         )}
