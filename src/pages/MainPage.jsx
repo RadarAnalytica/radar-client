@@ -47,7 +47,7 @@ import ApiBlockContainer from "../components/ApiBlockContainer"
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";
-import highQualityVideo from "../assets/video/videoChartmp4.mp4";
+import highQualityVideo from "../assets/video/fixed_video.mp4";
 import preview from "../assets/video/firstShot.jpg"
 
 const MainPage = () => {
