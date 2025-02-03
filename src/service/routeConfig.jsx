@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
-import AuthContext from '../service/AuthContext';
+import AuthContext from './AuthContext';
 const MainPage = lazy(() => import( '../pages/MainPage'));
 
 const RootComponent = () => {

@@ -45,9 +45,9 @@ const BigChart = ({
   dataDashBoard,
   children
 }) => {
-  const activeIcon = require('../assets/tick-active.png');
-  const activeIconYellow = require('../assets/tick-active-yellow.png');
-  const inactiveIcon = require('../assets/tick.png');
+  // const activeIcon = require('../assets/tick-active.png');
+  // const activeIconYellow = require('../assets/tick-active-yellow.png');
+  // const inactiveIcon = require('../assets/tick.png');
 
   const getArrayStep = (max) => {
     let expectStep = Math.ceil(max / 6);

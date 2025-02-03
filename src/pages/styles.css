@@ -1325,7 +1325,7 @@ padding:20px;
 }
 
 .widbody-container {
-  padding: 0px 20px 0;
+  padding: 0px 20px 0 !important;
 }
 
 .wid-solution {

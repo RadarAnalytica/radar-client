@@ -5,7 +5,21 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
     const heavyVideoRef = useRef(null);
     const [isHeavyLoaded, setIsHeavyLoaded] = useState(false);
     const [isUserInteracted, setIsUserInteracted] = useState(false);
+   
 
+    useEffect(() => {
+        // Add performance monitoring
+        new PerformanceObserver((entryList) => {
+          const entries = entryList.getEntries();
+          entries.forEach(entry => {
+            // Log LCP metrics
+            console.log('LCP Element:', entry.element);
+            console.log('LCP Timing:', entry.startTime);
+            console.log('LCP Size:', entry.size);
+            console.log('LCP ID:', entry.id);
+          });
+        }).observe({ entryTypes: ['largest-contentful-paint'] });
+      }, []);
     const handleUserInteraction = () => {
         setIsUserInteracted(true);
 
@@ -43,6 +57,16 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
         }
     }, [heavyVideoSrc, isUserInteracted]);
 
+    useEffect(() => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'fetch';
+        link.href = lightVideoSrc;
+        link.type = 'video/mp4';
+        document.head.appendChild(link);
+        return () => document.head.removeChild(link);
+      }, [lightVideoSrc]);
+
     return (
         <div style={{ width: "100%", height: "100%", ...style }} onClick={handleUserInteraction}>
             {/* Low-quality video (starts immediately) */}
@@ -54,11 +78,15 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
                     width: "100%",
                     height: "100%",
                     display: isHeavyLoaded ? "none" : "block",
+                    contentVisibility: 'auto',
+                    containIntrinsicSize: '16/9'
                 }}
                 autoPlay
                 loop
                 muted
                 playsInline
+                preload="auto"
+                fetchpriority="high"
             />
 
             {/* High-quality video (hidden initially, appears when ready) */}

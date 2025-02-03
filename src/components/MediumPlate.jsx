@@ -1,7 +1,5 @@
 import React from 'react';
 import { formatPrice } from '../service/utils';
-import GreenArrow from '../assets/greenarrow.svg';
-import RedArrow from '../assets/redarrow.svg';
 
 const MediumPlate = ({
   name,
@@ -14,8 +12,6 @@ const MediumPlate = ({
   dataDashBoard,
   days,
 }) => {
-  const green = require('../assets/greenarrow.png');
-  const red = require('../assets/redarrow.png');
   const rateUp = (
     <svg
       style={{ width: '16px', height: '12px', marginRight: '10px' }}
