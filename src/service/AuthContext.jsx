@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   const [value, deleteCookie] = useCookie('radar');
   const [authToken, setAuthToken] = useState();
+  console.log('value', value);
 
   let prevToken = authToken;
 

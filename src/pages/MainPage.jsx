@@ -57,6 +57,14 @@ const MainPage = () => {
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
 
+  useEffect(() => {
+    // Report LCP
+    new PerformanceObserver((entryList) => {
+      for (const entry of entryList.getEntries()) {
+        console.log('LCP:', entry.startTime, entry.element);
+      }
+    }).observe({entryTypes: ['largest-contentful-paint']});
+  }, []);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -260,9 +268,9 @@ const MainPage = () => {
                     <path
                       d='M43 20.5L48 25.5L55.5 18'
                       stroke='#5329FF'
-                      stroke-width='1.5'
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                     />
                   </svg>
                 </div>
@@ -301,9 +309,9 @@ const MainPage = () => {
                     <path
                       d='M43 20.5L48 25.5L55.5 18'
                       stroke='#5329FF'
-                      stroke-width='1.5'
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                     />
                   </svg>
                 </div>
@@ -341,9 +349,9 @@ const MainPage = () => {
                     <path
                       d='M43 20.5L48 25.5L55.5 18'
                       stroke='#5329FF'
-                      stroke-width='1.5'
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                     />
                   </svg>
                 </div>
@@ -381,9 +389,9 @@ const MainPage = () => {
                       <path
                         d='M43 20.5L48 25.5L55.5 18'
                         stroke='#5329FF'
-                        stroke-width='1.5'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
+                        strokeWidth='1.5'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
                       />
                     </svg>
                   </div>
