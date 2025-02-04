@@ -94,7 +94,7 @@ const AbcAnalysisPage = () => {
     if (shops?.length > 0) {
       validateStoredShop();
     }
-  }, []);
+  }, [shops]);
 
   useEffect(() => {
     let intervalId = null;
