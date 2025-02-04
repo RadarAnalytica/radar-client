@@ -22,6 +22,7 @@ import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-
 import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
 import styles from '../pages/TariffsPage.module.css';
 import thumbup from '../pages/images/thumbup.png';
+import { ServiceFunctions } from '../service/serviceFunctions';
 
 const SelectRate = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
@@ -276,6 +277,21 @@ const SelectRate = ({ redirect, isShowText }) => {
       function (reason, options) {
         // fail
         //действие при неуспешной оплате
+
+        ServiceFunctions.getFailPaymentStatus(authToken)
+        .then(res => {
+          if (res.message === 'No correct subscription') {
+            widget.close();
+          } else if (res.id && res.auth_token) {
+            widget.close();
+            navigate('/after-payment', { state: { paymentStatus: 'success' } });
+          }
+        }).catch(err => {
+          console.log('Payment verification failed:', err);
+          widget.close();
+          navigate('/after-payment', { state: { paymentStatus: 'error' } });
+        });
+
         console.log('Payment fail:', 'reason', reason, 'options', options);
       }
     );

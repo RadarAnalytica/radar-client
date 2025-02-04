@@ -1052,5 +1052,18 @@ export const ServiceFunctions = {
     return await response.json();
   },
 
+  getFailPaymentStatus: async(token) => {
+    const res = await fetch(`${URL}/api/user/check-fail-transaction`, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: token,
+      },
+    });
+    const data = await res.json();
+
+    return data;
+  }
+
   
 };
