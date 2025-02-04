@@ -39,6 +39,9 @@ export const fetchByGoodsFilters = createAsyncThunk(
         const week_data = {}
         for (let elem of Object.keys(data.date_sale_filter?.weekdays)) {
             const elemList = elem.split('-')
+            if (elemList[1].startsWith('0')) {
+                elemList[1] = elemList[1].replace('0', '')
+            }
             
             if (visibleYearArray.includes(elemList[0]) && visibleMonthArray.includes(elemList[1])) {
                 week_data[elem] = data.date_sale_filter?.weekdays[elem]

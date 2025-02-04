@@ -271,7 +271,7 @@ const DashboardPage = () => {
     setLoading(true);
     try {
       const controlValue = shops.filter(el => el.id === activeShopId).length
-      if (shops.length > 0 && controlValue !== 1) {
+      if (shops.length > 0 && controlValue !== 1 && !!activeBrand && activeBrand !== '0') {
         localStorage.removeItem('activeShop')
         window.location.reload()
       }

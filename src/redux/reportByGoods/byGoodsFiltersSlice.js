@@ -49,6 +49,9 @@ const byGoodsFiltersSlice = createSlice({
                 state.byGoodsFilters['week'] = {}
                 for (let elem of Object.keys(state.byGoodsFilters.weekOrigin)) {
                     const elemList = elem.split('-')
+                    if (elemList[1].startsWith('0')) {
+                        elemList[1] = elemList[1].replace('0', '')
+                    }
                     
                     if (visibleYearArray.includes(elemList[0]) && visibleMonthArray.includes(elemList[1])) {
                         state.byGoodsFilters.week[elem] = state.byGoodsFilters.weekOrigin[elem]

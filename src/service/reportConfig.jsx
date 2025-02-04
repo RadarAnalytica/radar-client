@@ -84,11 +84,11 @@ export const reportFilters = {
             filterIdent: 'subject',
             items: []
         },
-        {
-            title: 'srid',
-            filterIdent: 'srid',
-            items: []
-        },
+        // {
+        //     title: 'srid',
+        //     filterIdent: 'srid',
+        //     items: []
+        // },
         {
             title: 'Год',
             filterIdent: 'year',
@@ -146,11 +146,11 @@ export const reportFilters = {
             filterIdent: 'subject',
             items: []
         },
-        {
-            title: 'srid',
-            filterIdent: 'srid',
-            items: []
-        },
+        // {
+        //     title: 'srid',
+        //     filterIdent: 'srid',
+        //     items: []
+        // },
         {
             title: 'Год',
             filterIdent: 'year',
@@ -231,11 +231,11 @@ export const reportFilters = {
             filterIdent: 'size',
             items: []
         },
-        {
-            title: 'srid',
-            filterIdent: 'srid',
-            items: []
-        },
+        // {
+        //     title: 'srid',
+        //     filterIdent: 'srid',
+        //     items: []
+        // },
         {
             title: 'Виды логистики, штрафов и доплат',
             filterIdent: 'types',

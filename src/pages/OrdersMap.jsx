@@ -31,17 +31,7 @@ const OrdersMap = () => {
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const storedActiveShop = localStorage.getItem('activeShop');
   let activeShop;
-  if (storedActiveShop) {
-    const storedActiveShopObject = JSON.parse(storedActiveShop)
-
-    const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
-    if (shops.length > 0 && controlValue !== 1) {
-      localStorage.removeItem('activeShop')
-      window.location.reload()
-    }
-    
-    activeShop = JSON.parse(storedActiveShop)
-  };
+  
   const activeShopId = activeShop?.id;
 
   const [byRegions, setByRegions] = useState(true);
@@ -80,6 +70,17 @@ const OrdersMap = () => {
     { value: 'region', label: 'По регионам' },
     { value: 'store', label: 'По складам' },
   ];
+  if (storedActiveShop) {
+    const storedActiveShopObject = JSON.parse(storedActiveShop)
+
+    const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
+    if (shops.length > 0 && controlValue !== 1 && !!activeBrand && activeBrand !== '0') {
+      localStorage.removeItem('activeShop')
+      window.location.reload()
+    }
+    
+    activeShop = JSON.parse(storedActiveShop)
+  };
 
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
