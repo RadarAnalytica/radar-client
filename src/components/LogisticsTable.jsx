@@ -54,7 +54,7 @@ const LogisticsTable = ({data}) => {
               item.isChild ? styles.noBorder : ''
             }`}
           >
-            <span>{item.id}</span>
+            <span onClick={() => toggleRow(item.id)}>{item.id}</span>
             {hasChildren ? (
               <button
                 onClick={() => toggleRow(item.id)}
