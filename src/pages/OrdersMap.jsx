@@ -82,6 +82,24 @@ const OrdersMap = () => {
     activeShop = JSON.parse(storedActiveShop)
   };
 
+      const validateStoredShop = () => {
+        if (storedActiveShop && shops?.length > 0) {
+          const storedShopExists = shops.some(
+            shop => shop.id === JSON.parse(storedActiveShop).id
+          );
+          if (!storedShopExists) {
+            localStorage.removeItem('activeShop');
+            window.location.reload();
+          }
+        }
+      };
+  
+      useEffect(() => {
+        if (shops?.length > 0) {
+          validateStoredShop();
+        }
+      }, [shops]);
+
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       dispatch(fetchGeographyData({ authToken, days, activeBrand }));

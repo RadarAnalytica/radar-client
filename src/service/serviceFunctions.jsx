@@ -167,6 +167,11 @@ export const ServiceFunctions = {
       }
     );
 
+    if (res.status === 400) {
+      localStorage.removeItem('activeShop');
+      throw new Error('Invalid shop data');
+    }
+
     const data = await res.json();
 
     return data;
