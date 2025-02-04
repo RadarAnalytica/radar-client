@@ -55,6 +55,7 @@
   
   .cellId {
     min-width: 320px;
+    width: 320px;
     display: flex;
     align-items: center;
     padding: 0 12px 4px 12px;
@@ -78,6 +79,7 @@
   
   .cell_srid {
     min-width: 200px;
+    width: 200px;
     padding: 0 0 4px 12px;
     font-size: 16px;
     font-weight: 500;
@@ -97,6 +99,7 @@
   
   .cell_article {
     min-width: 94px;
+    width: 94px;
     padding: 0 0 4px 8px;
     font-size: 16px;
     font-weight: 500;
@@ -107,6 +110,7 @@
   
   .cell_goods {
     min-width: 400px;
+    width: 400px;
     padding: 0 0 4px 8px;
     font-size: 16px;
     font-weight: 500;
