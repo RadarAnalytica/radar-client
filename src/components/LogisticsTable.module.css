@@ -196,3 +196,8 @@
   .borderBottom {
     border-bottom: 1px solid #f5f5f5;
   }
+  
+  .loadingMessage {
+    background-color: #fff;
+    width: 100%;
+  }

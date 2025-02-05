@@ -5,7 +5,6 @@ import TableSections from './SaleTableSections';
 import TableSectionsEmpty from './SaleTableSectionsEmpty';
 
 const SalesTable = ({ tableData }) => {
-
   const [expandedRows, setExpandedRows] = useState({});
 
   const calculateYearTotals = (yearData) => {
@@ -389,8 +388,13 @@ const SalesTable = ({ tableData }) => {
           </div>
         </div>
       </div>
-
-      <div style={{ width: '334%' }}>{tableData && renderYearData()}</div>
+      {!tableData || Object.keys(tableData).length === 0 ? (
+        <div className={styles.loaderContainer}>
+          <div className='loader'></div>
+        </div>
+      ) : (
+        <div style={{ width: '334%' }}>{tableData && renderYearData()}</div>
+      )}
     </div>
   );
 };
