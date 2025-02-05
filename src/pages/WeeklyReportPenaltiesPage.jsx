@@ -419,7 +419,7 @@ const WeeklyReportPenaltiesPage = () => {
               </>
             )} */}
             <div className='container dash-container'>
-              <LogisticsTable data={penaltiesData} />
+              <LogisticsTable data={penaltiesData} loading={loading}/>
             </div>
           </>
         ) : (
