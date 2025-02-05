@@ -133,6 +133,7 @@ html {
 
 .filter-item {
   min-width: 14vw !important;
+  max-width: 14vw !important;
   position: relative;
 }
 

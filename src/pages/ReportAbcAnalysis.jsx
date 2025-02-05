@@ -11,7 +11,8 @@ import SelectField from '../components/SelectField';
 import abcFake from '../pages/images/abc_fake.png';
 import DemonstrationSection from '../components/DemonstrationSection';
 import NewFilterGroup from '../components/finReport/FilterGroup'
-
+import Modal from 'react-bootstrap/Modal';
+import warningIcon from '../assets/warning.png';
 
 const ReportAbcAnalysis = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +34,7 @@ const ReportAbcAnalysis = () => {
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [dataRevenue, setDataRevenue] = useState([]);
 
+  const [showModal, setShowModal] = useState(false);
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -249,15 +251,42 @@ const ReportAbcAnalysis = () => {
     }
   };
 
+  // const applyFilters = useCallback(async () => {
+  //   setIsRevenueLoading(true);
+  //   setError(null);
+
+  //   try {
+  //     const storageItem = localStorage.getItem('abc')
+  //     let currentPageData = JSON.parse(storageItem)
+  //     currentPageData = currentPageData ? currentPageData : {}
+  //     console.log('currentPageData', currentPageData);
+
+  //     const filters = {
+  //       article_filter_list: currentPageData.wbId || [],
+  //       brand_filter_list: currentPageData.brand || [],
+  //       group_filter_list: currentPageData.group || [],
+  //       month_filter_list: currentPageData.month || [],
+  //       product_filter_list: currentPageData.product || [],
+  //       year_filter_list: currentPageData.year || [],
+  //       week_filter_list: currentPageData.week || [],
+  //     }
+  //     const data = await ServiceFunctions.postAbcReportsData(authToken, filters);
+  //     setDataRevenue(data);
+  //   } catch (err) {
+  //     setError('Failed to load data');
+  //   } finally {
+  //     setIsRevenueLoading(false);
+  //   }
+
+  // }, [authToken])
   const applyFilters = useCallback(async () => {
     setIsRevenueLoading(true);
     setError(null);
 
     try {
-      const storageItem = localStorage.getItem('abc')
-      let currentPageData = JSON.parse(storageItem)
-      currentPageData = currentPageData ? currentPageData : {}  
-      console.log('currentPageData', currentPageData);
+      const storageItem = localStorage.getItem('abc');
+      let currentPageData = JSON.parse(storageItem);
+      currentPageData = currentPageData ? currentPageData : {};
 
       const filters = {
         article_filter_list: currentPageData.wbId || [],
@@ -267,17 +296,22 @@ const ReportAbcAnalysis = () => {
         product_filter_list: currentPageData.product || [],
         year_filter_list: currentPageData.year || [],
         week_filter_list: currentPageData.week || [],
-      }
+      };
+
       const data = await ServiceFunctions.postAbcReportsData(authToken, filters);
       setDataRevenue(data);
     } catch (err) {
-      setError('Failed to load data');
+      if (err.response && err.response.status === 422) {
+        setError(' : Некорректные данные');
+      } else {
+        setError('Не удалось загрузить данные');
+      }
+      setShowModal(true);
     } finally {
       setIsRevenueLoading(false);
     }
-
-  }, [authToken])
-
+  }, [authToken]);
+  const handleClose = () => setShowModal(false);
   const updateData = async () => {
     setIsRevenueLoading(true);
     setError(null);
@@ -981,7 +1015,7 @@ const ReportAbcAnalysis = () => {
                                 <div
                                   className={styles.size}
                                   title={item.size}
-                                  style={{width: '90%'}}
+                                  style={{ width: '90%' }}
                                 >
                                   {item.size}
                                 </div>{' '}
@@ -990,7 +1024,7 @@ const ReportAbcAnalysis = () => {
                                     key={i}
                                     className={styles.size}
                                     title={product.size}
-                                    style={{width: '90%'}}
+                                    style={{ width: '90%' }}
                                   >
                                     {product.size}
                                   </div>
@@ -1000,7 +1034,7 @@ const ReportAbcAnalysis = () => {
                               <div
                                 className={styles.size}
                                 title={item.size}
-                                style={{width: '90%'}}
+                                style={{ width: '90%' }}
                               >
                                 {item.size}
                               </div>
@@ -1231,7 +1265,7 @@ const ReportAbcAnalysis = () => {
                                 <div
                                   className={styles.size}
                                   title={item.size}
-                                  style={{width: '90%'}}
+                                  style={{ width: '90%' }}
                                 >
                                   {item.size}
                                 </div>{' '}
@@ -1240,7 +1274,7 @@ const ReportAbcAnalysis = () => {
                                     key={i}
                                     className={styles.size}
                                     title={product.size}
-                                    style={{width: '90%'}}
+                                    style={{ width: '90%' }}
                                   >
                                     {product.size}
                                   </div>
@@ -1250,7 +1284,7 @@ const ReportAbcAnalysis = () => {
                               <div
                                 className={styles.size}
                                 title={item.size}
-                                style={{width: '90%'}}
+                                style={{ width: '90%' }}
                               >
                                 {item.size}
                               </div>
@@ -1369,6 +1403,7 @@ const ReportAbcAnalysis = () => {
             </span>
           </>
         )}
+
 
         {/* <div className={`${styles.ScheduleFooter} dash-container container`}>
           <div className={styles.tabs}>
@@ -1803,6 +1838,21 @@ const ReportAbcAnalysis = () => {
           )}
         </div> */}
         <BottomNavigation />
+        <div>
+          <Modal show={showModal} onHide={handleClose}>
+            <Modal.Header closeButton style={{ borderBottom: "none" }}>
+              <div>
+                <div className="d-flex gap-3 mb-2 mt-2 align-items-center">
+                  <img src={warningIcon} alt="" style={{ height: '3vh' }} />
+                  <p className="fw-bold mb-0">Ошибка!</p>
+                </div>
+                <p className="fs-6 mb-1" style={{ fontWeight: 600 }}>
+                  {error}
+                </p>
+              </div>
+            </Modal.Header>
+          </Modal>
+        </div>
       </div>
     </div>
   );

@@ -2,11 +2,14 @@ import React from "react";
 import { formatPrice } from "../service/utils";
 import SeeMoreButton from "./SeeMoreButton";
 
+const formatNumber = (num) => typeof num === "number" ? num.toLocaleString("ru-RU") : num;
+
 const TableRow = ({ values }) => {
   return (
     <div className='d-flex'>
       {values
-        ? values.map((val, i) => (
+        ? values.map((val, i) => {
+          return (
             <span
               className='col fin-row'
               key={i}
@@ -14,26 +17,26 @@ const TableRow = ({ values }) => {
                 i === 0
                   ? { textAlign: "left", minWidth: "150px" }
                   : i === 1
-                  ? { fontWeight: 700, textAlign: "left" }
-                  : i > 1
-                  ? { textAlign: "right", fontWeight: 700 }
-                  : { fontWeight: 700, textAlign: "right" }
+                    ? { fontWeight: 700, textAlign: "left" }
+                    : i > 1
+                      ? { textAlign: "right", fontWeight: 700 }
+                      : { fontWeight: 700, textAlign: "right" }
               }
             >
               {(i === 1 || i === 2) && val !== "-"
-                ? val + " ₽"
+                ? `${formatNumber(Number(val))} ₽`
                 : i === 3
-                ? val + " шт."
-                : i === 1 && val === "-"
-                ? 0 + " ₽"
-                : val}
+                  ? `${formatNumber(Number(val))} шт.`
+                  : i === 1 && val === "-"
+                    ? "0 ₽"
+                    : val}
             </span>
-          ))
+          );
+        })
         : null}
     </div>
   );
 };
-
 const StorageTable = ({
   title,
   data,
@@ -71,15 +74,15 @@ const StorageTable = ({
                   style={
                     i === 0
                       ? {
-                          textAlign: "left",
-                          fontWeight: "bold",
-                          minWidth: "150px",
-                        }
+                        textAlign: "left",
+                        fontWeight: "bold",
+                        minWidth: "150px",
+                      }
                       : i === 1
-                      ? { fontWeight: 700, textAlign: "left" }
-                      : i > 1
-                      ? { textAlign: "right", fontWeight: 700 }
-                      : { fontWeight: 700, textAlign: "right" }
+                        ? { fontWeight: 700, textAlign: "left" }
+                        : i > 1
+                          ? { textAlign: "right", fontWeight: 700 }
+                          : { fontWeight: 700, textAlign: "right" }
                   }
                   key={i}
                 >
@@ -95,15 +98,15 @@ const StorageTable = ({
                   style={
                     i === 0
                       ? {
-                          textAlign: "left",
-                          fontWeight: "bold",
-                          minWidth: "150px",
-                        }
+                        textAlign: "left",
+                        fontWeight: "bold",
+                        minWidth: "150px",
+                      }
                       : i === 1
-                      ? { fontWeight: 400, textAlign: "left" }
-                      : i > 1
-                      ? { textAlign: "right", fontWeight: 400 }
-                      : { fontWeight: 400, textAlign: "right" }
+                        ? { fontWeight: 400, textAlign: "left" }
+                        : i > 1
+                          ? { textAlign: "right", fontWeight: 400 }
+                          : { fontWeight: 400, textAlign: "right" }
                   }
                   key={i}
                 >
