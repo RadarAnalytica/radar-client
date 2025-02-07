@@ -24,6 +24,7 @@ const WeeklyReportByGoods = () => {
     (state) => state.reportByGoodsSlice
   );
   const { byGoodsFilters, isFiltersLoading } = useSelector((state) => state?.byGoodsFiltersSlice);
+  const [isLoading, setIsLoading] = useState(false);
   const [filterOptions, setFilterOptions] = useState([]);
   const [isOpenFilters, setIsOpenFilters] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -171,12 +172,14 @@ const WeeklyReportByGoods = () => {
   };
 
   const handleFetchReport = useCallback(() => {
-    
+    setIsLoading(true);
     dispatch(
       fetchReportByGoods({
         authToken: authToken,
       })
-    );
+    ).then(() => {
+      setIsLoading(false);
+    });
   }, [authToken, dispatch, isFiltersLoading]);
 
   return (
@@ -667,7 +670,26 @@ const WeeklyReportByGoods = () => {
               </>
             )} */}
             <div className='container dash-container'>
-              <TableByGoods data={weeklyData} />
+            {!isLoading ? (
+                <TableByGoods data={weeklyData} />
+              ) : (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '200px',
+                    overflow: 'auto',
+                    position: 'relative',
+                    borderRadius: '16px',
+                    boxShadow: '0px 0px 20px 0px rgba(0, 0, 0, 0.08)',
+                    willChange: 'transform',
+                    marginTop: '21px',
+                  }}
+                >
+                  <span className='loader'></span>
+                </div>
+              )}
             </div>
           </>
         ) : (

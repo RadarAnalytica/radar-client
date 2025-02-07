@@ -17,8 +17,9 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 const WeeklyReportPL = () => {
   const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
-  const { plData, isLoading } = useSelector((state) => state?.plReportSlice);
+  const { plData } = useSelector((state) => state?.plReportSlice);
   const { plFilters, isFiltersLoading } = useSelector((state) => state?.plFiltersSlice);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     brand: [],
     group: [],
@@ -45,6 +46,7 @@ const WeeklyReportPL = () => {
   // })
 
   const handleApplyFilters = useCallback(() => {
+    setIsLoading(true);
     // Get the current active filters directly
     // const storageItem = localStorage.getItem('pl')
     // let currentPageData = JSON.parse(storageItem)
@@ -56,7 +58,9 @@ const WeeklyReportPL = () => {
     dispatch(
       fetchPLReport({token: authToken}
       )
-    );
+    ).then(() => {
+      setIsLoading(false);
+    })
     
     return
     
@@ -285,7 +289,26 @@ const WeeklyReportPL = () => {
               <NewFilterGroup pageIdent='pl' filtersData={plFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
             </div>
             <div className='container dash-container'>
-              <TablePL plData={plData} />
+            {!isLoading ? (
+                <TablePL plData={plData} />
+              ) : (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '200px',
+                    overflow: 'auto',
+                    position: 'relative',
+                    borderRadius: '16px',
+                    boxShadow: '0px 0px 20px 0px rgba(0, 0, 0, 0.08)',
+                    willChange: 'transform',
+                    marginTop: '21px',
+                  }}
+                >
+                  <span className='loader'></span>
+                </div>
+              )}
             </div>
           </>
         ) : (
