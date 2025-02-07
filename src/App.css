@@ -1114,6 +1114,23 @@ select {
   transform: translateZ(0);
 }
 
+.small-loader {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-top: 2px solid rgba(83, 41, 255, 1);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 @keyframes mulShdSpin {
   0%,
   100% {
@@ -1944,6 +1961,10 @@ select {
   width: 18px;
   height: 16px;
   margin-right: 6px;
+}
+
+.download-button.disabled {
+  pointer-events: none;
 }
 
 .filter-panel {
@@ -3617,10 +3638,6 @@ font-weight: 500;
 .tableContainer td:first-child{
   color: #5329FF;
   font-weight: 400;
-}
-
-.tableContainer .scrollableBody {
- 
 }
 
 /* Стили для скроллбара */

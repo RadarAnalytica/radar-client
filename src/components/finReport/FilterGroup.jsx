@@ -5,10 +5,14 @@ import AuthContext from '../../service/AuthContext';
 // import { getFilterData } from '../../service/ReportService'
 import { reportFilters } from '../../service/reportConfig'
 import DownloadButton from '../DownloadButton';
-import { URL } from '../../service/config'
+import { URL } from '../../service/config';
+import { useSelector, useDispatch } from 'react-redux';
+import { setDownloadLoading } from '../../redux/download/downloadSlice';
 
 const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     const { authToken } = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const isDownloading = useSelector((state) => state.downloadReducer?.isDownloading);
     // const [isLoading, setIsLoading] = useState(true);
     // const { plFilters } = useSelector((state) => state?.plFiltersSlice);
     const [isCollapsed, setIsCollapsed] = useState(false)
@@ -86,7 +90,7 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
     }, [weekOriginFilter, pageIdent])
 
     const handleDownload = async () => {
-        // const filters = getFiltersByLocalStorage()
+        dispatch(setDownloadLoading(true));
         fetch(
           `${URL}/api/report/download`,
           {
@@ -109,7 +113,10 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
             link.click();
             link.parentNode.removeChild(link);
           })
-          .catch((e) => console.error(e));
+          .catch((e) => console.error(e))
+          .finally(() => {
+            dispatch(setDownloadLoading(false));
+          });
       };
 
     // const getFiltersByLocalStorage = () => {
@@ -142,7 +149,7 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
                 >
                     {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
                 </button>
-                <DownloadButton handleDownload={handleDownload}/>
+                <DownloadButton handleDownload={handleDownload} isLoading={isDownloading}/>
             </div>
             
             {!isCollapsed && (

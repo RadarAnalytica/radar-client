@@ -31,6 +31,7 @@ const ReportMain = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [openBlock, setOpenBlock] = useState(true);
+  const [uploadingFile, setUploadingFile] = useState(false);
 
   const getListOfReports = async () => {
     try {
@@ -47,7 +48,7 @@ const ReportMain = () => {
   const handleFileUpload = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
-
+    setUploadingFile(true);
     try {
       const response = await fetch(`${URL}/api/report/upload`, {
         method: 'POST',
@@ -66,6 +67,8 @@ const ReportMain = () => {
       }
     } catch (error) {
       console.error('Error uploading file:', error);
+    } finally {
+      setUploadingFile(false);
     }
   };
 
@@ -290,14 +293,18 @@ const ReportMain = () => {
           >
             <div
               className={styles.uploadWrapper}
-              onClick={() => fileInputRef.current.click()}
-              style={{ cursor: 'pointer' }}
+              onClick={() => !uploadingFile && fileInputRef.current.click()}
+              style={{ cursor: uploadingFile ? 'not-allowed' : 'pointer' }}
             >
               <div className={styles.uploadTitle}>Загрузите отчеты</div>
-              {!selectedFile && (
+              {!uploadingFile ? (
                 <div className={styles.uploadIcon}>
                   <img src={upload} alt='upload' />
                 </div>
+              ) : (
+                <div className={styles.uploadIcon}>
+              <span  className="small-loader"></span>
+              </div>
               )}
               <div className={styles.uploadTextWrapper}>
                 <div className={styles.uploadText}>

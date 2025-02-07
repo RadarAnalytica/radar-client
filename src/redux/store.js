@@ -21,6 +21,7 @@ import externalExpensesSlice from './externalExpenses/externalExpensesSlice';
 import penaltiesSlice from './reportPrnalties/penaltiesSlice';
 import penaltyFiltersSlice from './reportPrnalties/penaltyFiltersSlice';
 import chartsFiltersSlice from './reportCharts/chartsFiltersSlice';
+import downloadReducer from './download/downloadSlice';
 
 const storeOptions = {
   reducer: {
@@ -45,6 +46,7 @@ const storeOptions = {
     penaltiesSlice,
     penaltyFiltersSlice,
     chartsFiltersSlice,
+    downloadReducer,
   },
 };
 
