@@ -301,3 +301,10 @@
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
   }
+
+  .loaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}

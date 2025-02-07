@@ -1,9 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import arrowDown from '../assets/arrow-down.svg';
 import styles from './LogisticsTable.module.css';
 
-const LogisticsTable = ({data}) => {
+const LogisticsTable = ({data, loading}) => {
+  const [showLoading, setShowLoading] = useState(loading);
+  const MINIMUM_LOADING_TIME = 500; // 500ms minimum loading time
   const [expandedRows, setExpandedRows] = useState(new Set());
+
+  useEffect(() => {
+    let timeoutId;
+    
+    if (loading) {
+      setShowLoading(true);
+    } else {
+      timeoutId = setTimeout(() => {
+        setShowLoading(false);
+      }, MINIMUM_LOADING_TIME);
+    }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [loading]);
+
   const formatTableData = (penaltiesData) => {
     return Object.entries(penaltiesData || {}).map(([actionType, items]) => ({
       id: actionType,
@@ -147,9 +167,24 @@ const LogisticsTable = ({data}) => {
           <div className={`${styles.cell_total} ${styles.cellGoods}`}>Итог</div>
         </div>
       </div>
-
-      {/* Data Rows */}
-      {!tableData || tableData.length === 0 || tableData[0].id === 'Ошибка' ? (
+      {showLoading ? (
+        <div className={styles.row}>
+          <div
+            className={styles.loadingMessage}
+            style={{
+              display: 'flex',
+              height: '200px',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '20px',
+            }}
+          >
+            <span className='loader'></span>
+          </div>
+        </div>
+      ) : !tableData ||
+        tableData.length === 0 ||
+        tableData[0].id === 'Ошибка' ? (
         <div className={styles.row}>
           <div
             className={styles.emptyMessage}

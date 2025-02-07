@@ -14,7 +14,7 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 
 const WeeklyReportPenaltiesPage = () => {
   const dispatch = useDispatch();
-  const { penaltiesData } = useSelector(
+  const { penaltiesData, loading } = useSelector(
     (state) => state.penaltiesSlice
   );
   const { penaltyFilters, isFiltersLoading } = useSelector((state) => state?.penaltyFiltersSlice);
@@ -45,7 +45,7 @@ const WeeklyReportPenaltiesPage = () => {
               <NewFilterGroup pageIdent='penalty' filtersData={penaltyFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
           </div>
             <div className='container dash-container'>
-              <LogisticsTable data={penaltiesData} />
+              <LogisticsTable data={penaltiesData} loading={loading}/>
             </div>
           </>
         ) : (

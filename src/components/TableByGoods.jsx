@@ -480,7 +480,13 @@ const TableByGoods = ({ data }) => {
       </div>
 
       {/* Data Rows */}
-      {tableData.map((item) => renderRow(item))}
+      {!data || Object.keys(data).length === 0 ? (
+        <div className={styles.loaderContainer}>
+          <div className='loader'></div>
+        </div>
+      ) : (
+        <>{tableData.map((item) => renderRow(item))}</>
+      )}
 
       {/* Total Row */}
       {/* <div className={styles.totalRow}>
