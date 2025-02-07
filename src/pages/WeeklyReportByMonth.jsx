@@ -1,4 +1,4 @@
-import { useContext, useCallback } from 'react';
+import { useContext, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchReportByMonth } from '../redux/reportByMonth/reportByMonthActions';
 import AuthContext from '../service/AuthContext';
@@ -14,12 +14,14 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 
 const WeeklyReportByMonth = () => {
   const { authToken, user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { weeklyData, loading, error } = useSelector(
+  const { weeklyData } = useSelector(
     (state) => state.reportByMonthSlice
   );
 
   const handleFetchReport = useCallback(() => {
+    setLoading(true);
     const storageItem = localStorage.getItem('month')
     let currentPageData = JSON.parse(storageItem)
     currentPageData = currentPageData ? currentPageData : {}  
@@ -46,7 +48,9 @@ const WeeklyReportByMonth = () => {
         authToken: authToken,
         filters,
       })
-    );
+    ).then(() => {
+      setLoading(false);
+    })
   }, [authToken, dispatch]);
 
   return (
@@ -60,7 +64,19 @@ const WeeklyReportByMonth = () => {
               <NewFilterGroup pageIdent='month' getData={handleFetchReport} />
             </div>
             <div className='container dash-container'>
-              <SalesTable tableData={weeklyData} />
+              {!loading ? (<SalesTable tableData={weeklyData} />) : (
+                   <div
+                   className='d-flex flex-column align-items-center justify-content-center'
+                   style={{
+                     height: '200px',
+                     display: 'flex',
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                   }}
+                 >
+                   <span className='loader'></span>
+                 </div>
+              )}
             </div>
           </>
         ) : (
