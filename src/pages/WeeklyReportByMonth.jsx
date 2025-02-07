@@ -1,4 +1,4 @@
-import { useEffect, useContext, useCallback } from 'react';
+import { useEffect, useContext, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchReportByMonth } from '../redux/reportByMonth/reportByMonthActions';
 import { fetchByMonthFilters } from '../redux/reportByMonth/byMonthFiltersAction';
@@ -15,8 +15,9 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 
 const WeeklyReportByMonth = () => {
   const { authToken, user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { weeklyData, loading, error } = useSelector(
+  const { weeklyData } = useSelector(
     (state) => state.reportByMonthSlice
   );
   const { byMonthFilters, isFiltersLoading } = useSelector((state) => state?.byMonthFiltersSlice);
@@ -28,11 +29,14 @@ const WeeklyReportByMonth = () => {
   }, [authToken, dispatch]);
 
   const handleFetchReport = useCallback(() => {
+    setLoading(true);
     dispatch(
       fetchReportByMonth({
         authToken: authToken,
       })
-    );
+    ).then(() => {
+      setLoading(false);
+    })
   }, [authToken, dispatch, isFiltersLoading]);
 
   return (
@@ -43,10 +47,29 @@ const WeeklyReportByMonth = () => {
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
-              <NewFilterGroup pageIdent='month' filtersData={byMonthFilters} isLoading={isFiltersLoading} getData={handleFetchReport} />
+              <NewFilterGroup
+                pageIdent='month'
+                filtersData={byMonthFilters}
+                isLoading={isFiltersLoading}
+                getData={handleFetchReport}
+              />
             </div>
             <div className='container dash-container'>
-              <SalesTable tableData={weeklyData} />
+              {!loading ? (
+                <SalesTable tableData={weeklyData} />
+              ) : (
+                <div
+                  className='d-flex flex-column align-items-center justify-content-center'
+                  style={{
+                    height: '200px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <span className='loader'></span>
+                </div>
+              )}
             </div>
           </>
         ) : (
