@@ -11,19 +11,20 @@ input[type="number"]:focus {
 }
 
 .map-container {
-  padding: 16px 30px;
+  padding: 16px 0px;
 }
 
 .map-radio {
   display: flex;
   align-items: center;
-  gap: 2vh;
+  gap: 10px;
+  margin-left: 5px;
 }
 
 .radio-item {
   display: flex;
   align-items: center;
-  gap: 1vh;
+  gap: 8px;
 }
 
 /* MAP */
@@ -127,7 +128,7 @@ select {
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
   padding: 24px 32px;
-  margin-bottom: 3vh;
+  margin-bottom: 10px;
   max-width: 39vw;
 }
 
@@ -4375,11 +4376,11 @@ button.accordion-button.collapsed::after {
 
 
 
-@media screen and (max-width: 1048px) {
+@media screen and (max-width: 1200px) {
   .order-map-doughnut,
   .order-table-extended,
   .order-map-table {
-    min-width: 90vw;
+    min-width: 100%; /*changed*/
   }
 
   .doughnut-content {
@@ -4433,3 +4434,12 @@ button.accordion-button.collapsed::after {
     .page-container.container-xxl {
         max-width: 1480px;
     }}
+
+
+    @media screen and (max-width: 1080px) {
+      #map svg {
+        min-height: 65vh !important;
+        max-width: 86vw !important;
+      }
+    
+    }

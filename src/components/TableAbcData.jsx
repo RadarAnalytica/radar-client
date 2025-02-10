@@ -4,6 +4,7 @@ import ArrowUp from "../assets/ArrowUp.svg";
 import ArrowDown from "../assets/ArrowDown.svg";
 import "../App.css";
 
+
 const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading }) => {
   // const [asc, setAsc] = useState(true);
   // const [sortedColumn, setSortedColumn] = useState(""); // Для отслеживания текущего столбца сортировки
@@ -67,10 +68,10 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
 
   return (
     <div
-      className='abcAnalysis dash-container table-content'
-      style={{ maxHeight: "700px", margin: "22px 0 0 60px" }}
+      className='abcAnalysis dash-container container table-content'
+      style={{ maxHeight: "700px" }}
     >
-      <div className='filter abc-filter-container dash-container d-flex'>
+      <div className='filter abc-filter-container  d-flex'>
         <div className='filter-btn-p'>Выбрать вид: </div>
         <div
           className={`filter-btn ${viewType === "proceeds" ? "active" : ""}`}

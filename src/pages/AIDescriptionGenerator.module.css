@@ -1,11 +1,13 @@
+.generatorPage{
 
+}
 .generatorHeader{
     display: flex;
     background-color: #FFFFFF;
     box-shadow: 0px 0px 20px 0px #0000000A;
     border-radius: 16px;
     flex-direction: column;
-    padding: 20px 32px;
+    padding: 20px 32px!important;
 }
 .generatorTitleWrapper{
     display: flex;
@@ -449,4 +451,28 @@ input::placeholder {
     text-align: center;
     font-weight: 600;
 
+}
+
+
+@media screen and (max-width: 1080px) {
+    .formContainer{
+        width: 100%;
+        margin-right: 0!important;
+        margin-left: 0!important;
+    }
+    .formContainerR{
+        width: 100%;
+        margin-top: 10px!important;
+        margin-right: 0!important;
+        margin-left: 0!important;
+    }
+    .generatorWrapper{
+        height: 11vh!important;
+        width: 100%!important;
+        margin-top: 10px;
+    }
+    .generatorPage >.top-nav >.generator{
+        flex-direction: column!important;
+    }
+    
 }

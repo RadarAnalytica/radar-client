@@ -14,6 +14,7 @@ import { abcAnalysis } from "../service/utils";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import SeeMoreButton from "../components/SeeMoreButton";
 import { useNavigate } from "react-router-dom";
+import styles from "../pages/AbcAnalysisPage.module.css"
 
 const AbcAnalysisPage = () => {
   const navigate = useNavigate();
@@ -315,13 +316,15 @@ const AbcAnalysisPage = () => {
             />
           </div>
           {shouldDisplay ? (
-            <TableAbcData
-              dataTable={dataAbcAnalysis}
-              setDataTable={setDataAbcAnalysis}
-              setViewType={setViewType}
-              viewType={viewType}
-              loading={loading}
-            />
+            <div>
+              <TableAbcData
+                dataTable={dataAbcAnalysis}
+                setDataTable={setDataAbcAnalysis}
+                setViewType={setViewType}
+                viewType={viewType}
+                loading={loading}
+              />
+            </div>
           ) : (
             <DataCollectionNotification
               title={"Ваши данные еще формируются и обрабатываются."}

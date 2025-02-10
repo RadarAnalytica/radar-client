@@ -194,7 +194,7 @@ const StockAnalysis = () => {
     return null; // or a loading indicator
   };
 
-  const getProdAnalyticXlsx = async (days, activeBrand, authToken) => { 
+  const getProdAnalyticXlsx = async (days, activeBrand, authToken) => {
     fetch(`${URL}/api/prod_analytic/download?period=${days}&shop=${activeBrand}`,
       {
         method: 'GET',
@@ -239,7 +239,7 @@ const StockAnalysis = () => {
 
           {shouldDisplay ? (
             <>
-              <div className='input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center'>
+              <div className='input-and-button-container container dash-container  pb-4 pt-0 d-flex flex-wrap justify-content-between  stock-mobile-header'>
                 <div className='search search-container'>
                   <div className='search-box'>
                     <input

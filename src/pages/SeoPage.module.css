@@ -29,3 +29,12 @@
     line-height: 20px;
     color: rgba(83, 41, 255, 1);
    }
+
+@media screen and (max-width: 1080px) {
+
+  .newTopNavButton {
+   
+    height: 13vh;
+    
+   }
+ }

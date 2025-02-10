@@ -92,8 +92,8 @@ const DashboardPage = () => {
   const shouldDisplay = activeShop
     ? activeShop.is_primary_collect
     : oneShop
-    ? oneShop.is_primary_collect
-    : allShop;
+      ? oneShop.is_primary_collect
+      : allShop;
 
   useEffect(() => {
     console.log('useEffect [oneShop, activeBrand]');
@@ -146,7 +146,7 @@ const DashboardPage = () => {
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
-  const handleDownload = () => {};
+  const handleDownload = () => { };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -313,10 +313,10 @@ const DashboardPage = () => {
   const selfCostArray =
     sales && state && state.initialCostsAndTax && state.initialCostsAndTax.data
       ? sales.map(
-          (item) =>
-            state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
-              ?.initialCosts
-        )
+        (item) =>
+          state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
+            ?.initialCosts
+      )
       : [];
 
   const selfCost =
@@ -364,13 +364,13 @@ const DashboardPage = () => {
 
   const stockAndCostsMatch =
     wbData &&
-    wbData.stocks &&
-    state &&
-    state.initialCostsAndTax &&
-    state.initialCostsAndTax.data
+      wbData.stocks &&
+      state &&
+      state.initialCostsAndTax &&
+      state.initialCostsAndTax.data
       ? wbData.stocks.data?.map((item) =>
-          state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
-        )
+        state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
+      )
       : [];
 
   // const fbo =
@@ -462,19 +462,19 @@ const DashboardPage = () => {
 
   const vp = sales
     ? sales.reduce((obj, item) => {
-        obj['amount'] =
-          sales.reduce(
-            (acc, el) =>
-              acc +
-              (el.finishedPrice -
-                state?.initialCostsAndTax?.data?.find(
-                  (item) => item.nmID === el.nmId
-                )?.initialCosts),
-            0
-          ) || 0;
-        obj['rate'] = content?.grossProfit?.percent || '0';
-        return obj;
-      }, {})
+      obj['amount'] =
+        sales.reduce(
+          (acc, el) =>
+            acc +
+            (el.finishedPrice -
+              state?.initialCostsAndTax?.data?.find(
+                (item) => item.nmID === el.nmId
+              )?.initialCosts),
+          0
+        ) || 0;
+      obj['rate'] = content?.grossProfit?.percent || '0';
+      return obj;
+    }, {})
     : null;
 
   const financeData = [
@@ -518,13 +518,13 @@ const DashboardPage = () => {
   const salesSelfCost =
     sales && sales
       ? sales.reduce(
-          (acc, el) =>
-            acc +
-            (state?.initialCostsAndTax?.data?.find(
-              (item) => item.nmID === el.nmId
-            )?.initialCosts || 0),
-          0
-        )
+        (acc, el) =>
+          acc +
+          (state?.initialCostsAndTax?.data?.find(
+            (item) => item.nmID === el.nmId
+          )?.initialCosts || 0),
+        0
+      )
       : 0;
 
   const profitabilityData = [
@@ -579,16 +579,16 @@ const DashboardPage = () => {
   const orderValuesRub =
     orders && orders.length
       ? orders?.map((i) => ({
-          price: i.finishedPrice,
-          date: new Date(i.date).toLocaleDateString(),
-        }))
+        price: i.finishedPrice,
+        date: new Date(i.date).toLocaleDateString(),
+      }))
       : [];
   const salesValuesRub =
     sales && sales.length
       ? sales?.map((i) => ({
-          price: i.finishedPrice,
-          date: new Date(i.date).toLocaleDateString(),
-        }))
+        price: i.finishedPrice,
+        date: new Date(i.date).toLocaleDateString(),
+      }))
       : [];
 
   const summedOrderRub = orderValuesRub.reduce((acc, curr) => {
@@ -685,129 +685,129 @@ const DashboardPage = () => {
       datasets: [
         orderLineOn
           ? {
-              label: 'Заказы',
-              borderRadius: 8,
-              type: 'line',
-              backgroundColor: 'rgba(255, 219, 126, 1)',
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-              borderColor: 'rgba(255, 219, 126, 1)',
-              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-              yAxisID: 'A',
-              data: dataDashBoard?.orderAmountList || [],
-              xAxisID: 'x-1',
-            }
+            label: 'Заказы',
+            borderRadius: 8,
+            type: 'line',
+            backgroundColor: 'rgba(255, 219, 126, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+            borderColor: 'rgba(255, 219, 126, 1)',
+            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+            yAxisID: 'A',
+            data: dataDashBoard?.orderAmountList || [],
+            xAxisID: 'x-1',
+          }
           : {
-              label: 'Заказы',
-              borderRadius: 8,
-              type: 'line',
-              backgroundColor: 'rgba(255, 219, 126, 1)',
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-              borderColor: 'rgba(255, 219, 126, 1)',
-              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-              yAxisID: 'A',
-              data: [],
-            },
+            label: 'Заказы',
+            borderRadius: 8,
+            type: 'line',
+            backgroundColor: 'rgba(255, 219, 126, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+            borderColor: 'rgba(255, 219, 126, 1)',
+            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+            yAxisID: 'A',
+            data: [],
+          },
         salesLineOn
           ? {
-              label: 'Продажи',
-              borderRadius: 8,
-              type: 'line',
-              backgroundColor: 'rgba(154, 129, 255, 1)',
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-              borderColor: 'rgba(154, 129, 255, 1)',
-              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-              yAxisID: 'A',
-              data: dataDashBoard?.saleAmountList || [],
-            }
+            label: 'Продажи',
+            borderRadius: 8,
+            type: 'line',
+            backgroundColor: 'rgba(154, 129, 255, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+            borderColor: 'rgba(154, 129, 255, 1)',
+            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+            yAxisID: 'A',
+            data: dataDashBoard?.saleAmountList || [],
+          }
           : {
-              label: 'Продажи',
-              borderRadius: 8,
-              type: 'line',
-              backgroundColor: 'rgba(154, 129, 255, 1)',
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-              borderColor: 'rgba(154, 129, 255, 1)',
-              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-              yAxisID: 'A',
-              data: [],
-            },
+            label: 'Продажи',
+            borderRadius: 8,
+            type: 'line',
+            backgroundColor: 'rgba(154, 129, 255, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+            borderColor: 'rgba(154, 129, 255, 1)',
+            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+            yAxisID: 'A',
+            data: [],
+          },
         orderOn
           ? {
-              label: 'Заказы',
-              borderRadius: 8,
-              type: 'bar',
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-              yAxisID: 'B',
-              data: dataDashBoard?.orderCountList || [],
-            }
-          : {
-              label: 'Заказы',
-              borderRadius: 8,
-              type: 'bar',
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-              yAxisID: 'B',
-              data: [],
+            label: 'Заказы',
+            borderRadius: 8,
+            type: 'bar',
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+              gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+              gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+              gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+              return gradient;
             },
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+            yAxisID: 'B',
+            data: dataDashBoard?.orderCountList || [],
+          }
+          : {
+            label: 'Заказы',
+            borderRadius: 8,
+            type: 'bar',
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+              gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+              gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+              gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+              return gradient;
+            },
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+            yAxisID: 'B',
+            data: [],
+          },
         salesOn
           ? {
-              label: 'Продажи',
-              borderRadius: 8,
-              type: 'bar',
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-              yAxisID: 'B',
-              data: dataDashBoard?.saleCountList || [],
-            }
-          : {
-              label: 'Продажи',
-              borderRadius: 8,
-              type: 'bar',
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-              yAxisID: 'B',
-              data: [],
+            label: 'Продажи',
+            borderRadius: 8,
+            type: 'bar',
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+              gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+              gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+              gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+              return gradient;
             },
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+            yAxisID: 'B',
+            data: dataDashBoard?.saleCountList || [],
+          }
+          : {
+            label: 'Продажи',
+            borderRadius: 8,
+            type: 'bar',
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+              gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+              gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+              gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+              return gradient;
+            },
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+            yAxisID: 'B',
+            data: [],
+          },
       ],
     };
   }, [orderLineOn, salesLineOn, orderOn, salesOn, dataDashBoard]);
@@ -853,9 +853,9 @@ const DashboardPage = () => {
         <div className='dashboard-content pb-3'>
           <TopNav title={'Сводка продаж'} />
           {!isInitialLoading &&
-          !dataDashBoard?.costPriceAmount &&
-          activeShopId !== 0 &&
-          shouldDisplay ? (
+            !dataDashBoard?.costPriceAmount &&
+            activeShopId !== 0 &&
+            shouldDisplay ? (
             <SelfCostWarning
               activeBrand={activeBrand}
               onUpdateDashboard={handleUpdateDashboard}
@@ -881,7 +881,7 @@ const DashboardPage = () => {
 
           {shouldDisplay ? (
             <div>
-              <div className='container dash-container p-3 pt-0 d-flex gap-3'>
+              <div className='container dash-container  pt-0 d-flex gap-3 paddingTopBottom'>
                 <MediumPlate
                   name={'Заказы'}
                   text={oneDayOrderAmount / days}
@@ -907,8 +907,8 @@ const DashboardPage = () => {
                   percent={dataDashBoard?.returnAmountCompare}
                   percent2={dataDashBoard?.returnCountCompare}
                 />
-                <div className='col d-flex flex-column' style={{ gap: '2vh' }}>
-                  <div className='' style={{ height: '11vh' }}>
+                <div className='col d-flex flex-column' style={{ justifyContent: "space-between", gap: "20px" }}>
+                  <div>
                     <SmallPlate
                       name={'Процент выкупа'}
                       dataDashBoard={dataDashBoard?.buyoutPercent}
@@ -916,7 +916,7 @@ const DashboardPage = () => {
                       percent={dataDashBoard?.buyoutPercentCompare || '0'}
                     />
                   </div>
-                  <div className='' style={{ height: '11vh' }}>
+                  <div>
                     <SmallPlate
                       name={'Средний чек'}
                       dataDashBoard={dataDashBoard?.averageBill}
@@ -926,8 +926,8 @@ const DashboardPage = () => {
                   </div>
                 </div>
               </div>
-              <div className='container dash-container p-3 pt-0 pb-3 d-flex gap-3'>
-                <div className='col chart-wrapper'>
+              <div className='container dash-container pt-0 pb-3 d-flex gap-3 paddingTopBottom'>
+                <div className='col chart-wrapper paddingTopBottom'>
                   <BigChart
                     name={'Заказы и продажи'}
                     data={chartData}
@@ -1052,7 +1052,7 @@ const DashboardPage = () => {
                 )}
               </div>
 
-              <div className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'>
+              <div className='container dash-container paddingTopBottom pt-0 pb-3 d-flex gap-3'>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
                     name={'Себестоимость проданных товаров'}
@@ -1094,7 +1094,7 @@ const DashboardPage = () => {
                   />
                 </div>
               </div>
-              <div className='container dash-container p-4 pt-0 d-flex gap-3'>
+              <div className='container dash-container paddingTopBottom pt-0 d-flex gap-3'>
                 <div className='col' style={{ height: '14vh' }}>
                   <SmallPlate
                     name={'Комиссия WB'}
@@ -1132,10 +1132,10 @@ const DashboardPage = () => {
               </div>
 
               <div
-                className='container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3'
+                className='container dash-container paddingTopBottom pt-0 pb-3 mb-2 d-flex gap-3'
                 style={{ width: '100%' }}
               >
-                <div className='wrapper'>
+                <div className='wrapper paddingTopBottom'>
                   <FinanceTable
                     title={'Финансы'}
                     data={financeData}
@@ -1152,7 +1152,7 @@ const DashboardPage = () => {
                     dataDashBoard={dataDashBoard}
                   />
                 </div>
-                <div className='wrapper'>
+                <div className='wrapper paddingTopBottom'>
                   <FinanceTable
                     title={'Прибыльность'}
                     data={profitabilityData}
@@ -1171,8 +1171,8 @@ const DashboardPage = () => {
                 </div>
               </div>
               <div
-                className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'
-                style={{ width: '100%' }}
+                className='container dash-container paddingTopBottom pt-0 pb-3 d-flex gap-3'
+                style={{ width: '100%', marginTop: "10px" }}
               >
                 <WidePlate
                   title={'ABC-анализ'}

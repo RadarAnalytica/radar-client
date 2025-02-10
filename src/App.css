@@ -44,6 +44,9 @@ html {
   align-items: flex-start !important;
 }
 
+.paddingTopBottom{
+  padding: 15px 0;
+}
 .settings-modal {
   display: flex;
   flex-direction: column;
@@ -142,11 +145,11 @@ html {
 }
 
 .filter-item label {
-  font-size: 1.75vh;
+  font-size: 15px;
 }
 
 .filter-item select {
-  font-size: 1.75vh;
+  font-size: 15px;
 }
 
 .medium-plate > div > img {
@@ -187,6 +190,9 @@ a.link {
   position: relative;
 }
 
+.burger-menu-mobile{
+  display: none
+}
 input,
 select {
   outline: none !important;
@@ -413,7 +419,7 @@ select {
 }
 
 .side-nav {
-  width: 21vw;
+  width: 21%;
   padding: 28px 20px;
   max-height: 100vh;
   position: sticky;
@@ -426,6 +432,11 @@ select {
 }
 
 
+.shop-select,.period-select{
+  position: relative;
+  width: 13vw;
+
+}
 .sidenav-el {
   display: flex;
   align-items: center;
@@ -531,6 +542,7 @@ select {
 .top-nav {
   padding: 12px;
   margin-top: 10px;
+  
 }
 .additional-tools {
   background: #f0ad000d;
@@ -597,9 +609,10 @@ select {
   overflow-y: scroll;
 }
 
+
 .dash-container,
 .linked-shops-container {
-  max-width: 76vw !important;
+  max-width: 78vw !important;
 }
 .orders-map {
   overflow: hidden;
@@ -620,7 +633,7 @@ select {
 .medium-plate {
   background-color: white;
   border-radius: 16px;
-  height: 24vh;
+  /* height: 24vh; */
   padding: 16px;
   min-width: 10vw;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -645,7 +658,7 @@ select {
 .storage-table {
   background-color: white;
   border-radius: 16px;
-  min-height: 44vh;
+  height: 50%;
   padding: 16px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -660,7 +673,7 @@ select {
 .chart-table {
   background-color: white;
   border-radius: 16px;
-  min-height: 44vh;
+  height: 50%;
   padding: 16px;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -684,7 +697,7 @@ select {
 }
 .finance-table {
   background-color: white;
-  min-height: 42vh;
+  height: 50%;
   border-radius: 16px;
   padding: 16px;
   width: 100%;
@@ -693,8 +706,6 @@ select {
 }
 
 .finance-table::-webkit-scrollbar {
-
-
   opacity: 0;
 }
 
@@ -792,7 +803,7 @@ select {
 .small-plate {
   background-color: white;
   border-radius: 16px;
-  height: 11vh;
+  /* height: 100% ; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1236,17 +1247,58 @@ select {
 }
 
 @media screen and (max-width: 1080px) {
-  .finance-table,
-  .storage-table,
-  .chart-table,
+  /* .finance-table, */
+  /* .storage-table,  */
+  /* .chart-table, */
   .linked-shop-block {
     min-width: 90vw;
   }
 
-  .top-nav .dash-container {
+  .stock-mobile-header{
+    flex-direction: column!important;
+    align-items: flex-start!important;
+  }
+  .generatorPage .generator{
+    flex-direction: column!important;
+  }
+  .generatorPage .generatorMain{
+    width: 100%!important;
+  }
+
+  .table-wrapper-req-monitoring{
+    min-width: 90vw !important;
+  }
+  .productInfo-price-photo,.productInfo-wbInfo,.barcode-sku-brand{
+    max-width: 100% !important;
+  }
+  .wide-plate-title-elem-p{
+    font-size: 18px!important;
+
+  }
+  .downloadButtonDashMobile > .download-button{
     display: flex;
-    flex-direction: row;
-    min-width: 90vw;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 4px;
+    min-width: 150px;
+    max-width: 150px;
+    white-space: nowrap;
+    height: 35px;
+    cursor: pointer;
+  }
+  .downloadButtonDashMobile > .download-button img{
+ width: 15px;
+ height: 13px;
+  }
+
+  .dashboardMobile .row{
+    flex-direction: column;
+
   }
 
   .dash-container,
@@ -1255,6 +1307,11 @@ select {
     flex-direction: column;
     min-width: 90vw;
     padding: 1.75vh 0 !important;
+  }
+  .top-nav .dash-container {
+    display: flex;
+    flex-direction: row;
+    min-width: 90vw;
   }
 
   .chart-wrapper {
@@ -1294,8 +1351,26 @@ select {
     overflow-x: hidden;
   }
 
+
   .side-nav {
-    display: none;
+    visibility: hidden;
+    opacity: 0; 
+    position: fixed;
+    left: -100%;
+    width: auto;
+    transition: opacity 0.3s ease, visibility 0.3s ease, left 0.3s ease; 
+  }
+
+  .side-nav.open {
+    visibility: visible; 
+    opacity: 1; 
+    left: 0;
+  }
+
+  .burger-menu-mobile {
+    display: block; /*todo*/
+    margin: 0;
+    color: #552CFF;
   }
 
   .finance-table::-webkit-scrollbar {
@@ -1305,7 +1380,8 @@ select {
   .top-menu {
     display: none !important;
     font-size: 20px !important;
-    width: 15vw !important;
+    /* width: 15vw !important; */
+    gap:10px;
     padding: 0 !important;
   }
 
@@ -1441,13 +1517,13 @@ select {
   }
 
   .storage-table {
-    height: 300px;
+    /* height: 300px; */
     overflow-x: scroll !important;
   }
-
+/* 
   .storage-table div {
     width: 420px;
-  }
+  } */
 
   .wide-plate {
     overflow-x: scroll;
@@ -1470,15 +1546,12 @@ select {
     flex-direction: column !important;
   }
 
-  .filter-item {
-    min-width: 120px;
-    font-size: 14px;
-  }
 
-  .top-nav p {
-    font-size: 2.5vh !important;
+  .shop-select,.period-select{
+    position: relative;
+    width: 150px;
+  
   }
-
   .mobile-menu {
     display: block;
     background-color: white;
@@ -1600,6 +1673,8 @@ select {
   .signup-form h1 {
     font-size: 18px !important;
   }
+
+
 
   /* .signup-form  */
 }
@@ -1835,7 +1910,7 @@ select {
  height: max-content;
   border-radius: 10px;
   background-color: #ffffff;
-  margin: 22px 0px 0px 40px;
+  /* margin: 22px 0px 0px 40px;  */
 }
 
 .table-content-stock {
@@ -3684,7 +3759,7 @@ font-weight: 500;
 .table-wrapper-req-monitoring{
   display: flex;
   flex-direction: column;
-  max-width: 76vw !important;
+  max-width: 78vw !important;
   height:max-content;
   --bs-gutter-x:0!important;
   border-radius: 10px;
@@ -3732,6 +3807,7 @@ font-weight: 500;
 }
 
 .page-info {
+  position: relative;
   display: flex;
   align-items: center;
 
@@ -4063,3 +4139,4 @@ canvas {
 .highResMain {
   background-image: url('./pages/images/imageFonStartBsn.png'); /* High-res image */
 }
+

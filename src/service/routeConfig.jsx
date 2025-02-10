@@ -2,23 +2,23 @@ import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from './AuthContext';
-const MainPage = lazy(() => import( '../pages/MainPage'));
+const MainPage = lazy(() => import('../pages/MainPage'));
 
 const RootComponent = () => {
-    const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
-    if (!user) {
-      return <MainPage />;
-    }
-    
-    if (user?.role === 'admin') {
-      return <Navigate to="/admin-panel" replace />;
-    } else if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
-      return <Navigate to="/tariffs" replace />;
-    } else {
-      return user?.is_onboarded ? <Navigate to="/dashboard" replace/> : <Navigate to="/onboarding" replace/>;
-    }
-  };
+  if (!user) {
+    return <MainPage />;
+  }
+
+  if (user?.role === 'admin') {
+    return <Navigate to="/admin-panel" replace />;
+  } else if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
+    return <Navigate to="/tariffs" replace />;
+  } else {
+    return user?.is_onboarded ? <Navigate to="/dashboard" replace /> : <Navigate to="/onboarding" replace />;
+  }
+};
 
 export const publicRoutes = [
   {

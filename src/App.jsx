@@ -4,6 +4,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './service/AuthContext';
 import { ProductProvider } from './service/ProductContext';
+import { NavigationProvider } from './service/NavigationContext';
 import { publicRoutes, protectedRoutes, adminRoutes, subscriptionRoutes, errorRoutes } from './service/routeConfig';
 import MobileMenu from './components/MobileMenu';
 import MessageWindow from './components/MessageWindow';
@@ -35,17 +36,19 @@ function App() {
   return (
     <div className="App">
       <AuthProvider>
-        <ProductProvider>
-          <MobileMenu />
-          <Routes>
-            {renderRoutes(publicRoutes)}
-            {renderRoutes(protectedRoutes)}
-            {renderRoutes(adminRoutes)}
-            {renderRoutes(subscriptionRoutes)}
-            {renderRoutes(errorRoutes)}
-          </Routes>
-          <MessageWindow />
-        </ProductProvider>
+        <NavigationProvider>
+          <ProductProvider>
+            {/* <MobileMenu /> */}
+            <Routes>
+              {renderRoutes(publicRoutes)}
+              {renderRoutes(protectedRoutes)}
+              {renderRoutes(adminRoutes)}
+              {renderRoutes(subscriptionRoutes)}
+              {renderRoutes(errorRoutes)}
+            </Routes>
+            <MessageWindow />
+          </ProductProvider>
+        </NavigationProvider>
       </AuthProvider>
     </div>
   );

@@ -4,6 +4,7 @@ import { Chart, Doughnut } from 'react-chartjs-2';
 import { formatPrice } from '../../service/utils';
 import GreenArrow from '../../assets/greenarrow.svg';
 import RedArrow from '../../assets/redarrow.svg';
+import styles from "../../pages/DashboardPage.module.css"
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -129,8 +130,8 @@ const OrderMapPieChart = ({
       </h5>
       <div className='doughnut-content'>
         <div
-          className='col-5 me-2'
-          style={{ position: 'relative', marginLeft: '-1vw' }}
+          className={`col-5 me-2 ${styles.doughnutMobile}`}
+          style={{ position: 'relative', marginLeft: '10px' }}
         >
           <Doughnut
             data={data}
@@ -321,7 +322,7 @@ const OrderMapPieChart = ({
         </div>
         <div
           style={{
-            marginLeft: '1vw',
+            marginLeft: '10px',
             display: 'flex',
             flexDirection: 'column',
             alignSelf: 'center',
@@ -348,8 +349,8 @@ const OrderMapPieChart = ({
                         height: '0.75vw',
                         borderRadius: '100%',
 
-                        marginLeft: '-0.5vw',
-                        marginRight: '0.7vw',
+                        marginLeft: '0',
+                        marginRight: '15px',
                         marginTop: '-0.75vh',
                       }}
                     >

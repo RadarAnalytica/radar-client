@@ -3,6 +3,7 @@ import downloadIcon from "../pages/images/Download.svg";
 import { ServiceFunctions } from "../service/serviceFunctions";
 import AuthContext from "../service/AuthContext";
 import { URL } from "../service/config";
+import styles from "../pages/DashboardPage.module.css"
 
 const AbcAnalysisFilter = ({
   setActiveBrand,
@@ -38,7 +39,7 @@ const AbcAnalysisFilter = ({
     .join("-");
 
   return (
-    <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
+    <div className={`filter container filter-panel dash-container pb-4 pt-0 d-flex dashboardMobile`}>
       <div className='row'>
         <div className='filter-item col' style={{ position: "relative" }}>
           <label
@@ -47,7 +48,7 @@ const AbcAnalysisFilter = ({
           >
             Период:
           </label>
-          <div style={{ position: "relative" }}>
+          <div className="period-select">
             <select
               style={{
                 width: "100%",
@@ -100,7 +101,7 @@ const AbcAnalysisFilter = ({
           >
             Магазин:
           </label>
-          <div style={{ position: 'relative', width: "13vw" }}>
+          <div className="shop-select">
             <select
               style={{
                 width: '100%',

@@ -107,3 +107,13 @@
     flex-direction: column;
     border: none;
   }
+  @media screen and (max-width: 1080px) {
+    .infoBodyBox{
+        display: flex;
+        flex-direction: column;
+    }
+    .infoSeoGroupWrapper{
+        width: 100%;
+    }
+
+  }

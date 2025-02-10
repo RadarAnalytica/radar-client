@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatPrice } from '../service/utils';
+import styles from '../pages/DashboardPage.module.css';
 
 const MediumPlate = ({
   name,
@@ -52,8 +53,8 @@ const MediumPlate = ({
               position: 'absolute',
               right: '0',
               top: '0',
-              width: '3.25vw',
             }}
+            className={styles.MediumPlateIcon}
             width='60'
             height='60'
             viewBox='0 0 60 60'
@@ -89,8 +90,9 @@ const MediumPlate = ({
               position: 'absolute',
               right: '0',
               top: '0',
-              width: '3.25vw',
+
             }}
+            className={styles.MediumPlateIcon}
             width='60'
             height='60'
             viewBox='0 0 60 60'
@@ -122,8 +124,9 @@ const MediumPlate = ({
               position: 'absolute',
               right: '0',
               top: '0',
-              width: '3.25vw',
+
             }}
+            className={styles.MediumPlateIcon}
             width='60'
             height='60'
             viewBox='0 0 60 60'
@@ -174,7 +177,7 @@ const MediumPlate = ({
               >
                 {name}
               </p>
-              <p className='p-0 m-0 mb-1 fw-bold numbers'>
+              <p className={`p-0 m-0 mb-1 fw-bold ${styles.numbers}`}>
                 {formatPrice(dataDashBoard) || '0,00'} ₽
               </p>
               <div className='d-flex align-items-center gap-2'>
@@ -182,7 +185,7 @@ const MediumPlate = ({
                   {percent > 0 ? rateUp : rateDown}
                   {/* <img src={percent > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} /> */}
                   <p
-                    className='m-0 p-0 tiny-numbers'
+                    className={`m-0 p-0 ${styles.tinyNumbers}`}
                     style={
                       percent > 0
                         ? { color: 'rgba(0, 182, 155, 1)' }
@@ -203,13 +206,13 @@ const MediumPlate = ({
               </div>
             </div>
             <div>
-              <p className='p-0 m-0 mb-1 fw-bold numbers'>{quantity} шт.</p>
+              <p className={`p-0 m-0 mb-1 fw-bold ${styles.numbers}`}>{quantity} шт.</p>
               <div className='d-flex align-items-center gap-2'>
                 <div className='d-flex align-items-center'>
                   {percent2 > 0 ? rateUp : rateDown}
                   {/* <img src={percent2 > 0 ? green : red} alt="" style={{ width: '20px', height: '12px', marginRight: '10px' }} /> */}
                   <p
-                    className='m-0 p-0 tiny-numbers'
+                    className={`m-0 p-0 ${styles.tinyNumbers}`}
                     style={
                       percent2 > 0
                         ? { color: 'rgba(0, 182, 155, 1)' }

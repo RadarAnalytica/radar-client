@@ -3,7 +3,7 @@ import DownloadButton from './DownloadButton';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import { URL } from '../service/config';
-
+import styles from '../pages/DashboardPage.module.css';
 const DashboardFilter = ({
   setActiveBrand,
   periodValue,
@@ -63,7 +63,7 @@ const DashboardFilter = ({
 
   return (
 
-    <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
+    <div className={`filter container filter-panel dash-container pb-4 pt-0 d-flex dashboardMobile`}>
       <div className='row'>
         <div className='filter-item col' style={{ position: 'relative' }}>
           <label
@@ -72,7 +72,7 @@ const DashboardFilter = ({
           >
             Период:
           </label>
-          <div style={{ position: 'relative', width: "13vw" }}>
+          <div className="period-select">
             <select
               style={{
                 width: '100%',
@@ -125,7 +125,7 @@ const DashboardFilter = ({
           >
             Магазин:
           </label>
-          <div style={{ position: 'relative', width: "13vw" }}>
+          <div className="shop-select">
             <select
               style={{
                 width: '100%',
@@ -212,9 +212,11 @@ const DashboardFilter = ({
           </div>
         </div>
       </div>
-      {(currentShop?.is_primary_collect || allShop) && (
-        <DownloadButton handleDownload={handleDownload} />
-      )}
+      <div className="downloadButtonDashMobile">
+        {(currentShop?.is_primary_collect || allShop) && (
+          <DownloadButton handleDownload={handleDownload} />
+        )}
+      </div>
     </div>
   );
 };

@@ -389,7 +389,7 @@ const AiDescriptionGeneratorPage = () => {
   return (
     <div className='dashboard-page'>
       <SideNav />
-      <div className={`${styles.generatorPage} dashboard-content pb-3 `}>
+      <div className={`${styles.generatorPage} dashboard-content pb-3 generatorPage `}>
         <TopNav title={'Генерация описания AI'}>
           <div className={styles.generatorWrapper}>
             <div
