@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { formatPrice } from '../service/utils';
 import styles from './TablePL.module.css';
 
-const TablePL = ({ plData }) => {
+const TablePL = ({ plData, isLoading }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const transformedData = plData?.map((item) => ({
@@ -271,175 +271,192 @@ const TablePL = ({ plData }) => {
               </div>
             </div>
             {/* Scrollable columns */}
-            <div className='scrollable-columns'>
-              {transformedData?.map((item) => {
-                return (
-                  <div className={styles.columnWidth}>
-                    <div className={styles.tableOverHeader}></div>
-                    <div className={styles.tableHeaderScrollable}>
-                      {item.date}
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{
-                        fontWeight: '700',
-                        color: 'rgba(26, 26, 26, 1)',
-                      }}
-                    >
-                      {formatPrice(item.profit.value) || '0'} ₽
-                    </div>
-                    <div className={styles.tableRow}>
-                      {formatPrice(item.averageBill.value) || '0'} ₽
-                    </div>
-                    <div className={styles.tableRow}>
-                      {item.spp.percentage} %
-                    </div>
-                    <div className={styles.tableRow}>
-                      {item.soldOut.percentage} %
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ minHeight: '58px' }}
-                    >
-                      <span className={styles.twoElements}>
-                        <span className={styles.valueElement}>
-                          {formatPrice(item.costPrice.value)} ₽
+            {!isLoading ? (
+              <div className='scrollable-columns'>
+                {transformedData?.map((item) => {
+                  return (
+                    <div className={styles.columnWidth}>
+                      <div className={styles.tableOverHeader}></div>
+                      <div className={styles.tableHeaderScrollable}>
+                        {item.date}
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{
+                          fontWeight: '700',
+                          color: 'rgba(26, 26, 26, 1)',
+                        }}
+                      >
+                        {formatPrice(item.profit.value) || '0'} ₽
+                      </div>
+                      <div className={styles.tableRow}>
+                        {formatPrice(item.averageBill.value) || '0'} ₽
+                      </div>
+                      <div className={styles.tableRow}>
+                        {item.spp.percentage} %
+                      </div>
+                      <div className={styles.tableRow}>
+                        {item.soldOut.percentage} %
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ minHeight: '58px' }}
+                      >
+                        <span className={styles.twoElements}>
+                          <span className={styles.valueElement}>
+                            {formatPrice(item.costPrice.value)} ₽
+                          </span>
+                          <span className={styles.percentageElement}>
+                            {item.costPrice.percentage} %
+                          </span>
                         </span>
-                        <span className={styles.percentageElement}>
-                          {item.costPrice.percentage} %
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ minHeight: '58px' }}
+                      >
+                        <span className={styles.twoElements}>
+                          <span className={styles.valueElement}>
+                            {formatPrice(item.keppWb.value) || '0'} ₽
+                          </span>
+                          <span className={styles.percentageElement}>
+                            {item.keppWb.percentage} %
+                          </span>
                         </span>
-                      </span>
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ minHeight: '58px' }}
-                    >
-                      <span className={styles.twoElements}>
-                        <span className={styles.valueElement}>
-                          {formatPrice(item.keppWb.value) || '0'} ₽
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ minHeight: '58px' }}
+                      >
+                        <span className={styles.twoElements}>
+                          <span className={styles.valueElement}>
+                            {formatPrice(item.commission.value)} ₽
+                          </span>
+                          <span className={styles.percentageElement}>
+                            {item.commission.percentage} %
+                          </span>
                         </span>
-                        <span className={styles.percentageElement}>
-                          {item.keppWb.percentage} %
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ minHeight: '58px' }}
+                      >
+                        <span className={styles.twoElements}>
+                          <span className={styles.valueElement}>
+                            {formatPrice(item.equiring.value) || '0'} ₽
+                          </span>
+                          <span className={styles.percentageElement}>
+                            {item.equiring.percentage} %
+                          </span>
                         </span>
-                      </span>
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ minHeight: '58px' }}
-                    >
-                      <span className={styles.twoElements}>
-                        <span className={styles.valueElement}>
-                          {formatPrice(item.commission.value)} ₽
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ minHeight: '58px' }}
+                      >
+                        <span className={styles.twoElements}>
+                          <span className={styles.valueElement}>
+                            {formatPrice(item.logistic.value)} ₽
+                          </span>
+                          <span className={styles.percentageElement}>
+                            {item.logistic.percentage} %
+                          </span>
                         </span>
-                        <span className={styles.percentageElement}>
-                          {item.commission.percentage} %
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ minHeight: '58px' }}
+                      >
+                        <span className={styles.twoElements}>
+                          <span className={styles.valueElement}>
+                            {formatPrice(item.storage.value) || '0'} ₽
+                          </span>
+                          <span className={styles.percentageElement}>
+                            {item.storage.percentage} %
+                          </span>
                         </span>
-                      </span>
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ minHeight: '58px' }}
-                    >
-                      <span className={styles.twoElements}>
-                        <span className={styles.valueElement}>
-                          {formatPrice(item.equiring.value) || '0'} ₽
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ minHeight: '58px' }}
+                      >
+                        <span className={styles.twoElements}>
+                          <span className={styles.valueElement}>
+                            {formatPrice(item.anotherSum.value) || '0'} ₽
+                          </span>
+                          <span className={styles.percentageElement}>
+                            {item.anotherSum.percentage} %
+                          </span>
                         </span>
-                        <span className={styles.percentageElement}>
-                          {item.equiring.percentage} %
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ minHeight: '58px' }}
+                      >
+                        <span className={styles.twoElements}>
+                          <span className={styles.valueElement}>
+                            {formatPrice(item.payForEnter.value) || '0'} ₽
+                          </span>
+                          <span className={styles.percentageElement}>
+                            {item.payForEnter.percentage} %
+                          </span>
                         </span>
-                      </span>
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                      >
+                        {formatPrice(item.payRC.value) || '0'} ₽
+                      </div>
+                      <div className={styles.tableRow}>
+                        {formatPrice(item.tax.value) || '0'} ₽
+                      </div>
+                      <div className={styles.tableRow}>
+                        {formatPrice(item.allTotalOut.value) || '0'} ₽
+                      </div>
+                      <div className={styles.tableRow}>
+                        {item.allTotalOut.percentage || '0'} %
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                      >
+                        {formatPrice(item.netProfit.value) || '0'} ₽
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                      >
+                        {item.marginalProfit.percentage} %
+                      </div>
+                      <div
+                        className={styles.tableRow}
+                        style={{ background: 'rgba(83, 41, 255, 0.05)' }}
+                      >
+                        {item.roi.percentage} %
+                      </div>
                     </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ minHeight: '58px' }}
-                    >
-                      <span className={styles.twoElements}>
-                        <span className={styles.valueElement}>
-                          {formatPrice(item.logistic.value)} ₽
-                        </span>
-                        <span className={styles.percentageElement}>
-                          {item.logistic.percentage} %
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ minHeight: '58px' }}
-                    >
-                      <span className={styles.twoElements}>
-                        <span className={styles.valueElement}>
-                          {formatPrice(item.storage.value) || '0'} ₽
-                        </span>
-                        <span className={styles.percentageElement}>
-                          {item.storage.percentage} %
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ minHeight: '58px' }}
-                    >
-                      <span className={styles.twoElements}>
-                        <span className={styles.valueElement}>
-                          {formatPrice(item.anotherSum.value) || '0'} ₽
-                        </span>
-                        <span className={styles.percentageElement}>
-                          {item.anotherSum.percentage} %
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ minHeight: '58px' }}
-                    >
-                      <span className={styles.twoElements}>
-                        <span className={styles.valueElement}>
-                          {formatPrice(item.payForEnter.value) || '0'} ₽
-                        </span>
-                        <span className={styles.percentageElement}>
-                          {item.payForEnter.percentage} %
-                        </span>
-                      </span>
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                    >
-                      {formatPrice(item.payRC.value) || '0'} ₽
-                    </div>
-                    <div className={styles.tableRow}>
-                      {formatPrice(item.tax.value) || '0'} ₽
-                    </div>
-                    <div className={styles.tableRow}>
-                      {formatPrice(item.allTotalOut.value) || '0'} ₽
-                    </div>
-                    <div className={styles.tableRow}>
-                      {item.allTotalOut.percentage || '0'} %
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                    >
-                      {formatPrice(item.netProfit.value) || '0'} ₽
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                    >
-                      {item.marginalProfit.percentage} %
-                    </div>
-                    <div
-                      className={styles.tableRow}
-                      style={{ background: 'rgba(83, 41, 255, 0.05)' }}
-                    >
-                      {item.roi.percentage} %
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '200px',
+                  width: '400px',
+                  overflow: 'auto',
+                  position: 'relative',
+                  willChange: 'transform',
+                  marginTop: '21px',
+                }}
+              >
+                <span className='loader'></span>
+              </div>
+            )}
           </div>
-          {/* )} */}
         </div>
       </div>
       <div className={styles.tableLeftMargin}></div>

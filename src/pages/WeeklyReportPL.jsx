@@ -239,76 +239,11 @@ const WeeklyReportPL = () => {
         <TopNav title={'P&L'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <>
-            {/* <div className='container dash-container'>
-              <div className={styles.filterContainer}>
-                <div className={styles.filterContainer}>
-                  <FilterGroup
-                    title='Бренд'
-                    options={
-                      filterOptions
-                        .find((filter) => filter.id === 'brand')
-                        ?.options.map((opt) => ({
-                          id: opt.value,
-                          label: opt.label,
-                        })) || []
-                    }
-                    selected={activeFilters.brand}
-                    onSelect={(value) => handleFilterChange('brand', value)}
-                    filterLoading={isLoadingFilters}
-                  />
-                  <FilterGroup
-                    title='Группа'
-                    options={
-                      filterOptions
-                        .find((filter) => filter.id === 'group')
-                        ?.options.map((opt) => ({
-                          id: opt.value,
-                          label: opt.label,
-                        })) || []
-                    }
-                    selected={activeFilters['group']}
-                    onSelect={(value) => handleFilterChange('group', value)}
-                    onClearAll={() => handleClearAll('group')}
-                    onSelectAll={() => handleSelectAll('group')}
-                    filterLoading={isLoadingFilters}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className='container dash-container'>
-              <div>
-                <button
-                  className={styles.applyButton}
-                  onClick={handleApplyFilters}
-                >
-                  Применить фильтры
-                </button>
-              </div>
-            </div> */}
             <div className='container dash-container'>
               <NewFilterGroup pageIdent='pl' filtersData={plFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
             </div>
             <div className='container dash-container'>
-            {!isLoading ? (
-                <TablePL plData={plData} />
-              ) : (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '200px',
-                    overflow: 'auto',
-                    position: 'relative',
-                    borderRadius: '16px',
-                    boxShadow: '0px 0px 20px 0px rgba(0, 0, 0, 0.08)',
-                    willChange: 'transform',
-                    marginTop: '21px',
-                  }}
-                >
-                  <span className='loader'></span>
-                </div>
-              )}
+              <TablePL plData={plData} isLoading={isLoading} />
             </div>
           </>
         ) : (
