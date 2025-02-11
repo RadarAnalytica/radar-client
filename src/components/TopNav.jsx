@@ -107,7 +107,7 @@ const TopNav = ({ title, children, subTitle }) => {
             </p>
           </>
           )}
-          <div className={` d-flex justify-content-around top-menu generatorMain ${styles.mobileShowMobileNav}`}>
+          <div className={` justify-content-around top-menu generatorMain ${styles.mobileShowMobileNav}`}>
             <span className='error-notification' ref={componentRef}>
               <span onClick={(event) => handleErrorClick(event)}>
                 <svg
@@ -156,7 +156,7 @@ const TopNav = ({ title, children, subTitle }) => {
 
         </div>
         {children}
-        <span className={`col-2 d-flex justify-content-around top-menu ${styles.mobileShowDesktopNav}`}>
+        <span className={`col-2 justify-content-around top-menu ${styles.mobileShowDesktopNav}`}>
           <span className='error-notification' ref={componentRef}>
             <span onClick={(event) => handleErrorClick(event)}>
               <svg

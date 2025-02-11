@@ -926,12 +926,17 @@ select {
   /* padding-left: 30px; */
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
-  min-width: 33vw;
-  max-width: 37.5vw !important;
+  min-width: calc(100% / 2 - 20px);
+  /* max-width: 37.5vw !important; */
   margin-bottom: 1.5vh;
   /* border: 1px solid red; */
 }
+.row-linked-shop{
+    --bs-gutter-x: 0 !important;
+    --bs-gutter-y: 0 !important;
+    gap: 15px!important;
 
+}
 .linked-shop-block h3,
 .linked-shop-block > div > div p {
   font-size: 2.75vh !important;
@@ -1276,8 +1281,12 @@ select {
   /* .finance-table, */
   /* .storage-table,  */
   /* .chart-table, */
-  .linked-shop-block {
-    min-width: 90vw;
+  /* .linked-shop-block { */
+    /* min-width: 90vw; */
+  /* } */
+
+  .row-linked-shop{
+    display: contents!important;
   }
   .table-container {
    overflow: scroll;

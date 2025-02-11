@@ -7,7 +7,6 @@ export const fetchStockAnalysisData = createAsyncThunk(
         
         const res = await fetch(
             `${URL}/api/prod_analytic/test?period=${days}&shop=${activeBrand}`
-            //   `${URL}/api/abc_data/${viewType}?period=${day}&shop=${idShop}`
             , {
             method: 'GET',
             headers: {
