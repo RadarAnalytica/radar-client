@@ -10,6 +10,7 @@ import sendButton from '../assets/SendButton.svg';
 import { closeSupportWindow } from '../redux/supportWindow/supportWindowSlice';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
+import warningIcon from '../assets/warning.png';
 
 const MessageWindow = ({ isNoHide, decodedEmail }) => {
   const dispatch = useDispatch();
@@ -284,7 +285,7 @@ const MessageWindow = ({ isNoHide, decodedEmail }) => {
     }
   }, [isOpenSupportWindow]);
 
-  const warningIcon = require('../assets/warning.png');
+  // const warningIcon = require('../assets/warning.png');
 
   return (
     <div

@@ -24,7 +24,7 @@ import { addShop } from "../redux/addShop/addShopActions";
 import { deleteShop } from "../redux/deleteShop/deleteShopActions";
 import { areAllFieldsFilled } from "../service/utils";
 import NoSubscriptionPage from "./NoSubscriptionPage";
-const warningIcon = require("../assets/warning.png");
+import warningIcon from "../assets/warning.png";
 
 const LinkedShops = () => {
   const { user, authToken, logout } = useContext(AuthContext);
