@@ -73,21 +73,23 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
     >
       <div className='filter abc-filter-container  d-flex'>
         <div className='filter-btn-p'>Выбрать вид: </div>
-        <div
-          className={`filter-btn ${viewType === "proceeds" ? "active" : ""}`}
-          onClick={() => handleViewType("proceeds")}
-        >
-          По выручке
-        </div>
-        <div
-          className={`filter-btn ${viewType === "profit" ? "active" : ""}`}
-          onClick={() => handleViewType("profit")}
-        >
-          По прибыли
+        <div className="filter-options">
+          <div
+            className={`filter-btn ${viewType === "proceeds" ? "active" : ""}`}
+            onClick={() => handleViewType("proceeds")}
+          >
+            По выручке
+          </div>
+          <div
+            className={`filter-btn ${viewType === "profit" ? "active" : ""}`}
+            onClick={() => handleViewType("profit")}
+          >
+            По прибыли
+          </div>
         </div>
       </div>
 
-      <div>
+      <div className="table-wrapper-mobile">
         {dataTable.length === 0 || loading ? (
           <div
             className='d-flex flex-column align-items-center justify-content-center'
@@ -96,7 +98,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
             <span className='loader'></span>
           </div>
         ) : (
-          <div className='table'>
+          <table className='table table-mobile-abc'>
             <div className='table-header'>
               <div
                 className='first-child-table-header'
@@ -245,7 +247,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                 </div>
               ))}
             </div>
-          </div>
+          </table>
         )}
       </div>
     </div>

@@ -6,7 +6,7 @@ export const fetchStockAnalysisData = createAsyncThunk(
     async ({ authToken, days, activeBrand }) => {
         
         const res = await fetch(
-            `${URL}/api/prod_analytic/test?period=${days}&shop=${activeBrand}`
+            `${URL}/api/prod_analytic/?period=${days}&shop=${activeBrand}`
             , {
             method: 'GET',
             headers: {

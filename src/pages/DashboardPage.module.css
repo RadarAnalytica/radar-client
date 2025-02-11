@@ -132,7 +132,7 @@
     }
 
     .doughnutMobile{
-        width: 300px!important;
+        width: 350px!important;
     }
 }
 
@@ -276,6 +276,6 @@
         cursor: pointer;
       }
       .doughnutMobile{
-        width: 250px;
+        width: 350px!important;
     }
   }
