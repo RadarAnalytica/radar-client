@@ -115,5 +115,11 @@
     .infoSeoGroupWrapper{
         width: 100%;
     }
+    .infoBodyText{
+        font-size: 17px;
+    }
+    .infoTitle >span{
+        font-size: 20px;
 
+    }
   }

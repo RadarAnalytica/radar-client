@@ -467,7 +467,8 @@ input::placeholder {
         margin-left: 0!important;
     }
     .generatorWrapper{
-        height: 11vh!important;
+        height: 60px!important;
+        padding: 2vh !important;
         width: 100%!important;
         margin-top: 10px;
     }
@@ -475,4 +476,13 @@ input::placeholder {
         flex-direction: column!important;
     }
     
+    .generatorTitle{
+        font-weight: 700;
+        font-size: 18px;
+        color: #1A1A1A;
+        margin-left: 10px;
+    }
+    .generatorParag{
+        margin-top: 15px;
+    }
 }

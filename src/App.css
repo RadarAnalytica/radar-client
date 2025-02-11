@@ -1246,6 +1246,32 @@ select {
   display: none !important;
 }
 
+.stock-analysis-left-space{
+  width: 24px;
+
+}
+
+/* @media (min-width: 709px) and (max-width: 1080px) {
+
+.stock-analysis-left-space{
+  width: 48px;
+} */
+/* } */
+/* @media (min-width: 300px) and (max-width: 708px) {
+.stock-analysis-left-space{
+  width: 36px;
+}
+
+} */
+.request-monitoring-search-mobile{
+  display: none;
+}
+.search-mobile-req-monitoring{
+  display: flex;
+  flex-direction: row;
+  width: 80%!important;
+}
+
 @media screen and (max-width: 1080px) {
   /* .finance-table, */
   /* .storage-table,  */
@@ -1253,7 +1279,42 @@ select {
   .linked-shop-block {
     min-width: 90vw;
   }
+  .table-container {
+   overflow: scroll;
+  }
+  .stock-analysis-left-space{
+    width: 48px;
+  }
 
+ .enteringRequestHeader{
+  font-size: 20px;
+ }
+ .enteringRequestImg{
+  padding:10px ;
+ }
+ .request-monitoring-search-mobile{
+  display: block;
+  margin: 20px 0px 10px 20px;
+  font-weight: 700;
+}
+.request-mon-search-wrapper .search{
+  flex-direction: column;
+}
+
+.search-mobile-req-monitoring{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+}
+
+.request-mon-search-wrapper .search .serach-button-wrapper{
+  margin: 0px 15px 0 5px!important;
+}
+
+ .enteringRequestText{
+  font-size: 14px;
+ }
   .stock-mobile-header{
     flex-direction: column!important;
     align-items: flex-start!important;
@@ -1261,15 +1322,15 @@ select {
   .generatorPage .generator{
     flex-direction: column!important;
   }
-  .generatorPage .generatorMain{
+  /* .generatorPage .generatorMain{
     width: 100%!important;
-  }
+  } */
 
   .table-wrapper-req-monitoring{
     min-width: 90vw !important;
   }
   .productInfo-price-photo,.productInfo-wbInfo,.barcode-sku-brand{
-    max-width: 100% !important;
+    width: 100% !important;
   }
   .wide-plate-title-elem-p{
     font-size: 18px!important;
@@ -1365,6 +1426,7 @@ select {
     visibility: visible; 
     opacity: 1; 
     left: 0;
+    height: 100%;
   }
 
   .burger-menu-mobile {
@@ -1677,6 +1739,16 @@ select {
 
 
   /* .signup-form  */
+}
+@media screen and (max-width: 900px) {
+  .stock-analysis-left-space{
+    width: 36px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .stock-analysis-left-space{
+    width: 24px;
+  }
 }
 
 /*Stock */
@@ -2808,8 +2880,8 @@ select {
 .productInfo-price-photo {
   display: flex;
   background: white;
-  width: 100%;
-  max-width: 422px;
+  width: calc(100% / 3 - 10px) ;
+
   height: 199px;
   border-radius: 16px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
@@ -2842,16 +2914,14 @@ select {
 
 .barcode-sku-brand {
   background-color: white;
-  width: 100%;
-  max-width: 422px;
+  width: calc(100% / 3 - 10px);
   height: 199px;
   border-radius: 16px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
 }
 
 .productInfo-wbInfo {
-  width: 100%;
-  max-width: 422px;
+  width: calc(100% / 3 - 10px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;

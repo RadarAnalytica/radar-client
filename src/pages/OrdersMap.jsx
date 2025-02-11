@@ -764,6 +764,7 @@ const OrdersMap = () => {
                   />
                   {geoData && isHovered && (
                     <div
+                      className="map-tooltip-mobile"
                       style={{
                         position: 'absolute',
                         left: tooltipPosition.x + 'px',

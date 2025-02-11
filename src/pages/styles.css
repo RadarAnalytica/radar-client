@@ -4440,5 +4440,15 @@ button.accordion-button.collapsed::after {
         min-height: 65vh !important;
         max-width: 86vw !important;
       }
+      .map-radio {
+        display: grid;
+        justify-items: start;
+        align-items: center;
+        gap: 10px;
+        margin-left: 5px;
+      }
+      .map-tooltip-mobile{
+        width: ;
+      }
     
     }

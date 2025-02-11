@@ -310,4 +310,10 @@
  .topBlock>svg{
     width: 30%;
  }
+ .keywordCount {
+  
+  right: 45%;
+  bottom: 10px;
+  
+}
 }

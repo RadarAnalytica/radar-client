@@ -196,6 +196,9 @@
     flex-direction: column!important;
     align-items: flex-start!important;
 
-
+}
+.quantityWrapperInfo{
+    
+    margin: 0px;
 }
 }

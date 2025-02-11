@@ -17,3 +17,10 @@
   text-anchor: start;
   fill: #666;
 }
+@media screen and (max-width: 1080px) {
+  .svg {
+    width: 50%;
+    height: auto;
+    background-color: #f8f8ff;
+  }
+}

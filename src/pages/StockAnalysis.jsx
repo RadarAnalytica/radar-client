@@ -124,12 +124,6 @@ const StockAnalysis = () => {
 
     fetchInitialData();
   }, []);
-
-  useEffect(() => {
-    const filteredData = filterData(stockAnalysisData, searchQuery);
-    setDataTable(filteredData);
-  }, [stockAnalysisData, searchQuery]);
-
   useEffect(() => {
     if (
       days !== prevDays.current ||
@@ -142,6 +136,13 @@ const StockAnalysis = () => {
       prevActiveBrand.current = activeBrand;
     }
   }, [days, activeBrand]);
+
+
+  useEffect(() => {
+    const filteredData = filterData(stockAnalysisData, searchQuery);
+    setDataTable(filteredData);
+  }, [stockAnalysisData, searchQuery]);
+
 
   useEffect(() => {
     if (shops.length > 0) {

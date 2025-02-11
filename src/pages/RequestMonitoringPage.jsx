@@ -109,10 +109,10 @@ const RequestMonitoringPage = () => {
         }
     };
 
-    
+
     if (user?.subscription_status === 'expired') {
         return <NoSubscriptionPage title={'Мониторинг запросов'} />;
-      }
+    }
 
 
     return <div className='dashboard-page'>
@@ -132,22 +132,26 @@ const RequestMonitoringPage = () => {
                     </div>
                     <div className='enteringRequestText'>Раздел покажет по каким ключевым запросам индексируется карточка товара</div>
                     <div className='search'>
-                        <input
-                            type='text'
-                            placeholder='Введите артикул или ссылку на карточку товара'
-                            className='search-input'
-                            value={searchInputQuery}
-                            onChange={handleSearchQuery}
-                            style={{ marginLeft: '20px' }}
-                        />
-                        <div style={{ marginLeft: '10px' }}>
-                            <img
-                                src={SearchButton}
-                                alt="Search"
-                                onClick={handleFilterSearch}
-                                style={{ cursor: 'pointer' }}
+                        <div className='request-monitoring-search-mobile'>Введите артикул или ссылку на карточку товара:</div>
+                        <div className='search-mobile-req-monitoring'>
+                            <input
+                                type='text'
+                                placeholder='Введите артикул или ссылку на карточку товара'
+                                className='search-input'
+                                value={searchInputQuery}
+                                onChange={handleSearchQuery}
+                                style={{ marginLeft: '20px' }}
                             />
+                            <div className="serach-button-wrapper" style={{ marginLeft: '10px' }}>
+                                <img
+                                    src={SearchButton}
+                                    alt="Search"
+                                    onClick={handleFilterSearch}
+                                    style={{ cursor: 'pointer' }}
+                                />
+                            </div>
                         </div>
+
                     </div>
                 </div>
             ) : isLoading ? (
@@ -178,46 +182,51 @@ const RequestMonitoringPage = () => {
                         </div>
                         <div className='enteringRequestText'>Раздел покажет по каким ключевым запросам индексируется карточка товара</div>
                         <div className='search'>
-                            <input
-                                type='text'
-                                placeholder='Введите артикул или ссылку на карточку товара'
-                                className='search-input'
-                                value={searchInputQuery}
-                                onChange={handleSearchQuery}
-                                style={{ marginLeft: '20px' }}
-                            />
-                            <div style={{ marginLeft: '10px' }}>
-                                <img
-                                    src={SearchButton}
-                                    alt="Search"
-                                    onClick={handleFilterSearch}
-                                    style={{ cursor: 'pointer' }}
+                            <div className='request-monitoring-search-mobile'>Введите артикул или ссылку на карточку товара:</div>
+                            <div className='search-mobile-req-monitoring'>
+                                <input
+                                    type='text'
+                                    placeholder='Введите артикул или ссылку на карточку товара'
+                                    className='search-input'
+                                    value={searchInputQuery}
+                                    onChange={handleSearchQuery}
+                                    style={{ marginLeft: '20px' }}
                                 />
+                                <div className="serach-button-wrapper" style={{ marginLeft: '10px' }}>
+                                    <img
+                                        src={SearchButton}
+                                        alt="Search"
+                                        onClick={handleFilterSearch}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
             ) : (
                 <>
                     <div className='request-mon-search-wrapper container dash-container d-flex'>
                         <div className='search'>
-                            <input
-                                type='text'
-                                placeholder='Введите артикул или ссылку на карточку товара'
-                                className='search-input'
-                                value={searchInputQuery}
-                                onChange={handleSearchQuery}
-                                style={{ marginLeft: '20px' }}
-                            />
-                            <div style={{ marginLeft: '10px' }}>
-                                <img
-                                    src={SearchButton}
-                                    alt="Search"
-                                    onClick={handleFilterSearch}
-                                    style={{ cursor: 'pointer' }}
+                            <div className='request-monitoring-search-mobile'>Введите артикул или ссылку на карточку товара:</div>
+                            <div className='search-mobile-req-monitoring'>
+                                <input
+                                    type='text'
+                                    placeholder='Введите артикул или ссылку на карточку товара'
+                                    className='search-input'
+                                    value={searchInputQuery}
+                                    onChange={handleSearchQuery}
+                                    style={{ marginLeft: '20px' }}
                                 />
+                                <div className="serach-button-wrapper" style={{ marginLeft: '10px' }}>
+                                    <img
+                                        src={SearchButton}
+                                        alt="Search"
+                                        onClick={handleFilterSearch}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                </div>
                             </div>
                         </div >
                     </div>
