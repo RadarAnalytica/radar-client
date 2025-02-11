@@ -1146,8 +1146,6 @@ iframe {
 }
 .arrow {
   position: relative;
-  top: 50%;
-  transform: translateY(-50%);
   width: 30px;
   height: 30px;
   cursor: pointer;
