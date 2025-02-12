@@ -190,6 +190,7 @@
 
 .uploadTableHeader {
     display: flex;
+    justify-content: space-between ;
     align-items: center;
     padding-bottom: 4px;
     font-size: 16px;
@@ -270,6 +271,7 @@
 
 .uploadTableRow {
     display: flex;
+    justify-content: space-between ;
     padding: 11px 0 11px 0;
     border-bottom: 1px solid #e5e7eb;
 }
@@ -407,4 +409,22 @@
   
   .line.closed::after {
     transform: rotate(90deg);
+  }
+
+  @media screen and (max-width: 1550px) {
+    .reports {
+      min-width: 500px;
+    }
+
+    .id {
+      min-width: 150px;
+    }
+
+    .startDate {
+      min-width: 100px;
+    }
+
+    .endDate {
+      min-width: 100px;
+    }
   }
