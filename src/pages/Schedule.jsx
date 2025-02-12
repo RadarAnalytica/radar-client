@@ -1013,7 +1013,7 @@ const Schedule = () => {
             </div>
 
             <div className={`${styles.ScheduleBody} dash-container container`}>
-              <div className='container dash-container '>
+              {/* <div className='container dash-container '> */}
                 <ScheduleBigChart
                   dataRevenue={dataRevenue}
                   dataNetProfit={dataNetProfit}
@@ -1023,8 +1023,8 @@ const Schedule = () => {
                   maxDataRevenue={maxDataRevenue}
                   isLoading={isChartsLoading}
                 />
-              </div>
-              <div className='container dash-container '>
+              {/* </div> */}
+              {/* <div className='container dash-container '> */}
                 <ScheduleProfitabilityBigChart
                   dataProfitability={dataProfitability}
                   dataProfitMinus={dataProfitMinus}
@@ -1036,7 +1036,7 @@ const Schedule = () => {
                   step={stepProfitability}
                 />
               </div>
-            </div>
+            {/* </div> */}
             <div
               className={`${styles.ScheduleFooter} dash-container container`}
             >

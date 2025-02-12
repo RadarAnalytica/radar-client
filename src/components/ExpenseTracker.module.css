@@ -17,8 +17,7 @@
   
 .headerRow,
 .dataRow {
-    display: grid;
-    grid-template-columns: minmax(210px, 230px) minmax(120px, 160px) repeat(5, minmax(100px, 130px)) minmax(24px, 30px) minmax(24px, 30px);
+    display: flex;
     gap: clamp(4px, 1vw, 16px);
     align-items: center;
     padding: 8px 12px;
@@ -266,5 +265,11 @@
   .totalCell {
     width: 120px;
     text-align: right;
+  }
+}
+
+@media screen and (max-width: 1477px) {
+  .yearCell {
+    width: 150px;
   }
 }

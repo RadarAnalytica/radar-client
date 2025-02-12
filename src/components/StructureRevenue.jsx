@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './StructureRevenue.module.css'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
@@ -114,7 +115,7 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
     });
 
     return (
-        <div className="chart-container" style={{ width: '30%', minHeight: "500px", display: "flex", flexDirection: "column" }}>
+        <div className={`chart-container ${styles.revenueStructure}`}>
             <div className='chart-title'>Структура выручки</div>
             {isLoading ? (
                 <div

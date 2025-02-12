@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
+import styles from './RevenueStorageChart.module.css'
 
 const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => {
     const data = {
@@ -88,7 +89,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
     };
 
     return (
-        <div className="chart-container" style={{ width: "68%", minHeight: "500px" }}>
+        <div className={`chart-container ${styles.revenueStrorage}`}>
             <div className='chart-container-header'>
                 <div>
                     <div className='chart-title'>Выручка по складам</div>

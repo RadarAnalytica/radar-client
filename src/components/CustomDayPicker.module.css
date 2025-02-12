@@ -240,3 +240,15 @@
 .selectYear:focus {
   border-color: #007bff;
 }
+
+@media screen and (max-width: 1590px) {
+  .calendarContainer {
+    width: 200px;
+  }
+}
+
+@media screen and (max-width: 1477px) {
+  .calendarContainer {
+    width: 150px;
+  }
+}
