@@ -1,5 +1,6 @@
 import React from 'react';
-import './styles.css'; U
+import './styles.css';
+import styles from "../pages/Politics.module.css"
 import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
 import FooterNewVersion from '../components/FooterNewVersion';
@@ -13,8 +14,7 @@ const Politics = () => {
 
         <div className='container col-10 pt-5 pb-5'>
           <h4
-            className='mb-4'
-
+            className={`mb-4 ${styles.politicsHeader}`}
             style={{
               color: 'rgba(83, 41, 255, 1)',
               fontWeight: 'bold',
@@ -22,10 +22,9 @@ const Politics = () => {
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center" }}><p style={{ fontWeight: 800 }}>ПОЛИТИКА ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ сайта https://radar-analytica.ru/</p></div>
 
-
           </h4>
 
-          <span style={{ fontWeight: 600 }}>
+          <div className={`${styles.politicsWrapper}`} style={{ fontWeight: 600 }}>
             <p style={{ fontWeight: 800, textIndent: "2em", marginBottom: "0" }}>1.	Общие понятия </p>
             1.1.	Политика Индивидуального Предпринимателя Скориченко
             Лианы Сергеевны, ИНН 230307181320. ОГРН 322237500349495,
@@ -557,7 +556,7 @@ const Politics = () => {
             <br />
             <br />
             <br />
-          </span>
+          </div>
         </div>
       </div>
       <FooterNewVersion />

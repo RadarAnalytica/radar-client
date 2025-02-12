@@ -4448,7 +4448,7 @@ button.accordion-button.collapsed::after {
         margin-left: 5px;
       }
       .map-tooltip-mobile{
-        width: ;
+        /* width: ; */
       }
     
     }

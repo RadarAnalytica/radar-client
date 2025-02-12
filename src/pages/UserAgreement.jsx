@@ -3,6 +3,7 @@ import './styles.css';
 import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
 import FooterNewVersion from '../components/FooterNewVersion';
+import styles from "../pages/Politics.module.css"
 
 const UserAgreement = () => {
     return (
@@ -12,7 +13,7 @@ const UserAgreement = () => {
 
                 <div className='container col-10 pt-5 pb-5'>
                     <h4
-                        className='mb-4'
+                        className={`mb-4 ${styles.politicsHeader}`}
                         style={{
                             color: 'rgba(83, 41, 255, 1)',
                             fontWeight: 'bold',
@@ -22,7 +23,7 @@ const UserAgreement = () => {
                     </h4>
 
 
-                    <span style={{ fontWeight: 600 }}>
+                    <div className={`${styles.politicsWrapper}`} style={{ fontWeight: 600 }}>
                         <br />
                         Дата публикации 11.02.2025
                         <br />
@@ -400,7 +401,7 @@ const UserAgreement = () => {
                         <br />
                         <br />
                         <br />
-                    </span>
+                    </div>
                 </div>
             </div>
             <FooterNewVersion />
