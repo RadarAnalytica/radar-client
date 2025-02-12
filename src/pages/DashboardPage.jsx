@@ -33,6 +33,13 @@ import Period from '../components/Period';
 import DownloadButton from '../components/DownloadButton';
 import DetailChart from '../components/DetailChart';
 
+
+import ScheduleProfitabilityChart from '../components/ScheduleProfitabilityChart';
+import RevenueStorageChart from '../components/RevenueStorageChart';
+import StructureRevenue from '../components/StructureRevenue';
+import ScheduleBigChart from '../components/ScheduleBigChart';
+import TaxTable from '../components/TaxTable'
+
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -1133,9 +1140,9 @@ const DashboardPage = () => {
 
               <div
                 className='container dash-container paddingTopBottom pt-0 pb-3 mb-2 d-flex gap-3'
-                style={{ width: '100%' }}
+                style={{ width: '100%', flexDirection: "column" }}
               >
-                <div className='wrapper paddingTopBottom'>
+                <div className={`first-block-dashboard ${styles.firstBlockDashboard}`}>
                   <FinanceTable
                     title={'Финансы'}
                     data={financeData}
@@ -1143,16 +1150,10 @@ const DashboardPage = () => {
                     dataDashBoard={dataDashBoard}
                     tableType={1}
                   />
-                  <StorageTable
-                    wbData={wbData}
-                    title={'Склад'}
-                    data={storeData}
-                    titles={['Где товар', 'Капитализация', '', 'Остатки']}
-                    subtitles={['', 'Себестоимость', 'Розница', '']}
-                    dataDashBoard={dataDashBoard}
-                  />
+                  <ScheduleProfitabilityChart className={styles.firstBlockChart} />
                 </div>
-                <div className='wrapper paddingTopBottom'>
+                <div className={`second-block-dashboard ${styles.secondBlockDashboard}`}>
+                  <ScheduleBigChart />
                   <FinanceTable
                     title={'Прибыльность'}
                     data={profitabilityData}
@@ -1161,15 +1162,38 @@ const DashboardPage = () => {
                     dataDashBoard={dataDashBoard}
                     tableType={1}
                   />
-
-                  <ChartTable
-                    title={'Расходы'}
-                    data={costsData}
-                    wbData={wbData}
-                    dataDashBoard={dataDashBoard}
-                  />
+                </div>
+                <div className={`third-block-dashboard ${styles.thirdBlockDashboard}`}>
+                  <div className={`third-block-dashboard-firstline ${styles.thirdBlockDashFirstLine}`}>
+                    <StorageTable
+                      wbData={wbData}
+                      title={'Склад'}
+                      data={storeData}
+                      titles={['Где товар', 'Капитализация', '', 'Остатки']}
+                      subtitles={['', 'Себестоимость', 'Розница', '']}
+                      dataDashBoard={dataDashBoard}
+                    />
+                    <RevenueStorageChart />
+                  </div>
+                  <div className={`third-block-dashboard-secondline ${styles.thirdBlockDashSecondLine}`}>
+                    <div className={`chart-wrapper-dash ${styles.chartWrapper}`}>
+                      <StructureRevenue />
+                      <TaxTable />
+                    </div>
+                    <div className={`finance-wrapper-dash ${styles.financeWrapper}`}>
+                      <ChartTable
+                        title={'Расходы'}
+                        data={costsData}
+                        wbData={wbData}
+                        dataDashBoard={dataDashBoard}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+
+
+
               <div
                 className='container dash-container paddingTopBottom pt-0 pb-3 d-flex gap-3'
                 style={{ width: '100%', marginTop: "10px" }}
@@ -1190,7 +1214,7 @@ const DashboardPage = () => {
             />
           )}
         </div>
-      </div>
+      </div >
     )
   );
 };

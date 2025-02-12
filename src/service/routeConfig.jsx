@@ -50,6 +50,10 @@ export const publicRoutes = [
     component: lazy(() => import('../pages/PublicOffer'))
   },
   {
+    path: '/user-agreement',
+    component: lazy(() => import('../pages/UserAgreement'))
+  },
+  {
     path: '/spasibo',
     component: lazy(() => import('../pages/Spasibo'))
   },

@@ -27,7 +27,8 @@ const FooterNewVersion = () => {
       </div>
       <div className={styles.footerHalvesRight}>
         <div className={styles.navLinks}>
-          <a href='https://t.me/SpyRadar_bot' style={{}}>Telegram-бот</a>
+          {/* <a href='https://t.me/SpyRadar_bot' style={{}}>Telegram-бот</a> */}
+          <span onClick={() => handleOpenPage('user-agreement')}>Пользовательское соглашение</span>
           <span onClick={() => handleOpenPage('offer')}>Публичная оферта</span>
           <span onClick={() => handleOpenPage('politics')}>Политика конфиденциальности</span>
         </div>
@@ -46,14 +47,15 @@ const FooterNewVersion = () => {
         </div>
       </div>
       <div className={styles.footerMobile}>
-      <div className={styles.footerLogoTextMobile}>
+        <div className={styles.footerLogoTextMobile}>
           <img src={faviconBig} alt='logo' className={styles.logo} />
           <div className={styles.textFatMobile}>
             Комплексный инструмент для роста продаж на маркетплейсах
           </div>
         </div>
         <div className={styles.navLinksMobile}>
-        <a href='https://t.me/SpyRadar_bot' style={{}}>Telegram-бот</a>
+          {/* <a href='https://t.me/SpyRadar_bot' style={{}}>Telegram-бот</a> */}
+          <span onClick={() => handleOpenPage('user-agreement')}>Пользовательское соглашение</span>
           <span onClick={() => handleOpenPage('offer')}>Публичная оферта</span>
           <span onClick={() => handleOpenPage('politics')}>Политика конфиденциальности</span>
         </div>
@@ -73,7 +75,7 @@ const FooterNewVersion = () => {
             публичной офертой.
           </span>
         </div>
-        <div style={{marginTop: '20px'}}>
+        <div style={{ marginTop: '20px' }}>
           <span className={styles.copyrightText}>
             Radar – Analytica © {new Date().getFullYear()}. Все права защищены
           </span>

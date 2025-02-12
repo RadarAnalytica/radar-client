@@ -37,11 +37,14 @@ const LimitedFooter = () => {
         </div>
       </div>
       <div className='col footer-col'>
-        <a
+        {/* <a
           href='https://t.me/SpyRadar_bot'
           className='fw-bold footer-col-text-a'
         >
           Telegram-бот
+        </a> */}
+        <a href='/user-agreement' className='fw-bold footer-col-text-a'>
+          Пользовательское соглашение
         </a>
       </div>
       <div className='col footer-col'>

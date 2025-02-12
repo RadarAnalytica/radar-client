@@ -159,7 +159,11 @@
     border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
 }
 
-.footerHalvesLeft, .footerHalvesRight {
+.footerHalvesLeft {
+    display: block;
+    width: 50%;
+}
+.footerHalvesRight {
     display: block;
     width: 50%;
 }
@@ -168,6 +172,12 @@
     display: none;
 }
 
+@media screen and (max-width: 1773px) {
+    .navLinks{
+      margin-bottom: -3px;
+      gap: 10px;
+    }
+}
 @media screen and (max-width: 1470px) {
     /* .footer {
         padding: 32px;
