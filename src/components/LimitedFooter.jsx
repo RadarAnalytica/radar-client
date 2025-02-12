@@ -9,7 +9,6 @@ const LimitedFooter = () => {
             display: "flex",
             alignItems: "center",
             gap: "12px",
-            alignItems: "center",
             // marginTop: '34px',
           }}
         >

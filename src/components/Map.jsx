@@ -11,8 +11,8 @@ import NorthWesternCircle from '../assets/northwesterncircle.svg';
 import FarEasternCircle from '../assets/fareasterncircle.svg';
 
 const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
-  const green = require('../assets/greenarrow.png');
-  const red = require('../assets/redarrow.png');
+  // const green = require('../assets/greenarrow.png');
+  // const red = require('../assets/redarrow.png');
   return (
     <svg
       onMouseMove={(e) => onMouseMove(e)}

@@ -3,8 +3,8 @@ import { formatPrice } from "../service/utils";
 import TooltipInfo from "../components/TooltipInfo";
 
 export const TableRow = ({ values, percent, sign, tableType }) => {
-  const green = require("../assets/greenarrow.png");
-  const red = require("../assets/redarrow.png");
+  // const green = require("../assets/greenarrow.png");
+  // const red = require("../assets/redarrow.png");
 
   return (
     <div className='d-flex'>

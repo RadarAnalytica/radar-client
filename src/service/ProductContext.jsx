@@ -47,8 +47,6 @@ const ProductProvider = ({ children }) => {
                 removeKeyword,
                 inputValue,
                 setInputValue,
-                competitorsLinks,
-                setCompetitorsLinks,
                 removeAllKeywords
             }}
         >

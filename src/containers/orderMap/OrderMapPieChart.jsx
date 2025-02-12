@@ -104,8 +104,8 @@ const OrderMapPieChart = ({
   // const totalSum =  info.reduce((acc, item) => acc + Number(item.saleCount), 0)
 
   const otherRegion = info.reduce((acc, item) => acc + item.percent, 0);
-  const green = require('../../assets/greenarrow.png');
-  const red = require('../../assets/redarrow.png');
+  // const green = require('../../assets/greenarrow.png');
+  // const red = require('../../assets/redarrow.png');
 
   const data = {
     labels: firstFive?.map((item) =>

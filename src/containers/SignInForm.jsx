@@ -3,7 +3,7 @@ import logo from '../assets/logo.png'
 import InputField from '../components/InputField'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthContext from '../service/AuthContext'
-
+import warningIcon from '../assets/warning.png';
 import Modal from 'react-bootstrap/Modal';
 
 
@@ -68,7 +68,7 @@ const SignInForm = () => {
         }
     }
 
-    const warningIcon = require('../assets/warning.png')
+    // const warningIcon = require('../assets/warning.png')
 
     return (
       <div className='signin-form'>

@@ -8,6 +8,7 @@ import InfoForm from './InfoForm';
 import CustomSelect from '../components/CustomSelect';
 import { useLocation } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
+import warningIcon from '../assets/warning.png';
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -149,7 +150,7 @@ const SignUpForm = () => {
     }
   };
 
-  const warningIcon = require('../assets/warning.png');
+  // const warningIcon = require('../assets/warning.png');
 
   return sent ? (
     <InfoForm />
