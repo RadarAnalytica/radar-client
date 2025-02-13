@@ -50,6 +50,7 @@ const SupplyCount = React.lazy(() => import("./pages/SupplyCount"));
 const StockAnalysis = React.lazy(() => import("./pages/StockAnalysis"));
 const MainWidget = React.lazy(() => import("./pages/MainWidget"));
 const Politics = React.lazy(() => import("./pages/Politics"));
+const UserAgreement = React.lazy(() => import("./pages/UserAgreement"));
 const PublicOffer = React.lazy(() => import("./pages/PublicOffer"));
 const StubPage = React.lazy(() => import("./pages/StubPage"));
 const MainPage = React.lazy(() => import("./pages/MainPage"));
@@ -226,6 +227,15 @@ function App() {
                   <React.Suspense fallback={<LoaderPage />}>
                     {" "}
                     <Politics />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path='/user-agreement'
+                element={
+                  <React.Suspense fallback={<LoaderPage />}>
+                    {" "}
+                    <UserAgreement />
                   </React.Suspense>
                 }
               />
@@ -880,6 +890,15 @@ function App() {
                 <React.Suspense fallback={<LoaderPage />}>
                   {" "}
                   <Politics />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path='/user-agreement'
+              element={
+                <React.Suspense fallback={<LoaderPage />}>
+                  {" "}
+                  <UserAgreement />
                 </React.Suspense>
               }
             />

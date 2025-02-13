@@ -1,0 +1,34 @@
+
+@media screen and (max-width: 1200px) {
+    .politicsWrapper{
+        font-size:14px ;
+    }
+    .politicsHeader{
+        font-size: 20px;
+    }
+
+}
+@media screen and (max-width: 1080px) {
+    .politicsWrapper{
+        font-size:13px ;
+    }
+    .politicsHeader{
+        font-size: 17px;
+    }
+}
+@media screen and (max-width: 780px) {
+    .politicsWrapper{
+        font-size:11px ;
+    }
+    .politicsHeader{
+        font-size: 16px;
+    }
+}
+@media screen and (max-width: 300px) {
+    .politicsWrapper{
+        font-size:10px ;
+    }
+    .politicsHeader{
+        font-size: 15px;
+    }
+}

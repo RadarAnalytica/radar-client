@@ -3,6 +3,7 @@ import './styles.css';
 import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
 import FooterNewVersion from '../components/FooterNewVersion';
+import styles from '../pages/Politics.module.css'
 
 const PublicOffer = () => {
   return (
@@ -12,7 +13,7 @@ const PublicOffer = () => {
 
         <div className='container col-10 pt-5 pb-5'>
           <h4
-            className='mb-4'
+            className={`mb-4 ${styles.politicsHeader}`}
             style={{
               color: 'rgba(83, 41, 255, 1)',
               fontWeight: 'bold',
@@ -21,7 +22,7 @@ const PublicOffer = () => {
             Публичная оферта
           </h4>
 
-          <span style={{ fontWeight: 600 }}>
+          <div className={`${styles.politicsWrapper}`} style={{ fontWeight: 600 }}>
             Настоящий Лицензионный договор устанавливает условия использования
             Сервиса и заключается между любым лицом, использующим Сервис (далее
             — «Лицензиат»), и Индивидуальным предпринимателем Скориченко Лианой
@@ -600,7 +601,7 @@ const PublicOffer = () => {
             <br />
             <br />
             <br />
-          </span>
+          </div>
         </div>
       </div>
       <FooterNewVersion />
