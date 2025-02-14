@@ -1,25 +1,55 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 
 const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
     const lightVideoRef = useRef(null);
     const heavyVideoRef = useRef(null);
+    const imgRef = useRef(null);
     const [isHeavyLoaded, setIsHeavyLoaded] = useState(false);
     const [isUserInteracted, setIsUserInteracted] = useState(false);
-   
+    const [isSafari, setIsSafari] = useState(false);
+
+    useLayoutEffect(() => {
+        const attemptAutoplay = async () => {
+            try {
+                if (lightVideoRef.current) {
+                    lightVideoRef.current.muted = true;
+                    await lightVideoRef.current.play();
+                }
+                if (heavyVideoRef.current && isHeavyLoaded) {
+                    heavyVideoRef.current.muted = true;
+                    await heavyVideoRef.current.play();
+                }
+            } catch (error) {
+                console.log("Autoplay failed:", error);
+                // Пробуем воспроизвести видео повторно через небольшую задержку
+                setTimeout(async () => {
+                    try {
+                        if (lightVideoRef.current) {
+                            await lightVideoRef.current.play();
+                        }
+                    } catch (e) {
+                        console.log("Retry failed:", e);
+                    }
+                }, 100);
+            }
+        };
+
+        attemptAutoplay();
+    }, [isHeavyLoaded]);
 
     useEffect(() => {
         // Add performance monitoring
         new PerformanceObserver((entryList) => {
-          const entries = entryList.getEntries();
-          entries.forEach(entry => {
-            // Log LCP metrics
-            console.log('LCP Element:', entry.element);
-            console.log('LCP Timing:', entry.startTime);
-            console.log('LCP Size:', entry.size);
-            console.log('LCP ID:', entry.id);
-          });
+            const entries = entryList.getEntries();
+            entries.forEach(entry => {
+                // Log LCP metrics
+                console.log('LCP Element:', entry.element);
+                console.log('LCP Timing:', entry.startTime);
+                console.log('LCP Size:', entry.size);
+                console.log('LCP ID:', entry.id);
+            });
         }).observe({ entryTypes: ['largest-contentful-paint'] });
-      }, []);
+    }, []);
     const handleUserInteraction = () => {
         setIsUserInteracted(true);
 
@@ -65,11 +95,10 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
         link.type = 'video/mp4';
         document.head.appendChild(link);
         return () => document.head.removeChild(link);
-      }, [lightVideoSrc]);
+    }, [lightVideoSrc]);
 
     return (
         <div style={{ width: "100%", height: "100%", ...style }} onClick={handleUserInteraction}>
-            {/* Low-quality video (starts immediately) */}
             <video
                 ref={lightVideoRef}
                 src={lightVideoSrc}
@@ -78,8 +107,7 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
                     width: "100%",
                     height: "100%",
                     display: isHeavyLoaded ? "none" : "block",
-                    contentVisibility: 'auto',
-                    containIntrinsicSize: '16/9'
+                    objectFit: "cover"
                 }}
                 autoPlay
                 loop
@@ -87,9 +115,11 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
                 playsInline
                 preload="auto"
                 fetchpriority="high"
+                webkit-playsinline="true"
+                x-webkit-airplay="allow"
             />
 
-            {/* High-quality video (hidden initially, appears when ready) */}
+            {/* High-quality video */}
             <video
                 ref={heavyVideoRef}
                 src={heavyVideoSrc}
@@ -97,6 +127,7 @@ const VideoComponent = ({ heavyVideoSrc, lightVideoSrc, preview, style }) => {
                     width: "100%",
                     height: "100%",
                     display: isHeavyLoaded ? "block" : "none",
+                    objectFit: "cover"
                 }}
                 autoPlay
                 loop
