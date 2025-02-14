@@ -73,13 +73,16 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
             const labels = chart.data.labels;
             const colors = dataset.backgroundColor;
 
+            // Определение респонсивного размера шрифта
+            const fontSize = 10; // Можете также сделать шрифт респонсивным
+
             ctx.restore();
-            const fontSize = 12;
             ctx.font = `${fontSize}px Arial`;
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#000';
 
-            const startY = height / 2 - ((labels.length - 1) * 30) + 15;
+            // Уменьшаем расстояние между строками
+            const startY = height / 2 - ((labels.length - 1) * 20) + 15; // уменьшено с 30 до 20
 
             labels.forEach((label, index) => {
                 const value = dataset.data[index];
@@ -89,7 +92,7 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
                 const labelX = Math.round((width - ctx.measureText(labelText).width) / 2) + 15;
                 const valueX = Math.round((width - ctx.measureText(valueText).width) / 2) + 15;
 
-                const labelY = startY + index * 50;
+                const labelY = startY + index * 30; // уменьшено с 50 до 30
                 const valueY = labelY + 20;
 
                 const circleX = labelX - 10;

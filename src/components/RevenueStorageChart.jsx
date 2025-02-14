@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import styles from './RevenueStorageChart.module.css';
@@ -21,7 +20,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
                     return gradient;
                 },
                 borderRadius: 3,
-                barThickness: 12,
+                barThickness: 'flex', // Автоматическая регулировка высоты
             }
         ]
     };
@@ -29,15 +28,10 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
     const options = {
         indexAxis: 'y',
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
-            legend: {
-                display: false,
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: 'Выручка по складам',
-            },
+            legend: { display: false },
+            title: { display: true, text: 'Выручка по складам' },
             datalabels: {
                 anchor: 'end',
                 align: 'end',
@@ -45,51 +39,42 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
                 formatter: function (value) {
                     return value.toLocaleString('ru-RU') + ' ₽';
                 },
-                font: {
-                    weight: 'bold',
-                    size: '12',
-                },
+                font: { weight: 'bold', size: 12 },
                 offset: 10,
             },
             tooltip: {
                 callbacks: {
                     label: function (context) {
-                        const value = context.raw;
-                        return value.toLocaleString('ru-RU') + ' ₽';
-                    }
-                }
-            }
+                        return context.raw.toLocaleString('ru-RU') + ' ₽';
+                    },
+                },
+            },
         },
         scales: {
             y: {
                 beginAtZero: true,
-                grid: {
-                    display: false
-                }
+                barPercentage: 0.5,
+                categoryPercentage: 0.9,
+                grid: { display: false },
             },
             x: {
                 beginAtZero: true,
                 min: 0,
                 max: max,
-
-                grid: {
-                    display: true
-                },
+                grid: { display: true },
                 ticks: {
-
                     callback: function (value) {
                         return value.toLocaleString('ru-RU') + '₽';
                     },
-
                     maxRotation: 0,
-                    minRotation: 0
-                }
-            }
-        }
+                    minRotation: 0,
+                },
+            },
+        },
     };
 
     return (
-        <div className={`chart-container ${styles.revenueStrorage}`}>
+        <div className={`chart-container ${styles.revenueStorage}`}>
             <div className='chart-container-header'>
                 <div>
                     <div className='chart-title'>Выручка по складам</div>
@@ -103,7 +88,9 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
                     <span className="loader"></span>
                 </div>
             ) : (
-                <Bar data={data} options={options} />
+                <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
+                    <Bar data={data} options={options} height={Math.max(labels.length * 60, 400)} />
+                </div>
             )}
         </div>
     );

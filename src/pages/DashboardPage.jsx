@@ -853,6 +853,36 @@ const DashboardPage = () => {
     return null; // or a loading indicator
   }
 
+
+  //fakedatafor schedule 
+  const fakeData = {
+    dataProfitability: [12, 15, 18, 10, 14, 19, 13, 17, 16, 14],
+    dataProfitPlus: [30, 35, 40, 32, 38, 42, 33, 39, 41, 37],
+    dataProfitMinus: [20, 22, 25, 18, 24, 28, 21, 26, 27, 23],
+    isLoading: false,
+    labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт'],
+    step: 10,
+    minValue: 0,
+    maxValue: 50
+  };
+  const fakeData2 = {
+    labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт'],
+    dataRevenue: [500000, 700000, 650000, 800000, 750000, 900000, 850000, 950000, 920000, 970000],
+    dataNetProfit: [120000, 150000, 130000, 180000, 170000, 200000, 190000, 220000, 210000, 230000],
+    minDataRevenue: 0,
+    maxDataRevenue: 1000000,
+    stepSizeRevenue: 100000,
+    isLoading: false
+  };
+  const fakeData3 = {
+    labels: ['Москва', 'Москва', 'Москва', 'Москва', 'Москва', 'Москва', 'Санкт-Петербург', 'Санкт-Петербург', 'Санкт-Петербург', 'Санкт-Петербург', 'Санкт-Петербург', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Новосибирск', 'Екатеринбург', 'Казань'],
+    dataRevenueStorage: [1200000, 900000, 750000, 750000, 750000, 750000, 750000, 750000, 750000, 750000, 750000, 600000, 450000, 4500000, 450000, 450000, 450000, 450000, 450000, 13040000, 14000, 12000, 110000, 10400, 106000, 10000,],
+    isLoading: false,
+    max: 1500000
+  };
+
+  const fakeDataStructureRevenue = [15, 25, 10, 30, 20];
+
   return (
     isVisible && (
       <div className='dashboard-page'>
@@ -1150,10 +1180,10 @@ const DashboardPage = () => {
                     dataDashBoard={dataDashBoard}
                     tableType={1}
                   />
-                  <ScheduleProfitabilityChart className={styles.firstBlockChart} />
+                  <ScheduleProfitabilityChart {...fakeData} className={styles.firstBlockChart} />
                 </div>
                 <div className={`second-block-dashboard ${styles.secondBlockDashboard}`}>
-                  <ScheduleBigChart />
+                  <ScheduleBigChart {...fakeData2} />
                   <FinanceTable
                     title={'Прибыльность'}
                     data={profitabilityData}
@@ -1173,11 +1203,11 @@ const DashboardPage = () => {
                       subtitles={['', 'Себестоимость', 'Розница', '']}
                       dataDashBoard={dataDashBoard}
                     />
-                    <RevenueStorageChart />
+                    <RevenueStorageChart  {...fakeData3} className={styles.revenueStorageChart} />
                   </div>
                   <div className={`third-block-dashboard-secondline ${styles.thirdBlockDashSecondLine}`}>
                     <div className={`chart-wrapper-dash ${styles.chartWrapper}`}>
-                      <StructureRevenue />
+                      <StructureRevenue dataStructureRevenue={fakeDataStructureRevenue} isLoading={false} />
                       <TaxTable />
                     </div>
                     <div className={`finance-wrapper-dash ${styles.financeWrapper}`}>

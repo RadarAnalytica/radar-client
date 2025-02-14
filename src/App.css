@@ -803,7 +803,7 @@ select {
 .small-plate {
   background-color: white;
   border-radius: 16px;
-  /* height: 100% ; */
+  height: 100% ;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -4284,6 +4284,8 @@ canvas {
   overflow: scroll;
   min-width: auto!important;
   min-height:  100%!important;
+  max-height: 350px;
+  overflow: scroll;
 }
 .third-block-dashboard-secondline .chart-wrapper-dash{
   width: calc(100% / 2 - 10px)!important;
@@ -4348,7 +4350,7 @@ canvas {
   }
   .third-block-dashboard-secondline .chart-wrapper-dash{
     width: 100%!important;
-    height: 100%;
+    height: 50vh;
   }
   .third-block-dashboard-secondline .finance-wrapper-dash{
     width: 100%!important;
