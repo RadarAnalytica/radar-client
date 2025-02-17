@@ -29,7 +29,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 yAxisID: 'left-y',
             },
             {
-                label: 'Маржинальность по прибыли,(Lower)',
+                label: 'Маржинальность по прибыли',
                 data: dataProfitMinus,
                 backgroundColor: function (context) {
                     const chart = context.chart;
@@ -148,6 +148,8 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 },
                 ticks: {
                     color: '#8C8C8C',
+                    // autoSkip: false, 
+                    // minRotation: 0,
                     callback: function (value, index) {
                         return data.labels[index];
                     }
@@ -156,13 +158,10 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
             'left-y': {
                 min: min,
                 max: max,
-                // min: -140,
-                // max: 80,
                 stacked: true,
                 grid: {
                     display: true,
                     drawOnChartArea: true,
-
                 },
                 ticks: {
                     stepSize: step,
@@ -171,15 +170,12 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
             },
             'right-y': {
                 position: 'right',
-                // min: -140,
-                // max: 80,
                 min: min,
                 max: max,
                 stacked: true,
                 grid: {
                     display: true,
                     drawOnChartArea: true,
-
                 },
                 ticks: {
                     stepSize: step,
@@ -187,6 +183,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 },
             }
         },
+
         interaction: {
             mode: 'index',
             intersect: false

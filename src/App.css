@@ -4248,7 +4248,7 @@ canvas {
 
 
 .first-block-dashboard .chart-container{
-  overflow: scroll;
+  overflow: hidden;
   width: calc(100% / 2 - 10px)!important;
   margin: 0!important;
   min-width: auto!important;
@@ -4257,11 +4257,11 @@ canvas {
 .first-block-dashboard .finance-table{
   width: calc(100% / 2 - 10px)!important;
   margin: 0!important;
-  height: 100%;
+  height: auto;
 }
 
 .second-block-dashboard .chart-container{
-  overflow: scroll;
+  overflow: hidden;
   width: calc(100% / 2 - 10px)!important;
   margin: 0!important;
   min-width: auto!important;
@@ -4270,7 +4270,7 @@ canvas {
 .second-block-dashboard  .finance-table{
   width: calc(100% / 2 - 10px)!important;
   margin: 0!important;
-  height: 100%;
+  height: auto;
 }
 .third-block-dashboard-firstline .storage-table{
   width: calc(100% / 2 - 10px)!important;
@@ -4304,7 +4304,7 @@ canvas {
   width: calc(100% / 2 - 10px)!important;
   margin: 0!important;
   height: 100%;
-  overflow: scroll;
+  overflow: hidden;
   min-width: auto!important;
   min-height:  100%!important;
   /* min-height: auto!important; */

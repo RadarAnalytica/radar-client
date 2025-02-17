@@ -63,7 +63,7 @@ const MainPage = () => {
       for (const entry of entryList.getEntries()) {
         console.log('LCP:', entry.startTime, entry.element);
       }
-    }).observe({entryTypes: ['largest-contentful-paint']});
+    }).observe({ entryTypes: ['largest-contentful-paint'] });
   }, []);
 
   useEffect(() => {
@@ -182,9 +182,8 @@ const MainPage = () => {
           </div>
           <div className='sol-screenshot col-7'>
             <VideoComponent
-              preview={preview}
-              heavyVideoSrc={highQualityVideo}
-              lightVideoSrc={lowQualityVideo}
+              poster={preview}
+              videoMp4={highQualityVideo}
               style={{ width: '100%', height: "auto" }}
             />
           </div>

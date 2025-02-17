@@ -73,6 +73,8 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
         },
     };
 
+    const safeLabels = data?.labels || []; // Default to an empty array if labels are undefined
+    const chartHeight = safeLabels.length < 10 ? 300 : Math.max(safeLabels.length * 60, 400);
     return (
         <div className={`chart-container ${styles.revenueStorage}`}>
             <div className='chart-container-header'>
@@ -89,7 +91,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
                 </div>
             ) : (
                 <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
-                    <Bar data={data} options={options} height={Math.max(labels.length * 60, 400)} />
+                    <Bar data={data} options={options} height={chartHeight} />
                 </div>
             )}
         </div>
