@@ -56,6 +56,9 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
 
     const options = {
         responsive: true,
+        onHover: (event) => {
+            event.native.target.style.cursor = 'pointer';
+        },
         plugins: {
             legend: {
                 display: false

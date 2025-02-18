@@ -47,6 +47,10 @@ html {
 .paddingTopBottom{
   padding: 15px 0;
 }
+.chartjs-tooltip {
+  cursor: pointer;
+}
+
 .settings-modal {
   display: flex;
   flex-direction: column;
@@ -4285,7 +4289,8 @@ canvas {
   min-width: auto!important;
   min-height:  100%!important;
   max-height: 350px;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .third-block-dashboard-secondline .chart-wrapper-dash{
   width: calc(100% / 2 - 10px)!important;

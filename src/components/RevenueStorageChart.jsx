@@ -43,6 +43,25 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
                 offset: 10,
             },
             tooltip: {
+                enabled: true,
+                backgroundColor: '#fff',
+                titleColor: '#000',
+                bodyColor: '#000',
+                borderColor: '#ccc',
+                borderWidth: 1,
+                cornerRadius: 6,
+                padding: 10,
+                external: function (context) {
+                    const tooltip = context.tooltip;
+                    const chartCanvas = context.chart.canvas;
+
+                    if (tooltip.opacity === 0) {
+                        chartCanvas.style.cursor = 'default';
+                        return;
+                    }
+
+                    chartCanvas.style.cursor = 'pointer';
+                },
                 callbacks: {
                     label: function (context) {
                         return context.raw.toLocaleString('ru-RU') + ' ₽';
@@ -71,7 +90,13 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
                 },
             },
         },
+        interaction: {
+            mode: 'index',
+            axis: 'х', // Ограничиваем область взаимодействия только осью Y
+            intersect: true, // Тултип отображается только при наведении на саму колонку
+        },
     };
+
 
     const safeLabels = data?.labels || []; // Default to an empty array if labels are undefined
     const chartHeight = safeLabels.length < 10 ? 300 : Math.max(safeLabels.length * 60, 400);

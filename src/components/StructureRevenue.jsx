@@ -36,6 +36,7 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
 
     const options = {
         responsive: true,
+
         plugins: {
             legend: {
                 display: false,
@@ -54,7 +55,10 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
                         return `${label}: ${value}%`;
                     }
                 }
-            }
+            },
+            onHover: (event) => {
+                event.native.target.style.cursor = 'pointer';
+            },
         },
         cutout: '85%',
         layout: {

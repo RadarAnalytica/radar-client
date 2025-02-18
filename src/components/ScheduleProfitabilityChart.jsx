@@ -76,10 +76,14 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
 
     const options = {
         responsive: true,
+        onHover: (event) => {
+            event.native.target.style.cursor = 'pointer';
+        },
         plugins: {
             legend: {
                 display: false,
             },
+
             tooltip: {
                 backgroundColor: '#FFFFFF',
                 borderWidth: 1,

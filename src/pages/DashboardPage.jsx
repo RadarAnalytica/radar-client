@@ -1325,7 +1325,10 @@ const DashboardPage = () => {
                       subtitles={['', 'Себестоимость', 'Розница', '']}
                       dataDashBoard={dataDashBoard}
                     />
-                    <RevenueStorageChart  {...revenueByWarehouse} className={styles.revenueStorageChart} />
+                    <RevenueStorageChart
+                      {...revenueByWarehouse}
+                      // {...fakeData3}
+                      className={styles.revenueStorageChart} />
                   </div>
                   <div className={`third-block-dashboard-secondline ${styles.thirdBlockDashSecondLine}`}>
                     <div className={`chart-wrapper-dash ${styles.chartWrapper}`}>
