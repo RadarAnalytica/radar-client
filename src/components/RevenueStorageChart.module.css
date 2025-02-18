@@ -1,7 +1,8 @@
 .revenueStrorage {
     width: 68%;
-    min-height: 500px;
-}
+    min-height: 490px;
+  }
+
 @media screen and (max-width: 1477px) {
     .revenueStrorage {
       width: 55%;

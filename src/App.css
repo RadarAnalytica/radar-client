@@ -1275,6 +1275,15 @@ select {
   flex-direction: row;
 
 }
+
+.schedule-footer .schedule-revenue-storage-chart{
+  width: 68%!important;
+  /* min-height: 100%!important; */
+}
+.schedule-footer .scehdule-revenue-structure{
+  width: 30%!important;
+  /* min-height: 100%!important; */
+}
 @media screen and (max-width: 1080px) {
   /* .finance-table, */
   /* .storage-table,  */

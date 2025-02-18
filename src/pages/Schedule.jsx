@@ -1042,13 +1042,14 @@ const Schedule = () => {
               </div>
             </div>
             <div
-              className={`${styles.ScheduleFooter} dash-container container`}
+              className={`${styles.ScheduleFooter} schedule-footer dash-container container`}
             >
               <StructureRevenue
                 dataStructureRevenue={dataStructureRevenue}
                 isLoading={isChartsLoading}
               />
               <RevenueStorageChart
+                className={styles.revenueStorageChart}
                 dataRevenueStorage={dataRevenueStorage}
                 labels={dataRevenueStorageLabels}
                 isLoading={isChartsLoading}

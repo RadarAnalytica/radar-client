@@ -47,8 +47,10 @@ import ApiBlockContainer from "../components/ApiBlockContainer"
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";
+import highQualityVideoWebm from "../assets/video/Webm_1920.webm"
 import highQualityVideo from "../assets/video/fixed_video.mp4";
 import preview from "../assets/video/firstShot.jpg"
+import AdaptiveMedia from "../components/AdaptiveMedia"
 
 const MainPage = () => {
 
@@ -181,10 +183,18 @@ const MainPage = () => {
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            <VideoComponent
+            {/* <VideoComponent
               poster={preview}
               videoMp4={highQualityVideo}
               style={{ width: '100%', height: "auto" }}
+            /> */}
+            <AdaptiveMedia
+              videoMp4={highQualityVideo}
+              // videoWebm={highQualityVideoWebm}
+              poster={preview}
+              heavyImageSrc={BlockImg_x2}
+              lightImageSrc={BlockImg_x1}
+              style={{ width: "100%", height: "auto" }}
             />
           </div>
         </div>

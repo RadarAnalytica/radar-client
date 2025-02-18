@@ -1,6 +1,6 @@
 .revenueStructure {
     width: 30%;
-    min-height: 500px;
+    min-height: 490px;
     display: flex;
     flex-direction: column;
 }

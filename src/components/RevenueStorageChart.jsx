@@ -101,7 +101,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
     const safeLabels = data?.labels || []; // Default to an empty array if labels are undefined
     const chartHeight = safeLabels.length < 10 ? 300 : Math.max(safeLabels.length * 60, 400);
     return (
-        <div className={`chart-container ${styles.revenueStorage}`}>
+        <div className={`chart-container ${styles.revenueStorage} schedule-revenue-storage-chart `}>
             <div className='chart-container-header'>
                 <div>
                     <div className='chart-title'>Выручка по складам</div>

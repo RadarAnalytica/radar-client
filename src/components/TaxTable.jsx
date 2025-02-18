@@ -63,7 +63,7 @@ function TaxTable({ taxInfo }) {
                                 type='number'
                                 value={taxRate}
                                 onChange={(e) => setTaxRate(e.target.value)}
-                                className={styles.taxRateInput}
+                                className={styles.taxRateWrapper}
                                 disabled={taxInfo?.taxType === 'Не считать налог'}
                             />
                             <button

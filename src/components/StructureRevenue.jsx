@@ -122,7 +122,7 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
     });
 
     return (
-        <div className={`chart-container ${styles.revenueStructure}`}>
+        <div className={`chart-container ${styles.revenueStructure} scehdule-revenue-structure`}>
             <div className='chart-title'>Структура выручки</div>
             {isLoading ? (
                 <div
