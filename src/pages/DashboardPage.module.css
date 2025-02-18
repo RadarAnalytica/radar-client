@@ -85,11 +85,11 @@
 }
 .thirdBlockDashSecondLine{
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     flex-direction: row;
     gap: 15px!important;
     margin-top: 15px;
-    height: 45vh
+    height: max-content;
 }
 
 .chartWrapper{

@@ -4289,15 +4289,15 @@ canvas {
 }
 .third-block-dashboard-secondline .chart-wrapper-dash{
   width: calc(100% / 2 - 10px)!important;
-  height: 100%;
+  height: max-content;
 }
 .third-block-dashboard-secondline .chart-wrapper-dash .chart-container{
   width: calc(100% / 2 - 10px)!important;
   margin: 0!important;
-  height: 100%;
-  overflow: scroll;
+  /* height: 100%; */
+  overflow: hidden;
   min-width: auto!important;
-  min-height:  100%!important;
+  min-height: -webkit-fill-available;
   /* min-height: auto!important; */
 }
 .third-block-dashboard-secondline .chart-wrapper-dash .taxChartWrapper{
@@ -4312,12 +4312,12 @@ canvas {
 .third-block-dashboard-secondline .finance-wrapper-dash{
   width: calc(100% / 2 - 10px)!important;
   margin: 0!important;
-  height: 100%;
+  height: initial!important;
 }
 .third-block-dashboard-secondline .finance-wrapper-dash .chart-table{
   width: 100%;
   margin: 0!important;
-  height: 100%;
+  min-height: 100%;
 }
 @media screen and (max-width: 1080px) {
   .first-block-dashboard .chart-container{
@@ -4350,7 +4350,11 @@ canvas {
   }
   .third-block-dashboard-secondline .chart-wrapper-dash{
     width: 100%!important;
-    height: 50vh;
+    height: max-content;
+  }
+  .third-block-dashboard-secondline .chart-wrapper-dash .chart-container{
+    min-height: -webkit-fill-available;
+    overflow: hidden;
   }
   .third-block-dashboard-secondline .finance-wrapper-dash{
     width: 100%!important;
