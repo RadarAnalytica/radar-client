@@ -1152,12 +1152,16 @@ iframe {
   user-select: none;
 }
 .arrow-left {
+  position: absolute;
+  top: 50%;
   transform: rotate(90deg);
   left: 0px;  
   z-index: 5;
 }
 
 .arrow-right {
+  position: absolute; 
+  top: 50%;
   transform: rotate(-90deg);
   right: 0px; 
   z-index: 5;
