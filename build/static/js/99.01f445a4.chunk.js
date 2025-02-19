@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkclient=self.webpackChunkclient||[]).push([[99],{7099:(s,e,a)=>{a.r(e),a.d(e,{default:()=>l});a(5043);var c=a(70),d=a(6144),n=a(579);const l=()=>(0,n.jsxs)("div",{className:"dashboard-page",children:[(0,n.jsx)(d.A,{}),(0,n.jsxs)("div",{className:"dashboard-content pb-3",children:[(0,n.jsx)(c.A,{title:"\u0420\u0430\u0441\u0447\u0435\u0442 \u043f\u043e\u0441\u0442\u0430\u0432\u043e\u043a"}),(0,n.jsx)("div",{className:"container dash-container p-3 pt-0 d-flex gap-3",children:"page"})]})]})}}]);
-//# sourceMappingURL=99.01f445a4.chunk.js.map
