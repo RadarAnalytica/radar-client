@@ -16,7 +16,6 @@ import { redirect } from 'react-router-dom';
 import { ProductContext } from '../service/ProductContext';
 import AddKeyImg from './images/addkeyword.svg';
 import {
-  getFileClickHandler,
   saveFileClickHandler,
 } from '../service/fileService';
 import DragDropFile from '../components/DragAndDropFiles';

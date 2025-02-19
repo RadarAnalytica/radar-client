@@ -19,6 +19,8 @@ import NoSubscriptionPage from './NoSubscriptionPage';
 import RadioGroup from '../components/RadioGroup';
 import OrderSalesPieCharts from '../components/OrderSalesPieCharts';
 import StockDataRow from '../components/StockDataRow';
+import green from '../assets/greenarrow.png';
+import red from '../assets/redarrow.png';
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -592,9 +594,6 @@ const OrdersMap = () => {
         return '';
     }
   };
-
-  const green = require('../assets/greenarrow.png');
-  const red = require('../assets/redarrow.png');
 
   const totalOrderAmount =
     geoData?.geo_data?.reduce((acc, item) => acc + item.orderAmount, 0) || '0';
