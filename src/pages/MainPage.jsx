@@ -183,19 +183,19 @@ const MainPage = () => {
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            {/* <VideoComponent
+            <VideoComponent
               poster={preview}
               videoMp4={highQualityVideo}
               style={{ width: '100%', height: "auto" }}
-            /> */}
-            <AdaptiveMedia
+            />
+            {/* <AdaptiveMedia
               videoMp4={highQualityVideo}
               // videoWebm={highQualityVideoWebm}
               poster={preview}
               heavyImageSrc={BlockImg_x2}
               lightImageSrc={BlockImg_x1}
               style={{ width: "100%", height: "auto" }}
-            />
+            /> */}
           </div>
         </div>
 

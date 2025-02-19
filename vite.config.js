@@ -18,7 +18,11 @@ export default defineConfig({
     }
   },
   server: {
-    port: 3001
+    port: 3001,
+    // allowedHosts: [
+    //   'rnxbu-95-24-151-214.a.free.pinggy.link'
+    // ]
+
   },
   resolve: {
     alias: {
