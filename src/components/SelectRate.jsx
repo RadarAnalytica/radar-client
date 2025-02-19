@@ -26,6 +26,7 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 
 const SelectRate = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
   const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
   const [subscriptionDiscount, setSubscriptionDiscount] = useState(
@@ -48,6 +49,33 @@ const SelectRate = ({ redirect, isShowText }) => {
 
   const currentPath = window.location.pathname;
   const [isHighResLoaded, setHighResLoaded] = useState(false);
+  
+  useEffect(() => {
+    const loadCloudPaymentsScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://widget.cloudpayments.ru/bundles/cloudpayments.js';
+      script.async = true;
+      
+      script.onload = () => {
+        setIsScriptLoaded(true);
+      };
+
+      document.body.appendChild(script);
+    };
+
+    if (!window.cp) {
+      loadCloudPaymentsScript();
+    } else {
+      setIsScriptLoaded(true);
+    }
+
+    return () => {
+      const script = document.querySelector('script[src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"]');
+      if (script) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const img = new Image();
@@ -212,7 +240,7 @@ const SelectRate = ({ redirect, isShowText }) => {
       },
     };
 
-    widget.charge(
+   await widget.charge(
       {
         // options
         publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
