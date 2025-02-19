@@ -13,6 +13,9 @@ input[type="number"]:focus {
 .map-container {
   padding: 16px 0px;
 }
+.container-xlwidth {
+  max-width: 1480px;
+}
 
 .map-radio {
   display: flex;
@@ -1126,12 +1129,16 @@ iframe {
   user-select: none;
 }
 .arrow-left {
+  position: absolute;
+  top: 50%;
   transform: rotate(90deg);
   left: 0px;  
   z-index: 5;
 }
 
 .arrow-right {
+  position: absolute;
+  top: 50%;
   transform: rotate(-90deg);
   right: 0px; 
   z-index: 5;
@@ -1670,9 +1677,7 @@ button.accordion-button.collapsed::after {
   margin: 0 auto;
   min-height: 100vh;
 }
-.container-xlwidth {
-  max-width: 1480px;
-}
+
 .content-wrap {
   flex-grow: 1;
 }
