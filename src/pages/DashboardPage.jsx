@@ -304,9 +304,8 @@ const DashboardPage = () => {
     const roiValues = marginalityRoiChart.map(item => item.roi);
     const marginalityValues = marginalityRoiChart.map(item => item.marginality);
 
-    // Округление min/max до ближайших 5
-    const minValue = Math.floor(Math.min(...roiValues, ...marginalityValues) / 5) * 5;
-    const maxValue = Math.ceil(Math.max(...roiValues, ...marginalityValues) / 5) * 5;
+    const minValue = Math.floor(Math.min(...roiValues, ...marginalityValues) / 10) * 10;
+    const maxValue = Math.ceil(Math.max(...roiValues, ...marginalityValues) / 10) * 10;
 
     // Динамический шаг
     const step = Math.ceil((maxValue - minValue) / 5);
@@ -319,7 +318,7 @@ const DashboardPage = () => {
     return {
       dataProfitability: roiValues,
       dataProfitPlus: marginalityValues,
-      dataProfitMinus: marginalityValues.map(m => m * 0.5), // Пример логики для profit minus
+      dataProfitMinus: marginalityValues.map(() => 0),
       isLoading: false,
       labels,
       step,
@@ -327,6 +326,7 @@ const DashboardPage = () => {
       maxValue
     };
   };
+
 
   const processSalesAndProfit = (salesAndProfit) => {
     if (!salesAndProfit || !salesAndProfit.length) return null;
@@ -397,6 +397,8 @@ const DashboardPage = () => {
       }
       if (data?.marginalityRoiChart) {
         const formattedData = processMarginalityRoiChart(data.marginalityRoiChart);
+        console.log(formattedData, "roiMarginality")
+        console.log(data.marginalityRoiChart, "roiMarginalityData")
         setChartRoiMarginalityData(formattedData);
       }
       if (data?.revenueByWarehouse) {
@@ -1333,7 +1335,12 @@ const DashboardPage = () => {
                   <div className={`third-block-dashboard-secondline ${styles.thirdBlockDashSecondLine}`}>
                     <div className={`chart-wrapper-dash ${styles.chartWrapper}`}>
                       <StructureRevenue dataStructureRevenue={structure} isLoading={false} />
-                      <TaxTable taxInfo={dataDashBoard?.taxInfo} />
+                      <TaxTable
+                        taxInfo={dataDashBoard?.taxInfo || []}
+                        authToken={authToken}
+                        activeBrand={activeBrand}
+                        updateDataDashBoard={updateDataDashBoard}
+                      />
                     </div>
                     <div className={`finance-wrapper-dash ${styles.financeWrapper}`}>
                       <ChartTable

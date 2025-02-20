@@ -171,6 +171,7 @@ export const ServiceFunctions = {
     return data;
   },
 
+
   getAllShops: async (token) => {
     const res = await fetch(`${URL}/api/shop/all`, {
       method: 'GET',
@@ -248,6 +249,8 @@ export const ServiceFunctions = {
     const data = await res.json();
     return data;
   },
+
+  // services/api.js
 
   postAiDescriptionGenerator: async (
     token,
@@ -733,7 +736,7 @@ export const ServiceFunctions = {
     };
   },
 
-  getCostPriceStatus: async(token) => {
+  getCostPriceStatus: async (token) => {
     const res = await fetch(`${URL}/api/report/cost/status`, {
       method: 'GET',
       headers: {
@@ -744,7 +747,7 @@ export const ServiceFunctions = {
     const data = await res.json()
     data.updated_at = data.updated_at === '' ? null : `Последняя загрузка ${formatFromIsoDate(data.updated_at)}г.`
     console.log(data);
-    
+
     return data;
   },
 
@@ -824,7 +827,7 @@ export const ServiceFunctions = {
     return await response.json();
   },
 
-  getSelfBuyoutStatus: async(token) => {
+  getSelfBuyoutStatus: async (token) => {
     const res = await fetch(`${URL}/api/report/self-buyout/status`, {
       method: 'GET',
       headers: {
@@ -833,7 +836,7 @@ export const ServiceFunctions = {
       },
     });
     const data = await res.json()
-        
+
     return data.status;
   },
 
@@ -892,6 +895,25 @@ export const ServiceFunctions = {
     });
     return await response.json();
   },
+  postTaxRateUpdateDashboard: async (token, taxRate, taxType) => {
+    try {
+      const response = await fetch(`${URL}/api/shop/tax-rate/set`, {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': token // Исправлено
+        },
+        body: JSON.stringify({ tax_rate: taxRate, tax_type: taxType })
+      });
 
-  
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Ошибка при обновлении налоговой ставки:', error);
+    }
+  }
 };

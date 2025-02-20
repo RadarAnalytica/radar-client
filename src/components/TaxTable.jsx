@@ -1,49 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../components/TaxTable.module.css";
 import { formatPrice } from '../service/utils';
-
-function TaxTable({ taxInfo }) {
+import { ServiceFunctions } from '../service/serviceFunctions';
+function TaxTable({ taxInfo, authToken, updateDataDashBoard, activeBrand }) {
+    const taxData = taxInfo?.[0] || {}; // Получаем первый объект массива, если он есть
     const [isEditing, setIsEditing] = useState(false);
-    const [taxRate, setTaxRate] = useState(taxInfo?.taxRate || 0); // Инициализируем с переданным значением или 0
+    const [taxRate, setTaxRate] = useState(taxData.taxRate || 0);
+    const [selectedTaxType, setSelectedTaxType] = useState(taxData.taxType || '');
 
     useEffect(() => {
-        // Обновляем taxRate, если taxInfo изменяется
-        setTaxRate(taxInfo?.taxRate || 0);
+        setTaxRate(taxData.taxRate || 0);
+        setSelectedTaxType(taxData.taxType || '');
     }, [taxInfo]);
 
     const handleTaxSubmit = async ({ taxType, submit } = {}) => {
-        const currentTaxType = taxType || taxInfo?.taxType;
-        const currentTaxRate = taxType === "Не считать налог" ? 0 : taxRate;
+        const currentTaxType = taxType || selectedTaxType;
+        const currentTaxRate = taxType === 'Не считать налог' ? 0 : parseFloat(taxRate) || 0;
 
         try {
-            if (taxType) {
-                // Обновляем значение налога на основе выбранного типа
-                setTaxRate(currentTaxRate);
+            await ServiceFunctions.postTaxRateUpdateDashboard(authToken, currentTaxRate, currentTaxType);
 
-                if (taxType === "Не считать налог") {
-                    setTaxRate(0);
-                    setIsEditing(false);
-                }
+            if (taxType) {
+                setSelectedTaxType(taxType);
+                setTaxRate(currentTaxRate);
             }
 
             if (submit) {
-                // Сценарий: подтверждение изменения ставки налога
                 setIsEditing(false);
             }
+
+            // Обновляем данные дашборда
+            await updateDataDashBoard(30, activeBrand, authToken);
+
         } catch (error) {
-            console.error("Ошибка при обновлении налоговой ставки:", error);
+            console.error('Ошибка при обновлении налоговой ставки:', error);
         }
     };
 
     return (
         <div className={`taxChartWrapper ${styles.salesChartWrapper}`}>
             <div className={styles.title}>Налог</div>
+
             <div className={styles.salesChartRow}>
                 <div className={styles.titleInRow}>Тип налогообложения</div>
                 <div className={styles.numbersBox}>
                     <select
                         className={styles.customSelect}
-                        value={taxInfo?.taxType} // Предполагается, что налоговый тип из данных
+                        value={selectedTaxType}
                         onChange={(e) => handleTaxSubmit({ taxType: e.target.value })}
                     >
                         <option value='УСН-доходы'>УСН-доходы</option>
@@ -64,11 +67,11 @@ function TaxTable({ taxInfo }) {
                                 value={taxRate}
                                 onChange={(e) => setTaxRate(e.target.value)}
                                 className={styles.taxRateWrapper}
-                                disabled={taxInfo?.taxType === 'Не считать налог'}
+                                disabled={selectedTaxType === 'Не считать налог'}
                             />
                             <button
                                 onClick={() => handleTaxSubmit({ submit: true })}
-                                disabled={taxInfo?.taxType === 'Не считать налог'}
+                                disabled={selectedTaxType === 'Не считать налог'}
                             >
                                 ✓
                             </button>
@@ -77,8 +80,7 @@ function TaxTable({ taxInfo }) {
                     ) : (
                         <div
                             onClick={() => {
-                                if (taxInfo?.taxType !== 'Не считать налог') {
-                                    setTaxRate(taxInfo?.taxRate || 0);
+                                if (selectedTaxType !== 'Не считать налог') {
                                     setIsEditing(true);
                                 }
                             }}
@@ -93,21 +95,21 @@ function TaxTable({ taxInfo }) {
             <div className={styles.salesChartRow}>
                 <div className={styles.titleInRow}>WB реализовал</div>
                 <div className={styles.mumbersInRow}>
-                    {formatPrice(taxInfo?.wbRealization) || '0'} ₽
+                    {formatPrice(taxData.wbRealization) || '0'} ₽
                 </div>
             </div>
 
             <div className={styles.salesChartRow}>
                 <div className={styles.titleInRow}>Налоговая база</div>
                 <div className={styles.mumbersInRow}>
-                    {formatPrice(taxInfo?.taxBase) || '0'} ₽
+                    {formatPrice(taxData.taxBase) || '0'} ₽
                 </div>
             </div>
 
             <div className={styles.salesChartRow}>
                 <div className={styles.titleInRow}>Налог</div>
                 <div className={styles.mumbersInRow}>
-                    {formatPrice(taxInfo?.taxAmount) || '0'} ₽
+                    {formatPrice(taxData.taxAmount) || '0'} ₽
                 </div>
             </div>
         </div>

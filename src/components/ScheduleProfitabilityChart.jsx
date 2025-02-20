@@ -29,7 +29,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 yAxisID: 'left-y',
             },
             {
-                label: 'Маржинальность по прибыли',
+                label: 'Маржинальность по прибыли,(Lower)',
                 data: dataProfitMinus,
                 backgroundColor: function (context) {
                     const chart = context.chart;
@@ -105,18 +105,22 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                             return `ROI: ${value}%`;
                         }
 
-
                         if (datasetLabel.includes('Маржинальность по прибыли,(Lower)')) {
+                            const lowerDataset = tooltipItem.chart.data.datasets.find(ds => ds.label === 'Маржинальность по прибыли,(Lower)');
+                            const upperDataset = tooltipItem.chart.data.datasets.find(ds => ds.label === 'Маржинальность по прибыли,(Upper)');
 
-                            const lowerValue = tooltipItem.chart.data.datasets.find(ds => ds.label === 'Маржинальность по прибыли,(Lower)').data[tooltipItem.dataIndex] || '0';
-                            const upperValue = tooltipItem.chart.data.datasets.find(ds => ds.label === 'Маржинальность по прибыли,(Upper)').data[tooltipItem.dataIndex] || '0';
+                            const lowerValue = lowerDataset?.data[tooltipItem.dataIndex] || '0';
+                            const upperValue = upperDataset?.data[tooltipItem.dataIndex] || '0';
+
+                            if (lowerValue === '0') {
+                                return `Маржинальность: ${upperValue}%`;
+                            }
+
                             return `Маржинальность: ${lowerValue}% .. - ${upperValue}%`;
                         }
                         if (datasetLabel.includes('Маржинальность по прибыли,(Upper)')) {
-
                             return ``;
                         }
-
 
                         return `${datasetLabel}: ${value}%`;
                     },

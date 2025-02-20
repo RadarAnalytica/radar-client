@@ -52,6 +52,8 @@ import highQualityVideo from "../assets/video/fixed_video.mp4";
 import preview from "../assets/video/firstShot.jpg"
 import AdaptiveMedia from "../components/AdaptiveMedia"
 
+import styles from "../pages/MainPage.module.css"
+
 const MainPage = () => {
 
   const navigate = useNavigate();
@@ -139,10 +141,10 @@ const MainPage = () => {
       className='page-white'
       style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
     >
-      <div className='container widbody-container container-xlwidth'>
+      <div className={`container widbody-container container-xlwidth  ${styles.mainPageContainer}`}>
         <NavbarMainHome />
-        <div className='wid-solution' style={{ marginTop: '20px' }}>
-          <div className='sol-description sol-description-top col'>
+        <div className={`wid-solution ${styles.widSolution}`} style={{ marginTop: '20px' }}>
+          <div className={`sol-description sol-description-top col  ${styles.solDescription}`}>
             <div className='sol-description-label-container'>
               <SolLabelBsn />
             </div>
@@ -183,19 +185,19 @@ const MainPage = () => {
             </div>
           </div>
           <div className='sol-screenshot col-7'>
-            <VideoComponent
+            {/* <VideoComponent
               poster={preview}
               videoMp4={highQualityVideo}
               style={{ width: '100%', height: "auto" }}
-            />
-            {/* <AdaptiveMedia
+            /> */}
+            <AdaptiveMedia
               videoMp4={highQualityVideo}
               // videoWebm={highQualityVideoWebm}
               poster={preview}
               heavyImageSrc={BlockImg_x2}
               lightImageSrc={BlockImg_x1}
               style={{ width: "100%", height: "auto" }}
-            /> */}
+            />
           </div>
         </div>
 
