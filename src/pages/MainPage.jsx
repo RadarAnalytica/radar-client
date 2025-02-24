@@ -144,25 +144,25 @@ const MainPage = () => {
       <div className={`container widbody-container container-xlwidth  ${styles.mainPageContainer}`}>
         <NavbarMainHome />
         <div className={`wid-solution ${styles.widSolution}`} style={{ marginTop: '20px' }}>
-          <div className={`sol-description sol-description-top col  ${styles.solDescription}`}>
-            <div className='sol-description-label-container'>
+          <div className={`sol-description sol-description-top col ${styles.solDescription}`}>
+            <div className={`sol-description-label-container ${styles.solDescriptionLabelContainer}`}>
               <SolLabelBsn />
             </div>
             <div
-              className='yellow-radar-small-container'
+              className={`yellow-radar-small-container ${styles.solDescriptionLabelSmallContainer}`}
               style={{ display: 'flex', justifyContent: 'start' }}
             >
               <YellowRadarSmall />
             </div>
-            <div className='sales-increase-text'>
+            <div className={`sales-increase-text ${styles.salesIncreseText}`}>
               – сервис аналитики для
-              <span className='sales-increse-text-span'>
+              <span className={`sales-increse-text-span ${styles.salesIncreseTextSpan}`}>
                 {' '}
                 увеличения ваших продаж{' '}
               </span>
               на маркетплейсах
             </div>
-            <div className='analyze-competitors-text'>
+            <div className={`analyze-competitors-text ${styles.ananlyzeText}`}>
               Анализируйте конкурентов, повышайте показатели своих карточек и
               контролируйте финансы в одном месте.
             </div>
@@ -184,7 +184,7 @@ const MainPage = () => {
               </button>
             </div>
           </div>
-          <div className='sol-screenshot col-7'>
+          <div className={`sol-screenshot col-7 ${styles.mainPicture}`}>
             {/* <VideoComponent
               poster={preview}
               videoMp4={highQualityVideo}
@@ -203,14 +203,17 @@ const MainPage = () => {
 
         <div className='authorized-service-container'>
           <div className='authorized-service-logo-wrapper'>
-            <div className='wb-logo-wrapper'><img src={wbLogo} alt="WB Logo" /></div>
+            <div className='wb-logo-wrapper'>
+              <img src={wbLogo} alt="WB Logo" />
+            </div>
             <div className='wb-text-wrapper'>Официальный <br /> авторизованный сервис</div>
           </div>
           <div className='authorized-service-text-wrapper'>Наш сервис успешно прошел проверку Wildberries, подтвердив соответствие всем стандартам, включая требования по информационной безопасности.</div>
         </div>
 
+
         <div className='wid-solution-text'>
-          <p className='wid-solution-text-p col-8'>
+          <p className={`wid-solution-text-p col-8 ${styles.widSolutionText}`}>
             Увеличьте продажи на маркетплейсе <br /> в 2 раза{' '}
             <span style={{ color: 'orange', fontWeight: '800' }}>
               с помощью инструментов Radar
@@ -219,25 +222,27 @@ const MainPage = () => {
         </div>
         <ToggleAnaliticsPanel />
 
-        <div style={{ marginTop: '100px' }}><FinancialStatements /></div>
+        <div style={{ marginTop: '100px' }}>
+          <FinancialStatements />
+        </div>
 
         <div style={{ marginTop: '100px' }}>
-          <div className='widhead-container'>
-            <div className='mainBlock-api'>
-              <div className='personal-account-connect-text'>
+          <div className={`widhead-container ${styles.widheadContainer}`}>
+            <div className={`mainBlock-api ${styles.mainBlockApi}`}>
+              <div className={`personal-account-connect-text  ${styles.personalAccountConnectText}`}>
                 Подключение личного кабинета{' '}
                 <span style={{ color: 'orange', fontWeight: '800' }}>
                   по API
                 </span>
               </div>
-              <div className='receive-data-text'>
+              <div className={`receive-data-text ${styles.receiveDataText}`}>
                 Получайте данные по всем вашим магазинам в режиме реального
                 времени в одном месте
               </div>
             </div>
             <div className='widhead-container-image widhead-container-image-mob'>
               <img
-                className='manyApiLogoMobile'
+                className={`manyApiLogoMobile ${styles.manyApiLogoMobile}`}
                 src={manyApiMobile}
                 alt='logo'
                 style={{ borderRadius: '15px', width: "100%" }}
@@ -249,7 +254,7 @@ const MainPage = () => {
                 <div className='widhead-contain-icon'>
                   <img src={ligtning} />
                 </div>
-                <div className='widhead-contian-title'>Быстро</div>
+                <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>Быстро</div>
                 <div className='widhead-contain-parag'>
                   Не успеете выпить
                   <br /> чашку кофе
@@ -290,7 +295,7 @@ const MainPage = () => {
                 <div className='widhead-contain-icon'>
                   <img src={safety} />
                 </div>
-                <div className='widhead-contian-title'>Безопасно</div>
+                <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>Безопасно</div>
                 <div className='widhead-contain-parag'>
                   Мы обо всем <br />
                   позаботились
@@ -331,7 +336,7 @@ const MainPage = () => {
                 <div className='widhead-contain-icon'>
                   <img src={bigData} />
                 </div>
-                <div className='widhead-contian-title'>
+                <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>
                   Большой объем данных{' '}
                 </div>
                 <div className='widhead-contain-parag'>Важных данных</div>
@@ -413,10 +418,10 @@ const MainPage = () => {
               </div>
             </div>
           </div>
-          <div className='widhead-container'>
+          <div className={`widhead-container ${styles.widHeadContainerLastLine}`}>
             <div className='widhead-container-image'>
               <img
-                className='manyApiLogo'
+                className={`manyApiLogo ${styles.manyApiLogo}`}
                 src={manyApi}
                 alt='logo'
                 style={{ borderRadius: '15px' }}
@@ -428,7 +433,7 @@ const MainPage = () => {
                 style={{ borderRadius: '15px' }}
               />
             </div>
-            <div className='apiBlock'>
+            <div className={`apiBlock ${styles.apiBlock}`}>
               <ApiBlockContainer />
               <img className='apiBlockImg' src={apiBlock} alt='logo' />
               {/* <img
@@ -438,13 +443,13 @@ const MainPage = () => {
               /> */}
             </div>
             <div
-              className='blockBtn'
+              className={`blockBtn ${styles.blockBtn}`}
               style={{
                 backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
                   })`,
               }}
             >
-              <div className='blockBtnContainer'>
+              <div className={`blockBtnContainer ${styles.blockBtnContainerInner}`}>
                 <div className='blockBtnContainerHeader'>
                   <div className='blockBtnContainerImageBlock'>
                     <img
@@ -462,8 +467,8 @@ const MainPage = () => {
                   </div>
                 </div>
 
-                <div className='readyforStartText'>Готовы начать?</div>
-                <div className='profitableStafText'>
+                <div className={`readyforStartText ${styles.readyforStartText}`}>Готовы начать?</div>
+                <div className={`profitableStafText ${styles.profitableStafText}`}>
                   Найдите прибыльные товары на маркетплейсе и развивайте свой
                   бизнес.
                 </div>

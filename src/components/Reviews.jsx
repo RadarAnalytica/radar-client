@@ -24,6 +24,18 @@ const Reviews = () => {
     nextArrow: <ImageArrow type="next" />,
     prevArrow: <ImageArrow type="prev" />,
     responsive: [
+
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          swipeToSlide: true,
+          swipe: true,
+          centerMode: true,
+          arrows: true,
+        },
+      },
       {
         breakpoint: 768,
         settings: {

@@ -6,6 +6,7 @@ import time from "../pages/images/time.png";
 import YellowRadarLarge from "../pages/images/YellowRadarLarge";
 import AuthContext from "../service/AuthContext";
 import YellowRadarSmall from "../pages/images/YelowRadarSmall";
+import styles from "../components/StepsTime.module.css"
 
 const StepsTime = ({ redirect }) => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const StepsTime = ({ redirect }) => {
           <div className='steps-container-content'>{stepData.content}</div>
         </div>
 
-        <div className='steps-container-after-content'>
+        <div className={`steps-container-after-content ${styles.stepsContainerAafterContent}`}>
           <img src={time} alt='tims' />
           {stepData.afterContent}
         </div>
@@ -61,14 +62,14 @@ const StepsTime = ({ redirect }) => {
         marginTop: "50px",
       }}
     >
-      <div className='stepsTimeHeader' style={{}}>
-        <div style={{ marginRight: "20px" }} className='hide-on-mobile'>
+      <div className={`stepsTimeHeader ${styles.stepsTimeHeader}`} style={{}}>
+        <div style={{ marginRight: "20px" }} className={`hide-on-mobile ${styles.YellowRadarLarge}`}>
           <YellowRadarLarge />
         </div>
         <div className='mobile-yellow-icon'>
           <YellowRadarSmall />
         </div>
-        <div className='helpEveryStepText'>
+        <div className={`helpEveryStepText ${styles.helpEveryStepText}`}>
           поможет на каждом этапе вашего{" "}
           <span style={{ color: "#5329FF", fontWeight: "800" }}>
             развития на маркетплейсах
@@ -82,9 +83,9 @@ const StepsTime = ({ redirect }) => {
         </div>
 
       </div>
-      <div className='stepsTimeItems'>
+      <div className={`stepsTimeItems ${styles.stepsTimeItems}`}>
         {stepsContent.map((item, index) => renderStep(item, index))}
-        <div className='stepsBtn steps-time5'>
+        <div className={`stepsBtn steps-time5`}>
           <div>
             <div className='stepsBtnBlock'>
               <Steps.StepsWhite />

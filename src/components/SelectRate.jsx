@@ -23,6 +23,7 @@ import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res
 import styles from '../pages/TariffsPage.module.css';
 import thumbup from '../pages/images/thumbup.png';
 
+
 const SelectRate = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
@@ -237,7 +238,7 @@ const SelectRate = ({ redirect, isShowText }) => {
       },
     };
 
-   await widget.charge(
+    await widget.charge(
       {
         // options
         publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
@@ -493,30 +494,30 @@ const SelectRate = ({ redirect, isShowText }) => {
             </div>
           </div>
         </div> */}
-        <div className='price-wrap'>
-          <div className='landing-price-wrap'>
-            <div className='landing-price-wrap-main'>
-              <div className='landing-price-wrap-header'>
+        <div className={`price-wrap ${styles.priceWrap}`}>
+          <div className={`landing-price-wrap ${styles.landingPriceWrap}`}>
+            <div className={`landing-price-wrap-main ${styles.landingPriceWrapMain}`}>
+              <div className={`landing-price-wrap-header ${styles.landingPriceWrapHeader}`}>
                 Здесь есть всё, что нужно любому бизнесу на маркетплейсе
               </div>
-              <div className='OrangeLabel'>
+              <div className={`OrangeLabel  ${styles.orangeLabel}`}>
                 <img src={BlueSwich} label='swich' />
               </div>
             </div>
             <div className='landing-price'>
-              <p className='landing-price-text'>
+              <p className={`landing-price-text ${styles.landingPriceText}`}>
                 Это то, что подойдет
                 <br />
                 именно
                 <span> Вам!</span>
               </p>
-              <p className='landing-price-text-main'>
+              <p className={`landing-price-text-main ${styles.landingPriceTextMain}`}>
                 Мы предлагаем один тариф,
                 <br /> который даст полный доступ к<br /> нашей аналитике и ко
                 всему ее функционалу!
               </p>
               <div className='landing-price-btn'>
-                <p className='landing-price-btn-text'>
+                <p className={`landing-price-btn-text ${styles.landingPriceBtnText}`}>
                   Мы дарим тестовый доступ на 3 дня <br />
                   <span> всего за</span>
                 </p>
@@ -774,7 +775,7 @@ const SelectRate = ({ redirect, isShowText }) => {
               <div className='HeadCardProPlus'>
                 <div className='HeadCardProPlusMain'>
                   <div className='HeadCardProPlusMainText'>Smart</div>
-                  <div className='HeadCardProPlusBestDes'>
+                  <div className={`HeadCardProPlusBestDes ${styles.HeadCardProPlusBestDes}`}>
                     <img src={logoProPlus} />
                     <div className='TextBestDes'>Лучший выбор</div>
                   </div>
@@ -1028,7 +1029,7 @@ const SelectRate = ({ redirect, isShowText }) => {
         <>
           <ReviewsUsers />
           <div
-            className='wid-solutionMain'
+            className={`wid-solutionMain ${styles.widSolutionMainImg}`}
             style={{
               backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
                 })`,

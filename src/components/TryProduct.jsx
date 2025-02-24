@@ -10,6 +10,7 @@ import AuthContext from "../service/AuthContext";
 import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-res image
 import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
 import ImageComponent from "./utilsComponents/ImageComponent ";
+import styles from "../components/TryProduct.module.css"
 
 
 const TryProduct = ({ redirect }) => {
@@ -31,9 +32,9 @@ const TryProduct = ({ redirect }) => {
   return (
     <>
       <div
-        className={`wid-solutionMain ${isHighResLoaded ? 'highResMain' : 'lowResMain'}`}
+        className={` ${styles.widSolutionMainImg} wid-solutionMain ${isHighResLoaded ? 'highResMain' : 'lowResMain'}`}
       >
-        <div className='sol-description col' style={{ padding: 0 }}>
+        <div className={` ${styles.solDescription} sol-description col`} style={{ padding: 0 }}>
           <div className='headStartBsn'>
             <SolLabelStartBsn />
             <div style={{ fontSize: "34px", fontWeight: "700" }}>
@@ -63,11 +64,11 @@ const TryProduct = ({ redirect }) => {
                   redirect();
                 }
               }}
-              className={"white-btn"}
+              className={`white-btn ${styles.whiteBtn}`}
             />
           </div>
         </div>
-        <div className='sol-screenshot sol-screenshot_bottom'>
+        <div className={`sol-screenshot sol-screenshot_bottom ${styles.solScreenshotBbottom}`}>
           {/* <img src={BlockImg_x2} alt='' /> */}
           <ImageComponent
             heavyImageSrc={BlockImg_x2}

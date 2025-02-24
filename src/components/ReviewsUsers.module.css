@@ -1,0 +1,15 @@
+@media  (min-width: 768px) and (max-width: 1300px) {
+    .userReviewsHeaderTitle{
+        font-size: 35px;
+    }
+.userReviewsHeaderParag{
+    font-size: 20px;
+    margin-bottom: 5px;
+    line-height: 35px;
+}
+.yellowLogoSpan{
+    margin: 15px;
+    white-space: normal;
+    text-wrap: nowrap;
+}
+}
