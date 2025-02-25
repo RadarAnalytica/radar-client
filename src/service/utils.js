@@ -76,13 +76,15 @@ export function filterArraysNoData(obj, days) {
 }
 
 export const formatPrice = (price) => {
-  if (price) {
+  if (!!price) {
     price = price.toString();
     const number = parseFloat(price);
     const formattedPrice = number.toLocaleString('ru-RU', {
       maximumFractionDigits: 2,
     });
     return formattedPrice;
+  } else {
+    return '-'
   }
 };
 

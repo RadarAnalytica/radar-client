@@ -118,11 +118,11 @@ const TableSections = ({ data, cellWidths }) => {
             {formatPrice(data?.compensation_damage.quantity) || '0'} шт
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.finesCell) }}>
-            {formatPrice(data?.compensation_penalties.rub) || '0'} ₽
+            {formatPrice(data?.penalties) || '0'} ₽
           </div>
           {/* ?????? */}
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.payMoreCell) }}>
-            {formatPrice(data?.compensation_penalties.rub) || '0'} ₽
+            {formatPrice(data?.additional_payments) || '0'} ₽
           </div>
         </div>
         {/* Another Keep Section */}
@@ -140,8 +140,8 @@ const TableSections = ({ data, cellWidths }) => {
             <div>{data?.acceptance.percent || '0'} %</div>
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.payWbCell) }}>
-            <div>{formatPrice(data?.wb_commission.rub) || '0'} ₽</div>
-            <div>{data?.wb_commission.percent || '0'} %</div>
+            <div>{formatPrice(data?.compensation_penalties.rub) || '0'} ₽</div>
+            <div>{data?.compensation_penalties.percent || '0'} %</div>
           </div>
         </div>
         {/* External Expenses Section */}
@@ -190,7 +190,7 @@ const TableSections = ({ data, cellWidths }) => {
             className={styles.defectCompnesaitionCell}
             style={{ width: getMinWidth(cellWidths.marginProfitCell) }}
           >
-            {formatPrice(data?.marginality) || '0'} ₽
+            {formatPrice(data?.marginality) || '0'} %
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.roiCell) }}>
             {data?.return_on_investment || '0'} %
