@@ -16,7 +16,11 @@ input[type="number"]:focus {
 .container-xlwidth {
   max-width: 1480px;
 }
-
+@media (min-width: 1400px) {
+  .container-xlwidth {
+    max-width: 1480px;
+  }
+}
 .map-radio {
   display: flex;
   align-items: center;
@@ -404,7 +408,7 @@ select {
   background-color: #ffffff;
   transition: height 1.75s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-  max-height: 81%;
+  /* max-height: 81%; */
   transform-origin: top center;
   will-change: height;
 }
@@ -2357,7 +2361,7 @@ button.accordion-button.collapsed::after {
     font-size: 20px !important;
   }
   .container-xlwidth{
-    max-width: 88%;
+    max-width: 88%!important;
   }
   .wid-solution-text-p {
     font-size: 35px;
@@ -2937,7 +2941,7 @@ button.accordion-button.collapsed::after {
   }
 
   .container-xlwidth{
-    max-width: 90%;
+    max-width: 90%!important;
   }
   .yellow-radar-small-cont svg{
     width: 80%;
@@ -4269,7 +4273,7 @@ button.accordion-button.collapsed::after {
   }
 
   .container-xlwidth{
-    max-width: 90%;
+    max-width: 90%!important;
   }
   .yellow-radar-small-cont svg{
     width: 80%;

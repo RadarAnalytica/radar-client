@@ -6,7 +6,7 @@ import { AuthProvider } from './service/AuthContext';
 import { ProductProvider } from './service/ProductContext';
 import { NavigationProvider } from './service/NavigationContext';
 import { publicRoutes, protectedRoutes, adminRoutes, subscriptionRoutes, errorRoutes } from './service/routeConfig';
-import MobileMenu from './components/MobileMenu';
+// import MobileMenu from './components/MobileMenu';
 import MessageWindow from './components/MessageWindow';
 import { guardComponents } from './service/guards';
 import LoaderPage from "./pages/LoaderPage";

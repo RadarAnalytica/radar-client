@@ -83,7 +83,7 @@
         height: 50px;
     }
     .verticalLine{
-        height: calc((var(--activeIndex) + 1) * 21%);
+        height: calc((var(--activeIndex) + 1) * 22%);
     }
     .images>img{
         width:  -webkit-fill-available;
