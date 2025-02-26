@@ -1,15 +1,22 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { chart } from 'highcharts';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const DetailChart = ({ labels, chartData, averages }) => {
+const DetailChart = ({ labels, chartData, averages, isLoading }) => {
     const chartRef = useRef(null);
     const containerRef = useRef(null);
     const [clickedIndex, setClickedIndex] = useState(null);
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
+    // Вычисляем min и max для оси Y
+    const nonZeroAverages = averages.filter((val) => val !== 0); // Игнорируем 0 в данных
+    const minValue = nonZeroAverages.length ? Math.min(...nonZeroAverages) : 0;
+    const maxValue = Math.max(...averages);
+
+    const yMin = minValue > 0 ? Math.floor(minValue * 0.9) : 0; // 10% запас снизу
+    const yMax = Math.ceil(maxValue * 1.1); // 10% запас сверху
 
     const data = {
         labels: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
@@ -25,7 +32,6 @@ const DetailChart = ({ labels, chartData, averages }) => {
                     const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
                     gradient.addColorStop(0.5, '#F0AD00');
                     gradient.addColorStop(1, '#F0AD0080');
-
 
                     if (clickedIndex !== null && context.dataIndex !== clickedIndex) {
                         return 'rgba(240, 173, 0, 0.3)';
@@ -66,7 +72,13 @@ const DetailChart = ({ labels, chartData, averages }) => {
         },
         scales: {
             x: { grid: { display: false }, ticks: { color: '#8C8C8C' } },
-            y: { beginAtZero: true, min: 0, max: 10, grid: { display: true }, ticks: { color: '#8C8C8C' } },
+            y: {
+                beginAtZero: false,
+                min: yMin, // Устанавливаем минимальное значение
+                max: yMax, // Устанавливаем максимальное значение
+                grid: { display: true },
+                ticks: { color: '#8C8C8C' },
+            },
         },
     };
 
@@ -85,11 +97,10 @@ const DetailChart = ({ labels, chartData, averages }) => {
 
     const renderCustomTooltip = () => {
         if (clickedIndex === null) return null;
-        console.log(chartData)
-        console.log(clickedIndex)
-        const total = chartData[clickedIndex]
 
+        const total = chartData[clickedIndex] ?? 0; // Default to 0 if not found
         const isLeftSide = clickedIndex > 11;
+
         const tooltipStyle = {
             position: 'absolute',
             top: `50%`,
@@ -104,6 +115,14 @@ const DetailChart = ({ labels, chartData, averages }) => {
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         };
 
+        const labelData = labels[clickedIndex.toString()];
+
+        // Check if labelData exists and is an array
+        if (!Array.isArray(labelData)) {
+            console.warn(`Expected an array for labels[${clickedIndex.toString()}], but got:`, labelData);
+            return null; // Avoid rendering if it's not an array
+        }
+
         return (
             <div className="custom-tooltip" style={tooltipStyle}>
                 <div className="custom-tooltip-header">
@@ -117,10 +136,10 @@ const DetailChart = ({ labels, chartData, averages }) => {
                     <div className="custom-tooltip-amount" style={{ fontWeight: '700' }}>{total}</div>
                 </div>
                 <div className="custom-tooltip-period">
-                    {labels[clickedIndex.toString()].map((time, i) => (
+                    {labelData.map((time, i) => (
                         <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ marginLeft: '5px' }}>{labels[clickedIndex.toString()][i]['time']}</span>
-                            <span style={{ marginRight: '5px' }}>{labels[clickedIndex.toString()][i]['count']}</span>
+                            <span style={{ marginLeft: '5px' }}>{time.time}:00</span>
+                            <span style={{ marginRight: '5px' }}>{time.count}</span>
                         </div>
                     ))}
                 </div>
@@ -128,10 +147,22 @@ const DetailChart = ({ labels, chartData, averages }) => {
         );
     };
 
+
     return (
         <div ref={containerRef} style={{ position: 'relative', minWidth: '630px', width: '100%' }}>
-            <Bar ref={chartRef} data={data} options={options} />
-            {renderCustomTooltip()}
+            {isLoading ? (
+                <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: '400px' }}
+                >
+                    <span className="loader"></span>
+                </div>
+            ) : (
+                <>
+                    <Bar ref={chartRef} data={data} options={options} />
+                    {renderCustomTooltip()}
+                </>
+            )}
         </div>
     );
 };

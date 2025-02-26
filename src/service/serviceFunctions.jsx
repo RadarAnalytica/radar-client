@@ -396,108 +396,94 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getChartDetailData: async (token, selectedRange) => {
-    // const res = await fetch(
-    //   `${URL}/api/dashboard/`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "content-type": "application/json",
-    //       authorization: "JWT " + token,
-    //     },
-    //   }
-    // );
+  getChartDetailData: async (token, selectedRange, activeBrand) => {
+    try {
+      let queryParams = new URLSearchParams();
 
-    // const data = await res.json();
-    const data = [
-      { '0:15': 4 },
-      { '0:45': 2 },
-      { '1:10': 3 },
-      { '1:30': 1 },
-      { '2:05': 5 },
-      { '2:50': 2 },
-      { '3:00': 4 },
-      { '3:30': 1 },
-      { '4:20': 3 },
-      { '4:50': 2 },
-      { '5:00': 1 },
-      { '5:40': 2 },
-      { '6:00': 2 },
-      { '6:15': 5 },
-      { '7:00': 3 },
-      { '7:45': 1 },
-      { '8:05': 4 },
-      { '8:30': 2 },
-      { '9:00': 1 },
-      { '9:55': 5 },
-      { '10:15': 2 },
-      { '10:45': 3 },
-      { '11:30': 1 },
-      { '11:55': 4 },
-      { '12:10': 3 },
-      { '12:40': 1 },
-      { '13:00': 5 },
-      { '13:25': 2 },
-      { '14:10': 3 },
-      { '14:50': 4 },
-      { '15:30': 1 },
-      { '15:55': 5 },
-      { '16:10': 2 },
-      { '16:40': 4 },
-      { '17:05': 3 },
-      { '17:50': 2 },
-      { '18:00': 4 },
-      { '18:30': 1 },
-      { '19:10': 3 },
-      { '19:45': 2 },
-      { '20:20': 4 },
-      { '20:55': 1 },
-      { '21:05': 2 },
-      { '21:30': 3 },
-      { '22:15': 4 },
-      { '22:50': 1 },
-      { '23:10': 2 },
-      { '23:45': 5 },
-    ];
+      if (typeof selectedRange === "number") {
+        queryParams.append("period", selectedRange);
+      } else if (selectedRange?.from && selectedRange?.to) {
 
-    const counts = Array(24).fill(0);
-    const averages = Array(24).fill(0);
+        const fromDate = selectedRange.from.toISOString().split('T')[0];
+        const toDate = selectedRange.to.toISOString().split('T')[0];
 
-    data.forEach((entry) => {
-      for (const [time, value] of Object.entries(entry)) {
-        const hour = parseInt(time.split(':')[0], 10);
-
-        counts[hour] += value;
-        averages[hour] += 1;
+        console.log(fromDate, "from", toDate, "to");
+        queryParams.append("date_from", fromDate);
+        queryParams.append("date_to", toDate);
+      } else {
+        throw new Error("Должен быть указан хотя бы один параметр: period или date_from/date_to.");
       }
-    });
 
-    const finalAverages = averages.map((count, index) => {
-      return count === 0 ? 0 : counts[index] / count;
-    });
+      if (activeBrand !== undefined) {
+        queryParams.append("shop", activeBrand);
+      }
 
-    const transformData = (data) => {
-      return data.reduce((acc, item) => {
-        const [time, count] = Object.entries(item)[0];
-        const hour = parseInt(time.split(':')[0], 10);
+      const url = `${URL}/api/dashboard/hourly?${queryParams.toString()}`;
+      console.log(token, "token");
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: `JWT ${token}`,
+        },
+        credentials: "include",
+      });
 
-        if (!acc[hour]) {
-          acc[hour] = [];
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      const rawData = await response.json();
+      console.log("Raw data from API:", rawData);
+
+      const counts = Array(24).fill(0);
+      const averages = Array(24).fill(0);
+
+      rawData.forEach((entry) => {
+        for (const [key, value] of Object.entries(entry)) {
+          const hour = key === "None" ? 23 : parseInt(key, 10);
+          if (!isNaN(hour)) {
+            counts[hour] += value;
+            averages[hour] += 1;
+          }
         }
-        acc[hour].push({ count, time });
+      });
 
-        return acc;
-      }, {});
-    };
+      const finalAverages = averages.map((count, index) =>
+        count === 0 ? 0 : counts[index] / count
+      );
 
-    const result = transformData(data);
+      const transformData = (data) => {
+        return data.reduce((acc, item) => {
+          const [time, count] = Object.entries(item)[0];
+          const hour = time === "None" ? 23 : parseInt(time, 10);
 
-    return {
-      result: result,
-      counts: counts,
-      averages: finalAverages,
-    };
+          if (!isNaN(hour)) {
+            if (!acc[hour]) {
+              acc[hour] = [];
+            }
+            acc[hour].push({ count, time });
+          }
+
+          return acc;
+        }, {});
+      };
+
+      const result = transformData(rawData);
+
+      return {
+        result: result,
+        counts: counts,
+        averages: finalAverages,
+      };
+    } catch (error) {
+      console.error("Ошибка получения данных:", error);
+      return { result: {}, counts: [], averages: [] };
+    }
   },
+
+
+
 
   getListOfReports: async (token) => {
     const res = await fetch(`${URL}/api/report/`, {

@@ -57,6 +57,7 @@ const DashboardPage = () => {
   const [firstLoading, setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
 
+
   const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
   const [detailChartLabels, setDetailChartLabels] = useState([]);
   const [detailChartData, setDetailChartData] = useState([]);
@@ -92,6 +93,8 @@ const DashboardPage = () => {
   const [revenueByWarehouse, SetRevenueByWarehouse] = useState()
   const [structure, setStructure] = useState()
 
+
+  const [isLoadingChart, setIsLoadingChart] = useState(true);
 
   const plugForAllStores = {
     id: 0,
@@ -147,19 +150,26 @@ const DashboardPage = () => {
   }, [oneShop, activeBrand]);
 
   useEffect(() => {
-    console.log(selectedRange, 'selectedRange');
-    const updateChartData = async () => {
-      const data = await ServiceFunctions.getChartDetailData(
-        authToken,
-        selectedRange
-      );
-      setDetailChartLabels(data.result);
-      setDetailChartData(data.counts);
-      setDetailChartAverages(data.averages);
-    };
-    updateChartData();
-  }, [selectedRange]);
+    if (isModalOpen) {
+      const updateChartData = async () => {
+        setIsLoadingChart(true)
+        const data = await ServiceFunctions.getChartDetailData(
+          authToken,
+          selectedRange, // здесь передаётся выбранный период (ожидается число)
+          activeBrand
+        );
+        setDetailChartLabels(data.result);
+        setDetailChartData(data.counts);
+        setDetailChartAverages(data.averages);
+        setIsLoadingChart(false)
+      };
+      updateChartData();
+    }
+  }, [isModalOpen, selectedRange, activeBrand]);
+
   const handleModalOpen = () => {
+    // При открытии модального окна устанавливаем период как число 7
+    setSelectedRange(7);
     setIsModalOpen(true);
   };
   const handleDownload = () => { };
@@ -167,6 +177,7 @@ const DashboardPage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -1191,17 +1202,18 @@ const DashboardPage = () => {
                           />
                         </div>
                         <div style={{ marginTop: '35px' }}>
-                          <div
+                          {/* <div
                             className='download-button'
                             onClick={() => handleDownload()}
                           >
                             <img src={downloadIcon} />
                             Скачать детализацию
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                       <div className={styles.modalBody}>
                         <DetailChart
+                          isLoading={isLoadingChart}
                           labels={detailChartLabels}
                           chartData={detailChartData}
                           averages={detailChartAverages}
