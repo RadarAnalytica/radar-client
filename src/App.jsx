@@ -63,6 +63,7 @@ const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashb
 const Schedule = React.lazy(() => import("./pages/Schedule"));
 const Period = React.lazy(() => import("./components/Period"));
 const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
+const StartPage = React.lazy(() => import("./pages/StartPage"));
 
 // const NoSubscriptionPage = React.lazy(() =>
 //   import("./pages/NoSubscriptionPage")
@@ -71,15 +72,21 @@ const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 function App() {
   const { user } = useContext(AuthContext);
 
-  const renderElement = (user) => {
 
+
+
+  const renderElement = (user) => {
     if (user?.role === 'admin') {
       return <Navigate to="/admin-panel" replace />;
     } else if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
       return <TariffsPage />;
+    } else if (user?.subscription_status && user?.subscription_status === 'Smart') { 
+      return <StartPage />
     } else {
       return user?.is_onboarded ? <DashboardPage /> : <Onboarding />;
     }
+
+    // Do we need a default (mean clear) condition here?
   };
   // return (
   //   <AuthProvider>

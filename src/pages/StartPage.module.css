@@ -1,0 +1,140 @@
+/* Page */
+
+.startPage {
+    background-color: #F7F6FE;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    box-sizing: border-box;
+}
+
+.startPage__content {
+    width: 100%;
+    padding: 0 0 25px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.startPage__galleryWrapper {
+    margin-top: 10px;
+    width: 100%;
+    padding: 0 30px;
+    height: 405px;
+    min-height: 405px;
+    box-sizing: border-box;
+}
+
+.startPage__bannersWrapper {
+    margin-top: 10px;
+    width: 100%;
+    padding: 0 30px;
+    height: auto;
+    box-sizing: border-box;
+}
+
+.startPage__gallery {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+/* Gallery */
+
+.gallery__item {
+    width: 50%;
+    height: 100%;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    background: white;
+}
+.gallery__itemPadding {
+    width: 50%;
+    height: 100%;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    background: white;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 17px
+}
+
+.gallery__imgWrapper {
+    height: 100%;
+    width: calc(100% + 12px);
+    position: relative;
+    background: url(../assets//startPage_gallery_bg.png);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.gallery__offerBlock {
+    width: 100%;
+    height: 98px;
+    border-radius: 12px;
+    padding: 12px;
+    background: #5329FF;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.gallery__offerTitleWrapper {
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.gallery__offerTitle {
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 35px;
+    color: white;
+    margin: 0;
+    padding: 0;
+
+    @media (max-width: 1550px) {
+        font-size: 24px;
+    }
+}
+
+.gallery__subtitleBox {
+    border-radius: 8px;
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    padding: 7px 8px 7px 5px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    color: white;
+    background: #7452FE;
+}
+
+.gallery__offerLink {
+    padding: 10px 12px;
+    background: white;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: #5329FF;
+    text-decoration: none;
+}
