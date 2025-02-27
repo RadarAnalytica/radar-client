@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import AuthContext from "../service/AuthContext";
 import styles from './StartPage.module.css'
 import { Link } from "react-router-dom";
 import SideNav from "../components/SideNav";
@@ -7,21 +8,22 @@ import PopupBanner from "../components/sharedComponents/popupBanner/PopupBanner"
 import TgBanner from "../components/startPageComponents/tgBanner/TgBanner";
 
 
-  // this is test user object for dev purposes
+// this is test user object for dev purposes
 
-  // let user = {
-  //   email: "modinsv@yandex.ru",
-  //   id: 2,
-  //   is_confirmed: true,
-  //   is_onboarded: true,
-  //   is_report_downloaded: true,
-  //   is_test_used: true,
-  //   role: "employee",
-  //   subscription_status: "Smart"
-  // }
+// let user = {
+//   email: "modinsv@yandex.ru",
+//   id: 2,
+//   is_confirmed: true,
+//   is_onboarded: true,
+//   is_report_downloaded: true,
+//   is_test_used: true,
+//   role: "employee",
+//   subscription_status: "Smart"
+// }
 
 // Main page for authorized user
 const StartPage = () => {
+    const { user } = useContext(AuthContext);
 
     return (
         <main
@@ -33,11 +35,43 @@ const StartPage = () => {
             >
                 <TopNav title='Главная' /> {/** TopNav expected props = {title?: string, subtitle?: string, children?: React.ReactNode} */}
 
-                
+
                 <div className={styles.startPage__galleryWrapper}>
                     {/* Feel free to create a shared component from this gallery below */}
                     <div className={styles.startPage__gallery}>
-                        <div className={styles.gallery__item}></div>
+                        <div className={styles.gallery__item}>
+                            <div className={styles.gallery__videoWrapper}>
+                                <iframe
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        // border: '1px solid #C4C4C4',
+                                    }}
+                                    src='https://play.boomstream.com/ebiWkmCg?title=0&start=1'
+                                    frameBorder='0'
+                                    scrolling='no'
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                            <div className={styles.gallery__videoPlate}>
+                                <div className={styles.gallery__videPlateTitleBox}>
+                                    <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.39186 1.70239C0.39186 0.666987 1.51272 0.0198584 2.40941 0.537561L12.9094 6.59976C13.8061 7.11746 13.8061 8.41172 12.9094 8.92942L2.40941 14.9916C1.51272 15.5093 0.39186 14.8622 0.39186 13.8268L0.39186 1.70239Z" fill="#5329FF" />
+                                    </svg>
+                                    <p className={styles.gallery__videoPlateTitle}>
+                                        Обзор сервиса. С чего начать?
+                                    </p>
+                                </div>
+                                <span
+                                    className={styles.gallery__videoPlateDuration}
+                                >
+                                    5:20
+                                </span>
+                            </div>
+                        </div>
 
                         <div className={styles.gallery__itemPadding}>
                             <div className={styles.gallery__imgWrapper}></div>
@@ -46,17 +80,17 @@ const StartPage = () => {
                                     <p className={styles.gallery__offerTitle}>Оцифруйтесь за 1 минуту</p>
                                     <div className={styles.gallery__subtitleBox}>
                                         <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <circle opacity="0.2" cx="8" cy="8.5" r="8" fill="white"/>
-                                            <rect opacity="0.4" x="3" y="3.5" width="10" height="10" rx="5" fill="white"/>
-                                            <rect x="3.25928" y="3.75928" width="9.48143" height="9.48143" rx="4.74072" stroke="white" strokeWidth="0.518569"/>
-                                            <circle cx="7.9268" cy="8.4268" r="1.16678" fill="white" stroke="white" strokeWidth="0.777853"/>
+                                            <circle opacity="0.2" cx="8" cy="8.5" r="8" fill="white" />
+                                            <rect opacity="0.4" x="3" y="3.5" width="10" height="10" rx="5" fill="white" />
+                                            <rect x="3.25928" y="3.75928" width="9.48143" height="9.48143" rx="4.74072" stroke="white" strokeWidth="0.518569" />
+                                            <circle cx="7.9268" cy="8.4268" r="1.16678" fill="white" stroke="white" strokeWidth="0.777853" />
                                         </svg>
 
                                         Новый подход к еженедельным отчетам
                                     </div>
                                 </div>
                                 <Link
-                                    to='/'
+                                    to={{ pathname: user && user.is_onboarded ? '/linked-shops' : '/onboarding'}}
                                     className={styles.gallery__offerLink}
                                 >
                                     Попробовать
@@ -68,7 +102,7 @@ const StartPage = () => {
                 </div>
 
                 <div className={styles.startPage__bannersWrapper}>
-                    <PopupBanner 
+                    <PopupBanner
                         offerTitle='1 300 ₽'
                         offerSubtitle='Платим вам на счет'
                         mainTitle='за каждого нового пользователя'
@@ -84,7 +118,7 @@ const StartPage = () => {
                     />
                 </div>
                 <div className={styles.startPage__bannersWrapper}>
-                    <PopupBanner 
+                    <PopupBanner
                         offerTitle='1 300 ₽'
                         offerSubtitle='Платим вам на счет'
                         mainTitle='за каждого нового пользователя'
