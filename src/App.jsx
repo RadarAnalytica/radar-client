@@ -84,15 +84,22 @@ function App() {
 //   role: "employee",
 //   subscription_status: "Smart"
 // }
+  console.log('-------------app.jsx user below----------')
+  console.log(user)
+  console.log('-----------------------------------------')
 
   const renderElement = (user) => {
     if (user?.role === 'admin') {
+      console.log('user is admin')
       return <Navigate to="/admin-panel" replace />;
     } else if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
+      console.log('users subscription is expired')
       return <TariffsPage />;
     } else if (user?.subscription_status && user?.subscription_status === 'Smart') { 
+      console.log('users subscription = Smart')
       return <StartPage />
     } else {
+      console.log('users redirected to onboarding')
       return user?.is_onboarded ? <DashboardPage /> : <Onboarding />;
     }
 
