@@ -74,16 +74,16 @@ function App() {
 
 // this is test user object for dev purposes
 
-let user = {
-  email: "modinsv@yandex.ru",
-  id: 2,
-  is_confirmed: true,
-  is_onboarded: true,
-  is_report_downloaded: true,
-  is_test_used: true,
-  role: "employee",
-  subscription_status: "Smart"
-}
+// let user = {
+//   email: "modinsv@yandex.ru",
+//   id: 2,
+//   is_confirmed: true,
+//   is_onboarded: true,
+//   is_report_downloaded: true,
+//   is_test_used: true,
+//   role: "employee",
+//   subscription_status: "Smart"
+// }
 
   const renderElement = (user) => {
     if (user?.role === 'admin') {
@@ -91,8 +91,7 @@ let user = {
     } else if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
       return <TariffsPage />;
     } else if (user?.subscription_status && user?.subscription_status === 'Smart') { 
-      // return <StartPage />
-      return <ExternalExpensesPage />
+      return <StartPage />
     } else {
       return user?.is_onboarded ? <DashboardPage /> : <Onboarding />;
     }
