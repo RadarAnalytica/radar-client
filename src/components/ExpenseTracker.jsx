@@ -84,7 +84,7 @@ const ExpenseTracker = () => {
 
       const response = await ServiceFunctions.postExternalExpensesUpdate(authToken, payload);
       console.log('response', response);
-      
+
       if (response && response.id) { // Проверяем успешность операции
         console.log('Response in sendRowData:', response)
         row.id = response.id
@@ -283,7 +283,9 @@ const ExpenseTracker = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+    >
       {!loading ? (
         <div className={styles.table}>
           {/* Header Row */}
@@ -307,9 +309,10 @@ const ExpenseTracker = () => {
           </div>
 
           {/* Data Rows */}
-          {rows.map((row) => (
-            <div key={row.id} className={styles.dataRow}>
-              {/* <div className={styles.yearCell}>
+          <div className={styles.rowContainer}>
+            {rows.map((row) => (
+              <div key={row.id} className={styles.dataRow}>
+                {/* <div className={styles.yearCell}>
                 <select
                   value={row.year || ''}
                   onChange={(e) => handleYearChange(row.id, e.target.value)}
@@ -330,21 +333,21 @@ const ExpenseTracker = () => {
                 </select>
               </div> */}
 
-              <div className={styles.yearCell}>
-                <div className={styles.inputWrapper}>
-                  <CustomDayPicker
-                    selectedDate={{ from: row.date || new Date() }}
-                    setSelectedDate={(range) => {
-                      console.log('Selected range:', range);
-                      if (range?.from) {
-                        handleDateChange(row.id, new Date(range.from));
-                      }
-                    }}
-                  />
+                <div className={styles.yearCell}>
+                  <div className={styles.inputWrapper}>
+                    <CustomDayPicker
+                      selectedDate={{ from: row.date || new Date() }}
+                      setSelectedDate={(range) => {
+                        console.log('Selected range:', range);
+                        if (range?.from) {
+                          handleDateChange(row.id, new Date(range.from));
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* <div className={styles.monthCell}>
+                {/* <div className={styles.monthCell}>
                 <select
                   value={row.month}
                   onChange={(e) => handleMonthChange(row.id, e.target.value)}
@@ -359,56 +362,62 @@ const ExpenseTracker = () => {
                 </select>
               </div> */}
 
-              <div className={styles.articleCell}>
-                <div className={styles.inputWrapper}>
-                  <input
-                    type='text'
-                    value={row.article}
-                    className={styles.input}
-                    onChange={(e) =>
-                      handleArticleChange(row.id, e.target.value)
-                    }
-                  />
-                </div>
-              </div>
-
-              {row.expenses.map((expense, index) => (
-                <div key={index} className={styles.expenseCell}>
+                <div className={styles.articleCell}>
                   <div className={styles.inputWrapper}>
                     <input
-                      type='number'
-                      value={expense === undefined ? '-' : expense || ''}
+                      type='text'
+                      value={row.article}
+                      className={styles.input}
                       onChange={(e) =>
-                        handleExpenseChange(row.id, index, e.target.value)
+                        handleArticleChange(row.id, e.target.value)
                       }
-                      className={`${styles.input} ${expense ? styles.active : ''
-                        }`}
-                      placeholder='0'
                     />
-                    <span
-                      className={`${styles.rubSign} ${expense ? styles.active : ''
-                        }`}
-                    >
-                      ₽
-                    </span>
                   </div>
                 </div>
-              ))}
-              <span
-                className={`${styles.saveIcon} ${hasChanges[row.id] ? styles.saveIconActive : ''
-                  }`}
-                onClick={() => handleSave(row)}
-              >
-                <img src={saveIcon} alt='Save Row' />
-              </span>
-              <span
-                className={styles.deleteIcon}
-                onClick={() => handleDeleteRow(row.id)}
-              >
-                <img src={trashIcon} alt='Delete Row' />
-              </span>
-            </div>
-          ))}
+
+                {row.expenses.map((expense, index) => (
+                  <div key={index} className={styles.expenseCell}>
+                    <div className={styles.inputWrapper}>
+                      <input
+                        type='number'
+                        value={expense === undefined ? '-' : expense || ''}
+                        onChange={(e) =>
+                          handleExpenseChange(row.id, index, e.target.value)
+                        }
+                        className={`${styles.input} ${expense ? styles.active : ''
+                          }`}
+                        placeholder='0'
+                      />
+                      <span
+                        className={`${styles.rubSign} ${expense ? styles.active : ''
+                          }`}
+                      >
+                        ₽
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                <span
+                  className={`${styles.saveIcon} ${hasChanges[row.id] ? styles.saveIconActive : ''
+                    }`}
+                  onClick={() => handleSave(row)}
+                >
+                  <img src={saveIcon} alt='Save Row' />
+                </span>
+                <span
+                  className={styles.deleteIcon}
+                  onClick={() => handleDeleteRow(row.id)}
+                >
+                  <img src={trashIcon} alt='Delete Row' />
+                </span>
+              </div>
+            ))}
+            <button onClick={addRow} className={styles.addButton}>
+            <img src={crossGrey} alt='Добавить строку'
+            // onClick={createRow}
+            />
+          </button>
+          </div>
         </div>
       ) : (
         <div
@@ -418,11 +427,7 @@ const ExpenseTracker = () => {
           <span className='loader'></span>
         </div>
       )}
-      <button onClick={addRow} className={styles.addButton}>
-        <img src={crossGrey} alt='Добавить строку'
-        // onClick={createRow}
-        />
-      </button>
+      
     </div>
   );
 };
