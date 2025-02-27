@@ -15,7 +15,8 @@ const TgBanner = () => {
             </div>
 
             <Link
-                to='/' 
+                to='https://t.me/radar_analytica' 
+                target='blank'
                 className={styles.banner__tgLink}
             >
                 <img

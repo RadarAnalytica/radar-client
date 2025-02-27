@@ -70,26 +70,22 @@ const StartPage = React.lazy(() => import("./pages/StartPage"));
 // );
 
 function App() {
-  const { user } = useContext(AuthContext);
+  //const { user } = useContext(AuthContext);
 
 // this is test user object for dev purposes
 
-// let user = {
-//   email: "modinsv@yandex.ru",
-//   id: 2,
-//   is_confirmed: true,
-//   is_onboarded: true,
-//   is_report_downloaded: true,
-//   is_test_used: true,
-//   role: "employee",
-//   subscription_status: "Smart"
-// }
-  console.log('-------------app.jsx user below----------')
-  console.log(user)
-  console.log('-----------------------------------------')
+let user = {
+  email: "modinsv@yandex.ru",
+  id: 2,
+  is_confirmed: true,
+  is_onboarded: true,
+  is_report_downloaded: true,
+  is_test_used: true,
+  role: "employee",
+  subscription_status: "Smart"
+}
 
   const renderElement = (user) => {
-    console.log('In renderElement()');
     
     if (user?.role === 'admin') {
       return <Navigate to="/admin-panel" replace />;

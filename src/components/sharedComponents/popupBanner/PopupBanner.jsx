@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styles from './PopupBanner.module.css'
 
 
@@ -11,11 +12,7 @@ import styles from './PopupBanner.module.css'
     mainSubtitle?: string,
     offerTitle?: string,
     offerSubtitle?: string,
-    description?: string,
-    steps?: {
-        stepsTitle: string,
-        stepsArray: string[]
-    }
+    sideBarText?: string
     
 }
     ------------------------
@@ -23,7 +20,7 @@ import styles from './PopupBanner.module.css'
 
 
 
-const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, description, steps }) => {
+const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, description, sideBarText }) => {
 
     const [isOpen, setIsOpen] = useState(false) //boolean
 
@@ -63,21 +60,31 @@ const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, descr
                     {description ?
                         <p className={styles.banner__description}>
                             {description}
-                        </p> : ''
-                    }
+                        </p> 
+                        :
+                        
+                        <div className={styles.banner__bar}>
+                            <p className={styles.banner__barText}>
+                                Мы развиваем партнерскую сеть и <b>предлагаем вам зарабатывать вместе с Радар-Аналитикой.</b> Получайте <b>до 1300</b> рублей за каждого привлеченного клиента, который зарегистрируется по вашей персональной ссылке. 
+                            </p>
 
-                    {steps &&
-                        <div className={styles.banner__steps}>
-                            {steps.stepsTitle && <p className={styles.banner__stepsTitle}>{steps.stepsTitle}</p>}
-                            <ul className={styles.banner__stepsList}>
-                                {steps.stepsArray && steps.stepsArray.map((i, id) =>
-                                    <li className={styles.banner__stepsListItem} key={id}>
-                                        {i}
-                                    </li>
-                                )}
-                            </ul>
+                            <p className={styles.banner__barText}>
+                                <b>Прозрачные условия</b> – вы всегда видите результаты. <b>Еженедельные выплаты</b> – стабильный доход без задержек. <b>Легкий старт</b> – приглашайте друзей и зарабатывайте.
+                            </p>
                         </div>
                     }
+
+
+                        <div className={styles.banner__steps}>
+                            {sideBarText && <p className={styles.banner__sidebarText}>{sideBarText}</p>}
+                            <Link
+                                className={styles.banner__tgLink}
+                                to='https://t.me/radar_analytica_support'
+                                target="blank"
+                            >
+                                Написать в Telegram
+                            </Link>
+                        </div>
                 </div>
             }
         </div>
