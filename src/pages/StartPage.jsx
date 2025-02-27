@@ -8,18 +8,7 @@ import PopupBanner from "../components/sharedComponents/popupBanner/PopupBanner"
 import TgBanner from "../components/startPageComponents/tgBanner/TgBanner";
 
 
-// this is test user object for dev purposes
 
-// let user = {
-//   email: "modinsv@yandex.ru",
-//   id: 2,
-//   is_confirmed: true,
-//   is_onboarded: true,
-//   is_report_downloaded: true,
-//   is_test_used: true,
-//   role: "employee",
-//   subscription_status: "Smart"
-// }
 
 // Main page for authorized user
 const StartPage = () => {

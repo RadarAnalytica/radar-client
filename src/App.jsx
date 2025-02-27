@@ -70,9 +70,20 @@ const StartPage = React.lazy(() => import("./pages/StartPage"));
 // );
 
 function App() {
-  const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
 
+// this is test user object for dev purposes
 
+let user = {
+  email: "modinsv@yandex.ru",
+  id: 2,
+  is_confirmed: true,
+  is_onboarded: true,
+  is_report_downloaded: true,
+  is_test_used: true,
+  role: "employee",
+  subscription_status: "Smart"
+}
 
   const renderElement = (user) => {
     if (user?.role === 'admin') {
@@ -80,7 +91,8 @@ function App() {
     } else if (user?.subscription_status === 'expired' || user?.subscription_status === null) {
       return <TariffsPage />;
     } else if (user?.subscription_status && user?.subscription_status === 'Smart') { 
-      return <StartPage />
+      // return <StartPage />
+      return <ExternalExpensesPage />
     } else {
       return user?.is_onboarded ? <DashboardPage /> : <Onboarding />;
     }
