@@ -13,6 +13,7 @@ import SelectField from '../components/SelectField';
 import abcFake from '../pages/images/abc_fake.png';
 import DemonstrationSection from '../components/DemonstrationSection';
 import NewFilterGroup from '../components/finReport/FilterGroup'
+import { formatPrice } from '../service/utils';
 
 
 const ReportAbcAnalysis = () => {
@@ -46,7 +47,7 @@ const ReportAbcAnalysis = () => {
   };
   const filterKeys = [
     'selectedYears',
-    'selectedMonths',
+    'selectedMonths', 
     'selectedArticles',
     'selectedBrands',
     'selectedGroups',
@@ -145,9 +146,9 @@ const ReportAbcAnalysis = () => {
 
   useEffect(() => {
     // if (Object.keys(abcFilters).length === 0) {
-      dispatch(fetchABCFilters(
-        authToken
-      ))
+    dispatch(fetchABCFilters(
+      authToken
+    ))
 
     // }
             
@@ -159,7 +160,7 @@ const ReportAbcAnalysis = () => {
 
       // console.log('!!!DATA ABC', data)
       
-    }, [authToken, dispatch])
+  }, [authToken, dispatch])
 
 
 
@@ -1040,15 +1041,15 @@ const ReportAbcAnalysis = () => {
                           <div className={styles.profit}>
                             {expandedRows[item.wb_id] ? (
                               <>
-                                <div>{item.proceeds.toLocaleString()} ₽</div>{' '}
+                                <div>{formatPrice(item.proceeds, '₽')}</div>{' '}
                                 {item.items.map((product, i) => (
                                   <div key={i}>
-                                    {product.proceeds.toLocaleString()} ₽
+                                    {formatPrice(product.proceeds, '₽')}
                                   </div>
                                 ))}
                               </>
                             ) : (
-                              <div>{item.proceeds.toLocaleString()} ₽</div>
+                              <div>{formatPrice(item.proceeds, '₽')}</div>
                             )}
                           </div>
 
@@ -1290,16 +1291,16 @@ const ReportAbcAnalysis = () => {
                           <div className={styles.profit}>
                             {expandedRows[item.wb_id] ? (
                               <>
-                                <div>{item.profit.toLocaleString()} ₽</div>
+                                <div>{formatPrice(item.profit, '₽')}</div>
 
                                 {item.items.map((product, i) => (
                                   <div key={i}>
-                                    {product.profit.toLocaleString()} ₽
+                                    {formatPrice(product.profit, '₽')}
                                   </div>
                                 ))}
                               </>
                             ) : (
-                              <div>{item.profit.toLocaleString()} ₽</div>
+                              <div>{formatPrice(item.profit, '₽')}</div>
                             )}
                           </div>
 
@@ -1344,7 +1345,7 @@ const ReportAbcAnalysis = () => {
                                       }}
                                     >
                                       {product.profit_abc}
-                                    </div>
+                                </div>
                                   </div>
                                 ))}
                               </>
@@ -1573,10 +1574,10 @@ const ReportAbcAnalysis = () => {
                             >
                               {item.proceed_abc}
                             </div>{' '}
-                            {item.items.map((product, i) => (
-                              <div key={i} style={{ padding: '6px 0' }}>
-                                <div
-                                  style={{
+                                {item.items.map((product, i) => (
+                                  <div key={i} style={{ padding: '6px 0' }}>
+                                    <div
+                                      style={{
                                     backgroundColor:
                                       colorMap[product.proceed_abc] ||
                                       'transparent',
@@ -1787,13 +1788,13 @@ const ReportAbcAnalysis = () => {
                                     backgroundColor:
                                       colorMap[product.proceed_abc] ||
                                       'transparent',
-                                    padding: '4px 16px',
-                                    borderRadius: '8px',
-                                    marginRight: '75%',
-                                  }}
-                                >
-                                  {product.profit_abc}
-                                </div>
+                                        padding: '4px 16px',
+                                        borderRadius: '8px',
+                                        marginRight: '75%',
+                                      }}
+                                    >
+                                      {product.profit_abc}
+                                    </div>
                               </div>
                             ))}
                           </>

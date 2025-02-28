@@ -75,17 +75,27 @@ export function filterArraysNoData(obj, days) {
   return obj;
 }
 
-export const formatPrice = (price) => {
-  if (!!price) {
-    price = price.toString();
-    const number = parseFloat(price);
-    const formattedPrice = number.toLocaleString('ru-RU', {
+export const formatPrice = (value, literal) => {
+  // define a value to return
+  let formattedPriceString = '-' 
+  // checking if value exists
+  if (value !== undefined && value !== null) {
+    //in case value is a string
+    const number = parseFloat(value);
+    // checking that number is number
+    if (Number.isNaN(number)) {
+      return formattedPriceString;
+    }
+    // formatting the value
+    formattedPriceString = number.toLocaleString('ru-RU', {
       maximumFractionDigits: 2,
     });
-    return formattedPrice;
-  } else {
-    return '-'
+    // adding a literal (like "шт" or "₽") to the string
+    if (literal) {
+      formattedPriceString += ` ${literal}`
+    }
   }
+  return formattedPriceString;
 };
 
 export const formatDate = (date) => {

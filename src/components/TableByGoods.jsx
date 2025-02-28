@@ -13,130 +13,112 @@ const TableByGoods = ({ data }) => {
         id,
         product: item.name,
         purchases: {
-          amount: `${formatPrice(item?.purchases?.rub) || '0'} ₽`,
-          quantity: `${formatPrice(item?.purchases?.quantity) || '0'} шт`,
+          amount: formatPrice(item?.purchases?.rub, '₽'),
+          quantity: `${formatPrice(item?.purchases?.quantity)} шт`,
         },
         returns: {
-          amount: `${formatPrice(item?.return?.rub) || '0'} ₽`,
-          quantity: `${formatPrice(item?.return?.quantity) || '0'} шт`,
+          amount: formatPrice(item?.return?.rub, '₽'),
+          quantity: `${formatPrice(item?.return?.quantity)} шт`,
         },
-        sales: `${formatPrice(item?.revenue?.quantity) || '0'} шт`,
-        revenue: `${formatPrice(item?.revenue?.rub) || '0'} ₽`,
-        avgPrice: `${formatPrice(item?.avg_check) || '0'} ₽`,
-        spp: `${formatPrice(item?.avg_spp) || '0'} %`,
-        buyout: `${formatPrice(item?.purchase_percent) || '0'} %`,
+        sales: `${formatPrice(item?.revenue?.quantity)} шт`,
+        revenue: formatPrice(item?.revenue?.rub, '₽'),
+        avgPrice: formatPrice(item?.avg_check, '₽'),
+        spp: formatPrice(item?.avg_spp, '%'),
+        buyout: formatPrice(item?.purchase_percent, '%'),
         cost: {
-          total: `${formatPrice(item?.cost_price) || '0'} ₽`,
-          percentage: `${formatPrice(item?.cost_price_percent) || '0'} %`,
-          perUnit: `${formatPrice(item?.cost_price_per_one) || '0'} ₽`,
+          total: formatPrice(item?.cost_price, '₽'),
+          percentage: formatPrice(item?.cost_price_percent, '%'),
+          perUnit: formatPrice(item?.cost_price_per_one, '₽'),
         },
-        logisticQnty: `${formatPrice(item?.deliveries) || '0'} шт`,
+        logisticQnty: `${formatPrice(item?.deliveries)} шт`,
         logisticCommission: {
-          comission: `${formatPrice(item?.wb_commission?.rub) || '0'} ₽`,
-          percentage: `${formatPrice(item?.wb_commission?.percent) || '0'} %`,
+          comission: formatPrice(item?.wb_commission?.rub, '₽'),
+          percentage: formatPrice(item?.wb_commission?.percent, '%'),
         },
         logisticEquiring: {
-          equiring: `${formatPrice(item?.acquiring?.rub) || '0'} ₽`,
-          percentage: `${formatPrice(item?.acquiring?.percent) || '0'} %`,
+          equiring: formatPrice(item?.acquiring?.rub, '₽'),
+          percentage: formatPrice(item?.acquiring?.percent, '%'),
         },
         logisticOfDeliever: {
-          ofDeliver: `${formatPrice(item?.logistics_straight?.rub) || '0'} ₽`,
+          ofDeliver: formatPrice(item?.logistics_straight?.rub, '₽'),
         },
         logisticOfReturn: {
-          ofReturn: `${formatPrice(item?.logistics_reverse?.rub) || '0'} ₽`,
+          ofReturn: formatPrice(item?.logistics_reverse?.rub, '₽'),
         },
         logisticOfTotal: {
-          ofTotal: `${formatPrice(item?.logistics_total?.rub) || '0'} ₽`,
-          percentage: `${formatPrice(item?.logistics_total?.percent) || '0'} %`,
+          ofTotal: formatPrice(item?.logistics_total?.rub, '₽'),
+          percentage: formatPrice(item?.logistics_total?.percent, '%'),
         },
         logisitcPerUnit: {
-          perUnit: `${formatPrice(item?.logistics_per_product) || '0'} ₽`,
+          perUnit: formatPrice(item?.logistics_per_product, '₽'),
         },
         defectCompensation: {
-          compensation: `${
-            formatPrice(item?.compensation_defects?.rub) || '0'
-          } ₽`,
+          compensation: formatPrice(item?.compensation_defects?.rub, '₽'),
         },
         defectQnty: {
-          quantity: `${
-            formatPrice(item?.compensation_defects?.quantity) || '0'
-          } шт`,
+          quantity: `${formatPrice(item?.compensation_defects?.quantity)} шт`,
         },
         defectCompensationDamage: {
-          compensationDamage: `${
-            formatPrice(item?.compensation_damage?.rub) || '0'
-          } ₽`,
+          compensationDamage: formatPrice(item?.compensation_damage?.rub, '₽'),
         },
         defectCompensationDamageQnty: {
-          damage: `${
-            formatPrice(item?.compensation_damage?.quantity) || '0'
-          } шт`,
+          damage: `${formatPrice(item?.compensation_damage?.quantity)} шт`,
         },
         defectFines: {
-          fines: `${formatPrice(item?.penalties) || '0'} ₽`,
+          fines: formatPrice(item?.penalties, '₽'),
         },
         defectFinesMore: {
-          finesMore: `${formatPrice(item?.additional_payments) || '0'} ₽`,
+          finesMore: formatPrice(item?.additional_payments, '₽'),
         },
         anotherKeeper: {
-          anotherKeeper: `${formatPrice(item?.storage?.rub) || '0'} ₽`,
-          percentage: `${formatPrice(item?.storage?.percent) || '0'} %`,
+          anotherKeeper: formatPrice(item?.storage?.rub, '₽'),
+          percentage: formatPrice(item?.storage?.percent, '%'),
         },
         anotherKeeperOtherDeduction: {
-          deduction: `${formatPrice(item?.other_retentions?.rub) || '0'} ₽`,
-          percentage: `${
-            formatPrice(item?.other_retentions?.percent) || '0'
-          } %`,
+          deduction: formatPrice(item?.other_retentions?.rub, '₽'),
+          percentage: formatPrice(item?.other_retentions?.percent, '%'),
         },
         anotherKeeperPaidAcceptance: {
-          paidAcceptance: `${formatPrice(item?.acceptance?.rub) || '0'} ₽`,
-          percentage: `${formatPrice(item?.acceptance?.percent) || '0'} %`,
+          paidAcceptance: formatPrice(item?.acceptance?.rub, '₽'),
+          percentage: formatPrice(item?.acceptance?.percent, '%'),
         },
         anotherKeeperWbDeduction: {
-          wbDeduction: `${
-            formatPrice(item?.compensation_penalties?.rub) || '0'
-          } ₽`,
-          percentage: `${
-            formatPrice(item?.compensation_penalties?.percent) || '0'
-          } %`,
+          wbDeduction: formatPrice(item?.compensation_penalties?.rub, '₽'),
+          percentage: formatPrice(item?.compensation_penalties?.percent, '%'),
         },
         externalExpensesSelfBuy: {
-          selfBuy: `${formatPrice(item?.self_purchase_costs) || '0'} ₽`,
+          selfBuy: formatPrice(item?.self_purchase_costs, '₽'),
         },
         externalExpenses: {
-          externalExpenses: `${formatPrice(item?.external_expenses) || '0'} ₽`,
-          percentage: `${formatPrice(item?.expenses_percent) || '0'} %`,
+          externalExpenses: formatPrice(item?.external_expenses, '₽'),
+          percentage: formatPrice(item?.expenses_percent, '%'),
         },
         externalExpensesAll: {
-          externalExpensesAll: `${formatPrice(item?.expenses) || '0'} ₽`,
+          externalExpensesAll: formatPrice(item?.expenses, '₽'),
         },
         taxSppWb: {
-          taxSppWb: `${formatPrice(item?.sold_by_wb) || '0'} ₽`,
+          taxSppWb: formatPrice(item?.sold_by_wb, '₽'),
         },
         taxTotal: {
-          taxTotal: `${formatPrice(item?.tax_base) || '0'} ₽`,
+          taxTotal: formatPrice(item?.tax_base, '₽'),
         },
         taxTax: {
-          taxTax: `${formatPrice(item?.tax) || '0'} ₽`,
+          taxTax: formatPrice(item?.tax, '₽'),
         },
         financePay: {
-          financePay: `${formatPrice(item?.payment) || '0'} ₽`,
+          financePay: formatPrice(item?.payment, '₽'),
         },
         financeTotal: {
-          financeTotal: `${formatPrice(item?.profit) || '0'} ₽`,
+          financeTotal: formatPrice(item?.profit, '₽'),
         },
         financeTotalPerUnit: {
-          financeTotalPerUnit: `${
-            formatPrice(item?.profit_per_one) || '0'
-          } ₽`,
+          financeTotalPerUnit: formatPrice(item?.profit_per_one, '₽'),
         },
         financeMarginProfit: {
-          financeMarginProfit: `${
-            formatPrice(item?.marginality) || '0'
-          } %`,
+          financeMarginProfit: formatPrice(item?.marginality, '%'),
         },
         financeRoi: {
-          financeRoi: `${formatPrice(item?.return_on_investment) || '0'} %`,
+          financeRoi: formatPrice(item?.return_on_investment, '%'),
         },
       }));
 

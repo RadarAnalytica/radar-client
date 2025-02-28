@@ -141,26 +141,19 @@ const WeeklyReportDashboard = () => {
                             <TooltipInfo text={'Выручка'} />
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_revenue?.quantity} шт /{' '}
-                            {formatPrice(dashboardData?.total_revenue?.rub) ||
-                              '0'}{' '}
-                            ₽
+                            {formatPrice(dashboardData?.total_revenue?.quantity, 'шт')} / {formatPrice(dashboardData?.total_revenue?.rub, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
                           <div className={styles.titleInRow}>Выкупы</div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_purchases?.quantity} шт /{' '}
-                            {formatPrice(dashboardData?.total_purchases?.rub) ||
-                              '0'}{' '}
-                            ₽
+                            {formatPrice(dashboardData?.total_purchases?.quantity, 'шт')} / {formatPrice(dashboardData?.total_purchases?.rub, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
                           <div className={styles.titleInRow}>Возвраты</div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_return?.quantity} шт /
-                            {formatPrice(dashboardData?.total_return?.rub)} ₽
+                            {formatPrice(dashboardData?.total_return?.quantity, 'шт')} / {formatPrice(dashboardData?.total_return?.rub, '₽')} 
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -169,8 +162,7 @@ const WeeklyReportDashboard = () => {
                             <TooltipInfo text={'Средний чек'} />
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(dashboardData?.total_avg_check) || '0'}{' '}
-                            ₽
+                            {formatPrice(dashboardData?.total_avg_check, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -179,13 +171,13 @@ const WeeklyReportDashboard = () => {
                             <TooltipInfo text={'Выкуп'} />
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_purchase_percent} %
+                            {formatPrice(dashboardData?.total_purchase_percent, '%')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
                           <div className={styles.titleInRow}>СПП</div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_avg_spp} %
+                            {formatPrice(dashboardData?.total_avg_spp, '%')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -194,9 +186,7 @@ const WeeklyReportDashboard = () => {
                             <TooltipInfo text={'Себестоимость'} />
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(dashboardData?.total_cost_price) ||
-                              '0'}{' '}
-                            ₽
+                            {formatPrice(dashboardData?.total_cost_price, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -205,7 +195,7 @@ const WeeklyReportDashboard = () => {
                             <TooltipInfo text={'Доля себестоимости'} />
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_cost_price_percent} %
+                            {formatPrice(dashboardData?.total_cost_price_percent, '%')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -213,7 +203,7 @@ const WeeklyReportDashboard = () => {
                             Кол-во доставок
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_deliveries} шт
+                            {formatPrice(dashboardData?.total_deliveries, 'шт')}
                           </div>
                         </div>
                       </>
@@ -241,7 +231,7 @@ const WeeklyReportDashboard = () => {
                         <div className={styles.salesChartRow}>
                           <div className={styles.titleInRow}>Оплата на Р/С</div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(dashboardData?.total_payment) || '0'} ₽
+                            {formatPrice(dashboardData?.total_payment, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -249,7 +239,7 @@ const WeeklyReportDashboard = () => {
                             Чистая прибыль
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(dashboardData?.total_profit) || '0'} ₽
+                            {formatPrice(dashboardData?.total_profit, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -258,7 +248,7 @@ const WeeklyReportDashboard = () => {
                             <TooltipInfo text={'Маржинальность'} />
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_marginality} %
+                            {formatPrice(dashboardData?.total_marginality, '%')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -267,7 +257,7 @@ const WeeklyReportDashboard = () => {
                             <TooltipInfo text={'Рентабельность инвестиций'} />
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_return_on_investment} %
+                            {formatPrice(dashboardData?.total_return_on_investment, '%')}
                           </div>
                         </div>
                       </>
@@ -297,8 +287,7 @@ const WeeklyReportDashboard = () => {
                             Всего расходов
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(dashboardData?.total_expenses) || '0'}{' '}
-                            ₽
+                            {formatPrice(dashboardData?.total_expenses, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -306,10 +295,7 @@ const WeeklyReportDashboard = () => {
                             Внешние расходы
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(
-                              dashboardData?.total_external_expenses
-                            )}{' '}
-                            ₽
+                            {formatPrice(dashboardData?.total_external_expenses, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -317,10 +303,7 @@ const WeeklyReportDashboard = () => {
                             Затраты на самовыкупы
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(
-                              dashboardData?.total_self_purchase_costs
-                            ) || '0'}{' '}
-                            ₽
+                            {formatPrice(dashboardData?.total_self_purchase_costs, '₽')}
                           </div>
                         </div>
                         <div
@@ -331,7 +314,7 @@ const WeeklyReportDashboard = () => {
                             Расходов в % от выручки
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {dashboardData?.total_expenses_percent} %
+                            {formatPrice(dashboardData?.total_expenses_percent, '%')}
                           </div>
                         </div>
                       </>
@@ -372,16 +355,14 @@ const WeeklyReportDashboard = () => {
                                 % от выручки
                               </div>
                               <div>
-                                {dashboardData?.total_wb_commission?.percent}
+                                {formatPrice(dashboardData?.total_wb_commission?.percent, '%')}
                               </div>
                             </div>
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
                               <div className={styles.headerInRow}>₽</div>
-                              {formatPrice(
-                                dashboardData?.total_wb_commission?.rub
-                              ) || '0'}
+                              {formatPrice(dashboardData?.total_wb_commission?.rub, '₽')}
                             </div>
                           </div>
                         </div>
@@ -392,15 +373,13 @@ const WeeklyReportDashboard = () => {
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
                               <div>
-                                {dashboardData?.total_acquiring?.percent}
+                                {formatPrice(dashboardData?.total_acquiring?.percent, '%')}
                               </div>
                             </div>
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
-                              {formatPrice(
-                                dashboardData?.total_acquiring?.rub
-                              ) || '0'}
+                              {formatPrice(dashboardData?.total_acquiring?.rub, '₽')}
                             </div>
                           </div>
                         </div>
@@ -411,15 +390,13 @@ const WeeklyReportDashboard = () => {
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
                               <div>
-                                {dashboardData?.total_logistics?.percent}
+                                {formatPrice(dashboardData?.total_logistics?.percent, '%')}
                               </div>
                             </div>
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
-                              {formatPrice(
-                                dashboardData?.total_logistics?.rub
-                              ) || '0'}
+                              {formatPrice(dashboardData?.total_logistics?.rub, '₽')}
                             </div>
                           </div>
                         </div>
@@ -429,13 +406,12 @@ const WeeklyReportDashboard = () => {
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
-                              <div>{dashboardData?.total_storage?.percent}</div>
+                              <div>{formatPrice(dashboardData?.total_storage?.percent, '%')}</div>
                             </div>
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
-                              {formatPrice(dashboardData?.total_storage?.rub) ||
-                                '0'}
+                              {formatPrice(dashboardData?.total_storage?.rub, '₽')}
                             </div>
                           </div>
                         </div>
@@ -448,15 +424,13 @@ const WeeklyReportDashboard = () => {
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
                               <div>
-                                {dashboardData?.total_other_retentions?.percent}
+                                {formatPrice(dashboardData?.total_other_retentions?.percent, '%')}
                               </div>
                             </div>
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
-                              {formatPrice(
-                                dashboardData?.total_other_retentions?.rub
-                              ) || '0'}
+                              {formatPrice(dashboardData?.total_other_retentions?.rub, '₽')}
                             </div>
                           </div>
                         </div>
@@ -467,15 +441,13 @@ const WeeklyReportDashboard = () => {
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
                               <div>
-                                {dashboardData?.total_acceptance?.percent}
+                                {formatPrice(dashboardData?.total_acceptance?.percent, '%')}
                               </div>
                             </div>
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
-                              {formatPrice(
-                                dashboardData?.total_acceptance?.rub
-                              ) || '0'}
+                              {formatPrice(dashboardData?.total_acceptance?.rub, '₽')}
                             </div>
                           </div>
                         </div>
@@ -493,17 +465,14 @@ const WeeklyReportDashboard = () => {
                             >
                               <div className={styles.headerInRow}>Штук</div>
                               <div>
-                                {dashboardData?.total_compensation_defects
-                                  ?.quantity || '0'}
+                                {formatPrice(dashboardData?.total_compensation_defects?.quantity, 'шт')}
                               </div>
                             </div>
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
                               <div className={styles.headerInRow}>₽</div>
-                              {formatPrice(
-                                dashboardData?.total_compensation_defects?.rub
-                              ) || '0'}
+                              {formatPrice(dashboardData?.total_compensation_defects?.rub, '₽')}
                             </div>
                           </div>
                         </div>
@@ -517,16 +486,13 @@ const WeeklyReportDashboard = () => {
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
                               <div>
-                                {dashboardData?.total_compensation_damage
-                                  ?.quantity || '0'}
+                                {formatPrice(dashboardData?.total_compensation_damage?.quantity, 'шт')}
                               </div>
                             </div>
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
-                              {formatPrice(
-                                dashboardData?.total_compensation_damage?.rub
-                              ) || '0'}
+                              {formatPrice(dashboardData?.total_compensation_damage?.rub, '₽')}
                             </div>
                           </div>
                         </div>
@@ -544,8 +510,7 @@ const WeeklyReportDashboard = () => {
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
-                              {formatPrice(dashboardData?.total_penalties) ||
-                                '0'}
+                              {formatPrice(dashboardData?.total_penalties, '₽')}
                             </div>
                           </div>
                         </div>
@@ -560,9 +525,7 @@ const WeeklyReportDashboard = () => {
                             <div
                               className={`${styles.mumbersInRow} ${styles.widthHeader}`}
                             >
-                              {formatPrice(
-                                dashboardData?.total_additional_payments
-                              ) || '0'}
+                              {formatPrice(dashboardData?.total_additional_payments, '₽')}
                             </div>
                           </div>
                         </div>
@@ -570,18 +533,10 @@ const WeeklyReportDashboard = () => {
                           <div>Итого от выручки</div>
                           <div className={styles.totalNumbers}>
                             <div>
-                              {' '}
-                              {formatPrice(
-                                dashboardData?.total_compensation_penalties?.rub
-                              ) || '0'}{' '}
-                              ₽
+                              {formatPrice(dashboardData?.total_compensation_penalties?.rub, '₽')}
                             </div>
                             <div>
-                              {
-                                dashboardData?.total_compensation_penalties
-                                  ?.percent
-                              }{' '}
-                              %
+                              {formatPrice(dashboardData?.total_compensation_penalties?.percent, '%')}
                             </div>
                           </div>
                         </div>
@@ -668,7 +623,7 @@ const WeeklyReportDashboard = () => {
                                 }}
                                 className={styles.taxRateWrapper}
                               >
-                                {dashboardData?.tax_rate || 0} %
+                                {formatPrice(dashboardData?.tax_rate || 0, '%')}
                               </div>
                             )}
                           </div>
@@ -676,9 +631,7 @@ const WeeklyReportDashboard = () => {
                         <div className={styles.salesChartRow}>
                           <div className={styles.titleInRow}>WB реализовал</div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(dashboardData?.total_sold_by_wb) ||
-                              '0'}{' '}
-                            ₽
+                            {formatPrice(dashboardData?.total_sold_by_wb, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -686,14 +639,13 @@ const WeeklyReportDashboard = () => {
                             Налоговая база
                           </div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(dashboardData?.total_tax_base) || '0'}{' '}
-                            ₽
+                            {formatPrice(dashboardData?.total_tax_base, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
                           <div className={styles.titleInRow}>Налог</div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(dashboardData?.total_tax) || '0'} ₽
+                            {formatPrice(dashboardData?.total_tax, '₽')}
                           </div>
                         </div>
                       </>
