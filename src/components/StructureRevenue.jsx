@@ -97,7 +97,7 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
                 const valueX = Math.round((width - ctx.measureText(valueText).width) / 2) + 15;
 
                 const labelY = startY + index * 30; // уменьшено с 50 до 30
-                const valueY = labelY + 20;
+                const valueY = labelY + 15;
 
                 const circleX = labelX - 10;
                 const circleY = labelY;

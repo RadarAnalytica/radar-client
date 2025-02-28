@@ -4174,7 +4174,7 @@ canvas {
 
 .custom-tooltip {
   min-width: 270px;
-  height: 341px;
+  /* height: 341px; */
   font-family: Arial, sans-serif;
   font-size: 14px;
   color: #1A1A1A;
@@ -4294,7 +4294,7 @@ canvas {
   width: calc(100% / 2 - 10px)!important; 
   margin: 0!important;
   height: 100%;
-  overflow: scroll;
+
   min-width: auto!important;
   min-height:  100%!important;
   max-height: 350px;

@@ -10,7 +10,7 @@ const ReviewsUsers = () => {
         <div className='userReviewsBlocksText'>
           <div className={`userReviewsHeaderTitle ${styles.userReviewsHeaderTitle}`}>Более <span style={{ color: "rgba(83, 41, 255, 1)" }}>6 000</span> предпринимателей</div>
           <div className={`userReviewsHeaderParag ${styles.userReviewsHeaderParag}`}>уже используют для начала и развития бизнеса на маркетплейсах
-            <span className={`yellowLogoSpan ${styles.yellowLogoSpan}`}>Radar Analytica</span>
+            <span className={`yellowLogoSpan ${styles.yellowLogoSpan}`} >Radar Analytica</span>
           </div>
         </div>
 

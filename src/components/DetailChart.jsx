@@ -123,6 +123,8 @@ const DetailChart = ({ labels, chartData, averages, isLoading }) => {
             return null; // Avoid rendering if it's not an array
         }
 
+        const rowHeight = 26; // высота одной строки в пикселях
+        const tooltipHeight = Math.min(labelData.length * rowHeight, 225);
         return (
             <div className="custom-tooltip" style={tooltipStyle}>
                 <div className="custom-tooltip-header">
@@ -135,10 +137,10 @@ const DetailChart = ({ labels, chartData, averages, isLoading }) => {
                     <div className="custom-tooltip-amount-title">Всего</div>
                     <div className="custom-tooltip-amount" style={{ fontWeight: '700' }}>{total}</div>
                 </div>
-                <div className="custom-tooltip-period">
+                <div className="custom-tooltip-period" style={{ height: tooltipHeight }}>
                     {labelData.map((time, i) => (
                         <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ marginLeft: '5px' }}>{time.time}:00</span>
+                            <span style={{ marginLeft: '5px' }}>{time.time}</span>
                             <span style={{ marginRight: '5px' }}>{time.count}</span>
                         </div>
                     ))}

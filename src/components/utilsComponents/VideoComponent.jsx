@@ -1,11 +1,13 @@
 import React, { useRef, useEffect } from "react";
+import styles from "../../pages/MainPage.module.css";
 
 const VideoComponent = ({
     style,
     poster,
     videoMp4,
     videoWebm,
-    className
+    className,
+    setIsVideoLoaded
 }) => {
     const videoRef = useRef(null);
 
@@ -13,32 +15,16 @@ const VideoComponent = ({
         const video = videoRef.current;
         if (!video) return;
 
-        // для попытки воспроизведения
-        const attemptPlay = async () => {
-            try {
-                await video.play();
-            } catch (err) {
-                console.log('Автовоспроизведение не удалось, попробуем после взаимодействия');
-            }
+        // Log when the video can be played through
+        const handleCanPlayThrough = () => {
+            setIsVideoLoaded(true);
+            console.log('Видео полностью загружено и готово к воспроизведению');
         };
 
-        // воспроизвести при загрузке метаданных
-        video.addEventListener('loadedmetadata', attemptPlay);
-
-        // воспроизвести при скролле или клику/нажатию на страницу
-        const playOnInteraction = () => {
-            attemptPlay();
-            document.removeEventListener('touchstart', playOnInteraction);
-            document.removeEventListener('click', playOnInteraction);
-        };
-
-        document.addEventListener('touchstart', playOnInteraction);
-        document.addEventListener('click', playOnInteraction);
+        video.addEventListener('canplaythrough', handleCanPlayThrough);
 
         return () => {
-            document.removeEventListener('touchstart', playOnInteraction);
-            document.removeEventListener('click', playOnInteraction);
-            video.removeEventListener('loadedmetadata', attemptPlay);
+            video.removeEventListener('canplaythrough', handleCanPlayThrough);
         };
     }, []);
 
@@ -54,6 +40,7 @@ const VideoComponent = ({
             className={className}
         >
             <video
+                className={styles.video}
                 ref={videoRef}
                 style={{
                     width: "100%",

@@ -115,8 +115,8 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
                     <span className="loader"></span>
                 </div>
             ) : (
-                <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
-                    <Bar data={data} options={options} height={chartHeight} />
+                <div style={{ height: '100%', overflowY: 'auto' }}>
+                    <Bar data={data} options={options} />
                 </div>
             )}
         </div>

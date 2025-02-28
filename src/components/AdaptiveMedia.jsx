@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
+import LoaderPage from "../pages/LoaderPage";
 import VideoComponent from "../components/utilsComponents/VideoComponent";
-import ImageComponent from "../components/utilsComponents/ImageComponent ";
 
-const AdaptiveMedia = ({ videoMp4, poster, heavyImageSrc, lightImageSrc, style }) => {
+const AdaptiveMedia = ({ videoMp4, poster, heavyImageSrc, lightImageSrc, style, setIsLoading }) => {
     const [showVideo, setShowVideo] = useState(window.innerWidth > 1080);
+    const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -15,7 +16,7 @@ const AdaptiveMedia = ({ videoMp4, poster, heavyImageSrc, lightImageSrc, style }
     }, []);
 
     return showVideo ? (
-        <VideoComponent videoMp4={videoMp4} poster={poster} style={style} />
+        <VideoComponent videoMp4={videoMp4} poster={poster} style={style} setIsVideoLoaded={setIsVideoLoaded} />
     ) : (
         <ImageComponent heavyImageSrc={heavyImageSrc} lightImageSrc={lightImageSrc} style={style} />
     );

@@ -881,6 +881,7 @@ export const ServiceFunctions = {
     });
     return await response.json();
   },
+
   postTaxRateUpdateDashboard: async (token, taxRate, taxType) => {
     try {
       const response = await fetch(`${URL}/api/shop/tax-rate/set`, {

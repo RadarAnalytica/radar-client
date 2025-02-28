@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import styles from "../../pages/MainPage.module.css"
 const ImageComponent = ({ heavyImageSrc, lightImageSrc, style }) => {
   const [heavyImageLoaded, setHeavyImageLoaded] = useState(false);
 
@@ -16,6 +17,7 @@ const ImageComponent = ({ heavyImageSrc, lightImageSrc, style }) => {
   return (
     <div>
       <img
+        className={styles.imageMain}
         src={heavyImageLoaded ? heavyImageSrc : lightImageSrc}
         alt="dynamic-icon"
         style={style}

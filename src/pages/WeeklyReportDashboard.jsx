@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useCallback } from 'react';
+import React, { useState, useContext, useRef, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardReport } from '../redux/dashboardReport/dashboardReportActions';
 import BottomNavigation from '../components/BottomNavigation';
@@ -20,60 +20,77 @@ const WeeklyReportDashboard = () => {
   const dashboardData = useSelector(
     (state) => state?.dashboardReportSlice?.data
   );
+
+
   const isLoading = useSelector((state) => state?.dashboardReportSlice?.loading);
   const [isEditing, setIsEditing] = useState(false);
-  const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [taxRate, setTaxRate] = useState(0);
+  const [selectedValue, setSelectedValue] = useState();
   const filterSectionRef = useRef();
 
+  useEffect(() => {
+    if (dashboardData && dashboardData.tax_rate !== undefined) {
+      setTaxRate(dashboardData.tax_rate);
+    }
+    if (dashboardData && dashboardData.tax_type !== undefined) {
+      setSelectedValue(dashboardData.tax_type);
+    }
+  }, [dashboardData]);
 
-  const handleTaxSubmit = async ({ taxType, submit } = {}) => {
+  const handleTaxSubmit = async ({ taxType, taxRate: inputTaxRate, submit } = {}) => {
     const currentTaxType = taxType || selectedValue;
+    // Если выбран тип "Не считать налог", принудительно ставим 0
     const currentTaxRate =
-      taxType === "Не считать налог" ? 0 : taxRate;
+      currentTaxType === "Не считать налог"
+        ? 0
+        : (inputTaxRate !== undefined ? inputTaxRate : taxRate);
 
     try {
       if (taxType) {
-        // Сценарий: выбор нового типа в <select>
         setSelectedValue(taxType);
-
         await ServiceFunctions.postTaxRateUpdate(authToken, {
           tax_rate: Number(currentTaxRate),
           tax_type: taxType,
         });
-
+        dispatch(fetchDashboardReport());
         filterSectionRef.current?.handleApplyFilters();
-
+        handleApplyFilters();
         if (taxType === "Не считать налог") {
           setTaxRate(0);
+          setIsEditing(false);
+        } else {
+          setTaxRate(dashboardData?.tax_rate);
           setIsEditing(false);
         }
       }
 
       if (submit) {
-        // Сценарий: подтверждение изменения ставки налога
         await ServiceFunctions.postTaxRateUpdate(authToken, {
           tax_rate: Number(currentTaxRate),
           tax_type: currentTaxType,
         });
+        dispatch(fetchDashboardReport());
 
-        // filterSectionRef.current?.handleApplyFilters();
-        handleApplyFilters()
+
+        filterSectionRef.current?.handleApplyFilters();
+        handleApplyFilters();
         setIsEditing(false);
       }
-      // filterSectionRef.current?.handleApplyFilters();
-      
-      // setIsEditing(false);
+      filterSectionRef.current?.handleApplyFilters();
+
     } catch (error) {
       console.error("Ошибка при обновлении налоговой ставки:", error);
     }
   };
 
+
+
+
   const handleApplyFilters = useCallback(async () => {
     const storageItem = localStorage.getItem('dashboard')
     let currentPageData = JSON.parse(storageItem)
-    currentPageData = currentPageData ? currentPageData : {}  
-    
+    currentPageData = currentPageData ? currentPageData : {}
+
     const filterPayload = {
       warehouse_name_filter: currentPageData.wh ? currentPageData.wh : [],
       brand_name_filter: currentPageData.brand ? currentPageData.brand : [],
@@ -84,11 +101,11 @@ const WeeklyReportDashboard = () => {
         weekdays: currentPageData.week ? currentPageData.week : [],
       },
     };
-  
-      dispatch(
-        fetchDashboardReport({ token: authToken, filterData: filterPayload })
-      );
-    }, [authToken, dispatch])
+
+    dispatch(
+      fetchDashboardReport({ token: authToken, filterData: filterPayload })
+    );
+  }, [authToken, dispatch])
 
   return (
     <div className='dashboard-page'>
@@ -592,9 +609,13 @@ const WeeklyReportDashboard = () => {
                             <select
                               className={styles.customSelect}
                               value={selectedValue}
-                              onChange={(e) =>
-                                handleTaxSubmit({ taxType: e.target.value })
-                              }
+                              onChange={(e) => {
+                                const selected = e.target.value;
+                                handleTaxSubmit({
+                                  taxType: selected,
+                                  taxRate: selected === "Не считать налог" ? 0 : taxRate,
+                                });
+                              }}
                             >
                               <option value='УСН-доходы'>УСН-доходы</option>
                               <option value='УСН Д-Р'>УСН Д-Р</option>
@@ -645,7 +666,7 @@ const WeeklyReportDashboard = () => {
                                 }}
                                 className={styles.taxRateWrapper}
                               >
-                                {dashboardData?.tax_rate || 0} %
+                                {taxRate || 0} %
                               </div>
                             )}
                           </div>

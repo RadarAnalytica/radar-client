@@ -711,9 +711,9 @@ select {
   .blockBtn {
     width: 46%;
   }
-  .profitableStafText{
-    font-size: 17px!important;
-  }
+  /* .profitableStafText{
+    font-size: 20px!important;
+  } */
 }
 
 
@@ -1414,7 +1414,7 @@ padding:20px;
   width: 100%;
   border-radius: 20px;
   display: flex;
-  gap: 20px;
+  /* gap: 20px; */
 }
 
 .authorized-service-container{
@@ -2133,7 +2133,7 @@ button.accordion-button.collapsed::after {
   color: white;
 }
 .profitableStafText {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   color: white;
   margin-bottom: 20px;
@@ -2482,12 +2482,12 @@ button.accordion-button.collapsed::after {
   .sol-label-btn {
     width: 100%;
   }
-  .readyforStartText {
+  /* .readyforStartText {
     font-size: 35px;
-  }
-  .profitableStafText {
+  } */
+  /* .profitableStafText {
     font-size: 20px;
-  }
+  } */
   .blockBtnContainerArrowImg {
     width: 65%;
   }
@@ -2527,31 +2527,26 @@ button.accordion-button.collapsed::after {
     display: block;
   }
 
-  .profitableStafText{
-    font-size: 16px;
-  }
-  .readyforStartText{
-    font-size: 26px;
-  }
+
   
 }
 
-@media (min-width: 1520px) and (max-width: 1600px) {
+/* @media (min-width: 1520px) and (max-width: 1600px) {
   .profitableStafText{
-    font-size: 17px !important;
+    font-size: 19px !important;
   }
   .readyforStartText{
     font-size: 30px !important;
   }
-}
-@media (min-width: 1620px) and (max-width: 1680px) {
+} */
+/* @media (min-width: 1620px) and (max-width: 1680px) {
   .profitableStafText{
     font-size: 20px !important;
   }
   .readyforStartText{
     font-size: 34px !important;
   }
-}
+} */
 
 /* 
 
@@ -3886,9 +3881,7 @@ button.accordion-button.collapsed::after {
     display: block;
   }
 
-  .profitableStafText{
-    font-size: 16px;
-  }
+
   .readyforStartText{
     font-size: 26px;
   }
@@ -3899,22 +3892,7 @@ button.accordion-button.collapsed::after {
     width: 100%;
   }
 }
-/* @media (min-width: 1520px) and (max-width: 1600px) {
-  .profitableStafText{
-    font-size: 20px !important;
-  }
-  .readyforStartText{
-    font-size: 30px !important;
-  }
-} */
-@media (min-width: 1620px) and (max-width: 1680px) {
-  .profitableStafText{
-    font-size: 20px !important;
-  }
-  .readyforStartText{
-    font-size: 34px !important;
-  }
-}
+
 
 @media(min-width:1350px) and (max-width:1390px){
   .blockBtn{

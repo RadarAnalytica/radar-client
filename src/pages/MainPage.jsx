@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, lazy, Suspense } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -15,7 +15,8 @@ import startAnalitic from './images/startAnalitic.svg';
 import arrowLink from './images/arrowLink.svg';
 import BtnHomePage from '../components/BtnHomePage';
 import StepsTime from '../components/StepsTime';
-import SelectRate from '../components/SelectRate';
+// import SelectRate from '../components/SelectRate';
+import SelectRateMain from '../components/SelectRateMain';
 import YellowRadarSmall from './images/YelowRadarSmall';
 import NavbarMainHome from '../components/NavbarMainHome';
 import AnalyzeWildberries from "../components/AnalyzeWildberries"
@@ -40,7 +41,9 @@ import lowQualityVideo from "../assets/video/WebmLow.webm";
 import highQualityVideoWebm from "../assets/video/Webm_1920.webm"
 import highQualityVideo from "../assets/video/fixed_video.mp4";
 import preview from "../assets/video/firstShot.jpg"
-import AdaptiveMedia from "../components/AdaptiveMedia"
+import LoaderPage from "../pages/LoaderPage";
+
+const AdaptiveMedia = lazy(() => import("../components/AdaptiveMedia"));
 
 import styles from "../pages/MainPage.module.css"
 
@@ -50,6 +53,7 @@ const MainPage = () => {
   const location = useLocation();
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Report LCP
@@ -126,249 +130,235 @@ const MainPage = () => {
     };
   }, [highResImage]);
 
+
   return (
+
     <div
       className='page-white'
       style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
     >
-      <div className={`container widbody-container container-xlwidth  ${styles.mainPageContainer}`}>
-        <NavbarMainHome />
-        <div className={`wid-solution ${styles.widSolution}`} style={{ marginTop: '20px' }}>
-          <div className={`sol-description sol-description-top col ${styles.solDescription}`}>
-            <div className={`sol-description-label-container ${styles.solDescriptionLabelContainer}`}>
-              <SolLabelBsn />
-            </div>
-            <div
-              className={`yellow-radar-small-container ${styles.solDescriptionLabelSmallContainer}`}
-              style={{ display: 'flex', justifyContent: 'start' }}
-            >
-              <YellowRadarSmall />
-            </div>
-            <div className={`sales-increase-text ${styles.salesIncreseText}`}>
-              – сервис аналитики для
-              <span className={`sales-increse-text-span ${styles.salesIncreseTextSpan}`}>
-                {' '}
-                увеличения ваших продаж{' '}
-              </span>
-              на маркетплейсах
-            </div>
-            <div className={`analyze-competitors-text ${styles.ananlyzeText}`}>
-              Анализируйте конкурентов, повышайте показатели своих карточек и
-              контролируйте финансы в одном месте.
-            </div>
-
-            <div className='d-flex flex-column gap-3 startWorkBtn'>
-              <button
-                className='prime-btn'
-                style={{ minHeight: '64px', fontSize: '18px', margin: 0 }}
-                onClick={() => {
-                  if (user) {
-                    window.open('/tariffs', '_blank');
-                  }
-                  if (!user) {
-                    navigate('/signup');
-                  }
-                }}
-              >
-                Начать работать
-              </button>
-            </div>
+      {/* {
+        !isVideoLoaded ? (
+          <div className='d-flex flex-column align-items-center justify-content-center' style={{ height: '100%', paddingTop: '15%' }}>
+            <span className='loader'></span>
           </div>
-          <div className={`sol-screenshot col-7 ${styles.mainPicture}`}>
-            {/* <VideoComponent
+        ) : <div></div>
+      } */}
+
+      <div>
+        <div className={`container widbody-container container-xlwidth  ${styles.mainPageContainer}`}>
+          <NavbarMainHome />
+          <div className={`wid-solution ${styles.widSolution}`} style={{ marginTop: '20px' }}>
+            <div className={`sol-description sol-description-top col ${styles.solDescription}`}>
+              <div className={`sol-description-label-container ${styles.solDescriptionLabelContainer}`}>
+                <SolLabelBsn />
+              </div>
+              <div
+                className={`yellow-radar-small-container ${styles.solDescriptionLabelSmallContainer}`}
+                style={{ display: 'flex', justifyContent: 'start' }}
+              >
+                <YellowRadarSmall />
+              </div>
+              <div className={`sales-increase-text ${styles.salesIncreseText}`}>
+                – сервис аналитики для
+                <span className={`sales-increse-text-span ${styles.salesIncreseTextSpan}`}>
+                  {' '}
+                  увеличения ваших продаж{' '}
+                </span>
+                на маркетплейсах
+              </div>
+              <div className={`analyze-competitors-text ${styles.ananlyzeText}`}>
+                Анализируйте конкурентов, повышайте показатели своих карточек и
+                контролируйте финансы в одном месте.
+              </div>
+
+              <div className='d-flex flex-column gap-3 startWorkBtn'>
+                <button
+                  className='prime-btn'
+                  style={{ minHeight: '64px', fontSize: '18px', margin: 0 }}
+                  onClick={() => {
+                    if (user) {
+                      window.open('/tariffs', '_blank');
+                    }
+                    if (!user) {
+                      navigate('/signup');
+                    }
+                  }}
+                >
+                  Начать работать
+                </button>
+              </div>
+            </div>
+            <div className={`sol-screenshot col-7 ${styles.mainPicture}`}>
+              {/* <VideoComponent
               poster={preview}
               videoMp4={highQualityVideo}
               style={{ width: '100%', height: "auto" }}
             /> */}
-            <AdaptiveMedia
-              videoMp4={highQualityVideo}
-              // videoWebm={highQualityVideoWebm}
-              poster={preview}
-              heavyImageSrc={BlockImg_x2}
-              lightImageSrc={BlockImg_x1}
-              style={{ width: "100%", height: "auto" }}
-            />
+              {/* <AdaptiveMedia
+                videoMp4={highQualityVideo}
+                // videoWebm={highQualityVideoWebm}
+                setIsVideoLoaded={setIsVideoLoaded}
+                poster={preview}
+                heavyImageSrc={BlockImg_x2}
+                lightImageSrc={BlockImg_x1}
+                style={{
+                  width: "100%", height: "auto",
+                }}
+              /> */}
+              <Suspense fallback={<LoaderPage />}>
+                <AdaptiveMedia
+                  videoMp4={highQualityVideo}
+                  // videoWebm={highQualityVideoWebm}
+                  poster={preview}
+                  heavyImageSrc={BlockImg_x2}
+                  lightImageSrc={BlockImg_x1}
+                  style={{
+                    width: "100%", height: "auto",
+                  }}
+                />
+              </Suspense>
+            </div>
           </div>
-        </div>
 
-        <div className='authorized-service-container'>
-          <div className='authorized-service-logo-wrapper'>
-            <div className='wb-logo-wrapper'>
-              <img src={wbLogo} alt="WB Logo" />
+          <div className='authorized-service-container'>
+            <div className='authorized-service-logo-wrapper'>
+              <div className='wb-logo-wrapper'>
+                <img src={wbLogo} alt="WB Logo" />
+              </div>
+              <div className='wb-text-wrapper'>Официальный <br /> авторизованный сервис</div>
             </div>
-            <div className='wb-text-wrapper'>Официальный <br /> авторизованный сервис</div>
+            <div className='authorized-service-text-wrapper'>Наш сервис успешно прошел проверку Wildberries, подтвердив соответствие всем стандартам, включая требования по информационной безопасности.</div>
           </div>
-          <div className='authorized-service-text-wrapper'>Наш сервис успешно прошел проверку Wildberries, подтвердив соответствие всем стандартам, включая требования по информационной безопасности.</div>
-        </div>
 
 
-        <div className='wid-solution-text'>
-          <p className={`wid-solution-text-p col-8 ${styles.widSolutionText}`}>
-            Увеличьте продажи на маркетплейсе <br /> в 2 раза{' '}
-            <span style={{ color: 'orange', fontWeight: '800' }}>
-              с помощью инструментов Radar
-            </span>
-          </p>
-        </div>
-        <ToggleAnaliticsPanel />
+          <div className='wid-solution-text'>
+            <p className={`wid-solution-text-p col-8 ${styles.widSolutionText}`}>
+              Увеличьте продажи на маркетплейсе <br /> в 2 раза{' '}
+              <span style={{ color: 'orange', fontWeight: '800' }}>
+                с помощью инструментов Radar
+              </span>
+            </p>
+          </div>
+          <ToggleAnaliticsPanel />
 
-        <div style={{ marginTop: '100px' }}>
-          <FinancialStatements />
-        </div>
+          <div style={{ marginTop: '100px' }}>
+            <FinancialStatements />
+          </div>
 
-        <div style={{ marginTop: '100px' }}>
-          <div className={`widhead-container ${styles.widheadContainer}`}>
-            <div className={`mainBlock-api ${styles.mainBlockApi}`}>
-              <div className={`personal-account-connect-text  ${styles.personalAccountConnectText}`}>
-                Подключение личного кабинета{' '}
-                <span style={{ color: 'orange', fontWeight: '800' }}>
-                  по API
-                </span>
+          <div style={{ marginTop: '100px' }}>
+            <div className={`widhead-container ${styles.widheadContainer}`}>
+              <div className={`mainBlock-api ${styles.mainBlockApi}`}>
+                <div className={`personal-account-connect-text  ${styles.personalAccountConnectText}`}>
+                  Подключение личного кабинета{' '}
+                  <span style={{ color: 'orange', fontWeight: '800' }}>
+                    по API
+                  </span>
+                </div>
+                <div className={`receive-data-text ${styles.receiveDataText}`}>
+                  Получайте данные по всем вашим магазинам в режиме реального
+                  времени в одном месте
+                </div>
               </div>
-              <div className={`receive-data-text ${styles.receiveDataText}`}>
-                Получайте данные по всем вашим магазинам в режиме реального
-                времени в одном месте
+              <div className='widhead-container-image widhead-container-image-mob'>
+                <img
+                  className={`manyApiLogoMobile ${styles.manyApiLogoMobile}`}
+                  src={manyApiMobile}
+                  alt='logo'
+                  style={{ borderRadius: '15px', width: "100%" }}
+                />
               </div>
-            </div>
-            <div className='widhead-container-image widhead-container-image-mob'>
-              <img
-                className={`manyApiLogoMobile ${styles.manyApiLogoMobile}`}
-                src={manyApiMobile}
-                alt='logo'
-                style={{ borderRadius: '15px', width: "100%" }}
-              />
-            </div>
 
-            <div className='widhead-container-block'>
-              <div className='widhead-containe-img'>
-                <div className='widhead-contain-icon'>
-                  <img src={ligtning} />
+              <div className='widhead-container-block'>
+                <div className='widhead-containe-img'>
+                  <div className='widhead-contain-icon'>
+                    <img src={ligtning} />
+                  </div>
+                  <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>Быстро</div>
+                  <div className='widhead-contain-parag'>
+                    Не успеете выпить
+                    <br /> чашку кофе
+                  </div>
+                  <div className='widhead-contain-check'>
+                    <svg
+                      width='71'
+                      height='43'
+                      viewBox='0 0 71 43'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <rect
+                        width='70.772'
+                        height='42.3005'
+                        rx='21.1503'
+                        fill='#5329FF'
+                      />
+                      <rect
+                        x='32.5391'
+                        y='4.88086'
+                        width='32.5389'
+                        height='32.5389'
+                        rx='16.2694'
+                        fill='white'
+                      />
+                      <path
+                        d='M43 20.5L48 25.5L55.5 18'
+                        stroke='#5329FF'
+                        strokeWidth='1.5'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                    </svg>
+                  </div>
                 </div>
-                <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>Быстро</div>
-                <div className='widhead-contain-parag'>
-                  Не успеете выпить
-                  <br /> чашку кофе
+                <div className='widhead-containe-img'>
+                  <div className='widhead-contain-icon'>
+                    <img src={safety} />
+                  </div>
+                  <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>Безопасно</div>
+                  <div className='widhead-contain-parag'>
+                    Мы обо всем <br />
+                    позаботились
+                  </div>
+                  <div className='widhead-contain-check'>
+                    <svg
+                      width='71'
+                      height='43'
+                      viewBox='0 0 71 43'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <rect
+                        width='70.772'
+                        height='42.3005'
+                        rx='21.1503'
+                        fill='#5329FF'
+                      />
+                      <rect
+                        x='32.5391'
+                        y='4.88086'
+                        width='32.5389'
+                        height='32.5389'
+                        rx='16.2694'
+                        fill='white'
+                      />
+                      <path
+                        d='M43 20.5L48 25.5L55.5 18'
+                        stroke='#5329FF'
+                        strokeWidth='1.5'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                      />
+                    </svg>
+                  </div>
                 </div>
-                <div className='widhead-contain-check'>
-                  <svg
-                    width='71'
-                    height='43'
-                    viewBox='0 0 71 43'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <rect
-                      width='70.772'
-                      height='42.3005'
-                      rx='21.1503'
-                      fill='#5329FF'
-                    />
-                    <rect
-                      x='32.5391'
-                      y='4.88086'
-                      width='32.5389'
-                      height='32.5389'
-                      rx='16.2694'
-                      fill='white'
-                    />
-                    <path
-                      d='M43 20.5L48 25.5L55.5 18'
-                      stroke='#5329FF'
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div className='widhead-containe-img'>
-                <div className='widhead-contain-icon'>
-                  <img src={safety} />
-                </div>
-                <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>Безопасно</div>
-                <div className='widhead-contain-parag'>
-                  Мы обо всем <br />
-                  позаботились
-                </div>
-                <div className='widhead-contain-check'>
-                  <svg
-                    width='71'
-                    height='43'
-                    viewBox='0 0 71 43'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <rect
-                      width='70.772'
-                      height='42.3005'
-                      rx='21.1503'
-                      fill='#5329FF'
-                    />
-                    <rect
-                      x='32.5391'
-                      y='4.88086'
-                      width='32.5389'
-                      height='32.5389'
-                      rx='16.2694'
-                      fill='white'
-                    />
-                    <path
-                      d='M43 20.5L48 25.5L55.5 18'
-                      stroke='#5329FF'
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div className='widhead-containe-img'>
-                <div className='widhead-contain-icon'>
-                  <img src={bigData} />
-                </div>
-                <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>
-                  Большой объем данных{' '}
-                </div>
-                <div className='widhead-contain-parag'>Важных данных</div>
-                <div className='widhead-contain-check'>
-                  <svg
-                    width='71'
-                    height='43'
-                    viewBox='0 0 71 43'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <rect
-                      width='70.772'
-                      height='42.3005'
-                      rx='21.1503'
-                      fill='#5329FF'
-                    />
-                    <rect
-                      x='32.5391'
-                      y='4.88086'
-                      width='32.5389'
-                      height='32.5389'
-                      rx='16.2694'
-                      fill='white'
-                    />
-                    <path
-                      d='M43 20.5L48 25.5L55.5 18'
-                      stroke='#5329FF'
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div className='widhead-containe-img-mobile'>
-              <div className='widhead-contian-title-mobile'>
-                Большой объем данных{' '}
-              </div>
-              <div className='widhead-contain-mobile'>
-                <div style={{ margin: '10px 0 30px 0px' }}>
+                <div className='widhead-containe-img'>
+                  <div className='widhead-contain-icon'>
+                    <img src={bigData} />
+                  </div>
+                  <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>
+                    Большой объем данных{' '}
+                  </div>
                   <div className='widhead-contain-parag'>Важных данных</div>
                   <div className='widhead-contain-check'>
                     <svg
@@ -402,106 +392,148 @@ const MainPage = () => {
                     </svg>
                   </div>
                 </div>
-                <div className='widhead-contain-icon-mobile'>
-                  <img src={bigData} />
+              </div>
+              <div className='widhead-containe-img-mobile'>
+                <div className='widhead-contian-title-mobile'>
+                  Большой объем данных{' '}
+                </div>
+                <div className='widhead-contain-mobile'>
+                  <div style={{ margin: '10px 0 30px 0px' }}>
+                    <div className='widhead-contain-parag'>Важных данных</div>
+                    <div className='widhead-contain-check'>
+                      <svg
+                        width='71'
+                        height='43'
+                        viewBox='0 0 71 43'
+                        fill='none'
+                        xmlns='http://www.w3.org/2000/svg'
+                      >
+                        <rect
+                          width='70.772'
+                          height='42.3005'
+                          rx='21.1503'
+                          fill='#5329FF'
+                        />
+                        <rect
+                          x='32.5391'
+                          y='4.88086'
+                          width='32.5389'
+                          height='32.5389'
+                          rx='16.2694'
+                          fill='white'
+                        />
+                        <path
+                          d='M43 20.5L48 25.5L55.5 18'
+                          stroke='#5329FF'
+                          strokeWidth='1.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className='widhead-contain-icon-mobile'>
+                    <img src={bigData} />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className={`widhead-container ${styles.widHeadContainerLastLine}`}>
-            <div className='widhead-container-image'>
-              <img
-                className={`manyApiLogo ${styles.manyApiLogo}`}
-                src={manyApi}
-                alt='logo'
-                style={{ borderRadius: '15px' }}
-              />
-              <img
-                className='manyApiLogoMedium'
-                src={manyApiMedium}
-                alt='logo'
-                style={{ borderRadius: '15px' }}
-              />
-            </div>
-            <div className={`apiBlock ${styles.apiBlock}`}>
-              <ApiBlockContainer />
-              <img className='apiBlockImg' src={apiBlock} alt='logo' />
-              {/* <img
+            <div className={`widhead-container ${styles.widHeadContainerLastLine}`}>
+              <div className='widhead-container-image'>
+                <img
+                  className={`manyApiLogo ${styles.manyApiLogo}`}
+                  src={manyApi}
+                  alt='logo'
+                  style={{ borderRadius: '15px' }}
+                />
+                <img
+                  className='manyApiLogoMedium'
+                  src={manyApiMedium}
+                  alt='logo'
+                  style={{ borderRadius: '15px' }}
+                />
+              </div>
+              <div className={`apiBlock ${styles.apiBlock}`}>
+                <ApiBlockContainer />
+                <img className='apiBlockImg' src={apiBlock} alt='logo' />
+                {/* <img
                 className='apiBlockImgMedium'
                 src={apiBlockMedium}
                 alt='logo'
               /> */}
-            </div>
-            <div
-              className={`blockBtn ${styles.blockBtn}`}
-              style={{
-                backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
-                  })`,
-              }}
-            >
-              <div className={`blockBtnContainer ${styles.blockBtnContainerInner}`}>
-                <div className='blockBtnContainerHeader'>
-                  <div className='blockBtnContainerImageBlock'>
-                    <img
-                      className='blockBtnContainerImage'
-                      src={startAnalitic}
-                      alt='start-analitic'
-                    />
+              </div>
+              <div
+                className={`blockBtn ${styles.blockBtn}`}
+                style={{
+                  backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
+                    })`,
+                }}
+              >
+                <div className={`blockBtnContainer ${styles.blockBtnContainerInner}`}>
+                  <div className='blockBtnContainerHeader'>
+                    <div className='blockBtnContainerImageBlock'>
+                      <img
+                        className='blockBtnContainerImage'
+                        src={startAnalitic}
+                        alt='start-analitic'
+                      />
+                    </div>
+                    <div className='blockBtnContainerArrowImgBlock'>
+                      <img
+                        className='blockBtnContainerArrowImg'
+                        src={arrowLink}
+                        alt='arrow-link'
+                      />
+                    </div>
                   </div>
-                  <div className='blockBtnContainerArrowImgBlock'>
-                    <img
-                      className='blockBtnContainerArrowImg'
-                      src={arrowLink}
-                      alt='arrow-link'
-                    />
-                  </div>
-                </div>
 
-                <div className={`readyforStartText ${styles.readyforStartText}`}>Готовы начать?</div>
-                <div className={`profitableStafText ${styles.profitableStafText}`}>
-                  Найдите прибыльные товары на маркетплейсе и развивайте свой
-                  бизнес.
+                  <div className={`readyforStartText ${styles.readyforStartText}`}>Готовы начать?</div>
+                  <div className={`profitableStafText ${styles.profitableStafText}`}>
+                    Найдите прибыльные товары на маркетплейсе и развивайте свой
+                    бизнес.
+                  </div>
+                  <button
+                    className='btn-warning btn-warning-home'
+                    onClick={() => {
+                      if (user) {
+                        window.open('/tariffs', '_blank');
+                      }
+                      if (!user) {
+                        navigate('/signup');
+                      }
+                    }}
+                  >
+                    Начать работать
+                  </button>
                 </div>
-                <button
-                  className='btn-warning btn-warning-home'
-                  onClick={() => {
-                    if (user) {
-                      window.open('/tariffs', '_blank');
-                    }
-                    if (!user) {
-                      navigate('/signup');
-                    }
-                  }}
-                >
-                  Начать работать
-                </button>
               </div>
             </div>
-          </div>
-          <div className='mainBlockFourBtn'>
-            <BtnHomePage />
-          </div>
-          <div>
-            <StepsTime redirect={redirect} />
-          </div>
-          <div style={{ marginTop: '100px' }}>
-            <SelectRate redirect={redirect} isShowText={false} />
-          </div>
-          <div style={{ marginTop: '100px' }}>
-            <ReviewsUsers />
-          </div>
-          <div style={{ marginBottom: '100px' }}>
-            <AccordionMain />
-          </div>
-          <div style={{ marginBottom: '100px' }}>
-            <TryProduct redirect={redirect} />
-          </div>
-          <div style={{ marginBottom: '100px' }}>
-            <AnalyzeWildberries />
+            <div className='mainBlockFourBtn'>
+              <BtnHomePage />
+            </div>
+            <div>
+              <StepsTime redirect={redirect} />
+            </div>
+            <div style={{ marginTop: '100px' }}>
+              <SelectRateMain redirect={redirect} isShowText={false} />
+            </div>
+            <div style={{ marginTop: '100px' }}>
+              <ReviewsUsers />
+            </div>
+            <div style={{ marginBottom: '100px' }}>
+              <AccordionMain />
+            </div>
+            <div style={{ marginBottom: '100px' }}>
+              <TryProduct redirect={redirect} />
+            </div>
+            <div style={{ marginBottom: '100px' }}>
+              <AnalyzeWildberries />
+            </div>
           </div>
         </div>
+        <FooterNewVersion />
       </div>
-      <FooterNewVersion />
+
     </div >
   );
 };
