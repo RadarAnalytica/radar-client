@@ -1,48 +1,96 @@
 .bottomNavigation {
     position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     background: rgba(255, 255, 255, 1);
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
     padding: 10px 0;
+    padding-left: 250px;
+    padding-right: 10px;
     z-index: 10;
 }
 
 .navItem {
-    padding: 8px 0 8px 0;
     color: rgba(26, 26, 26, 0.5);
     cursor: pointer;
-}
-
-.navItem span {
     text-decoration: none;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 27px;
-    padding: 8px 12px;
-
+    background: white;
+    border-radius: 8px;
+    padding: 4px 12px;
 }
-
-.active {
+.navItemActive {
+    cursor: pointer;
     background: rgba(83, 41, 255, 0.1);
     border-radius: 8px;
     color: rgba(26, 26, 26, 1);
+    text-decoration: none;
+    padding: 4px 12px;
 }
 
-.marginFirstElement {
-    margin-left: 54px;
+.bNav__menuButton {
+    width: 40px;
+    aspect-ratio: 2 / 1;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F7F7F7;
+    border-radius: 20px;
+    gap: 2px;
+}
+
+.bNav__menuButtonActive {
+    width: 40px;
+    aspect-ratio: 2 / 1;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(83, 41, 255, 0.1);
+    border-radius: 20px;
+    gap: 2px;
+}
+
+.bNav__menuDot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50% 50%;
+    background: #1a1a1a;
+}
+
+.bNav__menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    /* background: rgba(0,0,0,.2); */
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-bottom: 40px;
+}
+
+.bNav__menuBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    padding: 16px;
+    margin-right: 10px;
+    gap: 10px;
+    z-index: 1;
 }
 
 @media screen and (max-width: 1680px) {
     .marginFirstElement {
         margin-left: 0px;
-    }
-
-    .navItem span {
-        padding: 8px 10px;
-        font-size: 16px;
-    }
-    .navItem {
-        padding: 0;
     }
 }

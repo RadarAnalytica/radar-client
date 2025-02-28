@@ -682,7 +682,7 @@ const WeeklyReportDashboard = () => {
             </span>
           </>
         )}
-        <BottomNavigation />
+          <BottomNavigation />
       </div>
     </div>
   );

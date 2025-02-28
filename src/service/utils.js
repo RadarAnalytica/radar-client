@@ -75,12 +75,14 @@ export function filterArraysNoData(obj, days) {
   return obj;
 }
 
+
+// func that format any value to display (e.g, prices, percents...)
 export const formatPrice = (value, literal) => {
   // define a value to return
   let formattedPriceString = '-' 
   // checking if value exists
   if (value !== undefined && value !== null) {
-    //in case value is a string
+    //in case if value is a string
     const number = parseFloat(value);
     // checking that number is number
     if (Number.isNaN(number)) {

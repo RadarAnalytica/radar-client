@@ -6,41 +6,37 @@
     overflow: hidden;
     width: 100%;
     display: flex;
-    gap: 30px;
+    gap: 52px;
     box-sizing: border-box;
 }
 
 .startPage__content {
     width: 100%;
-    padding: 0 0 25px 0;
+    padding: 27px 20px 25px 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 10px;
+    gap: 20px;
     box-sizing: border-box;
     height: 100%;
     overflow-y: scroll;
 }
 
 .startPage__galleryWrapper {
-    margin-top: 10px;
     width: 100%;
-    padding: 0 30px;
     height: 405px;
     min-height: 405px;
     box-sizing: border-box;
 
     @media (max-width: 1400px) {
-        min-height: 830px;
-        height: 830px;
+        min-height: 720px;
+        height: 720px;
     }
 }
 
 .startPage__bannersWrapper {
-    margin-top: 10px;
     width: 100%;
-    padding: 0 30px;
     height: auto;
     box-sizing: border-box;
 }

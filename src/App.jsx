@@ -70,7 +70,7 @@ const StartPage = React.lazy(() => import("./pages/StartPage"));
 // );
 
 function App() {
-const { user } = useContext(AuthContext);
+ const { user } = useContext(AuthContext);
 
 // this is test user object for dev purposes
 
