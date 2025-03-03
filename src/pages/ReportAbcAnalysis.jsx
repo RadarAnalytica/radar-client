@@ -526,7 +526,7 @@ const ReportAbcAnalysis = () => {
   return (
     <div className='dashboard-page'>
       <SideNav />
-      <div className={`${styles.scheduleMain} dashboard-content pb-3 `}>
+      <div className={`${styles.scheduleMain} dashboard-content pb-3`}>
         <TopNav
           title={
             <>

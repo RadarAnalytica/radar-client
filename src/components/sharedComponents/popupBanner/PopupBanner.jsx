@@ -47,7 +47,7 @@ const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, descr
                     }
                     {isOpen &&
                         <svg width="25" height="3" viewBox="0 0 25 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M24 1.5L1 1.5" stroke="#5329FF" stroke-width="2" stroke-linecap="round" />
+                            <path d="M24 1.5L1 1.5" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" />
                         </svg>
                     }
                 </button>

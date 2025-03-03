@@ -45,12 +45,16 @@
 }
 
 .banner__offerSubtitle {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     line-height: 22px;
     color: white;
     margin: 0;
     padding: 0;
+
+    @media (max-width: 1550px) {
+        font-size: 14px;
+    }
 }
 
 .banner__offerTitle {
@@ -60,6 +64,10 @@
     color: white;
     margin: 0;
     padding: 0;
+
+    @media (max-width: 1550px) {
+        font-size: 28px;
+    }
 }
 
 .banner__titleBlock {
@@ -78,16 +86,24 @@
     font-size: 28px;
     font-weight: 700;
     line-height: 35px;
-    color: #5329FF
+    color: #5329FF;
+
+    @media (max-width: 1550px) {
+        font-size: 24px;
+    }
 }
 
 .banner__mainSubitle {
     margin: 0;
     padding: 0;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     line-height: 22px;
-    color: #1A1A1A
+    color: #1A1A1A;
+
+    @media (max-width: 1550px) {
+        font-size: 14px;
+    }
 }
 
 .banner__button {
@@ -161,6 +177,10 @@
     font-size: 18px;
     line-height: 29px;
     color: #1A1A1A;
+
+    @media (max-width: 1550px) {
+        font-size: 16px;
+    }
 }
 
 .banner__tgLink {
@@ -173,7 +193,11 @@
     font-size: 16px;
     line-height: 26px;
     color: #5329FF;
-    padding: 10px 12px
+    padding: 10px 12px;
+
+    @media (max-width: 1550px) {
+        font-size: 14px;
+    }
 }
 
 .banner__bar {
@@ -189,4 +213,8 @@
     font-weight: 500;
     font-size: 18px;
     line-height: 29px;
+
+    @media (max-width: 1550px) {
+        font-size: 16px;
+    }
 }

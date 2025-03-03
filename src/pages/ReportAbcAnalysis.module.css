@@ -19,6 +19,13 @@
     /* padding: 20px 32px; */
 
 }
+
+.bottomNavWrapper {
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  overflow: hidden;
+}
 .headerWrapperBox{
     display: flex;
     background-color: #FFFFFF;

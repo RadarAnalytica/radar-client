@@ -37,7 +37,7 @@ const WeeklyReportPenaltiesPage = () => {
   return (
     <div className='dashboard-page'>
       <SideNav />
-      <div className='dashboard-content pb-3'>
+      <div className='dashboard-content'>
         <TopNav title={'Штрафы'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <>
@@ -63,7 +63,11 @@ const WeeklyReportPenaltiesPage = () => {
             </span>
           </>
         )}
-        <BottomNavigation />
+       <div 
+          className={styles.bottomNavWrapper}
+        >
+           <BottomNavigation isStaticPosition={true} />
+        </div>
       </div>
     </div>
   );

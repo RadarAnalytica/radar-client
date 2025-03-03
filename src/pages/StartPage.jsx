@@ -41,21 +41,21 @@ const StartPage = () => {
                                     allowFullScreen
                                 ></iframe>
                             </div>
-                            <div className={styles.gallery__videoPlate}>
-                                {/* <div className={styles.gallery__videPlateTitleBox}>
+                            {/* <div className={styles.gallery__videoPlate}>
+                                <div className={styles.gallery__videPlateTitleBox}>
                                     <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M0.39186 1.70239C0.39186 0.666987 1.51272 0.0198584 2.40941 0.537561L12.9094 6.59976C13.8061 7.11746 13.8061 8.41172 12.9094 8.92942L2.40941 14.9916C1.51272 15.5093 0.39186 14.8622 0.39186 13.8268L0.39186 1.70239Z" fill="#5329FF" />
                                     </svg>
                                     <p className={styles.gallery__videoPlateTitle}>
                                         Обзор сервиса. С чего начать?
                                     </p>
-                                </div> */}
+                                </div>
                                 <span
                                     className={styles.gallery__videoPlateDuration}
                                 >
                                     5:20
                                 </span>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className={styles.gallery__itemPadding}>

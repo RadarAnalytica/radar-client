@@ -199,6 +199,10 @@
     line-height: 22px;
     color: white;
     background: #7452FE;
+
+    @media (max-width: 1550px) {
+        font-size: 12px;
+    }
 }
 
 .gallery__offerLink {
@@ -210,4 +214,8 @@
     line-height: 26px;
     color: #5329FF;
     text-decoration: none;
+
+    @media (max-width: 1550px) {
+        font-size: 14px;
+    }
 }

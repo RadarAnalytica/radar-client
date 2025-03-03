@@ -235,7 +235,7 @@ const WeeklyReportPL = () => {
   return (
     <div className='dashboard-page'>
       <SideNav />
-      <div className='dashboard-content pb-3'>
+      <div className='dashboard-content'>
         <TopNav title={'P&L'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <>
@@ -261,7 +261,11 @@ const WeeklyReportPL = () => {
             <span></span>
           </>
         )}
-        <BottomNavigation />
+        <div 
+          className={styles.bottomNavWrapper}
+        >
+           <BottomNavigation isStaticPosition={true} />
+        </div>
       </div>
     </div>
   );

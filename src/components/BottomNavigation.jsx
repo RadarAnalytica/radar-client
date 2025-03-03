@@ -18,7 +18,7 @@ const menuItemsArray = [
 ]
 
 
-const BottomNavigation = () => {
+const BottomNavigation = ({ isStaticPosition = false }) => {
 
   const { pathname } = useLocation()
   const [ isMenuVisible, setIsMenuVisible ] = useState(false)
@@ -28,7 +28,7 @@ const BottomNavigation = () => {
   return (
     <>
     {window.screen.width >= 1470 ? 
-      <div className={styles.bottomNavigation}>
+      <div className={isStaticPosition ? styles.bottomNavigationStatic : styles.bottomNavigation}>
           {menuItemsArray.map((i, id) => 
             <Link 
               to={i.path} 
@@ -40,7 +40,7 @@ const BottomNavigation = () => {
           )}
       </div>
     :
-    <div className={styles.bottomNavigation}>
+    <div className={isStaticPosition ? styles.bottomNavigationStatic : styles.bottomNavigation}>
       {mainLinksArr.map((i, id) => 
         <Link 
           to={i.path} 

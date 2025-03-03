@@ -131,7 +131,7 @@ const ReportMain = () => {
   return (
     <div className='dashboard-page notranslate'>
       <SideNav />
-      <div className='dashboard-content pb-3'>
+      <div className='dashboard-content'>
         <TopNav title={'Главная'} subTitle={'Отчёт /'} />
         <div className='container dash-container'>
           <div className={styles.instructionWrapper}>
@@ -447,7 +447,11 @@ const ReportMain = () => {
             </div>
           </div>
         </div>
-        <BottomNavigation />
+        <div 
+          className={styles.bottomNavWrapper}
+        >
+           <BottomNavigation isStaticPosition={true} />
+        </div>
       </div>
       <Modal
         show={openModal}

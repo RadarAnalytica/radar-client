@@ -76,7 +76,7 @@ const PrimeCost = () => {
   return (
     <div className='dashboard-page'>
       <SideNav />
-      <div className='dashboard-content pb-3'>
+      <div className='dashboard-content'>
         <TopNav title={'Себестоимость'} subTitle={'Отчёт /'} />
         <div className='container dash-container'>
           <div className={styles.primeCost}>
