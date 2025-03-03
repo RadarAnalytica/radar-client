@@ -12,6 +12,7 @@ import manager1 from "../pages/images/manager1.png";
 import manager2 from "../pages/images/manager2.png";
 import manager3 from "../pages/images/manager3.png";
 import Steps from "../pages/images/Steps";
+import styles from "../components/BtnHomePage.module.css"
 
 const dataImages = {
   newbie: [newbie1, newbie2, newbie3],
@@ -148,10 +149,10 @@ const BtnHomePage = () => {
 
   return (
     <>
-      <div className='widhead-container-title'>
+      <div className={`widhead-container-title ${styles.widHeadContainerTitle}`}>
         Кому и для чего нужен наш сервис
       </div>
-      <div className='widhead-container-header'>
+      <div className={`widhead-container-header  ${styles.widHeadContainerHeader}`}>
         <button
           onClick={() => handleClick("newbie")}
           className={activeButton === "newbie" ? "prime-btn" : "secondary-btn"}
@@ -188,7 +189,7 @@ const BtnHomePage = () => {
           {activeButton === "manager" ? <Steps.Circle /> : <span></span>}
           Менеджеры маркетплейсов и агентства
         </button>
-      </div>
+      </div >
       <div className='widhead-container widhead-container-main'>
         {renderedImages}
       </div>

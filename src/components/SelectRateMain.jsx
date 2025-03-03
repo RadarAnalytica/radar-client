@@ -1,20 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-// import OrangeLabelSelect from '../pages/images/OrangeLabelSelect';
-// import logoStart from '../pages/images/logoForCardStart.png';
-// import logoPro from '../pages/images/logoForCardPro.png';
+import OrangeLabelSelect from '../pages/images/OrangeLabelSelect';
+import logoStart from '../pages/images/logoForCardStart.png';
+import logoPro from '../pages/images/logoForCardPro.png';
 import logoProPlus from '../pages/images/logoForCardProPlus.png';
 import Steps from '../pages/images/Steps';
 import OneRuble from '../pages/images/OneRuble.svg';
 import BlueSwich from '../pages/images/BlueSwich.svg';
-// import StartLogo from '../assets/startlogo.svg';
-// import FireLogo from '../assets/firelogo.svg';
+import StartLogo from '../assets/startlogo.svg';
+import FireLogo from '../assets/firelogo.svg';
 import AuthContext from '../service/AuthContext';
 import axios from 'axios';
 import ReviewsUsers from '../components/ReviewsUsers';
-import BlockImg_x1 from "../pages/images/Dashboard_x1.png";
-import BlockImg_x2 from "../pages/images/Dashboard_x2.png";
+import BlockImg_x2 from '../pages/images/Dashboard_x2.png';
 import SolLabelStartBsn from '../pages/images/SolLabelStartBsn';
 import YellowRadarPoint from '../pages/images/YellowRadarPoint';
 import CustomButton from './utilsComponents/CustomButton';
@@ -23,10 +22,9 @@ import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-
 import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
 import styles from '../pages/TariffsPage.module.css';
 import thumbup from '../pages/images/thumbup.png';
-import ImageComponent from './utilsComponents/ImageComponent ';
-import { ServiceFunctions } from '../service/serviceFunctions';
 
-const SelectRate = ({ redirect, isShowText }) => {
+
+const SelectRateMain = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
@@ -34,7 +32,6 @@ const SelectRate = ({ redirect, isShowText }) => {
   const [subscriptionDiscount, setSubscriptionDiscount] = useState(
     user?.is_subscription_discount
   );
-
   const navigate = useNavigate();
   if (user?.is_test_used !== trialExpired) {
     user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false);
@@ -53,318 +50,292 @@ const SelectRate = ({ redirect, isShowText }) => {
   const currentPath = window.location.pathname;
   const [isHighResLoaded, setHighResLoaded] = useState(false);
 
-  useEffect(() => {
-    const loadCloudPaymentsScript = () => {
-      const script = document.createElement('script');
-      script.src = 'https://widget.cloudpayments.ru/bundles/cloudpayments.js';
-      script.async = true;
-
-      script.onload = () => {
-        setIsScriptLoaded(true);
-      };
-
-      document.body.appendChild(script);
-    };
-
-    if (!window.cp) {
-      loadCloudPaymentsScript();
-    } else {
-      setIsScriptLoaded(true);
-    }
-
-    return () => {
-      const script = document.querySelector('script[src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"]');
-      if (script) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
-
   // useEffect(() => {
-  //   const img = new Image();
-  //   img.src = highResImage;
+  //     const loadCloudPaymentsScript = () => {
+  //         const script = document.createElement('script');
+  //         script.src = 'https://widget.cloudpayments.ru/bundles/cloudpayments.js';
+  //         script.async = true;
 
-  //   img.onload = () => {
-  //     // When high-res image is fully loaded, change
-  //     setHighResLoaded(true);
-  //   };
-  // }, [highResImage]);
+  //         script.onload = () => {
+  //             setIsScriptLoaded(true);
+  //         };
+
+  //         document.body.appendChild(script);
+  //     };
+
+  //     if (!window.cp) {
+  //         loadCloudPaymentsScript();
+  //     } else {
+  //         setIsScriptLoaded(true);
+  //     }
+
+  //     return () => {
+  //         const script = document.querySelector('script[src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"]');
+  //         if (script) {
+  //             document.body.removeChild(script);
+  //         }
+  //     };
+  // }, []);
 
   useEffect(() => {
     const img = new Image();
     img.src = highResImage;
-
     img.onload = () => {
-      setHighResLoaded(true); // High-res image is fully loaded
+      setHighResLoaded(true);
     };
-  }, []);
+  }, [highResImage]);
 
-  const refreshUserToken = async () => {
-    try {
-      // const authToken = localStorage.getItem("authToken");
-      const response = await fetch(`${URL}/api/user/refresh`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: 'JWT ' + authToken,
-        },
-      });
-      console.log('response', response);
+  // const refreshUserToken = async () => {
+  //     try {
+  //         // const authToken = localStorage.getItem("authToken");
+  //         const response = await fetch(`${URL}/api/user/refresh`, {
+  //             method: 'GET',
+  //             headers: {
+  //                 'Content-Type': 'application/json',
+  //                 authorization: 'JWT ' + authToken,
+  //             },
+  //         });
+  //         console.log('response', response);
 
-      if (response.status === 200) {
-        const data = await response.json();
-        // localStorage.setItem("authToken", data.token);
-        // user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false)
-        return data.token;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    return null;
-  };
+  //         if (response.status === 200) {
+  //             const data = await response.json();
+  //             // localStorage.setItem("authToken", data.token);
+  //             // user?.is_test_used ? setTrialExpired(true) : setTrialExpired(false)
+  //             return data.token;
+  //         }
+  //     } catch (error) {
+  //         console.error(error);
+  //     }
+  //     return null;
+  // };
 
-  const pay = async (_user, _period, _trial) => {
-    const refresh_result = await refreshUserToken();
-    console.log('refresh_result', refresh_result);
+  // const pay = async (_user, _period, _trial) => {
+  //     const refresh_result = await refreshUserToken();
+  //     console.log('refresh_result', refresh_result);
 
-    // localStorage.setItem("authToken", refresh_result);
-    const decodedUser = jwtDecode(refresh_result);
-    console.log('decodedUser:', decodedUser);
-    let newTrialExpired;
-    if (decodedUser.is_test_used) {
-      setTrialExpired(true);
-      newTrialExpired = true;
-    } else {
-      setTrialExpired(false);
-      newTrialExpired = false;
-    }
+  //     // localStorage.setItem("authToken", refresh_result);
+  //     const decodedUser = jwtDecode(refresh_result);
+  //     console.log('decodedUser:', decodedUser);
+  //     let newTrialExpired;
+  //     if (decodedUser.is_test_used) {
+  //         setTrialExpired(true);
+  //         newTrialExpired = true;
+  //     } else {
+  //         setTrialExpired(false);
+  //         newTrialExpired = false;
+  //     }
 
-    console.log('user.email', user);
-    console.log('selectedPeriod', selectedPeriod);
-    console.log('trialExpired', trialExpired);
-    console.log('newTrialExpired', newTrialExpired);
+  //     console.log('user.email', user);
+  //     console.log('selectedPeriod', selectedPeriod);
+  //     console.log('trialExpired', trialExpired);
+  //     console.log('newTrialExpired', newTrialExpired);
 
-    let periodSubscribe = '';
-    let amountSubscribe = 0;
-    let firstAmount = 0;
-    let startDateSubscribe = '';
-    const options = {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-    };
-    const invoiceId = `radar-${user.id}-${new Date()
-      .toLocaleString('ru', options)
-      .replaceAll('.', '')
-      .replaceAll(', ', '-')
-      .replaceAll(':', '')}`;
+  //     let periodSubscribe = '';
+  //     let amountSubscribe = 0;
+  //     let firstAmount = 0;
+  //     let startDateSubscribe = '';
+  //     const options = {
+  //         year: 'numeric',
+  //         month: 'numeric',
+  //         day: 'numeric',
+  //         hour: 'numeric',
+  //         minute: 'numeric',
+  //         second: 'numeric',
+  //     };
+  //     const invoiceId = `radar-${user.id}-${new Date()
+  //         .toLocaleString('ru', options)
+  //         .replaceAll('.', '')
+  //         .replaceAll(', ', '-')
+  //         .replaceAll(':', '')}`;
 
-    if (selectedPeriod === '1month') {
-      amountSubscribe = 2990;
-      firstAmount = newTrialExpired ? 2990 : 1;
-      periodSubscribe = 1;
-      startDateSubscribe = new Date();
-      if (!!newTrialExpired) {
-        startDateSubscribe.setMonth(
-          startDateSubscribe.getMonth() + periodSubscribe
-        );
-        startDateSubscribe.setUTCHours(7, 0, 0, 0);
-      } else {
-        startDateSubscribe.setDate(startDateSubscribe.getDate() + 3);
-        startDateSubscribe.setUTCHours(7, 0, 0, 0);
-      }
-    } else if (selectedPeriod === '3month') {
-      amountSubscribe = 8073;
-      firstAmount = !subscriptionDiscount ? 8073 : 4485;
-      periodSubscribe = 3;
-      startDateSubscribe = new Date();
-      startDateSubscribe.setMonth(
-        startDateSubscribe.getMonth() + periodSubscribe
-      );
-    } else if (selectedPeriod === '6month') {
-      amountSubscribe = 10764;
-      firstAmount = !subscriptionDiscount ? 10764 : 5382;
-      periodSubscribe = 6;
-      startDateSubscribe = new Date();
-      startDateSubscribe.setMonth(
-        startDateSubscribe.getMonth() + periodSubscribe
-      );
-    }
-    console.log('periodSubscribe', periodSubscribe);
-    console.log('firstAmount', firstAmount);
-    console.log('amountSubscribe', amountSubscribe);
-    console.log(
-      'startDateSubscribe',
-      startDateSubscribe.toISOString().split('T')[0]
-    );
-    startDateSubscribe = startDateSubscribe.toISOString().split('T')[0];
+  //     if (selectedPeriod === '1month') {
+  //         amountSubscribe = 2990;
+  //         firstAmount = newTrialExpired ? 2990 : 10;
+  //         periodSubscribe = 1;
+  //         startDateSubscribe = new Date();
+  //         if (!!newTrialExpired) {
+  //             startDateSubscribe.setMonth(
+  //                 startDateSubscribe.getMonth() + periodSubscribe
+  //             );
+  //             startDateSubscribe.setUTCHours(7, 0, 0, 0);
+  //         } else {
+  //             startDateSubscribe.setDate(startDateSubscribe.getDate() + 3);
+  //             startDateSubscribe.setUTCHours(7, 0, 0, 0);
+  //         }
+  //     } else if (selectedPeriod === '3month') {
+  //         amountSubscribe = 8073;
+  //         firstAmount = !subscriptionDiscount ? 8073 : 4485;
+  //         periodSubscribe = 3;
+  //         startDateSubscribe = new Date();
+  //         startDateSubscribe.setMonth(
+  //             startDateSubscribe.getMonth() + periodSubscribe
+  //         );
+  //     } else if (selectedPeriod === '6month') {
+  //         amountSubscribe = 10764;
+  //         firstAmount = !subscriptionDiscount ? 10764 : 5382;
+  //         periodSubscribe = 6;
+  //         startDateSubscribe = new Date();
+  //         startDateSubscribe.setMonth(
+  //             startDateSubscribe.getMonth() + periodSubscribe
+  //         );
+  //     }
+  //     console.log('periodSubscribe', periodSubscribe);
+  //     console.log('firstAmount', firstAmount);
+  //     console.log('amountSubscribe', amountSubscribe);
+  //     console.log(
+  //         'startDateSubscribe',
+  //         startDateSubscribe.toISOString().split('T')[0]
+  //     );
+  //     startDateSubscribe = startDateSubscribe.toISOString().split('T')[0];
 
-    // eslint-disable-next-line no-undef
-    var widget = new cp.CloudPayments({
-      language: 'ru-RU',
-      email: user.email,
-      applePaySupport: false,
-      googlePaySupport: false,
-      yandexPaySupport: true,
-      tinkoffPaySupport: true,
-      tinkoffInstallmentSupport: false,
-      sbpSupport: true,
-      // sberSupport: true,
-      // sberPaySupport: true,
-    });
+  //     // eslint-disable-next-line no-undef
+  //     var widget = new cp.CloudPayments({
+  //         language: 'ru-RU',
+  //         email: user.email,
+  //         applePaySupport: false,
+  //         googlePaySupport: false,
+  //         yandexPaySupport: true,
+  //         tinkoffPaySupport: true,
+  //         tinkoffInstallmentSupport: false,
+  //         sbpSupport: true,
+  //         // sberSupport: true,
+  //         // sberPaySupport: true,
+  //     });
 
-    const receipt = {
-      Items: [
-        //товарные позиции
-        {
-          label: 'Подписка Радар Аналитика', //наименование товара
-          price: amountSubscribe, //цена
-          quantity: 1.0, //количество
-          amount: amountSubscribe, //сумма
-          vat: 20, //ставка НДС
-          method: 0, // тег-1214 признак способа расчета - признак способа расчета
-          object: 0, // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
-        },
-      ],
-      email: user.email, //e-mail покупателя, если нужно отправить письмо с чеком
-      phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
-      isBso: false, //чек является бланком строгой отчетности
-      amounts: {
-        electronic: amountSubscribe, // Сумма оплаты электронными деньгами
-        advancePayment: 0.0, // Сумма из предоплаты (зачетом аванса) (2 знака после точки)
-        credit: 0.0, // Сумма постоплатой(в кредит) (2 знака после точки)
-        provision: 0.0, // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после точки)
-      },
-    };
+  //     const receipt = {
+  //         Items: [
+  //             //товарные позиции
+  //             {
+  //                 label: 'Подписка Радар Аналитика', //наименование товара
+  //                 price: amountSubscribe, //цена
+  //                 quantity: 1.0, //количество
+  //                 amount: amountSubscribe, //сумма
+  //                 vat: 20, //ставка НДС
+  //                 method: 0, // тег-1214 признак способа расчета - признак способа расчета
+  //                 object: 0, // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
+  //             },
+  //         ],
+  //         email: user.email, //e-mail покупателя, если нужно отправить письмо с чеком
+  //         phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
+  //         isBso: false, //чек является бланком строгой отчетности
+  //         amounts: {
+  //             electronic: amountSubscribe, // Сумма оплаты электронными деньгами
+  //             advancePayment: 0.0, // Сумма из предоплаты (зачетом аванса) (2 знака после точки)
+  //             credit: 0.0, // Сумма постоплатой(в кредит) (2 знака после точки)
+  //             provision: 0.0, // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после точки)
+  //         },
+  //     };
 
-    const data = {};
-    data.CloudPayments = {
-      CustomerReceipt: receipt, //чек для первого платежа
-      recurrent: {
-        interval: 'Month',
-        period: periodSubscribe,
-        startDate: startDateSubscribe,
-        amount: amountSubscribe,
-        customerReceipt: receipt, //чек для регулярных платежей
-      },
-    };
+  //     const data = {};
+  //     data.CloudPayments = {
+  //         CustomerReceipt: receipt, //чек для первого платежа
+  //         recurrent: {
+  //             interval: 'Month',
+  //             period: periodSubscribe,
+  //             startDate: startDateSubscribe,
+  //             amount: amountSubscribe,
+  //             customerReceipt: receipt, //чек для регулярных платежей
+  //         },
+  //     };
 
-    await widget.charge(
-      {
-        // options
-        publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
-        description: 'Оплата подписки в Radar Analityca', //назначение
-        amount: firstAmount, //сумма
-        currency: 'RUB', //валюта
-        invoiceId: invoiceId, //номер заказа  (необязательно)
-        email: user.email,
-        accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
-        data: data,
-      },
-      function (options) {
-        // success - действие при успешной оплате
-        // TODO отправка запроса в сервис бэкенда на обновление данных user
-        // (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'],
-        // subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать))
+  //     await widget.charge(
+  //         {
+  //             // options
+  //             publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
+  //             description: 'Оплата подписки в Radar Analityca', //назначение
+  //             amount: firstAmount, //сумма
+  //             currency: 'RUB', //валюта
+  //             invoiceId: invoiceId, //номер заказа  (необязательно)
+  //             email: user.email,
+  //             accountId: `radar-${user.id}`, //идентификатор плательщика (обязательно для создания подписки)
+  //             data: data,
+  //         },
+  //         function (options) {
+  //             // success - действие при успешной оплате
+  //             // TODO отправка запроса в сервис бэкенда на обновление данных user
+  //             // (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'],
+  //             // subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать))
 
-        // Helper function to map selectedPeriod to the correct string
-        const mapPeriodToStatus = (period) => {
-          switch (period) {
-            case 'test':
-              return 'Test';
-            case '1month':
-              return 'Month 1';
-            case '3months':
-              return 'Month 3';
-            case '6months':
-              return 'Month 6';
-            default:
-              return period; // fallback to original value if no match
-          }
-        };
+  //             // Helper function to map selectedPeriod to the correct string
+  //             const mapPeriodToStatus = (period) => {
+  //                 switch (period) {
+  //                     case 'test':
+  //                         return 'Test';
+  //                     case '1month':
+  //                         return 'Month 1';
+  //                     case '3months':
+  //                         return 'Month 3';
+  //                     case '6months':
+  //                         return 'Month 6';
+  //                     default:
+  //                         return period; // fallback to original value if no match
+  //                 }
+  //             };
 
-        // Prepare the update data
-        const updateData = {
-          subscription_status: [mapPeriodToStatus(selectedPeriod)],
-          subscription_start_date: new Date().toISOString().split('T')[0],
-          invoice_id: invoiceId,
-        };
+  //             // Prepare the update data
+  //             const updateData = {
+  //                 subscription_status: [mapPeriodToStatus(selectedPeriod)],
+  //                 subscription_start_date: new Date().toISOString().split('T')[0],
+  //                 invoice_id: invoiceId,
+  //             };
 
-        // Add is_test_used only if it's a test period
-        if (selectedPeriod === '1month') {
-          updateData.is_test_used = true;
-        }
-        // Send PATCH request
-        axios
-          .post(`${URL}/api/user/subscription`, updateData, {
-            headers: {
-              'content-type': 'application/json',
-              authorization: 'JWT ' + authToken,
-            },
-          })
-          .then((res) => {
-            console.log('patch /api/user', res.data);
-            localStorage.setItem('authToken', res.data.auth_token);
-            navigate('/after-payment', { state: { paymentStatus: 'success' } });
-          })
-          .catch((err) => console.log('patch /api/user', err));
-        console.log('Payment success:', 'options', options);
-      },
+  //             // Add is_test_used only if it's a test period
+  //             if (selectedPeriod === '1month') {
+  //                 updateData.is_test_used = true;
+  //             }
+  //             // Send PATCH request
+  //             axios
+  //                 .post(`${URL}/api/user/subscription`, updateData, {
+  //                     headers: {
+  //                         'content-type': 'application/json',
+  //                         authorization: 'JWT ' + authToken,
+  //                     },
+  //                 })
+  //                 .then((res) => {
+  //                     console.log('patch /api/user', res.data);
+  //                     localStorage.setItem('authToken', res.data.auth_token);
+  //                     navigate('/after-payment', { state: { paymentStatus: 'success' } });
+  //                 })
+  //                 .catch((err) => console.log('patch /api/user', err));
+  //             console.log('Payment success:', 'options', options);
+  //         },
 
-      function (reason, options) {
-        // fail
-        //действие при неуспешной оплате
+  //         function (reason, options) {
+  //             // fail
+  //             //действие при неуспешной оплате
+  //             console.log('Payment fail:', 'reason', reason, 'options', options);
+  //         }
+  //     );
 
-        ServiceFunctions.getFailPaymentStatus(authToken)
-          .then(res => {
-            if (res.message === 'No correct subscription') {
-              widget.close();
-            } else if (res.id && res.auth_token) {
-              widget.close();
-              navigate('/after-payment', { state: { paymentStatus: 'success' } });
-            }
-          }).catch(err => {
-            console.log('Payment verification failed:', err);
-            widget.close();
-            navigate('/after-payment', { state: { paymentStatus: 'error' } });
-          });
+  //     //   widget.pay('charge', // или 'charge'
+  //     //       { //options
+  //     //           publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
+  //     //           description: 'Оплата подписки в Radar Analityca', //назначение
+  //     //           amount: amount, //сумма
+  //     //           currency: 'RUB', //валюта
+  //     //           accountId: user.id, //идентификатор плательщика (необязательно)
+  //     //         //  invoiceId: '1234567', //номер заказа  (необязательно)
+  //     //           email: user.email, //email плательщика (необязательно)
+  //     //           skin: "modern", //дизайн виджета (необязательно)
+  //     //       },
+  //     //       {
+  //     //           onSuccess: function (options) { // success
+  //     //               //действие при успешной оплате
+  //     //               console.log('Payment success:', 'options', options);
 
-        console.log('Payment fail:', 'reason', reason, 'options', options);
-      }
-    );
+  //     //           },
+  //     //           onFail: function (reason, options) { // fail
+  //     //               //действие при неуспешной оплате
+  //     //               console.log('Payment fail:', 'reason', reason, 'options', options);
 
-    //   widget.pay('charge', // или 'charge'
-    //       { //options
-    //           publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
-    //           description: 'Оплата подписки в Radar Analityca', //назначение
-    //           amount: amount, //сумма
-    //           currency: 'RUB', //валюта
-    //           accountId: user.id, //идентификатор плательщика (необязательно)
-    //         //  invoiceId: '1234567', //номер заказа  (необязательно)
-    //           email: user.email, //email плательщика (необязательно)
-    //           skin: "modern", //дизайн виджета (необязательно)
-    //       },
-    //       {
-    //           onSuccess: function (options) { // success
-    //               //действие при успешной оплате
-    //               console.log('Payment success:', 'options', options);
-
-    //           },
-    //           onFail: function (reason, options) { // fail
-    //               //действие при неуспешной оплате
-    //               console.log('Payment fail:', 'reason', reason, 'options', options);
-
-    //           },
-    //           onComplete: function (paymentResult, options) { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
-    //               //например вызов вашей аналитики Facebook Pixel
-    //               console.log('Payment complete:', 'paymentResult', paymentResult, 'options', options);
-    //           }
-    //       }
-    //   )
-  };
+  //     //           },
+  //     //           onComplete: function (paymentResult, options) { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
+  //     //               //например вызов вашей аналитики Facebook Pixel
+  //     //               console.log('Payment complete:', 'paymentResult', paymentResult, 'options', options);
+  //     //           }
+  //     //       }
+  //     //   )
+  // };
 
   return (
     <>
@@ -387,63 +358,52 @@ const SelectRate = ({ redirect, isShowText }) => {
                 </span>
               </div>
             </div>
-            {user.is_test_used ? (
-              <div></div>
-            ) : (
-              <div className={styles.rightBlock}>
-                <div className={styles.blockBackground}>
-                  <div className={styles.accessTitle}>
-                    <span className={styles.activateAccess}>
-                      На этой странице вы можете активировать тестовый доступ на 3
-                      дня
-                    </span>
+            <div className={styles.rightBlock}>
+              <div className={styles.blockBackground}>
+                <div className={styles.accessTitle}>
+                  <span className={styles.activateAccess}>
+                    На этой странице вы можете активировать тестовый доступ на 3
+                    дня
+                  </span>
+                </div>
+                <div className={styles.accessPrice}>
+                  <div
+                    className={styles.accessPeriod}
+                    style={{ marginRight: '24px' }}
+                  >
+                    Доступ:
+                    <span className={styles.accessPeriodBold}>3 дня</span>
                   </div>
-                  <div className={styles.accessPrice}>
-                    <div
-                      className={styles.accessPeriod}
-                      style={{ marginRight: '24px' }}
-                    >
-                      Доступ:
-                      <span className={styles.accessPeriodBold}>3 дня</span>
-                    </div>
-                    <div className={styles.accessPeriod}>
-                      Стоимость:
-                      <span className={styles.accessPeriodBold}>1 ₽</span>
-                    </div>
-                  </div>
-                  <div className={styles.accessButton}>
-                    <button
-                      onClick={() => {
-                        pay(user.id, selectedPeriod, trialExpired);
-                      }}
-                    >
-                      Активировать тестовый период за 1₽
-                    </button>
+                  <div className={styles.accessPeriod}>
+                    Стоимость:
+                    <span className={styles.accessPeriodBold}>1 ₽</span>
                   </div>
                 </div>
-              </div>
-            )}
-
-          </div>
-          {user.is_test_used ? (
-            <div></div>
-          ) : (
-
-            <div className={styles.infoBlockWrapper}>
-              <div className={styles.infoBlockTitle}>
-                Почему активация тестового периода стоит 1₽?
-              </div>
-              <div className={styles.infoBlockTextSimple}>
-                Предоставление тестового доступа без ограничений по функционалу
-                требует затрат со стороны сервиса. Поэтому мы взимаем
-                символическую плату в размере 1₽ за активацию тестового периода,
-                чтобы наши ресурсы расходовались только на тех продавцов, кто
-                действительно заинтересован в тестировании аналитики. Оплата
-                доступна всеми возможными способами и занимает не более 45 секунд.
+                <div className={styles.accessButton}>
+                  <button
+                  // onClick={() => {
+                  //     pay(user.id, selectedPeriod, trialExpired);
+                  // }}
+                  >
+                    Активировать тестовый период за 1₽
+                  </button>
+                </div>
               </div>
             </div>
-          )}
-
+          </div>
+          <div className={styles.infoBlockWrapper}>
+            <div className={styles.infoBlockTitle}>
+              Почему активация тестового периода стоит 1₽?
+            </div>
+            <div className={styles.infoBlockTextSimple}>
+              Предоставление тестового доступа без ограничений по функционалу
+              требует затрат со стороны сервиса. Поэтому мы взимаем
+              символическую плату в размере 1₽ за активацию тестового периода,
+              чтобы наши ресурсы расходовались только на тех продавцов, кто
+              действительно заинтересован в тестировании аналитики. Оплата
+              доступна всеми возможными способами и занимает не более 45 секунд.
+            </div>
+          </div>
         </>
       )}
       <div
@@ -826,7 +786,7 @@ const SelectRate = ({ redirect, isShowText }) => {
                       {subscriptionDiscount ? (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? '1 ₽' : '1 495 ₽'}
+                            {!trialExpired ? '10 ₽' : '1 495 ₽'}
                           </span>
                           <span
                             style={{
@@ -851,7 +811,7 @@ const SelectRate = ({ redirect, isShowText }) => {
                       ) : (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? '1 ₽' : '2 990 ₽'}
+                            {!trialExpired ? '10 ₽' : '2 990 ₽'}
                           </span>
                           {!trialExpired && (
                             <>
@@ -950,16 +910,13 @@ const SelectRate = ({ redirect, isShowText }) => {
                     marginTop: '15px',
                   }}
                   onClick={() => {
-                    if (currentPath === '/') {
-                      if (user) {
-                        window.open('/tariffs', '_blank');
-                      }
-                      if (!user) {
-                        navigate('/signup');
-                      }
-                    } else {
-                      pay(user.id, selectedPeriod, trialExpired);
+                    if (user) {
+                      window.open('/signin', '_blank');
                     }
+                    if (!user) {
+                      navigate('/signup');
+                    }
+
                   }}
                 >
                   Активировать сервис
@@ -1065,46 +1022,46 @@ const SelectRate = ({ redirect, isShowText }) => {
           </div>
         </div>
       </div>
-      {currentPath === '/tariffs' && (
-        <>
-          <ReviewsUsers />
-          <div
-            className={`${styles.widSolutionMainImg} wid-solutionMain ${isHighResLoaded ? 'highResMain' : 'lowResMain'}`}
-          >
-            <div className={` ${styles.solDescription} sol-description col`} style={{ padding: 0 }}>
-              <div className='headStartBsn'>
-                <SolLabelStartBsn />
-                <div className='wid-solutionMainReady'>Готовы начать?</div>
-                <div className='wid-solutionMainText'>
-                  Найдите прибыльные товары на маркетплейсе и развивайте свой
-                  бизнес.
-                </div>
-                <div className='YellowRadarPoint' style={{ marginTop: '20px' }}>
-                  <YellowRadarPoint />
-                </div>
-              </div>
+      {/* {currentPath === '/tariffs' && (
+                <>
+                    <ReviewsUsers />
+                    <div
+                        className={`wid-solutionMain ${styles.widSolutionMainImg}`}
+                        style={{
+                            backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
+                                })`,
+                        }}
+                    >
+                        <div className='sol-description col' style={{ padding: 0 }}>
+                            <div className='headStartBsn'>
+                                <SolLabelStartBsn />
+                                <div className='wid-solutionMainReady'>Готовы начать?</div>
+                                <div className='wid-solutionMainText'>
+                                    Найдите прибыльные товары на маркетплейсе и развивайте свой
+                                    бизнес.
+                                </div>
+                                <div className='YellowRadarPoint' style={{ marginTop: '20px' }}>
+                                    <YellowRadarPoint />
+                                </div>
+                            </div>
 
-              <div className='d-flex flex-column gap-3'>
-                <CustomButton
-                  text={'Активировать сервис'}
-                  action={() => {
-                    pay(user.id, selectedPeriod, trialExpired);
-                  }}
-                  className={`white-btn ${styles.whiteBtn}`}
-                />
-              </div>
-            </div>
-            <div className={`sol-screenshot sol-screenshot_bottom ${styles.solScreenshotBbottom}`}>
-              <ImageComponent
-                heavyImageSrc={BlockImg_x2}
-                lightImageSrc={BlockImg_x1}
-              />
-            </div>
-          </div>
-        </>
-      )
-      }
+                            <div className='d-flex flex-column gap-3'>
+                                <CustomButton
+                                    text={'Активировать сервис'}
+                                    action={() => {
+                                        pay(user.id, selectedPeriod, trialExpired);
+                                    }}
+                                    className={'white-btn'}
+                                />
+                            </div>
+                        </div>
+                        <div className='sol-screenshot sol-screenshot_bottom'>
+                            <img src={BlockImg_x2} alt='' />
+                        </div>
+                    </div>
+                </>
+            )} */}
     </>
   );
 };
-export default SelectRate;
+export default SelectRateMain;

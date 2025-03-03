@@ -1,0 +1,144 @@
+/* @media (min-width: 1250px) and (max-width: 1300px)
+{
+    .thesesHomeModule{
+        height: 80px;
+        max-width: 620px;
+    }
+    .thesesListText{
+        font-size: 15px;
+    }
+    .thesesListImages img{
+        width: 50px;
+        height: 50px;
+    }
+    .verticalLine{
+        height: calc((var(--activeIndex) + 1) * 20%);
+    }
+    .images>img{
+        width: 98% !important;
+    }
+
+} */
+@media (min-width: 1200px) and (max-width: 1250px){
+    .blockInOnAnalytics{
+        height: 420px;
+    }
+    .internalAnalyticsBtn{
+        font-size: 18px;
+    }
+    .externalAnalyticsBtn{
+        font-size: 18px;
+    }
+}
+@media (min-width: 1250px) and (max-width: 1300px){
+    .blockInOnAnalytics{
+        height: 430px;
+    }
+    .internalAnalyticsBtn{
+        font-size: 18px;
+    }
+    .externalAnalyticsBtn{
+        font-size: 18px;
+    }
+}
+@media (min-width: 1300px) and (max-width: 1250px){
+    .blockInOnAnalytics{
+        height: 440px;
+    }
+}
+@media (min-width: 1400px) and (max-width: 1450px){
+    .blockInOnAnalytics{
+        height: 460px;
+    }
+}
+
+@media (min-width: 1700px) and (max-width: 2500px){
+    .thesesListText{
+        font-size: 18px!important;
+    }
+}
+@media (min-width: 1500px) and (max-width: 1700px){
+    .thesesListText{
+        font-size: 16px!important;
+    }
+}
+@media (min-width: 1100px) and (max-width: 1500px){
+    .thesesListText{
+        font-size: 15px!important;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 2500px)
+{
+
+    .thesesHomeModule{
+        height: calc(100% / 4 - 10px);
+       
+    }
+    .thesesListText{
+        font-size: 15px;
+    }
+    .thesesListImages img{
+        width: 50px;
+        height: 50px;
+    }
+    .verticalLine{
+        height: calc((var(--activeIndex) + 1) * 22%);
+    }
+    .images>img{
+        width:  -webkit-fill-available;
+        height: -webkit-fill-available;
+    }
+    .images{
+        width: -webkit-fill-available!important;
+    }
+
+}
+
+
+@media (min-width: 768px) and (max-width: 1200px) {
+    .blockInOnAnalytics{
+        flex-direction: column!important;
+    }
+    .internalAnalyticsBtn{
+        font-size: 18px;
+    }
+    .externalAnalyticsBtn{
+        font-size: 18px;
+    }
+    .btnAnalytics{
+        min-width: 100%;
+    }
+    .btnAnalysticsInternalExternal{
+        width: 50%!important;
+        text-align: left;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+    .thesesHomeModule{
+        height: 80px;
+        min-width: 100%;
+    }
+    .thesesListText{
+        font-size: 17px;
+    }
+    .thesesListImages img{
+        width: 50px;
+        height: 50px;
+    }
+    .verticalLine{
+        height: calc((var(--activeIndex) + 1) * 9.7%);
+    }
+    .images>img{
+        width: 98% !important;
+    }
+}
+@media (min-width: 768px) and (max-width: 950px) {
+
+    .verticalLine{
+        height: calc((var(--activeIndex) + 1) * 10%)!important;
+    }
+
+}

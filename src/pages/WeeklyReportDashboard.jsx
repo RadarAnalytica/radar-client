@@ -40,76 +40,101 @@ const WeeklyReportDashboard = () => {
   const filterSectionRef = useRef();
 
   useEffect(() => {
-      
-      dispatch(fetchDashboardFilters(
-        authToken
-      ))
-      
-    }, [authToken, dispatch])
 
-  const handleTaxSubmit = async ({ taxType, submit } = {}) => {
+    dispatch(fetchDashboardFilters(
+      authToken
+    ))
+
+  }, [authToken, dispatch])
+
+  const handleTaxSubmit = async ({ taxType, taxRate: inputTaxRate, submit } = {}) => {
     const currentTaxType = taxType || selectedValue;
+    // Если выбран тип "Не считать налог", принудительно ставим 0
     const currentTaxRate =
-      taxType === "Не считать налог" ? 0 : taxRate;
+      currentTaxType === "Не считать налог"
+        ? 0
+        : (inputTaxRate !== undefined ? inputTaxRate : taxRate);
 
     try {
       if (taxType) {
-        // Сценарий: выбор нового типа в <select>
         setSelectedValue(taxType);
-
         await ServiceFunctions.postTaxRateUpdate(authToken, {
           tax_rate: Number(currentTaxRate),
           tax_type: taxType,
         });
-
+        dispatch(fetchDashboardReport());
         filterSectionRef.current?.handleApplyFilters();
-
+        handleApplyFilters();
         if (taxType === "Не считать налог") {
           setTaxRate(0);
+          setIsEditing(false);
+        } else {
+          setTaxRate(dashboardData?.tax_rate);
           setIsEditing(false);
         }
       }
 
       if (submit) {
-        // Сценарий: подтверждение изменения ставки налога
         await ServiceFunctions.postTaxRateUpdate(authToken, {
           tax_rate: Number(currentTaxRate),
           tax_type: currentTaxType,
         });
+        dispatch(fetchDashboardReport());
 
-        // filterSectionRef.current?.handleApplyFilters();
-        handleApplyFilters()
+
+        filterSectionRef.current?.handleApplyFilters();
+        handleApplyFilters();
         setIsEditing(false);
       }
-      // filterSectionRef.current?.handleApplyFilters();
-      
-      // setIsEditing(false);
+      filterSectionRef.current?.handleApplyFilters();
+
     } catch (error) {
       console.error("Ошибка при обновлении налоговой ставки:", error);
     }
   };
-
   const handleApplyFilters = useCallback(async () => {
-    // const storageItem = localStorage.getItem('dashboard')
-    // let currentPageData = JSON.parse(storageItem)
-    // currentPageData = currentPageData ? currentPageData : {}
-    // console.log(currentPageData);
-    
-    // const filterPayload = {
-    //   warehouse_name_filter: currentPageData.wh ? currentPageData.wh : [],
-    //   brand_name_filter: currentPageData.brand ? currentPageData.brand : [],
-    //   groups_filter: currentPageData.group ? currentPageData.group : [],
-    //   date_sale_filter: {
-    //     years: currentPageData.year ? currentPageData.year : [],
-    //     months: currentPageData.month ? currentPageData.month : [],
-    //     weekdays: currentPageData.week ? currentPageData.week : [],
-    //   },
-    // };
-  
-      dispatch(
-        fetchDashboardReport({ token: authToken })
-      );
-    }, [authToken, dispatch, isFiltersLoading])
+    const storageItem = localStorage.getItem('dashboard')
+    let currentPageData = JSON.parse(storageItem)
+    currentPageData = currentPageData ? currentPageData : {}
+
+    const filterPayload = {
+      warehouse_name_filter: currentPageData.wh ? currentPageData.wh : [],
+      brand_name_filter: currentPageData.brand ? currentPageData.brand : [],
+      groups_filter: currentPageData.group ? currentPageData.group : [],
+      date_sale_filter: {
+        years: currentPageData.year ? currentPageData.year : [],
+        months: currentPageData.month ? currentPageData.month : [],
+        weekdays: currentPageData.week ? currentPageData.week : [],
+      },
+    };
+
+    dispatch(
+      fetchDashboardReport({ token: authToken, filterData: filterPayload })
+    );
+  }, [authToken, dispatch])
+
+
+  // const handleApplyFilters = useCallback(async () => {
+  // const storageItem = localStorage.getItem('dashboard')
+  // let currentPageData = JSON.parse(storageItem)
+  // currentPageData = currentPageData ? currentPageData : {}
+  // console.log(currentPageData);
+
+  // const filterPayload = {
+  //   warehouse_name_filter: currentPageData.wh ? currentPageData.wh : [],
+  //   brand_name_filter: currentPageData.brand ? currentPageData.brand : [],
+  //   groups_filter: currentPageData.group ? currentPageData.group : [],
+  //   date_sale_filter: {
+  //     years: currentPageData.year ? currentPageData.year : [],
+  //     months: currentPageData.month ? currentPageData.month : [],
+  //     weekdays: currentPageData.week ? currentPageData.week : [],
+  //   },
+  // };
+
+  // dispatch(
+  // fetchDashboardReport({ token: authToken })
+  // );
+  // }, [authToken, dispatch, isFiltersLoading])
 
   return (
     <div className='dashboard-page'>
@@ -615,9 +640,13 @@ const WeeklyReportDashboard = () => {
                             <select
                               className={styles.customSelect}
                               value={selectedValue}
-                              onChange={(e) =>
-                                handleTaxSubmit({ taxType: e.target.value })
-                              }
+                              onChange={(e) => {
+                                const selected = e.target.value;
+                                handleTaxSubmit({
+                                  taxType: selected,
+                                  taxRate: selected === "Не считать налог" ? 0 : taxRate,
+                                });
+                              }}
                             >
                               <option value='УСН-доходы'>УСН-доходы</option>
                               <option value='УСН Д-Р'>УСН Д-Р</option>
@@ -668,7 +697,7 @@ const WeeklyReportDashboard = () => {
                                 }}
                                 className={styles.taxRateWrapper}
                               >
-                                {dashboardData?.tax_rate || 0} %
+                                {taxRate || 0} %
                               </div>
                             )}
                           </div>
@@ -699,9 +728,7 @@ const WeeklyReportDashboard = () => {
                       </>
                     ) : (
                       <div
-                        className='d-flex flex-column align-items-center justify-content-center'
                         style={{
-                          height: '200px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
