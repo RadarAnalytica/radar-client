@@ -47,7 +47,7 @@ const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, descr
 
 
             {isOpen &&
-                <div className={styles.banner__body}>
+                <div className={styles.banner__body} onClick={() => {setIsOpen(false)}}>
                     {description ?
                         <p className={styles.banner__description}>
                             {description}
@@ -72,6 +72,7 @@ const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, descr
                                 className={styles.banner__tgLink}
                                 to='https://t.me/radar_analytica_support'
                                 target="blank"
+                                onClick={(e) => e.stopPropagation()}
                             >
                                 Написать в Telegram
                             </Link>
