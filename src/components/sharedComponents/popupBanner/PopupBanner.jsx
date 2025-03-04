@@ -39,17 +39,8 @@ const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, descr
                 </div>
 
                 <button className={styles.banner__button}>
-                    {!isOpen &&
-                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12.5 24V1" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" />
-                            <path d="M24 12.5L1 12.5" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                    }
-                    {isOpen &&
-                        <svg width="25" height="3" viewBox="0 0 25 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M24 1.5L1 1.5" stroke="#5329FF" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                    }
+                    {!isOpen && 'Подробнее'}
+                    {isOpen && 'Скрыть'}
                 </button>
             </div>
 
@@ -65,7 +56,7 @@ const PopupBanner = ({ mainTitle, mainSubtitle, offerTitle, offerSubtitle, descr
                         
                         <div className={styles.banner__bar}>
                             <p className={styles.banner__barText}>
-                                Мы развиваем партнерскую сеть и <b>предлагаем вам зарабатывать вместе с Радар-Аналитикой.</b> Получайте <b>до 1300</b> рублей за каждого привлеченного клиента, который зарегистрируется по вашей персональной ссылке. 
+                                Мы развиваем партнерскую сеть и <b>предлагаем вам зарабатывать вместе с&nbsp;Радар-Аналитикой.</b> Получайте <b>до 1300</b> рублей за&nbsp;каждого привлеченного клиента, который зарегистрируется по&nbsp;вашей персональной ссылке. 
                             </p>
 
                             <p className={styles.banner__barText}>

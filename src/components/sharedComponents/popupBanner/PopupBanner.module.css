@@ -109,17 +109,22 @@
 .banner__button {
     border: none;
     background: transparent;
-    width: 25px;
-    height: 25px;
     display: flex;
     place-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: 0%;
+    color: #5329FF;
+    align-self: flex-start;
 }
 
 .banner__body {
     width: 100%;
     display: grid;
     grid-template-columns: 4fr 3fr;
-    gap: 40px;
+    align-items: start;
+    gap: 20px;
     padding: 12px;
     min-height: 194px;
 }
@@ -130,9 +135,9 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
-    gap: 26px;
+    height: auto;
     background: #F7F7F7;
 }
 
@@ -206,7 +211,11 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 24px;
+    gap: 6px;
+
+    @media (max-width: 1600px) {
+        gap: 6px;
+    }
 }
 
 .banner__barText {

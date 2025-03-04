@@ -12,9 +12,9 @@
 }
 
 .bNav__costil {
-    width: 21vw;
-    max-width: 21vw;
-    min-width: 21vw;
+    width: 18vw;
+    min-width: 270px;
+    max-width: 18vw;
     min-height: 100%;
     padding: 0 20px;
 }
