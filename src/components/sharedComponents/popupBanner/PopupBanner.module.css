@@ -179,7 +179,7 @@
 .banner__sidebarText {
     font-weight: 500;
     font-size: 18px;
-    line-height: 29px;
+    line-height: 26px;
     color: #1A1A1A;
 
     @media (max-width: 1550px) {
