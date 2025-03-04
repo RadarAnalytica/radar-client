@@ -20,7 +20,6 @@ const SignInPage = () => {
       }
     };
     handleNavigation();
-    //setTimeout(handleNavigation, 300);
   }, [navigate, user]);
 
   return (

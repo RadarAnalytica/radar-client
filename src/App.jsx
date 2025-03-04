@@ -2,6 +2,7 @@ import "./App.css";
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./service/AuthContext";
+import { Suspense } from "react";
 // import MobileMenu from "./components/MobileMenu";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import Digitization from "./pages/Digitization";
@@ -60,6 +61,7 @@ const Schedule = React.lazy(() => import("./pages/Schedule"));
 const Period = React.lazy(() => import("./components/Period"));
 const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 const StartPage = React.lazy(() => import("./pages/StartPage"));
+import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
 
@@ -104,21 +106,21 @@ function App() {
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute><ReportMain /></ProtectedRoute>} />
             {/* Public routes */}
-            <Route path='/stub' element={<StubPage />} />
-            <Route path='/signup' element={<SignUpPage />} />
-            <Route path='/signin' element={<SignInPage />} />
-            <Route path='/spasibo' element={<Spasibo />} />
-            <Route path='/politics' element={<Politics />} />
-            <Route path='/user-agreement' element={<UserAgreement />} />
-            <Route path='/offer' element={<PublicOffer />} />
-            <Route path='/app' element={<MainWidget />} />
-            <Route path='/reset' element={<RequestResetLink />} />
-            <Route path='/restore/:email/:code' element={<ResetPage />} />
-            <Route path='/confirmation/:email/:code' element={<ConfirmationPage />} />
-            <Route path='/development/Page404' element={<Page404 />} />
-            <Route path='/contacts' element={<Contacts />} />
-            <Route path='/after-payment' element={<AfterPayment />} />
-            <Route path='/how-to-connect-api' element={<HowToConnectAPI />} />
+            <Route path='/stub' element={<Suspense fallback={<LoaderPage />}><StubPage /></Suspense>} />
+            <Route path='/signup' element={<Suspense fallback={<LoaderPage />}><SignUpPage /></Suspense>} />
+            <Route path='/signin' element={<Suspense fallback={<LoaderPage />}>{' '}<SignInPage /></Suspense>} />
+            <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}><Spasibo /></Suspense>} />
+            <Route path='/politics' element={<Suspense fallback={<LoaderPage />}><Politics /></Suspense>} />
+            <Route path='/user-agreement' element={<Suspense fallback={<LoaderPage />}><UserAgreement /></Suspense>} />
+            <Route path='/offer' element={<Suspense fallback={<LoaderPage />}><PublicOffer /></Suspense>} />
+            <Route path='/app' element={<Suspense fallback={<LoaderPage />}><MainWidget /></Suspense>} />
+            <Route path='/reset' element={<Suspense fallback={<LoaderPage />}><RequestResetLink /></Suspense>} />
+            <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}><ResetPage /></Suspense>} />
+            <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}><ConfirmationPage /></Suspense>} />
+            <Route path='/development/Page404' element={<Suspense fallback={<LoaderPage />}><Page404 /></Suspense>} />
+            <Route path='/contacts' element={<Suspense fallback={<LoaderPage />}><Contacts /></Suspense>} />
+            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}><AfterPayment /></Suspense>} />
+            <Route path='/how-to-connect-api' element={<Suspense fallback={<LoaderPage />}><HowToConnectAPI /></Suspense>} />
             {/*  */}
             <Route path='*' element={<Page404 />} />
           </Routes>
