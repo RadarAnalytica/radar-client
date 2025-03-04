@@ -185,7 +185,7 @@ const WeeklyReportByGoods = () => {
   return (
     <div className='dashboard-page'>
       <SideNav />
-      <div className='dashboard-content'>
+      <div className='dashboard-content pb-3'>
         <TopNav title={'По товарам'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <>
@@ -707,11 +707,7 @@ const WeeklyReportByGoods = () => {
             </span>
           </>
         )}
-        <div 
-          className={styles.bottomNavWrapper}
-        >
-           <BottomNavigation isStaticPosition={true} />
-        </div>
+           <BottomNavigation />
       </div>
     </div>
   );

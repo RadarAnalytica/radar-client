@@ -125,13 +125,13 @@ const ReportMain = () => {
   const handleClose = () => setShow(false);
 
   if (user?.subscription_status === 'expired') {
-    return <NoSubscriptionPage title={'Финансовые отчеты'} />;;
+    return <NoSubscriptionPage title={'Финансовые отчеты'} />;
   }
 
   return (
     <div className='dashboard-page notranslate'>
       <SideNav />
-      <div className='dashboard-content'>
+      <div className='dashboard-content pb-3'>
         <TopNav title={'Главная'} subTitle={'Отчёт /'} />
         <div className='container dash-container'>
           <div className={styles.instructionWrapper}>
@@ -447,11 +447,7 @@ const ReportMain = () => {
             </div>
           </div>
         </div>
-        <div 
-          className={styles.bottomNavWrapper}
-        >
-           <BottomNavigation isStaticPosition={true} />
-        </div>
+           <BottomNavigation />
       </div>
       <Modal
         show={openModal}

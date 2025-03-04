@@ -46,6 +46,8 @@ const BottomNavigation = ({ isStaticPosition = false }) => {
       </div>
     :
     <div className={isStaticPosition ? styles.bottomNavigationStatic : styles.bottomNavigation}>
+      <div className={styles.bNav__costil}></div>
+      <div className={styles.bNav__menuItemsWrapper}>
       {mainLinksArr.map((i, id) => 
         <Link 
           to={i.path} 
@@ -78,6 +80,7 @@ const BottomNavigation = ({ isStaticPosition = false }) => {
           </div>
         </div>
       }
+      </div>
     </div>
   }
 </>

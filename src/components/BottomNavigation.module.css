@@ -24,8 +24,8 @@
     min-height: 100%;
     padding: 10px 0;
     display: flex;
-    padding: 0 10px;
-    justify-content: flex-start;
+    padding: 10px;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -66,6 +66,7 @@
     background: #F7F7F7;
     border-radius: 20px;
     gap: 2px;
+    margin-left: 10px;
 }
 
 .bNav__menuButtonActive {
@@ -78,6 +79,7 @@
     background: rgba(83, 41, 255, 0.1);
     border-radius: 20px;
     gap: 2px;
+    margin-left: 10px;
 }
 
 .bNav__menuDot {
