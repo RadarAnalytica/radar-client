@@ -24,11 +24,15 @@ const BottomNavigation = ({ isStaticPosition = false }) => {
   const [ isMenuVisible, setIsMenuVisible ] = useState(false)
   const mainLinksArr = menuItemsArray.filter(_ => _.position === 'main')
   const secondaryLinksArr = menuItemsArray.filter(_ => _.position === 'secondary')
+  const [ mainLinksList, setMainListLinks ] = useState(mainLinksArr)
+  const [ menuLinksList, setMenuListLinks ] = useState(mainLinksArr)
   const isSecondaryLocation = secondaryLinksArr.some(_ => _.path === pathname)
   return (
     <>
     {window.screen.width >= 1470 ? 
       <div className={isStaticPosition ? styles.bottomNavigationStatic : styles.bottomNavigation}>
+        <div className={styles.bNav__costil}></div>
+        <div className={styles.bNav__menuItemsWrapper}>
           {menuItemsArray.map((i, id) => 
             <Link 
               to={i.path} 
@@ -38,6 +42,7 @@ const BottomNavigation = ({ isStaticPosition = false }) => {
               {i.title}
             </Link>
           )}
+          </div>
       </div>
     :
     <div className={isStaticPosition ? styles.bottomNavigationStatic : styles.bottomNavigation}>

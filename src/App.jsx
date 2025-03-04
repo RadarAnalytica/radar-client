@@ -91,15 +91,15 @@ function App() {
             <Route path='/external-expenses' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / Внешние расходы'><ExternalExpensesPage /></ProtectedRoute>} />
             <Route path='/buy-back' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / Самовыкуп'><ReportBuyBack /></ProtectedRoute>} />
             <Route path='/admin-panel' element={<ProtectedRoute expireProtected onboardProtected userRoleProtected role='admin' routeRuName='Админ панель'><AdminPanel /></ProtectedRoute>} />
-            <Route path='/' element={<ProtectedRoute guardType="fallback"><StartPage /></ProtectedRoute>} />
-            <Route path='/home' element={<ProtectedRoute guardType="fallback"><StartPage /></ProtectedRoute>} />
-            <Route path='/instruction' element={<ProtectedRoute guardType="redirect"><Instructions /></ProtectedRoute>} /> 
-            <Route path='/onboarding' element={<ProtectedRoute guardType="redirect"><Onboarding /></ProtectedRoute>} />
-            <Route path='/user/:email' element={<ProtectedRoute guardType="redirect"><UserInfo /></ProtectedRoute>} />
-            <Route path='/tariffs' element={<ProtectedRoute guardType="redirect"><TariffsPage /></ProtectedRoute>} />
-            <Route path='/subscription' element={<ProtectedRoute guardType="redirect"><Subscriptions /></ProtectedRoute>} />
-            <Route path='/schedule' element={<ProtectedRoute guardType="redirect"><Schedule /></ProtectedRoute>} />
-            <Route path='/period' element={<ProtectedRoute guardType="redirect"><Period /></ProtectedRoute>} />
+            <Route path='/' element={<ProtectedRoute authGuardType="fallback"><StartPage /></ProtectedRoute>} />
+            <Route path='/home' element={<ProtectedRoute authGuardType="fallback"><StartPage /></ProtectedRoute>} />
+            <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} /> 
+            <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect"><Onboarding /></ProtectedRoute>} />
+            <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
+            <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
+            <Route path='/subscription' element={<ProtectedRoute authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
+            <Route path='/schedule' element={<ProtectedRoute authGuardType="redirect"><Schedule /></ProtectedRoute>} />
+            <Route path='/period' element={<ProtectedRoute authGuardType="redirect"><Period /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute><ReportMain /></ProtectedRoute>} />
