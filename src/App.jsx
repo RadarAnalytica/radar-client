@@ -71,7 +71,7 @@ function App() {
           <Routes>
             {/* Protected routes */}
             <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
-            <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
+            <Route path='/abc-data-reports' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
             <Route path='/seo' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
             <Route path='/monitoring' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Мониторинг запросов'><RequestMonitoringPage /></ProtectedRoute>} />
             <Route path='/ai-generator' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
