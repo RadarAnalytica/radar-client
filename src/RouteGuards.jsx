@@ -3,6 +3,7 @@ import AuthContext from './service/AuthContext';
 import { Navigate } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
+import NoSubscriptionPage from './pages/NoSubscriptionPage';
 
 
 /**
@@ -21,7 +22,7 @@ import LoaderPage from './pages/LoaderPage';
  *  use layer fallback's to pass component for render. Use layer redirect's to set redirection url
  * 
  *  
- *  --- feel fre to dm me for any question -------
+ *  --- feel free to dm me for any questions -------
  * ----------------------------- Mike Starina ----
  */
 
@@ -33,31 +34,32 @@ const config = {
       /** ... */
     },
     authGuardType: 'redirect', // 'redirect' | 'fallback'
-    expireGuardType: 'redirect', // 'redirect' | 'fallback'
+    expireGuardType: 'fallback', // 'redirect' | 'fallback'
     onboardGuardType: 'redirect', // 'redirect' | 'fallback'
     userRoleGuardType: 'redirect', // 'redirect' | 'fallback'
     subscriptionGuardType: 'redirect', // 'redirect' | 'fallback'
     authProtected: true, // default protection level is auth
-    authFallback: () => (<MainPage />), // () => ReactNode
+    authFallback: (props) => (<MainPage {...props} />), // (props: any) => ReactNode
     authRedirect: '/signin', // any url
     expireProtected: false, // boolean
-    expireFallback: () => (<MainPage />),
+    expireFallback: (props) => (<NoSubscriptionPage {...props} />),
     expireRedirect: '/tariffs',
     onboardProtected: false,
-    onboardFallback: () => (<MainPage />),
+    onboardFallback: (props) => (<MainPage {...props} />),
     onboardRedirect: '/onboarding',
     userRoleProtected: false,
-    userRoleFallback: () => (<MainPage />),
+    userRoleFallback: (props) => (<MainPage {...props} />),
     userRoleRedirect: '/onboarding',
     subscriptionProtected: false,
-    subscriptionFallback: () => (<MainPage />),
+    subscriptionFallback: (props) => (<MainPage {...props} />),
     subscriptionRedirect: '/tariffs',
     subscription: 'Smart', // subscription type
     role: 'admin', // role type
 }
 
 export const ProtectedRoute = ({
-  children, 
+  children,
+  routeRuName, // use it as props for <NoSubscriptionPage /> --- required for expire level
   authGuardType = config.authGuardType,
   expireGuardType = config.expireGuardType,
   onboardGuardType = config.onboardGuardType,
@@ -93,7 +95,7 @@ export const ProtectedRoute = ({
   //   is_onboarded: true,
   //   is_report_downloaded: true,
   //   is_test_used: true,
-  //   role: "employee",
+  //   role: "admin",
   //   subscription_status: 'Smart'
   // }
 
@@ -102,7 +104,7 @@ export const ProtectedRoute = ({
   // ----------------------------------------------------------//
 
 
-  //------- 1. Auth protection (checking user exists) ----------//
+  //------- 1. Auth protection (checking is user exists) ----------//
   if (authProtected && !user) {
     switch(authGuardType) {
       case 'redirect': {
@@ -147,7 +149,7 @@ export const ProtectedRoute = ({
         case 'fallback': {
           return (
             <Suspense fallback={<LoaderPage />}>
-              {expireFallback()}
+              {expireFallback({title: routeRuName})}
             </Suspense>
           )
         }
