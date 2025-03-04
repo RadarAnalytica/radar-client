@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './BottomNavigation.module.css';
+import { offset } from 'highcharts';
 
 
 const menuItemsArray = [
@@ -18,37 +19,55 @@ const menuItemsArray = [
 ]
 
 
-const BottomNavigation = ({ isStaticPosition = false }) => {
+const BottomNavigation = () => {
 
+  const ref = useRef(null)
   const { pathname } = useLocation()
   const [ isMenuVisible, setIsMenuVisible ] = useState(false)
-  const mainLinksArr = menuItemsArray.filter(_ => _.position === 'main')
-  const secondaryLinksArr = menuItemsArray.filter(_ => _.position === 'secondary')
-  const [ mainLinksList, setMainListLinks ] = useState(mainLinksArr)
-  const [ menuLinksList, setMenuListLinks ] = useState(mainLinksArr)
-  const isSecondaryLocation = secondaryLinksArr.some(_ => _.path === pathname)
+  const [ mainLinksList, setMainListLinks ] = useState([])
+  const [ menuLinksList, setMenuListLinks ] = useState([])
+  const isSecondaryLocation = menuLinksList?.some(_ => _.path === pathname)
+  const [ menuWidth, setMenuWidth ] = useState(window.innerWidth)
+
+
+  useEffect(() => {
+    setMenuWidth(ref.current.offsetWidth)
+    const handleResize = () => {
+      let width = menuWidth
+      if (ref && ref.current && ref.current.offsetWidth) {
+        width = ref.current.offsetWidth
+      }
+      setMenuWidth(width)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+
+  useEffect(() => {
+    const index = Math.floor(menuWidth / 120);
+    const tempArray = [...menuItemsArray]
+    let menuArr = []
+    let mainArr = []
+
+    if (index < menuItemsArray.length) {
+      mainArr = tempArray.slice(0, index)
+      menuArr = tempArray.slice(index)
+    } else {
+      mainArr = tempArray
+    }
+      setMainListLinks(mainArr)
+      setMenuListLinks(menuArr)
+  }, [menuWidth])
+
   return (
     <>
-    {window.screen.width >= 1470 ? 
-      <div className={isStaticPosition ? styles.bottomNavigationStatic : styles.bottomNavigation}>
-        <div className={styles.bNav__costil}></div>
-        <div className={styles.bNav__menuItemsWrapper}>
-          {menuItemsArray.map((i, id) => 
-            <Link 
-              to={i.path} 
-              key={id}
-              className={i.path === pathname ? styles.navItemActive : styles.navItem}
-            >
-              {i.title}
-            </Link>
-          )}
-          </div>
-      </div>
-    :
-    <div className={isStaticPosition ? styles.bottomNavigationStatic : styles.bottomNavigation}>
+    <div className={styles.bottomNavigation}>
       <div className={styles.bNav__costil}></div>
-      <div className={styles.bNav__menuItemsWrapper}>
-      {mainLinksArr.map((i, id) => 
+      <div className={styles.bNav__menuItemsWrapper} ref={ref}>
+      {mainLinksList?.map((i, id) => 
         <Link 
           to={i.path} 
           key={id}
@@ -58,16 +77,16 @@ const BottomNavigation = ({ isStaticPosition = false }) => {
         </Link>
       )}
 
-      <button className={isSecondaryLocation ? styles.bNav__menuButtonActive : styles.bNav__menuButton} onClick={() => {setIsMenuVisible(true)}}>
-          <span className={styles.bNav__menuDot}></span>
-          <span className={styles.bNav__menuDot}></span>
-          <span className={styles.bNav__menuDot}></span>
-      </button>
+        {menuLinksList && menuLinksList.length > 0 && <button className={isSecondaryLocation ? styles.bNav__menuButtonActive : styles.bNav__menuButton} onClick={() => {setIsMenuVisible(true)}}>
+            <span className={styles.bNav__menuDot}></span>
+            <span className={styles.bNav__menuDot}></span>
+            <span className={styles.bNav__menuDot}></span>
+        </button> }
 
       {isMenuVisible &&
         <div className={styles.bNav__menu} onClick={() => {setIsMenuVisible(false)}}>
           <div className={styles.bNav__menuBar}>
-          {secondaryLinksArr.map((i, id) => 
+          {menuLinksList?.map((i, id) => 
             <Link 
               to={i.path} 
               key={id + 1}
@@ -82,7 +101,6 @@ const BottomNavigation = ({ isStaticPosition = false }) => {
       }
       </div>
     </div>
-  }
 </>
 );
 };
