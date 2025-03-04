@@ -35,7 +35,7 @@ const StartPage = () => {
                                         height: '100%',
                                         // border: '1px solid #C4C4C4',
                                     }}
-                                    src='https://play.boomstream.com/ebiWkmCg?title=0&start=1'
+                                    src='https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1'
                                     frameBorder='0'
                                     scrolling='no'
                                     allowFullScreen
