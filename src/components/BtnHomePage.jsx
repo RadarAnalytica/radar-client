@@ -153,42 +153,42 @@ const BtnHomePage = () => {
         Кому и для чего нужен наш сервис
       </div>
       <div className={`widhead-container-header  ${styles.widHeadContainerHeader}`}>
-        <button
+        <div
           onClick={() => handleClick("newbie")}
           className={activeButton === "newbie" ? "prime-btn" : "secondary-btn"}
           id='btnDop'
         >
-          {activeButton === "newbie" ? <Steps.Circle /> : <span></span>}
+          {activeButton === "newbie" ? <div style={{ marginTop: "6px" }}><Steps.Circle /></div> : <span style={{ marginTop: "6px" }}></span>}
           Новички
-        </button>
-        <button
+        </div>
+        <div
           onClick={() => handleClick("currentSellers")}
           className={
             activeButton === "currentSellers" ? "prime-btn" : "secondary-btn"
           }
           id='btnDop'
         >
-          {activeButton === "currentSellers" ? <Steps.Circle /> : <span></span>}
+          {activeButton === "currentSellers" ? <div style={{ marginTop: "6px" }}><Steps.Circle /></div> : <span style={{ marginTop: "6px" }}></span>}
           Действующие продавцы
-        </button>
-        <button
+        </div>
+        <div
           onClick={() => handleClick("business")}
           className={
             activeButton === "business" ? "prime-btn" : "secondary-btn"
           }
           id='btnDop'
         >
-          {activeButton === "business" ? <Steps.Circle /> : <span></span>}
+          {activeButton === "business" ? <div style={{ marginTop: "6px" }}><Steps.Circle /></div> : <span style={{ marginTop: "6px" }}></span>}
           Крупный бизнес
-        </button>
-        <button
+        </div>
+        <div
           onClick={() => handleClick("manager")}
           className={activeButton === "manager" ? "prime-btn" : "secondary-btn"}
           id='btnDop'
         >
-          {activeButton === "manager" ? <Steps.Circle /> : <span></span>}
+          {activeButton === "manager" ? <div style={{ marginTop: "6px" }}><Steps.Circle /></div> : <span style={{ marginTop: "6px" }}></span>}
           Менеджеры маркетплейсов и агентства
-        </button>
+        </div>
       </div >
       <div className='widhead-container widhead-container-main'>
         {renderedImages}

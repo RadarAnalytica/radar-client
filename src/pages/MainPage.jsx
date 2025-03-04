@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, lazy, Suspense } from 'react';
+import React, { useContext, useState, useEffect, lazy, Suspense, useRef } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -54,6 +54,9 @@ const MainPage = () => {
   const { user, authToken } = useContext(AuthContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
   // const [isLoading, setIsLoading] = useState(true);
+
+  const [videoLoaded, setVideoLoaded] = useState(false); // Видео загрузилось
+
 
   useEffect(() => {
     // Report LCP
@@ -137,14 +140,10 @@ const MainPage = () => {
       className='page-white'
       style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
     >
-      {/* {
-        !isVideoLoaded ? (
-          <div className='d-flex flex-column align-items-center justify-content-center' style={{ height: '100%', paddingTop: '15%' }}>
-            <span className='loader'></span>
-          </div>
-        ) : <div></div>
-      } */}
 
+      {videoLoaded &&
+        <LoaderPage /> // Показывает прелоадер на всю страницу
+      }
       <div>
         <div className={`container widbody-container container-xlwidth  ${styles.mainPageContainer}`}>
           <NavbarMainHome />
@@ -195,29 +194,19 @@ const MainPage = () => {
               videoMp4={highQualityVideo}
               style={{ width: '100%', height: "auto" }}
             /> */}
-              {/* <AdaptiveMedia
+              {/* <Suspense fallback={<LoaderPage />}> */}
+              <AdaptiveMedia
                 videoMp4={highQualityVideo}
                 // videoWebm={highQualityVideoWebm}
-                setIsVideoLoaded={setIsVideoLoaded}
                 poster={preview}
                 heavyImageSrc={BlockImg_x2}
                 lightImageSrc={BlockImg_x1}
                 style={{
                   width: "100%", height: "auto",
                 }}
-              /> */}
-              <Suspense fallback={<LoaderPage />}>
-                <AdaptiveMedia
-                  videoMp4={highQualityVideo}
-                  // videoWebm={highQualityVideoWebm}
-                  poster={preview}
-                  heavyImageSrc={BlockImg_x2}
-                  lightImageSrc={BlockImg_x1}
-                  style={{
-                    width: "100%", height: "auto",
-                  }}
-                />
-              </Suspense>
+                setIsVideoLoaded={() => setVideoLoaded(true)}
+              />
+              {/* </Suspense> */}
             </div>
           </div>
 
@@ -260,7 +249,7 @@ const MainPage = () => {
                   времени в одном месте
                 </div>
               </div>
-              <div className='widhead-container-image widhead-container-image-mob'>
+              <div className={`widhead-container-image widhead-container-image-mob ${styles.widheadContainerImgMob}`}>
                 <img
                   className={`manyApiLogoMobile ${styles.manyApiLogoMobile}`}
                   src={manyApiMobile}

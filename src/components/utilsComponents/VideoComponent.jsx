@@ -55,6 +55,7 @@ const VideoComponent = ({
                 loop
                 preload="metadata"
                 webkit-playsinline="true"
+                onLoadedData={() => setIsVideoLoaded()}
             >
                 {videoMp4 && <source src={videoMp4} type="video/mp4" />}
                 {videoWebm && <source src={videoWebm} type="video/webm" />}

@@ -12,6 +12,9 @@
 .imageMain{
     margin-top: 20px;
 }
+.widheadContainerImgMob{
+    display: none;
+}
 @media  (min-width: 1550px) and (max-width: 1601px) {
     .profitableStafText{
         font-size: 19px!important;
@@ -66,6 +69,7 @@
     .readyforStartText{
         font-size: 32px!important;
     }
+
 }
 @media  (min-width: 1200px) and (max-width: 1300px) {
     .salesIncreseText{
@@ -97,6 +101,9 @@
     .manyApiLogoMobile{
         display: block;
         width: 100%;
+    }
+    .widheadContainerImgMob{
+        display: block!important;
     }
     .manyApiLogo{
         display: none;
@@ -170,9 +177,15 @@
     .blockBtnContainerInner{
         min-width: 98%;
     }
+    .widheadContainerImgMob{
+        display: block!important;
+    }
 }
 
 @media  (min-width: 768px) and (max-width: 1100px) {
+    .widheadContainerImgMob{
+        display: block!important;
+    }
     .widSolutionText{
         font-size: 28px;
     }
@@ -205,7 +218,7 @@
         font-size: 18px;
     }
     .widheadContainTitle{
-        font-size: 21px;
+        font-size: 23px;
     }
     .manyApiLogoMobile{
         display: block;
@@ -260,3 +273,8 @@
 
     
 } 
+@media screen and (max-width: 768px) {
+    .widheadContainerImgMob{
+        display: block!important;
+    }
+}
