@@ -37,7 +37,8 @@ const StartPage = () => {
 
     const playClickHandler = () => {
             ref.current.contentWindow.postMessage({code: `https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50`, method: 'action', action: 'play', data: ''}, '*');
-            //setVideoSource('https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=1&volume=50')
+            //
+            // setVideoSource('https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=1&volume=50')
     }
 
 
