@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import SortArrows from './SortArrows';
+import SortArrows from '../SortArrows';
 import { useNavigate } from 'react-router-dom';
 
 const TableStock = ({ dataTable, setDataTable }) => {
@@ -69,7 +69,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <div style={{ width: '3.5vw', height: '100%' }}></div>
-      <div className='custom-table'>
+      <div className='custom-table' style={{overscrollBehavior: 'none'}}>
         <div className='table-container'>
           {dataTable.length === 0 && (
             <div

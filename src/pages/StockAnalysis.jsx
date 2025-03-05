@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import StockAnalysisFilter from '../components/StockAnalysisFilter';
-import TableStock from '../components/TableStock';
+import TableStock from '../components/tableStock/TableStock';
 import SearchButton from '../assets/searchstock.svg';
 import StockCostPrice from '../assets/stockcostprice.svg';
 import DownloadFile from '../assets/downloadxlfile.svg';
