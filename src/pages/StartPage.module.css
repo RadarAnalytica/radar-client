@@ -74,6 +74,7 @@
 
     @media (max-width: 1400px) {
         width: 100%;
+        align-items: center;
     }
 }
 
@@ -98,6 +99,10 @@
     align-items: center;
     cursor: pointer;
     z-index: 2;
+
+    @media (max-width: 1400px) {
+        max-width: 600px;
+    }
 }
 
 .gallery__videPlateTitleBox {
