@@ -1921,6 +1921,7 @@ select {
   overflow-y: auto;
   max-height: 500px;
   overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
 .table-header-category-monitoring > div{
@@ -2794,6 +2795,7 @@ select {
   position: relative;
   border-radius: 16px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+  overscroll-behavior: none;
 }
 
 .table-container {
