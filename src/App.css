@@ -435,6 +435,8 @@ select {
   background-color: white;
   justify-content: space-between;
   z-index: 12;
+  overflow: auto;
+  gap: 1rem;
 }
 
 
@@ -556,6 +558,7 @@ select {
   font-size: 16px;
   border-radius: 16px;
   /* padding: 10px; */
+  margin: 0;
 }
 .additional-tools.expanded {
   background: #f0ad000d;
@@ -566,7 +569,6 @@ select {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
   /* padding: 10px; */
-  margin: 0;
 }
 
 #root
