@@ -707,7 +707,7 @@ const WeeklyReportByGoods = () => {
             </span>
           </>
         )}
-        <BottomNavigation />
+           <BottomNavigation />
       </div>
     </div>
   );

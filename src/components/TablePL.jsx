@@ -287,16 +287,16 @@ const TablePL = ({ plData, isLoading }) => {
                           color: 'rgba(26, 26, 26, 1)',
                         }}
                       >
-                        {formatPrice(item.profit.value) || '0'} ₽
+                        {formatPrice(item.profit.value, '₽')}
                       </div>
                       <div className={styles.tableRow}>
-                        {formatPrice(item.averageBill.value) || '0'} ₽
+                        {formatPrice(item.averageBill.value, '₽')}
                       </div>
                       <div className={styles.tableRow}>
-                        {item.spp.percentage} %
+                        {formatPrice(item.spp.percentage, '%')}
                       </div>
                       <div className={styles.tableRow}>
-                        {item.soldOut.percentage} %
+                        {formatPrice(item.soldOut.percentage, '%')}
                       </div>
                       <div
                         className={styles.tableRow}
@@ -304,10 +304,10 @@ const TablePL = ({ plData, isLoading }) => {
                       >
                         <span className={styles.twoElements}>
                           <span className={styles.valueElement}>
-                            {formatPrice(item.costPrice.value)} ₽
+                            {formatPrice(item.costPrice.value, '₽')}
                           </span>
                           <span className={styles.percentageElement}>
-                            {item.costPrice.percentage} %
+                            {formatPrice(item.costPrice.percentage, '%')}
                           </span>
                         </span>
                       </div>
@@ -317,10 +317,10 @@ const TablePL = ({ plData, isLoading }) => {
                       >
                         <span className={styles.twoElements}>
                           <span className={styles.valueElement}>
-                            {formatPrice(item.keppWb.value) || '0'} ₽
+                            {formatPrice(item.keppWb.value, '₽')}
                           </span>
                           <span className={styles.percentageElement}>
-                            {item.keppWb.percentage} %
+                            {formatPrice(item.keppWb.percentage, '%')}
                           </span>
                         </span>
                       </div>
@@ -330,10 +330,10 @@ const TablePL = ({ plData, isLoading }) => {
                       >
                         <span className={styles.twoElements}>
                           <span className={styles.valueElement}>
-                            {formatPrice(item.commission.value)} ₽
+                            {formatPrice(item.commission.value, '₽')}
                           </span>
                           <span className={styles.percentageElement}>
-                            {item.commission.percentage} %
+                            {formatPrice(item.commission.percentage, '%')}
                           </span>
                         </span>
                       </div>
@@ -343,10 +343,10 @@ const TablePL = ({ plData, isLoading }) => {
                       >
                         <span className={styles.twoElements}>
                           <span className={styles.valueElement}>
-                            {formatPrice(item.equiring.value) || '0'} ₽
+                            {formatPrice(item.equiring.value, '₽')}
                           </span>
                           <span className={styles.percentageElement}>
-                            {item.equiring.percentage} %
+                            {formatPrice(item.equiring.percentage, '%')}
                           </span>
                         </span>
                       </div>
@@ -356,10 +356,10 @@ const TablePL = ({ plData, isLoading }) => {
                       >
                         <span className={styles.twoElements}>
                           <span className={styles.valueElement}>
-                            {formatPrice(item.logistic.value)} ₽
+                            {formatPrice(item.logistic.value, '₽')}
                           </span>
                           <span className={styles.percentageElement}>
-                            {item.logistic.percentage} %
+                            {formatPrice(item.logistic.percentage, '%')}
                           </span>
                         </span>
                       </div>
@@ -369,10 +369,10 @@ const TablePL = ({ plData, isLoading }) => {
                       >
                         <span className={styles.twoElements}>
                           <span className={styles.valueElement}>
-                            {formatPrice(item.storage.value) || '0'} ₽
+                            {formatPrice(item.storage.value, '₽')}
                           </span>
                           <span className={styles.percentageElement}>
-                            {item.storage.percentage} %
+                            {formatPrice(item.storage.percentage, '%')}
                           </span>
                         </span>
                       </div>
@@ -382,10 +382,10 @@ const TablePL = ({ plData, isLoading }) => {
                       >
                         <span className={styles.twoElements}>
                           <span className={styles.valueElement}>
-                            {formatPrice(item.anotherSum.value) || '0'} ₽
+                            {formatPrice(item.anotherSum.value, '₽')}
                           </span>
                           <span className={styles.percentageElement}>
-                            {item.anotherSum.percentage} %
+                            {formatPrice(item.anotherSum.percentage, '%')}
                           </span>
                         </span>
                       </div>
@@ -395,10 +395,10 @@ const TablePL = ({ plData, isLoading }) => {
                       >
                         <span className={styles.twoElements}>
                           <span className={styles.valueElement}>
-                            {formatPrice(item.payForEnter.value) || '0'} ₽
+                            {formatPrice(item.payForEnter.value, '₽')}
                           </span>
                           <span className={styles.percentageElement}>
-                            {item.payForEnter.percentage} %
+                            {formatPrice(item.payForEnter.percentage, '%')}
                           </span>
                         </span>
                       </div>
@@ -406,34 +406,34 @@ const TablePL = ({ plData, isLoading }) => {
                         className={styles.tableRow}
                         style={{ background: 'rgba(83, 41, 255, 0.05)' }}
                       >
-                        {formatPrice(item.payRC.value) || '0'} ₽
+                        {formatPrice(item.payRC.value, '₽')}
                       </div>
                       <div className={styles.tableRow}>
-                        {formatPrice(item.tax.value) || '0'} ₽
+                        {formatPrice(item.tax.value, '₽')}
                       </div>
                       <div className={styles.tableRow}>
-                        {formatPrice(item.allTotalOut.value) || '0'} ₽
+                        {formatPrice(item.allTotalOut.value, '₽')}
                       </div>
                       <div className={styles.tableRow}>
-                        {item.allTotalOut.percentage || '0'} %
+                        {formatPrice(item.allTotalOut.percentage, '%')}
                       </div>
                       <div
                         className={styles.tableRow}
                         style={{ background: 'rgba(83, 41, 255, 0.05)' }}
                       >
-                        {formatPrice(item.netProfit.value) || '0'} ₽
+                        {formatPrice(item.netProfit.value, '₽')}
                       </div>
                       <div
                         className={styles.tableRow}
                         style={{ background: 'rgba(83, 41, 255, 0.05)' }}
                       >
-                        {item.marginalProfit.percentage} %
+                        {formatPrice(item.marginalProfit.percentage, '%')}
                       </div>
                       <div
                         className={styles.tableRow}
                         style={{ background: 'rgba(83, 41, 255, 0.05)' }}
                       >
-                        {item.roi.percentage} %
+                        {formatPrice(item.roi.percentage, '%')}
                       </div>
                     </div>
                   );

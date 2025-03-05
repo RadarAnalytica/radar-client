@@ -87,7 +87,7 @@ const WeeklyReportByMonth = () => {
             </span>
           </>
         )}
-        <BottomNavigation />
+           <BottomNavigation />
       </div>
     </div>
   );

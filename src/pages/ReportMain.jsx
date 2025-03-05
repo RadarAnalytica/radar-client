@@ -125,7 +125,7 @@ const ReportMain = () => {
   const handleClose = () => setShow(false);
 
   if (user?.subscription_status === 'expired') {
-    return <NoSubscriptionPage title={'Финансовые отчеты'} />;;
+    return <NoSubscriptionPage title={'Финансовые отчеты'} />;
   }
 
   return (
@@ -447,7 +447,7 @@ const ReportMain = () => {
             </div>
           </div>
         </div>
-        <BottomNavigation />
+           <BottomNavigation />
       </div>
       <Modal
         show={openModal}

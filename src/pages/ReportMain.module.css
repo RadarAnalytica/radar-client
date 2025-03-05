@@ -18,6 +18,13 @@
     width: 100%;
 }
 
+.bottomNavWrapper {
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    overflow: hidden;
+}
+
 .topTextTitle {
     font-size: 24px;
     font-weight: 700;

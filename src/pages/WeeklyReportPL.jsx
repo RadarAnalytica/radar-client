@@ -261,7 +261,7 @@ const WeeklyReportPL = () => {
             <span></span>
           </>
         )}
-        <BottomNavigation />
+           <BottomNavigation />
       </div>
     </div>
   );

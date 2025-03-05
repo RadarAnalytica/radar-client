@@ -13,33 +13,32 @@ const TableSections = ({ data, cellWidths }) => {
         {/* Sales Section */}
         <div className={styles.flexContainer}>
           <div className={styles.purchaseCell} style={{ width: getMinWidth(cellWidths.purchaseCell)}}>
-            <div>{formatPrice(data?.purchases.rub) || '0'} ₽</div>
+            <div>{formatPrice(data?.purchases.rub, '₽')}</div>
             <div className={styles.smallText}>
-              {data?.purchases.quantity || '0'} шт
+              {formatPrice(data?.purchases.quantity, 'шт')}
             </div>
           </div>
           <div className={styles.returnCell} style={{ width: getMinWidth(cellWidths.returnCell)}}>
-            <div>{formatPrice(data?.return.rub) || '0'} ₽</div>
+            <div>{formatPrice(data?.return.rub, '₽')}</div>
             <div className={styles.smallText}>
-              {data?.return.quantity || '0'} шт
+              {formatPrice(data?.return.quantity, 'шт')}
             </div>
           </div>
           <div className={styles.salesCell} style={{ width: getMinWidth(cellWidths.salesCell) }}>
-            {data?.revenue.quantity || '0'} шт
+            {formatPrice(data?.revenue.quantity, 'шт')}
           </div>
           <div className={styles.revenueCell} style={{ width: getMinWidth(cellWidths.revenueCell)}}>
-            {formatPrice(data?.revenue.rub) || '0'} ₽
+            {formatPrice(data?.revenue.rub, '₽')}
           </div>
           <div className={styles.avgPriceCell} style={{ width: getMinWidth(cellWidths.avgPriceCell)}}>
-            {formatPrice(data?.avg_check) || '0'} ₽
+            {formatPrice(data?.avg_check, '₽')}
           </div>
           <div className={styles.sppCell} style={{ width: getMinWidth(cellWidths.sppCell)}}>
-            <span>{data?.avg_spp}</span>
-            <span style={{ marginLeft: '4px' }}>%</span>
+            <span>{formatPrice(data?.avg_spp, '%')}</span>
           </div>
           {/* <div className={styles.sppCell}>{data?.avg_spp} %</div> */}
           <div className={styles.buyoutCell} style={{ width: getMinWidth(cellWidths.buyoutCell)}}>
-            {data?.purchase_percent || '0'} %
+            {formatPrice(data?.purchase_percent, '%')} 
           </div>
         </div>
         {/* Self Cost Section */}
@@ -49,55 +48,47 @@ const TableSections = ({ data, cellWidths }) => {
         >
           <div className={styles.costCell} style={{ width: getMinWidth(cellWidths.costCell) }}>
             <div>
-              {data?.cost_price !== '-'
-                ? formatPrice(data?.cost_price) + ' ₽'
-                : '-'}
+              {formatPrice(data?.cost_price, '₽')}
             </div>
             <div className={styles.smallText}>
-              {data?.cost_price_percent !== '-'
-                ? data?.cost_price_percent + ' %'
-                : '-'}
+              {formatPrice(data?.cost_price_percent, '%')}
             </div>
           </div>
           <div className={styles.costPerUnitCell} style={{ width: getMinWidth(cellWidths.costPerUnitCell) }}>
-            {data?.cost_price !== '-'
-              ? formatPrice(
-                  data?.cost_price / data?.revenue.quantity
-                ) + ' ₽'
-              : '-'}
+            {formatPrice(data?.cost_price, '₽')}
           </div>
         </div>
         {/* Commision & Logisitc Section */}
         <div className={styles.flexContainer}>
           <div className={styles.deliveryCountCell} style={{ width: getMinWidth(cellWidths.deliveryCountCell) }}>
-            {data?.deliveries} шт
+            {formatPrice(data?.deliveries, 'шт')}
           </div>
           <div className={styles.commissionCell} style={{ width: getMinWidth(cellWidths.commissionCell) }}>
-            <div>{formatPrice(data?.wb_commission.rub) || '0'} ₽</div>
+            <div>{formatPrice(data?.wb_commission.rub, '₽')}</div>
             <div className={styles.smallText}>
-              {formatPrice(data?.wb_commission.percent)} %
+              {formatPrice(data?.wb_commission.percent, '%')}
             </div>
           </div>
           <div className={styles.acquiringCell} style={{ width: getMinWidth(cellWidths.acquiringCell) }}>
-            <div>{formatPrice(data?.acquiring.rub) || '0'} ₽</div>
+            <div>{formatPrice(data?.acquiring.rub, '₽')}</div>
             <div className={styles.smallText}>
-              {data?.acquiring.percent.toFixed(1)} %
+              {formatPrice(data?.acquiring.percent.toFixed(1), '%')}
             </div>
           </div>
           <div className={`${styles.logisticsCell}`} style={{ width: getMinWidth(cellWidths.logisticDeliveryCell) }}>
-            {formatPrice(data?.logistics_straight.rub) || '0'} ₽
+            {formatPrice(data?.logistics_straight.rub, '₽')}
           </div>
           <div className={`${styles.logisticsCell} ${styles.logisticReturnCell}`} style={{ width: getMinWidth(cellWidths.logisticReturnCell) }}>
-            {formatPrice(data?.logistics_reverse.rub) || '0'} ₽
+            {formatPrice(data?.logistics_reverse.rub, '₽')}
           </div>
           <div className={styles.logisticsCell} style={{ width: getMinWidth(cellWidths.logisticStorageCell) }}>
-            <div>{formatPrice(data?.logistics_total.rub) || '0'} ₽</div>
+            <div>{formatPrice(data?.logistics_total.rub, '₽')}</div>
             <div className={styles.smallText}>
-              {data?.logistics_total.percent.toFixed(1)} %
+              {formatPrice(data?.logistics_total.percent.toFixed(1), '%')}
             </div>
           </div>
           <div className={styles.logisticsCell} style={{ width: getMinWidth(cellWidths.logisticUnitCell) }}>
-            {formatPrice(data?.logistics_per_product) || '0'} ₽
+            {formatPrice(data?.logistics_per_product, '₽')}
           </div>
         </div>
         {/* Compensation and Penalties Section */}
@@ -106,42 +97,42 @@ const TableSections = ({ data, cellWidths }) => {
           style={{ background: 'rgba(83, 41, 255, 0.05)' }}
         >
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.defectCompnesaitionCell) }}>
-            {formatPrice(data?.compensation_defects.rub) || '0'} ₽
+            {formatPrice(data?.compensation_defects.rub, '₽')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.defectQuantityCell) }}>
-            {formatPrice(data?.compensation_defects.quantity) || '0'} шт
+            {formatPrice(data?.compensation_defects.quantity, 'шт')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.damageCompensationCell) }}>
-            {formatPrice(data?.compensation_damage.rub) || '0'} ₽
+            {formatPrice(data?.compensation_damage.rub, '₽')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.damageQuantityCell) }}>
-            {formatPrice(data?.compensation_damage.quantity) || '0'} шт
+            {formatPrice(data?.compensation_damage.quantity, 'шт')} 
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.finesCell) }}>
-            {formatPrice(data?.penalties) || '0'} ₽
+            {formatPrice(data?.penalties, '₽')}
           </div>
           {/* ?????? */}
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.payMoreCell) }}>
-            {formatPrice(data?.additional_payments) || '0'} ₽
+            {formatPrice(data?.additional_payments, '₽')}
           </div>
         </div>
         {/* Another Keep Section */}
         <div className={styles.flexContainer}>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.keepCell) }}>
-            <div>{formatPrice(data?.storage.rub) || '0'} ₽</div>
-            <div>{data?.storage.percent || '0'} %</div>
+            <div>{formatPrice(data?.storage.rub, '₽')}</div>
+            <div>{formatPrice(data?.storage.percent, '%')}</div>
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.keepOtherCell) }}>
-            <div>{formatPrice(data?.other_retentions.rub) || '0'} ₽</div>
-            <div>{data?.other_retentions.percent || '0'} %</div>
+            <div>{formatPrice(data?.other_retentions.rub, '₽')}</div>
+            <div>{formatPrice(data?.other_retentions.percent, '%')}</div>
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.payForTakeCell) }}>
-            <div>{formatPrice(data?.acceptance.rub) || '0'} ₽</div>
-            <div>{data?.acceptance.percent || '0'} %</div>
+            <div>{formatPrice(data?.acceptance.rub, '₽')}</div>
+            <div>{formatPrice(data?.acceptance.percent, '%')}</div>
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.payWbCell) }}>
-            <div>{formatPrice(data?.compensation_penalties.rub) || '0'} ₽</div>
-            <div>{data?.compensation_penalties.percent || '0'} %</div>
+            <div>{formatPrice(data?.compensation_penalties.rub, '₽')}</div>
+            <div>{formatPrice(data?.compensation_penalties.percent, '%')}</div>
           </div>
         </div>
         {/* External Expenses Section */}
@@ -150,26 +141,26 @@ const TableSections = ({ data, cellWidths }) => {
           style={{ background: 'rgba(83, 41, 255, 0.05)' }}
         >
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.selfPurchaseCostCell) }}>
-            {formatPrice(data?.self_purchase_costs) || '0'} ₽
+            {formatPrice(data?.self_purchase_costs, '₽')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.externalCostCell) }}>
-            <div>{formatPrice(data?.external_expenses) || '0'} ₽</div>
-            <div>{data?.expenses_percent || '0'} %</div>
+            <div>{formatPrice(data?.external_expenses, '₽')}</div>
+            <div>{formatPrice(data?.expenses_percent, '%')}</div>
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.externalCostAllCell) }}>
-            {formatPrice(data?.expenses) || '0'} ₽
+            {formatPrice(data?.expenses, '₽')}
           </div>
         </div>
         {/* Tax Section */}
         <div className={styles.flexContainer}>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.soldByWbCell) }}>
-            {formatPrice(data?.sold_by_wb) || '0'} ₽
+            {formatPrice(data?.sold_by_wb, '₽')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.taxBaseCell) }}>
-            {formatPrice(data?.tax_base) || '0'} ₽
+            {formatPrice(data?.tax_base, '₽')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.taxCell) }}>
-            {formatPrice(data?.tax) || '0'} ₽
+            {formatPrice(data?.tax, '₽')}
           </div>
         </div>
         {/* Finance Section */}
@@ -178,22 +169,22 @@ const TableSections = ({ data, cellWidths }) => {
           style={{ background: 'rgba(83, 41, 255, 0.05)' }}
         >
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.payToRsCell) }}>
-            {formatPrice(data?.payment) || '0'} ₽
+            {formatPrice(data?.payment, '₽')} 
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.pureProfitCell) }}>
-            {formatPrice(data?.profit) || '0'} ₽
+            {formatPrice(data?.profit, '₽')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.pureProfitPerUnitCell) }}>
-            {formatPrice(data?.profit_per_one) || '0'} ₽
+            {formatPrice(data?.profit_per_one, '₽')}
           </div>
           <div
             className={styles.defectCompnesaitionCell}
             style={{ width: getMinWidth(cellWidths.marginProfitCell) }}
           >
-            {formatPrice(data?.marginality) || '0'} %
+            {formatPrice(data?.marginality, '%')}
           </div>
           <div className={styles.defectCompnesaitionCell} style={{ width: getMinWidth(cellWidths.roiCell) }}>
-            {data?.return_on_investment || '0'} %
+            {formatPrice(data?.return_on_investment, '%')}
           </div>
         </div>
     </>

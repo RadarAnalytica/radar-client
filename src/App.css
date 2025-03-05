@@ -423,7 +423,9 @@ select {
 }
 
 .side-nav {
-  width: 22vw;
+  width: 18vw;
+  min-width: 270px;
+  max-width: 18vw;
   padding: 28px 20px;
   max-height: 100vh;
   position: sticky;

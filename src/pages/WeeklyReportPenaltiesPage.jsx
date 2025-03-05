@@ -63,7 +63,7 @@ const WeeklyReportPenaltiesPage = () => {
             </span>
           </>
         )}
-        <BottomNavigation />
+           <BottomNavigation />
       </div>
     </div>
   );

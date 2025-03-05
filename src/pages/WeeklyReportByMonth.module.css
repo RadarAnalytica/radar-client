@@ -12,6 +12,13 @@
   cursor: pointer;
 }
 
+.bottomNavWrapper {
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  overflow: hidden;
+}
+
 .applyButton {
   display: flex;
   align-items: center;

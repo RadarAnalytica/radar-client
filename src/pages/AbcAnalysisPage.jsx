@@ -13,6 +13,7 @@ import SelfCostWarning from "../components/SelfCostWarning";
 import { abcAnalysis } from "../service/utils";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import SeeMoreButton from "../components/SeeMoreButton";
+import BottomNavigation from "../components/BottomNavigation";
 import { useNavigate } from "react-router-dom";
 
 const AbcAnalysisPage = () => {
@@ -321,6 +322,7 @@ const AbcAnalysisPage = () => {
   return (
     isVisible && (
       <div className='dashboard-page'>
+        
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={"ABC-анализ"} />
@@ -356,10 +358,12 @@ const AbcAnalysisPage = () => {
               title={"Ваши данные еще формируются и обрабатываются."}
             />
           )}
+            <BottomNavigation />
         </div>
       </div>
     )
   );
 };
+
 
 export default AbcAnalysisPage;

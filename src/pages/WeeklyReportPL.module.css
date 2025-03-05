@@ -21,6 +21,13 @@
     gap: 20px;
   }
 
+  .bottomNavWrapper {
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    overflow: hidden;
+  }
+
   .responsiveImage {
     max-width: 100%;
     height: auto;

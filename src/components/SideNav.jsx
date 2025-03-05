@@ -11,6 +11,7 @@ import support from '../assets/support.png';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   openSupportWindow,
   closeSupportWindow,
@@ -60,8 +61,9 @@ const SideNav = () => {
   return (
     <div className='side-nav'>
       <div>
-        <img src={logo} alt='' style={{ maxWidth: '160px' }} />
-
+        <Link to='/'>
+          <img src={logo} alt='' style={{ maxWidth: '160px' }}/>
+        </Link>
         <div className='mt-4'>
           <div className='sidenav-el' onClick={() => navigate('/dashboard')}>
             <div className='d-flex align-items-center'>
