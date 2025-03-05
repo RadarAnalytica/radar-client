@@ -61,6 +61,7 @@ const Schedule = React.lazy(() => import("./pages/Schedule"));
 const Period = React.lazy(() => import("./components/Period"));
 const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 const StartPage = React.lazy(() => import("./pages/StartPage"));
+const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -88,7 +89,10 @@ function App() {
             <Route path='/development/monitoring' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Мониторинг запросов'><Monitoring /></ProtectedRoute>} />
             <Route path='/development/supply' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Расчет поставок'><SupplyCount /></ProtectedRoute>} />
             <Route path='/stock-analysis' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Товарная аналитика'><StockAnalysis /></ProtectedRoute>} />
+            {/** wip */}
             <Route path='/calculate' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Калькулятор unit-экономики товара'><Calculate /></ProtectedRoute>} />
+            <Route path='/devCalc' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Калькулятор unit-экономики товара'><UnitCalculatorPage /></ProtectedRoute>} />
+            
             <Route path='/orders-map' element={<ProtectedRoute expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
             <Route path='/linked-shops' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
