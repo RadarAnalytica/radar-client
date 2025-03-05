@@ -803,7 +803,7 @@ const OrdersMap = () => {
                       }}
                     >
                       <div>
-                        <h6 className='fw-bold d-flex align-items-center'>
+                        <h6 className='d-flex align-items-center fw-bold font-m'>
                           <div
                             style={{
                               width: '1vw',
@@ -816,9 +816,9 @@ const OrdersMap = () => {
                           </div>
                           {foName}
                         </h6>
-                        <div className='d-flex'>
-                          <p className='mb-1 col'>Общая доля</p>
-                          <p className='mb-1 fw-bold  col'>
+                        <div className='d-flex mb-1'>
+                          <p className='m-0 col'>Общая доля</p>
+                          <p className='m-0 col fw-bold'>
                             {formatPrice(tooltipData?.percent)} %
                             <img
                               src={
@@ -828,50 +828,40 @@ const OrdersMap = () => {
                               style={{ width: '1.25vw', marginLeft: '8px' }}
                             />
                             <span
-                              className='pt-1'
-                              style={
-                                tooltipData?.comparePercent > 0
-                                  ? {
-                                      fontSize: '1.5vh',
-                                      whiteSpace: 'nowrap',
-                                      fontWeight: 600,
-                                      color: 'rgba(0, 182, 155, 1)',
-                                      marginLeft: '2px',
-                                    }
-                                  : {
-                                      fontSize: '1.5vh',
-                                      whiteSpace: 'nowrap',
-                                      fontWeight: 600,
-                                      color: 'rgba(249, 60, 101, 1)',
-                                      marginLeft: '2px',
-                                    }
-                              }
+                              className=''
+                              style={{
+                                fontSize: '1.5vh',
+                                whiteSpace: 'nowrap',
+                                fontWeight: 600,
+                                color: tooltipData?.comparePercent > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)',
+                                marginLeft: '2px',
+                              }}
                             >
                               {tooltipData?.comparePercent} %
                             </span>
                           </p>
                         </div>
-                        <div className='d-flex'>
-                          <p className='mb-1 col'>Продажи, руб</p>
-                          <p className='mb-1 fw-bold  col'>
+                        <div className='d-flex mb-1'>
+                          <p className='m-0 col'>Продажи, руб</p>
+                          <p className='m-0 col fw-bold'>
                             {formatPrice(tooltipData?.salesAmount)}
                           </p>
                         </div>
-                        <div className='d-flex'>
-                          <p className='mb-1 col'>Продажи, шт</p>
-                          <p className='mb-1 fw-bold  col'>
+                        <div className='d-flex mb-1'>
+                          <p className='m-0 col'>Продажи, шт</p>
+                          <p className='m-0 col fw-bold'>
                             {tooltipData?.salesCount}
                           </p>
                         </div>
-                        <div className='d-flex'>
-                          <p className='mb-1 col'>Заказы, руб</p>
-                          <p className='mb-1 fw-bold col'>
+                        <div className='d-flex mb-1'>
+                          <p className='m-0 col'>Заказы, руб</p>
+                          <p className='m-0 col fw-bold'>
                             {formatPrice(tooltipData?.ordersAmount)}
                           </p>
                         </div>
-                        <div className='d-flex'>
-                          <p className='mb-1 col'>Заказы, шт</p>
-                          <p className='mb-1 fw-bold col'>
+                        <div className='d-flex mb-1'>
+                          <p className='m-0 col'>Заказы, шт</p>
+                          <p className='m-0 col fw-bold'>
                             {tooltipData?.ordersCount}
                           </p>
                         </div>

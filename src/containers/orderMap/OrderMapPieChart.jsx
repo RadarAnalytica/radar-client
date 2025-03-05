@@ -19,29 +19,17 @@ const OrderMapPieChart = ({
   tooltipData,
 }) => {
   const isOrders = title == 'Топ 5 по заказам';
-  const getColorTooltip = (name) => {
-    switch (name) {
-      case 'Сибирский фо':
-        return 'rgba(254, 197, 61, 1)';
-      case 'Уральский фо':
-        return 'grey';
-      case 'Южный фо':
-        return 'rgba(74, 217, 145, 1)';
-      case 'Северо-Кавказский фо':
-        return 'orangered';
-      case 'Центральный фо':
-        return 'rgba(129, 172, 255, 1)';
-      case 'Приволжский фо':
-        return 'rgba(255, 153, 114, 1)';
-      case 'Северо-Западный фо':
-        return 'yellow';
-      case 'Дальневосточный фо':
-        return 'brown';
-      default:
-        return 'transparent';
-    }
-  };
-
+  const colorSchema = {
+    'Сибирский фо': 'rgba(254, 197, 61, 1)',
+    'Уральский фо': 'grey',
+    'Южный фо': 'rgba(74, 217, 145, 1)',
+    'Северо-Кавказский фо': 'orangered',
+    'Центральный фо': 'rgba(129, 172, 255, 1)',
+    'Приволжский фо': 'rgba(255, 153, 114, 1)',
+    'Северо-Западный фо': 'yellow',
+    'Дальневосточный фо': 'brown',
+  }
+  
   const cityColors = [
     'rgba(129, 172, 255, 1)',
     'rgba(255, 153, 114, 1)',
@@ -79,7 +67,7 @@ const OrderMapPieChart = ({
 
   const getCityCircle = (color) => {
     return (
-      <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
+      <svg width='16' height='16' className='flex-shrink-0' xmlns='http://www.w3.org/2000/svg'>
         <circle cx='8' cy='8' r='8' fill={color} />
       </svg>
     );
@@ -96,7 +84,7 @@ const OrderMapPieChart = ({
 
   const colorCons = firstFive.map((systemItem) =>
     systemItem.districtName
-      ? getColorTooltip(systemItem.districtName)
+      ? colorSchema[systemItem.districtName] || 'transparent'
       : getColorStockTooltip(systemItem.stockName)
   );
 
@@ -124,12 +112,12 @@ const OrderMapPieChart = ({
 
   return (
     <div className='order-map-doughnut'>
-      <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>
+      <h5 className='fw-bold font-xl'>
         {title}
       </h5>
-      <div className='doughnut-content'>
+      <div className='doughnut-content row m-0 justify-content-between'>
         <div
-          className='col-5 me-2'
+          className='col-5 g-0'
           style={{ position: 'relative', marginLeft: '-1vw' }}
         >
           <Doughnut
@@ -300,7 +288,7 @@ const OrderMapPieChart = ({
               },
               layout: {
                 padding: {
-                  right: 20,
+                  right: 0,
                 },
               },
               spacing: 10,
@@ -320,12 +308,14 @@ const OrderMapPieChart = ({
           </div>
         </div>
         <div
+          className='col-md-7 g-0'
           style={{
-            marginLeft: '1vw',
-            display: 'flex',
-            flexDirection: 'column',
+            // marginLeft: '1vw',
+            // display: 'flex',
+            // flexDirection: 'column',
             alignSelf: 'center',
-            width: '100%',
+            minWidth: 0,
+            // width: '100%',
           }}
         >
           {firstFive
@@ -336,73 +326,54 @@ const OrderMapPieChart = ({
               const percent = isOrders ? obj.percentOrder : obj.percent;
               return (
                 <div
-                  className='mb-2 d-flex'
-                  style={{ flexWrap: 'wrap', maxWidth: '100%' }}
+                  className='mb-2 d-flex align-items-center font-m'
+                  style={{ columnGap: '8px', maxWidth: '100%' }}
                   key={key}
                 >
-                  <div className='d-flex align-items-start'>
-                    <span
-                      className='pb-2'
-                      style={{
-                        width: '0.75vw',
-                        height: '0.75vw',
-                        borderRadius: '100%',
-
-                        marginLeft: '-0.5vw',
-                        marginRight: '0.7vw',
-                        marginTop: '-0.75vh',
-                      }}
-                    >
-                      {obj.districtName
-                        ? getColor(obj.districtName)
-                        : getCityCircle(getColorStockTooltip(obj.stockName))}
-                    </span>
-                    <p className='mb-0  pe-2' style={{ fontSize: '1.75vh' }}>
-                      {obj.districtName ? obj.districtName : obj.stockName}
-                    </p>
+                  <div className='flex-shrink-0'>
+                    {obj.districtName
+                      ? getColor(obj.districtName)
+                      : getCityCircle(getColorStockTooltip(obj.stockName))}
                   </div>
-                  <p
-                    className='mb-0 col text-end fw-bold'
-                    style={{ fontSize: '1.85vh' }}
+                  <div 
+                    className='flex-grow-1'
+                    style={{minWidth: 0}}
+                    // style={{maxWidth: 'calc(100% - 172px)'}}
+                    title={obj.districtName ? obj.districtName : obj.stockName}
                   >
-                    {percent ? percent.toFixed(percent < 10 ? 1 : 0) : 0}
-                    &nbsp;%
-                  </p>
+                    <div className='text-truncate font-s'>
+                      {obj.districtName ? obj.districtName : obj.stockName}
+                    </div>
+                  </div>
                   <div
-                    className='mb-0 ms-1  col-2 text-end d-flex justify-content-around align-items-start'
-                    style={{
-                      fontSize: '1.85vh',
-                      paddingLeft: '1vw',
-                      marginRight: '1vw',
+                    className='text-end fw-bold font-m'
+                    style={{marginLeft: 'auto'}}
+                  >
+                    {percent ? percent.toFixed(percent < 10 ? 1 : 0) : 0}&nbsp;%
+                  </div>
+                  <div
+                    className='d-flex align-items-center'
+                    style={{ 
+                      columnGap: '8px',
+                      maxWidth: '100%'
                     }}
                   >
-                    <span className='pb-1'>
-                      <img
-                        src={compare > 0 ? GreenArrow : RedArrow}
-                        alt=''
-                        style={{ width: '1.25vw', marginRight: '4px' }}
+                    <img
+                      src={compare > 0 ? GreenArrow : RedArrow}
+                      alt='arrow'
+                      className='flex-shrink-0'
+                      style={{ width: '1.25vw' }}
                       />
-                    </span>
-                    <span
-                      className='pt-1 mr-1'
-                      style={
-                        compare > 0
-                          ? {
-                            fontSize: '1.5vh',
-                            whiteSpace: 'nowrap',
-                            fontWeight: 600,
-                            color: 'rgba(0, 182, 155, 1)',
-                          }
-                          : {
-                            fontSize: '1.5vh',
-                            whiteSpace: 'nowrap',
-                            fontWeight: 600,
-                            color: 'rgba(249, 60, 101, 1)',
-                          }
-                      }
+                    <div
+                      className='fw-semibold font-xs text-end'
+                      style={{
+                          // minWidth: '40px',
+                          whiteSpace: 'nowrap',
+                          color: compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)',
+                      }}
                     >
                       {compare ? Number(compare).toFixed(0) : 0} %
-                    </span>
+                    </div>
                   </div>
                 </div>
               );
