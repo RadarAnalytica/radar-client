@@ -7,3 +7,6 @@
         font-size: 18px!important;
     }
 }
+.widHeadContainerHeader > div{
+   display: flex;
+}

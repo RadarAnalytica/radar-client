@@ -1,11 +1,11 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import LoaderPage from "../pages/LoaderPage";
-import VideoComponent from "./utilsComponents/VideoComponent";
+import VideoComponent from "../components/utilsComponents/VideoComponent";
 import ImageComponent from "./utilsComponents/ImageComponent "
 
-const AdaptiveMedia = ({ videoMp4, poster, heavyImageSrc, lightImageSrc, style, setIsLoading }) => {
+const AdaptiveMedia = ({ videoMp4, poster, heavyImageSrc, lightImageSrc, style, setIsVideoLoaded }) => {
     const [showVideo, setShowVideo] = useState(window.innerWidth > 1080);
-    const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
 
     useEffect(() => {
         const handleResize = () => {

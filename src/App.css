@@ -205,7 +205,7 @@ select {
 }
 
 .prime-btn {
-  display: flex;
+  
   align-items: center;
   border: none;
   background-color: var(--primary-color);
