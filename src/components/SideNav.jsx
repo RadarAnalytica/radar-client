@@ -471,7 +471,7 @@ const SideNav = () => {
                 background: '#F0AD000D',
                 borderBottomLeftRadius: '16px',
                 borderBottomRightRadius: '16px',
-                padding: '5px',
+                padding: '5px 8px',
               }}
             >
               <p
