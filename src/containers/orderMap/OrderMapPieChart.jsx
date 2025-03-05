@@ -296,13 +296,13 @@ const OrderMapPieChart = ({
             }}
           />
           <div className='in-circle'>
-            <p className='clue-text mb-1' style={{ fontSize: '1.75vh' }}>
+            <p className='clue-text mb-1 font-s'>
               {sub}
             </p>
-            <p className='mb-1 fw-bold' style={{ fontSize: '2vh' }}>
+            <p className='mb-1 fw-bold font-m'>
               {formatPrice(totalAmount)} ₽
             </p>
-            <p className='mb-1' style={{ fontSize: '1.75vh', fontWeight: 600 }}>
+            <p className='mb-1 font-s fw-semibold'>
               {totalCount} шт
             </p>
           </div>

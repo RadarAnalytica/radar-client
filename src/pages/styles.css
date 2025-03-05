@@ -151,7 +151,7 @@ select {
 
 .order-map-doughnut p,
 .order-map-table p {
-  font-size: 2vh;
+  /* font-size: 2vh; */
 }
 
 .order-table-extended p {

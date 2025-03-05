@@ -314,7 +314,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                 />
                 <span
                   className='ms-2'
-                  style={{ color: data?.northCaucasian?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
+                  style={{ color: data?.centr?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
                 >
                   {Number(data?.centr?.compare).toFixed(0)} %
                 </span>
@@ -714,7 +714,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                 />
                 <span
                   className='ms-2'
-                  style={{ color: data?.northCaucasian?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
+                  style={{ color: data?.southern?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
                 >
                   {Number(data?.southern?.compare).toFixed(0)} %
                 </span>
@@ -1221,7 +1221,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                 />
                 <span
                   className='ms-2'
-                  style={{ color: data?.northCaucasian?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
+                  style={{ color: data?.farEastern?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
                 >
                   {Number(data?.farEastern?.compare).toFixed(0)} %
                 </span>
@@ -1753,7 +1753,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                 />
                 <span
                   className='ms-2'
-                  style={{ color: data?.northCaucasian?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
+                  style={{ color: data?.siberian?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
                 >
                   {Number(data?.siberian?.compare).toFixed(0)} %
                 </span>
@@ -1962,7 +1962,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                 />
                 <span
                   className='ms-2'
-                  style={{ color: data?.northCaucasian?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
+                  style={{ color: data?.ural?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
                 >
                   {Number(data?.ural?.compare).toFixed(0)} %
                 </span>
@@ -2276,7 +2276,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                 />
                 <span
                   className='ms-2'
-                  style={{ color: data?.northCaucasian?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
+                  style={{ color: data?.privolzhsky?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
                 >
                   {Number(data?.privolzhsky?.compare).toFixed(0)} %
                 </span>
@@ -2675,7 +2675,7 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                 />
                 <span
                   className='ms-2'
-                  style={{ color: data?.northCaucasian?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
+                  style={{ color: data?.northWestern?.compare > 0 ? 'rgba(0, 182, 155, 1)' : 'rgba(249, 60, 101, 1)' } }
                 >
                   {Number(data?.northWestern?.compare).toFixed(0)} %
                 </span>
