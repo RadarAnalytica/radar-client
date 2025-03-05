@@ -98,7 +98,7 @@
         image-rendering: crisp-edges;
     }
 }
-@media (min-width: 300px) and (max-width: 780px) {
+@media (min-width: 100px) and (max-width: 780px) {
     .finStatesHeaderTitle{
         white-space: normal;
         width: 100%;

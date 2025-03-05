@@ -1,0 +1,20 @@
+@media  (min-width: 768px) and (max-width: 1300px) {
+    .widSolutionMainImg{
+        flex-direction: column;
+        display: flex;
+        min-width: 100%;
+        justify-content: center;
+    }
+    .solDescription{
+        min-width: 100%;
+        display: flex;
+        align-items: flex-start;
+    }
+    .solScreenshotBbottom{
+        min-width: 100%;
+    }
+    .whiteBtn{
+        min-width: 300px;
+        margin-top: 10px;
+    }
+}

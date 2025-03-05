@@ -3,6 +3,7 @@ import "../pages/styles.css";
 import Theses from "../pages/images/ThesesAnalyticsHome";
 import IMG from "../pages/images/imgAnalytics";
 import lightImg from "../pages/images/mainDashboard.png";
+import styles from "../components/ToggleAnalyticsPanel.module.css"
 
 const ToggleAnalyticsPanel = () => {
   const [isActive, setActive] = useState(true);
@@ -47,8 +48,10 @@ const ToggleAnalyticsPanel = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isImagesLoaded]);
 
+
   const toggleClass = useCallback(
-    (index) => (index === activeIndex ? "thesesHome2" : "thesesHome"),
+    (index) =>
+      `thesesHome ${styles.thesesHomeModule} ${index === activeIndex ? "thesesHome2" : ""}`,
     [activeIndex]
   );
 
@@ -66,8 +69,8 @@ const ToggleAnalyticsPanel = () => {
     const thesesList = isActive ? Theses.inTheses : Theses.onTheses;
     return thesesList.map((el, index) => (
       <div key={index} className={toggleClass(index)}>
-        <div className='thesesListImages'>{el.img}</div>
-        <div className='thesesListText'>{el.txt}</div>
+        <div className={`thesesListImages ${styles.thesesListImages}`}>{el.img}</div>
+        <div className={`thesesListText ${styles.thesesListText}`}>{el.txt}</div>
       </div>
     ));
   }, [isActive, toggleClass]);
@@ -89,30 +92,30 @@ const ToggleAnalyticsPanel = () => {
 
   return (
     <div className='InOnAnalytics'>
-      <div className='btnAnalytics'>
+      <div className={`btnAnalytics ${styles.btnAnalytics}`}>
         <button
-          className={`btnAnalysticsInternalExternal ${isActive ? "prime-btn" : "secondary-btn"
+          className={` ${styles.btnAnalysticsInternalExternal} btnAnalysticsInternalExternal ${isActive ? "prime-btn" : "secondary-btn"
             }`}
           onClick={handleExternalClick}
         >
-          <span className='secondary-btn-text internal-analytics-btn'>
+          <span className={`secondary-btn-text internal-analytics-btn ${styles.internalAnalyticsBtn}`}>
             Внутренняя аналитика
           </span>
         </button>
         <button
-          className={`btnAnalysticsInternalExternal ${isActive ? "secondary-btn" : "prime-btn"
+          className={`${styles.btnAnalysticsInternalExternal} btnAnalysticsInternalExternal ${isActive ? "secondary-btn" : "prime-btn"
             }`}
           onClick={handleInternalClick}
         >
-          <span className='secondary-btn-text external-analytics-btn'>
+          <span className={`secondary-btn-text external-analytics-btn ${styles.externalAnalyticsBtn}`}>
             Внешняя аналитика
           </span>
         </button>
       </div>
 
-      <div className='blockInOnAnalytics'>
+      <div className={`blockInOnAnalytics ${styles.blockInOnAnalytics}`}>
         <div
-          className='vertical-line'
+          className={`vertical-line ${styles.verticalLine}`}
           style={{ "--activeIndex": activeIndex }}
         // style={{ height: `${(activeIndex + 1) * 20}%` }}
         ></div>
@@ -122,7 +125,7 @@ const ToggleAnalyticsPanel = () => {
         >
           {renderTheses}
         </div>
-        <div className='images'>{renderImage}</div>
+        <div className={` ${styles.images} images`}>{renderImage}</div>
       </div>
     </div>
   );

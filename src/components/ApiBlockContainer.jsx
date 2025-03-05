@@ -1,5 +1,6 @@
 import styles from "../components/ApiBlockContainer.module.css"
 import circle from "../assets/circleApi.svg"
+
 const ApiTitle = ({ title }) => {
     return (
         <div className={styles.titleWrapper}>
@@ -27,6 +28,21 @@ const ApiBlockContainer = () => {
                     <ApiTitle title={"Остатки по складам"} />
                     <ApiTitle title={"Общая статистика за день"} />
                 </div>
+            </div>
+
+            <div className={styles.apiItemsWrapperMedium}>
+                <div className={styles.titleRow}>
+                    <ApiTitle title={"Заказы"} />
+                    <ApiTitle title={"География заказов"} />
+                    <ApiTitle title={"Выкупы"} />
+                    <ApiTitle title={"SEO-аналитика карточки"} />
+
+                    <ApiTitle title={"Отмены"} />
+                    <ApiTitle title={"Возвраты"} />
+                    <ApiTitle title={"Остатки по складам"} />
+                    <ApiTitle title={"Общая статистика за день"} />
+                </div>
+
             </div>
         </div>
     )
