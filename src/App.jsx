@@ -65,6 +65,14 @@ import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
 
+/**
+ * --------------------------------------
+ * 1. To connect a protected route - just wrap it with ProtectedRoute component (mind the props! - instruction is inside)
+ * 2. To connect a public one - wrap it with Suspense with LoaderPage as fallback - this is highly important!
+ * --------------------------------------
+ */
+
+
 function App() {
 
   return (
@@ -106,22 +114,22 @@ function App() {
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute><ReportMain /></ProtectedRoute>} />
             {/* Public routes */}
-            <Route path='/stub' element={<Suspense fallback={<LoaderPage />}><StubPage /></Suspense>} />
-            <Route path='/signup' element={<Suspense fallback={<LoaderPage />}><SignUpPage /></Suspense>} />
+            <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
+            <Route path='/signup' element={<Suspense fallback={<LoaderPage />}>{' '}<SignUpPage /></Suspense>} />
             <Route path='/signin' element={<Suspense fallback={<LoaderPage />}>{' '}<SignInPage /></Suspense>} />
-            <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}><Spasibo /></Suspense>} />
-            <Route path='/politics' element={<Suspense fallback={<LoaderPage />}><Politics /></Suspense>} />
-            <Route path='/user-agreement' element={<Suspense fallback={<LoaderPage />}><UserAgreement /></Suspense>} />
-            <Route path='/offer' element={<Suspense fallback={<LoaderPage />}><PublicOffer /></Suspense>} />
-            <Route path='/app' element={<Suspense fallback={<LoaderPage />}><MainWidget /></Suspense>} />
-            <Route path='/reset' element={<Suspense fallback={<LoaderPage />}><RequestResetLink /></Suspense>} />
-            <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}><ResetPage /></Suspense>} />
-            <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}><ConfirmationPage /></Suspense>} />
-            <Route path='/development/Page404' element={<Suspense fallback={<LoaderPage />}><Page404 /></Suspense>} />
-            <Route path='/contacts' element={<Suspense fallback={<LoaderPage />}><Contacts /></Suspense>} />
-            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}><AfterPayment /></Suspense>} />
-            <Route path='/how-to-connect-api' element={<Suspense fallback={<LoaderPage />}><HowToConnectAPI /></Suspense>} />
-            {/*  */}
+            <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}>{' '}<Spasibo /></Suspense>} />
+            <Route path='/politics' element={<Suspense fallback={<LoaderPage />}>{' '}<Politics /></Suspense>} />
+            <Route path='/user-agreement' element={<Suspense fallback={<LoaderPage />}>{' '}<UserAgreement /></Suspense>} />
+            <Route path='/offer' element={<Suspense fallback={<LoaderPage />}>{' '}<PublicOffer /></Suspense>} />
+            <Route path='/app' element={<Suspense fallback={<LoaderPage />}>{' '}<MainWidget /></Suspense>} />
+            <Route path='/reset' element={<Suspense fallback={<LoaderPage />}>{' '}<RequestResetLink /></Suspense>} />
+            <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
+            <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
+            <Route path='/development/Page404' element={<Suspense fallback={<LoaderPage />}>{' '}<Page404 /></Suspense>} />
+            <Route path='/contacts' element={<Suspense fallback={<LoaderPage />}>{' '}<Contacts /></Suspense>} />
+            <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />
+            <Route path='/how-to-connect-api' element={<Suspense fallback={<LoaderPage />}>{' '}<HowToConnectAPI /></Suspense>} />
+            {/* 404 */}
             <Route path='*' element={<Page404 />} />
           </Routes>
         </ProductProvider>
