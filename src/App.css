@@ -487,10 +487,8 @@ select {
   background-color: white;
   justify-content: space-between;
   z-index: 12;
-  font-size: 2vh;
-  gap: 0.9em;
-  font-size: 2vh;
-  gap: 0.9em;
+  overflow: auto;
+  gap: 1rem;
 }
 
 
@@ -616,6 +614,7 @@ select {
   font-size: 2vh;
   padding: 0.5em 1em;
   border-radius: 16px;
+  /* padding: 10px; */
   margin: 0;
 }
 .additional-tools.expanded {
@@ -626,6 +625,7 @@ select {
   border-top-right-radius: 16px;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
+  /* padding: 10px; */
 }
 
 #root
