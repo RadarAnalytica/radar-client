@@ -32,7 +32,7 @@ const SignUpForm = () => {
   ];
 
   const [name, setName] = useState();
-  console.log('name', name);
+  // console.log('name', name);
   const [regData, setRegData] = useState({
     firstname: null,
     lastname: null,
@@ -41,7 +41,7 @@ const SignUpForm = () => {
     stage: options[0],
     email: null,
     password: null,
-    promo_сode: null,
+    promocode: null,
     confirmed: false,
     isOnboarded: false,
     referral_partner_link: localStorage.getItem('referralCode') || '', 
@@ -92,7 +92,7 @@ const SignUpForm = () => {
   };
 
   const getPromocode = (e) => {
-    setRegData({ ...regData, promo_сode: e.target.value });
+    setRegData({ ...regData, promocode: e.target.value });
   };
 
   const [sent, setSent] = useState(false);
@@ -252,6 +252,12 @@ const SignUpForm = () => {
           label={'На каком этапе вы находитесь?'}
           defaultValue={regData.stage}
           callback={getStage}
+        />
+        <InputField
+          type={'text'}
+          placeholder={'Промокод'}
+          label={'Промокод'}
+          callback={getPromocode}
         />
         <InputField
           type={'tel'}
