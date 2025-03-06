@@ -37,15 +37,10 @@ const StockAnalysis = () => {
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const storedActiveShop = localStorage.getItem('activeShop');
+  const storedActiveShopObject = JSON.parse(storedActiveShop);
+
   let activeShop;
-  if (storedActiveShop && typeof storedActiveShop === 'string') {
-    try {
-      activeShop = JSON.parse(storedActiveShop);
-    } catch (error) {
-      console.error('Error parsing storedActiveShop:', error);
-      activeShop = null;
-    }
-  }
+  
   const activeShopId = activeShop?.id;
   const idShopAsValue =
     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
@@ -78,6 +73,21 @@ const StockAnalysis = () => {
     : oneShop
       ? oneShop.is_primary_collect
       : allShop;
+  
+  if (storedActiveShop && typeof storedActiveShop === 'string') {
+    try {
+      const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
+      if (shops.length > 0 && controlValue !== 1 && !!activeBrand && activeBrand !== '0') {
+        localStorage.removeItem('activeShop')
+        window.location.reload()
+      }
+
+      activeShop = storedActiveShopObject;
+    } catch (error) {
+      console.error('Error parsing storedActiveShop:', error);
+      activeShop = null;
+    }
+  }
 
   const handleCostPriceShow = () => {
     setCostPriceShow(true);
@@ -112,6 +122,24 @@ const StockAnalysis = () => {
     );
   };
 
+      const validateStoredShop = () => {
+        if (storedActiveShop && shops?.length > 0) {
+          const storedShopExists = shops.some(
+            shop => shop.id === JSON.parse(storedActiveShop).id
+          );
+          if (!storedShopExists) {
+            localStorage.removeItem('activeShop');
+            window.location.reload();
+          }
+        }
+      };
+  
+      useEffect(() => {
+        if (shops?.length > 0) {
+          validateStoredShop();
+        }
+      }, [shops]);
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -134,6 +162,12 @@ const StockAnalysis = () => {
 
     fetchInitialData();
   }, []);
+
+  useEffect(() => {
+    const filteredData = filterData(stockAnalysisData, searchQuery);
+    setDataTable(filteredData);
+  }, [stockAnalysisData, searchQuery]);
+
   useEffect(() => {
     if (
       days !== prevDays.current ||
@@ -146,13 +180,6 @@ const StockAnalysis = () => {
       prevActiveBrand.current = activeBrand;
     }
   }, [days, activeBrand]);
-
-
-  useEffect(() => {
-    const filteredData = filterData(stockAnalysisData, searchQuery);
-    setDataTable(filteredData);
-  }, [stockAnalysisData, searchQuery]);
-
 
   useEffect(() => {
     if (shops.length > 0) {
@@ -205,7 +232,7 @@ const StockAnalysis = () => {
     return null; // or a loading indicator
   };
 
-  const getProdAnalyticXlsx = async (days, activeBrand, authToken) => {
+  const getProdAnalyticXlsx = async (days, activeBrand, authToken) => { 
     fetch(`${URL}/api/prod_analytic/download?period=${days}&shop=${activeBrand}`,
       {
         method: 'GET',
@@ -251,7 +278,7 @@ const StockAnalysis = () => {
 
           {shouldDisplay ? (
             <>
-              <div className='input-and-button-container container dash-container  pb-4 pt-0 d-flex flex-wrap justify-content-between  stock-mobile-header'>
+              <div className='input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center'>
                 <div className='search search-container'>
                   <div className='search-box'>
                     <input

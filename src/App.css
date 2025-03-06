@@ -207,8 +207,6 @@ select {
 }
 
 .prime-btn {
-  
-  align-items: center;
   border: none;
   background-color: var(--primary-color);
   color: white;
@@ -476,8 +474,9 @@ select {
 }
 
 .side-nav {
-  margin:0 20px 0 0 ;
-  width: 22vw;
+  width: 18vw;
+  min-width: 270px;
+  max-width: 18vw;
   padding: 28px 20px;
   /* max-height: 100vh; */
   min-height: 100vh;
@@ -2496,7 +2495,7 @@ select {
 
   top: 0px;
   white-space: nowrap;
-  padding: 16px 0 0px 16px;  
+  padding: 16px 0 0px 16px;
   /* padding: 16px; */
   align-items: center;
 }

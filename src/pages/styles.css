@@ -675,7 +675,7 @@ select {
   padding: 25px;
   border-radius: 20px;
 }
-@media (min-width: 1678px) and (max-width: 3000px) {
+@media (min-width: 1674px) and (max-width: 2000px) {
   .blockBtn {
     transition: background-image 0.5s ease-in-out;
     background-size: cover;
@@ -686,7 +686,7 @@ select {
     border-radius: 20px;
   }
 }
-@media (min-width: 1628px) and (max-width: 1678px) {
+@media (min-width: 1628px) and (max-width: 1674px) {
   .blockBtn {
     transition: background-image 0.5s ease-in-out;
     background-size: cover;
@@ -705,11 +705,15 @@ select {
 }
 
 
+
+
 @media (min-width: 1580px) and (max-width: 1601px) {
   .blockBtn {
     width: 46%;
   }
-
+  /* .profitableStafText{
+    font-size: 20px!important;
+  } */
 }
 
 
@@ -773,7 +777,7 @@ select {
   }
 }
 
-@media screen and (min-width: 769px) {
+@media (min-width: 768px) and (max-width: 2000px) {
 .apiBlockImg{
   display: none;
 }
@@ -934,14 +938,14 @@ select {
 @media (min-width: 1250px) and (max-width: 1300px) {
   .slider-item {
     width: 220px !important;
-    height: 387px !important;
+    height: 391px !important;
     border-radius: 15px;
   }
 }
 @media (min-width: 1200px) and (max-width: 1250px) {
   .slider-item {
     width: 220px !important;
-    height: 387px !important;
+    height: 391px !important;
     border-radius: 15px;
   }
 }
@@ -2042,7 +2046,6 @@ button.accordion-button.collapsed::after {
   font-weight: 700;
 }
 .widhead-container-header {
-  align-items: center;
   display: flex;
   justify-content: space-between;
   background-color: white;
@@ -3695,7 +3698,7 @@ button.accordion-button.collapsed::after {
   }
   
   .landing-price-btn img {
-    width: 25%;
+    width: 18%;
   }
   .userReviewsBlocks {
     font-size: 24px;

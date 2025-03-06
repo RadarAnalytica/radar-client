@@ -7,11 +7,6 @@ import { useAppDispatch } from "../redux/hooks";
 import { useSelector } from "react-redux";
 import { MessagesDropdown } from "./MessagesDropdown";
 import "../App.css";
-import styles from '../components/TopNav.module.css';
-import { useNavigation } from '../service/NavigationContext';
-
-import { FiMenu, FiX } from 'react-icons/fi';
-
 
 const TopNav = ({ title, children, subTitle }) => {
   const navigate = useNavigate();
@@ -22,9 +17,8 @@ const TopNav = ({ title, children, subTitle }) => {
   const [menuShown, setMenuShown] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
-  const { isOpen, toggleNavigation, iconVisible } = useNavigation();
 
-  const messages = useSelector((state) => state.messagesSlice.messages.messages);
+  const messages = useSelector((state) => state.messagesSlice.messages);
 
   const handleMouseEnter = () => {
     clearTimeout(timeoutId);
@@ -81,80 +75,38 @@ const TopNav = ({ title, children, subTitle }) => {
 
   return (
     <div className='top-nav'>
-      <div className='container dash-container d-flex align-items-center justify-content-between generator'>
-        <div className={`d-flex col me-2 ${styles.mobileNavHeader}`}>
+      <div className='container dash-container d-flex align-items-center justify-content-between'>
+        <div className='d-flex col me-2 top-wrapper'>
           {!title ? (
             <>
               <span className='me-3'>{`${user?.firstName} ${user?.lastName}`}</span>
               <span>{user?.email}</span>
             </>
           ) : (<>
-            {subTitle && <p
-              className='p-0'
+            {subTitle && <p 
+              className='p-0' 
               style={{
-                fontSize: "24px",
-                lineHeight: "30px",
-                color: 'rgba(26, 26, 26, 0.3)',
-                fontWeight: 700,
-                marginRight: '12px',
+                fontSize: "24px", 
+                lineHeight: "30px", 
+                color: 'rgba(26, 26, 26, 0.3)', 
+                fontWeight: 700, 
+                marginRight: '12px', 
                 marginBottom: '0'
               }}
             >
               {subTitle}
             </p>}
-            <p className={`m-0 p-0 fw-bold ${styles['top-nav-heading']}`}>
+            <p
+              style={{ fontSize: "2.75vh", fontWeight: 700 }}
+              className='m-0 p-0 fw-bold'
+            >
               {title}
             </p>
-          </>
+            </>
           )}
-          <div className={` justify-content-around top-menu generatorMain ${styles.mobileShowMobileNav}`}>
-            <span className='error-notification' ref={componentRef}>
-              <span onClick={(event) => handleErrorClick(event)}>
-                <svg
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <g clipPath='url(#clip0_592_1517)'>
-                    <path
-                      d='M22 19.8372H2V17.7442H3V10.451C3 5.23105 7.03 1 12 1C16.97 1 21 5.23105 21 10.451V17.7442H22V19.8372ZM5 17.7442H19V10.451C19 6.38744 15.866 3.09302 12 3.09302C8.134 3.09302 5 6.38744 5 10.451V17.7442ZM9.5 20.8837H14.5C14.5 21.5776 14.2366 22.2431 13.7678 22.7337C13.2989 23.2244 12.663 23.5 12 23.5C11.337 23.5 10.7011 23.2244 10.2322 22.7337C9.76339 22.2431 9.5 21.5776 9.5 20.8837Z'
-                      fill='#09121F'
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id='clip0_592_1517'>
-                      <rect width='24' height='24' fill='white' />
-                    </clipPath>
-                  </defs>
-                </svg>
-                {messages?.length <= 0 ? (
-                  ""
-                ) : (
-                  <span className='error-number'>{messages?.length}</span>
-                )}
-              </span>
-              {showErrorPopup && (
-                <span className='error-popup'>
-                  <MessagesDropdown messages={messages} />
-                </span>
-              )}
-            </span>
-            <span>
-              <MdOutlineSettings
-                id='settings-icon'
-                onClick={() => setMenuShown(true)}
-                style={{ cursor: "pointer", width: "28px", height: "28px" }}
-              />
-            </span>
-            <span className="burger-menu-mobile" onClick={toggleNavigation}>
-              {isOpen ? <FiX size={30} /> : <FiMenu size={30} />}
-            </span>
-          </div>
         </div>
         {children}
-        <span className={`col-2 justify-content-around top-menu ${styles.mobileShowDesktopNav}`}>
+        <span className='col-2 d-flex justify-content-around top-menu top-wrapper'>
           <span className='error-notification' ref={componentRef}>
             <span onClick={(event) => handleErrorClick(event)}>
               <svg
@@ -176,7 +128,7 @@ const TopNav = ({ title, children, subTitle }) => {
                   </clipPath>
                 </defs>
               </svg>
-              {messages?.length <= 0 ? (
+              {messages?.length <= 0 || messages === undefined ? (
                 ""
               ) : (
                 <span className='error-number'>{messages?.length}</span>
@@ -191,7 +143,7 @@ const TopNav = ({ title, children, subTitle }) => {
           <MdOutlineSettings
             id='settings-icon'
             onClick={() => setMenuShown(true)}
-            style={{ cursor: "pointer", fontSize: "28px" }}
+            style={{ maxWidth: "3vw", cursor: "pointer", fontSize: "28px" }}
           />
         </span>
 
@@ -256,6 +208,12 @@ const TopNav = ({ title, children, subTitle }) => {
             </a>
           </div>
         ) : null}
+        {/* <div className="hamburger col-2 d-flex justify-content-around">
+                    <RxHamburgerMenu
+                        style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px', color: 'black' }}
+                        onClick={() => setShowMobile(true)}
+                    />
+                </div> */}
       </div>
     </div>
   );

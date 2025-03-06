@@ -17,7 +17,6 @@ import AuthContext from "../service/AuthContext";
 import MessageWindow from '../components/MessageWindow';
 import warningIcon from "../assets/warning.png"
 import Modal from 'react-bootstrap/Modal';
-import NoSubscriptionPage from './NoSubscriptionPage';
 
 const RequestMonitoringPage = () => {
 
@@ -37,6 +36,7 @@ const RequestMonitoringPage = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [sort, setSort] = useState("desc");
+    const [isTableLoading, setIsTableLoading] = useState(false);
 
     // Функции для открытия и закрытия модального окна
     const handleShowModal = () => setShowModal(true);
@@ -48,7 +48,6 @@ const RequestMonitoringPage = () => {
 
     const handleFilterSearch = async () => {
         if (searchInputQuery) {
-            setIsLoading(true);
             await updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25, sort)
 
         } else {
@@ -64,7 +63,7 @@ const RequestMonitoringPage = () => {
     const updateRequestMonitoring = async (
         token, product, period, page, page_limit, sort
     ) => {
-        setIsLoading(true);
+        setIsTableLoading(true);
         setErrorMessage('');
         try {
             const data = await ServiceFunctions.postRequestMonitoring(
@@ -105,14 +104,9 @@ const RequestMonitoringPage = () => {
             handleShowModal();
         } finally {
             setHasSearched(true);
-            setIsLoading(false);
+            setIsTableLoading(false);
         }
     };
-
-
-    if (user?.subscription_status === 'expired') {
-        return <NoSubscriptionPage title={'Мониторинг запросов'} />;
-    }
 
 
     return <div className='dashboard-page'>
@@ -122,7 +116,7 @@ const RequestMonitoringPage = () => {
 
 
 
-            {!hasSearched && !isLoading ? (
+            {!hasSearched && !isTableLoading ? (
 
                 <div className='request-mon-search-wrapper container dash-container d-flex' style={{ flexDirection: "column" }}>
 
@@ -132,26 +126,22 @@ const RequestMonitoringPage = () => {
                     </div>
                     <div className='enteringRequestText'>Раздел покажет по каким ключевым запросам индексируется карточка товара</div>
                     <div className='search'>
-                        <div className='request-monitoring-search-mobile'>Введите артикул или ссылку на карточку товара:</div>
-                        <div className='search-mobile-req-monitoring'>
-                            <input
-                                type='text'
-                                placeholder='Введите артикул или ссылку на карточку товара'
-                                className='search-input'
-                                value={searchInputQuery}
-                                onChange={handleSearchQuery}
-                                style={{ marginLeft: '20px' }}
+                        <input
+                            type='text'
+                            placeholder='Введите артикул или ссылку на карточку товара'
+                            className='search-input'
+                            value={searchInputQuery}
+                            onChange={handleSearchQuery}
+                            style={{ marginLeft: '20px' }}
+                        />
+                        <div style={{ marginLeft: '10px' }}>
+                            <img
+                                src={SearchButton}
+                                alt="Search"
+                                onClick={handleFilterSearch}
+                                style={{ cursor: 'pointer' }}
                             />
-                            <div className="serach-button-wrapper" style={{ marginLeft: '10px' }}>
-                                <img
-                                    src={SearchButton}
-                                    alt="Search"
-                                    onClick={handleFilterSearch}
-                                    style={{ cursor: 'pointer' }}
-                                />
-                            </div>
                         </div>
-
                     </div>
                 </div>
             ) : isLoading ? (
@@ -182,51 +172,46 @@ const RequestMonitoringPage = () => {
                         </div>
                         <div className='enteringRequestText'>Раздел покажет по каким ключевым запросам индексируется карточка товара</div>
                         <div className='search'>
-                            <div className='request-monitoring-search-mobile'>Введите артикул или ссылку на карточку товара:</div>
-                            <div className='search-mobile-req-monitoring'>
-                                <input
-                                    type='text'
-                                    placeholder='Введите артикул или ссылку на карточку товара'
-                                    className='search-input'
-                                    value={searchInputQuery}
-                                    onChange={handleSearchQuery}
-                                    style={{ marginLeft: '20px' }}
+                            <input
+                                type='text'
+                                placeholder='Введите артикул или ссылку на карточку товара'
+                                className='search-input'
+                                value={searchInputQuery}
+                                onChange={handleSearchQuery}
+                                style={{ marginLeft: '20px' }}
+                            />
+                            <div style={{ marginLeft: '10px' }}>
+                                <img
+                                    src={SearchButton}
+                                    alt="Search"
+                                    onClick={handleFilterSearch}
+                                    style={{ cursor: 'pointer' }}
                                 />
-                                <div className="serach-button-wrapper" style={{ marginLeft: '10px' }}>
-                                    <img
-                                        src={SearchButton}
-                                        alt="Search"
-                                        onClick={handleFilterSearch}
-                                        style={{ cursor: 'pointer' }}
-                                    />
-                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
             ) : (
                 <>
                     <div className='request-mon-search-wrapper container dash-container d-flex'>
                         <div className='search'>
-                            <div className='request-monitoring-search-mobile'>Введите артикул или ссылку на карточку товара:</div>
-                            <div className='search-mobile-req-monitoring'>
-                                <input
-                                    type='text'
-                                    placeholder='Введите артикул или ссылку на карточку товара'
-                                    className='search-input'
-                                    value={searchInputQuery}
-                                    onChange={handleSearchQuery}
-                                    style={{ marginLeft: '20px' }}
+                            <input
+                                type='text'
+                                placeholder='Введите артикул или ссылку на карточку товара'
+                                className='search-input'
+                                value={searchInputQuery}
+                                onChange={handleSearchQuery}
+                                style={{ marginLeft: '20px' }}
+                            />
+                            <div style={{ marginLeft: '10px' }}>
+                                <img
+                                    src={SearchButton}
+                                    alt="Search"
+                                    onClick={handleFilterSearch}
+                                    style={{ cursor: 'pointer' }}
                                 />
-                                <div className="serach-button-wrapper" style={{ marginLeft: '10px' }}>
-                                    <img
-                                        src={SearchButton}
-                                        alt="Search"
-                                        onClick={handleFilterSearch}
-                                        style={{ cursor: 'pointer' }}
-                                    />
-                                </div>
                             </div>
                         </div >
                     </div>
@@ -235,7 +220,7 @@ const RequestMonitoringPage = () => {
                         style={{ justifyContent: 'space-between', marginBottom: '9px' }}
                     >
                         <div className='productInfo-price-photo'>
-                            {isLoading && (
+                            {isTableLoading && (
                                 <div
                                     className='d-flex flex-column align-items-center justify-content-center'
                                     style={{ height: '100%', paddingTop: '5%', width: '100%' }}
@@ -243,7 +228,7 @@ const RequestMonitoringPage = () => {
                                     <span className='loader'></span>
                                 </div>
                             )}
-                            {!isLoading && (
+                            {!isTableLoading && (
                                 <>
                                     {/* <div className='productInfo-price-photo-photo'>
                                     <img
@@ -299,7 +284,7 @@ const RequestMonitoringPage = () => {
                         <div
                             className='productInfo-wbInfo'
                         >
-                            {isLoading && (
+                            {isTableLoading && (
                                 <div
                                     className='d-flex flex-column align-items-center justify-content-center'
                                     style={{ height: '100%', paddingTop: '5%', width: '100%' }}
@@ -307,7 +292,7 @@ const RequestMonitoringPage = () => {
                                     <span className='loader'></span>
                                 </div>
                             )}
-                            {!isLoading && (
+                            {!isTableLoading && (
                                 <>
                                     <div className='d-flex'>
                                         <span className='productInfo-wbInfo-rating'>
@@ -372,7 +357,7 @@ const RequestMonitoringPage = () => {
                         </div>
 
                         <div className='barcode-sku-brand'>
-                            {isLoading && (
+                            {isTableLoading && (
                                 <div
                                     className='d-flex flex-column align-items-center justify-content-center'
                                     style={{ height: '100%', paddingTop: '5%', width: '100%' }}
@@ -380,7 +365,7 @@ const RequestMonitoringPage = () => {
                                     <span className='loader'></span>
                                 </div>
                             )}
-                            {!isLoading && (
+                            {!isTableLoading && (
                                 <div className='barcode-wrapper'>
                                     <div className='barcode'>
                                         <div className='barcode-row'>
@@ -412,7 +397,7 @@ const RequestMonitoringPage = () => {
                         <RequestMonitoringFilter setDays={setDays} days={days} />
                     </div>
                     {/* {shouldDisplay ? ( */}
-                    {isLoadingSearch ? (
+                    {isTableLoading ? (
                         <div className="loader-wrapper">
                             <span className="loader"></span>
                         </div>

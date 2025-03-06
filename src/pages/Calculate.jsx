@@ -67,7 +67,7 @@ const Calculate = () => {
 
     if (user?.subscription_status === 'expired') {
         return <NoSubscriptionPage title={'Калькулятор unit-экономики товара'} />
-    };
+      };
 
     return (
         <div className='calculate-page'>
