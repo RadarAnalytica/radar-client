@@ -19,7 +19,6 @@ const RequestMonitoringFilter = ({ setDays, days }) => {
                             padding: '1vh 1.75vh',
                             backgroundColor: 'rgba(0, 0, 0, 0.05)',
                             borderRadius: '8px',
-                            width: "200px"
                         }}
                         className='form-control'
                         id='period'
@@ -37,8 +36,8 @@ const RequestMonitoringFilter = ({ setDays, days }) => {
                     <svg
                         style={{
                             position: 'absolute',
-                            left: '190px',
-                            bottom: '14px',
+                            right: '1.75vw',
+                            top: '5.5vh',
                             width: '1.5vh',
                         }}
                         viewBox='0 0 28 17'

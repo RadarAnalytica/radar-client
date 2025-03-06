@@ -2,7 +2,7 @@ import React from 'react';
 
 const RadioGroup = ({ options, name, defaultValue, onChange }) => {
   return (
-    <div className='map-radio mb-3 mobile-map-radio'>
+    <div className='map-radio mb-3'>
       {options.map((option) => (
         <div key={option.value} className='radio-item' style={{ cursor: 'pointer' }}>
           <input
