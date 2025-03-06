@@ -1,0 +1,40 @@
+.item{
+  padding: 20px; 
+  border-radius: 8px;
+  background-color: #f7f6fe;
+}
+.item + .item{
+  margin-top: 1.5rem;
+}
+.category,
+.date{
+  color: #8C8C8C;
+  font-size: 12px;
+}
+.title{
+  font-size: 24px;
+  font-weight: bold;
+}
+.preview{
+  width: 100px;
+}
+.preview img{
+  width: 100%;
+}
+.btn{
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  color: grey;
+  border-radius: 8px;
+  background-color: rgba(83, 41, 255, 0.1);;
+  color: #212529;
+  border: none;
+}
+.btn:hover{
+  background-color: #5329ff;
+  color: #fff;
+}

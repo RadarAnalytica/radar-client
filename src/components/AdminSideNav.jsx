@@ -36,6 +36,44 @@ const AdminSideNav = () => {
             ) : null}
             Админ Панель
           </p>
+          { false && 
+          <>
+          <p 
+            className='sidenav-el sidenav-title submenu-item'
+            style={
+              ['blog-list', 'blog-add'].includes(location)
+                ? { fontWeight: 'bold', fontSize: '14px' }
+                : {}
+            }
+          >
+                Блог список
+          </p>
+          <div>
+            <p
+              className='sidenav-title submenu-item'
+              onClick={() => navigate('/blog-add')}
+              style={
+                'blog-add' === location
+                  ? { fontWeight: 'bold', fontSize: '14px' }
+                  : {}
+              }
+            >
+              Добавить
+            </p>
+            <p
+              className='sidenav-title submenu-item'
+              onClick={() => navigate('/blog-list')}
+              style={
+                'blog-list' === location
+                  ? { fontWeight: 'bold', fontSize: '14px' }
+                  : {}
+              }
+            >
+              Список
+            </p>
+          </div>
+          </>
+          }
         </div>
       </div>
     </div>

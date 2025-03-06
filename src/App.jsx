@@ -63,7 +63,7 @@ const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 const StartPage = React.lazy(() => import("./pages/StartPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
-
+import { BlogAdd, BlogList } from "./pages/blog";
 
 /**
  * --------------------------------------
@@ -107,6 +107,8 @@ function App() {
             <Route path='/external-expenses' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / Внешние расходы'><ExternalExpensesPage /></ProtectedRoute>} />
             <Route path='/buy-back' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / Самовыкуп'><ReportBuyBack /></ProtectedRoute>} />
             <Route path='/admin-panel' element={<ProtectedRoute expireProtected onboardProtected userRoleProtected role='admin' routeRuName='Админ панель'><AdminPanel /></ProtectedRoute>} />
+            {/* <Route path='/blog-add' element={<ProtectedRoute expireProtected onboardProtected userRoleProtected role='admin' routeRuName='Блог добавить'><BlogAdd /></ProtectedRoute>} /> */}
+            {/* <Route path='/blog-list' element={<ProtectedRoute expireProtected onboardProtected userRoleProtected role='admin' routeRuName='Блог список'><BlogList /></ProtectedRoute>} /> */}
             <Route path='/' element={<ProtectedRoute authGuardType="fallback"><StartPage /></ProtectedRoute>} />
             <Route path='/home' element={<ProtectedRoute authGuardType="fallback"><StartPage /></ProtectedRoute>} />
             <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} /> 
