@@ -581,7 +581,6 @@ export const ServiceFunctions = {
     if (!response.ok) {
       throw new Error('Failed to fetch dashboard report');
     }
-
     return await response.json();
   },
 

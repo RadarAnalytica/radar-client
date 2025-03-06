@@ -81,7 +81,7 @@ function App() {
           <Routes>
             {/* Protected routes */}
             <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
-            <Route path='/abc-data-reports' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
+            <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
             <Route path='/seo' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
             <Route path='/monitoring' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Мониторинг запросов'><RequestMonitoringPage /></ProtectedRoute>} />
             <Route path='/ai-generator' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
@@ -97,6 +97,8 @@ function App() {
             <Route path='/weeklyreport-month' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / По месяцам'><WeeklyReportByMonth /></ProtectedRoute>} />
             <Route path='/weeklyreport-goods' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / По товарам'><WeeklyReportByGoods /></ProtectedRoute>} />
             <Route path='/weeklyreport-penalties' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / Штрафы'><WeeklyReportPenaltiesPage /></ProtectedRoute>} />
+            <Route path='/weeklyreport-goods' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / По товарам'><WeeklyReportByGoods /></ProtectedRoute>} />
+            <Route path='/abc-data-reports' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC анализ'><ReportAbcAnalysis /></ProtectedRoute>} />
             <Route path='/prime-cost' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / Себестоимость'><PrimeCost /></ProtectedRoute>} />
             <Route path='/external-expenses' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / Внешние расходы'><ExternalExpensesPage /></ProtectedRoute>} />
             <Route path='/buy-back' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Отчёт / Самовыкуп'><ReportBuyBack /></ProtectedRoute>} />
