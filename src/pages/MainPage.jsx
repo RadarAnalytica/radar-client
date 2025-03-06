@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect, lazy, Suspense } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
-import BlockImg_x1 from './images/Dashboard_x1.png';
-import BlockImg_x2 from './images/Dashboard_x2.png';
+// import BlockImg_x1 from './images/Dashboard_x1.png';
+// import BlockImg_x2 from './images/Dashboard_x2.png';
 import AccordionMain from '../components/AccordionMain';
 import manyApi from './images/manyApi.svg';
 import manyApiMobile from './images/manyApiMobile.svg';
@@ -35,6 +35,11 @@ import safety from './images/safety.svg';
 import bigData from './images/bigData.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
 import ApiBlockContainer from "../components/ApiBlockContainer"
+
+import ImageComponent from '../components/utilsComponents/ImageComponent ';
+import BlockImg_x1 from './images/Dashboard_x1.png';
+import BlockImg_x3 from './images/Dashboard_x3.png';
+
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";
@@ -190,6 +195,10 @@ const MainPage = () => {
               </div>
             </div>
             <div className={`sol-screenshot col-7 ${styles.mainPicture}`}>
+            <ImageComponent
+              heavyImageSrc={BlockImg_x3}
+              lightImageSrc={BlockImg_x1}
+            />
               {/* <VideoComponent
               poster={preview}
               videoMp4={highQualityVideo}
@@ -206,7 +215,7 @@ const MainPage = () => {
                   width: "100%", height: "auto",
                 }}
               /> */}
-              <Suspense fallback={<LoaderPage />}>
+              {/* <Suspense fallback={<LoaderPage />}>
                 <AdaptiveMedia
                   videoMp4={highQualityVideo}
                   // videoWebm={highQualityVideoWebm}
@@ -217,7 +226,7 @@ const MainPage = () => {
                     width: "100%", height: "auto",
                   }}
                 />
-              </Suspense>
+              </Suspense> */}
             </div>
           </div>
 

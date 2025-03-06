@@ -9,7 +9,7 @@ export const fetchDashboardReport = createAsyncThunk(
         const storeFilterData = store.getState().dashboardFiltersSlice.dashboardFilters
 
         if (Object.keys(storeFilterData).length === 0) {
-            return {}
+            return
         }
 
         const whFilterData = storeFilterData.wh
@@ -78,6 +78,7 @@ export const fetchDashboardReport = createAsyncThunk(
             },
             groups_filter: groupFilter,
         }
+        
         const response = await ServiceFunctions.postDashboardFilters(token, filterData);
         return response;
     }
