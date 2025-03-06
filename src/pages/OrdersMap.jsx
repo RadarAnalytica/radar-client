@@ -564,6 +564,12 @@ const OrdersMap = () => {
             <circle cx='8' cy='8' r='8' fill='brown' />
           </svg>
         );
+      case 'Другой округ':
+        return (
+          <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg' key={name}>
+            <circle cx='8' cy='8' r='8' fill='rgba(196, 196, 196, 1)' />
+          </svg>
+        );
       default:
         return '';
     }

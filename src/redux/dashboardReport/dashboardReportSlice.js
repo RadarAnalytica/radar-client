@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchDashboardReport } from './dashboardReportActions';
 
 const initialState = {
-    data: null,
+    dashboardData: null,
     loading: false,
     error: null
 };
@@ -18,7 +18,8 @@ const dashboardReportSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchDashboardReport.fulfilled, (state, action) => {
-                state.data = action.payload;
+                state.dashboardData = action.payload;
+
                 state.loading = false;
             })
             .addCase(fetchDashboardReport.rejected, (state, action) => {
