@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styles from "../../pages/MainPage.module.css";
 
 const VideoComponent = ({
@@ -10,23 +10,38 @@ const VideoComponent = ({
     setIsVideoLoaded
 }) => {
     const videoRef = useRef(null);
+    const [currentSource, setCurrentSource] = useState('/video_400.webm');
+    const [currentTime, setCurrentTime] = useState(0); // Сохраняем текущее время воспроизведен
 
-    // useEffect(() => {
-    //     const video = videoRef.current;
-    //     if (!video) return;
+    useEffect(() => {
+        const videoElement = videoRef && videoRef.current ? videoRef.current : null;
+        const handleTimeUpdate = () => {
+            console.log('c time: ' + currentTime)
+            setCurrentTime(videoElement.currentTime);
+        };
+    
+        videoElement.addEventListener('timeupdate', handleTimeUpdate);
+        
+        const highQualityVideo = document.createElement('video');
+        highQualityVideo.src = '/video_full.webm';
+        
+        const handleCanPlayThrough = () => {
+            console.log('source updated');
+            if (currentSource !== '/video_full.webm') {
+                setCurrentSource('/video_full.webm');
+            }
+        };
+    
+        // Добавляем обработчик события после установки src
+        highQualityVideo.addEventListener('canplaythrough', handleCanPlayThrough);
+        highQualityVideo.load(); // Загружаем видео, чтобы сработало событие canplaythrough
+    
+        return () => {
+            videoElement.removeEventListener('timeupdate', handleTimeUpdate);
+            highQualityVideo.removeEventListener('canplaythrough', handleCanPlayThrough);
+        };
+    }, [currentSource]); 
 
-    //     // Log when the video can be played through
-    //     const handleCanPlayThrough = () => {
-    //         setIsVideoLoaded(true);
-    //         console.log('Видео полностью загружено и готово к воспроизведению');
-    //     };
-
-    //     video.addEventListener('canplaythrough', handleCanPlayThrough);
-
-    //     return () => {
-    //         video.removeEventListener('canplaythrough', handleCanPlayThrough);
-    //     };
-    // }, []);
 
     return (
         <div
@@ -42,6 +57,7 @@ const VideoComponent = ({
             <video
                 className={styles.video}
                 ref={videoRef}
+                src={currentSource}
                 style={{
                     width: "100%",
                     height: "100%",
@@ -59,11 +75,6 @@ const VideoComponent = ({
                 preload="metadata"
                 webkit-playsinline="true"
             >
-                <source src='/video_full.webm' type="video/webm" />
-                <source src='/video_1000' type="video/webm" loading='eager' decoding='async' fetchpriority='high' />
-                <source src='/video_400.webm' type="video/webm" loading='eager' decoding='async' fetchpriority='high' />
-                <source src='/video_300.webm' type="video/webm" loading='eager' decoding='async' fetchpriority='high' />
-                Ваш браузер не поддерживает видео.
             </video>
         </div>
     );
