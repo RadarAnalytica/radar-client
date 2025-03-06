@@ -108,6 +108,7 @@ html {
 
 .signup-form input,
 .signup-form select,
+.signup-form label,
 .signin-form input {
   font-size: 1.95vh;
   margin: 0.25vh auto;

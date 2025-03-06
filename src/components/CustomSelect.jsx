@@ -41,9 +41,9 @@ const CustomSelect = ({ options, callback, label, defaultValue }) => {
           <p
             className='mb-0'
             style={{
-              fontSize: '2vh',
-              border: '1px solid rgb(232, 232, 232) !important',
+              border: '1px solid rgb(232, 232, 232)!important',
               cursor: 'pointer',
+              paddingRight: '1.5vw',
             }}
           >
             {state}
@@ -66,15 +66,14 @@ const CustomSelect = ({ options, callback, label, defaultValue }) => {
                   <div
                     key={index}
                     onClick={() => callback(item)}
-                    style={{ padding: '0 1vw' }}
+                    style={{ padding: '0 .75rem' }}
                   >
                     <p
                       className='mb-0 select-element'
                       style={{
-                        fontSize: '2vh',
                         cursor: 'pointer',
-                        padding: '1.5vh 0',
-                        borderBottom: '1px solid silver',
+                        padding: '.375rem 0',
+                        borderBottom: '1px solid rgb(232, 232, 232)',
                       }}
                     >
                       {item}

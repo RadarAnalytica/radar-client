@@ -155,7 +155,7 @@ const SignUpForm = () => {
   return sent ? (
     <InfoForm />
   ) : (
-    <div className='signup-form'>
+    <div className='signup-form' style={{margin: '2rem 0'}}>
       <div className='d-flex flex-column align-items-center'>
         <svg
           width='200'
