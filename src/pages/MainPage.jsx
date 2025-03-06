@@ -39,7 +39,7 @@ import ApiBlockContainer from "../components/ApiBlockContainer"
 import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import BlockImg_x1 from './images/Dashboard_x1.png';
 import BlockImg_x3 from './images/Dashboard_x3.png';
-
+import ApiBlock from '../components/mainPageComponents/ApiBlock';
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";
@@ -195,15 +195,15 @@ const MainPage = () => {
               </div>
             </div>
             <div className={`sol-screenshot col-7 ${styles.mainPicture}`}>
-            <ImageComponent
-              heavyImageSrc={BlockImg_x3}
-              lightImageSrc={BlockImg_x1}
-            />
-              {/* <VideoComponent
+              {/* <ImageComponent
+                heavyImageSrc={BlockImg_x3}
+                lightImageSrc={BlockImg_x1}
+              /> */}
+              <VideoComponent
               poster={preview}
               videoMp4={highQualityVideo}
               style={{ width: '100%', height: "auto" }}
-            /> */}
+            />
               {/* <AdaptiveMedia
                 videoMp4={highQualityVideo}
                 // videoWebm={highQualityVideoWebm}
@@ -256,267 +256,7 @@ const MainPage = () => {
           </div>
 
           <div style={{ marginTop: '100px' }}>
-            <div className={`widhead-container ${styles.widheadContainer}`}>
-              <div className={`mainBlock-api ${styles.mainBlockApi}`}>
-                <div className={`personal-account-connect-text  ${styles.personalAccountConnectText}`}>
-                  Подключение личного кабинета{' '}
-                  <span style={{ color: 'orange', fontWeight: '800' }}>
-                    по API
-                  </span>
-                </div>
-                <div className={`receive-data-text ${styles.receiveDataText}`}>
-                  Получайте данные по всем вашим магазинам в режиме реального
-                  времени в одном месте
-                </div>
-              </div>
-              <div className='widhead-container-image widhead-container-image-mob'>
-                <img
-                  className={`manyApiLogoMobile ${styles.manyApiLogoMobile}`}
-                  src={manyApiMobile}
-                  alt='logo'
-                  style={{ borderRadius: '15px', width: "100%" }}
-                />
-              </div>
-
-              <div className='widhead-container-block'>
-                <div className='widhead-containe-img'>
-                  <div className='widhead-contain-icon'>
-                    <img src={ligtning} />
-                  </div>
-                  <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>Быстро</div>
-                  <div className='widhead-contain-parag'>
-                    Не успеете выпить
-                    <br /> чашку кофе
-                  </div>
-                  <div className='widhead-contain-check'>
-                    <svg
-                      width='71'
-                      height='43'
-                      viewBox='0 0 71 43'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <rect
-                        width='70.772'
-                        height='42.3005'
-                        rx='21.1503'
-                        fill='#5329FF'
-                      />
-                      <rect
-                        x='32.5391'
-                        y='4.88086'
-                        width='32.5389'
-                        height='32.5389'
-                        rx='16.2694'
-                        fill='white'
-                      />
-                      <path
-                        d='M43 20.5L48 25.5L55.5 18'
-                        stroke='#5329FF'
-                        strokeWidth='1.5'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div className='widhead-containe-img'>
-                  <div className='widhead-contain-icon'>
-                    <img src={safety} />
-                  </div>
-                  <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>Безопасно</div>
-                  <div className='widhead-contain-parag'>
-                    Мы обо всем <br />
-                    позаботились
-                  </div>
-                  <div className='widhead-contain-check'>
-                    <svg
-                      width='71'
-                      height='43'
-                      viewBox='0 0 71 43'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <rect
-                        width='70.772'
-                        height='42.3005'
-                        rx='21.1503'
-                        fill='#5329FF'
-                      />
-                      <rect
-                        x='32.5391'
-                        y='4.88086'
-                        width='32.5389'
-                        height='32.5389'
-                        rx='16.2694'
-                        fill='white'
-                      />
-                      <path
-                        d='M43 20.5L48 25.5L55.5 18'
-                        stroke='#5329FF'
-                        strokeWidth='1.5'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div className='widhead-containe-img'>
-                  <div className='widhead-contain-icon'>
-                    <img src={bigData} />
-                  </div>
-                  <div className={`widhead-contian-title ${styles.widheadContainTitle}`}>
-                    Большой объем данных{' '}
-                  </div>
-                  <div className='widhead-contain-parag'>Важных данных</div>
-                  <div className='widhead-contain-check'>
-                    <svg
-                      width='71'
-                      height='43'
-                      viewBox='0 0 71 43'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <rect
-                        width='70.772'
-                        height='42.3005'
-                        rx='21.1503'
-                        fill='#5329FF'
-                      />
-                      <rect
-                        x='32.5391'
-                        y='4.88086'
-                        width='32.5389'
-                        height='32.5389'
-                        rx='16.2694'
-                        fill='white'
-                      />
-                      <path
-                        d='M43 20.5L48 25.5L55.5 18'
-                        stroke='#5329FF'
-                        strokeWidth='1.5'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <div className='widhead-containe-img-mobile'>
-                <div className='widhead-contian-title-mobile'>
-                  Большой объем данных{' '}
-                </div>
-                <div className='widhead-contain-mobile'>
-                  <div style={{ margin: '10px 0 30px 0px' }}>
-                    <div className='widhead-contain-parag'>Важных данных</div>
-                    <div className='widhead-contain-check'>
-                      <svg
-                        width='71'
-                        height='43'
-                        viewBox='0 0 71 43'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <rect
-                          width='70.772'
-                          height='42.3005'
-                          rx='21.1503'
-                          fill='#5329FF'
-                        />
-                        <rect
-                          x='32.5391'
-                          y='4.88086'
-                          width='32.5389'
-                          height='32.5389'
-                          rx='16.2694'
-                          fill='white'
-                        />
-                        <path
-                          d='M43 20.5L48 25.5L55.5 18'
-                          stroke='#5329FF'
-                          strokeWidth='1.5'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className='widhead-contain-icon-mobile'>
-                    <img src={bigData} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`widhead-container ${styles.widHeadContainerLastLine}`}>
-              <div className='widhead-container-image'>
-                <img
-                  className={`manyApiLogo ${styles.manyApiLogo}`}
-                  src={manyApi}
-                  alt='logo'
-                  style={{ borderRadius: '15px' }}
-                />
-                <img
-                  className='manyApiLogoMedium'
-                  src={manyApiMedium}
-                  alt='logo'
-                  style={{ borderRadius: '15px' }}
-                />
-              </div>
-              <div className={`apiBlock ${styles.apiBlock}`}>
-                <ApiBlockContainer />
-                {/* <img className='apiBlockImg' src={apiBlock} alt='logo' /> */}
-                {/* <img
-                className='apiBlockImgMedium'
-                src={apiBlockMedium}
-                alt='logo'
-              /> */}
-              </div>
-              <div
-                className={`blockBtn ${styles.blockBtn}`}
-                style={{
-                  backgroundImage: `url(${isHighResLoaded ? highResImage : lowResImage
-                    })`,
-                }}
-              >
-                <div className={`blockBtnContainer ${styles.blockBtnContainerInner}`}>
-                  <div className='blockBtnContainerHeader'>
-                    <div className='blockBtnContainerImageBlock'>
-                      <img
-                        className='blockBtnContainerImage'
-                        src={startAnalitic}
-                        alt='start-analitic'
-                      />
-                    </div>
-                    <div className='blockBtnContainerArrowImgBlock'>
-                      <img
-                        className='blockBtnContainerArrowImg'
-                        src={arrowLink}
-                        alt='arrow-link'
-                      />
-                    </div>
-                  </div>
-
-                  <div className={`readyforStartText ${styles.readyforStartText}`}>Готовы начать?</div>
-                  <div className={`profitableStafText ${styles.profitableStafText}`}>
-                    Найдите прибыльные товары на маркетплейсе и развивайте свой
-                    бизнес.
-                  </div>
-                  <button
-                    className='btn-warning btn-warning-home'
-                    onClick={() => {
-                      if (user) {
-                        window.open('/tariffs', '_blank');
-                      }
-                      if (!user) {
-                        navigate('/signup');
-                      }
-                    }}
-                  >
-                    Начать работать
-                  </button>
-                </div>
-              </div>
-            </div>
+              <ApiBlock />
             <div className='mainBlockFourBtn'>
               <BtnHomePage />
             </div>

@@ -25,9 +25,14 @@
     background-color: #000000;
     border-radius: 12.15px;
     padding: 24px;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-between; */
+    
+
+    @media (max-width: 1050px) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 20px;
+    }
 }
 .wrapperSecond{ background-color:#0069FF}
 .wrapperThird {background-color: #1A1A1A0D;}

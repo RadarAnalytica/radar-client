@@ -11,22 +11,22 @@ const VideoComponent = ({
 }) => {
     const videoRef = useRef(null);
 
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
+    // useEffect(() => {
+    //     const video = videoRef.current;
+    //     if (!video) return;
 
-        // Log when the video can be played through
-        const handleCanPlayThrough = () => {
-            setIsVideoLoaded(true);
-            console.log('Видео полностью загружено и готово к воспроизведению');
-        };
+    //     // Log when the video can be played through
+    //     const handleCanPlayThrough = () => {
+    //         setIsVideoLoaded(true);
+    //         console.log('Видео полностью загружено и готово к воспроизведению');
+    //     };
 
-        video.addEventListener('canplaythrough', handleCanPlayThrough);
+    //     video.addEventListener('canplaythrough', handleCanPlayThrough);
 
-        return () => {
-            video.removeEventListener('canplaythrough', handleCanPlayThrough);
-        };
-    }, []);
+    //     return () => {
+    //         video.removeEventListener('canplaythrough', handleCanPlayThrough);
+    //     };
+    // }, []);
 
     return (
         <div
@@ -48,7 +48,10 @@ const VideoComponent = ({
                     objectFit: "cover",
                     display: "block"
                 }}
-                poster={poster}
+                loading='eager'
+                decoding='async'
+                fetchpriority='high'
+                poster='/firstShot.jpg'
                 playsInline
                 autoPlay
                 muted
@@ -56,8 +59,9 @@ const VideoComponent = ({
                 preload="metadata"
                 webkit-playsinline="true"
             >
-                {videoMp4 && <source src={videoMp4} type="video/mp4" />}
-                {videoWebm && <source src={videoWebm} type="video/webm" />}
+                <source src='/Webm_1920.webm' type="video/webm" />
+                <source src='/WebmLow.webm' type="video/webm" />
+                Ваш браузер не поддерживает видео.
             </video>
         </div>
     );

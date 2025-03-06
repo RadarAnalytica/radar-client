@@ -837,6 +837,13 @@ select {
   padding: 32px;
   border-radius: 15px;
 
+  @media (max-width: 780px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }
 .userReviewsHeaderTitle{
   font-size: 45px;
@@ -3200,6 +3207,14 @@ button.accordion-button.collapsed::after {
   }
   .cardBody {
     padding: 0 0 15px 0;
+
+    @media (max-width: 769px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 8px;
+    }
   }
   .cardContent {
     display: flex;
