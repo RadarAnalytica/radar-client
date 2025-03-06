@@ -3,7 +3,6 @@ import SortArrows from './SortArrows';
 import { useNavigate } from 'react-router-dom';
 
 const TableStock = ({ dataTable, setDataTable }) => {
-  console.log('dataTable', dataTable);
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
@@ -69,7 +68,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
   }
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <div style={{ height: '100%' }} className="stock-analysis-left-space"></div>
+      <div style={{ width: '3.5vw', height: '100%' }}></div>
       <div className='custom-table'>
         <div className='table-container'>
           {dataTable.length === 0 && (
@@ -142,9 +141,9 @@ const TableStock = ({ dataTable, setDataTable }) => {
                           WebkitLineClamp: 2,
                           WebkitBoxOrient: 'vertical',
                           textOverflow: 'ellipsis',
-                          cursor: 'pointer',
+                          // cursor: 'pointer',
                         }}
-                        onClick={() => handleClickProductName(row)}
+                        // onClick={() => handleClickProductName(row)}
                       >
                         {row.productName}
                       </span>

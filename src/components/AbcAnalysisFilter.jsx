@@ -3,7 +3,6 @@ import downloadIcon from "../pages/images/Download.svg";
 import { ServiceFunctions } from "../service/serviceFunctions";
 import AuthContext from "../service/AuthContext";
 import { URL } from "../service/config";
-import styles from "../pages/DashboardPage.module.css"
 
 const AbcAnalysisFilter = ({
   setActiveBrand,
@@ -39,7 +38,7 @@ const AbcAnalysisFilter = ({
     .join("-");
 
   return (
-    <div className={`filter container filter-panel dash-container pb-4 pt-0 d-flex dashboardMobile`}>
+    <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
         <div className='filter-item col' style={{ position: "relative" }}>
           <label
@@ -48,7 +47,7 @@ const AbcAnalysisFilter = ({
           >
             Период:
           </label>
-          <div className="period-select">
+          <div style={{ position: "relative" }}>
             <select
               style={{
                 width: "100%",
@@ -94,85 +93,64 @@ const AbcAnalysisFilter = ({
           </div>
         </div>
 
-        <div className='filter-item col' style={{ position: 'relative' }}>
+        <div className='filter-item col' style={{ position: "relative" }}>
           <label
-            style={{ fontWeight: 600, marginBottom: '4px', display: 'block' }}
+            style={{ fontWeight: 600, marginBottom: "4px", display: "block" }}
             htmlFor='store'
           >
             Магазин:
           </label>
-          <div className="shop-select">
+          <div style={{ position: "relative" }}>
             <select
               style={{
-                width: '100%',
-                padding: '1vh 1.75vh',
-                paddingRight: "3vh",
-                backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                borderRadius: '8px',
-                appearance: 'none',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
+                width: "100%",
+                padding: "1vh 1.75vh",
+                backgroundColor: "rgba(0, 0, 0, 0.05)",
+                borderRadius: "8px",
+                appearance: "none",
+                cursor: "pointer",
               }}
               className='form-control'
               id='store'
-              defaultValue={activeShopId !== undefined ? activeShopId : shops?.[0]?.id}
+              defaultValue={`${activeShopId !== undefined ? activeShopId : shops?.[0]?.id
+                }`}
               onChange={(e) => {
-                const [firstValue, secondValue, lastValue] = e.target.value.split('|');
+                const firstValue = e.target.value.split("|")[0];
+                const secondValue = e.target.value.split("|")[1];
+                const lastValue = e.target.value.split("|")[2];
                 setPrimary(lastValue);
                 setChangeBrand(secondValue);
                 setActiveBrand(firstValue);
               }}
-              onMouseEnter={(e) => {
-                const selectedOption = e.target.options[e.target.selectedIndex];
-                const tooltip = document.getElementById('shop-tooltip');
-                if (selectedOption.text.length > 15) {
-                  tooltip.style.display = 'block';
-                  tooltip.textContent = selectedOption.text;
-                  // tooltip.style.left = `${e.target.getBoundingClientRect().left}px`;
-                  // tooltip.style.top = `${e.target.getBoundingClientRect().bottom + 5}px`;
-                }
-              }}
-              onMouseLeave={() => {
-                document.getElementById('shop-tooltip').style.display = 'none';
-              }}
             >
+              <option
+                value={`${shops?.[0]?.id}|${shops?.[0]?.is_primary_collect}|${shops?.[0]?.is_valid}`}
+                hidden
+              >
+                {shopName ||
+                  shops?.[activeShopId]?.brand_name ||
+                  shops?.[0]?.brand_name}
+              </option>
               <option value='0'>Все</option>
               {shops &&
-                shops.map((brand) => (
-                  <option key={brand.id} value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}>
-                    {brand.brand_name.length > 15 ? `${brand.brand_name.slice(0, 15)}...` : brand.brand_name}
+                shops?.map((brand) => (
+                  <option
+                    key={brand.id}
+                    value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}
+                  >
+                    {brand.brand_name}
                   </option>
                 ))}
             </select>
-            <div
-              id='shop-tooltip'
-              style={{
-                display: 'none',
-                position: 'absolute',
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                color: 'white',
-                padding: '5px 10px',
-                borderRadius: '5px',
-                whiteSpace: 'nowrap',
-                fontSize: '12px',
-                zIndex: 1000,
-                left: "20px",
-                top: "40px",
-                textAlign: 'center',
-              }}
-            ></div>
             <svg
               style={{
-                position: 'absolute',
-                right: '1.75vh',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '1.5vh',
-                height: '1.5vh',
-                pointerEvents: 'none',
-                marginLeft: "5px",
+                position: "absolute",
+                right: "1.75vh",
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: "1.5vh",
+                height: "1.5vh",
+                pointerEvents: "none",
               }}
               viewBox='0 0 28 17'
               fill='none'
