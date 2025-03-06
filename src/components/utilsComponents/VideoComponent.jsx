@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import styles from "../../pages/MainPage.module.css";
-
+import moment from "moment/moment";
+import 'moment/locale/ru'
 const VideoComponent = ({
     style,
     poster,
@@ -10,13 +11,15 @@ const VideoComponent = ({
     setIsVideoLoaded
 }) => {
     const videoRef = useRef(null);
-    const [currentSource, setCurrentSource] = useState('/video_400.webm');
+    const [currentSource, setCurrentSource] = useState('/video_300.webm');
+    //console.log(currentSource)
     const [currentTime, setCurrentTime] = useState(0); // Сохраняем текущее время воспроизведен
-
     useEffect(() => {
         const videoElement = videoRef && videoRef.current ? videoRef.current : null;
+        console.log(videoElement.src)
         const handleTimeUpdate = () => {
-            console.log('c time: ' + currentTime)
+            
+            //console.log('c time: ' + currentTime)
             setCurrentTime(videoElement.currentTime);
         };
     
@@ -27,7 +30,8 @@ const VideoComponent = ({
         
         const handleCanPlayThrough = () => {
             console.log('source updated');
-            if (currentSource !== '/video_full.webm') {
+            if (currentSource !== '/video_full.webm' && currentTime >= 1) {
+                console.log(currentTime)
                 setCurrentSource('/video_full.webm');
             }
         };
@@ -40,7 +44,7 @@ const VideoComponent = ({
             videoElement.removeEventListener('timeupdate', handleTimeUpdate);
             highQualityVideo.removeEventListener('canplaythrough', handleCanPlayThrough);
         };
-    }, [currentSource]); 
+    }, [currentTime, currentSource]); 
 
 
     return (
