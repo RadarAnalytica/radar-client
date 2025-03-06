@@ -424,6 +424,7 @@ select {
 }
 
 .side-nav {
+  width: 22vw;
   width: 18vw;
   min-width: 270px;
   max-width: 18vw;
