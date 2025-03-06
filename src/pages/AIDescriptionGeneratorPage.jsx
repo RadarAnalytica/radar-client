@@ -15,9 +15,7 @@ import AiDescriptionGeneratorTariffs from '../components/AiDescriptionGeneratorT
 import { redirect } from 'react-router-dom';
 import { ProductContext } from '../service/ProductContext';
 import AddKeyImg from './images/addkeyword.svg';
-import {
-  saveFileClickHandler,
-} from '../service/fileService';
+import { saveFileClickHandler } from '../service/fileService';
 import DragDropFile from '../components/DragAndDropFiles';
 import NoSubscriptionPage from './NoSubscriptionPage';
 
@@ -38,6 +36,10 @@ const AiDescriptionGeneratorPage = () => {
     removeAllKeywords,
   } = useContext(ProductContext);
 
+  console.log('Product Name');
+  console.log(productName);
+  console.log('Keywords');
+  console.log(keywords);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingNext, setIsLoadingNext] = useState(false);
@@ -73,6 +75,7 @@ const AiDescriptionGeneratorPage = () => {
 
       if (data) {
         setAmountGenerations(data);
+        console.log(amountGenerations);
       }
     } catch (e) {
       console.error(e);
@@ -386,7 +389,7 @@ const AiDescriptionGeneratorPage = () => {
   return (
     <div className='dashboard-page'>
       <SideNav />
-      <div className={`${styles.generatorPage} dashboard-content pb-3 `}>
+      <div className={`${styles.generatorPage} dashboard-content pb-3 generatorPage `}>
         <TopNav title={'Генерация описания AI'}>
           <div className={styles.generatorWrapper}>
             <div
