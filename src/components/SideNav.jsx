@@ -17,6 +17,8 @@ import {
   closeSupportWindow,
 } from '../redux/supportWindow/supportWindowSlice';
 import aiGenerator from '../assets/aiGenerator.svg';
+import { useNavigation } from '../service/NavigationContext';
+
 
 const SideNav = () => {
   const navigate = useNavigate();
@@ -26,16 +28,16 @@ const SideNav = () => {
   const productUrl = chunkArray ? chunkArray.includes('product') : false;
   const location = chunkArray ? chunkArray[0] : null;
   const linkPlagin = 'https://chromewebstore.google.com/';
+
+
   const isOpenSupportWindow = useSelector(
     (state) => state.supportWindowSlice?.isOpenSupportWindow
   );
   const messages = useSelector(
     (state) => state.messagesSlice.messages.support_messages_count
   );
+  const { isOpen, toggleNavigation, iconVisible } = useNavigation();
 
-  const [messagesShown, setMessagesShown] = useState(messages);
-
-  const [active, setActive] = useState('');
   useEffect(() => {
     setActive(location);
   }, [location]);
@@ -45,6 +47,15 @@ const SideNav = () => {
       setMessagesShown(0);
     }
   }, [isOpenSupportWindow]);
+
+  const [messagesShown, setMessagesShown] = useState(messages);
+
+
+  const [active, setActive] = useState('');
+  useEffect(() => {
+    setActive(location);
+  }, [location]);
+
 
   const [goodsShown, setGoodsShown] = useState(true);
   const [promotionShown, setPromotionShown] = useState(true);
@@ -59,10 +70,10 @@ const SideNav = () => {
   };
 
   return (
-    <div className='side-nav'>
+    <div className={`side-nav ${isOpen ? 'open' : ''}`}>
       <div>
         <Link to='/'>
-          <img src={logo} alt='' style={{ maxWidth: '160px' }}/>
+          <img src={logo} alt='' style={{ maxWidth: '160px' }} />
         </Link>
         <div className='mt-4'>
           <div className='sidenav-el' onClick={() => navigate('/dashboard')}>
@@ -89,16 +100,16 @@ const SideNav = () => {
               <img
                 src={
                   active === 'weeklyreport-dashboard' ||
-                  active === 'weeklyreport-pl' ||
-                  active === 'weeklyreport-month' ||
-                  active === 'report-main' ||
-                  active === 'weeklyreport-goods' ||
-                  active === 'abc-data-reports' ||
-                  active === 'weeklyreport-penalties' ||
-                  active === 'schedule' ||
-                  active === 'prime-cost' ||
-                  active === 'external-expenses' ||
-                  active === 'buy-back'
+                    active === 'weeklyreport-pl' ||
+                    active === 'weeklyreport-month' ||
+                    active === 'report-main' ||
+                    active === 'weeklyreport-goods' ||
+                    active === 'abc-data-reports' ||
+                    active === 'weeklyreport-penalties' ||
+                    active === 'schedule' ||
+                    active === 'prime-cost' ||
+                    active === 'external-expenses' ||
+                    active === 'buy-back'
                     ? financeIcon
                     : financeIconGrey
                 }
@@ -110,16 +121,16 @@ const SideNav = () => {
                 className='sidenav-title'
                 style={
                   active === 'weeklyreport-dashboard' ||
-                  active === 'weeklyreport-pl' ||
-                  active === 'weeklyreport-month' ||
-                  active === 'report-main' ||
-                  active === 'weeklyreport-goods' ||
-                  active === 'abc-data-reports' ||
-                  active === 'weeklyreport-penalties' ||
-                  active === 'schedule' ||
-                  active === 'prime-cost' ||
-                  active === 'external-expenses' ||
-                  active === 'buy-back'
+                    active === 'weeklyreport-pl' ||
+                    active === 'weeklyreport-month' ||
+                    active === 'report-main' ||
+                    active === 'weeklyreport-goods' ||
+                    active === 'abc-data-reports' ||
+                    active === 'weeklyreport-penalties' ||
+                    active === 'schedule' ||
+                    active === 'prime-cost' ||
+                    active === 'external-expenses' ||
+                    active === 'buy-back'
                     ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
                     : {}
                 }
@@ -134,8 +145,8 @@ const SideNav = () => {
           >
             <div className='d-flex align-items-center'>
               {location === 'orders-map' ||
-              location === 'supply' ||
-              location === 'stock-analysis' ? (
+                location === 'supply' ||
+                location === 'stock-analysis' ? (
                 <svg
                   width='18'
                   height='18'
@@ -155,9 +166,9 @@ const SideNav = () => {
                 className='sidenav-title'
                 style={
                   location === 'orders-map' ||
-                  location === 'supply' ||
-                  location === 'abc-data' ||
-                  location === 'stock-analysis'
+                    location === 'supply' ||
+                    location === 'abc-data' ||
+                    location === 'stock-analysis'
                     ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
                     : {}
                 }
@@ -224,13 +235,13 @@ const SideNav = () => {
                     : {}
                 }
                 onClick={() => navigate('/abc-data')}
-                // =======
-                //                   location === 'stock-analysis'
-                //                     ? { fontWeight: 'bold', fontSize: '14px' }
-                //                     : {}
-                //                 }
-                //                 onClick={() => navigate('/stock-analysis')}
-                // >>>>>>> stockAnlysis
+              // =======
+              //                   location === 'stock-analysis'
+              //                     ? { fontWeight: 'bold', fontSize: '14px' }
+              //                     : {}
+              //                 }
+              //                 onClick={() => navigate('/stock-analysis')}
+              // >>>>>>> stockAnlysis
               >
                 {location === 'abc-data' ? (
                   <svg
@@ -252,10 +263,10 @@ const SideNav = () => {
                 style={
                   location === 'stock-analysis' || productUrl
                     ? {
-                        fontWeight: 'bold',
-                        fontSize: '14px',
-                        whiteSpace: 'nowrap',
-                      }
+                      fontWeight: 'bold',
+                      fontSize: '14px',
+                      whiteSpace: 'nowrap',
+                    }
                     : {}
                 }
                 onClick={() => navigate('/stock-analysis')}
@@ -282,8 +293,8 @@ const SideNav = () => {
           >
             <div className='d-flex align-items-center'>
               {location === 'calculate' ||
-              location === 'monitoring' ||
-              location === 'ai-generator' ? (
+                location === 'monitoring' ||
+                location === 'ai-generator' ? (
                 <svg
                   width='20'
                   height='20'
@@ -303,8 +314,8 @@ const SideNav = () => {
                 className='sidenav-title'
                 style={
                   location === 'calculate' ||
-                  location === 'monitoring' ||
-                  location === 'ai-generator'
+                    location === 'monitoring' ||
+                    location === 'ai-generator'
                     ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
                     : {}
                 }
@@ -416,9 +427,8 @@ const SideNav = () => {
             </div>
           ) : null}
           <div
-            className={`sidenav-el additional-tools ${
-              additionalTools ? 'expanded' : ''
-            }`}
+            className={`sidenav-el additional-tools ${additionalTools ? 'expanded' : ''
+              }`}
             onClick={() => setAdditionalTools(!additionalTools)}
           >
             <div className='d-flex align-items-center'>
@@ -445,10 +455,10 @@ const SideNav = () => {
                   location === 'abc-data'
                     ? { fontWeight: '', fontSize: '14px', color: '#F0AD00' }
                     : {
-                        fontWeight: '',
-                        fontSize: '14px',
-                        color: '#F0AD00',
-                      }
+                      fontWeight: '',
+                      fontSize: '14px',
+                      color: '#F0AD00',
+                    }
                 }
               >
                 Дополнительные
@@ -521,15 +531,15 @@ const SideNav = () => {
       </div>
 
       <div
-        className='support-block'      
+        className='support-block'
       >
         <a href="https://t.me/radar_analytica_support" target="_blank">
-          <img 
-            src={support} 
-            alt='Call support window' 
-            className='support-icon' 
-            style={{ cursor: "pointer" }}  
-            // onClick={() => toggleOpenSupport()}
+          <img
+            src={support}
+            alt='Call support window'
+            className='support-icon'
+            style={{ cursor: "pointer" }}
+          // onClick={() => toggleOpenSupport()}
           />
         </a>
         <span className='support-block-text-box'>

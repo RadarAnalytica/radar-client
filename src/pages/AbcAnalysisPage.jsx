@@ -34,7 +34,7 @@ const AbcAnalysisPage = () => {
   const storedActiveShopObject = JSON.parse(storedActiveShop);
 
   let activeShop;
-  
+
   const activeShopId = activeShop?.id;
   const idShopAsValue =
     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
@@ -62,7 +62,7 @@ const AbcAnalysisPage = () => {
     : oneShop
       ? oneShop.is_primary_collect
       : allShop;
-      
+
   if (storedActiveShop && typeof storedActiveShop === "string") {
     try {
       const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
@@ -70,7 +70,7 @@ const AbcAnalysisPage = () => {
         localStorage.removeItem('activeShop')
         window.location.reload()
       }
-      
+
       activeShop = storedActiveShopObject;
     } catch (error) {
       console.error("Error parsing storedActiveShop:", error);
@@ -322,7 +322,7 @@ const AbcAnalysisPage = () => {
   return (
     isVisible && (
       <div className='dashboard-page'>
-        
+
         <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={"ABC-анализ"} />
@@ -358,7 +358,6 @@ const AbcAnalysisPage = () => {
               title={"Ваши данные еще формируются и обрабатываются."}
             />
           )}
-            <BottomNavigation />
         </div>
       </div>
     )

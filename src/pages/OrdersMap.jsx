@@ -22,6 +22,9 @@ import StockDataRow from '../components/StockDataRow';
 import green from '../assets/greenarrow.png';
 import red from '../assets/redarrow.png';
 
+// const green = require('../assets/greenarrow.png');
+// const red = require('../assets/redarrow.png');
+
 const OrdersMap = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -33,7 +36,7 @@ const OrdersMap = () => {
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const storedActiveShop = localStorage.getItem('activeShop');
   let activeShop;
-  
+  if (storedActiveShop) activeShop = JSON.parse(storedActiveShop);
   const activeShopId = activeShop?.id;
 
   const [byRegions, setByRegions] = useState(true);
@@ -42,15 +45,15 @@ const OrdersMap = () => {
   const idShopAsValue =
     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
-  const [firstLoading ,setFirstLoading] = useState(true);
+  const [firstLoading, setFirstLoading] = useState(true);
 
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
   const shouldDisplay = activeShop
     ? activeShop.is_primary_collect
     : oneShop
-    ? oneShop.is_primary_collect
-    : allShop;
+      ? oneShop.is_primary_collect
+      : allShop;
 
   const [changeBrand, setChangeBrand] = useState();
   const [primary, setPrimary] = useState();
@@ -72,40 +75,11 @@ const OrdersMap = () => {
     { value: 'region', label: 'По регионам' },
     { value: 'store', label: 'По складам' },
   ];
-  if (storedActiveShop) {
-    const storedActiveShopObject = JSON.parse(storedActiveShop)
-
-    const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
-    if (shops.length > 0 && controlValue !== 1 && !!activeBrand && activeBrand !== '0') {
-      localStorage.removeItem('activeShop')
-      window.location.reload()
-    }
-    
-    activeShop = JSON.parse(storedActiveShop)
-  };
-
-      const validateStoredShop = () => {
-        if (storedActiveShop && shops?.length > 0) {
-          const storedShopExists = shops.some(
-            shop => shop.id === JSON.parse(storedActiveShop).id
-          );
-          if (!storedShopExists) {
-            localStorage.removeItem('activeShop');
-            window.location.reload();
-          }
-        }
-      };
-  
-      useEffect(() => {
-        if (shops?.length > 0) {
-          validateStoredShop();
-        }
-      }, [shops]);
 
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       dispatch(fetchGeographyData({ authToken, days, activeBrand }));
-    } 
+    }
   }, [authToken]);
 
   useEffect(() => {
@@ -124,43 +98,43 @@ const OrdersMap = () => {
   useEffect(() => {
     if (shops?.length === 0 && !firstLoading) {
       navigate("/onboarding");
-    } 
-  },[firstLoading, shops.length]);
-  
+    }
+  }, [firstLoading, shops.length]);
+
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
       const now = new Date();
       let targetTime = new Date(now);
-      
+
       // Set to the next half hour
       targetTime.setMinutes(targetTime.getMinutes() <= 30 ? 30 : 60, 0, 0);
-      
+
       // If we're already past an even hour + 30 minutes, move to the next even hour
       if (targetTime.getHours() % 2 !== 0 || (targetTime.getHours() % 2 === 0 && targetTime <= now)) {
         targetTime.setHours(targetTime.getHours() + 1);
       }
-      
+
       // Ensure we're on an even hour
       if (targetTime.getHours() % 2 !== 0) {
         targetTime.setHours(targetTime.getHours() + 1);
       }
-    
+
       return targetTime;
     };
-  
+
     const targetTime = calculateNextEvenHourPlus30();
     const timeToTarget = targetTime.getTime() - Date.now();
-  
+
     const intervalId = setTimeout(() => {
       dispatch(fetchShops(authToken));
       dispatch(fetchGeographyData({ authToken, days, activeBrand }));
     }, timeToTarget);
-  
+
     return () => {
       clearTimeout(intervalId);
     };
   }, [dispatch, activeBrand, days, authToken]);
-  
+
   useEffect(() => {
     if (authToken !== authTokenRef.current) {
       dispatch(fetchShops(authToken));
@@ -169,16 +143,16 @@ const OrdersMap = () => {
 
   useEffect(() => {
     const fetchInitalData = async () => {
-      try{
+      try {
         await dispatch(fetchShops(authToken));
         if (activeBrand !== undefined) {
           await dispatch(fetchGeographyData({ authToken, days, activeBrand }));
         }
-        } catch (error) {
-          console.error("Error fetching initial data:", error);
-        } finally {
-          setFirstLoading(false);
-        }
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setFirstLoading(false);
+      }
     }
     // dispatch(fetchShops(authToken)).then(() => {
     //   setFirstLoading(false);
@@ -219,7 +193,7 @@ const OrdersMap = () => {
     if (idQueryParam && parseInt(idQueryParam) !== user.id) {
       logout();
       navigate('/signin');
-     
+
     } else {
       return;
     }
@@ -252,19 +226,19 @@ const OrdersMap = () => {
   let totalPriceOrders = 0;
   ordersByWarehouses
     ? ordersByWarehouses.forEach((item) => {
-        let warehouseSum =
-          item.data?.reduce((acc, el) => acc + el.finishedPrice, 0) || 0;
-        totalPriceOrders = totalPriceOrders + warehouseSum;
-      })
+      let warehouseSum =
+        item.data?.reduce((acc, el) => acc + el.finishedPrice, 0) || 0;
+      totalPriceOrders = totalPriceOrders + warehouseSum;
+    })
     : console.log();
 
   let totalPriceSales = 0;
   salesByWarehouses
     ? salesByWarehouses.forEach((item) => {
-        let warehouseSum =
-          item.data?.reduce((acc, el) => acc + el.finishedPrice, 0) || 0;
-        totalPriceSales = totalPriceSales + warehouseSum;
-      })
+      let warehouseSum =
+        item.data?.reduce((acc, el) => acc + el.finishedPrice, 0) || 0;
+      totalPriceSales = totalPriceSales + warehouseSum;
+    })
     : console.log();
 
   const whNames =
@@ -747,7 +721,7 @@ const OrdersMap = () => {
   };
 
   if (user?.subscription_status === 'expired') {
-    return <NoSubscriptionPage title={'География заказов и продаж'}/>
+    return <NoSubscriptionPage title={'География заказов и продаж'} />
   };
 
   if (!shops || shops.length === 0) {
@@ -773,7 +747,7 @@ const OrdersMap = () => {
             activeShopId={activeShopId}
           />
           {shouldDisplay ? (
-            <div className='map-container dash-container container p-3'>
+            <div className='map-container dash-container container'>
               <RadioGroup
                 options={radioOptions}
                 name='mapView'
@@ -790,6 +764,7 @@ const OrdersMap = () => {
                   />
                   {geoData && isHovered && (
                     <div
+                      className="map-tooltip-mobile"
                       style={{
                         position: 'absolute',
                         left: tooltipPosition.x + 'px',
@@ -832,19 +807,19 @@ const OrdersMap = () => {
                               style={
                                 tooltipData?.comparePercent > 0
                                   ? {
-                                      fontSize: '1.5vh',
-                                      whiteSpace: 'nowrap',
-                                      fontWeight: 600,
-                                      color: 'rgba(0, 182, 155, 1)',
-                                      marginLeft: '2px',
-                                    }
+                                    fontSize: '1.5vh',
+                                    whiteSpace: 'nowrap',
+                                    fontWeight: 600,
+                                    color: 'rgba(0, 182, 155, 1)',
+                                    marginLeft: '2px',
+                                  }
                                   : {
-                                      fontSize: '1.5vh',
-                                      whiteSpace: 'nowrap',
-                                      fontWeight: 600,
-                                      color: 'rgba(249, 60, 101, 1)',
-                                      marginLeft: '2px',
-                                    }
+                                    fontSize: '1.5vh',
+                                    whiteSpace: 'nowrap',
+                                    fontWeight: 600,
+                                    color: 'rgba(249, 60, 101, 1)',
+                                    marginLeft: '2px',
+                                  }
                               }
                             >
                               {tooltipData?.comparePercent} %
@@ -894,7 +869,7 @@ const OrdersMap = () => {
                         titleTooltipCount={'Заказы, шт  '}
                         getColor={getColor}
                         tooltipData={tooltipOrderDataGeo}
-                        // link={'Смотреть все регионы*'}
+                      // link={'Смотреть все регионы*'}
                       />
                     </div>
                     <div className='col'>
@@ -908,7 +883,7 @@ const OrdersMap = () => {
                         titleTooltipCount={'Продажи, шт  '}
                         getColor={getColor}
                         tooltipData={tooltipSalesDataGeo}
-                        // link={'Место для кнопки-ссылки'}
+                      // link={'Место для кнопки-ссылки'}
                       />
                     </div>
                   </div>
@@ -965,15 +940,15 @@ const OrdersMap = () => {
                   </h5>
                   {geoData?.stock_data && geoData?.stock_data.length
                     ? geoData?.stock_data.map((stockData, i) => {
-                        return (
-                          <StockDataRow
-                            key={i}
-                            stockName={stockData.stockName}
-                            orderDetails={stockData.orderDetails}
-                            saleDetails={stockData.saleDetails}
-                          />
-                        );
-                      })
+                      return (
+                        <StockDataRow
+                          key={i}
+                          stockName={stockData.stockName}
+                          orderDetails={stockData.orderDetails}
+                          saleDetails={stockData.saleDetails}
+                        />
+                      );
+                    })
                     : null}
                 </div>
               ) : loading ? (
