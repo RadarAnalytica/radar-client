@@ -59,8 +59,10 @@ const VideoComponent = ({
                 preload="metadata"
                 webkit-playsinline="true"
             >
-                <source src='/Webm_1920.webm' type="video/webm" />
-                <source src='/WebmLow.webm' type="video/webm" />
+                <source src='/video_full.webm' type="video/webm" />
+                <source src='/video_1000' type="video/webm" loading='eager' decoding='async' fetchpriority='high' />
+                <source src='/video_400.webm' type="video/webm" loading='eager' decoding='async' fetchpriority='high' />
+                <source src='/video_300.webm' type="video/webm" loading='eager' decoding='async' fetchpriority='high' />
                 Ваш браузер не поддерживает видео.
             </video>
         </div>
