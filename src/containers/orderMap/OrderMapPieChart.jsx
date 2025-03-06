@@ -32,11 +32,13 @@ const OrderMapPieChart = ({
       case 'Центральный фо':
         return 'rgba(129, 172, 255, 1)';
       case 'Приволжский фо':
-        return 'rgba(255, 153, 114, 1)';
+        return 'rgb(255, 153, 114)';
       case 'Северо-Западный фо':
         return 'yellow';
       case 'Дальневосточный фо':
         return 'brown';
+      case 'Другой округ':
+        return 'rgba(196, 196, 196, 1)';
       default:
         return 'transparent';
     }

@@ -786,7 +786,7 @@ const SelectRateMain = ({ redirect, isShowText }) => {
                       {subscriptionDiscount ? (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? '10 ₽' : '1 495 ₽'}
+                            {!trialExpired ? '1 ₽' : '1 495 ₽'}
                           </span>
                           <span
                             style={{
@@ -811,7 +811,7 @@ const SelectRateMain = ({ redirect, isShowText }) => {
                       ) : (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? '10 ₽' : '2 990 ₽'}
+                            {!trialExpired ? '1 ₽' : '2 990 ₽'}
                           </span>
                           {!trialExpired && (
                             <>
