@@ -25,6 +25,7 @@ import styles from '../pages/TariffsPage.module.css';
 import thumbup from '../pages/images/thumbup.png';
 import ImageComponent from './utilsComponents/ImageComponent ';
 import { ServiceFunctions } from '../service/serviceFunctions';
+import { periodStringFormat } from '../service/utils'
 
 const SelectRate = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
@@ -147,7 +148,7 @@ const SelectRate = ({ redirect, isShowText }) => {
     let periodSubscribe = '';
     let amountSubscribe = 0;
     let firstAmount = 0;
-    let startDateSubscribe = '';
+    let startDateSubscribe = new Date();;
     const options = {
       year: 'numeric',
       month: 'numeric',
@@ -166,21 +167,19 @@ const SelectRate = ({ redirect, isShowText }) => {
       amountSubscribe = 2990;
       firstAmount = newTrialExpired ? 2990 : 1;
       periodSubscribe = 1;
-      startDateSubscribe = new Date();
       if (!!newTrialExpired) {
         startDateSubscribe.setMonth(
           startDateSubscribe.getMonth() + periodSubscribe
         );
         startDateSubscribe.setUTCHours(7, 0, 0, 0);
       } else {
-        startDateSubscribe.setDate(startDateSubscribe.getDate() + 3);
+        startDateSubscribe.setDate(startDateSubscribe.getDate() + user?.test_days || 3);
         startDateSubscribe.setUTCHours(7, 0, 0, 0);
       }
     } else if (selectedPeriod === '3month') {
       amountSubscribe = 8073;
       firstAmount = !subscriptionDiscount ? 8073 : 4485;
       periodSubscribe = 3;
-      startDateSubscribe = new Date();
       startDateSubscribe.setMonth(
         startDateSubscribe.getMonth() + periodSubscribe
       );
@@ -188,7 +187,6 @@ const SelectRate = ({ redirect, isShowText }) => {
       amountSubscribe = 10764;
       firstAmount = !subscriptionDiscount ? 10764 : 5382;
       periodSubscribe = 6;
-      startDateSubscribe = new Date();
       startDateSubscribe.setMonth(
         startDateSubscribe.getMonth() + periodSubscribe
       );
@@ -394,8 +392,7 @@ const SelectRate = ({ redirect, isShowText }) => {
                 <div className={styles.blockBackground}>
                   <div className={styles.accessTitle}>
                     <span className={styles.activateAccess}>
-                      На этой странице вы можете активировать тестовый доступ на 3
-                      дня
+                      На этой странице вы можете активировать тестовый доступ на {periodStringFormat(user?.test_days)}
                     </span>
                   </div>
                   <div className={styles.accessPrice}>
@@ -404,7 +401,7 @@ const SelectRate = ({ redirect, isShowText }) => {
                       style={{ marginRight: '24px' }}
                     >
                       Доступ:
-                      <span className={styles.accessPeriodBold}>3 дня</span>
+                      <span className={styles.accessPeriodBold}>{periodStringFormat(user?.test_days)}</span>
                     </div>
                     <div className={styles.accessPeriod}>
                       Стоимость:
@@ -558,11 +555,11 @@ const SelectRate = ({ redirect, isShowText }) => {
               </p>
               <div className='landing-price-btn'>
                 <p className={`landing-price-btn-text ${styles.landingPriceBtnText}`}>
-                  Мы дарим тестовый доступ на 3 дня <br />
+                  Мы дарим тестовый доступ на {periodStringFormat(user?.test_days)} <br />
                   <span> всего за</span>
                 </p>
                 <p className='landing-price-btn-text-mobile'>
-                  Мы дарим тестовый доступ на 3 дня <br />
+                  Мы дарим тестовый доступ на {periodStringFormat(user?.test_days)} <br />
                   <span> всего за</span>
                 </p>
                 <img src={OneRuble} alt='ruble'></img>
@@ -877,7 +874,7 @@ const SelectRate = ({ redirect, isShowText }) => {
                           )}
                           <div>
                             {!trialExpired
-                              ? 'Тестовый доступ на 3 дня'
+                              ? `Тестовый доступ на ${periodStringFormat(user?.test_days)}`
                               : 'За месяц'}
                           </div>
                         </>

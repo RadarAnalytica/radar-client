@@ -570,3 +570,18 @@ export const getMonthNumbers = (monthArray) => {
 
   return monthArray.map(monthName => monthNamesReverse[monthName]);
 };
+
+export const periodStringFormat = (period) => {
+  /* TODO подумать про склонения */
+
+  if (!period){
+    return '3 дня'
+  }
+
+  if (period >= 6 ){
+    return `${period} дней`
+  } else {
+    return `${period} дня`
+  }
+
+}
