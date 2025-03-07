@@ -12,11 +12,8 @@ const VideoComponent = ({
 }) => {
     const videoRef = useRef(null);
     const [currentSource, setCurrentSource] = useState('/video_300.webm');
-    //console.log(currentSource)
     const [currentTime, setCurrentTime] = useState(0); // Сохраняем текущее время воспроизведен
     useLayoutEffect(() => {
-        console.log(videoRef.current)
-        console.log('ule')
         videoRef.current.play();
     }, [])
     useEffect(() => {
@@ -26,13 +23,12 @@ const VideoComponent = ({
         };
     
         videoElement.addEventListener('timeupdate', handleTimeUpdate);
-        
+
         const highQualityVideo = document.createElement('video');
         highQualityVideo.src = '/video_full.webm';
         
         const handleCanPlayThrough = () => {
-            if (currentSource !== '/video_full.webm' && currentTime >= 1) {
-                console.log(currentTime)
+            if (currentSource !== '/video_full.webm' && Math.round(currentTime) >= 8) { // 8 secs - video duration
                 setCurrentSource('/video_full.webm');
             }
         };
@@ -45,12 +41,6 @@ const VideoComponent = ({
             highQualityVideo.removeEventListener('canplaythrough', handleCanPlayThrough);
         };
     }, [currentTime, currentSource]); 
-
-
-    useEffect(() => {
-        const videoElement = videoRef && videoRef.current ? videoRef.current : null;
-        videoElement.currentTime = currentTime
-    }, [currentSource])
 
 
     return (

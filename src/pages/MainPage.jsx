@@ -40,14 +40,14 @@ const MainPage = () => {
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to track when high-res image is loaded
   // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Report LCP
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('LCP:', entry.startTime, entry.element);
-      }
-    }).observe({ entryTypes: ['largest-contentful-paint'] });
-  }, []);
+  // useEffect(() => {
+  //   // Report LCP
+  //   new PerformanceObserver((entryList) => {
+  //     for (const entry of entryList.getEntries()) {
+  //       console.log('LCP:', entry.startTime, entry.element);
+  //     }
+  //   }).observe({ entryTypes: ['largest-contentful-paint'] });
+  // }, []);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -122,13 +122,6 @@ const MainPage = () => {
       className='page-white'
       style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
     >
-      {/* {
-        !isVideoLoaded ? (
-          <div className='d-flex flex-column align-items-center justify-content-center' style={{ height: '100%', paddingTop: '15%' }}>
-            <span className='loader'></span>
-          </div>
-        ) : <div></div>
-      } */}
 
       <div>
         <div className={`container widbody-container container-xlwidth  ${styles.mainPageContainer}`}>
