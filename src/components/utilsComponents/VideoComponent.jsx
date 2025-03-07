@@ -11,10 +11,10 @@ const VideoComponent = ({
     setIsVideoLoaded
 }) => {
     const videoRef = useRef(null);
-    const [currentSource, setCurrentSource] = useState('/video_300.webm');
+    const [currentSource, setCurrentSource] = useState('/video_full.webm');
     const [currentTime, setCurrentTime] = useState(0); // Сохраняем текущее время воспроизведен
     useLayoutEffect(() => {
-        videoRef.current.play();
+        currentSource !== '/video_300.webm' && videoRef &&  videoRef.current && videoRef.current.play();
     }, [])
     useEffect(() => {
         const videoElement = videoRef && videoRef.current ? videoRef.current : null;
