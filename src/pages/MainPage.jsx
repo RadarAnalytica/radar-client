@@ -3,52 +3,32 @@ import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 // import BlockImg_x1 from './images/Dashboard_x1.png';
 // import BlockImg_x2 from './images/Dashboard_x2.png';
-import AccordionMain from '../components/AccordionMain';
-import manyApi from './images/manyApi.svg';
-import manyApiMobile from './images/manyApiMobile.svg';
-import manyApiMedium from '../pages/images/blockApiMedium.svg';
+const AccordionMain = lazy(() => import('../components/AccordionMain'));
 import wbLogo from './images/wb_icon.svg'
 
-import FinancialStatements from '../components/FinancialStatements';
-import apiBlock from './images/apiblock2.svg';
-import startAnalitic from './images/startAnalitic.svg';
-import arrowLink from './images/arrowLink.svg';
-import BtnHomePage from '../components/BtnHomePage';
-import StepsTime from '../components/StepsTime';
+const FinancialStatements = lazy(() => import('../components/FinancialStatements'));
+const BtnHomePage = lazy(() => import('../components/BtnHomePage'));
+const StepsTime = lazy(() => import('../components/StepsTime'));
 // import SelectRate from '../components/SelectRate';
-import SelectRateMain from '../components/SelectRateMain';
+const SelectRateMain = lazy(() => import('../components/SelectRateMain'));
 import YellowRadarSmall from './images/YelowRadarSmall';
 import NavbarMainHome from '../components/NavbarMainHome';
-import AnalyzeWildberries from "../components/AnalyzeWildberries"
+const AnalyzeWildberries = lazy(() => import("../components/AnalyzeWildberries"));
 import AuthContext from '../service/AuthContext';
 import { useNavigate } from 'react-router-dom';
 // import LimitedFooter from '../components/LimitedFooter';
-import ToggleAnaliticsPanel from '../components/ToggleAnaliticsPanel';
-import ReviewsUsers from '../components/ReviewsUsers';
-import TryProduct from '../components/TryProduct';
+const ToggleAnaliticsPanel = lazy(() => import('../components/ToggleAnaliticsPanel'));
+const ReviewsUsers = lazy(() => import('../components/ReviewsUsers'));
+const TryProduct = lazy(() => import('../components/TryProduct'));
 import { useLocation } from 'react-router-dom';
 import { URL } from '../service/config';
-import lowResImage from './images/imageFon_comp.png';
 import highResImage from './images/imageFon.png';
-import ligtning from './images/ligtningIcon.svg';
-import safety from './images/safety.svg';
-import bigData from './images/bigData.svg';
-import FooterNewVersion from '../components/FooterNewVersion';
-import ApiBlockContainer from "../components/ApiBlockContainer"
-
-import ImageComponent from '../components/utilsComponents/ImageComponent ';
-import BlockImg_x1 from './images/Dashboard_x1.png';
-import BlockImg_x3 from './images/Dashboard_x3.png';
-import ApiBlock from '../components/mainPageComponents/ApiBlock';
+const FooterNewVersion = lazy(() => import('../components/FooterNewVersion'));
+const ApiBlock = lazy(() => import('../components/mainPageComponents/ApiBlock'));
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
-import lowQualityVideo from "../assets/video/WebmLow.webm";
-import highQualityVideoWebm from "../assets/video/Webm_1920.webm"
 import highQualityVideo from "../assets/video/fixed_video.mp4";
 import preview from "../assets/video/firstShot.jpg"
-import LoaderPage from "../pages/LoaderPage";
-
-const AdaptiveMedia = lazy(() => import("../components/AdaptiveMedia"));
 
 import styles from "../pages/MainPage.module.css"
 
@@ -229,7 +209,7 @@ const MainPage = () => {
               </Suspense> */}
             </div>
           </div>
-
+          <Suspense fallback={null}>
           <div className='authorized-service-container'>
             <div className='authorized-service-logo-wrapper'>
               <div className='wb-logo-wrapper'>
@@ -279,10 +259,13 @@ const MainPage = () => {
               <AnalyzeWildberries />
             </div>
           </div>
+          </Suspense>
         </div>
-        <FooterNewVersion />
+        <Suspense fallback={null}>
+          <FooterNewVersion />
+        </Suspense>
       </div>
-
+      
     </div >
   );
 };

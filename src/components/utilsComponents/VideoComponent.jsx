@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
 import styles from "../../pages/MainPage.module.css";
 import moment from "moment/moment";
 import 'moment/locale/ru'
@@ -14,12 +14,14 @@ const VideoComponent = ({
     const [currentSource, setCurrentSource] = useState('/video_300.webm');
     //console.log(currentSource)
     const [currentTime, setCurrentTime] = useState(0); // Сохраняем текущее время воспроизведен
+    useLayoutEffect(() => {
+        console.log(videoRef.current)
+        console.log('ule')
+        videoRef.current.play();
+    }, [])
     useEffect(() => {
         const videoElement = videoRef && videoRef.current ? videoRef.current : null;
-        console.log(videoElement.src)
         const handleTimeUpdate = () => {
-            
-            //console.log('c time: ' + currentTime)
             setCurrentTime(videoElement.currentTime);
         };
     
@@ -29,22 +31,26 @@ const VideoComponent = ({
         highQualityVideo.src = '/video_full.webm';
         
         const handleCanPlayThrough = () => {
-            console.log('source updated');
             if (currentSource !== '/video_full.webm' && currentTime >= 1) {
                 console.log(currentTime)
                 setCurrentSource('/video_full.webm');
             }
         };
     
-        // Добавляем обработчик события после установки src
         highQualityVideo.addEventListener('canplaythrough', handleCanPlayThrough);
-        highQualityVideo.load(); // Загружаем видео, чтобы сработало событие canplaythrough
+        highQualityVideo.load();
     
         return () => {
             videoElement.removeEventListener('timeupdate', handleTimeUpdate);
             highQualityVideo.removeEventListener('canplaythrough', handleCanPlayThrough);
         };
     }, [currentTime, currentSource]); 
+
+
+    useEffect(() => {
+        const videoElement = videoRef && videoRef.current ? videoRef.current : null;
+        videoElement.currentTime = currentTime
+    }, [currentSource])
 
 
     return (
@@ -62,6 +68,7 @@ const VideoComponent = ({
                 className={styles.video}
                 ref={videoRef}
                 src={currentSource}
+                
                 style={{
                     width: "100%",
                     height: "100%",
