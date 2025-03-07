@@ -140,7 +140,7 @@ const SelectRate = ({ redirect, isShowText }) => {
       newTrialExpired = false;
     }
 
-    console.log('user.email', user);
+    console.log('user', user);
     console.log('selectedPeriod', selectedPeriod);
     console.log('trialExpired', trialExpired);
     console.log('newTrialExpired', newTrialExpired);
@@ -148,7 +148,13 @@ const SelectRate = ({ redirect, isShowText }) => {
     let periodSubscribe = '';
     let amountSubscribe = 0;
     let firstAmount = 0;
-    let startDateSubscribe = new Date();;
+    let startDateSubscribe = new Date();
+    // проверяем время с 10:10 по 10 мск
+    if (startDateSubscribe.getUTCHours() + 3 <= 23 && startDateSubscribe.getUTCMinutes() < 10){
+      startDateSubscribe.setDate(startDateSubscribe.getDate() + 1);
+    }
+    // ставим время платежа на 10 мск
+    startDateSubscribe.setUTCHours(7, 0, 0, 0);
     const options = {
       year: 'numeric',
       month: 'numeric',
@@ -171,19 +177,19 @@ const SelectRate = ({ redirect, isShowText }) => {
         startDateSubscribe.setMonth(
           startDateSubscribe.getMonth() + periodSubscribe
         );
-        startDateSubscribe.setUTCHours(7, 0, 0, 0);
       } else {
         startDateSubscribe.setDate(startDateSubscribe.getDate() + user?.test_days || 3);
-        startDateSubscribe.setUTCHours(7, 0, 0, 0);
       }
-    } else if (selectedPeriod === '3month') {
+    }
+    if (selectedPeriod === '3month') {
       amountSubscribe = 8073;
       firstAmount = !subscriptionDiscount ? 8073 : 4485;
       periodSubscribe = 3;
       startDateSubscribe.setMonth(
         startDateSubscribe.getMonth() + periodSubscribe
       );
-    } else if (selectedPeriod === '6month') {
+    }
+    if (selectedPeriod === '6month') {
       amountSubscribe = 10764;
       firstAmount = !subscriptionDiscount ? 10764 : 5382;
       periodSubscribe = 6;
@@ -333,7 +339,7 @@ const SelectRate = ({ redirect, isShowText }) => {
         console.log('Payment fail:', 'reason', reason, 'options', options);
       }
     );
-
+    
     //   widget.pay('charge', // или 'charge'
     //       { //options
     //           publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
