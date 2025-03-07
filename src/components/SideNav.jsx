@@ -123,6 +123,7 @@ const SideNav = () => {
                   active === 'external-expenses' ||
                   active === 'buy-back'
                     ? { fontWeight: 'bold', color: 'black' }
+                    ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
               >
@@ -160,6 +161,7 @@ const SideNav = () => {
                   location === 'supply' ||
                   location === 'abc-data' ||
                   location === 'stock-analysis'
+                    ? { fontWeight: 'bold', color: 'black' }
                     ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
@@ -310,6 +312,7 @@ const SideNav = () => {
                   location === 'monitoring' ||
                   location === 'ai-generator'
                     ? { fontWeight: 'bold', color: 'black' }
+                    ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
               >
@@ -448,11 +451,9 @@ const SideNav = () => {
 
               <span
                 className='sidenav-title'
-                style={
-                     {
-                        color: '#F0AD00',
-                      }
-                }
+                style={{
+                  color: '#F0AD00',
+                }}
               >
                 Дополнительные
                 <br />
@@ -480,7 +481,9 @@ const SideNav = () => {
               <p
                 className='sidenav-title ps-4 submenu-item'
                 style={
-                     { marginBottom: 0 }
+                  {
+                    marginBottom: 0,
+                  }
                 }
                 onClick={() => navigate('')}
               >
