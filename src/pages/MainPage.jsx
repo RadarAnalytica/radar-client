@@ -27,8 +27,6 @@ const FooterNewVersion = lazy(() => import('../components/FooterNewVersion'));
 const ApiBlock = lazy(() => import('../components/mainPageComponents/ApiBlock'));
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
-import highQualityVideo from "../assets/video/fixed_video.mp4";
-import preview from "../assets/video/firstShot.jpg"
 
 import styles from "../pages/MainPage.module.css"
 
@@ -126,7 +124,7 @@ const MainPage = () => {
       <div>
         <div className={`container widbody-container container-xlwidth  ${styles.mainPageContainer}`}>
           <NavbarMainHome />
-          <div className={`wid-solution ${styles.widSolution}`} style={{ marginTop: '20px' }}>
+          <div className={styles.mainScreen}>
             <div className={`sol-description sol-description-top col ${styles.solDescription}`}>
               <div className={`sol-description-label-container ${styles.solDescriptionLabelContainer}`}>
                 <SolLabelBsn />
@@ -172,11 +170,7 @@ const MainPage = () => {
                 heavyImageSrc={BlockImg_x3}
                 lightImageSrc={BlockImg_x1}
               /> */}
-              <VideoComponent
-              poster={preview}
-              videoMp4={highQualityVideo}
-              style={{ width: '100%', height: "auto" }}
-            />
+              <VideoComponent />
               {/* <AdaptiveMedia
                 videoMp4={highQualityVideo}
                 // videoWebm={highQualityVideoWebm}

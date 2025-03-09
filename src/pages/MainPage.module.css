@@ -6,6 +6,23 @@
     /* gap: 20px; */
 }
 
+.mainScreen {
+    width: 100%;
+    min-height: 50vh;
+    border-radius: 20px;
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+
+    @media (max-width: 1000px) {
+        /* min-height: 100vh; */
+        min-height: auto;
+        flex-direction: column;
+        justify-content: stretch;
+        align-items: stretch;
+    }
+}
+
 .video{
     margin-left: 20px;
 }
