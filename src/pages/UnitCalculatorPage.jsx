@@ -1,9 +1,24 @@
+import React, { useState } from 'react'
 import styles from './UnitCalculatorPage.module.css'
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import { Form, Input, Checkbox, Radio, Button, ConfigProvider } from 'antd';
+import { Form, Input, Checkbox, Radio, Button, ConfigProvider, Tooltip } from 'antd';
 
 const UnitCalculatorPage = () => {
+
+    const [ popupState, setPopupState ] = useState({
+        isShippingCostsPopupVisible: false,
+        isTaxesPopupVisible: false,
+        isOtherCostsPopupVisible: false
+    })
+
+    const [ form ] = Form.useForm();
+    console.log(form)
+    const userName = Form.useWatch('username', form);
+
+    const submitHandler = (fields) => {
+        console.log(fields)
+    }
 
     return (
         <main className={styles.page}>
@@ -15,6 +30,7 @@ const UnitCalculatorPage = () => {
                         token: {
                             fontFamily: 'Mulish',
                             colorBorder: 'white',
+                            // colorTextLightSolid: '#000'
                         },
                         components: {
                             Form: {
@@ -34,6 +50,12 @@ const UnitCalculatorPage = () => {
                             <Form
                                 className={styles.form}
                                 layout="vertical"
+                                onFinish={submitHandler}
+                                form={form}
+                                initialValues={{
+                                    product: 1111,
+                                    isSPP: true
+                                }}
                             >
                                 <fieldset className={styles.fieldset}>
                                     <div className={styles.fieldset__header}>
@@ -42,6 +64,7 @@ const UnitCalculatorPage = () => {
                                     </div>
 
                                     <Form.Item
+                                        name='product'
                                         label='Товар'
                                         className={styles.fromItem}
 
@@ -55,6 +78,7 @@ const UnitCalculatorPage = () => {
 
                                     <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                                         <Form.Item
+                                            name='product_price'
                                             label='Цена товара'
                                             className={styles.fromItem}
                                         >
@@ -66,16 +90,14 @@ const UnitCalculatorPage = () => {
                                         <Form.Item
                                             label='СПП'
                                             className={styles.fromItem}
+                                            name='SPP'
                                         >
                                             <Input
                                                 size='large'
                                                 placeholder='Укажите СПП, %'
                                             />
                                         </Form.Item>
-                                        <Form.Item
-                                            className={styles.fromItem}
-                                        >
-                                            <ConfigProvider
+                                        <ConfigProvider
                                                 theme={{
                                                     token: {
                                                         colorBorder: '#00000033',
@@ -84,9 +106,14 @@ const UnitCalculatorPage = () => {
 
                                                 }}
                                             >
-                                                <Checkbox checked>Указывать СПП</Checkbox>
-                                            </ConfigProvider>
+                                        <Form.Item
+                                            className={styles.fromItem}
+                                            name='isSPP'
+                                            valuePropName="checked"
+                                        >
+                                                <Checkbox>Указывать СПП</Checkbox>
                                         </Form.Item>
+                                        </ConfigProvider>
                                         <div className={styles.fieldset__footer} style={{ justifyContent: 'space-between' }}>
                                             <p className={styles.fieldset__footerText}>цена с СПП</p>
                                             <p className={styles.fieldset__footerText_price}>1 000 ₽</p>
@@ -145,7 +172,21 @@ const UnitCalculatorPage = () => {
                                         <div className={styles.fieldset__footer_span}>
                                             <p className={styles.fieldset__footerText}>Сумма трех сторон: 38 см</p>
                                             <p className={styles.fieldset__footerText}>Расчетный объем: 1,95 л</p>
-                                            <p className={styles.fieldset__footerText}>/t/</p>
+                                            <ConfigProvider
+                                                theme={{
+                                                    token: {
+                                                        colorTextLightSolid: '#000'
+                                                    }
+                                                }}
+                                            >
+                                                <Tooltip
+                                                    title='test'
+                                                    style={{ cursor: 'pointer'}}
+                                                    color={'white'}
+                                                >
+                                                    <div className={styles.tooltip}>!</div>
+                                                </Tooltip>
+                                            </ConfigProvider>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -175,7 +216,24 @@ const UnitCalculatorPage = () => {
 
                                                     }}
                                                 >
-                                                    <Radio value="a">Короб /t/</Radio>
+                                                    <Radio value="a"> <div className={styles.label}>
+                                                    {'Короб'}
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorTextLightSolid: '#000'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Tooltip
+                                                        title='test'
+                                                        style={{ cursor: 'pointer'}}
+                                                        color={'white'}
+                                                    >
+                                                        <div className={styles.tooltip}>!</div>
+                                                    </Tooltip>
+                                                    </ConfigProvider>
+                                                </div></Radio>
                                                     <Radio value="b">Монопаллета</Radio>
                                                 </ConfigProvider>
                                             </div>
@@ -186,7 +244,26 @@ const UnitCalculatorPage = () => {
 
                                     <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                                         <Form.Item
-                                            label='Склад отгрузки /t/'
+                                            label={
+                                                <div className={styles.label}>
+                                                    {'Склад отгрузки'}
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorTextLightSolid: '#000'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Tooltip
+                                                        title='test'
+                                                        style={{ cursor: 'pointer'}}
+                                                        color={'white'}
+                                                    >
+                                                        <div className={styles.tooltip}>!</div>
+                                                    </Tooltip>
+                                                    </ConfigProvider>
+                                                </div>
+                                            }
                                             className={styles.fromItem}
                                         >
                                             <Input
@@ -215,7 +292,25 @@ const UnitCalculatorPage = () => {
 
                                                 }}
                                             >
-                                                <Checkbox checked>Платная приемка /t/</Checkbox>
+                                                <Checkbox checked><div className={styles.label}>
+                                                    {'Платная приемка'}
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorTextLightSolid: '#000'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Tooltip
+                                                        title='test'
+                                                        style={{ cursor: 'pointer'}}
+                                                        color={'white'}
+                                                    >
+                                                        <div className={styles.tooltip}>!</div>
+                                                    </Tooltip>
+                                                    </ConfigProvider>
+                                                </div>
+                                                </Checkbox>
                                             </ConfigProvider>
                                         </Form.Item>
                                     </div>
@@ -224,7 +319,26 @@ const UnitCalculatorPage = () => {
 
                                     <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                                         <Form.Item
-                                            label='Скорость доставки (FBS) /t/'
+                                            label={
+                                                <div className={styles.label}>
+                                                    {'Скорость доставки (FBS)'}
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorTextLightSolid: '#000'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Tooltip
+                                                        title='test'
+                                                        style={{ cursor: 'pointer'}}
+                                                        color={'white'}
+                                                    >
+                                                        <div className={styles.tooltip}>!</div>
+                                                    </Tooltip>
+                                                    </ConfigProvider>
+                                                </div>
+                                            }
                                             className={styles.fromItem}
                                         >
                                             <Input
@@ -233,7 +347,26 @@ const UnitCalculatorPage = () => {
                                             />
                                         </Form.Item>
                                         <Form.Item
-                                            label='Логистика с учетом процента выкупа /t/'
+                                            label={
+                                                <div className={styles.label}>
+                                                    {'Логистика с учетом процента выкупа'}
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorTextLightSolid: '#000'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Tooltip
+                                                        title='test'
+                                                        style={{ cursor: 'pointer'}}
+                                                        color={'white'}
+                                                    >
+                                                        <div className={styles.tooltip}>!</div>
+                                                    </Tooltip>
+                                                    </ConfigProvider>
+                                                </div>
+                                            }
                                             className={styles.fromItem}
                                         >
                                             <Input
@@ -299,7 +432,26 @@ const UnitCalculatorPage = () => {
                                         </div>
 
                                         <Form.Item
-                                            label='Комиссия за тарифные опции /t/'
+                                            label={
+                                                <div className={styles.label}>
+                                                    {'Комиссия за тарифные опции'}
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorTextLightSolid: '#000'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Tooltip
+                                                        title='test'
+                                                        style={{ cursor: 'pointer'}}
+                                                        color={'white'}
+                                                    >
+                                                        <div className={styles.tooltip}>!</div>
+                                                    </Tooltip>
+                                                    </ConfigProvider>
+                                                </div>
+                                            }
                                             className={styles.fromItem}
                                         >
                                             <Input
@@ -308,7 +460,26 @@ const UnitCalculatorPage = () => {
                                             />
                                         </Form.Item>
                                         <Form.Item
-                                            label='Эквайринг /t/'
+                                            label={
+                                                <div className={styles.label}>
+                                                    {'Эквайринг'}
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorTextLightSolid: '#000'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Tooltip
+                                                        title='test'
+                                                        style={{ cursor: 'pointer'}}
+                                                        color={'white'}
+                                                    >
+                                                        <div className={styles.tooltip}>!</div>
+                                                    </Tooltip>
+                                                    </ConfigProvider>
+                                                </div>
+                                            }
                                             className={styles.fromItem}
                                         >
                                             <Input
@@ -326,107 +497,115 @@ const UnitCalculatorPage = () => {
                                     </div>
                                     <div className={styles.fieldset__popupWrapper}>
                                         <div className={styles.fieldset__popup}>
-                                            <div className={styles.fieldset__popupHeader}>
+                                            <div className={styles.fieldset__popupHeader} onClick={() => {setPopupState({...popupState, isShippingCostsPopupVisible: !popupState.isShippingCostsPopupVisible})}}>
                                                 <h3 className={styles.fieldset__popupTitle}>Организация поставки</h3>
-                                                <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: popupState.isShippingCostsPopupVisible ? 'rotate(180deg' : '', transition: 'all .3s ease-out'}}>
                                                     <path d="M13 7.5L7 1.5L1 7.5" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
                                                 </svg>
 
                                             </div>
-                                            <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
-                                                <Form.Item
-                                                    label='Логистика от производителя'
-                                                    className={styles.fromItem}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        placeholder='Укажите стоимость'
-                                                    />
-                                                </Form.Item>
-                                                <Form.Item
-                                                    label='Упаковка и маркировка'
-                                                    className={styles.fromItem}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        placeholder='Укажите стоимость упаковки'
-                                                    />
-                                                </Form.Item>
-                                                <Form.Item
-                                                    label='Логистика до маркетплейса'
-                                                    className={styles.fromItem}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        placeholder='Укажите стоимость'
-                                                    />
-                                                </Form.Item>
-                                                <Form.Item
-                                                    label='Услуги фулфилмента'
-                                                    className={styles.fromItem}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        placeholder='Укажите стоимость'
-                                                    />
-                                                </Form.Item>
-                                            </div>
-                                        </div>
-
-                                        <div className={styles.fieldset__popup}>
-                                            <div className={styles.fieldset__popupHeader}>
-                                                <h3 className={styles.fieldset__popupTitle}>Налоги</h3>
-                                                <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M13 7.5L7 1.5L1 7.5" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
-                                                </svg>
-
-                                            </div>
-                                            <Form.Item
-                                                label='Налоговый режим'
-                                                className={styles.fromItem}
-                                            >
-                                                <Radio.Group
-                                                    style={{ width: '100%' }}
-                                                    defaultValue='b'
-                                                >
-                                                    <ConfigProvider
-                                                        theme={{
-                                                            token: {
-                                                                colorBorder: '#00000033',
-                                                                colorPrimary: '#5329FF'
-                                                            }
-
-                                                        }}
+                                            {popupState.isShippingCostsPopupVisible && 
+                                                <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
+                                                    <Form.Item
+                                                        label='Логистика от производителя'
+                                                        className={styles.fromItem}
                                                     >
-                                                        <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
-                                                            <Radio value="a">УНС-доходы</Radio>
-                                                            <Radio value="b">Доходы - расходы</Radio>
-                                                        </div>
-                                                    </ConfigProvider>
-                                                </Radio.Group>
-                                            </Form.Item>
-
-                                            <Form.Item
-                                                label='Налоговая ставка'
-                                                className={styles.fromItem}
-                                            >
-                                                <Input
-                                                    size='large'
-                                                    placeholder='Укажите ставку'
-                                                />
-                                            </Form.Item>
-
-                                            <p className={styles.fieldset__footerText_price}>60 ₽</p>
+                                                        <Input
+                                                            size='large'
+                                                            placeholder='Укажите стоимость'
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        label='Упаковка и маркировка'
+                                                        className={styles.fromItem}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            placeholder='Укажите стоимость упаковки'
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        label='Логистика до маркетплейса'
+                                                        className={styles.fromItem}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            placeholder='Укажите стоимость'
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        label='Услуги фулфилмента'
+                                                        className={styles.fromItem}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            placeholder='Укажите стоимость'
+                                                        />
+                                                    </Form.Item>
+                                                </div>
+                                            }
                                         </div>
 
                                         <div className={styles.fieldset__popup}>
-                                            <div className={styles.fieldset__popupHeader}>
-                                                <h3 className={styles.fieldset__popupTitle}>Прочие расходы на товар</h3>
-                                                <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <div className={styles.fieldset__popupHeader} onClick={() => {setPopupState({...popupState, isTaxesPopupVisible: !popupState.isTaxesPopupVisible})}}>
+                                                <h3 className={styles.fieldset__popupTitle}>Налоги</h3>
+                                                <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: popupState.isTaxesPopupVisible ? 'rotate(180deg' : '', transition: 'all .3s ease-out'}}>
                                                     <path d="M13 7.5L7 1.5L1 7.5" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
                                                 </svg>
 
                                             </div>
+                                            {popupState.isTaxesPopupVisible &&
+                                            <>
+                                                <Form.Item
+                                                    label='Налоговый режим'
+                                                    className={styles.fromItem}
+                                                >
+                                                    <Radio.Group
+                                                        style={{ width: '100%' }}
+                                                        defaultValue='b'
+                                                    >
+                                                        <ConfigProvider
+                                                            theme={{
+                                                                token: {
+                                                                    colorBorder: '#00000033',
+                                                                    colorPrimary: '#5329FF'
+                                                                }
+
+                                                            }}
+                                                        >
+                                                            <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
+                                                                <Radio value="a">УНС-доходы</Radio>
+                                                                <Radio value="b">Доходы - расходы</Radio>
+                                                            </div>
+                                                        </ConfigProvider>
+                                                    </Radio.Group>
+                                                </Form.Item>
+
+                                                <Form.Item
+                                                    label='Налоговая ставка'
+                                                    className={styles.fromItem}
+                                                >
+                                                    <Input
+                                                        size='large'
+                                                        placeholder='Укажите ставку'
+                                                    />
+                                                </Form.Item>
+
+                                                <p className={styles.fieldset__footerText_price}>60 ₽</p>
+                                            </>
+                                            }
+                                        </div>
+
+                                        <div className={styles.fieldset__popup}>
+                                            <div className={styles.fieldset__popupHeader} onClick={() => {setPopupState({...popupState, isOtherCostsPopupVisible: !popupState.isOtherCostsPopupVisible})}}>
+                                                <h3 className={styles.fieldset__popupTitle}>Прочие расходы на товар</h3>
+                                                <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: popupState.isOtherCostsPopupVisible ? 'rotate(180deg' : '', transition: 'all .3s ease-out'}}>
+                                                    <path d="M13 7.5L7 1.5L1 7.5" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+                                                </svg>
+
+                                            </div>
+                                            {popupState.isOtherCostsPopupVisible && 
+                                            <>
                                             <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                                                 <Form.Item
                                                     label='Затраты на рекламу'
@@ -457,6 +636,8 @@ const UnitCalculatorPage = () => {
                                                     placeholder='Укажите стоимость'
                                                 />
                                             </Form.Item>
+                                            </>
+                                            }
                                         </div>
                                     </div>
                                 </fieldset>
@@ -472,11 +653,18 @@ const UnitCalculatorPage = () => {
                                     <Button
                                         type='primary'
                                         size='large'
+                                        htmlType='submit'
                                     >Рассчитать</Button>
                                 </ConfigProvider>
 
                             </Form>
                         </div>
+
+
+
+
+
+
                         {/* result here */}
                         <div className={styles.page__resultWrapper}>
                             <div className={styles.result__shareWrapper}>
@@ -522,16 +710,86 @@ const UnitCalculatorPage = () => {
                             </div>
 
                             <div className={styles.result__tableWrapper}>
-                                <p className={styles.result__title}></p>
-                                {/* <Input
-                                    size='large'
-                                    placeholder='50 000 P'
+                                <p className={styles.result__title}>Расчет партии</p>
+                                <label
+                                    className={styles.result__inputWrapper}
                                 >
-                                </Input> */}
+                                    {'Мои вложения, ₽'}
+                                    <Input
+                                        size='large'
+                                        placeholder='50 000 ₽'
+                                    />
+                                </label>
+
+                                <div className={styles.result__table}>
+                                    <div className={styles.result__tableRow}>
+                                        {'Кол-во товара'} <span>46 шт</span>
+                                    </div>
+                                    <div className={styles.result__tableRow}>
+                                        {'Выручка'} <span>46 000 ₽</span>
+                                    </div>
+                                    <div className={styles.result__tableRow}>
+                                        {'Чистая прибыль'} <span>-73 600 ₽ </span>
+                                    </div>
+                                    <div className={styles.result__tableRow}>
+                                    <div className={styles.label} style={{ gap: 4}}>
+                                                    {'Точка безубыточности'}
+                                                    <ConfigProvider theme={{ token: {colorTextLightSolid: '#000'}}}>
+                                                    <Tooltip
+                                                    color={'white'}
+                                                    title='test'
+                                                    arrow={false}
+                                                    style={{ cursor: 'pointer', color: 'black'}}
+                                                    >
+                                                        <div className={styles.tooltip}>!</div>
+                                                    </Tooltip>
+                                                    </ConfigProvider>
+                                                </div>
+                                         <span>66 шт</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div className={styles.result__tableWrapper}>
+                                <p className={styles.result__title}>Итоговые значения</p>
+
+                                <div className={styles.result__mainResultTable}>
+                                    <div className={styles.result__mainTableRow}>
+                                        <div className={styles.result__mainTablePrice}>1 105 ₽</div>
+                                        <div className={styles.result__mainTableText}>Общая себестоимость</div>
+                                        <div className={`${styles.result__mainTableText} ${styles.result__mainTableText_gray}`}>Общая сумма затрат до поставки товара</div>
+                                    </div>
+                                    <div className={styles.result__mainTableRow}>
+                                        <div className={styles.result__mainTablePrice}>-144,8 %</div>
+                                        <div className={styles.result__mainTableText}>Рентабельность ROI</div>
+                                        <div className={`${styles.result__mainTableText} ${styles.result__mainTableText_gray}`}>Доля прибыли от вложений</div>
+                                    </div>
+                                    <div className={styles.result__mainTableRow}>
+                                        <div className={styles.result__mainTablePrice}>-160 %</div>
+                                        <div className={styles.result__mainTableText}>Маржинальность</div>
+                                        <div className={`${styles.result__mainTableText} ${styles.result__mainTableText_gray}`}>Доля прибыли в выручке</div>
+                                    </div>
+                                </div>
+
+                                <div className={styles.result__table}>
+                                    <div className={styles.result__tableRow}>
+                                        {'Чистая прибыль'} <span>-1 600 ₽</span>
+                                    </div>
+                                    <div className={styles.result__tableRow}>
+                                        {'Минимальная цена'}
+                                        <span>2 600 ₽</span>
+                                    </div>
+                                    <div className={styles.result__tableRow}>
+                                        {'Максимальаня скидка'} <span>-160 %</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    </ConfigProvider>
+                </ConfigProvider>
             </section>
         </main>
     )
