@@ -3,16 +3,15 @@ import styles from './VideoComponent.module.css'
 import 'moment/locale/ru'
 const VideoComponent = () => {
     const videoRef = useRef(null);
-    const [ isHiresActive, setHiresActive ] = useState(false)
-    const [ isFirstStart, setIsFirstStart ] = useState(true)
-    const [ hiresSource, setHiresSource ] = useState(null)
+    const containerRef = useRef(null);
 
     return (
         <div
             className={styles.videoContainer}
+            ref={containerRef}
         >   
                 <video
-                    className={styles.video}
+                    className={styles.videoSD}
                     ref={videoRef}
                     src='/video_300.webm'
                     style={{
@@ -21,40 +20,32 @@ const VideoComponent = () => {
                         objectFit: "cover",
                         display: "block"
                     }}
-                    onEnded={() => {
+                    loading='eager'
+                    decoding='async'
+                    fetchpriority='high'
+                    poster='/firstShot.jpg'
+                    playsInline
+                    autoPlay
+                    muted
+                    preload="auto"
+                    webkit-playsinline="true"
+                    loop
+                />
+                 <video
+                    className={styles.videoHD}
+                    src='/video_full.webm'
+                    onCanPlayThrough={() => {
                         const videoElement = videoRef.current;
-                        if (!isFirstStart && hiresSource && videoElement && !isHiresActive) {
-                            const newSourceUrl = URL.createObjectURL(hiresSource)
-                            videoElement.loop = true;
-                            videoElement.src = newSourceUrl;
-                            videoElement.play()
-                            setHiresActive(true)
+                        if (videoElement && videoElement.style.display !== 'none') {
+                            videoElement.style.display = 'none'
+                            videoElement.style.zIndex = 0
                         }
                     }}
-                    onPlaying={async function () {
-                        const videoElement = videoRef.current;
-                        if (videoElement && isFirstStart && !hiresSource) {
-                            const arrayBuffer = await fetch('/video_full.webm').then(r => r.arrayBuffer());
-                            const blob = new Blob([arrayBuffer]);
-                            const newSourceUrl = URL.createObjectURL(blob)
-                            videoElement.src = newSourceUrl
-                            setHiresSource(blob)
-                            setIsFirstStart(false)
-                        } 
-                        
-                        // if (!isFirstStart && hiresSource && videoElement && !isHiresActive) {
-                        //     const newSourceUrl = URL.createObjectURL(hiresSource)
-                        //     videoElement.src = newSourceUrl
-                        //     setHiresActive(true)
-                        // }
-
-                        // if (!isFirstStart && hiresSource && videoElement && !isHiresActive) {
-                        //     const newSourceUrl = URL.createObjectURL(hiresSource)
-                        //     videoElement.loop = true;
-                        //     videoElement.src = newSourceUrl;
-                        //     videoElement.play()
-                        //     setHiresActive(true)
-                        // }
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block"
                     }}
                     loading='eager'
                     decoding='async'
