@@ -199,10 +199,14 @@
 
 /* FROM ITEM */
 
-.fromItem {
+.formItem {
     width: 100%;
     margin: 0;
     padding: 0;
+}
+
+.formItem_wide {
+    grid-column: span 2;
 }
 
 .radioLabel {
@@ -377,6 +381,11 @@
     letter-spacing: 0%;
     color: #1A1A1A80;
     cursor: pointer;
+}
+
+.tooltip_red {
+    border: 1px solid #FEEBF0;
+    color: #F93C65
 }
 
 .label {

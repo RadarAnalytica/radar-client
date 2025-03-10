@@ -13,8 +13,8 @@ const UnitCalculatorPage = () => {
     })
 
     const [ form ] = Form.useForm();
-    console.log(form)
-    const userName = Form.useWatch('username', form);
+    const isSPP = Form.useWatch('isSPP', form);
+    const isHeavy = Form.useWatch('isHeavy', form);
 
     const submitHandler = (fields) => {
         console.log(fields)
@@ -54,7 +54,8 @@ const UnitCalculatorPage = () => {
                                 form={form}
                                 initialValues={{
                                     product: 1111,
-                                    isSPP: true
+                                    isSPP: false,
+                                    isHeavy: false
                                 }}
                             >
                                 <fieldset className={styles.fieldset}>
@@ -66,7 +67,7 @@ const UnitCalculatorPage = () => {
                                     <Form.Item
                                         name='product'
                                         label='Товар'
-                                        className={styles.fromItem}
+                                        className={styles.formItem}
 
                                     >
                                         <Input
@@ -80,21 +81,76 @@ const UnitCalculatorPage = () => {
                                         <Form.Item
                                             name='product_price'
                                             label='Цена товара'
-                                            className={styles.fromItem}
+                                            className={isSPP ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
                                         >
                                             <Input
                                                 size='large'
                                                 placeholder='Укажите цену товара'
                                             />
                                         </Form.Item>
-                                        <Form.Item
+                                        {isSPP && <Form.Item
                                             label='СПП'
-                                            className={styles.fromItem}
+                                            className={styles.formItem}
                                             name='SPP'
                                         >
                                             <Input
                                                 size='large'
                                                 placeholder='Укажите СПП, %'
+                                            />
+                                        </Form.Item>}
+                                        <ConfigProvider
+                                                theme={{
+                                                    token: {
+                                                        colorBorder: '#00000033',
+                                                        colorPrimary: '#5329FF'
+                                                    }
+
+                                                }}
+                                            >
+                                        <Form.Item
+                                            className={styles.formItem}
+                                            name='isSPP'
+                                            valuePropName="checked"
+                                        >
+                                                <Checkbox>Указывать СПП</Checkbox>
+                                        </Form.Item>
+                                        </ConfigProvider>
+                                        {isSPP && 
+                                        <div className={styles.fieldset__footer} style={{ justifyContent: 'space-between' }}>
+                                            <p className={styles.fieldset__footerText}>цена с СПП</p>
+                                            <p className={styles.fieldset__footerText_price}>1 000 ₽</p>
+                                        </div>
+                                        }
+                                    </div>
+
+
+
+                                    <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_3cols}`}>
+                                        <Form.Item
+                                            label='Длина упаковки'
+                                            className={styles.formItem}
+                                        >
+                                            <Input
+                                                size='large'
+                                                placeholder='Укажите длину упаковки'
+                                            />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label='Ширина упаковки'
+                                            className={styles.formItem}
+                                        >
+                                            <Input
+                                                size='large'
+                                                placeholder='Укажите ширину упаковки'
+                                            />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label='Высота упаковки'
+                                            className={styles.formItem}
+                                        >
+                                            <Input
+                                                size='large'
+                                                placeholder='Укажите высоту упаковки'
                                             />
                                         </Form.Item>
                                         <ConfigProvider
@@ -106,73 +162,21 @@ const UnitCalculatorPage = () => {
 
                                                 }}
                                             >
-                                        <Form.Item
-                                            className={styles.fromItem}
-                                            name='isSPP'
-                                            valuePropName="checked"
-                                        >
-                                                <Checkbox>Указывать СПП</Checkbox>
-                                        </Form.Item>
-                                        </ConfigProvider>
-                                        <div className={styles.fieldset__footer} style={{ justifyContent: 'space-between' }}>
-                                            <p className={styles.fieldset__footerText}>цена с СПП</p>
-                                            <p className={styles.fieldset__footerText_price}>1 000 ₽</p>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_3cols}`}>
-                                        <Form.Item
-                                            label='Длина упаковки'
-                                            className={styles.fromItem}
-                                        >
-                                            <Input
-                                                size='large'
-                                                placeholder='Укажите длину упаковки'
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
-                                            label='Ширина упаковки'
-                                            className={styles.fromItem}
-                                        >
-                                            <Input
-                                                size='large'
-                                                placeholder='Укажите ширину упаковки'
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
-                                            label='Высота упаковки'
-                                            className={styles.fromItem}
-                                        >
-                                            <Input
-                                                size='large'
-                                                placeholder='Укажите высоту упаковки'
-                                            />
-                                        </Form.Item>
-
-                                        <Form.Item
-                                            className={styles.fromItem}
-                                        >
-                                            <ConfigProvider
-                                                theme={{
-                                                    token: {
-                                                        colorBorder: '#00000033',
-                                                        colorPrimary: '#5329FF'
-                                                    }
-
-                                                }}
+                                            <Form.Item
+                                                className={styles.formItem}
+                                                name='isHeavy'
+                                                valuePropName="checked"
                                             >
-                                                <Checkbox
-                                                    checked
-                                                >Тяжелее 25 кг</Checkbox>
-                                            </ConfigProvider>
-                                        </Form.Item>
+                                            
+                                                    <Checkbox
+                                                    >Тяжелее 25 кг</Checkbox>
+                                            </Form.Item>
+                                        </ConfigProvider>
 
                                         <div className={styles.fieldset__footer_span}>
                                             <p className={styles.fieldset__footerText}>Сумма трех сторон: 38 см</p>
                                             <p className={styles.fieldset__footerText}>Расчетный объем: 1,95 л</p>
-                                            <ConfigProvider
+                                            {isHeavy && <ConfigProvider
                                                 theme={{
                                                     token: {
                                                         colorTextLightSolid: '#000'
@@ -184,9 +188,9 @@ const UnitCalculatorPage = () => {
                                                     style={{ cursor: 'pointer'}}
                                                     color={'white'}
                                                 >
-                                                    <div className={styles.tooltip}>!</div>
+                                                    <div className={`${styles.tooltip} ${styles.tooltip_red}`}>!</div>
                                                 </Tooltip>
-                                            </ConfigProvider>
+                                            </ConfigProvider>}
                                         </div>
                                     </div>
                                 </fieldset>
@@ -199,7 +203,7 @@ const UnitCalculatorPage = () => {
 
                                     <Form.Item
                                         label='Тип упаковки'
-                                        className={styles.fromItem}
+                                        className={styles.formItem}
                                     >
 
                                         <Radio.Group
@@ -264,7 +268,7 @@ const UnitCalculatorPage = () => {
                                                     </ConfigProvider>
                                                 </div>
                                             }
-                                            className={styles.fromItem}
+                                            className={styles.formItem}
                                         >
                                             <Input
                                                 size='large'
@@ -273,7 +277,7 @@ const UnitCalculatorPage = () => {
                                         </Form.Item>
                                         <Form.Item
                                             label='Стоимость платной приемки, ₽'
-                                            className={styles.fromItem}
+                                            className={styles.formItem}
                                         >
                                             <Input
                                                 size='large'
@@ -281,7 +285,7 @@ const UnitCalculatorPage = () => {
                                             />
                                         </Form.Item>
                                         <Form.Item
-                                            className={styles.fromItem}
+                                            className={styles.formItem}
                                         >
                                             <ConfigProvider
                                                 theme={{
@@ -339,7 +343,7 @@ const UnitCalculatorPage = () => {
                                                     </ConfigProvider>
                                                 </div>
                                             }
-                                            className={styles.fromItem}
+                                            className={styles.formItem}
                                         >
                                             <Input
                                                 size='large'
@@ -367,7 +371,7 @@ const UnitCalculatorPage = () => {
                                                     </ConfigProvider>
                                                 </div>
                                             }
-                                            className={styles.fromItem}
+                                            className={styles.formItem}
                                         >
                                             <Input
                                                 size='large'
@@ -381,7 +385,7 @@ const UnitCalculatorPage = () => {
                                     </div>
 
                                     <Form.Item
-                                        className={styles.fromItem}
+                                        className={styles.formItem}
                                     >
 
                                         <Radio.Group
@@ -452,7 +456,7 @@ const UnitCalculatorPage = () => {
                                                     </ConfigProvider>
                                                 </div>
                                             }
-                                            className={styles.fromItem}
+                                            className={styles.formItem}
                                         >
                                             <Input
                                                 size='large'
@@ -480,7 +484,7 @@ const UnitCalculatorPage = () => {
                                                     </ConfigProvider>
                                                 </div>
                                             }
-                                            className={styles.fromItem}
+                                            className={styles.formItem}
                                         >
                                             <Input
                                                 size='large'
@@ -508,7 +512,7 @@ const UnitCalculatorPage = () => {
                                                 <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                                                     <Form.Item
                                                         label='Логистика от производителя'
-                                                        className={styles.fromItem}
+                                                        className={styles.formItem}
                                                     >
                                                         <Input
                                                             size='large'
@@ -517,7 +521,7 @@ const UnitCalculatorPage = () => {
                                                     </Form.Item>
                                                     <Form.Item
                                                         label='Упаковка и маркировка'
-                                                        className={styles.fromItem}
+                                                        className={styles.formItem}
                                                     >
                                                         <Input
                                                             size='large'
@@ -526,7 +530,7 @@ const UnitCalculatorPage = () => {
                                                     </Form.Item>
                                                     <Form.Item
                                                         label='Логистика до маркетплейса'
-                                                        className={styles.fromItem}
+                                                        className={styles.formItem}
                                                     >
                                                         <Input
                                                             size='large'
@@ -535,7 +539,7 @@ const UnitCalculatorPage = () => {
                                                     </Form.Item>
                                                     <Form.Item
                                                         label='Услуги фулфилмента'
-                                                        className={styles.fromItem}
+                                                        className={styles.formItem}
                                                     >
                                                         <Input
                                                             size='large'
@@ -558,7 +562,7 @@ const UnitCalculatorPage = () => {
                                             <>
                                                 <Form.Item
                                                     label='Налоговый режим'
-                                                    className={styles.fromItem}
+                                                    className={styles.formItem}
                                                 >
                                                     <Radio.Group
                                                         style={{ width: '100%' }}
@@ -583,7 +587,7 @@ const UnitCalculatorPage = () => {
 
                                                 <Form.Item
                                                     label='Налоговая ставка'
-                                                    className={styles.fromItem}
+                                                    className={styles.formItem}
                                                 >
                                                     <Input
                                                         size='large'
@@ -609,7 +613,7 @@ const UnitCalculatorPage = () => {
                                             <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                                                 <Form.Item
                                                     label='Затраты на рекламу'
-                                                    className={styles.fromItem}
+                                                    className={styles.formItem}
                                                 >
                                                     <Input
                                                         size='large'
@@ -618,7 +622,7 @@ const UnitCalculatorPage = () => {
                                                 </Form.Item>
                                                 <Form.Item
                                                     label='Брак'
-                                                    className={styles.fromItem}
+                                                    className={styles.formItem}
                                                 >
                                                     <Input
                                                         size='large'
@@ -629,7 +633,7 @@ const UnitCalculatorPage = () => {
 
                                             <Form.Item
                                                 label='Другое'
-                                                className={styles.fromItem}
+                                                className={styles.formItem}
                                             >
                                                 <Input
                                                     size='large'
