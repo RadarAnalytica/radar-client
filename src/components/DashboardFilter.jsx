@@ -92,6 +92,7 @@ const DashboardFilter = ({
               <option value='14'>14 дней</option>
               <option value='30'>30 дней</option>
               <option value='90'>90 дней</option>
+              {/* <option value=''>Произвольные даты</option> */}
             </select>
             <svg
               style={{

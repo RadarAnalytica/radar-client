@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
+import { format } from 'date-fns';
 import styles from './Period.module.css';
 
 const Period = ({ selectedRange, setSelectedRange }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
-    const [selectedOption, setSelectedOption] = useState("7");
+    const [selectedOption, setSelectedOption] = useState(selectedRange?.period || '7');
+    const [localSelectedRange, setLocalSelectedRange] = useState({from: null, to: null});
 
     const today = new Date();
     const minDate = new Date(today);
@@ -43,42 +45,33 @@ const Period = ({ selectedRange, setSelectedRange }) => {
     const selectOption = (value) => {
         if (value === "") {
             setSelectedOption("");
-            setSelectedRange({ from: null, to: null });
             toggleCalendar();
         } else {
             setSelectedOption(value);
-            setSelectedRange(predefinedRanges[value]);
+            setSelectedRange({period: predefinedRanges[value]});
             setIsCalendarOpen(false);
         }
         setIsDropdownOpen(false);
     };
 
     const handleDayClick = (day) => {
-        if (day < minDate || day > maxDate) return;
-
-        if (!selectedRange.from || (selectedRange.from && selectedRange.to)) {
-            setSelectedRange({ from: day, to: null });
-        } else if (selectedRange.from && !selectedRange.to) {
-            const { from } = selectedRange;
-            const rangeLength = Math.abs((day - from) / (1000 * 60 * 60 * 24)) + 1;
-
-            if (rangeLength > 90) return;
-
-            const newRange =
-                day < from
+        if (!localSelectedRange.from || (localSelectedRange.from && localSelectedRange.to)) {
+            setLocalSelectedRange({ from: day, to: null });
+        } else if (localSelectedRange.from && !localSelectedRange.to) {
+            setLocalSelectedRange((range) => {
+                const { from } = range;
+                return day < from
                     ? { from: day, to: from }
                     : { from, to: day };
-
-            setSelectedRange(newRange);
+            });
+            setSelectedRange(localSelectedRange);
             setIsCalendarOpen(false);
         }
     };
 
     const formatDateRange = (range) => {
         if (range.from && range.to) {
-            const fromDate = range.from.toLocaleDateString("ru-RU");
-            const toDate = range.to.toLocaleDateString("ru-RU");
-            return `${fromDate} - ${toDate}`;
+            return `${format(range.from, 'yyyy-MM-dd')} - ${format(range.to, 'yyyy-MM-dd')}`;
         }
         return "Произвольные даты";
     };
@@ -110,7 +103,7 @@ const Period = ({ selectedRange, setSelectedRange }) => {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
                 <div className={styles.selectedOption}>
-                    {selectedOption ? `${selectedOption} дней` : formatDateRange(selectedRange)}
+                    {selectedOption ? `${selectedOption} дней` : formatDateRange(localSelectedRange)}
                 </div>
                 <svg
                     width="14"
@@ -139,17 +132,13 @@ const Period = ({ selectedRange, setSelectedRange }) => {
                 <div className={styles.calendarPopup}>
                     <DayPicker
                         mode="range"
-                        selected={selectedRange}
+                        selected={localSelectedRange}
                         month={month}
                         onMonthChange={setMonth}
                         captionLayout="dropdown"
-                        fromYear={2024}
-                        toYear={2025}
                         className={styles.customDayPicker}
                         locale={customRuLocale}
                         onDayClick={handleDayClick}
-                        fromDate={minDate}
-                        toDate={maxDate}
                         disabled={[
                             { before: minDate },
                             { after: maxDate },

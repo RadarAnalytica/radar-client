@@ -32,6 +32,7 @@ import styles from '../pages/DashboardPage.module.css';
 import Period from '../components/Period';
 import DownloadButton from '../components/DownloadButton';
 import DetailChart from '../components/DetailChart';
+import { format } from 'date-fns';
 
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,7 +51,7 @@ const DashboardPage = () => {
   const [firstLoading, setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
 
-  const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
+  const [selectedRange, setSelectedRange] = useState({ period: days });
   const [detailChartLabels, setDetailChartLabels] = useState([]);
   const [detailChartData, setDetailChartData] = useState([]);
   const [detailChartAverages, setDetailChartAverages] = useState([]);
@@ -147,9 +148,15 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const updateChartData = async () => {
+      let range = selectedRange;
+      if (!!range.from || !!range.to){
+        range.from = format(range.from, 'yyyy-MM-dd');
+        range.to = format(range.to, 'yyyy-MM-dd');
+      }
       const data = await ServiceFunctions.getChartDetailData(
         authToken,
-        selectedRange
+        range,
+        activeBrand
       );
       setDetailChartLabels(data.result);
       setDetailChartData(data.counts);
@@ -969,7 +976,7 @@ const DashboardPage = () => {
                     maxAmount={maxAmount}
                     dataDashBoard={dataDashBoard}
                   >
-                    {/* <div
+                    <div
                       style={{
                         backgroundColor: '#F0AD000D',
                         padding: '5px 10px',
@@ -1011,7 +1018,7 @@ const DashboardPage = () => {
                       >
                         Детализировать заказы по времени
                       </div>
-                    </div> */}
+                    </div>
                   </BigChart>
                 </div>
                 {isModalOpen && (
@@ -1050,7 +1057,7 @@ const DashboardPage = () => {
                             setSelectedRange={setSelectedRange}
                           />
                         </div>
-                        <div style={{ marginTop: '35px' }}>
+                        {/* <div style={{ marginTop: '35px' }}>
                           <div
                             className='download-button'
                             onClick={() => handleDownload()}
@@ -1058,7 +1065,7 @@ const DashboardPage = () => {
                             <img src={downloadIcon} />
                             Скачать детализацию
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                       <div className={styles.modalBody}>
                         <DetailChart
