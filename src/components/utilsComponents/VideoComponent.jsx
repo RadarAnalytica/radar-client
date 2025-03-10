@@ -3,32 +3,15 @@ import styles from './VideoComponent.module.css'
 import 'moment/locale/ru'
 const VideoComponent = () => {
     const videoRef = useRef(null);
-    const hiresVideoRef = useRef(null);
-    const [ isMainVideoActive, setIsMainVideoActive ] = useState(false)
-
-
-    useEffect(() => {
-        const videoElement = videoRef.current;
-        const hiResVideoElement = hiresVideoRef.current;
-        const handleTime = () => {
-            const timeStamp = videoElement.currentTime
-            if (isMainVideoActive) {
-                hiResVideoElement.currentTime = timeStamp;
-                videoElement.style.opacity = 0
-                videoElement.style.display = 'none'
-                videoElement.pause()
-            }
-        }
-       videoElement.addEventListener('timeupdate', handleTime);
-       return () => {videoElement.removeEventListener('timeupdate', handleTime)}
-
-    }, [isMainVideoActive])
+    const [ isHiresActive, setHiresActive ] = useState(false)
+    const [ isFirstStart, setIsFirstStart ] = useState(true)
+    const [ hiresSource, setHiresSource ] = useState(null)
 
     return (
         <div
             className={styles.videoContainer}
         >   
-                {/* <video
+                <video
                     className={styles.video}
                     ref={videoRef}
                     src='/video_300.webm'
@@ -53,15 +36,25 @@ const VideoComponent = () => {
                         if (videoElement && isFirstStart && !hiresSource) {
                             const arrayBuffer = await fetch('/video_full.webm').then(r => r.arrayBuffer());
                             const blob = new Blob([arrayBuffer]);
+                            const newSourceUrl = URL.createObjectURL(blob)
+                            videoElement.src = newSourceUrl
                             setHiresSource(blob)
                             setIsFirstStart(false)
                         } 
                         
-                        if (!isFirstStart && hiresSource && videoElement && !isHiresActive) {
-                            const newSourceUrl = URL.createObjectURL(hiresSource)
-                            videoElement.src = newSourceUrl
-                            setHiresActive(true)
-                        }
+                        // if (!isFirstStart && hiresSource && videoElement && !isHiresActive) {
+                        //     const newSourceUrl = URL.createObjectURL(hiresSource)
+                        //     videoElement.src = newSourceUrl
+                        //     setHiresActive(true)
+                        // }
+
+                        // if (!isFirstStart && hiresSource && videoElement && !isHiresActive) {
+                        //     const newSourceUrl = URL.createObjectURL(hiresSource)
+                        //     videoElement.loop = true;
+                        //     videoElement.src = newSourceUrl;
+                        //     videoElement.play()
+                        //     setHiresActive(true)
+                        // }
                     }}
                     loading='eager'
                     decoding='async'
@@ -70,39 +63,11 @@ const VideoComponent = () => {
                     playsInline
                     autoPlay
                     muted
-                    //preload="metadata"
-                    webkit-playsinline="true"
-                /> */}
-                <video
-                    className={styles.videoSD}
-                    ref={videoRef}
-                    src='/video_300.webm'
-                    loading='eager'
-                    decoding='async'
-                    fetchpriority='high'
-                    poster='/firstShot.jpg'
-                    playsInline
-                    autoPlay
-                    muted
-                    loop
                     preload="auto"
                     webkit-playsinline="true"
-                />
-                <video
-                    className={styles.videoHD}
-                    ref={hiresVideoRef}
-                    src='/video_full.webm'
-                    onPlaying={() => {!isMainVideoActive && setIsMainVideoActive(true)}}
-                    loading='async'
-                    decoding='async'
-                    fetchpriority='low'
-                    playsInline
-                    autoPlay
-                    muted
                     loop
-                    preload="auto"
-                    webkit-playsinline="true"
                 />
+               
         </div>
     );
 };
