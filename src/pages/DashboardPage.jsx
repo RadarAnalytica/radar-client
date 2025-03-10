@@ -29,10 +29,10 @@ import NoSubscriptionPage from './NoSubscriptionPage';
 import TooltipInfo from '../components/TooltipInfo';
 import MessageWindow from '../components/MessageWindow';
 import styles from '../pages/DashboardPage.module.css';
-import Period from '../components/Period';
+import Period from '../components/period/Period';
 import DownloadButton from '../components/DownloadButton';
 import DetailChart from '../components/DetailChart';
-import { format } from 'date-fns';
+import { format, differenceInDays } from 'date-fns';
 
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,17 +41,17 @@ const DashboardPage = () => {
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
   const [wbData, setWbData] = useState();
-  const [days, setDays] = useState(30);
+  const [days, setDays] = useState({ period: 30 });
   const [content, setContent] = useState();
   const [state, setState] = useState();
   const [brandNames, setBrandNames] = useState();
-  const [changeBrand, setChangeBrand] = useState();
+  // const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [firstLoading, setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
 
-  const [selectedRange, setSelectedRange] = useState({ period: days });
+  const [selectedRange, setSelectedRange] = useState(days);
   const [detailChartLabels, setDetailChartLabels] = useState([]);
   const [detailChartData, setDetailChartData] = useState([]);
   const [detailChartAverages, setDetailChartAverages] = useState([]);
@@ -254,6 +254,7 @@ const DashboardPage = () => {
       prevDays.current = days;
       prevActiveBrand.current = activeBrand;
     }
+    setSelectedRange(days)
   }, [days, activeBrand]);
 
   useEffect(() => {
@@ -300,10 +301,16 @@ const DashboardPage = () => {
         localStorage.removeItem('activeShop')
         window.location.reload()
       }
+
+      let range = days;
+      if (!!range.from || !!range.to){
+        range.from = format(range.from, 'yyyy-MM-dd');
+        range.to = format(range.to, 'yyyy-MM-dd');
+      }
       
       const data = await ServiceFunctions.getDashBoard(
         authToken,
-        days,
+        range,
         activeBrand
       );
       setDataDashboard(data);
@@ -873,6 +880,7 @@ const DashboardPage = () => {
     return null; // or a loading indicator
   }
 
+  const rangeDays = days.from && days.to ? differenceInDays(days.to, days.from, {unit: 'days'}) : days.period
   return (
     isVisible && (
       <div className='dashboard-page'>
@@ -900,9 +908,9 @@ const DashboardPage = () => {
             periodValue={days}
             setDays={setDays}
             setActiveBrand={handleSaveActiveShop}
-            setChangeBrand={setChangeBrand}
+            // setChangeBrand={setChangeBrand}
             shops={shops}
-            setPrimary={setPrimary}
+            // setPrimary={setPrimary}
             activeShopId={activeShopId}
           />
 
@@ -911,8 +919,8 @@ const DashboardPage = () => {
               <div className='container dash-container p-3 pt-0 d-flex gap-3'>
                 <MediumPlate
                   name={'Заказы'}
-                  text={oneDayOrderAmount / days}
-                  text2={oneDayOrderCount / days}
+                  text={oneDayOrderAmount / rangeDays}
+                  text2={oneDayOrderCount / rangeDays}
                   dataDashBoard={dataDashBoard?.orderAmount}
                   quantity={dataDashBoard?.orderCount}
                   percent={dataDashBoard?.orderAmountCompare}
@@ -920,8 +928,8 @@ const DashboardPage = () => {
                 />
                 <MediumPlate
                   name={'Продажи'}
-                  text={oneDaySaleAmount / days}
-                  text2={oneDaySaleCount / days}
+                  text={oneDaySaleAmount / rangeDays}
+                  text2={oneDaySaleCount / rangeDays}
                   dataDashBoard={dataDashBoard?.saleAmount}
                   quantity={dataDashBoard?.saleCount}
                   percent={dataDashBoard?.saleAmountCompare}
@@ -970,7 +978,7 @@ const DashboardPage = () => {
                     byAmount={byAmount}
                     byMoney={byMoney}
                     loading={loading}
-                    days={days}
+                    days={rangeDays}
                     wbData={wbData}
                     maxValue={maxValue}
                     maxAmount={maxAmount}

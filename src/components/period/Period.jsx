@@ -9,22 +9,34 @@ const Period = ({ selectedRange, setSelectedRange }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
-    const [selectedOption, setSelectedOption] = useState(selectedRange?.period || '7');
-    const [localSelectedRange, setLocalSelectedRange] = useState({from: null, to: null});
+    const [selectedOption, setSelectedOption] = useState(selectedRange?.period || 30);
+    const [localSelectedRange, setLocalSelectedRange] = useState(selectedRange);
 
     const today = new Date();
     const minDate = new Date(today);
-    const maxDate = new Date(today);
+    // const maxDate = new Date(today);
 
     minDate.setDate(today.getDate() - 90);
-    maxDate.setDate(today.getDate() + 90);
+    // maxDate.setDate(today.getDate() + 90);
 
-    const predefinedRanges = {
-        "7": 7,
-        "14": 14,
-        "30": 30,
-        "90": 90,
-    };
+    const predefinedRanges = [
+        {
+            value: 7,
+            title: '7 дней'
+        },
+        {
+            value: 14,
+            title: '14 дней'
+        },
+        {
+            value: 30,
+            title: '30 дней'
+        },
+        {
+            value: 90,
+            title: '90 дней'
+        }
+    ];
 
     const customRuLocale = {
         ...ru,
@@ -48,7 +60,7 @@ const Period = ({ selectedRange, setSelectedRange }) => {
             toggleCalendar();
         } else {
             setSelectedOption(value);
-            setSelectedRange({period: predefinedRanges[value]});
+            setSelectedRange({period: value});
             setIsCalendarOpen(false);
         }
         setIsDropdownOpen(false);
@@ -58,20 +70,19 @@ const Period = ({ selectedRange, setSelectedRange }) => {
         if (!localSelectedRange.from || (localSelectedRange.from && localSelectedRange.to)) {
             setLocalSelectedRange({ from: day, to: null });
         } else if (localSelectedRange.from && !localSelectedRange.to) {
-            setLocalSelectedRange((range) => {
-                const { from } = range;
-                return day < from
-                    ? { from: day, to: from }
-                    : { from, to: day };
-            });
-            setSelectedRange(localSelectedRange);
+            const { from } = localSelectedRange;
+            const newRange = day < from
+                ? { from: day, to: from }
+                : { from: from, to: day };
+            setLocalSelectedRange(newRange);
+            setSelectedRange(newRange);
             setIsCalendarOpen(false);
         }
     };
 
     const formatDateRange = (range) => {
         if (range.from && range.to) {
-            return `${format(range.from, 'yyyy-MM-dd')} - ${format(range.to, 'yyyy-MM-dd')}`;
+            return `${format(range.from, 'dd.MM.yyyy')} - ${format(range.to, 'dd.MM.yyyy')}`;
         }
         return "Произвольные даты";
     };
@@ -118,10 +129,13 @@ const Period = ({ selectedRange, setSelectedRange }) => {
             </div>
             {isDropdownOpen && (
                 <ul className={styles.dropdownMenu}>
-                    <li onClick={() => selectOption("7")}>7 дней</li>
-                    <li onClick={() => selectOption("14")}>14 дней</li>
-                    <li onClick={() => selectOption("30")}>30 дней</li>
-                    <li onClick={() => selectOption("90")}>90 дней</li>
+                    {
+                       predefinedRanges.map( (el) => <li key={el.value} onClick={() => selectOption(el.value)}>{el.title}</li>)
+                    }
+                    {/* <li onClick={() => selectOption("7")}>7 дней</li> */}
+                    {/* <li onClick={() => selectOption("14")}>14 дней</li> */}
+                    {/* <li onClick={() => selectOption("30")}>30 дней</li> */}
+                    {/* <li onClick={() => selectOption("90")}>90 дней</li> */}
                     <li onClick={() => selectOption("")} className={styles.customDateOption}>
                         Произвольные даты
                     </li>
@@ -131,6 +145,8 @@ const Period = ({ selectedRange, setSelectedRange }) => {
             {isCalendarOpen && (
                 <div className={styles.calendarPopup}>
                     <DayPicker
+                        minDate={minDate}
+                        maxDate={today}
                         mode="range"
                         selected={localSelectedRange}
                         month={month}
@@ -141,7 +157,7 @@ const Period = ({ selectedRange, setSelectedRange }) => {
                         onDayClick={handleDayClick}
                         disabled={[
                             { before: minDate },
-                            { after: maxDate },
+                            { after: today },
                         ]}
                     />
                 </div>

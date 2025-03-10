@@ -572,7 +572,7 @@ export const getMonthNumbers = (monthArray) => {
 };
 
 export const periodStringFormat = (period) => {
-  /* TODO подумать про склонения */
+  /* TODO подумать про склонения или использовать date-fns */
 
   if (!period){
     return '3 дня'
@@ -583,5 +583,17 @@ export const periodStringFormat = (period) => {
   } else {
     return `${period} дня`
   }
+
+}
+
+export const rangeApiFormat = (range) => {
+  let params = '';
+  if (!!range.period ){
+    params += 'period=' + range.period;
+  } else {
+    params += `date_from=${range.from}`;
+    params += `&date_to=${range.to}`;
+  }
+  return params
 
 }

@@ -3,14 +3,15 @@ import DownloadButton from './DownloadButton';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import { URL } from '../service/config';
+import Period from './period/Period';
 
 const DashboardFilter = ({
   setActiveBrand,
   periodValue,
   setDays,
   shops,
-  setChangeBrand,
-  setPrimary,
+  // setChangeBrand,
+  // setPrimary,
   activeShopId,
 }) => {
   const { authToken } = useContext(AuthContext);
@@ -65,7 +66,11 @@ const DashboardFilter = ({
     <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
         <div className='filter-item col' style={{ position: 'relative' }}>
-          <label
+          <Period 
+            selectedRange={periodValue}
+            setSelectedRange={setDays}
+          />
+          {/* <label
             style={{ fontWeight: 600, marginBottom: '4px', display: 'block' }}
             htmlFor='period'
           >
@@ -92,7 +97,6 @@ const DashboardFilter = ({
               <option value='14'>14 дней</option>
               <option value='30'>30 дней</option>
               <option value='90'>90 дней</option>
-              {/* <option value=''>Произвольные даты</option> */}
             </select>
             <svg
               style={{
@@ -115,7 +119,7 @@ const DashboardFilter = ({
                 strokeLinecap='round'
               />
             </svg>
-          </div>
+          </div> */}
         </div>
 
         <div className='filter-item col' style={{ position: 'relative' }}>
@@ -128,6 +132,7 @@ const DashboardFilter = ({
           <div style={{ position: 'relative' }}>
             <select
               style={{
+                minWidth: 220,
                 width: '100%',
                 padding: '1vh 1.75vh',
                 backgroundColor: 'rgba(0, 0, 0, 0.05)',
@@ -144,7 +149,7 @@ const DashboardFilter = ({
                 const firstValue = e.target.value.split('|')[0];
                 const secondValue = e.target.value.split('|')[1];
                 const lastValue = e.target.value.split('|')[2];
-                setPrimary(lastValue);
+                // setPrimary(lastValue);
                 setChangeBrand(secondValue);
                 setActiveBrand(firstValue);
               }}
