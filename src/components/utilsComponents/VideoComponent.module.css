@@ -9,7 +9,7 @@
         width: 100%;
         height: auto;
         min-height: auto;
-        aspect-ratio: 2 / 1;
+        /* aspect-ratio: 4 / 3; */
     }
 }
 
@@ -18,11 +18,7 @@
     height: 100%;
     object-fit: contain;
     display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    position: relative;
     z-index: 2;
 }
 .videoHD {
@@ -30,10 +26,6 @@
     height: 100%;
     object-fit: contain;
     display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    position: relative;
     z-index: 1;
 }
