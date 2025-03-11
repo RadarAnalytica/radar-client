@@ -21,12 +21,14 @@ import OrderSalesPieCharts from '../components/OrderSalesPieCharts';
 import StockDataRow from '../components/StockDataRow';
 import green from '../assets/greenarrow.png';
 import red from '../assets/redarrow.png';
+import { ServiceFunctions } from '../service/serviceFunctions';
 
 const OrdersMap = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, authToken, logout } = useContext(AuthContext);
+  // const [geoData, setGeoData] = useState([]);
   const { geoData, loading, error } = useAppSelector(
     (state) => state.geoDataSlice
   );
@@ -37,7 +39,7 @@ const OrdersMap = () => {
   const activeShopId = activeShop?.id;
 
   const [byRegions, setByRegions] = useState(true);
-  const [days, setDays] = useState(30);
+  const [days, setDays] = useState({period: 30});
   const [brandNames, setBrandNames] = useState();
   const idShopAsValue =
     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
@@ -52,8 +54,8 @@ const OrdersMap = () => {
     ? oneShop.is_primary_collect
     : allShop;
 
-  const [changeBrand, setChangeBrand] = useState();
-  const [primary, setPrimary] = useState();
+  // const [changeBrand, setChangeBrand] = useState();
+  // const [primary, setPrimary] = useState();
   const [data, setData] = useState();
   const [isVisible, setIsVisible] = useState(true);
   const prevDays = useRef(days);
@@ -105,6 +107,8 @@ const OrdersMap = () => {
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
       dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+      // const newData = await ServiceFunctions.getGeographyData(authToken, days, activeBrand)
+      // setData(newData);
     } 
   }, [authToken]);
 
@@ -242,9 +246,8 @@ const OrdersMap = () => {
   //     changePeriod()
   // }, [days, activeBrand])
 
-  const orders =
-    data && data?.orders && data?.orders.data ? data?.orders.data : [];
-  const sales = data && data?.sales && data?.sales.data ? data?.sales.data : [];
+  // const orders = data && data?.orders && data?.orders.data ? data?.orders.data : [];
+  // const sales = data && data?.sales && data?.sales.data ? data?.sales.data : [];
 
   const ordersByWarehouses = data ? data?.ordersByWarehouse : [];
   const salesByWarehouses = data ? data?.salesByWarehouse : [];
@@ -769,14 +772,15 @@ const OrdersMap = () => {
           {/* {oneShop?.is_primary_collect && <SelfCostWarning activeBrand={activeBrand}/>}  */}
 
           <OrdersMapFilter
-            brandNames={brandNames}
-            defaultValue={days}
-            setDays={setDays}
-            changeBrand={handleSaveActiveShop}
             shops={shops}
-            setChangeBrand={setChangeBrand}
-            setPrimary={setPrimary}
+            setDays={setDays}
+            selectedRange={days}
+            changeBrand={handleSaveActiveShop}
             activeShopId={activeShopId}
+            // brandNames={brandNames}
+            // defaultValue={days}
+            // setChangeBrand={setChangeBrand}
+            // setPrimary={setPrimary}
           />
           {shouldDisplay ? (
             <div className='map-container dash-container container p-3'>
@@ -886,7 +890,7 @@ const OrdersMap = () => {
                   )}
                 </div>
               ) : null}
-              {byRegions && !loading && geoData?.geo_data ? (
+              {byRegions && geoData?.geo_data ? (
                 <div className='map-data-content'>
                   <div className=' pl-3 d-flex map-data-row'>
                     <div className='col'>
@@ -947,7 +951,7 @@ const OrdersMap = () => {
                     </div>
                   </div>
                 </div>
-              ) : !byRegions && !loading && geoData?.stock_data ? (
+              ) : !byRegions && geoData?.stock_data ? (
                 <div className='map-data-content'>
                   <OrderSalesPieCharts
                     geoData={geoData}
@@ -981,13 +985,6 @@ const OrdersMap = () => {
                         );
                       })
                     : null}
-                </div>
-              ) : loading ? (
-                <div
-                  className='d-flex flex-column align-items-center justify-content-center'
-                  style={{ minHeight: '70vh' }}
-                >
-                  <span className='loader'></span>
                 </div>
               ) : null}
             </div>
