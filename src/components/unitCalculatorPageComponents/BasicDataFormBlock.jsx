@@ -1,6 +1,16 @@
-import { Form, Input, Checkbox, ConfigProvider, Tooltip } from 'antd';
+import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete } from 'antd';
 import styles from './BasicDataFormBlock.module.css'
-const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height, package_width, package_length }) => {
+const BasicDataFormBlock = ({ form }) => {
+
+    const isSPP = Form.useWatch('isSPP', form);
+    const product = Form.useWatch('product', form);
+    const product_cost = Form.useWatch('product_cost', form);
+    const isHeavy = Form.useWatch('isHeavy', form);
+    const product_price = Form.useWatch('product_price', form);
+    const SPP = Form.useWatch('SPP', form);
+    const package_length = Form.useWatch('package_length', form);
+    const package_width = Form.useWatch('package_width', form);
+    const package_height = Form.useWatch('package_height', form);
 
     const package_width_int = parseInt(package_width)
     const package_length_int = parseInt(package_length)
@@ -25,6 +35,7 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                 <Input
                     size='large'
                     placeholder='Введите название товара'
+                    style={{background: product ? '#F2F2F2' : ''}}
                 />
             </Form.Item>
 
@@ -35,17 +46,18 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     label='Цена товара'
                     className={isSPP ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
                     normalize={(value, prevValue) => {
-                        if (value.match(/^\d+(\.\d+)?$/)) return value;
-                        return prevValue;
+                        const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
                     }}
                     rules={
                         [
                             { required: true, message: ''},
-                            { pattern: /^\d+(\.\d+)?$/, message: ''},
                         ]
                     }
                 >
                     <Input
+                        style={{background: product_price ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите цену товара'
                     />
@@ -54,15 +66,19 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     label='СПП'
                     className={styles.formItem}
                     name='SPP'
+                    normalize={(value, prevValue) => {
+                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
+                    }}
                     rules={
                         [
                             { required: true, message: '' },
-                            { pattern: /^\d+(\.\d+)?$/, message: '' },
-                            { pattern: /^(100|[1-9]?\d)(\.\d+)?$/, message: '' },
                         ]
                     }
                 >
                     <Input
+                        style={{background: SPP ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите СПП, %'
                     />
@@ -101,14 +117,19 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                 name='product_cost'
                 label='Закупочная цена'
                 className={styles.formItem}
+                normalize={(value, prevValue) => {
+                    const regex = /^(|-?\d*\.?\d*)$/; // только целые и дробные числа
+                    if (regex.test(value)) { return value };
+                    return prevValue || '';
+                }}
                 rules={
                     [
                         { required: true, message: '' },
-                        { pattern: /^\d+(\.\d+)?$/, message: '' },
                     ]
                 }
             >
                 <Input
+                    style={{background: product_cost ? '#F2F2F2' : ''}}
                     size='large'
                     placeholder='Укажите цену товара'
                 />
@@ -119,14 +140,19 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     label='Длина упаковки'
                     name='package_length'
                     className={styles.formItem}
+                    normalize={(value, prevValue) => {
+                        const regex = /^(|\d+)$/ // только целые числа
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
+                    }}
                     rules={
                         [
                             { required: true, message: '' },
-                            { pattern: /^\d+$/, message: '' },
                         ]
                     }
                 >
                     <Input
+                        style={{background: package_length ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите длину упаковки'
                     />
@@ -135,14 +161,19 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     label='Ширина упаковки'
                     name='package_width'
                     className={styles.formItem}
+                    normalize={(value, prevValue) => {
+                        const regex = /^(|\d+)$/ // только целые числа
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
+                    }}
                     rules={
                         [
                             { required: true, message: '' },
-                            { pattern: /^\d+$/, message: '' },
                         ]
                     }
                 >
                     <Input
+                        style={{background: package_width ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите ширину упаковки'
                     />
@@ -151,14 +182,19 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     label='Высота упаковки'
                     className={styles.formItem}
                     name='package_height'
+                    normalize={(value, prevValue) => {
+                        const regex = /^(|\d+)$/ // только целые числа
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
+                    }}
                     rules={
                         [
                             { required: true, message: '' },
-                            { pattern: /^\d+$/, message: '' },
                         ]
                     }
                 >
                     <Input
+                        style={{background: package_height ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите высоту упаковки'
                     />

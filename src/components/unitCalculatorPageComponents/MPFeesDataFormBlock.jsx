@@ -1,6 +1,10 @@
 import styles from './MPFeesDataFormBlock.module.css'
 import { Form, Input, ConfigProvider, Tooltip } from 'antd';
-const MPFeesDataFormBlock = () => {
+const MPFeesDataFormBlock = ({ mp_fee, form }) => {
+
+    const product_price = Form.useWatch('product_price', form);
+    const additional_mp_fee = Form.useWatch('additional_mp_fee', form);
+    const equiring_fee = Form.useWatch('equiring_fee', form);
 
     return (
         <fieldset className={styles.fieldset}>
@@ -12,7 +16,9 @@ const MPFeesDataFormBlock = () => {
             <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                 <p className={styles.fieldset__footerText}>Комиссия WB 22,5%</p>
                 <div style={{ justifySelf: 'end' }}>
-                    <p className={styles.fieldset__footerText_price}>225 ₽</p>
+                    <p className={styles.fieldset__footerText_price}>
+                        {!!product_price && !!mp_fee ? (product_price * (mp_fee/100)) : 0} ₽
+                    </p>
                 </div>
 
                 <Form.Item
@@ -38,16 +44,15 @@ const MPFeesDataFormBlock = () => {
                         </div>
                     }
                     className={styles.formItem}
-                    rules={
-                        [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
-                            { pattern: /^\d+(\.\d+)?$/, message: 'Пожалуйста, введите только числа!' },
-                            { pattern: /^(100|[1-9]?\d)(\.\d+)?$/, message: 'Пожалуйста, введите число от 0 до 100!' },
-                        ]
-                    }
+                    normalize={(value, prevValue) => {
+                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
+                    }}
                     name='additional_mp_fee'
                 >
                     <Input
+                        style={{background: additional_mp_fee ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите комиссию'
                     />
@@ -75,15 +80,15 @@ const MPFeesDataFormBlock = () => {
                         </div>
                     }
                     className={styles.formItem}
-                    rules={
-                        [
-                            { pattern: /^\d+(\.\d+)?$/, message: 'Пожалуйста, введите только числа!' },
-                            { pattern: /^(100|[1-9]?\d)(\.\d+)?$/, message: 'Пожалуйста, введите число от 0 до 100!' },
-                        ]
-                    }
+                    normalize={(value, prevValue) => {
+                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
+                    }}
                     name='equiring_fee'
                 >
                     <Input
+                        style={{background: equiring_fee ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите комиссию'
                     />

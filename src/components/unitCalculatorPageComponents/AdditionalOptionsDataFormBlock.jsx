@@ -2,13 +2,29 @@ import { useState } from "react"
 import styles from './AdditionalOptionsDataFormBlock.module.css'
 import { Form, Input, Radio, ConfigProvider } from 'antd';
 
-const AdditionalOptionsDataFormBlock = () => {
+const AdditionalOptionsDataFormBlock = ({ form }) => {
+
+    const inhouse_logistics_price = Form.useWatch('inhouse_logistics_price', form);
+    const packaging_price = Form.useWatch('packaging_price', form);
+    const mp_logistics_price = Form.useWatch('mp_logistics_price', form);
+    const fullfilment_price = Form.useWatch('fullfilment_price', form);
+    const product_price = Form.useWatch('product_price', form);
+    const SPP = Form.useWatch('SPP', form);
+    const isSPP = Form.useWatch('isSPP', form);
+    const tax_rate = Form.useWatch('tax_rate', form);
+    const adv_price = Form.useWatch('adv_price', form);
+    const defective_percentage = Form.useWatch('defective_percentage', form);
+    const other_costs = Form.useWatch('other_costs', form);
+
+
+    const total_product_price = isSPP && SPP && tax_rate ? (product_price - (product_price*((SPP)/100)))*(tax_rate / 100)  : product_price*(tax_rate / 100);
 
     const [popupState, setPopupState] = useState({
         isShippingCostsPopupVisible: false,
         isTaxesPopupVisible: false,
         isOtherCostsPopupVisible: false
     })
+
 
     return (
         <fieldset className={styles.fieldset}>
@@ -30,13 +46,14 @@ const AdditionalOptionsDataFormBlock = () => {
                                 label='Логистика от производителя'
                                 className={styles.formItem}
                                 name='inhouse_logistics_price'
-                                rules={
-                                    [
-                                        { pattern: /^\d+(\.\d+)?$/, message: 'Введите только числа!' },
-                                    ]
-                                }
+                                normalize={(value, prevValue) => {
+                                    const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                    if (regex.test(value)) { return value };
+                                    return prevValue || '';
+                                }}
                             >
                                 <Input
+                                    style={{background: inhouse_logistics_price ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость'
                                 />
@@ -45,13 +62,14 @@ const AdditionalOptionsDataFormBlock = () => {
                                 label='Упаковка и маркировка'
                                 className={styles.formItem}
                                 name='packaging_price'
-                                rules={
-                                    [
-                                        { pattern: /^\d+(\.\d+)?$/, message: 'Введите только числа!' },
-                                    ]
-                                }
+                                normalize={(value, prevValue) => {
+                                    const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                    if (regex.test(value)) { return value };
+                                    return prevValue || '';
+                                }}
                             >
                                 <Input
+                                    style={{background: packaging_price ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость упаковки'
                                 />
@@ -60,13 +78,14 @@ const AdditionalOptionsDataFormBlock = () => {
                                 label='Логистика до маркетплейса'
                                 className={styles.formItem}
                                 name='mp_logistics_price'
-                                rules={
-                                    [
-                                        { pattern: /^\d+(\.\d+)?$/, message: 'Введите только числа!' },
-                                    ]
-                                }
+                                normalize={(value, prevValue) => {
+                                    const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                    if (regex.test(value)) { return value };
+                                    return prevValue || '';
+                                }}
                             >
                                 <Input
+                                    style={{background: mp_logistics_price ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость'
                                 />
@@ -75,13 +94,14 @@ const AdditionalOptionsDataFormBlock = () => {
                                 label='Услуги фулфилмента'
                                 className={styles.formItem}
                                 name='fullfilment_price'
-                                rules={
-                                    [
-                                        { pattern: /^\d+(\.\d+)?$/, message: 'Введите только числа!' },
-                                    ]
-                                }
+                                normalize={(value, prevValue) => {
+                                    const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                    if (regex.test(value)) { return value };
+                                    return prevValue || '';
+                                }}
                             >
                                 <Input
+                                    style={{background: fullfilment_price ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость'
                                 />
@@ -129,21 +149,21 @@ const AdditionalOptionsDataFormBlock = () => {
                             <Form.Item
                                 label='Налоговая ставка'
                                 className={styles.formItem}
-                                rules={
-                                    [
-                                        { pattern: /^\d+(\.\d+)?$/, message: 'Пожалуйста, введите только числа!' },
-                                        { pattern: /^(100|[1-9]?\d)(\.\d+)?$/, message: 'Пожалуйста, введите число от 0 до 100!' },
-                                    ]
-                                }
+                                normalize={(value, prevValue) => {
+                                    const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
+                                    if (regex.test(value)) { return value };
+                                    return prevValue || '';
+                                }}
                                 name='tax_rate'
                             >
                                 <Input
+                                    style={{background: tax_rate ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите ставку'
                                 />
                             </Form.Item>
 
-                            <p className={styles.fieldset__footerText_price}>60 ₽</p>
+                            <p className={styles.fieldset__footerText_price}>{!!total_product_price ? total_product_price : 0} ₽</p>
                         </>
                     }
                 </div>
@@ -163,13 +183,14 @@ const AdditionalOptionsDataFormBlock = () => {
                                     label='Затраты на рекламу'
                                     className={styles.formItem}
                                     name='adv_price'
-                                    rules={
-                                        [
-                                            { pattern: /^\d+(\.\d+)?$/, message: 'Введите только числа!' },
-                                        ]
-                                    }
+                                    normalize={(value, prevValue) => {
+                                        const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                        if (regex.test(value)) { return value };
+                                        return prevValue || '';
+                                    }}
                                 >
                                     <Input
+                                        style={{background: adv_price ? '#F2F2F2' : ''}}
                                         size='large'
                                         placeholder='Укажите стоимость'
                                     />
@@ -178,14 +199,14 @@ const AdditionalOptionsDataFormBlock = () => {
                                     label='Брак'
                                     className={styles.formItem}
                                     name='defective_percentage'
-                                    rules={
-                                        [
-                                            { pattern: /^\d+(\.\d+)?$/, message: 'Пожалуйста, введите только числа!' },
-                                            { pattern: /^(100|[1-9]?\d)(\.\d+)?$/, message: 'Пожалуйста, введите число от 0 до 100!' },
-                                        ]
-                                    }
+                                    normalize={(value, prevValue) => {
+                                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
+                                        if (regex.test(value)) { return value };
+                                        return prevValue || '';
+                                    }}
                                 >
                                     <Input
+                                        style={{background: defective_percentage ? '#F2F2F2' : ''}}
                                         size='large'
                                         placeholder='Укажите процент'
                                     />
@@ -195,14 +216,15 @@ const AdditionalOptionsDataFormBlock = () => {
                             <Form.Item
                                 label='Другое'
                                 className={styles.formItem}
-                                rules={
-                                    [
-                                        { pattern: /^\d+(\.\d+)?$/, message: 'Введите только числа!' },
-                                    ]
-                                }
+                                normalize={(value, prevValue) => {
+                                    const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                    if (regex.test(value)) { return value };
+                                    return prevValue || '';
+                                }}
                                 name='other_costs'
                             >
                                 <Input
+                                    style={{background: other_costs ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость'
                                 />

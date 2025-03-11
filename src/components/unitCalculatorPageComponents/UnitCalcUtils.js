@@ -32,7 +32,7 @@ export const unitCalcResultFunction = (fields, mp_fee, current_storage_logistic_
 
 
     // total mp fee
-    let absMpFee = (total_product_price * ((additional_mp_fee + mp_fee) / 100));
+    let absMpFee = (product_price * ((additional_mp_fee + mp_fee) / 100));
     // total eq fee
     let absEquiringFee = (total_product_price * ((equiring_fee) / 100));
 

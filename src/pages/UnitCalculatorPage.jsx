@@ -12,17 +12,10 @@ import { unitCalcResultFunction } from '../components/unitCalculatorPageComponen
 
 const UnitCalculatorPage = () => {
 
-    const [ result, setResult ] = useState();
+    const [result, setResult] = useState();
 
     const [form] = Form.useForm();
-    const isSPP = Form.useWatch('isSPP', form);
     const isHeavy = Form.useWatch('isHeavy', form);
-    const isPaidCargoAcceptance = Form.useWatch('is_paid_cargo_acceptance', form);
-    const product_price = Form.useWatch('product_price', form);
-    const SPP = Form.useWatch('SPP', form);
-    const package_length = Form.useWatch('package_length', form);
-    const package_width = Form.useWatch('package_width', form);
-    const package_height = Form.useWatch('package_height', form);
 
     const submitHandler = (fields) => {
         setResult(unitCalcResultFunction(fields, 22.5, 0, 0))
@@ -48,16 +41,14 @@ const UnitCalculatorPage = () => {
                         },
                         components: {
                             Form: {
-                                labelFontSize: 16
+                                labelFontSize: 16,
+                                labelRequiredMarkColor: '#000'
                             },
                             Input: {
                                 activeBorderColor: '#5329FF',
                                 hoverBorderColor: '#5329FF',
                                 activeBg: '#F2F2F2',
                             },
-                            Form: {
-                                labelRequiredMarkColor: '#000'
-                            }
                         }
                     }}
                 >
@@ -84,15 +75,15 @@ const UnitCalculatorPage = () => {
 
 
 
-                                
-                                <BasicDataFormBlock isHeavy={isHeavy} isSPP={isSPP} SPP={SPP} product_price={product_price} package_height={package_height} package_width={package_width} package_length={package_length} />
-                                <LogisticsDataFormBlock isPaidCargoAcceptance={isPaidCargoAcceptance} isHeavy={isHeavy} />
-                                <MPFeesDataFormBlock />
-                                <AdditionalOptionsDataFormBlock />
 
-                               
+                                <BasicDataFormBlock form={form} />
+                                <LogisticsDataFormBlock form={form} />
+                                <MPFeesDataFormBlock mp_fee={22.5} form={form} />
+                                <AdditionalOptionsDataFormBlock form={form} />
 
-                                
+
+
+
                                 <ConfigProvider
                                     theme={{
                                         token: {
@@ -116,7 +107,7 @@ const UnitCalculatorPage = () => {
 
 
                         <ResultBlock result={result} />
-                        
+
                     </div>
                 </ConfigProvider>
             </section>

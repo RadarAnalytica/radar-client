@@ -1,6 +1,14 @@
 import styles from './LogisticsDataFormBlock.module.css'
 import { Form, Input, Checkbox, Radio, ConfigProvider, Tooltip } from 'antd';
-const LogisticsDataFormBlock = ({ isPaidCargoAcceptance, isHeavy }) => {
+const LogisticsDataFormBlock = ({ form }) => {
+
+    const warehouse = Form.useWatch('warehouse', form);
+    const cargo_acceptance_price = Form.useWatch('cargo_acceptance_price', form);
+    const isHeavy = Form.useWatch('isHeavy', form);
+    const isPaidCargoAcceptance = Form.useWatch('is_paid_cargo_acceptance', form);
+    const buyout_percentage = Form.useWatch('buyout_percentage', form);
+    const delivery_speed = Form.useWatch('delivery_speed', form);
+
 
     return (
         <fieldset className={styles.fieldset}>
@@ -82,7 +90,7 @@ const LogisticsDataFormBlock = ({ isPaidCargoAcceptance, isHeavy }) => {
                     }
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
+                            { required: true, message: '' },
                         ]
                     }
                     name='warehouse'
@@ -91,15 +99,20 @@ const LogisticsDataFormBlock = ({ isPaidCargoAcceptance, isHeavy }) => {
                     <Input
                         size='large'
                         placeholder='Выберите склад'
+                        style={{background: warehouse ? '#F2F2F2' : ''}}
                     />
                 </Form.Item>
                 {isPaidCargoAcceptance && <Form.Item
                     label='Стоимость платной приемки, ₽'
                     className={styles.formItem}
+                    normalize={(value, prevValue) => {
+                        const regex = /^(|-?\d*\.?\d*)$/; // только целые и дробные числа
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
+                    }}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
-                            { pattern: /^\d+(\.\d+)?$/, message: 'Введите только числа!' },
+                            { required: true, message: '' },
                         ]
                     }
                     name='cargo_acceptance_price'
@@ -107,6 +120,7 @@ const LogisticsDataFormBlock = ({ isPaidCargoAcceptance, isHeavy }) => {
                     <Input
                         size='large'
                         placeholder='Укажите стоимость'
+                        style={{background: cargo_acceptance_price ? '#F2F2F2' : ''}}
                     />
                 </Form.Item>}
 
@@ -174,16 +188,16 @@ const LogisticsDataFormBlock = ({ isPaidCargoAcceptance, isHeavy }) => {
                             </ConfigProvider>
                         </div>
                     }
-                    rules={
-                        [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
-                            { pattern: /^\d+$/, message: 'Пожалуйста, введите только целые числа!' },
-                        ]
-                    }
+                    normalize={(value, prevValue) => {
+                        const regex = /^(|\d+)$/ // только целые числа
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
+                    }}
                     name='delivery_speed'
                     className={styles.formItem}
                 >
                     <Input
+                        style={{background: delivery_speed ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите скорость доставки'
                     />
@@ -221,28 +235,31 @@ const LogisticsDataFormBlock = ({ isPaidCargoAcceptance, isHeavy }) => {
                             </ConfigProvider>
                         </div>
                     }
+                    normalize={(value, prevValue) => {
+                        const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
+                        if (regex.test(value)) { return value };
+                        return prevValue || '';
+                    }}
                     name='buyout_percentage'
                     className={styles.formItem}
-                    rules={
-                        [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
-                            { pattern: /^\d+(\.\d+)?$/, message: 'Пожалуйста, введите только числа!' },
-                            { pattern: /^(100|[1-9]?\d)(\.\d+)?$/, message: 'Пожалуйста, введите число от 0 до 100!' },
-                        ]
-                    }
                 >
                     <Input
+                        style={{background: buyout_percentage ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите процент выкупа'
                     />
                 </Form.Item>
 
                 <div className={styles.fieldset__footer}>
-                    <p className={styles.fieldset__footerText_price}>115,9 ₽</p>
+                    <p className={styles.fieldset__footerText_price}>0 ₽</p>
                 </div>
             </div>
 
-            <Form.Item
+            <div className={styles.fieldset__logWrapper}>
+                <p className={styles.fieldset__footerText_price}>0 ₽</p>
+                <p className={styles.fieldset__footerText}>Хранение 1 шт. в месяц</p>
+            </div>
+            {/* <Form.Item
                 className={styles.formItem}
                 name='storage_price'
             >
@@ -276,7 +293,7 @@ const LogisticsDataFormBlock = ({ isPaidCargoAcceptance, isHeavy }) => {
                     </ConfigProvider>
                 </Radio.Group>
 
-            </Form.Item>
+            </Form.Item> */}
         </fieldset>
     )
 }
