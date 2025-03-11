@@ -489,6 +489,8 @@ select {
   z-index: 12;
   font-size: 2vh;
   gap: 0.9em;
+  font-size: 2vh;
+  gap: 0.9em;
 }
 
 
@@ -501,7 +503,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.9em;
+  margin-bottom: 0.9rem;
   cursor: pointer;
 }
 
@@ -509,6 +511,7 @@ select {
   color: var(--clue-color);
   font-weight: 500;
   margin-left: 10px;
+  /* font-size: 2vh !important; */
 }
 
 .sidenav-el > div > img {
@@ -518,11 +521,13 @@ select {
 
 .submenu-item {
   margin-bottom: 0.9em;
+  margin-bottom: 0.9em;
   cursor: pointer;
   color: #1a1a1a;
 }
 .submenu-item:hover {
   font-weight: bold;
+  /* font-size: 14px; */
 }
 
 .side-nav-icon {
@@ -534,10 +539,13 @@ select {
   flex-direction: row;
   border-radius: 16px;
   padding: 0.5em 1em;
+  /* font-size: 1.25vw; */
   background: rgba(83, 41, 255, 0.04);
 }
 
 .support-block-text-writeus {
+  /* font-size: 16px; */
+  /* line-height: 20px; */
   font-weight: 700;
   color: rgba(26, 26, 26, 1);
 }
@@ -547,13 +555,18 @@ select {
   flex-direction: column;
   justify-content: center;
   margin-left: 1vh;
+  margin-left: 1vh;
 }
 .support-block-text-title {
   font-size: 1.75vh;
+  font-size: 1.75vh;
   font-weight: 600;
+  /* line-height: 17.5px; */
   color: rgba(26, 26, 26, 0.5);
 }
 .support-block-text-subtitle {
+  /* font-size: 16px; */
+  /* line-height: 20px; */
   font-weight: 500;
   color: rgba(26, 26, 26, 1);
   background: rgba(83, 41, 255, 0.04);
@@ -570,13 +583,13 @@ select {
   justify-content: center;
   margin-left: 16px;
 }
-/* 
-.support-block-text-title {
+
+/* .support-block-text-title {
   font-size: 14px;
   font-weight: 600;
   line-height: 17.5px;
   color: rgba(26, 26, 26, 0.5);
-}
+} */
 
 .support-block-text-subtitle {
   font-size: 16px;
@@ -600,12 +613,15 @@ select {
   color: #f0ad00;
   font-size: 2vh;
   padding: 0.5em 1em;
+  font-size: 2vh;
+  padding: 0.5em 1em;
   border-radius: 16px;
   margin: 0;
 }
 .additional-tools.expanded {
   background: #f0ad000d;
   color: #f0ad00;
+  /* font-size: 16px; */
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   border-bottom-right-radius: 0px;
