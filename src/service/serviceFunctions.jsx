@@ -222,8 +222,9 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getGeographyData: async (token, day, idShop) => {
-    const res = await fetch(`${URL}/api/geo/?period=${day}&shop=${idShop}`, {
+  getGeographyData: async (token, selectedRange, idShop) => {
+    let rangeParams = rangeApiFormat(selectedRange);
+    const res = await fetch(`${URL}/api/geo/?${rangeParams}&shop=${idShop}`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',

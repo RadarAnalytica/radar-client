@@ -4,11 +4,11 @@ import { format } from 'date-fns';
 
 const OrdersMapFilter = ({
   changeBrand,
-  setDays,
   shops,
   setChangeBrand,
   activeShopId,
   selectedRange,
+  setSelectedRange
 }) => {
   const shopName =
     activeShopId == 0
@@ -19,7 +19,7 @@ const OrdersMapFilter = ({
       <div className='row w-100'>
         <div className='filter-item col'>
           <Period
-            setSelectedRange={setDays}
+            setSelectedRange={setSelectedRange}
             selectedRange={selectedRange}
           />
         </div>
