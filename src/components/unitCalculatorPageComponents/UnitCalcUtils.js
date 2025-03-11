@@ -49,7 +49,8 @@ export const unitCalcResultFunction = (fields, mp_fee, current_storage_logistic_
    
     let netProfit = grossMargin - absMpFee - absEquiringFee - absTaxFee - cargo_acceptance_price - adv_price - current_storage_logistic_price - current_storage_price_month
     let totalMargin = (netProfit / total_product_price) * 100;
-    const minimalPrice = total_product_price - netProfit;
+    //const minimalPrice = total_product_price - netProfit;
+    const minimalPrice = selfCost + absMpFee + absEquiringFee + absTaxFee + adv_price + cargo_acceptance_price + current_storage_logistic_price + current_storage_price_month;
     const maximumDiscount = totalMargin;
     const roi = (netProfit / selfCost) * 100;
 
@@ -90,7 +91,8 @@ export const unitCalcResultFunction = (fields, mp_fee, current_storage_logistic_
         maximumDiscount,
         roi,
         totalProductAmountQuef,
-        total_product_price
+        total_product_price,
+        product_cost
     }
 }
 

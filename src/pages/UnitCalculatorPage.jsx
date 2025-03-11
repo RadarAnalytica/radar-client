@@ -54,6 +54,9 @@ const UnitCalculatorPage = () => {
                                 activeBorderColor: '#5329FF',
                                 hoverBorderColor: '#5329FF',
                                 activeBg: '#F2F2F2',
+                            },
+                            Form: {
+                                labelRequiredMarkColor: '#000'
                             }
                         }
                     }}

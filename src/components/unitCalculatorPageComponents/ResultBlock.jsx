@@ -73,13 +73,13 @@ const ResultBlock = ({result}) => {
 
                 <div className={styles.result__table}>
                     <div className={styles.result__tableRow}>
-                        {'Кол-во товара'} <span>{investValue && result ? ((investValue / result.total_product_price) * result.totalProductAmountQuef) : 0} шт.</span>
+                        {'Кол-во товара'} <span>{investValue && result ? Math.round((investValue / result.product_cost) * result.totalProductAmountQuef) : 0} шт.</span>
                     </div>
                     <div className={styles.result__tableRow}>
-                        {'Выручка'} <span>{investValue && result ? ((investValue / result.total_product_price) * result.totalProductAmountQuef)*result.total_product_price : 0} ₽</span>
+                        {'Выручка'} <span>{investValue && result ? Math.round(((investValue / result.product_cost) * result.totalProductAmountQuef)*result.total_product_price) : 0} ₽</span>
                     </div>
                     <div className={styles.result__tableRow}>
-                        {'Чистая прибыль'} <span>{investValue && result ? ((investValue / result.total_product_price) * result.totalProductAmountQuef) * result.netProfit : 0} ₽ </span>
+                        {'Чистая прибыль'} <span>{investValue && result ? Math.round((investValue / result.product_cost) * result.totalProductAmountQuef) * result.netProfit : 0} ₽ </span>
                     </div>
                     <div className={styles.result__tableRow}>
                         <div className={styles.label} style={{ gap: 4 }}>
@@ -95,7 +95,7 @@ const ResultBlock = ({result}) => {
                                 </Tooltip>
                             </ConfigProvider>
                         </div>
-                        <span>66 шт</span>
+                        <span>-- шт</span>
                     </div>
                 </div>
             </div>
@@ -108,7 +108,7 @@ const ResultBlock = ({result}) => {
 
                 <div className={styles.result__mainResultTable}>
                     <div className={styles.result__mainTableRow}>
-                        <div className={styles.result__mainTablePrice}>{result?.selfCost ? result?.selfCost : 0} ₽</div>
+                        <div className={styles.result__mainTablePrice}>{result?.selfCost ? result?.selfCost.toFixed(2) : 0} ₽</div>
                         <div className={styles.result__mainTableText}>Общая себестоимость</div>
                         <div className={`${styles.result__mainTableText} ${styles.result__mainTableText_gray}`}>Общая сумма затрат до поставки товара</div>
                     </div>
@@ -118,7 +118,7 @@ const ResultBlock = ({result}) => {
                         <div className={`${styles.result__mainTableText} ${styles.result__mainTableText_gray}`}>Доля прибыли от вложений</div>
                     </div>
                     <div className={styles.result__mainTableRow}>
-                        <div className={styles.result__mainTablePrice}>{result?.totalMargin ? result.totalMargin : 0} %</div>
+                        <div className={styles.result__mainTablePrice}>{result?.totalMargin ? result.totalMargin.toFixed(2) : 0} %</div>
                         <div className={styles.result__mainTableText}>Маржинальность</div>
                         <div className={`${styles.result__mainTableText} ${styles.result__mainTableText_gray}`}>Доля прибыли в выручке</div>
                     </div>
@@ -126,14 +126,14 @@ const ResultBlock = ({result}) => {
 
                 <div className={styles.result__table}>
                     <div className={styles.result__tableRow}>
-                        {'Чистая прибыль'} <span>{result?.netProfit ? result?.netProfit : 0} ₽</span>
+                        {'Чистая прибыль'} <span>{result?.netProfit ? result?.netProfit.toFixed(2) : 0} ₽</span>
                     </div>
                     <div className={styles.result__tableRow}>
                         {'Минимальная цена'}
-                        <span>{result?.minimalPrice ? result?.minimalPrice : 0} ₽</span>
+                        <span>{result?.minimalPrice ? result?.minimalPrice.toFixed(2) : 0} ₽</span>
                     </div>
                     <div className={styles.result__tableRow}>
-                        {'Максимальаня скидка'} <span>{result?.maximumDiscount ? result?.maximumDiscount : 0} %</span>
+                        {'Максимальаня скидка'} <span>{result?.maximumDiscount ? result?.maximumDiscount.toFixed(2) : 0} %</span>
                     </div>
                 </div>
             </div>

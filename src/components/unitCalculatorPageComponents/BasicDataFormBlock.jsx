@@ -8,8 +8,7 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
 
     const sidesSum = package_width_int + package_length_int + package_height_int
     const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2)
-    console.log(volume)
-    console.log(Number.isNaN(volume))
+
     return (
         <fieldset className={styles.fieldset}>
             <div className={styles.fieldset__header}>
@@ -35,10 +34,14 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     name='product_price'
                     label='Цена товара'
                     className={isSPP ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
+                    normalize={(value, prevValue) => {
+                        if (value.match(/^\d+(\.\d+)?$/)) return value;
+                        return prevValue;
+                    }}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
-                            { pattern: /^\d+(\.\d+)?$/, message: 'Введите только числа!' },
+                            { required: true, message: ''},
+                            { pattern: /^\d+(\.\d+)?$/, message: ''},
                         ]
                     }
                 >
@@ -53,9 +56,9 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     name='SPP'
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
-                            { pattern: /^\d+(\.\d+)?$/, message: 'Пожалуйста, введите только числа!' },
-                            { pattern: /^(100|[1-9]?\d)(\.\d+)?$/, message: 'Пожалуйста, введите число от 0 до 100!' },
+                            { required: true, message: '' },
+                            { pattern: /^\d+(\.\d+)?$/, message: '' },
+                            { pattern: /^(100|[1-9]?\d)(\.\d+)?$/, message: '' },
                         ]
                     }
                 >
@@ -100,8 +103,8 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                 className={styles.formItem}
                 rules={
                     [
-                        { required: true, message: 'Пожалуйста, заполните это поле!' },
-                        { pattern: /^\d+(\.\d+)?$/, message: 'Введите только числа!' },
+                        { required: true, message: '' },
+                        { pattern: /^\d+(\.\d+)?$/, message: '' },
                     ]
                 }
             >
@@ -118,8 +121,8 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     className={styles.formItem}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
-                            { pattern: /^\d+$/, message: 'Пожалуйста, введите только целые числа!' },
+                            { required: true, message: '' },
+                            { pattern: /^\d+$/, message: '' },
                         ]
                     }
                 >
@@ -134,8 +137,8 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     className={styles.formItem}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
-                            { pattern: /^\d+$/, message: 'Пожалуйста, введите только целые числа!' },
+                            { required: true, message: '' },
+                            { pattern: /^\d+$/, message: '' },
                         ]
                     }
                 >
@@ -150,8 +153,8 @@ const BasicDataFormBlock = ({ isHeavy, isSPP, product_price, SPP, package_height
                     name='package_height'
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!' },
-                            { pattern: /^\d+$/, message: 'Пожалуйста, введите только целые числа!' },
+                            { required: true, message: '' },
+                            { pattern: /^\d+$/, message: '' },
                         ]
                     }
                 >
