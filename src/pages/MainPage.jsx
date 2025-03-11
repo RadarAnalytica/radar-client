@@ -179,7 +179,7 @@ const MainPage = () => {
 
               <div className='d-flex flex-column gap-3 startWorkBtn'>
                 <button
-                  className='prime-btn'
+                  className='first-screen-action-button'
                   style={{ minHeight: '64px', fontSize: '18px', margin: 0 }}
                   onClick={() => {
                     if (user) {
