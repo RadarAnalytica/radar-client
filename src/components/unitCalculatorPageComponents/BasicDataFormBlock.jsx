@@ -1,5 +1,6 @@
 import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete } from 'antd';
 import styles from './BasicDataFormBlock.module.css'
+
 const BasicDataFormBlock = ({ form }) => {
 
     const isSPP = Form.useWatch('isSPP', form);
@@ -26,19 +27,48 @@ const BasicDataFormBlock = ({ form }) => {
                 <p className={styles.fieldset__subtitle}>Укажите значения для расчета одной единицы товара (SKU)</p>
             </div>
 
-            <Form.Item
-                name='product'
-                label='Товар'
-                className={styles.formItem}
-
+            <ConfigProvider
+                theme={{
+                    token: {
+                        fontFamily: 'Mulish',
+                        colorBgContainer: 'white',
+                        activeBg: 'red'
+                        //colorBorder: 'white',
+                        // colorTextLightSolid: '#000'
+                    },
+                    components: {
+                        Select: {
+                            activeBorderColor: '#5329FF',
+                            hoverBorderColor: '#5329FF',
+                            activeOutlineColor: 'transparent'
+                        },
+                        Input: {
+                            activeBorderColor: '#5329FF',
+                            hoverBorderColor: '#5329FF',
+                            activeBg: '#F2F2F2',
+                        },
+                    }
+                }}
             >
-                <Input
-                    size='large'
-                    placeholder='Введите название товара'
-                    style={{background: product ? '#F2F2F2' : ''}}
-                />
-            </Form.Item>
+                <Form.Item
+                    name='product'
+                    label='Товар'
+                    className={styles.formItem}
 
+                >
+                    {/* <AutoComplete 
+                        size='large'
+                        placeholder='Введите название товара'
+                        style={{background: product ? '#F2F2F2' : ''}}
+                        id='autocomp'
+                    /> */}
+                    <Input
+                        size='large'
+                        placeholder='Введите название товара'
+                        style={{background: product ? '#F2F2F2' : ''}}
+                    />
+                </Form.Item>
+            </ConfigProvider>
 
             <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                 <Form.Item

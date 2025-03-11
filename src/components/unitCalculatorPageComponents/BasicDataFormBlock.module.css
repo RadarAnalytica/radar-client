@@ -1,3 +1,12 @@
+:global(.ant-select-selector) {
+    border: 1px solid rgba(232, 232, 232, 1) !important;
+}
+:global(.ant-select) {
+    background: none !important;
+}
+:global(#autocomp) {
+    border: none !important;
+}
 
 .fieldset {
     width: 100%;
