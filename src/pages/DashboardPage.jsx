@@ -41,7 +41,7 @@ const DashboardPage = () => {
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
   const [wbData, setWbData] = useState();
-  const [days, setDays] = useState({ period: 30 });
+  const [selectedRange, setSelectedRange] = useState({ period: 30 });
   const [content, setContent] = useState();
   const [state, setState] = useState();
   const [brandNames, setBrandNames] = useState();
@@ -51,7 +51,7 @@ const DashboardPage = () => {
   const [firstLoading, setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
 
-  const [selectedRange, setSelectedRange] = useState(days);
+  const [selectedRangeDetail, setSelectedRangeDetail] = useState(selectedRange);
   const [detailChartLabels, setDetailChartLabels] = useState([]);
   const [detailChartData, setDetailChartData] = useState([]);
   const [detailChartAverages, setDetailChartAverages] = useState([]);
@@ -75,7 +75,7 @@ const DashboardPage = () => {
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
-  const prevDays = useRef(days);
+  const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
 
@@ -127,9 +127,9 @@ const DashboardPage = () => {
       }
       if (
         !isInitialLoading &&
-        (days === prevDays.current || activeBrand === prevActiveBrand.current)
+        (selectedRange === prevDays.current || activeBrand === prevActiveBrand.current)
       ) {
-        updateDataDashBoard(days, activeBrand, authToken);
+        updateDataDashBoard(selectedRange, activeBrand, authToken);
       }
       // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
       clearInterval(intervalId);
@@ -147,23 +147,53 @@ const DashboardPage = () => {
   }, [oneShop, activeBrand]);
 
   useEffect(() => {
-    const updateChartData = async () => {
-      let range = selectedRange;
-      if (!!range.from || !!range.to){
-        range.from = format(range.from, 'yyyy-MM-dd');
-        range.to = format(range.to, 'yyyy-MM-dd');
-      }
+    const updateChartDetailData = async () => {
       const data = await ServiceFunctions.getChartDetailData(
         authToken,
-        range,
+        selectedRangeDetail,
         activeBrand
       );
-      setDetailChartLabels(data.result);
-      setDetailChartData(data.counts);
-      setDetailChartAverages(data.averages);
+      const counts = Array(24).fill(0);
+      const averages = Array(24).fill(0);
+
+      data.forEach((entry) => {
+        for (const [time, value] of Object.entries(entry)) {
+          const hour = parseInt(time.split(':')[0], 10);
+          console.log(time, value)
+          counts[hour] += value;
+          averages[hour] += value !== 0 ? 1 : 0;
+        }
+        console.log(counts)
+        console.log(averages)
+      });
+
+      const transformData = (data) => {
+        return data.reduce((acc, item) => {
+          const [time, count] = Object.entries(item)[0];
+          const hour = parseInt(time.split(':')[0], 10);
+
+          if (!acc[hour]) {
+            acc[hour] = [];
+          }
+          acc[hour].push({ count, time });
+
+          return acc;
+        }, {});
+      };
+
+      const result = transformData(data);
+
+      setDetailChartLabels(result);
+      setDetailChartData(counts);
+      setDetailChartAverages(averages);
     };
-    updateChartData();
+    updateChartDetailData();
+  }, [selectedRangeDetail]);
+
+  useEffect( () => {
+    setSelectedRangeDetail(selectedRange);
   }, [selectedRange]);
+
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
@@ -177,7 +207,7 @@ const DashboardPage = () => {
       try {
         await dispatch(fetchShops(authToken));
         if (activeBrand !== undefined) {
-          await updateDataDashBoard(days, activeBrand, authToken);
+          await updateDataDashBoard(selectedRange, activeBrand, authToken);
         }
       } catch (error) {
         console.error('Error fetching initial data:', error);
@@ -225,7 +255,7 @@ const DashboardPage = () => {
 
   const updateDataDashBoardCaller = async () => {
     activeBrand !== undefined &&
-      updateDataDashBoard(days, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand, authToken);
   };
 
   const handleSaveActiveShop = (shopId) => {
@@ -241,21 +271,21 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
-      updateDataDashBoard(days, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand, authToken);
     }
   }, [authToken]);
 
   // Update dashboard data when necessary
   useEffect(() => {
-    if (days !== prevDays.current || activeBrand !== prevActiveBrand.current) {
+    if (selectedRange !== prevDays.current || activeBrand !== prevActiveBrand.current) {
       if (activeBrand !== undefined) {
-        updateDataDashBoard(days, activeBrand, authToken);
+        updateDataDashBoard(selectedRange, activeBrand, authToken);
       }
-      prevDays.current = days;
+      prevDays.current = selectedRange;
       prevActiveBrand.current = activeBrand;
     }
-    setSelectedRange(days)
-  }, [days, activeBrand]);
+    setSelectedRange(selectedRange)
+  }, [selectedRange, activeBrand]);
 
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
@@ -285,15 +315,15 @@ const DashboardPage = () => {
     const timeToTarget = targetTime.getTime() - Date.now();
     const intervalId = setTimeout(() => {
       dispatch(fetchShops(authToken));
-      updateDataDashBoard(days, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand, authToken);
     }, timeToTarget);
 
     return () => {
       clearTimeout(intervalId);
     };
-  }, [dispatch, activeBrand, days, authToken]);
+  }, [dispatch, activeBrand, selectedRange, authToken]);
 
-  const updateDataDashBoard = async (days, activeBrand, authToken) => {
+  const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
     setLoading(true);
     try {
       const controlValue = shops.filter(el => el.id === activeShopId).length
@@ -302,15 +332,9 @@ const DashboardPage = () => {
         window.location.reload()
       }
 
-      let range = days;
-      if (!!range.from || !!range.to){
-        range.from = format(range.from, 'yyyy-MM-dd');
-        range.to = format(range.to, 'yyyy-MM-dd');
-      }
-      
       const data = await ServiceFunctions.getDashBoard(
         authToken,
-        range,
+        selectedRange,
         activeBrand
       );
       setDataDashboard(data);
@@ -380,18 +404,22 @@ const DashboardPage = () => {
 
   const [curOrders, setCurOrders] = useState();
   useEffect(() => {
-    if (days === 1) {
-      setCurOrders(reportDaily);
-    } else if (days === 7) {
-      setCurOrders(reportWeekly);
-    } else if (days === 14) {
-      setCurOrders(reportTwoWeeks);
-    } else if (days === 30) {
-      setCurOrders(reportMonthly);
-    } else if (days === 90) {
-      setCurOrders(reportThreeMonths);
+    if (!!selectedRange.period){
+
+      if (selectedRange.period === 1) {
+        setCurOrders(reportDaily);
+      } else if (selectedRange.period === 7) {
+        setCurOrders(reportWeekly);
+      } else if (selectedRange.period === 14) {
+        setCurOrders(reportTwoWeeks);
+      } else if (selectedRange.period === 30) {
+        setCurOrders(reportMonthly);
+      } else if (selectedRange.period === 90) {
+        setCurOrders(reportThreeMonths);
+      }
     }
-  }, [days, wbData]);
+
+  }, [selectedRange, wbData]);
 
   const tax =
     state && state.initialCostsAndTax ? state.initialCostsAndTax.tax : 0;
@@ -643,12 +671,12 @@ const DashboardPage = () => {
     return acc;
   }, {});
 
-  const summedOrderArray = Object.keys(summedOrderRub)
-    .map((date) => summedOrderRub[date].toFixed(2))
-    .slice(0, days);
-  const summedSalesArray = Object.keys(summedSalesRub)
-    .map((date) => summedSalesRub[date].toFixed(2))
-    .slice(0, days);
+  // const summedOrderArray = Object.keys(summedOrderRub)
+  //   .map((date) => summedOrderRub[date].toFixed(2))
+  //   .slice(0, selectedRange?.period);
+  // const summedSalesArray = Object.keys(summedSalesRub)
+  //   .map((date) => summedSalesRub[date].toFixed(2))
+  //   .slice(0, selectedRange?.period);
 
   const ordersByDate = orderValuesRub.reduce((acc, item) => {
     const { date } = item;
@@ -662,12 +690,12 @@ const DashboardPage = () => {
     return acc;
   }, {});
 
-  const totalOrByDate = Object.entries(ordersByDate)
-    .map(([date, count]) => count)
-    .slice(0, days);
-  const totalsalesByDate = Object.entries(salesByDate)
-    .map(([date, count]) => count)
-    .slice(0, days);
+  // const totalOrByDate = Object.entries(ordersByDate)
+  //   .map(([date, count]) => count)
+  //   .slice(0, selectedRange?.period);
+  // const totalsalesByDate = Object.entries(salesByDate)
+  //   .map(([date, count]) => count)
+  //   .slice(0, selectedRange?.period);
 
   const [orderOn, setOrderOn] = useState(true);
   const [orderLineOn, setOrderLineOn] = useState(true);
@@ -684,7 +712,7 @@ const DashboardPage = () => {
   // };
 
   function getPastDays(number) {
-    const today = new Date();
+    const today = !!selectedRange.to ? new Date(selectedRange.to) : new Date();
     const pastDays = [];
 
     for (let i = 0; i < number; i++) {
@@ -880,7 +908,7 @@ const DashboardPage = () => {
     return null; // or a loading indicator
   }
 
-  const rangeDays = days.from && days.to ? differenceInDays(days.to, days.from, {unit: 'days'}) : days.period
+  const rangeDays = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, {unit: 'days'}) : selectedRange.period
   return (
     isVisible && (
       <div className='dashboard-page'>
@@ -905,8 +933,8 @@ const DashboardPage = () => {
           {wbData === null ? <DataCollectionNotification /> : null} */}
 
           <DashboardFilter
-            periodValue={days}
-            setDays={setDays}
+            selectedRange={selectedRange}
+            setSelectedRange={setSelectedRange}
             setActiveBrand={handleSaveActiveShop}
             // setChangeBrand={setChangeBrand}
             shops={shops}
@@ -1061,8 +1089,8 @@ const DashboardPage = () => {
                           style={{ position: 'relative' }}
                         >
                           <Period
-                            selectedRange={selectedRange}
-                            setSelectedRange={setSelectedRange}
+                            selectedRange={selectedRangeDetail}
+                            setSelectedRange={setSelectedRangeDetail}
                           />
                         </div>
                         {/* <div style={{ marginTop: '35px' }}>

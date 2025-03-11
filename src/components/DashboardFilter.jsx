@@ -7,8 +7,8 @@ import Period from './period/Period';
 
 const DashboardFilter = ({
   setActiveBrand,
-  periodValue,
-  setDays,
+  selectedRange,
+  setSelectedRange,
   shops,
   // setChangeBrand,
   // setPrimary,
@@ -67,8 +67,8 @@ const DashboardFilter = ({
       <div className='row'>
         <div className='filter-item col' style={{ position: 'relative' }}>
           <Period 
-            selectedRange={periodValue}
-            setSelectedRange={setDays}
+            selectedRange={selectedRange}
+            setSelectedRange={setSelectedRange}
           />
           {/* <label
             style={{ fontWeight: 600, marginBottom: '4px', display: 'block' }}

@@ -460,10 +460,10 @@ export const ServiceFunctions = {
   },
 
   getChartDetailData: async (token, selectedRange, shop) => {
-    let rangeParams = rangeApiFormat(selectedRange);
+    let rangeParams = rangeApiFormat(selectedRange);    
     
     const res = await fetch(
-      `${URL}/api/dashboard/?shops=${shop}&${rangeParams}`,
+      `${URL}/api/dashboard/hourly?shops=${shop}&${rangeParams}`,
       {
         method: "GET",
         headers: {
@@ -472,96 +472,8 @@ export const ServiceFunctions = {
         },
       }
     );
-    // TODO Сделать отрисовку ответа
     const data = await res.json();
-    // const data = [
-    //   { '0:15': 4 },
-    //   { '0:45': 2 },
-    //   { '1:10': 3 },
-    //   { '1:30': 1 },
-    //   { '2:05': 5 },
-    //   { '2:50': 2 },
-    //   { '3:00': 4 },
-    //   { '3:30': 1 },
-    //   { '4:20': 3 },
-    //   { '4:50': 2 },
-    //   { '5:00': 1 },
-    //   { '5:40': 2 },
-    //   { '6:00': 2 },
-    //   { '6:15': 5 },
-    //   { '7:00': 3 },
-    //   { '7:45': 1 },
-    //   { '8:05': 4 },
-    //   { '8:30': 2 },
-    //   { '9:00': 1 },
-    //   { '9:55': 5 },
-    //   { '10:15': 2 },
-    //   { '10:45': 3 },
-    //   { '11:30': 1 },
-    //   { '11:55': 4 },
-    //   { '12:10': 3 },
-    //   { '12:40': 1 },
-    //   { '13:00': 5 },
-    //   { '13:25': 2 },
-    //   { '14:10': 3 },
-    //   { '14:50': 4 },
-    //   { '15:30': 1 },
-    //   { '15:55': 5 },
-    //   { '16:10': 2 },
-    //   { '16:40': 4 },
-    //   { '17:05': 3 },
-    //   { '17:50': 2 },
-    //   { '18:00': 4 },
-    //   { '18:30': 1 },
-    //   { '19:10': 3 },
-    //   { '19:45': 2 },
-    //   { '20:20': 4 },
-    //   { '20:55': 1 },
-    //   { '21:05': 2 },
-    //   { '21:30': 3 },
-    //   { '22:15': 4 },
-    //   { '22:50': 1 },
-    //   { '23:10': 2 },
-    //   { '23:45': 5 },
-    // ];
-
-    const counts = Array(24).fill(0);
-    const averages = Array(24).fill(0);
-
-    // data.forEach((entry) => {
-    //   for (const [time, value] of Object.entries(entry)) {
-    //     const hour = parseInt(time.split(':')[0], 10);
-
-    //     counts[hour] += value;
-    //     averages[hour] += 1;
-    //   }
-    // });
-
-    // const finalAverages = averages.map((count, index) => {
-    //   return count === 0 ? 0 : counts[index] / count;
-    // });
-
-    // const transformData = (data) => {
-    //   return data.reduce((acc, item) => {
-    //     const [time, count] = Object.entries(item)[0];
-    //     const hour = parseInt(time.split(':')[0], 10);
-
-    //     if (!acc[hour]) {
-    //       acc[hour] = [];
-    //     }
-    //     acc[hour].push({ count, time });
-
-    //     return acc;
-    //   }, {});
-    // };
-
-    // const result = transformData(data);
-
-    return {
-      // result: result,
-      // counts: counts,
-      // averages: finalAverages,
-    };
+    return data;
   },
 
   getListOfReports: async (token) => {
