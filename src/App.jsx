@@ -50,7 +50,6 @@ const Politics = React.lazy(() => import("./pages/Politics"));
 const UserAgreement = React.lazy(() => import("./pages/UserAgreement"));
 const PublicOffer = React.lazy(() => import("./pages/PublicOffer"));
 const StubPage = React.lazy(() => import("./pages/StubPage"));
-const MainPage = React.lazy(() => import("./pages/MainPage"));
 const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
 const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
@@ -71,11 +70,6 @@ import { BlogAdd, BlogList } from "./pages/blog";
  * 2. To connect a public one - wrap it with Suspense with LoaderPage as fallback - this is highly important!
  * --------------------------------------
  */
-
-
-
-
-
 
 function App() {
 

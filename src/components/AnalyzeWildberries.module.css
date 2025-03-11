@@ -25,16 +25,27 @@
     background-color: #000000;
     border-radius: 12.15px;
     padding: 24px;
-    /* display: flex;
+    display: flex;
     flex-direction: column;
-    justify-content: space-between; */
+    justify-content: space-between;
 }
-.wrapperSecond{ background-color:#0069FF}
+.wrapperSecond{ 
+    background-color:#0069FF;
+}
 .wrapperThird {background-color: #1A1A1A0D;}
 .wrapperHeader{
     display: flex;
     justify-content: flex-start;
     align-items: center;
+}
+
+.cardHeader {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
 }
 .logoContainer{
     min-width: 75px;
@@ -60,7 +71,6 @@
     color: black;
 }
 .wrapperMain,.wrapperMainThird{
-    margin-top: 5px;
     color: white;
     font-size: 19px;
     font-weight: 500;
@@ -69,7 +79,6 @@
     color: black;
 }
 .buttonTry{
-    margin-top: 30px;
     width: max-content;
     background-color: #0069FF;
     padding: 15px 20px;
@@ -80,7 +89,6 @@
     cursor: pointer;
 }
 .buttonTrySecond{
-    margin-top: 30px;
     width: max-content;
     background-color: #0069FF;
     padding: 15px 20px;
@@ -89,25 +97,18 @@
     font-weight: 500;
     font-size: 15px;
     cursor: pointer;
-}
-.buttonTryThird{
-    margin-top: 30px;
-    width: max-content;
-    background-color: #0069FF;
-    padding: 15px 20px;
-    border-radius: 6.5px;
-    color: white;
-    font-weight: 500;
-    font-size: 15px;
-    cursor: pointer;
-}
-
-.buttonTrySecond{
     background-color: white;
     color: black;
 }
 .buttonTryThird{
-    margin-top: 30px;
+    width: max-content;
+    background-color: #0069FF;
+    padding: 15px 20px;
+    border-radius: 6.5px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
     background-color: #000000;
 }
 

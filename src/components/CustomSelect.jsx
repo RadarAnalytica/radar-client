@@ -19,25 +19,32 @@ const CustomSelect = ({ options, callback, label, defaultValue }) => {
         className='form-control mt-2'
         onClick={() => setShown(!shown)}
       >
-        <svg
-          style={{
-            position: 'absolute',
-            right: '16px',
-            top: '6.25vh',
-            width: '1vw',
-          }}
-          viewBox='0 0 28 17'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <path
-            d='M2 2L14 14L26 2'
-            stroke='#1A1A1A'
-            strokeWidth='4'
-            strokeLinecap='round'
-          />
-        </svg>
         <div style={{ position: 'relative', width: '100%' }}>
+          <div
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              bottom: 0,
+              width: '14px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+          <svg
+            viewBox='0 0 28 17'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              d='M2 2L14 14L26 2'
+              stroke='#1A1A1A'
+              strokeWidth='4'
+              strokeLinecap='round'
+            />
+          </svg>
+          </div>
           <p
             className='mb-0'
             style={{

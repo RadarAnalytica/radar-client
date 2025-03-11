@@ -294,7 +294,7 @@ const SignUpForm = () => {
                     /> */}
       </div>
       <button
-        className='prime-btn'
+        className='signup-screen-action-button'
         onClick={(e) => sumbitHandler(e, regData)}
         style={{ width: '100%', height: '7vh' }}
       >
@@ -330,9 +330,9 @@ const SignUpForm = () => {
       </div>
 
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton style={{border: 'none'}}>
           <div>
-            <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
+            <div className='d-flex gap-3 mb-2 mt-2 align-items-center hidden'>
               <img src={warningIcon} alt='' style={{ height: '3vh' }} />
               <p className='fw-bold mb-0'>Ошибка!</p>
             </div>
