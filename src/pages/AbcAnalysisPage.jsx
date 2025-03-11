@@ -18,15 +18,15 @@ import { useNavigate } from "react-router-dom";
 
 const AbcAnalysisPage = () => {
   const navigate = useNavigate();
-  const [days, setDays] = useState(30);
+  const [days, setDays] = useState({ period: 30 });
   const { user, authToken } = useContext(AuthContext);
-  const [wbData, setWbData] = useState();
+  // const [wbData, setWbData] = useState();
   const dispatch = useAppDispatch();
   const [dataAbcAnalysis, setDataAbcAnalysis] = useState([]);
   const [isNeedCost, setIsNeedCost] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [changeBrand, setChangeBrand] = useState();
-  const [primary, setPrimary] = useState();
+  // const [changeBrand, setChangeBrand] = useState();
+  // const [primary, setPrimary] = useState();
   const [viewType, setViewType] = useState("proceeds");
   const shops = useAppSelector((state) => state.shopsSlice.shops);
 
@@ -126,6 +126,11 @@ const AbcAnalysisPage = () => {
       }
     };
   }, [oneShop, activeBrand]);
+
+
+  // useEffect(() => {
+  //   updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
+  // }, [days]);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -276,40 +281,25 @@ const AbcAnalysisPage = () => {
   //   };
   // });
 
-  const [reportDaily, setReportDaily] = useState();
-  const [reportWeekly, setReportWeekly] = useState();
-  const [reportTwoWeeks, setReportTwoWeeks] = useState();
-  const [reportMonthly, setReportMonthly] = useState();
-  const [reportThreeMonths, setReportThreeMonths] = useState();
+  // const [reportDaily, setReportDaily] = useState();
+  // const [reportWeekly, setReportWeekly] = useState();
+  // const [reportTwoWeeks, setReportTwoWeeks] = useState();
+  // const [reportMonthly, setReportMonthly] = useState();
+  // const [reportThreeMonths, setReportThreeMonths] = useState();
 
-  useEffect(() => {
-    if (wbData) {
-      setReportDaily(wbData.reportDaily?.data?.data?.groups[0]?.statistics);
-      setReportWeekly(wbData.reportWeekly?.data?.data?.groups[0]?.statistics);
-      setReportTwoWeeks(
-        wbData.reportTwoWeeks?.data?.data?.groups[0]?.statistics
-      );
-      setReportMonthly(wbData.reportMonthly?.data?.data?.groups[0]?.statistics);
-      setReportThreeMonths(
-        wbData.reportThreeMonths?.data?.data?.groups[0]?.statistics
-      );
-    }
-  }, [wbData]);
-
-  const [curOrders, setCurOrders] = useState();
-  useEffect(() => {
-    if (days === 1) {
-      setCurOrders(reportDaily);
-    } else if (days === 7) {
-      setCurOrders(reportWeekly);
-    } else if (days === 14) {
-      setCurOrders(reportTwoWeeks);
-    } else if (days === 30) {
-      setCurOrders(reportMonthly);
-    } else if (days === 90) {
-      setCurOrders(reportThreeMonths);
-    }
-  }, [days, wbData]);
+  // useEffect(() => {
+  //   if (wbData) {
+  //     setReportDaily(wbData.reportDaily?.data?.data?.groups[0]?.statistics);
+  //     setReportWeekly(wbData.reportWeekly?.data?.data?.groups[0]?.statistics);
+  //     setReportTwoWeeks(
+  //       wbData.reportTwoWeeks?.data?.data?.groups[0]?.statistics
+  //     );
+  //     setReportMonthly(wbData.reportMonthly?.data?.data?.groups[0]?.statistics);
+  //     setReportThreeMonths(
+  //       wbData.reportThreeMonths?.data?.data?.groups[0]?.statistics
+  //     );
+  //   }
+  // }, [wbData]);
 
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"ABC-анализ"} />;
@@ -320,7 +310,7 @@ const AbcAnalysisPage = () => {
   }
 
   return (
-    isVisible && (
+    // isVisible && (
       <div className='dashboard-page'>
         
         <SideNav />
@@ -336,13 +326,13 @@ const AbcAnalysisPage = () => {
 
           <div className='pt-0 d-flex gap-3'>
             <AbcAnalysisFilter
+              shops={shops}
+              setActiveBrand={handleSaveActiveShop}
               periodValue={days}
               setDays={setDays}
-              setActiveBrand={handleSaveActiveShop}
-              setChangeBrand={setChangeBrand}
-              shops={shops}
-              setPrimary={setPrimary}
               activeShopId={activeShopId}
+              // setChangeBrand={setChangeBrand}
+              // setPrimary={setPrimary}
             />
           </div>
           {shouldDisplay ? (
@@ -361,7 +351,7 @@ const AbcAnalysisPage = () => {
             <BottomNavigation />
         </div>
       </div>
-    )
+    // )
   );
 };
 

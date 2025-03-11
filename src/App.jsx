@@ -57,7 +57,7 @@ const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashboard"));
 const Schedule = React.lazy(() => import("./pages/Schedule"));
-const Period = React.lazy(() => import("./components/Period"));
+// const Period = React.lazy(() => import("./components/period/Period"));
 const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 const StartPage = React.lazy(() => import("./pages/StartPage"));
 import LoaderPage from "./pages/LoaderPage";
@@ -107,7 +107,7 @@ function App() {
             <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
             <Route path='/subscription' element={<ProtectedRoute authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
             <Route path='/schedule' element={<ProtectedRoute authGuardType="redirect"><Schedule /></ProtectedRoute>} />
-            <Route path='/period' element={<ProtectedRoute authGuardType="redirect"><Period /></ProtectedRoute>} />
+            {/* <Route path='/period' element={<ProtectedRoute authGuardType="redirect"><Period /></ProtectedRoute>} /> */}
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute><ReportMain /></ProtectedRoute>} />

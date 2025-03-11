@@ -21,15 +21,18 @@ import OrderSalesPieCharts from '../components/OrderSalesPieCharts';
 import StockDataRow from '../components/StockDataRow';
 import green from '../assets/greenarrow.png';
 import red from '../assets/redarrow.png';
+import { ServiceFunctions } from '../service/serviceFunctions';
 
 const OrdersMap = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, authToken, logout } = useContext(AuthContext);
-  const { geoData, loading, error } = useAppSelector(
-    (state) => state.geoDataSlice
-  );
+  // const [geoData, setGeoData] = useState([]);
+  // const { geoData, loading, error } = useAppSelector(
+    // (state) => state.geoDataSlice
+  // );
+  const [geoData, setGeoData] = useState([])
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const storedActiveShop = localStorage.getItem('activeShop');
   let activeShop;
@@ -37,7 +40,7 @@ const OrdersMap = () => {
   const activeShopId = activeShop?.id;
 
   const [byRegions, setByRegions] = useState(true);
-  const [days, setDays] = useState(30);
+  const [selectedRange, setSelectedRange] = useState({period: 30});
   const [brandNames, setBrandNames] = useState();
   const idShopAsValue =
     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
@@ -52,11 +55,11 @@ const OrdersMap = () => {
     ? oneShop.is_primary_collect
     : allShop;
 
-  const [changeBrand, setChangeBrand] = useState();
-  const [primary, setPrimary] = useState();
+  // const [changeBrand, setChangeBrand] = useState();
+  // const [primary, setPrimary] = useState();
   const [data, setData] = useState();
   const [isVisible, setIsVisible] = useState(true);
-  const prevDays = useRef(days);
+  const prevselectedRange = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
 
@@ -104,22 +107,36 @@ const OrdersMap = () => {
 
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
-      dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+      const updateGeoData = async () => {
+        const data = await ServiceFunctions.getGeographyData( authToken, selectedRange, activeBrand );
+        setGeoData(data);
+      }
+      updateGeoData();
+      // dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
+      // const dataata = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand)
+      // setData(data);
     } 
   }, [authToken]);
 
   useEffect(() => {
-    if (days !== prevDays.current || activeBrand !== prevActiveBrand.current) {
+
+    
+    if (selectedRange !== prevselectedRange.current || activeBrand !== prevActiveBrand.current) {
       if (activeBrand !== undefined) {
-        dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+        const updateGeoData = async () => {
+          const data = await ServiceFunctions.getGeographyData( authToken, selectedRange, activeBrand );
+          setGeoData(data);
+        }
+        updateGeoData();
+        // dispatch(fetchzeographyData({ authToken, selectedRange, activeBrand }));
         dispatch(fetchShops(authToken));
       }
-      prevDays.current = days;
+      prevselectedRange.current = selectedRange;
       prevActiveBrand.current = activeBrand;
     }
     // dispatch(fetchShops(authToken));
-    // dispatch(fetchGeographyData({ authToken, days, activeBrand }));
-  }, [days, activeBrand]);
+    // dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
+  }, [selectedRange, activeBrand]);
 
   useEffect(() => {
     if (shops?.length === 0 && !firstLoading) {
@@ -153,13 +170,18 @@ const OrdersMap = () => {
   
     const intervalId = setTimeout(() => {
       dispatch(fetchShops(authToken));
-      dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+      const updateGeoData = async () => {
+        const data = await ServiceFunctions.getGeographyData( authToken, selectedRange, activeBrand );
+        setGeoData(data);
+      }
+      updateGeoData();
+      // dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
     }, timeToTarget);
   
     return () => {
       clearTimeout(intervalId);
     };
-  }, [dispatch, activeBrand, days, authToken]);
+  }, [dispatch, activeBrand, selectedRange, authToken]);
   
   useEffect(() => {
     if (authToken !== authTokenRef.current) {
@@ -172,7 +194,12 @@ const OrdersMap = () => {
       try{
         await dispatch(fetchShops(authToken));
         if (activeBrand !== undefined) {
-          await dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+          const updateGeoData = async () => {
+            const data = await ServiceFunctions.getGeographyData( authToken, selectedRange, activeBrand );
+            setGeoData(data);
+          }
+          updateGeoData();
+          // await dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
         }
         } catch (error) {
           console.error("Error fetching initial data:", error);
@@ -183,7 +210,7 @@ const OrdersMap = () => {
     // dispatch(fetchShops(authToken)).then(() => {
     //   setFirstLoading(false);
     // });
-    // dispatch(fetchGeographyData({ authToken, days, activeBrand }));
+    // dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
 
     fetchInitalData();
   }, []);
@@ -234,17 +261,16 @@ const OrdersMap = () => {
   // const changePeriod = () => {
   //     setLoading(true)
   //     if (user && activeBrand) {
-  //         ServiceFunctions.getGeoData(user.id, activeBrand, days).then(data => setData(data))
+  //         ServiceFunctions.getGeoData(user.id, activeBrand, selectedRange).then(data => setData(data))
   //     }
   // }
 
   // useEffect(() => {
   //     changePeriod()
-  // }, [days, activeBrand])
+  // }, [selectedRange, activeBrand])
 
-  const orders =
-    data && data?.orders && data?.orders.data ? data?.orders.data : [];
-  const sales = data && data?.sales && data?.sales.data ? data?.sales.data : [];
+  // const orders = data && data?.orders && data?.orders.data ? data?.orders.data : [];
+  // const sales = data && data?.sales && data?.sales.data ? data?.sales.data : [];
 
   const ordersByWarehouses = data ? data?.ordersByWarehouse : [];
   const salesByWarehouses = data ? data?.salesByWarehouse : [];
@@ -769,14 +795,15 @@ const OrdersMap = () => {
           {/* {oneShop?.is_primary_collect && <SelfCostWarning activeBrand={activeBrand}/>}  */}
 
           <OrdersMapFilter
-            brandNames={brandNames}
-            defaultValue={days}
-            setDays={setDays}
-            changeBrand={handleSaveActiveShop}
             shops={shops}
-            setChangeBrand={setChangeBrand}
-            setPrimary={setPrimary}
+            setSelectedRange={setSelectedRange}
+            selectedRange={selectedRange}
+            changeBrand={handleSaveActiveShop}
             activeShopId={activeShopId}
+            // brandNames={brandNames}
+            // defaultValue={selectedRange}
+            // setChangeBrand={setChangeBrand}
+            // setPrimary={setPrimary}
           />
           {shouldDisplay ? (
             <div className='map-container dash-container container p-3'>
@@ -886,7 +913,7 @@ const OrdersMap = () => {
                   )}
                 </div>
               ) : null}
-              {byRegions && !loading && geoData?.geo_data ? (
+              {byRegions && geoData?.geo_data ? (
                 <div className='map-data-content'>
                   <div className=' pl-3 d-flex map-data-row'>
                     <div className='col'>
@@ -947,7 +974,7 @@ const OrdersMap = () => {
                     </div>
                   </div>
                 </div>
-              ) : !byRegions && !loading && geoData?.stock_data ? (
+              ) : !byRegions && geoData?.stock_data ? (
                 <div className='map-data-content'>
                   <OrderSalesPieCharts
                     geoData={geoData}
@@ -981,13 +1008,6 @@ const OrdersMap = () => {
                         );
                       })
                     : null}
-                </div>
-              ) : loading ? (
-                <div
-                  className='d-flex flex-column align-items-center justify-content-center'
-                  style={{ minHeight: '70vh' }}
-                >
-                  <span className='loader'></span>
                 </div>
               ) : null}
             </div>
