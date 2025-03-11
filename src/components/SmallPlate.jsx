@@ -1,6 +1,7 @@
 import React from 'react';
 import { formatPrice } from '../service/utils';
 import TooltipInfo from './TooltipInfo';
+import styles from '../pages/DashboardPage.module.css';
 
 const SmallPlate = ({
   name,
@@ -53,7 +54,7 @@ const SmallPlate = ({
     };
 
     const activeLines = Object.entries(fineTypes)
-      .filter(([key]) => allProps[key] !== 0)
+      .filter(([key]) => allProps[key] > 0)
       .map(([key, label]) => `${label}: ${formatPrice(allProps[key])}<br/>`)
       .join('');
 
@@ -64,7 +65,7 @@ const SmallPlate = ({
   };
 
   return (
-    <div className='small-plate' style={{ height: '100%' }}>
+    <div className='small-plate'>
       {dataDashBoard === null || dataDashBoard === undefined ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'
@@ -77,7 +78,7 @@ const SmallPlate = ({
           className='d-flex flex-column justify-content-between'
           style={{ height: '100%' }}
         >
-          <div
+          <p
             className='p-0 m-0  clue-text small-title'
             style={{ fontSize: '1.65vh' }}
           >
@@ -90,7 +91,7 @@ const SmallPlate = ({
               <TooltipInfo text='Суммарные расходы на логистику, определяются расчетным способом от количества заказов' />
             )}
             {name === 'Хранение' && (
-              <TooltipInfo text='Расходы на хранение товаров на складах WB' />
+              <TooltipInfo text='Суммарные расходы на хранение товаров на складах WB и на платную приемку' />
             )}
             {name === 'Упущенные продажи' && (
               <TooltipInfo text='Расчетная величина, определенная как произведение средней скорости продаж на количество дней, в которых товар отсутствовал на полках магазина или на складе' />
@@ -106,7 +107,7 @@ const SmallPlate = ({
                 }
               />
             )}
-          </div>
+          </p>
 
           <div
             className={
@@ -115,7 +116,7 @@ const SmallPlate = ({
                 : 'd-flex justify-content-between align-items-end'
             }
           >
-            <p className='p-0 m-0 fw-bold numbers'>
+            <p className={`p-0 m-0 fw-bold ${styles.numbers}`}>
               {dataDashBoard ? formatPrice(dataDashBoard) : 0}
               {type === 'price' ? ' ₽' : ' %'}
             </p>
@@ -125,7 +126,7 @@ const SmallPlate = ({
                   <div className='d-flex align-items-center justify-content-between'>
                     {percent > 0 ? rateUp : rateDown}
                     <p
-                      className='m-0 p-0 tiny-numbers'
+                      className={`m-0 p-0 ${styles.tinyNumbers}`}
                       style={
                         percent > 0
                           ? { color: 'rgba(0, 182, 155, 1)' }
@@ -142,7 +143,7 @@ const SmallPlate = ({
                 )}
               </div>
             ) : (
-              <p className='fw-bold p-0 mb-1 small-numbers'>
+              <p className={`fw-bold p-0 mb- ${styles.smallNumbers}`}>
                 {`${quantity} шт`}
               </p>
             )}
