@@ -72,8 +72,8 @@ const Period = ({ selectedRange, setSelectedRange }) => {
         } else if (localSelectedRange.from && !localSelectedRange.to) {
             const { from } = localSelectedRange;
             const newRange = day < from
-                ? { from: day, to: from }
-                : { from: from, to: day };
+                ? { from: format(day, 'yyyy-MM-dd'), to: format(from, 'yyyy-MM-dd') }
+                : { from: format(from, 'yyyy-MM-dd'), to: format(day, 'yyyy-MM-dd') };
             setLocalSelectedRange(newRange);
             setSelectedRange(newRange);
             setIsCalendarOpen(false);
@@ -132,10 +132,6 @@ const Period = ({ selectedRange, setSelectedRange }) => {
                     {
                        predefinedRanges.map( (el) => <li key={el.value} onClick={() => selectOption(el.value)}>{el.title}</li>)
                     }
-                    {/* <li onClick={() => selectOption("7")}>7 дней</li> */}
-                    {/* <li onClick={() => selectOption("14")}>14 дней</li> */}
-                    {/* <li onClick={() => selectOption("30")}>30 дней</li> */}
-                    {/* <li onClick={() => selectOption("90")}>90 дней</li> */}
                     <li onClick={() => selectOption("")} className={styles.customDateOption}>
                         Произвольные даты
                     </li>

@@ -235,8 +235,10 @@ export const ServiceFunctions = {
   },
 
   getAbcData: async (viewType, token, day, idShop) => {
+    let rangeParams = rangeApiFormat(day);
+
     const res = await fetch(
-      `${URL}/api/abc_data/${viewType}?period=${day}&shop=${idShop}`,
+      `${URL}/api/abc_data/${viewType}?${rangeParams}&shop=${idShop}`,
       {
         method: 'GET',
         headers: {

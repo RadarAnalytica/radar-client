@@ -114,21 +114,22 @@
 
 .dropdownWrapper {
   width: 100%;
-  height: 35px;
+  /* height: 35px; */
+  max-height: 7vh !important;
+  min-height: 4vh !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.05);
-  padding: 1vh 1.5vh;
+  padding: 1vh 1.75vh;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 15px;
 }
 
 .selectedOption {
-  font-size: 14px;
   color: #000;
-  margin-left: 5px;
- 
+  /* margin-left: 5px; */
 }
 
 .arrowIcon {
@@ -154,7 +155,7 @@
 .dropdownMenu li {
   padding: 8px 10px;
   cursor: pointer;
-  font-size: 14px;
+  /* font-size: 14px; */
   border-bottom: 1px solid #E8E8E8;
 }
 
