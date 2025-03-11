@@ -238,13 +238,13 @@ const LinkedShops = () => {
         <div
           className='container linked-shops-container d-flex'
           style={{
-            padding: "12px 20px",
-            marginLeft: "50px",
+            padding: "12px 0px",
+            
             gap: "20px",
             maxWidth: "78vw !importan",
           }}
         >
-          <div className='row linked-wrap p-0'>
+          <div className='sub-page-grid linked-wrap p-0'>
             {shops && shops.length
               ? shops.map((item, i) => (
                   <div className='linked-shop-block col me-2' key={i}>

@@ -1,6 +1,6 @@
 import { useContext, Suspense } from 'react';
 import AuthContext from './service/AuthContext';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
@@ -55,6 +55,7 @@ const config = {
     subscriptionRedirect: '/tariffs',
     subscription: 'Smart', // subscription type
     role: 'admin', // role type
+
 }
 
 export const ProtectedRoute = ({
@@ -85,6 +86,7 @@ export const ProtectedRoute = ({
 }) => {
   const { user } = useContext(AuthContext);
 
+  const { pathname } = useLocation()
 
   // -------this is test user object for dev purposes ------//
 
@@ -120,6 +122,24 @@ export const ProtectedRoute = ({
     }
     return (<Navigate to={authRedirect} />)
   }
+
+  // ---------0. Subscription expiration protection (checking subscription) -------//
+  if (user && !user.is_onboarded &&  user.subscription_status === null && pathname !== '/tariffs') {
+    // switch(expireGuardType) {
+    //   case 'redirect': {
+    //     return (<Navigate to='/tariffs' />)
+    //   }
+    //   case 'fallback': {
+    //     return (
+    //       <Suspense fallback={<LoaderPage />}>
+    //         {expireFallback({title: routeRuName})}
+    //       </Suspense>
+    //     )
+    //   }
+    // }
+
+    return (<Navigate to='/tariffs' />)
+}
 
     // ---------2. Onboarding protection (user should be onboarded) ------//
     if (onboardProtected && user && !user.is_onboarded) {
