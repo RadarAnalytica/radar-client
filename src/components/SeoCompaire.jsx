@@ -37,9 +37,9 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
       case 'differenceAB':
         return { color1: '#f0ae03', color2: '#00B69B1A', colorIntersection: '#dff2f5', textColor: 'white', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgb(0, 182, 155, 1)' };
       case 'differenceBA':
-        return { color1: '#00B69B1A', color2: '#f0ae03', colorIntersection: '#00B69B1', textColor: 'white', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgb(0, 182, 155, 1)', strockB: 'transparent'};
+        return { color1: '#00B69B1A', color2: '#f0ae03', colorIntersection: '#00B69B1', textColor: 'white', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgb(0, 182, 155, 1)', strockB: 'transparent' };
       default:
-        return { color1: 'purple', color2: 'blue', colorIntersection: 'white',textColor: 'white' };
+        return { color1: 'purple', color2: 'blue', colorIntersection: 'white', textColor: 'white' };
     }
   };
 
@@ -176,27 +176,27 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
   return (
     <div className={styles.seoCompaireWrapper}>
       <div className={styles.buttonWrapper}>
-      <div className={styles.downloadButton}>
-        <DownloadButton handleDownload={handleDownload}/>
-      </div>
+        <div className={styles.downloadButton}>
+          <DownloadButton handleDownload={handleDownload} />
+        </div>
       </div>
       <div className={styles.topBlock}>
         <div style={{ position: 'relative' }}>
-          <IntersectingCircles 
-             color1={color1} 
-             color2={color2} 
-             colorIntersection={colorIntersection}
-             textColorA={textColorA}
-             textColorB={textColorB}
-             strockA={strockA}
-             strockB={strockB}
+          <IntersectingCircles
+            color1={color1}
+            color2={color2}
+            colorIntersection={colorIntersection}
+            textColorA={textColorA}
+            textColorB={textColorB}
+            strockA={strockA}
+            strockB={strockB}
           />
-         <div 
-         className={styles.keywordCount}
-    >
-      <span className={styles.keywordCountNumber}>{sortedData.length }</span>
-      <span className={styles.keywordCountText}>ключевых слов</span>
-    </div>
+          <div
+            className={styles.keywordCount}
+          >
+            <span className={styles.keywordCountNumber}>{sortedData.length}</span>
+            <span className={styles.keywordCountText}>ключевых слов</span>
+          </div>
         </div>
         <div className={styles.seoTableWrapper}>
           <div className={styles.seoTableHeader}>
@@ -274,7 +274,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
           />
           <button>
             <span className={styles.unionImage}>
-              <img src={Union} alt='Search button'/>
+              <img src={Union} alt='Search button' />
             </span>
             <span className={styles.searchButtonText}>Найти</span>
           </button>
