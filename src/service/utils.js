@@ -595,5 +595,14 @@ export const rangeApiFormat = (range) => {
     params += `&date_to=${range.to}`;
   }
   return params
+}
 
+export const fileDownload = (blob, title) => {
+  const url = window.URL.createObjectURL(new Blob([blob]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', title);
+  document.body.appendChild(link);
+  link.click();
+  link.parentNode.removeChild(link);
 }

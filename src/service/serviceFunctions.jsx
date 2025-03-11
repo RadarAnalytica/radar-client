@@ -433,6 +433,31 @@ export const ServiceFunctions = {
     return data;
   },
 
+  getAnalysisData: async (token, selectedRange, shop) => {
+      let rangeParams = rangeApiFormat(selectedRange);
+      const res = await fetch(`${URL}/api/prod_analytic/?${rangeParams}&shop=${shop}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'JWT ' + token,
+          },
+      });
+      const data = await res.json();
+      return data;
+  },
+
+  getProdAnalyticXlsx: async (token, selectedRange, shop) => { 
+    let rangeParams = rangeApiFormat(selectedRange);
+    const res = await fetch(`${URL}/api/prod_analytic/download?${rangeParams}&shop=${shop}`, {
+      method: 'GET',
+      headers: {
+        authorization: 'JWT ' + token,
+      },
+    });
+    const data = await res.blob()
+    return data;
+  },
+
   getChartDetailData: async (token, selectedRange, shop) => {
     let rangeParams = rangeApiFormat(selectedRange);
     

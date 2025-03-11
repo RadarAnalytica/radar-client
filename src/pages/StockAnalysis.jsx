@@ -6,10 +6,7 @@ import TableStock from '../components/TableStock';
 import SearchButton from '../assets/searchstock.svg';
 import StockCostPrice from '../assets/stockcostprice.svg';
 import DownloadFile from '../assets/downloadxlfile.svg';
-import {
-  getFileClickHandler,
-  saveFileClickHandler,
-} from '../service/getSaveFile';
+import { getFileClickHandler, saveFileClickHandler } from '../service/getSaveFile';
 import AuthContext from '../service/AuthContext';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchShops } from '../redux/shops/shopsActions';
@@ -23,14 +20,19 @@ import SelfCostWarning from "../components/SelfCostWarning";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import { useNavigate } from "react-router-dom";
 import { URL } from '../service/config';
+import { fileDownload } from '../service/utils';
 
 const StockAnalysis = () => {
   const navigate = useNavigate();
-  const stockAnalysisData = useAppSelector(
-    (state) => state.stockAnalysisDataSlice.stockAnalysisData
-  );
-  const dataStock = Array.isArray(stockAnalysisData) ? stockAnalysisData : [];
+
+  // const stockAnalysisData = useAppSelector(
+  //   (state) => state.stockAnalysisDataSlice.stockAnalysisData
+  // );
+  // const dataStock = Array.isArray(stockAnalysisData) ? stockAnalysisData : [];
+  const [stockAnalysisData, setStockAnalysisData] = useState([]);
+  const [dataStock, setDataStock] = useState([])
   const hasSelfCostPrice = dataStock.every(product => product.costPriceOne !== null);
+
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
@@ -45,15 +47,15 @@ const StockAnalysis = () => {
   const { user, authToken } = useContext(AuthContext);
   const [file, setFile] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
   const [dataTable, setDataTable] = useState([]);
   const [costPriceShow, setCostPriceShow] = useState(false);
-  const [days, setDays] = useState(30);
+  const [selectedRange, setSelectedRange] = useState({ period: 30 });
   const [searchQuery, setSearchQuery] = useState('');
-  const prevDays = useRef(days);
+  // const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
   const handleCostPriceClose = () => setCostPriceShow(false);
@@ -91,19 +93,19 @@ const StockAnalysis = () => {
     setCostPriceShow(true);
   };
 
-  const updateDataDashBoard = async (days, activeBrand, authToken) => {
-    setLoading(true);
+  const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
+    // setLoading(true);
     try {
       const data = await ServiceFunctions.getDashBoard(
         authToken,
-        days,
+        selectedRange,
         activeBrand
       );
       setDataDashboard(data);
     } catch (e) {
       console.error(e);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -142,7 +144,15 @@ const StockAnalysis = () => {
     const fetchInitialData = async () => {
       try {
         await dispatch(fetchShops(authToken));
-        await dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+        
+        // await dispatch(fetchStockAnalysisData({ authToken, selectedRange, activeBrand }));
+        const data = await ServiceFunctions.getAnalysisData(
+          authToken,
+          selectedRange,
+          activeBrand
+        );
+        setStockAnalysisData(data);
+        // await ServiceFunctions.getAllShops(authToken).then((data) => setStockAnalysisData(data));
       } catch (error) {
         console.error("Error fetching initial data:", error);
       } finally {
@@ -159,17 +169,28 @@ const StockAnalysis = () => {
   }, [stockAnalysisData, searchQuery]);
 
   useEffect(() => {
-    if (
-      days !== prevDays.current ||
-      activeBrand !== prevActiveBrand.current
-    ) {
-      if (activeBrand !== undefined) {
-        dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+    const fetchAnalysisData = async () => {
+      if (
+        // selectedRange !== prevDays.current ||
+        activeBrand !== prevActiveBrand.current
+      ) {
+        if (activeBrand !== undefined) {
+          const data = await ServiceFunctions.getAnalysisData(
+            authToken,
+            selectedRange,
+            activeBrand
+          );
+          setStockAnalysisData(data);
+          // dispatch(fetchStockAnalysisData({ authToken, selectedRange, activeBrand }));
+        }
+        // prevDays.current = selectedRange;
+        prevActiveBrand.current = activeBrand;
       }
-      prevDays.current = days;
-      prevActiveBrand.current = activeBrand;
     }
-  }, [days, activeBrand]);
+
+    fetchAnalysisData();
+
+  }, [selectedRange, activeBrand]);
 
   useEffect(() => {
     if (shops.length > 0) {
@@ -211,7 +232,7 @@ const StockAnalysis = () => {
 
   const updateDataDashBoardCaller = async () => {
     activeBrand !== undefined &&
-      updateDataDashBoard(days, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand, authToken);
   };
 
   if (user?.subscription_status === "expired") {
@@ -222,26 +243,17 @@ const StockAnalysis = () => {
     return null; // or a loading indicator
   };
 
-  const getProdAnalyticXlsx = async (days, activeBrand, authToken) => { 
-    fetch(`${URL}/api/prod_analytic/download?period=${days}&shop=${activeBrand}`,
-      {
-        method: 'GET',
-        headers: {
-          authorization: 'JWT ' + authToken,
-        },
-      }
-    ).then((response) => {
-      return response.blob();
-    }).then((blob) => {
-      const url = window.URL.createObjectURL(new Blob([blob]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `Товарная_аналитика.xlsx`);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-    }).catch((e) => console.error(e));
-  };
+  const getProdAnalyticXlsxHandler = async () => {
+    const fileBlob = await ServiceFunctions.getProdAnalyticXlsx(authToken, selectedRange, activeBrand);
+    fileDownload(fileBlob, 'Товарная_аналитика.xlsx');
+    // const url = window.URL.createObjectURL(new Blob([data]));
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.setAttribute('download', `Товарная_аналитика.xlsx`);
+    // document.body.appendChild(link);
+    // link.click();
+    // link.parentNode.removeChild(link);
+  }
 
   return (
     <>
@@ -260,7 +272,8 @@ const StockAnalysis = () => {
             <StockAnalysisFilter
               shops={shops}
               setActiveBrand={handleSaveActiveShop}
-              setDays={setDays}
+              setSelectedRange={setSelectedRange}
+              selectedRange={selectedRange}
               activeShopId={activeShopId}
             />
           </div>
@@ -301,7 +314,7 @@ const StockAnalysis = () => {
                       </div>
                       <div>
                         <DownloadButton
-                          handleDownload={() => getProdAnalyticXlsx(days, activeBrand, authToken)}
+                          handleDownload={() => getProdAnalyticXlsxHandler()}
                         />
                       </div>
                     </div>

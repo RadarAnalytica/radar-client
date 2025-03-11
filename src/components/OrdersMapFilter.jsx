@@ -16,7 +16,7 @@ const OrdersMapFilter = ({
       : shops?.find((item) => item.id == activeShopId)?.brand_name;
   return (
     <div className='filter container dash-container p-3 pb-4 pt-0 d-flex'>
-      <div className='row'>
+      <div className='row w-100'>
         <div className='filter-item col'>
           <Period
             setSelectedRange={setDays}
