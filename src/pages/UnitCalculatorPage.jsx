@@ -9,16 +9,25 @@ import MPFeesDataFormBlock from '../components/unitCalculatorPageComponents/MPFe
 import AdditionalOptionsDataFormBlock from '../components/unitCalculatorPageComponents/AdditionalOptionsDataFormBlock';
 import ResultBlock from '../components/unitCalculatorPageComponents/ResultBlock';
 import { unitCalcResultFunction } from '../components/unitCalculatorPageComponents/UnitCalcUtils';
+import crypto from 'crypto'
 
 const UnitCalculatorPage = () => {
 
     const [result, setResult] = useState();
+    const [token, setToken] = useState(null);
 
     const [form] = Form.useForm();
     const isHeavy = Form.useWatch('isHeavy', form);
 
     const submitHandler = (fields) => {
         setResult(unitCalcResultFunction(fields, 22.5, 0, 0))
+        
+        function md5Hash(str) {
+            return crypto.createHash("md5").update(str).digest("hex");
+        }
+
+        const token = md5Hash(JSON.stringify(fields))
+        console.log(token)
     }
 
     useEffect(() => {

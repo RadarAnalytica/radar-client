@@ -32,7 +32,6 @@ const BasicDataFormBlock = ({ form }) => {
                     token: {
                         fontFamily: 'Mulish',
                         colorBgContainer: 'white',
-                        activeBg: 'red'
                         //colorBorder: 'white',
                         // colorTextLightSolid: '#000'
                     },
@@ -40,7 +39,8 @@ const BasicDataFormBlock = ({ form }) => {
                         Select: {
                             activeBorderColor: '#5329FF',
                             hoverBorderColor: '#5329FF',
-                            activeOutlineColor: 'transparent'
+                            activeOutlineColor: 'transparent',
+                            activeBg: 'red'
                         },
                         Input: {
                             activeBorderColor: '#5329FF',
@@ -61,6 +61,7 @@ const BasicDataFormBlock = ({ form }) => {
                         placeholder='Введите название товара'
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
+                        options={['1','2','3']}
                     /> */}
                     <Input
                         size='large'
