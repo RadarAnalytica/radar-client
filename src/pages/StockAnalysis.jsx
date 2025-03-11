@@ -55,7 +55,7 @@ const StockAnalysis = () => {
   const [costPriceShow, setCostPriceShow] = useState(false);
   const [selectedRange, setSelectedRange] = useState({ period: 30 });
   const [searchQuery, setSearchQuery] = useState('');
-  // const prevDays = useRef(selectedRange);
+  const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
   const handleCostPriceClose = () => setCostPriceShow(false);
@@ -171,7 +171,7 @@ const StockAnalysis = () => {
   useEffect(() => {
     const fetchAnalysisData = async () => {
       if (
-        // selectedRange !== prevDays.current ||
+        selectedRange !== prevDays.current ||
         activeBrand !== prevActiveBrand.current
       ) {
         if (activeBrand !== undefined) {
@@ -183,7 +183,7 @@ const StockAnalysis = () => {
           setStockAnalysisData(data);
           // dispatch(fetchStockAnalysisData({ authToken, selectedRange, activeBrand }));
         }
-        // prevDays.current = selectedRange;
+        prevDays.current = selectedRange;
         prevActiveBrand.current = activeBrand;
       }
     }
