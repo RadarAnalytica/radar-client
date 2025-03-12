@@ -1044,6 +1044,28 @@ export const ServiceFunctions = {
     const data = await res.json();
 
     return data;
+  },
+  
+  postTaxRateUpdateDashboard: async (token, taxRate, taxType) => {
+    try {
+      const response = await fetch(`${URL}/api/shop/tax-rate/set`, {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': token // Исправлено
+        },
+        body: JSON.stringify({ tax_rate: taxRate, tax_type: taxType })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Ошибка при обновлении налоговой ставки:', error);
+    }
   }
 
   

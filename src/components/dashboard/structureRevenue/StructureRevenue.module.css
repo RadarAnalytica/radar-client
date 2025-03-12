@@ -1,0 +1,12 @@
+.revenueStructure {
+  width: 30%;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 1477px) {
+  .revenueStructure {
+    width: 40%;
+  }
+}

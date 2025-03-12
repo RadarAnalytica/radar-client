@@ -34,6 +34,8 @@ import DownloadButton from '../components/DownloadButton';
 import DetailChart from '../components/DetailChart';
 import { format, differenceInDays } from 'date-fns';
 
+import { ScheduleProfitabilityChart, ScheduleBigChart, RevenueStorageChart, TaxTable, StructureRevenue } from '../components/dashboard';
+
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -81,6 +83,11 @@ const DashboardPage = () => {
 
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
+
+  const [chartRoiMarginalityData, setChartRoiMarginalityData] = useState()
+  const [salesAndProfit, setSalesAndProfit] = useState()
+  const [revenueByWarehouse, SetRevenueByWarehouse] = useState()
+  const [structure, setStructure] = useState()
 
   const plugForAllStores = {
     id: 0,
@@ -159,12 +166,9 @@ const DashboardPage = () => {
       data.forEach((entry) => {
         for (const [time, value] of Object.entries(entry)) {
           const hour = parseInt(time.split(':')[0], 10);
-          console.log(time, value)
           counts[hour] += value;
           averages[hour] += value !== 0 ? 1 : 0;
         }
-        console.log(counts)
-        console.log(averages)
       });
 
       const transformData = (data) => {
@@ -323,6 +327,101 @@ const DashboardPage = () => {
     };
   }, [dispatch, activeBrand, selectedRange, authToken]);
 
+  const processMarginalityRoiChart = (marginalityRoiChart) => {
+    if (!marginalityRoiChart || marginalityRoiChart.length === 0) {
+      return {
+        dataProfitability: [],
+        dataProfitPlus: [],
+        dataProfitMinus: [],
+        isLoading: false,
+        labels: [],
+        step: 10,
+        minValue: 0,
+        maxValue: 50
+      };
+    }
+
+    const roiValues = marginalityRoiChart.map(item => item.roi);
+    const marginalityValues = marginalityRoiChart.map(item => item.marginality);
+
+    const minValue = Math.floor(Math.min(...roiValues, ...marginalityValues) / 10) * 10;
+    const maxValue = Math.ceil(Math.max(...roiValues, ...marginalityValues) / 10) * 10;
+
+    // Динамический шаг
+    const step = Math.ceil((maxValue - minValue) / 5);
+
+    // Форматирование дат
+    const labels = marginalityRoiChart.map(item =>
+      new Date(item.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
+    );
+
+    return {
+      dataProfitability: roiValues,
+      dataProfitPlus: marginalityValues,
+      dataProfitMinus: marginalityValues.map(() => 0),
+      isLoading: false,
+      labels,
+      step,
+      minValue,
+      maxValue
+    };
+  };
+
+  const processSalesAndProfit = (salesAndProfit) => {
+    if (!salesAndProfit || !salesAndProfit.length) return null;
+
+    const labels = salesAndProfit.map(item =>
+      new Date(item.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
+    );
+    const dataRevenue = salesAndProfit.map(item => item.sales);
+    const dataNetProfit = salesAndProfit.map(item => item.profit);
+
+    const minDataRevenue = Math.floor(Math.min(...dataRevenue) / 1000) * 1000;
+    const maxDataRevenue = Math.ceil(Math.max(...dataRevenue) / 1000) * 1000;
+    const stepSizeRevenue = Math.ceil((maxDataRevenue - minDataRevenue) / 10);
+
+    return {
+      labels,
+      dataRevenue,
+      dataNetProfit,
+      minDataRevenue,
+      maxDataRevenue,
+      stepSizeRevenue,
+      isLoading: false,
+    };
+  };
+
+  const processRevenueData = (revenueByWarehouse) => {
+    if (!revenueByWarehouse || !revenueByWarehouse.length) return null;
+
+    // Собираем метки и округляем выручку
+    const labels = revenueByWarehouse.map(item => item.name);
+    console.log(labels.length, "labelsWarehouse"
+    )
+    const dataRevenueStorage = revenueByWarehouse.map(item => item.revenue); // Округляем выручку
+
+    // Находим минимальное и максимальное значение выручки, округляя их
+
+    const max = Math.ceil(Math.max(...dataRevenueStorage) / 1000) * 1000; // Округляем максимальное значение до 1000
+
+    // Вычисляем шаг для оси Y
+    // const stepSizeRevenue = Math.ceil((maxRevenue ) / 10);
+
+    return {
+      labels,
+      dataRevenueStorage,
+      isLoading: false,
+      max,
+      // stepSizeRevenue,
+    };
+  };
+
+  const processStructureData = (structure) => {
+    if (!structure) return null;
+    const structureValues = Object.values(structure);
+    return structureValues;
+  };
+
   const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
     setLoading(true);
     try {
@@ -338,6 +437,24 @@ const DashboardPage = () => {
         activeBrand
       );
       setDataDashboard(data);
+
+      if (data?.salesAndProfit) {
+        const formattedData = processSalesAndProfit(data.salesAndProfit);
+        setSalesAndProfit(formattedData);
+      }
+      if (data?.marginalityRoiChart) {
+        const formattedData = processMarginalityRoiChart(data.marginalityRoiChart);
+        setChartRoiMarginalityData(formattedData);
+      }
+      if (data?.revenueByWarehouse) {
+        const formattedData = processRevenueData(data.revenueByWarehouse);
+        SetRevenueByWarehouse(formattedData);
+      }
+      if (data?.structure) {
+        const formattedData = processStructureData(data.structure);
+        setStructure(formattedData);
+      }
+
     } catch (e) {
       console.error(e);
     } finally {
@@ -1206,6 +1323,9 @@ const DashboardPage = () => {
                     dataDashBoard={dataDashBoard}
                     tableType={1}
                   />
+
+                  <ScheduleBigChart {...salesAndProfit} />
+
                   <StorageTable
                     wbData={wbData}
                     title={'Склад'}
@@ -1214,8 +1334,24 @@ const DashboardPage = () => {
                     subtitles={['', 'Себестоимость', 'Розница', '']}
                     dataDashBoard={dataDashBoard}
                   />
+                  <div>
+                    
+                  <StructureRevenue
+                    dataStructureRevenue={structure}
+                    isLoading={false}
+                  />
+                  
+                  <TaxTable
+                    taxInfo={dataDashBoard?.taxInfo || []}
+                    authToken={authToken}
+                    activeBrand={activeBrand}
+                    updateDataDashBoard={updateDataDashBoard}
+                  />
+                  </div>
                 </div>
                 <div className='wrapper'>
+                <ScheduleProfitabilityChart {...chartRoiMarginalityData} className={styles.firstBlockChart} />
+                  
                   <FinanceTable
                     title={'Прибыльность'}
                     data={profitabilityData}
@@ -1223,6 +1359,10 @@ const DashboardPage = () => {
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
                     tableType={1}
+                  />
+
+                  <RevenueStorageChart {...revenueByWarehouse}
+                  // {...fakeData3} className={styles.revenueStorageChart} 
                   />
 
                   <ChartTable
