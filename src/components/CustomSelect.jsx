@@ -30,6 +30,7 @@ const CustomSelect = ({ options, callback, label, defaultValue }) => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              cursor: 'pointer',
             }}
           >
           <svg
