@@ -109,7 +109,7 @@ function App() {
             <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
             <Route path='/subscription' element={<ProtectedRoute authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
             <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
-            <Route path='/period' element={<ProtectedRoute authGuardType="redirect"><Period /></ProtectedRoute>} />
+            {/* <Route path='/period' element={<ProtectedRoute authGuardType="redirect"><Period /></ProtectedRoute>} /> */}
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             {/* <Route path='/report-main' element={<ProtectedRoute><ReportMain /></ProtectedRoute>} /> */}
