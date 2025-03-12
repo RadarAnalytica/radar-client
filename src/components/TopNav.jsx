@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { MessagesDropdown } from "./MessagesDropdown";
 import "../App.css";
 
-const TopNav = ({ title, children, subTitle }) => {
+const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const componentRef = useRef(null);
@@ -73,9 +73,20 @@ const TopNav = ({ title, children, subTitle }) => {
     };
   }, []);
 
+  const containerStyles = mikeStarinaStaticProp ?
+  `container d-flex align-items-center justify-content-between topNavWidth` : 
+  `container dash-container d-flex align-items-center justify-content-between`
+
+  const topNavStyles = mikeStarinaStaticProp ?
+  `top-nav topNavStatic` : 
+  `top-nav`
+
   return (
-    <div className='top-nav'>
-      <div className='container dash-container d-flex align-items-center justify-content-between'>
+    <div className={topNavStyles}
+    >
+      <div className={containerStyles}
+      style={{ margin: 0, width: '100% !important', maxWidth: '100% !important'}}
+      >
         <div className='d-flex col me-2 top-wrapper'>
           {!title ? (
             <>
