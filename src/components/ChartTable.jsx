@@ -110,7 +110,7 @@ const ChartTableRow = ({ object }) => {
 
 const ChartTable = ({ data, title, wbData, dataDashBoard }) => {
   return (
-    <div className='chart-table mt-3'>
+    <div className='chart-table'>
       {!dataDashBoard ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'

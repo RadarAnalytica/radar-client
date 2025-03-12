@@ -139,11 +139,9 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
     };
 
     return (
-        <div className="chart-container" style={{ marginRight: "10px", minWidth: "50%" }}>
-            <div className='chart-container-header'>
-                <div>
-                    <div className='chart-title'>Продажи и прибыль</div>
-                </div>
+        <div className="chart-container mb-3">
+            <p className='fw-bold numbers mb-2'>Продажи и прибыль</p>
+            <div className='chart-container-header mb-1'>
                 <div className='chart-header-wrapper'>
                     <div className='chart-container-colors-wrapper'>
                         <div className='roundedChartColor'></div>

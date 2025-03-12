@@ -1334,23 +1334,28 @@ const DashboardPage = () => {
                     subtitles={['', 'Себестоимость', 'Розница', '']}
                     dataDashBoard={dataDashBoard}
                   />
-                  <div>
-                    
-                  <StructureRevenue
-                    dataStructureRevenue={structure}
-                    isLoading={false}
-                  />
-                  
-                  <TaxTable
-                    taxInfo={dataDashBoard?.taxInfo || []}
-                    authToken={authToken}
-                    activeBrand={activeBrand}
-                    updateDataDashBoard={updateDataDashBoard}
-                  />
-                  </div>
+                  <div className='d-flex align-items-stretch gap-3'>
+                    <div className="col w-50">
+                      <StructureRevenue
+                        dataStructureRevenue={structure}
+                        isLoading={false}
+                        />
+                    </div>
+                    <div className="col w-50">
+                      <TaxTable
+                        taxInfo={dataDashBoard?.taxInfo || []}
+                        authToken={authToken}
+                        activeBrand={activeBrand}
+                        updateDataDashBoard={updateDataDashBoard}
+                      />
+                    </div>
+                </div>
                 </div>
                 <div className='wrapper'>
-                <ScheduleProfitabilityChart {...chartRoiMarginalityData} className={styles.firstBlockChart} />
+                  
+                  <ScheduleProfitabilityChart
+                    {...chartRoiMarginalityData}
+                  />
                   
                   <FinanceTable
                     title={'Прибыльность'}

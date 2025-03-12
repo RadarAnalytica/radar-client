@@ -38,8 +38,8 @@ function TaxTable({ taxInfo, authToken, updateDataDashBoard, activeBrand }) {
     };
 
     return (
-        <div className={`taxChartWrapper ${styles.salesChartWrapper}`}>
-            <div className={styles.title}>Налог</div>
+        <div className={`finance-table ${styles.salesChartWrapper}`}>
+            <p className='fw-bold numbers mb-2'>Налог</p>
 
             <div className={styles.salesChartRow}>
                 <div className={styles.titleInRow}>Тип налогообложения</div>

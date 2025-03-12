@@ -122,8 +122,8 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
     });
 
     return (
-        <div className={`chart-container ${styles.revenueStructure} scehdule-revenue-structure`}>
-            <div className='chart-title'>Структура выручки</div>
+        <div className={`chart-container h-100 ${styles.revenueStructure} scehdule-revenue-structure`}>
+            <p className='fw-bold numbers mb-2'>Структура выручки</p>
             {isLoading ? (
                 <div
                     className="d-flex flex-column align-items-center justify-content-center"

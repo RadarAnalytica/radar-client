@@ -199,13 +199,9 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
     };
 
     return (
-        <div className="chart-container" style={{ marginLeft: "8px", minWidth: "50%" }}>
-            <div className='chart-container-header-prof'>
-                <div>
-                    <div className='chart-title'>Рентабельность и маржинальность</div>
-                </div>
-            </div>
-            <div className='chart-header-wrapper-prof'>
+        <div className="chart-container mb-3">
+            <p className='fw-bold numbers mb-2'>Рентабельность и маржинальность</p>
+            <div className='chart-header-wrapper-prof mb-1'>
                 <div className='chart-container-colors-wrapper'>
                     <div className='roundedChartColor'></div>
                     <div>Маржинальность по прибыли, %</div>
