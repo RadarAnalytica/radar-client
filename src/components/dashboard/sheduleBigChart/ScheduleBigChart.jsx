@@ -139,7 +139,7 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
     };
 
     return (
-        <div className="chart-container mb-3">
+        <div className="chart-container">
             <p className='fw-bold numbers mb-2'>Продажи и прибыль</p>
             <div className='chart-container-header mb-1'>
                 <div className='chart-header-wrapper'>

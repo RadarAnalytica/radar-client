@@ -43,7 +43,7 @@ const StorageTable = ({
   dataDashBoard,
 }) => {
   return (
-    <div className='storage-table mb-3'>
+    <div className='storage-table'>
       {!dataDashBoard ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'

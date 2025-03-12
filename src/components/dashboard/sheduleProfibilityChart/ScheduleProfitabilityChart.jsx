@@ -199,7 +199,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
     };
 
     return (
-        <div className="chart-container mb-3">
+        <div className="chart-container">
             <p className='fw-bold numbers mb-2'>Рентабельность и маржинальность</p>
             <div className='chart-header-wrapper-prof mb-1'>
                 <div className='chart-container-colors-wrapper'>

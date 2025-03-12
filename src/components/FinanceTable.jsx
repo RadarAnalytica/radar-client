@@ -147,7 +147,7 @@ const FinanceTable = ({
   tableType,
 }) => {
   return (
-    <div className='finance-table mb-3'>
+    <div className='finance-table'>
       {!dataDashBoard ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'

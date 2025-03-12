@@ -142,7 +142,6 @@ html {
 
 .filter-item {
   min-width: 14vw !important;
-  max-width: 17vw !important;
   position: relative;
 }
 
@@ -478,8 +477,7 @@ select {
   min-width: 270px;
   max-width: 18vw;
   padding: 28px 20px;
-  /* max-height: 100vh; */
-  min-height: 100vh;
+  max-height: 100vh;
   position: sticky;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -663,9 +661,8 @@ select {
 .orders-map-content,
 .calculate-content {
   width: 100%;
-  /* max-height: 100vh; */
-  min-height: 100vh;
-  overflow-y: scroll;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 

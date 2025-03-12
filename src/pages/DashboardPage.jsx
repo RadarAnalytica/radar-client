@@ -1314,25 +1314,29 @@ const DashboardPage = () => {
                 className='container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3'
                 style={{ width: '100%' }}
               >
-                <div className='wrapper'>
-                  <FinanceTable
-                    title={'Финансы'}
-                    data={financeData}
-                    wbData={wbData}
-                    dataDashBoard={dataDashBoard}
-                    tableType={1}
-                  />
-
-                  <ScheduleBigChart {...salesAndProfit} />
-
-                  <StorageTable
-                    wbData={wbData}
-                    title={'Склад'}
-                    data={storeData}
-                    titles={['Где товар', 'Капитализация', '', 'Остатки']}
-                    subtitles={['', 'Себестоимость', 'Розница', '']}
-                    dataDashBoard={dataDashBoard}
-                  />
+                <div className='wrapper d-flex flex-column'>
+                  <div className='mb-3'>
+                    <FinanceTable
+                      title={'Финансы'}
+                      data={financeData}
+                      wbData={wbData}
+                      dataDashBoard={dataDashBoard}
+                      tableType={1}
+                    />
+                  </div>
+                  <div className='mb-3'>
+                    <ScheduleBigChart {...salesAndProfit} />
+                  </div>
+                  <div className='mb-3'>
+                    <StorageTable
+                      wbData={wbData}
+                      title={'Склад'}
+                      data={storeData}
+                      titles={['Где товар', 'Капитализация', '', 'Остатки']}
+                      subtitles={['', 'Себестоимость', 'Розница', '']}
+                      dataDashBoard={dataDashBoard}
+                    />
+                  </div>
                   <div className='d-flex align-items-stretch gap-3'>
                     <div className="col w-50">
                       <StructureRevenue
@@ -1351,25 +1355,27 @@ const DashboardPage = () => {
                     </div>
                 </div>
                 </div>
-                <div className='wrapper'>
-                  
-                  <ScheduleProfitabilityChart
-                    {...chartRoiMarginalityData}
-                  />
-                  
-                  <FinanceTable
-                    title={'Прибыльность'}
-                    data={profitabilityData}
-                    sign={' %'}
-                    wbData={wbData}
-                    dataDashBoard={dataDashBoard}
-                    tableType={1}
-                  />
-
-                  <RevenueStorageChart {...revenueByWarehouse}
-                  // {...fakeData3} className={styles.revenueStorageChart} 
-                  />
-
+                <div className='wrapper d-flex flex-column'>
+                  <div className='mb-3'>
+                    <ScheduleProfitabilityChart
+                      {...chartRoiMarginalityData}
+                    />
+                  </div>
+                  <div className='mb-3'>
+                    <FinanceTable
+                      title={'Прибыльность'}
+                      data={profitabilityData}
+                      sign={' %'}
+                      wbData={wbData}
+                      dataDashBoard={dataDashBoard}
+                      tableType={1}
+                    />
+                  </div>
+                  <div className='mb-3 flex-grow-1'>
+                    <RevenueStorageChart {...revenueByWarehouse}
+                    // {...fakeData3} className={styles.revenueStorageChart} 
+                    />
+                  </div>
                   <ChartTable
                     title={'Расходы'}
                     data={costsData}

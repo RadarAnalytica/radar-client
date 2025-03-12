@@ -1,6 +1,5 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import styles from './RevenueStorageChart.module.css';
 
 const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => {
     const data = {
@@ -101,7 +100,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
     const safeLabels = data?.labels || []; // Default to an empty array if labels are undefined
     const chartHeight = safeLabels.length < 10 ? 300 : Math.max(safeLabels.length * 60, 400);
     return (
-        <div className={`chart-container ${styles.revenueStorage} schedule-revenue-storage-chart mb-3`}>
+        <div className='chart-container h-100'>
             <p className='fw-bold numbers mb-2'>Выручка по складам</p>
             {isLoading ? (
                 <div
