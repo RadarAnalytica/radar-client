@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from "./TaxTable.module.css";
 import { formatPrice } from '../../../service/utils';
 import { ServiceFunctions } from '../../../service/serviceFunctions';
-function TaxTable({ taxInfo, authToken, updateDataDashBoard, activeBrand }) {
+function TaxTable({ taxInfo, authToken, updateDataDashBoard, activeBrand, selectedRange }) {
     const taxData = taxInfo?.[0] || {}; // Получаем первый объект массива, если он есть
     const [isEditing, setIsEditing] = useState(false);
     const [taxRate, setTaxRate] = useState(taxData.taxRate || 0);
@@ -30,7 +30,7 @@ function TaxTable({ taxInfo, authToken, updateDataDashBoard, activeBrand }) {
             }
 
             // Обновляем данные дашборда
-            await updateDataDashBoard(30, activeBrand, authToken);
+            await updateDataDashBoard(selectedRange, activeBrand, authToken);
 
         } catch (error) {
             console.error('Ошибка при обновлении налоговой ставки:', error);

@@ -396,8 +396,7 @@ const DashboardPage = () => {
 
     // Собираем метки и округляем выручку
     const labels = revenueByWarehouse.map(item => item.name);
-    console.log(labels.length, "labelsWarehouse"
-    )
+    // console.log(labels.length, "labelsWarehouse")
     const dataRevenueStorage = revenueByWarehouse.map(item => item.revenue); // Округляем выручку
 
     // Находим минимальное и максимальное значение выручки, округляя их
@@ -1346,6 +1345,7 @@ const DashboardPage = () => {
                         taxInfo={dataDashBoard?.taxInfo || []}
                         authToken={authToken}
                         activeBrand={activeBrand}
+                        selectedRange={selectedRange}
                         updateDataDashBoard={updateDataDashBoard}
                       />
                     </div>

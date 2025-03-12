@@ -151,7 +151,7 @@
   }
   .taxRateWrapper{
     cursor: pointer;
-    width:176px;
+    width: 170px;
     background-color: #f9f9f9;
     padding: 6px 24px;
 
@@ -159,5 +159,7 @@
     /* background-size: 25px; */
     border: 1px solid rgba(232, 232, 232, 1);
     text-align: center;
-  
+  }
+  .taxRateWrapperDisabled{
+    cursor: auto;
   }
