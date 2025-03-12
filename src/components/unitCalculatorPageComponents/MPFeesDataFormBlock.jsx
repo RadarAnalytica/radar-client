@@ -14,10 +14,10 @@ const MPFeesDataFormBlock = ({ mp_fee, form }) => {
 
 
             <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
-                <p className={styles.fieldset__footerText}>Комиссия WB 22,5%</p>
+                <p className={styles.fieldset__footerText}>Комиссия WB {mp_fee.toFixed(2)} %</p>
                 <div style={{ justifySelf: 'end' }}>
                     <p className={styles.fieldset__footerText_price}>
-                        {!!product_price && !!mp_fee ? (product_price * (mp_fee/100)) : 0} ₽
+                        {!!product_price && !!mp_fee ? Math.round((product_price * (mp_fee/100))) : 0} ₽
                     </p>
                 </div>
 

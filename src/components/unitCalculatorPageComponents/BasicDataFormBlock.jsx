@@ -1,7 +1,13 @@
+import { useState, useRef } from 'react';
 import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete } from 'antd';
 import styles from './BasicDataFormBlock.module.css'
 
 const BasicDataFormBlock = ({ form }) => {
+
+    const [visibleOptions, setVisibleOptions] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+    const dropdownRef = useRef(null);
+    const visibleCount = 10;
 
     const isSPP = Form.useWatch('isSPP', form);
     const product = Form.useWatch('product', form);
@@ -19,6 +25,22 @@ const BasicDataFormBlock = ({ form }) => {
 
     const sidesSum = package_width_int + package_length_int + package_height_int
     const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2)
+
+
+    const handleSearch = (value) => {
+        setInputValue(value);
+        if (value) {
+            const filteredOptions = options.filter(option => option.value.includes(value));
+            setVisibleOptions(filteredOptions.slice(0, visibleCount)); // Ограничиваем количество отображаемых опций
+        } else {
+            setVisibleOptions([]);
+        }
+    };
+
+    const handleSelect = (value) => {
+        setInputValue(value);
+        setVisibleOptions([]);
+    };
 
     return (
         <fieldset className={styles.fieldset}>
@@ -56,18 +78,34 @@ const BasicDataFormBlock = ({ form }) => {
                     className={styles.formItem}
 
                 >
-                    {/* <AutoComplete 
+                    <AutoComplete 
                         size='large'
                         placeholder='Введите название товара'
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
-                        options={['1','2','3']}
-                    /> */}
-                    <Input
+                        options={[{value: '1'},{value: '2'},{value: '3'}]}
+                        allowClear={{
+                            clearIcon: (
+                                <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z" fill="#8C8C8C"/>
+                                </svg>
+                            )
+                        }}
+                        value={inputValue}
+                        onSearch={handleSearch}
+                        onSelect={handleSelect}
+                        // options={visibleOptions}
+                        dropdownRender={menu => (
+                            <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                                {menu}
+                            </div>
+                        )}
+                    />
+                    {/* <Input
                         size='large'
                         placeholder='Введите название товара'
                         style={{background: product ? '#F2F2F2' : ''}}
-                    />
+                    /> */}
                 </Form.Item>
             </ConfigProvider>
 

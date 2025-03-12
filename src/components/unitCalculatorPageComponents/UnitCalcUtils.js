@@ -28,7 +28,7 @@ export const unitCalcResultFunction = (fields, mp_fee, current_storage_logistic_
     let selfCost = product_cost + (product_cost*((defective_percentage)/100)) + other_costs + inhouse_logistics_price + packaging_price + mp_logistics_price + fullfilment_price;
 
     // gross margin (price value wo selfcost)
-    let grossMargin = total_product_price - selfCost;
+    let grossMargin = product_price - selfCost;
 
 
     // total mp fee
@@ -92,21 +92,50 @@ export const unitCalcResultFunction = (fields, mp_fee, current_storage_logistic_
         roi,
         totalProductAmountQuef,
         total_product_price,
-        product_cost
+        product_cost,
+        fields
     }
 }
 
 
+export const logisticsWithBuyoutPercentagePriceCalcFunc = (current_storage_logistic_price, return_price, buyout_percentage = 100) => {
+    const bp = parseInt(buyout_percentage)
+    const cslp = parseInt(current_storage_logistic_price)
+    if (bp === 0 || Number.isNaN(bp)) { return 0 }
+    const counter = 100 - bp
+    const l = cslp * (counter / 100)
+    const r = return_price * (counter / 100)
+
+    const lp = ((l + r) * counter) 
+    return Math.round(lp)
+}   
 
 
-
-
-
-
-
-
-
-
-export const arrivalCalculator = (investAmount, fields) => {
-
-}
+export const fieldsVocab = {
+    product: 'Категория',
+    product_price: 'Цена товара, Р.',
+    isSPP: 'Скидка постоянного покупателя, да/нет',
+    product_cost: 'Закупочная цена товара, Р.',
+    package_length: 'Длина упаковки, см.',
+    package_width: 'Ширина упаковки, см.',
+    package_height: 'Высота упаковки, см.',
+    isHeavy: 'Тяжелее 25 кг, да/нет',
+    PackageType: 'Тип груза',
+    warehouse: 'Выбранный склад',
+    is_paid_cargo_acceptance: 'Платная приемка, да/нет',
+    delivery_speed: 'Скорость доставки (FBS), часы',
+    buyout_percentage: 'Процент выкупа, %',
+    additional_mp_fee: 'Дополнительная коммисия МП, %',
+    equiring_fee: 'Эквайринг, %',
+    SPP: 'Скидка постоянного покупателя, %',
+    cargo_acceptance_price: 'Стоимость платной приемки, Р.',
+    inhouse_logistics_price: 'Стоимость логистики от производителя, Р.',
+    packaging_price: 'Стоимость упаковки, Р.',
+    mp_logistics_price: 'Стоимость логистики до МП, Р.',
+    fullfilment_price: 'Стоимость фулфилмента, Р.',
+    tax_state: 'Тип налогобложения',
+    tax_rate: 'Ставка налога, %',
+    adv_price: 'Затраты на рекламу, %',
+    defective_percentage: 'Процент брака, %',
+    other_costs: 'Прочие расходы, %',
+};

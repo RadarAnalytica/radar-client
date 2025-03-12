@@ -4,6 +4,10 @@
 :global(.ant-select) {
     background: none !important;
 }
+:global(.ant-select-clear) {
+    margin-top: -8px !important;
+    margin-right: 8px !important;
+}
 :global(#autocomp) {
     border: none !important;
 }

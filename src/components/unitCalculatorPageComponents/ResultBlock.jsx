@@ -1,18 +1,63 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './ResultBlock.module.css'
 import { Input, Button, ConfigProvider, Tooltip } from 'antd';
-import { arrivalCalculator } from './UnitCalcUtils';
+import { utils, writeFile } from 'xlsx'
+import { fieldsVocab } from './UnitCalcUtils';
+import { useLocation } from 'react-router-dom';
 
-const ResultBlock = ({result}) => {
+const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
-    const [ investValue, setInvestValue ] = useState(50000)
-    console.log(result)
+    const [ buttonState, setButtonState ] = useState('Поделиться результатом')
+    const { pathname } = useLocation()
 
-    const investChangeHandler = (e) => {
-        const { value } = e.target.value;
-        setInvestValue(value);
-        const arrival = arrivalCalculator(value)
+    const shareButtonClickHandler = () => {
+        if (token) {
+            const currentDomain = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
+            navigator.clipboard.writeText(`${currentDomain}${pathname}?data=${token}`)
+            .catch(err => console.log('Error'))
+
+            setButtonState('Ссылка скопирована')
+        }
     }
+
+
+    useEffect(() => {
+        const changeButtonStateFunc = () => {
+            if (buttonState === 'Ссылка скопирована') {
+                setButtonState('Поделиться результатом')
+            }
+        }
+        const timer = setTimeout(changeButtonStateFunc, 1500)
+        return () => {clearTimeout(timer)} 
+    }, [buttonState])
+
+    const generateExcel = () => {
+        // const data = [["Name", "Age"], ["Alice", 30], ["Bob", 25]];
+        if (result && result.fields) {
+            const data = [['Товар', '']];
+            const keysArr = Object.keys(result.fields)
+           
+            keysArr.forEach(k => {
+                let value = result.fields[k]
+                if (typeof value === 'boolean') {
+                    value = value === 'true' ? 'да' : 'нет'
+                }
+
+                if (!value) {
+                    value = ''
+                }
+                data.push([fieldsVocab[k], value.toString()])
+            })
+            
+            const ws = utils.aoa_to_sheet(data);
+            const wb = utils.book_new();
+            utils.book_append_sheet(wb, ws, "Sheet1");
+            writeFile(wb, "example.xlsx");
+        }
+      };
+
+
+
     return (
         <div className={styles.page__resultWrapper}>
             <div className={styles.result__shareWrapper}>
@@ -38,7 +83,8 @@ const ResultBlock = ({result}) => {
                         iconPosition='start'
                         icon={<ShareIcon />}
                         size='large'
-                    >Поделиться результатом</Button>
+                        onClick={() => {shareButtonClickHandler()}}
+                    >{buttonState}</Button>
                 </ConfigProvider>
                 <ConfigProvider
                     theme={{
@@ -53,6 +99,7 @@ const ResultBlock = ({result}) => {
                         icon={<DownloadIcon />}
                         iconPosition='start'
                         size='large'
+                        onClick={generateExcel}
                     >Скачать Excel</Button>
                 </ConfigProvider>
             </div>
@@ -95,7 +142,7 @@ const ResultBlock = ({result}) => {
                                 </Tooltip>
                             </ConfigProvider>
                         </div>
-                        <span>-- шт</span>
+                        <span>{investValue && result ? Math.ceil(investValue / (result.selfCost + result.netProfit)) : 0} шт</span>
                     </div>
                 </div>
             </div>

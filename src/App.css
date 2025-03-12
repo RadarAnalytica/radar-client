@@ -568,6 +568,16 @@ select {
   > div.col-2.d-flex.justify-content-around.top-menu {
   height: 9vh !important;
 }
+.topNavWidth {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.topNavStatic {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  width: 100% !important;
+}
 
 .top-nav > div .col,
 .top-nav > div .col-2 {
