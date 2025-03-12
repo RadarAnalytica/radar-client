@@ -1,10 +1,16 @@
 import { URL } from './config';
-import { formatFromIsoDate } from './utils'
+import { formatFromIsoDate, rangeApiFormat } from './utils'
 import { store } from '../redux/store'
 
 export const ServiceFunctions = {
   register: async (object) => {
     try {
+      if (object.password === null || object.password.length < 6) {
+        return {
+          success: false,
+          message: 'Пароль должен быть не короче 6 символов'
+        }
+      }
       const res = await fetch(`${URL}/api/user/signup`, {
         method: 'POST',
         headers: {
@@ -155,9 +161,12 @@ export const ServiceFunctions = {
   //   return data;
   // },
 
-  getDashBoard: async (token, day, idShop) => {
+  getDashBoard: async (token, selectedRange, idShop) => {
+
+    let rangeParams = rangeApiFormat(selectedRange);
+
     const res = await fetch(
-      `${URL}/api/dashboard/?period=${day}&shop=${idShop}`,
+      `${URL}/api/dashboard/?${rangeParams}&shop=${idShop}`,
       {
         method: 'GET',
         headers: {
@@ -177,6 +186,36 @@ export const ServiceFunctions = {
     return data;
   },
 
+  getDownloadDashBoard: async () => {
+    // TODO вынести функционал скачивания отчета
+    /*
+      const handleDownload = async () => {
+        fetch(
+          `${URL}/api/dashboard/download?period=${periodValue}&shop=${activeShopId}`,
+          {
+            method: 'GET',
+            headers: {
+              authorization: 'JWT ' + authToken,
+            },
+          }
+        )
+          .then((response) => {
+            return response.blob();
+          })
+          .then((blob) => {
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Сводка_продаж.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+          })
+          .catch((e) => console.error(e));
+      };
+    */
+  },
+
   getAllShops: async (token) => {
     const res = await fetch(`${URL}/api/shop/all`, {
       method: 'GET',
@@ -188,8 +227,10 @@ export const ServiceFunctions = {
     const data = await res.json();
     return data;
   },
-  getGeographyData: async (token, day, idShop) => {
-    const res = await fetch(`${URL}/api/geo/?period=${day}&shop=${idShop}`, {
+
+  getGeographyData: async (token, selectedRange, idShop) => {
+    let rangeParams = rangeApiFormat(selectedRange);
+    const res = await fetch(`${URL}/api/geo/?${rangeParams}&shop=${idShop}`, {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -201,8 +242,10 @@ export const ServiceFunctions = {
   },
 
   getAbcData: async (viewType, token, day, idShop) => {
+    let rangeParams = rangeApiFormat(day);
+
     const res = await fetch(
-      `${URL}/api/abc_data/${viewType}?period=${day}&shop=${idShop}`,
+      `${URL}/api/abc_data/${viewType}?${rangeParams}&shop=${idShop}`,
       {
         method: 'GET',
         headers: {
@@ -397,107 +440,46 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getChartDetailData: async (token, selectedRange) => {
-    // const res = await fetch(
-    //   `${URL}/api/dashboard/`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "content-type": "application/json",
-    //       authorization: "JWT " + token,
-    //     },
-    //   }
-    // );
+  getAnalysisData: async (token, selectedRange, shop) => {
+      let rangeParams = rangeApiFormat(selectedRange);
+      const res = await fetch(`${URL}/api/prod_analytic/?${rangeParams}&shop=${shop}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'JWT ' + token,
+          },
+      });
+      const data = await res.json();
+      return data;
+  },
 
-    // const data = await res.json();
-    const data = [
-      { '0:15': 4 },
-      { '0:45': 2 },
-      { '1:10': 3 },
-      { '1:30': 1 },
-      { '2:05': 5 },
-      { '2:50': 2 },
-      { '3:00': 4 },
-      { '3:30': 1 },
-      { '4:20': 3 },
-      { '4:50': 2 },
-      { '5:00': 1 },
-      { '5:40': 2 },
-      { '6:00': 2 },
-      { '6:15': 5 },
-      { '7:00': 3 },
-      { '7:45': 1 },
-      { '8:05': 4 },
-      { '8:30': 2 },
-      { '9:00': 1 },
-      { '9:55': 5 },
-      { '10:15': 2 },
-      { '10:45': 3 },
-      { '11:30': 1 },
-      { '11:55': 4 },
-      { '12:10': 3 },
-      { '12:40': 1 },
-      { '13:00': 5 },
-      { '13:25': 2 },
-      { '14:10': 3 },
-      { '14:50': 4 },
-      { '15:30': 1 },
-      { '15:55': 5 },
-      { '16:10': 2 },
-      { '16:40': 4 },
-      { '17:05': 3 },
-      { '17:50': 2 },
-      { '18:00': 4 },
-      { '18:30': 1 },
-      { '19:10': 3 },
-      { '19:45': 2 },
-      { '20:20': 4 },
-      { '20:55': 1 },
-      { '21:05': 2 },
-      { '21:30': 3 },
-      { '22:15': 4 },
-      { '22:50': 1 },
-      { '23:10': 2 },
-      { '23:45': 5 },
-    ];
+  getProdAnalyticXlsx: async (token, selectedRange, shop) => { 
+    let rangeParams = rangeApiFormat(selectedRange);
+    const res = await fetch(`${URL}/api/prod_analytic/download?${rangeParams}&shop=${shop}`, {
+      method: 'GET',
+      headers: {
+        authorization: 'JWT ' + token,
+      },
+    });
+    const data = await res.blob()
+    return data;
+  },
 
-    const counts = Array(24).fill(0);
-    const averages = Array(24).fill(0);
-
-    data.forEach((entry) => {
-      for (const [time, value] of Object.entries(entry)) {
-        const hour = parseInt(time.split(':')[0], 10);
-
-        counts[hour] += value;
-        averages[hour] += 1;
+  getChartDetailData: async (token, selectedRange, shop) => {
+    let rangeParams = rangeApiFormat(selectedRange);    
+    
+    const res = await fetch(
+      `${URL}/api/dashboard/hourly?shops=${shop}&${rangeParams}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          authorization: "JWT " + token,
+        },
       }
-    });
-
-    const finalAverages = averages.map((count, index) => {
-      return count === 0 ? 0 : counts[index] / count;
-    });
-
-    const transformData = (data) => {
-      return data.reduce((acc, item) => {
-        const [time, count] = Object.entries(item)[0];
-        const hour = parseInt(time.split(':')[0], 10);
-
-        if (!acc[hour]) {
-          acc[hour] = [];
-        }
-        acc[hour].push({ count, time });
-
-        return acc;
-      }, {});
-    };
-
-    const result = transformData(data);
-
-    return {
-      result: result,
-      counts: counts,
-      averages: finalAverages,
-    };
+    );
+    const data = await res.json();
+    return data;
   },
 
   getListOfReports: async (token) => {
@@ -581,7 +563,6 @@ export const ServiceFunctions = {
     if (!response.ok) {
       throw new Error('Failed to fetch dashboard report');
     }
-
     return await response.json();
   },
 
@@ -1063,6 +1044,28 @@ export const ServiceFunctions = {
     const data = await res.json();
 
     return data;
+  },
+  
+  postTaxRateUpdateDashboard: async (token, taxRate, taxType) => {
+    try {
+      const response = await fetch(`${URL}/api/shop/tax-rate/set`, {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': token // Исправлено
+        },
+        body: JSON.stringify({ tax_rate: taxRate, tax_type: taxType })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Ошибка при обновлении налоговой ставки:', error);
+    }
   }
 
   

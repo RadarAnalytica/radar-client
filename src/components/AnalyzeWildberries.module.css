@@ -25,16 +25,27 @@
     background-color: #000000;
     border-radius: 12.15px;
     padding: 24px;
-    /* display: flex;
+    display: flex;
     flex-direction: column;
-    justify-content: space-between; */
+    justify-content: space-between;
 }
-.wrapperSecond{ background-color:#0069FF}
+.wrapperSecond{ 
+    background-color:#0069FF;
+}
 .wrapperThird {background-color: #1A1A1A0D;}
 .wrapperHeader{
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
+}
+
+.cardHeader {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
 }
 .logoContainer{
     min-width: 75px;
@@ -60,7 +71,6 @@
     color: black;
 }
 .wrapperMain,.wrapperMainThird{
-    margin-top: 5px;
     color: white;
     font-size: 19px;
     font-weight: 500;
@@ -69,7 +79,6 @@
     color: black;
 }
 .buttonTry{
-    margin-top: 30px;
     width: max-content;
     background-color: #0069FF;
     padding: 15px 20px;
@@ -80,7 +89,6 @@
     cursor: pointer;
 }
 .buttonTrySecond{
-    margin-top: 30px;
     width: max-content;
     background-color: #0069FF;
     padding: 15px 20px;
@@ -89,28 +97,106 @@
     font-weight: 500;
     font-size: 15px;
     cursor: pointer;
-}
-.buttonTryThird{
-    margin-top: 30px;
-    width: max-content;
-    background-color: #0069FF;
-    padding: 15px 20px;
-    border-radius: 6.5px;
-    color: white;
-    font-weight: 500;
-    font-size: 15px;
-    cursor: pointer;
-}
-
-.buttonTrySecond{
     background-color: white;
     color: black;
 }
 .buttonTryThird{
-    margin-top: 30px;
+    width: max-content;
+    background-color: #0069FF;
+    padding: 15px 20px;
+    border-radius: 6.5px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
     background-color: #000000;
 }
-@media (min-width: 300px) and (max-width: 780px) {
+
+@media (min-width: 768px) and (max-width: 1050px) {
+    .headerTextMoblie{
+        display: block;
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    .containerWildberries{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .wrapper,.wrapperSecond,.wrapperThird{
+        width: 100%;
+        max-height: 270px;
+        min-height: 240px;
+        background-color: #000000;
+        border-radius: 12.15px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .wrapperMain{
+        font-size: 23px;
+    }
+    .wrapperSecond{
+         background-color:#0069FF;
+         margin-top:10px;
+    }
+    .wrapperThird {background-color: #1A1A1A0D;  margin-top:10px;}
+    .headerTitle,.headerTitleThird{
+        color: #FFFFFF;
+        font-size: 23px;
+        font-weight: 700;
+        margin-left: 20px;
+    }
+    .headerTitleThird{
+        color: black;
+    }
+    .headerText{
+        display: none;
+    }
+    .headerText{
+        font-size: 30px;
+    }
+    .logoContainer{
+        min-width: 70px;
+        min-height: 70px;
+        background-color: white;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding:0;
+    }
+    .logoContainer img{
+        width: 60px;
+        height: 60px;
+    }
+    .buttonTry,.buttonTrySecond,.buttonTryThird{
+        cursor: pointer;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0069FF;
+        padding: 15px 20px;
+        border-radius: 6.5px;
+        color: white;
+        font-weight: 500;
+        font-size: 20px;
+        margin-top: 20px;
+    }
+    .buttonTrySecond{
+        background-color: white;
+        color: black;
+    }
+    .buttonTryThird{
+        background-color: #000000;
+    }
+}
+@media (min-width: 300px) and (max-width: 768px) {
     .headerTextMoblie{
         display: block;
         font-size: 25px;

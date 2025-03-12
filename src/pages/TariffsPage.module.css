@@ -105,7 +105,91 @@
     color: rgba(0, 0, 0, 0.5);
 }
 
+@media  (min-width: 1000px) and (max-width: 1300px) {
+
+    .landingPriceWrapHeader{
+        font-size: 22px;
+    }
+    .landingPriceText{
+        font-size: 30px;
+        line-height: 45px;
+    }
+    .landingPriceTextMain{
+        font-size: 21px;
+        line-height: 40px;
+    }
+    .landingPriceBtnText{
+        font-size: 22px;
+    }
+    .priceWrap{
+        flex-direction: column;
+    }
+    .landingPriceWrap{
+        min-width: 100%;
+    }
+    .orangeLabel{
+        max-width: max-content;
+    }
+    .HeadCardProPlusBestDes img{
+        width: 60px;
+        height: 60px;
+        margin-left:10px;
+        margin-right:10px;
+    }
+    .HeadCardProPlusBestDes {
+        width: max-content;
+        padding: 10px;
+    }
+    .cardsBlockMain {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+}
+@media  (min-width: 768px) and (max-width: 1000px) {
+    .cardsBlockMain {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+    .landingPriceWrapHeader{
+        font-size: 22px;
+    }
+    .landingPriceText{
+        font-size: 30px;
+        line-height: 45px;
+    }
+    .landingPriceTextMain{
+        font-size: 21px;
+        line-height: 40px;
+    }
+    .landingPriceBtnText{
+        font-size: 22px;
+    }
+    .widSolutionMainImg{
+        flex-direction: column;
+    }
+    .priceWrap{
+        flex-direction: column;
+    }
+    .landingPriceWrap{
+        min-width: 100%;
+    }
+    .orangeLabel{
+        max-width: max-content;
+    }
+    .HeadCardProPlusBestDes img{
+        width: 50px;
+        height: 50px;
+        margin-left:10px;
+        margin-right:10px;
+    }
+    .HeadCardProPlusBestDes {
+        width: max-content;
+        padding: 10px;
+    } 
+    
+}
 @media screen and (max-width: 1680px) {
+    
     .imageBox img {
         height: 140px;
         width: 140px;
@@ -255,5 +339,25 @@
         font-size: 14px;
         line-height: 21px;
         font-weight: 600;
+    }
+}
+@media  (min-width: 768px) and (max-width: 1300px) {
+    .widSolutionMainImg{
+        flex-direction: column;
+        display: flex;
+        min-width: 100%;
+        justify-content: center;
+    }
+    .solDescription{
+        min-width: 100%;
+        display: flex;
+        align-items: flex-start;
+    }
+    .solScreenshotBbottom{
+        min-width: 100%;
+    }
+    .whiteBtn{
+        min-width: 300px;
+        margin-top: 10px;
     }
 }

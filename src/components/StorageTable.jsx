@@ -43,7 +43,7 @@ const StorageTable = ({
   dataDashBoard,
 }) => {
   return (
-    <div className='storage-table mt-3'>
+    <div className='storage-table'>
       {!dataDashBoard ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'
@@ -53,9 +53,9 @@ const StorageTable = ({
         </div>
       ) : (
         <div style={{ display: "block" }}>
-          <div className='storage-table-title-element'>
+          <div className='storage-table-title-element mb-2'>
             <div>
-              <p className='fw-bold numbers mb-2'>{title}</p>
+              <p className='fw-bold numbers mb-0'>{title}</p>
             </div>
 
             <div>

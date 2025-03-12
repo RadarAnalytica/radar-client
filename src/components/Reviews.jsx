@@ -24,6 +24,18 @@ const Reviews = () => {
     nextArrow: <ImageArrow type="next" />,
     prevArrow: <ImageArrow type="prev" />,
     responsive: [
+
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          swipeToSlide: true,
+          swipe: true,
+          centerMode: true,
+          arrows: true,
+        },
+      },
       {
         breakpoint: 768,
         settings: {
@@ -67,20 +79,20 @@ const Reviews = () => {
       <div className="slider-container">
         <Slider {...settings}>
           {reviewsIP.map((el, index) => (
-            <div 
-            key={index} 
-            className="slider-item"
+            <div
+              key={index}
+              className="slider-item"
             >
-               <div className="video-wrapper">
-                 <iframe
-                width="100%"
-                height="100%"
-                src={el.videoSrc}
-                frameBorder="0"
-                scrolling="no"
-                allowFullScreen
-              ></iframe>
-               </div>            
+              <div className="video-wrapper">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={el.videoSrc}
+                  frameBorder="0"
+                  scrolling="no"
+                  allowFullScreen
+                ></iframe>
+              </div>
             </div>
           ))}
         </Slider>
@@ -99,4 +111,3 @@ function ImageArrow({ type, onClick }) {
   );
 }
 export default Reviews;
-

@@ -19,31 +19,39 @@ const CustomSelect = ({ options, callback, label, defaultValue }) => {
         className='form-control mt-2'
         onClick={() => setShown(!shown)}
       >
-        <svg
-          style={{
-            position: 'absolute',
-            right: '16px',
-            top: '6.25vh',
-            width: '1vw',
-          }}
-          viewBox='0 0 28 17'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <path
-            d='M2 2L14 14L26 2'
-            stroke='#1A1A1A'
-            strokeWidth='4'
-            strokeLinecap='round'
-          />
-        </svg>
         <div style={{ position: 'relative', width: '100%' }}>
+          <div
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              bottom: 0,
+              width: '14px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer',
+            }}
+          >
+          <svg
+            viewBox='0 0 28 17'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              d='M2 2L14 14L26 2'
+              stroke='#1A1A1A'
+              strokeWidth='4'
+              strokeLinecap='round'
+            />
+          </svg>
+          </div>
           <p
             className='mb-0'
             style={{
-              fontSize: '2vh',
-              border: '1px solid rgb(232, 232, 232) !important',
+              border: '1px solid rgb(232, 232, 232)!important',
               cursor: 'pointer',
+              paddingRight: '1.5vw',
             }}
           >
             {state}
@@ -66,15 +74,14 @@ const CustomSelect = ({ options, callback, label, defaultValue }) => {
                   <div
                     key={index}
                     onClick={() => callback(item)}
-                    style={{ padding: '0 1vw' }}
+                    style={{ padding: '0 .75rem' }}
                   >
                     <p
                       className='mb-0 select-element'
                       style={{
-                        fontSize: '2vh',
                         cursor: 'pointer',
-                        padding: '1.5vh 0',
-                        borderBottom: '1px solid silver',
+                        padding: '.375rem 0',
+                        borderBottom: '1px solid rgb(232, 232, 232)',
                       }}
                     >
                       {item}

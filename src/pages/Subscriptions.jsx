@@ -19,6 +19,9 @@ const Subscriptions = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [keepSubscriptionId, setKeepSubscriptionId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const months = [
+    'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+  ]
 
   const fetchSubscriptions = async () => {
     const response = await fetch(`${URL}/api/user/subscription/all`, {
@@ -158,13 +161,21 @@ const Subscriptions = () => {
               : restoreSubscription({
                   subscriptionId: item.id,
                 });
-            const paymentDate = moment(item.validity_period)
-              .add(1, "days")
-              .locale("ru")
-              .format("DD MMMM");
-            const activeTillPeriod = moment(item.validity_period)
-              .locale("ru")
-              .format("DD MMMM");
+            const paymentDateEndString = item.validity_period
+            const paymentDateValue = new Date(Date.parse(paymentDateEndString))
+            paymentDateValue.setDate(paymentDateValue.getDate() + 1)
+            const paymentDate = `${paymentDateValue.getDate()} ${months[paymentDateValue.getMonth()]}`
+
+            const activeTillPeriodValue = new Date(Date.parse(paymentDateEndString))
+            const activeTillPeriod = `${activeTillPeriodValue.getDate()} ${months[activeTillPeriodValue.getMonth()]}`
+            
+            // const paymentDateValue = moment(item.validity_period)
+            // const paymentDate = paymentDateValue.locale("ru")
+            //   .add(1, "days")
+            //   .format("DD MMMM");
+            // const activeTillPeriodValue = moment(item.validity_period)
+            // const activeTillPeriod = activeTillPeriodValue.locale("ru")
+            //   .format("DD MMMM");
             return (
               <div className="sub-card">
                 <div className="sub-card-row">

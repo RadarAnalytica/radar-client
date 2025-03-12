@@ -29,9 +29,12 @@ import NoSubscriptionPage from './NoSubscriptionPage';
 import TooltipInfo from '../components/TooltipInfo';
 import MessageWindow from '../components/MessageWindow';
 import styles from '../pages/DashboardPage.module.css';
-import Period from '../components/Period';
+import Period from '../components/period/Period';
 import DownloadButton from '../components/DownloadButton';
 import DetailChart from '../components/DetailChart';
+import { format, differenceInDays } from 'date-fns';
+
+import { ScheduleProfitabilityChart, ScheduleBigChart, RevenueStorageChart, TaxTable, StructureRevenue } from '../components/dashboard';
 
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,17 +43,17 @@ const DashboardPage = () => {
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
   const [wbData, setWbData] = useState();
-  const [days, setDays] = useState(30);
+  const [selectedRange, setSelectedRange] = useState({ period: 30 });
   const [content, setContent] = useState();
   const [state, setState] = useState();
   const [brandNames, setBrandNames] = useState();
-  const [changeBrand, setChangeBrand] = useState();
+  // const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [firstLoading, setFirstLoading] = useState(true);
   const [primary, setPrimary] = useState();
 
-  const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
+  const [selectedRangeDetail, setSelectedRangeDetail] = useState(selectedRange);
   const [detailChartLabels, setDetailChartLabels] = useState([]);
   const [detailChartData, setDetailChartData] = useState([]);
   const [detailChartAverages, setDetailChartAverages] = useState([]);
@@ -74,12 +77,17 @@ const DashboardPage = () => {
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
-  const prevDays = useRef(days);
+  const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
 
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
+
+  const [chartRoiMarginalityData, setChartRoiMarginalityData] = useState()
+  const [salesAndProfit, setSalesAndProfit] = useState()
+  const [revenueByWarehouse, SetRevenueByWarehouse] = useState()
+  const [structure, setStructure] = useState()
 
   const plugForAllStores = {
     id: 0,
@@ -126,9 +134,9 @@ const DashboardPage = () => {
       }
       if (
         !isInitialLoading &&
-        (days === prevDays.current || activeBrand === prevActiveBrand.current)
+        (selectedRange === prevDays.current || activeBrand === prevActiveBrand.current)
       ) {
-        updateDataDashBoard(days, activeBrand, authToken);
+        updateDataDashBoard(selectedRange, activeBrand, authToken);
       }
       // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
       clearInterval(intervalId);
@@ -146,17 +154,50 @@ const DashboardPage = () => {
   }, [oneShop, activeBrand]);
 
   useEffect(() => {
-    const updateChartData = async () => {
+    const updateChartDetailData = async () => {
       const data = await ServiceFunctions.getChartDetailData(
         authToken,
-        selectedRange
+        selectedRangeDetail,
+        activeBrand
       );
-      setDetailChartLabels(data.result);
-      setDetailChartData(data.counts);
-      setDetailChartAverages(data.averages);
+      const counts = Array(24).fill(0);
+      const averages = Array(24).fill(0);
+
+      data.forEach((entry) => {
+        for (const [time, value] of Object.entries(entry)) {
+          const hour = parseInt(time.split(':')[0], 10);
+          counts[hour] += value;
+          averages[hour] += value !== 0 ? 1 : 0;
+        }
+      });
+
+      const transformData = (data) => {
+        return data.reduce((acc, item) => {
+          const [time, count] = Object.entries(item)[0];
+          const hour = parseInt(time.split(':')[0], 10);
+
+          if (!acc[hour]) {
+            acc[hour] = [];
+          }
+          acc[hour].push({ count, time });
+
+          return acc;
+        }, {});
+      };
+
+      const result = transformData(data);
+
+      setDetailChartLabels(result);
+      setDetailChartData(counts);
+      setDetailChartAverages(averages);
     };
-    updateChartData();
+    updateChartDetailData();
+  }, [selectedRangeDetail]);
+
+  useEffect( () => {
+    setSelectedRangeDetail(selectedRange);
   }, [selectedRange]);
+
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
@@ -170,7 +211,7 @@ const DashboardPage = () => {
       try {
         await dispatch(fetchShops(authToken));
         if (activeBrand !== undefined) {
-          await updateDataDashBoard(days, activeBrand, authToken);
+          await updateDataDashBoard(selectedRange, activeBrand, authToken);
         }
       } catch (error) {
         console.error('Error fetching initial data:', error);
@@ -218,7 +259,7 @@ const DashboardPage = () => {
 
   const updateDataDashBoardCaller = async () => {
     activeBrand !== undefined &&
-      updateDataDashBoard(days, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand, authToken);
   };
 
   const handleSaveActiveShop = (shopId) => {
@@ -234,20 +275,21 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (activeBrand !== undefined && authToken !== authTokenRef.current) {
-      updateDataDashBoard(days, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand, authToken);
     }
   }, [authToken]);
 
   // Update dashboard data when necessary
   useEffect(() => {
-    if (days !== prevDays.current || activeBrand !== prevActiveBrand.current) {
+    if (selectedRange !== prevDays.current || activeBrand !== prevActiveBrand.current) {
       if (activeBrand !== undefined) {
-        updateDataDashBoard(days, activeBrand, authToken);
+        updateDataDashBoard(selectedRange, activeBrand, authToken);
       }
-      prevDays.current = days;
+      prevDays.current = selectedRange;
       prevActiveBrand.current = activeBrand;
     }
-  }, [days, activeBrand]);
+    setSelectedRange(selectedRange)
+  }, [selectedRange, activeBrand]);
 
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
@@ -277,15 +319,109 @@ const DashboardPage = () => {
     const timeToTarget = targetTime.getTime() - Date.now();
     const intervalId = setTimeout(() => {
       dispatch(fetchShops(authToken));
-      updateDataDashBoard(days, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand, authToken);
     }, timeToTarget);
 
     return () => {
       clearTimeout(intervalId);
     };
-  }, [dispatch, activeBrand, days, authToken]);
+  }, [dispatch, activeBrand, selectedRange, authToken]);
 
-  const updateDataDashBoard = async (days, activeBrand, authToken) => {
+  const processMarginalityRoiChart = (marginalityRoiChart) => {
+    if (!marginalityRoiChart || marginalityRoiChart.length === 0) {
+      return {
+        dataProfitability: [],
+        dataProfitPlus: [],
+        dataProfitMinus: [],
+        isLoading: false,
+        labels: [],
+        step: 10,
+        minValue: 0,
+        maxValue: 50
+      };
+    }
+
+    const roiValues = marginalityRoiChart.map(item => item.roi);
+    const marginalityValues = marginalityRoiChart.map(item => item.marginality);
+
+    const minValue = Math.floor(Math.min(...roiValues, ...marginalityValues) / 10) * 10;
+    const maxValue = Math.ceil(Math.max(...roiValues, ...marginalityValues) / 10) * 10;
+
+    // Динамический шаг
+    const step = Math.ceil((maxValue - minValue) / 5);
+
+    // Форматирование дат
+    const labels = marginalityRoiChart.map(item =>
+      new Date(item.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
+    );
+
+    return {
+      dataProfitability: roiValues,
+      dataProfitPlus: marginalityValues,
+      dataProfitMinus: marginalityValues.map(() => 0),
+      isLoading: false,
+      labels,
+      step,
+      minValue,
+      maxValue
+    };
+  };
+
+  const processSalesAndProfit = (salesAndProfit) => {
+    if (!salesAndProfit || !salesAndProfit.length) return null;
+
+    const labels = salesAndProfit.map(item =>
+      new Date(item.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
+    );
+    const dataRevenue = salesAndProfit.map(item => item.sales);
+    const dataNetProfit = salesAndProfit.map(item => item.profit);
+
+    const minDataRevenue = Math.floor(Math.min(...dataRevenue) / 1000) * 1000;
+    const maxDataRevenue = Math.ceil(Math.max(...dataRevenue) / 1000) * 1000;
+    const stepSizeRevenue = Math.ceil((maxDataRevenue - minDataRevenue) / 10);
+
+    return {
+      labels,
+      dataRevenue,
+      dataNetProfit,
+      minDataRevenue,
+      maxDataRevenue,
+      stepSizeRevenue,
+      isLoading: false,
+    };
+  };
+
+  const processRevenueData = (revenueByWarehouse) => {
+    if (!revenueByWarehouse || !revenueByWarehouse.length) return null;
+
+    // Собираем метки и округляем выручку
+    const labels = revenueByWarehouse.map(item => item.name);
+    // console.log(labels.length, "labelsWarehouse")
+    const dataRevenueStorage = revenueByWarehouse.map(item => item.revenue); // Округляем выручку
+
+    // Находим минимальное и максимальное значение выручки, округляя их
+
+    const max = Math.ceil(Math.max(...dataRevenueStorage) / 1000) * 1000; // Округляем максимальное значение до 1000
+
+    // Вычисляем шаг для оси Y
+    // const stepSizeRevenue = Math.ceil((maxRevenue ) / 10);
+
+    return {
+      labels,
+      dataRevenueStorage,
+      isLoading: false,
+      max,
+      // stepSizeRevenue,
+    };
+  };
+
+  const processStructureData = (structure) => {
+    if (!structure) return null;
+    const structureValues = Object.values(structure);
+    return structureValues;
+  };
+
+  const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
     setLoading(true);
     try {
       const controlValue = shops.filter(el => el.id === activeShopId).length
@@ -293,13 +429,31 @@ const DashboardPage = () => {
         localStorage.removeItem('activeShop')
         window.location.reload()
       }
-      
+
       const data = await ServiceFunctions.getDashBoard(
         authToken,
-        days,
+        selectedRange,
         activeBrand
       );
       setDataDashboard(data);
+
+      if (data?.salesAndProfit) {
+        const formattedData = processSalesAndProfit(data.salesAndProfit);
+        setSalesAndProfit(formattedData);
+      }
+      if (data?.marginalityRoiChart) {
+        const formattedData = processMarginalityRoiChart(data.marginalityRoiChart);
+        setChartRoiMarginalityData(formattedData);
+      }
+      if (data?.revenueByWarehouse) {
+        const formattedData = processRevenueData(data.revenueByWarehouse);
+        SetRevenueByWarehouse(formattedData);
+      }
+      if (data?.structure) {
+        const formattedData = processStructureData(data.structure);
+        setStructure(formattedData);
+      }
+
     } catch (e) {
       console.error(e);
     } finally {
@@ -366,18 +520,22 @@ const DashboardPage = () => {
 
   const [curOrders, setCurOrders] = useState();
   useEffect(() => {
-    if (days === 1) {
-      setCurOrders(reportDaily);
-    } else if (days === 7) {
-      setCurOrders(reportWeekly);
-    } else if (days === 14) {
-      setCurOrders(reportTwoWeeks);
-    } else if (days === 30) {
-      setCurOrders(reportMonthly);
-    } else if (days === 90) {
-      setCurOrders(reportThreeMonths);
+    if (!!selectedRange.period){
+
+      if (selectedRange.period === 1) {
+        setCurOrders(reportDaily);
+      } else if (selectedRange.period === 7) {
+        setCurOrders(reportWeekly);
+      } else if (selectedRange.period === 14) {
+        setCurOrders(reportTwoWeeks);
+      } else if (selectedRange.period === 30) {
+        setCurOrders(reportMonthly);
+      } else if (selectedRange.period === 90) {
+        setCurOrders(reportThreeMonths);
+      }
     }
-  }, [days, wbData]);
+
+  }, [selectedRange, wbData]);
 
   const tax =
     state && state.initialCostsAndTax ? state.initialCostsAndTax.tax : 0;
@@ -629,12 +787,12 @@ const DashboardPage = () => {
     return acc;
   }, {});
 
-  const summedOrderArray = Object.keys(summedOrderRub)
-    .map((date) => summedOrderRub[date].toFixed(2))
-    .slice(0, days);
-  const summedSalesArray = Object.keys(summedSalesRub)
-    .map((date) => summedSalesRub[date].toFixed(2))
-    .slice(0, days);
+  // const summedOrderArray = Object.keys(summedOrderRub)
+  //   .map((date) => summedOrderRub[date].toFixed(2))
+  //   .slice(0, selectedRange?.period);
+  // const summedSalesArray = Object.keys(summedSalesRub)
+  //   .map((date) => summedSalesRub[date].toFixed(2))
+  //   .slice(0, selectedRange?.period);
 
   const ordersByDate = orderValuesRub.reduce((acc, item) => {
     const { date } = item;
@@ -648,12 +806,12 @@ const DashboardPage = () => {
     return acc;
   }, {});
 
-  const totalOrByDate = Object.entries(ordersByDate)
-    .map(([date, count]) => count)
-    .slice(0, days);
-  const totalsalesByDate = Object.entries(salesByDate)
-    .map(([date, count]) => count)
-    .slice(0, days);
+  // const totalOrByDate = Object.entries(ordersByDate)
+  //   .map(([date, count]) => count)
+  //   .slice(0, selectedRange?.period);
+  // const totalsalesByDate = Object.entries(salesByDate)
+  //   .map(([date, count]) => count)
+  //   .slice(0, selectedRange?.period);
 
   const [orderOn, setOrderOn] = useState(true);
   const [orderLineOn, setOrderLineOn] = useState(true);
@@ -670,7 +828,7 @@ const DashboardPage = () => {
   // };
 
   function getPastDays(number) {
-    const today = new Date();
+    const today = !!selectedRange.to ? new Date(selectedRange.to) : new Date();
     const pastDays = [];
 
     for (let i = 0; i < number; i++) {
@@ -866,6 +1024,7 @@ const DashboardPage = () => {
     return null; // or a loading indicator
   }
 
+  const rangeDays = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, {unit: 'days'}) : selectedRange.period
   return (
     isVisible && (
       <div className='dashboard-page'>
@@ -890,12 +1049,12 @@ const DashboardPage = () => {
           {wbData === null ? <DataCollectionNotification /> : null} */}
 
           <DashboardFilter
-            periodValue={days}
-            setDays={setDays}
+            selectedRange={selectedRange}
+            setSelectedRange={setSelectedRange}
             setActiveBrand={handleSaveActiveShop}
-            setChangeBrand={setChangeBrand}
+            // setChangeBrand={setChangeBrand}
             shops={shops}
-            setPrimary={setPrimary}
+            // setPrimary={setPrimary}
             activeShopId={activeShopId}
           />
 
@@ -904,8 +1063,8 @@ const DashboardPage = () => {
               <div className='container dash-container p-3 pt-0 d-flex gap-3'>
                 <MediumPlate
                   name={'Заказы'}
-                  text={oneDayOrderAmount / days}
-                  text2={oneDayOrderCount / days}
+                  text={oneDayOrderAmount / rangeDays}
+                  text2={oneDayOrderCount / rangeDays}
                   dataDashBoard={dataDashBoard?.orderAmount}
                   quantity={dataDashBoard?.orderCount}
                   percent={dataDashBoard?.orderAmountCompare}
@@ -913,8 +1072,8 @@ const DashboardPage = () => {
                 />
                 <MediumPlate
                   name={'Продажи'}
-                  text={oneDaySaleAmount / days}
-                  text2={oneDaySaleCount / days}
+                  text={oneDaySaleAmount / rangeDays}
+                  text2={oneDaySaleCount / rangeDays}
                   dataDashBoard={dataDashBoard?.saleAmount}
                   quantity={dataDashBoard?.saleCount}
                   percent={dataDashBoard?.saleAmountCompare}
@@ -963,13 +1122,13 @@ const DashboardPage = () => {
                     byAmount={byAmount}
                     byMoney={byMoney}
                     loading={loading}
-                    days={days}
+                    days={rangeDays}
                     wbData={wbData}
                     maxValue={maxValue}
                     maxAmount={maxAmount}
                     dataDashBoard={dataDashBoard}
                   >
-                    {/* <div
+                    <div
                       style={{
                         backgroundColor: '#F0AD000D',
                         padding: '5px 10px',
@@ -1011,7 +1170,7 @@ const DashboardPage = () => {
                       >
                         Детализировать заказы по времени
                       </div>
-                    </div> */}
+                    </div>
                   </BigChart>
                 </div>
                 {isModalOpen && (
@@ -1046,11 +1205,11 @@ const DashboardPage = () => {
                           style={{ position: 'relative' }}
                         >
                           <Period
-                            selectedRange={selectedRange}
-                            setSelectedRange={setSelectedRange}
+                            selectedRange={selectedRangeDetail}
+                            setSelectedRange={setSelectedRangeDetail}
                           />
                         </div>
-                        <div style={{ marginTop: '35px' }}>
+                        {/* <div style={{ marginTop: '35px' }}>
                           <div
                             className='download-button'
                             onClick={() => handleDownload()}
@@ -1058,7 +1217,7 @@ const DashboardPage = () => {
                             <img src={downloadIcon} />
                             Скачать детализацию
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                       <div className={styles.modalBody}>
                         <DetailChart
@@ -1155,33 +1314,68 @@ const DashboardPage = () => {
                 className='container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3'
                 style={{ width: '100%' }}
               >
-                <div className='wrapper'>
-                  <FinanceTable
-                    title={'Финансы'}
-                    data={financeData}
-                    wbData={wbData}
-                    dataDashBoard={dataDashBoard}
-                    tableType={1}
-                  />
-                  <StorageTable
-                    wbData={wbData}
-                    title={'Склад'}
-                    data={storeData}
-                    titles={['Где товар', 'Капитализация', '', 'Остатки']}
-                    subtitles={['', 'Себестоимость', 'Розница', '']}
-                    dataDashBoard={dataDashBoard}
-                  />
+                <div className='wrapper d-flex flex-column'>
+                  <div className='mb-3'>
+                    <FinanceTable
+                      title={'Финансы'}
+                      data={financeData}
+                      wbData={wbData}
+                      dataDashBoard={dataDashBoard}
+                      tableType={1}
+                    />
+                  </div>
+                  <div className='mb-3'>
+                    <ScheduleBigChart {...salesAndProfit} />
+                  </div>
+                  <div className='mb-3'>
+                    <StorageTable
+                      wbData={wbData}
+                      title={'Склад'}
+                      data={storeData}
+                      titles={['Где товар', 'Капитализация', '', 'Остатки']}
+                      subtitles={['', 'Себестоимость', 'Розница', '']}
+                      dataDashBoard={dataDashBoard}
+                    />
+                  </div>
+                  <div className='d-flex align-items-stretch gap-3'>
+                    <div className="col w-50">
+                      <StructureRevenue
+                        dataStructureRevenue={structure}
+                        isLoading={false}
+                        />
+                    </div>
+                    <div className="col w-50">
+                      <TaxTable
+                        taxInfo={dataDashBoard?.taxInfo || []}
+                        authToken={authToken}
+                        activeBrand={activeBrand}
+                        selectedRange={selectedRange}
+                        updateDataDashBoard={updateDataDashBoard}
+                      />
+                    </div>
                 </div>
-                <div className='wrapper'>
-                  <FinanceTable
-                    title={'Прибыльность'}
-                    data={profitabilityData}
-                    sign={' %'}
-                    wbData={wbData}
-                    dataDashBoard={dataDashBoard}
-                    tableType={1}
-                  />
-
+                </div>
+                <div className='wrapper d-flex flex-column'>
+                  <div className='mb-3'>
+                    <ScheduleProfitabilityChart
+                      {...chartRoiMarginalityData}
+                    />
+                  </div>
+                  <div className='mb-3'>
+                    <FinanceTable
+                      title={'Прибыльность'}
+                      data={profitabilityData}
+                      sign={' %'}
+                      wbData={wbData}
+                      dataDashBoard={dataDashBoard}
+                      tableType={1}
+                    />
+                  </div>
+                  <div className='mb-3 flex-grow-1'>
+                    <RevenueStorageChart {...revenueByWarehouse}
+                    // {...fakeData3} className={styles.revenueStorageChart} 
+                    />
+                  </div>
                   <ChartTable
                     title={'Расходы'}
                     data={costsData}

@@ -1,0 +1,262 @@
+.widSolution{
+    min-height: 200px;
+    width: 100%;
+    border-radius: 20px;
+    display: flex;
+    /* gap: 20px; */
+}
+
+.video{
+    margin-left: 20px;
+}
+.imageMain{
+    margin-top: 20px;
+}
+@media  (min-width: 1550px) and (max-width: 1601px) {
+    .profitableStafText{
+        font-size: 19px!important;
+    }
+    .readyforStartText{
+        font-size: 35px!important;
+    }
+}
+@media  (min-width: 1400px) and (max-width: 1550px) {
+    .salesIncreseText{
+        font-size: 28px;
+        line-height:normal;
+    }
+    .solDescription{
+        min-width: 40%!important;
+        padding: 30px;
+     }
+    .widSolutionText{
+        font-size: 35px;
+    }
+    .profitableStafText{
+        font-size: 18px!important;
+    }
+    .readyforStartText{
+        font-size: 35px!important;
+    }
+}
+
+@media  (min-width: 1400px) and (max-width: 1480px) {
+    .profitableStafText{
+        font-size: 17px!important;
+    }
+    .readyforStartText{
+        font-size: 34px!important;
+    }
+}
+@media  (min-width: 1300px) and (max-width: 1400px) {
+    .salesIncreseText{
+        font-size: 24px;
+        line-height:normal;
+    }
+    .solDescription{
+        padding: 25px;
+        min-width: 37%!important;
+     }
+     .widSolutionText{
+        font-size: 35px;
+    }
+    .profitableStafText{
+        font-size: 16px!important;
+    }
+    .readyforStartText{
+        font-size: 32px!important;
+    }
+}
+@media  (min-width: 1200px) and (max-width: 1300px) {
+    .salesIncreseText{
+        font-size: 22px;
+        line-height:normal;
+    }
+    .solDescription{
+        padding: 25px;
+        min-width: 37%!important;
+     }
+     .widSolutionText{
+        font-size: 30px;
+    }
+    .widheadContainer{
+        flex-direction: column;
+    }
+    .mainBlockApi{
+        min-width: 100%;
+    }
+    .personalAccountConnectText{
+        font-size: 36px;
+    }
+    .receiveDataText{
+        font-size: 23px;
+    }
+    .widheadContainTitle{
+        font-size: 25px;
+    }
+    .manyApiLogoMobile{
+        display: block;
+        width: 100%;
+    }
+    .manyApiLogo{
+        display: none;
+    }
+    .widHeadContainerLastLine{
+        height: max-content;
+        flex-direction: column;
+    }
+    .blockBtn{
+        min-width: 100%;
+    }
+    .readyforStartText{
+        font-size: 37px;
+    }
+    .profitableStafText{
+        font-size: 18px;
+    }
+    .blockBtnContainerInner{
+        min-width: 98%;
+    }
+
+}
+@media  (min-width: 1100px) and (max-width: 1200px) {
+    .salesIncreseText{
+        font-size: 20px;
+        line-height:normal;
+    }
+    .solDescription{
+        padding: 25px;
+        min-width: 37%!important;
+     }
+     .widSolutionText{
+        
+        font-size: 30px;
+    }
+    .widheadContainer{
+        flex-direction: column;
+    }
+    .mainBlockApi{
+        min-width: 100%;
+    }
+    .personalAccountConnectText{
+        font-size: 34px;
+    }
+    .receiveDataText{
+        font-size: 22px;
+    }
+    .widheadContainTitle{
+        font-size: 23px;
+    }
+    .manyApiLogoMobile{
+        display: block;
+        width: 100%;
+    }
+    .manyApiLogo{
+        display: none;
+    }
+    .widHeadContainerLastLine{
+        height: max-content;
+        flex-direction: column;
+    }
+    .blockBtn{
+        min-width: 100%;
+    }
+    .readyforStartText{
+        font-size: 37px;
+    }
+    .profitableStafText{
+        font-size: 18px;
+    }
+    .blockBtnContainerInner{
+        min-width: 98%;
+    }
+}
+
+@media  (min-width: 768px) and (max-width: 1100px) {
+    .widSolutionText{
+        font-size: 28px;
+    }
+    .solDescription{
+       padding: 20px;
+       min-width: 37%!important;
+    }
+    .solDescriptionLabelSmallContainer svg{
+        width: 247px;
+        height: 51px;
+    }
+    .salesIncreseText{
+        font-size: 18px;
+        line-height:normal;
+    }
+    .ananlyzeText{
+        font-size: 13px;
+        line-height: normal;
+    }
+    .widheadContainer{
+        flex-direction: column;
+    }
+    .mainBlockApi{
+        min-width: 100%;
+    }
+    .personalAccountConnectText{
+        font-size: 30px;
+    }
+    .receiveDataText{
+        font-size: 18px;
+    }
+    .widheadContainTitle{
+        font-size: 21px;
+    }
+    .manyApiLogoMobile{
+        display: block;
+        width: 100%;
+    }
+    .manyApiLogo{
+        display: none;
+    }
+    .widHeadContainerLastLine{
+        height: max-content;
+        flex-direction: column;
+    }
+    .apiBlock{
+        height: max-content;
+    }
+    .blockBtn{
+        min-width: 100%;
+    }
+    .readyforStartText{
+        font-size: 37px;
+    }
+    .profitableStafText{
+        font-size: 18px;
+    }
+    .blockBtnContainerInner{
+        min-width: 98%;
+    }
+} 
+
+
+@media (min-width: 768px) and (max-width: 1000px) {
+    .widSolution{
+        flex-direction: column;
+    }
+    .salesIncreseText{
+        font-size: 25px!important;
+        line-height:normal;
+    }
+    .solDescription{
+       min-width: 100%;
+       padding: 20px;
+    }
+    .mainPageContainer{
+        max-width: 100%!important;
+    }
+    .mainPicture{
+        min-width: 100%;
+    } 
+    .widSolutionText{
+        font-size: 26px!important;
+    }
+
+    
+} 

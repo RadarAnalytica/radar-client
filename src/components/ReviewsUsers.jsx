@@ -1,14 +1,17 @@
 import React from "react";
 import "../pages/styles.css";
 import Reviews from "./Reviews";
+import styles from "../components/ReviewsUsers.module.css"
 
 const ReviewsUsers = () => {
   return (
     <div>
       <div className='pb-3 mt-5 d-flex justify-content-center userReviewsMain'>
         <div className='userReviewsBlocksText'>
-          <div className="userReviewsHeaderTitle">Более <span style={{ color: "rgba(83, 41, 255, 1)" }}>6 000</span> предпринимателей</div>
-          <div className="userReviewsHeaderParag">уже используют наш сервис для начала и развития бизнеса на маркетплейсах <span className="yellowLogoSpan">Radar Analytica</span></div>
+          <div className={`userReviewsHeaderTitle ${styles.userReviewsHeaderTitle}`}>Более <span style={{ color: "rgba(83, 41, 255, 1)" }}>6 000</span> предпринимателей</div>
+          <div className={`userReviewsHeaderParag ${styles.userReviewsHeaderParag}`}>уже используют для начала и развития бизнеса на маркетплейсах
+            <span className={`yellowLogoSpan ${styles.yellowLogoSpan}`} >Radar Analytica</span>
+          </div>
         </div>
 
         {/* <div className='userReviewsBlocksText mobile-version'>

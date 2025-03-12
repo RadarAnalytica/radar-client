@@ -1,0 +1,35 @@
+@media  (min-width: 1150px) and (max-width: 1300px) {
+    .userReviewsHeaderTitle{
+        font-size: 35px;
+    }
+    .userReviewsHeaderParag{
+        font-size: 20px;
+        margin-bottom: 5px;
+        line-height: 35px;
+    }
+    .yellowLogoSpan{
+        margin: 15px;
+        white-space: normal;
+        text-wrap: nowrap;
+    }
+}
+@media  (min-width: 768px) and (max-width: 1150px) {
+    .userReviewsHeaderTitle{
+        font-size: 33px;
+    }
+    .userReviewsHeaderParag{
+        font-size: 17px;
+        margin-bottom: 5px;
+        line-height: 35px;
+    }
+    .yellowLogoSpan{
+        margin: 15px;
+        white-space: normal;
+        text-wrap: nowrap;
+    }
+}
+
+
+.yellowLogoSpan{
+    margin-left: 10px;
+}

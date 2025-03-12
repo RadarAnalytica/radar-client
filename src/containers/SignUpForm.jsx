@@ -32,7 +32,7 @@ const SignUpForm = () => {
   ];
 
   const [name, setName] = useState();
-  console.log('name', name);
+  // console.log('name', name);
   const [regData, setRegData] = useState({
     firstname: null,
     lastname: null,
@@ -41,7 +41,7 @@ const SignUpForm = () => {
     stage: options[0],
     email: null,
     password: null,
-    promo_сode: null,
+    promocode: null,
     confirmed: false,
     isOnboarded: false,
     referral_partner_link: localStorage.getItem('referralCode') || '', 
@@ -92,7 +92,7 @@ const SignUpForm = () => {
   };
 
   const getPromocode = (e) => {
-    setRegData({ ...regData, promo_сode: e.target.value });
+    setRegData({ ...regData, promocode: e.target.value });
   };
 
   const [sent, setSent] = useState(false);
@@ -132,7 +132,7 @@ const SignUpForm = () => {
     const nullable = Object.values(obj)?.filter((item) => item === null);
     console.log(obj, Object.values(obj), nullable);
     
-    if (!obj || nullable?.length > 3 || !isValidEmail(obj.email)) {
+    if (!obj || nullable?.length > 3 || !isValidEmail(obj.email) || (obj.password && obj.password.length < 6)) {
       e.preventDefault();
       setError('Введите корректное значение для всех полей');
       setShow(true);
@@ -155,7 +155,7 @@ const SignUpForm = () => {
   return sent ? (
     <InfoForm />
   ) : (
-    <div className='signup-form'>
+    <div className='signup-form' style={{margin: '2rem 0'}}>
       <div className='d-flex flex-column align-items-center'>
         <svg
           width='200'
@@ -254,6 +254,12 @@ const SignUpForm = () => {
           callback={getStage}
         />
         <InputField
+          type={'text'}
+          placeholder={'Промокод'}
+          label={'Промокод'}
+          callback={getPromocode}
+        />
+        <InputField
           type={'tel'}
           placeholder={'+7'}
           label={'Номер телефона'}
@@ -288,7 +294,7 @@ const SignUpForm = () => {
                     /> */}
       </div>
       <button
-        className='prime-btn'
+        className='signup-screen-action-button'
         onClick={(e) => sumbitHandler(e, regData)}
         style={{ width: '100%', height: '7vh' }}
       >
@@ -324,9 +330,9 @@ const SignUpForm = () => {
       </div>
 
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton style={{border: 'none'}}>
           <div>
-            <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
+            <div className='d-flex gap-3 mb-2 mt-2 align-items-center hidden'>
               <img src={warningIcon} alt='' style={{ height: '3vh' }} />
               <p className='fw-bold mb-0'>Ошибка!</p>
             </div>

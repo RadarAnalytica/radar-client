@@ -11,19 +11,27 @@ input[type="number"]:focus {
 }
 
 .map-container {
-  padding: 16px 30px;
+  padding: 16px 0px;
 }
-
+.container-xlwidth {
+  max-width: 1480px;
+}
+@media (min-width: 1400px) {
+  .container-xlwidth {
+    max-width: 1480px!important;
+  }
+}
 .map-radio {
   display: flex;
   align-items: center;
-  gap: 2vh;
+  gap: 10px;
+  margin-left: 5px;
 }
 
 .radio-item {
   display: flex;
   align-items: center;
-  gap: 1vh;
+  gap: 8px;
 }
 
 /* MAP */
@@ -127,7 +135,7 @@ select {
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
   padding: 24px 32px;
-  margin-bottom: 3vh;
+  margin-bottom: 10px;
   max-width: 39vw;
 }
 
@@ -400,7 +408,7 @@ select {
   background-color: #ffffff;
   transition: height 1.75s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-  max-height: 81%;
+  /* max-height: 81%; */
   transform-origin: top center;
   will-change: height;
 }
@@ -560,7 +568,6 @@ select {
   padding: 40px;
   border-radius: 20px;
   margin-top: 120px;
-  margin-bottom: 100px;
 }
 
 .btn-black {
@@ -697,26 +704,16 @@ select {
   }
 }
 
-@media (max-width: 1520px) and (min-width: 1200px) {
-  .userReviewsBlocksText .userReviewsHeaderParag {
-    font-size: 20px;
-  }
-}
 
-@media (max-width: 1330px) and (min-width: 1329px) {
-  .userReviewsHeaderParag .yellowLogoSpan {
-    display: block;
-  }
-}
 
 
 @media (min-width: 1580px) and (max-width: 1601px) {
   .blockBtn {
     width: 46%;
   }
-  .profitableStafText{
-    font-size: 17px!important;
-  }
+  /* .profitableStafText{
+    font-size: 20px!important;
+  } */
 }
 
 
@@ -844,7 +841,6 @@ select {
 .userReviewsHeaderTitle{
   font-size: 45px;
   font-weight: 700;
-  
 }
 .userReviewsHeaderParag{
   font-size: 25px;
@@ -857,13 +853,17 @@ select {
   padding: 10px 20px;
   border-radius: 10px;
   font-size: 22px;
-  width: fit-content;
 }
 
 .slider-container {
   width:100%;
   /* margin: 0 auto; */
   text-align: center;
+}
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 .slick-track {
   display: flex !important; /* Use Flexbox */
@@ -882,13 +882,6 @@ select {
   align-items: center !important;
   justify-content: center!important;
   border-radius: 15px;
-  touch-action: pan-y pinch-zoom;
-}
-
-.video-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
 }
 
 @media (min-width: 1600px) and (max-width: 1690px) {
@@ -944,8 +937,78 @@ select {
 }
 @media (min-width: 1250px) and (max-width: 1300px) {
   .slider-item {
+    width: 220px !important;
+    height: 391px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 1200px) and (max-width: 1250px) {
+  .slider-item {
+    width: 220px !important;
+    height: 391px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 1150px) and (max-width: 1200px) {
+  .slider-item {
+    width: 270px !important;
+    height: 480px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 1100px) and (max-width: 1150px) {
+  .slider-item {
+    width: 260px !important;
+    height: 462px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 1050px) and (max-width: 1100px) {
+  .slider-item {
+    width: 250px !important;
+    height: 444px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 1000px) and (max-width: 1050px) {
+  .slider-item {
+    width: 250px !important;
+    height: 444px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 950px) and (max-width: 1000px) {
+  .slider-item {
     width: 240px !important;
     height: 426px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 900px) and (max-width: 950px) {
+  .slider-item {
+    width: 240px !important;
+    height: 426px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 850px) and (max-width: 900px) {
+  .slider-item {
+    width: 220px !important;
+    height: 387px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 800px) and (max-width: 850px) {
+  .slider-item {
+    width: 200px !important;
+    height: 355px !important;
+    border-radius: 15px;
+  }
+}
+@media (min-width: 768px) and (max-width: 800px) {
+  .slider-item {
+    width: 200px !important;
+    height: 355px !important;
     border-radius: 15px;
   }
 }
@@ -1063,18 +1126,12 @@ select {
     height: 399px !important;
     border-radius: 15px;
   }
-  .wid-solution-block-margin {
-    margin-bottom: 60px;
-  }
 }
 @media (min-width: 325px) and (max-width:  370px) {
   .slider-item {
     width: 180px !important;
     height:320px !important;
     border-radius: 15px;
-  }
-  .wid-solution-block-margin {
-    margin-bottom: 60px;
   }
 }
 
@@ -1108,7 +1165,6 @@ select {
   .userReviewsHeaderTitle{
     font-size: 25px;
     line-height: 27px;
-    margin-bottom: 8px;
   }
   .userReviewsHeaderParag{
     font-size: 14px;
@@ -1119,16 +1175,10 @@ select {
     display: none;
   }
 }
-@media  (min-width: 300px) and (max-width: 1245px) {
-  .yellowLogoSpan{
-    display: none;
-  }
-}
 @media (min-width: 200px) and (max-width: 300px) {
   .userReviewsHeaderTitle{
     font-size: 20px;
     line-height: 23px;
-    margin-bottom: 8px;
   }
   .userReviewsHeaderParag{
     font-size: 12px;
@@ -1146,6 +1196,7 @@ iframe {
 }
 .arrow {
   position: relative;
+  top: 50%;
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -1160,7 +1211,7 @@ iframe {
 }
 
 .arrow-right {
-  position: absolute; 
+  position: absolute;
   top: 50%;
   transform: rotate(-90deg);
   right: 0px; 
@@ -1355,7 +1406,7 @@ padding:20px;
 }
 
 .widbody-container {
-  padding: 0px 20px !important;
+  padding: 0px 20px 0 !important;
 }
 
 .wid-solution {
@@ -1363,11 +1414,7 @@ padding:20px;
   width: 100%;
   border-radius: 20px;
   display: flex;
-  gap: 20px;
-}
-
-.wid-solution-block-margin {
-  margin-bottom: 100px;
+  /* gap: 20px; */
 }
 
 .authorized-service-container{
@@ -1704,9 +1751,7 @@ button.accordion-button.collapsed::after {
   margin: 0 auto;
   min-height: 100vh;
 }
-.container-xlwidth {
-  max-width: 1480px;
-}
+
 .content-wrap {
   flex-grow: 1;
 }
@@ -1888,10 +1933,6 @@ button.accordion-button.collapsed::after {
   margin-left: 2%;
   margin-top: 1%;
   
-}
-
-.InOnAnalytics {
-  margin-bottom: 100px;
 }
 
 
@@ -2092,7 +2133,7 @@ button.accordion-button.collapsed::after {
   color: white;
 }
 .profitableStafText {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   color: white;
   margin-bottom: 20px;
@@ -2119,7 +2160,7 @@ button.accordion-button.collapsed::after {
 }
 
 .helpEveryStepText {
-  font-size: 44px;
+  font-size: 40px;
   width: 90%;
   font-weight: 700;
   line-height: 1.2;
@@ -2295,12 +2336,6 @@ button.accordion-button.collapsed::after {
   align-items: center;
 }
 
-.steps-time-container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 100px;
-}
-
 /*Responsive for 1680*/
 
 @media (min-width: 1300px) and (max-width: 1680px) {
@@ -2326,7 +2361,7 @@ button.accordion-button.collapsed::after {
     font-size: 20px !important;
   }
   .container-xlwidth{
-    max-width: 88%;
+    max-width: 88%!important;
   }
   .wid-solution-text-p {
     font-size: 35px;
@@ -2426,9 +2461,7 @@ button.accordion-button.collapsed::after {
   .custom-accordion-body p {
     font-size: 20px;
   }
-  .sales-increase-text {
-    font-size: 26px;
-  }
+
   .analyze-competitors-text {
     font-size: 16px;
   }
@@ -2449,12 +2482,12 @@ button.accordion-button.collapsed::after {
   .sol-label-btn {
     width: 100%;
   }
-  .readyforStartText {
+  /* .readyforStartText {
     font-size: 35px;
-  }
-  .profitableStafText {
+  } */
+  /* .profitableStafText {
     font-size: 20px;
-  }
+  } */
   .blockBtnContainerArrowImg {
     width: 65%;
   }
@@ -2494,44 +2527,29 @@ button.accordion-button.collapsed::after {
     display: block;
   }
 
-  .profitableStafText{
-    font-size: 16px;
-  }
-  .readyforStartText{
-    font-size: 26px;
-  }
+
   
 }
 
-@media (min-width: 1520px) and (max-width: 1600px) {
+/* @media (min-width: 1520px) and (max-width: 1600px) {
   .profitableStafText{
-    font-size: 17px !important;
+    font-size: 19px !important;
   }
   .readyforStartText{
     font-size: 30px !important;
   }
-}
-@media (min-width: 1620px) and (max-width: 1680px) {
+} */
+/* @media (min-width: 1620px) and (max-width: 1680px) {
   .profitableStafText{
     font-size: 20px !important;
   }
   .readyforStartText{
     font-size: 34px !important;
   }
-}
+} */
 
+/* 
 
-@media(min-width:1660px) and (max-width:1680px){
-  .thesesHome {
-    padding: 14.2px !important;
-    width: 540px!important;
-  }
-  
-  .thesesHome2 {
-    padding: 14.2px !important;
-    width: 540px !important;
-  }
-}
 @media(min-width:1680px) and (max-width:1700px){
   .thesesHome {
     padding: 14.2px !important;
@@ -2792,8 +2810,8 @@ button.accordion-button.collapsed::after {
     font-size: 15px;
 
   }
-}
-@media(min-width:1235px) and (max-width:1250px){
+} */
+/* @media(min-width:1235px) and (max-width:1250px){
   .thesesHome {
     padding: 1.5px !important;
     width: 380px;
@@ -2809,8 +2827,8 @@ button.accordion-button.collapsed::after {
     margin-top: 2%!important;
   
   }
-}
-@media(min-width:1225px) and (max-width:1235px){
+} */
+/* @media(min-width:1225px) and (max-width:1235px){
   .thesesHome {
     padding: 1.5px !important;
     width: 367px;
@@ -2829,8 +2847,8 @@ button.accordion-button.collapsed::after {
     margin-top: 2%!important;
     width: 97%;
   }
-}
-@media(min-width:1220px) and (max-width:1225px){
+} */
+/* @media(min-width:1220px) and (max-width:1225px){
   .thesesHome {
     padding: 1.5px !important;
     width: 360px;
@@ -2848,8 +2866,8 @@ button.accordion-button.collapsed::after {
     margin-top: 2%!important;
     width: 97%;
   }
-}
-@media(min-width:1215px) and (max-width:1220px){
+} */
+/* @media(min-width:1215px) and (max-width:1220px){
   .thesesHome {
     padding: 1.5px !important;
     width: 355px;
@@ -2867,8 +2885,8 @@ button.accordion-button.collapsed::after {
     margin-top: 2%!important;
     width: 97%;
   }
-}
-@media(min-width:1200px) and (max-width:1215px){
+} */
+/* @media(min-width:1200px) and (max-width:1215px){
   .thesesHome {
     padding: 1.5px !important;
     width: 350px;
@@ -2884,10 +2902,9 @@ button.accordion-button.collapsed::after {
     margin-top: 2%!important;
     width: 98%;
   }
-}
+} */
 
 @media(min-width:1250px) and (max-width:1550px){
-
 
   .sol-description {
     min-width: 500px !important;
@@ -2895,10 +2912,7 @@ button.accordion-button.collapsed::after {
   .sol-label-btn>svg{
     width: 90%;
   }
-  .sales-increase-text{
-    font-size: 22px;
-    line-height: normal;
-  }
+
 }
 @media(min-width:1330px) and (max-width:1400px){
   .sol-description {
@@ -2907,29 +2921,22 @@ button.accordion-button.collapsed::after {
   .sol-label-btn>svg{
     width: 90%;
   }
-  .sales-increase-text{
-    font-size: 20px;
-    line-height: normal;
-  }
+
   .analyze-competitors-text{
     font-size: 18px;
   }
 
 }
-@media(min-width:1100px) and (max-width:1330px){
+@media(min-width:1000px) and (max-width:1330px){
   .sol-description {
-    min-width: 37% !important;
+    min-width: 37%!important;
   }
   .sol-label-btn>svg{
     width: 90%;
   }
-  .sales-increase-text{
-    font-size: 18px;
-    line-height: normal;
-    margin-top: 10px;
-  }
+
   .container-xlwidth{
-    max-width: 90%;
+    max-width: 90%!important;
   }
   .yellow-radar-small-cont svg{
     width: 80%;
@@ -3078,7 +3085,7 @@ button.accordion-button.collapsed::after {
     height: 65px;
   }
 }
-@media (min-width: 1200px) and (max-width: 1300px) {
+/* @media (min-width: 1200px) and (max-width: 1300px) {
   .thesesHome{
     height: 75px;
   }
@@ -3089,7 +3096,7 @@ button.accordion-button.collapsed::after {
     width: 50px;
     height: 50px;
   }
-}
+} */
 
 
 @media (max-width: 768px) {
@@ -3107,10 +3114,10 @@ button.accordion-button.collapsed::after {
     width: 100%;
   }
   .thesesHome{
-    width: 96% !important;
+    min-width: 96% !important;
   }
   .thesesHome2{
-    width: 96% !important;
+    min-width: 96% !important;
   }
   .page-white {
     overflow-x: hidden;
@@ -3151,13 +3158,6 @@ button.accordion-button.collapsed::after {
   }
   .hide-on-mobile {
     display: none;
-  }
-
-  .InOnAnalytics {
-    margin-bottom: 60px;
-  }
-  .wid-solution-block-margin {
-    margin-bottom: 60px;
   }
 }
 
@@ -3339,11 +3339,6 @@ button.accordion-button.collapsed::after {
     flex-direction: column;
     align-items: start;
   }
-  .steps-time-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 60px;
-  }
   .stepsTimeItems {
     flex-direction: column;
   }
@@ -3368,7 +3363,7 @@ button.accordion-button.collapsed::after {
   .steps-time3:hover,
   .steps-time4:hover,
   .steps-time5:hover {
-    transform: scale(1.1) rotate(0);
+    transform: scale(1.03) rotate(0);
     z-index: 2;
   }
   .stepsBtn {
@@ -3443,7 +3438,7 @@ button.accordion-button.collapsed::after {
   .sol-description-top {
     padding: 20px;
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     justify-content: left;
   }
 
@@ -3476,7 +3471,6 @@ button.accordion-button.collapsed::after {
     font-weight: 700;
     font-size: 25px;
     line-height: 31.38px;
-    margin-top: 60px;
   }
   .wid-solution-text-p span {
     font-weight: 800;
@@ -3704,7 +3698,7 @@ button.accordion-button.collapsed::after {
   }
   
   .landing-price-btn img {
-    width: 25%;
+    width: 18%;
   }
   .userReviewsBlocks {
     font-size: 24px;
@@ -3749,8 +3743,7 @@ button.accordion-button.collapsed::after {
     width: 100%;
   }
   .mainBlockFourBtn {
-    margin-top: 60px;
-    margin-bottom: 60px;
+    margin-top: 80px;
     padding: 20px;
   }
   .monthesText {
@@ -3888,9 +3881,7 @@ button.accordion-button.collapsed::after {
     display: block;
   }
 
-  .profitableStafText{
-    font-size: 16px;
-  }
+
   .readyforStartText{
     font-size: 26px;
   }
@@ -3901,22 +3892,7 @@ button.accordion-button.collapsed::after {
     width: 100%;
   }
 }
-/* @media (min-width: 1520px) and (max-width: 1600px) {
-  .profitableStafText{
-    font-size: 20px !important;
-  }
-  .readyforStartText{
-    font-size: 30px !important;
-  }
-} */
-@media (min-width: 1620px) and (max-width: 1680px) {
-  .profitableStafText{
-    font-size: 20px !important;
-  }
-  .readyforStartText{
-    font-size: 34px !important;
-  }
-}
+
 
 @media(min-width:1350px) and (max-width:1390px){
   .blockBtn{
@@ -3927,7 +3903,7 @@ button.accordion-button.collapsed::after {
   }
 
 }
-@media(min-width:1670px) and (max-width:1700px){
+/* @media(min-width:1700px) and (max-width:1750px){
  
   .thesesHome {
     padding: 12.5px !important;
@@ -3946,8 +3922,28 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1650px) and (max-width:1670px){
+} */
+/* @media(min-width:1670px) and (max-width:1700px){
+ 
+  .thesesHome {
+    padding: 12.5px !important;
+    height: 113px;
+    width: 430px;
+  }
+  .thesesHome2 {
+    padding: 12.5px !important;
+    height: 113px;
+    width: 430px;
+  }
+  .vertical-line {
+    height: calc((var(--activeIndex) + 1) * 22%);
+    max-height: 90% !important;
+  }
+  .thesesListText{
+    font-size: 16px;
+  }
+} */
+/* @media(min-width:1650px) and (max-width:1670px){
   .thesesHome {
     padding: 12.5px !important;
     height: 113px;
@@ -3965,8 +3961,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1630px) and (max-width:1650px){
+} */
+/* @media(min-width:1630px) and (max-width:1650px){
   .thesesHome {
     padding: 12.5px !important;
     height: 111px;
@@ -3981,8 +3977,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1610px) and (max-width:1630px){
+} */
+/* @media(min-width:1610px) and (max-width:1630px){
   .thesesHome {
     padding: 12px !important;
     height: 110px;
@@ -3997,8 +3993,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1590px) and (max-width:1610px){
+} */
+/* @media(min-width:1590px) and (max-width:1610px){
   .thesesHome {
     padding: 12px !important;
     height: 108px;
@@ -4013,8 +4009,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1570px) and (max-width:1590px){
+} */
+/* @media(min-width:1570px) and (max-width:1590px){
   .thesesHome {
     padding: 12px !important;
     height: 106px;
@@ -4029,8 +4025,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1540px) and (max-width:1570px){
+} */
+/* @media(min-width:1540px) and (max-width:1570px){
   .thesesHome {
     padding: 12px !important;
     height: 104px;
@@ -4045,8 +4041,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1500px) and (max-width:1540px){
+} */
+/* @media(min-width:1500px) and (max-width:1540px){
   .thesesHome {
     padding: 12px !important;
     height: 102px;
@@ -4061,8 +4057,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1470px) and (max-width:1500px){
+} */
+/* @media(min-width:1470px) and (max-width:1500px){
   .thesesHome {
     padding: 12px !important;
     height: 99px;
@@ -4077,8 +4073,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1450px) and (max-width:1470px){
+} */
+/* @media(min-width:1450px) and (max-width:1470px){
   .thesesHome {
     padding: 12px !important;
     height: 98px;
@@ -4093,8 +4089,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 16px;
   }
-}
-@media(min-width:1430px) and (max-width:1450px){
+} */
+/* @media(min-width:1430px) and (max-width:1450px){
   .thesesHome {
     padding: 12px !important;
     height: 95px; width: 355px;
@@ -4108,8 +4104,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 15px;
   }
-}
-@media(min-width:1400px) and (max-width:1430px){
+} */
+/* @media(min-width:1400px) and (max-width:1430px){
   .thesesHome {
     padding: 12px !important;
     height: 94px;
@@ -4124,8 +4120,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 15px;
   }
-}
-@media(min-width:1370px) and (max-width:1400px){
+} */
+/* @media(min-width:1370px) and (max-width:1400px){
   .thesesHome {
     padding: 10px !important;
     height: 90px;
@@ -4139,8 +4135,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 15px;
   }
-}
-@media(min-width:1350px) and (max-width:1370px){
+} */
+/* @media(min-width:1350px) and (max-width:1370px){
   .thesesHome {
     padding: 10px !important;
     height: 88px;
@@ -4155,8 +4151,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 14px;
   }
-}
-@media(min-width:1300px) and (max-width:1350px){
+} */
+/* @media(min-width:1300px) and (max-width:1350px){
   .thesesHome {
     padding: 10px !important;
     height: 88px;
@@ -4171,8 +4167,8 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 14px;
   }
-}
-@media(min-width:1250px) and (max-width:1300px){
+} */
+/* @media(min-width:1250px) and (max-width:1300px){
   .thesesHome {
     padding: 9px !important;
     height: 85px;
@@ -4187,9 +4183,9 @@ button.accordion-button.collapsed::after {
   .thesesListText{
     font-size: 14px;
   }
-}
+} */
 
-@media(min-width:1230px) and (max-width:1250px){
+/* @media(min-width:1230px) and (max-width:1250px){
   .thesesHome {
     padding: 9px !important;
     height: 82px;
@@ -4205,8 +4201,8 @@ button.accordion-button.collapsed::after {
     font-size: 12px;
   }
 
-}
-@media(min-width:1200px) and (max-width:1230px){
+} */
+/* @media(min-width:1200px) and (max-width:1230px){
   .thesesHome {
     padding: 9px !important;
     height: 80px;
@@ -4222,7 +4218,7 @@ button.accordion-button.collapsed::after {
     font-size: 12px;
   }
 
-}
+} */
 @media(min-width:1250px) and (max-width:1550px){
   
   .sol-description {
@@ -4231,10 +4227,7 @@ button.accordion-button.collapsed::after {
   .sol-label-btn>svg{
     width: 90%;
   }
-  .sales-increase-text{
-    font-size: 22px;
-    line-height: normal;
-  }
+
 }
 @media(min-width:1330px) and (max-width:1400px){
   .sol-description {
@@ -4243,10 +4236,7 @@ button.accordion-button.collapsed::after {
   .sol-label-btn>svg{
     width: 90%;
   }
-  .sales-increase-text{
-    font-size: 20px;
-    line-height: normal;
-  }
+
   .analyze-competitors-text{
     font-size: 18px;
   }
@@ -4259,13 +4249,9 @@ button.accordion-button.collapsed::after {
   .sol-label-btn>svg{
     width: 90%;
   }
-  .sales-increase-text{
-    font-size: 18px;
-    line-height: normal;
-    margin-top: 10px;
-  }
+
   .container-xlwidth{
-    max-width: 90%;
+    max-width: 90%!important;
   }
   .yellow-radar-small-cont svg{
     width: 80%;
@@ -4433,11 +4419,11 @@ button.accordion-button.collapsed::after {
 
 
 
-@media screen and (max-width: 1048px) {
+@media screen and (max-width: 1200px) {
   .order-map-doughnut,
   .order-table-extended,
   .order-map-table {
-    min-width: 90vw;
+    min-width: 100%; /*changed*/
   }
 
   .doughnut-content {
@@ -4491,19 +4477,65 @@ button.accordion-button.collapsed::after {
     .page-container.container-xxl {
         max-width: 1480px;
     }}
-@media (min-width: 475px) and (max-width: 501px) {
-  .widhead-container-title {
-    width: 70%;
-  }
-}
-@media (min-width: 413px) and (max-width: 462px) {
-  .widhead-container-title {
-    width: 87%;
-  }
-}
 
-@media (min-width: 462px) and (max-width: 475px) {
-  .widhead-container-title {
-    width: 84%;
+
+    @media screen and (max-width: 1080px) {
+      #map svg {
+        min-height: 65vh !important;
+        max-width: 86vw !important;
+      }
+      .map-radio {
+        display: grid;
+        justify-items: start;
+        align-items: center;
+        gap: 10px;
+        margin-left: 5px;
+      }
+      .map-tooltip-mobile{
+        /* width: ; */
+      }
+    
+    }
+
+@media  (min-width: 768px) and (max-width: 1300px) {
+
+  .stepsTimeItems {
+    flex-direction: column;
   }
+  .steps {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .steps-time1,
+  .steps-time2,
+  .steps-time3,
+  .steps-time4,
+  .steps-time5 {
+    transition: transform 0.3s ease;
+    transform: rotate(0);
+    z-index: 1;
+    margin-top: 8px;
+    height: auto;
+  }
+  .steps-time1:hover,
+  .steps-time2:hover,
+  .steps-time3:hover,
+  .steps-time4:hover,
+  .steps-time5:hover {
+    transform: scale(1.03) rotate(0);
+    z-index: 2;
+  }
+  .stepsBtn {
+    width: 100%;
+  }
+  .stepsBtnContent {
+    font-size: 16px;
+    color: #ffffffb2;
+  }
+  .stepsBtnTitle {
+    font-size: 23px;
+    font-weight: 700;
+  }
+
 }

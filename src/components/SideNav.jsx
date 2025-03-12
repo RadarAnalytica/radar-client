@@ -64,7 +64,7 @@ const SideNav = () => {
         <Link to='/'>
           <img src={logo} alt='' style={{ maxWidth: '160px' }}/>
         </Link>
-        <div className='mt-4'>
+        <div style={{marginTop: '1.5em'}}>
           <div className='sidenav-el' onClick={() => navigate('/dashboard')}>
             <div className='d-flex align-items-center'>
               <img
@@ -76,7 +76,7 @@ const SideNav = () => {
                 className='sidenav-title'
                 style={
                   active === 'dashboard'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                    ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
               >
@@ -120,7 +120,7 @@ const SideNav = () => {
                   active === 'prime-cost' ||
                   active === 'external-expenses' ||
                   active === 'buy-back'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                    ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
               >
@@ -137,8 +137,7 @@ const SideNav = () => {
               location === 'supply' ||
               location === 'stock-analysis' ? (
                 <svg
-                  width='18'
-                  height='18'
+                  width='3vh'
                   viewBox='0 0 20 18'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -158,7 +157,7 @@ const SideNav = () => {
                   location === 'supply' ||
                   location === 'abc-data' ||
                   location === 'stock-analysis'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                    ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
               >
@@ -173,7 +172,7 @@ const SideNav = () => {
                 className='sidenav-title ps-4 submenu-item'
                 style={
                   location === 'supply'
-                    ? { fontWeight: 'bold', fontSize: '14px', display: 'none' }
+                    ? { fontWeight: 'bold', display: 'none' }
                     : { display: 'none' }
                 }
                 onClick={() => navigate('/development/supply')}
@@ -196,7 +195,7 @@ const SideNav = () => {
                 className='sidenav-title padding-left submenu-item'
                 style={
                   location === 'orders-map'
-                    ? { fontWeight: 'bold', fontSize: '14px' }
+                    ? { fontWeight: 'bold' }
                     : {}
                 }
                 onClick={() => navigate('/orders-map')}
@@ -220,7 +219,7 @@ const SideNav = () => {
                 style={
                   // <<<<<<< HEAD
                   location === 'abc-data'
-                    ? { fontWeight: 'bold', fontSize: '14px' }
+                    ? { fontWeight: 'bold' }
                     : {}
                 }
                 onClick={() => navigate('/abc-data')}
@@ -253,7 +252,6 @@ const SideNav = () => {
                   location === 'stock-analysis' || productUrl
                     ? {
                         fontWeight: 'bold',
-                        fontSize: '14px',
                         whiteSpace: 'nowrap',
                       }
                     : {}
@@ -285,8 +283,7 @@ const SideNav = () => {
               location === 'monitoring' ||
               location === 'ai-generator' ? (
                 <svg
-                  width='20'
-                  height='20'
+                  width='3vh'
                   viewBox='0 0 20 20'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -305,7 +302,7 @@ const SideNav = () => {
                   location === 'calculate' ||
                   location === 'monitoring' ||
                   location === 'ai-generator'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                    ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
               >
@@ -325,7 +322,6 @@ const SideNav = () => {
                   whiteSpace: 'nowrap',
                   ...(location === 'ai-generator' && {
                     fontWeight: 'bold',
-                    fontSize: '14px',
                   }),
                 }}
               >
@@ -342,14 +338,14 @@ const SideNav = () => {
                   </svg>
                 ) : null}
                 Генерация описания
-                <img src={aiGenerator} style={{ marginLeft: '5px' }} />
+                <img src={aiGenerator} style={{ marginLeft: '5px', width: '4vh' }} />
               </p>
               <p
                 className='sidenav-title submenu-item'
                 onClick={() => navigate('/monitoring')}
                 style={
                   location === 'monitoring'
-                    ? { fontWeight: 'bold', fontSize: '14px' }
+                    ? { fontWeight: 'bold' }
                     : {}
                 }
               >
@@ -372,7 +368,7 @@ const SideNav = () => {
                 onClick={() => navigate('/calculate')}
                 style={
                   location === 'calculate'
-                    ? { fontWeight: 'bold', fontSize: '14px' }
+                    ? { fontWeight: 'bold' }
                     : {}
                 }
               >
@@ -395,7 +391,7 @@ const SideNav = () => {
                 onClick={() => navigate('/seo')}
                 style={
                   location === 'seo'
-                    ? { fontWeight: 'bold', fontSize: '14px' }
+                    ? { fontWeight: 'bold' }
                     : {}
                 }
               >
@@ -423,8 +419,7 @@ const SideNav = () => {
           >
             <div className='d-flex align-items-center'>
               <svg
-                width='24'
-                height='24'
+                width='3vh'
                 viewBox='0 0 24 24'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
@@ -442,11 +437,7 @@ const SideNav = () => {
               <span
                 className='sidenav-title'
                 style={
-                  location === 'abc-data'
-                    ? { fontWeight: '', fontSize: '14px', color: '#F0AD00' }
-                    : {
-                        fontWeight: '',
-                        fontSize: '14px',
+                     {
                         color: '#F0AD00',
                       }
                 }
@@ -477,9 +468,7 @@ const SideNav = () => {
               <p
                 className='sidenav-title ps-4 submenu-item'
                 style={
-                  location === 'plagin'
-                    ? { fontWeight: 'bold', fontSize: '14px' }
-                    : {}
+                     { marginBottom: 0 }
                 }
                 onClick={() => navigate('')}
               >
@@ -538,7 +527,7 @@ const SideNav = () => {
         </span>
         <span
           className='error-notification'
-          style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}
+          style={{ display: messagesShown > 0 || messagesShown !== undefined ? 'flex' : 'none', alignItems: 'center', marginLeft: '10px' }}
         >
           <span>
             {messagesShown <= 0 || messagesShown === undefined ? (
