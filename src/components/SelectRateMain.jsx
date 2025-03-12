@@ -1015,7 +1015,7 @@ const SelectRateMain = ({ redirect, isShowText }) => {
                 {selectedPeriod === '6month' ? <Steps.Circle /> : <span></span>}
                 <span>6 месяцев </span>
                 <span className='saleTextMobile'>
-                  {!subscriptionDiscount ? 'до -60%' : '-50%'}
+                  {!subscriptionDiscount ? 'до -40%' : '-50%'}
                 </span>
               </button>
             </div>

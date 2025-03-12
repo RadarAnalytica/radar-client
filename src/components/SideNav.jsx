@@ -120,7 +120,7 @@ const SideNav = () => {
                   active === 'prime-cost' ||
                   active === 'external-expenses' ||
                   active === 'buy-back'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                    ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
               >
@@ -157,7 +157,7 @@ const SideNav = () => {
                   location === 'supply' ||
                   location === 'abc-data' ||
                   location === 'stock-analysis'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                    ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
               >
@@ -252,7 +252,6 @@ const SideNav = () => {
                   location === 'stock-analysis' || productUrl
                     ? {
                         fontWeight: 'bold',
-                        fontSize: '14px',
                         whiteSpace: 'nowrap',
                       }
                     : {}
@@ -303,7 +302,7 @@ const SideNav = () => {
                   location === 'calculate' ||
                   location === 'monitoring' ||
                   location === 'ai-generator'
-                    ? { fontWeight: 'bold', fontSize: '14px', color: 'black' }
+                    ? { fontWeight: 'bold', color: 'black' }
                     : {}
                 }
               >
@@ -438,11 +437,7 @@ const SideNav = () => {
               <span
                 className='sidenav-title'
                 style={
-                  location === 'abc-data'
-                    ? { fontWeight: '', fontSize: '14px', color: '#F0AD00' }
-                    : {
-                        fontWeight: '',
-                        fontSize: '14px',
+                     {
                         color: '#F0AD00',
                       }
                 }
@@ -473,9 +468,7 @@ const SideNav = () => {
               <p
                 className='sidenav-title ps-4 submenu-item'
                 style={
-                  {
-                    marginBottom: 0,
-                  }
+                     { marginBottom: 0 }
                 }
                 onClick={() => navigate('')}
               >

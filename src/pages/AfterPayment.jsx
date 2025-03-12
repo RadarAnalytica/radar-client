@@ -18,7 +18,7 @@ const AfterPayment = () => {
   useEffect(() => {
     setTimeout(() => {
       if (status) {
-        navigate('/onboarding');
+        navigate('/');
       } else {
         navigate('/tariffs');
       }

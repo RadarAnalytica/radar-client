@@ -5,6 +5,12 @@ import { store } from '../redux/store'
 export const ServiceFunctions = {
   register: async (object) => {
     try {
+      if (object.password === null || object.password.length < 6) {
+        return {
+          success: false,
+          message: 'Пароль должен быть не короче 6 символов'
+        }
+      }
       const res = await fetch(`${URL}/api/user/signup`, {
         method: 'POST',
         headers: {

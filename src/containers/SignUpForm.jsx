@@ -132,7 +132,7 @@ const SignUpForm = () => {
     const nullable = Object.values(obj)?.filter((item) => item === null);
     console.log(obj, Object.values(obj), nullable);
     
-    if (!obj || nullable?.length > 3 || !isValidEmail(obj.email)) {
+    if (!obj || nullable?.length > 3 || !isValidEmail(obj.email) || (obj.password && obj.password.length < 6)) {
       e.preventDefault();
       setError('Введите корректное значение для всех полей');
       setShow(true);
