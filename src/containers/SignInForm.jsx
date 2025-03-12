@@ -211,7 +211,7 @@ const SignInForm = () => {
         </div>
 
         <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton style={{border: 'none'}}>
             <div>
               <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
                 <img src={warningIcon} alt='' style={{ height: '3vh' }} />
