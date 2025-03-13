@@ -1369,6 +1369,7 @@ const DashboardPage = () => {
                         activeBrand={activeBrand}
                         selectedRange={selectedRange}
                         updateDataDashBoard={updateDataDashBoard}
+                        loading={loading}
                       />
                     </div>
                 </div>
