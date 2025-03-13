@@ -186,7 +186,8 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getDownloadDashBoard: async () => {
+  getDownloadDashBoard: async (token, selectedRange, shop) => {
+    let rangeParams = rangeApiFormat(selectedRange);
     const res = await fetch(`${URL}/api/dashboard/download?${rangeParams}&shop=${shop}`, {
       method: 'GET',
       headers: {

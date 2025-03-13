@@ -39,7 +39,7 @@ const DashboardFilter = ({
     .join('-');
 
   const handleDownload = async () => {
-    const fileBlob = await ServiceFunctions.getProdAnalyticXlsx(authToken, selectedRange, activeShopId);
+    const fileBlob = await ServiceFunctions.getDownloadDashBoard(authToken, selectedRange, activeShopId);
     fileDownload(fileBlob, 'Сводка_продаж.xlsx');
     // fetch(
     //   `${URL}/api/dashboard/download?period=${periodValue}&shop=${activeShopId}`,
