@@ -23,6 +23,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
         if (typeof a[key] === 'number' && typeof b[key] === 'number') {
           return direction === 'asc' ? a[key] - b[key] : b[key] - a[key];
         } else {
+          console.log(a, b)
           return direction === 'asc'
             ? a[key].localeCompare(b[key])
             : b[key].localeCompare(a[key]);
@@ -101,6 +102,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     style={{ minHeight: '70px', borderTopLeftRadius: '12px', borderBottomLeftRadius: '12px' }}
                   >
                     Товар
+                    <div
+                      className='icon-sort-wrap'
+                      style={{ background: 'transparent' }}
+                    >
+                      {renderSortArrows('productName')}
+                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -143,6 +150,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                           textOverflow: 'ellipsis',
                           // cursor: 'pointer',
                         }}
+                        title={row.productName}
                         // onClick={() => handleClickProductName(row)}
                       >
                         {row.productName}
@@ -150,7 +158,45 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     </div>
                   ))}
                 </div>
-                <div className='column' style={{ width: '200px' }}>
+                <div className='column'>
+                  <div
+                    className='cell header-cell'
+                    style={{ minWidth: '200px', border: 'none' }}
+                  ></div>
+                  <div
+                    className='cell cell-header'
+                    style={{
+                      maxWidth: '200px', 
+                      minWidth: '150px',
+                      minHeight: '70px',
+                      border: 'none',
+                    }}
+                    onClick={() => sortData('vendorСode')}
+                  >
+                    Артикул
+                    <div
+                      className='icon-sort-wrap'
+                      style={{ background: 'transparent' }}
+                    >
+                      {renderSortArrows('vendorСode')}
+                    </div>
+                  </div>
+                  {dataTable.map((row, index) => (
+                    <div
+                      key={index}
+                      className='cell data-cell'
+                      style={{ maxWidth: '200px', minWidth: '150px', zIndex: '1' }}
+                    >
+                      <div className='text-truncate' title={row.vendorСode}>
+                        {row.vendorСode}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Scrollable columns */}
+              <div className='scrollable-columns'>
+              <div className='column' style={{ width: '200px' }}>
                   <div
                     className='cell header-cell'
                     style={{ border: 'none' }}
@@ -165,46 +211,23 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('brandName')}
                   >
                     Бренд
-                  </div>
-                  {dataTable.map((row, index) => (
                     <div
-                      key={index}
-                      className='cell data-cell goods-cell'
-                      style={{ minWidth: '200px', zIndex: '1' }}
+                      className='icon-sort-wrap'
+                      style={{ background: 'transparent' }}
                     >
-                      {row.brandName}
+                      {renderSortArrows('brandName')}
                     </div>
-                  ))}
-                </div>
-                <div className='column'>
-                  <div
-                    className='cell header-cell'
-                    style={{ minWidth: '200px', border: 'none' }}
-                  ></div>
-                  <div
-                    className='cell cell-header'
-                    style={{
-                      minWidth: '200px',
-                      minHeight: '70px',
-                      border: 'none',
-                    }}
-                    onClick={() => sortData('vendorСode')}
-                  >
-                    Артикул
                   </div>
                   {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
-                      style={{ minWidth: '200px', zIndex: '1' }}
+                      style={{ minWidth: '200px' }}
                     >
-                      {row.vendorСode}
+                      {row.brandName}
                     </div>
                   ))}
                 </div>
-              </div>
-              {/* Scrollable columns */}
-              <div className='scrollable-columns'>
                 <div className='column'>
                   <div
                     className='cell header-cell'
@@ -220,6 +243,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     onClick={() => sortData('sku')}
                   >
                     SKU
+                    <div
+                      className='icon-sort-wrap'
+                      style={{ background: 'transparent' }}
+                    >
+                      {renderSortArrows('sku')}
+                    </div>
                   </div>
                   {dataTable.map((row, index) => (
                     <div
@@ -249,7 +278,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
                     >
                       {renderSortArrows('size')}
                     </div>
@@ -282,7 +310,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
                     >
                       {renderSortArrows('category')}
                     </div>
@@ -326,7 +353,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('saleSum')}
                     >
                       {renderSortArrows('saleSum')}
                     </div>
@@ -356,12 +382,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('quantity')}
                   >
                     Кол-во
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('quantity')}
                     >
                       {renderSortArrows('quantity')}
                     </div>
@@ -395,7 +421,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('quantity')}
                     >
                       {renderSortArrows('lessReturns')}
                     </div>
@@ -466,7 +491,6 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('quantity')}
                     >
                       {renderSortArrows('returnsSum')}
                     </div>
@@ -496,12 +520,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('returnsQuantity')}
                   >
                     Кол-во
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('returnsQuantity')}
                     >
                       {renderSortArrows('returnsQuantity')}
                     </div>
@@ -631,12 +655,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       borderTop: 'none',
                       borderLeft: '1px solid #e0e0e0',
                     }}
+                    onClick={() => sortData('toClient')}
                   >
                     К клиенту
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('toClient')}
                     >
                       {renderSortArrows('toClient')}
                     </div>
@@ -701,12 +725,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('fromClient')}
                   >
                     От клиента
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('fromClient')}
                     >
                       {renderSortArrows('fromClient')}
                     </div>
@@ -769,12 +793,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       borderTop: 'none',
                       borderLeft: '1px solid #e0e0e0',
                     }}
+                    onClick={() => sortData('commissionWB')}
                   >
                     Комиссия WB
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('commissionWB')}
                     >
                       {renderSortArrows('commissionWB')}
                     </div>
@@ -804,12 +828,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('fines')}
                   >
                     Штрафы
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('fines')}
                     >
                       {renderSortArrows('fines')}
                     </div>
@@ -836,12 +860,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('additionalpayment')}
                   >
                     Доплаты
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('additionalpayment')}
                     >
                       {renderSortArrows('additionalpayment')}
                     </div>
@@ -879,12 +903,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       borderTop: 'none',
                       borderLeft: '1px solid #e0e0e0',
                     }}
+                    onClick={() => sortData('toPayoff')}
                   >
                     К выплате
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('toPayoff')}
                     >
                       {renderSortArrows('toPayoff')}
                     </div>
@@ -1081,13 +1105,13 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       borderTop: 'none',
                       borderLeft: '1px solid #e0e0e0',
                     }}
+                    onClick={() => sortData('byRevenue')}
                   >
                     По
                     <br /> выручке
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('byRevenue')}
                     >
                       {renderSortArrows('byRevenue')}
                     </div>
@@ -1117,13 +1141,13 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('byProfit')}
                   >
                     По
                     <br /> прибыли
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('byProfit')}
                     >
                       {renderSortArrows('byProfit')}
                     </div>
@@ -1161,12 +1185,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       borderTop: 'none',
                       borderLeft: '1px solid #e0e0e0',
                     }}
+                    onClick={() => sortData('basic')}
                   >
                     Базовая
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('basic')}
                     >
                       {renderSortArrows('basic')}
                     </div>
@@ -1196,13 +1220,13 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('maxDiscount')}
                   >
                     Макс.
                     <br /> скидка
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('maxDiscount')}
                     >
                       {renderSortArrows('maxDiscount')}
                     </div>
@@ -1229,13 +1253,13 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('minDiscountPrice')}
                   >
                     Мин. цена
                     <br /> со скидкой
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('minDiscountPrice')}
                     >
                       {renderSortArrows('minDiscountPrice')}
                     </div>
@@ -1273,12 +1297,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       borderTop: 'none',
                       borderLeft: '1px solid #e0e0e0',
                     }}
+                    onClick={() => sortData('orderQuantity')}
                   >
                     Кол-во
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('orderQuantity')}
                     >
                       {renderSortArrows('orderQuantity')}
                     </div>
@@ -1308,12 +1332,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('orderSum')}
                   >
                     Сумма
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('orderSum')}
                     >
                       {renderSortArrows('orderSum')}
                     </div>
@@ -1351,12 +1375,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       borderTop: 'none',
                       borderLeft: '1px solid #e0e0e0',
                     }}
+                    onClick={() => sortData('purchased')}
                   >
                     Выкуплено
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('purchased')}
                     >
                       {renderSortArrows('purchased')}
                     </div>
@@ -1386,12 +1410,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('notPurchased')}
                   >
                     Не выкуплено
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('notPurchased')}
                     >
                       {renderSortArrows('notPurchased')}
                     </div>
@@ -1418,15 +1442,15 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('purchasedPercent')}
                   >
                     Процент
                     <br /> выкупа
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('purchasedPrecent')}
                     >
-                      {renderSortArrows('purchasedPrecent')}
+                      {renderSortArrows('purchasedPercent')}
                     </div>
                   </div>
                   {dataTable.map((row, index) => (
@@ -1451,12 +1475,12 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       minHeight: '70px',
                       border: 'none',
                     }}
+                    onClick={() => sortData('completed')}
                   >
                     Завершены
                     <div
                       className='icon-sort-wrap'
                       style={{ background: 'transparent' }}
-                      onClick={() => sortData('completed')}
                     >
                       {renderSortArrows('completed')}
                     </div>
@@ -1562,7 +1586,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       borderRight: 'none',
                       borderBottom: 'none',
                       borderTop: 'none',
-                      marginRight: '17px',
+                      // marginRight: '17px',
                       borderLeft: '1px solid #e0e0e0',
                     }}
                   >

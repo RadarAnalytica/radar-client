@@ -186,34 +186,16 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getDownloadDashBoard: async () => {
-    // TODO вынести функционал скачивания отчета
-    /*
-      const handleDownload = async () => {
-        fetch(
-          `${URL}/api/dashboard/download?period=${periodValue}&shop=${activeShopId}`,
-          {
-            method: 'GET',
-            headers: {
-              authorization: 'JWT ' + authToken,
-            },
-          }
-        )
-          .then((response) => {
-            return response.blob();
-          })
-          .then((blob) => {
-            const url = window.URL.createObjectURL(new Blob([blob]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `Сводка_продаж.xlsx`);
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
-          })
-          .catch((e) => console.error(e));
-      };
-    */
+  getDownloadDashBoard: async (token, selectedRange, shop) => {
+    let rangeParams = rangeApiFormat(selectedRange);
+    const res = await fetch(`${URL}/api/dashboard/download?${rangeParams}&shop=${shop}`, {
+      method: 'GET',
+      headers: {
+        authorization: 'JWT ' + token,
+      },
+    });
+    const data = await res.blob()
+    return data;
   },
 
   getAllShops: async (token) => {

@@ -11,6 +11,7 @@ const SmallPlate = ({
   dataDashBoard,
   pieces,
   allProps,
+  loading,
 }) => {
   const rateUp = (
     <svg
@@ -65,7 +66,7 @@ const SmallPlate = ({
 
   return (
     <div className='small-plate' style={{ height: '100%' }}>
-      {dataDashBoard === null || dataDashBoard === undefined ? (
+      {dataDashBoard === null || dataDashBoard === undefined || loading ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'
           style={{ height: '100%' }}

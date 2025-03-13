@@ -276,6 +276,7 @@ const BigChart = ({
               height: '100%',
               width: '100%',
               position: 'absolute',
+              backgroundColor: '#fff',
             }}
           >
             <span className='loader'></span>

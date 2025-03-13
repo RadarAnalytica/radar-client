@@ -150,6 +150,7 @@ const FinanceTable = ({
   wbData,
   dataDashBoard,
   tableType,
+  loading,
 }) => {
   const tooltipList = {
     'Выручка': 'Сумма, заработанная при продаже товаров',
@@ -162,16 +163,38 @@ const FinanceTable = ({
   };
   return (
     <div className='finance-table'>
-      {!dataDashBoard ? (
+      <p className='fw-bold numbers mb-2'>{title}</p>
+      {!dataDashBoard || loading ? (
         <div
-          className='d-flex flex-column align-items-center justify-content-center'
-          style={{ height: "100%", paddingTop: "20%" }}
+          style={{
+            position: 'relative',
+            height: '100%',
+            width: '100%',
+            paddingTop: '20%',
+          }}
         >
-          <span className='loader'></span>
+          <div
+            className='d-flex flex-column align-items-center justify-content-center'
+            style={{
+              height: '100%',
+              width: '100%',
+              position: 'absolute',
+              top: 0,
+              left: 0
+              // backgroundColor: '#fff',
+            }}
+          >
+            <span className='loader'></span>
+          </div>
         </div>
+        // <div
+        //   className='d-flex flex-column align-items-center justify-content-center'
+        //   style={{ height: "100%", paddingTop: "20%" }}
+        // >
+        //   <span className='loader'></span>
+        // </div>
       ) : (
         <div>
-          <p className='fw-bold numbers mb-2'>{title}</p>
           {data &&
             data.map((item, i) => {
               let values = item ? Object.values(item) : [];
