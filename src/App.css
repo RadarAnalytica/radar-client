@@ -499,14 +499,17 @@ select {
   cursor: pointer;
 }
 
+.sidenav-el:hover .sidenav-title{
+  font-weight: bold;
+}
+
 .sidenav-title {
   color: var(--clue-color);
   font-weight: 500;
   margin-left: 10px;
   /* font-size: 2vh !important; */
 }
-
-.sidenav-el > div > img {
+.side-nav-icon {
   width: 2vh;
   height: 2vh;
 }
@@ -519,10 +522,6 @@ select {
 .submenu-item:hover {
   font-weight: bold;
   /* font-size: 14px; */
-}
-
-.side-nav-icon {
-  width: 20px;
 }
 
 .support-block {
@@ -578,7 +577,7 @@ select {
   font-weight: 600;
   line-height: 17.5px;
   color: rgba(26, 26, 26, 0.5);
-} */
+}
 
 .support-block-text-subtitle {
   font-size: 16px;
