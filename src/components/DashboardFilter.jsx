@@ -4,6 +4,7 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import { URL } from '../service/config';
 import Period from './period/Period';
+import {fileDownload} from '../service/utils';
 
 const DashboardFilter = ({
   setActiveBrand,
@@ -38,28 +39,30 @@ const DashboardFilter = ({
     .join('-');
 
   const handleDownload = async () => {
-    fetch(
-      `${URL}/api/dashboard/download?period=${periodValue}&shop=${activeShopId}`,
-      {
-        method: 'GET',
-        headers: {
-          authorization: 'JWT ' + authToken,
-        },
-      }
-    )
-      .then((response) => {
-        return response.blob();
-      })
-      .then((blob) => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `Сводка_продаж.xlsx`);
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-      })
-      .catch((e) => console.error(e));
+    const fileBlob = await ServiceFunctions.getProdAnalyticXlsx(authToken, selectedRange, activeShopId);
+    fileDownload(fileBlob, 'Сводка_продаж.xlsx');
+    // fetch(
+    //   `${URL}/api/dashboard/download?period=${periodValue}&shop=${activeShopId}`,
+    //   {
+    //     method: 'GET',
+    //     headers: {
+    //       authorization: 'JWT ' + authToken,
+    //     },
+    //   }
+    // )
+    //   .then((response) => {
+    //     return response.blob();
+    //   })
+    //   .then((blob) => {
+    //     const url = window.URL.createObjectURL(new Blob([blob]));
+    //     const link = document.createElement('a');
+    //     link.href = url;
+    //     link.setAttribute('download', `Сводка_продаж.xlsx`);
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     link.parentNode.removeChild(link);
+    //   })
+    //   .catch((e) => console.error(e));
   };
 
   return (
