@@ -6,7 +6,7 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, maxDataRevenue, stepSizeRevenue, isLoading }) => {
+const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, maxDataRevenue, stepSizeRevenue, loading }) => {
     const data = {
         labels: labels,
         datasets: [
@@ -141,27 +141,45 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
     return (
         <div className="chart-container">
             <p className='fw-bold numbers mb-2'>Продажи и прибыль</p>
-            <div className='chart-container-header mb-1'>
-                <div className='chart-header-wrapper'>
-                    <div className='chart-container-colors-wrapper'>
-                        <div className='roundedChartColor'></div>
-                        <div>Выручка, ₽</div>
-                    </div>
-                    <div className='chart-container-colors-wrapper'>
-                        <div className='roundedChartColorPurple'></div>
-                        <div>Чистая прибыль, ₽</div>
-                    </div>
-                </div>
-            </div>
-            {isLoading ? (
+            {loading ? (
                 <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100%', marginTop: "140px" }}
+                    style={{
+                    position: 'relative',
+                    height: '100%',
+                    width: '100%',
+                    paddingTop: '20%',
+                    }}
                 >
-                    <span className="loader"></span>
+                    <div
+                    className='d-flex flex-column align-items-center justify-content-center'
+                    style={{
+                        height: '100%',
+                        width: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0
+                        // backgroundColor: '#fff',
+                    }}
+                    >
+                    <span className='loader'></span>
+                    </div>
                 </div>
             ) : (
-                <Bar data={data} options={options} />
+                <>
+                    <div className='chart-container-header mb-1'>
+                        <div className='chart-header-wrapper'>
+                            <div className='chart-container-colors-wrapper'>
+                                <div className='roundedChartColor'></div>
+                                <div>Выручка, ₽</div>
+                            </div>
+                            <div className='chart-container-colors-wrapper'>
+                                <div className='roundedChartColorPurple'></div>
+                                <div>Чистая прибыль, ₽</div>
+                            </div>
+                        </div>
+                    </div>
+                    <Bar data={data} options={options} />
+                </>
             )}
         </div>
     );

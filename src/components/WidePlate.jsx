@@ -11,6 +11,7 @@ const WidePlate = ({
   products,
   data,
   dataDashBoard,
+  loading
 }) => {
 
   const sales = data
@@ -33,7 +34,22 @@ const WidePlate = ({
 
   return (
 
-    <div className='wide-plate w-100'>
+    <div className='wide-plate w-100' style={{position: 'relative'}}>
+      { loading &&
+        <div
+          className='d-flex flex-column align-items-center justify-content-center'
+          style={{
+              height: '100%',
+              width: '100%',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              backgroundColor: '#fff'
+          }}
+        >
+          <span className='loader'></span>
+        </div>
+      }
       <div className='wide-plate-title-element'>
         <div className='wide-plate-title-element-div'>
           <p className='fw-bold mb-2 numbers wide-plate-title-elem-p'>

@@ -208,6 +208,7 @@ const DashboardPage = () => {
   };
   useEffect(() => {
     const fetchInitialData = async () => {
+      setLoading(true);
       try {
         await dispatch(fetchShops(authToken));
         if (activeBrand !== undefined) {
@@ -216,6 +217,7 @@ const DashboardPage = () => {
       } catch (error) {
         console.error('Error fetching initial data:', error);
       } finally {
+        setLoading(false);
         setFirstLoading(false);
         setIsInitialLoading(false);
       }
@@ -386,8 +388,7 @@ const DashboardPage = () => {
       dataNetProfit,
       minDataRevenue,
       maxDataRevenue,
-      stepSizeRevenue,
-      isLoading: false,
+      stepSizeRevenue
     };
   };
 
@@ -1069,6 +1070,7 @@ const DashboardPage = () => {
                   quantity={dataDashBoard?.orderCount}
                   percent={dataDashBoard?.orderAmountCompare}
                   percent2={dataDashBoard?.orderCountCompare}
+                  loading={loading}
                 />
                 <MediumPlate
                   name={'Продажи'}
@@ -1078,6 +1080,7 @@ const DashboardPage = () => {
                   quantity={dataDashBoard?.saleCount}
                   percent={dataDashBoard?.saleAmountCompare}
                   percent2={dataDashBoard?.saleCountCompare}
+                  loading={loading}
                 />
                 <MediumPlate
                   name={'Возвраты'}
@@ -1085,6 +1088,7 @@ const DashboardPage = () => {
                   quantity={dataDashBoard?.returnCount}
                   percent={dataDashBoard?.returnAmountCompare}
                   percent2={dataDashBoard?.returnCountCompare}
+                  loading={loading}
                 />
                 <div className='col d-flex flex-column' style={{ gap: '2vh' }}>
                   <div className='' style={{ height: '11vh' }}>
@@ -1093,6 +1097,7 @@ const DashboardPage = () => {
                       dataDashBoard={dataDashBoard?.buyoutPercent}
                       type={'percent'}
                       percent={dataDashBoard?.buyoutPercentCompare || '0'}
+                      loading={loading}
                     />
                   </div>
                   <div className='' style={{ height: '11vh' }}>
@@ -1101,6 +1106,7 @@ const DashboardPage = () => {
                       dataDashBoard={dataDashBoard?.averageBill}
                       type={'price'}
                       percent={curOrders?.periodComparison?.avgPriceRubDynamics}
+                      loading={loading}
                     />
                   </div>
                 </div>
@@ -1241,6 +1247,7 @@ const DashboardPage = () => {
                     dataDashBoard={dataDashBoard?.costPriceAmount}
                     percent={dataDashBoard?.costPriceAmountCompare}
                     pieces={dataDashBoard?.saleCount}
+                    loading={loading}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
@@ -1252,6 +1259,7 @@ const DashboardPage = () => {
                     dataDashBoard={dataDashBoard?.returnAmount}
                     percent={dataDashBoard?.returnAmountCompare}
                     pieces={dataDashBoard?.returnCount}
+                    loading={loading}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
@@ -1262,6 +1270,7 @@ const DashboardPage = () => {
                     nochart={true}
                     dataDashBoard={dataDashBoard?.penalty}
                     allProps={dataDashBoard}
+                    loading={loading}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
@@ -1270,6 +1279,7 @@ const DashboardPage = () => {
                     type={'price'}
                     nochart={true}
                     dataDashBoard={dataDashBoard?.additional}
+                    loading={loading}
                   />
                 </div>
               </div>
@@ -1280,6 +1290,7 @@ const DashboardPage = () => {
                     type={'price'}
                     dataDashBoard={dataDashBoard?.commissionWB}
                     persent={dataDashBoard?.commissionWBCompare}
+                    loading={loading}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
@@ -1288,6 +1299,7 @@ const DashboardPage = () => {
                     type={'price'}
                     dataDashBoard={dataDashBoard?.logistics}
                     percent={dataDashBoard?.logisticsCompare}
+                    loading={loading}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
@@ -1296,6 +1308,7 @@ const DashboardPage = () => {
                     type={'price'}
                     dataDashBoard={dataDashBoard?.storageData}
                     percent={dataDashBoard?.storageDataCompare}
+                    loading={loading}
                   />
                 </div>
                 <div className='col' style={{ height: '14vh' }}>
@@ -1306,6 +1319,7 @@ const DashboardPage = () => {
                     quantity={curOrders?.selectedPeriod?.cancelCount}
                     dataDashBoard={dataDashBoard?.lostSalesAmount}
                     pieces={dataDashBoard?.lostSalesCount}
+                    loading={loading}
                   />
                 </div>
               </div>
@@ -1322,10 +1336,13 @@ const DashboardPage = () => {
                       wbData={wbData}
                       dataDashBoard={dataDashBoard}
                       tableType={1}
+                      loading={loading}
                     />
                   </div>
                   <div className='mb-3'>
-                    <ScheduleBigChart {...salesAndProfit} />
+                    <ScheduleBigChart
+                      {...salesAndProfit} loading={loading} 
+                    />
                   </div>
                   <div className='mb-3'>
                     <StorageTable
@@ -1335,13 +1352,14 @@ const DashboardPage = () => {
                       titles={['Где товар', 'Капитализация', '', 'Остатки']}
                       subtitles={['', 'Себестоимость', 'Розница', '']}
                       dataDashBoard={dataDashBoard}
+                      loading={loading}
                     />
                   </div>
                   <div className='d-flex align-items-stretch gap-3'>
                     <div className="col w-50">
                       <StructureRevenue
                         dataStructureRevenue={structure}
-                        isLoading={false}
+                        loading={loading}
                         />
                     </div>
                     <div className="col w-50">
@@ -1359,6 +1377,7 @@ const DashboardPage = () => {
                   <div className='mb-3'>
                     <ScheduleProfitabilityChart
                       {...chartRoiMarginalityData}
+                      loading={loading}
                     />
                   </div>
                   <div className='mb-3'>
@@ -1369,10 +1388,11 @@ const DashboardPage = () => {
                       wbData={wbData}
                       dataDashBoard={dataDashBoard}
                       tableType={1}
+                      loading={loading}
                     />
                   </div>
                   <div className='mb-3 flex-grow-1'>
-                    <RevenueStorageChart {...revenueByWarehouse}
+                    <RevenueStorageChart {...revenueByWarehouse} loading={loading}
                     // {...fakeData3} className={styles.revenueStorageChart} 
                     />
                   </div>
@@ -1381,6 +1401,7 @@ const DashboardPage = () => {
                     data={costsData}
                     wbData={wbData}
                     dataDashBoard={dataDashBoard}
+                    loading={loading}
                   />
                 </div>
               </div>
@@ -1395,6 +1416,7 @@ const DashboardPage = () => {
                     wbData && wbData.sales ? abcAnalysis(wbData.sales.data) : []
                   }
                   dataDashBoard={dataDashBoard?.ABCAnalysis}
+                  loading={loading}
                 />
               </div>
             </div>

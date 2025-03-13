@@ -13,6 +13,7 @@ const MediumPlate = ({
   text2,
   dataDashBoard,
   days,
+  loading,
 }) => {
   // const green = require('../assets/greenarrow.png');
   // const red = require('../assets/redarrow.png');
@@ -158,7 +159,7 @@ const MediumPlate = ({
 
   return (
     <div className='medium-plate col'>
-      {dataDashBoard === null || dataDashBoard === undefined ? (
+      {dataDashBoard === null || dataDashBoard === undefined || loading ? (
         <div
           className='d-flex flex-column align-items-center justify-content-center'
           style={{ height: '100%' }}

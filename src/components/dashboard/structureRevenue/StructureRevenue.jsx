@@ -5,7 +5,7 @@ import styles from './StructureRevenue.module.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
+const StructureRevenue = ({ dataStructureRevenue, loading }) => {
     const data = {
         labels: ['Все удержания', 'Всего внешних расходов', 'Налог', "Доход", "Себестоимость"],
         datasets: [
@@ -124,12 +124,27 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
     return (
         <div className={`chart-container h-100 ${styles.revenueStructure} scehdule-revenue-structure`}>
             <p className='fw-bold numbers mb-2'>Структура выручки</p>
-            {isLoading ? (
+            {loading ? (
                 <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100%', marginTop: "200px" }}
+                    style={{
+                    position: 'relative',
+                    height: '100%',
+                    width: '100%',
+                    paddingTop: '20%',
+                    }}
                 >
-                    <span className="loader"></span>
+                    <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0
+                        }}
+                    >
+                        <span className='loader'></span>
+                    </div>
                 </div>
             ) : (
                 <Doughnut data={data} options={options} style={{ margin: "auto" }} />

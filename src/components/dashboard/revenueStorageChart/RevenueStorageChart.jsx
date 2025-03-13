@@ -1,7 +1,7 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => {
+const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max, loading }) => {
     const data = {
         labels: labels,
         datasets: [
@@ -100,15 +100,31 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
     const safeLabels = data?.labels || []; // Default to an empty array if labels are undefined
     const chartHeight = safeLabels.length < 10 ? 300 : Math.max(safeLabels.length * 60, 400);
     return (
+
         <div className='chart-container h-100'>
             <p className='fw-bold numbers mb-2'>Выручка по складам</p>
-            {isLoading ? (
+            {loading ? (
                 <div
-                    className="d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: '100%', marginTop: "200px" }}
+                    style={{
+                    position: 'relative',
+                    height: '100%',
+                    width: '100%',
+                    paddingTop: '20%',
+                    }}
                 >
-                    <span className="loader"></span>
-                </div>
+                    <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0
+                        }}
+                    >
+                        <span className='loader'></span>
+                    </div>
+              </div>
             ) : (
                 <div style={{ height: '100%', overflowY: 'auto' }}>
                     <Bar data={data} options={options} />
