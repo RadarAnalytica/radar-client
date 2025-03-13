@@ -198,9 +198,8 @@ const OrderMapPieChart = ({
                       const color = tooltipModel.labelColors[0].backgroundColor;
                       const titleLines = tooltipModel.title || [];
                       const bodyLines = tooltipModel.body.map(getBody);
-                      const amount =
-                        tooltipData[targetInex]?.amount?.toFixed(2);
-                      const count = tooltipData[targetInex]?.count?.toFixed(2);
+                      const amount = tooltipData[targetInex]?.amount ? tooltipData[targetInex]?.amount?.toFixed(0) : '-';
+                      const count = tooltipData[targetInex]?.count ? tooltipData[targetInex]?.count?.toFixed(0) : '-';
 
                       let innerHtml = '<thead>';
 
@@ -323,7 +322,6 @@ const OrderMapPieChart = ({
         </div>
         <div
           style={{
-            marginLeft: '1vw',
             display: 'flex',
             flexDirection: 'column',
             alignSelf: 'center',
@@ -338,44 +336,47 @@ const OrderMapPieChart = ({
               const percent = isOrders ? obj.percentOrder : obj.percent;
               return (
                 <div
-                  className='mb-2 d-flex'
-                  style={{ flexWrap: 'wrap', maxWidth: '100%' }}
+                  className='mb-2'
+                  style={{ maxWidth: '100%', boxSizing: 'border-box', display: 'grid', gridTemplateColumns: '4fr 1fr 1.5fr', alignItems: 'center' }}
                   key={key}
                 >
-                  <div className='d-flex align-items-start'>
+                  {/* circle & title */}
+                  <div className='d-flex align-items-center w-auto'
+                    style={{ overflow: 'hidden' }}
+                  >
                     <span
-                      className='pb-2'
+                      className='d-flex align-items-center'
                       style={{
-                        width: '0.75vw',
-                        height: '0.75vw',
+                        //width: '0.75vw',
+                        //height: '0.75vw',
                         borderRadius: '100%',
 
-                        marginLeft: '-0.5vw',
-                        marginRight: '0.7vw',
-                        marginTop: '-0.75vh',
+                        //marginLeft: '-0.5vw',
+                        marginRight: '6px',
+
+                        //marginTop: '-0.75vh',
                       }}
                     >
                       {obj.districtName
                         ? getColor(obj.districtName)
                         : getCityCircle(getColorStockTooltip(obj.stockName))}
                     </span>
-                    <p className='mb-0  pe-2' style={{ fontSize: '1.75vh' }}>
+                    <p className='m-0 p-0' style={{ fontSize: '1.75vh', textWrap: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '100%' }}>
                       {obj.districtName ? obj.districtName : obj.stockName}
                     </p>
                   </div>
+                  {/* data */}
                   <p
-                    className='mb-0 col text-end fw-bold'
-                    style={{ fontSize: '1.85vh' }}
+                    className='fw-bold m-0'
+                    style={{ fontSize: '1.85vh', width: 'auto', paddingLeft: '10px'}}
                   >
                     {percent ? percent.toFixed(percent < 10 ? 1 : 0) : 0}
                     &nbsp;%
                   </p>
                   <div
-                    className='mb-0 ms-1  col-2 text-end d-flex justify-content-around align-items-start'
+                    className='d-flex justify-content-end align-items-center'
                     style={{
                       fontSize: '1.85vh',
-                      paddingLeft: '1vw',
-                      marginRight: '1vw',
                     }}
                   >
                     <span className='pb-1'>
@@ -386,7 +387,7 @@ const OrderMapPieChart = ({
                       />
                     </span>
                     <span
-                      className='pt-1 mr-1'
+                      className=''
                       style={
                         compare > 0
                           ? {
@@ -406,6 +407,9 @@ const OrderMapPieChart = ({
                       {compare ? Number(compare).toFixed(0) : 0} %
                     </span>
                   </div>
+
+
+
                 </div>
               );
             })
