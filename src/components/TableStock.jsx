@@ -143,6 +143,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                           textOverflow: 'ellipsis',
                           // cursor: 'pointer',
                         }}
+                        title={row.productName}
                         // onClick={() => handleClickProductName(row)}
                       >
                         {row.productName}
@@ -150,7 +151,39 @@ const TableStock = ({ dataTable, setDataTable }) => {
                     </div>
                   ))}
                 </div>
-                <div className='column' style={{ width: '200px' }}>
+                <div className='column'>
+                  <div
+                    className='cell header-cell'
+                    style={{ minWidth: '200px', border: 'none' }}
+                  ></div>
+                  <div
+                    className='cell cell-header'
+                    style={{
+                      maxWidth: '200px', 
+                      minWidth: '150px',
+                      minHeight: '70px',
+                      border: 'none',
+                    }}
+                    onClick={() => sortData('vendorСode')}
+                  >
+                    Артикул
+                  </div>
+                  {dataTable.map((row, index) => (
+                    <div
+                      key={index}
+                      className='cell data-cell'
+                      style={{ maxWidth: '200px', minWidth: '150px', zIndex: '1' }}
+                    >
+                      <div className='text-truncate' title={row.vendorСode}>
+                        {row.vendorСode}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Scrollable columns */}
+              <div className='scrollable-columns'>
+              <div className='column' style={{ width: '200px' }}>
                   <div
                     className='cell header-cell'
                     style={{ border: 'none' }}
@@ -169,42 +202,13 @@ const TableStock = ({ dataTable, setDataTable }) => {
                   {dataTable.map((row, index) => (
                     <div
                       key={index}
-                      className='cell data-cell goods-cell'
-                      style={{ minWidth: '200px', zIndex: '1' }}
+                      className='cell data-cell'
+                      style={{ minWidth: '200px' }}
                     >
                       {row.brandName}
                     </div>
                   ))}
                 </div>
-                <div className='column'>
-                  <div
-                    className='cell header-cell'
-                    style={{ minWidth: '200px', border: 'none' }}
-                  ></div>
-                  <div
-                    className='cell cell-header'
-                    style={{
-                      minWidth: '200px',
-                      minHeight: '70px',
-                      border: 'none',
-                    }}
-                    onClick={() => sortData('vendorСode')}
-                  >
-                    Артикул
-                  </div>
-                  {dataTable.map((row, index) => (
-                    <div
-                      key={index}
-                      className='cell data-cell'
-                      style={{ minWidth: '200px', zIndex: '1' }}
-                    >
-                      {row.vendorСode}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Scrollable columns */}
-              <div className='scrollable-columns'>
                 <div className='column'>
                   <div
                     className='cell header-cell'
@@ -1562,7 +1566,7 @@ const TableStock = ({ dataTable, setDataTable }) => {
                       borderRight: 'none',
                       borderBottom: 'none',
                       borderTop: 'none',
-                      marginRight: '17px',
+                      // marginRight: '17px',
                       borderLeft: '1px solid #e0e0e0',
                     }}
                   >
