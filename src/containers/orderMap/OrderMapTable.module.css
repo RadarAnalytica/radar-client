@@ -1,0 +1,28 @@
+.table {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(auto, 4fr) 1fr max-content 1fr;
+    grid-template-rows: auto;
+    column-gap: 12px;
+    row-gap: 8px;
+}
+
+.table_extended {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(auto, 4fr) max-content min-content min-content;
+    grid-template-rows: auto;
+    column-gap: 12px;
+    row-gap: 8px;
+}
+
+
+.table__rowTitle {
+    width: 100%;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-wrap: nowrap;
+    margin: 0;
+    padding: 0;
+}
