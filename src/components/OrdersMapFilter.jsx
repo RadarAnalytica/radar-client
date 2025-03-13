@@ -36,6 +36,8 @@ const OrdersMapFilter = ({
               padding: '1vh 1.75vh',
               backgroundColor: 'rgba(0, 0, 0, 0.05)',
               borderRadius: '8px',
+              height: '38px',
+              minHeight: '38px !important'
             }}
             className='form-control'
             id='store'
