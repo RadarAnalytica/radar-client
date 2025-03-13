@@ -9,7 +9,7 @@ const Period = ({ selectedRange, setSelectedRange }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
-    const [selectedOption, setSelectedOption] = useState(selectedRange?.period || 30);
+    const [selectedOption, setSelectedOption] = useState(selectedRange);
     const [localSelectedRange, setLocalSelectedRange] = useState(selectedRange);
 
     const today = new Date();
@@ -59,7 +59,7 @@ const Period = ({ selectedRange, setSelectedRange }) => {
             setSelectedOption("");
             toggleCalendar();
         } else {
-            setSelectedOption(value);
+            setSelectedOption({period: value});
             setSelectedRange({period: value});
             setIsCalendarOpen(false);
         }
@@ -81,6 +81,7 @@ const Period = ({ selectedRange, setSelectedRange }) => {
     };
 
     const formatDateRange = (range) => {
+        console.log('formatDateRange', range);
         if (range.from && range.to) {
             return `${format(range.from, 'dd.MM.yyyy')} - ${format(range.to, 'dd.MM.yyyy')}`;
         }
@@ -114,7 +115,7 @@ const Period = ({ selectedRange, setSelectedRange }) => {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
                 <div className={styles.selectedOption}>
-                    {selectedOption ? `${selectedOption} дней` : formatDateRange(localSelectedRange)}
+                    {selectedOption.period ? `${selectedOption.period} дней` : formatDateRange(localSelectedRange)}
                 </div>
                 <svg
                     width="14"

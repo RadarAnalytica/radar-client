@@ -41,7 +41,7 @@ const AbcAnalysisFilter = ({
   return (
     <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row w-100'>
-        <div className='filter-item col' style={{ position: "relative" }}>
+        <div className='filter-item col'>
           <Period
             selectedRange={periodValue}
             setSelectedRange={setDays}
