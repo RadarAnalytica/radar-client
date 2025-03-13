@@ -91,8 +91,8 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
         },
         interaction: {
             mode: 'index',
-            axis: 'х', // Ограничиваем область взаимодействия только осью Y
-            intersect: true, // Тултип отображается только при наведении на саму колонку
+            axis: 'y',
+            intersect: false
         },
     };
 
