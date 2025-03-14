@@ -25,7 +25,7 @@ const OrderMapTable = ({ title, data, totalAmount, totalCount }) => {
           ? withName.map((item, key) => (
           
             <>
-              <p className={styles.table__rowTitle}>
+              <p className={styles.table__rowTitle} title={item.districtName || 'Регион не определен'}>
                 {item.districtName || 'Регион не определен'}
               </p>
               <p className='mb-2 col'>{item.count}&nbsp;шт</p>

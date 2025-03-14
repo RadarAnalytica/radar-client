@@ -97,8 +97,9 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
             {subTitle && <p 
               className='p-0' 
               style={{
-                fontSize: "24px", 
-                lineHeight: "30px", 
+                // fontSize: "24px", 
+                fontSize: "2.75vh", 
+                // lineHeight: "30px", 
                 color: 'rgba(26, 26, 26, 0.3)', 
                 fontWeight: 700, 
                 marginRight: '12px', 
