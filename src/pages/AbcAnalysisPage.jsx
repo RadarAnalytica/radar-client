@@ -314,8 +314,8 @@ const AbcAnalysisPage = () => {
       <div className='dashboard-page'>
         
         <SideNav />
-        <div className='dashboard-content pb-3'>
-          <TopNav title={"ABC-анализ"} />
+        <div className='dashboard-content pb-3' style={{ padding: '0 20px 0 50px'}}>
+          <TopNav title={"ABC-анализ"} mikeStarinaStaticProp />
 
           {!isInitialLoading && isNeedCost && shouldDisplay ? (
             <SelfCostWarning
@@ -324,7 +324,7 @@ const AbcAnalysisPage = () => {
             />
           ) : null}
 
-          <div className='pt-0 d-flex gap-3'>
+          <div className='d-flex gap-3' style={{ marginTop: '20px'}}>
             <AbcAnalysisFilter
               shops={shops}
               setActiveBrand={handleSaveActiveShop}
