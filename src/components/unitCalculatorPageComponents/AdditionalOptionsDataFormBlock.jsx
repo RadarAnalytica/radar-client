@@ -1,6 +1,7 @@
 import { useState } from "react"
 import styles from './AdditionalOptionsDataFormBlock.module.css'
 import { Form, Input, Radio, ConfigProvider } from 'antd';
+import { normilizeUnitsInputValue } from "./UnitCalcUtils";
 
 const AdditionalOptionsDataFormBlock = ({ form }) => {
 
@@ -46,9 +47,14 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                 label='Логистика от производителя'
                                 className={styles.formItem}
                                 name='inhouse_logistics_price'
+                                getValueProps={(value) => {
+                                    const transformedValue = {value: value ? value + ' ₽' : value}
+                                    return transformedValue
+                                }}
                                 normalize={(value, prevValue) => {
+                                    const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
                                     const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                                    if (regex.test(value)) { return value };
+                                    if (regex.test(normalizedValue)) { return normalizedValue };
                                     return prevValue || '';
                                 }}
                             >
@@ -62,9 +68,14 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                 label='Упаковка и маркировка'
                                 className={styles.formItem}
                                 name='packaging_price'
+                                getValueProps={(value) => {
+                                    const transformedValue = {value: value ? value + ' ₽' : value}
+                                    return transformedValue
+                                }}
                                 normalize={(value, prevValue) => {
+                                    const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
                                     const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                                    if (regex.test(value)) { return value };
+                                    if (regex.test(normalizedValue)) { return normalizedValue };
                                     return prevValue || '';
                                 }}
                             >
@@ -78,9 +89,14 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                 label='Логистика до маркетплейса'
                                 className={styles.formItem}
                                 name='mp_logistics_price'
+                                getValueProps={(value) => {
+                                    const transformedValue = {value: value ? value + ' ₽' : value}
+                                    return transformedValue
+                                }}
                                 normalize={(value, prevValue) => {
+                                    const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
                                     const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                                    if (regex.test(value)) { return value };
+                                    if (regex.test(normalizedValue)) { return normalizedValue };
                                     return prevValue || '';
                                 }}
                             >
@@ -94,9 +110,14 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                 label='Услуги фулфилмента'
                                 className={styles.formItem}
                                 name='fullfilment_price'
+                                getValueProps={(value) => {
+                                    const transformedValue = {value: value ? value + ' ₽' : value}
+                                    return transformedValue
+                                }}
                                 normalize={(value, prevValue) => {
+                                    const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
                                     const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                                    if (regex.test(value)) { return value };
+                                    if (regex.test(normalizedValue)) { return normalizedValue };
                                     return prevValue || '';
                                 }}
                             >
@@ -149,9 +170,14 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                             <Form.Item
                                 label='Налоговая ставка'
                                 className={styles.formItem}
+                                getValueProps={(value) => {
+                                    const transformedValue = {value: value ? value + ' %' : value}
+                                    return transformedValue
+                                }}
                                 normalize={(value, prevValue) => {
+                                    const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
                                     const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                                    if (regex.test(value)) { return value };
+                                    if (regex.test(normalizedValue)) { return normalizedValue };
                                     return prevValue || '';
                                 }}
                                 name='tax_rate'
@@ -183,9 +209,14 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                     label='Затраты на рекламу'
                                     className={styles.formItem}
                                     name='adv_price'
+                                    getValueProps={(value) => {
+                                        const transformedValue = {value: value ? value + ' ₽' : value}
+                                        return transformedValue
+                                    }}
                                     normalize={(value, prevValue) => {
+                                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
                                         const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                                        if (regex.test(value)) { return value };
+                                        if (regex.test(normalizedValue)) { return normalizedValue };
                                         return prevValue || '';
                                     }}
                                 >
@@ -199,9 +230,14 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                     label='Брак'
                                     className={styles.formItem}
                                     name='defective_percentage'
+                                    getValueProps={(value) => {
+                                        const transformedValue = {value: value ? value + ' %' : value}
+                                        return transformedValue
+                                    }}
                                     normalize={(value, prevValue) => {
+                                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
                                         const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                                        if (regex.test(value)) { return value };
+                                        if (regex.test(normalizedValue)) { return normalizedValue };
                                         return prevValue || '';
                                     }}
                                 >
@@ -216,9 +252,14 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                             <Form.Item
                                 label='Другое'
                                 className={styles.formItem}
+                                getValueProps={(value) => {
+                                    const transformedValue = {value: value ? value + ' ₽' : value}
+                                    return transformedValue
+                                }}
                                 normalize={(value, prevValue) => {
+                                    const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
                                     const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                                    if (regex.test(value)) { return value };
+                                    if (regex.test(normalizedValue)) { return normalizedValue };
                                     return prevValue || '';
                                 }}
                                 name='other_costs'

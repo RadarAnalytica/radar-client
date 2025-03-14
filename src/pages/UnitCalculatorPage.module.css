@@ -23,6 +23,11 @@
     overflow-y: scroll;
 }
 
+.page__resultWrapper {
+    width: 100%;
+    height: 100%;
+}
+
 .page__mainContentWrapper {
     width: 100%;
     display: grid;

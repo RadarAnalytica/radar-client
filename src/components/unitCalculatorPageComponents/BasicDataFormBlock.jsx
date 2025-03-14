@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete } from 'antd';
+import { normilizeUnitsInputValue } from './UnitCalcUtils';
 import styles from './BasicDataFormBlock.module.css'
 
 const BasicDataFormBlock = ({ form }) => {
@@ -101,11 +102,6 @@ const BasicDataFormBlock = ({ form }) => {
                             </div>
                         )}
                     />
-                    {/* <Input
-                        size='large'
-                        placeholder='Введите название товара'
-                        style={{background: product ? '#F2F2F2' : ''}}
-                    /> */}
                 </Form.Item>
             </ConfigProvider>
 
@@ -114,14 +110,19 @@ const BasicDataFormBlock = ({ form }) => {
                     name='product_price'
                     label='Цена товара'
                     className={isSPP ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' ₽' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
                         const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
-                        if (regex.test(value)) { return value };
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     rules={
                         [
-                            { required: true, message: ''},
+                            { required: true, message: 'Пожалуйста, заполните это поле!'},
                         ]
                     }
                 >
@@ -135,14 +136,19 @@ const BasicDataFormBlock = ({ form }) => {
                     label='СПП'
                     className={styles.formItem}
                     name='SPP'
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' %' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
                         const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                        if (regex.test(value)) { return value };
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     rules={
                         [
-                            { required: true, message: '' },
+                            { required: true, message: 'Пожалуйста, заполните это поле!'},
                         ]
                     }
                 >
@@ -186,14 +192,19 @@ const BasicDataFormBlock = ({ form }) => {
                 name='product_cost'
                 label='Закупочная цена'
                 className={styles.formItem}
+                getValueProps={(value) => {
+                    const transformedValue = {value: value ? value + ' ₽' : value}
+                    return transformedValue
+                }}
                 normalize={(value, prevValue) => {
-                    const regex = /^(|-?\d*\.?\d*)$/; // только целые и дробные числа
-                    if (regex.test(value)) { return value };
+                    const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
+                    const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                    if (regex.test(normalizedValue)) { return normalizedValue };
                     return prevValue || '';
                 }}
                 rules={
                     [
-                        { required: true, message: '' },
+                        { required: true, message: 'Пожалуйста, заполните это поле!'},
                     ]
                 }
             >
@@ -209,14 +220,19 @@ const BasicDataFormBlock = ({ form }) => {
                     label='Длина упаковки'
                     name='package_length'
                     className={styles.formItem}
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' см' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' см')
                         const regex = /^(|\d+)$/ // только целые числа
-                        if (regex.test(value)) { return value };
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     rules={
                         [
-                            { required: true, message: '' },
+                            { required: true, message: 'Пожалуйста, заполните это поле!'},
                         ]
                     }
                 >
@@ -230,14 +246,19 @@ const BasicDataFormBlock = ({ form }) => {
                     label='Ширина упаковки'
                     name='package_width'
                     className={styles.formItem}
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' см' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' см')
                         const regex = /^(|\d+)$/ // только целые числа
-                        if (regex.test(value)) { return value };
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     rules={
                         [
-                            { required: true, message: '' },
+                            { required: true, message: 'Пожалуйста, заполните это поле!'},
                         ]
                     }
                 >
@@ -251,14 +272,19 @@ const BasicDataFormBlock = ({ form }) => {
                     label='Высота упаковки'
                     className={styles.formItem}
                     name='package_height'
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' см' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' см')
                         const regex = /^(|\d+)$/ // только целые числа
-                        if (regex.test(value)) { return value };
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     rules={
                         [
-                            { required: true, message: '' },
+                            { required: true, message: 'Пожалуйста, заполните это поле!'},
                         ]
                     }
                 >

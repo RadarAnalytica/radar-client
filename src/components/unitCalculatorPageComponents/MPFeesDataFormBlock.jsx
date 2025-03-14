@@ -1,5 +1,6 @@
 import styles from './MPFeesDataFormBlock.module.css'
 import { Form, Input, ConfigProvider, Tooltip } from 'antd';
+import { normilizeUnitsInputValue } from './UnitCalcUtils';
 const MPFeesDataFormBlock = ({ mp_fee, form }) => {
 
     const product_price = Form.useWatch('product_price', form);
@@ -44,9 +45,14 @@ const MPFeesDataFormBlock = ({ mp_fee, form }) => {
                         </div>
                     }
                     className={styles.formItem}
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' %' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
                         const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                        if (regex.test(value)) { return value };
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     name='additional_mp_fee'
@@ -80,9 +86,14 @@ const MPFeesDataFormBlock = ({ mp_fee, form }) => {
                         </div>
                     }
                     className={styles.formItem}
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' %' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
                         const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                        if (regex.test(value)) { return value };
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     name='equiring_fee'
