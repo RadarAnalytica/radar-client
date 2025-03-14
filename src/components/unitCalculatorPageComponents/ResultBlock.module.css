@@ -1,11 +1,13 @@
 /* RESULT */
 
-.page__resultWrapper {
+.page__result {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    /* position: sticky;
+    top: 0; */
 }
 
 .result__shareWrapper {

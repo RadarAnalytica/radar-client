@@ -11,6 +11,9 @@
 :global(#autocomp) {
     border: none !important;
 }
+:global(.ant-input-status-error) {
+    border: 1px solid #ff4d4f !important;
+}
 
 .fieldset {
     width: 100%;

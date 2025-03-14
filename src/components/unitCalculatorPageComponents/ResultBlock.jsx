@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import styles from './ResultBlock.module.css'
-import { Input, Button, ConfigProvider, Tooltip } from 'antd';
+import { Form, Input, Button, ConfigProvider, Tooltip } from 'antd';
 import { utils, writeFile } from 'xlsx'
 import { fieldsVocab } from './UnitCalcUtils';
 import { useLocation } from 'react-router-dom';
+import { normilizeUnitsInputValue, investValueInputTransformer } from './UnitCalcUtils';
 
 const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
@@ -11,6 +12,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
     const { pathname } = useLocation()
 
     const shareButtonClickHandler = () => {
+        
         if (token) {
             const currentDomain = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
             navigator.clipboard.writeText(`${currentDomain}${pathname}?data=${token}`)
@@ -59,7 +61,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
 
     return (
-        <div className={styles.page__resultWrapper}>
+        <div className={styles.page__result}>
             <div className={styles.result__shareWrapper}>
                 <ConfigProvider
                     theme={{
@@ -113,8 +115,15 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                     <Input
                         size='large'
                         placeholder='50 000 ₽'
-                        value={investValue}
-                        onChange={(e) => {setInvestValue(e.target.value)}}
+                        value={investValueInputTransformer(investValue)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            const prevValue = investValue;
+                            const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
+                            const regex = /^(|\d+)$/ // только целые числа
+                            if (regex.test(normalizedValue)) { return setInvestValue(normalizedValue)};
+                            return setInvestValue(prevValue || '')
+                        }}  
                     />
                 </label>
 
@@ -142,7 +151,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                                 </Tooltip>
                             </ConfigProvider>
                         </div>
-                        <span>{investValue && result ? Math.ceil(investValue / (result.selfCost + result.netProfit)) : 0} шт</span>
+                        <span>{investValue && result && result.netProfit >= 0 ? Math.ceil(investValue / (result.selfCost + result.netProfit)) : 0} шт</span>
                     </div>
                 </div>
             </div>

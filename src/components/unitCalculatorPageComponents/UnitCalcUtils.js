@@ -110,6 +110,53 @@ export const logisticsWithBuyoutPercentagePriceCalcFunc = (current_storage_logis
     return Math.round(lp)
 }   
 
+export function encodeUnicodeToBase64(str) {
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(str);
+    return btoa(String.fromCharCode(...bytes));
+  }
+
+
+
+export function decodeBase64ToUnicode(base64) {
+    const binaryString = atob(base64);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    const decoder = new TextDecoder();
+    return decoder.decode(bytes);
+}
+
+
+export function investValueInputTransformer (value) {
+    const transformedValue = value ? value + ' ₽' : value
+    return transformedValue
+} 
+
+
+export function normilizeUnitsInputValue (value, prevValue, units) {
+
+    if (units.length === 2 && prevValue && value && prevValue.toString().trim() === value.toString().trim()) {
+        let transformedValue = value.substring(0, value.length - 2);
+        return transformedValue;
+    }
+    
+    if (units.length > 2 && prevValue && value && (prevValue.roString() + units.substring(0, units.length - 1)) === value.toString().trim()) {
+        //console.log(value.indexOf(units))
+        let transformedValue = value.substring(0, value.length - 3);
+        return transformedValue;
+    }
+
+    const arrFromValue = value.split(units);
+    const transformedArr = arrFromValue.filter(_ => _ !== units);
+    let transformedValue = ''
+    transformedArr.forEach(_ => {
+        transformedValue += _
+    })
+    return transformedValue
+}
+
 
 export const fieldsVocab = {
     product: 'Категория',

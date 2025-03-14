@@ -2,7 +2,8 @@ import { useState } from 'react';
 import styles from './LogisticsDataFormBlock.module.css'
 import { Form, Input, Checkbox, Radio, ConfigProvider, Tooltip, AutoComplete } from 'antd';
 import { tempWhouseData } from './tempWarehouseData';
-const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_log_price }) => {
+import { normilizeUnitsInputValue } from './UnitCalcUtils';
+const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_log_price, storagePrice }) => {
 
     const warehouse = Form.useWatch('warehouse', form);
     const cargo_acceptance_price = Form.useWatch('cargo_acceptance_price', form);
@@ -127,7 +128,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                     }
                     rules={
                         [
-                            { required: true, message: '' },
+                            //{ required: true, message: '' },
                         ]
                     }
                     name='warehouse'
@@ -158,24 +159,24 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                         //     </div>
                         // )}
                     />
-                    {/* <Input
-                        size='large'
-                        placeholder='Выберите склад'
-                        style={{background: warehouse ? '#F2F2F2' : ''}}
-                    /> */}
                 </Form.Item>
                 </ConfigProvider>
                 {isPaidCargoAcceptance && <Form.Item
                     label='Стоимость платной приемки, ₽'
                     className={styles.formItem}
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' ₽' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
-                        const regex = /^(|-?\d*\.?\d*)$/; // только целые и дробные числа
-                        if (regex.test(value)) { return value };
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ₽')
+                        const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     rules={
                         [
-                            { required: true, message: '' },
+                            { required: true, message: 'Пожалуйста, заполните это поле!'},
                         ]
                     }
                     name='cargo_acceptance_price'
@@ -251,9 +252,14 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                             </ConfigProvider>
                         </div>
                     }
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' ч' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' ч')
                         const regex = /^(|\d+)$/ // только целые числа
-                        if (regex.test(value)) { return value };
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     name='delivery_speed'
@@ -298,9 +304,14 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                             </ConfigProvider>
                         </div>
                     }
+                    getValueProps={(value) => {
+                        const transformedValue = {value: value ? value + ' %' : value}
+                        return transformedValue
+                    }}
                     normalize={(value, prevValue) => {
+                        const normalizedValue = normilizeUnitsInputValue(value, prevValue, ' %')
                         const regex = /^(100(\.0*)?|0*(\d{1,2}(\.\d*)?|\.\d+))$|^$/ // только целые и дробные от 0 до 100
-                        if (regex.test(value)) { return value };
+                        if (regex.test(normalizedValue)) { return normalizedValue };
                         return prevValue || '';
                     }}
                     name='buyout_percentage'
@@ -319,7 +330,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
             </div>
 
             <div className={styles.fieldset__logWrapper}>
-                <p className={styles.fieldset__footerText_price}>0 ₽</p>
+                <p className={styles.fieldset__footerText_price}>{storagePrice ? storagePrice : '0'} ₽</p>
                 <p className={styles.fieldset__footerText}>Хранение 1 шт. в месяц</p>
             </div>
             {/* <Form.Item
