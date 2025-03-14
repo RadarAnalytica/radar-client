@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import SortArrows from './SortArrows';
 import { useNavigate } from 'react-router-dom';
 
-const TableStock = ({ dataTable, setDataTable }) => {
+const TableStock = ({ dataTable, setDataTable, loading }) => {
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
@@ -59,9 +59,9 @@ const TableStock = ({ dataTable, setDataTable }) => {
     };
   }, []);
 
-  const handleClickProductName = (shop) => {
-    navigate(`/product/${shop.sku}`);
-  };
+  // const handleClickProductName = (shop) => {
+  //   navigate(`/product/${shop.sku}`);
+  // };
 
   function formatNumber(num) {
     if (num == null) return ''; // Return an empty string or any default value for null/undefined
@@ -70,9 +70,10 @@ const TableStock = ({ dataTable, setDataTable }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <div style={{ width: '3.5vw', height: '100%' }}></div>
-      <div className='custom-table'>
+      <div className='custom-table' style = {loading ? { overflow: 'hidden'} : null}>
         <div className='table-container'>
-          {dataTable.length === 0 && (
+          {/* {dataTable.length === 0 && ( */}
+          {loading && (
             <div
               className='d-flex flex-column align-items-center justify-content-center'
               style={{
@@ -80,11 +81,19 @@ const TableStock = ({ dataTable, setDataTable }) => {
                 height: '100%',
                 position: 'absolute',
                 background: 'white',
+                zIndex: 999
               }}
             >
               <span className='loader'></span>
             </div>
           )}
+          {dataTable.length === 0 && 
+            <div
+              className='cell header-cell'
+              style={{paddingLeft: 50, background: 'none', border: 'none' }}
+            >
+              Ничего не найдено
+            </div> }
           {dataTable.length > 0 && (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               {/* Fixed columns */}
