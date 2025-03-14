@@ -282,24 +282,38 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               backgroundColor: 'white',
               borderRadius: '8px',
               boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
+              overflow: 'visible',
             }}
           >
             <div
-              className='d-flex fw-bold'
+              className='d-flex fw-bold justify-content-between align-items-center px-2'
               style={{
                 fontSize: '12px',
                 display: 'flex',
                 alignItems: 'center',
+                boxSizing: 'border-box',
+                height: '100%'
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
-              <img
-                style={{ margin: ' 0 0 5px 5px' }}
-                src={CentrCircle}
-                alt=''
-              />
-              <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
-                {Number(data?.centr?.common)} %
+              <div 
+                className="d-flex w-auto align-items-center gap-2"
+              >
+                <img
+                  style={{ minWidth: 16, minHeight: 16 }}
+                  src={CentrCircle}
+                  alt=''
+                  width={16}
+                  height={16}
+                />
+
+                <p 
+                  style={{ textAlign: 'center', padding: 0, margin: 0 }}
+                >
+                  {Number(data?.centr?.common)} %
+                </p>
+              </div>
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
                 <img
                   src={
                     data?.centr?.compare > 0
@@ -311,11 +325,10 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
                   alt=''
                 />
                 <span
-                  className='pt-1'
                   style={
                     data?.centr?.compare > 0
-                      ? { marginLeft: '5px', color: 'rgba(0, 182, 155, 1)' }
-                      : { marginLeft: '5px', color: 'rgba(249, 60, 101, 1)' }
+                      ? { color: 'rgba(0, 182, 155, 1)' }
+                      : { color: 'rgba(249, 60, 101, 1)' }
                   }
                 >
                   {Number(data?.centr?.compare).toFixed(0)} %
@@ -447,27 +460,42 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
           data?.northCaucasian?.compare !== 0) && (
           <foreignObject
             x='10'
-            y='360'
+            y='380'
             width='140'
             height='40'
             style={{
               backgroundColor: 'white',
               borderRadius: '8px',
               boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
+              overflow: 'visible',
             }}
           >
             <div
-              className='d-flex fw-bold'
+              className='d-flex fw-bold justify-content-between align-items-center px-2'
               style={{
                 fontSize: '12px',
                 display: 'flex',
                 alignItems: 'center',
+                height: '100%',
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
-              <img style={{ margin: '0 0 5px 5px' }} src={NorthCircle} alt='' />
-              <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
-                {Number(data?.northCaucasian?.common)} %
+              <div 
+                 className="d-flex w-auto align-items-center gap-2"
+              >
+                <img 
+                  style={{ minWidth: 16, minHeight: 16 }}
+                  src={NorthCircle} 
+                  alt='' 
+                  width={16}
+                  height={16}
+                />
+                <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+                  {Number(data?.northCaucasian?.common)} %
+                </p>
+              </div>
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+                
                 <img
                   src={
                     data?.northCaucasian?.compare > 0
@@ -688,10 +716,11 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               backgroundColor: 'white',
               borderRadius: '8px',
               boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
+              overflow: 'visible',
             }}
           >
             <div
-              className='d-flex fw-bold'
+              className='d-flex fw-bold justify-content-between align-items-center px-2 h-100'
               style={{
                 fontSize: '12px',
                 display: 'flex',
@@ -699,9 +728,14 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
-              <img style={{ margin: '0 0 5px 5px' }} src={SouthCircle} alt='' />
-              <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
-                {Number(data?.southern?.common)} %
+              <div className="d-flex w-auto align-items-center gap-2">
+              <img style={{ minWidth: 16, minHeight: 16 }} width={16} height={16} src={SouthCircle} alt='' />
+                <p style={{ textAlign: 'center', margin: 0, padding: 0 }}>
+                  {Number(data?.southern?.common)} %
+                </p>
+              </div>
+              <p style={{ textAlign: 'center', margin: 0, padding: 0 }}>
+                
                 <img
                   src={
                     data?.southern?.compare > 0
@@ -1192,10 +1226,11 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               backgroundColor: 'white',
               borderRadius: '8px',
               boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
+              overflow: 'visible',
             }}
           >
             <div
-              className='d-flex fw-bold'
+              className='d-flex fw-bold justify-content-between align-items-center px-2 h-100'
               style={{
                 fontSize: '12px',
                 display: 'flex',
@@ -1203,13 +1238,20 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
-              <img
-                style={{ margin: '0 0 5px 5px' }}
-                src={FarEasternCircle}
-                alt=''
-              />
-              <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
-                {Number(data?.farEastern?.common)} %
+              <div className="d-flex w-auto align-items-center gap-2">
+                <img
+                  style={{ minHeight: 16, minWidth: 16 }}
+                  src={FarEasternCircle}
+                  alt=''
+                  width={16}
+                  height={16}
+                />
+                <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+                  {Number(data?.farEastern?.common)} %
+                </p>
+              </div>
+              
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
                 <img
                   src={
                     data?.farEastern?.compare > 0
@@ -1729,10 +1771,11 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               backgroundColor: 'white',
               borderRadius: '8px',
               boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
+              overflow: 'visible'
             }}
           >
             <div
-              className='d-flex fw-bold'
+              className='d-flex fw-bold justify-content-between align-items-center px-2 h-100'
               style={{
                 fontSize: '12px',
                 display: 'flex',
@@ -1740,9 +1783,14 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
-              <img style={{ margin: '0 0 5px 5px' }} src={SibCircle} alt='' />
-              <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
-                {Number(data?.siberian?.common)} %
+              <div className="d-flex w-auto align-items-center gap-2">
+              <img style={{ minHeight: 16, minWidth: 16 }} src={SibCircle} alt='' />
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+              {Number(data?.siberian?.common)} %
+              </p>
+              </div>
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+                
                 <img
                   src={
                     data?.siberian?.compare > 0
@@ -1928,7 +1976,6 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
           fill='white'
           fillOpacity='0.8'
         />
-
         {(data?.ural?.common > 0 || data?.ural?.compare !== 0) && (
           <foreignObject
             x='420'
@@ -1939,10 +1986,11 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               backgroundColor: 'white',
               borderRadius: '8px',
               boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
+              overflow: 'visible'
             }}
           >
             <div
-              className='d-flex fw-bold'
+              className='d-flex fw-bold justify-content-between align-items-center px-2 h-100'
               style={{
                 fontSize: '12px',
                 display: 'flex',
@@ -1950,9 +1998,15 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
-              <img style={{ margin: '0 0 5px 5px' }} src={UralCircle} alt='' />
-              <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
-                {Number(data?.ural?.common)} %
+              <div className="d-flex w-auto align-items-center gap-2">
+                <img style={{ minHeight: 16, minWidth: 16 }} src={UralCircle} alt='' />
+                <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+                  {Number(data?.ural?.common)} %
+                </p>
+              </div>
+              
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+                
                 <img
                   src={
                     data?.ural?.compare > 0
@@ -2250,10 +2304,11 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               backgroundColor: 'white',
               borderRadius: '8px',
               boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
+              overflow: 'visible'
             }}
           >
             <div
-              className='d-flex fw-bold'
+              className='d-flex fw-bold justify-content-between align-items-center px-2 h-100'
               style={{
                 fontSize: '12px',
                 display: 'flex',
@@ -2261,13 +2316,18 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
+              <div className="d-flex w-auto align-items-center gap-2">
               <img
-                style={{ margin: '0 0 5px 5px' }}
+                style={{ minHeight: 16, minWidth: 16 }}
                 src={PrivolCircle}
                 alt=''
               />
-              <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
                 {Number(data?.privolzhsky?.common)} %
+              </p>
+              </div>
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+                
                 <img
                   src={
                     data?.privolzhsky?.compare > 0
@@ -2647,13 +2707,14 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
             width='140'
             height='40'
             style={{
-              backgroundColor: 'white',
+              background: 'white',
               borderRadius: '8px',
               boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
+              overflow: 'visible',
             }}
           >
             <div
-              className='d-flex fw-bold'
+              className='d-flex fw-bold justify-content-between align-items-center px-2 h-100'
               style={{
                 fontSize: '12px',
                 display: 'flex',
@@ -2661,13 +2722,18 @@ const Map = ({ onMouseMove, data, onMouseEnterAction }) => {
               }}
               xmlns='http://www.w3.org/1999/xhtml'
             >
+              <div className="d-flex w-auto align-items-center gap-2">
               <img
-                style={{ margin: '0 0 5px 5px' }}
+                style={{ minHeight: 16, minWidth: 16 }}
                 src={NorthWesternCircle}
                 alt=''
               />
-              <p style={{ textAlign: 'center', padding: '9px 0px 0px 9px' }}>
-                {Number(data?.northWestern?.common)} %
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+              {Number(data?.northWestern?.common)} %
+              </p>
+              </div>
+              <p style={{ textAlign: 'center', padding: 0, margin: 0 }}>
+                
                 <img
                   src={
                     data?.northWestern?.compare > 0

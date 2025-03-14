@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './OrderMapTable.module.css'
 import { formatPrice } from '../../service/utils'
 
 const OrderTableExtended = ({ title, data, geoData }) => {
@@ -33,24 +34,29 @@ const OrderTableExtended = ({ title, data, geoData }) => {
         return (
         <div className='order-table-extended'>
             <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>{title}</h5>
-            <div className='d-flex justify-content-between'>
+
+            <div className={styles.table_extended}>
+            {/* <div className='d-flex justify-content-between'> */}
                 <p className="mb-2 clue-text col-5 pe-2">Регион</p>
-                <p className="mb-2 clue-text col-2">Рубли</p>
-                <p className="mb-2 clue-text col-3 text-center">Общая доля</p>
-                <p className="mb-2 clue-text col-2 text-end">По складу</p>
-            </div>
+                <p className="mb-2 clue-text col">Рубли</p>
+                <p className="mb-2 clue-text col">Общая доля</p>
+                <p className="mb-2 clue-text col text-end">По складу</p>
+            {/* </div> */}
            
             {
                 data  && data.length ?
                 data.map((item, key) =>   (
-                        <div key={key} className='d-flex' >
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-5 pe-2">{item.district}</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-2">{formatPrice(item.amount) || '0'} ₽</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-3 text-center">{(item.common_percent)?.toFixed(1) || '0'}%</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col-2 fw-bold text-end">{(item.stock_percent)?.toFixed(1) || '0'}%</p>
-                        </div>
+                        // <div key={key} className='d-flex' >
+                            <>
+                            <p style={{ fontWeight: 600 }} className={styles.table__rowTitle}>{item.district}</p>
+                            <p style={{ fontWeight: 600, textWrap: 'nowrap'}} className="mb-2 col">{formatPrice(item.amount) || '0'} ₽</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col">{(item.common_percent)?.toFixed(1) || '0'}%</p>
+                            <p style={{ fontWeight: 600 }} className="mb-2 col fw-bold text-end">{(item.stock_percent)?.toFixed(1) || '0'}%</p>
+                            </>
+                        // </div>
                     )) : null
             }
+            </div>
         </div>
     )
 }

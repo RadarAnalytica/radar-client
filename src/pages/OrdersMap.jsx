@@ -43,7 +43,8 @@ const OrdersMap = () => {
   const [selectedRange, setSelectedRange] = useState({period: 30});
   const [brandNames, setBrandNames] = useState();
   const idShopAsValue =
-    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
+    //activeShopId != undefined ? activeShopId : shops?.[0]?.id;
+    activeShopId != undefined ? activeShopId : '0';
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const [firstLoading ,setFirstLoading] = useState(true);
 
@@ -800,6 +801,7 @@ const OrdersMap = () => {
             selectedRange={selectedRange}
             changeBrand={handleSaveActiveShop}
             activeShopId={activeShopId}
+            activeBrand={activeBrand}
             // brandNames={brandNames}
             // defaultValue={selectedRange}
             // setChangeBrand={setChangeBrand}

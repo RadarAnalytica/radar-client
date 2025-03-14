@@ -8,7 +8,8 @@ const OrdersMapFilter = ({
   setChangeBrand,
   activeShopId,
   selectedRange,
-  setSelectedRange
+  setSelectedRange,
+  activeBrand
 }) => {
   const shopName =
     activeShopId == 0
@@ -35,20 +36,24 @@ const OrdersMapFilter = ({
               padding: '1vh 1.75vh',
               backgroundColor: 'rgba(0, 0, 0, 0.05)',
               borderRadius: '8px',
+              height: '38px',
+              minHeight: '38px !important'
             }}
             className='form-control'
             id='store'
-            defaultValue={`${
-              activeShopId != undefined ? activeShopId : shops?.[0]?.id
-            }`}
+            // defaultValue={`${
+            //   activeShopId != undefined ? activeShopId : shops?.[0]?.id
+            // }`}
+            defaultValue={activeBrand}
             onChange={(e) => {
-              const firstValue = e.target.value.split('|')[0];
-              const secondValue = e.target.value.split('|')[1];
-              const lastValue = e.target.value.split('|')[2];
+              // const firstValue = e.target.value.split('|')[0];
+              // const secondValue = e.target.value.split('|')[1];
+              // const lastValue = e.target.value.split('|')[2];
               // setPrimary(lastValue);
 
-              setChangeBrand(secondValue);
-              changeBrand(firstValue);
+              //setChangeBrand(secondValue);
+             //changeBrand(firstValue);
+              changeBrand(e.target.value);
             }}
           >
             <option
@@ -62,7 +67,8 @@ const OrdersMapFilter = ({
               shops.map((brand, i) => (
                 <option
                   key={i}
-                  value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}
+                  //value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}
+                  value={brand.id}
                 >
                   {brand.brand_name}
                 </option>

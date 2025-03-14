@@ -5,7 +5,7 @@ import roi from '../../../assets/roi.svg';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels, step, minValue, maxValue }) => {
+const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, loading, labels, step, minValue, maxValue }) => {
     const min = minValue
     const max = maxValue
     if (Math.abs(min) + Math.abs(max) < 300) {
@@ -199,19 +199,9 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
     };
 
     return (
-        <div className="chart-container">
+        <div className="chart-container" style={{position: 'relative'}}>
             <p className='fw-bold numbers mb-2'>Рентабельность и маржинальность</p>
-            <div className='chart-header-wrapper-prof mb-1'>
-                <div className='chart-container-colors-wrapper'>
-                    <div className='roundedChartColor'></div>
-                    <div>Маржинальность по прибыли, %</div>
-                </div>
-                <div className='chart-container-colors-wrapper'>
-                    <div style={{ marginRight: '5px' }}><img src={roi} /></div>
-                    <div>ROI, %</div>
-                </div>
-            </div>
-            {isLoading ? (
+            {loading ? (
                 <div
                     className="d-flex flex-column align-items-center justify-content-center"
                     style={{ height: '100%', marginTop: "140px" }}
@@ -219,7 +209,19 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                     <span className="loader"></span>
                 </div>
             ) : (
-                <Bar data={data} options={options} />
+                <>
+                    <div className='chart-header-wrapper-prof mb-1'>
+                        <div className='chart-container-colors-wrapper'>
+                            <div className='roundedChartColor'></div>
+                            <div>Маржинальность по прибыли, %</div>
+                        </div>
+                        <div className='chart-container-colors-wrapper'>
+                            <div style={{ marginRight: '5px' }}><img src={roi} /></div>
+                            <div>ROI, %</div>
+                        </div>
+                    </div>
+                    <Bar data={data} options={options} />
+                </>
             )}
         </div>
     );

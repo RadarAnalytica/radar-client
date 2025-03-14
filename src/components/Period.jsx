@@ -2,41 +2,27 @@ import React, { useState, useEffect, useRef } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
-import { format } from 'date-fns';
 import styles from './Period.module.css';
 
 const Period = ({ selectedRange, setSelectedRange }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
-    const [selectedOption, setSelectedOption] = useState(selectedRange);
-    const [localSelectedRange, setLocalSelectedRange] = useState(selectedRange);
+    const [selectedOption, setSelectedOption] = useState("7");
 
     const today = new Date();
     const minDate = new Date(today);
-    // const maxDate = new Date(today);
+    const maxDate = new Date(today);
 
     minDate.setDate(today.getDate() - 90);
-    // maxDate.setDate(today.getDate() + 90);
+    maxDate.setDate(today.getDate() + 90);
 
-    const predefinedRanges = [
-        {
-            value: 7,
-            title: '7 дней'
-        },
-        {
-            value: 14,
-            title: '14 дней'
-        },
-        {
-            value: 30,
-            title: '30 дней'
-        },
-        {
-            value: 90,
-            title: '90 дней'
-        }
-    ];
+    const predefinedRanges = {
+        "7": 7,
+        "14": 14,
+        "30": 30,
+        "90": 90,
+    };
 
     const customRuLocale = {
         ...ru,
@@ -57,33 +43,42 @@ const Period = ({ selectedRange, setSelectedRange }) => {
     const selectOption = (value) => {
         if (value === "") {
             setSelectedOption("");
+            setSelectedRange({ from: null, to: null });
             toggleCalendar();
         } else {
-            setSelectedOption({period: value});
-            setSelectedRange({period: value});
+            setSelectedOption(value);
+            setSelectedRange(predefinedRanges[value]);
             setIsCalendarOpen(false);
         }
         setIsDropdownOpen(false);
     };
 
     const handleDayClick = (day) => {
-        if (!localSelectedRange.from || (localSelectedRange.from && localSelectedRange.to)) {
-            setLocalSelectedRange({ from: day, to: null });
-        } else if (localSelectedRange.from && !localSelectedRange.to) {
-            const { from } = localSelectedRange;
-            const newRange = day < from
-                ? { from: format(day, 'yyyy-MM-dd'), to: format(from, 'yyyy-MM-dd') }
-                : { from: format(from, 'yyyy-MM-dd'), to: format(day, 'yyyy-MM-dd') };
-            setLocalSelectedRange(newRange);
+        if (day < minDate || day > maxDate) return;
+
+        if (!selectedRange.from || (selectedRange.from && selectedRange.to)) {
+            setSelectedRange({ from: day, to: null });
+        } else if (selectedRange.from && !selectedRange.to) {
+            const { from } = selectedRange;
+            const rangeLength = Math.abs((day - from) / (1000 * 60 * 60 * 24)) + 1;
+
+            if (rangeLength > 90) return;
+
+            const newRange =
+                day < from
+                    ? { from: day, to: from }
+                    : { from, to: day };
+
             setSelectedRange(newRange);
             setIsCalendarOpen(false);
         }
     };
 
     const formatDateRange = (range) => {
-        console.log('formatDateRange', range);
         if (range.from && range.to) {
-            return `${format(range.from, 'dd.MM.yyyy')} - ${format(range.to, 'dd.MM.yyyy')}`;
+            const fromDate = range.from.toLocaleDateString("ru-RU");
+            const toDate = range.to.toLocaleDateString("ru-RU");
+            return `${fromDate} - ${toDate}`;
         }
         return "Произвольные даты";
     };
@@ -115,7 +110,7 @@ const Period = ({ selectedRange, setSelectedRange }) => {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
                 <div className={styles.selectedOption}>
-                    {selectedOption.period ? `${selectedOption.period} дней` : formatDateRange(localSelectedRange)}
+                    {selectedOption ? `${selectedOption} дней` : formatDateRange(selectedRange)}
                 </div>
                 <svg
                     width="14"
@@ -130,9 +125,10 @@ const Period = ({ selectedRange, setSelectedRange }) => {
             </div>
             {isDropdownOpen && (
                 <ul className={styles.dropdownMenu}>
-                    {
-                       predefinedRanges.map( (el) => <li key={el.value} onClick={() => selectOption(el.value)}>{el.title}</li>)
-                    }
+                    <li onClick={() => selectOption("7")}>7 дней</li>
+                    <li onClick={() => selectOption("14")}>14 дней</li>
+                    <li onClick={() => selectOption("30")}>30 дней</li>
+                    <li onClick={() => selectOption("90")}>90 дней</li>
                     <li onClick={() => selectOption("")} className={styles.customDateOption}>
                         Произвольные даты
                     </li>
@@ -142,19 +138,21 @@ const Period = ({ selectedRange, setSelectedRange }) => {
             {isCalendarOpen && (
                 <div className={styles.calendarPopup}>
                     <DayPicker
-                        minDate={minDate}
-                        maxDate={today}
                         mode="range"
-                        selected={localSelectedRange}
+                        selected={selectedRange}
                         month={month}
                         onMonthChange={setMonth}
                         captionLayout="dropdown"
+                        fromYear={2024}
+                        toYear={2025}
                         className={styles.customDayPicker}
                         locale={customRuLocale}
                         onDayClick={handleDayClick}
+                        fromDate={minDate}
+                        toDate={maxDate}
                         disabled={[
                             { before: minDate },
-                            { after: today },
+                            { after: maxDate },
                         ]}
                     />
                 </div>
