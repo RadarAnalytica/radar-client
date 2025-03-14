@@ -126,7 +126,8 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max, loadi
                     </div>
               </div>
             ) : (
-                <div style={{ height: '100%', overflowY: 'auto' }}>
+                // TODO костыль от высоты контейнера отменяем выосту заголовка
+                <div style={{ height: 'calc(100% - 41px)'}}>
                     <Bar data={data} options={options} />
                 </div>
             )}

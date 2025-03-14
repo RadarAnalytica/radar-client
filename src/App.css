@@ -836,7 +836,7 @@ select {
 }
 
 .storage-table span {
-  font-size: 14px !important;
+  font-size: 14px;
 }
 
 .chart-table-row {
@@ -4106,7 +4106,8 @@ font-weight: 500;
 .chart-container {
   /* width: 98%; */
   /* min-height: 355px; */
-  max-height:max-content;
+  /* max-height: max-content; */
+  /* width: inherit; */
   /* max-width: 100%;  */
   /* margin: 20px 0px 20px 0px; */
   padding: 16px;

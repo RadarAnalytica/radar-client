@@ -1322,13 +1322,13 @@ const DashboardPage = () => {
                     loading={loading}
                   />
                 </div>
-              </div>
+              </div> 
 
               <div
                 className='container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3'
                 style={{ width: '100%' }}
               >
-                <div className='wrapper d-flex flex-column'>
+                <div className='wrapper d-flex flex-column overflow-hidden'>
                   <div className='mb-3'>
                     <FinanceTable
                       title={'Финансы'}
@@ -1374,7 +1374,7 @@ const DashboardPage = () => {
                     </div>
                 </div>
                 </div>
-                <div className='wrapper d-flex flex-column'>
+                <div className='wrapper d-flex flex-column overflow-hidden'>
                   <div className='mb-3'>
                     <ScheduleProfitabilityChart
                       {...chartRoiMarginalityData}
@@ -1393,9 +1393,7 @@ const DashboardPage = () => {
                     />
                   </div>
                   <div className='mb-3 flex-grow-1'>
-                    <RevenueStorageChart {...revenueByWarehouse} loading={loading}
-                    // {...fakeData3} className={styles.revenueStorageChart} 
-                    />
+                    <RevenueStorageChart {...revenueByWarehouse} loading={loading} />
                   </div>
                   <ChartTable
                     title={'Расходы'}
