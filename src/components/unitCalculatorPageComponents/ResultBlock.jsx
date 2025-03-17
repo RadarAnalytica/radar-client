@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import styles from './ResultBlock.module.css'
-import { Form, Input, Button, ConfigProvider, Tooltip } from 'antd';
+import { Input, Button, ConfigProvider, Tooltip } from 'antd';
 import { utils, writeFile } from 'xlsx'
-import { fieldsVocab } from './UnitCalcUtils';
 import { useLocation } from 'react-router-dom';
-import { normilizeUnitsInputValue, investValueInputTransformer } from './UnitCalcUtils';
+import { normilizeUnitsInputValue, investValueInputTransformer, createExelData } from './UnitCalcUtils';
+import { formatPrice } from '../../service/utils';
+import moment from 'moment';
 
 const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
@@ -34,31 +35,14 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
     }, [buttonState])
 
     const generateExcel = () => {
-        // const data = [["Name", "Age"], ["Alice", 30], ["Bob", 25]];
-        if (result && result.fields) {
-            const data = [['Товар', '']];
-            const keysArr = Object.keys(result.fields)
-           
-            keysArr.forEach(k => {
-                let value = result.fields[k]
-                if (typeof value === 'boolean') {
-                    value = value === 'true' ? 'да' : 'нет'
-                }
-
-                if (!value) {
-                    value = ''
-                }
-                data.push([fieldsVocab[k], value.toString()])
-            })
-            
+            const data = createExelData(result)
             const ws = utils.aoa_to_sheet(data);
             const wb = utils.book_new();
             utils.book_append_sheet(wb, ws, "Sheet1");
-            writeFile(wb, "example.xlsx");
-        }
+            const date = moment().format('DD.MM.YYYY')
+            const name = result && result?.product ? result.product : '____'
+            writeFile(wb, `RADAR ANALYTICA - Расчет для ${name} от ${date}.xlsx`);
       };
-
-
 
     return (
         <div className={styles.page__result}>
@@ -129,13 +113,13 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
                 <div className={styles.result__table}>
                     <div className={styles.result__tableRow}>
-                        {'Кол-во товара'} <span>{investValue && result ? Math.round((investValue / result.product_cost) * result.totalProductAmountQuef) : 0} шт.</span>
+                        {'Кол-во товара'} <span>{result && result.total_product_quantity ? formatPrice(result.total_product_quantity, 'шт') : "0 шт" }</span>
                     </div>
                     <div className={styles.result__tableRow}>
-                        {'Выручка'} <span>{investValue && result ? Math.round(((investValue / result.product_cost) * result.totalProductAmountQuef)*result.total_product_price) : 0} ₽</span>
+                        {'Выручка'} <span>{result && result.total_value ? formatPrice(result.total_value, '₽') : "0 ₽"}</span>
                     </div>
                     <div className={styles.result__tableRow}>
-                        {'Чистая прибыль'} <span>{investValue && result ? Math.round((investValue / result.product_cost) * result.totalProductAmountQuef) * result.netProfit : 0} ₽ </span>
+                        {'Чистая прибыль'} <span>{result && result.total_net_value ? formatPrice(result.total_net_value, "₽") : "0 ₽"}</span>
                     </div>
                     <div className={styles.result__tableRow}>
                         <div className={styles.label} style={{ gap: 4 }}>
@@ -151,7 +135,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                                 </Tooltip>
                             </ConfigProvider>
                         </div>
-                        <span>{investValue && result && result.netProfit >= 0 ? Math.ceil(investValue / (result.selfCost + result.netProfit)) : 0} шт</span>
+                        <span>{result && result.zero_loss_point && result.total_net_value > 0 ? formatPrice(result.zero_loss_point, "шт") : "--"}</span>
                     </div>
                 </div>
             </div>
@@ -164,17 +148,17 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
                 <div className={styles.result__mainResultTable}>
                     <div className={styles.result__mainTableRow}>
-                        <div className={styles.result__mainTablePrice}>{result?.selfCost ? result?.selfCost.toFixed(2) : 0} ₽</div>
+                        <div className={styles.result__mainTablePrice}>{result?.selfCost ? formatPrice(result?.selfCost, "₽") : "0 ₽"}</div>
                         <div className={styles.result__mainTableText}>Общая себестоимость</div>
                         <div className={`${styles.result__mainTableText} ${styles.result__mainTableText_gray}`}>Общая сумма затрат до поставки товара</div>
                     </div>
                     <div className={styles.result__mainTableRow}>
-                        <div className={styles.result__mainTablePrice}>{result?.roi ? result.roi.toFixed(2) : 0} %</div>
+                        <div className={styles.result__mainTablePrice}>{result?.roi ? formatPrice(result.roi, "%") : '0 %'}</div>
                         <div className={styles.result__mainTableText}>Рентабельность ROI</div>
                         <div className={`${styles.result__mainTableText} ${styles.result__mainTableText_gray}`}>Доля прибыли от вложений</div>
                     </div>
                     <div className={styles.result__mainTableRow}>
-                        <div className={styles.result__mainTablePrice}>{result?.totalMargin ? result.totalMargin.toFixed(2) : 0} %</div>
+                        <div className={styles.result__mainTablePrice}>{result?.totalMargin ? formatPrice(result.totalMargin, '%') : '0 %'}</div>
                         <div className={styles.result__mainTableText}>Маржинальность</div>
                         <div className={`${styles.result__mainTableText} ${styles.result__mainTableText_gray}`}>Доля прибыли в выручке</div>
                     </div>
@@ -182,14 +166,14 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
                 <div className={styles.result__table}>
                     <div className={styles.result__tableRow}>
-                        {'Чистая прибыль'} <span>{result?.netProfit ? result?.netProfit.toFixed(2) : 0} ₽</span>
+                        {'Чистая прибыль'} <span>{result?.netProfit ? formatPrice(result?.netProfit, '₽') : '0 ₽'}</span>
                     </div>
                     <div className={styles.result__tableRow}>
                         {'Минимальная цена'}
-                        <span>{result?.minimalPrice ? result?.minimalPrice.toFixed(2) : 0} ₽</span>
+                        <span>{result?.minimalPrice ? formatPrice(result?.minimalPrice, '₽') : '0 ₽'}</span>
                     </div>
                     <div className={styles.result__tableRow}>
-                        {'Максимальаня скидка'} <span>{result?.maximumDiscount ? result?.maximumDiscount.toFixed(2) : 0} %</span>
+                        {'Максимальаня скидка'} <span>{result?.maximumDiscount ? formatPrice(result?.maximumDiscount, '%') : '0 %'}</span>
                     </div>
                 </div>
             </div>
