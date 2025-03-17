@@ -37,7 +37,12 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
     const generateExcel = () => {
         // const data = [["Name", "Age"], ["Alice", 30], ["Bob", 25]];
         if (result && result.fields) {
-            const data = [['Товар', '']];
+            const data = [['Товар', '', '', '', ''], [ 'name', 'john']];
+            const resultTable = [['', '', '', 'Результат', '']]
+            const productTable = [['Товар', '']];
+            const sizesTable = [['Габариты и объем', '']];
+            const warehouseTable = [];
+
             const keysArr = Object.keys(result.fields)
            
             keysArr.forEach(k => {
@@ -49,10 +54,21 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                 if (!value) {
                     value = ''
                 }
-                data.push([fieldsVocab[k], value.toString()])
+
+                if (k === 'product' || k === 'product_price' || k === 'SPP' || k === 'product_cost') {
+                    productTable.push([fieldsVocab[k], value.toString()])
+                }
+                if (k === 'package_length' || k === 'package_width' || k === 'package_height') {
+                    sizesTable.push([fieldsVocab[k], value.toString()])
+                }
+                if (k === 'warehouse' || k === 'buyout_percentage') {
+                    warehouseTable.push([fieldsVocab[k], value.toString()])
+                }
+
+                //data.push([fieldsVocab[k], value.toString()])
             })
-            
-            const ws = utils.aoa_to_sheet(data);
+            const finalData = [...productTable, ...resultTable, ['', ''], ...sizesTable, ['', ''], ...warehouseTable]
+            const ws = utils.aoa_to_sheet(finalData);
             const wb = utils.book_new();
             utils.book_append_sheet(wb, ws, "Sheet1");
             writeFile(wb, "example.xlsx");
