@@ -15,8 +15,8 @@ const AnalyzeWildberries = () => {
     const navigate = useNavigate();
     return (
         <div className={styles.analyzeContainer}>
-            <div className={styles.headerText}>Начните <span style={{ color: "#5329FF" }}>анализировать Wildberries </span> уже сегодня</div>
-            <div className={styles.headerTextMoblie}>Начните <span style={{ color: "#5329FF" }}>анализировать Wildberries </span>уже сегодня</div>
+            <h3 className={styles.headerText}>Начните <span style={{ color: "#5329FF" }}>анализировать Wildberries </span> уже сегодня</h3>
+            <h3 className={styles.headerTextMoblie}>Начните <span style={{ color: "#5329FF" }}>анализировать Wildberries </span>уже сегодня</h3>
             <div className={styles.containerWildberries}>
 
                 <div className={styles.wrapper}>

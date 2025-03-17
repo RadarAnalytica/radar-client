@@ -5,10 +5,15 @@ import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
 import FooterNewVersion from '../components/FooterNewVersion';
 import TablePolitics from '../components/TablePolitics';
+import { Helmet } from 'react-helmet';
 
 const Politics = () => {
   return (
     <div className='instruction-page'>
+      <Helmet>
+        <title>Политика конфиденциальности сервиса Radar Analytica</title>
+        <meta name="description" content="Политика конфиденциальности сервиса Радар Аналитика. Правовые основания и цели обработки персональных данных." />
+      </Helmet>
       <div className='container instruction-container col-10 container-xlwidth'>
         <NavbarMainHome onlyLogo />
 

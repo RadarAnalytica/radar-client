@@ -93,7 +93,6 @@ function App() {
             {/** wip */}
             <Route path='/devCalc' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Калькулятор unit-экономики товара'><Calculate /></ProtectedRoute>} />
             <Route path='/calculate' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Калькулятор unit-экономики товара'><UnitCalculatorPage /></ProtectedRoute>} />
-            
             <Route path='/orders-map' element={<ProtectedRoute expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
             <Route path='/linked-shops' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />

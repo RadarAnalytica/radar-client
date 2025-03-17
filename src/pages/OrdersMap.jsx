@@ -793,7 +793,7 @@ const OrdersMap = () => {
         <SideNav />
         <div className='orders-map-content pb-3'>
           <TopNav title={'География заказов и продаж'} />
-          {/* {oneShop?.is_primary_collect && <SelfCostWarning activeBrand={activeBrand}/>}  */}
+          {oneShop?.is_primary_collect && <SelfCostWarning activeBrand={activeBrand}/>} 
 
           <OrdersMapFilter
             shops={shops}

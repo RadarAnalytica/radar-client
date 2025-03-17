@@ -160,7 +160,7 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
                 <Link
                   to='/'
                   className={styles.menuModal__logoutLink}
-                  onClick={() => { logout(); setMenuShown(false) }}
+                  onClick={() => { logout(); setMenuShown(false); window.reload() }}
                 >
                   Выход
                 </Link>
