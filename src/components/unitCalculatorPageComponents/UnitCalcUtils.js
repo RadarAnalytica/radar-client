@@ -74,37 +74,36 @@ export const unitCalcResultFunction = (
 
 
     //расчет поставки
-    const total_product_quantity = (invest_value / product_cost) * totalProductAmountQuef
-    const total_value = ((invest_value / product_cost) * totalProductAmountQuef) * product_price
-    const total_net_value = ((invest_value / product_cost) * totalProductAmountQuef) * netProfit
-    const zero_loss_point = invest_value / (selfCost + netProfit)
+    const total_product_quantity = Math.round((invest_value / product_cost) * totalProductAmountQuef)
+    const total_value = Math.round(((invest_value / product_cost) * totalProductAmountQuef) * product_price)
+    const total_net_value = Math.round(((invest_value / product_cost) * totalProductAmountQuef) * netProfit)
+    const zero_loss_point = Math.ceil(invest_value / (selfCost + netProfit))
 
 
     //дополнительно
    
     return {
-        selfCost,
-        netProfit,
-        totalMargin,
-        minimalPrice,
-        maximumDiscount,
-        roi,
+        selfCost: selfCost.toFixed(2),
+        netProfit: netProfit.toFixed(2),
+        totalMargin: totalMargin.toFixed(2),
+        minimalPrice: minimalPrice.toFixed(2),
+        maximumDiscount: maximumDiscount.toFixed(2),
+        roi: roi.toFixed(2),
         totalProductAmountQuef,
         total_product_price,
         mpFee: mp_fee,
         last_mile_logistics_price,
         last_mile_logistics_price_w_buyout,
         current_storage_price_month,
+        current_storage_logistic_price,
         total_product_quantity,
         total_value,
         total_net_value,
         zero_loss_point,
         sizes_sum,
-        volume,
-        last_mile_logistics_price,
-        last_mile_logistics_price_w_buyout,
+        volume: volume,
         storagePrice,
-        absTaxFee,
+        absTaxFee: Math.round(absTaxFee),
         invest_value,
         ...fields,
     }
@@ -184,9 +183,9 @@ export const createExelData = (result) => {
         const supplyTable = [['Расчет поставки', '']]
 
         const keysArr = Object.keys(result)
-       
+
         keysArr.forEach(k => {
-            let value = Math.round(result[k])
+            let value = result[k]
             if (typeof value === 'boolean') {
                 value = value === 'true' ? 'да' : 'нет'
             }
@@ -195,10 +194,11 @@ export const createExelData = (result) => {
                 value = '-'
             }
 
-            if (k === 'product' || k === 'product_price' || k === 'SPP' || k === 'product_cost') {
+            if (k === 'product' || k === 'product_price' || k === 'SPP' || k === 'product_cost' || k === 'total_product_price') {
                 productTable.push([fieldsVocab[k], value.toString()])
             }
-            if (k === 'package_length' || k === 'package_width' || k === 'package_height', k === 'sizes_sum', k === 'volume') {
+            if (k === 'package_length' || k === 'package_width' || k === 'package_height' || k === 'sizes_sum' || k === 'volume') {
+                console.log(k)
                 sizesTable.push([fieldsVocab[k], value.toString()])
             }
             if (k === 'warehouse' || k === 'buyout_percentage' || k === 'PackageType') {
@@ -253,6 +253,7 @@ export const createExelData = (result) => {
 export const fieldsVocab = {
     product: 'Предмет',
     product_price: 'Цена на WB (без СПП), ₽',
+    total_product_price: 'Цена с СПП, ₽',
     isSPP: 'Скидка постоянного покупателя, да/нет',
     product_cost: 'Закупочная цена, ₽',
     package_length: 'Длина упаковки, см.',
@@ -280,7 +281,7 @@ export const fieldsVocab = {
     sizes_sum: 'Сумма трех сторон, см',
     volume: 'Объем, л',
     last_mile_logistics_price: 'Логистика, ₽',
-    last_mile_logistics_price_w_buyout: 'Логистика с % выкупа, ₽',
+    current_storage_logistic_price: 'Логистика с % выкупа, ₽',
     storagePrice: 'Хранение 1 шт. в мес., ₽',
     mpFee: 'Комиссия маркетплейса, %',
     absTaxFee: 'Налог в рублях, ₽',
