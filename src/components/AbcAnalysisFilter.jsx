@@ -13,6 +13,7 @@ const AbcAnalysisFilter = ({
   setChangeBrand,
   setPrimary,
   activeShopId,
+  activeBrand
 }) => {
   const { authToken } = useContext(AuthContext);
 
@@ -69,32 +70,33 @@ const AbcAnalysisFilter = ({
               }}
               className='form-control'
               id='store'
-              defaultValue={`${activeShopId !== undefined ? activeShopId : shops?.[0]?.id
-                }`}
+              // defaultValue={`${activeShopId !== undefined ? activeShopId : '0'
+              //   }`}
+              defaultValue={activeBrand}
               onChange={(e) => {
                 const firstValue = e.target.value.split("|")[0];
                 const secondValue = e.target.value.split("|")[1];
                 const lastValue = e.target.value.split("|")[2];
-                setPrimary(lastValue);
-                setChangeBrand(secondValue);
+                //setPrimary(lastValue);
+                //setChangeBrand(secondValue);
                 setActiveBrand(firstValue);
               }}
             >
-              <option
+              {/* <option
                 value={`${shops?.[0]?.id}|${shops?.[0]?.is_primary_collect}|${shops?.[0]?.is_valid}`}
                 hidden
-                style={{ visibility: 'hidden'}}
               >
                 {shopName ||
                   shops?.[activeShopId]?.brand_name ||
                   shops?.[0]?.brand_name}
-              </option>
+              </option> */}
               <option value='0'>Все</option>
               {shops &&
                 shops?.map((brand) => (
                   <option
                     key={brand.id}
-                    value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}
+                    //value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}
+                    value={brand.id}
                   >
                     {brand.brand_name}
                   </option>
@@ -106,8 +108,10 @@ const AbcAnalysisFilter = ({
                 right: "1.75vh",
                 top: "50%",
                 transform: "translateY(-50%)",
-                width: "1.5vh",
-                height: "1.5vh",
+                width: '14px',
+                height: '9px',
+                // width: "1.5vh",
+                // height: "1.5vh",
                 pointerEvents: "none",
               }}
               viewBox='0 0 28 17'

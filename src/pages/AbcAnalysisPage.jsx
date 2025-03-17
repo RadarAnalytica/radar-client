@@ -37,7 +37,7 @@ const AbcAnalysisPage = () => {
   
   const activeShopId = activeShop?.id;
   const idShopAsValue =
-    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
+    activeShopId != undefined ? activeShopId : '0';
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -331,6 +331,7 @@ const AbcAnalysisPage = () => {
               periodValue={days}
               setDays={setDays}
               activeShopId={activeShopId}
+              activeBrand={activeBrand}
               // setChangeBrand={setChangeBrand}
               // setPrimary={setPrimary}
             />

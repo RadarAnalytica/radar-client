@@ -5,6 +5,9 @@
     right: 0;
     bottom: 0;
     z-index: 9999;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
 }
 
 .menuModal {
@@ -12,16 +15,18 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    position: absolute;
+    position: relative;
     top: 68px;
     right: 55px;
     background-color: white;
     border-radius: 8px;
     min-height: 160px;
     min-width: 270px;
+    max-width: 270px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     z-index: 999999;
     padding: 0 !important;
+    /* position: relative; */
   }
 
   .menuModal__linkList {
@@ -52,11 +57,13 @@
   }
 
   .menuModal__closeButtonWrapper {
-    width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding: 14px;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .menuModal__closeButton {
