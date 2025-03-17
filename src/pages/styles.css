@@ -155,8 +155,10 @@ select {
 
 .filter-item select,
 .filter-item input {
-  max-height: 7vh !important;
-  min-height: 4vh !important;
+  min-height: 38px;
+  max-height: 38px;
+  /* max-height: 7vh !important;
+  min-height: 4vh !important; */
 }
 
 .order-table-extended {
