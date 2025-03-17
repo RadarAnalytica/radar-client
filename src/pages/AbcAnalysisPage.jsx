@@ -37,7 +37,7 @@ const AbcAnalysisPage = () => {
   
   const activeShopId = activeShop?.id;
   const idShopAsValue =
-    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
+    activeShopId != undefined ? activeShopId : '0';
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -314,8 +314,8 @@ const AbcAnalysisPage = () => {
       <div className='dashboard-page'>
         
         <SideNav />
-        <div className='dashboard-content pb-3'>
-          <TopNav title={"ABC-анализ"} />
+        <div className='dashboard-content pb-3' style={{ padding: '0 20px 0 50px'}}>
+          <TopNav title={"ABC-анализ"} mikeStarinaStaticProp />
 
           {!isInitialLoading && isNeedCost && shouldDisplay ? (
             <SelfCostWarning
@@ -324,13 +324,14 @@ const AbcAnalysisPage = () => {
             />
           ) : null}
 
-          <div className='pt-0 d-flex gap-3'>
+          <div className='d-flex gap-3' style={{ marginTop: '20px'}}>
             <AbcAnalysisFilter
               shops={shops}
               setActiveBrand={handleSaveActiveShop}
               periodValue={days}
               setDays={setDays}
               activeShopId={activeShopId}
+              activeBrand={activeBrand}
               // setChangeBrand={setChangeBrand}
               // setPrimary={setPrimary}
             />

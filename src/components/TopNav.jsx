@@ -1,36 +1,23 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import AuthContext from "../service/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { MdOutlineSettings } from "react-icons/md";
 import { fetchMessages } from "../redux/messages/messagesSlice";
 import { useAppDispatch } from "../redux/hooks";
 import { useSelector } from "react-redux";
 import { MessagesDropdown } from "./MessagesDropdown";
+import { Link } from "react-router-dom";
+import styles from './TopNav.module.css'
 import "../App.css";
 
 const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const componentRef = useRef(null);
   const { user, logout, authToken } = useContext(AuthContext);
 
   const [menuShown, setMenuShown] = useState(false);
-  const [timeoutId, setTimeoutId] = useState(null);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const messages = useSelector((state) => state.messagesSlice.messages);
-
-  const handleMouseEnter = () => {
-    clearTimeout(timeoutId);
-    setMenuShown(true);
-  };
-
-  const handleMouseLeave = () => {
-    const newTimeoutId = setTimeout(() => {
-      setMenuShown(false);
-    }, 1500);
-    setTimeoutId(newTimeoutId);
-  };
 
   useEffect(() => {
     dispatch(fetchMessages(authToken));
@@ -39,7 +26,6 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
   useEffect(() => {
     // Initial fetch
     // dispatch(fetchMessages(authToken));
-
     // Set up interval to fetch messages every minute
     const intervalId = setInterval(() => {
       dispatch(fetchMessages(authToken));
@@ -54,38 +40,20 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
     setShowErrorPopup(!showErrorPopup);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        componentRef.current &&
-        !componentRef.current.contains(event.target)
-      ) {
-        setShowErrorPopup(false);
-      }
-    };
-
-    // Attach the event listener
-    document.addEventListener("click", handleClickOutside);
-
-    // Clean up the event listener
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
+  
   const containerStyles = mikeStarinaStaticProp ?
-  `container d-flex align-items-center justify-content-between topNavWidth` : 
-  `container dash-container d-flex align-items-center justify-content-between`
+    `container d-flex align-items-center justify-content-between topNavWidth` :
+    `container dash-container d-flex align-items-center justify-content-between`
 
   const topNavStyles = mikeStarinaStaticProp ?
-  `top-nav topNavStatic` : 
-  `top-nav`
+    `top-nav topNavStatic` :
+    `top-nav`
 
   return (
     <div className={topNavStyles}
     >
       <div className={containerStyles}
-      style={{ margin: 0, width: '100% !important', maxWidth: '100% !important'}}
+        style={{ margin: 0, width: '100% !important', maxWidth: '100% !important' }}
       >
         <div className='d-flex col me-2 top-wrapper'>
           {!title ? (
@@ -94,15 +62,14 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
               <span>{user?.email}</span>
             </>
           ) : (<>
-            {subTitle && <p 
-              className='p-0' 
+            {subTitle && <p
+              className='p-0'
               style={{
-                // fontSize: "24px", 
-                fontSize: "2.75vh", 
-                // lineHeight: "30px", 
-                color: 'rgba(26, 26, 26, 0.3)', 
-                fontWeight: 700, 
-                marginRight: '12px', 
+                fontSize: "24px",
+                lineHeight: "30px",
+                color: 'rgba(26, 26, 26, 0.3)',
+                fontWeight: 700,
+                marginRight: '12px',
                 marginBottom: '0'
               }}
             >
@@ -114,7 +81,7 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
             >
               {title}
             </p>
-            </>
+          </>
           )}
         </div>
         {children}
@@ -159,73 +126,48 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
           />
         </span>
 
-        {menuShown ? (
-          <div
-            onMouseEnter={() => handleMouseEnter()}
-            onMouseLeave={() => handleMouseLeave()}
-            className='settings-modal'
-            id='settings-modal'
+        {menuShown && (
+          <div 
+            className={styles.menuModal__bg}
+            onClick={(e) => {e.target.id === 'menu-backdrop' && setMenuShown(false)}} 
+            id='menu-backdrop'
           >
-            {/* <a href="#" className='link'
-                                    style={{
-                                        borderBottom: '1px  solid silver',
-                                        paddingBottom: '8px',
-                                    }}
-                                >
-                                    Получить полный доступ
-                                </a> */}
-            <div>
-              {/* <p className='mt-3 mb-2'>Сотрудники</p> */}
-              {/* <p className='mb-1 mt-2' onClick={() => navigate('/development/settings')}>Настройки аккаунта</p> */}
-              <p
-                className='mb-1 mt-2'
-                onClick={() => navigate("/linked-shops")}
-              >
-                Подключенные магазины
-              </p>
-              <p className='m-0 mb-1' onClick={() => navigate("/subscription")}>
-                Моя подписка
-              </p>
-              <p
-                className='m-0'
-                onClick={() => window.open("/tariffs", "_blank")}
-              >
-                Тарифы
-              </p>
-              {/* <p className='mb-2'>Экспорт отчетов</p>
-                                    <p className='mb-2'>Тарифы</p> */}
-            </div>
-            <hr
-              style={{
-                minWidth: "220px",
-                height: "1px",
-                border: "1px solid silver",
-                marginBottom: "4px",
-                marginTop: "0",
-              }}
-            />
-            <a
-              href='/'
-              className='link'
-              style={{
-                paddingTop: "4px",
-                paddingLeft: "20px",
-                width: "240px",
-              }}
-              onClick={() => {
-                logout();
-              }}
+            <div style={{ display: 'none' }}></div> {/*это костыль */}
+            <div
+              className={styles.menuModal}
+              //id='settings-modal'
             >
-              Выход
-            </a>
+              <div style={{ display: 'none' }}></div> {/*это костыль */}
+              <div className={styles.menuModal__closeButtonWrapper}>
+                <button className={styles.menuModal__closeButton} onClick={(e) => {setMenuShown(false)}}>
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M14.3282 1.70711C14.7187 1.31658 14.7187 0.683417 14.3282 0.292893C13.9377 -0.0976311 13.3045 -0.0976311 12.914 0.292893L7.207 5.99988L1.70711 0.499986C1.31658 0.109461 0.683417 0.109461 0.292893 0.499986C-0.0976311 0.89051 -0.0976311 1.52368 0.292893 1.9142L5.58579 7.20709L0.292893 12.5C-0.0976311 12.8905 -0.0976311 13.5237 0.292893 13.9142C0.683417 14.3047 1.31658 14.3047 1.70711 13.9142L7.41409 8.20721L12.914 13.7071C13.3045 14.0976 13.9377 14.0976 14.3282 13.7071C14.7187 13.3166 14.7187 12.6834 14.3282 12.2929L9.03531 7L14.3282 1.70711Z" fill="#ECECEC" />
+                  </svg>
+                </button>
+              </div>
+              <ul className={styles.menuModal__linkList}>
+                <li className={styles.menuModal__listItem}>
+                  <Link className={styles.menuModal__link} to='/linked-shops'>Подключенные магазины</Link>
+                </li>
+                <li className={styles.menuModal__listItem}>
+                  <Link className={styles.menuModal__link} to='/subscription'>Моя подписка</Link>
+                </li>
+                <li className={styles.menuModal__listItem}>
+                  <Link className={styles.menuModal__link} to='/tariffs' target="_blank">Тарифы</Link>
+                </li>
+              </ul>
+              <div className={styles.menuModal__logoutWrapper}>
+                <Link
+                  to='/'
+                  className={styles.menuModal__logoutLink}
+                  onClick={() => { logout(); setMenuShown(false) }}
+                >
+                  Выход
+                </Link>
+              </div>
+            </div>
           </div>
-        ) : null}
-        {/* <div className="hamburger col-2 d-flex justify-content-around">
-                    <RxHamburgerMenu
-                        style={{ maxWidth: '2vw', cursor: 'pointer', fontSize: '28px', color: 'black' }}
-                        onClick={() => setShowMobile(true)}
-                    />
-                </div> */}
+        )}
       </div>
     </div>
   );

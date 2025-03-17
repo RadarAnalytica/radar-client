@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import ArrowUp from "../assets/ArrowUp.svg";
 import ArrowDown from "../assets/ArrowDown.svg";
 import "../App.css";
+import styles from './TableAbcData.module.css'
 
 const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading }) => {
   // const [asc, setAsc] = useState(true);
   // const [sortedColumn, setSortedColumn] = useState(""); // Для отслеживания текущего столбца сортировки
   const [sortConfig, setSortConfig] = useState({
-    column: null,
-    direction: "asc", // 'asc' or 'desc'
+    column: 'amount',
+    direction: "desc", // 'asc' or 'desc'
   });
 
   const sortData = (key) => {
@@ -68,7 +69,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
   return (
     <div
       className='abcAnalysis dash-container table-content'
-      style={{ maxHeight: "700px", margin: "22px 0 0 60px" }}
+      style={{ maxHeight: "700px", marginTop: "25px"}}
     >
       <div className='filter abc-filter-container dash-container d-flex'>
         <div className='filter-btn-p'>Выбрать вид: </div>
@@ -239,7 +240,17 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                     {formatNumber(item.amount)}
                   </div>
                   <div style={{ width: "20%" }}>{item.amount_percent}%</div>
-                  <div style={{ width: "13.75%" }}>{item.category}</div>
+                  <div className={styles.category}>
+                    <span 
+                      className={
+                        item.category === 'A' ? `${styles.category__icon} ${styles.category__icon_green}` :
+                        item.category === 'B' ? `${styles.category__icon} ${styles.category__icon_yellow}` :
+                        item.category === 'C' ? `${styles.category__icon} ${styles.category__icon_red}` : styles.category__icon
+                      }
+                    >
+                      {item.category}
+                    </span>
+                  </div>
                   {/* <div style={{ width: "10%" }}>{item.category_total}</div> */}
                 </div>
               ))}
