@@ -74,13 +74,18 @@ const MainPage = () => {
   useLayoutEffect(() => {
     const head = document.querySelector('head');
     const videoscript = head.querySelector('#video_instruction')
+   
+    const script = document.createElement('script')
+    script.src = 'https://app.getreview.com/tags/ugfMbLpl3yqfOvpC/sdk.js'
+    script.async = true
+    script.id = 'video_instruction'
 
     if (!videoscript) {
-      const script = document.createElement('script')
-      script.src = 'https://app.getreview.com/tags/ugfMbLpl3yqfOvpC/sdk.js'
-      script.async = true
-      script.id = 'video_instruction'
       head.appendChild(script);
+    }
+
+    return () => {
+      head.removeChild(script);
     }
   }, [])
 
