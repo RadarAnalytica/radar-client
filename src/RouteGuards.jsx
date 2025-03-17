@@ -85,8 +85,6 @@ export const ProtectedRoute = ({
   role = config.role,
 }) => {
   const { user } = useContext(AuthContext);
-  console.log('user is:')
-  console.log(user)
   const { pathname } = useLocation()
 
   // -------this is test user object for dev purposes ------//

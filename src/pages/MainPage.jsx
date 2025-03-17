@@ -104,7 +104,7 @@ const MainPage = () => {
     if (user?.is_onboarded) {
       user?.subscription_status === 'expired'
         ? navigate('/tariffs')
-        : navigate('/dashboard');
+        : navigate('/main/dashboard');
     } else {
       navigate('/onboarding');
     }
