@@ -1,0 +1,21 @@
+.category {
+    width: 14%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.category__icon {
+    padding: 4px 20px;
+    border-radius: 8px;
+    background: silver;
+}
+.category__icon_green {
+    background: #DBF7E9;
+}
+.category__icon_yellow {
+    background: #FCEFCC;
+}
+.category__icon_red {
+    background: #FEDACC;
+}

@@ -28,6 +28,12 @@ input[type="number"]:focus {
   margin-left: 5px;
 }
 
+@media screen and (min-width: 2000px) {
+  .map-radio {
+    gap: 1.5vw;
+  }
+}
+
 .radio-item {
   display: flex;
   align-items: center;
@@ -139,10 +145,20 @@ select {
   max-width: 39vw;
 }
 
+@media screen and (min-width: 2000px) {
+  .order-map-doughnut,
+  .order-table-extended,
+  .order-map-table {
+    margin-bottom: 1.5vw;
+  }
+}
+
 .filter-item select,
 .filter-item input {
-  max-height: 7vh !important;
-  min-height: 4vh !important;
+  min-height: 38px;
+  max-height: 38px;
+  /* max-height: 7vh !important;
+  min-height: 4vh !important; */
 }
 
 .order-table-extended {

@@ -6,6 +6,13 @@
     
     border-radius: 12px;
   }
+
+  @media screen and (min-width: 2000px) {
+    .filterGroup {
+      width: 20%!important;
+      padding: 1.2rem;
+    }
+  }
   
   .filterGroupBig {
     width: 100%;
@@ -62,7 +69,14 @@
     font-weight: 700;
     line-height: 20px;
   }
-  
+
+  @media screen and (min-width: 2000px) {
+    .filterHeader h3 {
+      font-size: 1rem;
+      line-height: 1.25;
+    }
+  }
+
   .clearButton {
     background: none;
     border: none;
@@ -74,7 +88,14 @@
     padding: 4px 4px;
     min-width: 100px;
   }
-  
+
+  @media screen and (min-width: 2000px) {
+    .clearButton {
+      font-size: 0.875rem;
+      line-height: 1.25;
+    }
+  }
+
   .clearButton:hover {
     text-decoration: underline;
   }
@@ -87,6 +108,12 @@
     overflow-y: auto;
   }
   
+  @media screen and (min-width: 2000px) {
+    .optionsList {
+      max-height: 15vh;
+    }
+  }
+
   .optionLabel {
     display: flex;
     align-items: center;
@@ -99,6 +126,13 @@
     padding: 2px 0 2px 0;
   }
   
+  @media screen and (min-width: 2000px) {
+    .optionLabel {
+      font-size: 0.875rem;
+      line-height: 1.25;
+    }
+  }
+
   .optionLabel input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
@@ -139,6 +173,12 @@
     max-width: 180px;
     display: inline-block;
     vertical-align: middle;
+  }
+  
+  @media screen and (min-width: 2000px) {
+    .optionLabel span {
+      max-width: 100%!important;
+    }
   }
   
   /* Style for big size */

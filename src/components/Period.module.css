@@ -122,12 +122,20 @@
   border-radius: 8px;
   cursor: pointer;
 }
-
+@media screen and (min-width: 2000px) {
+  .dropdownWrapper {
+    font-size: 2vh;
+  }
+}
 .selectedOption {
   font-size: 14px;
   color: #000;
   margin-left: 5px;
- 
+}
+@media screen and (min-width: 2000px) {
+  .selectedOption {
+    font-size: 2vh;
+  }
 }
 
 .arrowIcon {
@@ -155,6 +163,11 @@
   cursor: pointer;
   font-size: 14px;
   border-bottom: 1px solid #E8E8E8;
+}
+@media screen and (min-width: 2000px) {
+  .dropdownMenu li {
+    font-size: 2vh;
+  }
 }
 
 .customDateOption {

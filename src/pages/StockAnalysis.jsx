@@ -47,7 +47,7 @@ const StockAnalysis = () => {
   const { user, authToken } = useContext(AuthContext);
   const [file, setFile] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [activeBrand, setActiveBrand] = useState(idShopAsValue);
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
@@ -94,7 +94,7 @@ const StockAnalysis = () => {
   };
 
   const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
-    // setLoading(true);
+    setLoading(true);
     try {
       const data = await ServiceFunctions.getDashBoard(
         authToken,
@@ -105,7 +105,7 @@ const StockAnalysis = () => {
     } catch (e) {
       console.error(e);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -157,6 +157,7 @@ const StockAnalysis = () => {
         console.error("Error fetching initial data:", error);
       } finally {
         setIsInitialLoading(false);
+        setLoading(false);
       }
     };
 
@@ -175,12 +176,14 @@ const StockAnalysis = () => {
         activeBrand !== prevActiveBrand.current
       ) {
         if (activeBrand !== undefined) {
+          setLoading(true);
           const data = await ServiceFunctions.getAnalysisData(
             authToken,
             selectedRange,
             activeBrand
           );
           setStockAnalysisData(data);
+          setLoading(false);
           // dispatch(fetchStockAnalysisData({ authToken, selectedRange, activeBrand }));
         }
         prevDays.current = selectedRange;
@@ -260,7 +263,8 @@ const StockAnalysis = () => {
       <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
-          <TopNav title={'Товарная аналитика'} />
+        <div className='h-100 d-flex flex-column overflow-hidden'>
+        <TopNav title={'Товарная аналитика'} />
           {!isInitialLoading && !hasSelfCostPrice && activeShopId !== 0 && shouldDisplay ? (
             <SelfCostWarning
               activeBrand={activeBrand}
@@ -285,7 +289,7 @@ const StockAnalysis = () => {
                   <div className='search-box'>
                     <input
                       type='text'
-                      placeholder='Поиск по SKU или артикулу'
+                      placeholder='Поиск по названию, SKU или артикулу'
                       className='search-input'
                       value={searchQuery}
                       onChange={handleSearchChange}
@@ -323,7 +327,9 @@ const StockAnalysis = () => {
               </div>
 
               <div style={{ height: '20px' }}></div>
-              <TableStock dataTable={dataTable} setDataTable={setDataTable} />
+              <div className='flex-grow-1'>
+                <TableStock dataTable={dataTable} setDataTable={setDataTable} loading={loading} />
+              </div>
             </>
           ) : (
             <DataCollectionNotification
@@ -331,8 +337,9 @@ const StockAnalysis = () => {
             />
           )}
         </div>
-      </div>
 
+      </div>
+      </div>
       {/* Modal for Cost Price */}
       <Modal
         show={costPriceShow}

@@ -56,10 +56,10 @@ const StorageTable = ({
       {!dataDashBoard || loading ? (
         <div
           style={{
-          position: 'relative',
-          height: '100%',
-          width: '100%',
-          paddingTop: '20%',
+            position: 'relative',
+            height: '100%',
+            width: '100%',
+            paddingTop: '20%',
           }}
         >
           <div
@@ -73,7 +73,7 @@ const StorageTable = ({
                 // backgroundColor: '#fff',
             }}
           >
-            <span className='loader'></span>
+            <span className='loader' style={{fontSize: '8px'}}></span>
           </div>
         </div>
       ) : (

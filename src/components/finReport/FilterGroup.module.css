@@ -18,6 +18,13 @@
     font-weight: 600;
     line-height: 20px;
   }
+
+  @media screen and (min-width: 2000px) {
+    .collapseButton {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  }
   
   .filterGrid {
     width: 100%;
@@ -43,4 +50,12 @@
     margin-top: 20px;
     border-radius: 8px;
     background-color: rgba(83, 41, 255, 0.1);
+  }
+
+  @media screen and (min-width: 2000px) {
+    .applyButton{
+      margin-top: 1.25em;
+      padding: 0.5em 1em;
+      font-size: 1rem;
+    }
   }

@@ -1,0 +1,89 @@
+.menuModal__bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.menuModal {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    position: relative;
+    top: 68px;
+    right: 55px;
+    background-color: white;
+    border-radius: 8px;
+    min-height: 160px;
+    min-width: 270px;
+    max-width: 270px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    z-index: 999999;
+    padding: 0 !important;
+    /* position: relative; */
+  }
+
+  .menuModal__linkList {
+    width: 100;
+    margin: 0;
+    padding: 14px;
+    border-bottom: 1px solid silver;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .menuModal__listItem {
+    width: 100%;
+  }
+
+  .menuModal__link {
+    color: black;
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+  }
+
+  .menuModal__link:hover {
+    color: var(--primary-color);
+  }
+
+  .menuModal__closeButtonWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 14px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .menuModal__closeButton {
+    background: transparent;
+    border: none;
+  }
+
+  .menuModal__logoutWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 14px;
+  }
+
+  .menuModal__logoutLink {
+    border: none;
+    background: transparent;
+    color: var(--primary-color);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+  }

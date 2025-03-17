@@ -69,12 +69,12 @@ const StepsTime = ({ redirect }) => {
         <div className='mobile-yellow-icon'>
           <YellowRadarSmall />
         </div>
-        <div className={`helpEveryStepText ${styles.helpEveryStepText}`}>
+        <h3 className={`helpEveryStepText ${styles.helpEveryStepText}`}>
           поможет на каждом этапе вашего{" "}
           <span style={{ color: "#5329FF", fontWeight: "800" }}>
             развития на маркетплейсах
           </span>
-        </div>
+        </h3>
         <div className='helpEveryStepTextMobile'>
           поможет на каждом <br /> этапе вашего{" "}
           <span style={{ color: "#5329FF", fontWeight: "800" }}>
