@@ -1,0 +1,98 @@
+.request-mon-search-wrapper .search {
+  flex-direction: column;
+}
+
+.enteringRequest {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+}
+
+.enteringRequestImg {
+  padding: 15px;
+  background-color: #5329FF26;
+  border-radius: 10px;
+}
+
+.enteringRequestHeader {
+  font-size: 24px;
+  color: #1A1A1A;
+  font-weight: 700;
+  margin-left: 20px;
+}
+
+@media screen and (min-width: 2000px) {
+  .enteringRequestHeader {
+      font-size: 1.5rem;
+  }
+}
+
+.enteringRequestText {
+  margin: 20px 0px 20px 20px;
+  font-size: 18px;
+  color: #1A1A1A;
+}
+
+@media screen and (min-width: 2000px) {
+  .enteringRequestText {
+      margin: 1.25em 0 1.25em 1.25em;
+      font-size: 1.125rem;
+  }
+}
+
+.request-mon-search-wrapper .search .serach-button-wrapper {
+  margin: 0px 15px 0 5px !important;
+}
+
+.request-mon-search-wrapper {
+  padding: 22px 32px 24px 32px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  max-width: 74 !important;
+  --bs-gutter-x: 0 !important;
+  box-shadow: rgba(0, 0, 0, 0.08)
+}
+
+.request-mon-search-wrapper>.search>.search-input {
+  max-width: 50vw;
+
+}
+
+.enteringRequestHeader {
+  font-size: 20px;
+}
+
+@media screen and (min-width: 2000px) {
+  .enteringRequestHeader {
+    font-size: 1.25rem;
+  }
+}
+
+.enteringRequestImg {
+  padding: 10px;
+}
+
+.request-monitoring-search-mobile {
+  display: block;
+  margin: 20px 0px 10px 20px;
+  font-weight: 700;
+}
+
+.enteringRequestText {
+  font-size: 14px;
+}
+
+@media screen and (min-width: 2000px) {
+  .enteringRequestText {
+    font-size: 0.875rem;
+  }
+}
+
+.noResulstFound{
+  align-items: center;
+  margin-left: 35vw;
+}

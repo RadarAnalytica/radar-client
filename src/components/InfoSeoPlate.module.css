@@ -14,17 +14,30 @@
 .infoTitle span {
     font-weight: 700;
     font-size: 24px;
-    line-height: 30px;
+    line-height: 1.25;
     color: rgba(26, 26, 26, 1);
     margin-left: 12px;
+}
+
+@media screen and (min-width: 2000px) {
+    .infoTitle span{
+        font-size: 1.5rem;
+    }
 }
 
 .infoBodyText span {
     font-weight: 500;
     font-size: 16px;
-    line-height: 25px;
+    line-height: 1.5;
     color: rgba(26, 26, 26, 1);
     margin-top: 8px;
+}
+
+@media screen and (min-width: 2000px) {
+    .infoBodyText span {
+        margin-top: 0.5em;
+        font-size: 1rem;
+    }
 }
 
 .infoBodyBox {
@@ -32,6 +45,13 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 16px;
     margin-top: 8px;
+}
+
+@media screen and (min-width: 2000px) {
+    .infoBodyBox {
+        margin-top: 0.5rem;
+        gap: 1rem;
+    }
 }
 
 .infoBodyBoxItem {
@@ -42,12 +62,24 @@
     align-items: center;
 }
 
+@media screen and (min-width: 2000px) {
+    .infoBodyBoxItem{
+        padding: 1rem;
+    }
+}
+
 .infoBodyBoxItem span {
-    margin-left: 8px;
+    margin-left: 0.5em;
     font-weight: 500;
-    font-size: 16px;
-    font-weight: 22px;
+    font-size: 1rem;
+    line-height: 1.375;
     max-width: 340px;
+}
+
+@media screen and (min-width: 2000px) {
+    .infoBodyBoxItem img{
+        width: 2rem;
+    }
 }
 
 .infoSeoGroupWrapper {
@@ -62,28 +94,28 @@
 
 .infoSeoGroupTitle {
     font-weight: 700;
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 1.125rem;
+    line-height: 1.2;
     color: rgba(26, 26, 26, 1);
 }
 
 .groupBoxTitle {
     font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 1rem;
+    line-height: 1.25;
     color: rgba(26, 26, 26, 1);
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 1.25em;
+    margin-bottom: 0.625em;
 }
 
 .groupTextarea {
     width: 100%;
-    padding: 8px;
+    padding: 0.5em;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1.4;
     resize: none;
   }
@@ -91,14 +123,14 @@
   .getReportBtn {
     width: 100%;
     background: rgba(83, 41, 255, 1);
-    padding: 20px 0 20px 0;
+    padding: 1.25em 0 1.25em 0;
     color: rgba(255, 255, 255, 1);
     font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 1rem;
+    line-height: 1.25;
     border-radius: 8px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
     border: none;
   }
 

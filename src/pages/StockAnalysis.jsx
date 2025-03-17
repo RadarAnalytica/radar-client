@@ -263,7 +263,8 @@ const StockAnalysis = () => {
       <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
-          <TopNav title={'Товарная аналитика'} />
+        <div className='h-100 d-flex flex-column overflow-hidden'>
+        <TopNav title={'Товарная аналитика'} />
           {!isInitialLoading && !hasSelfCostPrice && activeShopId !== 0 && shouldDisplay ? (
             <SelfCostWarning
               activeBrand={activeBrand}
@@ -326,7 +327,9 @@ const StockAnalysis = () => {
               </div>
 
               <div style={{ height: '20px' }}></div>
-              <TableStock dataTable={dataTable} setDataTable={setDataTable} loading={loading} />
+              <div className='flex-grow-1'>
+                <TableStock dataTable={dataTable} setDataTable={setDataTable} loading={loading} />
+              </div>
             </>
           ) : (
             <DataCollectionNotification
@@ -334,8 +337,9 @@ const StockAnalysis = () => {
             />
           )}
         </div>
-      </div>
 
+      </div>
+      </div>
       {/* Modal for Cost Price */}
       <Modal
         show={costPriceShow}

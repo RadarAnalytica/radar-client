@@ -97,6 +97,14 @@
     padding: 4px 0 4px 12px;
 }
 
+@media screen and (min-width: 2000px) {
+    .salesSection {
+        padding: 0.25em 0 0.25em 0.75em;
+        font-size: 1rem;
+        line-height: 1.25rem;
+    }
+}
+
 .salesHeader {
     flex: 1;
     padding: 0 0 0 12px;
@@ -111,6 +119,13 @@
     margin-bottom: 4px;
 }
 
+@media screen and (min-width: 2000px) {
+    .salesTitle {
+        font-size: 1.125rem;
+        line-height: 1.25;
+    }
+}
+
 .salesSubheader {
     display: flex;
     padding: 0 0 7px 0;
@@ -120,13 +135,34 @@
     color: rgba(140, 140, 140, 1);
 }
 
+@media screen and (min-width: 2000px) {
+    .salesSubheader {
+        padding-bottom: 0.25em;
+        font-size: 1rem;
+        line-height: 1.25rem;
+    }
+}
+
 .cell_purchases,
 .cell_returns {
     width: 128px;
 }
 
+@media screen and (min-width: 2000px) {
+    .cell_purchases,
+    .cell_returns {
+        width: 220px;
+    }
+}
+
 .cell_sales {
     width: 96px;
+}
+
+@media screen and (min-width: 2000px) {
+    .cell_sales {
+        width: 160px;
+    }
 }
 
 .cell_revenue,
@@ -134,9 +170,23 @@
     width: 128px;
 }
 
+@media screen and (min-width: 2000px) {
+    .cell_revenue,
+    .cell_avgPrice {
+        width: 220px;
+    }
+}
+
 .cell_spp,
 .cell_buyout {
     width: 80px;
+}
+
+@media screen and (min-width: 2000px) {
+    .cell_spp,
+    .cell_buyout {
+        width: 180px;
+    }
 }
 
 /* Cost section */
@@ -150,6 +200,12 @@
     background: rgba(83, 41, 255, 0.05);
     padding: 0 12px 0 12px;
     box-shadow: 0 1px 0 rgba(232, 232, 232, 1);
+}
+
+@media screen and (min-width: 2000px) {
+    .costSection {
+        padding: 0 0.75em 0 0.75em;
+    }
 }
 
 .costHeader {
@@ -166,12 +222,26 @@
     margin-bottom: 4px;
 }
 
+@media screen and (min-width: 2000px) {
+    .costTitle {
+        font-size: 1.125rem;
+        line-height: 1.25;
+    }
+}
+
 .costSubheader {
     display: flex;
     font-weight: 500;
     font-size: 16px;
     line-height: 20px;
     color: rgba(140, 140, 140, 1);
+}
+
+@media screen and (min-width: 2000px) {
+    .costSubheader {
+        font-size: 1rem;
+        line-height: 1.25;
+    }
 }
 
 .cell_cost,
@@ -184,6 +254,15 @@
     /* color: rgba(26, 26, 26, 1); */
 }
 
+@media screen and (min-width: 2000px) {
+    .cell_cost,
+    .cell_costPerUnit {
+        min-width: 240px;
+        font-size: 1rem;
+        line-height: 1.25;
+    }
+}
+
 .logisticSection {
     display: flex;
     font-size: 16px;
@@ -193,12 +272,26 @@
     padding: 0 0 0 12px;
 }
 
+@media screen and (min-width: 2000px) {
+    .logisticSection {
+        font-size: 1rem;
+        line-height: 1.25;
+    }
+}
+
 /* Utils */
 .subtext {
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
+}
+
+@media screen and (min-width: 2000px) {
+    .subtext {
+        font-size: 1rem;
+        line-height: 1.25;
+    }
 }
 
 .toggleButton {
@@ -217,9 +310,23 @@
     color: #999;
 }
 
+@media screen and (min-width: 2000px) {
+    .icon {
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
 .indent {
     width: 16px;
     margin-left: 16px;
+}
+
+@media screen and (min-width: 2000px) {
+    .indent {
+        width: 1rem;
+        height: 1rem;
+    }
 }
 
 .totalRow {
@@ -230,6 +337,12 @@
 
 .logisticSubheader {
     min-width: 128px;
+}
+
+@media screen and (min-width: 2000px) {
+    .logisticSubheader {
+        min-width: 240px;
+    }
 }
 
 .damgeSection,
@@ -291,6 +404,13 @@
     color: rgba(140, 140, 140, 1);
 }
 
+@media screen and (min-width: 2000px) {
+    .cellArticle {
+        font-size: 1rem;
+        line-height: 1.25;
+    }
+}
+
 .cellGoods {
     display: flex;
     align-items: center;
@@ -298,6 +418,13 @@
     font-weight: 500;
     line-height: 20px;
     color: rgba(140, 140, 140, 1);
+}
+
+@media screen and (min-width: 2000px) {
+    .cellGoods {
+        font-size: 1rem;
+        line-height: 1.25;
+    }
 }
 
 .dropdownArrow {

@@ -192,9 +192,9 @@ const LogisticsTable = ({data, loading}) => {
               gridColumn: '1 / -1',
               textAlign: 'center',
               padding: '20px',
-              fontSize: '16px',
+              fontSize: '1rem',
               fontWeight: '700',
-              lineHeight: '24px',
+              lineHeight: '1.25',
             }}
           >
             Штрафы отсутствуют

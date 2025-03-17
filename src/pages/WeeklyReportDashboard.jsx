@@ -260,10 +260,7 @@ const WeeklyReportDashboard = () => {
                       </div>
                     )}
                   </div>
-                  <div
-                    className={styles.salesChartWrapper}
-                    style={{ marginTop: '20px' }}
-                  >
+                  <div className={styles.salesChartWrapper}>
                     <div className={styles.title}>Финансы</div>
                     {!isLoading ? (
                       <>
@@ -314,10 +311,7 @@ const WeeklyReportDashboard = () => {
                       </div>
                     )}
                   </div>
-                  <div
-                    className={styles.salesChartWrapper}
-                    style={{ marginTop: '20px' }}
-                  >
+                  <div className={styles.salesChartWrapper}>
                     <div className={styles.title}>Внешние расходы</div>
                     {!isLoading ? (
                       <>
@@ -594,10 +588,7 @@ const WeeklyReportDashboard = () => {
                       </div>
                     )}
                   </div>
-                  <div
-                    className={styles.salesChartWrapper}
-                    style={{ marginTop: '20px' }}
-                  >
+                  <div className={styles.salesChartWrapper}>
                     <div className={styles.title}>Налог</div>
                     {!isLoading ? (
                       <>

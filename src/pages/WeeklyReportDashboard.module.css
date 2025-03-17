@@ -7,12 +7,27 @@
   margin-bottom: 80px;
 }
 
+@media screen and (min-width: 2000px) {
+  .blockWrapper{
+    margin-top: 1.25em;
+    margin-top: 5em;
+    gap: 0 1.25rem;
+  }
+}
+
 .title {
   color: rgba(26, 26, 26, 1);
   font-size: 22px;
   font-weight: 700;
   line-height: 27px;
   margin-bottom: 6px;
+}
+
+@media screen and (min-width: 2000px) {
+  .title{
+    margin-bottom: 0.3em;
+    font-size: 1.375rem;
+  }
 }
 
 .bottomNavWrapper {
@@ -28,6 +43,21 @@
   border-radius: 8px;
   padding: 12px;
   min-height: 200px;
+}
+@media screen and (min-width: 2000px) {
+  .salesChartWrapper {
+    padding: 0.75rem;
+  }
+}
+
+.salesChartWrapper + .salesChartWrapper {
+  margin-top: 20px;
+}
+
+@media screen and (min-width: 2000px) {
+  .salesChartWrapper + .salesChartWrapper {
+    margin-top: 1.25em;
+  }
 }
 
 .salesChartRow {
@@ -51,7 +81,14 @@
   font-size: 16px;
   line-height: 20px;
   color: rgba(26, 26, 26, 1);
+}
 
+@media screen and (min-width: 2000px) {
+  .titleInRow{
+    margin-left: 0.25em;
+    font-size: 1rem;
+    line-height: 1.25;
+  }
 }
 
 .mumbersInRow {
@@ -61,6 +98,14 @@
   color: rgba(26, 26, 26, 1);
   margin-bottom: 6.5px;
   cursor: pointer;
+}
+
+@media screen and (min-width: 2000px) {
+  .mumbersInRow{
+    margin-bottom: 0.3em;
+    font-size: 1.05rem;
+    line-height: 1;
+  }
 }
 
 .headerInRow {
@@ -80,7 +125,11 @@
 .widthHeader {
   width: 120px;
 }
-
+@media screen and (min-width: 2000px) {
+  .widthHeader {
+    width: 180px;
+  }
+}
 .totalBox {
   display: flex;
   justify-content: space-between;
