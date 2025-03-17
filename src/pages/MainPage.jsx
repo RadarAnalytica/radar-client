@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, lazy, Suspense } from 'react';
+import React, { useContext, useState, useEffect, lazy, Suspense, useLayoutEffect } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 // import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -68,6 +68,23 @@ const MainPage = () => {
       }
     }).observe({ entryTypes: ['largest-contentful-paint'] });
   }, []);
+
+
+  // ----- video instruction script ----------------------//
+  useLayoutEffect(() => {
+    const head = document.querySelector('head');
+    const videoscript = head.querySelector('#video_instruction')
+
+    if (!videoscript) {
+      const script = document.createElement('script')
+      script.src = 'https://app.getreview.com/tags/ugfMbLpl3yqfOvpC/sdk.js'
+      script.async = true
+      script.id = 'video_instruction'
+      head.appendChild(script);
+    }
+  }, [])
+
+  // ------------------------------------------------------//
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
