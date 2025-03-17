@@ -8,7 +8,11 @@
   --grow-green: rgba(0, 182, 155, 1);
   --red: rgba(249, 60, 101, 1);
 }
-
+@media screen and (min-width: 2000px) {
+  :root {
+    font-size: 1.6vh;
+  }
+}
 * {
   font-family: "Mulish", sans-serif;
   margin: 0;
@@ -149,15 +153,29 @@ html {
 .top-wrapper {
   height: 8vh !important;
 }
+@media screen and (min-width: 2000px) {
+  .top-wrapper svg{
+    width: 2vh;
+    height: 2vh;
+  }
+}
 
 .filter-item label {
   font-size: 15px;
 }
-
+@media screen and (min-width: 2000px) {
+  .filter-item label {
+    font-size: 1.8vh;
+  }
+}
 .filter-item select {
   font-size: 15px;
 }
-
+@media screen and (min-width: 2000px) {
+  .filter-item select {
+    font-size: 1.5vh;
+  }
+}
 .medium-plate > div > img {
   width: 7vh !important;
 }
@@ -726,6 +744,12 @@ select {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
+@media screen and (min-width: 2000px) {
+  .storage-table {
+    padding: 2vh;
+  }
+}
+
 .storage-table-title-element {
   display: flex;
   align-items: center;
@@ -741,6 +765,12 @@ select {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
+@media screen and (min-width: 2000px) {
+  .chart-table {
+    padding: 2vh;
+  }
+}
+
 .wide-plate {
   background-color: white;
   border-radius: 16px;
@@ -750,6 +780,13 @@ select {
   font-weight: 600;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
+
+@media screen and (min-width: 2000px) {
+  .wide-plate {
+    padding: 2vh;
+  }
+}
+
 .wide-plate-title-element-div > .wide-plate-title-elem-p {
   margin-bottom: 0 !important;
   font-size: 24px;
@@ -765,6 +802,12 @@ select {
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   /* overflow-x: auto; */
+}
+
+@media screen and (min-width: 2000px) {
+  .finance-table {
+    padding: 2vh;
+  }
 }
 
 .finance-table::-webkit-scrollbar {
@@ -812,7 +855,6 @@ select {
   display: flex;
   align-items: flex-start;
 }
-
 #root
   > div
   > div.dashboard-page
@@ -838,9 +880,19 @@ select {
 .storage-table span {
   font-size: 14px;
 }
-
+@media screen and (min-width: 2000px) {
+  .storage-table span {
+    font-size: 1.7vh;
+  }
+}
 .chart-table-row {
   margin-top: 1rem;
+}
+
+@media screen and (min-width: 2000px) {
+  .chart-table-row .clue-text{
+    font-size: 1.7vh!important;
+  }
 }
 
 .chart-row-data {
@@ -872,6 +924,12 @@ select {
   padding: 16px;
   min-width: 15vw;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+}
+
+@media screen and (min-width: 2000px) {
+  .small-plate {
+    padding: 2vh;
+  }
 }
 
 .big-chart {
@@ -1449,8 +1507,8 @@ select {
     cursor: pointer;
   }
   .downloadButtonDashMobile > .download-button img{
- width: 15px;
- height: 13px;
+    width: 15px;
+    height: 13px;
   }
 
   .dashboardMobile .row{
@@ -2212,10 +2270,27 @@ select {
   height: 45px;
   cursor: pointer;
 }
+
+@media screen and (min-width: 2000px) {
+  .download-button {
+    height: auto;
+    padding: 1vh;
+    font-size: 1.75vh;
+  }
+}
+
 .download-button img {
   width: 18px;
   height: 16px;
   margin-right: 6px;
+}
+
+@media screen and (min-width: 2000px) {
+  .download-button img {
+    width: 2vh;
+    height: 2vh;
+    margin-top: 1vh;
+  }
 }
 
 .download-button.disabled {
@@ -2586,6 +2661,12 @@ select {
   max-height: 50px; /* Fixed maximum height */
   box-sizing: border-box;
 }
+@media screen and (min-width: 2000px) {
+  .image-button {
+    align-items: center;
+    max-width: unset;
+  }
+}
 
 .circle {
   border-radius: 50%;
@@ -2599,6 +2680,12 @@ select {
   width: 24px; /* Fixed width for icon */
   height: 24px; /* Fixed height for icon */
   object-fit: cover;
+}
+@media screen and (min-width: 2000px) {
+  .icon-image {
+    width: 2vh;
+    height: 2vh;
+  }
 }
 
 .label {
@@ -4118,7 +4205,11 @@ font-weight: 500;
 
 }
 
-
+@media screen and (min-width: 2000px) {
+  .chart-container {
+    padding: 2vh;
+  }
+}
 
 .chart-title{
   text-align: left;

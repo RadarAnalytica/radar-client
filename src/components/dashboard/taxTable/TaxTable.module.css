@@ -32,6 +32,12 @@
     margin-bottom: 6px;
   }
   
+  @media screen and (min-width: 2000px) {
+    .salesChartRow {
+      margin-bottom: 1vh;
+    }
+  }
+  
   .salesChartRow:last-child {
     border-bottom: none;
     margin-bottom: 0;
@@ -46,7 +52,13 @@
     font-size: 14px;
     line-height: 20px;
     color: rgba(26, 26, 26, 1);
+  }
   
+  @media screen and (min-width: 2000px) {
+    .titleInRow {
+      margin-bottom: 0.85vh;
+      font-size: 1.95vh;
+    }
   }
   
   .mumbersInRow {
@@ -57,6 +69,13 @@
     margin-bottom: 4px;
     /* margin-left: 10px; */
     cursor: pointer;
+  }
+  
+  @media screen and (min-width: 2000px) {
+    .mumbersInRow {
+      margin-bottom: 0.5vh;
+      font-size: 1.95vh;
+    }
   }
   
   .headerInRow {
@@ -113,6 +132,13 @@
     cursor: pointer;
     background: #f0f0f0;
   }
+
+  @media screen and (min-width: 2000px) {
+    .editTaxRate button {
+      width: 4vh;
+      font-size: 1.95vh;
+    }
+  }
   
   .editTaxRate button:hover {
     background: #e0e0e0;
@@ -151,6 +177,13 @@
     background-position: right 5px center;
     background-size: 25px; 
   }
+
+  @media screen and (min-width: 2000px) {
+    .customSelect {
+      font-size: 1.95vh;
+    }
+  }
+
   .taxRateWrapper{
     cursor: pointer;
     width: calc(100% - 78px);
@@ -162,6 +195,13 @@
     border: 1px solid rgba(232, 232, 232, 1);
     text-align: center;
   }
+
+  @media screen and (min-width: 2000px) {
+    .taxRateWrapper {
+      font-size: 1.95vh;
+    }
+  }
+
   .taxRateWrapperDisabled{
     cursor: auto;
   }

@@ -129,12 +129,22 @@
   -webkit-user-select: none;
   -moz-user-select: none;
 }
+@media screen and (min-width: 2000px) {
+  .dropdownWrapper {
+    height: auto;
+    font-size: 1.5vh;
+  }
+}
 
 .selectedOption {
   color: #000;
   /* margin-left: 5px; */
 }
-
+@media screen and (min-width: 2000px) {
+  .selectedOption {
+    font-size: 1.5vh;
+  }
+}
 .arrowIcon {
   margin-left: 5px;
 }
