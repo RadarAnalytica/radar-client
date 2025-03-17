@@ -46,7 +46,7 @@ const UnitCalculatorPage = () => {
     // ---------------------- form submit handler ----------------------------//
     const submitHandler = (fields) => {
         // calculating data for the result block
-        setResult(unitCalcResultFunction(fields, mpMainFee, (lastMileLogisticsPrice + lastMileLogisticsPriceWBuyout), storagePrice))
+        setResult(unitCalcResultFunction(fields, mpMainFee, lastMileLogisticsPrice, lastMileLogisticsPriceWBuyout, storagePrice, investValue, storagePrice))
 
         // obkect for tokenized data
         const data = {
@@ -199,7 +199,8 @@ const UnitCalculatorPage = () => {
                                     equiring_fee: 1,
                                     package_length: 10,
                                     package_width: 10,
-                                    package_height: 10
+                                    package_height: 10,
+                                    PackageType: 'Короб'
                                 }}
                             >
 

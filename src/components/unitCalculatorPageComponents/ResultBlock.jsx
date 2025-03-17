@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import styles from './ResultBlock.module.css'
 import { Input, Button, ConfigProvider, Tooltip } from 'antd';
 import { utils, writeFile } from 'xlsx'
-import { fieldsVocab } from './UnitCalcUtils';
 import { useLocation } from 'react-router-dom';
-import { normilizeUnitsInputValue, investValueInputTransformer } from './UnitCalcUtils';
+import { normilizeUnitsInputValue, investValueInputTransformer, createExelData } from './UnitCalcUtils';
 import { formatPrice } from '../../service/utils';
+import moment from 'moment';
 
 const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
@@ -35,47 +35,14 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
     }, [buttonState])
 
     const generateExcel = () => {
-        // const data = [["Name", "Age"], ["Alice", 30], ["Bob", 25]];
-        if (result && result.fields) {
-            const data = [['Товар', '', '', '', ''], [ 'name', 'john']];
-            const resultTable = [['', '', '', 'Результат', '']]
-            const productTable = [['Товар', '']];
-            const sizesTable = [['Габариты и объем', '']];
-            const warehouseTable = [];
-
-            const keysArr = Object.keys(result.fields)
-           
-            keysArr.forEach(k => {
-                let value = result.fields[k]
-                if (typeof value === 'boolean') {
-                    value = value === 'true' ? 'да' : 'нет'
-                }
-
-                if (!value) {
-                    value = ''
-                }
-
-                if (k === 'product' || k === 'product_price' || k === 'SPP' || k === 'product_cost') {
-                    productTable.push([fieldsVocab[k], value.toString()])
-                }
-                if (k === 'package_length' || k === 'package_width' || k === 'package_height') {
-                    sizesTable.push([fieldsVocab[k], value.toString()])
-                }
-                if (k === 'warehouse' || k === 'buyout_percentage') {
-                    warehouseTable.push([fieldsVocab[k], value.toString()])
-                }
-
-                //data.push([fieldsVocab[k], value.toString()])
-            })
-            const finalData = [...productTable, ...resultTable, ['', ''], ...sizesTable, ['', ''], ...warehouseTable]
-            const ws = utils.aoa_to_sheet(finalData);
+            const data = createExelData(result)
+            const ws = utils.aoa_to_sheet(data);
             const wb = utils.book_new();
             utils.book_append_sheet(wb, ws, "Sheet1");
-            writeFile(wb, "example.xlsx");
-        }
+            const date = moment().format('DD.MM.YYYY')
+            const name = result && result?.product ? result.product : '____'
+            writeFile(wb, `RADAR ANALYTICA - Расчет для ${name} от ${date}.xlsx`);
       };
-
-
 
     return (
         <div className={styles.page__result}>
@@ -146,13 +113,13 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
                 <div className={styles.result__table}>
                     <div className={styles.result__tableRow}>
-                        {'Кол-во товара'} <span>{investValue && result ? formatPrice(Math.round((investValue / result.product_cost) * result.totalProductAmountQuef), 'шт') : "0 шт" }</span>
+                        {'Кол-во товара'} <span>{result && result.total_product_quantity ? formatPrice(Math.round(result.total_product_quantity), 'шт') : "0 шт" }</span>
                     </div>
                     <div className={styles.result__tableRow}>
-                        {'Выручка'} <span>{investValue && result ? formatPrice(Math.round(((investValue / result.product_cost) * result.totalProductAmountQuef)*result.total_product_price), '₽') : "0 ₽"}</span>
+                        {'Выручка'} <span>{result && result.total_value ? formatPrice(Math.round(result.total_value), '₽') : "0 ₽"}</span>
                     </div>
                     <div className={styles.result__tableRow}>
-                        {'Чистая прибыль'} <span>{investValue && result ? formatPrice(Math.round((investValue / result.product_cost) * result.totalProductAmountQuef) * result.netProfit, "₽") : "0 ₽"}</span>
+                        {'Чистая прибыль'} <span>{result && result.total_net_value ? formatPrice(Math.round(result.total_net_value), "₽") : "0 ₽"}</span>
                     </div>
                     <div className={styles.result__tableRow}>
                         <div className={styles.label} style={{ gap: 4 }}>
@@ -168,7 +135,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                                 </Tooltip>
                             </ConfigProvider>
                         </div>
-                        <span>{investValue && result && result.netProfit >= 0 ? formatPrice(Math.ceil(investValue / (result.selfCost + result.netProfit)), "шт") : "0 шт"}</span>
+                        <span>{result && result.zero_loss_point && result.total_net_value > 0 ? formatPrice(Math.ceil(result.zero_loss_point), "шт") : "--"}</span>
                     </div>
                 </div>
             </div>

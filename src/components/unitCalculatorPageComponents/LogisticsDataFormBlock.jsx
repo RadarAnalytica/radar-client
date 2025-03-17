@@ -46,7 +46,6 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
 
                     <Radio.Group
                         style={{ width: '100%' }}
-                        defaultValue='Короб'
                     >
                         <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
 
@@ -325,12 +324,12 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                 </Form.Item>
 
                 <div className={styles.fieldset__footer}>
-                    <p className={styles.fieldset__footerText_price}>{current_storage_logistic_price + buyout_log_price} ₽</p>
+                    <p className={styles.fieldset__footerText_price}>{Math.round(current_storage_logistic_price + buyout_log_price)} ₽</p>
                 </div>
             </div>
 
             <div className={styles.fieldset__logWrapper}>
-                <p className={styles.fieldset__footerText_price}>{storagePrice ? storagePrice : '0'} ₽</p>
+                <p className={styles.fieldset__footerText_price}>{storagePrice ? Math.round(storagePrice) : '0'} ₽</p>
                 <p className={styles.fieldset__footerText}>Хранение 1 шт. в месяц</p>
             </div>
             {/* <Form.Item
