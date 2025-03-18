@@ -166,15 +166,6 @@ const MainPage = () => {
        <Helmet>
           <title>Radar Analytica — сервис аналитики маркетплейсов для увеличения ваших продаж.</title>
           <meta name="description" content="Радар Аналитика - сервис аналитики для увеличения ваших продаж на маркетплейсах. Анализируйте конкурентов, повышайте показатели своих карточек и контролируйте финансы в одном месте." />
-          <meta property="og:title" content="Radar Analytica – сервис аналитики для увеличения ваших продаж на маркетплейсах"/>
-          <meta property="og:description" content="Радар Аналитика - сервис аналитики для увеличения ваших продаж на маркетплейсах. Анализируйте конкурентов, повышайте показатели своих карточек и контролируйте финансы в одном месте."/>
-          <meta property="og:url" content="https://radar-analytica.ru/ "/>
-          <meta property="og:type" content="website"/>
-          <meta property="og:site_name" content="Radar Analytica"/>
-          <meta property="og:image" content="https://radar-analytica.ru/RadarAnalitica.png "/>
-          <meta property="og:image:type" content="image/png"/>
-          <meta property="og:image:width" content="1200"/>
-          <meta property="og:image:height" content="539"/>
       </Helmet>
       {/* {
         !isVideoLoaded ? (
