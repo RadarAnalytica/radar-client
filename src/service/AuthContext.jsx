@@ -133,6 +133,7 @@ export const AuthProvider = ({ children }) => {
     setAuthToken(null);
     setUser(null);
     navigate('/');
+    window.reload();
   };
 
   // Offcanvas functions

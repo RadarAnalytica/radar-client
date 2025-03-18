@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './styles.css';
 import styles from './HowToConnectAPI.module.css';
 import NavbarMainHome from '../components/NavbarMainHome';
+import { Helmet } from 'react-helmet';
 
 import step1img1 from '../assets/step1-img1.svg';
 import step1img2 from '../assets/step1-img2.svg';
@@ -29,7 +30,7 @@ const HowToConnectAPI = () => {
   const [highResLoaded, setHighResLoaded] = useState(false);
 
   const handleImageLoad = () => {
-      setHighResLoaded(true);
+    setHighResLoaded(true);
   };
 
   return (
@@ -37,6 +38,10 @@ const HowToConnectAPI = () => {
       className='page-white'
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
     >
+      <Helmet>
+        <title>Подключение к API Radar Analytica — сервис аналитики маркетплейсов</title>
+        <meta name="description" content="API сервиса Radar Analytica — быстрое и удобное подключение Wildberries через API-токен" />
+      </Helmet>
       <div className='container widbody-container container-xlwidth'>
         <NavbarMainHome />
         <div className={styles.marginBottom}></div>
@@ -78,7 +83,7 @@ const HowToConnectAPI = () => {
             </div>
           </div>
           <div className={styles.stepText}>
-            На странице “подключенные магазины” выбираем вариант “Подключить”. 
+            На странице “подключенные магазины” выбираем вариант “Подключить”.
           </div>
           <img
             src={isSafari ? (highResLoaded ? step2img1PNG : step2img1PNGLow) : step2img1}

@@ -151,7 +151,7 @@ const TableStock = ({ dataTable, setDataTable, loading }) => {
                         style={{
                           color: 'rgba(83, 41, 255, 1)',
                           width: '200px',
-                          height: '45px',
+                          height: '2.5rem',
                           overflow: 'hidden',
                           display: '-webkit-box',
                           WebkitLineClamp: 2,

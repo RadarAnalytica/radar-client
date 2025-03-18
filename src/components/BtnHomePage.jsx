@@ -149,9 +149,9 @@ const BtnHomePage = () => {
 
   return (
     <>
-      <div className={`widhead-container-title ${styles.widHeadContainerTitle}`}>
+      <h3 className={`widhead-container-title ${styles.widHeadContainerTitle}`}>
         Кому и для чего нужен наш сервис
-      </div>
+      </h3>
       <div className={`widhead-container-header  ${styles.widHeadContainerHeader}`}>
         <button
           onClick={() => handleClick("newbie")}

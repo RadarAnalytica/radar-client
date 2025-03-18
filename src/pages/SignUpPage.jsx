@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import SignUpForm from '../containers/SignUpForm'
 import AuthContext from '../service/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 const SignUpPage = () => {
 
@@ -23,6 +24,10 @@ const SignUpPage = () => {
 
     return (
         <div className='signup-page pt-1 pb-1'>
+             <Helmet>
+                <title>Регистрация аккаунта Radar Analytica — сервис аналитики маркетплейсов</title>
+                <meta name="description" content="Регистрация Radar Analytica — сервис аналитики маркетплейсов. Создание личного кабинета Радар Аналитика." />
+            </Helmet>
             <SignUpForm />
         </div>
     )

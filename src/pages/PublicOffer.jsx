@@ -4,10 +4,15 @@ import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
 import FooterNewVersion from '../components/FooterNewVersion';
 import styles from '../pages/Politics.module.css'
+import { Helmet } from 'react-helmet';
 
 const PublicOffer = () => {
   return (
     <div className='instruction-page'>
+      <Helmet>
+        <title>Публичная оферта сервиса Radar Analytica</title>
+        <meta name="description" content="Публичная оферта сервиса Радар Аналитика. Права и обязанности Сторон. Предмет Лицензионного договора. Порядок заключения Лицензионного договора." />
+      </Helmet>
       <div className='container instruction-container col-10 container-xlwidth'>
         <NavbarMainHome onlyLogo />
 

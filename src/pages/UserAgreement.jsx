@@ -4,10 +4,15 @@ import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
 import FooterNewVersion from '../components/FooterNewVersion';
 import styles from "../pages/Politics.module.css"
+import { Helmet } from 'react-helmet';
 
 const UserAgreement = () => {
     return (
         <div className='instruction-page'>
+            <Helmet>
+                <title>Пользовательское соглашение сервиса Radar Analytica</title>
+                <meta name="description" content="Пользовательское соглашение сервиса Радар Аналитика. Правила использования сервиса и правила конфиденциальности" />
+            </Helmet>
             <div className='container instruction-container col-10 container-xlwidth'>
                 <NavbarMainHome onlyLogo />
 

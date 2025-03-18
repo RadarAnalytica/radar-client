@@ -12,6 +12,44 @@
 .imageMain{
     margin-top: 20px;
 }
+
+.mainTitle {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: 0%;
+
+    @media (max-width: 1700px) {
+        font-size: 26px;
+    }
+}
+
+.mainTitle__color {
+    color: #5329FF;
+    font-weight: 800;
+    @media (max-width: 1700px) {
+        font-size: 26px;
+    }
+}
+
+.mainTitle__logo {
+    background: #F0AD00;
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: white;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 2;
+    letter-spacing: 0%;
+
+    @media (max-width: 1700px) {
+        font-size: 26px;
+        padding: 8px 16px;
+    }
+}
+
 @media  (min-width: 1550px) and (max-width: 1601px) {
     .profitableStafText{
         font-size: 19px!important;
