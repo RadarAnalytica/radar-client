@@ -120,10 +120,10 @@ const StockAnalysisFilter = ({shops, setActiveBrand, setSelectedRange, selectedR
                 position: 'absolute',
                 right: '1.75vh',
                 top: '50%',
-                width: '1.5vh',
-                height: '1.5vh',
+                transform: 'translateY(-50%)',
+                width: '14px',
+                height: '14px',
                 pointerEvents: 'none',
-                transform: 'translateY(-50%)'
               }}
               viewBox='0 0 28 17'
               fill='none'
