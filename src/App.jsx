@@ -103,8 +103,8 @@ function App() {
             <Route path='/external-expenses' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Внешние расходы'><ExternalExpensesPage /></ProtectedRoute>} />
             <Route path='/buy-back' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Самовыкуп'><ReportBuyBack /></ProtectedRoute>} />
             <Route path='/admin-panel' element={<ProtectedRoute userRoleProtected role='admin' routeRuName='Админ панель'><AdminPanel /></ProtectedRoute>} />
-            <Route path='/' element={<ProtectedRoute authGuardType="fallback"><StartPage /></ProtectedRoute>} />
-            <Route path='/home' element={<ProtectedRoute authGuardType="fallback"><StartPage /></ProtectedRoute>} />
+            <Route path='/main' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
+            <Route path='/home' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
             <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} /> 
             <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect"><Onboarding /></ProtectedRoute>} />
             <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
@@ -116,6 +116,7 @@ function App() {
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             {/* <Route path='/report-main' element={<ProtectedRoute><ReportMain /></ProtectedRoute>} /> */}
             {/* Public routes */}
+            <Route path='/' element={<Suspense fallback={<LoaderPage />}>{' '}<MainPage /></Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
             <Route path='/signup' element={<Suspense fallback={<LoaderPage />}>{' '}<SignUpPage /></Suspense>} />
             <Route path='/signin' element={<Suspense fallback={<LoaderPage />}>{' '}<SignInPage /></Suspense>} />

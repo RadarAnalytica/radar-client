@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, lazy, Suspense } from 'react';
+import React, { useContext, useState, useEffect, lazy, useLayoutEffect } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 // import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -39,7 +39,7 @@ import ApiBlockContainer from "../components/ApiBlockContainer"
 import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import BlockImg_x1 from './images/Dashboard_x1.png';
 import BlockImg_x3 from './images/Dashboard_x3.png';
-
+import { Helmet } from 'react-helmet';
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";
@@ -68,6 +68,27 @@ const MainPage = () => {
       }
     }).observe({ entryTypes: ['largest-contentful-paint'] });
   }, []);
+
+   // ----- video instruction script ----------------------//
+   useLayoutEffect(() => {
+    const head = document.querySelector('head');
+    const videoscript = head.querySelector('#video_instruction')
+   
+    const script = document.createElement('script')
+    script.src = 'https://app.getreview.com/tags/ugfMbLpl3yqfOvpC/sdk.js'
+    script.async = true
+    script.id = 'video_instruction'
+
+    if (!videoscript) {
+      head.appendChild(script);
+    }
+
+    return () => {
+      head.removeChild(script);
+    }
+  }, [])
+
+  // ------------------------------------------------------//
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -142,6 +163,19 @@ const MainPage = () => {
       className='page-white'
       style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
     >
+       <Helmet>
+          <title>Radar Analytica — сервис аналитики маркетплейсов для увеличения ваших продаж.</title>
+          <meta name="description" content="Радар Аналитика - сервис аналитики для увеличения ваших продаж на маркетплейсах. Анализируйте конкурентов, повышайте показатели своих карточек и контролируйте финансы в одном месте." />
+          <meta property="og:title" content="Radar Analytica – сервис аналитики для увеличения ваших продаж на маркетплейсах"/>
+          <meta property="og:description" content="Радар Аналитика - сервис аналитики для увеличения ваших продаж на маркетплейсах. Анализируйте конкурентов, повышайте показатели своих карточек и контролируйте финансы в одном месте."/>
+          <meta property="og:url" content="https://radar-analytica.ru/ "/>
+          <meta property="og:type" content="website"/>
+          <meta property="og:site_name" content="Radar Analytica"/>
+          <meta property="og:image" content="https://radar-analytica.ru/RadarAnalitica.png "/>
+          <meta property="og:image:type" content="image/png"/>
+          <meta property="og:image:width" content="1200"/>
+          <meta property="og:image:height" content="539"/>
+      </Helmet>
       {/* {
         !isVideoLoaded ? (
           <div className='d-flex flex-column align-items-center justify-content-center' style={{ height: '100%', paddingTop: '15%' }}>
@@ -160,17 +194,19 @@ const MainPage = () => {
               </div>
               <div
                 className={`yellow-radar-small-container ${styles.solDescriptionLabelSmallContainer}`}
-                style={{ display: 'flex', justifyContent: 'start' }}
+                style={{ display: 'flex', justifyContent: 'start'}}
               >
-                <YellowRadarSmall />
-              </div>
-              <div className={`sales-increase-text ${styles.salesIncreseText}`}>
-                – сервис аналитики для
-                <span className={`sales-increse-text-span ${styles.salesIncreseTextSpan}`}>
+                <h1 className={styles.mainTitle}>
+                  <span className={styles.mainTitle__logo}>
+                    Radar&nbsp;Analytica
+                  </span><br />
+                  – сервис аналитики для
+                <span className={styles.mainTitle__color}>
                   {' '}
                   увеличения ваших продаж{' '}
                 </span>
                 на маркетплейсах
+                </h1>
               </div>
               <div className={`analyze-competitors-text ${styles.ananlyzeText}`}>
                 Анализируйте конкурентов, повышайте показатели своих карточек и
@@ -242,12 +278,12 @@ const MainPage = () => {
 
 
           <div className='wid-solution-text'>
-            <p className={`wid-solution-text-p col-8 ${styles.widSolutionText}`}>
+            <h2 className={`wid-solution-text-p col-8 ${styles.widSolutionText}`}>
               Увеличьте продажи на маркетплейсе <br /> в 2 раза{' '}
               <span style={{ color: 'orange', fontWeight: '800' }}>
                 с помощью инструментов Radar
               </span>
-            </p>
+            </h2>
           </div>
           <ToggleAnaliticsPanel />
 
