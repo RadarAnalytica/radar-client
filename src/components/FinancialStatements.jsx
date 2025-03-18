@@ -24,7 +24,7 @@ const FinancialStatements = () => {
 
     return (
         <div className={styles.FinStateContainer}>
-            <div className={styles.finStatesHeaderTitle}>Расшифровка финансовых отчетов</div>
+            <h2 className={styles.finStatesHeaderTitle}>Расшифровка финансовых отчетов</h2>
             <div className={styles.finStateParagraph}>
                 Анализируйте финансы в наглядном формате графиков и таблиц
             </div>

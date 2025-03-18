@@ -17,7 +17,7 @@ import step1img1PNGLow from '../assets/step1-img1-png-low.png';
 import step1img2PNGLow from '../assets/step1-img2-png-low.png';
 import step2img1PNGLow from '../assets/step2-img1-png-low.png';
 import step4img1PNGLow from '../assets/step4-img1-png-low.png';
-
+import { Helmet } from 'react-helmet';
 import Steps from '../pages/images/Steps';
 import exclamation from './images/ExlamationMark.svg';
 import FooterNewVersion from '../components/FooterNewVersion';
@@ -37,6 +37,10 @@ const HowToConnectAPI = () => {
       className='page-white'
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
     >
+      <Helmet>
+        <title>Подключение к API Radar Analytica — сервис аналитики маркетплейсов</title>
+        <meta name="description" content="API сервиса Radar Analytica — быстрое и удобное подключение Wildberries через API-токен" />
+      </Helmet>
       <div className='container widbody-container container-xlwidth'>
         <NavbarMainHome />
         <div className={styles.marginBottom}></div>
