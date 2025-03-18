@@ -2,10 +2,17 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import SortArrows from './SortArrows';
 import { useNavigate } from 'react-router-dom';
 
-const TableStock = ({ dataTable, setDataTable, loading }) => {
+const TableStock = ({ data, setDataTable, loading }) => {
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const dataTable = []
+  data.forEach((_, id) => {
+    if (id < 200) {
+      dataTable.push(_)
+    }
+  })
 
   const handleMouseEnter = (e) => {
     const element = e.target;

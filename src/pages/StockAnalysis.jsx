@@ -51,6 +51,7 @@ const StockAnalysis = () => {
   const [costPriceShow, setCostPriceShow] = useState(false); // хз что это
   const [selectedRange, setSelectedRange] = useState({ period: 30 }); // стейт селекта периода
   const [searchQuery, setSearchQuery] = useState(""); // стейт инпута поиска
+  const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false); // стейт инпута поиска
   // рефы (используются для сохранения пред значений)
   const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand ? activeBrand.id : null);
@@ -65,12 +66,6 @@ const StockAnalysis = () => {
     const fetchInitialData = async () => {
       try {
         dispatch(fetchShops(authToken));
-        // const data = await ServiceFunctions.getAnalysisData(
-        //   authToken,
-        //   selectedRange,
-        //   activeBrand.id
-        // );
-        // setStockAnalysisData(data);
       } catch (error) {
         console.error("Error fetching initial data:", error);
       } finally {
@@ -87,7 +82,7 @@ const StockAnalysis = () => {
   // 1. - проверяем магазин в локал сторадже
   useEffect(() => {
     if (shops) {
-      
+
       setIsInitialLoading(false)
       // достаем сохраненный магазин
       const shopFromLocalStorage = localStorage.getItem('activeShop')
@@ -135,6 +130,7 @@ const StockAnalysis = () => {
             activeBrand.id
           );
           setStockAnalysisData(data);
+          setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
           setLoading(false);
         }
         prevDays.current = selectedRange;
@@ -161,24 +157,6 @@ const StockAnalysis = () => {
 
   const handleCostPriceClose = () => setCostPriceShow(false);
   //----------------------------------------------------------------------------------------//
-
-  //--------------------------- какой-то апдейт данных ------------------------------------//
-  const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
-    setLoading(true);
-    try {
-      const data = await ServiceFunctions.getDashBoard(
-        authToken,
-        selectedRange,
-        activeBrand.id
-      );
-      setDataDashboard(data);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
-  //--------------------------------------------------------------------------------------//
 
 
 
@@ -217,6 +195,22 @@ const StockAnalysis = () => {
     activeBrand !== undefined &&
       updateDataDashBoard(selectedRange, activeBrand.id, authToken);
   };
+
+  const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
+    setLoading(true);
+    try {
+      const data = await ServiceFunctions.getDashBoard(
+        authToken,
+        selectedRange,
+        activeBrand.id
+      );
+      setDataDashboard(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
   // ---------------------------------------------------------------------------------------//
 
   // --------------------------- ниче не загружаем если нет магазов (переписать бы по человечески) ---------------------//
@@ -247,12 +241,12 @@ const StockAnalysis = () => {
             <TopNav title={"Товарная аналитика"} />
             {
               !hasSelfCostPrice &&
-              activeShopId !== 0 ? (
-              <SelfCostWarning
-                activeBrand={activeBrand.id}
-                onUpdateDashboard={handleUpdateDashboard}
-              />
-            ) : null}
+                activeBrand && activeBrand.id !== 0 ? (
+                <SelfCostWarning
+                  activeBrand={activeBrand.id}
+                  onUpdateDashboard={handleUpdateDashboard}
+                />
+              ) : null}
 
             <div className="pt-0 d-flex gap-3">
               {shops && activeBrand &&
@@ -266,7 +260,7 @@ const StockAnalysis = () => {
               }
             </div>
 
-            {dataTable ? (
+            {activeBrand && activeBrand.is_primary_collect ? (
               <>
                 <div className="input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center">
                   <div className="search search-container">
@@ -318,9 +312,9 @@ const StockAnalysis = () => {
                 </div>
 
                 <div style={{ height: "20px" }}></div>
-                <div className="flex-grow-1">
+                <div className="flex-grow-1" style={{ border: '1px solid red' }}>
                   <TableStock
-                    dataTable={dataTable}
+                    data={dataTable}
                     setDataTable={setDataTable}
                     loading={loading}
                   />
