@@ -25,93 +25,151 @@ import { useNavigate } from "react-router-dom";
 import { URL } from "../service/config";
 import { fileDownload } from "../service/utils";
 
+
+/**
+ *  ***************** ИНСТРУКЦИЯ ********************
+ *  1. При начальном рендере подтягиваем магазины и данные таблиц. 
+ *  Видимо одновременно с этим подтягиваем данные сохраненного в local storage магазина и проверяем его.
+ *  
+ * 
+ *  *************************************************
+ */
+
 const StockAnalysis = () => {
-  const navigate = useNavigate();
-
-  // const stockAnalysisData = useAppSelector(
-  //   (state) => state.stockAnalysisDataSlice.stockAnalysisData
-  // );
-  // const dataStock = Array.isArray(stockAnalysisData) ? stockAnalysisData : [];
-  const [stockAnalysisData, setStockAnalysisData] = useState([]);
-  const [dataStock, setDataStock] = useState([]);
-  const hasSelfCostPrice = dataStock.every(
-    (product) => product.costPriceOne !== null
-  );
-
+  // база
   const dispatch = useAppDispatch();
-  const shops = useAppSelector((state) => state.shopsSlice.shops);
-  const allShop = shops?.some((item) => item?.is_primary_collect === true);
-  const storedActiveShop = localStorage.getItem("activeShop");
-  const storedActiveShopObject = JSON.parse(storedActiveShop);
+  const { authToken } = useContext(AuthContext);
+  const shops = useAppSelector((state) => state.shopsSlice.shops); // магазины
 
-  let activeShop;
-
-  const activeShopId = activeShop?.id;
-  const idShopAsValue =
-    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
-  const { user, authToken } = useContext(AuthContext);
-  const [file, setFile] = useState();
-  const [dataDashBoard, setDataDashboard] = useState();
-  const [loading, setLoading] = useState(true);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [activeBrand, setActiveBrand] = useState(idShopAsValue);
-  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
-  const [dataTable, setDataTable] = useState([]);
-  const [costPriceShow, setCostPriceShow] = useState(false);
-  const [selectedRange, setSelectedRange] = useState({ period: 30 });
-  const [searchQuery, setSearchQuery] = useState("");
+  // стейты
+  const [file, setFile] = useState(); // это видимо загрузка файла себестоимости
+  const [stockAnalysisData, setStockAnalysisData] = useState([]); // это видимо данные для таблицы
+  const [loading, setLoading] = useState(true); // лоадер для загрузки данных
+  const [isInitialLoading, setIsInitialLoading] = useState(true); // тож самое
+  const [activeBrand, setActiveBrand] = useState(null); // стейт селекта магазина (выбранный магазин или "0")
+  const [dataTable, setDataTable] = useState([]); // это отфильтрованная дата (если используется поиск)
+  const [costPriceShow, setCostPriceShow] = useState(false); // хз что это
+  const [selectedRange, setSelectedRange] = useState({ period: 30 }); // стейт селекта периода
+  const [searchQuery, setSearchQuery] = useState(""); // стейт инпута поиска
+  // рефы (используются для сохранения пред значений)
   const prevDays = useRef(selectedRange);
-  const prevActiveBrand = useRef(activeBrand);
-  const authTokenRef = useRef(authToken);
-  const handleCostPriceClose = () => setCostPriceShow(false);
+  const prevActiveBrand = useRef(activeBrand ? activeBrand.id : null);
 
-  const plugForAllStores = {
-    id: 0,
-    brand_name: "Все",
-    is_active: true,
-    is_primary_collect: allShop,
-    is_valid: true,
-  };
 
-  const shouldDisplay = activeShop
-    ? activeShop.is_primary_collect
-    : oneShop
-    ? oneShop.is_primary_collect
-    : allShop;
 
-  if (storedActiveShop && typeof storedActiveShop === "string") {
-    try {
-      const controlValue = shops.filter(
-        (el) => el.id === storedActiveShopObject.id
-      ).length;
-      if (
-        shops.length > 0 &&
-        controlValue !== 1 &&
-        !!activeBrand &&
-        activeBrand !== "0"
-      ) {
-        localStorage.removeItem("activeShop");
-        window.location.reload();
+
+
+  // ------------------------ здесь будет апдейт логики ---------------------------------//
+  // 0. Получаем данные магазинов
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        dispatch(fetchShops(authToken));
+        // const data = await ServiceFunctions.getAnalysisData(
+        //   authToken,
+        //   selectedRange,
+        //   activeBrand.id
+        // );
+        // setStockAnalysisData(data);
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setIsInitialLoading(false);
+        setLoading(false);
       }
+    };
 
-      activeShop = storedActiveShopObject;
-    } catch (error) {
-      console.error("Error parsing storedActiveShop:", error);
-      activeShop = null;
+    fetchInitialData();
+  }, []);
+  // ------
+
+
+  // 1. - проверяем магазин в локал сторадже
+  useEffect(() => {
+    if (shops) {
+      
+      setIsInitialLoading(false)
+      // достаем сохраненный магазин
+      const shopFromLocalStorage = localStorage.getItem('activeShop')
+      // если сохранненный магазин существует и у нас есть массив магазинов....
+      if (shopFromLocalStorage && shopFromLocalStorage !== 'undefined') {
+        // парсим сохраненный магазин
+        const { id } = JSON.parse(shopFromLocalStorage);
+        // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
+        const isInShops = shops.some(_ => _.id === id);
+        // Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
+        if (isInShops) {
+          //....устанавливаем как текущий
+          setActiveBrand(shops.find(_ => _.id === id))
+          // Если нет, то...
+        } else {
+          // ...Обновляем локал - сохраняем туда первый из списка
+          localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+          console.log(shops[0])
+          // ...устанавливаем текущим первый из списка
+          setActiveBrand(shops[0])
+        }
+      } else {
+        // ...Обновляем локал - сохраняем туда первый из списка
+        localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+        console.log(shops[0])
+        // ...устанавливаем текущим первый из списка
+        setActiveBrand(shops[0])
+      }
     }
-  }
+  }, [shops])
 
+
+  // 2. Обновляем данные при изменении периода или выбранного магазина
+  useEffect(() => {
+    const fetchAnalysisData = async () => {
+      if (
+        selectedRange !== prevDays.current ||
+        activeBrand.id !== prevActiveBrand.current
+      ) {
+        if (activeBrand) {
+          setLoading(true);
+          const data = await ServiceFunctions.getAnalysisData(
+            authToken,
+            selectedRange,
+            activeBrand.id
+          );
+          setStockAnalysisData(data);
+          setLoading(false);
+        }
+        prevDays.current = selectedRange;
+        prevActiveBrand.current = activeBrand.id;
+      }
+    };
+    if (activeBrand) {
+      fetchAnalysisData();
+    }
+
+  }, [selectedRange, activeBrand]);
+
+
+
+  //---------------------------------------------------------------------------------------//
+
+
+
+
+  // ----------------------------- пока хз что это ----------------------------------------//
   const handleCostPriceShow = () => {
     setCostPriceShow(true);
   };
 
+  const handleCostPriceClose = () => setCostPriceShow(false);
+  //----------------------------------------------------------------------------------------//
+
+  //--------------------------- какой-то апдейт данных ------------------------------------//
   const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
     setLoading(true);
     try {
       const data = await ServiceFunctions.getDashBoard(
         authToken,
         selectedRange,
-        activeBrand
+        activeBrand.id
       );
       setDataDashboard(data);
     } catch (e) {
@@ -120,10 +178,17 @@ const StockAnalysis = () => {
       setLoading(false);
     }
   };
+  //--------------------------------------------------------------------------------------//
 
-  const handleSearchChange = (e) => {
+
+
+
+
+  // ---------------- видимо это фильтрация на основе поиска ---------------//
+  const handleSearchChange = (e) => {// хэндлер поискового инпута
     setSearchQuery(e.target.value);
   };
+
 
   const filterData = (data, query) => {
     if (!query) return data;
@@ -135,108 +200,13 @@ const StockAnalysis = () => {
     );
   };
 
-  const validateStoredShop = () => {
-    if (storedActiveShop && shops?.length > 0) {
-      const storedShopExists = shops.some(
-        (shop) => shop.id === JSON.parse(storedActiveShop).id
-      );
-      if (!storedShopExists) {
-        localStorage.removeItem("activeShop");
-        window.location.reload();
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (shops?.length > 0) {
-      validateStoredShop();
-    }
-  }, [shops]);
-
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        await dispatch(fetchShops(authToken));
-
-        // await dispatch(fetchStockAnalysisData({ authToken, selectedRange, activeBrand }));
-        const data = await ServiceFunctions.getAnalysisData(
-          authToken,
-          selectedRange,
-          activeBrand
-        );
-        setStockAnalysisData(data);
-        // await ServiceFunctions.getAllShops(authToken).then((data) => setStockAnalysisData(data));
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
-      } finally {
-        setIsInitialLoading(false);
-        setLoading(false);
-      }
-    };
-
-    fetchInitialData();
-  }, []);
-
   useEffect(() => {
     const filteredData = filterData(stockAnalysisData, searchQuery);
     setDataTable(filteredData);
   }, [stockAnalysisData, searchQuery]);
+  // -----------------------------------------------------------------------//
 
-  useEffect(() => {
-    const fetchAnalysisData = async () => {
-      if (
-        selectedRange !== prevDays.current ||
-        activeBrand !== prevActiveBrand.current
-      ) {
-        if (activeBrand !== undefined) {
-          setLoading(true);
-          const data = await ServiceFunctions.getAnalysisData(
-            authToken,
-            selectedRange,
-            activeBrand
-          );
-          setStockAnalysisData(data);
-          setLoading(false);
-          // dispatch(fetchStockAnalysisData({ authToken, selectedRange, activeBrand }));
-        }
-        prevDays.current = selectedRange;
-        prevActiveBrand.current = activeBrand;
-      }
-    };
-
-    fetchAnalysisData();
-  }, [selectedRange, activeBrand]);
-
-  useEffect(() => {
-    if (shops.length > 0) {
-      let id;
-      if (activeShopId == undefined) {
-        id = shops?.[0].id;
-        localStorage.setItem("activeShop", JSON.stringify(shops?.[0]));
-      } else {
-        id = activeShopId;
-      }
-      setActiveBrand(id);
-    }
-  }, [shops]);
-
-  useEffect(() => {
-    if (shops?.length === 0 && !isInitialLoading) {
-      navigate("/onboarding");
-    }
-  }, [isInitialLoading, shops.length]);
-
-  const handleSaveActiveShop = (shopId) => {
-    const currentShop = shops?.find((item) => item.id == shopId);
-    if (currentShop) {
-      localStorage.setItem("activeShop", JSON.stringify(currentShop));
-    }
-    if (shopId === "0") {
-      localStorage.setItem("activeShop", JSON.stringify(plugForAllStores));
-    }
-    setActiveBrand(shopId);
-  };
-
+  // ------------------------ это апдейт данных если себестоимость отсутствует --------------------//
   const handleUpdateDashboard = () => {
     setTimeout(() => {
       updateDataDashBoardCaller();
@@ -245,32 +215,28 @@ const StockAnalysis = () => {
 
   const updateDataDashBoardCaller = async () => {
     activeBrand !== undefined &&
-      updateDataDashBoard(selectedRange, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand.id, authToken);
   };
+  // ---------------------------------------------------------------------------------------//
 
-  if (user?.subscription_status === "expired") {
-    return <NoSubscriptionPage title={"Товарная аналитика"} />;
-  }
-
+  // --------------------------- ниче не загружаем если нет магазов (переписать бы по человечески) ---------------------//
   if (!shops || shops.length === 0) {
     return null; // or a loading indicator
   }
+  // -------------------------------------------------------------------------------------------------------------------//
 
+
+
+  //------ загрузка эксельки---------------//
   const getProdAnalyticXlsxHandler = async () => {
     const fileBlob = await ServiceFunctions.getProdAnalyticXlsx(
       authToken,
       selectedRange,
-      activeBrand
+      activeBrand.id
     );
     fileDownload(fileBlob, "Товарная_аналитика.xlsx");
-    // const url = window.URL.createObjectURL(new Blob([data]));
-    // const link = document.createElement('a');
-    // link.href = url;
-    // link.setAttribute('download', `Товарная_аналитика.xlsx`);
-    // document.body.appendChild(link);
-    // link.click();
-    // link.parentNode.removeChild(link);
   };
+  // ---------------------------------------//
 
   return (
     <>
@@ -279,27 +245,28 @@ const StockAnalysis = () => {
         <div className="dashboard-content pb-3">
           <div className="h-100 d-flex flex-column overflow-hidden">
             <TopNav title={"Товарная аналитика"} />
-            {!isInitialLoading &&
-            !hasSelfCostPrice &&
-            activeShopId !== 0 &&
-            shouldDisplay ? (
+            {
+              !hasSelfCostPrice &&
+              activeShopId !== 0 ? (
               <SelfCostWarning
-                activeBrand={activeBrand}
+                activeBrand={activeBrand.id}
                 onUpdateDashboard={handleUpdateDashboard}
               />
             ) : null}
 
             <div className="pt-0 d-flex gap-3">
-              <StockAnalysisFilter
-                shops={shops}
-                setActiveBrand={handleSaveActiveShop}
-                setSelectedRange={setSelectedRange}
-                selectedRange={selectedRange}
-                activeShopId={activeShopId}
-              />
+              {shops && activeBrand &&
+                <StockAnalysisFilter
+                  shops={shops} // магазины
+                  setActiveBrand={setActiveBrand} // сеттер id магазина
+                  setSelectedRange={setSelectedRange} // сеттер периода (пробрасывается дальше в селект периода)
+                  selectedRange={selectedRange} // выбранный период (пробрасывается дальше в селект периода)
+                  activeBrand={activeBrand} // выбранный id магазина
+                />
+              }
             </div>
 
-            {shouldDisplay ? (
+            {dataTable ? (
               <>
                 <div className="input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center">
                   <div className="search search-container">
@@ -417,7 +384,7 @@ const StockAnalysis = () => {
               <div className="d-flex justify-content-center w-100 mt-2 gap-2">
                 <button
                   onClick={() => {
-                    saveFileClickHandler(file, authToken, activeBrand);
+                    saveFileClickHandler(file, authToken, activeBrand.id);
                     setFile(null);
                     handleCostPriceClose();
                   }}
@@ -440,7 +407,7 @@ const StockAnalysis = () => {
                 <a
                   href="#"
                   className="link"
-                  onClick={() => getFileClickHandler(authToken, activeBrand)}
+                  onClick={() => getFileClickHandler(authToken, activeBrand.id)}
                 >
                   Скачать шаблон
                 </a>
