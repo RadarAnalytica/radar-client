@@ -129,6 +129,14 @@ const UnitCalculatorPage = () => {
     }, [isHeavy])
     // --------------------------------------------------------------------------------//
 
+    // -- Это необходимо для коррекного редиректа не авторизованного юзера, который тыкает дальше по внутренней навигачии (используется в ProtectedRoute) --//
+    useEffect(() => {
+        if (window.history && window.history.length <= 2) {
+            sessionStorage.setItem('isCalculateEntryUrl', '1')
+        }
+    }, [])
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------//
+
     //--this is handler for url-token data (decode, prefill and submit the form)--//
     useEffect(() => {
         const token = params.get('data')

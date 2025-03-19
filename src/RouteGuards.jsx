@@ -1,6 +1,6 @@
 import { useContext, Suspense } from 'react';
 import AuthContext from './service/AuthContext';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
@@ -85,9 +85,8 @@ export const ProtectedRoute = ({
   role = config.role,
 }) => {
   const { user } = useContext(AuthContext);
-  console.log('user is:')
-  console.log(user)
   const { pathname } = useLocation()
+  const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl'); // это устанавливается в калькуляторе. Необходимо для коррекного редиректа не авторизованного юзера
 
   // -------this is test user object for dev purposes ------//
 
@@ -111,7 +110,12 @@ export const ProtectedRoute = ({
   if (authProtected && !user) {
     switch(authGuardType) {
       case 'redirect': {
-        return (<Navigate to={authRedirect} />)
+        if (isCalculateEntryUrl === '1') {
+          sessionStorage.removeItem('isCalculateEntryUrl')
+          return (<Navigate to='/signup' />)
+        } else {
+          return (<Navigate to={authRedirect} />)
+        }
       }
       case 'fallback': {
         return (
