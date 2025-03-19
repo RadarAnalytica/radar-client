@@ -1,8 +1,7 @@
+import { URL } from "../config";
 export const getCalculatorSubjects = async (data) => {
-    //const url = process.env.VITE_SERVICE_URL
-    const url = 'https://test-server-pro.ru'
     try {
-        const res = await fetch(`${url}/api/calculator/subjects`, {
+        const res = await fetch(`${URL}/api/calculator/subjects`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
