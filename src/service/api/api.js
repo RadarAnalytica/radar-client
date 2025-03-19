@@ -7,7 +7,7 @@ export const getCalculatorSubjects = async (data) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify('')
+            body: JSON.stringify(data)
         }).then(res => res.json())
 
        return res;

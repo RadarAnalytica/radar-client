@@ -20,8 +20,6 @@ const BasicDataFormBlock = ({ form, setMpMainFee }) => {
         } else {
             setError(true)
         }
-        
-        
     }
     const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500)
 
