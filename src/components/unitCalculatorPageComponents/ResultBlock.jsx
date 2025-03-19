@@ -39,13 +39,6 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
             const ws = utils.aoa_to_sheet(data);
             const cell = ws['A1']
             cell.l = { Target: "https://radar-analytica.ru/calculate", Tooltip: "Перейти на сайт" };
-            cell.s = {
-                font: {
-                    name: 'Calibri',
-                    italic: true,
-                    color: 'red'
-                }
-            }
             ws['!cols'] = [{ wch: 50 }, { wch: 25 },];
             const wb = utils.book_new();
             utils.book_append_sheet(wb, ws, "Sheet1");
