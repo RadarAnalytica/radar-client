@@ -170,6 +170,7 @@ html {
 }
 .filter-item select {
   font-size: 15px;
+  border: none!important;
 }
 @media screen and (min-width: 2000px) {
   .filter-item select {
@@ -1974,14 +1975,14 @@ select {
   height: 76px;
   background-color: #f7f6fe;
   color: grey;
-  padding: 5px;
+  padding: 0.3em;
   margin: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 8px;
 }
 
@@ -2014,6 +2015,12 @@ select {
   max-height: 500px;
   overflow-x: hidden;
   overscroll-behavior: none;
+}
+
+@media screen and (min-width: 2000px) {
+  .abcAnalysis .scrollable-table {
+    max-height: 850px;
+  }
 }
 
 .table-header-category-monitoring > div{
@@ -2250,6 +2257,7 @@ select {
 
 @media screen and (min-width: 2000px) {
   .download-button {
+    min-width: fit-content;
     height: auto;
     padding: 1vh;
     font-size: 1.75vh;
@@ -2266,7 +2274,6 @@ select {
   .download-button img {
     width: 2vh;
     height: 2vh;
-    margin-top: 1vh;
   }
 }
 
@@ -2528,14 +2535,20 @@ select {
 .abcAnalysis .filter-btn {
   text-align: center;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
-  padding: 10px 20px;
-  margin-left: 12px;
+  padding: 0.6em 1.25em;
+  margin-left: 0.75em;
   white-space: nowrap;
   height: 45px;
   cursor: pointer;
   color: grey;
+}
+
+@media screen and (min-width: 2000px) {
+  .abcAnalysis .filter-btn {
+    height: unset;
+  }
 }
 
 .abcAnalysis .filter-btn.active {
@@ -2545,19 +2558,18 @@ select {
 
 .filter-btn-p {
   color: grey;
-  font-size: 16px;
-  margin-left: 12px;
+  font-size: 1rem;
+  margin-left: 0.75em;
 }
 
 .abc-filter-container {
   position: sticky;
-
   top: 0px;
   white-space: nowrap;
-  padding: 16px 0 0px 16px;
-  /* padding: 16px; */
+  padding: 1rem 0 0 1rem;
   align-items: center;
 }
+
 .table-row-image {
   display: flex;
   flex-direction: row;
@@ -2974,8 +2986,8 @@ select {
   font-weight: bold;
   position: sticky;
   background: rgba(255, 255, 255, 1);
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 1.5rem;
+  line-height: 1.25;
   font-weight: 700;
   color: rgba(26, 26, 26, 1);
   min-height: 70px;
@@ -2990,9 +3002,9 @@ select {
 /* Specific styles for goods-cell-header */
 .goods-cell-header {
   color: #8c8c8c;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 1.25;
   border: none;
   padding-left: 50px;
   margin-left: 17px;
@@ -3001,12 +3013,18 @@ select {
   align-items: center;
 }
 
+@media screen and (min-width: 2000px) {
+  .goods-cell-header {
+    min-height: 4.7em!important;
+  }
+}
+
 /* Specific styles for cell-header */
 .cell-header {
   color: #8c8c8c;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 1.25;
   border: none;
   background: #f7f6fe;
   /* new added!!*/
@@ -3015,12 +3033,18 @@ select {
   box-sizing: border-box;
 }
 
+@media screen and (min-width: 2000px) {
+  .cell-header {
+    min-height: 4.7em!important;
+  }
+}
+
 /* Data cell styles */
 .data-cell {
   background-color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 1.25;
 }
 
 /* Fixed columns header cells */
