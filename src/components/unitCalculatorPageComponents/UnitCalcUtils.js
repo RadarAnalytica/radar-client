@@ -224,6 +224,8 @@ export const createExelData = (result) => {
             }
         })
         const finalData = [
+            [["Расчет сгенерирован с помощью сервиса Radar Analytica"]],
+            ['', ''],
             ...productTable,
             ['', ''],
             ...sizesTable, 
