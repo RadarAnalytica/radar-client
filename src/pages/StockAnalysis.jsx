@@ -45,7 +45,6 @@ const StockAnalysis = () => {
   const [file, setFile] = useState(); // это видимо загрузка файла себестоимости
   const [stockAnalysisData, setStockAnalysisData] = useState([]); // это видимо данные для таблицы
   const [loading, setLoading] = useState(true); // лоадер для загрузки данных
-  const [isInitialLoading, setIsInitialLoading] = useState(true); // тож самое
   const [activeBrand, setActiveBrand] = useState(null); // стейт селекта магазина (выбранный магазин или "0")
   const [dataTable, setDataTable] = useState([]); // это отфильтрованная дата (если используется поиск)
   const [costPriceShow, setCostPriceShow] = useState(false); // хз что это
@@ -69,7 +68,6 @@ const StockAnalysis = () => {
       } catch (error) {
         console.error("Error fetching initial data:", error);
       } finally {
-        setIsInitialLoading(false);
         setLoading(false);
       }
     };
@@ -82,8 +80,6 @@ const StockAnalysis = () => {
   // 1. - проверяем магазин в локал сторадже
   useEffect(() => {
     if (shops) {
-
-      setIsInitialLoading(false)
       // достаем сохраненный магазин
       const shopFromLocalStorage = localStorage.getItem('activeShop')
       // если сохранненный магазин существует и у нас есть массив магазинов....
@@ -236,12 +232,11 @@ const StockAnalysis = () => {
     <>
       <div className="dashboard-page">
         <SideNav />
-        <div className="dashboard-content pb-3">
+        <div className="dashboard-content">
           <div className="h-100 d-flex flex-column overflow-hidden">
             <TopNav title={"Товарная аналитика"} />
             {
-              !hasSelfCostPrice &&
-                activeBrand && activeBrand.id !== 0 ? (
+              !hasSelfCostPrice && activeBrand && activeBrand.id !== 0 && !loading? (
                 <SelfCostWarning
                   activeBrand={activeBrand.id}
                   onUpdateDashboard={handleUpdateDashboard}
@@ -260,7 +255,7 @@ const StockAnalysis = () => {
               }
             </div>
 
-            {activeBrand && activeBrand.is_primary_collect ? (
+            {activeBrand && activeBrand.is_primary_collect && !loading && (
               <>
                 <div className="input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center">
                   <div className="search search-container">
@@ -312,7 +307,7 @@ const StockAnalysis = () => {
                 </div>
 
                 <div style={{ height: "20px" }}></div>
-                <div className="flex-grow-1" style={{ border: '1px solid red' }}>
+                <div className="flex-grow-1">
                   <TableStock
                     data={dataTable}
                     setDataTable={setDataTable}
@@ -320,7 +315,9 @@ const StockAnalysis = () => {
                   />
                 </div>
               </>
-            ) : (
+            )}
+            {activeBrand && !activeBrand.is_primary_collect && !loading &&
+            (
               <DataCollectionNotification
                 title={"Ваши данные еще формируются и обрабатываются."}
               />

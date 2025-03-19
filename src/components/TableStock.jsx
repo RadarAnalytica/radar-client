@@ -6,13 +6,14 @@ const TableStock = ({ data, setDataTable, loading }) => {
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
-
-  const dataTable = []
+  console.log(data[15])
+  let dataTable = []
   data.forEach((_, id) => {
-    if (id < 200) {
+    if (id <= 600) {
       dataTable.push(_)
     }
   })
+  dataTable = data
 
   const handleMouseEnter = (e) => {
     const element = e.target;
@@ -47,6 +48,12 @@ const TableStock = ({ data, setDataTable, loading }) => {
   };
 
   useEffect(() => {
+    const rows = document.querySelectorAll('#data-test')
+    console.log('rows fact: '+rows.length)
+    console.log('rows plan: '+dataTable.length)
+  }, [dataTable])
+
+  useEffect(() => {
     const handleScroll = () => {
       const tableContainer = document.querySelector('.custom-table');
       if (tableContainer) {
@@ -64,6 +71,8 @@ const TableStock = ({ data, setDataTable, loading }) => {
         tableContainer.removeEventListener('scroll', handleScroll);
       }
     };
+
+    
   }, []);
 
   // const handleClickProductName = (shop) => {
@@ -75,7 +84,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   }
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div style={{ display: 'flex', flexDirection: 'row'}}>
       <div style={{ width: '3.5vw', height: '100%' }}></div>
       <div className='custom-table' style = {loading ? { overflow: 'hidden'} : null}>
         <div className='table-container'>
@@ -102,9 +111,9 @@ const TableStock = ({ data, setDataTable, loading }) => {
               Ничего не найдено
             </div> }
           {dataTable.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', height: 'auto', border: '3px solid black', paddingBottom: '500px' }}>
               {/* Fixed columns */}
-              <div className={`fixed-columns ${isScrolled ? 'fixed-columns-shadow' : ''}`}>
+              <div className={`fixed-columns ${isScrolled ? 'fixed-columns-shadow' : ''}`} style={{border: '1px solid red'}}>
                 <div className='column goods-cell'>
                   <div
                     className='cell header-cell goods-cell'
@@ -136,6 +145,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                         zIndex: '1',
                       }}
                     >
+                      {index}
                       <div className='empty-box'>
                         <img
                           src={row.photo}
