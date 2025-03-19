@@ -1,14 +1,27 @@
-import { useState, useRef } from 'react';
-import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete } from 'antd';
+import { useState, useRef, useEffect } from 'react';
+import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete, Modal } from 'antd';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
+import { getCalculatorSubjects } from '../../service/api/api';
 import styles from './BasicDataFormBlock.module.css'
+import useDebouncedFunction from '../../service/hooks/useDebounce';
 
-const BasicDataFormBlock = ({ form }) => {
-
-    const [visibleOptions, setVisibleOptions] = useState([]);
+const BasicDataFormBlock = ({ form, setMpMainFee }) => {
+    const [ autocompleteOptions, setAutocompleteOptions ] = useState([]);
     const [inputValue, setInputValue] = useState('');
-    const dropdownRef = useRef(null);
-    const visibleCount = 10;
+    const [isOptionClicked, setIsOptionClicked] = useState(false);
+    const [ error, setError ] = useState(false)
+    const dropdownRef = useRef(null)
+
+    const getSubjectsDataWSetter = async (value) => {
+        const res = await getCalculatorSubjects({search_string: value})
+        
+        if (res.rows) {
+            setAutocompleteOptions(res.rows)
+        } else {
+            setError(true)
+        }
+    }
+    const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500)
 
     const isSPP = Form.useWatch('isSPP', form);
     const product = Form.useWatch('product', form);
@@ -27,24 +40,47 @@ const BasicDataFormBlock = ({ form }) => {
     const sidesSum = package_width_int + package_length_int + package_height_int
     const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2)
 
-
-    const handleSearch = (value) => {
-        setInputValue(value);
-        if (value) {
-            const filteredOptions = options.filter(option => option.value.includes(value));
-            setVisibleOptions(filteredOptions.slice(0, visibleCount)); // Ограничиваем количество отображаемых опций
+    const autocompleteValidation = (_, value) => { //custom validation for autocomplete
+        if (!value) {
+            return Promise.reject('Пожалуйста, заполните это поле')
+        } else if (value.length <= 3) {
+            return Promise.reject('Пожалуйста, введите минимум 3 символа')
+        } else if (!isOptionClicked) {
+            return Promise.reject('Пожалуйста, выберите опцию')
         } else {
-            setVisibleOptions([]);
+            return Promise.resolve()
         }
+    }
+
+
+    const handleSearch = (value) => { // обработка ввода пользователя вручную
+        setIsOptionClicked(false)
+        setInputValue(value);
+        if (!value || value.length <= 3) {
+            setAutocompleteOptions([])
+        }
+        value && value.length > 3 && debouncedDataFetch(inputValue)
     };
 
-    const handleSelect = (value) => {
+    const handleSelect = (value) => { // обработка клика на опцию
+        setIsOptionClicked(true)
         setInputValue(value);
-        setVisibleOptions([]);
+        const currentOption = autocompleteOptions.find(_ => _.name === value)
+        if (currentOption) {
+            setMpMainFee(currentOption.fbo)
+        }
     };
 
     return (
         <fieldset className={styles.fieldset}>
+            <Modal 
+                open={error}
+                title='Что-то пошло не так'
+                onClose={() => {setError(false)}}
+                onOk={() => {setError(false)}}
+                onCancel={() => {setError(false)}}
+                footer={null}
+            />
             <div className={styles.fieldset__header}>
                 <h2 className={styles.fieldset__title}>Базовые данные</h2>
                 <p className={styles.fieldset__subtitle}>Укажите значения для расчета одной единицы товара (SKU)</p>
@@ -77,14 +113,15 @@ const BasicDataFormBlock = ({ form }) => {
                     name='product'
                     label='Товар'
                     className={styles.formItem}
-
+                    rules={[
+                        { validator: autocompleteValidation }
+                    ]}
                 >
                     <AutoComplete 
                         size='large'
                         placeholder='Введите название товара'
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
-                        options={[{value: '1'},{value: '2'},{value: '3'}]}
                         allowClear={{
                             clearIcon: (
                                 <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +132,7 @@ const BasicDataFormBlock = ({ form }) => {
                         value={inputValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
-                        // options={visibleOptions}
+                        options={autocompleteOptions?.map(_ => ({ value: _.name}))}
                         dropdownRender={menu => (
                             <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
                                 {menu}

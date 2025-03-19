@@ -123,21 +123,28 @@ export const logisticsWithBuyoutPercentagePriceCalcFunc = (current_storage_logis
 }   
 
 export function encodeUnicodeToBase64(str) {
-    const encoder = new TextEncoder();
-    const bytes = encoder.encode(str);
-    return btoa(String.fromCharCode(...bytes));
+    const utf8Str = encodeURIComponent(str); // Преобразуем в UTF-8
+    const token = btoa(utf8Str); // Кодируем в base64
+    return token;
+    // const encoder = new TextEncoder();
+    // const bytes = encoder.encode(str);
+    // return btoa(String.fromCharCode(...bytes));
   }
 
 
 
-export function decodeBase64ToUnicode(base64) {
-    const binaryString = atob(base64);
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-    const decoder = new TextDecoder();
-    return decoder.decode(bytes);
+export function decodeBase64ToUnicode(token) {
+    // const binaryString = atob(base64);
+    // const bytes = new Uint8Array(binaryString.length);
+    // for (let i = 0; i < binaryString.length; i++) {
+    //   bytes[i] = binaryString.charCodeAt(i);
+    // }
+    // const decoder = new TextDecoder();
+    // return decoder.decode(bytes);
+    const decodedUtf8Str = atob(token); // Декодируем base64
+    const decodedJsonStr = decodeURIComponent(decodedUtf8Str); // Преобразуем из UTF-8
+    const decodedData = JSON.parse(decodedJsonStr);
+    return decodedData;
 }
 
 
