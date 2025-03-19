@@ -13,7 +13,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
     const delivery_speed = Form.useWatch('delivery_speed', form);
 
     const [ whouseData, setWhouseData ] = useState(tempWhouseData.fbo.map(w => ({ value: w.name })))
-        const handleSearch = (value) => {
+    const handleSearch = (value) => {
         const newData = tempWhouseData.fbo.filter(_ => _.name === value);
         setWhouseData(newData)
     };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styles from './UnitCalculatorPage.module.css'
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
@@ -11,10 +11,11 @@ import AdditionalOptionsDataFormBlock from '../components/unitCalculatorPageComp
 import ResultBlock from '../components/unitCalculatorPageComponents/ResultBlock';
 import { unitCalcResultFunction, logisticsWithBuyoutPercentagePriceCalcFunc, encodeUnicodeToBase64, decodeBase64ToUnicode } from '../components/unitCalculatorPageComponents/UnitCalcUtils';
 import { tempWhouseData } from '../components/unitCalculatorPageComponents/tempWarehouseData';
+import { getCalculatorSubjects } from '../service/api/api';
 
 const UnitCalculatorPage = () => {
 
-
+    const sectionRef = useRef(null)
     // states
     const [ result, setResult ] = useState(); // resultOblect (created when form submits)
     const [ token, setToken ] = useState(null); // tokenized result data for share link
@@ -25,7 +26,6 @@ const UnitCalculatorPage = () => {
     const [ mpMainFee, setMpMainFee ] = useState(22.5) // *temporary* - hardcode of marketplace main fee
     const [ params ] = useSearchParams() // <- to get token from the url
     const [ form ] = Form.useForm(); // form instance
-
     //------------------ a few form fields to observe ---------------------//
     const isHeavy = Form.useWatch('isHeavy', form);
     const buyout_percentage = Form.useWatch('buyout_percentage', form);
@@ -60,7 +60,9 @@ const UnitCalculatorPage = () => {
         const token = encodeUnicodeToBase64(json)
         // set token
         setToken(token)
+        sectionRef?.current?.scrollTo({ top: 0, behavior: 'smooth'})
     }
+   
 
     // -------------- cost of buyout ration calculations --------------------//
     useEffect(() => {
@@ -142,8 +144,8 @@ const UnitCalculatorPage = () => {
         const token = params.get('data')
         if (token) {
             try {
-                const jsonData = decodeBase64ToUnicode(token);
-                const data = JSON.parse(jsonData);
+                const data = decodeBase64ToUnicode(token);
+                //const data = JSON.parse(jsonData);
                 const keysArr = Object.keys(data.fields);
 
                 keysArr.forEach(k => {
@@ -163,7 +165,7 @@ const UnitCalculatorPage = () => {
     return (
         <main className={styles.page}>
             <SideNav /> 
-            <section className={styles.page__content}>
+            <section className={styles.page__content} ref={sectionRef}>
                 <TopNav title={'Калькулятор unit-экономики товара'} mikeStarinaStaticProp />
                 <ConfigProvider
                     theme={{
@@ -215,7 +217,7 @@ const UnitCalculatorPage = () => {
 
 
 
-                                <BasicDataFormBlock form={form} />
+                                <BasicDataFormBlock form={form} setMpMainFee={setMpMainFee} />
                                 <LogisticsDataFormBlock form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
                                 <MPFeesDataFormBlock mp_fee={mpMainFee} form={form} />
                                 <AdditionalOptionsDataFormBlock form={form} />

@@ -135,7 +135,7 @@ function App() {
             <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />
             <Route path='/how-to-connect-api' element={<Suspense fallback={<LoaderPage />}>{' '}<HowToConnectAPI /></Suspense>} />
             {/* 404 */}
-            <Route path='*' element={<Page404 />} />
+            <Route path='*' element={<Page404 />} status={404} />
           </Routes>
         </ProductProvider>
     </AuthProvider>
