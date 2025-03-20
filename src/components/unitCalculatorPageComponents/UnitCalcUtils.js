@@ -194,7 +194,7 @@ export const createExelData = (result) => {
         keysArr.forEach(k => {
             let value = result[k]
             if (typeof value === 'boolean') {
-                value = value === 'true' ? 'да' : 'нет'
+                value = value === true ? 'да' : 'нет'
             }
 
             if (!value) {
@@ -204,7 +204,7 @@ export const createExelData = (result) => {
             if (k === 'product' || k === 'product_price' || k === 'SPP' || k === 'isSPP' || k === 'product_cost' || k === 'total_product_price' || k === 'isHeavy' || k === 'package_length' || k === 'package_width' || k === 'package_height' || k === 'sizes_sum' || k === 'volume') {
                 basicDataTable.push([fieldsVocab[k], value.toString()])
             }
-            if (k === 'warehouse' || k === 'buyout_percentage' || k === 'PackageType' || k === 'cargo_acceptance_price' || k === 'last_mile_logistics_price' || k === 'current_storage_logistic_price' || k === 'storagePrice' || k === 'buyout_percentage') {
+            if (k === 'warehouse' || k === 'buyout_percentage' || k === 'PackageType' || k === 'cargo_acceptance_price' || k === 'last_mile_logistics_price' || k === 'current_storage_logistic_price' || k === 'storagePrice' || k === 'buyout_percentage' || k === 'is_paid_cargo_acceptance') {
                 logisticsDataTable.push([fieldsVocab[k], value.toString()])
             }
             if (k === 'equiring_fee' || k === 'additional_mp_fee' || k === 'mpFee' || k === 'absMpFee') {
