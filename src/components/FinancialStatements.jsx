@@ -30,23 +30,32 @@ const FinancialStatements = () => {
             </div>
             <div className={styles.finLogoMain}>
                 <img
-                    src={isSafari ? (highResLoaded ? finLogoMainPNG : finLogoMainPNGLow) : finLogoMain}
+                    srcSet={`
+                        ${finLogoMainPNG} 1x, 
+                        ${finLogoMainPNGLow} 0.5x, 
+                        ${finLogoMain} 2x
+                    `}
                     alt="Main Logo"
-                    onLoad={handleImageLoad}
                 />
             </div>
             <div className={styles.finLogo}>
                 <img
-                    src={isSafari ? (highResLoaded ? finLogoPNG : finLogoPNGLow) : finLogo}
-                    alt="Logo"
-                    onLoad={handleImageLoad}
+                    srcSet={`
+                        ${finLogoMain} 1x, 
+                        ${finLogoMainPNGLow} 0.5x, 
+                        ${finLogoMainPNG} 2x
+                    `}
+                    alt="Main Logo"
                 />
             </div>
             <div className={styles.finLogoMobile}>
-                <img
-                    src={isSafari ? (highResLoaded ? finLogoMobilePNG : finLogoMobilePNGLow) : finLogoMobile}
-                    alt="Mobile Logo"
-                    onLoad={handleImageLoad}
+                 <img
+                    srcSet={`
+                        ${finLogoMobile} 1x, 
+                        ${finLogoMobilePNGLow} 0.5x, 
+                        ${finLogoMobilePNG} 2x
+                    `}
+                    alt="Main Logo"
                 />
             </div>
         </div>

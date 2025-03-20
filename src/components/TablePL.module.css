@@ -14,6 +14,13 @@
   overscroll-behavior: none;
 }
 
+@media screen and (min-width: 2000px) {
+  .customTable{
+    height: auto;
+    max-height: calc(100vh - 150px);
+  }
+}
+
 .customTable::-webkit-scrollbar {
   height: 6px;
   border-radius: 6px;

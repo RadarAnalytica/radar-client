@@ -1,44 +1,51 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
-import StockAnalysisFilter from '../components/StockAnalysisFilter';
-import TableStock from '../components/TableStock';
-import SearchButton from '../assets/searchstock.svg';
-import StockCostPrice from '../assets/stockcostprice.svg';
-import DownloadFile from '../assets/downloadxlfile.svg';
+import React, { useContext, useEffect, useState, useRef } from "react";
+import SideNav from "../components/SideNav";
+import TopNav from "../components/TopNav";
+import StockAnalysisFilter from "../components/StockAnalysisFilter";
+import TableStock from "../components/TableStock";
+import SearchButton from "../assets/searchstock.svg";
+import StockCostPrice from "../assets/stockcostprice.svg";
+import DownloadFile from "../assets/downloadxlfile.svg";
 import {
   getFileClickHandler,
   saveFileClickHandler,
-} from '../service/getSaveFile';
-import AuthContext from '../service/AuthContext';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { fetchShops } from '../redux/shops/shopsActions';
-import DragDropFile from '../components/DragAndDropFiles';
-import Modal from 'react-bootstrap/Modal';
-import { fetchStockAnalysisData } from '../redux/stockAnalysis/stockAnalysisDataActions';
+} from "../service/getSaveFile";
+import AuthContext from "../service/AuthContext";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { fetchShops } from "../redux/shops/shopsActions";
+import DragDropFile from "../components/DragAndDropFiles";
+import Modal from "react-bootstrap/Modal";
+import { fetchStockAnalysisData } from "../redux/stockAnalysis/stockAnalysisDataActions";
 import { ServiceFunctions } from "../service/serviceFunctions";
-import DownloadButton from '../components/DownloadButton';
+import DownloadButton from "../components/DownloadButton";
 import NoSubscriptionPage from "./NoSubscriptionPage";
 import SelfCostWarning from "../components/SelfCostWarning";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import { useNavigate } from "react-router-dom";
-import { URL } from '../service/config';
+import { URL } from "../service/config";
+import { fileDownload } from "../service/utils";
 
 const StockAnalysis = () => {
   const navigate = useNavigate();
-  const stockAnalysisData = useAppSelector(
-    (state) => state.stockAnalysisDataSlice.stockAnalysisData
+
+  // const stockAnalysisData = useAppSelector(
+  //   (state) => state.stockAnalysisDataSlice.stockAnalysisData
+  // );
+  // const dataStock = Array.isArray(stockAnalysisData) ? stockAnalysisData : [];
+  const [stockAnalysisData, setStockAnalysisData] = useState([]);
+  const [dataStock, setDataStock] = useState([]);
+  const hasSelfCostPrice = dataStock.every(
+    (product) => product.costPriceOne !== null
   );
-  const dataStock = Array.isArray(stockAnalysisData) ? stockAnalysisData : [];
-  const hasSelfCostPrice = dataStock.every(product => product.costPriceOne !== null);
+
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const allShop = shops?.some((item) => item?.is_primary_collect === true);
-  const storedActiveShop = localStorage.getItem('activeShop');
+  const storedActiveShop = localStorage.getItem("activeShop");
   const storedActiveShopObject = JSON.parse(storedActiveShop);
 
   let activeShop;
-  
+
   const activeShopId = activeShop?.id;
   const idShopAsValue =
     activeShopId != undefined ? activeShopId : shops?.[0]?.id;
@@ -51,16 +58,16 @@ const StockAnalysis = () => {
   const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
   const [dataTable, setDataTable] = useState([]);
   const [costPriceShow, setCostPriceShow] = useState(false);
-  const [days, setDays] = useState(30);
-  const [searchQuery, setSearchQuery] = useState('');
-  const prevDays = useRef(days);
+  const [selectedRange, setSelectedRange] = useState({ period: 30 });
+  const [searchQuery, setSearchQuery] = useState("");
+  const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
   const handleCostPriceClose = () => setCostPriceShow(false);
 
   const plugForAllStores = {
     id: 0,
-    brand_name: 'Все',
+    brand_name: "Все",
     is_active: true,
     is_primary_collect: allShop,
     is_valid: true,
@@ -69,20 +76,27 @@ const StockAnalysis = () => {
   const shouldDisplay = activeShop
     ? activeShop.is_primary_collect
     : oneShop
-      ? oneShop.is_primary_collect
-      : allShop;
-  
-  if (storedActiveShop && typeof storedActiveShop === 'string') {
+    ? oneShop.is_primary_collect
+    : allShop;
+
+  if (storedActiveShop && typeof storedActiveShop === "string") {
     try {
-      const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
-      if (shops.length > 0 && controlValue !== 1 && !!activeBrand && activeBrand !== '0') {
-        localStorage.removeItem('activeShop')
-        window.location.reload()
+      const controlValue = shops.filter(
+        (el) => el.id === storedActiveShopObject.id
+      ).length;
+      if (
+        shops.length > 0 &&
+        controlValue !== 1 &&
+        !!activeBrand &&
+        activeBrand !== "0"
+      ) {
+        localStorage.removeItem("activeShop");
+        window.location.reload();
       }
 
       activeShop = storedActiveShopObject;
     } catch (error) {
-      console.error('Error parsing storedActiveShop:', error);
+      console.error("Error parsing storedActiveShop:", error);
       activeShop = null;
     }
   }
@@ -91,12 +105,12 @@ const StockAnalysis = () => {
     setCostPriceShow(true);
   };
 
-  const updateDataDashBoard = async (days, activeBrand, authToken) => {
+  const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
     setLoading(true);
     try {
       const data = await ServiceFunctions.getDashBoard(
         authToken,
-        days,
+        selectedRange,
         activeBrand
       );
       setDataDashboard(data);
@@ -113,40 +127,50 @@ const StockAnalysis = () => {
 
   const filterData = (data, query) => {
     if (!query) return data;
-    return data.filter(item =>
-      item?.sku?.toLowerCase().includes(query.toLowerCase()) ||
-      item?.vendorСode?.toLowerCase().includes(query.toLowerCase()) ||
-      item?.productName?.toLowerCase().includes(query.toLowerCase())
+    return data.filter(
+      (item) =>
+        item?.sku?.toLowerCase().includes(query.toLowerCase()) ||
+        item?.vendorСode?.toLowerCase().includes(query.toLowerCase()) ||
+        item?.productName?.toLowerCase().includes(query.toLowerCase())
     );
   };
 
-      const validateStoredShop = () => {
-        if (storedActiveShop && shops?.length > 0) {
-          const storedShopExists = shops.some(
-            shop => shop.id === JSON.parse(storedActiveShop).id
-          );
-          if (!storedShopExists) {
-            localStorage.removeItem('activeShop');
-            window.location.reload();
-          }
-        }
-      };
-  
-      useEffect(() => {
-        if (shops?.length > 0) {
-          validateStoredShop();
-        }
-      }, [shops]);
+  const validateStoredShop = () => {
+    if (storedActiveShop && shops?.length > 0) {
+      const storedShopExists = shops.some(
+        (shop) => shop.id === JSON.parse(storedActiveShop).id
+      );
+      if (!storedShopExists) {
+        localStorage.removeItem("activeShop");
+        window.location.reload();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (shops?.length > 0) {
+      validateStoredShop();
+    }
+  }, [shops]);
 
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         await dispatch(fetchShops(authToken));
-        await dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+
+        // await dispatch(fetchStockAnalysisData({ authToken, selectedRange, activeBrand }));
+        const data = await ServiceFunctions.getAnalysisData(
+          authToken,
+          selectedRange,
+          activeBrand
+        );
+        setStockAnalysisData(data);
+        // await ServiceFunctions.getAllShops(authToken).then((data) => setStockAnalysisData(data));
       } catch (error) {
         console.error("Error fetching initial data:", error);
       } finally {
         setIsInitialLoading(false);
+        setLoading(false);
       }
     };
 
@@ -159,24 +183,36 @@ const StockAnalysis = () => {
   }, [stockAnalysisData, searchQuery]);
 
   useEffect(() => {
-    if (
-      days !== prevDays.current ||
-      activeBrand !== prevActiveBrand.current
-    ) {
-      if (activeBrand !== undefined) {
-        dispatch(fetchStockAnalysisData({ authToken, days, activeBrand }));
+    const fetchAnalysisData = async () => {
+      if (
+        selectedRange !== prevDays.current ||
+        activeBrand !== prevActiveBrand.current
+      ) {
+        if (activeBrand !== undefined) {
+          setLoading(true);
+          const data = await ServiceFunctions.getAnalysisData(
+            authToken,
+            selectedRange,
+            activeBrand
+          );
+          setStockAnalysisData(data);
+          setLoading(false);
+          // dispatch(fetchStockAnalysisData({ authToken, selectedRange, activeBrand }));
+        }
+        prevDays.current = selectedRange;
+        prevActiveBrand.current = activeBrand;
       }
-      prevDays.current = days;
-      prevActiveBrand.current = activeBrand;
-    }
-  }, [days, activeBrand]);
+    };
+
+    fetchAnalysisData();
+  }, [selectedRange, activeBrand]);
 
   useEffect(() => {
     if (shops.length > 0) {
       let id;
       if (activeShopId == undefined) {
         id = shops?.[0].id;
-        localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
+        localStorage.setItem("activeShop", JSON.stringify(shops?.[0]));
       } else {
         id = activeShopId;
       }
@@ -190,18 +226,16 @@ const StockAnalysis = () => {
     }
   }, [isInitialLoading, shops.length]);
 
-
   const handleSaveActiveShop = (shopId) => {
     const currentShop = shops?.find((item) => item.id == shopId);
     if (currentShop) {
-      localStorage.setItem('activeShop', JSON.stringify(currentShop));
+      localStorage.setItem("activeShop", JSON.stringify(currentShop));
     }
-    if (shopId === '0') {
-      localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
+    if (shopId === "0") {
+      localStorage.setItem("activeShop", JSON.stringify(plugForAllStores));
     }
     setActiveBrand(shopId);
   };
-
 
   const handleUpdateDashboard = () => {
     setTimeout(() => {
@@ -211,126 +245,139 @@ const StockAnalysis = () => {
 
   const updateDataDashBoardCaller = async () => {
     activeBrand !== undefined &&
-      updateDataDashBoard(days, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand, authToken);
   };
 
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"Товарная аналитика"} />;
-  };
+  }
 
   if (!shops || shops.length === 0) {
     return null; // or a loading indicator
-  };
+  }
 
-  const getProdAnalyticXlsx = async (days, activeBrand, authToken) => { 
-    fetch(`${URL}/api/prod_analytic/download?period=${days}&shop=${activeBrand}`,
-      {
-        method: 'GET',
-        headers: {
-          authorization: 'JWT ' + authToken,
-        },
-      }
-    ).then((response) => {
-      return response.blob();
-    }).then((blob) => {
-      const url = window.URL.createObjectURL(new Blob([blob]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `Товарная_аналитика.xlsx`);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-    }).catch((e) => console.error(e));
+  const getProdAnalyticXlsxHandler = async () => {
+    const fileBlob = await ServiceFunctions.getProdAnalyticXlsx(
+      authToken,
+      selectedRange,
+      activeBrand
+    );
+    fileDownload(fileBlob, "Товарная_аналитика.xlsx");
+    // const url = window.URL.createObjectURL(new Blob([data]));
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.setAttribute('download', `Товарная_аналитика.xlsx`);
+    // document.body.appendChild(link);
+    // link.click();
+    // link.parentNode.removeChild(link);
   };
 
   return (
     <>
-      <div className='dashboard-page'>
+      <div className="dashboard-page">
         <SideNav />
-        <div className='dashboard-content pb-3'>
-          <TopNav title={'Товарная аналитика'} />
-          {!isInitialLoading && !hasSelfCostPrice && activeShopId !== 0 && shouldDisplay ? (
-            <SelfCostWarning
-              activeBrand={activeBrand}
-              onUpdateDashboard={handleUpdateDashboard}
-            />
-          ) : null}
+        <div className="dashboard-content pb-3">
+          <div className="h-100 d-flex flex-column overflow-hidden">
+            <TopNav title={"Товарная аналитика"} />
+            {!isInitialLoading &&
+            !hasSelfCostPrice &&
+            activeShopId !== 0 &&
+            shouldDisplay ? (
+              <SelfCostWarning
+                activeBrand={activeBrand}
+                onUpdateDashboard={handleUpdateDashboard}
+              />
+            ) : null}
 
-          <div className='pt-0 d-flex gap-3'>
-            <StockAnalysisFilter
-              shops={shops}
-              setActiveBrand={handleSaveActiveShop}
-              setDays={setDays}
-              activeShopId={activeShopId}
-            />
-          </div>
+            <div className="pt-0 d-flex gap-3">
+              <StockAnalysisFilter
+                shops={shops}
+                setActiveBrand={handleSaveActiveShop}
+                setSelectedRange={setSelectedRange}
+                selectedRange={selectedRange}
+                activeShopId={activeShopId}
+              />
+            </div>
 
-          {shouldDisplay ? (
-            <>
-              <div className='input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center'>
-                <div className='search search-container'>
-                  <div className='search-box'>
-                    <input
-                      type='text'
-                      placeholder='Поиск по SKU или артикулу'
-                      className='search-input'
-                      value={searchQuery}
-                      onChange={handleSearchChange}
-                    />
-                    <button className='search-box-btn'>
-                      <img
-                        onClick={() => setDataTable(filterData(stockAnalysisData, searchQuery))}
-                        style={{ marginLeft: "10px", cursor: "pointer" }}
-                        src={SearchButton}
-                        alt='search'
+            {shouldDisplay ? (
+              <>
+                <div className="input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center">
+                  <div className="search search-container">
+                    <div className="search-box">
+                      <input
+                        type="text"
+                        placeholder="Поиск по названию, SKU или артикулу"
+                        className="search-input"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
                       />
-                    </button>
-                  </div>
-                </div>
-
-                <div className='button-container d-flex gap-3'>
-                  <div className='d-flex' style={{ gap: '20px', alignItems: 'center' }}>
-                    <div className='button-container d-flex gap-3'>
-                      <div>
+                      <button className="search-box-btn">
                         <img
-                          style={{ cursor: 'pointer' }}
-                          onClick={handleCostPriceShow}
-                          src={StockCostPrice}
-                          alt=''
+                          onClick={() =>
+                            setDataTable(
+                              filterData(stockAnalysisData, searchQuery)
+                            )
+                          }
+                          style={{ marginLeft: "10px", cursor: "pointer" }}
+                          src={SearchButton}
+                          alt="search"
                         />
-                      </div>
-                      <div>
-                        <DownloadButton
-                          handleDownload={() => getProdAnalyticXlsx(days, activeBrand, authToken)}
-                        />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="button-container d-flex gap-3">
+                    <div
+                      className="d-flex"
+                      style={{ gap: "20px", alignItems: "center" }}
+                    >
+                      <div className="button-container d-flex gap-3">
+                        <div>
+                          <img
+                            style={{ cursor: "pointer" }}
+                            onClick={handleCostPriceShow}
+                            src={StockCostPrice}
+                            alt=""
+                          />
+                        </div>
+                        <div>
+                          <DownloadButton
+                            handleDownload={() => getProdAnalyticXlsxHandler()}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div style={{ height: '20px' }}></div>
-              <TableStock dataTable={dataTable} setDataTable={setDataTable} />
-            </>
-          ) : (
-            <DataCollectionNotification
-              title={'Ваши данные еще формируются и обрабатываются.'}
-            />
-          )}
+                <div style={{ height: "20px" }}></div>
+                <div className="flex-grow-1">
+                  <TableStock
+                    dataTable={dataTable}
+                    setDataTable={setDataTable}
+                    loading={loading}
+                  />
+                </div>
+              </>
+            ) : (
+              <DataCollectionNotification
+                title={"Ваши данные еще формируются и обрабатываются."}
+              />
+            )}
+          </div>
         </div>
       </div>
-
       {/* Modal for Cost Price */}
       <Modal
         show={costPriceShow}
         onHide={handleCostPriceClose}
-        className='add-token-modal'
+        className="add-token-modal"
       >
         <Modal.Header closeButton>
-          <div className='d-flex align-items-center gap-2'>
-            <div style={{ width: '100%' }}>
-              <div className='d-flex justify-content-between'>
-                <h4 className='fw-bold mb-0'>Установка себестоимости товара</h4>
+          <div className="d-flex align-items-center gap-2">
+            <div style={{ width: "100%" }}>
+              <div className="d-flex justify-content-between">
+                <h4 className="fw-bold mb-0">Установка себестоимости товара</h4>
               </div>
             </div>
           </div>
@@ -338,61 +385,61 @@ const StockAnalysis = () => {
         <Modal.Body>
           {file ? (
             <div>
-              <div className='d-flex align-items-center justify-content-between w-100 mt-2 gap-2'>
-                <div className='d-flex gap-2'>
+              <div className="d-flex align-items-center justify-content-between w-100 mt-2 gap-2">
+                <div className="d-flex gap-2">
                   <svg
-                    width='17'
-                    height='23'
-                    viewBox='0 0 17 23'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
+                    width="17"
+                    height="23"
+                    viewBox="0 0 17 23"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d='M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z'
-                      stroke='black'
-                      strokeOpacity='0.5'
-                      strokeWidth='1.5'
+                      d="M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z"
+                      stroke="black"
+                      strokeOpacity="0.5"
+                      strokeWidth="1.5"
                     />
                   </svg>
-                  <span>{file ? file.name : ''}</span>
+                  <span>{file ? file.name : ""}</span>
                 </div>
                 <div>
                   <a
-                    href='#'
-                    className='link'
+                    href="#"
+                    className="link"
                     onClick={() => setFile(null)}
-                    style={{ color: 'red', cursor: 'pointer' }}
+                    style={{ color: "red", cursor: "pointer" }}
                   >
                     Удалить
                   </a>
                 </div>
               </div>
-              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+              <div className="d-flex justify-content-center w-100 mt-2 gap-2">
                 <button
                   onClick={() => {
                     saveFileClickHandler(file, authToken, activeBrand);
                     setFile(null);
                     handleCostPriceClose();
                   }}
-                  className='prime-btn'
-                  style={{ height: '52px' }}
+                  className="prime-btn"
+                  style={{ height: "52px" }}
                 >
                   Сохранить
                 </button>
               </div>
-              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
-                <a href='#' className='link' onClick={handleCostPriceClose}>
+              <div className="d-flex justify-content-center w-100 mt-2 gap-2">
+                <a href="#" className="link" onClick={handleCostPriceClose}>
                   Отмена
                 </a>
               </div>
             </div>
           ) : (
-            <div className='d-flex flex-column align-items-center justify-content-around w-100'>
+            <div className="d-flex flex-column align-items-center justify-content-around w-100">
               <DragDropFile files={file} setFiles={setFile} />
-              <div className='d-flex justify-content-center w-100 mt-2 gap-2'>
+              <div className="d-flex justify-content-center w-100 mt-2 gap-2">
                 <a
-                  href='#'
-                  className='link'
+                  href="#"
+                  className="link"
                   onClick={() => getFileClickHandler(authToken, activeBrand)}
                 >
                   Скачать шаблон
@@ -405,6 +452,5 @@ const StockAnalysis = () => {
     </>
   );
 };
-
 
 export default StockAnalysis;

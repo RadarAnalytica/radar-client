@@ -17,8 +17,11 @@ import AuthContext from "../service/AuthContext";
 import MessageWindow from '../components/MessageWindow';
 import warningIcon from "../assets/warning.png"
 import Modal from 'react-bootstrap/Modal';
+import styles from './RequestMonitoringPage.module.css';
 
 const RequestMonitoringPage = () => {
+
+    console.log('RequestMonitoringPage', styles);
 
     // const [loading, setLoading] = useState(false);
     const { id } = useParams();
@@ -112,19 +115,20 @@ const RequestMonitoringPage = () => {
     return <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
+            <div style={{ widht: '100%', padding: '0 10px'}}>
             <TopNav title={'Мониторинг запросов'} />
-
+            </div>
 
 
             {!hasSearched && !isTableLoading ? (
 
-                <div className='request-mon-search-wrapper container dash-container d-flex' style={{ flexDirection: "column" }}>
+                <div className={`${styles['request-mon-search-wrapper']} container dash-container d-flex`} style={{ flexDirection: "column" }}>
 
-                    <div className='enteringRequest'>
-                        <div className='enteringRequestImg'><img src={enteringQueries} /></div>
-                        <div className='enteringRequestHeader'>Вхождение запросов</div>
+                    <div className={styles['enteringRequest']}>
+                        <div className={styles['enteringRequestImg']}><img src={enteringQueries} /></div>
+                        <div className={styles['enteringRequestHeader']}>Вхождение запросов</div>
                     </div>
-                    <div className='enteringRequestText'>Раздел покажет по каким ключевым запросам индексируется карточка товара</div>
+                    <div className={styles['enteringRequestText']}>Раздел покажет по каким ключевым запросам индексируется карточка товара</div>
                     <div className='search'>
                         <input
                             type='text'
@@ -164,13 +168,13 @@ const RequestMonitoringPage = () => {
                             </div>
                         </Modal.Header>
                     </Modal>
-                    <div className='request-mon-search-wrapper container dash-container d-flex' style={{ flexDirection: "column" }}>
+                    <div className={`${styles['request-mon-search-wrapper']} container dash-container d-flex`} style={{ flexDirection: "column" }}>
 
-                        <div className='enteringRequest'>
-                            <div className='enteringRequestImg'><img src={enteringQueries} /></div>
-                            <div className='enteringRequestHeader'>Вхождение запросов</div>
+                        <div className={styles['enteringRequest']}>
+                            <div className={styles['enteringRequestImg']}><img src={enteringQueries} /></div>
+                            <div className={styles['enteringRequestHeader']}>Вхождение запросов</div>
                         </div>
-                        <div className='enteringRequestText'>Раздел покажет по каким ключевым запросам индексируется карточка товара</div>
+                        <div className={styles['enteringRequestText']}>Раздел покажет по каким ключевым запросам индексируется карточка товара</div>
                         <div className='search'>
                             <input
                                 type='text'
@@ -195,7 +199,7 @@ const RequestMonitoringPage = () => {
 
             ) : (
                 <>
-                    <div className='request-mon-search-wrapper container dash-container d-flex'>
+                    <div className={`${styles['request-mon-search-wrapper']} container dash-container d-flex`}>
                         <div className='search'>
                             <input
                                 type='text'
@@ -266,14 +270,14 @@ const RequestMonitoringPage = () => {
                                         <p
                                             style={{
                                                 color: '#8C8C8C',
-                                                fontSize: '16px',
+                                                fontSize: '1rem',
                                                 fontWeight: '500',
                                                 marginBottom: '0',
                                             }}
                                         >
                                             Цена
                                         </p>
-                                        <span style={{ fontSize: '24px', fontWeight: '700' }}>
+                                        <span style={{ fontSize: '1.5rem', fontWeight: '700' }}>
                                             {`${(monitorData.price / 100).toFixed(2)} ₽`}
                                         </span>
                                     </div>
@@ -303,7 +307,7 @@ const RequestMonitoringPage = () => {
                                                         alt=''
                                                     />
                                                     <p
-                                                        style={{ marginBottom: '5px', fontSize: '24px', marginLeft: '8px' }}
+                                                        style={{ marginBottom: '5px', fontSize: '1.5rem', marginLeft: '8px' }}
                                                     >
                                                         {monitorData.rate}
                                                     </p>
@@ -311,7 +315,7 @@ const RequestMonitoringPage = () => {
                                                 <p
                                                     style={{
                                                         color: '#8C8C8C',
-                                                        fontSize: '16px',
+                                                        fontSize: '1rem',
                                                         fontWeight: '500',
                                                         margin: '0',
                                                     }}
@@ -344,7 +348,7 @@ const RequestMonitoringPage = () => {
                                             rel="noopener noreferrer"
                                             style={{
                                                 textDecoration: 'none',
-                                                fontSize: '16px',
+                                                fontSize: '1rem',
                                                 fontWeight: '600',
                                                 color: 'rgba(83, 41, 255, 1)',
                                             }}

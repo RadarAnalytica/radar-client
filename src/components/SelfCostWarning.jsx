@@ -11,12 +11,12 @@ const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
   const { user, authToken } = useContext(AuthContext);
   const [file, setFile] = useState();
 
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
   const [costPriceShow, setCostPriceShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleCostPriceShow = () => {
-    handleClose();
+  // const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
+  const handleCostPriceShow = (e) => {
+    // handleClose();
     setCostPriceShow(true);
   };
   const handleCostPriceClose = () => {
@@ -33,7 +33,7 @@ const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
   };
 
   return (
-    <div className='container dash-container p-3 pt-0 d-flex gap-3 '>
+    <div className='container dash-container d-flex gap-3' style={{ marginTop: '20px'}}>
       <div className='p-3 selfcost-warning w-100'>
         <div className='d-flex align-items-center gap-2 mb-2'>
           <svg
@@ -65,9 +65,9 @@ const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
           проданных товаров» не учитывают себестоимость товаров, для которых она
           неизвестна.
         </p>
-        <a href='#' className='link' onClick={handleCostPriceShow}>
+        <button className='link' onClick={handleCostPriceShow}>
           Заполнить себестоимость
-        </a>
+        </button>
       </div>
       <Modal
         show={costPriceShow}

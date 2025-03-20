@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
+    "antd": "^5.24.3",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.1",
@@ -29,7 +30,8 @@
     "react-scripts": "^5.0.1",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
-    "swagger-ui-react": "^5.12.3"
+    "swagger-ui-react": "^5.12.3",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "dev": "vite --port 3001",

@@ -22,7 +22,7 @@ import lowResImage from '../pages/images/imageFonStartBsn_comp.png'; // the low-
 import highResImage from '../pages/images/imageFonStartBsn.png'; // the high-res image
 import styles from '../pages/TariffsPage.module.css';
 import thumbup from '../pages/images/thumbup.png';
-
+import { periodStringFormat } from '../service/utils'
 
 const SelectRateMain = ({ redirect, isShowText }) => {
   const { user, authToken } = useContext(AuthContext);
@@ -84,6 +84,7 @@ const SelectRateMain = ({ redirect, isShowText }) => {
       setHighResLoaded(true);
     };
   }, [highResImage]);
+
 
   // const refreshUserToken = async () => {
   //     try {
@@ -362,8 +363,7 @@ const SelectRateMain = ({ redirect, isShowText }) => {
               <div className={styles.blockBackground}>
                 <div className={styles.accessTitle}>
                   <span className={styles.activateAccess}>
-                    На этой странице вы можете активировать тестовый доступ на 3
-                    дня
+                    На этой странице вы можете активировать тестовый доступ на {periodStringFormat(user?.test_days)}
                   </span>
                 </div>
                 <div className={styles.accessPrice}>
@@ -372,7 +372,7 @@ const SelectRateMain = ({ redirect, isShowText }) => {
                     style={{ marginRight: '24px' }}
                   >
                     Доступ:
-                    <span className={styles.accessPeriodBold}>3 дня</span>
+                    <span className={styles.accessPeriodBold}>{periodStringFormat(user?.test_days)}</span>
                   </div>
                   <div className={styles.accessPeriod}>
                     Стоимость:
@@ -518,11 +518,11 @@ const SelectRateMain = ({ redirect, isShowText }) => {
               </p>
               <div className='landing-price-btn'>
                 <p className={`landing-price-btn-text ${styles.landingPriceBtnText}`}>
-                  Мы дарим тестовый доступ на 3 дня <br />
+                  Мы дарим тестовый доступ на {periodStringFormat(user?.test_days)} <br />
                   <span> всего за</span>
                 </p>
                 <p className='landing-price-btn-text-mobile'>
-                  Мы дарим тестовый доступ на 3 дня <br />
+                  Мы дарим тестовый доступ на {periodStringFormat(user?.test_days)} <br />
                   <span> всего за</span>
                 </p>
                 <img src={OneRuble} alt='ruble'></img>
@@ -837,7 +837,7 @@ const SelectRateMain = ({ redirect, isShowText }) => {
                           )}
                           <div>
                             {!trialExpired
-                              ? 'Тестовый доступ на 3 дня'
+                              ? `Тестовый доступ на ${periodStringFormat(user?.test_days)}`
                               : 'За месяц'}
                           </div>
                         </>

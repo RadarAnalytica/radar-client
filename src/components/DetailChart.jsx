@@ -66,7 +66,7 @@ const DetailChart = ({ labels, chartData, averages }) => {
         },
         scales: {
             x: { grid: { display: false }, ticks: { color: '#8C8C8C' } },
-            y: { beginAtZero: true, min: 0, max: 10, grid: { display: true }, ticks: { color: '#8C8C8C' } },
+            y: { beginAtZero: true, min: 0, grid: { display: true }, ticks: { color: '#8C8C8C' } },
         },
     };
 
@@ -85,8 +85,6 @@ const DetailChart = ({ labels, chartData, averages }) => {
 
     const renderCustomTooltip = () => {
         if (clickedIndex === null) return null;
-        console.log(chartData)
-        console.log(clickedIndex)
         const total = chartData[clickedIndex]
 
         const isLeftSide = clickedIndex > 11;

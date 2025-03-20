@@ -20,23 +20,26 @@ const AnalyzeWildberries = () => {
             <div className={styles.containerWildberries}>
 
                 <div className={styles.wrapper}>
-
-                    <div className={styles.wrapperHeader}>
-                        <div className={styles.logoContainer}><img src={webLogo1} alt="WebLogo" /> </div>
-                        <div className={styles.headerTitle}>Веб-сервис</div>
+                    <div className={styles.cardHeader}>
+                        <div className={styles.wrapperHeader}>
+                            <div className={styles.logoContainer}><img src={webLogo1} alt="WebLogo" /> </div>
+                            <div className={styles.headerTitle}>Веб-сервис</div>
+                        </div>
+                        <div className={styles.wrapperMain}>Для полноценной работы со всем функционалом</div>
                     </div>
-                    <div className={styles.wrapperMain}>Для полноценной работы со всем функционалом</div>
                     <div className={styles.wrapperFooter}>
                         <div className={styles.buttonTry} onClick={() => navigate('/signup')}>Попробовать</div>
                     </div>
                 </div>
 
                 <div className={styles.wrapperSecond}>
-                    <div className={styles.wrapperHeader}>
-                        <div className={styles.logoContainer}><img src={browserLogo1} alt="WebLogo" /> </div>
-                        <div className={styles.headerTitle}>Браузерное расширение</div>
+                    <div className={styles.cardHeader}>
+                        <div className={styles.wrapperHeader}>
+                            <div className={styles.logoContainer}><img src={browserLogo1} alt="WebLogo" /> </div>
+                            <div className={styles.headerTitle}>Браузерное расширение</div>
+                        </div>
+                        <div className={styles.wrapperMain}>Для удобной аналитики прямо на сайте WB</div>
                     </div>
-                    <div className={styles.wrapperMain}>Для удобной аналитики прямо на сайте WB</div>
                     <div className={styles.wrapperFooter}>
                         <div className={styles.buttonTrySecond}
                             onClick={() => window.open(
@@ -48,11 +51,13 @@ const AnalyzeWildberries = () => {
                     </div>
                 </div>
                 <div className={styles.wrapperThird}>
-                    <div className={styles.wrapperHeader}>
-                        <div className={styles.logoContainer}><img src={telegramLogo1} alt="WebLogo" /> </div>
-                        <div className={styles.headerTitleThird}>Телеграм-бот</div>
+                    <div className={styles.cardHeader}>
+                        <div className={styles.wrapperHeader}>
+                            <div className={styles.logoContainer}><img src={telegramLogo1} alt="WebLogo" /> </div>
+                            <div className={styles.headerTitleThird}>Телеграм-бот</div>
+                        </div>
+                        <div className={styles.wrapperMainThird}>Для экспресс-аналитики прямо у вас в телефоне</div>
                     </div>
-                    <div className={styles.wrapperMainThird}>Для экспресс-аналитики прямо у вас в телефоне</div>
                     <div className={styles.wrapperFooter}>
                         <div className={styles.buttonTryThird} onClick={() => navigate('/signup')}>Попробовать</div>
                     </div>

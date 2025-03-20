@@ -41,28 +41,43 @@ const StorageTable = ({
   subtitles,
   wbData,
   dataDashBoard,
+  loading
 }) => {
   return (
-    <div className='storage-table mt-3'>
-      {!dataDashBoard ? (
+    <div className='storage-table'>
+      <div className='storage-table-title-element mb-2'>
+        <div>
+          <p className='fw-bold numbers mb-0'>{title}</p>
+        </div>
+        <div>
+          <SeeMoreButton path='/orders-map' />
+        </div>
+      </div>
+      {!dataDashBoard || loading ? (
         <div
-          className='d-flex flex-column align-items-center justify-content-center'
-          style={{ height: "100%", paddingTop: "20%" }}
+          style={{
+            position: 'relative',
+            height: '100%',
+            width: '100%',
+            paddingTop: '20%',
+          }}
         >
-          <span className='loader'></span>
+          <div
+            className='d-flex flex-column align-items-center justify-content-center'
+            style={{
+                height: '100%',
+                width: '100%',
+                position: 'absolute',
+                top: 0,
+                left: 0
+                // backgroundColor: '#fff',
+            }}
+          >
+            <span className='loader' style={{fontSize: '8px'}}></span>
+          </div>
         </div>
       ) : (
         <div style={{ display: "block" }}>
-          <div className='storage-table-title-element'>
-            <div>
-              <p className='fw-bold numbers mb-2'>{title}</p>
-            </div>
-
-            <div>
-              <SeeMoreButton path='/orders-map' />
-            </div>
-          </div>
-
           <div className='d-flex'>
             {titles &&
               titles.map((t, i) => (

@@ -570,3 +570,39 @@ export const getMonthNumbers = (monthArray) => {
 
   return monthArray.map(monthName => monthNamesReverse[monthName]);
 };
+
+export const periodStringFormat = (period) => {
+  /* TODO подумать про склонения или использовать date-fns */
+
+  if (!period){
+    return '3 дня'
+  }
+
+  if (period >= 6 ){
+    return `${period} дней`
+  } else {
+    return `${period} дня`
+  }
+
+}
+
+export const rangeApiFormat = (range) => {
+  let params = '';
+  if (!!range.period ){
+    params += 'period=' + range.period;
+  } else {
+    params += `date_from=${range.from}`;
+    params += `&date_to=${range.to}`;
+  }
+  return params
+}
+
+export const fileDownload = (blob, title) => {
+  const url = window.URL.createObjectURL(new Blob([blob]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', title);
+  document.body.appendChild(link);
+  link.click();
+  link.parentNode.removeChild(link);
+}

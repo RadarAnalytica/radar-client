@@ -58,7 +58,7 @@ export const MessagesDropdown = () => {
                     {(() => {
                       const date = new Date(msg.created_at + 'Z');
                       const now = new Date();
-                      const diff = (now.getTime() - date.getTime()) / 1000;
+                      const diff = Math.abs(now.getTime() - date.getTime()) / 1000;
                       if (diff < 60) {
                         return `${Math.ceil(diff)} сек. назад`;
                       } else if (diff < 3600) {

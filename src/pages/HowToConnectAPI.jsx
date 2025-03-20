@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './styles.css';
 import styles from './HowToConnectAPI.module.css';
 import NavbarMainHome from '../components/NavbarMainHome';
+import { Helmet } from 'react-helmet';
 
 import step1img1 from '../assets/step1-img1.svg';
 import step1img2 from '../assets/step1-img2.svg';
@@ -29,7 +30,7 @@ const HowToConnectAPI = () => {
   const [highResLoaded, setHighResLoaded] = useState(false);
 
   const handleImageLoad = () => {
-      setHighResLoaded(true);
+    setHighResLoaded(true);
   };
 
   return (
@@ -82,7 +83,7 @@ const HowToConnectAPI = () => {
             </div>
           </div>
           <div className={styles.stepText}>
-            На странице “подключенные магазины” выбираем вариант “Подключить”. 
+            На странице “подключенные магазины” выбираем вариант “Подключить”.
           </div>
           <img
             src={isSafari ? (highResLoaded ? step2img1PNG : step2img1PNGLow) : step2img1}

@@ -11,6 +11,9 @@ import { ProductProvider } from "./service/ProductContext";
 // import DataCollectionNotification from './components/DataCollectionNotification';
 // import { ServiceFunctions } from './service/serviceFunctions';
 
+
+
+
 const Contacts = React.lazy(() => import("./components/Contacts"));
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
 const Subscriptions = React.lazy(() => import("./pages/Subscriptions"));
@@ -50,7 +53,6 @@ const Politics = React.lazy(() => import("./pages/Politics"));
 const UserAgreement = React.lazy(() => import("./pages/UserAgreement"));
 const PublicOffer = React.lazy(() => import("./pages/PublicOffer"));
 const StubPage = React.lazy(() => import("./pages/StubPage"));
-const MainPage = React.lazy(() => import("./pages/MainPage"));
 const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
 const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
@@ -58,12 +60,13 @@ const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashboard"));
 const Schedule = React.lazy(() => import("./pages/Schedule"));
-const Period = React.lazy(() => import("./components/Period"));
+// const Period = React.lazy(() => import("./components/period/Period"));
 const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 const StartPage = React.lazy(() => import("./pages/StartPage"));
+const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
-
+import { BlogAdd, BlogList } from "./pages/blog";
 
 /**
  * --------------------------------------
@@ -71,7 +74,6 @@ import { ProtectedRoute } from "./RouteGuards";
  * 2. To connect a public one - wrap it with Suspense with LoaderPage as fallback - this is highly important!
  * --------------------------------------
  */
-
 
 function App() {
 
@@ -88,7 +90,7 @@ function App() {
             <Route path='/development/monitoring' element={<ProtectedRoute expireProtected onboardProtected userRoleProtected role='admin' routeRuName='Мониторинг запросов'><Monitoring /></ProtectedRoute>} />
             <Route path='/development/supply' element={<ProtectedRoute expireProtected onboardProtected userRoleProtected role='admin' routeRuName='Расчет поставок'><SupplyCount /></ProtectedRoute>} />
             <Route path='/stock-analysis' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Товарная аналитика'><StockAnalysis /></ProtectedRoute>} />
-            <Route path='/calculate' element={<ProtectedRoute expireProtected routeRuName='Калькулятор unit-экономики товара'><Calculate /></ProtectedRoute>} />
+            {/** wip */}
             <Route path='/orders-map' element={<ProtectedRoute expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
             <Route path='/linked-shops' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
@@ -111,12 +113,12 @@ function App() {
             <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
             <Route path='/subscription' element={<ProtectedRoute authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
             <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
-            <Route path='/period' element={<ProtectedRoute authGuardType="redirect"><Period /></ProtectedRoute>} />
+            {/* <Route path='/period' element={<ProtectedRoute authGuardType="redirect"><Period /></ProtectedRoute>} /> */}
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             {/* <Route path='/report-main' element={<ProtectedRoute><ReportMain /></ProtectedRoute>} /> */}
             {/* Public routes */}
-            <Route path='/' element={<Suspense fallback={<LoaderPage />}>{' '}<MainPage /></Suspense>} />
+            <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{' '}<UnitCalculatorPage /></Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
             <Route path='/signup' element={<Suspense fallback={<LoaderPage />}>{' '}<SignUpPage /></Suspense>} />
             <Route path='/signin' element={<Suspense fallback={<LoaderPage />}>{' '}<SignInPage /></Suspense>} />
@@ -133,7 +135,7 @@ function App() {
             <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />
             <Route path='/how-to-connect-api' element={<Suspense fallback={<LoaderPage />}>{' '}<HowToConnectAPI /></Suspense>} />
             {/* 404 */}
-            <Route path='*' element={<Page404 />} />
+            <Route path='*' element={<Page404 />} status={404} />
           </Routes>
         </ProductProvider>
     </AuthProvider>

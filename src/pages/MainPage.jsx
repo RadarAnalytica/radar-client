@@ -17,7 +17,6 @@ import BtnHomePage from '../components/BtnHomePage';
 import StepsTime from '../components/StepsTime';
 // import SelectRate from '../components/SelectRate';
 import SelectRateMain from '../components/SelectRateMain';
-import YellowRadarSmall from './images/YelowRadarSmall';
 import NavbarMainHome from '../components/NavbarMainHome';
 import AnalyzeWildberries from "../components/AnalyzeWildberries"
 import AuthContext from '../service/AuthContext';
@@ -206,7 +205,7 @@ const MainPage = () => {
 
               <div className='d-flex flex-column gap-3 startWorkBtn'>
                 <button
-                  className='prime-btn'
+                  className='first-screen-action-button'
                   style={{ minHeight: '64px', fontSize: '18px', margin: 0 }}
                   onClick={() => {
                     if (user) {

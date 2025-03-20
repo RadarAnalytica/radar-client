@@ -2,7 +2,7 @@ import React from "react";
 import { formatPrice } from "../service/utils";
 import TooltipInfo from "../components/TooltipInfo";
 
-export const TableRow = ({ values, percent, sign, tableType }) => {
+export const TableRow = ({ values, percent, sign, tableType, tooltipList }) => {
   // const green = require("../assets/greenarrow.png");
   // const red = require("../assets/redarrow.png");
 
@@ -11,7 +11,7 @@ export const TableRow = ({ values, percent, sign, tableType }) => {
       {values
         ? values.map((val, i) => {
             return (
-              <span
+              <div
                 className={i < 2 ? "col fin-row" : "col-2 fin-row"}
                 key={i}
                 style={
@@ -84,17 +84,22 @@ export const TableRow = ({ values, percent, sign, tableType }) => {
                     ? 0 + " %"
                     : val} */}
                   {i === 0 &&
-                  tableType === 1 &&
-                  (val === "Выручка" ||
-                    val === "Маржинальная стоимость" ||
-                    val === "Валовая прибыль" ||
-                    val === "Чистая прибыль" ||
-                    val === "ROI" ||
-                    val === "Рентабельность ВП" ||
-                    val === "Рентабельность ОП") ? (
+                  tableType === 1 && 
+                  (val in tooltipList)
+                  // (val === "Выручка" ||
+                  //   val === "Маржинальная стоимость" ||
+                  //   val === "Валовая прибыль" ||
+                  //   val === "Чистая прибыль" ||
+                  //   val === "ROI" ||
+                  //   val === "Рентабельность ВП" ||
+                  //   val === "Рентабельность ОП")
+                     ? (
                     <>
                       {val}
-                      {val === "Выручка" && (
+                      {val in tooltipList && (
+                        <TooltipInfo text={tooltipList[val]} />
+                      )}
+                      {/* {val === "Выручка" && (
                         <TooltipInfo text='Сумма, заработанная при продаже товаров' />
                       )}
                       {val === "Маржинальная стоимость" && (
@@ -114,7 +119,7 @@ export const TableRow = ({ values, percent, sign, tableType }) => {
                       )}
                       {val === "Рентабельность ОП" && (
                         <TooltipInfo text='Отношение операционной прибыли к суммарной выручке' />
-                      )}
+                      )} */}
                     </>
                   ) : i === 1 ? (
                     typeof val === "string" ? (
@@ -130,7 +135,7 @@ export const TableRow = ({ values, percent, sign, tableType }) => {
                     val
                   )}
                 </span>
-              </span>
+              </div>
             );
           })
         : null}
@@ -145,19 +150,51 @@ const FinanceTable = ({
   wbData,
   dataDashBoard,
   tableType,
+  loading,
 }) => {
+  const tooltipList = {
+    'Выручка': 'Сумма, заработанная при продаже товаров',
+    'Маржинальная стоимо': 'Разница между выручкой и переменными расходами',
+    'Валовая прибыль': 'Разность между выручкой и себестоимостью продаж',
+    'Чистая прибыль': 'Прибыль, остающаяся после уплаты налогов, сборов, отчислений',
+    'ROI': 'Рассчитана как отношение чистой прибыли к суммарным расходам (себестоимость продаж + расходы на рекламу, логистику, хранение, штрафы, комиссию)',
+    'Рентабельность ВП': 'Отношение валовой прибыли к суммарной выручке',
+    'Рентабельность ОП': 'Отношение операционной прибыли к суммарной выручке',
+  };
   return (
-    <div className='finance-table mb-0'>
-      {!dataDashBoard ? (
+    <div className='finance-table'>
+      <p className='fw-bold numbers mb-2'>{title}</p>
+      {!dataDashBoard || loading ? (
         <div
-          className='d-flex flex-column align-items-center justify-content-center'
-          style={{ height: "100%", paddingTop: "20%" }}
+          style={{
+            position: 'relative',
+            height: '100%',
+            width: '100%',
+            paddingTop: '20%',
+          }}
         >
-          <span className='loader'></span>
+          <div
+            className='d-flex flex-column align-items-center justify-content-center'
+            style={{
+              height: '100%',
+              width: '100%',
+              position: 'absolute',
+              top: 0,
+              left: 0
+              // backgroundColor: '#fff',
+            }}
+          >
+            <span className='loader'></span>
+          </div>
         </div>
+        // <div
+        //   className='d-flex flex-column align-items-center justify-content-center'
+        //   style={{ height: "100%", paddingTop: "20%" }}
+        // >
+        //   <span className='loader'></span>
+        // </div>
       ) : (
         <div>
-          <p className='fw-bold numbers mb-2'>{title}</p>
           {data &&
             data.map((item, i) => {
               let values = item ? Object.values(item) : [];
@@ -170,6 +207,7 @@ const FinanceTable = ({
                   sign={sign}
                   percent={rate ? item["rate"] : null}
                   tableType={tableType}
+                  tooltipList={tooltipList}
                 />
               );
             })}

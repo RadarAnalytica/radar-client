@@ -3,14 +3,16 @@ import DownloadButton from './DownloadButton';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
 import { URL } from '../service/config';
+import Period from './period/Period';
+import {fileDownload} from '../service/utils';
 
 const DashboardFilter = ({
   setActiveBrand,
-  periodValue,
-  setDays,
+  selectedRange,
+  setSelectedRange,
   shops,
-  setChangeBrand,
-  setPrimary,
+  // setChangeBrand,
+  // setPrimary,
   activeShopId,
 }) => {
   const { authToken } = useContext(AuthContext);
@@ -37,35 +39,41 @@ const DashboardFilter = ({
     .join('-');
 
   const handleDownload = async () => {
-    fetch(
-      `${URL}/api/dashboard/download?period=${periodValue}&shop=${activeShopId}`,
-      {
-        method: 'GET',
-        headers: {
-          authorization: 'JWT ' + authToken,
-        },
-      }
-    )
-      .then((response) => {
-        return response.blob();
-      })
-      .then((blob) => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `Сводка_продаж.xlsx`);
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-      })
-      .catch((e) => console.error(e));
+    const fileBlob = await ServiceFunctions.getDownloadDashBoard(authToken, selectedRange, activeShopId);
+    fileDownload(fileBlob, 'Сводка_продаж.xlsx');
+    // fetch(
+    //   `${URL}/api/dashboard/download?period=${periodValue}&shop=${activeShopId}`,
+    //   {
+    //     method: 'GET',
+    //     headers: {
+    //       authorization: 'JWT ' + authToken,
+    //     },
+    //   }
+    // )
+    //   .then((response) => {
+    //     return response.blob();
+    //   })
+    //   .then((blob) => {
+    //     const url = window.URL.createObjectURL(new Blob([blob]));
+    //     const link = document.createElement('a');
+    //     link.href = url;
+    //     link.setAttribute('download', `Сводка_продаж.xlsx`);
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     link.parentNode.removeChild(link);
+    //   })
+    //   .catch((e) => console.error(e));
   };
 
   return (
     <div className='filter container filter-panel  dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row'>
         <div className='filter-item col' style={{ position: 'relative' }}>
-          <label
+          <Period 
+            selectedRange={selectedRange}
+            setSelectedRange={setSelectedRange}
+          />
+          {/* <label
             style={{ fontWeight: 600, marginBottom: '4px', display: 'block' }}
             htmlFor='period'
           >
@@ -114,7 +122,7 @@ const DashboardFilter = ({
                 strokeLinecap='round'
               />
             </svg>
-          </div>
+          </div> */}
         </div>
 
         <div className='filter-item col' style={{ position: 'relative' }}>
@@ -127,6 +135,7 @@ const DashboardFilter = ({
           <div style={{ position: 'relative' }}>
             <select
               style={{
+                minWidth: 220,
                 width: '100%',
                 padding: '1vh 1.75vh',
                 backgroundColor: 'rgba(0, 0, 0, 0.05)',
@@ -143,7 +152,7 @@ const DashboardFilter = ({
                 const firstValue = e.target.value.split('|')[0];
                 const secondValue = e.target.value.split('|')[1];
                 const lastValue = e.target.value.split('|')[2];
-                setPrimary(lastValue);
+                // setPrimary(lastValue);
                 setChangeBrand(secondValue);
                 setActiveBrand(firstValue);
               }}
@@ -173,8 +182,8 @@ const DashboardFilter = ({
                 right: '1.75vh',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                width: '1.5vh',
-                height: '1.5vh',
+                width: '14px',
+                height: '9px',
                 pointerEvents: 'none',
               }}
               viewBox='0 0 28 17'
