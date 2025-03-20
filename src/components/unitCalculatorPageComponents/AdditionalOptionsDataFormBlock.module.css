@@ -106,7 +106,25 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    /* gap: 16px; */
+}
+.fieldset__popup_closed {
+    gap: 0;
+}
+
+.fieldset__popupBody {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
     gap: 16px;
+}
+.fieldset__popupBody_closed {
+   visibility: hidden;
+   height: 0;
+   max-height: 0;
+   overflow: hidden;
 }
 
 .fieldset__popupHeader {
