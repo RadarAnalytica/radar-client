@@ -96,14 +96,12 @@ const StockAnalysis = () => {
         } else {
           // ...Обновляем локал - сохраняем туда первый из списка
           localStorage.setItem('activeShop', JSON.stringify(shops[0]))
-          console.log(shops[0])
           // ...устанавливаем текущим первый из списка
           setActiveBrand(shops[0])
         }
       } else {
         // ...Обновляем локал - сохраняем туда первый из списка
         localStorage.setItem('activeShop', JSON.stringify(shops[0]))
-        console.log(shops[0])
         // ...устанавливаем текущим первый из списка
         setActiveBrand(shops[0])
       }
@@ -232,15 +230,19 @@ const StockAnalysis = () => {
     <>
       <div className="dashboard-page">
         <SideNav />
-        <div className="dashboard-content">
+        <div className="dashboard-content" style={{paddingLeft: '52px'}}>
           <div className="h-100 d-flex flex-column overflow-hidden" style={{ justifyContent: 'stretch'}}>
-            <TopNav title={"Товарная аналитика"} />
+            <div style={{ paddingRight: '52px'}}>
+            <TopNav title={"Товарная аналитика"} mikeStarinaStaticProp />
+            </div>
             {
               !hasSelfCostPrice && activeBrand && activeBrand.id !== 0 && !loading? (
-                <SelfCostWarning
-                  activeBrand={activeBrand.id}
-                  onUpdateDashboard={handleUpdateDashboard}
-                />
+                <div style={{ width: '100%', paddingRight: '52px'}}>
+                  <SelfCostWarning
+                    activeBrand={activeBrand.id}
+                    onUpdateDashboard={handleUpdateDashboard}
+                  />
+                </div>
               ) : null}
 
             <div className="pt-0 d-flex gap-3">
@@ -257,7 +259,7 @@ const StockAnalysis = () => {
 
             {activeBrand && activeBrand.is_primary_collect && !loading && (
               <>
-                <div className="input-and-button-container container dash-container p-3 pb-4 pt-0 d-flex flex-wrap justify-content-between align-items-center">
+                <div className="input-and-button-container container dash-container d-flex flex-wrap justify-content-between align-items-center mt-3 mb-3" style={{paddingRight: '52px'}}>
                   <div className="search search-container">
                     <div className="search-box">
                       <input

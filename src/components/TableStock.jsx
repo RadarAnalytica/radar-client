@@ -2,63 +2,64 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import SortArrows from './SortArrows';
 import { useNavigate } from 'react-router-dom';
 
+const VIRTUAL_QUANTITY = 300;
+
 const TableStock = ({ data, setDataTable, loading }) => {
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
   const [ dataTable, setFilteredDataTable ] = useState()
-  const [ virtualLimit, setVirtualLimit ] = useState(100)
-  const [ virtualLimitTwo, setVirtualLimitTwo ] = useState({min: 0, max: 100})
-  console.log(virtualLimitTwo)
-  console.log(dataTable?.length)
+  const [ virtualLimit, setVirtualLimit ] = useState({min: 0, max: 100})
+
 
   useEffect(() => {
     const filteredData = [];
-    console.log('item:')
-    console.log(data[data.length - 1])
     data.forEach((_, id) => {
-      if (id >= virtualLimitTwo.min && id <= virtualLimitTwo.max) {
+      if (id >= virtualLimit.min && id <= virtualLimit.max) {
         filteredData.push(_)
       }
     })
     setFilteredDataTable(filteredData)
-    //setFilteredDataTable(data)
-  }, [data, virtualLimitTwo])
+  }, [data, virtualLimit])
 
   const observerRef = useRef(null);
   const containerRef = useRef(null)
-  const observerOptions = {
+  const bottomObserverOptions = {
       root: containerRef.current,
       rootMargin: '0px 0px 70px 0px',
       threshold: 0.1,
   }
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
+    const bottomObserver = new IntersectionObserver((entries) => {
+     
         const [entry] = entries;
-        // if (dataTable && entry.isIntersecting && virtualLimit < dataTable.length) {
-        if (dataTable && entry.isIntersecting && virtualLimit) {
-          // console.log('hit')
-            setVirtualLimit(virtualLimit + 100);
-            const newLimit = {
-              min: virtualLimitTwo.min + 100,
-              max: virtualLimitTwo.max + 100,
-            }
-            setVirtualLimitTwo(newLimit)
+        if (dataTable && entry.isIntersecting && virtualLimit.max < dataTable.length + 100) {
+          let newMinLimit = virtualLimit.min;
+          let newMaxLimit = virtualLimit.max + 100;
+            setVirtualLimit(
+              {
+                min: newMinLimit,
+                max: newMaxLimit,
+              }
+            )
         }
-    }, observerOptions);
+    }, bottomObserverOptions);
+
 
     const currentRef = observerRef.current;
     if (currentRef) {
-        observer.observe(currentRef);
+      bottomObserver.observe(currentRef);
     }
+
+    
 
     return () => {
         if (currentRef) {
-            observer.unobserve(currentRef);
+          bottomObserver.unobserve(currentRef);
         }
     };
-}, [observerRef, virtualLimit, dataTable, observerOptions]);
+}, [observerRef, virtualLimit, dataTable, bottomObserverOptions]);
   
 
   const handleMouseEnter = (e) => {
@@ -128,7 +129,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
   }
   return dataTable && dataTable.length > 0 && (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100%', overflow: 'hidden'}} ref={containerRef}>
-      <div style={{ width: '3.5vw', height: '100%' }}></div>
+      {/* <div style={{ width: '3.5vw', height: '100%' }}></div> */}
       <div className='custom-table' style = {loading ? { overflow: 'hidden'} : null}>
         <div className='table-container'>
           {/* {dataTable.length === 0 && ( */}
@@ -177,7 +178,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('productName')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell goods-cell'
@@ -189,7 +190,6 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       }}
                       ref={observerRef}
                     >
-                      {index}
                       <div className='empty-box'>
                         <img
                           src={row.photo}
@@ -251,7 +251,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('vendorСode')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -288,7 +288,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('brandName')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -320,7 +320,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('sku')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -352,7 +352,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('size')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -384,7 +384,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('category')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -427,7 +427,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('saleSum')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -462,7 +462,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('quantity')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -495,7 +495,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('lessReturns')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -522,7 +522,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     <br /> проданных
                     <br /> товаров
                   </div>
-                  {dataTable.map((row, index) => index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -565,7 +565,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('returnsSum')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -600,7 +600,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('returnsQuantity')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -627,7 +627,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     <br /> возвращенных
                     <br /> товаров
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -662,7 +662,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                   >
                     За единицу
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -692,7 +692,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     <br /> товарного запаса
                     <br /> (сегодня)
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -735,7 +735,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('toClient')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -771,7 +771,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                   >
                     Сумма
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -805,7 +805,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('fromClient')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -830,7 +830,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                   >
                     Сумма
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -873,7 +873,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('commissionWB')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -908,7 +908,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('fines')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -940,7 +940,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('additionalpayment')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -983,7 +983,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('toPayoff')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1012,7 +1012,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     Маржинальная
                     <br /> прибыль
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1037,7 +1037,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                   >
                     Средняя прибыль
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1064,7 +1064,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     <br /> реализованной
                     <br /> продукции
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1089,7 +1089,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                   >
                     Маржинальность
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1116,7 +1116,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     <br /> рентабельность
                     <br /> товарных запасов
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1142,7 +1142,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     Упущенная
                     <br /> выручка
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1186,7 +1186,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('byRevenue')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1222,7 +1222,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('byProfit')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1265,7 +1265,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('basic')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1301,7 +1301,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('maxDiscount')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1334,7 +1334,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('minDiscountPrice')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1377,7 +1377,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('orderQuantity')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1412,7 +1412,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('orderSum')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1455,7 +1455,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('purchased')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1490,7 +1490,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('notPurchased')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1523,7 +1523,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('purchasedPercent')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1555,7 +1555,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                       {renderSortArrows('completed')}
                     </div>
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1593,7 +1593,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     <br />
                     шт/день
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1625,7 +1625,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                     <br />
                     ₽/день
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'
@@ -1662,7 +1662,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                   >
                     Данные Радар
                   </div>
-                  {dataTable.map((row, index) =>  index < virtualLimit && (
+                  {dataTable.map((row, index) => (
                     <div
                       key={index}
                       className='cell data-cell'

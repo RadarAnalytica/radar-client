@@ -349,7 +349,7 @@ const AbcAnalysisPage = () => {
               title={"Ваши данные еще формируются и обрабатываются."}
             />
           )}
-            <BottomNavigation />
+            {/* <BottomNavigation /> */}
         </div>
       </div>
     // )

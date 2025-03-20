@@ -8,7 +8,7 @@ const DataCollectionNotification = ({ title }) => {
     <div className='dashboard-page'>
       <div className='dashboard-content pb-3'>
         <div>
-          <div className='container dash-container p-3 pb-0 pt-0 d-flex flex-column'>
+          <div className='container dash-container pb-0 pt-0 d-flex flex-column' style={{padding: '0 52px 0 16px', marginTop: '16px'}}>
             <div className='p-3 selfcost-warning w-100'>
               <div className='d-flex align-items-center gap-2'>
                 <svg
@@ -35,7 +35,7 @@ const DataCollectionNotification = ({ title }) => {
               </div>
             </div>
           </div>
-          <div className='p-3 pt-0'>
+          <div style={{ paddingRight: '36px'}}>
             <DataCollectionPreview />
           </div>
         </div>
