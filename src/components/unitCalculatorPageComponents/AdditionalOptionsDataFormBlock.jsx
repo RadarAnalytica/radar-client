@@ -13,7 +13,6 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
     const SPP = Form.useWatch('SPP', form);
     const isSPP = Form.useWatch('isSPP', form);
     const tax_rate = Form.useWatch('tax_rate', form);
-    console.log(tax_rate)
     const adv_price = Form.useWatch('adv_price', form);
     const defective_percentage = Form.useWatch('defective_percentage', form);
     const other_costs = Form.useWatch('other_costs', form);

@@ -219,7 +219,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee }) => {
                     <div className={styles.fieldset__footer} style={{ justifyContent: 'space-between' }}>
                         <p className={styles.fieldset__footerText}>цена с СПП</p>
                         <p className={styles.fieldset__footerText_price}>
-                            {product_price * ((100 - SPP) / 100)} ₽
+                            {(product_price * ((100 - SPP) / 100)).toFixed(2)} ₽
                         </p>
                     </div>
                 }
