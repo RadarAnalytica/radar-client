@@ -8,10 +8,11 @@ const ReviewsUsers = () => {
     <div>
       <div className='pb-3 mt-5 d-flex justify-content-center userReviewsMain'>
         <div className='userReviewsBlocksText'>
-          <h3 className={`userReviewsHeaderTitle ${styles.userReviewsHeaderTitle}`}>Более <span style={{ color: "rgba(83, 41, 255, 1)" }}>6 000</span> предпринимателей</h3>
-          <div className={`userReviewsHeaderParag ${styles.userReviewsHeaderParag}`}>уже используют для начала и развития бизнеса на маркетплейсах
-            <span className={`yellowLogoSpan ${styles.yellowLogoSpan}`} >Radar Analytica</span>
-          </div>
+          <h3 className={`userReviewsHeaderTitle ${styles.userReviewsHeaderTitle}`}>Более <span style={{ color: "rgba(83, 41, 255, 1)" }}>
+            6 000</span> предпринимателей <br />
+            <span className={`userReviewsHeaderParag ${styles.userReviewsHeaderParag}`}>уже используют для начала и развития бизнеса на маркетплейсах</span>
+            <span className={`yellowLogoSpan ${styles.yellowLogoSpan}`}>Radar Analytica</span>
+          </h3>
         </div>
 
         {/* <div className='userReviewsBlocksText mobile-version'>

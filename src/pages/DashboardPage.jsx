@@ -1031,7 +1031,10 @@ const DashboardPage = () => {
       <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
-          <TopNav title={'Сводка продаж'} />
+          <div style={{ width: '100%', padding: '0 40px'}}>
+           <TopNav title={'Сводка продаж'} mikeStarinaStaticProp />
+          </div>
+          
           {!isInitialLoading &&
           !dataDashBoard?.costPriceAmount &&
           activeShopId !== 0 &&

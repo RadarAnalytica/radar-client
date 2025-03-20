@@ -387,7 +387,8 @@ const AiDescriptionGeneratorPage = () => {
     <div className='dashboard-page'>
       <SideNav />
       <div className={`${styles.generatorPage} dashboard-content pb-3 `}>
-        <TopNav title={'Генерация описания AI'}>
+      <div style={{ width: '100%', padding: '0 22px'}}>
+        <TopNav title={'Генерация описания AI'} mikeStarinaStaticProp >
           <div className={styles.generatorWrapper}>
             <div
               style={{
@@ -410,6 +411,7 @@ const AiDescriptionGeneratorPage = () => {
             </div>
           </div>
         </TopNav>
+        </div>
         {isModalOpenNewGen && (
           <AiDescriptionGeneratorTariffs
             redirect={redirect}
