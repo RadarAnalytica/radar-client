@@ -40,6 +40,7 @@ const StockAnalysis = () => {
   const dispatch = useAppDispatch();
   const { authToken } = useContext(AuthContext);
   const shops = useAppSelector((state) => state.shopsSlice.shops); // магазины
+  console.log(shops)
 
   // стейты
   const [file, setFile] = useState(); // это видимо загрузка файла себестоимости
@@ -56,30 +57,31 @@ const StockAnalysis = () => {
   const prevActiveBrand = useRef(activeBrand ? activeBrand.id : null);
 
 
-
-
+// ------- Фетч массива магазинов -------------//
+  const fetchShopData = async () => {
+    setLoading(true)
+    try {
+      dispatch(fetchShops(authToken));
+    } catch (error) {
+      console.error("Error fetching initial data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  //---------------------------------------------//
 
   // ------------------------ здесь будет апдейт логики ---------------------------------//
   // 0. Получаем данные магазинов
   useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        dispatch(fetchShops(authToken));
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchInitialData();
+    fetchShopData();
   }, []);
   // ------
 
 
-  // 1. - проверяем магазин в локал сторадже
+  // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
+  // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
   useEffect(() => {
-    if (shops) {
+    if (shops && !activeBrand) {
       // достаем сохраненный магазин
       const shopFromLocalStorage = localStorage.getItem('activeShop')
       // если сохранненный магазин существует и у нас есть массив магазинов....
@@ -106,10 +108,18 @@ const StockAnalysis = () => {
         setActiveBrand(shops[0])
       }
     }
+
+    if (shops && activeBrand && !activeBrand.is_primary_collect) {
+      console.log('shop upd')
+      const currentShop = shops.find(shop => shop.id === activeBrand.id)
+      if (currentShop?.is_primary_collect) {
+        setActiveBrand(currentShop)
+      }
+    }
   }, [shops])
 
 
-  // 2. Обновляем данные при изменении периода или выбранного магазина
+  // 2.
   useEffect(() => {
     const fetchAnalysisData = async () => {
       if (
@@ -131,10 +141,14 @@ const StockAnalysis = () => {
         prevActiveBrand.current = activeBrand.id;
       }
     };
-    if (activeBrand) {
+    let interval;
+    if (activeBrand?.is_primary_collect) {
       fetchAnalysisData();
+    } else {
+      interval = setInterval(() => {fetchShopData()}, 10000)
     }
 
+    return () => {interval && clearInterval(interval)}
   }, [selectedRange, activeBrand]);
 
 
