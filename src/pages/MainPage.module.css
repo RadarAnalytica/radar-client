@@ -12,7 +12,6 @@
 .imageMain{
     margin-top: 20px;
 }
-
 .mainTitle {
     font-family: Mulish;
     font-weight: 700;
@@ -49,7 +48,6 @@
         padding: 8px 16px;
     }
 }
-
 @media  (min-width: 1550px) and (max-width: 1601px) {
     .profitableStafText{
         font-size: 19px!important;

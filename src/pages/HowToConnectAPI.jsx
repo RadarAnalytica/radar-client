@@ -2,7 +2,6 @@ import { useState } from 'react';
 import './styles.css';
 import styles from './HowToConnectAPI.module.css';
 import NavbarMainHome from '../components/NavbarMainHome';
-import { Helmet } from 'react-helmet';
 
 import step1img1 from '../assets/step1-img1.svg';
 import step1img2 from '../assets/step1-img2.svg';
@@ -18,7 +17,7 @@ import step1img1PNGLow from '../assets/step1-img1-png-low.png';
 import step1img2PNGLow from '../assets/step1-img2-png-low.png';
 import step2img1PNGLow from '../assets/step2-img1-png-low.png';
 import step4img1PNGLow from '../assets/step4-img1-png-low.png';
-
+import { Helmet } from 'react-helmet';
 import Steps from '../pages/images/Steps';
 import exclamation from './images/ExlamationMark.svg';
 import FooterNewVersion from '../components/FooterNewVersion';

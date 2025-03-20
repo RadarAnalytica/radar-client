@@ -2019,7 +2019,7 @@ select {
 
 @media screen and (min-width: 2000px) {
   .abcAnalysis .scrollable-table {
-    max-height: 850px;
+    max-height: calc(100vh - 590px);
   }
 }
 

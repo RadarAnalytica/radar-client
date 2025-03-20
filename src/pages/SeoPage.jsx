@@ -20,6 +20,7 @@ const SeoPage = () => {
     <div className={styles.pageWrapper}>
       <SideNav />
       <div className={styles.scrollableContent}>
+        <div style={{ width: '100%', padding: '0 10px'}}>
         <TopNav title={'Сравнение SEO'}>
           {Object.keys(compaireData).length > 0 && (
             <div
@@ -30,6 +31,7 @@ const SeoPage = () => {
             </div>
           )}
         </TopNav>
+        </div>
         <div className='container dash-container'>
           {Object.keys(compaireData).length <= 0 && (
             <InfoSeoPlate

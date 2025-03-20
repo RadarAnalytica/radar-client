@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styles from './UnitCalculatorPage.module.css'
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
@@ -11,10 +11,11 @@ import AdditionalOptionsDataFormBlock from '../components/unitCalculatorPageComp
 import ResultBlock from '../components/unitCalculatorPageComponents/ResultBlock';
 import { unitCalcResultFunction, logisticsWithBuyoutPercentagePriceCalcFunc, encodeUnicodeToBase64, decodeBase64ToUnicode } from '../components/unitCalculatorPageComponents/UnitCalcUtils';
 import { tempWhouseData } from '../components/unitCalculatorPageComponents/tempWarehouseData';
+import { RETURN_PRICE, FBS_DEADLINE, FBS_DEADLIE_RATE } from '../components/unitCalculatorPageComponents/constatnts';
 
 const UnitCalculatorPage = () => {
 
-
+    const sectionRef = useRef(null)
     // states
     const [ result, setResult ] = useState(); // resultOblect (created when form submits)
     const [ token, setToken ] = useState(null); // tokenized result data for share link
@@ -25,7 +26,6 @@ const UnitCalculatorPage = () => {
     const [ mpMainFee, setMpMainFee ] = useState(22.5) // *temporary* - hardcode of marketplace main fee
     const [ params ] = useSearchParams() // <- to get token from the url
     const [ form ] = Form.useForm(); // form instance
-
     //------------------ a few form fields to observe ---------------------//
     const isHeavy = Form.useWatch('isHeavy', form);
     const buyout_percentage = Form.useWatch('buyout_percentage', form);
@@ -37,11 +37,7 @@ const UnitCalculatorPage = () => {
     const package_height = Form.useWatch('package_height', form);
     // ---------------------------------------------------------------------//
 
-    //---------------------- some constants -------------------------------//
-    const return_price = 50; // -- rubles -- fixed cost of product return (used to calculate cost of buyout ratio)
-    const fbsDeadline = 30 // -- hours -- fbs delivery deadline
-    const fbsDeadlineRate = 0.1 // -- % -- ratio of WB bonus/fee. Use it with fbsDeadline
-    // ---------------------------------------------------------------------//
+    
 
     // ---------------------- form submit handler ----------------------------//
     const submitHandler = (fields) => {
@@ -60,11 +56,13 @@ const UnitCalculatorPage = () => {
         const token = encodeUnicodeToBase64(json)
         // set token
         setToken(token)
+        sectionRef?.current?.scrollTo({ top: 0, behavior: 'smooth'})
     }
+   
 
     // -------------- cost of buyout ration calculations --------------------//
     useEffect(() => {
-        setLastMileLogisticsPriceWBuyout(logisticsWithBuyoutPercentagePriceCalcFunc(lastMileLogisticsPrice, return_price, buyout_percentage))
+        setLastMileLogisticsPriceWBuyout(logisticsWithBuyoutPercentagePriceCalcFunc(lastMileLogisticsPrice, RETURN_PRICE, buyout_percentage))
     }, [buyout_percentage])
     //-----------------------------------------------------------------------//
 
@@ -109,13 +107,13 @@ const UnitCalculatorPage = () => {
     useEffect(() => {
         const ds = parseInt(delivery_speed);
         if (!ds || Number.isNaN(ds)) {return setMpMainFee(22.5)}
-        const hoursToDeadline = fbsDeadline - ds;
+        const hoursToDeadline = FBS_DEADLINE - ds;
         if (hoursToDeadline === 0) {setMpMainFee(22.5)}
         if (hoursToDeadline > 0) {
-            setMpMainFee(mpMainFee - (hoursToDeadline * fbsDeadlineRate))
+            setMpMainFee(mpMainFee - (hoursToDeadline * FBS_DEADLIE_RATE))
         }
         if (hoursToDeadline < 0) {
-            setMpMainFee(mpMainFee + (hoursToDeadline * fbsDeadlineRate * -1))
+            setMpMainFee(mpMainFee + (hoursToDeadline * FBS_DEADLIE_RATE * -1))
         }
     }, [delivery_speed])
     // --------------------------------------------------------------------------------//
@@ -129,13 +127,21 @@ const UnitCalculatorPage = () => {
     }, [isHeavy])
     // --------------------------------------------------------------------------------//
 
+    // -- Это необходимо для коррекного редиректа не авторизованного юзера, который тыкает дальше по внутренней навигачии (используется в ProtectedRoute) --//
+    useEffect(() => {
+        if (window.history && window.history.length <= 2) {
+            sessionStorage.setItem('isCalculateEntryUrl', '1')
+        }
+    }, [])
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------//
+
     //--this is handler for url-token data (decode, prefill and submit the form)--//
     useEffect(() => {
         const token = params.get('data')
         if (token) {
             try {
-                const jsonData = decodeBase64ToUnicode(token);
-                const data = JSON.parse(jsonData);
+                const data = decodeBase64ToUnicode(token);
+                //const data = JSON.parse(jsonData);
                 const keysArr = Object.keys(data.fields);
 
                 keysArr.forEach(k => {
@@ -155,7 +161,7 @@ const UnitCalculatorPage = () => {
     return (
         <main className={styles.page}>
             <SideNav /> 
-            <section className={styles.page__content}>
+            <section className={styles.page__content} ref={sectionRef}>
                 <TopNav title={'Калькулятор unit-экономики товара'} mikeStarinaStaticProp />
                 <ConfigProvider
                     theme={{
@@ -207,7 +213,7 @@ const UnitCalculatorPage = () => {
 
 
 
-                                <BasicDataFormBlock form={form} />
+                                <BasicDataFormBlock form={form} setMpMainFee={setMpMainFee} />
                                 <LogisticsDataFormBlock form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
                                 <MPFeesDataFormBlock mp_fee={mpMainFee} form={form} />
                                 <AdditionalOptionsDataFormBlock form={form} />

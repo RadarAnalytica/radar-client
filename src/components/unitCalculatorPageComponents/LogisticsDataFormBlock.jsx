@@ -12,9 +12,10 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
     const buyout_percentage = Form.useWatch('buyout_percentage', form);
     const delivery_speed = Form.useWatch('delivery_speed', form);
 
-    const [ whouseData, setWhouseData ] = useState(tempWhouseData.fbo.map(w => ({ value: w.name })))
-        const handleSearch = (value) => {
-        const newData = tempWhouseData.fbo.filter(_ => _.name === value);
+    const [ whouseData, setWhouseData ] = useState(tempWhouseData.fbo)
+
+    const handleSearch = (value) => {
+        const newData = tempWhouseData.fbo.filter(_ => _.name.toLowerCase().includes(value.toLowerCase()));
         setWhouseData(newData)
     };
 
@@ -138,7 +139,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                         placeholder='Выберите склад'
                         style={{background: warehouse ? '#F2F2F2' : ''}}
                         id='autocomp'
-                        options={whouseData}
+                        options={whouseData?.map(_ => ({ value: _.name })) || null}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
                         allowClear={{
@@ -329,7 +330,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
             </div>
 
             <div className={styles.fieldset__logWrapper}>
-                <p className={styles.fieldset__footerText_price}>{storagePrice ? Math.round(storagePrice) : '0'} ₽</p>
+                <p className={styles.fieldset__footerText_price}>{storagePrice ? Math.round(storagePrice) : '-'} ₽</p>
                 <p className={styles.fieldset__footerText}>Хранение 1 шт. в месяц</p>
             </div>
             {/* <Form.Item

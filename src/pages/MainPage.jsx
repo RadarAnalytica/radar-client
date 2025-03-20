@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, lazy, Suspense, useLayoutEffect } from 'react';
+import React, { useContext, useState, useEffect, lazy, useLayoutEffect } from 'react';
 import './styles.css';
 import SolLabelBsn from './images/SolLabelBsn';
 // import BlockImg_x1 from './images/Dashboard_x1.png';
@@ -40,7 +40,6 @@ import BlockImg_x1 from './images/Dashboard_x1.png';
 import BlockImg_x3 from './images/Dashboard_x3.png';
 import { Helmet } from 'react-helmet';
 
-
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";
 import highQualityVideoWebm from "../assets/video/Webm_1920.webm"
@@ -69,9 +68,8 @@ const MainPage = () => {
     }).observe({ entryTypes: ['largest-contentful-paint'] });
   }, []);
 
-
-  // ----- video instruction script ----------------------//
-  useLayoutEffect(() => {
+   // ----- video instruction script ----------------------//
+   useLayoutEffect(() => {
     const head = document.querySelector('head');
     const videoscript = head.querySelector('#video_instruction')
    
@@ -164,18 +162,9 @@ const MainPage = () => {
       className='page-white'
       style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
     >
-      <Helmet>
-        <title>Radar Analytica — сервис аналитики маркетплейсов для увеличения ваших продаж.</title>
-        <meta name="description" content="Радар Аналитика - сервис аналитики для увеличения ваших продаж на маркетплейсах. Анализируйте конкурентов, повышайте показатели своих карточек и контролируйте финансы в одном месте." />
-        <meta property="og:title" content="Radar Analytica – сервис аналитики для увеличения ваших продаж на маркетплейсах"/>
-        <meta property="og:description" content="Радар Аналитика - сервис аналитики для увеличения ваших продаж на маркетплейсах. Анализируйте конкурентов, повышайте показатели своих карточек и контролируйте финансы в одном месте."/>
-        <meta property="og:url" content="https://radar-analytica.ru/ "/>
-        <meta property="og:type" content="website"/>
-        <meta property="og:site_name" content="Radar Analytica"/>
-        <meta property="og:image" content="https://radar-analytica.ru/RadarAnalitica.png "/>
-        <meta property="og:image:type" content="image/png"/>
-        <meta property="og:image:width" content="1200"/>
-        <meta property="og:image:height" content="539"/>
+       <Helmet>
+          <title>Radar Analytica — сервис аналитики маркетплейсов для увеличения ваших продаж.</title>
+          <meta name="description" content="Радар Аналитика - сервис аналитики для увеличения ваших продаж на маркетплейсах. Анализируйте конкурентов, повышайте показатели своих карточек и контролируйте финансы в одном месте." />
       </Helmet>
       {/* {
         !isVideoLoaded ? (

@@ -1,0 +1,133 @@
+.page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin: 0;
+    padding: 0 52px;
+    gap: 20px;
+}
+
+.content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.shopCard {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    padding: 24px;
+}
+
+.shopCard__header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+}
+
+.shopCard__titleWrapper {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.shopCard__titleWrapper_oneItem {
+    justify-content: center;
+}
+
+.shopCard__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 0;
+}
+
+.shopCard__subtitle {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C; 
+    margin: 0;
+    padding: 0;   
+}
+
+.shopCard__buttonsWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    border-bottom: 1px solid silver;
+}
+
+.shopCard__footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.shopCard__token {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A
+}
+
+.shopCard__text {
+    width: 100%;
+    max-width: 550px;
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    margin-top: 10px;
+}
+
+.shopCard__addButton {
+    border: none;
+    background: #5329FF;
+    border-radius: 8px;
+    color: white;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    padding: 20px 24px;
+    margin-top: 14px;
+}

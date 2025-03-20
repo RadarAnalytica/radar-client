@@ -132,7 +132,9 @@ const ReportMain = () => {
     <div className='dashboard-page notranslate'>
       <SideNav />
       <div className='dashboard-content pb-3'>
-        <TopNav title={'Главная'} subTitle={'Отчёт /'} />
+        <div style={{ width: '100%', padding: '0 22px'}}>
+          <TopNav title={'Главная'} subTitle={'Отчёт /'} mikeStarinaStaticProp />
+        </div>
         <div className='container dash-container'>
           <div className={styles.instructionWrapper}>
             <div className={styles.instructionTop}>

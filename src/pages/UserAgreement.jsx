@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet';
 const UserAgreement = () => {
     return (
         <div className='instruction-page'>
-            <Helmet>
+             <Helmet>
                 <title>Пользовательское соглашение сервиса Radar Analytica</title>
                 <meta name="description" content="Пользовательское соглашение сервиса Радар Аналитика. Правила использования сервиса и правила конфиденциальности" />
             </Helmet>

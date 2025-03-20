@@ -15,9 +15,9 @@ const SignInPage = () => {
       if (user?.subscription_status === 'expired') {
         navigate('/tariffs');
       } else if (user.is_onboarded) {
-        navigate('/');
+        navigate('/main');
       } else {
-        navigate('/');
+        navigate('/main');
       }
     };
     handleNavigation();
