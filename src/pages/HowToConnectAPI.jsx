@@ -2,7 +2,6 @@ import { useState } from 'react';
 import './styles.css';
 import styles from './HowToConnectAPI.module.css';
 import NavbarMainHome from '../components/NavbarMainHome';
-import { Helmet } from 'react-helmet';
 
 import step1img1 from '../assets/step1-img1.svg';
 import step1img2 from '../assets/step1-img2.svg';
