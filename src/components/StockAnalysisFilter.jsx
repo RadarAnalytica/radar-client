@@ -12,8 +12,10 @@ const StockAnalysisFilter = ({shops, setActiveBrand, setSelectedRange, selectedR
 
   const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
   return (
-    <div className='filter container filter-panel dash-container d-flex' style={{ marginTop: '16px'}}>
-      <div className='row w-100 flex gap-3'>
+    // <div className='filter container filter-panel dash-container d-flex' style={{ marginTop: '16px'}}>
+    //   <div className='row w-100 flex gap-3'>
+    <div className='filter container dash-container pb-4 pt-0 d-flex'>
+      <div className='row w-100'>
         <div className='filter-item col'>
           <Period 
             selectedRange={selectedRange}

@@ -46,8 +46,8 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
     `container dash-container d-flex align-items-center justify-content-between`
 
   const topNavStyles = mikeStarinaStaticProp ?
-    `top-nav topNavStatic` :
-    `top-nav`
+    `top-nav topNavStatic container dash-container` :
+    `top-nav container dash-container`
 
   return (
     <div className={topNavStyles}
