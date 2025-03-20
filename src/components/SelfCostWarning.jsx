@@ -33,7 +33,7 @@ const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
   };
 
   return (
-    <div className='container dash-container d-flex gap-3' style={{ marginTop: '20px'}}>
+    <div className='container dash-container d-flex gap-3 p-3'>
       <div className='p-3 selfcost-warning w-100'>
         <div className='d-flex align-items-center gap-2 mb-2'>
           <svg

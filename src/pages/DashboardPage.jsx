@@ -1056,7 +1056,9 @@ const DashboardPage = () => {
         <SideNav />
         <div className='dashboard-content pb-3'>
           <div style={{ width: '100%', padding: '0 36px'}}>
-          <TopNav title={'Сводка продаж'} mikeStarinaStaticProp />
+          <div style={{ width: '100%'}} className="container dash-container px-3">
+           <TopNav title={'Сводка продаж'} mikeStarinaStaticProp />
+          </div>
           {!isInitialLoading &&
             !dataDashBoard?.costPriceAmount &&
             activeBrand &&
