@@ -34,110 +34,105 @@ const OrdersMap = () => {
   // );
   const [geoData, setGeoData] = useState([])
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-  const storedActiveShop = localStorage.getItem('activeShop');
-  let activeShop;
-  
-  const activeShopId = activeShop?.id;
-
   const [byRegions, setByRegions] = useState(true);
   const [selectedRange, setSelectedRange] = useState({period: 30});
-  const [brandNames, setBrandNames] = useState();
-  const idShopAsValue =
-    //activeShopId != undefined ? activeShopId : shops?.[0]?.id;
-    activeShopId != undefined ? activeShopId : '0';
-  const [activeBrand, setActiveBrand] = useState(idShopAsValue);
+  const [activeBrand, setActiveBrand] = useState(null);
   const [firstLoading ,setFirstLoading] = useState(true);
-
-  const allShop = shops?.some((item) => item?.is_primary_collect === true);
-  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
-  const shouldDisplay = activeShop
-    ? activeShop.is_primary_collect
-    : oneShop
-    ? oneShop.is_primary_collect
-    : allShop;
-
-  // const [changeBrand, setChangeBrand] = useState();
-  // const [primary, setPrimary] = useState();
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(true); // лоадер для загрузки данных
   const [isVisible, setIsVisible] = useState(true);
   const prevselectedRange = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
 
-  const plugForAllStores = {
-    id: 0,
-    brand_name: 'Все',
-    is_active: true,
-    is_primary_collect: allShop,
-    is_valid: true,
-  };
-
+  
   const radioOptions = [
     { value: 'region', label: 'По регионам' },
     { value: 'store', label: 'По складам' },
   ];
-  if (storedActiveShop) {
-    const storedActiveShopObject = JSON.parse(storedActiveShop)
-
-    const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
-    if (shops.length > 0 && controlValue !== 1 && !!activeBrand && activeBrand !== '0') {
-      localStorage.removeItem('activeShop')
-      window.location.reload()
-    }
-    
-    activeShop = JSON.parse(storedActiveShop)
-  };
-
-      const validateStoredShop = () => {
-        if (storedActiveShop && shops?.length > 0) {
-          const storedShopExists = shops.some(
-            shop => shop.id === JSON.parse(storedActiveShop).id
-          );
-          if (!storedShopExists) {
-            localStorage.removeItem('activeShop');
-            window.location.reload();
-          }
-        }
-      };
   
-      useEffect(() => {
-        if (shops?.length > 0) {
-          validateStoredShop();
+ // --------- upd -------------//
+// ------- Фетч массива магазинов -------------//
+const fetchShopData = async () => {
+  setLoading(true)
+  try {
+    dispatch(fetchShops(authToken));
+  } catch (error) {
+    console.error("Error fetching initial data:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+//---------------------------------------------//
+
+
+// 0. Получаем данные магазинов
+useEffect(() => {
+  fetchShopData();
+}, []);
+// ------
+
+// 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
+  // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
+  useEffect(() => {
+    if (shops && shops.length > 0 && !activeBrand) {
+      // достаем сохраненный магазин
+      const shopFromLocalStorage = localStorage.getItem('activeShop')
+      // если сохранненный магазин существует и у нас есть массив магазинов....
+      if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
+        // парсим сохраненный магазин
+        const { id } = JSON.parse(shopFromLocalStorage);
+        // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
+        const isInShops = shops.some(_ => _.id === id);
+        // Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
+        if (isInShops) {
+          //....устанавливаем как текущий
+          setActiveBrand(shops.find(_ => _.id === id))
+          // Если нет, то...
+        } else {
+          // ...Обновляем локал - сохраняем туда первый из списка
+          localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+          // ...устанавливаем текущим первый из списка
+          setActiveBrand(shops[0])
         }
-      }, [shops]);
+      } else {
+        // ...Обновляем локал - сохраняем туда первый из списка
+        localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+        // ...устанавливаем текущим первый из списка
+        setActiveBrand(shops[0])
+      }
+    }
+
+    if (shops && activeBrand && !activeBrand.is_primary_collect) {
+      const currentShop = shops.find(shop => shop.id === activeBrand.id)
+      if (currentShop?.is_primary_collect) {
+        setActiveBrand(currentShop)
+      }
+    }
+  }, [shops])
+ // ---------------------------- //
+  
 
   useEffect(() => {
-    if (activeBrand !== undefined && authToken !== authTokenRef.current) {
-      const updateGeoData = async () => {
-        const data = await ServiceFunctions.getGeographyData( authToken, selectedRange, activeBrand );
+    const updateGeoData = async () => {
+      if (activeBrand && selectedRange && authToken) {
+        const data = await ServiceFunctions.getGeographyData( authToken, selectedRange, activeBrand.id );
         setGeoData(data);
       }
-      updateGeoData();
-      // dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
-      // const dataata = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand)
-      // setData(data);
-    } 
-  }, [authToken]);
-
-  useEffect(() => {
-
-    
-    if (selectedRange !== prevselectedRange.current || activeBrand !== prevActiveBrand.current) {
-      if (activeBrand !== undefined) {
-        const updateGeoData = async () => {
-          const data = await ServiceFunctions.getGeographyData( authToken, selectedRange, activeBrand );
-          setGeoData(data);
-        }
-        updateGeoData();
-        // dispatch(fetchzeographyData({ authToken, selectedRange, activeBrand }));
-        dispatch(fetchShops(authToken));
-      }
-      prevselectedRange.current = selectedRange;
-      prevActiveBrand.current = activeBrand;
     }
-    // dispatch(fetchShops(authToken));
-    // dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
-  }, [selectedRange, activeBrand]);
+    activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
+    let interval;
+    if (activeBrand?.is_primary_collect) {
+      updateGeoData();
+    } else {
+      interval = setInterval(() => {fetchShopData()}, 30000)
+    }
+
+    return () => {interval && clearInterval(interval)}
+  }, [activeBrand, selectedRange]);
+
+
+
 
   useEffect(() => {
     if (shops?.length === 0 && !firstLoading) {
@@ -190,56 +185,6 @@ const OrdersMap = () => {
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    const fetchInitalData = async () => {
-      try{
-        await dispatch(fetchShops(authToken));
-        if (activeBrand !== undefined) {
-          const updateGeoData = async () => {
-            const data = await ServiceFunctions.getGeographyData( authToken, selectedRange, activeBrand );
-            setGeoData(data);
-          }
-          updateGeoData();
-          // await dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
-        }
-        } catch (error) {
-          console.error("Error fetching initial data:", error);
-        } finally {
-          setFirstLoading(false);
-        }
-    }
-    // dispatch(fetchShops(authToken)).then(() => {
-    //   setFirstLoading(false);
-    // });
-    // dispatch(fetchGeographyData({ authToken, selectedRange, activeBrand }));
-
-    fetchInitalData();
-  }, []);
-
-  useEffect(() => {
-    if (shops.length > 0) {
-      let id;
-      if (activeShopId == undefined) {
-        id = shops?.[0].id;
-        localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
-      } else {
-        id = activeShopId;
-      }
-      setActiveBrand(id);
-    }
-  }, [shops]);
-
-  const handleSaveActiveShop = (shopId) => {
-    const currentShop = shops?.find((item) => item.id == shopId);
-    if (currentShop) {
-      localStorage.setItem('activeShop', JSON.stringify(currentShop));
-    }
-    if (shopId == 0) {
-      localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
-      //localStorage.removeItem('activeShop');
-    }
-    setActiveBrand(shopId);
-  };
 
   const checkIdQueryParam = () => {
     const searchParams = new URLSearchParams(location.search);
@@ -792,22 +737,21 @@ const OrdersMap = () => {
       <div className='orders-map'>
         <SideNav />
         <div className='orders-map-content pb-3'>
-          <TopNav title={'География заказов и продаж'} />
-          {oneShop?.is_primary_collect && <SelfCostWarning activeBrand={activeBrand}/>} 
+          <div style={{ width: '100%', padding: '0 36px'}}>
+            <TopNav title={'География заказов и продаж'} mikeStarinaStaticProp />
+          </div>
 
+          {shops && activeBrand &&
           <OrdersMapFilter
-            shops={shops}
-            setSelectedRange={setSelectedRange}
-            selectedRange={selectedRange}
-            changeBrand={handleSaveActiveShop}
-            activeShopId={activeShopId}
-            activeBrand={activeBrand}
-            // brandNames={brandNames}
-            // defaultValue={selectedRange}
-            // setChangeBrand={setChangeBrand}
-            // setPrimary={setPrimary}
-          />
-          {shouldDisplay ? (
+            shops={shops} // магазины
+            setActiveBrand={setActiveBrand} // сеттер id магазина
+            setSelectedRange={setSelectedRange} // сеттер периода (пробрасывается дальше в селект периода)
+            selectedRange={selectedRange} // выбранный период (пробрасывается дальше в селект периода)
+            activeBrand={activeBrand} // выбранный id магазина
+          />}
+
+
+          {activeBrand && activeBrand.is_primary_collect && !loading && (
             <div className='map-container dash-container container p-3'>
               <RadioGroup
                 options={radioOptions}
@@ -1013,10 +957,15 @@ const OrdersMap = () => {
                 </div>
               ) : null}
             </div>
-          ) : (
-            <DataCollectionNotification
-              title={'Ваши данные еще формируются и обрабатываются.'}
-            />
+          )} 
+          
+          {activeBrand && !activeBrand.is_primary_collect && !loading &&
+          (
+            <div style={{ width: '100%', padding: '0 36px'}}>
+              <DataCollectionNotification
+                title={'Ваши данные еще формируются и обрабатываются.'}
+              />
+            </div>
           )}
         </div>
       </div>

@@ -345,11 +345,13 @@ const AbcAnalysisPage = () => {
               loading={loading}
             />
           ) : (
-            <DataCollectionNotification
-              title={"Ваши данные еще формируются и обрабатываются."}
-            />
+            <div style={{marginTop: '20px'}}>
+              <DataCollectionNotification
+                title={"Ваши данные еще формируются и обрабатываются."}
+              />
+            </div>
           )}
-            <BottomNavigation />
+            {/* <BottomNavigation /> */}
         </div>
       </div>
     // )

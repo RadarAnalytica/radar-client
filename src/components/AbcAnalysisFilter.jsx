@@ -43,7 +43,7 @@ const AbcAnalysisFilter = ({
     console.log(shops?.[0])
 
   return (
-    <div className='filter container filter-panel  dash-container d-flex'>
+    <div className='filter container filter-panel dash-container d-flex'>
       <div className='row w-100'>
         <div className='filter-item col'>
           <Period
