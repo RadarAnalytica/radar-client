@@ -233,7 +233,7 @@ const StockAnalysis = () => {
       <div className="dashboard-page">
         <SideNav />
         <div className="dashboard-content">
-          <div className="h-100 d-flex flex-column overflow-hidden">
+          <div className="h-100 d-flex flex-column overflow-hidden" style={{ justifyContent: 'stretch'}}>
             <TopNav title={"Товарная аналитика"} />
             {
               !hasSelfCostPrice && activeBrand && activeBrand.id !== 0 && !loading? (
@@ -307,7 +307,7 @@ const StockAnalysis = () => {
                 </div>
 
                 <div style={{ height: "20px" }}></div>
-                <div className="flex-grow-1">
+                <div style={{ overflow: 'hidden' }}>
                   <TableStock
                     data={dataTable}
                     setDataTable={setDataTable}
