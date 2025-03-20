@@ -10,7 +10,7 @@ import { Helmet } from 'react-helmet';
 const Politics = () => {
   return (
     <div className='instruction-page'>
-      <Helmet>
+       <Helmet>
         <title>Политика конфиденциальности сервиса Radar Analytica</title>
         <meta name="description" content="Политика конфиденциальности сервиса Радар Аналитика. Правовые основания и цели обработки персональных данных." />
       </Helmet>

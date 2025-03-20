@@ -75,12 +75,12 @@ const StepsTime = ({ redirect }) => {
             развития на маркетплейсах
           </span>
         </h3>
-        <div className='helpEveryStepTextMobile'>
+        <h3 className='helpEveryStepTextMobile'>
           поможет на каждом <br /> этапе вашего{" "}
           <span style={{ color: "#5329FF", fontWeight: "800" }}>
             развития <br />на маркетплейсах
           </span>
-        </div>
+        </h3>
 
       </div>
       <div className={`stepsTimeItems ${styles.stepsTimeItems}`}>

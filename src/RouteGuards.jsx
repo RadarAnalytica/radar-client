@@ -4,6 +4,7 @@ import { Navigate, useLocation, useNavigation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
+import { Helmet } from 'react-helmet';
 
 
 /**
@@ -233,6 +234,10 @@ export const ProtectedRoute = ({
   // ----default ----------//
   return ( 
     <Suspense fallback={<LoaderPage />}>
+      <Helmet>
+        <title>Radar Analityca</title>
+        <meta name="description" content={routeRuName} />
+      </Helmet>
       { children }
     </Suspense>
   )

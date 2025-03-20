@@ -61,7 +61,7 @@ const SideNav = () => {
   return (
     <div className='side-nav'>
       <div>
-        <Link to='/'>
+        <Link to='/main'>
           <img src={logo} alt='' style={{ maxWidth: '160px' }}/>
         </Link>
         <div style={{marginTop: '1.5em'}}>
