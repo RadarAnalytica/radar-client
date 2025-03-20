@@ -2,10 +2,65 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import SortArrows from './SortArrows';
 import { useNavigate } from 'react-router-dom';
 
-const TableStock = ({ dataTable, setDataTable, loading }) => {
+const VIRTUAL_QUANTITY = 300;
+
+const TableStock = ({ data, setDataTable, loading }) => {
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [isScrolled, setIsScrolled] = useState(false);
+  const [ dataTable, setFilteredDataTable ] = useState()
+  const [ virtualLimit, setVirtualLimit ] = useState({min: 0, max: 100})
+
+
+  useEffect(() => {
+    const filteredData = [];
+    data.forEach((_, id) => {
+      if (id >= virtualLimit.min && id <= virtualLimit.max) {
+        filteredData.push(_)
+      }
+    })
+    setFilteredDataTable(filteredData)
+  }, [data, virtualLimit])
+
+  const observerRef = useRef(null);
+  const containerRef = useRef(null)
+  const bottomObserverOptions = {
+      root: containerRef.current,
+      rootMargin: '0px 0px 70px 0px',
+      threshold: 0.1,
+  }
+
+  useEffect(() => {
+    const bottomObserver = new IntersectionObserver((entries) => {
+     
+        const [entry] = entries;
+        if (dataTable && entry.isIntersecting && virtualLimit.max < dataTable.length + 100) {
+          let newMinLimit = virtualLimit.min;
+          let newMaxLimit = virtualLimit.max + 100;
+            setVirtualLimit(
+              {
+                min: newMinLimit,
+                max: newMaxLimit,
+              }
+            )
+        }
+    }, bottomObserverOptions);
+
+
+    const currentRef = observerRef.current;
+    if (currentRef) {
+      bottomObserver.observe(currentRef);
+    }
+
+    
+
+    return () => {
+        if (currentRef) {
+          bottomObserver.unobserve(currentRef);
+        }
+    };
+}, [observerRef, virtualLimit, dataTable, bottomObserverOptions]);
+  
 
   const handleMouseEnter = (e) => {
     const element = e.target;
@@ -39,6 +94,9 @@ const TableStock = ({ dataTable, setDataTable, loading }) => {
     return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
   };
 
+  
+
+  
   useEffect(() => {
     const handleScroll = () => {
       const tableContainer = document.querySelector('.custom-table');
@@ -57,6 +115,8 @@ const TableStock = ({ dataTable, setDataTable, loading }) => {
         tableContainer.removeEventListener('scroll', handleScroll);
       }
     };
+
+    
   }, []);
 
   // const handleClickProductName = (shop) => {
@@ -67,9 +127,9 @@ const TableStock = ({ dataTable, setDataTable, loading }) => {
     if (num == null) return ''; // Return an empty string or any default value for null/undefined
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   }
-  return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <div style={{ width: '3.5vw', height: '100%' }}></div>
+  return dataTable && dataTable.length > 0 && (
+    <div style={{ display: 'flex', flexDirection: 'row', height: '100%', overflow: 'hidden'}} ref={containerRef}>
+      {/* <div style={{ width: '3.5vw', height: '100%' }}></div> */}
       <div className='custom-table' style = {loading ? { overflow: 'hidden'} : null}>
         <div className='table-container'>
           {/* {dataTable.length === 0 && ( */}
@@ -95,7 +155,7 @@ const TableStock = ({ dataTable, setDataTable, loading }) => {
               Ничего не найдено
             </div> }
           {dataTable.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', background: 'white' }}>
               {/* Fixed columns */}
               <div className={`fixed-columns ${isScrolled ? 'fixed-columns-shadow' : ''}`}>
                 <div className='column goods-cell'>
@@ -128,6 +188,7 @@ const TableStock = ({ dataTable, setDataTable, loading }) => {
                         padding: '10px',
                         zIndex: '1',
                       }}
+                      ref={observerRef}
                     >
                       <div className='empty-box'>
                         <img

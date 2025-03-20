@@ -46,12 +46,10 @@ const DashboardPage = () => {
   const [selectedRange, setSelectedRange] = useState({ period: 30 });
   const [content, setContent] = useState();
   const [state, setState] = useState();
-  const [brandNames, setBrandNames] = useState();
   // const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [firstLoading, setFirstLoading] = useState(true);
-  const [primary, setPrimary] = useState();
 
   const [selectedRangeDetail, setSelectedRangeDetail] = useState(selectedRange);
   const [detailChartLabels, setDetailChartLabels] = useState([]);
@@ -61,104 +59,134 @@ const DashboardPage = () => {
   // console.log('shouldNavigate', shouldNavigate);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-  const storedActiveShop = localStorage.getItem('activeShop');
-  let activeShop;
-  if (storedActiveShop && typeof storedActiveShop === 'string') {
-    try {
-      activeShop = JSON.parse(storedActiveShop);
-    } catch (error) {
-      console.error('Error parsing storedActiveShop:', error);
-      activeShop = null;
-    }
-  }
-  const activeShopId = activeShop?.id;
-  const idShopAsValue =
-    activeShopId != undefined ? activeShopId : shops?.[0]?.id;
-  const [activeBrand, setActiveBrand] = useState(idShopAsValue);
+  const [activeBrand, setActiveBrand] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
   const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
-  const authTokenRef = useRef(authToken);
-
-  const allShop = shops?.some((item) => item?.is_primary_collect === true);
-  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
 
   const [chartRoiMarginalityData, setChartRoiMarginalityData] = useState()
   const [salesAndProfit, setSalesAndProfit] = useState()
   const [revenueByWarehouse, SetRevenueByWarehouse] = useState()
   const [structure, setStructure] = useState()
 
-  const plugForAllStores = {
-    id: 0,
-    brand_name: 'Все',
-    is_active: true,
-    is_primary_collect: allShop,
-    is_valid: true,
+
+
+  // ------- Фетч массива магазинов -------------//
+  const fetchShopData = async () => {
+    setLoading(true)
+    try {
+      dispatch(fetchShops(authToken));
+    } catch (error) {
+      console.error("Error fetching initial data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+  //---------------------------------------------//
 
-  const shouldDisplay = activeShop
-    ? activeShop.is_primary_collect
-    : oneShop
-    ? oneShop.is_primary_collect
-    : allShop;
-  
-    const validateStoredShop = () => {
-      if (storedActiveShop && shops?.length > 0) {
-        const storedShopExists = shops.some(
-          shop => shop.id === JSON.parse(storedActiveShop).id
-        );
-        if (!storedShopExists) {
-          localStorage.removeItem('activeShop');
-          window.location.reload();
+
+  // 0. Получаем данные магазинов
+  useEffect(() => {
+    fetchShopData();
+  }, []);
+  // ------
+
+  // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
+  // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
+  useEffect(() => {
+    if (shops && shops.length > 0 && !activeBrand) {
+      // достаем сохраненный магазин
+      const shopFromLocalStorage = localStorage.getItem('activeShop')
+      // если сохранненный магазин существует и у нас есть массив магазинов....
+      if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
+        // парсим сохраненный магазин
+        const { id } = JSON.parse(shopFromLocalStorage);
+        // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
+        const isInShops = shops.some(_ => _.id === id);
+        // Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
+        if (isInShops) {
+          //....устанавливаем как текущий
+          setActiveBrand(shops.find(_ => _.id === id))
+          // Если нет, то...
+        } else {
+          // ...Обновляем локал - сохраняем туда первый из списка
+          localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+          // ...устанавливаем текущим первый из списка
+          setActiveBrand(shops[0])
         }
+      } else {
+        // ...Обновляем локал - сохраняем туда первый из списка
+        localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+        // ...устанавливаем текущим первый из списка
+        setActiveBrand(shops[0])
       }
-    };
+    }
 
-    useEffect(() => {
-      if (shops?.length > 0) {
-        validateStoredShop();
+    if (shops && activeBrand && !activeBrand.is_primary_collect) {
+      const currentShop = shops.find(shop => shop.id === activeBrand.id)
+      if (currentShop?.is_primary_collect) {
+        setActiveBrand(currentShop)
       }
-    }, [shops]);
+    }
+  }, [shops])
+
+  //--------------------------------------------------------------------------------//
+
+
 
   useEffect(() => {
-    let intervalId = null;
+    activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
+    let interval;
+    if (activeBrand) {
+      console.log('upd')
+      console.log(activeBrand)
+      updateDataDashBoard(selectedRange, activeBrand.id, authToken);
+    } else {
+      interval = setInterval(() => { fetchShopData() }, 30000)
+    }
 
-    if (
-      oneShop?.is_primary_collect &&
-      oneShop?.is_primary_collect === allShop
-    ) {
-      const currentShop = shops?.find((item) => item.id === activeShopId);
-      if (currentShop) {
-        localStorage.setItem('activeShop', JSON.stringify(currentShop));
-      }
-      if (
-        !isInitialLoading &&
-        (selectedRange === prevDays.current || activeBrand === prevActiveBrand.current)
-      ) {
-        updateDataDashBoard(selectedRange, activeBrand, authToken);
-      }
-      // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
-      clearInterval(intervalId);
-    }
-    if (!oneShop?.is_primary_collect && activeBrand !== 0) {
-      intervalId = setInterval(() => {
-        dispatch(fetchShops(authToken));
-      }, 30000);
-    }
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [oneShop, activeBrand]);
+    return () => { interval && clearInterval(interval) }
+  }, [activeBrand, selectedRange]);
+
+  // useEffect(() => {
+  //   let intervalId = null;
+
+  //   if (
+  //     oneShop?.is_primary_collect &&
+  //     oneShop?.is_primary_collect === allShop
+  //   ) {
+  //     const currentShop = shops?.find((item) => item.id === activeShopId);
+  //     if (currentShop) {
+  //       localStorage.setItem('activeShop', JSON.stringify(currentShop));
+  //     }
+  //     if (
+  //       !isInitialLoading &&
+  //       (selectedRange === prevDays.current || activeBrand === prevActiveBrand.current)
+  //     ) {
+  //       updateDataDashBoard(selectedRange, activeBrand, authToken);
+  //     }
+  //     // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
+  //     clearInterval(intervalId);
+  //   }
+  //   if (!oneShop?.is_primary_collect && activeBrand !== 0) {
+  //     intervalId = setInterval(() => {
+  //       dispatch(fetchShops(authToken));
+  //     }, 30000);
+  //   }
+  //   return () => {
+  //     if (intervalId) {
+  //       clearInterval(intervalId);
+  //     }
+  //   };
+  // }, [activeBrand, selectedRange]);
 
   useEffect(() => {
     const updateChartDetailData = async () => {
       const data = await ServiceFunctions.getChartDetailData(
         authToken,
         selectedRangeDetail,
-        activeBrand
+        activeBrand.id,
       );
       const counts = Array(24).fill(0);
       const averages = Array(24).fill(0);
@@ -191,48 +219,47 @@ const DashboardPage = () => {
       setDetailChartData(counts);
       setDetailChartAverages(averages);
     };
-    updateChartDetailData();
+    activeBrand?.id && updateChartDetailData();
   }, [selectedRangeDetail]);
 
-  useEffect( () => {
+  useEffect(() => {
     setSelectedRangeDetail(selectedRange);
   }, [selectedRange]);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
   };
-  const handleDownload = () => {};
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      setLoading(true);
-      try {
-        await dispatch(fetchShops(authToken));
-        if (activeBrand !== undefined) {
-          await updateDataDashBoard(selectedRange, activeBrand, authToken);
-        }
-      } catch (error) {
-        console.error('Error fetching initial data:', error);
-      } finally {
-        setLoading(false);
-        setFirstLoading(false);
-        setIsInitialLoading(false);
-      }
-    };
-    //   if (firstLoading) {
-    //     await dispatch(fetchShops(authToken)).then(() => {
-    //       setFirstLoading(false);
-    //     });
-    //     await updateDataDashBoard(days, activeBrand, authToken);
-    //   }
+  // useEffect(() => {
+  //   const fetchInitialData = async () => {
+  //     setLoading(true);
+  //     try {
+  //       await dispatch(fetchShops(authToken));
+  //       if (activeBrand !== undefined) {
+  //         await updateDataDashBoard(selectedRange, activeBrand.id, authToken);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching initial data:', error);
+  //     } finally {
+  //       setLoading(false);
+  //       setFirstLoading(false);
+  //       setIsInitialLoading(false);
+  //     }
+  //   };
+  //   //   if (firstLoading) {
+  //   //     await dispatch(fetchShops(authToken)).then(() => {
+  //   //       setFirstLoading(false);
+  //   //     });
+  //   //     await updateDataDashBoard(days, activeBrand, authToken);
+  //   //   }
 
-    // }
+  //   // }
 
-    fetchInitialData();
-  }, []);
+  //   activeBrand?.id && fetchInitialData();
+  // }, []);
 
   useEffect(() => {
     if (shops.length === 0 && !firstLoading) {
@@ -240,18 +267,18 @@ const DashboardPage = () => {
     }
   }, [firstLoading, shops.length]);
 
-  useEffect(() => {
-    if (shops.length > 0) {
-      let id;
-      if (activeShopId == undefined) {
-        id = shops?.[0].id;
-        localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
-      } else {
-        id = activeShopId;
-      }
-      setActiveBrand(id);
-    }
-  }, [shops]);
+  // useEffect(() => {
+  //   if (shops.length > 0) {
+  //     let id;
+  //     if (activeBrand?.id == undefined) {
+  //       id = shops?.[0].id;
+  //       localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
+  //     } else {
+  //       id = activeBrand.id;
+  //     }
+  //     setActiveBrand(id);
+  //   }
+  // }, [shops]);
 
   const handleUpdateDashboard = () => {
     setTimeout(() => {
@@ -261,37 +288,28 @@ const DashboardPage = () => {
 
   const updateDataDashBoardCaller = async () => {
     activeBrand !== undefined &&
-      updateDataDashBoard(selectedRange, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand.id, authToken);
   };
 
-  const handleSaveActiveShop = (shopId) => {
-    const currentShop = shops?.find((item) => item.id == shopId);
-    if (currentShop) {
-      localStorage.setItem('activeShop', JSON.stringify(currentShop));
-    }
-    if (shopId === '0') {
-      localStorage.setItem('activeShop', JSON.stringify(plugForAllStores));
-    }
-    setActiveBrand(shopId);
-  };
 
-  useEffect(() => {
-    if (activeBrand !== undefined && authToken !== authTokenRef.current) {
-      updateDataDashBoard(selectedRange, activeBrand, authToken);
-    }
-  }, [authToken]);
+
+  // useEffect(() => {
+  //   if (activeBrand !== undefined && authToken !== authTokenRef.current) {
+  //     updateDataDashBoard(selectedRange, activeBrand.id, authToken);
+  //   }
+  // }, [authToken]);
 
   // Update dashboard data when necessary
-  useEffect(() => {
-    if (selectedRange !== prevDays.current || activeBrand !== prevActiveBrand.current) {
-      if (activeBrand !== undefined) {
-        updateDataDashBoard(selectedRange, activeBrand, authToken);
-      }
-      prevDays.current = selectedRange;
-      prevActiveBrand.current = activeBrand;
-    }
-    setSelectedRange(selectedRange)
-  }, [selectedRange, activeBrand]);
+  // useEffect(() => {
+  //   if (selectedRange !== prevDays.current || activeBrand !== prevActiveBrand.current) {
+  //     if (activeBrand !== undefined) {
+  //       updateDataDashBoard(selectedRange, activeBrand, authToken);
+  //     }
+  //     prevDays.current = selectedRange;
+  //     prevActiveBrand.current = activeBrand;
+  //   }
+  //   setSelectedRange(selectedRange)
+  // }, [selectedRange, activeBrand]);
 
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
@@ -321,7 +339,7 @@ const DashboardPage = () => {
     const timeToTarget = targetTime.getTime() - Date.now();
     const intervalId = setTimeout(() => {
       dispatch(fetchShops(authToken));
-      updateDataDashBoard(selectedRange, activeBrand, authToken);
+      updateDataDashBoard(selectedRange, activeBrand.id, authToken);
     }, timeToTarget);
 
     return () => {
@@ -425,11 +443,15 @@ const DashboardPage = () => {
   const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
     setLoading(true);
     try {
-      const controlValue = shops.filter(el => el.id === activeShopId).length
-      if (shops.length > 0 && controlValue !== 1 && !!activeBrand && activeBrand !== '0') {
-        localStorage.removeItem('activeShop')
-        window.location.reload()
-      }
+      // const controlValue = shops.filter(el => el.id === activeBrand.id).length
+      // if (shops.length > 0 && controlValue !== 1 && activeBrand?.id !== 0) {
+      //   localStorage.removeItem('activeShop')
+      //   window.location.reload()
+      // }
+     
+    if (activeBrand !== 'null' && activeBrand !== 'undefined') {
+          console.log('go')
+       
 
       const data = await ServiceFunctions.getDashBoard(
         authToken,
@@ -454,7 +476,9 @@ const DashboardPage = () => {
         const formattedData = processStructureData(data.structure);
         setStructure(formattedData);
       }
-
+     
+    }
+   
     } catch (e) {
       console.error(e);
     } finally {
@@ -488,10 +512,10 @@ const DashboardPage = () => {
   const selfCostArray =
     sales && state && state.initialCostsAndTax && state.initialCostsAndTax.data
       ? sales.map(
-          (item) =>
-            state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
-              ?.initialCosts
-        )
+        (item) =>
+          state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
+            ?.initialCosts
+      )
       : [];
 
   const selfCost =
@@ -521,7 +545,7 @@ const DashboardPage = () => {
 
   const [curOrders, setCurOrders] = useState();
   useEffect(() => {
-    if (!!selectedRange.period){
+    if (!!selectedRange.period) {
 
       if (selectedRange.period === 1) {
         setCurOrders(reportDaily);
@@ -543,13 +567,13 @@ const DashboardPage = () => {
 
   const stockAndCostsMatch =
     wbData &&
-    wbData.stocks &&
-    state &&
-    state.initialCostsAndTax &&
-    state.initialCostsAndTax.data
+      wbData.stocks &&
+      state &&
+      state.initialCostsAndTax &&
+      state.initialCostsAndTax.data
       ? wbData.stocks.data?.map((item) =>
-          state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
-        )
+        state.initialCostsAndTax.data.find((el) => el.nmID === item.nmId)
+      )
       : [];
 
   // const fbo =
@@ -641,19 +665,19 @@ const DashboardPage = () => {
 
   const vp = sales
     ? sales.reduce((obj, item) => {
-        obj['amount'] =
-          sales.reduce(
-            (acc, el) =>
-              acc +
-              (el.finishedPrice -
-                state?.initialCostsAndTax?.data?.find(
-                  (item) => item.nmID === el.nmId
-                )?.initialCosts),
-            0
-          ) || 0;
-        obj['rate'] = content?.grossProfit?.percent || '0';
-        return obj;
-      }, {})
+      obj['amount'] =
+        sales.reduce(
+          (acc, el) =>
+            acc +
+            (el.finishedPrice -
+              state?.initialCostsAndTax?.data?.find(
+                (item) => item.nmID === el.nmId
+              )?.initialCosts),
+          0
+        ) || 0;
+      obj['rate'] = content?.grossProfit?.percent || '0';
+      return obj;
+    }, {})
     : null;
 
   const financeData = [
@@ -697,13 +721,13 @@ const DashboardPage = () => {
   const salesSelfCost =
     sales && sales
       ? sales.reduce(
-          (acc, el) =>
-            acc +
-            (state?.initialCostsAndTax?.data?.find(
-              (item) => item.nmID === el.nmId
-            )?.initialCosts || 0),
-          0
-        )
+        (acc, el) =>
+          acc +
+          (state?.initialCostsAndTax?.data?.find(
+            (item) => item.nmID === el.nmId
+          )?.initialCosts || 0),
+        0
+      )
       : 0;
 
   const profitabilityData = [
@@ -758,16 +782,16 @@ const DashboardPage = () => {
   const orderValuesRub =
     orders && orders.length
       ? orders?.map((i) => ({
-          price: i.finishedPrice,
-          date: new Date(i.date).toLocaleDateString(),
-        }))
+        price: i.finishedPrice,
+        date: new Date(i.date).toLocaleDateString(),
+      }))
       : [];
   const salesValuesRub =
     sales && sales.length
       ? sales?.map((i) => ({
-          price: i.finishedPrice,
-          date: new Date(i.date).toLocaleDateString(),
-        }))
+        price: i.finishedPrice,
+        date: new Date(i.date).toLocaleDateString(),
+      }))
       : [];
 
   const summedOrderRub = orderValuesRub.reduce((acc, curr) => {
@@ -864,129 +888,129 @@ const DashboardPage = () => {
       datasets: [
         orderLineOn
           ? {
-              label: 'Заказы',
-              borderRadius: 8,
-              type: 'line',
-              backgroundColor: 'rgba(255, 219, 126, 1)',
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-              borderColor: 'rgba(255, 219, 126, 1)',
-              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-              yAxisID: 'A',
-              data: dataDashBoard?.orderAmountList || [],
-              xAxisID: 'x-1',
-            }
+            label: 'Заказы',
+            borderRadius: 8,
+            type: 'line',
+            backgroundColor: 'rgba(255, 219, 126, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+            borderColor: 'rgba(255, 219, 126, 1)',
+            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+            yAxisID: 'A',
+            data: dataDashBoard?.orderAmountList || [],
+            xAxisID: 'x-1',
+          }
           : {
-              label: 'Заказы',
-              borderRadius: 8,
-              type: 'line',
-              backgroundColor: 'rgba(255, 219, 126, 1)',
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-              borderColor: 'rgba(255, 219, 126, 1)',
-              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-              yAxisID: 'A',
-              data: [],
-            },
+            label: 'Заказы',
+            borderRadius: 8,
+            type: 'line',
+            backgroundColor: 'rgba(255, 219, 126, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+            borderColor: 'rgba(255, 219, 126, 1)',
+            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+            yAxisID: 'A',
+            data: [],
+          },
         salesLineOn
           ? {
-              label: 'Продажи',
-              borderRadius: 8,
-              type: 'line',
-              backgroundColor: 'rgba(154, 129, 255, 1)',
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-              borderColor: 'rgba(154, 129, 255, 1)',
-              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-              yAxisID: 'A',
-              data: dataDashBoard?.saleAmountList || [],
-            }
+            label: 'Продажи',
+            borderRadius: 8,
+            type: 'line',
+            backgroundColor: 'rgba(154, 129, 255, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+            borderColor: 'rgba(154, 129, 255, 1)',
+            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+            yAxisID: 'A',
+            data: dataDashBoard?.saleAmountList || [],
+          }
           : {
-              label: 'Продажи',
-              borderRadius: 8,
-              type: 'line',
-              backgroundColor: 'rgba(154, 129, 255, 1)',
-              borderWidth: 2,
-              pointRadius: 5,
-              pointBorderColor: 'rgba(230, 230, 230, 0.8)',
-              borderColor: 'rgba(154, 129, 255, 1)',
-              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-              yAxisID: 'A',
-              data: [],
-            },
+            label: 'Продажи',
+            borderRadius: 8,
+            type: 'line',
+            backgroundColor: 'rgba(154, 129, 255, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBorderColor: 'rgba(230, 230, 230, 0.8)',
+            borderColor: 'rgba(154, 129, 255, 1)',
+            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+            yAxisID: 'A',
+            data: [],
+          },
         orderOn
           ? {
-              label: 'Заказы',
-              borderRadius: 8,
-              type: 'bar',
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-              yAxisID: 'B',
-              data: dataDashBoard?.orderCountList || [],
-            }
-          : {
-              label: 'Заказы',
-              borderRadius: 8,
-              type: 'bar',
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-              yAxisID: 'B',
-              data: [],
+            label: 'Заказы',
+            borderRadius: 8,
+            type: 'bar',
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+              gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+              gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+              gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+              return gradient;
             },
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+            yAxisID: 'B',
+            data: dataDashBoard?.orderCountList || [],
+          }
+          : {
+            label: 'Заказы',
+            borderRadius: 8,
+            type: 'bar',
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+              gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+              gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+              gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+              return gradient;
+            },
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+            yAxisID: 'B',
+            data: [],
+          },
         salesOn
           ? {
-              label: 'Продажи',
-              borderRadius: 8,
-              type: 'bar',
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-              yAxisID: 'B',
-              data: dataDashBoard?.saleCountList || [],
-            }
-          : {
-              label: 'Продажи',
-              borderRadius: 8,
-              type: 'bar',
-              backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
-                return gradient;
-              },
-              borderWidth: 1,
-              hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
-              yAxisID: 'B',
-              data: [],
+            label: 'Продажи',
+            borderRadius: 8,
+            type: 'bar',
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+              gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+              gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+              gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+              return gradient;
             },
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+            yAxisID: 'B',
+            data: dataDashBoard?.saleCountList || [],
+          }
+          : {
+            label: 'Продажи',
+            borderRadius: 8,
+            type: 'bar',
+            backgroundColor: (context) => {
+              const ctx = context.chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+              gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+              gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+              gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+              return gradient;
+            },
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
+            yAxisID: 'B',
+            data: [],
+          },
       ],
     };
   }, [orderLineOn, salesLineOn, orderOn, salesOn, dataDashBoard]);
@@ -1025,25 +1049,27 @@ const DashboardPage = () => {
     return null; // or a loading indicator
   }
 
-  const rangeDays = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, {unit: 'days'}) : selectedRange.period
+  const rangeDays = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period
   return (
     isVisible && (
       <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
-          <div style={{ width: '100%', padding: '0 40px'}}>
-           <TopNav title={'Сводка продаж'} mikeStarinaStaticProp />
-          </div>
-          
+          <div style={{ width: '100%', padding: '0 36px'}}>
+          <TopNav title={'Сводка продаж'} mikeStarinaStaticProp />
           {!isInitialLoading &&
-          !dataDashBoard?.costPriceAmount &&
-          activeShopId !== 0 &&
-          shouldDisplay ? (
-            <SelfCostWarning
-              activeBrand={activeBrand}
-              onUpdateDashboard={handleUpdateDashboard}
-            />
+            !dataDashBoard?.costPriceAmount &&
+            activeBrand &&
+            activeBrand.id !== 0 ? (
+            <div style={{ marginBottom: '20px'}}>
+              <SelfCostWarning
+                activeBrand={activeBrand}
+                onUpdateDashboard={handleUpdateDashboard}
+              />
+            </div>
+           
           ) : null}
+           </div>
 
           {/* {wbData?.initialCostsAndTax === null ||
           wbData?.initialCostsAndTax?.data?.length === 0 ||
@@ -1051,18 +1077,24 @@ const DashboardPage = () => {
             <SelfCostWarning />
           ) : null}
           {wbData === null ? <DataCollectionNotification /> : null} */}
-
+          {shops && activeBrand &&
           <DashboardFilter
-            selectedRange={selectedRange}
-            setSelectedRange={setSelectedRange}
-            setActiveBrand={handleSaveActiveShop}
-            // setChangeBrand={setChangeBrand}
-            shops={shops}
-            // setPrimary={setPrimary}
-            activeShopId={activeShopId}
-          />
+            shops={shops} // магазины
+            setActiveBrand={setActiveBrand} // сеттер id магазина
+            setSelectedRange={setSelectedRange} // сеттер периода (пробрасывается дальше в селект периода)
+            selectedRange={selectedRange} // выбранный период (пробрасывается дальше в селект периода)
+            activeBrand={activeBrand} // выбранный id магазина
 
-          {shouldDisplay ? (
+          // selectedRange={selectedRange}
+          // setSelectedRange={setSelectedRange}
+          // setActiveBrand={handleSaveActiveShop}
+          // // setChangeBrand={setChangeBrand}
+          // shops={shops}
+          // // setPrimary={setPrimary}
+          // activeShopId={activeShopId}
+          />}
+
+          {activeBrand && activeBrand.is_primary_collect && !loading && (
             <div>
               <div className='container dash-container p-3 pt-0 d-flex gap-3'>
                 <MediumPlate
@@ -1325,7 +1357,7 @@ const DashboardPage = () => {
                     loading={loading}
                   />
                 </div>
-              </div> 
+              </div>
 
               <div
                 className='container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3'
@@ -1344,7 +1376,7 @@ const DashboardPage = () => {
                   </div>
                   <div className='mb-3'>
                     <ScheduleBigChart
-                      {...salesAndProfit} loading={loading} 
+                      {...salesAndProfit} loading={loading}
                     />
                   </div>
                   <div className='mb-3'>
@@ -1363,7 +1395,7 @@ const DashboardPage = () => {
                       <StructureRevenue
                         dataStructureRevenue={structure}
                         loading={loading}
-                        />
+                      />
                     </div>
                     <div className="col w-50">
                       <TaxTable
@@ -1375,7 +1407,7 @@ const DashboardPage = () => {
                         loading={loading}
                       />
                     </div>
-                </div>
+                  </div>
                 </div>
                 <div className='wrapper d-flex flex-column overflow-hidden'>
                   <div className='mb-3'>
@@ -1422,10 +1454,13 @@ const DashboardPage = () => {
                 />
               </div>
             </div>
-          ) : (
-            <DataCollectionNotification
-              title={'Ваши данные еще формируются и обрабатываются.'}
-            />
+          )}
+          {activeBrand && !activeBrand.is_primary_collect && !loading && (
+            <div style={{marginTop: '20px', padding: '0 36px'}}>
+              <DataCollectionNotification
+                title={'Ваши данные еще формируются и обрабатываются.'}
+              />
+            </div>
           )}
         </div>
       </div>
