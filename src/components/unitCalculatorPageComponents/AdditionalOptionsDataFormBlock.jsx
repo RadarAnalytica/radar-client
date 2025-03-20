@@ -13,6 +13,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
     const SPP = Form.useWatch('SPP', form);
     const isSPP = Form.useWatch('isSPP', form);
     const tax_rate = Form.useWatch('tax_rate', form);
+    console.log(tax_rate)
     const adv_price = Form.useWatch('adv_price', form);
     const defective_percentage = Form.useWatch('defective_percentage', form);
     const other_costs = Form.useWatch('other_costs', form);
@@ -41,7 +42,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                         </svg>
 
                     </div>
-                    {popupState.isShippingCostsPopupVisible &&
+                    <div className={popupState.isShippingCostsPopupVisible ? styles.fieldset__popupBody : styles.fieldset__popupBody_closed}>
                         <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                             <Form.Item
                                 label='Логистика от производителя'
@@ -128,7 +129,8 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                 />
                             </Form.Item>
                         </div>
-                    }
+                        </div>
+                    
                 </div>
 
                 <div className={styles.fieldset__popup}>
@@ -139,12 +141,12 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                         </svg>
 
                     </div>
-                    {popupState.isTaxesPopupVisible &&
-                        <>
+                       <div className={popupState.isTaxesPopupVisible ? styles.fieldset__popupBody : styles.fieldset__popupBody_closed}>
                             <Form.Item
                                 label='Налоговый режим'
                                 className={styles.formItem}
                                 name='tax_state'
+                                preserve
                             >
                                 <Radio.Group
                                     style={{ width: '100%' }}
@@ -169,6 +171,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
 
                             <Form.Item
                                 label='Налоговая ставка'
+                                preserve
                                 className={styles.formItem}
                                 getValueProps={(value) => {
                                     const transformedValue = {value: value ? value + ' %' : value}
@@ -189,9 +192,8 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                 />
                             </Form.Item>
 
-                            <p className={styles.fieldset__footerText_price}>{!!total_product_price ? total_product_price : 0} ₽</p>
-                        </>
-                    }
+                            <p className={styles.fieldset__footerText_price}>{!!total_product_price ? total_product_price.toFixed(2) : 0} ₽</p>
+                            </div>
                 </div>
 
                 <div className={styles.fieldset__popup}>
@@ -202,8 +204,8 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                         </svg>
 
                     </div>
-                    {popupState.isOtherCostsPopupVisible &&
-                        <>
+
+                       <div className={popupState.isOtherCostsPopupVisible ? styles.fieldset__popupBody : styles.fieldset__popupBody_closed}>
                             <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                                 <Form.Item
                                     label='Затраты на рекламу'
@@ -270,8 +272,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                     placeholder='Укажите стоимость'
                                 />
                             </Form.Item>
-                        </>
-                    }
+                      </div>
                 </div>
             </div>
         </fieldset>

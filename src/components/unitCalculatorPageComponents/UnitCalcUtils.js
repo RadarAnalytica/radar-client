@@ -77,12 +77,13 @@ export const unitCalcResultFunction = (
     const total_product_quantity = Math.round((invest_value / product_cost) * totalProductAmountQuef)
     const total_value = Math.round(((invest_value / product_cost) * totalProductAmountQuef) * product_price)
     const total_net_value = Math.round(((invest_value / product_cost) * totalProductAmountQuef) * netProfit)
-    const zero_loss_point = Math.ceil(invest_value / (selfCost + netProfit))
+    const zero_loss_point = total_net_value > 0 ? Math.ceil(invest_value / (selfCost + netProfit)) : '--'
 
 
     //дополнительно
    
     return {
+        ...fields,
         selfCost: selfCost.toFixed(2),
         netProfit: netProfit.toFixed(2),
         totalMargin: totalMargin.toFixed(2),
@@ -105,7 +106,7 @@ export const unitCalcResultFunction = (
         storagePrice,
         absTaxFee: Math.round(absTaxFee),
         invest_value,
-        ...fields,
+        absMpFee,
     }
 }
 
@@ -179,15 +180,14 @@ export function normilizeUnitsInputValue (value, prevValue, units) {
 
 export const createExelData = (result) => {
     if (result) {
-        const productTable = [['Товар', '', '', '', '']]; //+
-        const sizesTable = [['Габариты и объем', '']]; //+
-        const warehouseTable = [['Склад', '']]; //+
-        const marketplaceFeeTable = [['Удержания маркетплейса', '']] //+
-        const shippingTable = [['Организация поставки', '']] //+
-        const taxesTable = [['Налоги', '']] //+
-        const otherCostsTable = [['Прочие расходы', '']] //+
-        const resultTable = [['Результат', '']]
-        const supplyTable = [['Расчет поставки', '']]
+        const basicDataTable = [['Базовые данные', '']]
+        const logisticsDataTable = [['Логистика', '']]
+        const mpFeesDataTable = [['Удержания маркетплейса', '']]
+        const additionalDataTable_Shipping = [['Дополнительно - организация поставки', '']]
+        const additionalDataTable_Taxes = [['Допольнительно - налоги', '']]
+        const additionalDataTable_Others = [['Допольнительно - прочие расходы на товар', '']]
+        const resultTable = [['Итоговые значения', '']]
+        const supplyTable = [['Расчет партии', '']]
 
         const keysArr = Object.keys(result)
 
@@ -201,27 +201,23 @@ export const createExelData = (result) => {
                 value = '-'
             }
 
-            if (k === 'product' || k === 'product_price' || k === 'SPP' || k === 'product_cost' || k === 'total_product_price') {
-                productTable.push([fieldsVocab[k], value.toString()])
+            if (k === 'product' || k === 'product_price' || k === 'SPP' || k === 'isSPP' || k === 'product_cost' || k === 'total_product_price' || k === 'isHeavy' || k === 'package_length' || k === 'package_width' || k === 'package_height' || k === 'sizes_sum' || k === 'volume') {
+                basicDataTable.push([fieldsVocab[k], value.toString()])
             }
-            if (k === 'package_length' || k === 'package_width' || k === 'package_height' || k === 'sizes_sum' || k === 'volume') {
-                console.log(k)
-                sizesTable.push([fieldsVocab[k], value.toString()])
+            if (k === 'warehouse' || k === 'buyout_percentage' || k === 'PackageType' || k === 'cargo_acceptance_price' || k === 'last_mile_logistics_price' || k === 'current_storage_logistic_price' || k === 'storagePrice' || k === 'buyout_percentage') {
+                logisticsDataTable.push([fieldsVocab[k], value.toString()])
             }
-            if (k === 'warehouse' || k === 'buyout_percentage' || k === 'PackageType') {
-                warehouseTable.push([fieldsVocab[k], value.toString()])
-            }
-            if (k === 'cargo_acceptance_price' || k === 'equiring_fee' || k === 'additional_mp_fee' || k === 'mpFee' || k === 'last_mile_logistics_price' || k === 'last_mile_logistics_price_w_buyout' || k === 'storagePrice') {
-                marketplaceFeeTable.push([fieldsVocab[k], value.toString()])
+            if (k === 'equiring_fee' || k === 'additional_mp_fee' || k === 'mpFee' || k === 'absMpFee') {
+                mpFeesDataTable.push([fieldsVocab[k], value.toString()])
             }
             if (k === 'inhouse_logistics_price' || k === 'packaging_price' || k === 'mp_logistics_price' || k === 'fullfilment_price') {
-                shippingTable.push([fieldsVocab[k], value.toString()])
+                additionalDataTable_Shipping.push([fieldsVocab[k], value.toString()])
             }
             if (k === 'tax_state' || k === 'tax_rate' || k === 'absTaxFee') {
-                taxesTable.push([fieldsVocab[k], value.toString()])
+                additionalDataTable_Taxes.push([fieldsVocab[k], value.toString()])
             }
             if (k === 'adv_price' || k === 'defective_percentage' || k === 'other_costs') {
-                otherCostsTable.push([fieldsVocab[k], value.toString()])
+                additionalDataTable_Others.push([fieldsVocab[k], value.toString()])
             }
             if (k === 'selfCost' || k === 'roi' || k === 'totalMargin' || k === 'netProfit' || k === 'minimalPrice' || k === 'maximumDiscount') {
                 resultTable.push([fieldsVocab[k], value.toString()])
@@ -233,19 +229,17 @@ export const createExelData = (result) => {
         const finalData = [
             [["Расчет сгенерирован с помощью сервиса Radar Analytica"]],
             ['', ''],
-            ...productTable,
+            ...basicDataTable,
             ['', ''],
-            ...sizesTable, 
+            ...logisticsDataTable, 
             ['', ''], 
-            ...warehouseTable,
+            ...mpFeesDataTable,
             ['', ''], 
-            ...marketplaceFeeTable,
+            ...additionalDataTable_Shipping,
             ['', ''], 
-            ...shippingTable,
+            ...additionalDataTable_Taxes,
             ['', ''], 
-            ...taxesTable,
-            ['', ''], 
-            ...otherCostsTable,
+            ...additionalDataTable_Others,
             ['', ''], 
             ...resultTable,
             ['', ''],
@@ -260,39 +254,40 @@ export const createExelData = (result) => {
 
 
 export const fieldsVocab = {
-    product: 'Предмет',
-    product_price: 'Цена на WB (без СПП), ₽',
-    total_product_price: 'Цена с СПП, ₽',
-    isSPP: 'Скидка постоянного покупателя, да/нет',
+    product: 'Товар',
+    product_price: 'Цена товара (без СПП), ₽',
+    total_product_price: 'Цена товара (с СПП), ₽',
+    isSPP: 'СПП, да/нет',
     product_cost: 'Закупочная цена, ₽',
     package_length: 'Длина упаковки, см.',
     package_width: 'Ширина упаковки, см.',
     package_height: 'Высота упаковки, см.',
     isHeavy: 'Тяжелее 25 кг, да/нет',
     PackageType: 'Тип упаковки',
-    warehouse: 'Выбранный склад',
+    warehouse: 'Склад отгрузки',
     is_paid_cargo_acceptance: 'Платная приемка, да/нет',
     delivery_speed: 'Скорость доставки (FBS), часы',
     buyout_percentage: 'Процент выкупа, %',
-    additional_mp_fee: 'Тарифная опция, %',
+    additional_mp_fee: 'Комиссия за тарифные опции, %',
     equiring_fee: 'Эквайринг, %',
     SPP: 'СПП, %',
-    cargo_acceptance_price: 'Стоимость платной приемки, Р.',
-    inhouse_logistics_price: 'Стоимость логистики от производителя, Р.',
-    packaging_price: 'Стоимость упаковки, Р.',
-    mp_logistics_price: 'Стоимость логистики до МП, Р.',
-    fullfilment_price: 'Стоимость фулфилмента, Р.',
-    tax_state: 'Тип налогобложения',
-    tax_rate: 'Ставка налога, %',
+    cargo_acceptance_price: 'Стоимость платной приемки, ₽',
+    inhouse_logistics_price: 'Логистика от производителя, ₽',
+    packaging_price: 'Упаковка и маркировка, ₽',
+    mp_logistics_price: 'Логистика до маркетплейса, ₽',
+    fullfilment_price: 'Услуги фулфилмента, ₽',
+    tax_state: 'Налоговый режим',
+    tax_rate: 'Налоговая ставка, %',
     adv_price: 'Затраты на рекламу, %',
-    defective_percentage: 'Процент брака, %',
-    other_costs: 'Прочие расходы, ₽',
+    defective_percentage: 'Брак, %',
+    other_costs: 'Другое, ₽',
     sizes_sum: 'Сумма трех сторон, см',
     volume: 'Объем, л',
     last_mile_logistics_price: 'Логистика, ₽',
     current_storage_logistic_price: 'Логистика с % выкупа, ₽',
     storagePrice: 'Хранение 1 шт. в мес., ₽',
     mpFee: 'Комиссия маркетплейса, %',
+    absMpFee: 'Комиссия маркетплейса, ₽',
     absTaxFee: 'Налог в рублях, ₽',
 
     selfCost: 'Общая себестоимость, ₽',
