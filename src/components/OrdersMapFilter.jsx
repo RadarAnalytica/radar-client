@@ -3,18 +3,21 @@ import Period from './period/Period';
 import { format } from 'date-fns';
 
 const OrdersMapFilter = ({
-  changeBrand,
   shops,
-  setChangeBrand,
-  activeShopId,
+  setActiveBrand,
   selectedRange,
   setSelectedRange,
   activeBrand
 }) => {
-  const shopName =
-    activeShopId == 0
-      ? 'Все'
-      : shops?.find((item) => item.id == activeShopId)?.brand_name;
+  const allShopOptionAsShopObject = {
+    id: 0,
+    brand_name: "Все",
+    is_active: true,
+    is_primary_collect: shops.some(_ => _.is_primary_collect),
+    is_valid: true,
+  };
+  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
+  console.log(shopArrayFormSelect)
   return (
     <div className='filter container dash-container p-3 pb-4 pt-0 d-flex'>
       <div className='row w-100'>
@@ -31,7 +34,7 @@ const OrdersMapFilter = ({
           >
             Магазин:
           </label>
-          <div style={{position: 'relative'}}>
+          <div style={{ position: 'relative' }}>
             <select
               style={{
                 padding: '1vh 1.75vh',
@@ -40,35 +43,16 @@ const OrdersMapFilter = ({
               }}
               className='form-control'
               id='store'
-              // defaultValue={`${
-              //   activeShopId != undefined ? activeShopId : shops?.[0]?.id
-              // }`}
-              defaultValue={activeBrand}
+              value={activeBrand.id}
               onChange={(e) => {
-                // const firstValue = e.target.value.split('|')[0];
-                // const secondValue = e.target.value.split('|')[1];
-                // const lastValue = e.target.value.split('|')[2];
-                // setPrimary(lastValue);
-
-                //setChangeBrand(secondValue);
-              //changeBrand(firstValue);
-                changeBrand(e.target.value);
+                const { value } = e.target
+                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value)
+                setActiveBrand(selectedShop)
               }}
             >
-              <option
-                value={`${shops?.[0]?.id}|${shops?.[0]?.is_primary_collect}|${shops?.[0]?.is_valid}`}
-                hidden
-              >
-                {shopName || shops?.[0]?.brand_name}
-              </option>
-              <option value='0'>Все</option>
-              {shops &&
-                shops.map((brand, i) => (
-                  <option
-                    key={i}
-                    //value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}
-                    value={brand.id}
-                  >
+              {shopArrayFormSelect &&
+                shopArrayFormSelect?.map((brand) => (
+                  <option key={brand.id} value={brand.id.toString()}>
                     {brand.brand_name}
                   </option>
                 ))}

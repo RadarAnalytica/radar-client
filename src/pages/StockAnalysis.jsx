@@ -5,7 +5,7 @@ import StockAnalysisFilter from "../components/StockAnalysisFilter";
 import TableStock from "../components/TableStock";
 import SearchButton from "../assets/searchstock.svg";
 import StockCostPrice from "../assets/stockcostprice.svg";
-import DownloadFile from "../assets/downloadxlfile.svg";
+//import DownloadFile from "../assets/downloadxlfile.svg";
 import {
   getFileClickHandler,
   saveFileClickHandler,
@@ -26,21 +26,12 @@ import { URL } from "../service/config";
 import { fileDownload } from "../service/utils";
 
 
-/**
- *  ***************** ИНСТРУКЦИЯ ********************
- *  1. При начальном рендере подтягиваем магазины и данные таблиц. 
- *  Видимо одновременно с этим подтягиваем данные сохраненного в local storage магазина и проверяем его.
- *  
- * 
- *  *************************************************
- */
 
 const StockAnalysis = () => {
   // база
   const dispatch = useAppDispatch();
   const { authToken } = useContext(AuthContext);
   const shops = useAppSelector((state) => state.shopsSlice.shops); // магазины
-  console.log(shops)
 
   // стейты
   const [file, setFile] = useState(); // это видимо загрузка файла себестоимости
@@ -70,7 +61,7 @@ const StockAnalysis = () => {
   };
   //---------------------------------------------//
 
-  // ------------------------ здесь будет апдейт логики ---------------------------------//
+
   // 0. Получаем данные магазинов
   useEffect(() => {
     fetchShopData();
@@ -81,11 +72,11 @@ const StockAnalysis = () => {
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
   // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
   useEffect(() => {
-    if (shops && !activeBrand) {
+    if (shops && shops.length > 0 && !activeBrand) {
       // достаем сохраненный магазин
       const shopFromLocalStorage = localStorage.getItem('activeShop')
       // если сохранненный магазин существует и у нас есть массив магазинов....
-      if (shopFromLocalStorage && shopFromLocalStorage !== 'undefined') {
+      if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
         // парсим сохраненный магазин
         const { id } = JSON.parse(shopFromLocalStorage);
         // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
@@ -110,7 +101,6 @@ const StockAnalysis = () => {
     }
 
     if (shops && activeBrand && !activeBrand.is_primary_collect) {
-      console.log('shop upd')
       const currentShop = shops.find(shop => shop.id === activeBrand.id)
       if (currentShop?.is_primary_collect) {
         setActiveBrand(currentShop)
@@ -119,7 +109,8 @@ const StockAnalysis = () => {
   }, [shops])
 
 
-  // 2.
+  // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
+  // 2.2 Если магазин в стадии сбора данных (is_primary_collect = false) запускаем 30 секундный интервал через который запрашиваем магазины снова. результат обрабатываем в п 1.2
   useEffect(() => {
     const fetchAnalysisData = async () => {
       if (
@@ -141,18 +132,16 @@ const StockAnalysis = () => {
         prevActiveBrand.current = activeBrand.id;
       }
     };
+    activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
     let interval;
     if (activeBrand?.is_primary_collect) {
       fetchAnalysisData();
     } else {
-      interval = setInterval(() => {fetchShopData()}, 10000)
+      interval = setInterval(() => {fetchShopData()}, 30000)
     }
 
     return () => {interval && clearInterval(interval)}
   }, [selectedRange, activeBrand]);
-
-
-
   //---------------------------------------------------------------------------------------//
 
 
@@ -221,6 +210,9 @@ const StockAnalysis = () => {
   };
   // ---------------------------------------------------------------------------------------//
 
+
+
+  
   // --------------------------- ниче не загружаем если нет магазов (переписать бы по человечески) ---------------------//
   if (!shops || shops.length === 0) {
     return null; // or a loading indicator
@@ -250,7 +242,7 @@ const StockAnalysis = () => {
             <TopNav title={"Товарная аналитика"} mikeStarinaStaticProp />
             </div>
             {
-              !hasSelfCostPrice && activeBrand && activeBrand.id !== 0 && !loading? (
+              !hasSelfCostPrice && activeBrand && activeBrand.id !== 0 && !loading ? (
                 <div style={{ width: '100%', paddingRight: '52px'}}>
                   <SelfCostWarning
                     activeBrand={activeBrand.id}
@@ -334,9 +326,11 @@ const StockAnalysis = () => {
             )}
             {activeBrand && !activeBrand.is_primary_collect && !loading &&
             (
-              <DataCollectionNotification
-                title={"Ваши данные еще формируются и обрабатываются."}
-              />
+              <div style={{marginTop: '20px', paddingRight: '52px'}}>
+                <DataCollectionNotification
+                  title={"Ваши данные еще формируются и обрабатываются."}
+                />
+              </div>
             )}
           </div>
         </div>
