@@ -67,6 +67,7 @@ const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage")
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 import { BlogAdd, BlogList } from "./pages/blog";
+import MainPage from "./pages/MainPage";
 
 /**
  * --------------------------------------
@@ -118,6 +119,7 @@ function App() {
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             {/* <Route path='/report-main' element={<ProtectedRoute><ReportMain /></ProtectedRoute>} /> */}
             {/* Public routes */}
+            <Route path='/' element={<Suspense fallback={<LoaderPage />}>{' '}<MainPage /></Suspense>} />
             <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{' '}<UnitCalculatorPage /></Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
             <Route path='/signup' element={<Suspense fallback={<LoaderPage />}>{' '}<SignUpPage /></Suspense>} />
