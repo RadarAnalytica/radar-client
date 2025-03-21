@@ -218,7 +218,7 @@ const DashboardPage = () => {
       setDetailChartAverages(averages);
     };
     activeBrand?.id && updateChartDetailData();
-  }, [selectedRangeDetail]);
+  }, [selectedRangeDetail, activeBrand]);
 
   useEffect(() => {
     setSelectedRangeDetail(selectedRange);
