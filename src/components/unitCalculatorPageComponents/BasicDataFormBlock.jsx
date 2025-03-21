@@ -5,7 +5,7 @@ import { getCalculatorSubjects } from '../../service/api/api';
 import styles from './BasicDataFormBlock.module.css'
 import useDebouncedFunction from '../../service/hooks/useDebounce';
 
-const BasicDataFormBlock = ({ form, setMpMainFee }) => {
+const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken }) => {
     const [ autocompleteOptions, setAutocompleteOptions ] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
@@ -40,10 +40,13 @@ const BasicDataFormBlock = ({ form, setMpMainFee }) => {
     const sidesSum = package_width_int + package_length_int + package_height_int
     const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2)
 
+
+    console.log(isProductFromToken)
     const autocompleteValidation = (_, value) => { //custom validation for autocomplete
         if (!value) {
             return Promise.reject('Пожалуйста, заполните это поле')
-        } else if (!isOptionClicked) {
+        // } else if (!isOptionClicked && !isProductFromToken) {
+        } else if (!isOptionClicked && isProductFromToken !== null && isProductFromToken === false) {
             return Promise.reject('Пожалуйста, выберите опцию')
         } else {
             return Promise.resolve()
