@@ -91,7 +91,7 @@ const AbcAnalysisPage = () => {
     activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
     let interval;
     if (activeBrand?.is_primary_collect) {
-      const tm = setTimeout(()=>{updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id)}, 5000);
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id)
     } else {
       interval = setInterval(() => {fetchShopData()}, 30000)
     }
