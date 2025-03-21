@@ -94,7 +94,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
         {dataTable.length === 0 || loading ? (
           <div
             className='d-flex flex-column align-items-center justify-content-center'
-            style={{ height: "100%", paddingTop: "20%" }}
+            style={{ height: "100%", paddingTop: "10%", paddingBottom: '10%' }}
           >
             <span className='loader'></span>
           </div>
