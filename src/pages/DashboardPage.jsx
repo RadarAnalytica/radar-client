@@ -139,7 +139,7 @@ const DashboardPage = () => {
     activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
     let interval;
     if (activeBrand) {
-      updateDataDashBoard(selectedRange, activeBrand.id, authToken);
+      updateDataDashBoard(selectedRange, activeBrand.id, authToken)
     } else {
       interval = setInterval(() => { fetchShopData() }, 30000)
     }
@@ -1056,13 +1056,15 @@ const DashboardPage = () => {
           <div style={{ width: '100%'}} className="container dash-container px-3">
            <TopNav title={'Сводка продаж'} mikeStarinaStaticProp />
           </div>
-          {!isInitialLoading &&
-            !dataDashBoard?.costPriceAmount &&
+          {
+            dataDashBoard &&
+            !dataDashBoard.costPriceAmount &&
             activeBrand &&
-            activeBrand.id !== 0 ? (
+            activeBrand.id !== 0 &&
+            !loading ? (
             <div style={{ marginBottom: '20px'}}>
               <SelfCostWarning
-                activeBrand={activeBrand}
+                activeBrand={activeBrand.id}
                 onUpdateDashboard={handleUpdateDashboard}
               />
             </div>
@@ -1093,7 +1095,7 @@ const DashboardPage = () => {
           // activeShopId={activeShopId}
           />}
 
-          {activeBrand && activeBrand.is_primary_collect && !loading && (
+          {activeBrand && activeBrand.is_primary_collect && (
             <div>
               <div className='container dash-container p-3 pt-0 d-flex gap-3'>
                 <MediumPlate
@@ -1105,6 +1107,7 @@ const DashboardPage = () => {
                   percent={dataDashBoard?.orderAmountCompare}
                   percent2={dataDashBoard?.orderCountCompare}
                   loading={loading}
+                  //loading={true}
                 />
                 <MediumPlate
                   name={'Продажи'}
@@ -1454,7 +1457,7 @@ const DashboardPage = () => {
               </div>
             </div>
           )}
-          {activeBrand && !activeBrand.is_primary_collect && !loading && (
+          {activeBrand && !activeBrand.is_primary_collect && (
             <div style={{marginTop: '20px', padding: '0 36px'}}>
               <DataCollectionNotification
                 title={'Ваши данные еще формируются и обрабатываются.'}

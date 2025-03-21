@@ -91,7 +91,7 @@ const AbcAnalysisPage = () => {
     activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
     let interval;
     if (activeBrand?.is_primary_collect) {
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id);
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id)
     } else {
       interval = setInterval(() => {fetchShopData()}, 30000)
     }
@@ -195,7 +195,7 @@ const AbcAnalysisPage = () => {
 
           {isNeedCost && activeBrand && activeBrand.is_primary_collect ? (
             <SelfCostWarning
-              activeBrand={activeBrand}
+              activeBrand={activeBrand.id}
               onUpdateDashboard={handleUpdateAbcAnalysis}
             />
           ) : null}

@@ -269,7 +269,7 @@ const BigChart = ({
         </div>
       </div>
       <div className='bar-div' style={{ position: 'relative' }}>
-        {loading && (
+        {((data && data.labels.length === 0) || loading) && (
           <div
             className='d-flex flex-column align-items-center justify-content-center'
             style={{

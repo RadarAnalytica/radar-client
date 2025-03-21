@@ -54,10 +54,10 @@ const BasicDataFormBlock = ({ form, setMpMainFee }) => {
     const handleSearch = (value) => { // обработка ввода пользователя вручную
         setIsOptionClicked(false)
         setInputValue(value);
-        if (!value || value.length <= 3) {
+        if (value === '') {
             setAutocompleteOptions([])
         }
-        value && value.length > 3 && debouncedDataFetch(inputValue)
+        value && debouncedDataFetch(inputValue)
     };
 
     const handleSelect = (value) => { // обработка клика на опцию

@@ -103,7 +103,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max, loadi
 
         <div className='chart-container h-100'>
             <p className='fw-bold numbers mb-2'>Выручка по складам</p>
-            {loading ? (
+            {(labels === undefined || loading) ? (
                 <div
                     style={{
                     position: 'relative',
