@@ -58,7 +58,7 @@ const NavbarMainHome = ({ onlyLogo }) => {
           <div className='widheader-login hide-on-mobile'>
             {user ? (
               user?.subscription_status !== "expired" ? (
-                buttonSignIn("/dashboard")
+                buttonSignIn("/main")
               ) : user?.subscription_status === "expired" ? (
                 buttonSignIn("/tariffs")
               ) : null
