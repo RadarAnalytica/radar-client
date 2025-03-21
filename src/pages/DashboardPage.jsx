@@ -139,8 +139,6 @@ const DashboardPage = () => {
     activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
     let interval;
     if (activeBrand) {
-      console.log('upd')
-      console.log(activeBrand)
       updateDataDashBoard(selectedRange, activeBrand.id, authToken);
     } else {
       interval = setInterval(() => { fetchShopData() }, 30000)
@@ -450,7 +448,6 @@ const DashboardPage = () => {
       // }
      
     if (activeBrand !== 'null' && activeBrand !== 'undefined') {
-          console.log('go')
        
 
       const data = await ServiceFunctions.getDashBoard(

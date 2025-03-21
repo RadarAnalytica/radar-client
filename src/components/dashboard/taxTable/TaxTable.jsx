@@ -30,7 +30,7 @@ function TaxTable({ taxInfo, authToken, updateDataDashBoard, activeBrand, select
             }
 
             // Обновляем данные дашборда
-            await updateDataDashBoard(selectedRange, activeBrand, authToken);
+            await updateDataDashBoard(selectedRange, activeBrand.id, authToken);
 
         } catch (error) {
             console.error('Ошибка при обновлении налоговой ставки:', error);

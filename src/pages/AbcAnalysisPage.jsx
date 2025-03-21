@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef } from "react";
+import { useContext, useState, useEffect } from "react";
 import SideNav from "../components/SideNav";
 import TopNav from "../components/TopNav";
 import AbcAnalysisFilter from "../components/AbcAnalysisFilter";
@@ -7,158 +7,98 @@ import AuthContext from "../service/AuthContext";
 import { fetchShops } from "../redux/shops/shopsActions";
 import NoSubscriptionPage from "../pages/NoSubscriptionPage";
 import { ServiceFunctions } from "../service/serviceFunctions";
-// import { abcAnalysis } from "../service/utils";
 import TableAbcData from "../components/TableAbcData";
 import SelfCostWarning from "../components/SelfCostWarning";
-import { abcAnalysis } from "../service/utils";
 import DataCollectionNotification from "../components/DataCollectionNotification";
-import SeeMoreButton from "../components/SeeMoreButton";
-import BottomNavigation from "../components/BottomNavigation";
-import { useNavigate } from "react-router-dom";
 
 const AbcAnalysisPage = () => {
-  const navigate = useNavigate();
   const [days, setDays] = useState({ period: 30 });
   const { user, authToken } = useContext(AuthContext);
-  // const [wbData, setWbData] = useState();
   const dispatch = useAppDispatch();
   const [dataAbcAnalysis, setDataAbcAnalysis] = useState([]);
   const [isNeedCost, setIsNeedCost] = useState([]);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  // const [changeBrand, setChangeBrand] = useState();
-  // const [primary, setPrimary] = useState();
   const [viewType, setViewType] = useState("proceeds");
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-
-  const storedActiveShop = localStorage.getItem("activeShop");
-  const storedActiveShopObject = JSON.parse(storedActiveShop);
-
-  let activeShop;
-  
-  const activeShopId = activeShop?.id;
-  const idShopAsValue =
-    activeShopId != undefined ? activeShopId : '0';
-  const [activeBrand, setActiveBrand] = useState(idShopAsValue);
+  const [activeBrand, setActiveBrand] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const authTokenRef = useRef(authToken);
-  const prevDays = useRef(days);
-  const prevActiveBrand = useRef(activeBrand);
-  const prevViewType = useRef(viewType);
 
-  const allShop = shops?.some((item) => item?.is_primary_collect === true);
-  const oneShop = shops?.filter((item) => item?.id == activeBrand)[0];
-
-  const plugForAllStores = {
-    id: 0,
-    brand_name: "Все",
-    is_active: true,
-    is_primary_collect: allShop,
-    is_valid: true,
-  };
-
-  const shouldDisplay = activeShop
-    ? activeShop.is_primary_collect
-    : oneShop
-      ? oneShop.is_primary_collect
-      : allShop;
+ 
       
-  if (storedActiveShop && typeof storedActiveShop === "string") {
+ 
+  // ------- Фетч массива магазинов -------------//
+  const fetchShopData = async () => {
+    setLoading(true)
     try {
-      const controlValue = shops.filter(el => el.id === storedActiveShopObject.id).length
-      if (shops.length > 0 && controlValue !== 1 && !!activeBrand && activeBrand !== '0') {
-        localStorage.removeItem('activeShop')
-        window.location.reload()
-      }
-      
-      activeShop = storedActiveShopObject;
+      dispatch(fetchShops(authToken));
     } catch (error) {
-      console.error("Error parsing storedActiveShop:", error);
-      activeShop = null;
+      console.error("Error fetching initial data:", error);
+    } finally {
+      setLoading(false);
     }
   };
+  //---------------------------------------------//
 
-  const validateStoredShop = () => {
-    if (storedActiveShop && shops?.length > 0) {
-      const storedShopExists = shops.some(
-        shop => shop.id === JSON.parse(storedActiveShop).id
-      );
 
-      if (!storedShopExists) {
-        localStorage.removeItem('activeShop');
-        window.location.reload();
-      }
-    }
-  };
-
+  // 0. Получаем данные магазинов
   useEffect(() => {
-    if (shops?.length > 0) {
-      validateStoredShop();
-    }
-  }, [shops]);
-
-  useEffect(() => {
-    let intervalId = null;
-    if (activeBrand == 0) {
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
-      clearInterval(intervalId);
-    }
-    if (
-      oneShop?.is_primary_collect &&
-      oneShop?.is_primary_collect === allShop &&
-      !isInitialLoading
-    ) {
-      const currentShop = shops?.find((item) => item.id == activeShopId);
-      if (currentShop) {
-        localStorage.setItem("activeShop", JSON.stringify(currentShop));
-      }
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
-      clearInterval(intervalId);
-    }
-    if (!oneShop?.is_primary_collect && activeBrand !== 0) {
-      intervalId = setInterval(() => {
-        dispatch(fetchShops(authToken));
-      }, 30000);
-    }
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [oneShop, activeBrand]);
-
-
-  // useEffect(() => {
-  //   updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
-  // }, [days]);
-
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        await dispatch(fetchShops(authToken));
-        await updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
-      } finally {
-        setIsInitialLoading(false);
-      }
-    };
-
-    fetchInitialData();
+    fetchShopData();
   }, []);
+  // ------
 
+// 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
+  // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
   useEffect(() => {
-    if (shops.length > 0) {
-      let id;
-      if (activeShopId == undefined) {
-        id = shops?.[0].id;
-        localStorage.setItem("activeShop", JSON.stringify(shops?.[0]));
+    if (shops && shops.length > 0 && !activeBrand) {
+      // достаем сохраненный магазин
+      const shopFromLocalStorage = localStorage.getItem('activeShop')
+      // если сохранненный магазин существует и у нас есть массив магазинов....
+      if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
+        // парсим сохраненный магазин
+        const { id } = JSON.parse(shopFromLocalStorage);
+        // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
+        const isInShops = shops.some(_ => _.id === id);
+        // Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
+        if (isInShops) {
+          //....устанавливаем как текущий
+          setActiveBrand(shops.find(_ => _.id === id))
+          // Если нет, то...
+        } else {
+          // ...Обновляем локал - сохраняем туда первый из списка
+          localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+          // ...устанавливаем текущим первый из списка
+          setActiveBrand(shops[0])
+        }
       } else {
-        id = activeShopId;
+        // ...Обновляем локал - сохраняем туда первый из списка
+        localStorage.setItem('activeShop', JSON.stringify(shops[0]))
+        // ...устанавливаем текущим первый из списка
+        setActiveBrand(shops[0])
       }
-      setActiveBrand(id);
     }
-  }, [shops]);
+
+    if (shops && activeBrand && !activeBrand.is_primary_collect) {
+      const currentShop = shops.find(shop => shop.id === activeBrand.id)
+      if (currentShop?.is_primary_collect) {
+        setActiveBrand(currentShop)
+      }
+    }
+  }, [shops])
+
+
+   // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
+  // 2.2 Если магазин в стадии сбора данных (is_primary_collect = false) запускаем 30 секундный интервал через который запрашиваем магазины снова. результат обрабатываем в п 1.2
+  useEffect(() => {
+    activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
+    let interval;
+    if (activeBrand?.is_primary_collect) {
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id);
+    } else {
+      interval = setInterval(() => {fetchShopData()}, 30000)
+    }
+
+    return () => {interval && clearInterval(interval)}
+  }, [activeBrand, viewType, days]);
+  //---------------------------------------------------------------------------------------//
 
   //for SelfCostWarning
   const handleUpdateAbcAnalysis = () => {
@@ -172,38 +112,7 @@ const AbcAnalysisPage = () => {
       updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
   };
 
-  const handleSaveActiveShop = (shopId) => {
-    const currentShop = shops?.find((item) => item.id == shopId);
-    if (currentShop) {
-      localStorage.setItem("activeShop", JSON.stringify(currentShop));
-    }
-    if (shopId === "0") {
-      localStorage.setItem("activeShop", JSON.stringify(plugForAllStores));
-    }
-    setActiveBrand(shopId);
-  };
 
-  useEffect(() => {
-    if (activeBrand !== undefined && authToken !== authTokenRef.current) {
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
-    }
-  }, [authToken]);
-
-  // Update data when days, activeBrand, viewType changes
-  useEffect(() => {
-    if (
-      days !== prevDays.current ||
-      activeBrand !== prevActiveBrand.current ||
-      viewType !== prevViewType.current
-    ) {
-      if (activeBrand !== undefined) {
-        updateDataAbcAnalysis(viewType, authToken, days, activeBrand);
-      }
-      prevDays.current = days;
-      prevActiveBrand.current = activeBrand;
-      prevViewType.current = viewType;
-    }
-  }, [days, activeBrand, viewType]);
 
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
@@ -239,12 +148,6 @@ const AbcAnalysisPage = () => {
     };
   }, [dispatch, viewType, authToken, days, activeBrand]);
 
-  useEffect(() => {
-    if (shops?.length === 0 && !isInitialLoading) {
-      navigate("/onboarding");
-    }
-  }, [isInitialLoading, shops.length]);
-
   const updateDataAbcAnalysis = async (
     viewType,
     authToken,
@@ -272,35 +175,6 @@ const AbcAnalysisPage = () => {
     }
   };
 
-  // const totalAbcData = dataAbcAnalysis?.map((el) => {
-  //   return {
-  //     title: el?.title,
-  //     wb_id: el?.wb_id,
-  //     supplier_id: el?.supplier_id,
-  //     amount: el?.amount,
-  //   };
-  // });
-
-  // const [reportDaily, setReportDaily] = useState();
-  // const [reportWeekly, setReportWeekly] = useState();
-  // const [reportTwoWeeks, setReportTwoWeeks] = useState();
-  // const [reportMonthly, setReportMonthly] = useState();
-  // const [reportThreeMonths, setReportThreeMonths] = useState();
-
-  // useEffect(() => {
-  //   if (wbData) {
-  //     setReportDaily(wbData.reportDaily?.data?.data?.groups[0]?.statistics);
-  //     setReportWeekly(wbData.reportWeekly?.data?.data?.groups[0]?.statistics);
-  //     setReportTwoWeeks(
-  //       wbData.reportTwoWeeks?.data?.data?.groups[0]?.statistics
-  //     );
-  //     setReportMonthly(wbData.reportMonthly?.data?.data?.groups[0]?.statistics);
-  //     setReportThreeMonths(
-  //       wbData.reportThreeMonths?.data?.data?.groups[0]?.statistics
-  //     );
-  //   }
-  // }, [wbData]);
-
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"ABC-анализ"} />;
   }
@@ -319,26 +193,24 @@ const AbcAnalysisPage = () => {
             <TopNav title={"ABC-анализ"} mikeStarinaStaticProp />
           </div>
 
-          {!isInitialLoading && isNeedCost && shouldDisplay ? (
+          {isNeedCost && activeBrand && activeBrand.is_primary_collect ? (
             <SelfCostWarning
               activeBrand={activeBrand}
               onUpdateDashboard={handleUpdateAbcAnalysis}
             />
           ) : null}
 
+          {shops && activeBrand &&
           <div className='d-flex gap-3 container dash-container' style={{ marginTop: '20px', marginLeft: '0'}}>
             <AbcAnalysisFilter
-              shops={shops}
-              setActiveBrand={handleSaveActiveShop}
-              periodValue={days}
-              setDays={setDays}
-              activeShopId={activeShopId}
-              activeBrand={activeBrand}
-              // setChangeBrand={setChangeBrand}
-              // setPrimary={setPrimary}
+              shops={shops} // магазины
+              setActiveBrand={setActiveBrand} // сеттер id магазина
+              setSelectedRange={setDays} // сеттер периода (пробрасывается дальше в селект периода)
+              selectedRange={days} // выбранный период (пробрасывается дальше в селект периода)
+              activeBrand={activeBrand} // выбранный id магазина
             />
-          </div>
-          {shouldDisplay ? (
+          </div>}
+          {activeBrand && activeBrand.is_primary_collect ? (
             <TableAbcData
               dataTable={dataAbcAnalysis}
               setDataTable={setDataAbcAnalysis}
