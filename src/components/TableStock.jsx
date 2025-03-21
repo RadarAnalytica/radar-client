@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import SortArrows from './SortArrows';
 import { useNavigate } from 'react-router-dom';
+import { formatPrice } from '../service/utils';
 
 const VIRTUAL_QUANTITY = 300;
 
@@ -769,7 +770,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                         borderLeft: '1px solid #e0e0e0',
                       }}
                     >
-                      {formatNumber(row.toClient)}
+                      {formatPrice(row.toClient, '₽')}
                     </div>
                   ))}
                 </div>
@@ -804,7 +805,7 @@ const TableStock = ({ data, setDataTable, loading }) => {
                         minWidth: '150px',
                       }}
                     >
-                      {formatNumber(row.to_client_sum || '0')} ₽
+                      {formatPrice(row.to_client_sum, '₽')}
                     </div>
                   ))}
                 </div>
