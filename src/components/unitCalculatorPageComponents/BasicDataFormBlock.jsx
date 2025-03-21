@@ -5,7 +5,7 @@ import { getCalculatorSubjects } from '../../service/api/api';
 import styles from './BasicDataFormBlock.module.css'
 import useDebouncedFunction from '../../service/hooks/useDebounce';
 
-const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken }) => {
+const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
     const [ autocompleteOptions, setAutocompleteOptions ] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
@@ -40,8 +40,6 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken }) => {
     const sidesSum = package_width_int + package_length_int + package_height_int
     const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2)
 
-
-    console.log(isProductFromToken)
     const autocompleteValidation = (_, value) => { //custom validation for autocomplete
         if (!value) {
             return Promise.reject('Пожалуйста, заполните это поле')
@@ -55,6 +53,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken }) => {
 
 
     const handleSearch = (value) => { // обработка ввода пользователя вручную
+        setIsProductFromToken(false)
         setIsOptionClicked(false)
         setInputValue(value);
         if (value === '') {
@@ -119,7 +118,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken }) => {
                     label='Товар'
                     className={styles.formItem}
                     rules={[
-                        { validator: autocompleteValidation }
+                        { validator: isProductFromToken !== null && autocompleteValidation }
                     ]}
                 >
                     <AutoComplete 

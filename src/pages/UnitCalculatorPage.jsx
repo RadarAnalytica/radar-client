@@ -42,8 +42,15 @@ const UnitCalculatorPage = () => {
 
     // ---------------------- form submit handler ----------------------------//
     const submitHandler = (fields) => {
-        setIsProductFromToken(false)
+        //setIsProductFromToken(false)
         // calculating data for the result block
+        // console.log(fields)
+        // console.log(mpMainFee)
+        // console.log(lastMileLogisticsPrice)
+        // console.log(lastMileLogisticsPriceWBuyout)
+        // console.log(storagePrice)
+        // console.log(investValue)
+        // console.log(storagePrice)
         setResult(unitCalcResultFunction(fields, mpMainFee, lastMileLogisticsPrice, lastMileLogisticsPriceWBuyout, storagePrice, investValue, storagePrice))
 
         // obkect for tokenized data
@@ -144,6 +151,7 @@ const UnitCalculatorPage = () => {
     //--this is handler for url-token data (decode, prefill and submit the form)--//
     useEffect(() => {
         const token = params.get('data')
+        let timeout;
         if (token) {
             setIsProductFromToken(true)
             try {
@@ -155,11 +163,15 @@ const UnitCalculatorPage = () => {
                     const value = data.fields[k]
                     form.setFieldValue(k, value)
                 })
+                console.log('data:')
+                console.log(data)
                 setInvestValue(data.investValue)
                 setMpMainFee(data.mpMainFee)
                 setLastMileLogisticsPrice(data.lastMileLogisticsPrice)
                 setLastMileLogisticsPriceWBuyout(data.lastMileLogisticsPriceWBuyout)
                 setStoragePrice(data.storagePrice)
+
+                timeout = setTimeout(() => {form.submit()}, 500)
                 
             } catch(e) {
                 setIsProductFromToken(false)
@@ -168,7 +180,9 @@ const UnitCalculatorPage = () => {
         } else {
             setIsProductFromToken(false)
         }
-        form.submit()
+        
+        
+        return () => {timeout && clearTimeout(timeout)}
     }, [params])
     //------------------------------------------------------------------------------------//
 
@@ -229,7 +243,7 @@ const UnitCalculatorPage = () => {
 
 
 
-                                <BasicDataFormBlock form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} />
+                                <BasicDataFormBlock form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} setIsProductFromToken={setIsProductFromToken} />
                                 <LogisticsDataFormBlock form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
                                 <MPFeesDataFormBlock mp_fee={mpMainFee} form={form} />
                                 <AdditionalOptionsDataFormBlock form={form} />
