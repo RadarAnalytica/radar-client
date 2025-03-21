@@ -14,6 +14,7 @@ const WidePlate = ({
   loading
 }) => {
 
+
   const sales = data
     ? Object.values(data)?.filter((array) => array?.totalSales)
     : [];
@@ -35,7 +36,7 @@ const WidePlate = ({
   return (
 
     <div className='wide-plate w-100' style={{position: 'relative'}}>
-      { loading &&
+      {(dataDashBoard === undefined || loading) &&
         <div
           className='d-flex flex-column align-items-center justify-content-center'
           style={{

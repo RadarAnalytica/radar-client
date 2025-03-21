@@ -124,7 +124,7 @@ const StructureRevenue = ({ dataStructureRevenue, loading }) => {
     return (
         <div className={`chart-container h-100 ${styles.revenueStructure} scehdule-revenue-structure`}>
             <p className='fw-bold numbers mb-2'>Структура выручки</p>
-            {loading ? (
+            {(dataStructureRevenue === undefined || loading) ? (
                 <div
                     style={{
                     position: 'relative',

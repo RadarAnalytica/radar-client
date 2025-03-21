@@ -141,7 +141,7 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
     return (
         <div className="chart-container">
             <p className='fw-bold numbers mb-2'>Продажи и прибыль</p>
-            {loading ? (
+            {(labels === undefined || loading) ? (
                 <div
                     style={{
                     position: 'relative',
