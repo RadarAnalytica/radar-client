@@ -201,7 +201,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
     return (
         <div className="chart-container" style={{position: 'relative'}}>
             <p className='fw-bold numbers mb-2'>Рентабельность и маржинальность</p>
-            {loading ? (
+            {(labels === undefined || loading) ? (
                 <div
                     style={{
                         position: 'relative',

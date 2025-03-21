@@ -3,6 +3,7 @@ import styles from "./TaxTable.module.css";
 import { formatPrice } from '../../../service/utils';
 import { ServiceFunctions } from '../../../service/serviceFunctions';
 function TaxTable({ taxInfo, authToken, updateDataDashBoard, activeBrand, selectedRange, loading }) {
+
     const taxData = taxInfo?.[0] || {}; // Получаем первый объект массива, если он есть
     const [isEditing, setIsEditing] = useState(false);
     const [taxRate, setTaxRate] = useState(taxData.taxRate || 0);
@@ -41,7 +42,7 @@ function TaxTable({ taxInfo, authToken, updateDataDashBoard, activeBrand, select
         <div className={`finance-table ${styles.salesChartWrapper}`}>
             <p className='fw-bold numbers mb-2'>Налог</p>
             <div style={{position: 'relative'}}>
-                {loading &&
+                {(taxInfo === undefined || loading) &&
                     <div
                         className="d-flex flex-column align-items-center justify-content-center"
                         style={{ position: 'absolute', zIndex: 1, height: '100%', width: "100%", backgroundColor: '#fff' }}
