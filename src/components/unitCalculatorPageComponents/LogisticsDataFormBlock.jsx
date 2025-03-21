@@ -12,7 +12,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
     const buyout_percentage = Form.useWatch('buyout_percentage', form);
     const delivery_speed = Form.useWatch('delivery_speed', form);
 
-    const [ whouseData, setWhouseData ] = useState(tempWhouseData.fbo)
+    const [whouseData, setWhouseData] = useState(tempWhouseData.fbo)
 
     const handleSearch = (value) => {
         const newData = tempWhouseData.fbo.filter(_ => _.name.toLowerCase().includes(value.toLowerCase()));
@@ -81,91 +81,119 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
             <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
 
 
-            <ConfigProvider
-                theme={{
-                    token: {
-                        fontFamily: 'Mulish',
-                        colorBgContainer: 'white',
-                        //colorBorder: 'white',
-                        // colorTextLightSolid: '#000'
-                    },
-                    components: {
-                        Select: {
-                            activeBorderColor: '#5329FF',
-                            hoverBorderColor: '#5329FF',
-                            activeOutlineColor: 'transparent',
-                            activeBg: 'red'
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            fontFamily: 'Mulish',
+                            colorBgContainer: 'white',
+                            //colorBorder: 'white',
+                            // colorTextLightSolid: '#000'
                         },
-                        Input: {
-                            activeBorderColor: '#5329FF',
-                            hoverBorderColor: '#5329FF',
-                            activeBg: '#F2F2F2',
-                        },
-                    }
-                }}
-            >
-                <Form.Item
-                    label={
-                        <div className={styles.label}>
-                            {'Склад отгрузки'}
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorTextLightSolid: '#000'
-                                    }
-                                }}
-                            >
-                                <Tooltip
-                                    title='Внимание! Если склад недоступен для выбора, то на данный склад нельзя поставлять товар с выбранным типом упаковки'
-                                    style={{ cursor: 'pointer' }}
-                                    color={'white'}
-                                    arrow={false}
-                                >
-                                    <div className={styles.tooltip}>!</div>
-                                </Tooltip>
-                            </ConfigProvider>
-                        </div>
-                    }
-                    rules={
-                        [
-                            //{ required: true, message: '' },
-                        ]
-                    }
-                    name='warehouse'
-                    className={isPaidCargoAcceptance ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
+                        components: {
+                            Select: {
+                                activeBorderColor: '#5329FF',
+                                hoverBorderColor: '#5329FF',
+                                activeOutlineColor: 'transparent',
+                                activeBg: 'red'
+                            },
+                            Input: {
+                                activeBorderColor: '#5329FF',
+                                hoverBorderColor: '#5329FF',
+                                activeBg: '#F2F2F2',
+                            },
+                        }
+                    }}
                 >
-                     <AutoComplete 
-                        size='large'
-                        placeholder='Выберите склад'
-                        style={{background: warehouse ? '#F2F2F2' : ''}}
-                        id='autocomp'
-                        options={whouseData?.map(_ => ({ value: _.name })) || null}
-                        onSearch={handleSearch}
-                        onSelect={handleSelect}
-                        allowClear={{
-                            clearIcon: (
-                                <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z" fill="#8C8C8C"/>
-                                </svg>
-                            )
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                fontFamily: 'Mulish',
+                                colorBgContainer: 'white',
+                                colorPrimary: 'black',
+                                colorPrimaryActive: 'black'
+                                //colorBorder: 'white',
+                                // colorTextLightSolid: '#000'
+                            },
+                            components: {
+                                Select: {
+                                    activeBorderColor: 'rgba(232, 232, 232, 1)',
+                                    colorBorder: 'rgba(232, 232, 232, 1)',
+                                    hoverBorderColor: 'rgba(232, 232, 232, 1)',
+                                    activeOutlineColor: 'rgba(0,0,0,0)',
+                                    selectorBg: warehouse ? '#F2F2F2' : '',
+                                    clearBg: 'black'
+                                },
+                                Input: {
+                                    activeBorderColor: '#5329FF',
+                                    hoverBorderColor: '#5329FF',
+                                    activeBg: '#F2F2F2',
+                                },
+                            }
                         }}
-                        //value={inputValue}
-                        //onSearch={handleSearch}
-                        //onSelect={handleSelect}
-                        // options={visibleOptions}
-                        // dropdownRender={menu => (
-                        //     <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                        //         {menu}
-                        //     </div>
-                        // )}
-                    />
-                </Form.Item>
+                    >
+                        <Form.Item
+                            label={
+                                <div className={styles.label}>
+                                    {'Склад отгрузки'}
+                                    <ConfigProvider
+                                        theme={{
+                                            token: {
+                                                colorTextLightSolid: '#000'
+                                            }
+                                        }}
+                                    >
+                                        <Tooltip
+                                            title='Внимание! Если склад недоступен для выбора, то на данный склад нельзя поставлять товар с выбранным типом упаковки'
+                                            style={{ cursor: 'pointer' }}
+                                            color={'white'}
+                                            arrow={false}
+                                        >
+                                            <div className={styles.tooltip}>!</div>
+                                        </Tooltip>
+                                    </ConfigProvider>
+                                </div>
+                            }
+                            rules={
+                                [
+                                    //{ required: true, message: '' },
+                                ]
+                            }
+                            name='warehouse'
+                            className={isPaidCargoAcceptance ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
+                        >
+                            <AutoComplete
+                                size='large'
+                                placeholder='Выберите склад'
+                                style={{ background: warehouse ? '#F2F2F2' : '' }}
+                                id='autocomp'
+                                options={whouseData?.map(_ => ({ value: _.name })) || null}
+                                onSearch={handleSearch}
+                                onSelect={handleSelect}
+                                allowClear={{
+                                    clearIcon: (
+                                        <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z" fill="#8C8C8C" />
+                                        </svg>
+                                    )
+                                }}
+                            //value={inputValue}
+                            //onSearch={handleSearch}
+                            //onSelect={handleSelect}
+                            // options={visibleOptions}
+                            // dropdownRender={menu => (
+                            //     <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                            //         {menu}
+                            //     </div>
+                            // )}
+                            />
+                        </Form.Item>
+                    </ConfigProvider>
                 </ConfigProvider>
                 {isPaidCargoAcceptance && <Form.Item
                     label='Стоимость платной приемки, ₽'
                     className={styles.formItem}
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' ₽' : value}
+                        const transformedValue = { value: value ? value + ' ₽' : value }
                         return transformedValue
                     }}
                     normalize={(value, prevValue) => {
@@ -176,7 +204,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                     }}
                     rules={
                         [
-                            { required: true, message: 'Пожалуйста, заполните это поле!'},
+                            { required: true, message: 'Пожалуйста, заполните это поле!' },
                         ]
                     }
                     name='cargo_acceptance_price'
@@ -184,7 +212,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                     <Input
                         size='large'
                         placeholder='Укажите стоимость'
-                        style={{background: cargo_acceptance_price ? '#F2F2F2' : ''}}
+                        style={{ background: cargo_acceptance_price ? '#F2F2F2' : '' }}
                     />
                 </Form.Item>}
 
@@ -253,7 +281,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                         </div>
                     }
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' ч' : value}
+                        const transformedValue = { value: value ? value + ' ч' : value }
                         return transformedValue
                     }}
                     normalize={(value, prevValue) => {
@@ -266,7 +294,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                     className={styles.formItem}
                 >
                     <Input
-                        style={{background: delivery_speed ? '#F2F2F2' : ''}}
+                        style={{ background: delivery_speed ? '#F2F2F2' : '' }}
                         size='large'
                         placeholder='Укажите скорость доставки'
                     />
@@ -305,7 +333,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                         </div>
                     }
                     getValueProps={(value) => {
-                        const transformedValue = {value: value ? value + ' %' : value}
+                        const transformedValue = { value: value ? value + ' %' : value }
                         return transformedValue
                     }}
                     normalize={(value, prevValue) => {
@@ -318,7 +346,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                     className={styles.formItem}
                 >
                     <Input
-                        style={{background: buyout_percentage ? '#F2F2F2' : ''}}
+                        style={{ background: buyout_percentage ? '#F2F2F2' : '' }}
                         size='large'
                         placeholder='Укажите процент выкупа'
                     />

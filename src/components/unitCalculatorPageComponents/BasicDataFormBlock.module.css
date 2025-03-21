@@ -1,5 +1,7 @@
 :global(.ant-select-selector) {
-    border: 1px solid rgba(232, 232, 232, 1) !important;
+    border: 1px solid rgba(232, 232, 232, 1);
+    outline: none;
+    box-shadow: none !important;
 }
 :global(.ant-select) {
     background: none !important;
@@ -13,6 +15,9 @@
 }
 :global(.ant-input-status-error) {
     border: 1px solid #ff4d4f !important;
+}
+:global(.ant-select-clear) {
+    background: transparent !important;
 }
 
 .fieldset {
