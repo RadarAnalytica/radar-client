@@ -236,8 +236,8 @@ const StockAnalysis = () => {
     <>
       <div className="dashboard-page">
         <SideNav />
-        <div className="dashboard-content" style={{paddingLeft: '52px'}}>
-          <div className="h-100 d-flex flex-column overflow-hidden" style={{ justifyContent: 'stretch'}}>
+        <div className="dashboard-content" style={{paddingLeft: '52px', paddingBottom: '16px'}}>
+          <div className="d-flex flex-column overflow-hidden" style={{ justifyContent: 'stretch'}}>
             <div style={{ paddingRight: '52px'}}>
             <TopNav title={"Товарная аналитика"} mikeStarinaStaticProp />
             </div>

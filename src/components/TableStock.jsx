@@ -133,7 +133,14 @@ const TableStock = ({ data, setDataTable, loading }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100%', overflow: 'hidden'}} ref={containerRef}>
       {/* <div style={{ width: '3.5vw', height: '100%' }}></div> */}
-      <div className='custom-table' style = {loading ? { overflow: 'hidden'} : null}>
+      <div 
+        className='custom-table' 
+        style=
+        {{ 
+          overflow: loading ? 'hidden' : '',
+          maxHeight: '650px',
+        }}
+      >
         <div className='table-container' style={{ minWidth: '100%'}}>
           {/* {dataTable.length === 0 && 
             <div
