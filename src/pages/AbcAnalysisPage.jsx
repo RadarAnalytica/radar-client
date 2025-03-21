@@ -195,7 +195,7 @@ const AbcAnalysisPage = () => {
 
           {isNeedCost && activeBrand && activeBrand.is_primary_collect ? (
             <SelfCostWarning
-              activeBrand={activeBrand}
+              activeBrand={activeBrand.id}
               onUpdateDashboard={handleUpdateAbcAnalysis}
             />
           ) : null}

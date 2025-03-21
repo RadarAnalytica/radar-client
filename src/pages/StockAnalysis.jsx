@@ -136,6 +136,7 @@ const StockAnalysis = () => {
     let interval;
     if (activeBrand?.is_primary_collect) {
       fetchAnalysisData();
+      //const tm = setTimeout(()=>{fetchAnalysisData()}, 5000);
     } else {
       interval = setInterval(() => {fetchShopData()}, 30000)
     }

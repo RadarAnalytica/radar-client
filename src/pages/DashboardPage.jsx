@@ -1064,7 +1064,7 @@ const DashboardPage = () => {
             !loading ? (
             <div style={{ marginBottom: '20px'}}>
               <SelfCostWarning
-                activeBrand={activeBrand}
+                activeBrand={activeBrand.id}
                 onUpdateDashboard={handleUpdateDashboard}
               />
             </div>
