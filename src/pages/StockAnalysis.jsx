@@ -35,10 +35,10 @@ const StockAnalysis = () => {
 
   // стейты
   const [file, setFile] = useState(); // это видимо загрузка файла себестоимости
-  const [stockAnalysisData, setStockAnalysisData] = useState([]); // это видимо данные для таблицы
+  const [stockAnalysisData, setStockAnalysisData] = useState(); // это видимо данные для таблицы
   const [loading, setLoading] = useState(true); // лоадер для загрузки данных
   const [activeBrand, setActiveBrand] = useState(null); // стейт селекта магазина (выбранный магазин или "0")
-  const [dataTable, setDataTable] = useState([]); // это отфильтрованная дата (если используется поиск)
+  const [dataTable, setDataTable] = useState(); // это отфильтрованная дата (если используется поиск)
   const [costPriceShow, setCostPriceShow] = useState(false); // хз что это
   const [selectedRange, setSelectedRange] = useState({ period: 30 }); // стейт селекта периода
   const [searchQuery, setSearchQuery] = useState(""); // стейт инпута поиска
@@ -136,7 +136,6 @@ const StockAnalysis = () => {
     let interval;
     if (activeBrand?.is_primary_collect) {
       fetchAnalysisData();
-      //const tm = setTimeout(()=>{fetchAnalysisData()}, 5000);
     } else {
       interval = setInterval(() => {fetchShopData()}, 30000)
     }
@@ -264,7 +263,7 @@ const StockAnalysis = () => {
               }
             </div>
 
-            {activeBrand && activeBrand.is_primary_collect && !loading && (
+            {activeBrand && activeBrand.is_primary_collect && (
               <>
                 <div className="input-and-button-container container dash-container d-flex flex-wrap justify-content-between align-items-center mt-3 mb-3" style={{paddingRight: '52px'}}>
                   <div className="search search-container">
@@ -325,7 +324,7 @@ const StockAnalysis = () => {
                 </div>
               </>
             )}
-            {activeBrand && !activeBrand.is_primary_collect && !loading &&
+            {activeBrand && !activeBrand.is_primary_collect &&
             (
               <div style={{marginTop: '20px', paddingRight: '52px'}}>
                 <DataCollectionNotification
