@@ -1,27 +1,19 @@
-import React, { useContext } from "react";
-import downloadIcon from "../pages/images/Download.svg";
-import { ServiceFunctions } from "../service/serviceFunctions";
-import AuthContext from "../service/AuthContext";
-import { URL } from "../service/config";
+import React from "react";
 import Period from "./period/Period"
 
 const AbcAnalysisFilter = ({
-  setActiveBrand,
-  periodValue,
-  setDays,
-  shops,
-  setChangeBrand,
-  setPrimary,
-  activeShopId,
-  activeBrand
+  shops, setActiveBrand, setSelectedRange, selectedRange, activeBrand
 }) => {
-  const { authToken } = useContext(AuthContext);
 
-  const currentShop = shops?.find((item) => item.id == activeShopId);
-  const shopName = activeShopId == 0 ? "Все" : currentShop?.brand_name;
-  const allShop =
-    activeShopId == 0 &&
-    shops?.some((item) => item?.is_primary_collect === true);
+  const allShopOptionAsShopObject = {
+    id: 0,
+    brand_name: "Все",
+    is_active: true,
+    is_primary_collect: shops.some(_ => _.is_primary_collect),
+    is_valid: true,
+  };
+
+  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
 
   const weekAgo = new Date(new Date().setDate(new Date().getDate() - 7))
     .toLocaleDateString("ru")
@@ -40,15 +32,15 @@ const AbcAnalysisFilter = ({
     .join("-");
 
 
-    console.log(shops?.[0])
+  
 
   return (
     <div className='filter container filter-panel dash-container d-flex'>
       <div className='row w-100'>
         <div className='filter-item col'>
           <Period
-            selectedRange={periodValue}
-            setSelectedRange={setDays}
+            selectedRange={selectedRange}
+            setSelectedRange={setSelectedRange}
           />
         </div>
         <div className='filter-item col' style={{ position: "relative" }}>
@@ -70,32 +62,17 @@ const AbcAnalysisFilter = ({
               }}
               className='form-control'
               id='store'
-              // defaultValue={`${activeShopId !== undefined ? activeShopId : '0'
-              //   }`}
-              defaultValue={activeBrand}
+              value={activeBrand.id}
               onChange={(e) => {
-                const firstValue = e.target.value.split("|")[0];
-                const secondValue = e.target.value.split("|")[1];
-                const lastValue = e.target.value.split("|")[2];
-                //setPrimary(lastValue);
-                //setChangeBrand(secondValue);
-                setActiveBrand(firstValue);
+                const { value } = e.target
+                const selectedShop = shopArrayFormSelect.find(_ => _.id.toString() === value)
+                setActiveBrand(selectedShop)
               }}
             >
-              {/* <option
-                value={`${shops?.[0]?.id}|${shops?.[0]?.is_primary_collect}|${shops?.[0]?.is_valid}`}
-                hidden
-              >
-                {shopName ||
-                  shops?.[activeShopId]?.brand_name ||
-                  shops?.[0]?.brand_name}
-              </option> */}
-              <option value='0'>Все</option>
-              {shops &&
-                shops?.map((brand) => (
+              {shopArrayFormSelect &&
+                shopArrayFormSelect?.map((brand) => (
                   <option
                     key={brand.id}
-                    //value={`${brand.id}|${brand.is_primary_collect}|${brand.is_valid}`}
                     value={brand.id}
                   >
                     {brand.brand_name}
