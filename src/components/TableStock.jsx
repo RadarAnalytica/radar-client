@@ -13,13 +13,16 @@ const TableStock = ({ data, setDataTable, loading }) => {
 
 
   useEffect(() => {
-    const filteredData = [];
-    data.forEach((_, id) => {
-      if (id >= virtualLimit.min && id <= virtualLimit.max) {
-        filteredData.push(_)
-      }
-    })
-    setFilteredDataTable(filteredData)
+    if (data) {
+      const filteredData = [];
+      data.forEach((_, id) => {
+        if (id >= virtualLimit.min && id <= virtualLimit.max) {
+          filteredData.push(_)
+        }
+      })
+      setFilteredDataTable(filteredData)
+    }
+   
   }, [data, virtualLimit])
 
   const observerRef = useRef(null);
@@ -127,19 +130,29 @@ const TableStock = ({ data, setDataTable, loading }) => {
     if (num == null) return ''; // Return an empty string or any default value for null/undefined
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   }
-  return dataTable && dataTable.length > 0 && (
+  return (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100%', overflow: 'hidden'}} ref={containerRef}>
       {/* <div style={{ width: '3.5vw', height: '100%' }}></div> */}
       <div className='custom-table' style = {loading ? { overflow: 'hidden'} : null}>
-        <div className='table-container'>
-          {/* {dataTable.length === 0 && ( */}
-          {loading && (
+        <div className='table-container' style={{ minWidth: '100%'}}>
+          {/* {dataTable.length === 0 && 
+            <div
+              className='cell header-cell'
+              style={{paddingLeft: 50, background: 'none', border: 'none' }}
+            >
+              Ничего не найдено
+            </div> } */}
+          {(dataTable === undefined || loading) && (
             <div
               className='d-flex flex-column align-items-center justify-content-center'
               style={{
                 width: '100%',
                 height: '100%',
-                position: 'absolute',
+                padding: '10%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
                 background: 'white',
                 zIndex: 999
               }}
@@ -147,14 +160,19 @@ const TableStock = ({ data, setDataTable, loading }) => {
               <span className='loader'></span>
             </div>
           )}
-          {dataTable.length === 0 && 
-            <div
+          
+         {dataTable && dataTable.length === 0 && (
+          <div
               className='cell header-cell'
               style={{paddingLeft: 50, background: 'none', border: 'none' }}
             >
               Ничего не найдено
-            </div> }
-          {dataTable.length > 0 && (
+            </div>
+         )
+
+          }
+         {dataTable && dataTable.length > 0 &&
+         (
             <div style={{ display: 'flex', flexDirection: 'row', background: 'white' }}>
               {/* Fixed columns */}
               <div className={`fixed-columns ${isScrolled ? 'fixed-columns-shadow' : ''}`}>
