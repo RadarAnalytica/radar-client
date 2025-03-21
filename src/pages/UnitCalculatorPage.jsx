@@ -23,6 +23,7 @@ const UnitCalculatorPage = () => {
     const [ lastMileLogisticsPrice, setLastMileLogisticsPrice ] = useState(0) // cost of logistics for current warehouse
     const [ storagePrice, setStoragePrice ] = useState(0) // cost of storaging for current warehouse
     const [ lastMileLogisticsPriceWBuyout, setLastMileLogisticsPriceWBuyout ] = useState(0) // cost of buyout ratio
+    const [ isProductFromToken, setIsProductFromToken ] = useState(null) // we are redefining product input if the data came from share link
     const [ mpMainFee, setMpMainFee ] = useState(22.5) // *temporary* - hardcode of marketplace main fee
     const [ params ] = useSearchParams() // <- to get token from the url
     const [ form ] = Form.useForm(); // form instance
@@ -41,13 +42,18 @@ const UnitCalculatorPage = () => {
 
     // ---------------------- form submit handler ----------------------------//
     const submitHandler = (fields) => {
+        setIsProductFromToken(false)
         // calculating data for the result block
         setResult(unitCalcResultFunction(fields, mpMainFee, lastMileLogisticsPrice, lastMileLogisticsPriceWBuyout, storagePrice, investValue, storagePrice))
 
         // obkect for tokenized data
         const data = {
             fields,
-            investValue
+            investValue,
+            mpMainFee,
+            lastMileLogisticsPrice,
+            storagePrice,
+            lastMileLogisticsPriceWBuyout,
         }
        
         // data as json
@@ -139,6 +145,7 @@ const UnitCalculatorPage = () => {
     useEffect(() => {
         const token = params.get('data')
         if (token) {
+            setIsProductFromToken(true)
             try {
                 const data = decodeBase64ToUnicode(token);
                 //const data = JSON.parse(jsonData);
@@ -149,10 +156,17 @@ const UnitCalculatorPage = () => {
                     form.setFieldValue(k, value)
                 })
                 setInvestValue(data.investValue)
+                setMpMainFee(data.mpMainFee)
+                setLastMileLogisticsPrice(data.lastMileLogisticsPrice)
+                setLastMileLogisticsPriceWBuyout(data.lastMileLogisticsPriceWBuyout)
+                setStoragePrice(data.storagePrice)
                 
             } catch(e) {
+                setIsProductFromToken(false)
                 console.log(e)
             }
+        } else {
+            setIsProductFromToken(false)
         }
         form.submit()
     }, [params])
@@ -215,7 +229,7 @@ const UnitCalculatorPage = () => {
 
 
 
-                                <BasicDataFormBlock form={form} setMpMainFee={setMpMainFee} />
+                                <BasicDataFormBlock form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} />
                                 <LogisticsDataFormBlock form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
                                 <MPFeesDataFormBlock mp_fee={mpMainFee} form={form} />
                                 <AdditionalOptionsDataFormBlock form={form} />
