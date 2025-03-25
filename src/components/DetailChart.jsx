@@ -1,11 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { chart } from 'highcharts';
+import { chartYaxisMaxScale } from '../service/utils';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const DetailChart = ({ labels, chartData, averages }) => {
+const DetailChart = ({ labels, chartData }) => {
+
+    console.log(chartData)
+    const sortedChartData = [...chartData].sort((a,b) => b - a)
+    const maxValue = chartYaxisMaxScale(sortedChartData[0])
+    const step = Math.round(maxValue / 10)
     const chartRef = useRef(null);
     const containerRef = useRef(null);
     const [clickedIndex, setClickedIndex] = useState(null);
@@ -16,7 +21,7 @@ const DetailChart = ({ labels, chartData, averages }) => {
         datasets: [
             {
                 label: 'Заказы',
-                data: averages,
+                data: chartData,
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
@@ -66,7 +71,7 @@ const DetailChart = ({ labels, chartData, averages }) => {
         },
         scales: {
             x: { grid: { display: false }, ticks: { color: '#8C8C8C' } },
-            y: { beginAtZero: true, min: 0, grid: { display: true }, ticks: { color: '#8C8C8C' } },
+            y: { beginAtZero: true, min: 0, max: maxValue, grid: { display: true }, ticks: { color: '#8C8C8C', stepSize: step } },
         },
     };
 

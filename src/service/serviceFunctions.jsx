@@ -455,6 +455,7 @@ export const ServiceFunctions = {
       {
         method: "GET",
         headers: {
+          'cache': 'no-store',
           "content-type": "application/json",
           authorization: "JWT " + token,
         },

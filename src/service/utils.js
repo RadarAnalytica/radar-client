@@ -606,3 +606,20 @@ export const fileDownload = (blob, title) => {
   link.click();
   link.parentNode.removeChild(link);
 }
+
+
+export const chartYaxisMaxScale = (maxChartValue) => {
+  let maxValue = Math.ceil(maxChartValue / 10) * 10
+
+  if (maxChartValue < 100) {
+    maxValue = Math.ceil(maxChartValue / 10) * 10
+  }
+  if (maxChartValue >= 100 && maxChartValue < 1000) {
+    maxValue = Math.ceil(maxChartValue / 100) * 100
+  }
+  if (maxChartValue >= 1000) {
+    maxValue = Math.ceil(maxChartValue / 1000) * 1000
+  }
+
+  return maxValue
+}
