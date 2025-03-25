@@ -56,7 +56,7 @@ const UnitCalculatorPage = () => {
         // console.log(storagePrice)
         // console.log(investValue)
         // console.log(storagePrice)
-        setResult(unitCalcResultFunction(fields, mpMainFee, lastMileLogisticsPrice, lastMileLogisticsPriceWBuyout, storagePrice, investValue, storagePrice))
+        setResult(unitCalcResultFunction(fields, mpMainFee, lastMileLogisticsPrice, lastMileLogisticsPriceWBuyout, Math.round(storagePrice), investValue, Math.round(storagePrice)))
 
         // obkect for tokenized data
         const data = {
