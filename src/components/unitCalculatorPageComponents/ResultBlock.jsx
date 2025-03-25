@@ -70,7 +70,8 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                         type='primary'
                         //style={{ color: '#5329FF' }}
                         iconPosition='start'
-                        icon={<ShareIcon />}
+                        icon={!!!result && <ShareIcon />}
+                        disabled={!!result}
                         size='large'
                         onClick={() => {shareButtonClickHandler()}}
                     >{buttonState}</Button>
