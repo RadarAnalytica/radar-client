@@ -139,11 +139,11 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         onSearch={handleSearch}
                         onSelect={handleSelect}
                         options={autocompleteOptions?.map(_ => ({ value: _.name}))}
-                        dropdownRender={menu => (
-                            <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                                {menu}
-                            </div>
-                        )}
+                        // dropdownRender={menu => (
+                        //     <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                        //         {menu}
+                        //     </div>
+                        // )}
                     />
                 </Form.Item>
             </ConfigProvider>
