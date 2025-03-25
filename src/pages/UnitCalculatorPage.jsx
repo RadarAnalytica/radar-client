@@ -38,7 +38,12 @@ const UnitCalculatorPage = () => {
     const package_height = Form.useWatch('package_height', form);
     // ---------------------------------------------------------------------//
 
-    
+    // --- следим за изменениями полей формы --- //
+    const onFieldsChanged = () => {
+        setResult(undefined)
+        setToken(null)
+    }
+    // ------------------------------------------- //
 
     // ---------------------- form submit handler ----------------------------//
     const submitHandler = (fields) => {
@@ -222,6 +227,7 @@ const UnitCalculatorPage = () => {
                                 layout="vertical"
                                 onFinish={submitHandler}
                                 form={form}
+                                onFieldsChange={onFieldsChanged}
                                 initialValues={{
                                     product_price: 3000,
                                     product_cost: 1000,

@@ -11,6 +11,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
     const [ buttonState, setButtonState ] = useState('Поделиться результатом')
     const { pathname } = useLocation()
+    console.log(result)
 
     const shareButtonClickHandler = () => {
         
@@ -70,8 +71,8 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                         type='primary'
                         //style={{ color: '#5329FF' }}
                         iconPosition='start'
-                        icon={!!!result && <ShareIcon />}
-                        disabled={!!result}
+                        icon={result !== undefined && <ShareIcon />}
+                        disabled={result === undefined}
                         size='large'
                         onClick={() => {shareButtonClickHandler()}}
                     >{buttonState}</Button>
@@ -86,8 +87,9 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                 >
                     <Button
                         type='primary'
-                        icon={<DownloadIcon />}
+                        icon={result !== undefined && <DownloadIcon />}
                         iconPosition='start'
+                        disabled={result === undefined}
                         size='large'
                         onClick={generateExcel}
                     >Скачать Excel</Button>
