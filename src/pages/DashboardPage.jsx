@@ -39,6 +39,8 @@ import { ScheduleProfitabilityChart, ScheduleBigChart, RevenueStorageChart, TaxT
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+  
   const navigate = useNavigate();
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
