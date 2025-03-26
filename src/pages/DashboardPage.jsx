@@ -49,6 +49,7 @@ const DashboardPage = () => {
   // const [changeBrand, setChangeBrand] = useState();
   const [dataDashBoard, setDataDashboard] = useState();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isDetailChartDataLoading, setIsDetailChartDataLoading] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
 
   const [selectedRangeDetail, setSelectedRangeDetail] = useState(selectedRange);
@@ -181,6 +182,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const updateChartDetailData = async () => {
+      setIsDetailChartDataLoading(true)
       const data = await ServiceFunctions.getChartDetailData(
         authToken,
         selectedRangeDetail,
@@ -216,6 +218,7 @@ const DashboardPage = () => {
       setDetailChartLabels(result);
       setDetailChartData(counts);
       setDetailChartAverages(averages);
+      setIsDetailChartDataLoading(false)
     };
     activeBrand?.id && updateChartDetailData();
   }, [selectedRangeDetail, activeBrand]);
@@ -1267,6 +1270,7 @@ const DashboardPage = () => {
                           labels={detailChartLabels}
                           chartData={detailChartData}
                           averages={detailChartAverages}
+                          isLoading={isDetailChartDataLoading}
                         />
                       </div>
                     </div>

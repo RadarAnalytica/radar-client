@@ -6,12 +6,12 @@ import styles from './DetailChart.module.css'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const DetailChart = ({ labels, chartData }) => {
+const DetailChart = ({ labels, chartData, isLoading }) => {
 
     const absoluteValue = chartData?.reduce((i, acc) => {
         return acc += i
     }, 0)
-    const sortedChartData = [...chartData]?.sort((a,b) => b - a)
+    const sortedChartData = [...chartData]?.sort((a, b) => b - a)
     const maxValue = chartYaxisMaxScale(sortedChartData[0])
     const step = Math.round(maxValue / 10)
     const chartRef = useRef(null);
@@ -136,27 +136,30 @@ const DetailChart = ({ labels, chartData }) => {
 
     return (
         <div ref={containerRef} style={{ position: 'relative', minWidth: '630px', width: '100%' }}>
-            {absoluteValue === 0 &&
-            <div 
-                className={styles.chart__noData}
-            >
-                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1"/>
-                <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65"/>
-                </svg>
-                Нет продаж за выбранный период
-            </div>
+            {!isLoading && absoluteValue === 0 &&
+                <div
+                    className={styles.chart__noData}
+                >
+                    <div className={styles.chart__noDataWrapper}>
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+                        <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
+                    </svg>
+                    Нет продаж за выбранный период
+                    </div>
+                </div>
             }
-            {(!chartData || chartData?.length === 0) &&
-            <div 
-                className={styles.chart__noData}
-            >
-                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1"/>
-                <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65"/>
-                </svg>
-                Не удалось получить данные за период
-            </div>
+            {isLoading &&
+                <div
+                    className={styles.chart__noData}
+                >
+                    <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100%' }}
+                    >
+                        <span className='loader'></span>
+                    </div>
+                </div>
             }
             <Bar ref={chartRef} data={data} options={options} />
             {renderCustomTooltip()}
@@ -165,3 +168,12 @@ const DetailChart = ({ labels, chartData }) => {
 };
 
 export default DetailChart;
+
+/**
+ *  <div
+          className='d-flex flex-column align-items-center justify-content-center'
+          style={{ height: '100%' }}
+        >
+          <span className='loader'></span>
+        </div>
+ */
