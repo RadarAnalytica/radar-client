@@ -953,7 +953,7 @@ const SolScreenshot = () => {
         height='685.491'
         rx='19.37'
         stroke='black'
-        stroke-opacity='0.1'
+        strokeOpacity='0.1'
         strokeWidth='1.50935'
       />
       <defs>

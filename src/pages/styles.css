@@ -56,42 +56,42 @@ input[type="number"]:focus {
   /* strokeWidth: 2px !important; */
   fill: rgba(255, 249, 236, 1);
   transition: all 0.25s ease-in-out;
-  stroke-opacity: 1 !important;
+  strokeOpacity: 1 !important;
 }
 /* #order-map > g[name='Центральный ФО']:hover * {
   stroke: rgba(129, 172, 255, 1); 
   fill: rgba(129, 172, 255, 0.25); 
-  stroke-opacity: 1;
+  strokeOpacity: 1;
 }
 #order-map > g[name='Северо-Кавказский ФО']:hover * {
   stroke: rgba(255, 69, 0, 1); 
   fill: rgba(255, 69, 0, 0.25); 
-  stroke-opacity: 1;
+  strokeOpacity: 1;
 }
 #order-map > g[name='Южный ФО']:hover * {
   stroke: rgba(74, 217, 145, 1); 
   fill:rgba(74, 217, 145, 0.25); 
-  stroke-opacity: 1;
+  strokeOpacity: 1;
 }
 #order-map > g[name='Дальневосточный ФО']:hover * {
   stroke: rgba(165, 42, 42, 1); 
   fill: rgba(165, 42, 42, 0.25); 
-  stroke-opacity: 1;
+  strokeOpacity: 1;
 }
 #order-map > g[name='Сибирский ФО']:hover * {
   stroke: rgba(254, 197, 61, 1); 
   fill: rgba(254, 197, 61, 0.25); 
-  stroke-opacity: 1;
+  strokeOpacity: 1;
 }
 #order-map > g[name='Уральский ФО']:hover * {
   stroke: rgba(128, 128, 128, 1);
   fill: rgba(128, 128, 128, 0.25); 
-  stroke-opacity: 1;
+  strokeOpacity: 1;
 }
 #order-map > g[name='Приволжский ФО']:hover * {
   stroke: rgba(255, 153, 114, 1); 
   fill: rgba(255, 153, 114, 0.25);
-  stroke-opacity: 1;
+  strokeOpacity: 1;
 } */
 
 .g-box-shadow .test-div {

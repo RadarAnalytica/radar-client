@@ -119,15 +119,9 @@ function App() {
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             {/* <Route path='/report-main' element={<ProtectedRoute><ReportMain /></ProtectedRoute>} /> */}
             {/* Public routes */}
-            <Route path='/' element={<Suspense fallback={<LoaderPage />}>{' '}<MainPage /></Suspense>} />
             <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{' '}<UnitCalculatorPage /></Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
-            <Route path='/signup' element={<Suspense fallback={<LoaderPage />}>{' '}<SignUpPage /></Suspense>} />
-            <Route path='/signin' element={<Suspense fallback={<LoaderPage />}>{' '}<SignInPage /></Suspense>} />
             <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}>{' '}<Spasibo /></Suspense>} />
-            <Route path='/politics' element={<Suspense fallback={<LoaderPage />}>{' '}<Politics /></Suspense>} />
-            <Route path='/user-agreement' element={<Suspense fallback={<LoaderPage />}>{' '}<UserAgreement /></Suspense>} />
-            <Route path='/offer' element={<Suspense fallback={<LoaderPage />}>{' '}<PublicOffer /></Suspense>} />
             <Route path='/app' element={<Suspense fallback={<LoaderPage />}>{' '}<MainWidget /></Suspense>} />
             <Route path='/reset' element={<Suspense fallback={<LoaderPage />}>{' '}<RequestResetLink /></Suspense>} />
             <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
@@ -135,7 +129,16 @@ function App() {
             <Route path='/development/Page404' element={<Suspense fallback={<LoaderPage />}>{' '}<Page404 /></Suspense>} />
             <Route path='/contacts' element={<Suspense fallback={<LoaderPage />}>{' '}<Contacts /></Suspense>} />
             <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />
-            <Route path='/how-to-connect-api' element={<Suspense fallback={<LoaderPage />}>{' '}<HowToConnectAPI /></Suspense>} />
+
+            {/* Это роуты которые перемещены в некст. Закомментировал Старина М. 27.03.2025 Не удалены по причине: не до конца протестили... если ты читаешь это после 28.04.2025 - удали   */}
+            {/* <Route path='/' element={<Suspense fallback={<LoaderPage />}>{' '}<MainPage /></Suspense>} />
+            <Route path='/signup' element={<Suspense fallback={<LoaderPage />}>{' '}<SignUpPage /></Suspense>} />
+            <Route path='/signin' element={<Suspense fallback={<LoaderPage />}>{' '}<SignInPage /></Suspense>} />
+            <Route path='/politics' element={<Suspense fallback={<LoaderPage />}>{' '}<Politics /></Suspense>} />
+            <Route path='/user-agreement' element={<Suspense fallback={<LoaderPage />}>{' '}<UserAgreement /></Suspense>} />
+            <Route path='/offer' element={<Suspense fallback={<LoaderPage />}>{' '}<PublicOffer /></Suspense>} />
+            <Route path='/how-to-connect-api' element={<Suspense fallback={<LoaderPage />}>{' '}<HowToConnectAPI /></Suspense>} /> */}
+            
             {/* 404 */}
             <Route path='*' element={<Redirect />} status={404} />
           </Routes>

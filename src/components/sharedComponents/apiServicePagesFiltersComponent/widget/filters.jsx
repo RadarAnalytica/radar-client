@@ -52,7 +52,9 @@ export const Filters = ({
   
     // 0. Получаем данные магазинов
     useEffect(() => {
+      if (!shops || shops.length === 0) {
         fetchShopData();
+      }
     }, [shops]);
     // ------
 

@@ -19,7 +19,7 @@ const Union3 = () => {
       <path
         d='M0 83L365 82.9999'
         stroke='black'
-        stroke-opacity='0.1'
+        strokeOpacity='0.1'
         strokeWidth='1.5'
       />
       <rect x='309' y='251' width='54' height='51' rx='15' fill='#F8F8F8' />
