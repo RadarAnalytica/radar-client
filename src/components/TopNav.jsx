@@ -158,13 +158,12 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
                 </li>
               </ul>
               <div className={styles.menuModal__logoutWrapper}>
-                <Link
-                  to={URL}
+                <button
                   className={styles.menuModal__logoutLink}
                   onClick={() => { logout(); setMenuShown(false) }}
                 >
                   Выход
-                </Link>
+                </button>
               </div>
             </div>
           </div>
