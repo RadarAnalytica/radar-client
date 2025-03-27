@@ -1173,7 +1173,7 @@ const DashboardPage = () => {
                     name={'Комиссия WB'}
                     type={'price'}
                     dataDashBoard={dataDashBoard?.commissionWB}
-                    persent={dataDashBoard?.commissionWBCompare}
+                    percent={dataDashBoard?.commissionWBCompare}
                     loading={loading}
                   />
                 </div>

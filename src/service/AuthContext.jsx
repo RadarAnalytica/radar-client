@@ -129,11 +129,13 @@ export const AuthProvider = ({ children }) => {
   //     user && user.id ? ServiceFunctions.getOneUser(user.id, authToken.token).then(data => setUserImage(data.image)) : setUserImage()
   // }, [])
   const logout = async () => {
-    document.cookie = `radar=;domain=${URL.split('://')[1]}`;
+    document.cookie = `radar=;max-age=-1;domain=${URL.split('://')[1]}`;
+    document.cookie = `radar=;max-age=-1;domain=.${URL.split('://')[1]}`;
+    document.cookie = `radar=;max-age=-1;domain=${window.location.hostname}`;
+    document.cookie = `radar=;max-age=-1;domain=.${window.location.hostname}`;
     setAuthToken(null);
     setUser(null);
-    navigate('/');
-    window.reload();
+    window.location.replace(URL)
   };
 
   // Offcanvas functions
