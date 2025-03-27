@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { MessagesDropdown } from "./MessagesDropdown";
 import { Link } from "react-router-dom";
 import styles from './TopNav.module.css'
+import { URL } from "../service/config";
 import "../App.css";
 
 const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
@@ -158,9 +159,9 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
               </ul>
               <div className={styles.menuModal__logoutWrapper}>
                 <Link
-                  to='/'
+                  to={URL}
                   className={styles.menuModal__logoutLink}
-                  onClick={() => { logout(); setMenuShown(false); window.reload() }}
+                  onClick={() => { logout(); setMenuShown(false) }}
                 >
                   Выход
                 </Link>
