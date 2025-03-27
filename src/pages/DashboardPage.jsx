@@ -1145,7 +1145,7 @@ const DashboardPage = () => {
                       name={'Средний чек'}
                       dataDashBoard={dataDashBoard?.averageBill}
                       type={'price'}
-                      percent={curOrders?.periodComparison?.avgPriceRubDynamics}
+                      percent={dataDashBoard?.averageBillCompare}
                       loading={loading}
                     />
                   </div>
