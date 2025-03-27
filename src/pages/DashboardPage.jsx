@@ -34,18 +34,21 @@ import DownloadButton from '../components/DownloadButton';
 import DetailChart from '../components/DetailChart';
 import { format, differenceInDays } from 'date-fns';
 
+import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent'
+
 import { ScheduleProfitabilityChart, ScheduleBigChart, RevenueStorageChart, TaxTable, StructureRevenue } from '../components/dashboard';
 
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
-  
+
   const navigate = useNavigate();
+  const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
   const { user, authToken, logout } = useContext(AuthContext);
   const location = useLocation();
   const [wbData, setWbData] = useState();
-  const [selectedRange, setSelectedRange] = useState({ period: 30 });
+  const [_, setSelectedRange] = useState({ period: 30 });
   const [content, setContent] = useState();
   const [state, setState] = useState();
   // const [changeBrand, setChangeBrand] = useState();
@@ -62,9 +65,9 @@ const DashboardPage = () => {
   // console.log('shouldNavigate', shouldNavigate);
   const dispatch = useAppDispatch();
   const shops = useAppSelector((state) => state.shopsSlice.shops);
-  const [activeBrand, setActiveBrand] = useState(null);
+
+  //const [_, setActiveBrand] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(true);
   const prevDays = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
 
@@ -75,113 +78,13 @@ const DashboardPage = () => {
 
 
 
-  // ------- Фетч массива магазинов -------------//
-  const fetchShopData = async () => {
-    setLoading(true)
-    try {
-      dispatch(fetchShops(authToken));
-    } catch (error) {
-      console.error("Error fetching initial data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  //---------------------------------------------//
-
-
-  // 0. Получаем данные магазинов
   useEffect(() => {
-    fetchShopData();
-  }, []);
-  // ------
-
-  // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
-  // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
-  useEffect(() => {
-    if (shops && shops.length > 0 && !activeBrand) {
-      // достаем сохраненный магазин
-      const shopFromLocalStorage = localStorage.getItem('activeShop')
-      // если сохранненный магазин существует и у нас есть массив магазинов....
-      if (shopFromLocalStorage && shopFromLocalStorage !== 'null' && shopFromLocalStorage !== 'undefined') {
-        // парсим сохраненный магазин
-        const { id } = JSON.parse(shopFromLocalStorage);
-        // проверяем есть ли магазин в массиве (это на случай разных аккаунтов)
-        const isInShops = shops.some(_ => _.id === id);
-        // Если магазин есть в массиве (т.е. валиден для этого аккаунта) то...
-        if (isInShops) {
-          //....устанавливаем как текущий
-          setActiveBrand(shops.find(_ => _.id === id))
-          // Если нет, то...
-        } else {
-          // ...Обновляем локал - сохраняем туда первый из списка
-          localStorage.setItem('activeShop', JSON.stringify(shops[0]))
-          // ...устанавливаем текущим первый из списка
-          setActiveBrand(shops[0])
-        }
-      } else {
-        // ...Обновляем локал - сохраняем туда первый из списка
-        localStorage.setItem('activeShop', JSON.stringify(shops[0]))
-        // ...устанавливаем текущим первый из списка
-        setActiveBrand(shops[0])
-      }
-    }
-
-    if (shops && activeBrand && !activeBrand.is_primary_collect) {
-      const currentShop = shops.find(shop => shop.id === activeBrand.id)
-      if (currentShop?.is_primary_collect) {
-        setActiveBrand(currentShop)
-      }
-    }
-  }, [shops])
-
-  //--------------------------------------------------------------------------------//
-
-
-
-  useEffect(() => {
-    activeBrand && localStorage.setItem('activeShop', JSON.stringify(activeBrand))
-    let interval;
-    if (activeBrand) {
+    if (activeBrand && activeBrand.is_primary_collect) {
       updateDataDashBoard(selectedRange, activeBrand.id, authToken)
-    } else {
-      interval = setInterval(() => { fetchShopData() }, 30000)
     }
-
-    return () => { interval && clearInterval(interval) }
   }, [activeBrand, selectedRange]);
 
-  // useEffect(() => {
-  //   let intervalId = null;
-
-  //   if (
-  //     oneShop?.is_primary_collect &&
-  //     oneShop?.is_primary_collect === allShop
-  //   ) {
-  //     const currentShop = shops?.find((item) => item.id === activeShopId);
-  //     if (currentShop) {
-  //       localStorage.setItem('activeShop', JSON.stringify(currentShop));
-  //     }
-  //     if (
-  //       !isInitialLoading &&
-  //       (selectedRange === prevDays.current || activeBrand === prevActiveBrand.current)
-  //     ) {
-  //       updateDataDashBoard(selectedRange, activeBrand, authToken);
-  //     }
-  //     // !isInitialLoading &&  updateDataDashBoard(days, activeBrand, authToken);
-  //     clearInterval(intervalId);
-  //   }
-  //   if (!oneShop?.is_primary_collect && activeBrand !== 0) {
-  //     intervalId = setInterval(() => {
-  //       dispatch(fetchShops(authToken));
-  //     }, 30000);
-  //   }
-  //   return () => {
-  //     if (intervalId) {
-  //       clearInterval(intervalId);
-  //     }
-  //   };
-  // }, [activeBrand, selectedRange]);
-
+ 
   useEffect(() => {
     const updateChartDetailData = async () => {
       setIsDetailChartDataLoading(true)
@@ -236,52 +139,15 @@ const DashboardPage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  // useEffect(() => {
-  //   const fetchInitialData = async () => {
-  //     setLoading(true);
-  //     try {
-  //       await dispatch(fetchShops(authToken));
-  //       if (activeBrand !== undefined) {
-  //         await updateDataDashBoard(selectedRange, activeBrand.id, authToken);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching initial data:', error);
-  //     } finally {
-  //       setLoading(false);
-  //       setFirstLoading(false);
-  //       setIsInitialLoading(false);
-  //     }
-  //   };
-  //   //   if (firstLoading) {
-  //   //     await dispatch(fetchShops(authToken)).then(() => {
-  //   //       setFirstLoading(false);
-  //   //     });
-  //   //     await updateDataDashBoard(days, activeBrand, authToken);
-  //   //   }
-
-  //   // }
-
-  //   activeBrand?.id && fetchInitialData();
-  // }, []);
+  
 
   useEffect(() => {
-    if (shops.length === 0 && !firstLoading) {
+    if (shops && shops.length === 0 && !firstLoading) {
       navigate('/onboarding');
     }
-  }, [firstLoading, shops.length]);
+  }, [firstLoading, shops]);
 
-  // useEffect(() => {
-  //   if (shops.length > 0) {
-  //     let id;
-  //     if (activeBrand?.id == undefined) {
-  //       id = shops?.[0].id;
-  //       localStorage.setItem('activeShop', JSON.stringify(shops?.[0]));
-  //     } else {
-  //       id = activeBrand.id;
-  //     }
-  //     setActiveBrand(id);
-  //   }
-  // }, [shops]);
+ 
 
   const handleUpdateDashboard = () => {
     setTimeout(() => {
@@ -295,24 +161,6 @@ const DashboardPage = () => {
   };
 
 
-
-  // useEffect(() => {
-  //   if (activeBrand !== undefined && authToken !== authTokenRef.current) {
-  //     updateDataDashBoard(selectedRange, activeBrand.id, authToken);
-  //   }
-  // }, [authToken]);
-
-  // Update dashboard data when necessary
-  // useEffect(() => {
-  //   if (selectedRange !== prevDays.current || activeBrand !== prevActiveBrand.current) {
-  //     if (activeBrand !== undefined) {
-  //       updateDataDashBoard(selectedRange, activeBrand, authToken);
-  //     }
-  //     prevDays.current = selectedRange;
-  //     prevActiveBrand.current = activeBrand;
-  //   }
-  //   setSelectedRange(selectedRange)
-  // }, [selectedRange, activeBrand]);
 
   useEffect(() => {
     const calculateNextEvenHourPlus30 = () => {
@@ -341,7 +189,7 @@ const DashboardPage = () => {
     const targetTime = calculateNextEvenHourPlus30();
     const timeToTarget = targetTime.getTime() - Date.now();
     const intervalId = setTimeout(() => {
-      dispatch(fetchShops(authToken));
+      //dispatch(fetchShops(authToken));
       updateDataDashBoard(selectedRange, activeBrand.id, authToken);
     }, timeToTarget);
 
@@ -1047,13 +895,12 @@ const DashboardPage = () => {
     return <NoSubscriptionPage title={'Сводка продаж'} />;
   }
 
-  if (!shops || shops.length === 0) {
-    return null; // or a loading indicator
-  }
+  // if (!shops || shops.length === 0) {
+  //   return null; // or a loading indicator
+  // }
 
   const rangeDays = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period
   return (
-    isVisible && (
       <div className='dashboard-page'>
         <SideNav />
         <div className='dashboard-content pb-3'>
@@ -1083,22 +930,16 @@ const DashboardPage = () => {
             <SelfCostWarning />
           ) : null}
           {wbData === null ? <DataCollectionNotification /> : null} */}
-          {shops && activeBrand &&
-          <DashboardFilter
-            shops={shops} // магазины
-            setActiveBrand={setActiveBrand} // сеттер id магазина
-            setSelectedRange={setSelectedRange} // сеттер периода (пробрасывается дальше в селект периода)
-            selectedRange={selectedRange} // выбранный период (пробрасывается дальше в селект периода)
-            activeBrand={activeBrand} // выбранный id магазина
 
-          // selectedRange={selectedRange}
-          // setSelectedRange={setSelectedRange}
-          // setActiveBrand={handleSaveActiveShop}
-          // // setChangeBrand={setChangeBrand}
-          // shops={shops}
-          // // setPrimary={setPrimary}
-          // activeShopId={activeShopId}
-          />}
+
+          <div style={{
+            padding: '0 36px',
+            margin: '20px 0'
+          }}>
+            <Filters
+              setLoading={setLoading}
+            />
+          </div>
 
           {activeBrand && activeBrand.is_primary_collect && (
             <div>
@@ -1200,14 +1041,14 @@ const DashboardPage = () => {
                           fill='#F0AD00'
                         />
                         <path
-                          fill-rule='evenodd'
-                          clip-rule='evenodd'
+                          fillRule='evenodd'
+                          clipRule='evenodd'
                           d='M16.5 9.00012C16.5 13.1423 13.1421 16.5001 9 16.5001C4.85786 16.5001 1.5 13.1423 1.5 9.00012C1.5 4.85799 4.85786 1.50012 9 1.50012C13.1421 1.50012 16.5 4.85799 16.5 9.00012ZM15.375 9.00012C15.375 12.5209 12.5208 15.3751 9 15.3751C5.47918 15.3751 2.625 12.5209 2.625 9.00012C2.625 5.47931 5.47918 2.62512 9 2.62512C12.5208 2.62512 15.375 5.47931 15.375 9.00012Z'
                           fill='#F0AD00'
                         />
                         <path
-                          fill-rule='evenodd'
-                          clip-rule='evenodd'
+                          fillRule='evenodd'
+                          clipRule='evenodd'
                           d='M1.25 9.00012C1.25 4.71991 4.71979 1.25012 9 1.25012C13.2802 1.25012 16.75 4.71991 16.75 9.00012C16.75 13.2803 13.2802 16.7501 9 16.7501C4.71979 16.7501 1.25 13.2803 1.25 9.00012ZM9 1.75012C4.99593 1.75012 1.75 4.99606 1.75 9.00012C1.75 13.0042 4.99593 16.2501 9 16.2501C13.0041 16.2501 16.25 13.0042 16.25 9.00012C16.25 4.99606 13.0041 1.75012 9 1.75012ZM2.375 9.00012C2.375 5.34124 5.34111 2.37512 9 2.37512C12.6589 2.37512 15.625 5.34124 15.625 9.00012C15.625 12.659 12.6589 15.6251 9 15.6251C5.34111 15.6251 2.375 12.659 2.375 9.00012ZM9 2.87512C5.61726 2.87512 2.875 5.61738 2.875 9.00012C2.875 12.3829 5.61726 15.1251 9 15.1251C12.3827 15.1251 15.125 12.3829 15.125 9.00012C15.125 5.61738 12.3827 2.87512 9 2.87512ZM9 4.93762C8.82741 4.93762 8.6875 5.07753 8.6875 5.25012V9.75012C8.6875 9.92271 8.82741 10.0626 9 10.0626H12C12.1726 10.0626 12.3125 9.92271 12.3125 9.75012C12.3125 9.57753 12.1726 9.43762 12 9.43762H9.5625C9.42443 9.43762 9.3125 9.32569 9.3125 9.18762V5.25012C9.3125 5.07753 9.17259 4.93762 9 4.93762ZM8.1875 5.25012C8.1875 4.80139 8.55127 4.43762 9 4.43762C9.44873 4.43762 9.8125 4.80139 9.8125 5.25012V8.93762H12C12.4487 8.93762 12.8125 9.30139 12.8125 9.75012C12.8125 10.1989 12.4487 10.5626 12 10.5626H9C8.55127 10.5626 8.1875 10.1989 8.1875 9.75012V5.25012Z'
                           fill='#F0AD00'
                         />
@@ -1473,7 +1314,6 @@ const DashboardPage = () => {
         </div>
       </div>
     )
-  );
 };
 
 export default DashboardPage;
