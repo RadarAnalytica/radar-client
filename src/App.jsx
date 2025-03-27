@@ -1,6 +1,6 @@
 import "./App.css";
 import * as React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./service/AuthContext";
 import { Suspense } from "react";
 import { URL } from "./service/config";
@@ -137,11 +137,17 @@ function App() {
             <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />
             <Route path='/how-to-connect-api' element={<Suspense fallback={<LoaderPage />}>{' '}<HowToConnectAPI /></Suspense>} />
             {/* 404 */}
-            <Route path='*' element={<Navigate to={`${URL}/not-found`} replace />} status={404} />
+            <Route path='*' element={<Redirect />} status={404} />
           </Routes>
         </ProductProvider>
     </AuthProvider>
   )
+}
+
+const Redirect = () => {
+  React.useLayoutEffect(() => {
+    window.location.replace(`${URL}/not-found`)
+  }, [])
 }
 
 export default App;

@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import DownloadButton from '../../../DownloadButton';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AuthContext from '../../../../service/AuthContext';
-import Period from '../../../period/Period';
 import { fileDownload } from '../../../../service/utils';
 import styles from './filters.module.css'
 import { TimeSelect, PlainSelect } from '../features'
