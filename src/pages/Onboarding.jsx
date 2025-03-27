@@ -264,7 +264,7 @@ const Onboarding = () => {
                       <path
                         d='M14 21.75H3C1.75736 21.75 0.75 20.7426 0.75 19.5V3.5C0.75 2.25736 1.75736 1.25 3 1.25H10.8588L16.25 6.32405V19.5C16.25 20.7426 15.2426 21.75 14 21.75Z'
                         stroke='black'
-                        stroke-opacity='0.5'
+                        strokeOpacity='0.5'
                         strokeWidth='1.5'
                       />
                     </svg>

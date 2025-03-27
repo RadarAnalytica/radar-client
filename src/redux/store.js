@@ -22,6 +22,7 @@ import penaltiesSlice from './reportPrnalties/penaltiesSlice';
 import penaltyFiltersSlice from './reportPrnalties/penaltyFiltersSlice';
 import chartsFiltersSlice from './reportCharts/chartsFiltersSlice';
 import downloadReducer from './download/downloadSlice';
+import { reducer as apiServicePagesFilterStateReducer } from './apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 
 const storeOptions = {
   reducer: {
@@ -47,6 +48,7 @@ const storeOptions = {
     penaltyFiltersSlice,
     chartsFiltersSlice,
     downloadReducer,
+    filters: apiServicePagesFilterStateReducer,
   },
 };
 

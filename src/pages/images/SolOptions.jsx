@@ -26,7 +26,7 @@ const SolOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='21.5' cy='63.5' r='12' fill='#4092F7' />
       <rect
@@ -67,7 +67,7 @@ const SolOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='248.5' cy='63.5' r='12' fill='#4092F7' />
       <rect
@@ -108,7 +108,7 @@ const SolOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='21.5' cy='106.5' r='12' fill='#4092F7' />
       <rect
@@ -149,7 +149,7 @@ const SolOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='311.5' cy='106.5' r='12' fill='#4092F7' />
       <rect
@@ -190,7 +190,7 @@ const SolOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='21.5' cy='149.5' r='12' fill='#4092F7' />
       <rect
@@ -231,7 +231,7 @@ const SolOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='243.5' cy='149.5' r='12' fill='#4092F7' />
       <rect
@@ -272,7 +272,7 @@ const SolOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='21.5' cy='192.5' r='12' fill='#4092F7' />
       <rect
@@ -313,7 +313,7 @@ const SolOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='144.5' cy='192.5' r='12' fill='#4092F7' />
       <rect
