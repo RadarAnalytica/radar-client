@@ -65,6 +65,7 @@ const Schedule = React.lazy(() => import("./pages/Schedule"));
 const HowToConnectAPI = React.lazy(() => import("./pages/HowToConnectAPI"));
 const StartPage = React.lazy(() => import("./pages/StartPage"));
 const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage"));
+const _DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 import { BlogAdd, BlogList } from "./pages/blog";
@@ -84,6 +85,7 @@ function App() {
         <ProductProvider>
           <Routes>
             {/* Protected routes */}
+            <Route path='/dashboard2' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><_DashboardPage /></ProtectedRoute>} />
             <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
             <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
             <Route path='/seo' element={<ProtectedRoute expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
