@@ -20,13 +20,59 @@ const AbcAnalysisPage = () => {
   const [viewType, setViewType] = useState("proceeds");
   const [loading, setLoading] = useState(false);
 
+  // console.log('---------- base ----------')
+  // console.log(loading)
+  // console.log(dataAbcAnalysis)
+  // console.log(activeBrand)
+  // console.log(viewType)
+  // console.log('--------------------------')
+
+
+  const updateDataAbcAnalysis = async (
+    viewType,
+    authToken,
+    days,
+    activeBrand
+  ) => {
+    setLoading(true);
+    try {
+      const data = await ServiceFunctions.getAbcData(
+        viewType,
+        authToken,
+        days,
+        activeBrand
+      );
+
+  // console.log('---------- base ----------')
+  // console.log(viewType)
+  // console.log(authToken)
+  // console.log(days)
+  // console.log(activeBrand)
+  // console.log('--------------------------')
+  //     console.log('data: ')
+  //     console.log(data)
+      setIsNeedCost(data.is_need_cost);
+      const result = data.results;
+
+      if (result && result.length > 0) {
+        setDataAbcAnalysis(result);
+      } else {
+        setDataAbcAnalysis([]);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+    setLoading(false);
+  };
  
    // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
   useEffect(() => {
-    if (activeBrand?.is_primary_collect) {
-      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id)
+    if (activeBrand?.is_primary_collect && viewType && days && authToken) {
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
     }
-  }, [activeBrand, viewType, days]);
+  }, [activeBrand, viewType, days, authToken]);
   //---------------------------------------------------------------------------------------//
 
   //for SelfCostWarning
@@ -77,32 +123,9 @@ const AbcAnalysisPage = () => {
     };
   }, [dispatch, viewType, authToken, days, activeBrand]);
 
-  const updateDataAbcAnalysis = async (
-    viewType,
-    authToken,
-    days,
-    activeBrand
-  ) => {
-    setLoading(true);
-    try {
-      const data = await ServiceFunctions.getAbcData(
-        viewType,
-        authToken,
-        days,
-        activeBrand
-      );
-      setIsNeedCost(data.is_need_cost);
-      const result = data.results;
+  
 
-      if (result && result.length > 0) {
-        setDataAbcAnalysis(result);
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"ABC-анализ"} />;

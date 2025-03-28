@@ -31,6 +31,7 @@ const OrdersMap = () => {
   const { user, authToken, logout } = useContext(AuthContext);
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
+  
   // const [geoData, setGeoData] = useState([]);
   // const { geoData, loading, error } = useAppSelector(
     // (state) => state.geoDataSlice
@@ -41,12 +42,11 @@ const OrdersMap = () => {
   const [_, setActiveBrand] = useState(null);
   const [firstLoading ,setFirstLoading] = useState(true);
   const [data, setData] = useState();
-  const [loading, setLoading] = useState(true); // лоадер для загрузки данных
+  const [loading, setLoading] = useState(false); // лоадер для загрузки данных
   const [isVisible, setIsVisible] = useState(true);
   const prevselectedRange = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
-
   
   const radioOptions = [
     { value: 'region', label: 'По регионам' },
@@ -57,10 +57,12 @@ const OrdersMap = () => {
 
   useEffect(() => {
     const updateGeoData = async () => {
+      setLoading(true)
       if (activeBrand && selectedRange && authToken) {
         const data = await ServiceFunctions.getGeographyData( authToken, selectedRange, activeBrand.id );
         setGeoData(data);
       }
+      setLoading(false)
     }
     if (activeBrand?.is_primary_collect) {
       updateGeoData();

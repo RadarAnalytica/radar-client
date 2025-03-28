@@ -54,10 +54,6 @@ const StockAnalysis = () => {
   useEffect(() => {
     const fetchAnalysisData = async () => {
       setLoading(true);
-      if (
-        selectedRange !== prevDays.current ||
-        activeBrand.id !== prevActiveBrand.current
-      ) {
         if (activeBrand) {
           
           const data = await ServiceFunctions.getAnalysisData(
@@ -72,13 +68,13 @@ const StockAnalysis = () => {
         prevDays.current = selectedRange;
         prevActiveBrand.current = activeBrand.id;
         
-      }
+      
       setLoading(false);
     };
     if (activeBrand?.is_primary_collect) {
       fetchAnalysisData();
     }
-  }, [selectedRange, activeBrand]);
+  }, [selectedRange, activeBrand, authToken]);
   //---------------------------------------------------------------------------------------//
 
 

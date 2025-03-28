@@ -932,10 +932,7 @@ const DashboardPage = () => {
           {wbData === null ? <DataCollectionNotification /> : null} */}
 
 
-          <div style={{
-            padding: '0 36px',
-            margin: '20px 0'
-          }}>
+          <div className={styles.filtersWrapper} >
             <Filters
               setLoading={setLoading}
             />
