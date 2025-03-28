@@ -86,7 +86,7 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
           )}
         </div>
         {children}
-        <span className='col-2 d-flex justify-content-around top-menu top-wrapper'>
+        <span className='col-2 d-flex justify-content-around top-menu top-wrapper' style={{ border: '1px solid red'}}>
           <span className='error-notification' ref={componentRef}>
             <span onClick={(event) => handleErrorClick(event)}>
               <svg
