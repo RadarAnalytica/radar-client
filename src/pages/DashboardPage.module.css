@@ -10,6 +10,12 @@
     align-items: center;
     z-index: 1000;
 }
+.filtersWrapper {
+    width: 100%;
+    max-width: 78vw;
+    margin: 20px auto;
+    padding: 0 1rem;
+}
 .modalHeader {
     display: flex;
     justify-content: space-between;
