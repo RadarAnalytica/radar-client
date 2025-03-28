@@ -16,7 +16,7 @@ const SmallOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='21.5' cy='16.5' r='12' fill='#4092F7' />
       <rect
@@ -57,7 +57,7 @@ const SmallOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='216.5' cy='16.5' r='12' fill='#4092F7' />
       <rect
@@ -98,7 +98,7 @@ const SmallOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='21.5' cy='59.5' r='12' fill='#4092F7' />
       <rect
@@ -139,7 +139,7 @@ const SmallOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='144.5' cy='59.5' r='12' fill='#4092F7' />
       <rect
@@ -180,7 +180,7 @@ const SmallOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='21.5' cy='102.5' r='12' fill='#4092F7' />
       <rect
@@ -221,7 +221,7 @@ const SmallOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='204.5' cy='102.5' r='12' fill='#4092F7' />
       <rect
@@ -262,7 +262,7 @@ const SmallOptions = () => {
         height='32'
         rx='7.5'
         stroke='#4092F7'
-        stroke-opacity='0.4'
+        strokeOpacity='0.4'
       />
       <circle opacity='0.2' cx='21.5' cy='145.5' r='12' fill='#4092F7' />
       <rect

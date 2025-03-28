@@ -942,7 +942,7 @@ const ExtDemoSvg = () => {
         height='870.5'
         rx='19.25'
         stroke='black'
-        stroke-opacity='0.1'
+        strokeOpacity='0.1'
         strokeWidth='1.5'
       />
       <defs>

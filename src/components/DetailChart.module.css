@@ -1,0 +1,39 @@
+@keyframes show {
+    from {
+        translate: 0 1000%
+    };
+    to {
+        translate: 0 0
+    }
+}
+
+.chart__noData {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    bottom: 20%;
+    right: 10%;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: '#1a1a1a';
+}
+
+.chart__noDataWrapper {
+    background: #F2F2F2;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,.2);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 12px;
+}

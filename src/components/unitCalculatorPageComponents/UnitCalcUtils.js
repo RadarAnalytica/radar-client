@@ -287,7 +287,7 @@ export const fieldsVocab = {
     current_storage_logistic_price: 'Логистика с % выкупа, ₽',
     storagePrice: 'Хранение 1 шт. в мес., ₽',
     mpFee: 'Комиссия маркетплейса, %',
-    absMpFee: 'Комиссия маркетплейса, ₽',
+    absMpFee: 'Комиссия маркетплейса (общая), ₽',
     absTaxFee: 'Налог в рублях, ₽',
 
     selfCost: 'Общая себестоимость, ₽',

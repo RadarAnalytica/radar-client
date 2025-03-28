@@ -2,13 +2,16 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { chartYaxisMaxScale } from '../service/utils';
+import styles from './DetailChart.module.css'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const DetailChart = ({ labels, chartData }) => {
+const DetailChart = ({ labels, chartData, isLoading }) => {
 
-    console.log(chartData)
-    const sortedChartData = [...chartData].sort((a,b) => b - a)
+    const absoluteValue = chartData?.reduce((i, acc) => {
+        return acc += i
+    }, 0)
+    const sortedChartData = [...chartData]?.sort((a, b) => b - a)
     const maxValue = chartYaxisMaxScale(sortedChartData[0])
     const step = Math.round(maxValue / 10)
     const chartRef = useRef(null);
@@ -71,7 +74,7 @@ const DetailChart = ({ labels, chartData }) => {
         },
         scales: {
             x: { grid: { display: false }, ticks: { color: '#8C8C8C' } },
-            y: { beginAtZero: true, min: 0, max: maxValue, grid: { display: true }, ticks: { color: '#8C8C8C', stepSize: step } },
+            y: { beginAtZero: true, min: 0, max: !!maxValue ? maxValue : 10, grid: { display: true }, ticks: { color: '#8C8C8C', stepSize: step } },
         },
     };
 
@@ -133,6 +136,31 @@ const DetailChart = ({ labels, chartData }) => {
 
     return (
         <div ref={containerRef} style={{ position: 'relative', minWidth: '630px', width: '100%' }}>
+            {!isLoading && absoluteValue === 0 &&
+                <div
+                    className={styles.chart__noData}
+                >
+                    <div className={styles.chart__noDataWrapper}>
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+                        <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
+                    </svg>
+                    Нет продаж за выбранный период
+                    </div>
+                </div>
+            }
+            {isLoading &&
+                <div
+                    className={styles.chart__noData}
+                >
+                    <div
+                        className='d-flex flex-column align-items-center justify-content-center'
+                        style={{ height: '100%' }}
+                    >
+                        <span className='loader'></span>
+                    </div>
+                </div>
+            }
             <Bar ref={chartRef} data={data} options={options} />
             {renderCustomTooltip()}
         </div>
@@ -140,3 +168,12 @@ const DetailChart = ({ labels, chartData }) => {
 };
 
 export default DetailChart;
+
+/**
+ *  <div
+          className='d-flex flex-column align-items-center justify-content-center'
+          style={{ height: '100%' }}
+        >
+          <span className='loader'></span>
+        </div>
+ */

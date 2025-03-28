@@ -1,9 +1,10 @@
 import { useContext, Suspense } from 'react';
 import AuthContext from './service/AuthContext';
-import { Navigate, useLocation, useNavigation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
+import { URL } from './service/config';
 import { Helmet } from 'react-helmet';
 
 
@@ -41,7 +42,7 @@ const config = {
     subscriptionGuardType: 'redirect', // 'redirect' | 'fallback'
     authProtected: true, // default protection level is auth
     authFallback: (props) => (<MainPage {...props} />), // (props: any) => ReactNode
-    authRedirect: '/signin', // any url
+    authRedirect: `/signin`, // any url
     expireProtected: false, // boolean
     expireFallback: (props) => (<NoSubscriptionPage {...props} />),
     expireRedirect: '/tariffs',
@@ -102,7 +103,7 @@ export const ProtectedRoute = ({
   //   subscription_status: 'Smart'
   // }
 
-  // const user = undefined
+//  const user = undefined
 
   // ----------------------------------------------------------//
 
@@ -113,9 +114,9 @@ export const ProtectedRoute = ({
       case 'redirect': {
         if (isCalculateEntryUrl === '1') {
           sessionStorage.removeItem('isCalculateEntryUrl')
-          return (<Navigate to='/signup' />)
+          return (window.location.replace(`${URL}/signup`))
         } else {
-          return (<Navigate to={authRedirect} />)
+          return (window.location.replace(`${URL}${authRedirect}`))
         }
       }
       case 'fallback': {
@@ -126,7 +127,7 @@ export const ProtectedRoute = ({
         )
       }
     }
-    return (<Navigate to={authRedirect} />)
+    return (window.location.replace(`${URL}${authRedirect}`))
   }
 
   // ---------0. Subscription expiration protection (checking subscription) -------//

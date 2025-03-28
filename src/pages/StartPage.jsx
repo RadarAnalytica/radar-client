@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import SideNav from "../components/SideNav";
 import PopupBanner from "../components/sharedComponents/popupBanner/PopupBanner";
 import TgBanner from "../components/startPageComponents/tgBanner/TgBanner";
+import CalcBanners from "../components/startPageComponents/calcBanners/calcBanners";
 
 
 
@@ -114,8 +115,11 @@ const StartPage = () => {
                         </div>
                     </div>
                     {/* -------------------------------------------------------------- */}
+                   
                 </div>
-
+                <div className={styles.startPage__bannersWrapper}>
+                    <CalcBanners />
+                    </div>
                 <div className={styles.startPage__bannersWrapper}>
                     <PopupBanner
                         offerTitle='1 300 ₽'
