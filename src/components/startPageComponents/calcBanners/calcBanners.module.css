@@ -1,0 +1,118 @@
+.banners {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 20px;
+    overflow: hidden;
+
+    @media (max-width: 1400px) {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+}
+
+.banner {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 4fr;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 190px; 
+    max-height: 190px; 
+}
+
+.banner_bgBlue {
+    background: #5329FF;
+}
+
+.banner_bgGold {
+    background: #F0AD02;
+}
+
+.banner__header {
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.banner__header_bgBlue {
+    background: #7452FE;
+}
+.banner__header_bgGold {
+    background: #CC9302;
+}
+.banner__titleWrapper {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+}
+.banner__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+
+    @media (max-width: 1550px) {
+        font-size: 16px;
+    }
+}
+.banner__mainLink {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #FFF;
+    cursor: pointer;
+    text-decoration: none;
+
+    @media (max-width: 1550px) {
+        font-size: 14px;
+    }
+}
+.banner__body {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.banner__body_left {
+    grid-template-columns: 2fr 1fr 1fr;
+}
+.banner__body_right {
+    grid-template-columns: 2fr 2fr 3fr;
+}
+.banner__imgWrapper {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 0px 8.9px 0px #0000000A;
+    background-color: white;
+    padding: 5px;
+}
+.banner__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left center;
+}
