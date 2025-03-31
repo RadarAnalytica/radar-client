@@ -214,6 +214,12 @@ const AiDescriptionGeneratorPage = () => {
   };
 
   const handleNextStep = async () => {
+    if (!!!productName || !!!shortDescription || competitorsLinks.length === 0) {
+      setErrorMessage('Пожалуйста, заполните все поля!');
+      handleShowModalError();
+      return; 
+    }
+    
     const linksArray = competitorsLinks
       .split('\n')
       .map((link) => link.trim())
@@ -454,7 +460,7 @@ const AiDescriptionGeneratorPage = () => {
           )}
         </div>
         <Modal show={showModalError} onHide={handleCloseModalError}>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton style={{border: 'none'}}>
             <div>
               <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
                 <img src={warningIcon} alt='' style={{ height: '3vh' }} />
