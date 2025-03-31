@@ -110,6 +110,14 @@ const OrderMapPieChart = ({
   // const green = require('../../assets/greenarrow.png');
   // const red = require('../../assets/redarrow.png');
 
+  let bgColorData = colorCons;
+  if (!!!bgColorData || bgColorData.length === 0) {
+    bgColorData = [];
+    firstFive?.forEach(_ => {
+      bgColorData.push(getRandomColor());
+    })
+  }
+
   const data = {
     labels: firstFive?.map((item) =>
       item.districtName ? item.districtName : item.stockName
@@ -118,7 +126,7 @@ const OrderMapPieChart = ({
       {
         label: 'Общая доля',
         data: firstFive?.map((item) => item.percent),
-        backgroundColor: colorCons,
+        backgroundColor: bgColorData,
         borderColor: 'white',
         borderWidth: 0,
       },
