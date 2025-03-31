@@ -44,6 +44,10 @@ export const TimeSelect = () => {
         {
             value: 90,
             title: '90 дней'
+        },
+        {
+            value: 0,
+            title: 'Произвольные даты'
         }
     ];
 
@@ -102,6 +106,15 @@ export const TimeSelect = () => {
     const periodRef = useRef(null);
 
 
+    const timeSelectChangeHandler = (value) => {
+        if (value !== 0) {
+            dispatch(filtersActions.setPeriod({ period: value }))
+        } else {
+            setIsCalendarOpen(true)
+        }
+    }
+
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (periodRef.current && !periodRef.current.contains(event.target)) {
@@ -150,7 +163,8 @@ export const TimeSelect = () => {
                         className={styles.select}
                         options={predefinedRanges.map(i => ({ value: i.value, label: i.title }))}
                         value={selectedRange.period}
-                        onChange={(value) => {dispatch(filtersActions.setPeriod({ period: value }))}}
+                        onChange={timeSelectChangeHandler}
+                        disabled={isCalendarOpen}
                     />
                 </ConfigProvider>
             </div>
@@ -172,7 +186,7 @@ export const TimeSelect = () => {
                     <path d="M1 1.5L7 7.5L13 1.5" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                 </svg>
             </div> */}
-            {isDropdownOpen && (
+            {/* {isDropdownOpen && (
                 <ul className={styles.dropdownMenu}>
                     {
                         predefinedRanges.map((el) => <li key={el.value} onClick={() => selectOption(el.value)}>{el.title}</li>)
@@ -181,7 +195,7 @@ export const TimeSelect = () => {
                         Произвольные даты
                     </li>
                 </ul>
-            )}
+            )} */}
 
             {isCalendarOpen && (
                 <div className={styles.calendarPopup}>

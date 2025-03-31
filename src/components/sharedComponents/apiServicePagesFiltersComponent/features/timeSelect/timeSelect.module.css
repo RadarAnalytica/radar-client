@@ -171,6 +171,15 @@
   appearance: none;
 }
 
+.customPeriodOption {
+  width: 100%;
+  border-top: 1px solid silver;
+  padding: 6px 12px;
+  margin-top: 6px;
+  color: #5329FF;
+  cursor: pointer;
+}
+
 .mainSelectWrapper {
   position: relative;
   width: 100%;
