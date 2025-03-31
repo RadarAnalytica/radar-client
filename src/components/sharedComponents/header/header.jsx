@@ -61,7 +61,7 @@ const Header = ({ title = 'Radar Analytica', titlePrefix }) => {
                         content={<HeaderAlerts messages={messages} />}
                     >
                         <>
-                            <Icon type='alert' counter={messages.length} />
+                            <Icon type='alert' counter={messages?.length} />
                         </>
                     </Popover>
 
