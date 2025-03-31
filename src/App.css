@@ -503,6 +503,7 @@ select {
   z-index: 12;
   font-size: 2vh;
   gap: 0.9em;
+  overflow: hidden;
 }
 
 
