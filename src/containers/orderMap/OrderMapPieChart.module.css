@@ -1,6 +1,35 @@
+.card {
+    background-color: white;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    padding: 24px 32px;
+    margin-bottom: 10px;
+    width: 100%;
+}
 .chartContainer {
-    min-height: 167px;
-    margin-left: -1vw;
+    min-height: 200px;
+    max-width: 40%;
+    aspect-ratio: 1 / 1;
+    height: 100%;
     position: relative;
     margin-right: 8px;
+    flex-shrink: 0;
+    flex-grow: 1;
+}
+
+.cardContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 100%;
+}
+
+.legendContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    max-width: 60%;
+    flex-grow: 0;
+    flex-shrink: 1;
 }
