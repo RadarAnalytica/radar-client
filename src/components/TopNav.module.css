@@ -16,7 +16,7 @@
     justify-content: flex-start;
     align-items: stretch;
     position: relative;
-    top: 68px;
+    top: 80px;
     right: 55px;
     background-color: white;
     border-radius: 8px;
@@ -86,4 +86,30 @@
     cursor: pointer;
     text-decoration: none;
     font-weight: bold;
+  }
+  .messagesBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9998;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+  .messagesModal {
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: 80px;
+    right: 85px;
+    background: white;
+    height: auto;
+    max-height: 75%;
+    overflow-y: scroll;
+    padding: 32px;
+    border-radius: 8px;
+    border: 1px solid silver
   }
