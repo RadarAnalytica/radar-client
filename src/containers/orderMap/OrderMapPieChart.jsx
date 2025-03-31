@@ -340,7 +340,7 @@ const OrderMapPieChart = ({
               return (
                 <div
                   className='mb-2'
-                  style={{ maxWidth: '100%', boxSizing: 'border-box', display: 'grid', gridTemplateColumns: '4fr 1fr 1.5fr', alignItems: 'center', border: '1px solid red' }}
+                  style={{ maxWidth: '100%', boxSizing: 'border-box', display: 'grid', gridTemplateColumns: '4fr 1fr 1.5fr', alignItems: 'center' }}
                   key={key}
                 >
                   {/* circle & title */}
