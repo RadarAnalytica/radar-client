@@ -6,13 +6,12 @@
     overflow: hidden;
     width: 100%;
     display: flex;
-    gap: 52px;
     box-sizing: border-box;
 }
 
 .startPage__content {
     width: 100%;
-    padding: 27px 20px 25px 0;
+    padding: 27px 32px 25px 32px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
