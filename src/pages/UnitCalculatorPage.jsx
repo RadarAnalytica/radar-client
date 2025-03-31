@@ -168,8 +168,6 @@ const UnitCalculatorPage = () => {
                     const value = data.fields[k]
                     form.setFieldValue(k, value)
                 })
-                console.log('data:')
-                console.log(data)
                 setInvestValue(data.investValue)
                 setMpMainFee(data.mpMainFee)
                 setLastMileLogisticsPrice(data.lastMileLogisticsPrice)
