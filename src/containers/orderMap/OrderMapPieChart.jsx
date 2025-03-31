@@ -45,14 +45,6 @@ const OrderMapPieChart = ({
     }
   };
 
-  const cityColors = [
-    'rgba(129, 172, 255, 1)',
-    'rgba(255, 153, 114, 1)',
-    'rgba(154, 129, 255, 1)',
-    'rgba(74, 217, 145, 1)',
-    'rgba(254, 197, 61, 1)',
-  ];
-
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -62,8 +54,17 @@ const OrderMapPieChart = ({
     return color;
   };
 
+  const cityColors = [
+    'rgba(129, 172, 255, 1)',
+    'rgba(255, 153, 114, 1)',
+    'rgba(154, 129, 255, 1)',
+    'rgba(74, 217, 145, 1)',
+    'rgba(254, 197, 61, 1)',
+  ];
+
   let cityColorMap = {}; //Do not delete! Needed for getColorStockTooltip to work
   const getColorStockTooltip = (city) => {
+    console.log(cityColorMap)
     // If the city already exists in cityColorMap, return its color
     if (cityColorMap[city]) {
       return cityColorMap[city];
@@ -88,19 +89,22 @@ const OrderMapPieChart = ({
     );
   };
 
-  const updatedInfo = info.map((item) => {
+  const updatedInfo = [...info].map((item) => {
     let sub = item.districtName?.split('федеральный округ')?.join('фо');
     return { ...item, districtName: sub };
   });
 
-  const firstFive = updatedInfo
+  const firstFive = [...updatedInfo]
     .filter((o) => (o.districtName ? o.districtName : o.stockName))
     ?.slice(0, 5);
 
+ 
+
   const colorCons = firstFive.map((systemItem) =>
-    systemItem.districtName
+    {return systemItem.districtName
       ? getColorTooltip(systemItem.districtName)
       : getColorStockTooltip(systemItem.stockName)
+    }
   );
 
   // const totalAmount =  info.reduce((acc, item) => acc + item.saleAmount, 0)
@@ -125,8 +129,8 @@ const OrderMapPieChart = ({
     datasets: [
       {
         label: 'Общая доля',
-        data: firstFive?.map((item) => item.percent),
-        backgroundColor: bgColorData,
+        data: [...firstFive]?.map((item) => item.percent),
+        backgroundColor: [...colorCons],
         borderColor: 'white',
         borderWidth: 0,
       },
@@ -341,7 +345,7 @@ const OrderMapPieChart = ({
           }}
         >
           {firstFive
-            ? firstFive.map((obj, key) => {
+            ? [...firstFive]?.map((obj, key) => {
               const compare = isOrders
                 ? obj.comparePercentOrder
                 : obj.comparePercent;

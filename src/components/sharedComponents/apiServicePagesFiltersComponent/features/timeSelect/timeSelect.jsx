@@ -4,8 +4,10 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
 import styles from './timeSelect.module.css';
+import { SelectIcon } from '../../shared'
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { actions as filtersActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import { Select, ConfigProvider } from 'antd'
 
 export const TimeSelect = () => {
 
@@ -23,6 +25,8 @@ export const TimeSelect = () => {
 
     minDate.setDate(today.getDate() - 90);
     // maxDate.setDate(today.getDate() + 90);
+
+    const icon = <SelectIcon />
 
     const predefinedRanges = [
         {
@@ -64,8 +68,8 @@ export const TimeSelect = () => {
             setSelectedOption("");
             toggleCalendar();
         } else {
-            setSelectedOption({period: value});
-            dispatch(filtersActions.setPeriod({period: value}))
+            setSelectedOption({ period: value });
+            dispatch(filtersActions.setPeriod({ period: value }))
             //setSelectedRange({period: value});
             setIsCalendarOpen(false);
         }
@@ -117,7 +121,40 @@ export const TimeSelect = () => {
             <label className={styles.label} htmlFor="period">
                 Период:
             </label>
-            <div
+            <div className={styles.mainSelectWrapper}>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            //colorBgBase: '#EAEAF1',
+                            colorBgContainer: '#EAEAF1',
+                            colorBorder: 'transparent',
+                            borderRadius: 8,
+                            fontFamily: 'Mulish',
+                            fontSize: 16
+                        },
+                        components: {
+                            Select: {
+                                activeBorderColor: 'transparent',
+                                activeOutlineColor: 'transparent',
+                                hoverBorderColor: 'transparent',
+                                optionActiveBg: '#EAEAF1',
+                                optionFontSize: 16,
+                                optionSelectedBg: '#5329FF',
+                                optionSelectedColor: 'white'
+                            }
+                        }
+                    }}
+                >
+                    <Select
+                        suffixIcon={icon}
+                        className={styles.select}
+                        options={predefinedRanges.map(i => ({ value: i.value, label: i.title }))}
+                        value={selectedRange.period}
+                        onChange={(value) => {dispatch(filtersActions.setPeriod({ period: value }))}}
+                    />
+                </ConfigProvider>
+            </div>
+            {/* <div
                 className={styles.dropdownWrapper}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
@@ -134,11 +171,11 @@ export const TimeSelect = () => {
                 >
                     <path d="M1 1.5L7 7.5L13 1.5" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                 </svg>
-            </div>
+            </div> */}
             {isDropdownOpen && (
                 <ul className={styles.dropdownMenu}>
                     {
-                       predefinedRanges.map( (el) => <li key={el.value} onClick={() => selectOption(el.value)}>{el.title}</li>)
+                        predefinedRanges.map((el) => <li key={el.value} onClick={() => selectOption(el.value)}>{el.title}</li>)
                     }
                     <li onClick={() => selectOption("")} className={styles.customDateOption}>
                         Произвольные даты
