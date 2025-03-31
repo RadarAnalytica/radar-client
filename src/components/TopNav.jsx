@@ -115,9 +115,15 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
               )}
             </span>
             {showErrorPopup && (
-              <span className='error-popup'>
-                <MessagesDropdown messages={messages} />
-              </span>
+              <div 
+                className={styles.messagesBackdrop} 
+                onClick={(e)=> {e.target.id === 'messages-backdrop' && setShowErrorPopup(false)}}
+                id='messages-backdrop'
+              >
+                  <div className={styles.messagesModal}>
+                    <MessagesDropdown messages={messages} />
+                  </div>
+              </div>
             )}
           </span>
           <MdOutlineSettings
