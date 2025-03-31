@@ -184,7 +184,7 @@ const StockAnalysis = () => {
                 </div>
               ) : null}
 
-            <div className="pt-0 d-flex gap-3">
+            <div className="input-and-button-container container dash-container d-flex flex-wrap justify-content-between align-items-center mt-3 mb-3" style={{paddingRight: '52px'}}>
               <Filters
                 setLoading={setLoading}
               />
