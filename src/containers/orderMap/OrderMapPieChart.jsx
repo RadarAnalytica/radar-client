@@ -138,18 +138,14 @@ const OrderMapPieChart = ({
   };
 
   return (
-    <div className='order-map-doughnut'>
+    <div className={styles.card}>
       <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>
         {title}
       </h5>
-      <div className='doughnut-content'>
+      <div className={styles.cardContainer}>
         <div
           className={styles.chartContainer}
         >
-        {/* <div
-          className='col-5 me-2'
-          style={{ position: 'relative', marginLeft: '-1vw' }}
-        > */}
           <Doughnut
             data={data}
             options={{
@@ -337,12 +333,7 @@ const OrderMapPieChart = ({
           </div>
         </div>
         <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignSelf: 'center',
-            width: '100%',
-          }}
+          className={styles.legendContainer}
         >
           {firstFive
             ? [...firstFive]?.map((obj, key) => {
@@ -384,7 +375,7 @@ const OrderMapPieChart = ({
                   {/* data */}
                   <p
                     className='fw-bold m-0'
-                    style={{ fontSize: '1.85vh', width: 'auto', paddingLeft: '10px'}}
+                    style={{ fontSize: '1.85vh', width: 'auto', paddingLeft: '10px' }}
                   >
                     {percent ? percent.toFixed(percent < 10 ? 1 : 0) : 0}
                     &nbsp;%

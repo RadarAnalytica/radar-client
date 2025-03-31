@@ -110,7 +110,7 @@ const SelectRate = ({ redirect, isShowText }) => {
           authorization: 'JWT ' + authToken,
         },
       });
-      console.log('response', response);
+      // console.log('response', response);
 
       if (response.status === 200) {
         const data = await response.json();
@@ -126,7 +126,7 @@ const SelectRate = ({ redirect, isShowText }) => {
 
   const pay = async (_user, _period, _trial) => {
     const refresh_result = await refreshUserToken();
-    console.log('refresh_result', refresh_result);
+    // console.log('refresh_result', refresh_result);
 
     // localStorage.setItem("authToken", refresh_result);
     const decodedUser = jwtDecode(refresh_result);
@@ -140,17 +140,17 @@ const SelectRate = ({ redirect, isShowText }) => {
       newTrialExpired = false;
     }
 
-    console.log('user', user);
-    console.log('selectedPeriod', selectedPeriod);
-    console.log('trialExpired', trialExpired);
-    console.log('newTrialExpired', newTrialExpired);
+    // console.log('user', user);
+    // console.log('selectedPeriod', selectedPeriod);
+    // console.log('trialExpired', trialExpired);
+    // console.log('newTrialExpired', newTrialExpired);
 
     let periodSubscribe = '';
     let amountSubscribe = 0;
     let firstAmount = 0;
     let startDateSubscribe = new Date();
     // проверяем время с 10:10 по 10 мск
-    if (startDateSubscribe.getUTCHours() + 3 <= 23 && startDateSubscribe.getUTCMinutes() < 10){
+    if (startDateSubscribe.getUTCHours() > 7 || (startDateSubscribe.getUTCHours() == 7 && startDateSubscribe.getUTCMinutes() < 10)){
       startDateSubscribe.setDate(startDateSubscribe.getDate() + 1);
     }
     // ставим время платежа на 10 мск
@@ -178,7 +178,7 @@ const SelectRate = ({ redirect, isShowText }) => {
           startDateSubscribe.getMonth() + periodSubscribe
         );
       } else {
-        startDateSubscribe.setDate(startDateSubscribe.getDate() + user?.test_days || 3);
+        startDateSubscribe.setDate(startDateSubscribe.getDate() + (user?.test_days || 3));
       }
     }
     if (selectedPeriod === '3month') {
@@ -197,15 +197,16 @@ const SelectRate = ({ redirect, isShowText }) => {
         startDateSubscribe.getMonth() + periodSubscribe
       );
     }
-    console.log('periodSubscribe', periodSubscribe);
-    console.log('firstAmount', firstAmount);
-    console.log('amountSubscribe', amountSubscribe);
-    console.log(
-      'startDateSubscribe',
-      startDateSubscribe.toISOString().split('T')[0]
-    );
+    // console.log('periodSubscribe', periodSubscribe);
+    // console.log('firstAmount', firstAmount);
+    // console.log('amountSubscribe', amountSubscribe);
+    // console.log(
+    //   'startDateSubscribe',
+    //   startDateSubscribe.toISOString().split('T')[0]
+    // );
     startDateSubscribe = startDateSubscribe.toISOString().split('T')[0];
-
+    startDateSubscribe = `${startDateSubscribe}T07:00:00`
+    // console.log('startDateSubscribe', startDateSubscribe);
     // eslint-disable-next-line no-undef
     var widget = new cp.CloudPayments({
       language: 'ru-RU',
@@ -311,11 +312,11 @@ const SelectRate = ({ redirect, isShowText }) => {
           })
           .then((res) => {
             console.log('patch /api/user', res.data);
-            localStorage.setItem('authToken', res.data.auth_token);
+            // localStorage.setItem('authToken', res.data.auth_token);
             navigate('/after-payment', { state: { paymentStatus: 'success' } });
           })
           .catch((err) => console.log('patch /api/user', err));
-        console.log('Payment success:', 'options', options);
+        // console.log('Payment success:', 'options', options);
       },
 
       function (reason, options) {
@@ -336,7 +337,7 @@ const SelectRate = ({ redirect, isShowText }) => {
             navigate('/after-payment', { state: { paymentStatus: 'error' } });
           });
 
-        console.log('Payment fail:', 'reason', reason, 'options', options);
+        // console.log('Payment fail:', 'reason', reason, 'options', options);
       }
     );
     
