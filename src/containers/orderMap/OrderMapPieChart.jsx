@@ -4,6 +4,7 @@ import { Chart, Doughnut } from 'react-chartjs-2';
 import { formatPrice } from '../../service/utils';
 import GreenArrow from '../../assets/greenarrow.svg';
 import RedArrow from '../../assets/redarrow.svg';
+import styles from './OrderMapPieChart.module.css'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -82,7 +83,7 @@ const OrderMapPieChart = ({
   const getCityCircle = (color) => {
     return (
       <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-        <circle cx='8' cy='8' r='8' fill={color} />
+        <circle cx='8' cy='8' r='10' fill={color} />
       </svg>
     );
   };
@@ -131,9 +132,12 @@ const OrderMapPieChart = ({
       </h5>
       <div className='doughnut-content'>
         <div
+          className={styles.chartContainer}
+        >
+        {/* <div
           className='col-5 me-2'
           style={{ position: 'relative', marginLeft: '-1vw' }}
-        >
+        > */}
           <Doughnut
             data={data}
             options={{
