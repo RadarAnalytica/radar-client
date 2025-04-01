@@ -49,6 +49,10 @@
     appearance: none;
 }
 
+.plainSelect__select .ant-select-item:hover {
+    color: #FF5733; /* Установите нужный цвет для ховера */
+}
+
 .plainSelect__iconWrapper {
     position: absolute;
     top: 0;

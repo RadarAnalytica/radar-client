@@ -167,10 +167,10 @@ export const TimeSelect = () => {
                                 activeBorderColor: 'transparent',
                                 activeOutlineColor: 'transparent',
                                 hoverBorderColor: 'transparent',
-                                optionActiveBg: '#EAEAF1',
+                                optionActiveBg: 'transparent',
                                 optionFontSize: 16,
-                                optionSelectedBg: '#5329FF',
-                                optionSelectedColor: 'white'
+                                optionSelectedBg: 'transparent',
+                                optionSelectedColor: '#5329FF',
                             }
                         }
                     }}

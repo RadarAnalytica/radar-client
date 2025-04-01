@@ -11,6 +11,8 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
     if (Math.abs(min) + Math.abs(max) < 300) {
         step = 25
     }
+    const marginMin = dataProfitPlus ? Math.round([...dataProfitPlus].sort((a,b) => a - b)[0]) : 0;
+    const marginMax = dataProfitPlus ? Math.ceil([...dataProfitPlus].sort((a,b) => b - a)[0] / 100) * 100 : 100;
     const data = {
         labels: labels,
         datasets: [
@@ -26,7 +28,8 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 pointBorderColor: 'white',
                 pointRadius: 4,
                 pointBorderWidth: 1,
-                yAxisID: 'left-y',
+                yAxisID: 'A',
+                //yAxisID: 'left-y',
             },
             {
                 label: 'Маржинальность по прибыли,(Lower)',
@@ -46,7 +49,8 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 barPercentage: 0.3,
                 borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 3, bottomRight: 3 },
                 categoryPercentage: 1,
-                yAxisID: 'right-y',
+                yAxisID: 'B'
+                //yAxisID: 'right-y',
             },
             {
                 label: 'Маржинальность по прибыли,(Upper)',
@@ -67,7 +71,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 barPercentage: 0.3,
                 borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 3, bottomRight: 3 },
                 categoryPercentage: 1,
-                yAxisID: 'right-y',
+                yAxisID: 'B',
             }
 
 
@@ -149,9 +153,36 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
 
         },
         scales: {
+            A: {
+                id: 'A',
+                min,
+                max,
+                position: 'left',
+                grid: {
+                  drawOnChartArea: true, // only want the grid lines for one axis to show up
+                },
+                ticks: {
+                  stepSize: step,
+                },
+            },
+            B: {
+                id: 'B',
+                type: 'linear',
+                position: 'right',
+                min: marginMin,
+                max: marginMax,
+                suggestedMax: marginMax,
+                grid: {
+                  drawOnChartArea: false,
+                },
+                ticks: {
+                  stepSize: Math.round((marginMax - marginMin) / 5),
+                },
+            },
             x: {
                 stacked: true,
                 grid: {
+                    //drawOnChartArea: false,
                     display: false,
                 },
                 ticks: {
@@ -163,33 +194,6 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                     }
                 }
             },
-            'left-y': {
-                min: min,
-                max: max,
-                stacked: true,
-                grid: {
-                    display: true,
-                    drawOnChartArea: true,
-                },
-                ticks: {
-                    stepSize: step,
-                    color: '#8C8C8C',
-                }
-            },
-            'right-y': {
-                position: 'right',
-                min: min,
-                max: max,
-                stacked: true,
-                grid: {
-                    display: true,
-                    drawOnChartArea: true,
-                },
-                ticks: {
-                    stepSize: step,
-                    color: '#8C8C8C',
-                },
-            }
         },
 
         interaction: {
