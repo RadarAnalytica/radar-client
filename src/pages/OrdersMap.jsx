@@ -679,14 +679,10 @@ const OrdersMap = () => {
             <TopNav title={'География заказов и продаж'} mikeStarinaStaticProp />
           </div>
 
-          <div style={{
-            width: '100%',
-            padding: '0 36px',
-            margin: '20px 0'
-          }}>
-          <Filters
-            setLoading={setLoading}
-          />
+          <div style={{ width: '100%'}} className="map-container dash-container container p-3">
+            <Filters
+              setLoading={setLoading}
+            />
           </div>
 
 
