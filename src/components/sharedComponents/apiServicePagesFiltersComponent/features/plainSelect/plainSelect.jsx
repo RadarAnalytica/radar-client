@@ -31,17 +31,17 @@ export const PlainSelect = (
                             colorBorder: 'transparent',
                             borderRadius: 8,
                             fontFamily: 'Mulish',
-                            fontSize: 16
+                            fontSize: 16,
                         },
                         components: {
                             Select: {
                                 activeBorderColor: 'transparent',
                                 activeOutlineColor: 'transparent',
                                 hoverBorderColor: 'transparent',
-                                optionActiveBg: '#EAEAF1',
+                                optionActiveBg: 'transparent',
                                 optionFontSize: 16,
-                                optionSelectedBg: '#5329FF',
-                                optionSelectedColor: 'white'
+                                optionSelectedBg: 'transparent',
+                                optionSelectedColor: '#5329FF',
                             }
                         }
                     }}
