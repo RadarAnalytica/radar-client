@@ -47,18 +47,8 @@ const UnitCalculatorPage = () => {
 
     // ---------------------- form submit handler ----------------------------//
     const submitHandler = (fields) => {
-        //setIsProductFromToken(false)
-        // calculating data for the result block
-        // console.log(fields)
-        // console.log(mpMainFee)
-        // console.log(lastMileLogisticsPrice)
-        // console.log(lastMileLogisticsPriceWBuyout)
-        // console.log(storagePrice)
-        // console.log(investValue)
-        // console.log(storagePrice)
         setResult(unitCalcResultFunction(fields, mpMainFee, lastMileLogisticsPrice, lastMileLogisticsPriceWBuyout, Math.round(storagePrice), investValue, Math.round(storagePrice)))
-
-        // obkect for tokenized data
+        // object for tokenized data
         const data = {
             fields,
             investValue,
@@ -67,7 +57,6 @@ const UnitCalculatorPage = () => {
             storagePrice,
             lastMileLogisticsPriceWBuyout,
         }
-       
         // data as json
         const json = JSON.stringify(data)
         // creating token (encoding result data)
@@ -118,7 +107,7 @@ const UnitCalculatorPage = () => {
             form.validateFields()
             .then(_ => form.submit())
             .catch(_ => setToken(null))
-    }, [investValue, token, form])
+    }, [investValue])
     //-----------------------------------------------------------------------//
 
     //---------------------------- fbs bonus/fee calculations ------------------------//
