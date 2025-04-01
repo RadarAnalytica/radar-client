@@ -28,12 +28,15 @@ const Header = ({ title = 'Radar Analytica', titlePrefix }) => {
             dispatch(fetchMessages(authToken));
         } else {
             intervalId = setInterval(() => {
-                console.log('hit')
                 dispatch(fetchMessages(authToken));
             }, 60000);
         }
         return () => { intervalId && clearInterval(intervalId); }
     }, [authToken, messages]);
+
+    useEffect(() => {
+        dispatch(fetchMessages(authToken));
+      }, []);
 
     // пропс для кнопки внутри меню
     const menuPopoverCloseHandler = () => {
