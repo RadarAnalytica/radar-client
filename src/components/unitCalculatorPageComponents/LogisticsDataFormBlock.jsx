@@ -162,6 +162,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                             className={isPaidCargoAcceptance ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
                         >
                             <AutoComplete
+                                
                                 size='large'
                                 placeholder='Выберите склад'
                                 style={{ background: warehouse ? '#F2F2F2' : '' }}
@@ -213,6 +214,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                         size='large'
                         placeholder='Укажите стоимость'
                         style={{ background: cargo_acceptance_price ? '#F2F2F2' : '' }}
+                        className={styles.formItem__input}
                     />
                 </Form.Item>}
 
@@ -297,6 +299,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                         style={{ background: delivery_speed ? '#F2F2F2' : '' }}
                         size='large'
                         placeholder='Укажите скорость доставки'
+                        className={styles.formItem__input}
                     />
                 </Form.Item>
                 <Form.Item
@@ -349,6 +352,7 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                         style={{ background: buyout_percentage ? '#F2F2F2' : '' }}
                         size='large'
                         placeholder='Укажите процент выкупа'
+                        className={styles.formItem__input}
                     />
                 </Form.Item>
 

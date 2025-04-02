@@ -62,6 +62,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                     style={{background: inhouse_logistics_price ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость'
+                                    className={styles.formItem__input}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -83,6 +84,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                     style={{background: packaging_price ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость упаковки'
+                                    className={styles.formItem__input}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -104,6 +106,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                     style={{background: mp_logistics_price ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость'
+                                    className={styles.formItem__input}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -125,6 +128,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                     style={{background: fullfilment_price ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость'
+                                    className={styles.formItem__input}
                                 />
                             </Form.Item>
                         </div>
@@ -188,6 +192,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                     style={{background: tax_rate ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите ставку'
+                                    className={styles.formItem__input}
                                 />
                             </Form.Item>
 
@@ -225,6 +230,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                         style={{background: adv_price ? '#F2F2F2' : ''}}
                                         size='large'
                                         placeholder='Укажите стоимость'
+                                        className={styles.formItem__input}
                                     />
                                 </Form.Item>
                                 <Form.Item
@@ -246,6 +252,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                         style={{background: defective_percentage ? '#F2F2F2' : ''}}
                                         size='large'
                                         placeholder='Укажите процент'
+                                        className={styles.formItem__input}
                                     />
                                 </Form.Item>
                             </div>
@@ -269,6 +276,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                                     style={{background: other_costs ? '#F2F2F2' : ''}}
                                     size='large'
                                     placeholder='Укажите стоимость'
+                                    className={styles.formItem__input}
                                 />
                             </Form.Item>
                       </div>
