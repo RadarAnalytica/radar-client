@@ -35,6 +35,11 @@
 
 .page__mobileHeaderWrapper {
     width: 100%;
+    display: none;
+
+    @media (max-width: 900px) {
+        display: block;
+    }
 }
 
 .page__resultWrapper {
