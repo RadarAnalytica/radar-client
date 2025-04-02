@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import styles from './UnitCalculatorPage.module.css'
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
+import MobileHeader from '../components/sharedComponents/mobileHeader/mobileHeader';
 import { useSearchParams } from 'react-router-dom';
 import { Form, Button, ConfigProvider } from 'antd';
 import BasicDataFormBlock from '../components/unitCalculatorPageComponents/BasicDataFormBlock';
@@ -63,7 +64,10 @@ const UnitCalculatorPage = () => {
         const token = encodeUnicodeToBase64(json)
         // set token
         setToken(token)
-        sectionRef?.current?.scrollTo({ top: 0, behavior: 'smooth'})
+
+        if (window.innerWidth > 900) {
+            sectionRef?.current?.scrollTo({ top: 0, behavior: 'smooth'})
+        }
     }
    
 
@@ -182,8 +186,11 @@ const UnitCalculatorPage = () => {
         <main className={styles.page}>
             <SideNav /> 
             <section className={styles.page__content} ref={sectionRef}>
-                <div className="container dash-container" style={{ marginLeft: 0}} >
+                <div className={styles.page__headerWrapper}>
                     <TopNav title={'Калькулятор unit-экономики товара'} mikeStarinaStaticProp />
+                </div>
+                <div className={styles.page__mobileHeaderWrapper}>
+                    <MobileHeader title='Калькулятор unit-экономики товара' />
                 </div>
                 <ConfigProvider
                     theme={{

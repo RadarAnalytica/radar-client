@@ -124,6 +124,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     <AutoComplete 
                         size='large'
                         placeholder='Введите название товара'
+                        className={styles.formItem__input}
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
                         allowClear={{
@@ -173,6 +174,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: product_price ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите цену товара'
+                        className={styles.formItem__input}
                     />
                 </Form.Item>
                 {isSPP && <Form.Item
@@ -199,6 +201,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: SPP ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите СПП, %'
+                        className={styles.formItem__input}
                     />
                 </Form.Item>}
 
@@ -255,6 +258,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     style={{background: product_cost ? '#F2F2F2' : ''}}
                     size='large'
                     placeholder='Укажите цену товара'
+                    className={styles.formItem__input}
                 />
             </Form.Item>
 
@@ -283,6 +287,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: package_length ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите длину упаковки'
+                        className={styles.formItem__input}
                     />
                 </Form.Item>
                 <Form.Item
@@ -309,6 +314,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: package_width ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите ширину упаковки'
+                        className={styles.formItem__input}
                     />
                 </Form.Item>
                 <Form.Item
@@ -335,6 +341,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: package_height ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите высоту упаковки'
+                        className={styles.formItem__input}
                     />
                 </Form.Item>
                 <ConfigProvider

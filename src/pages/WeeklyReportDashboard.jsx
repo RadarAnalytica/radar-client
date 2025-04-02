@@ -37,7 +37,7 @@ const WeeklyReportDashboard = () => {
   const { dashboardFilters, isFiltersLoading } = useSelector((state) => state?.dashboardFiltersSlice);
   const [isEditing, setIsEditing] = useState(false);
   const [taxRate, setTaxRate] = useState(dashboardData?.tax_rate);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState('УСН-доходы');
   const filterSectionRef = useRef();
 
   useEffect(() => {
@@ -68,7 +68,6 @@ const WeeklyReportDashboard = () => {
 
     try {
       if (taxType) {
-        setSelectedValue(taxType);
         await ServiceFunctions.postTaxRateUpdate(authToken, {
           tax_rate: Number(currentTaxRate),
           tax_type: taxType,
@@ -588,6 +587,10 @@ const WeeklyReportDashboard = () => {
                       </div>
                     )}
                   </div>
+
+
+
+                  {/* TAXES */}
                   <div className={styles.salesChartWrapper}>
                     <div className={styles.title}>Налог</div>
                     {!isLoading ? (
@@ -602,6 +605,7 @@ const WeeklyReportDashboard = () => {
                               value={selectedValue}
                               onChange={(e) => {
                                 const selected = e.target.value;
+                                setSelectedValue(selected)
                                 handleTaxSubmit({
                                   taxType: selected,
                                   taxRate: selected === "Не считать налог" ? 0 : taxRate,
@@ -697,6 +701,11 @@ const WeeklyReportDashboard = () => {
                       </div>
                     )}
                   </div>
+
+                  {/* TAXES END */}
+
+
+
                 </div>
               </div>
             </div>
