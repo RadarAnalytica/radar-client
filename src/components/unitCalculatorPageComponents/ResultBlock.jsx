@@ -102,6 +102,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                     <Input
                         size='large'
                         placeholder='50 000 ₽'
+                        className={styles.result__input}
                         value={investValueInputTransformer(investValue)}
                         onChange={(e) => {
                             const value = e.target.value;
