@@ -24,7 +24,7 @@
 .page__sideNavWrapper {
     height: 100%;
     width: auto;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     justify-content: stretch;
     align-items: stretch;

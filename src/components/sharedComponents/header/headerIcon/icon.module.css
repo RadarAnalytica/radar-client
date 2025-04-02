@@ -1,4 +1,4 @@
-.icon {
+.menuIcon {
     width: auto;
     height: auto;
     display: flex;
@@ -7,6 +7,24 @@
     box-sizing: border-box;
     cursor: pointer;
     position: relative;
+    transition: transform .2s ease-in;
+}
+.ringIcon {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: relative;
+    transition: transform .1s ease-in;
+}
+.menuIcon:hover {
+    transform: rotate(100deg) scale(110%);
+}
+.ringIcon:hover {
+    transform: scale(105%);
 }
 .icon__messageCounter {
     width: 20px;

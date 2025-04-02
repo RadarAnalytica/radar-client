@@ -1,13 +1,13 @@
 import styles from './icon.module.css'
 import { alertIcon, menuIcon } from './svgIcons';
+
 // type: 'alert' | 'menu'
 // counter: number 
 const Icon = ({ type, counter }) => {
-    console.log(counter)
     switch (type) {
         case 'alert': {
             return (
-                <div className={styles.icon}>
+                <div className={styles.ringIcon}>
                     {alertIcon}
                     {counter !== undefined && counter > 0 &&
                         <div className={styles.icon__messageCounter}>
@@ -20,7 +20,7 @@ const Icon = ({ type, counter }) => {
 
         case 'menu': {
             return (
-                <div className={styles.icon}>
+                <div className={styles.menuIcon}>
                     {menuIcon}
                 </div>
             )

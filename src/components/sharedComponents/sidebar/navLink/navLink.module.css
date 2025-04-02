@@ -1,0 +1,52 @@
+.navLink {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+    text-decoration: none;
+    transition: all .3s ease-out;
+}
+.navLink > svg {
+    width: 19px;
+    height: 18px;
+}
+.navLink:hover {
+    color: #1A1A1A;
+}
+.navLink:hover > svg {
+    color: #5329FF;
+}
+.navLink_active {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+.navLink_active > svg {
+    color: #5329FF
+}
+
+.navLink_activeNoIcon {
+    font-weight: 700;
+    color: #1A1A1A;
+}
+
+.navLink_activeNoIcon::before {
+    content: ' ';
+    width: 8px;
+    height: 8px;
+    border-radius: 50% 50%;
+    background: #5329FF;
+}

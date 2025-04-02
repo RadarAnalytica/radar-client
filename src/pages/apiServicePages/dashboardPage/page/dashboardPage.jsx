@@ -1,7 +1,6 @@
 import styles from './dashboardPage.module.css'
-import SideNav from '../../../../components/SideNav'
 import Header from '../../../../components/sharedComponents/header/header'
-import TopNav from '../../../../components/TopNav'
+import Sidebar from '../../../../components/sharedComponents/sidebar/sidebar'
 
 const _DashboardPage = () => {
 
@@ -9,7 +8,8 @@ const _DashboardPage = () => {
         <main className={styles.page}>
             {/* ------ SIDE BAR ------ */}
             <section className={styles.page__sideNavWrapper}>
-                <SideNav />
+                <Sidebar />
+                {/* <SideNav /> */}
             </section>
             {/* ------ CONTENT ------ */}
             <section className={styles.page__content}>
