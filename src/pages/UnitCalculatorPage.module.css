@@ -33,6 +33,10 @@
     }
 }
 
+.page__mobileHeaderWrapper {
+    width: 100%;
+}
+
 .page__resultWrapper {
     width: 100%;
     height: 100%;
