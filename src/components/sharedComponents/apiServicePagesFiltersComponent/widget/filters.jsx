@@ -29,9 +29,8 @@ export const Filters = ({
   //----------------------------------------//
 
   // ---- хэндлер выбора магазина -----------//
-  const shopChangeHandler = (e) => {
-    const { value } = e.target
-    const selectedShop = shopArrayFormSelect?.find(_ => _.id.toString() === value)
+  const shopChangeHandler = (value) => {
+    const selectedShop = shopArrayFormSelect?.find(_ => _.id=== value)
     dispatch(filterActions.setActiveShop(selectedShop))
   }
   //- -----------------------------------------//

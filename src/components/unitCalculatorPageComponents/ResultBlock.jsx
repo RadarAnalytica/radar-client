@@ -11,15 +11,12 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
 
     const [ buttonState, setButtonState ] = useState('Поделиться результатом')
     const { pathname } = useLocation()
-    console.log(result)
 
     const shareButtonClickHandler = () => {
-        
         if (token) {
             const currentDomain = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
             navigator.clipboard.writeText(`${currentDomain}${pathname}?data=${token}`)
             .catch(err => console.log('Error'))
-
             setButtonState('Ссылка скопирована')
         }
     }
@@ -105,6 +102,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                     <Input
                         size='large'
                         placeholder='50 000 ₽'
+                        className={styles.result__input}
                         value={investValueInputTransformer(investValue)}
                         onChange={(e) => {
                             const value = e.target.value;

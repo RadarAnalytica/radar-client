@@ -14,14 +14,16 @@ const MPFeesDataFormBlock = ({ mp_fee, form }) => {
             </div>
 
 
-            <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
+            <div className={styles.fieldset__info}>
                 <p className={styles.fieldset__footerText}>Комиссия WB {mp_fee.toFixed(2)} %</p>
                 <div style={{ justifySelf: 'end' }}>
                     <p className={styles.fieldset__footerText_price}>
                         {!!product_price && !!mp_fee ? Math.round((product_price * (mp_fee/100))) : 0} ₽
                     </p>
                 </div>
+            </div>
 
+            <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
                 <Form.Item
                     label={
                         <div className={styles.label}>
@@ -61,6 +63,7 @@ const MPFeesDataFormBlock = ({ mp_fee, form }) => {
                         style={{background: additional_mp_fee ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите комиссию'
+                        className={styles.formItem__input}
                     />
                 </Form.Item>
                 <Form.Item
@@ -102,6 +105,7 @@ const MPFeesDataFormBlock = ({ mp_fee, form }) => {
                         style={{background: equiring_fee ? '#F2F2F2' : ''}}
                         size='large'
                         placeholder='Укажите комиссию'
+                        className={styles.formItem__input}
                     />
                 </Form.Item>
             </div>

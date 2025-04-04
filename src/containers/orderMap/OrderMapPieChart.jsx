@@ -4,6 +4,7 @@ import { Chart, Doughnut } from 'react-chartjs-2';
 import { formatPrice } from '../../service/utils';
 import GreenArrow from '../../assets/greenarrow.svg';
 import RedArrow from '../../assets/redarrow.svg';
+import styles from './OrderMapPieChart.module.css'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -82,7 +83,7 @@ const OrderMapPieChart = ({
   const getCityCircle = (color) => {
     return (
       <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
-        <circle cx='8' cy='8' r='8' fill={color} />
+        <circle cx='8' cy='8' r='10' fill={color} />
       </svg>
     );
   };
@@ -109,6 +110,14 @@ const OrderMapPieChart = ({
   // const green = require('../../assets/greenarrow.png');
   // const red = require('../../assets/redarrow.png');
 
+  let bgColorData = colorCons;
+  if (!!!bgColorData || bgColorData.length === 0) {
+    bgColorData = [];
+    firstFive?.forEach(_ => {
+      bgColorData.push(getRandomColor());
+    })
+  }
+
   const data = {
     labels: firstFive?.map((item) =>
       item.districtName ? item.districtName : item.stockName
@@ -117,7 +126,7 @@ const OrderMapPieChart = ({
       {
         label: 'Общая доля',
         data: firstFive?.map((item) => item.percent),
-        backgroundColor: colorCons,
+        backgroundColor: bgColorData,
         borderColor: 'white',
         borderWidth: 0,
       },
@@ -125,14 +134,13 @@ const OrderMapPieChart = ({
   };
 
   return (
-    <div className='order-map-doughnut'>
+    <div className={styles.card}>
       <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>
         {title}
       </h5>
-      <div className='doughnut-content'>
+      <div className={styles.cardContainer}>
         <div
-          className='col-5 me-2'
-          style={{ position: 'relative', marginLeft: '-1vw' }}
+          className={styles.chartContainer}
         >
           <Doughnut
             data={data}
@@ -321,12 +329,7 @@ const OrderMapPieChart = ({
           </div>
         </div>
         <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignSelf: 'center',
-            width: '100%',
-          }}
+          className={styles.legendContainer}
         >
           {firstFive
             ? firstFive.map((obj, key) => {
@@ -337,7 +340,7 @@ const OrderMapPieChart = ({
               return (
                 <div
                   className='mb-2'
-                  style={{ maxWidth: '100%', boxSizing: 'border-box', display: 'grid', gridTemplateColumns: '4fr 1fr 1.5fr', alignItems: 'center' }}
+                  style={{ width: '100%', maxWidth: '100%', boxSizing: 'border-box', display: 'grid', gridTemplateColumns: '4fr 1fr 1.5fr', alignItems: 'center' }}
                   key={key}
                 >
                   {/* circle & title */}
@@ -368,7 +371,7 @@ const OrderMapPieChart = ({
                   {/* data */}
                   <p
                     className='fw-bold m-0'
-                    style={{ fontSize: '1.85vh', width: 'auto', paddingLeft: '10px'}}
+                    style={{ fontSize: '1.85vh', width: 'auto', paddingLeft: '10px' }}
                   >
                     {percent ? percent.toFixed(percent < 10 ? 1 : 0) : 0}
                     &nbsp;%

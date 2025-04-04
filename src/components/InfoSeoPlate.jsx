@@ -62,7 +62,7 @@ const InfoSeoPlate = ({ setCompaireData, setLinksToSend }) => {
     const productA = processedGroupA.join('\n');
     const productB = processedGroupB.join('\n');
 
-    if (productA === '' && productB === '') {
+    if (productA === '' || productB === '') {
       setErrorMessage('Введите ссылки на товары.');
       handleShowModalError();
       return;

@@ -18,7 +18,7 @@ const AfterPayment = () => {
   useEffect(() => {
     setTimeout(() => {
       if (status) {
-        navigate('/');
+        navigate('/main');
       } else {
         navigate('/tariffs');
       }

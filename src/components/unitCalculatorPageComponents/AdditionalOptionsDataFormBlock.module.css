@@ -30,7 +30,12 @@
     font-weight: 700;
     font-size: 24px;
     line-height: 30px;
-    color: #1A1A1A
+    color: #1A1A1A;
+
+    @media (max-width: 900px) {
+        font-size: 18px;
+        line-height: 1;
+    }
 }
 
 .fieldset__subtitle {
@@ -50,6 +55,11 @@
 }
 .fieldset__wrapper_2cols {
     grid-template-columns: 1fr 1fr;
+
+    @media (max-width: 900px) {
+        display: flex;
+        flex-direction: column;
+    }
 }
 .fieldset__wrapper_3cols {
     grid-template-columns: 1fr 1fr 1fr;
@@ -79,6 +89,10 @@
     font-size: 14px;
     line-height: 18px;
     color: #1A1A1A80;
+
+    @media (max-width: 900px) {
+        font-size: 12px;
+    }
 }
 
 .fieldset__footerText_price {
@@ -88,6 +102,10 @@
     font-size: 18px;
     line-height: 23px;
     color: #1A1A1A;
+
+    @media (max-width: 900px) {
+        font-size: 16px;
+    }
 }
 
 .fieldset__popupWrapper {
@@ -142,6 +160,11 @@
     font-size: 18px;
     line-height: 23px;
     color: #1A1A1A;
+
+    @media (max-width: 900px) {
+        font-size: 18px;
+        line-height: 1;
+    }
 }
 
 
@@ -153,10 +176,24 @@
     width: 100%;
     margin: 0;
     padding: 0;
+
+    @media (max-width: 900px) {
+        font-size: 12px !important;
+    }
 }
 
 .formItem_wide {
     grid-column: span 2;
+
+    @media (max-width: 900px) {
+        font-size: 12px !important;
+    }
+}
+
+.formItem__input {
+    @media (max-width: 900px) {
+        font-size: 12px !important;
+    }
 }
 
 .radioLabel {
@@ -181,6 +218,12 @@
     letter-spacing: 0%;
     color: #1A1A1A80;
     cursor: pointer;
+
+    @media (max-width: 900px) {
+        font-size: 12px;
+        width: 16px;
+        height: 16px;
+    }
 }
 
 .tooltip_red {

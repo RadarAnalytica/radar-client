@@ -51,7 +51,7 @@ const config = {
     onboardRedirect: '/onboarding',
     userRoleProtected: false,
     userRoleFallback: (props) => (<MainPage {...props} />),
-    userRoleRedirect: '/onboarding',
+    userRoleRedirect: '/main',
     subscriptionProtected: false,
     subscriptionFallback: (props) => (<MainPage {...props} />),
     subscriptionRedirect: '/tariffs',

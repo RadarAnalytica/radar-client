@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import styles from './UnitCalculatorPage.module.css'
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
+import MobileHeader from '../components/sharedComponents/mobileHeader/mobileHeader';
 import { useSearchParams } from 'react-router-dom';
 import { Form, Button, ConfigProvider } from 'antd';
 import BasicDataFormBlock from '../components/unitCalculatorPageComponents/BasicDataFormBlock';
@@ -47,18 +48,8 @@ const UnitCalculatorPage = () => {
 
     // ---------------------- form submit handler ----------------------------//
     const submitHandler = (fields) => {
-        //setIsProductFromToken(false)
-        // calculating data for the result block
-        // console.log(fields)
-        // console.log(mpMainFee)
-        // console.log(lastMileLogisticsPrice)
-        // console.log(lastMileLogisticsPriceWBuyout)
-        // console.log(storagePrice)
-        // console.log(investValue)
-        // console.log(storagePrice)
         setResult(unitCalcResultFunction(fields, mpMainFee, lastMileLogisticsPrice, lastMileLogisticsPriceWBuyout, Math.round(storagePrice), investValue, Math.round(storagePrice)))
-
-        // obkect for tokenized data
+        // object for tokenized data
         const data = {
             fields,
             investValue,
@@ -67,14 +58,16 @@ const UnitCalculatorPage = () => {
             storagePrice,
             lastMileLogisticsPriceWBuyout,
         }
-       
         // data as json
         const json = JSON.stringify(data)
         // creating token (encoding result data)
         const token = encodeUnicodeToBase64(json)
         // set token
         setToken(token)
-        sectionRef?.current?.scrollTo({ top: 0, behavior: 'smooth'})
+
+        if (window.innerWidth > 900) {
+            sectionRef?.current?.scrollTo({ top: 0, behavior: 'smooth'})
+        }
     }
    
 
@@ -118,7 +111,7 @@ const UnitCalculatorPage = () => {
             form.validateFields()
             .then(_ => form.submit())
             .catch(_ => setToken(null))
-    }, [investValue, token, form])
+    }, [investValue])
     //-----------------------------------------------------------------------//
 
     //---------------------------- fbs bonus/fee calculations ------------------------//
@@ -168,8 +161,6 @@ const UnitCalculatorPage = () => {
                     const value = data.fields[k]
                     form.setFieldValue(k, value)
                 })
-                console.log('data:')
-                console.log(data)
                 setInvestValue(data.investValue)
                 setMpMainFee(data.mpMainFee)
                 setLastMileLogisticsPrice(data.lastMileLogisticsPrice)
@@ -195,8 +186,11 @@ const UnitCalculatorPage = () => {
         <main className={styles.page}>
             <SideNav /> 
             <section className={styles.page__content} ref={sectionRef}>
-                <div className="container dash-container" style={{ marginLeft: 0}} >
+                <div className={styles.page__headerWrapper}>
                     <TopNav title={'Калькулятор unit-экономики товара'} mikeStarinaStaticProp />
+                </div>
+                <div className={styles.page__mobileHeaderWrapper}>
+                    <MobileHeader title='Калькулятор unit-экономики товара' />
                 </div>
                 <ConfigProvider
                     theme={{

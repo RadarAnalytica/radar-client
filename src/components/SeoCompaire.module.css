@@ -97,7 +97,7 @@
 .search {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     gap: 8px;
     width: 100%;
     margin-bottom: 5px;
@@ -136,6 +136,8 @@
 
 .searchInput {
     width: 100%;
+    padding: 12px;
+    border-radius: 8px;
 }
 
 .tableHeader {
