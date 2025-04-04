@@ -68,6 +68,7 @@ const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage")
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 import { BlogAdd, BlogList } from "./pages/blog";
+const AdminPage = React.lazy(() => import("./pages/AdminPage/AdminPage"));
 import MainPage from "./pages/MainPage";
 
 /**
@@ -84,6 +85,7 @@ function App() {
         <ProductProvider>
           <Routes>
             {/* Protected routes */}
+            <Route path='/admin' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
             <Route path='/dashboard' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
             <Route path='/abc-data' element={<ProtectedRoute expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
             <Route path='/seo' element={<ProtectedRoute expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
