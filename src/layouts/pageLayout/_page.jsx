@@ -1,8 +1,7 @@
 // dont forget to renew imports
 import styles from './_page.module.css'
-import SideNav from '../../../../components/SideNav'
 import Header from '../../components/sharedComponents/header/header'
-import TopNav from '../../../../components/TopNav'
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 
 
 // dont forget to rename the component and its export
@@ -12,13 +11,14 @@ const _Page = () => {
         <main className={styles.page}>
             {/* ------ SIDE BAR ------ */}
             <section className={styles.page__sideNavWrapper}>
-                <SideNav />
+                <Sidebar />
+                {/* <SideNav /> */}
             </section>
             {/* ------ CONTENT ------ */}
             <section className={styles.page__content}>
                 {/* header */}
                 <div className={styles.page__headerWrapper}>
-                    <Header title='title' pref />
+                    <Header title='Сводка продаж' />
                 </div>
                 {/* !header */}
             </section>
@@ -28,3 +28,4 @@ const _Page = () => {
 }
 
 export default _Page;
+

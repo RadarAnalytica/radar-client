@@ -77,3 +77,20 @@
     opacity: 1;
     transition: all .3s ease-in;
 }
+
+.nested__iconWrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    color: #8C8C8C;
+}
+
+.nested__iconWrapper_active {
+    color: #5329FF
+}
+.nested__iconWrapper:hover {
+    background: #F7F7F7;
+}

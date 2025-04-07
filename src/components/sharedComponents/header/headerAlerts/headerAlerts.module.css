@@ -1,6 +1,5 @@
 :global(.ant-popover-inner) {
     padding: 0 !important;
-    border: 1px solid silver !important;
 }
 
 .list {

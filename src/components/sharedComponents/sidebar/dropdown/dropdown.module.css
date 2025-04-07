@@ -78,3 +78,13 @@
     color: #1A1A1A;
     text-decoration: none;
 }
+
+.dropdown__smallMenu {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background: #FEFBF2;
+}

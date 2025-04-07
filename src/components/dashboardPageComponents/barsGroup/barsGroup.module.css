@@ -1,0 +1,19 @@
+.group {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 20px;
+    justify-items: stretch;
+    justify-content: stretch;
+    box-sizing: border-box;
+}
+
+.group__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    box-sizing: border-box;
+}

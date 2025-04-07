@@ -9,6 +9,7 @@ const DataCollectionPreview = () => {
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
+      style={{border: '1px solid red'}}
     >
       <g filter='url(#filter0_d_959_10427)'>
         <g clipPath='url(#clip0_959_10427)'>

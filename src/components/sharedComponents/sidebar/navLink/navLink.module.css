@@ -50,3 +50,20 @@
     border-radius: 50% 50%;
     background: #5329FF;
 }
+
+.navLink__iconWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #8C8C8C;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+}
+.navLink__iconWrapper:hover {
+    background: #F7F7F7;
+}
+
+.navLink__iconWrapper_active {
+    color: #5329FF
+}
