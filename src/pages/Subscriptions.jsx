@@ -146,6 +146,7 @@ const Subscriptions = () => {
 
   return (
     <div className="sub-page">
+      <MobilePlug />
       <SideNav />
       <div className="sub-page-content">
         <TopNav title={"Моя подписка"} />

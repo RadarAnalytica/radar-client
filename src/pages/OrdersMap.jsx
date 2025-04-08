@@ -673,7 +673,8 @@ const OrdersMap = () => {
   return (
     isVisible && (
       <div className='orders-map'>
-        <SideNav />
+        <MobilePlug />
+      <SideNav />
         <div className='orders-map-content pb-3'>
           <div style={{ width: '100%'}} className="container dash-container">
             <TopNav title={'География заказов и продаж'} mikeStarinaStaticProp />

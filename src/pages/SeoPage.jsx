@@ -6,6 +6,7 @@ import InfoSeoPlate from '../components/InfoSeoPlate';
 import SeoCompaire from '../components/SeoCompaire';
 import NoSubscriptionPage from './NoSubscriptionPage';
 import AuthContext from '../service/AuthContext';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const SeoPage = () => {
   const [compaireData, setCompaireData] = useState({});
@@ -18,6 +19,7 @@ const SeoPage = () => {
 
   return (
     <div className={styles.pageWrapper}>
+      <MobilePlug />
       <SideNav />
       <div className={styles.scrollableContent}>
         <div style={{ width: '100%', padding: '0 10px'}}>

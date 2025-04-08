@@ -47,7 +47,8 @@ const StartPage = () => {
         <main
             className={styles.startPage}
         >
-            <SideNav />
+            <MobilePlug />
+      <SideNav />
             <section
                 className={styles.startPage__content}
             >

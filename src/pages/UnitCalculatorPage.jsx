@@ -184,7 +184,8 @@ const UnitCalculatorPage = () => {
 
     return (
         <main className={styles.page}>
-            <SideNav /> 
+            <MobilePlug />
+      <SideNav /> 
             <section className={styles.page__content} ref={sectionRef}>
                 <div className={styles.page__headerWrapper}>
                     <TopNav title={'Калькулятор unit-экономики товара'} mikeStarinaStaticProp />

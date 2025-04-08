@@ -113,7 +113,8 @@ const RequestMonitoringPage = () => {
 
 
     return <div className='dashboard-page'>
-        <SideNav />
+        <MobilePlug />
+      <SideNav />
         <div className='dashboard-content pb-3'>
             <div style={{ widht: '100%', padding: '0 10px'}}>
             <TopNav title={'Мониторинг запросов'} />

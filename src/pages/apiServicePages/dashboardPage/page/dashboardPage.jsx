@@ -6,6 +6,7 @@ import { ServiceFunctions } from '../../../../service/serviceFunctions'
 
 import Header from '../../../../components/sharedComponents/header/header'
 import Sidebar from '../../../../components/sharedComponents/sidebar/sidebar'
+import MobilePlug from '../../../../components/sharedComponents/mobilePlug/mobilePlug'
 import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent'
 import SelfCostWarningBlock from '../../../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock'
 import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
@@ -68,6 +69,7 @@ const _DashboardPage = () => {
 
     return (
         <main className={styles.page}>
+            <MobilePlug />
             {/* ------ SIDE BAR ------ */}
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />

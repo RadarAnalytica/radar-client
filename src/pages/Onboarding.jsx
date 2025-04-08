@@ -97,7 +97,8 @@ const Onboarding = () => {
   return (
     user && (
       <div className='onboarding-page'>
-        <SideNav />
+        <MobilePlug />
+      <SideNav />
         <div className='boarding-content w-100'>
           <TopNav title={'Подключение API'} />
 

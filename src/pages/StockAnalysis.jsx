@@ -168,7 +168,8 @@ const StockAnalysis = () => {
   return (
     <>
       <div className="dashboard-page">
-        <SideNav />
+        <MobilePlug />
+      <SideNav />
         <div className="dashboard-content" style={{paddingLeft: '52px', paddingBottom: '16px'}}>
           <div className="d-flex flex-column overflow-hidden" style={{ justifyContent: 'stretch'}}>
             <div style={{ paddingRight: '52px'}}>

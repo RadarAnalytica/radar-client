@@ -232,6 +232,7 @@ const LinkedShops = () => {
 
   return (
     <div className='linked-shops-page'>
+      <MobilePlug />
       <SideNav />
       <div 
         //className='linked-shops-content'
