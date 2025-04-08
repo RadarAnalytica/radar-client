@@ -77,7 +77,8 @@ const Settings = () => {
 
     return (
         <div className='dashboard-page'>
-            <SideNav />
+            <MobilePlug />
+      <SideNav />
             <div className="dashboard-content pb-3">
                 <TopNav title={'Настройки аккаунта'} />
 

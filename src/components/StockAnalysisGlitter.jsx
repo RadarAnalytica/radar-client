@@ -105,7 +105,8 @@ const StockAnalysisGlitter = () => {
 
     return (
         <div className='dashboard-page'>
-        <SideNav />
+        <MobilePlug />
+      <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
           <div

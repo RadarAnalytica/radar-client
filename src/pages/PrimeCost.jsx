@@ -75,6 +75,7 @@ const PrimeCost = () => {
 
   return (
     <div className='dashboard-page'>
+      <MobilePlug />
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'Себестоимость'} subTitle={'Отчёт /'} />

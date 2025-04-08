@@ -997,6 +997,7 @@ const Schedule = () => {
 
   return (
     <div className='dashboard-page'>
+      <MobilePlug />
       <SideNav />
       <div className={`${styles.scheduleMain} dashboard-content pb-3 `}>
         <TopNav

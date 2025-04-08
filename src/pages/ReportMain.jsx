@@ -130,6 +130,7 @@ const ReportMain = () => {
 
   return (
     <div className='dashboard-page notranslate'>
+      <MobilePlug />
       <SideNav />
       <div className='dashboard-content pb-3'>
         <div style={{ width: '100%'}} className="container dash-container">

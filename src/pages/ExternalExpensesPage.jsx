@@ -13,6 +13,7 @@ const ExternalExpensesPage = () => {
 
   return (
     <div className='dashboard-page'>
+      <MobilePlug />
       <SideNav />
       <div className='dashboard-content'>
         <TopNav title={'Внешние расходы'} subTitle={'Отчёт /'} />

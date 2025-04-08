@@ -33,6 +33,7 @@ import Period from '../components/period/Period';
 import DownloadButton from '../components/DownloadButton';
 import DetailChart from '../components/DetailChart';
 import { format, differenceInDays } from 'date-fns';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent'
 
@@ -902,6 +903,7 @@ const DashboardPage = () => {
   const rangeDays = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period
   return (
       <div className='dashboard-page'>
+        <MobilePlug />
         <SideNav />
         <div className='dashboard-content pb-3'>
           <div style={{ width: '100%', padding: '0 36px'}}>

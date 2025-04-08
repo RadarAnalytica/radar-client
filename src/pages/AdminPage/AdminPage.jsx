@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { Button, Divider, ConfigProvider } from 'antd';
 import { BlogAdd, BlogList } from '../blog';
 import { fetchPosts, fetchCategories } from '../../redux/blog/blogActions';
+import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import AuthContext from '../../service/AuthContext';
 
 
@@ -29,6 +30,7 @@ const AdminPage = () => {
 
     return (
         <main className={styles.page}>
+            <MobilePlug />
             <section></section>
             <section className={styles.page__content}>
 
