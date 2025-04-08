@@ -8,6 +8,7 @@ import { SelectIcon } from '../../shared'
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { actions as filtersActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import { Select, ConfigProvider } from 'antd'
+import DatePickerCustomDropdown from '../../shared/datePickerCustomDropdown/datePickerCustomDropdown';
 
 const predefinedRanges = [
     {
@@ -135,7 +136,7 @@ export const TimeSelect = () => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (periodRef.current && !periodRef.current.contains(event.target)) {
+            if (periodRef.current && !periodRef.current.contains(event.target) && !event.target.classList.value.includes('ant')) {
                 setIsCalendarOpen(false);
             }
         };
@@ -201,6 +202,9 @@ export const TimeSelect = () => {
                         { before: minDate },
                         { after: today },
                     ]}
+                    components={{
+                        Dropdown: DatePickerCustomDropdown
+                    }}
                 />
             </div>
 

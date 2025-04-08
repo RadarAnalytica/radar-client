@@ -84,7 +84,7 @@ const _DashboardPage = () => {
                 {/* !header */}
 
                 {/* NO SUBSCRIPTION WARNING BLOCK */}
-                <NoSubscriptionWarningBlock />
+                {/* <NoSubscriptionWarningBlock /> */}
                 {/* !NO SUBSCRIPTION WARNING BLOCK */}
 
                 {/* SELF-COST WARNING */}

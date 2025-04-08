@@ -18,9 +18,9 @@ const MobileHeader = ({ title }) => {
 
                 <button className={styles.header__menuButton} onClick={() => { setIsMenuVisible(true) }}>
                     <svg width="38" height="26" viewBox="0 0 38 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 1.25H38" stroke="#552CFF" stroke-width="1.5" />
-                        <path d="M0 13.25H38" stroke="#552CFF" stroke-width="1.5" />
-                        <path d="M0 25.25H38" stroke="#552CFF" stroke-width="1.5" />
+                        <path d="M0 1.25H38" stroke="#552CFF" strokeWidth="1.5" />
+                        <path d="M0 13.25H38" stroke="#552CFF" strokeWidth="1.5" />
+                        <path d="M0 25.25H38" stroke="#552CFF" strokeWidth="1.5" />
                     </svg>
                 </button>
             </div>

@@ -115,7 +115,7 @@ const CircleWhite = () => {
         height='14.2221'
         rx='7.11107'
         stroke='white'
-        stroke-width='0.777853'
+        strokeWidth='0.777853'
       />
       <circle
         cx='12.4918'
@@ -123,7 +123,7 @@ const CircleWhite = () => {
         r='1.75017'
         fill='white'
         stroke='white'
-        stroke-width='1.16678'
+        strokeWidth='1.16678'
       />
     </svg>
   );
