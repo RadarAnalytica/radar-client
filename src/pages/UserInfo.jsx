@@ -6,6 +6,7 @@ import AdminSideNav from '../components/AdminSideNav';
 import TopNav from '../components/TopNav';
 import radarIcon from '../assets/radarIconMessage.svg';
 import MessageWindow from '../components/MessageWindow';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const UserInfo = () => {
   const { user } = useContext(AuthContext);
@@ -70,6 +71,7 @@ const UserInfo = () => {
   ];
   return (
     <div className={styles.pageWrapper}>
+      <MobilePlug />
       <AdminSideNav />
       <div className={styles.scrollableContent}>
         <TopNav title={'Админ панель'} />

@@ -15,7 +15,7 @@ import AuthContext from '../service/AuthContext';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/schedule-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
-
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const Schedule = () => {
   const { authToken, user } = useContext(AuthContext);

@@ -1,0 +1,18 @@
+.le_bequille {
+    height: auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #EFECFE;
+    border: none;
+    padding: 8px;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF;
+    border-radius: 8px;
+    cursor: pointer;
+}

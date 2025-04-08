@@ -6,6 +6,7 @@ import SideNav from "../components/SideNav";
 import PopupBanner from "../components/sharedComponents/popupBanner/PopupBanner";
 import TgBanner from "../components/startPageComponents/tgBanner/TgBanner";
 import CalcBanners from "../components/startPageComponents/calcBanners/calcBanners";
+import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 
 
 

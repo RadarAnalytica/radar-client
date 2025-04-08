@@ -6,7 +6,7 @@ const DownloadButton = ({ handleDownload, isLoading }) => {
     <div
     className={`download-button ${isLoading ? 'disabled' : ''}`}
     onClick={() => !isLoading && handleDownload()}
-    style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}
+    style={{ cursor: isLoading ? 'not-allowed' : 'pointer', height: '100%' }}
   >
     {!isLoading ? (
       <img src={downloadIcon} />

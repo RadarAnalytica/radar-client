@@ -13,6 +13,7 @@ import DesktopExtInfo from './images/DesktopExtInfo';
 import MiniDemo from './images/MiniDemo';
 import TopTgIcon from './images/TopTgIcon';
 import FooterNewVersion from '../components/FooterNewVersion';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const Instructions = () => {
   return (

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
+import styles from './StockAnalysis.module.css'
 import SideNav from "../components/SideNav";
 import TopNav from "../components/TopNav";
 import StockAnalysisFilter from "../components/StockAnalysisFilter";
@@ -25,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { URL } from "../service/config";
 import { fileDownload } from "../service/utils";
 import { Filters } from "../components/sharedComponents/apiServicePagesFiltersComponent";
+import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 
 
 
@@ -54,21 +56,21 @@ const StockAnalysis = () => {
   useEffect(() => {
     const fetchAnalysisData = async () => {
       setLoading(true);
-        if (activeBrand) {
-          
-          const data = await ServiceFunctions.getAnalysisData(
-            authToken,
-            selectedRange,
-            activeBrand.id
-          );
-          setStockAnalysisData(data);
-          setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
-          
-        }
-        prevDays.current = selectedRange;
-        prevActiveBrand.current = activeBrand.id;
-        
-      
+      if (activeBrand) {
+
+        const data = await ServiceFunctions.getAnalysisData(
+          authToken,
+          selectedRange,
+          activeBrand.id
+        );
+        setStockAnalysisData(data);
+        setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
+
+      }
+      prevDays.current = selectedRange;
+      prevActiveBrand.current = activeBrand.id;
+
+
       setLoading(false);
     };
     if (activeBrand?.is_primary_collect) {
@@ -145,7 +147,7 @@ const StockAnalysis = () => {
 
 
 
-  
+
   // --------------------------- ниче не загружаем если нет магазов (переписать бы по человечески) ---------------------//
   // if (!shops || shops.length === 0) {
   //   return null; // or a loading indicator
@@ -169,15 +171,15 @@ const StockAnalysis = () => {
     <>
       <div className="dashboard-page">
         <MobilePlug />
-      <SideNav />
-        <div className="dashboard-content" style={{paddingLeft: '52px', paddingBottom: '16px'}}>
-          <div className="d-flex flex-column overflow-hidden" style={{ justifyContent: 'stretch'}}>
-            <div style={{ paddingRight: '52px'}}>
-            <TopNav title={"Товарная аналитика"} mikeStarinaStaticProp />
+        <SideNav />
+        <div className="dashboard-content" style={{ paddingLeft: '52px', paddingBottom: '16px' }}>
+          <div className="d-flex flex-column overflow-hidden" style={{ justifyContent: 'stretch' }}>
+            <div style={{ paddingRight: '52px' }}>
+              <TopNav title={"Товарная аналитика"} mikeStarinaStaticProp />
             </div>
             {
               !hasSelfCostPrice && activeBrand && activeBrand.id !== 0 && !loading ? (
-                <div style={{ width: '100%', paddingRight: '52px'}}>
+                <div style={{ width: '100%', paddingRight: '52px' }}>
                   <SelfCostWarning
                     activeBrand={activeBrand.id}
                     onUpdateDashboard={handleUpdateDashboard}
@@ -185,7 +187,7 @@ const StockAnalysis = () => {
                 </div>
               ) : null}
 
-            <div className="input-and-button-container container dash-container d-flex flex-wrap justify-content-between align-items-center mt-3 mb-3" style={{paddingRight: '52px'}}>
+            <div className="input-and-button-container container dash-container d-flex flex-wrap justify-content-between align-items-center mt-3 mb-3" style={{ paddingRight: '52px' }}>
               <Filters
                 setLoading={setLoading}
               />
@@ -202,7 +204,7 @@ const StockAnalysis = () => {
 
             {activeBrand && activeBrand.is_primary_collect && (
               <>
-                <div className="input-and-button-container container dash-container d-flex flex-wrap justify-content-between align-items-center mt-3 mb-3" style={{paddingRight: '52px'}}>
+                <div className="input-and-button-container container dash-container d-flex flex-wrap justify-content-between align-items-center mt-3 mb-3">
                   <div className="search search-container">
                     <div className="search-box">
                       <input
@@ -232,15 +234,14 @@ const StockAnalysis = () => {
                       className="d-flex"
                       style={{ gap: "20px", alignItems: "center" }}
                     >
-                      <div className="button-container d-flex gap-3">
-                        <div>
-                          <img
-                            style={{ cursor: "pointer" }}
-                            onClick={handleCostPriceShow}
-                            src={StockCostPrice}
-                            alt=""
-                          />
-                        </div>
+                      <div className={`button-container d-flex gap-3`} style={{ alignItems: 'stretch', width: 'auto' }}>
+                        <button className={styles.le_bequille} style={{ height: '100%' }} onClick={handleCostPriceShow}>
+                          <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 18.5C4.0293 18.5 0 14.4707 0 9.5C0 4.5293 4.0293 0.5 9 0.5C13.9707 0.5 18 4.5293 18 9.5C18 14.4707 13.9707 18.5 9 18.5ZM9 16.7C10.9096 16.7 12.7409 15.9414 14.0912 14.5912C15.4414 13.2409 16.2 11.4096 16.2 9.5C16.2 7.59044 15.4414 5.75909 14.0912 4.40883C12.7409 3.05857 10.9096 2.3 9 2.3C7.09044 2.3 5.25909 3.05857 3.90883 4.40883C2.55857 5.75909 1.8 7.59044 1.8 9.5C1.8 11.4096 2.55857 13.2409 3.90883 14.5912C5.25909 15.9414 7.09044 16.7 9 16.7ZM9 5.045L13.455 9.5L9 13.955L4.545 9.5L9 5.045ZM9 7.5911L7.0911 9.5L9 11.4089L10.9089 9.5L9 7.5911Z" fill="#5329FF" />
+                          </svg>
+
+                          Установить себестоимость
+                        </button>
                         <div>
                           <DownloadButton
                             handleDownload={() => getProdAnalyticXlsxHandler()}
@@ -262,13 +263,13 @@ const StockAnalysis = () => {
               </>
             )}
             {activeBrand && !activeBrand.is_primary_collect &&
-            (
-              <div style={{marginTop: '20px', paddingRight: '52px'}}>
-                <DataCollectionNotification
-                  title={"Ваши данные еще формируются и обрабатываются."}
-                />
-              </div>
-            )}
+              (
+                <div style={{ marginTop: '20px', paddingRight: '52px' }}>
+                  <DataCollectionNotification
+                    title={"Ваши данные еще формируются и обрабатываются."}
+                  />
+                </div>
+              )}
           </div>
         </div>
       </div>

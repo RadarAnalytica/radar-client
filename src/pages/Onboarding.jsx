@@ -6,7 +6,7 @@ import InputField from '../components/InputField';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
-
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import { URL } from '../service/config';
 
 import Modal from 'react-bootstrap/Modal';

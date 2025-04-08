@@ -15,6 +15,7 @@ import { monthNames, getMonthNumbers } from '../service/utils';
 import plFake from '../pages/images/goods-fake.png';
 import DemonstrationSection from '../components/DemonstrationSection';
 import NewFilterGroup from '../components/finReport/FilterGroup'
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 
 const WeeklyReportByGoods = () => {

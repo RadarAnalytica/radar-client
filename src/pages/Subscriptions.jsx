@@ -12,6 +12,7 @@ import { URL } from "../service/config";
 import AuthContext from "../service/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
+import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 
 const Subscriptions = () => {
   const navigate = useNavigate();

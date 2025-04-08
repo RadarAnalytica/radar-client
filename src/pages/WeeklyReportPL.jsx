@@ -13,6 +13,7 @@ import styles from './WeeklyReportPL.module.css';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/goods-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const WeeklyReportPL = () => {
   const { authToken, user } = useContext(AuthContext);
