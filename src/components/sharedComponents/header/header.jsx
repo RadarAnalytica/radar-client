@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import styles from './header.module.css'
-import Icon from './headerIcon/Icon';
+import Icon from './headerIcon/icon';
 import { Popover } from 'antd';
 import HeaderMenu from './headerMenu/headerMenu';
 import HeaderAlerts from './headerAlerts/headerAlerts';
