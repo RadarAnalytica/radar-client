@@ -23,7 +23,7 @@
     @media (max-width: 1550px) {
         flex-direction: column;
         align-items: flex-end;
-    }
+    };
     @media (max-width: 900px) {
         padding: 0;
         width: 100%;
@@ -57,12 +57,16 @@
                        LS        ~o
         */
     }
-    @media (max-width: 900px) {
+    @media (max-width: 380px) {
         flex-direction: column;
         align-items: flex-start;
     }
 }
-
+.result__shareButton {
+    @media (max-width: 900px) {
+       font-size: 12px;
+    }
+}
 .result__tableWrapper {
     width: 100%;
     padding: 24px 32px;
