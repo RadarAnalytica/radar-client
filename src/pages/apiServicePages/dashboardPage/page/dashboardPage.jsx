@@ -12,6 +12,7 @@ import SelfCostWarningBlock from '../../../../components/sharedComponents/selfCo
 import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import FirstBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/firstBarsGroup'
 import MainChart from '../../../../components/dashboardPageComponents/charts/mainChart/mainChart'
+import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const _DashboardPage = () => {
     const { authToken } = useContext(AuthContext)
@@ -82,6 +83,9 @@ const _DashboardPage = () => {
                 </div>
                 {/* !header */}
 
+                {/* NO SUBSCRIPTION WARNING BLOCK */}
+                <NoSubscriptionWarningBlock />
+                {/* !NO SUBSCRIPTION WARNING BLOCK */}
 
                 {/* SELF-COST WARNING */}
                 {dataDashBoard &&
