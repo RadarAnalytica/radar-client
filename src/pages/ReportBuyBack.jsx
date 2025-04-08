@@ -9,6 +9,7 @@ import DragDropFile from '../components/DragAndDropFiles';
 import BottomNavigation from '../components/BottomNavigation';
 import styles from './PrimeCost.module.css';
 import doneIcon from "../assets/tick-active.png"
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const ReportBuyBack = () => {
   const [file, setFile] = useState();

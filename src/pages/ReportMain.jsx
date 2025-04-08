@@ -20,6 +20,7 @@ import BottomNavigation from '../components/BottomNavigation';
 import Modal from 'react-bootstrap/Modal';
 import warningIcon from '../assets/warning.png';
 import NoSubscriptionPage from './NoSubscriptionPage';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const ReportMain = () => {
   const { user, authToken } = useContext(AuthContext);
@@ -297,7 +298,7 @@ const ReportMain = () => {
             <div
               className={styles.uploadWrapper}
               onClick={() => !uploadingFile && fileInputRef.current.click()}
-              style={{ cursor: uploadingFile ? 'not-allowed' : 'pointer' }}
+              style={{ cursor: uploadingFile ? 'not-allowed' : 'pointer'}}
             >
               <div className={styles.uploadTitle}>Загрузите отчеты</div>
               {!uploadingFile ? (

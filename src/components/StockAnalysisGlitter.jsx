@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useAppSelector } from '../redux/hooks';
 import { fetchStockAnalysisData } from '../redux/stockAnalysis/stockAnalysisDataActions';
 import AuthContext from '../service/AuthContext';
+import MobilePlug from './sharedComponents/mobilePlug/mobilePlug';
 
 const StockAnalysisGlitter = () => {
     const { id } = useParams();

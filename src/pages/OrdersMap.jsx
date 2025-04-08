@@ -23,6 +23,7 @@ import green from '../assets/greenarrow.png';
 import red from '../assets/redarrow.png';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const OrdersMap = () => {
   const location = useLocation();

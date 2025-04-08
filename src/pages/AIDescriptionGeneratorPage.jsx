@@ -20,6 +20,7 @@ import {
 } from '../service/fileService';
 import DragDropFile from '../components/DragAndDropFiles';
 import NoSubscriptionPage from './NoSubscriptionPage';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const AiDescriptionGeneratorPage = () => {
   const {

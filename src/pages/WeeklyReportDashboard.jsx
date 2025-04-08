@@ -14,6 +14,7 @@ import fakeDashboard from '../pages/images/report-dashboard-fake.png';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import { formatPrice } from '../service/utils';
 import NewFilterGroup from '../components/finReport/FilterGroup'
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 
 const WeeklyReportDashboard = () => {
