@@ -153,7 +153,7 @@ https://www.wildberries.ru/catalog/177307899'
             </form>
           </div>
           <Modal show={showModalError} onHide={handleCloseModalError}>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton style={{border: 'none'}}>
               <div>
                 <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
                   <img src={warningIcon} alt='' style={{ height: '3vh' }} />
