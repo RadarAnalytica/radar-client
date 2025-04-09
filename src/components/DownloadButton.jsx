@@ -1,20 +1,21 @@
 import React from 'react';
 import downloadIcon from '../pages/images/Download.svg';
 
-const DownloadButton = ({ handleDownload, isLoading }) => {
+const DownloadButton = ({ handleDownload, isLoading, styles }) => {
   return (
-    <div
-    className={`download-button ${isLoading ? 'disabled' : ''}`}
-    onClick={() => !isLoading && handleDownload()}
-    style={{ cursor: isLoading ? 'not-allowed' : 'pointer', height: '100%' }}
-  >
-    {!isLoading ? (
-      <img src={downloadIcon} />
-    ) : (
-      <span className='small-loader'></span>
-    )}
-    Скачать Excel
-  </div>
+    <button
+      className={styles}
+      disabled={isLoading}
+      onClick={() => !isLoading && handleDownload()}
+      style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}
+    >
+      {!isLoading ? (
+        <img src={downloadIcon} />
+      ) : (
+        <span className='small-loader'></span>
+      )}
+      Скачать Excel
+    </button>
   )
 };
 
