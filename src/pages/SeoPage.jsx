@@ -6,6 +6,8 @@ import InfoSeoPlate from '../components/InfoSeoPlate';
 import SeoCompaire from '../components/SeoCompaire';
 import NoSubscriptionPage from './NoSubscriptionPage';
 import AuthContext from '../service/AuthContext';
+import { Helmet } from 'react-helmet';
+
 
 const SeoPage = () => {
   const [compaireData, setCompaireData] = useState({});
@@ -18,6 +20,9 @@ const SeoPage = () => {
 
   return (
     <div className={styles.pageWrapper}>
+      <Helmet>
+        <link rel="canonical" href="https://radar-analytica.ru/signup" />
+      </Helmet>
       <SideNav />
       <div className={styles.scrollableContent}>
         <div style={{ width: '100%', padding: '0 10px'}}>
