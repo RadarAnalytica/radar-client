@@ -6,6 +6,7 @@ import LoaderPage from './pages/LoaderPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
 import { URL } from './service/config';
 import { Helmet } from 'react-helmet';
+import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
 
 
 /**
@@ -44,7 +45,7 @@ const config = {
     authFallback: (props) => (<MainPage {...props} />), // (props: any) => ReactNode
     authRedirect: `/signin`, // any url
     expireProtected: false, // boolean
-    expireFallback: (props) => (<NoSubscriptionPage {...props} />),
+    expireFallback: (props) => (<NoSubscriptionPlugPage {...props} />),
     expireRedirect: '/tariffs',
     onboardProtected: false,
     onboardFallback: (props) => (<MainPage {...props} />),
@@ -86,7 +87,7 @@ export const ProtectedRoute = ({
   subscription = config.subscription,
   role = config.role,
 }) => {
-  const { user } = useContext(AuthContext);
+ const { user } = useContext(AuthContext);
   const { pathname } = useLocation()
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl'); // это устанавливается в калькуляторе. Необходимо для коррекного редиректа не авторизованного юзера
 
@@ -100,7 +101,7 @@ export const ProtectedRoute = ({
   //   is_report_downloaded: true,
   //   is_test_used: true,
   //   role: "admin",
-  //   subscription_status: 'Smart'
+  //   subscription_status: 'expired'
   // }
 
 //  const user = undefined
@@ -176,7 +177,7 @@ export const ProtectedRoute = ({
         case 'fallback': {
           return (
             <Suspense fallback={<LoaderPage />}>
-              {expireFallback({title: routeRuName})}
+              {expireFallback({title: routeRuName, pathname: pathname.substring(1)})}
             </Suspense>
           )
         }

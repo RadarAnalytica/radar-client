@@ -1,6 +1,10 @@
+import React, { useState } from 'react';
 import styles from './nuSubscriptionWarningBlock.module.css'
+import SubscriptionModal from '../modals/subscriptionModal/subscriptionModal';
 
 const NoSubscriptionWarningBlock = () => {
+
+    const [ isModalVisible, setIsModalVisible ] = useState(false)
 
     return (
         <div className={styles.block}>
@@ -36,10 +40,15 @@ const NoSubscriptionWarningBlock = () => {
                     Чтобы подключить свой магазин и работать уже <b>с реальными данными, активируйте тестовый период.</b> <span>У вас будет три дня, чтобы изучить функционал сервиса и убедиться в его удобстве.</span> Желаем удачи!
                 </p>
 
-                <button className={styles.block__actionButton}>
+                <button className={styles.block__actionButton} onClick={() => setIsModalVisible(true)}>
                     Активировать тестовый период – 3 дня
                 </button>
             </div>
+
+            <SubscriptionModal
+                visible={isModalVisible}
+                visibilityHandler={setIsModalVisible}
+            />
         </div>
     )
 }
