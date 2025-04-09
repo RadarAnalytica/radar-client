@@ -1,6 +1,6 @@
 .block {
     width: 100%;
-    box-shadow: 0px 0px 20px 0px #00000014;
+    /* box-shadow: 0px 0px 20px 0px #00000014; */
     padding: 16px 16px 32px;
     border-radius: 8px;
     background: white;
