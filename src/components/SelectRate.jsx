@@ -150,7 +150,7 @@ const SelectRate = ({ redirect, isShowText }) => {
     let firstAmount = 0;
     let startDateSubscribe = new Date();
     // проверяем время с 10:10 по 10 мск
-    if (startDateSubscribe.getUTCHours() > 7 || (startDateSubscribe.getUTCHours() == 7 && startDateSubscribe.getUTCMinutes() < 10)){
+    if (startDateSubscribe.getUTCHours() > 7 || (startDateSubscribe.getUTCHours() == 7 && startDateSubscribe.getUTCMinutes() < 10)) {
       startDateSubscribe.setDate(startDateSubscribe.getDate() + 1);
     }
     // ставим время платежа на 10 мск
@@ -340,7 +340,7 @@ const SelectRate = ({ redirect, isShowText }) => {
         // console.log('Payment fail:', 'reason', reason, 'options', options);
       }
     );
-    
+
     //   widget.pay('charge', // или 'charge'
     //       { //options
     //           publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета

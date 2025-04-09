@@ -1,13 +1,12 @@
-// dont forget to renew imports
-import styles from './_page.module.css'
+import styles from './noSubscriptionPlugPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
-
-// dont forget to rename the component and its export
-const _Page = () => {
+const NoSubscriptionPlugPage = ({ title, pathname }) => {
+ 
+    const path = pathname ? pathname : 'dashboard';
 
     return (
         <main className={styles.page}>
@@ -20,18 +19,20 @@ const _Page = () => {
             <section className={styles.page__content}>
                 {/* header */}
                 <div className={styles.page__headerWrapper}>
-                    <Header title='Сводка продаж' />
+                    <Header title={title} />
                 </div>
                 {/* !header */}
 
                 {/* NO SUBSCRIPTION WARNING BLOCK */}
                 <NoSubscriptionWarningBlock />
                 {/* !NO SUBSCRIPTION WARNING BLOCK */}
+                <div className={styles.page__plugWrapper}>
+                    <img src={`/src/assets/plugs/${path}_plug.png`} alt='' />
+                </div>
             </section>
             {/* ---------------------- */}
         </main>
     )
 }
 
-export default _Page;
-
+export default NoSubscriptionPlugPage;

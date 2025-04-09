@@ -142,9 +142,9 @@ export const Filters = ({
             />}
         </div>
       </div>
-      {(!activeBrand?.is_primary_collect) && (
+      {/* {(!activeBrand?.is_primary_collect) && (
         <DownloadButton handleDownload={handleDownload} />
-      )}
+      )} */}
     </div>
   );
 };
