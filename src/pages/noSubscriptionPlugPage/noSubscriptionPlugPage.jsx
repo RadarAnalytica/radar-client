@@ -27,7 +27,7 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                 <NoSubscriptionWarningBlock />
                 {/* !NO SUBSCRIPTION WARNING BLOCK */}
                 <div className={styles.page__plugWrapper}>
-                    <img src={`/src/assets/plugs/${path}_plug.png`} alt='' />
+                    <img src={`/assets/plugs/${path}_plug.png`} alt='' />
                 </div>
             </section>
             {/* ---------------------- */}
