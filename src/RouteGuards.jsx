@@ -131,24 +131,6 @@ export const ProtectedRoute = ({
     return (window.location.replace(`${URL}${authRedirect}`))
   }
 
-  // ---------0. Subscription expiration protection (checking subscription) -------//
-  if (user && !user.is_onboarded &&  user.subscription_status === null && pathname !== '/tariffs') {
-    // switch(expireGuardType) {
-    //   case 'redirect': {
-    //     return (<Navigate to='/tariffs' />)
-    //   }
-    //   case 'fallback': {
-    //     return (
-    //       <Suspense fallback={<LoaderPage />}>
-    //         {expireFallback({title: routeRuName})}
-    //       </Suspense>
-    //     )
-    //   }
-    // }
-
-    return (<Navigate to='/tariffs' />)
-}
-
     // ---------2. Onboarding protection (user should be onboarded) ------//
     if (onboardProtected && user && !user.is_onboarded) {
       switch(onboardGuardType) {
@@ -169,7 +151,7 @@ export const ProtectedRoute = ({
   }
 
   // ---------3. Subscription expiration protection (checking subscription) -------//
-  if (expireProtected && user && user.is_onboarded && (user.subscription_status === 'expired' || user.subscription_status === null)) {
+  if (expireProtected && user && user.is_onboarded && user.subscription_status === 'expired') {
       switch(expireGuardType) {
         case 'redirect': {
           return (<Navigate to={expireRedirect} />)
