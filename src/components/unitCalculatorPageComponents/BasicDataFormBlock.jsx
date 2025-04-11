@@ -133,7 +133,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
                         autoComplete='off'
-                        notFoundContent={<div style={{color: 'black'}}>Не найдено</div>}
+                        notFoundContent={<div style={{color: 'black'}}>Ничего не найдено</div>}
                         allowClear={{
                             clearIcon: (
                                 <div style={{ background: 'transparent'}}>
