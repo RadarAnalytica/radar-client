@@ -20,6 +20,7 @@ import {
 } from '../service/fileService';
 import DragDropFile from '../components/DragAndDropFiles';
 import NoSubscriptionPage from './NoSubscriptionPage';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const AiDescriptionGeneratorPage = () => {
   const {
@@ -391,6 +392,7 @@ const AiDescriptionGeneratorPage = () => {
 
   return (
     <div className='dashboard-page'>
+      <MobilePlug />
       <SideNav />
       <div className={`${styles.generatorPage} dashboard-content pb-3 `}>
       <div style={{ width: '100%', padding: '0 22px'}}>

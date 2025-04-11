@@ -11,6 +11,7 @@ import { fetchPenaltyFilters } from '../redux/reportPrnalties/penaltyFiltersActi
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/penalties-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const WeeklyReportPenaltiesPage = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const WeeklyReportPenaltiesPage = () => {
 
   return (
     <div className='dashboard-page'>
+      <MobilePlug />
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'Штрафы'} subTitle={'Отчёт /'} />

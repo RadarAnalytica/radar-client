@@ -27,7 +27,7 @@ const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const HowToConnectAPI = () => {
 
   const [highResLoaded, setHighResLoaded] = useState(false);
-
+  console.log('Test new variant')
   const handleImageLoad = () => {
     setHighResLoaded(true);
   };

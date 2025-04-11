@@ -268,6 +268,9 @@ const BigChart = ({
           </div>
         </div>
       </div>
+
+
+      
       <div className='bar-div' style={{ position: 'relative' }}>
         {((data && data.labels.length === 0) || loading) && (
           <div

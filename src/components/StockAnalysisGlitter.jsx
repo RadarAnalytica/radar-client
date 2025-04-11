@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useAppSelector } from '../redux/hooks';
 import { fetchStockAnalysisData } from '../redux/stockAnalysis/stockAnalysisDataActions';
 import AuthContext from '../service/AuthContext';
+import MobilePlug from './sharedComponents/mobilePlug/mobilePlug';
 
 const StockAnalysisGlitter = () => {
     const { id } = useParams();
@@ -105,7 +106,8 @@ const StockAnalysisGlitter = () => {
 
     return (
         <div className='dashboard-page'>
-        <SideNav />
+        <MobilePlug />
+      <SideNav />
         <div className='dashboard-content pb-3'>
           <TopNav title={'Товарная аналитика'} />
           <div

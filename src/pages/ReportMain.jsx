@@ -20,6 +20,8 @@ import BottomNavigation from '../components/BottomNavigation';
 import Modal from 'react-bootstrap/Modal';
 import warningIcon from '../assets/warning.png';
 import NoSubscriptionPage from './NoSubscriptionPage';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import FileUploader from '../components/sharedComponents/fileUploader/fileUploader';
 
 const ReportMain = () => {
   const { user, authToken } = useContext(AuthContext);
@@ -130,9 +132,10 @@ const ReportMain = () => {
 
   return (
     <div className='dashboard-page notranslate'>
+      <MobilePlug />
       <SideNav />
       <div className='dashboard-content pb-3'>
-        <div style={{ width: '100%'}} className="container dash-container">
+        <div style={{ width: '100%' }} className="container dash-container">
           <TopNav title={'Главная'} subTitle={'Отчёт /'} mikeStarinaStaticProp />
         </div>
         <div className='container dash-container'>
@@ -151,9 +154,8 @@ const ReportMain = () => {
                 onClick={() => handleOpenClose()}
               >
                 <span
-                  className={`${styles.line} ${
-                    openBlock ? styles.open : styles.closed
-                  }`}
+                  className={`${styles.line} ${openBlock ? styles.open : styles.closed
+                    }`}
                 ></span>
               </div>
             </div>
@@ -243,8 +245,8 @@ const ReportMain = () => {
                             Отчёт по платному хранению:{' '}
                           </span>
                           документ за тот же период, что и детализация
-                          еженедельного отчёта. В личном кабинете селлера вкладка «Аналитика», 
-                          далее вкладка «Отчёты», в отчётах выбрать «Платное хранение», далее 
+                          еженедельного отчёта. В личном кабинете селлера вкладка «Аналитика»,
+                          далее вкладка «Отчёты», в отчётах выбрать «Платное хранение», далее
                           выбрать «Отчёт по номенклатурам», после выгружаем отчёт в Excel.
                         </li>
                       </ul>
@@ -288,16 +290,28 @@ const ReportMain = () => {
           </div>
         </div>
         <div className='container dash-container'>
+
+
+
+          {/* file uploader */}
           <div
             className={styles.uploadContainer}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
+            {/* <div className={styles.uploadWrapper}>
+              <FileUploader
+                setShow={setShow}
+                setError={setError}
+                getListOfReports={getListOfReports}
+              />
+            </div> */}
             <div
               className={styles.uploadWrapper}
               onClick={() => !uploadingFile && fileInputRef.current.click()}
               style={{ cursor: uploadingFile ? 'not-allowed' : 'pointer' }}
             >
+
               <div className={styles.uploadTitle}>Загрузите отчеты</div>
               {!uploadingFile ? (
                 <div className={styles.uploadIcon}>
@@ -305,8 +319,8 @@ const ReportMain = () => {
                 </div>
               ) : (
                 <div className={styles.uploadIcon}>
-              <span  className="small-loader"></span>
-              </div>
+                  <span className="small-loader"></span>
+                </div>
               )}
               <div className={styles.uploadTextWrapper}>
                 <div className={styles.uploadText}>
@@ -347,6 +361,14 @@ const ReportMain = () => {
               />
             </div>
           </div>
+
+
+          {/* !file uploader */}
+
+
+
+
+
         </div>
         <div className='container dash-container'>
           <div className={styles.uploadTableContainer}>
@@ -391,20 +413,20 @@ const ReportMain = () => {
                         {row.main_report_name}
                       </span>
                     </div>
-                    {row.foreign_country_report_name && ( 
-                    <div className={styles.reportRow}>
-                      <span className={styles.reportResult}>
-                        {row.foreign_country_report_status === 'Done' && (
-                          <img src={sucesscheck} alt='Sucess' />
-                        )}
-                        {row.foreign_country_report_status === 'Fail' && (
-                          <img src={failcheck} alt='Fail' />
-                        )}
-                      </span>
-                      <span className={styles.reportText}>
-                        {row.foreign_country_report_name}
-                      </span>
-                    </div>)}
+                    {row.foreign_country_report_name && (
+                      <div className={styles.reportRow}>
+                        <span className={styles.reportResult}>
+                          {row.foreign_country_report_status === 'Done' && (
+                            <img src={sucesscheck} alt='Sucess' />
+                          )}
+                          {row.foreign_country_report_status === 'Fail' && (
+                            <img src={failcheck} alt='Fail' />
+                          )}
+                        </span>
+                        <span className={styles.reportText}>
+                          {row.foreign_country_report_name}
+                        </span>
+                      </div>)}
                     <div className={styles.reportRow}>
                       <span className={styles.reportResult}>
                         {row.storage_report_status === 'Done' && (
@@ -449,7 +471,7 @@ const ReportMain = () => {
             </div>
           </div>
         </div>
-           <BottomNavigation />
+        <BottomNavigation />
       </div>
       <Modal
         show={openModal}

@@ -13,6 +13,7 @@ import styles from './WeeklyReportPL.module.css';
 import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/goods-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const WeeklyReportPL = () => {
   const { authToken, user } = useContext(AuthContext);
@@ -234,6 +235,7 @@ const WeeklyReportPL = () => {
 
   return (
     <div className='dashboard-page'>
+      <MobilePlug />
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'P&L'} subTitle={'Отчёт /'} />

@@ -11,6 +11,7 @@ import BottomNavigation from '../components/BottomNavigation';
 import plFake from '../pages/images/month-fake.png';
 import DemonstrationSection from '../components/DemonstrationSection';
 import NewFilterGroup from '../components/finReport/FilterGroup'
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 
 const WeeklyReportByMonth = () => {
@@ -41,6 +42,7 @@ const WeeklyReportByMonth = () => {
 
   return (
     <div className='dashboard-page'>
+      <MobilePlug />
       <SideNav />
       <div className='dashboard-content pb-3'>
         <TopNav title={'По месяцам'} subTitle={'Отчёт /'} />

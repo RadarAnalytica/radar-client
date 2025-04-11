@@ -1,0 +1,91 @@
+.page__secButton {
+    height: 100% !important;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #EFECFE;
+    border: none;
+    padding: 8px;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+.page__primeButton {
+    height: 100% !important;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    border: none;
+    padding: 8px;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    background: #5329FF;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.page__searchContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    padding-right: 52px;
+    gap: 20px;
+    height: 48px;
+    overflow: hidden;
+}
+
+.page__inputWrapper {
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 10px;
+    width: auto;
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
+.page__searchInput {
+    width: 100%;
+    max-width: 670px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    border-radius: 8px;
+    padding: 0 10px;
+    border: 1px solid #5329FF !important;
+}
+
+.page__searchInput::placeholder {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A80
+}
+
+.page__controlsWrapper {
+    width: auto;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    gap: 10px
+}

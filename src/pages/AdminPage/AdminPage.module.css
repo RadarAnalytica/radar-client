@@ -1,0 +1,53 @@
+
+/* Page */
+
+.page {
+    background-color: #F7F6FE;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+}
+.page__content {
+    width: 100%;
+    padding: 30px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: scroll;
+    
+}
+.page__sideNavWrapper {
+    height: 100%;
+    width: auto;
+    overflow: visible;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+.page__headerWrapper {
+    width: 100%;
+}
+
+.page__additionalMenu {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+}
+
+.page__wrapper {
+    width: 100%;
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    filter: drop-shadow(0px 0px 20px #00000014);
+}

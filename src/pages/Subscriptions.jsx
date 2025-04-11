@@ -12,6 +12,7 @@ import { URL } from "../service/config";
 import AuthContext from "../service/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
+import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 
 const Subscriptions = () => {
   const navigate = useNavigate();
@@ -146,6 +147,7 @@ const Subscriptions = () => {
 
   return (
     <div className="sub-page">
+      <MobilePlug />
       <SideNav />
       <div className="sub-page-content">
         <TopNav title={"Моя подписка"} />

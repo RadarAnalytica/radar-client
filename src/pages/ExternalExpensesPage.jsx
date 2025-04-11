@@ -7,12 +7,14 @@ import BottomNavigation from '../components/BottomNavigation';
 import DemonstrationSection from '../components/DemonstrationSection';
 import styles from './ExternalExpensesPage.module.css';
 import plFake from '../pages/images/external-fake.png';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const ExternalExpensesPage = () => {
   const { user } = useContext(AuthContext);
 
   return (
     <div className='dashboard-page'>
+      <MobilePlug />
       <SideNav />
       <div className='dashboard-content'>
         <TopNav title={'Внешние расходы'} subTitle={'Отчёт /'} />

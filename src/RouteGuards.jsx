@@ -6,6 +6,7 @@ import LoaderPage from './pages/LoaderPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
 import { URL } from './service/config';
 import { Helmet } from 'react-helmet';
+import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
 
 
 /**
@@ -36,22 +37,26 @@ const config = {
       /** ... */
     },
     authGuardType: 'redirect', // 'redirect' | 'fallback'
-    expireGuardType: 'fallback', // 'redirect' | 'fallback'
+    expireGuardType: 'redirect', // 'redirect' | 'fallback'
     onboardGuardType: 'redirect', // 'redirect' | 'fallback'
     userRoleGuardType: 'redirect', // 'redirect' | 'fallback'
     subscriptionGuardType: 'redirect', // 'redirect' | 'fallback'
+    testPeriodGuardType: 'fallback', // 'redirect' | 'fallback'
     authProtected: true, // default protection level is auth
     authFallback: (props) => (<MainPage {...props} />), // (props: any) => ReactNode
     authRedirect: `/signin`, // any url
+    testPeriodProtected: false,
+    testPeriodFallback: (props) => (<NoSubscriptionPlugPage {...props} />),
+    testPeriodRedirect: '/tariffs',
     expireProtected: false, // boolean
-    expireFallback: (props) => (<NoSubscriptionPage {...props} />),
+    expireFallback: (props) => (<NoSubscriptionPlugPage {...props} />),
     expireRedirect: '/tariffs',
     onboardProtected: false,
     onboardFallback: (props) => (<MainPage {...props} />),
     onboardRedirect: '/onboarding',
     userRoleProtected: false,
     userRoleFallback: (props) => (<MainPage {...props} />),
-    userRoleRedirect: '/onboarding',
+    userRoleRedirect: '/main',
     subscriptionProtected: false,
     subscriptionFallback: (props) => (<MainPage {...props} />),
     subscriptionRedirect: '/tariffs',
@@ -68,6 +73,10 @@ export const ProtectedRoute = ({
   onboardGuardType = config.onboardGuardType,
   userRoleGuardType = config.userRoleGuardType,
   subscriptionGuardType = config.subscriptionGuardType,
+  testPeriodGuardType = config.testPeriodGuardType,
+  testPeriodProtected = config.testPeriodProtected,
+  testPeriodFallback = config.testPeriodFallback,
+  testPeriodRedirect = config.testPeriodRedirect,
   authProtected = config.authProtected,
   authFallback = config.authFallback,
   authRedirect = config.authRedirect,
@@ -96,14 +105,20 @@ export const ProtectedRoute = ({
   //   email: "modinsv@yandex.ru",
   //   id: 2,
   //   is_confirmed: true,
-  //   is_onboarded: true,
+  //   is_onboarded: false,
   //   is_report_downloaded: true,
   //   is_test_used: true,
   //   role: "admin",
-  //   subscription_status: 'Smart'
+  //   subscription_status: 'smart'
   // }
 
 //  const user = undefined
+
+/**
+1. null
+2. expired
+3& smart + !onboardig
+ */
 
   // ----------------------------------------------------------//
 
@@ -130,26 +145,44 @@ export const ProtectedRoute = ({
     return (window.location.replace(`${URL}${authRedirect}`))
   }
 
-  // ---------0. Subscription expiration protection (checking subscription) -------//
-  if (user && !user.is_onboarded &&  user.subscription_status === null && pathname !== '/tariffs') {
-    // switch(expireGuardType) {
-    //   case 'redirect': {
-    //     return (<Navigate to='/tariffs' />)
-    //   }
-    //   case 'fallback': {
-    //     return (
-    //       <Suspense fallback={<LoaderPage />}>
-    //         {expireFallback({title: routeRuName})}
-    //       </Suspense>
-    //     )
-    //   }
-    // }
-
-    return (<Navigate to='/tariffs' />)
+   // ---------2. Test period protection ------//
+   if (testPeriodProtected && user && user.subscription_status === null) {
+    switch(testPeriodGuardType) {
+      case 'redirect': {
+        return (<Navigate to={testPeriodRedirect} />)
+      }
+      case 'fallback': {
+        return (
+          <Suspense fallback={<LoaderPage />}>
+            {testPeriodFallback({title: routeRuName, pathname: pathname.substring(1)})}
+          </Suspense>
+        )
+      }
+    }
+    
+    return (<Navigate to={testPeriodRedirect} replace />)
+  
 }
 
-    // ---------2. Onboarding protection (user should be onboarded) ------//
-    if (onboardProtected && user && !user.is_onboarded) {
+  // ---------3. Subscription expiration protection (checking subscription) -------//
+  if (expireProtected && user && user.subscription_status.toLowerCase() === 'expired') {
+    switch(expireGuardType) {
+      case 'redirect': {
+        return (<Navigate to={expireRedirect} />)
+      }
+      case 'fallback': {
+        return (
+          <Suspense fallback={<LoaderPage />}>
+            {expireFallback({title: routeRuName, pathname: pathname.substring(1)})}
+          </Suspense>
+        )
+      }
+    }
+    return (<Navigate to={expireRedirect} replace />)
+}
+
+    // ---------4. Onboarding protection (user should be onboarded) ------//
+    if (onboardProtected && user && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
       switch(onboardGuardType) {
         case 'redirect': {
           return (<Navigate to={onboardRedirect} />)
@@ -167,27 +200,12 @@ export const ProtectedRoute = ({
     
   }
 
-  // ---------3. Subscription expiration protection (checking subscription) -------//
-  if (expireProtected && user && user.is_onboarded && (user.subscription_status === 'expired' || user.subscription_status === null)) {
-      switch(expireGuardType) {
-        case 'redirect': {
-          return (<Navigate to={expireRedirect} />)
-        }
-        case 'fallback': {
-          return (
-            <Suspense fallback={<LoaderPage />}>
-              {expireFallback({title: routeRuName})}
-            </Suspense>
-          )
-        }
-      }
-      return (<Navigate to={expireRedirect} replace />)
-  }
 
 
 
 
-  // ----------4. User role protection ------------//
+
+  // ----------5. User role protection ------------//
   if (userRoleProtected && user && role && user.role !== role) {
       switch(userRoleGuardType) {
         case 'redirect': {
@@ -205,7 +223,7 @@ export const ProtectedRoute = ({
       return (<Navigate to={userRoleRedirect} replace />)
   }
 
-  // ---------- 5. Subscription protection (for different types of subscription) ------------//
+  // ---------- 6. Subscription protection (for different types of subscription) ------------//
   if (subscriptionProtected && user && user.subscription_status !== subscription) {
     /***
      * 

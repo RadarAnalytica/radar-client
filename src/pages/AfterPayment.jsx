@@ -11,9 +11,8 @@ import CustomButton from '../components/utilsComponents/CustomButton';
 const AfterPayment = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { paymentStatus } = location.state;
 
-  const status = paymentStatus === 'success' ? true : false;
+  const status = location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false;
 
   useEffect(() => {
     setTimeout(() => {

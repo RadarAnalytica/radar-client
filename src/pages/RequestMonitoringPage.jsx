@@ -18,6 +18,7 @@ import MessageWindow from '../components/MessageWindow';
 import warningIcon from "../assets/warning.png"
 import Modal from 'react-bootstrap/Modal';
 import styles from './RequestMonitoringPage.module.css';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const RequestMonitoringPage = () => {
 
@@ -113,7 +114,8 @@ const RequestMonitoringPage = () => {
 
 
     return <div className='dashboard-page'>
-        <SideNav />
+        <MobilePlug />
+      <SideNav />
         <div className='dashboard-content pb-3'>
             <div style={{ widht: '100%', padding: '0 10px'}}>
             <TopNav title={'Мониторинг запросов'} />

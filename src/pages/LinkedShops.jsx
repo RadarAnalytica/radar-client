@@ -26,6 +26,7 @@ import { deleteShop } from "../redux/deleteShop/deleteShopActions";
 import { areAllFieldsFilled } from "../service/utils";
 import NoSubscriptionPage from "./NoSubscriptionPage";
 import warningIcon from "../assets/warning.png";
+import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 
 const LinkedShops = () => {
   const { user, authToken, logout } = useContext(AuthContext);
@@ -232,6 +233,7 @@ const LinkedShops = () => {
 
   return (
     <div className='linked-shops-page'>
+      <MobilePlug />
       <SideNav />
       <div 
         //className='linked-shops-content'

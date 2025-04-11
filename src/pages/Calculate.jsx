@@ -71,7 +71,8 @@ const Calculate = () => {
 
     return (
         <div className='calculate-page'>
-            <SideNav />
+            <MobilePlug />
+      <SideNav />
             <div className="calculate-content pb-3">
                 <TopNav title={'Калькулятор unit-экономики товара'} />
                 <div className="calculate-container dash-container container">

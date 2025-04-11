@@ -72,6 +72,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                         disabled={result === undefined}
                         size='large'
                         onClick={() => {shareButtonClickHandler()}}
+                        className={styles.result__shareButton}
                     >{buttonState}</Button>
                 </ConfigProvider>
                 <ConfigProvider
@@ -89,6 +90,7 @@ const ResultBlock = ({result, token, investValue, setInvestValue}) => {
                         disabled={result === undefined}
                         size='large'
                         onClick={generateExcel}
+                        className={styles.result__shareButton}
                     >Скачать Excel</Button>
                 </ConfigProvider>
             </div>

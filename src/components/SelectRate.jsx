@@ -130,7 +130,6 @@ const SelectRate = ({ redirect, isShowText }) => {
 
     // localStorage.setItem("authToken", refresh_result);
     const decodedUser = jwtDecode(refresh_result);
-    console.log('decodedUser:', decodedUser);
     let newTrialExpired;
     if (decodedUser.is_test_used) {
       setTrialExpired(true);
@@ -150,11 +149,11 @@ const SelectRate = ({ redirect, isShowText }) => {
     let firstAmount = 0;
     let startDateSubscribe = new Date();
     // проверяем время с 10:10 по 10 мск
-    if (startDateSubscribe.getUTCHours() > 7 || (startDateSubscribe.getUTCHours() == 7 && startDateSubscribe.getUTCMinutes() < 10)){
+    if (startDateSubscribe.getUTCHours() > 10 || (startDateSubscribe.getUTCHours() == 10 && startDateSubscribe.getUTCMinutes() > 10)) {
       startDateSubscribe.setDate(startDateSubscribe.getDate() + 1);
     }
     // ставим время платежа на 10 мск
-    startDateSubscribe.setUTCHours(7, 0, 0, 0);
+    startDateSubscribe.setUTCHours(10, 0, 0, 0);
     const options = {
       year: 'numeric',
       month: 'numeric',
@@ -171,7 +170,7 @@ const SelectRate = ({ redirect, isShowText }) => {
 
     if (selectedPeriod === '1month') {
       amountSubscribe = 2990;
-      firstAmount = newTrialExpired ? 2990 : 1;
+      firstAmount = 2990;
       periodSubscribe = 1;
       if (!!newTrialExpired) {
         startDateSubscribe.setMonth(
@@ -205,20 +204,19 @@ const SelectRate = ({ redirect, isShowText }) => {
     //   startDateSubscribe.toISOString().split('T')[0]
     // );
     startDateSubscribe = startDateSubscribe.toISOString().split('T')[0];
-    startDateSubscribe = `${startDateSubscribe}T07:00:00`
+    startDateSubscribe = `${startDateSubscribe}T10:00:00`
     // console.log('startDateSubscribe', startDateSubscribe);
     // eslint-disable-next-line no-undef
     var widget = new cp.CloudPayments({
       language: 'ru-RU',
       email: user.email,
-      applePaySupport: false,
-      googlePaySupport: false,
-      yandexPaySupport: true,
+      // applePaySupport: false,
+      // googlePaySupport: false,
+      // yandexPaySupport: true,
       tinkoffPaySupport: true,
       tinkoffInstallmentSupport: false,
-      sbpSupport: true,
       // sberSupport: true,
-      // sberPaySupport: true,
+      sberPaySupport: true,
     });
 
     const receipt = {
@@ -340,7 +338,7 @@ const SelectRate = ({ redirect, isShowText }) => {
         // console.log('Payment fail:', 'reason', reason, 'options', options);
       }
     );
-    
+
     //   widget.pay('charge', // или 'charge'
     //       { //options
     //           publicId: 'pk_1359b4923cc282c6f76e05d9f138a', //id из личного кабинета
@@ -373,83 +371,6 @@ const SelectRate = ({ redirect, isShowText }) => {
 
   return (
     <>
-      {isShowText && (
-        <>
-          <div className={styles.upBlockWrapper}>
-            <div className={styles.leftBlock}>
-              <div className={styles.imageBox}>
-                <img src={thumbup} alt='thumbup' />
-                <div className={styles.imageText}>
-                  Спасибо
-                  <br /> за регистрацию
-                  <br /> в сервисе Radar!
-                </div>
-              </div>
-              <div className={styles.downTextblock}>
-                <span className={styles.downText}>
-                  Желаем вам успехов и надеемся, что вы останетесь довольны
-                  нашим сервисом!
-                </span>
-              </div>
-            </div>
-            {user.is_test_used ? (
-              <div></div>
-            ) : (
-              <div className={styles.rightBlock}>
-                <div className={styles.blockBackground}>
-                  <div className={styles.accessTitle}>
-                    <span className={styles.activateAccess}>
-                      На этой странице вы можете активировать тестовый доступ на {periodStringFormat(user?.test_days)}
-                    </span>
-                  </div>
-                  <div className={styles.accessPrice}>
-                    <div
-                      className={styles.accessPeriod}
-                      style={{ marginRight: '24px' }}
-                    >
-                      Доступ:
-                      <span className={styles.accessPeriodBold}>{periodStringFormat(user?.test_days)}</span>
-                    </div>
-                    <div className={styles.accessPeriod}>
-                      Стоимость:
-                      <span className={styles.accessPeriodBold}>1 ₽</span>
-                    </div>
-                  </div>
-                  <div className={styles.accessButton}>
-                    <button
-                      onClick={() => {
-                        pay(user.id, selectedPeriod, trialExpired);
-                      }}
-                    >
-                      Активировать тестовый период за 1₽
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-          </div>
-          {user.is_test_used ? (
-            <div></div>
-          ) : (
-
-            <div className={styles.infoBlockWrapper}>
-              <div className={styles.infoBlockTitle}>
-                Почему активация тестового периода стоит 1₽?
-              </div>
-              <div className={styles.infoBlockTextSimple}>
-                Предоставление тестового доступа без ограничений по функционалу
-                требует затрат со стороны сервиса. Поэтому мы взимаем
-                символическую плату в размере 1₽ за активацию тестового периода,
-                чтобы наши ресурсы расходовались только на тех продавцов, кто
-                действительно заинтересован в тестировании аналитики. Оплата
-                доступна всеми возможными способами и занимает не более 45 секунд.
-              </div>
-            </div>
-          )}
-
-        </>
-      )}
       <div
         style={{
           display: 'flex',
@@ -457,87 +378,6 @@ const SelectRate = ({ redirect, isShowText }) => {
           marginBottom: '10px',
         }}
       >
-        {/* <div className='doughnut-content'>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: 'rgba(83, 41, 255, 1)',
-              padding: '20px',
-              borderRadius: '20px',
-              width: '50%',
-            }}
-          >
-            <div
-              style={{
-                fontWeight: '700',
-                fontSize: '32px',
-                color: 'white',
-                width: '100%',
-              }}
-            >
-              Здесь есть всё, что нужно любому бизнесу на маркетплейсе
-            </div>
-            <div className='OrangeLabel'>
-              <OrangeLabelSelect />
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              marginLeft: '20px',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div style={{ fontSize: '46px', fontWeight: '700' }}>
-              Выберите тариф, который подойдет{' '}
-              <span style={{ color: '#F0AD00', fontWeight: '800' }}>
-                именно Вам
-              </span>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                backgroundColor: '#1A1A1A08',
-                padding: '5px',
-                borderRadius: '10px',
-              }}
-            >
-              <button
-                onClick={() => handlePeriodChange('1month')}
-                className={
-                  selectedPeriod === '1month' ? 'prime-btn' : 'secondary-btn'
-                }
-                id='btnDop'
-              >
-                {selectedPeriod === '1month' ? <Steps.Circle /> : <span></span>}
-                1 месяц
-              </button>
-              <button
-                onClick={() => handlePeriodChange('3month')}
-                className={
-                  selectedPeriod === '3month' ? 'prime-btn' : 'secondary-btn'
-                }
-                id='btnDop'
-              >
-                {selectedPeriod === '3month' ? <Steps.Circle /> : <span></span>}
-                3 месяца <span>-10%</span>
-              </button>
-              <button
-                onClick={() => handlePeriodChange('6month')}
-                className={
-                  selectedPeriod === '6month' ? 'prime-btn' : 'secondary-btn'
-                }
-                id='btnDop'
-              >
-                {selectedPeriod === '6month' ? <Steps.Circle /> : <span></span>}
-                6 месяцев <span>до -60%</span>
-              </button>
-            </div>
-          </div>
-        </div> */}
         <div className={`price-wrap ${styles.priceWrap}`}>
           <div className={`landing-price-wrap ${styles.landingPriceWrap}`}>
             <div className={`landing-price-wrap-main ${styles.landingPriceWrapMain}`}>
@@ -830,7 +670,7 @@ const SelectRate = ({ redirect, isShowText }) => {
                       {subscriptionDiscount ? (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? '1 ₽' : '1 495 ₽'}
+                            1 495 ₽
                           </span>
                           <span
                             style={{
@@ -848,41 +688,18 @@ const SelectRate = ({ redirect, isShowText }) => {
                               fontWeight: '700',
                             }}
                           >
-                            {!trialExpired ? '-99%' : '-50%'}
+                            -50%
                           </span>
                           <div>За месяц</div>
                         </>
                       ) : (
                         <>
                           <span className='priceCardOne'>
-                            {!trialExpired ? '1 ₽' : '2 990 ₽'}
+                            2 990 ₽
                           </span>
-                          {!trialExpired && (
-                            <>
-                              <span
-                                style={{
-                                  marginLeft: '10px',
-                                  textDecoration: 'line-through',
-                                }}
-                              >
-                                2 990 ₽
-                              </span>
-                              <span
-                                style={{
-                                  marginLeft: '10px',
-                                  color: '#5329FF',
-                                  backgroundColor: '#5329FF1A',
-                                  fontWeight: '700',
-                                }}
-                              >
-                                -99%
-                              </span>
-                            </>
-                          )}
+                          
                           <div>
-                            {!trialExpired
-                              ? `Тестовый доступ на ${periodStringFormat(user?.test_days)}`
-                              : 'За месяц'}
+                              За месяц
                           </div>
                         </>
                       )}

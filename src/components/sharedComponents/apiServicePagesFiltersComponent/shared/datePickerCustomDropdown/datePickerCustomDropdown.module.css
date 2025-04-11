@@ -1,0 +1,7 @@
+.dropdown {
+    min-width: 80px;
+}
+.dropdown__select {
+    width: 100%;
+    padding: 0;
+}

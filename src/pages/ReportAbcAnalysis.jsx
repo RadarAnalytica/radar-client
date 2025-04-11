@@ -14,6 +14,7 @@ import abcFake from '../pages/images/abc_fake.png';
 import DemonstrationSection from '../components/DemonstrationSection';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import { formatPrice } from '../service/utils';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 
 const ReportAbcAnalysis = () => {
@@ -525,6 +526,7 @@ const ReportAbcAnalysis = () => {
 
   return (
     <div className='dashboard-page'>
+      <MobilePlug />
       <SideNav />
       <div className={`${styles.scheduleMain} dashboard-content pb-3`}>
         <TopNav

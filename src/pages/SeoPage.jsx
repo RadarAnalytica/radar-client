@@ -8,6 +8,7 @@ import NoSubscriptionPage from './NoSubscriptionPage';
 import AuthContext from '../service/AuthContext';
 import { Helmet } from 'react-helmet';
 
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const SeoPage = () => {
   const [compaireData, setCompaireData] = useState({});
@@ -23,6 +24,7 @@ const SeoPage = () => {
       <Helmet>
         <link rel="canonical" href="https://radar-analytica.ru/signup" />
       </Helmet>
+      <MobilePlug />
       <SideNav />
       <div className={styles.scrollableContent}>
         <div style={{ width: '100%', padding: '0 10px'}}>

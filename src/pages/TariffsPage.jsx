@@ -9,6 +9,7 @@ import { URL } from '../service/config';
 import { useAppDispatch } from '../redux/hooks';
 import { fetchMessages } from '../redux/messages/messagesSlice';
 import FooterNewVersion from '../components/FooterNewVersion';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const TariffsPage = () => {
   const navigate = useNavigate();
@@ -92,6 +93,7 @@ const TariffsPage = () => {
       className='page-white'
       style={{ display: 'flex', flexDirection: 'column' }}
     >
+      <MobilePlug />
       <div className='container widbody-container container-xlwidth '>
         <NavbarMainHome onlyLogo />
 

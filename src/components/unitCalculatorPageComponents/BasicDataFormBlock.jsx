@@ -7,13 +7,14 @@ import useDebouncedFunction from '../../service/hooks/useDebounce';
 
 const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
     const [ autocompleteOptions, setAutocompleteOptions ] = useState([]);
+    console.log(autocompleteOptions)
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
     const [ error, setError ] = useState(false)
     const dropdownRef = useRef(null)
 
     const getSubjectsDataWSetter = async (value) => {
-        const res = await getCalculatorSubjects({search_string: value})
+        const res = await getCalculatorSubjects({search_string: value.trim()})
         
         if (res.rows) {
             setAutocompleteOptions(res.rows)
@@ -59,7 +60,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
         if (value === '') {
             setAutocompleteOptions([])
         }
-        value && debouncedDataFetch(inputValue)
+        value && debouncedDataFetch(value)
     };
 
     const handleSelect = (value) => { // обработка клика на опцию
@@ -117,6 +118,10 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     name='product'
                     label='Товар'
                     className={styles.formItem}
+                    normalize={(value) => {
+                        const regex = /[<>:"/\\|?*]/;
+                        return regex.test(value) ? value.replace(regex, '') : value;
+                    }}
                     rules={[
                         { validator: isProductFromToken !== null && autocompleteValidation }
                     ]}
@@ -127,6 +132,8 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         className={styles.formItem__input}
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
+                        autoComplete='off'
+                        notFoundContent={<div style={{color: 'black'}}>Ничего не найдено</div>}
                         allowClear={{
                             clearIcon: (
                                 <div style={{ background: 'transparent'}}>
@@ -139,7 +146,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         value={inputValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
-                        options={autocompleteOptions?.map(_ => ({ value: _.name}))}
+                        options={autocompleteOptions && autocompleteOptions.length > 0 ? autocompleteOptions.map(_ => ({ value: _.name})) : undefined}
                         // dropdownRender={menu => (
                         //     <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
                         //         {menu}

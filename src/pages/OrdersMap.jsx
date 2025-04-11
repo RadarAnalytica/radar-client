@@ -23,6 +23,7 @@ import green from '../assets/greenarrow.png';
 import red from '../assets/redarrow.png';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent';
+import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -673,7 +674,8 @@ const OrdersMap = () => {
   return (
     isVisible && (
       <div className='orders-map'>
-        <SideNav />
+        <MobilePlug />
+      <SideNav />
         <div className='orders-map-content pb-3'>
           <div style={{ width: '100%'}} className="container dash-container">
             <TopNav title={'География заказов и продаж'} mikeStarinaStaticProp />

@@ -9,6 +9,7 @@ import TableAbcData from "../components/TableAbcData";
 import SelfCostWarning from "../components/SelfCostWarning";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import { Filters } from "../components/sharedComponents/apiServicePagesFiltersComponent";
+import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 
 const AbcAnalysisPage = () => {
   const { activeBrand, selectedRange: days } = useAppSelector(store => store.filters)
@@ -138,8 +139,8 @@ const AbcAnalysisPage = () => {
   return (
     // isVisible && (
       <div className='dashboard-page'>
-        
-        <SideNav />
+        <MobilePlug />
+      <SideNav />
         <div className='dashboard-content pb-3' style={{ padding: '0 20px 0 50px'}}>
           <div style={{ marginLeft: '0'}} className="container dash-container">
             <TopNav title={"ABC-анализ"} mikeStarinaStaticProp />

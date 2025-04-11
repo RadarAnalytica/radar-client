@@ -6,7 +6,8 @@ const Monitoring = () => {
 
     return (
         <div className='dashboard-page'>
-            <SideNav />
+            <MobilePlug />
+      <SideNav />
             <div className="dashboard-content pb-3">
                 <TopNav title={'Мониторинг запросов'} />
                 <div className="container dash-container p-3 pt-0 d-flex gap-3">
