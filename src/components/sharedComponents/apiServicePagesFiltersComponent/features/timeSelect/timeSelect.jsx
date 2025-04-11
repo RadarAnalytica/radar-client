@@ -42,7 +42,7 @@ export const TimeSelect = () => {
     const [localSelectedRange, setLocalSelectedRange] = useState(selectedRange);
     const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
     const [selectValue, setSelectValue] = useState()
-
+    console.log(selectValue)
     const today = new Date();
     const minDate = new Date(today);
 
@@ -82,6 +82,7 @@ export const TimeSelect = () => {
 
 
     const timeSelectChangeHandler = (value) => {
+        console.log(value)
         if (value !== 0) {
             setSelectValue(value)
             setSelectOptions(predefinedRanges)
@@ -181,7 +182,7 @@ export const TimeSelect = () => {
                         className={styles.select}
                         options={[...selectOptions].map(i => ({ value: i.value, label: i.title }))}
                         value={selectValue}
-                        onChange={timeSelectChangeHandler}
+                        onSelect={timeSelectChangeHandler}
                         disabled={isCalendarOpen}
                     />
                 </ConfigProvider>
