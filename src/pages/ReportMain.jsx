@@ -296,17 +296,17 @@ const ReportMain = () => {
           {/* file uploader */}
           <div
             className={styles.uploadContainer}
-            //onDragOver={handleDragOver}
-            //onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
           >
-            <div className={styles.uploadWrapper}>
+            {/* <div className={styles.uploadWrapper}>
               <FileUploader
                 setShow={setShow}
                 setError={setError}
                 getListOfReports={getListOfReports}
               />
-            </div>
-            {/* <div
+            </div> */}
+            <div
               className={styles.uploadWrapper}
               onClick={() => !uploadingFile && fileInputRef.current.click()}
               style={{ cursor: uploadingFile ? 'not-allowed' : 'pointer' }}
@@ -359,7 +359,7 @@ const ReportMain = () => {
                 style={{ display: 'none' }}
                 multiple
               />
-            </div> */}
+            </div>
           </div>
 
 

@@ -74,7 +74,6 @@ const FileUploader = ({ setShow, setError, getListOfReports}) => {
                     accept='.xls,.xlsx,.zip'
                     name='file_uploader'
                     multiple
-                    maxCount={10}
                     disabled={uploadStatus.isUploading}
                     className={styles.uploader__component}
                     onRemove={file => {
