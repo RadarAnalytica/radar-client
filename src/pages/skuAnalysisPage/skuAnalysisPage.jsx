@@ -1,13 +1,9 @@
-// dont forget to renew imports
-import styles from './_page.module.css'
+import styles from './skuAnalysisPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 
-
-
-// dont forget to rename the component and its export
-const _Page = () => {
+const SkuAnalysisPage = () => {
 
     return (
         <main className={styles.page}>
@@ -20,7 +16,7 @@ const _Page = () => {
             <section className={styles.page__content}>
                 {/* header */}
                 <div className={styles.page__headerWrapper}>
-                    <Header title='Сводка продаж' />
+                    <Header title='Анализ артикула' />
                 </div>
                 {/* !header */}
             </section>
@@ -29,5 +25,4 @@ const _Page = () => {
     )
 }
 
-export default _Page;
-
+export default SkuAnalysisPage;
