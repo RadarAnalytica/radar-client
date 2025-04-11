@@ -13,7 +13,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
     const dropdownRef = useRef(null)
 
     const getSubjectsDataWSetter = async (value) => {
-        const res = await getCalculatorSubjects({search_string: value})
+        const res = await getCalculatorSubjects({search_string: value.trim()})
         
         if (res.rows) {
             setAutocompleteOptions(res.rows)
@@ -59,7 +59,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
         if (value === '') {
             setAutocompleteOptions([])
         }
-        value && debouncedDataFetch(inputValue)
+        value && debouncedDataFetch(value)
     };
 
     const handleSelect = (value) => { // обработка клика на опцию
@@ -127,7 +127,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         className={styles.formItem__input}
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
-                        AutoComplete='off'
+                        autoComplete='off'
                         allowClear={{
                             clearIcon: (
                                 <div style={{ background: 'transparent'}}>
