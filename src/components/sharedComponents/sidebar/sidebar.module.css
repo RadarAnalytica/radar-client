@@ -42,6 +42,10 @@
 .sidebar__mainLinklogo {
     width: 200px;
     height: auto;
+    transition: all .2s ease-in-out;
+}
+.sidebar__mainLinklogo:hover {
+    transform: scale(103%);
 }
 .sidebar__mainLinklogo_hidden {
     width: 50px;
