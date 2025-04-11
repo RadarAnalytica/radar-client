@@ -87,22 +87,22 @@ export const ProtectedRoute = ({
   subscription = config.subscription,
   role = config.role,
 }) => {
- const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
   const { pathname } = useLocation()
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl'); // это устанавливается в калькуляторе. Необходимо для коррекного редиректа не авторизованного юзера
 
   // -------this is test user object for dev purposes ------//
 
-  // let user = {
-  //   email: "modinsv@yandex.ru",
-  //   id: 2,
-  //   is_confirmed: true,
-  //   is_onboarded: true,
-  //   is_report_downloaded: true,
-  //   is_test_used: true,
-  //   role: "admin",
-  //   subscription_status: 'expired'
-  // }
+  let user = {
+    email: "modinsv@yandex.ru",
+    id: 2,
+    is_confirmed: true,
+    is_onboarded: true,
+    is_report_downloaded: true,
+    is_test_used: true,
+    role: "admin",
+    subscription_status: 'expired'
+  }
 
 //  const user = undefined
 
@@ -151,7 +151,7 @@ export const ProtectedRoute = ({
   }
 
   // ---------3. Subscription expiration protection (checking subscription) -------//
-  if (expireProtected && user && user.is_onboarded && user.subscription_status === 'expired') {
+  if (expireProtected && user && user.is_onboarded && user.subscription_status.toLowerCase() === 'expired') {
       switch(expireGuardType) {
         case 'redirect': {
           return (<Navigate to={expireRedirect} />)
