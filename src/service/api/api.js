@@ -5,6 +5,7 @@ export const getCalculatorSubjects = async (data) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'cache': 'no-store'
             },
             body: JSON.stringify(data)
         }).then(res => res.json())

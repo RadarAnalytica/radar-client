@@ -13,21 +13,22 @@ import ResultBlock from '../components/unitCalculatorPageComponents/ResultBlock'
 import { unitCalcResultFunction, logisticsWithBuyoutPercentagePriceCalcFunc, encodeUnicodeToBase64, decodeBase64ToUnicode } from '../components/unitCalculatorPageComponents/UnitCalcUtils';
 import { tempWhouseData } from '../components/unitCalculatorPageComponents/tempWarehouseData';
 import { RETURN_PRICE, FBS_DEADLINE, FBS_DEADLIE_RATE } from '../components/unitCalculatorPageComponents/constatnts';
+import { Helmet } from 'react-helmet';
 
 const UnitCalculatorPage = () => {
 
     const sectionRef = useRef(null)
     // states
-    const [ result, setResult ] = useState(); // resultOblect (created when form submits)
-    const [ token, setToken ] = useState(null); // tokenized result data for share link
-    const [ investValue, setInvestValue ] = useState(50000) // user invest value state
-    const [ lastMileLogisticsPrice, setLastMileLogisticsPrice ] = useState(0) // cost of logistics for current warehouse
-    const [ storagePrice, setStoragePrice ] = useState(0) // cost of storaging for current warehouse
-    const [ lastMileLogisticsPriceWBuyout, setLastMileLogisticsPriceWBuyout ] = useState(0) // cost of buyout ratio
-    const [ isProductFromToken, setIsProductFromToken ] = useState(null) // we are redefining product input if the data came from share link
-    const [ mpMainFee, setMpMainFee ] = useState(22.5) // *temporary* - hardcode of marketplace main fee
-    const [ params ] = useSearchParams() // <- to get token from the url
-    const [ form ] = Form.useForm(); // form instance
+    const [result, setResult] = useState(); // resultOblect (created when form submits)
+    const [token, setToken] = useState(null); // tokenized result data for share link
+    const [investValue, setInvestValue] = useState(50000) // user invest value state
+    const [lastMileLogisticsPrice, setLastMileLogisticsPrice] = useState(0) // cost of logistics for current warehouse
+    const [storagePrice, setStoragePrice] = useState(0) // cost of storaging for current warehouse
+    const [lastMileLogisticsPriceWBuyout, setLastMileLogisticsPriceWBuyout] = useState(0) // cost of buyout ratio
+    const [isProductFromToken, setIsProductFromToken] = useState(null) // we are redefining product input if the data came from share link
+    const [mpMainFee, setMpMainFee] = useState(22.5) // *temporary* - hardcode of marketplace main fee
+    const [params] = useSearchParams() // <- to get token from the url
+    const [form] = Form.useForm(); // form instance
     //------------------ a few form fields to observe ---------------------//
     const isHeavy = Form.useWatch('isHeavy', form);
     const buyout_percentage = Form.useWatch('buyout_percentage', form);
@@ -67,10 +68,10 @@ const UnitCalculatorPage = () => {
         setToken(token)
 
         if (window.innerWidth > 900) {
-            sectionRef?.current?.scrollTo({ top: 0, behavior: 'smooth'})
+            sectionRef?.current?.scrollTo({ top: 0, behavior: 'smooth' })
         }
     }
-   
+
 
     // -------------- cost of buyout ration calculations --------------------//
     useEffect(() => {
@@ -109,7 +110,7 @@ const UnitCalculatorPage = () => {
 
     // ------------ updating the token if investValue has changed -----------//
     useEffect(() => {
-            form.validateFields()
+        form.validateFields()
             .then(_ => form.submit())
             .catch(_ => setToken(null))
     }, [investValue])
@@ -118,9 +119,9 @@ const UnitCalculatorPage = () => {
     //---------------------------- fbs bonus/fee calculations ------------------------//
     useEffect(() => {
         const ds = parseInt(delivery_speed);
-        if (!ds || Number.isNaN(ds)) {return setMpMainFee(22.5)}
+        if (!ds || Number.isNaN(ds)) { return setMpMainFee(22.5) }
         const hoursToDeadline = FBS_DEADLINE - ds;
-        if (hoursToDeadline === 0) {setMpMainFee(22.5)}
+        if (hoursToDeadline === 0) { setMpMainFee(22.5) }
         if (hoursToDeadline > 0) {
             setMpMainFee(mpMainFee - (hoursToDeadline * FBS_DEADLIE_RATE))
         }
@@ -168,24 +169,27 @@ const UnitCalculatorPage = () => {
                 setLastMileLogisticsPriceWBuyout(data.lastMileLogisticsPriceWBuyout)
                 setStoragePrice(data.storagePrice)
 
-                timeout = setTimeout(() => {form.submit()}, 500)
-                
-            } catch(e) {
+                timeout = setTimeout(() => { form.submit() }, 500)
+
+            } catch (e) {
                 setIsProductFromToken(false)
                 console.log(e)
             }
         } else {
             setIsProductFromToken(false)
         }
-        
-        
-        return () => {timeout && clearTimeout(timeout)}
+
+
+        return () => { timeout && clearTimeout(timeout) }
     }, [params])
     //------------------------------------------------------------------------------------//
 
     return (
         <main className={styles.page}>
-        <SideNav /> 
+            <Helmet>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+            </Helmet>
+            <SideNav />
             <section className={styles.page__content} ref={sectionRef}>
                 <div className={styles.page__headerWrapper}>
                     <TopNav title={'Калькулятор unit-экономики товара'} mikeStarinaStaticProp />

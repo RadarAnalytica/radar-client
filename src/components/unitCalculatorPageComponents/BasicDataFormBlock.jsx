@@ -127,6 +127,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         className={styles.formItem__input}
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
+                        AutoComplete='off'
                         allowClear={{
                             clearIcon: (
                                 <div style={{ background: 'transparent'}}>
