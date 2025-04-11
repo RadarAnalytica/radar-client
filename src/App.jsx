@@ -77,6 +77,8 @@ import MainPage from "./pages/MainPage";
  * --------------------------------------
  */
 
+// this is backup of main branch 11.04.2025 version
+
 function App() {
 
   return (
