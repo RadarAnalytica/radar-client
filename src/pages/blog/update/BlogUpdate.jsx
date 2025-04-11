@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import styles from './BlogAdd.module.css';
+import styles from './BlogUpdate.module.css';
 import { Form, Input, Upload, Select, Button, ConfigProvider, Modal } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import { createBlogPost, createBlogCategory } from '../../../service/api/api';
+import { createBlogCategory } from '../../../service/api/api';
+import { URL } from '../../../service/config';
+import { useAppDispatch } from '../../../redux/hooks';
+import { fetchPosts } from '../../../redux/blog/blogActions';
 
 const statusInitialState = { isLoading: false, isError: false, isSuccess: false, message: '' }
 
-const BlogAdd = ({ categories, token }) => {
+const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
+  const dispatch = useAppDispatch()
   const [categoriesState, setCategoriesState] = useState([...categories, { id: 'add', name: 'Создать категорию' }])
   const [mainFormStatus, setMainFormStatus] = useState(statusInitialState)
   const [categoryFormStatus, setCategoryFormStatus] = useState(statusInitialState)
   const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] = useState(false)
-  const [ mainForm ] = Form.useForm()
-  const [ categoryForm ] = Form.useForm()
+  const [mainForm] = Form.useForm()
+  const [categoryForm] = Form.useForm()
 
   const categorySelectChangeHandler = (value) => {
     if (value !== 'add') return;
@@ -48,33 +52,66 @@ const BlogAdd = ({ categories, token }) => {
       return setMainFormStatus({ ...statusInitialState, isLoading: false, isError: true, message: 'Пожалуйста, выберите категорию статьи!' })
     }
     setMainFormStatus({ ...statusInitialState, isLoading: true })
-    const formData = new FormData();
-    const query = `title=${fields.articleName}&slug=${fields.articleUrl}&category_id=${fields.category}&description=${fields.articleDescription}`
+    const plainData = {
+      title: fields.articleName,
+      slug: fields.articleUrl,
+      category_id: fields.category,
+      description: fields.articleDescription
+    }
+    const filesData = new FormData();
 
     if (fields.textFile?.file?.originFileObj) {
-      formData.append('document', fields.textFile.file.originFileObj);
+      filesData.append('document', fields.textFile.file.originFileObj);
     }
 
     if (fields.coverFile?.file?.originFileObj) {
-      formData.append('cover_image', fields.coverFile.file.originFileObj);
+      filesData.append('cover_image', fields.coverFile.file.originFileObj);
     }
-
     try {
-      await createBlogPost(formData, query, token);
-      setMainFormStatus({...statusInitialState, isSuccess: true, message: 'Статья успешно создана'})
-      mainForm.resetFields()
+
+      const plainDataRes = await fetch(`${URL}/api/admin/blog/articles/${post.id}`, {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json',
+          'authorization': 'JWT ' + token
+        },
+        body: JSON.stringify(plainData)
+      })
+
+      if (!plainDataRes.ok) {
+        return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' })
+      }
+      const filesDataRes = await fetch(`${URL}/api/admin/blog/articles/${post.id}/files`, {
+        method: 'PATCH',
+        headers: {
+          'authorization': 'JWT ' + token
+        },
+        body: filesData
+      })
+
+      if (!filesDataRes.ok) {
+        return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' })
+      }
+
+      setMainFormStatus({ ...statusInitialState, isSuccess: true, message: 'Статья успешно обновлена' })
+      //mainForm.resetFields()
+      dispatch(fetchPosts(token))
+      //setPostIdForUpdate(undefined)
     } catch (error) {
       setMainFormStatus({
         ...statusInitialState,
         isError: true,
-        message: error.message || 'Что-то пошло не так при создании статьи'
+        message: 'Что-то пошло не так при обновлении статьи'
       });
     }
   }
 
   return (
     <div className={styles.page}>
-      <h2>Создание статьи</h2>
+      <div className={styles.page__titleWrapper} onClick={() => setPostIdForUpdate(undefined)}>
+        <h2>Обновление статьи</h2>
+        <button className={styles.page__backButton}>&larr; Назад</button>
+      </div>
       <ConfigProvider
         theme={{
           token: {
@@ -95,6 +132,12 @@ const BlogAdd = ({ categories, token }) => {
           className={styles.form}
           layout='vertical'
           onFinish={mainFormSubmitHandler}
+          initialValues={{
+            articleName: post.title,
+            articleUrl: post.slug,
+            articleDescription: post.description,
+            category: post.category_id
+          }}
         >
           {/* Name */}
           <Form.Item
@@ -148,9 +191,6 @@ const BlogAdd = ({ categories, token }) => {
           <Form.Item
             label='Текст статьи'
             name='textFile'
-            rules={[
-              { required: true, message: 'Пожалуйста, заполните это поле' },
-            ]}
           >
             <Upload.Dragger
               maxCount={1}
@@ -168,9 +208,6 @@ const BlogAdd = ({ categories, token }) => {
           <Form.Item
             label='Обложка статьи'
             name='coverFile'
-            rules={[
-              { required: true, message: 'Пожалуйста, заполните это поле' },
-            ]}
           >
             <Upload.Dragger
               maxCount={1}
@@ -329,7 +366,7 @@ const BlogAdd = ({ categories, token }) => {
                 htmlType='submit'
                 loading={categoryFormStatus.isLoading}
               >
-                Создать
+                Обновить
               </Button>
             </Form>
           </ConfigProvider>
@@ -340,4 +377,4 @@ const BlogAdd = ({ categories, token }) => {
   );
 };
 
-export default BlogAdd;
+export default BlogUpdate;

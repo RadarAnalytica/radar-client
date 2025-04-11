@@ -13,10 +13,13 @@ import { menuConfig } from './shared/config/config';
 
 const Sidebar = () => {
 
-    const [isMenuHidden, setIsMenuHidden] = useState(true)
+    const [isMenuHidden, setIsMenuHidden] = useState(false)
 
     return (
-        <nav className={isMenuHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar} onClick={() => setIsMenuHidden(false)} onMouseLeave={() => setIsMenuHidden(true)}>
+        <nav className={isMenuHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar} 
+            //onClick={() => setIsMenuHidden(false)} 
+            //onMouseLeave={() => setIsMenuHidden(true)}
+        >
             <div className={styles.sidebar__mainWrapper}>
                 <div className={isMenuHidden ? `${styles.sidebar__mainLinkWrapper} ${styles.sidebar__mainLinkWrapper_hidden}` : styles.sidebar__mainLinkWrapper}>
                     <Link to='/main'>

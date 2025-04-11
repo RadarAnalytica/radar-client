@@ -7,11 +7,12 @@ export const fetchPosts = createAsyncThunk(
   async (token, { dispatch }) => {
     try {
       dispatch(setLoading(true));
-      const res = await fetch(`${URL}/api/blog/articles`, {
+      const res = await fetch(`${URL}/api/admin/blog/articles`, {
         method: 'GET',
         headers: {
           'cache': 'no-store',
           'content-type': 'application/json',
+          'authorization': 'JWT ' + token
         },
       });
       const data = await res.json();
