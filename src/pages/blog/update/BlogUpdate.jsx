@@ -94,9 +94,9 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
       }
 
       setMainFormStatus({ ...statusInitialState, isSuccess: true, message: 'Статья успешно обновлена' })
-      //mainForm.resetFields()
+      mainForm.resetFields()
       dispatch(fetchPosts(token))
-      //setPostIdForUpdate(undefined)
+      setPostIdForUpdate(undefined)
     } catch (error) {
       setMainFormStatus({
         ...statusInitialState,
