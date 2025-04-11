@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import styles from './nestedLink.module.css'
 
 const NestedLink = ({ title, icon, links, isMenuHidden }) => {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
     const { pathname } = useLocation()
 
     useEffect(() => {
