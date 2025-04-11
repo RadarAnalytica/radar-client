@@ -118,6 +118,10 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     name='product'
                     label='Товар'
                     className={styles.formItem}
+                    normalize={(value) => {
+                        const regex = /[<>:"/\\|?*]/;
+                        return regex.test(value) ? value.replace(regex, '') : value;
+                    }}
                     rules={[
                         { validator: isProductFromToken !== null && autocompleteValidation }
                     ]}
