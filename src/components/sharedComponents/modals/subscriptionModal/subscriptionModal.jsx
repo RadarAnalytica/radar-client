@@ -156,14 +156,14 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
         var widget = new cp.CloudPayments({
           language: 'ru-RU',
           email: user.email,
-          applePaySupport: false,
-          googlePaySupport: false,
-          yandexPaySupport: true,
+          //applePaySupport: false,
+          //googlePaySupport: false,
+          //yandexPaySupport: true,
           tinkoffPaySupport: true,
           tinkoffInstallmentSupport: false,
-          sbpSupport: true,
-          // sberSupport: true,
-          // sberPaySupport: true,
+          //sbpSupport: true,
+          sberSupport: true,
+          sberPaySupport: true,
         });
     
         const receipt = {
