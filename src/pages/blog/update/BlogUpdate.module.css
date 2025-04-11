@@ -6,9 +6,24 @@
     align-items: stretch;
     gap: 40px;
 }
+.page__titleWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
 .page__title {
     margin: 0;
     padding: 0;
+}
+
+.page__backButton {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    width: 100px;
 }
 
 .form {

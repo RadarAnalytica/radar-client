@@ -15,8 +15,8 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
   const [mainFormStatus, setMainFormStatus] = useState(statusInitialState)
   const [categoryFormStatus, setCategoryFormStatus] = useState(statusInitialState)
   const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] = useState(false)
-  const [ mainForm ] = Form.useForm()
-  const [ categoryForm ] = Form.useForm()
+  const [mainForm] = Form.useForm()
+  const [categoryForm] = Form.useForm()
 
   const categorySelectChangeHandler = (value) => {
     if (value !== 'add') return;
@@ -68,20 +68,20 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
       filesData.append('cover_image', fields.coverFile.file.originFileObj);
     }
     try {
-      const plainDataResponse = await fetch(`${URL}/api/admin/blog/articles/${post.id}`, {
-          method: 'PATCH',
-          headers: {
-            'content-type': 'application/json',
-            'authorization': 'JWT ' + token
-          },
-          body: JSON.stringify(plainData)
+
+      const plainDataRes = await fetch(`${URL}/api/admin/blog/articles/${post.id}`, {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json',
+          'authorization': 'JWT ' + token
+        },
+        body: JSON.stringify(plainData)
       })
 
-      if (!plainDataResponse.ok) {
-        setMainFormStatus({...statusInitialState, isError: true, message: 'Не удалось обновить статью'})
+      if (!plainDataRes.ok) {
+        return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' })
       }
-
-      const filesDataResponse = await fetch(`${URL}/api/admin/blog/articles/${post.id}/files`, {
+      const filesDataRes = await fetch(`${URL}/api/admin/blog/articles/${post.id}/files`, {
         method: 'PATCH',
         headers: {
           'authorization': 'JWT ' + token
@@ -89,26 +89,29 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
         body: filesData
       })
 
-      if (!filesDataResponse.ok) {
-        setMainFormStatus({...statusInitialState, isError: true, message: 'Не удалось обновить статью'})
+      if (!filesDataRes.ok) {
+        return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' })
       }
 
-      setMainFormStatus({...statusInitialState, isSuccess: true, message: 'Статья успешно обновлена'})
-      mainForm.resetFields()
+      setMainFormStatus({ ...statusInitialState, isSuccess: true, message: 'Статья успешно обновлена' })
+      //mainForm.resetFields()
       dispatch(fetchPosts(token))
-      setPostIdForUpdate(undefined)
+      //setPostIdForUpdate(undefined)
     } catch (error) {
       setMainFormStatus({
         ...statusInitialState,
         isError: true,
-        message: error.message || 'Что-то пошло не так при обновлении статьи'
+        message: 'Что-то пошло не так при обновлении статьи'
       });
     }
   }
 
   return (
     <div className={styles.page}>
-      <h2>Обновление статьи</h2>
+      <div className={styles.page__titleWrapper} onClick={() => setPostIdForUpdate(undefined)}>
+        <h2>Обновление статьи</h2>
+        <button className={styles.page__backButton}>&larr; Назад</button>
+      </div>
       <ConfigProvider
         theme={{
           token: {
