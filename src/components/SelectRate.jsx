@@ -149,11 +149,11 @@ const SelectRate = ({ redirect, isShowText }) => {
     let firstAmount = 0;
     let startDateSubscribe = new Date();
     // проверяем время с 10:10 по 10 мск
-    if (startDateSubscribe.getUTCHours() > 7 || (startDateSubscribe.getUTCHours() == 7 && startDateSubscribe.getUTCMinutes() < 10)) {
+    if (startDateSubscribe.getUTCHours() > 10 || (startDateSubscribe.getUTCHours() == 10 && startDateSubscribe.getUTCMinutes() > 10)) {
       startDateSubscribe.setDate(startDateSubscribe.getDate() + 1);
     }
     // ставим время платежа на 10 мск
-    startDateSubscribe.setUTCHours(7, 0, 0, 0);
+    startDateSubscribe.setUTCHours(10, 0, 0, 0);
     const options = {
       year: 'numeric',
       month: 'numeric',
@@ -170,7 +170,7 @@ const SelectRate = ({ redirect, isShowText }) => {
 
     if (selectedPeriod === '1month') {
       amountSubscribe = 2990;
-      firstAmount = newTrialExpired ? 2990 : 1;
+      firstAmount = 2990;
       periodSubscribe = 1;
       if (!!newTrialExpired) {
         startDateSubscribe.setMonth(
@@ -204,7 +204,7 @@ const SelectRate = ({ redirect, isShowText }) => {
     //   startDateSubscribe.toISOString().split('T')[0]
     // );
     startDateSubscribe = startDateSubscribe.toISOString().split('T')[0];
-    startDateSubscribe = `${startDateSubscribe}T07:00:00`
+    startDateSubscribe = `${startDateSubscribe}T10:00:00`
     // console.log('startDateSubscribe', startDateSubscribe);
     // eslint-disable-next-line no-undef
     var widget = new cp.CloudPayments({
@@ -216,8 +216,8 @@ const SelectRate = ({ redirect, isShowText }) => {
       tinkoffPaySupport: true,
       tinkoffInstallmentSupport: false,
       sbpSupport: true,
-      // sberSupport: true,
-      // sberPaySupport: true,
+      sberSupport: true,
+      sberPaySupport: true,
     });
 
     const receipt = {

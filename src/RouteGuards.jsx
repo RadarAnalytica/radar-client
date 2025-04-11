@@ -109,18 +109,15 @@ export const ProtectedRoute = ({
     is_report_downloaded: true,
     is_test_used: true,
     role: "admin",
-    subscription_status: null
+    subscription_status: 'smart'
   }
 
 //  const user = undefined
 
 /**
- * 1. Новые заглушки если:
- * - только если подписка null
- * 2. Заглушка с мужиком
- * - если подписка expired
- * 3. Редирект на онбординг
- * - если не онбордед
+1. null
+2. expired
+3& smart + !onboardig
  */
 
   // ----------------------------------------------------------//
@@ -167,8 +164,25 @@ export const ProtectedRoute = ({
   
 }
 
-    // ---------3. Onboarding protection (user should be onboarded) ------//
-    if (onboardProtected && user && !user.is_onboarded) {
+  // ---------3. Subscription expiration protection (checking subscription) -------//
+  if (expireProtected && user && user.subscription_status.toLowerCase() === 'expired') {
+    switch(expireGuardType) {
+      case 'redirect': {
+        return (<Navigate to={expireRedirect} />)
+      }
+      case 'fallback': {
+        return (
+          <Suspense fallback={<LoaderPage />}>
+            {expireFallback({title: routeRuName, pathname: pathname.substring(1)})}
+          </Suspense>
+        )
+      }
+    }
+    return (<Navigate to={expireRedirect} replace />)
+}
+
+    // ---------4. Onboarding protection (user should be onboarded) ------//
+    if (onboardProtected && user && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
       switch(onboardGuardType) {
         case 'redirect': {
           return (<Navigate to={onboardRedirect} />)
@@ -186,22 +200,7 @@ export const ProtectedRoute = ({
     
   }
 
-  // ---------4. Subscription expiration protection (checking subscription) -------//
-  if (expireProtected && user && user.is_onboarded && user.subscription_status.toLowerCase() === 'expired') {
-      switch(expireGuardType) {
-        case 'redirect': {
-          return (<Navigate to={expireRedirect} />)
-        }
-        case 'fallback': {
-          return (
-            <Suspense fallback={<LoaderPage />}>
-              {expireFallback({title: routeRuName, pathname: pathname.substring(1)})}
-            </Suspense>
-          )
-        }
-      }
-      return (<Navigate to={expireRedirect} replace />)
-  }
+
 
 
 

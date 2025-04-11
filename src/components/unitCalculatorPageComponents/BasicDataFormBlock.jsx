@@ -7,6 +7,7 @@ import useDebouncedFunction from '../../service/hooks/useDebounce';
 
 const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
     const [ autocompleteOptions, setAutocompleteOptions ] = useState([]);
+    console.log(autocompleteOptions)
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
     const [ error, setError ] = useState(false)
@@ -128,6 +129,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
                         autoComplete='off'
+                        notFoundContent={<div style={{color: 'black'}}>Не найдено</div>}
                         allowClear={{
                             clearIcon: (
                                 <div style={{ background: 'transparent'}}>
@@ -140,7 +142,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         value={inputValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
-                        options={autocompleteOptions?.map(_ => ({ value: _.name}))}
+                        options={autocompleteOptions && autocompleteOptions.length > 0 ? autocompleteOptions.map(_ => ({ value: _.name})) : undefined}
                         // dropdownRender={menu => (
                         //     <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
                         //         {menu}

@@ -116,7 +116,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
     
         if (selectedPeriod === '1month') {
           amountSubscribe = 2990;
-          firstAmount = newTrialExpired ? 2990 : 1;
+          firstAmount = 2990;
           periodSubscribe = 1;
           if (!!newTrialExpired) {
             startDateSubscribe.setMonth(
@@ -165,7 +165,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
           sberSupport: true,
           sberPaySupport: true,
         });
-    
+
         const receipt = {
           Items: [
             //товарные позиции
@@ -189,7 +189,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
             provision: 0.0, // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после точки)
           },
         };
-        console.log(startDateSubscribe)
+
         const data = {};
         data.CloudPayments = {
           CustomerReceipt: receipt, //чек для первого платежа
