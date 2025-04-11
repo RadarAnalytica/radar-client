@@ -56,7 +56,8 @@ import { ProtectedRoute } from "./RouteGuards";
  */
 
 function App() {
-
+  console.log('Test');
+  
   return (
     <AuthProvider>
       <ProductProvider>

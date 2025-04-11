@@ -210,13 +210,12 @@ const SelectRate = ({ redirect, isShowText }) => {
     var widget = new cp.CloudPayments({
       language: 'ru-RU',
       email: user.email,
-      applePaySupport: false,
-      googlePaySupport: false,
-      yandexPaySupport: true,
+      // applePaySupport: false,
+      // googlePaySupport: false,
+      // yandexPaySupport: true,
       tinkoffPaySupport: true,
       tinkoffInstallmentSupport: false,
-      sbpSupport: true,
-      sberSupport: true,
+      // sberSupport: true,
       sberPaySupport: true,
     });
 
