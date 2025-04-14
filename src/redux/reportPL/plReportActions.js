@@ -14,8 +14,11 @@ export const fetchPLReport = createAsyncThunk(
             
             const brandFilterData = plFilters.brand
             const groupFilterData = plFilters.group
+            const monthFilterData = plFilters.month
+            console.log(monthFilterData)
             const brandFilter = []
             const groupFilter = []
+            const monthFilter = []
             if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
                 for (let _key of Object.keys(brandFilterData)) {
                 if (!!brandFilterData[_key]) {
@@ -30,6 +33,13 @@ export const fetchPLReport = createAsyncThunk(
                 }
                 }
             }
+            if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
+                for (let _key of Object.keys(monthFilterData)) {
+                if (!!monthFilterData[_key]) {
+                    monthFilter.push(_key)
+                }
+                }
+            }
 
             const res = await fetch(
                 `${URL}/api/report/v2/p_l/data`,
@@ -41,7 +51,8 @@ export const fetchPLReport = createAsyncThunk(
                     },
                     body: JSON.stringify({
                         brand_filter: brandFilter,
-                        group_filter: groupFilter
+                        group_filter: groupFilter,
+                        month_filter: monthFilter
                     })
                 }
             );
