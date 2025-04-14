@@ -215,8 +215,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
                 style={{maxWidth: widthData ? '600px' : '180px'}}
                 ref={(el) => el && handleTitleDisplay({ currentTarget: el })}
                 >
-                  {filterIdent === 'month' ? monthNames[option.value] : option.value}
-                  
+                  {filterIdent === 'month' ? `${monthNames[option.value.split('.')[0]]} ${option.value.split('.')[1]}` : option.value}
                 </span>
               </label>
             ))}

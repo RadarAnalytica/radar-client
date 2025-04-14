@@ -43,8 +43,8 @@ export const reportFilters = {
             items: []
         },
         {
-            title: 'Meсяц',
-            filterIdent: 'month_filter',
+            title: 'Meсяц, год',
+            filterIdent: 'month',
             items: []
         },
     ],

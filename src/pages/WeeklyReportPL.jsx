@@ -19,7 +19,9 @@ const WeeklyReportPL = () => {
   const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const { plData } = useSelector((state) => state?.plReportSlice);
+  
   const { plFilters, isFiltersLoading } = useSelector((state) => state?.plFiltersSlice);
+  console.log(plFilters)
   const [isLoading, setIsLoading] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     brand: [],
