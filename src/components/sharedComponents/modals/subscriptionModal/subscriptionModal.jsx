@@ -116,7 +116,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
     
         if (selectedPeriod === '1month') {
           amountSubscribe = 2990;
-          firstAmount = 2990;
+          firstAmount = newTrialExpired ? 2990 : 1;
           periodSubscribe = 1;
           if (!!newTrialExpired) {
             startDateSubscribe.setMonth(
