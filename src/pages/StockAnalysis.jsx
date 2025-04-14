@@ -241,8 +241,7 @@ const StockAnalysis = () => {
                   </div>
                 </div>
 
-                {/* <div style={{ height: "20px" }}></div> */}
-                <div style={{ overflow: 'hidden' }}>
+                <div style={{ overflow: 'hidden', height: '100%' }}>
                   <TableStock
                     data={dataTable}
                     setDataTable={setDataTable}
