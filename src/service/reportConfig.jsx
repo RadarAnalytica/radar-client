@@ -42,11 +42,11 @@ export const reportFilters = {
             filterIdent: 'group',
             items: []
         },
-        // {
-        //     title: 'Meсяц, год',
-        //     filterIdent: 'time',
-        //     items: []
-        // },
+        {
+            title: 'Meсяц',
+            filterIdent: 'month_filter',
+            items: []
+        },
     ],
     month: [
         {
