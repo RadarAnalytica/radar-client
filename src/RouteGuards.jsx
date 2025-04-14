@@ -165,7 +165,7 @@ export const ProtectedRoute = ({
 }
 
   // ---------3. Subscription expiration protection (checking subscription) -------//
-  if (expireProtected && user && user.subscription_status.toLowerCase() === 'expired') {
+  if (expireProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'expired') {
     switch(expireGuardType) {
       case 'redirect': {
         return (<Navigate to={expireRedirect} />)
@@ -182,7 +182,7 @@ export const ProtectedRoute = ({
 }
 
     // ---------4. Onboarding protection (user should be onboarded) ------//
-    if (onboardProtected && user && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
+    if (onboardProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
       switch(onboardGuardType) {
         case 'redirect': {
           return (<Navigate to={onboardRedirect} />)
