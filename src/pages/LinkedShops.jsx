@@ -21,12 +21,13 @@ import {
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchShops } from "../redux/shops/shopsActions";
 import { editShop } from "../redux/editShop/editShopActions";
-import { addShop } from "../redux/addShop/addShopActions";
+//import { addShop } from "../redux/addShop/addShopActions";
 import { deleteShop } from "../redux/deleteShop/deleteShopActions";
 import { areAllFieldsFilled } from "../service/utils";
 import NoSubscriptionPage from "./NoSubscriptionPage";
 import warningIcon from "../assets/warning.png";
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
+import { addShop } from "../service/api/api";
 
 const LinkedShops = () => {
   const { user, authToken, logout } = useContext(AuthContext);
@@ -183,16 +184,24 @@ const LinkedShops = () => {
     navigate("/dashboard");
   };
 
-  const handleAddShop = (e) => {
+  const handleAddShop = async (e) => {
     if (!areAllFieldsFilled(addShopData)) {
       e.preventDefault();
       setError("Введите корректное значение для всех полей");
       setShowError(true);
       return;
     }
-    dispatch(addShop(addShopData));
-    handleClose();
-    setShowSuccess(true);
+    
+    try {
+      const res = await addShop(addShopData)
+      handleClose();
+      setShowSuccess(true);
+      dispatch(fetchShops(authToken));
+
+    } catch {
+      setError("Не удалось добавить магазин. Проверьте корректность введенных данных.");
+      setShowError(true);
+    }
   };
 
   const handleEditShop = (e) => {

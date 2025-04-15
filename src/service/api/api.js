@@ -59,3 +59,30 @@ export const createBlogCategory = async (data, token) => {
         throw error;
     }
 }
+export const addShop = async (data) => {
+    const {brandName, tkn, authToken } = data
+    
+    try {
+        const response = await fetch(URL + '/api/shop/', {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json",
+                "authorization": "JWT " + authToken,
+            },
+            body: JSON.stringify({
+                brand_name: brandName,
+                token: tkn,
+                is_active: true
+            })
+        })
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Ошибка при добавлении магазина');
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+}
