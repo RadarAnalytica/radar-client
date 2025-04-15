@@ -13,7 +13,7 @@
 }
 
 .chart:hover {
-    transform: scale(102%);
+    transform: scale(100.25%);
 }
 
 .chart__loaderWrapper {

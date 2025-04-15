@@ -1061,6 +1061,9 @@ const DashboardPage = () => {
                     </div>
                   </BigChart>
                 </div>
+
+
+                {/* modal */}
                 {isModalOpen && (
                   <div className={styles.modalOverlay}>
                     <div className={styles.modalContent}>
@@ -1097,15 +1100,6 @@ const DashboardPage = () => {
                             setSelectedRange={setSelectedRangeDetail}
                           />
                         </div>
-                        {/* <div style={{ marginTop: '35px' }}>
-                          <div
-                            className='download-button'
-                            onClick={() => handleDownload()}
-                          >
-                            <img src={downloadIcon} />
-                            Скачать детализацию
-                          </div>
-                        </div> */}
                       </div>
                       <div className={styles.modalBody}>
                         <DetailChart
@@ -1118,6 +1112,9 @@ const DashboardPage = () => {
                     </div>
                   </div>
                 )}
+          {/* !modal */}
+
+
               </div>
 
               <div className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'>

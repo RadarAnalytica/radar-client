@@ -114,7 +114,7 @@ export const getRateIcon = (rate) => {
     return (
       <svg
         style={{ width: '16px', height: '12px', marginRight: '10px' }}
-        width='20'
+        width='16'
         height='12'
         viewBox='0 0 20 12'
         fill='none'
@@ -131,7 +131,7 @@ export const getRateIcon = (rate) => {
     return (
       <svg
         style={{ width: '16px', height: '12px', marginRight: '10px' }}
-        width='20'
+        width='16'
         height='12'
         viewBox='0 0 20 12'
         fill='none'

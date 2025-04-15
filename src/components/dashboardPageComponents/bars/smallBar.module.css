@@ -17,24 +17,12 @@
     transform: scale(101%);
 }
 
-.bar_float {
+.bar__titleWrapper {
     width: 100%;
-    box-shadow: 0px 0px 20px 0px #00000014;
-    background: white;
-    border-radius: 16px;
-    padding: 16px;
-    height: 50%;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: flex-start;
+    align-items: center;
     gap: 8px;
-    transition: all .2s ease-in-out;
-    box-sizing: border-box;
-}
-
-.bar_float:hover {
-    transform: scale(101%);
 }
 
 .bar__title {
@@ -48,11 +36,10 @@
     color: #8C8C8C;
 }
 
-.bar__iconWrapper {
-    position: absolute;
-    top: 8px;
-    right: 16px;
+.bar__tooltipIcon {
+    cursor: pointer;
 }
+
 .bar__mainData {
     font-family: Mulish;
     font-weight: 700;
@@ -64,6 +51,31 @@
     padding: 0;
 }
 
+.bar__dataWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px
+}
+
+.bar__absoluteData {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A
+}
+
+.bar__secDataWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
 .bar__mainSubData {
     font-family: Mulish;
     font-weight: 600;
@@ -73,38 +85,18 @@
     margin: 0;
     padding: 0;
     color: #1A1A1A
-}   
+}
 
 .bar__mainSubData_green {
     color: #00B69B
 }
+
 .bar__mainSubData_red {
     color: #F93C65
 }
+
 .bar__mainSubData_gray {
     color: #8C8C8C
-}
-
-.bar__floatData {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.bar__contentWrapper {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 6px;
-}
-
-.bar__dataWrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 4px;
 }
 
 .bar__loaderWrapper {
@@ -113,9 +105,4 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.bar__loaderWrapper_ar {
-    width: 100%;
-    aspect-ratio: auto;
-    height: 100%;
 }

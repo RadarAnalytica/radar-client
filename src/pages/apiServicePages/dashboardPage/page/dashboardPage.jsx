@@ -11,8 +11,9 @@ import { Filters } from '../../../../components/sharedComponents/apiServicePages
 import SelfCostWarningBlock from '../../../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock'
 import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import FirstBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/firstBarsGroup'
+import SecondBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/secondBarsGroup'
 import MainChart from '../../../../components/dashboardPageComponents/charts/mainChart/mainChart'
-import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import AbcDataBlock from '../../../../components/dashboardPageComponents/blocks/abcDataBlock/abcDataBlock'
 
 const _DashboardPage = () => {
     const { authToken } = useContext(AuthContext)
@@ -138,6 +139,15 @@ const _DashboardPage = () => {
                             dataDashBoard={dataDashBoard}
                             selectedRange={selectedRange}
                         />
+                        {/* Second group of data bars */}
+                        <SecondBarsGroup
+                            dataDashBoard={dataDashBoard}
+                            loading={loading}
+                        />
+
+
+                        {/* ABC-analysis block */}
+                        <AbcDataBlock />
                     </>
                 }
 
