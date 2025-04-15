@@ -490,7 +490,7 @@ select {
 
 .side-nav {
   width: 18vw;
-  min-width: 270px;
+  min-width: 280px;
   max-width: 18vw;
   padding: 28px 20px;
   max-height: 100vh;
@@ -501,7 +501,7 @@ select {
   background-color: white;
   justify-content: space-between;
   z-index: 12;
-  font-size: 2vh;
+  font-size: 16px;
   gap: 0.9em;
   overflow: hidden;
 }
