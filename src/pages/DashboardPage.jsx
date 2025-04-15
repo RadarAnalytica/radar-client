@@ -1255,7 +1255,7 @@ const DashboardPage = () => {
                   </div>
                 </div>
                 <div className='wrapper d-flex flex-column overflow-hidden'>
-                  <div className='mb-3'>
+                  <div className='mb-3' style={{ border: '1px solid red'}}>
                     <ScheduleProfitabilityChart
                       {...chartRoiMarginalityData}
                       loading={loading}

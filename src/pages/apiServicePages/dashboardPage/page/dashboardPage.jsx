@@ -14,6 +14,9 @@ import FirstBarsGroup from '../../../../components/dashboardPageComponents/barsG
 import SecondBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/secondBarsGroup'
 import MainChart from '../../../../components/dashboardPageComponents/charts/mainChart/mainChart'
 import AbcDataBlock from '../../../../components/dashboardPageComponents/blocks/abcDataBlock/abcDataBlock'
+import FinanceBlock from '../../../../components/dashboardPageComponents/blocks/financeBlock/financeBlock'
+import ProfitBlock from '../../../../components/dashboardPageComponents/blocks/profitBlock/profitBlock'
+import MarginChartBlock from '../../../../components/dashboardPageComponents/blocks/marginChartBlock/marginChartBlock'
 
 const _DashboardPage = () => {
     const { authToken } = useContext(AuthContext)
@@ -84,10 +87,6 @@ const _DashboardPage = () => {
                 </div>
                 {/* !header */}
 
-                {/* NO SUBSCRIPTION WARNING BLOCK */}
-                {/* <NoSubscriptionWarningBlock /> */}
-                {/* !NO SUBSCRIPTION WARNING BLOCK */}
-
                 {/* SELF-COST WARNING */}
                 {dataDashBoard &&
                     !dataDashBoard.costPriceAmount &&
@@ -145,9 +144,28 @@ const _DashboardPage = () => {
                             loading={loading}
                         />
 
+                        {/*  Grid group */}
+                        <div className={styles.page__chartGroup}>
+                            <FinanceBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <MarginChartBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <ProfitBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                        </div>
 
                         {/* ABC-analysis block */}
-                        <AbcDataBlock />
+                        <AbcDataBlock
+                            titles={['Группа А', 'Группа В', 'Группа С']}
+                            data={dataDashBoard?.ABCAnalysis}
+                            loading={loading}
+                        />
                     </>
                 }
 

@@ -346,7 +346,7 @@ export const getChartTooltip = (context, chartData) => {
     tooltipEl.style.transition = 'all 0.2s ease';
     tooltipEl.style.backgroundColor = 'white';
     tooltipEl.style.borderRadius = '8px';
-    tooltipEl.style.boxShadow = '0 0 20px rgba(19,19, 19, 0.7)';
+    tooltipEl.style.boxShadow = '0px 0px 20px 0px #00000014;';
     tooltipEl.style.padding = '1rem';
     tooltipEl.style.pointerEvents = 'none';
     tooltipEl.style.zIndex = '1000';

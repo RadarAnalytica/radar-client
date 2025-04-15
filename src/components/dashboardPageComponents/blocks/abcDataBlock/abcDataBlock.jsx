@@ -1,8 +1,19 @@
 import styles from './abcDataBlock.module.css'
 import { Link } from 'react-router-dom'
+import { formatPrice } from '../../../../service/utils'
+import { getColor } from '../blockUtils'
 
-const AbcDataBlock = () => {
+const AbcDataBlock = ({ titles, data, loading }) => {
 
+    if (loading) {
+        return (
+            <div className={styles.block}>
+                <div className={styles.bar__loaderWrapper}>
+                    <span className='loader'></span>
+                </div>
+            </div>
+        )
+    }
     return (
         <div className={styles.block}>
             <div className={styles.block__titleWrapper}>
@@ -20,7 +31,30 @@ const AbcDataBlock = () => {
                 </Link>
             </div>
 
-            <div className={styles.block__table}></div>
+            {data &&
+                <div className={styles.block__table}>
+                    <div className={styles.block__tableRow}>
+                        <div></div>
+                        {titles.map((i, id) => (
+                            <div className={styles.block__tableCell} key={id}>
+                                {i}
+                            </div>
+                        ))}
+                    </div>
+                    <div className={styles.block__tableRow}>
+                        <div className={styles.block__tableCell}>Выручка</div>
+                        <div className={styles.block__tableCell}>{formatPrice(data.amountA, '₽')} <span style={{ color: getColor(data.amountPercentA) }}>{formatPrice(data.amountPercentA, '%')}</span></div>
+                        <div className={styles.block__tableCell}>{formatPrice(data.amountB, '₽')} <span style={{ color: getColor(data.amountPercentB) }}>{formatPrice(data.amountPercentB, '%')}</span></div>
+                        <div className={styles.block__tableCell}>{formatPrice(data.amountC, '₽')} <span style={{ color: getColor(data.amountPercentC) }}>{formatPrice(data.amountPercentC, '%')}</span></div>
+                    </div>
+                    <div className={styles.block__tableRow}>
+                        <div className={styles.block__tableCell}>Товар</div>
+                        <div className={styles.block__tableCell}>{formatPrice(data.countA, 'шт')} <span style={{ color: getColor(data.countPercentA) }}>{formatPrice(data.countPercentA, '%')}</span></div>
+                        <div className={styles.block__tableCell}>{formatPrice(data.countB, 'шт')} <span style={{ color: getColor(data.countPercentB) }}>{formatPrice(data.countPercentB, '%')}</span></div>
+                        <div className={styles.block__tableCell}>{formatPrice(data.countC, 'шт')} <span style={{ color: getColor(data.countPercentC) }}>{formatPrice(data.countPercentC, '%')}</span></div>
+                    </div>
+                </div>
+            }
         </div>
     )
 }
