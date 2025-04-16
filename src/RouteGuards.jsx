@@ -3,7 +3,6 @@ import AuthContext from './service/AuthContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
-import NoSubscriptionPage from './pages/NoSubscriptionPage';
 import { URL } from './service/config';
 import { Helmet } from 'react-helmet';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';

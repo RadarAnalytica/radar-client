@@ -11,12 +11,13 @@ import { URL } from '../service/config';
 
 import Modal from 'react-bootstrap/Modal';
 import DragDropFile from '../components/DragAndDropFiles';
-import WbIcon from '../assets/WbIcon';
+//import WbIcon from '../assets/WbIcon';
 import {
   getFileClickHandler,
   saveFileClickHandler,
 } from '../service/getSaveFile';
 import NoSubscriptionPage from './NoSubscriptionPage';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const Onboarding = () => {
   const { user, authToken, setUser, logout } = useContext(AuthContext);
@@ -60,7 +61,7 @@ const Onboarding = () => {
         })
         .finally(handleShow());
     }
-  };  
+  };
   const checkIdQueryParam = () => {
     const searchParams = new URLSearchParams(location.search);
     const idQueryParam = searchParams.get('id');
@@ -98,8 +99,11 @@ const Onboarding = () => {
     user && (
       <div className='onboarding-page'>
         <MobilePlug />
-      <SideNav />
-        <div className='boarding-content w-100'>
+        <div style={{ height: '100vh' }}>
+          <Sidebar />
+        </div>
+        {/* <SideNav /> */}
+        <div className='boarding-content w-100' style={{ padding: '0 32px'}}>
           <TopNav title={'Подключение API'} />
 
           <div
@@ -123,12 +127,12 @@ const Onboarding = () => {
                 callback={getToken}
                 placeholder={'Пример: GJys67G7sbNw178F'}
               />
-              <div 
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  position: 'relative', 
-                  height: '100%' 
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  position: 'relative',
+                  height: '100%'
                 }}>
                 <button
                   className='prime-btn'
@@ -151,7 +155,7 @@ const Onboarding = () => {
                 доступа к личному кабинету.
               </p>
               <ol>
-                <li translate="no"  className='no-translate'>
+                <li translate="no" className='no-translate'>
                   Зайдите в ваш Личный Кабинет на портале Поставщиков
                   Wildberries
                 </li>
@@ -165,7 +169,7 @@ const Onboarding = () => {
                   Вопросы и отзывы, Цены и скидки). Важно: галочка
                   «Только на чтение» должна быть снята.
                 </li>
-                <li translate="no"  className='no-translate'>
+                <li translate="no" className='no-translate'>
                   Нажмите на кнопку «Скопировать» и вставьте токен в текстовое
                   поле «Токен Wildberries» и нажмите кнопку «Подключить».
                   Готово!
@@ -213,7 +217,7 @@ const Onboarding = () => {
             <p>
               Ваш токен успешно подключен к сервису и находится на проверке. В
               ближайшее время данные начнут отображаться в разделе{' '}
-              <Link onClick={handleClose} className='link' style={{padding: '0'}}>
+              <Link onClick={handleClose} className='link' style={{ padding: '0' }}>
                 Сводка продаж
               </Link>
             </p>
