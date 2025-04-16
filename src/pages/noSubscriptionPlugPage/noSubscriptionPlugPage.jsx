@@ -42,6 +42,8 @@ import seo1 from '../../assets/plugs/seo/seo-1.svg'
 import seo2 from '../../assets/plugs/seo/seo-2.svg'
 //shops plugs
 import shop1 from '../../assets/plugs/linked_shops/shop-1.svg'
+//subscription plugs
+import sub1 from '../../assets/plugs/subscription/subscriptions.svg'
 
 
 const plugsConfig = {
@@ -54,6 +56,7 @@ const plugsConfig = {
     "monitoring": [monitor1, monitor2],
     "seo": [seo1, seo2],
     "linked-shops": [shop1],
+    "subscription": [sub1]
 }
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
