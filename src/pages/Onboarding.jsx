@@ -35,10 +35,8 @@ const Onboarding = () => {
   const getToken = (e) => setToken(e.target.value);
 
   const updateIsOnboarded = () => {
-    const currentToken = localStorage.getItem('authToken');
-    ServiceFunctions.refreshUser(currentToken).then((data) => {
+    ServiceFunctions.refreshUser(authToken).then((data) => {
       setUser(jwtDecode(data?.token));
-      localStorage.setItem('authToken', data?.token);
       navigate('/dashboard');
     });
   };
