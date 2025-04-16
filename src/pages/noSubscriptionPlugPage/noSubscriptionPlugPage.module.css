@@ -35,9 +35,20 @@
     width: 100%;
 }
 .page__plugWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     position: relative;
-    left: -20px;
-    width: calc(100% + 40px);
+    left: -15px;
+    width: calc(100% + 30px)
+}
+.page__plugWrapperDashboard {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 .page__plugWrapper img {
     width: 100%;
