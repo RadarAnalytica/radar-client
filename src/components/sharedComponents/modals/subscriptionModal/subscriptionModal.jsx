@@ -216,6 +216,8 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
           },
           function (options) {
             // success - действие при успешной оплате
+            navigate('/after-payment', { state: { paymentStatus: 'success' } });
+            return
             // TODO отправка запроса в сервис бэкенда на обновление данных user
             // (/api/user Patch subscription_status: ['Test', 'Month 1', 'Month 3', 'Month 6'],
             // subscription_start_date: TODAY, is_test_used: true (если выбран тестовый период, если нет - не передавать))
@@ -267,6 +269,8 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
           function (reason, options) {
             // fail
             //действие при неуспешной оплате
+            navigate('/after-payment', { state: { paymentStatus: 'error' } });
+            return
     
             ServiceFunctions.getFailPaymentStatus(authToken)
               .then(res => {

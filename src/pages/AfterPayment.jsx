@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useLocation  } from 'react-router-dom';
 import './styles.css';
 import LimitedFooter from '../components/LimitedFooter';
@@ -7,19 +7,50 @@ import SuccessPayment from './images/SuccessPayment.svg';
 import SuccessPaymentLight from './images/SuccessPayment.png';
 import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import CustomButton from '../components/utilsComponents/CustomButton';
+import AuthContext from '../service/AuthContext'
+
 
 const AfterPayment = () => {
+  const { authToken, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
   const status = location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false;
 
+  const refreshUserToken = async () => {
+        try {
+            const response = await fetch(`${URL}/api/user/refresh`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: 'JWT ' + authToken,
+                },
+            });
+
+            if (response.status === 200) {
+                const data = await response.json();
+                return data.token;
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        return null;
+    };
+
   useEffect(() => {
     setTimeout(() => {
       if (status) {
-        navigate('/main');
+        refreshUserToken().then((res) => {
+          console.log(res);
+          
+          navigate('/main')
+        });
       } else {
-        navigate('/tariffs');
+        refreshUserToken().then((res) => {
+          console.log(res);
+          
+          navigate('/main')
+        });
       }
     }, 5000);
   }, []);

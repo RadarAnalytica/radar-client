@@ -95,7 +95,7 @@ const StartPage = () => {
                             <div className={styles.gallery__imgWrapper}></div>
                             <div className={styles.gallery__offerBlock}>
                                 <div className={styles.gallery__offerTitleWrapper}>
-                                    <p className={styles.gallery__offerTitle}>Оцифруйтесь за 1 минуту</p>
+                                    <p className={styles.gallery__offerTitle}></p>
                                     <div className={styles.gallery__subtitleBox}>
                                         <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle opacity="0.2" cx="8" cy="8.5" r="8" fill="white" />
@@ -108,7 +108,8 @@ const StartPage = () => {
                                     </div>
                                 </div>
                                 <Link
-                                    to={{ pathname: user && user.is_onboarded ? '/report-main' : '/onboarding' }}
+                                    // to={{ pathname: '/report-main' }}
+                                    to={{ pathname: user ? '/report-main' : '/signup'}}
                                     className={styles.gallery__offerLink}
                                 >
                                     Попробовать
