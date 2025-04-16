@@ -195,7 +195,7 @@ const LinkedShops = () => {
     }
 
     try {
-      const res = await addShop(addShopData)
+      await addShop(addShopData)
       handleClose();
       setShowSuccess(true);
       dispatch(fetchShops(authToken));
@@ -238,9 +238,9 @@ const LinkedShops = () => {
     }
   }, [location.search]);
 
-  if (user?.subscription_status === "expired") {
-    return <NoSubscriptionPage title={"Подключенные магазины"} />;
-  }
+  // if (user?.subscription_status === "expired") {
+  //   return <NoSubscriptionPage title={"Подключенные магазины"} />;
+  // }
 
   return (
     <main className={styles.page}>
