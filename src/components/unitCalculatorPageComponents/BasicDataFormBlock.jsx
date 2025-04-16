@@ -6,7 +6,7 @@ import styles from './BasicDataFormBlock.module.css'
 import useDebouncedFunction from '../../service/hooks/useDebounce';
 
 const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
-    const [ autocompleteOptions, setAutocompleteOptions ] = useState([]);
+    const [ autocompleteOptions, setAutocompleteOptions ] = useState();
     console.log(autocompleteOptions)
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
@@ -133,7 +133,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
                         autoComplete='off'
-                        notFoundContent={<div style={{color: 'black'}}>Ничего не найдено</div>}
+                        notFoundContent={autocompleteOptions && autocompleteOptions.length === 0 && <div style={{color: 'black'}}>Ничего не найдено</div>}
                         allowClear={{
                             clearIcon: (
                                 <div style={{ background: 'transparent'}}>
