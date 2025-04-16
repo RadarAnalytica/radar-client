@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import styles from './AbcAnalysisPage.module.css'
 import SideNav from "../components/SideNav";
 import TopNav from "../components/TopNav";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -10,6 +11,8 @@ import SelfCostWarning from "../components/SelfCostWarning";
 import DataCollectionNotification from "../components/DataCollectionNotification";
 import { Filters } from "../components/sharedComponents/apiServicePagesFiltersComponent";
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
+import Header from "../components/sharedComponents/header/header";
+import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 
 const AbcAnalysisPage = () => {
   const { activeBrand, selectedRange: days } = useAppSelector(store => store.filters)
@@ -44,14 +47,14 @@ const AbcAnalysisPage = () => {
         activeBrand
       );
 
-  // console.log('---------- base ----------')
-  // console.log(viewType)
-  // console.log(authToken)
-  // console.log(days)
-  // console.log(activeBrand)
-  // console.log('--------------------------')
-  //     console.log('data: ')
-  //     console.log(data)
+      // console.log('---------- base ----------')
+      // console.log(viewType)
+      // console.log(authToken)
+      // console.log(days)
+      // console.log(activeBrand)
+      // console.log('--------------------------')
+      //     console.log('data: ')
+      //     console.log(data)
       setIsNeedCost(data.is_need_cost);
       const result = data.results;
 
@@ -67,8 +70,8 @@ const AbcAnalysisPage = () => {
     }
     setLoading(false);
   };
- 
-   // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
+
+  // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
   useEffect(() => {
     if (activeBrand?.is_primary_collect && viewType && days && authToken) {
       updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
@@ -124,9 +127,9 @@ const AbcAnalysisPage = () => {
     };
   }, [dispatch, viewType, authToken, days, activeBrand]);
 
-  
 
-  
+
+
 
   if (user?.subscription_status === "expired") {
     return <NoSubscriptionPage title={"ABC-анализ"} />;
@@ -138,44 +141,58 @@ const AbcAnalysisPage = () => {
 
   return (
     // isVisible && (
-      <div className='dashboard-page'>
-        <MobilePlug />
-      <SideNav />
-        <div className='dashboard-content pb-3' style={{ padding: '0 20px 0 50px'}}>
-          <div style={{ marginLeft: '0'}} className="container dash-container">
-            <TopNav title={"ABC-анализ"} mikeStarinaStaticProp />
-          </div>
+    <main className={styles.page}>
+      <MobilePlug />
+      {/* ------ SIDE BAR ------ */}
+      <section className={styles.page__sideNavWrapper}>
+        <Sidebar />
+      </section>
+      {/* ------ CONTENT ------ */}
+      <section className={styles.page__content}>
+        {/* header */}
+        <div className={styles.page__headerWrapper}>
+          <Header title='Сводка продаж' />
+        </div>
+        {/* !header */}
+        {isNeedCost && activeBrand && activeBrand.is_primary_collect ? (
+          <SelfCostWarning
+            activeBrand={activeBrand.id}
+            onUpdateDashboard={handleUpdateAbcAnalysis}
+          />
+        ) : null}
 
-          {isNeedCost && activeBrand && activeBrand.is_primary_collect ? (
-            <SelfCostWarning
-              activeBrand={activeBrand.id}
-              onUpdateDashboard={handleUpdateAbcAnalysis}
-            />
-          ) : null}
-
-
+        <div>
           <Filters
             setLoading={setLoading}
           />
-
-          {activeBrand && activeBrand.is_primary_collect ? (
-            <TableAbcData
-              dataTable={dataAbcAnalysis}
-              setDataTable={setDataAbcAnalysis}
-              setViewType={setViewType}
-              viewType={viewType}
-              loading={loading}
-            />
-          ) : (
-            <div style={{marginTop: '20px'}}>
-              <DataCollectionNotification
-                title={"Ваши данные еще формируются и обрабатываются."}
-              />
-            </div>
-          )}
-            {/* <BottomNavigation /> */}
         </div>
-      </div>
+
+        {activeBrand && activeBrand.is_primary_collect ? (
+          <TableAbcData
+            dataTable={dataAbcAnalysis}
+            setDataTable={setDataAbcAnalysis}
+            setViewType={setViewType}
+            viewType={viewType}
+            loading={loading}
+          />
+        ) : (
+          <div style={{ marginTop: '20px' }}>
+            <DataCollectionNotification
+              title={"Ваши данные еще формируются и обрабатываются."}
+            />
+          </div>
+        )}
+      </section>
+      {/* ---------------------- */}
+    </main>
+    // <div className='dashboard-page'>
+    //   <MobilePlug />
+    // <SideNav />
+    //   <div className='dashboard-content pb-3' style={{ padding: '0 20px 0 50px'}}>
+
+    //       {/* <BottomNavigation /> */}
+    //   </div>
+    // </div>
     // )
   );
 };

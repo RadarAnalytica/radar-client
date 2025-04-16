@@ -12,6 +12,7 @@ import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/penalties-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const WeeklyReportPenaltiesPage = () => {
   const dispatch = useDispatch();
@@ -38,8 +39,11 @@ const WeeklyReportPenaltiesPage = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
-      <SideNav />
-      <div className='dashboard-content pb-3'>
+      <div style={{ height: '100vh', zIndex: 999 }}>
+        <Sidebar />
+      </div>
+      {/* <SideNav /> */}
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
         <TopNav title={'Штрафы'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <>

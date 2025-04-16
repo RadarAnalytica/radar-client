@@ -13,6 +13,7 @@ import AuthContext from "../service/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
+import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 
 const Subscriptions = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const Subscriptions = () => {
     const checkSubscriptions = async () => {
       const data = await fetchSubscriptions();
       if (data.length === 0) {
-        navigate('/tariffs');
+       navigate('/tariffs');
       }
     };
   
@@ -148,8 +149,11 @@ const Subscriptions = () => {
   return (
     <div className="sub-page">
       <MobilePlug />
-      <SideNav />
-      <div className="sub-page-content">
+      <div style={{ height: '100vh' }}>
+            <Sidebar />
+        </div>
+      {/* <SideNav /> */}
+      <div className="sub-page-content" style={{ padding: '0 32px'}}>
         <TopNav title={"Моя подписка"} />
         <div className="container dash-container sub-page-grid">
           {subscriptions.map((item) => {

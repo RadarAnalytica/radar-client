@@ -7,7 +7,7 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
     const [isOpen, setIsOpen] = useState(true)
     const { pathname } = useLocation()
 
-    const isInList = links.some(_ => _.url === pathname)
+    const isInList = links.some(_ => _.url === pathname);
 
     useEffect(() => {
         if (isMenuHidden) {
