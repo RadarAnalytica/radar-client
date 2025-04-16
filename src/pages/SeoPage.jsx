@@ -7,7 +7,7 @@ import SeoCompaire from '../components/SeoCompaire';
 import NoSubscriptionPage from './NoSubscriptionPage';
 import AuthContext from '../service/AuthContext';
 import { Helmet } from 'react-helmet';
-
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
 const SeoPage = () => {
@@ -25,19 +25,22 @@ const SeoPage = () => {
         <link rel="canonical" href="https://radar-analytica.ru/signup" />
       </Helmet>
       <MobilePlug />
-      <SideNav />
-      <div className={styles.scrollableContent}>
-        <div style={{ width: '100%', padding: '0 10px'}}>
-        <TopNav title={'Сравнение SEO'}>
-          {Object.keys(compaireData).length > 0 && (
-            <div
-              className={styles.newTopNavButton}
-              onClick={() => setCompaireData({})}
-            >
-              <span>Новый запрос</span>
-            </div>
-          )}
-        </TopNav>
+      <div style={{ height: '100vh' }}>
+        <Sidebar />
+      </div>
+      {/* <SideNav /> */}
+      <div className={styles.scrollableContent} style={{ padding: '0 32px'}}>
+        <div style={{ width: '100%', padding: '0' }}>
+          <TopNav title={'Сравнение SEO'}>
+            {Object.keys(compaireData).length > 0 && (
+              <div
+                className={styles.newTopNavButton}
+                onClick={() => setCompaireData({})}
+              >
+                <span>Новый запрос</span>
+              </div>
+            )}
+          </TopNav>
         </div>
         <div className='container dash-container'>
           {Object.keys(compaireData).length <= 0 && (

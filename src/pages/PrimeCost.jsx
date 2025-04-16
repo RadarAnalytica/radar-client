@@ -10,6 +10,7 @@ import BottomNavigation from '../components/BottomNavigation';
 import styles from './PrimeCost.module.css';
 import doneIcon from "../assets/tick-active.png"
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const PrimeCost = () => {
   const [file, setFile] = useState();
@@ -77,8 +78,11 @@ const PrimeCost = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
-      <SideNav />
-      <div className='dashboard-content pb-3'>
+      <div style={{ height: '100vh', zIndex: 999 }}>
+        <Sidebar />
+      </div>
+      {/* <SideNav /> */}
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
         <TopNav title={'Себестоимость'} subTitle={'Отчёт /'} />
         <div className='container dash-container'>
           <div className={styles.primeCost}>

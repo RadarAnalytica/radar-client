@@ -16,6 +16,7 @@ import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/schedule-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const Schedule = () => {
   const { authToken, user } = useContext(AuthContext);
@@ -998,8 +999,11 @@ const Schedule = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
-      <SideNav />
-      <div className={`${styles.scheduleMain} dashboard-content pb-3 `}>
+      <div style={{ height: '100vh', zIndex: 999 }}>
+        <Sidebar />
+      </div>
+      {/* <SideNav /> */}
+      <div className={`${styles.scheduleMain} dashboard-content pb-3 `} style={{ padding: '0 32px'}}>
         <TopNav
           title={
             <>
