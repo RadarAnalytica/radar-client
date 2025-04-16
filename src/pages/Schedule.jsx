@@ -1017,7 +1017,8 @@ const Schedule = () => {
               <NewFilterGroup pageIdent='charts' filtersData={chartsFilters} isLoading={isFiltersLoading} getData={updateScheduleChartData} />
             </div>
 
-            <div className={`${styles.ScheduleBody} dash-container container`}>
+            {/* <div className={`${styles.ScheduleBody} dash-container container`} style={{border: '1px solid red'}}> */}
+              <div className={styles.ScheduleBody}>
               {/* <div className='container dash-container '> */}
                 <ScheduleBigChart
                   dataRevenue={dataRevenue}
