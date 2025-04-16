@@ -154,6 +154,10 @@ const _DashboardPage = () => {
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}
                             />
+                            <MarginChartBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
                             <ProfitBlock
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}

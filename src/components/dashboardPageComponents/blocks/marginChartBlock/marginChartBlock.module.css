@@ -7,7 +7,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 16px;
+    gap: 10px;
     grid-row: span 8;
     transition: all .1s ease-in-out;
 }
@@ -33,4 +33,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.block__chart {
+    width: 100%;
 }
