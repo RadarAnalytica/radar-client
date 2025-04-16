@@ -8,6 +8,7 @@ import SuccessPaymentLight from './images/SuccessPayment.png';
 import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import CustomButton from '../components/utilsComponents/CustomButton';
 import AuthContext from '../service/AuthContext'
+import { URL } from '../service/config';
 
 
 const AfterPayment = () => {
