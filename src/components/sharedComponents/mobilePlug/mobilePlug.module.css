@@ -11,6 +11,7 @@
     align-items: center;
     padding: 40px 25px;
     background: white;
+    overscroll-behavior: none;
 
     @media (max-width: 1200px) {
         display: flex;
