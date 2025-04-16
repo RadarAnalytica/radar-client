@@ -58,9 +58,7 @@ const plugsConfig = {
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
 
-
-    const path = pathname ? pathname : 'dashboard';
-    const current = plugsConfig[path]
+    const current = plugsConfig[pathname]
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -79,32 +77,39 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                 {/* NO SUBSCRIPTION WARNING BLOCK */}
                 <NoSubscriptionWarningBlock />
                 {/* !NO SUBSCRIPTION WARNING BLOCK */}
-                <div className={styles.page__plugWrapper}>
-                    {current.map((i, id) => {
+                {current &&
+                    <div className={styles.page__plugWrapper}>
+                        {current.map((i, id) => {
 
-                        if (id === 0) {
-                            return (
-                                <img
-                                    src={i}
-                                    key={id}
-                                    alt=''
-                                    loading='eager'
-                                    decoding='async'
-                                    fetchpriority='high'
-                                    style={{ 
-                                        padding: path === 'report-main' ? '0 12px' 
-                                        : path === 'orders-map' || path === 'abc-data' ? '0 16px' : '0'
-                                        }} 
+                            if (id === 0) {
+                                return (
+                                    <img
+                                        src={i}
+                                        key={id}
+                                        alt=''
+                                        loading='eager'
+                                        decoding='async'
+                                        fetchpriority='high'
+                                        style={{
+                                            padding: pathname === 'report-main' ? '0 12px'
+                                                : pathname === 'orders-map' || pathname === 'abc-data' ? '0 16px' : '0'
+                                        }}
                                     />
+                                )
+                            }
+
+                            return (
+                                <img src={i} key={id} alt='' loading='lazy' decoding='async' fetchpriority='low' />
                             )
-                        }
+                        })}
 
-                        return (
-                            <img src={i} key={id} alt='' loading='lazy' decoding='async' fetchpriority='low' />
-                        )
-                    })}
-
-                </div>
+                    </div>
+                }
+                {!current &&
+                    <div className={styles.page__loaderWrapper}>
+                        <span className='loader'></span>
+                    </div>
+                }
             </section>
             {/* ---------------------- */}
         </main>
