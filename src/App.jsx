@@ -46,7 +46,6 @@ const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage")
 const _DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));
 const AdminPage = React.lazy(() => import("./pages/AdminPage/AdminPage"));
 const SkuAnalysisPage = React.lazy(() => import("./pages/skuAnalysisPage/skuAnalysisPage"));
-const NoSubscriptionPlugPage = React.lazy(() => import("./pages/noSubscriptionPlugPage/noSubscriptionPlugPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 

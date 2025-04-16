@@ -3,14 +3,14 @@ import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
-import dashboardPlug from '../../assets/dashboard_plug.png'
-import reportPlug from '../../assets/report-main_plug.png'
-import mapPlug from '../../assets/orders-map_plug.png'
-import abcPlug from '../../assets/abc-data_plug.png'
-import stockPlug from '../../assets/stock-analysis_plug.png'
-import aiPlug from '../../assets/ai-generator_plug.png'
-import monitoringPlug from '../../assets/monitoring_plug.png'
-import seoPlug from '../../assets/seo_plug.png'
+// import dashboardPlug from '../../assets/dashboard_plug.png'
+// import reportPlug from '../../assets/report-main_plug.png'
+// import mapPlug from '../../assets/orders-map_plug.png'
+// import abcPlug from '../../assets/abc-data_plug.png'
+// import stockPlug from '../../assets/stock-analysis_plug.png'
+// import aiPlug from '../../assets/ai-generator_plug.png'
+// import monitoringPlug from '../../assets/monitoring_plug.png'
+// import seoPlug from '../../assets/seo_plug.png'
 //dashboard plugs
 import dashboard1 from '../../assets/plugs/dashboard/dashboard-1.svg'
 import dashboard2 from '../../assets/plugs/dashboard/dashboard_2.svg'
@@ -55,19 +55,6 @@ const plugsConfig = {
     "seo": [seo1, seo2],
     "linked-shops": [shop1],
 }
-/**
- * 
- "dashboard": [dashboard1, dashboard2, dashboard3, dashboard4],  //ok
-    "report-main": [fin1, fin2], // !
-    "orders-map": [geo1, geo2, geo4], //!
-    "abc-data": [abc1, abc2], //!
-    "stock-analysis": [stock1,stock2,stock3,stock4,stock5], //ok
-    "ai-generator": [ai1], // ok
-    "monitoring": [monitor1, monitor2], //ok
-    "seo": [seo1, seo2], // ok
-    "linked-shops": [shop1], //ok
-}
- */
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
 
