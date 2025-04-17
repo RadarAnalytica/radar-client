@@ -7,18 +7,19 @@ export const fetchMessages = createAsyncThunk(
     'messages',
     async (token) => {
         try {
-            // const response = await axios.get(`${URL}/api/msg`, {
-            //     headers: {
-            //         'content-type': 'application/json',
-            //         authorization: 'JWT ' + token,
-            //     },
-            // });
-            const response = await fetch(`${URL}/api/msg`, {
+            const response = await axios.get(`${URL}/api/msg/`, {
                 headers: {
                     'content-type': 'application/json',
                     authorization: 'JWT ' + token,
                 },
             });
+            // const response = await fetch(`${URL}/api/msg/`, {
+            //     headers: {
+            //         'content-type': 'application/json',
+            //         authorization: 'JWT ' + token,
+            //     },
+            // });
+            console.log(response)
             return response.data;
 
         } catch (error) {

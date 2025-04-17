@@ -21,6 +21,7 @@ const Header = ({ title = 'Radar Analytica', titlePrefix }) => {
     const [isMenuPopoverVisible, setIsMenuPopoverVisible] = useState(false);
     // сообщения
     const { messages } = useAppSelector((state) => state.messagesSlice);
+    console.log(messages)
     // получение и обновление сообщений
     useEffect(() => {
         let intervalId;
