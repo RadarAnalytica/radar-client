@@ -30,7 +30,7 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
                     '#FFFFFF',
                     '#FFFFFF',
                 ],
-                borderWidth: 5,
+                borderWidth: 1,
                 cutout: '90%',
                 borderRadius: 11,
             },
@@ -62,9 +62,9 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
                 event.native.target.style.cursor = 'pointer';
             },
         },
-        cutout: '90%',
+        cutout: '100%',
         layout: {
-            padding: 20,
+            padding: 0,
         },
         displayCenterText: true,
     };

@@ -22,6 +22,7 @@ import StorageBlock from '../../../../components/dashboardPageComponents/blocks/
 import StorageRevenueChartBlock from '../../../../components/dashboardPageComponents/blocks/storageRevenueChartBlock/storageRevenueChartBlock'
 import CostsBlock from '../../../../components/dashboardPageComponents/blocks/costsBlock/costsBlock'
 import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
+import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 
 const _DashboardPage = () => {
     const { authToken } = useContext(AuthContext)
@@ -164,7 +165,7 @@ const _DashboardPage = () => {
                                     loading={loading}
                                     dataDashBoard={dataDashBoard}
                                 />
-                                <RevenueStructChartBlock
+                                <TaxTableBlock
                                     loading={loading}
                                     dataDashBoard={dataDashBoard}
                                 />
