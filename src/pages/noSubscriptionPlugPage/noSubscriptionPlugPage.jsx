@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import styles from './noSubscriptionPlugPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -66,10 +66,12 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
     let currentImages = [...plugsConfig[pathname]]
 
     useEffect(() => {
+        setIsImageLoaded(false)
         return () => {
             currentImages = undefined
+            setIsImageLoaded(false)
         }
-    }, [])
+    }, [pathname])
 
     return (
         <main className={styles.page}>
@@ -97,6 +99,7 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                                 return (
                                     <>
                                         <img
+
                                             src={i}
                                             key={id}
                                             alt=''
@@ -111,7 +114,10 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                                                 height: 'auto'
                                             }}
                                             hidden={!isImageLoaded}
-                                            onLoad={() => setIsImageLoaded(true)}
+                                            onLoad={() => {
+                                                console.log('loading')
+                                                setIsImageLoaded(true)
+                                            }}
                                         />
                                         <div className={styles.page__loaderWrapperInner} hidden={isImageLoaded}>
                                             <span className='loader' hidden={isImageLoaded}></span>
