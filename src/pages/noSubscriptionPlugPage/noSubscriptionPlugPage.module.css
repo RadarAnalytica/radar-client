@@ -60,3 +60,14 @@
     justify-content: center;
     align-items: center;
 }
+
+.page__loaderWrapperInner {
+    width: 100%;
+    border-radius: 16px;
+    padding: 16px;
+    aspect-ratio: 4 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 16px;
+}
