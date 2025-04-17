@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import styles from './noSubscriptionPlugPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -61,6 +62,8 @@ const plugsConfig = {
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
 
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
+
     const current = plugsConfig[pathname]
     return (
         <main className={styles.page}>
@@ -86,23 +89,34 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
 
                             if (id === 0) {
                                 return (
-                                    <img
-                                        src={i}
-                                        key={id}
-                                        alt=''
-                                        loading='eager'
-                                        decoding='async'
-                                        fetchpriority='high'
-                                        style={{
-                                            padding: pathname === 'report-main' ? '0 12px'
-                                                : pathname === 'orders-map' || pathname === 'abc-data' ? '0 16px' : '0'
-                                        }}
-                                    />
+                                    <>
+                                        <img
+                                            src={i}
+                                            key={id}
+                                            alt=''
+                                            loading='eager'
+                                            decoding='async'
+                                            fetchpriority='high'
+                                            style={{
+                                                padding: pathname === 'report-main' ? '0 12px'
+                                                    : pathname === 'orders-map' || pathname === 'abc-data' ? '0 16px' : '0',
+                                                display: 'block',
+                                                width: '100%',
+                                                height: 'auto'
+                                            }}
+                                            hidden={!isImageLoaded}
+                                            onLoad={() => setIsImageLoaded(true)}
+                                        />
+                                        <div className={styles.page__loaderWrapperInner} hidden={isImageLoaded}>
+                                            <span className='loader' hidden={isImageLoaded}></span>
+                                        </div>
+
+                                    </>
                                 )
                             }
 
                             return (
-                                <img src={i} key={id} alt='' loading='lazy' decoding='async' fetchpriority='low' />
+                                <img src={i} key={id} alt='' loading='lazy' decoding='async' fetchpriority='low' hidden={!isImageLoaded} />
                             )
                         })}
 
