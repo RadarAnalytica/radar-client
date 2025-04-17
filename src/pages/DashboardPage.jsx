@@ -1235,7 +1235,7 @@ const DashboardPage = () => {
                       loading={loading}
                     />
                   </div>
-                  <div className='d-flex align-items-stretch gap-3'>
+                  <div className='d-flex align-items-stretch gap-3' style={{ border: '1px solid red'}}>
                     <div className="col w-50">
                       <StructureRevenue
                         dataStructureRevenue={structure}
@@ -1255,7 +1255,7 @@ const DashboardPage = () => {
                   </div>
                 </div>
                 <div className='wrapper d-flex flex-column overflow-hidden'>
-                  <div className='mb-3' style={{ border: '1px solid red'}}>
+                  <div className='mb-3'>
                     <ScheduleProfitabilityChart
                       {...chartRoiMarginalityData}
                       loading={loading}

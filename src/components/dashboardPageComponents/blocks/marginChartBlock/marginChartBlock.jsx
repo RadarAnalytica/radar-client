@@ -227,18 +227,17 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
     return (
         <div className={styles.block}>
             <p className={styles.block__title}>Рентабельность и маржинальность</p>
-
-            <div className={styles.block__chart}>
-                <div className='chart-header-wrapper-prof mb-1'>
-                    <div className='chart-container-colors-wrapper'>
-                        <div className='roundedChartColor'></div>
-                        <div>Маржинальность по прибыли, %</div>
-                    </div>
-                    <div className='chart-container-colors-wrapper'>
-                        <div style={{ marginRight: '5px' }}><img src={roi} /></div>
-                        <div>ROI, %</div>
-                    </div>
+            <div className={styles.block__legend}>
+                <div className={styles.block__legendWrapper}>
+                    <div style={{ width: '20px', height: '20px', aspectRatio: '1 / 1', borderRadius: 3, background: '#F0AD00' }}></div>
+                    <p className={styles.block__legendItemText}>Маржинальность по прибыли, %</p>
                 </div>
+                <div className={styles.block__legendWrapper}>
+                    <img src={roi} />
+                    <p className={styles.block__legendItemText}>ROI, %</p>
+                </div>
+            </div>
+            <div className={styles.block__chart}>
                 <Bar data={data} options={options} />
             </div>
         </div >

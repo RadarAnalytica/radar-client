@@ -17,6 +17,11 @@ import AbcDataBlock from '../../../../components/dashboardPageComponents/blocks/
 import FinanceBlock from '../../../../components/dashboardPageComponents/blocks/financeBlock/financeBlock'
 import ProfitBlock from '../../../../components/dashboardPageComponents/blocks/profitBlock/profitBlock'
 import MarginChartBlock from '../../../../components/dashboardPageComponents/blocks/marginChartBlock/marginChartBlock'
+import ProfitChartBlock from '../../../../components/dashboardPageComponents/blocks/profitChartBlock/profitChartBlock'
+import StorageBlock from '../../../../components/dashboardPageComponents/blocks/storageBlock/storageBlock'
+import StorageRevenueChartBlock from '../../../../components/dashboardPageComponents/blocks/storageRevenueChartBlock/storageRevenueChartBlock'
+import CostsBlock from '../../../../components/dashboardPageComponents/blocks/costsBlock/costsBlock'
+import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
 
 const _DashboardPage = () => {
     const { authToken } = useContext(AuthContext)
@@ -37,24 +42,6 @@ const _DashboardPage = () => {
                     activeBrand
                 );
                 setDataDashboard(data);
-
-                //   if (data?.salesAndProfit) {
-                //     const formattedData = processSalesAndProfit(data.salesAndProfit);
-                //     setSalesAndProfit(formattedData);
-                //   }
-                //   if (data?.marginalityRoiChart) {
-                //     const formattedData = processMarginalityRoiChart(data.marginalityRoiChart);
-                //     setChartRoiMarginalityData(formattedData);
-                //   }
-                //   if (data?.revenueByWarehouse) {
-                //     const formattedData = processRevenueData(data.revenueByWarehouse);
-                //     SetRevenueByWarehouse(formattedData);
-                //   }
-                //   if (data?.structure) {
-                //     const formattedData = processStructureData(data.structure);
-                //     setStructure(formattedData);
-                //   }
-
             }
 
         } catch (e) {
@@ -145,6 +132,7 @@ const _DashboardPage = () => {
                         />
 
                         {/*  Grid group */}
+                        {/* Сетка построена гридами в две колонки и строками по 25px. Используй grid-column: span X для управления высотой блоков */}
                         <div className={styles.page__chartGroup}>
                             <FinanceBlock
                                 loading={loading}
@@ -154,11 +142,35 @@ const _DashboardPage = () => {
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}
                             />
-                            <MarginChartBlock
+                            <ProfitChartBlock
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}
                             />
                             <ProfitBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <StorageRevenueChartBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <StorageBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+
+                            <div className={styles.page__doubleBlockWrapper}>
+                                <RevenueStructChartBlock
+                                    loading={loading}
+                                    dataDashBoard={dataDashBoard}
+                                />
+                                <RevenueStructChartBlock
+                                    loading={loading}
+                                    dataDashBoard={dataDashBoard}
+                                />
+                            </div>
+
+                            <CostsBlock
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}
                             />
