@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 
 const HeaderAlerts = ({ messages }) => {
-    const sortedMessages = [...messages]?.sort((a,b) => {
+    const sortedMessages = messages ? [...messages].sort((a,b) => {
         const aDate = moment(a.created_at);
         const bDate = moment(b.created_at);
         if (aDate > bDate) {
@@ -19,7 +19,7 @@ const HeaderAlerts = ({ messages }) => {
         } else {
             return 1
         }
-    })
+    }) : undefined;
     const dispatch = useAppDispatch();
     const { authToken } = useContext(AuthContext)
 
@@ -68,7 +68,7 @@ const HeaderAlerts = ({ messages }) => {
             }
             )}
 
-            {sortedMessages && sortedMessages.length === 0 &&
+            {(!!!sortedMessages || (sortedMessages && sortedMessages.length === 0)) &&
             <div className={styles.list__noMessages}>
                  <img src={OkMessage} alt='' />
                  <p className={styles.list__title}>Нет новых сообщений!</p>
