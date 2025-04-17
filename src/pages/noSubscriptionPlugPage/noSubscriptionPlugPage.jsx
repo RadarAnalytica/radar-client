@@ -63,11 +63,9 @@ const plugsConfig = {
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
 
     const [isImageLoaded, setIsImageLoaded] = useState(false)
-    let currentImages = plugsConfig[pathname]
+    let currentImages = [...plugsConfig[pathname]]
 
     useEffect(() => {
-
-
         return () => {
             currentImages = undefined
         }
@@ -93,7 +91,7 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                 {/* !NO SUBSCRIPTION WARNING BLOCK */}
                 {currentImages &&
                     <div className={styles.page__plugWrapper}>
-                        {currentImages.map((i, id) => {
+                        {[...currentImages].map((i, id) => {
 
                             if (id === 0) {
                                 return (
