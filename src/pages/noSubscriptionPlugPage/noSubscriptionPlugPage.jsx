@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './noSubscriptionPlugPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -19,16 +19,16 @@ import dashboard3 from '../../assets/plugs/dashboard/dashboard_3.svg'
 import dashboard4 from '../../assets/plugs/dashboard/dashboard_4.svg'
 //finreports plugs
 import fin1 from '../../assets/plugs/fin_reports/fin-1.svg'
-import fin2 from '../../assets/plugs/fin_reports/fin-2.svg'
+import fin2 from '../../assets/plugs/fin_reports/fin-2.png'
 //map plugs
 import geo1 from '../../assets/plugs/orders_map/geo-1.svg'
 import geo2 from '../../assets/plugs/orders_map/geo-2.svg'
 import geo4 from '../../assets/plugs/orders_map/geo-4.svg'
 //abc plugs
 import abc1 from '../../assets/plugs/abc/abc-1.svg'
-import abc2 from '../../assets/plugs/abc/abc-2.svg'
+import abc2 from '../../assets/plugs/abc/abc-2.png'
 //stock plugs
-import stock1 from '../../assets/plugs/prod_analytic/prod-1.svg'
+import stock1 from '../../assets/plugs/prod_analytic/prod-1.png'
 import stock2 from '../../assets/plugs/prod_analytic/prod-2.svg'
 import stock3 from '../../assets/plugs/prod_analytic/prod-3.svg'
 import stock4 from '../../assets/plugs/prod_analytic/prod-4.svg'
@@ -36,10 +36,10 @@ import stock5 from '../../assets/plugs/prod_analytic/prod-5.svg'
 //ai plugs
 import ai1 from '../../assets/plugs/ai-generation/ai-1.svg'
 //monitor plugs
-import monitor1 from '../../assets/plugs/monitoring/monitoring-1.svg'
+import monitor1 from '../../assets/plugs/monitoring/monitoring-1.png'
 import monitor2 from '../../assets/plugs/monitoring/monitoring-2.svg'
 //monitor plugs
-import seo1 from '../../assets/plugs/seo/seo-1.svg'
+import seo1 from '../../assets/plugs/seo/seo-1.png'
 import seo2 from '../../assets/plugs/seo/seo-2.svg'
 //shops plugs
 import shop1 from '../../assets/plugs/linked_shops/shop-1.svg'
@@ -63,8 +63,14 @@ const plugsConfig = {
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
 
     const [isImageLoaded, setIsImageLoaded] = useState(false)
+    let currentImages = [...plugsConfig[pathname]]
 
-    const current = plugsConfig[pathname]
+    useEffect(() => {
+        return () => {
+            currentImages = undefined
+        }
+    }, [])
+
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -83,9 +89,9 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                 {/* NO SUBSCRIPTION WARNING BLOCK */}
                 <NoSubscriptionWarningBlock />
                 {/* !NO SUBSCRIPTION WARNING BLOCK */}
-                {current &&
+                {currentImages &&
                     <div className={styles.page__plugWrapper}>
-                        {current.map((i, id) => {
+                        {[...currentImages].map((i, id) => {
 
                             if (id === 0) {
                                 return (
@@ -122,7 +128,7 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
 
                     </div>
                 }
-                {!current &&
+                {!currentImages &&
                     <div className={styles.page__loaderWrapper}>
                         <span className='loader'></span>
                     </div>
