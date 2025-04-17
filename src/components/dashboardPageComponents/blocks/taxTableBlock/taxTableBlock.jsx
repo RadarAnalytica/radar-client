@@ -1,16 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styles from './taxTableBlock.module.css'
 import { formatPrice } from '../../../../service/utils'
-import { Select, Input, ConfigProvider } from 'antd'
+import { Select, Input, ConfigProvider, Button } from 'antd'
+import { RedoOutlined } from '@ant-design/icons'
+import AuthContext from '../../../../service/AuthContext'
+import { useAppSelector } from '../../../../redux/hooks'
+import { ServiceFunctions } from '../../../../service/serviceFunctions'
 
 const taxOption = ['УСН Д-Р', 'УСН-доходы', 'Не считать налог', 'Считать от РС']
 
-const TaxTableBlock = ({ dataDashBoard, loading }) => {
+const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
 
+    const { authToken } = useContext(AuthContext)
     const [taxType, setTaxType] = useState(taxOption[0])
     const [taxRate, setTaxRate] = useState(6)
-
+    const [isButtonVisible, setIsButtonVisible ] = useState(false)
+    const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const data = dataDashBoard?.taxInfo[0] || {}
+
+
+    const handleTaxSubmit = async ( type, submit ) => {
+        const currentTaxType = type || taxType;
+        const currentTaxRate = taxType === 'Не считать налог' ? 0 : parseFloat(taxRate) || 0;
+
+        try {
+            await ServiceFunctions.postTaxRateUpdateDashboard(authToken, currentTaxRate, currentTaxType);
+            // Обновляем данные дашборда
+            await updateDashboard(selectedRange, activeBrand.id, authToken);
+            if (submit) {
+                setIsButtonVisible(false)
+            }
+        } catch (error) {
+            console.error('Ошибка при обновлении налоговой ставки:', error);
+        }
+    };
+
 
     if (loading) {
         return (
@@ -37,15 +61,15 @@ const TaxTableBlock = ({ dataDashBoard, loading }) => {
                                     //colorBgBase: '#EAEAF1',
                                     borderRadius: 8,
                                     fontFamily: 'Mulish',
-                                    fontSize: 16
+                                    fontSize: 14
                                 },
                                 components: {
                                     Select: {
-                                        activeBorderColor: 'transparent',
+                                        activeBorderColor: '#d9d9d9',
                                         activeOutlineColor: 'transparent',
                                         hoverBorderColor: '#d9d9d9',
                                         optionActiveBg: 'transparent',
-                                        optionFontSize: 16,
+                                        optionFontSize: 14,
                                         optionSelectedBg: 'transparent',
                                         optionSelectedColor: '#5329FF',
                                     }
@@ -54,7 +78,10 @@ const TaxTableBlock = ({ dataDashBoard, loading }) => {
                         >
                             <Select
                                 value={taxType}
-                                onSelect={(value) => setTaxType(value)}
+                                onSelect={(value) => {
+                                    handleTaxSubmit(value)
+                                    setTaxType(value)
+                                }}
                                 options={taxOption.map(_ => ({ value: _, label: _ }))}
                             />
                         </ConfigProvider>
@@ -63,10 +90,33 @@ const TaxTableBlock = ({ dataDashBoard, loading }) => {
                         <label className={styles.block__inputLabel}>
                             Ставка налога:
                         </label>
-                        <Input.Search
-                            value={taxRate}
-                            onChange={(e) => setTaxRate(e.target.value)}
-                        />
+                        <div className={styles.block__specWrapper}>
+                            <Input
+                                value={taxRate}
+                                placeholder={`${taxRate} %`}
+                                onChange={(e) => {
+                                    setTaxRate((prevValue) => e.target.value.replace(/[^0-9.-]+|\.(?=\D)/g, ''))
+                                }}
+                                onFocus={() => { setIsButtonVisible(true) }}
+                            />
+                            {isButtonVisible &&
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#5329FF'
+                                        }
+                                    }}
+                                >
+                                    <Button
+                                        type='primary'
+                                        size='medium'
+                                        onClick={() => handleTaxSubmit(undefined, true)}
+                                    >
+                                        <RedoOutlined />
+                                    </Button>
+                                </ConfigProvider>
+                            }
+                        </div>
                     </div>
                 </div>
 

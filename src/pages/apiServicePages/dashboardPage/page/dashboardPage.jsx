@@ -84,7 +84,7 @@ const _DashboardPage = () => {
                     <div>
                         <SelfCostWarningBlock
                             shopId={activeBrand.id}
-                        //onUpdateDashboard={handleUpdateDashboard} //
+                            onUpdateDashboard={updateDataDashBoard} //
                         />
                     </div>
                 }
@@ -168,6 +168,7 @@ const _DashboardPage = () => {
                                 <TaxTableBlock
                                     loading={loading}
                                     dataDashBoard={dataDashBoard}
+                                    updateDashboard={updateDataDashBoard}
                                 />
                             </div>
 
