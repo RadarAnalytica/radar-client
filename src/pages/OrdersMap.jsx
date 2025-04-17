@@ -687,7 +687,7 @@ const OrdersMap = () => {
           {/* header */}
           <div className={styles.page__headerWrapper}>
             <div style={{ width: '100%' }} className="map-container dash-container container p-3">
-              <Header title='Сводка продаж' />
+              <Header title='География заказов и продаж' />
             </div>
           </div>
           {/* !header */}
