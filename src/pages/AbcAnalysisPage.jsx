@@ -151,7 +151,7 @@ const AbcAnalysisPage = () => {
       <section className={styles.page__content}>
         {/* header */}
         <div className={styles.page__headerWrapper}>
-          <Header title='Сводка продаж' />
+          <Header title='ABC-анализ' />
         </div>
         {/* !header */}
         {isNeedCost && activeBrand && activeBrand.is_primary_collect ? (

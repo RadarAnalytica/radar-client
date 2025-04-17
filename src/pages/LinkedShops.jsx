@@ -253,7 +253,7 @@ const LinkedShops = () => {
     <section className={styles.page__content}>
         {/* header */}
         <div className={styles.page__headerWrapper}>
-            <Header title='Сводка продаж' />
+            <Header title='Подключенные магазины' />
         </div>
         {/* !header */}
         <div className={styles.content}>
