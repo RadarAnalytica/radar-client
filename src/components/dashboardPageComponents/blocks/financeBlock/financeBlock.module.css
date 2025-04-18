@@ -70,6 +70,8 @@
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
+    display: flex;
+    gap: 10px;
 }
 
 .block__tableRowContent {

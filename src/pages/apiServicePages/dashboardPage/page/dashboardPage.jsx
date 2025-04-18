@@ -25,6 +25,7 @@ import RevenueStructChartBlock from '../../../../components/dashboardPageCompone
 import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 
 const _DashboardPage = () => {
+    
     const { authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const [dataDashBoard, setDataDashboard] = useState();
@@ -133,7 +134,7 @@ const _DashboardPage = () => {
                         />
 
                         {/*  Grid group */}
-                        {/* Сетка построена гридами в две колонки и строками по 25px. Используй grid-column: span X для управления высотой блоков */}
+                        {/* Сетка построена гридами в две колонки и строками по 25px. Используй grid-row: span X для управления высотой блоков */}
                         <div className={styles.page__chartGroup}>
                             <FinanceBlock
                                 loading={loading}

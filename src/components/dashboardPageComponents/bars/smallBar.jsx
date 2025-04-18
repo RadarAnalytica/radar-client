@@ -1,7 +1,7 @@
 import styles from './smallBar.module.css'
 import { Tooltip, ConfigProvider } from 'antd';
 import { formatPrice } from '../../../service/utils';
-import { getRateIcon } from '../shared/barUtils';
+import { getRateIcon, getRateStyle } from '../shared/barUtils';
 
 const SmallBar = ({
     title, //string
@@ -61,7 +61,7 @@ const SmallBar = ({
                 {hasSecondaryData && secondaryDataType === 'relative' && !!secondaryData &&
                     <div className={styles.bar__secDataWrapper}>
                         {getRateIcon(secondaryData)}
-                        <p className={secondaryData > 0 ? `${styles.bar__mainSubData} ${styles.bar__mainSubData_green}` : `${styles.bar__mainSubData} ${styles.bar__mainSubData_red}`}>{formatPrice(secondaryData, secondaryDataUnits)}</p>
+                        <p className={getRateStyle(parseInt(secondaryData), styles)}>{formatPrice(secondaryData, secondaryDataUnits)}</p>
                     </div>
                 }
             </div>
