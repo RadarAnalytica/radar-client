@@ -1,0 +1,147 @@
+.block {
+    background: white;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+    grid-row: span 8;
+    transition: all .1s ease-in-out;
+}
+
+.block:hover {
+    transform: scale(101%);
+}
+
+.block__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.block__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.block__mainLink {
+    text-decoration: none;
+    padding: 6px 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    background: #F6F4FF;
+    border-radius: 8px;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF
+}
+
+.bar__loaderWrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.block__table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.block__tableRow {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+    padding: 8px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.block__tableRow:last-of-type {
+    border: none;
+}
+
+.block__tableColumnTitle {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C
+}
+
+.block__tableRowWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+.block__contentWrapper {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+}
+.block__rateWrapper {
+    display: flex;
+}
+
+.block__mainData {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+    justify-self: end;
+}
+
+.block__mainSubData {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.block__mainSubData_green {
+    color: #00B69B
+}
+
+.block__mainSubData_red {
+    color: #F93C65
+}
+
+.block__mainSubData_gray {
+    color: #8C8C8C
+}

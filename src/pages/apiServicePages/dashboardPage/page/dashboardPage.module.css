@@ -33,3 +33,18 @@
 .page__headerWrapper {
     width: 100%;
 }
+.page__chartGroup {
+    width: 100%;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 25px;
+}
+
+.page__doubleBlockWrapper {
+    width: 100%;
+    grid-row: span 11;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}

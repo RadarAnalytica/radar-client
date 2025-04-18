@@ -114,7 +114,7 @@ export const getRateIcon = (rate) => {
     return (
       <svg
         style={{ width: '16px', height: '12px', marginRight: '10px' }}
-        width='20'
+        width='16'
         height='12'
         viewBox='0 0 20 12'
         fill='none'
@@ -131,7 +131,7 @@ export const getRateIcon = (rate) => {
     return (
       <svg
         style={{ width: '16px', height: '12px', marginRight: '10px' }}
-        width='20'
+        width='16'
         height='12'
         viewBox='0 0 20 12'
         fill='none'
@@ -144,6 +144,33 @@ export const getRateIcon = (rate) => {
       </svg>
     )
   }
+  if (parseInt(rate) === 0) {
+    return (
+      <div
+        style={{
+          width: '12px',
+          marginRight: '10px',
+          height: '2px',
+          background: '#8C8C8C'
+        }}
+      ></div>
+    )
+  }
 
   return null
+}
+
+
+export const getRateStyle = (amount, styles) => {
+  let style = ''
+  if (amount > 0) {
+    style = `${styles.bar__mainSubData} ${styles.bar__mainSubData_green}`
+  }
+  if (amount < 0) {
+    style = `${styles.bar__mainSubData} ${styles.bar__mainSubData_red}`
+  }
+  if (amount === 0) {
+    style = `${styles.bar__mainSubData} ${styles.bar__mainSubData_gray}`
+  }
+  return style
 }
