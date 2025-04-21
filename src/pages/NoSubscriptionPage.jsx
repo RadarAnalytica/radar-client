@@ -10,7 +10,6 @@ const NoSubscriptionPage = ({title}) => {
   const navigate = useNavigate();
   return (
     <div className="sub-page">
-      <MobilePlug />
       <SideNav />
       <div className="background-cover">
         <TopNav title={title} />
