@@ -114,6 +114,7 @@ const MainChart = ({ title, loading, dataDashBoard, selectedRange }) => {
                     isModalOpen={isModalOpen}
                     setIsModalOpen={setIsModalOpen}
                     loading={loading}
+                    chartData={chartData}
                 />
             }
 

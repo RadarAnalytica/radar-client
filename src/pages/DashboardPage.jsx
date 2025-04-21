@@ -946,182 +946,186 @@ const DashboardPage = () => {
             setLoading={setLoading}
           />
 
-          {activeBrand && activeBrand.is_primary_collect && (
-            <div>
-              <div className='container dash-container p-3 pt-0 d-flex gap-3'>
-                <MediumPlate
-                  name={'Заказы'}
-                  text={oneDayOrderAmount / rangeDays}
-                  text2={oneDayOrderCount / rangeDays}
-                  dataDashBoard={dataDashBoard?.orderAmount}
-                  quantity={dataDashBoard?.orderCount}
-                  percent={dataDashBoard?.orderAmountCompare}
-                  percent2={dataDashBoard?.orderCountCompare}
-                  loading={loading}
-                  //loading={true}
-                />
-                <MediumPlate
-                  name={'Продажи'}
-                  text={oneDaySaleAmount / rangeDays}
-                  text2={oneDaySaleCount / rangeDays}
-                  dataDashBoard={dataDashBoard?.saleAmount}
-                  quantity={dataDashBoard?.saleCount}
-                  percent={dataDashBoard?.saleAmountCompare}
-                  percent2={dataDashBoard?.saleCountCompare}
-                  loading={loading}
-                />
-                <MediumPlate
-                  name={'Возвраты'}
-                  dataDashBoard={dataDashBoard?.returnAmount}
-                  quantity={dataDashBoard?.returnCount}
-                  percent={dataDashBoard?.returnAmountCompare}
-                  percent2={dataDashBoard?.returnCountCompare}
-                  loading={loading}
-                />
-                <div className='col d-flex flex-column' style={{ gap: '2vh' }}>
-                  <div className='' style={{ height: '11vh' }}>
-                    <SmallPlate
-                      name={'Процент выкупа'}
-                      dataDashBoard={dataDashBoard?.buyoutPercent}
-                      type={'percent'}
-                      percent={dataDashBoard?.buyoutPercentCompare || '0'}
-                      loading={loading}
-                    />
-                  </div>
-                  <div className='' style={{ height: '11vh' }}>
-                    <SmallPlate
-                      name={'Средний чек'}
-                      dataDashBoard={dataDashBoard?.averageBill}
-                      type={'price'}
-                      percent={dataDashBoard?.averageBillCompare}
-                      loading={loading}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className='container dash-container p-3 pt-0 pb-3 d-flex gap-3'>
-                <div className='col chart-wrapper'>
-                  <BigChart
-                    name={'Заказы и продажи'}
-                    data={chartData}
-                    orderOn={orderOn}
-                    salesOn={salesOn}
-                    setOrderOn={setOrderOn}
-                    setSalesOn={setSalesOn}
-                    setOrderLineOn={setOrderLineOn}
-                    setSalesLineOn={setSalesLineOn}
-                    orderLineOn={orderLineOn}
-                    salesLineOn={salesLineOn}
-                    setByMoney={setByMoney}
-                    byAmount={byAmount}
-                    byMoney={byMoney}
+        </div>
+        {activeBrand && activeBrand.is_primary_collect && (
+          <div>
+            <div className='container dash-container p-3 pt-0 d-flex gap-3'>
+              <MediumPlate
+                name={'Заказы'}
+                text={oneDayOrderAmount / rangeDays}
+                text2={oneDayOrderCount / rangeDays}
+                dataDashBoard={dataDashBoard?.orderAmount}
+                quantity={dataDashBoard?.orderCount}
+                percent={dataDashBoard?.orderAmountCompare}
+                percent2={dataDashBoard?.orderCountCompare}
+                loading={loading}
+              //loading={true}
+              />
+              <MediumPlate
+                name={'Продажи'}
+                text={oneDaySaleAmount / rangeDays}
+                text2={oneDaySaleCount / rangeDays}
+                dataDashBoard={dataDashBoard?.saleAmount}
+                quantity={dataDashBoard?.saleCount}
+                percent={dataDashBoard?.saleAmountCompare}
+                percent2={dataDashBoard?.saleCountCompare}
+                loading={loading}
+              />
+              <MediumPlate
+                name={'Возвраты'}
+                dataDashBoard={dataDashBoard?.returnAmount}
+                quantity={dataDashBoard?.returnCount}
+                percent={dataDashBoard?.returnAmountCompare}
+                percent2={dataDashBoard?.returnCountCompare}
+                loading={loading}
+              />
+              <div className='col d-flex flex-column' style={{ gap: '2vh' }}>
+                <div className='' style={{ height: '11vh' }}>
+                  <SmallPlate
+                    name={'Процент выкупа'}
+                    dataDashBoard={dataDashBoard?.buyoutPercent}
+                    type={'percent'}
+                    percent={dataDashBoard?.buyoutPercentCompare || '0'}
                     loading={loading}
-                    days={rangeDays}
-                    wbData={wbData}
-                    maxValue={maxValue}
-                    maxAmount={maxAmount}
-                    dataDashBoard={dataDashBoard}
-                  >
-                    <div
-                      style={{
-                        backgroundColor: '#F0AD000D',
-                        padding: '5px 10px',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        color: '#F0AD00',
-                        fontWeight: '700',
-                        fontSize: '14px',
-                      }}
-                    >
-                      <svg
-                        width='18'
-                        height='18'
-                        viewBox='0 0 18 18'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <path
-                          d='M9.5625 5.25012C9.5625 4.93946 9.31066 4.68762 9 4.68762C8.68934 4.68762 8.4375 4.93946 8.4375 5.25012V9.75012C8.4375 10.0608 8.68934 10.3126 9 10.3126H12C12.3107 10.3126 12.5625 10.0608 12.5625 9.75012C12.5625 9.43946 12.3107 9.18762 12 9.18762H9.5625V5.25012Z'
-                          fill='#F0AD00'
-                        />
-                        <path
-                          fillRule='evenodd'
-                          clipRule='evenodd'
-                          d='M16.5 9.00012C16.5 13.1423 13.1421 16.5001 9 16.5001C4.85786 16.5001 1.5 13.1423 1.5 9.00012C1.5 4.85799 4.85786 1.50012 9 1.50012C13.1421 1.50012 16.5 4.85799 16.5 9.00012ZM15.375 9.00012C15.375 12.5209 12.5208 15.3751 9 15.3751C5.47918 15.3751 2.625 12.5209 2.625 9.00012C2.625 5.47931 5.47918 2.62512 9 2.62512C12.5208 2.62512 15.375 5.47931 15.375 9.00012Z'
-                          fill='#F0AD00'
-                        />
-                        <path
-                          fillRule='evenodd'
-                          clipRule='evenodd'
-                          d='M1.25 9.00012C1.25 4.71991 4.71979 1.25012 9 1.25012C13.2802 1.25012 16.75 4.71991 16.75 9.00012C16.75 13.2803 13.2802 16.7501 9 16.7501C4.71979 16.7501 1.25 13.2803 1.25 9.00012ZM9 1.75012C4.99593 1.75012 1.75 4.99606 1.75 9.00012C1.75 13.0042 4.99593 16.2501 9 16.2501C13.0041 16.2501 16.25 13.0042 16.25 9.00012C16.25 4.99606 13.0041 1.75012 9 1.75012ZM2.375 9.00012C2.375 5.34124 5.34111 2.37512 9 2.37512C12.6589 2.37512 15.625 5.34124 15.625 9.00012C15.625 12.659 12.6589 15.6251 9 15.6251C5.34111 15.6251 2.375 12.659 2.375 9.00012ZM9 2.87512C5.61726 2.87512 2.875 5.61738 2.875 9.00012C2.875 12.3829 5.61726 15.1251 9 15.1251C12.3827 15.1251 15.125 12.3829 15.125 9.00012C15.125 5.61738 12.3827 2.87512 9 2.87512ZM9 4.93762C8.82741 4.93762 8.6875 5.07753 8.6875 5.25012V9.75012C8.6875 9.92271 8.82741 10.0626 9 10.0626H12C12.1726 10.0626 12.3125 9.92271 12.3125 9.75012C12.3125 9.57753 12.1726 9.43762 12 9.43762H9.5625C9.42443 9.43762 9.3125 9.32569 9.3125 9.18762V5.25012C9.3125 5.07753 9.17259 4.93762 9 4.93762ZM8.1875 5.25012C8.1875 4.80139 8.55127 4.43762 9 4.43762C9.44873 4.43762 9.8125 4.80139 9.8125 5.25012V8.93762H12C12.4487 8.93762 12.8125 9.30139 12.8125 9.75012C12.8125 10.1989 12.4487 10.5626 12 10.5626H9C8.55127 10.5626 8.1875 10.1989 8.1875 9.75012V5.25012Z'
-                          fill='#F0AD00'
-                        />
-                      </svg>
-                      <div
-                        style={{ marginLeft: '5px', cursor: 'pointer' }}
-                        onClick={handleModalOpen}
-                      >
-                        Детализировать заказы по времени
-                      </div>
-                    </div>
-                  </BigChart>
+                  />
                 </div>
-
-
-                {/* modal */}
-                {isModalOpen && (
-                  <div className={styles.modalOverlay}>
-                    <div className={styles.modalContent}>
-                      <div className={styles.modalHeader}>
-                        <div className={styles.modalHeaderTitle}>
-                          Детализация заказов по времени
-                        </div>
-                        <div
-                          className={styles.closeBtnModal}
-                          onClick={handleCloseModal}
-                        >
-                          <svg
-                            width='20'
-                            height='21'
-                            viewBox='0 0 20 21'
-                            fill='none'
-                            xmlns='http://www.w3.org/2000/svg'
-                          >
-                            <path
-                              d='M10 8.27813L17.7781 0.5L20 2.72187L12.2219 10.5L20 18.2781L17.7781 20.5L10 12.7219L2.22187 20.5L0 18.2781L7.77813 10.5L0 2.72187L2.22187 0.5L10 8.27813Z'
-                              fill='#1A1A1A'
-                              fill-opacity='0.5'
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                      <div className={styles.underHeader}>
-                        <div
-                          className={styles.period}
-                          style={{ position: 'relative' }}
-                        >
-                          <Period
-                            selectedRange={selectedRangeDetail}
-                            setSelectedRange={setSelectedRangeDetail}
-                          />
-                        </div>
-                      </div>
-                      <div className={styles.modalBody}>
-                        <DetailChart
-                          labels={detailChartLabels}
-                          chartData={detailChartData}
-                          averages={detailChartAverages}
-                          isLoading={isDetailChartDataLoading}
-                        />
-                      </div>
+                <div className='' style={{ height: '11vh' }}>
+                  <SmallPlate
+                    name={'Средний чек'}
+                    dataDashBoard={dataDashBoard?.averageBill}
+                    type={'price'}
+                    percent={dataDashBoard?.averageBillCompare}
+                    loading={loading}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className='container dash-container p-3 pt-0 pb-3 d-flex gap-3'>
+              <div className='col chart-wrapper'>
+                <BigChart
+                  name={'Заказы и продажи'}
+                  data={chartData}
+                  orderOn={orderOn}
+                  salesOn={salesOn}
+                  setOrderOn={setOrderOn}
+                  setSalesOn={setSalesOn}
+                  setOrderLineOn={setOrderLineOn}
+                  setSalesLineOn={setSalesLineOn}
+                  orderLineOn={orderLineOn}
+                  salesLineOn={salesLineOn}
+                  setByMoney={setByMoney}
+                  byAmount={byAmount}
+                  byMoney={byMoney}
+                  loading={loading}
+                  days={rangeDays}
+                  wbData={wbData}
+                  maxValue={maxValue}
+                  maxAmount={maxAmount}
+                  dataDashBoard={dataDashBoard}
+                >
+                  <div
+                    style={{
+                      backgroundColor: '#F0AD000D',
+                      padding: '5px 10px',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      color: '#F0AD00',
+                      fontWeight: '700',
+                      fontSize: '14px',
+                    }}
+                  >
+                    <svg
+                      width='18'
+                      height='18'
+                      viewBox='0 0 18 18'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <path
+                        d='M9.5625 5.25012C9.5625 4.93946 9.31066 4.68762 9 4.68762C8.68934 4.68762 8.4375 4.93946 8.4375 5.25012V9.75012C8.4375 10.0608 8.68934 10.3126 9 10.3126H12C12.3107 10.3126 12.5625 10.0608 12.5625 9.75012C12.5625 9.43946 12.3107 9.18762 12 9.18762H9.5625V5.25012Z'
+                        fill='#F0AD00'
+                      />
+                      <path
+                        fillRule='evenodd'
+                        clipRule='evenodd'
+                        d='M16.5 9.00012C16.5 13.1423 13.1421 16.5001 9 16.5001C4.85786 16.5001 1.5 13.1423 1.5 9.00012C1.5 4.85799 4.85786 1.50012 9 1.50012C13.1421 1.50012 16.5 4.85799 16.5 9.00012ZM15.375 9.00012C15.375 12.5209 12.5208 15.3751 9 15.3751C5.47918 15.3751 2.625 12.5209 2.625 9.00012C2.625 5.47931 5.47918 2.62512 9 2.62512C12.5208 2.62512 15.375 5.47931 15.375 9.00012Z'
+                        fill='#F0AD00'
+                      />
+                      <path
+                        fillRule='evenodd'
+                        clipRule='evenodd'
+                        d='M1.25 9.00012C1.25 4.71991 4.71979 1.25012 9 1.25012C13.2802 1.25012 16.75 4.71991 16.75 9.00012C16.75 13.2803 13.2802 16.7501 9 16.7501C4.71979 16.7501 1.25 13.2803 1.25 9.00012ZM9 1.75012C4.99593 1.75012 1.75 4.99606 1.75 9.00012C1.75 13.0042 4.99593 16.2501 9 16.2501C13.0041 16.2501 16.25 13.0042 16.25 9.00012C16.25 4.99606 13.0041 1.75012 9 1.75012ZM2.375 9.00012C2.375 5.34124 5.34111 2.37512 9 2.37512C12.6589 2.37512 15.625 5.34124 15.625 9.00012C15.625 12.659 12.6589 15.6251 9 15.6251C5.34111 15.6251 2.375 12.659 2.375 9.00012ZM9 2.87512C5.61726 2.87512 2.875 5.61738 2.875 9.00012C2.875 12.3829 5.61726 15.1251 9 15.1251C12.3827 15.1251 15.125 12.3829 15.125 9.00012C15.125 5.61738 12.3827 2.87512 9 2.87512ZM9 4.93762C8.82741 4.93762 8.6875 5.07753 8.6875 5.25012V9.75012C8.6875 9.92271 8.82741 10.0626 9 10.0626H12C12.1726 10.0626 12.3125 9.92271 12.3125 9.75012C12.3125 9.57753 12.1726 9.43762 12 9.43762H9.5625C9.42443 9.43762 9.3125 9.32569 9.3125 9.18762V5.25012C9.3125 5.07753 9.17259 4.93762 9 4.93762ZM8.1875 5.25012C8.1875 4.80139 8.55127 4.43762 9 4.43762C9.44873 4.43762 9.8125 4.80139 9.8125 5.25012V8.93762H12C12.4487 8.93762 12.8125 9.30139 12.8125 9.75012C12.8125 10.1989 12.4487 10.5626 12 10.5626H9C8.55127 10.5626 8.1875 10.1989 8.1875 9.75012V5.25012Z'
+                        fill='#F0AD00'
+                      />
+                    </svg>
+                    <div
+                      style={{ marginLeft: '5px', cursor: 'pointer' }}
+                      onClick={handleModalOpen}
+                    >
+                      Детализировать заказы по времени
                     </div>
                   </div>
-                )}
-          {/* !modal */}
-
-
+                </BigChart>
               </div>
+              {isModalOpen && (
+                <div className={styles.modalOverlay}>
+                  <div className={styles.modalContent}>
+                    <div className={styles.modalHeader}>
+                      <div className={styles.modalHeaderTitle}>
+                        Детализация заказов по времени
+                      </div>
+                      <div
+                        className={styles.closeBtnModal}
+                        onClick={handleCloseModal}
+                      >
+                        <svg
+                          width='20'
+                          height='21'
+                          viewBox='0 0 20 21'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                        >
+                          <path
+                            d='M10 8.27813L17.7781 0.5L20 2.72187L12.2219 10.5L20 18.2781L17.7781 20.5L10 12.7219L2.22187 20.5L0 18.2781L7.77813 10.5L0 2.72187L2.22187 0.5L10 8.27813Z'
+                            fill='#1A1A1A'
+                            fill-opacity='0.5'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className={styles.underHeader}>
+                      <div
+                        className={styles.period}
+                        style={{ position: 'relative' }}
+                      >
+                        <Period
+                          selectedRange={selectedRangeDetail}
+                          setSelectedRange={setSelectedRangeDetail}
+                        />
+                      </div>
+                      {/* <div style={{ marginTop: '35px' }}>
+                          <div
+                            className='download-button'
+                            onClick={() => handleDownload()}
+                          >
+                            <img src={downloadIcon} />
+                            Скачать детализацию
+                          </div>
+                        </div> */}
+                    </div>
+                    <div className={styles.modalBody}>
+                      <DetailChart
+                        labels={detailChartLabels}
+                        chartData={detailChartData}
+                        averages={detailChartAverages}
+                        isLoading={isDetailChartDataLoading}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <div className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'>
               <div className='col' style={{ height: '14vh' }}>
@@ -1210,112 +1214,120 @@ const DashboardPage = () => {
               </div>
             </div>
 
-              <div
-                className='container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3'
-                style={{ width: '100%' }}
-              >
-                <div className='wrapper d-flex flex-column overflow-hidden'>
-                  <div className='mb-3'>
-                    <FinanceTable
-                      title={'Финансы'}
-                      data={financeData}
-                      wbData={wbData}
-                      dataDashBoard={dataDashBoard}
-                      tableType={1}
-                      loading={loading}
-                    />
-                  </div>
-                  <div className='mb-3'>
-                    <ScheduleBigChart
-                      {...salesAndProfit} loading={loading}
-                    />
-                  </div>
-                  <div className='mb-3'>
-                    <StorageTable
-                      wbData={wbData}
-                      title={'Склад'}
-                      data={storeData}
-                      titles={['Где товар', 'Капитализация', '', 'Остатки']}
-                      subtitles={['', 'Себестоимость', 'Розница', '']}
-                      dataDashBoard={dataDashBoard}
-                      loading={loading}
-                    />
-                  </div>
-                  <div className='d-flex align-items-stretch gap-3' style={{ border: '1px solid red'}}>
-                    <div className="col w-50">
-                      <StructureRevenue
-                        dataStructureRevenue={structure}
-                        loading={loading}
-                      />
-                    </div>
-                    <div className="col w-50">
-                      <TaxTable
-                        taxInfo={dataDashBoard?.taxInfo || []}
-                        authToken={authToken}
-                        activeBrand={activeBrand}
-                        selectedRange={selectedRange}
-                        updateDataDashBoard={updateDataDashBoard}
-                        loading={loading}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className='wrapper d-flex flex-column overflow-hidden'>
-                  <div className='mb-3'>
-                    <ScheduleProfitabilityChart
-                      {...chartRoiMarginalityData}
-                      loading={loading}
-                    />
-                  </div>
-                  <div className='mb-3'>
-                    <FinanceTable
-                      title={'Прибыльность'}
-                      data={profitabilityData}
-                      sign={' %'}
-                      wbData={wbData}
-                      dataDashBoard={dataDashBoard}
-                      tableType={1}
-                      loading={loading}
-                    />
-                  </div>
-                  <div className='mb-3 flex-grow-1'>
-                    <RevenueStorageChart {...revenueByWarehouse} loading={loading} />
-                  </div>
-                  <ChartTable
-                    title={'Расходы'}
-                    data={costsData}
+            <div
+              className='container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3'
+              style={{ width: '100%' }}
+            >
+              <div className='wrapper d-flex flex-column overflow-hidden'>
+                <div className='mb-3'>
+                  <FinanceTable
+                    title={'Финансы'}
+                    data={financeData}
                     wbData={wbData}
+                    dataDashBoard={dataDashBoard}
+                    tableType={1}
+                    loading={loading}
+                  />
+                </div>
+                <div className='mb-3'>
+                  <ScheduleBigChart
+                    {...salesAndProfit} loading={loading}
+                  />
+                </div>
+                <div className='mb-3'>
+                  <StorageTable
+                    wbData={wbData}
+                    title={'Склад'}
+                    data={storeData}
+                    titles={['Где товар', 'Капитализация', '', 'Остатки']}
+                    subtitles={['', 'Себестоимость', 'Розница', '']}
                     dataDashBoard={dataDashBoard}
                     loading={loading}
                   />
                 </div>
+                <div className='d-flex align-items-stretch gap-3'>
+                  <div className="col w-50">
+                    <StructureRevenue
+                      dataStructureRevenue={structure}
+                      loading={loading}
+                    />
+                  </div>
+                  <div className="col w-50">
+                    <TaxTable
+                      taxInfo={dataDashBoard?.taxInfo || []}
+                      authToken={authToken}
+                      activeBrand={activeBrand}
+                      selectedRange={selectedRange}
+                      updateDataDashBoard={updateDataDashBoard}
+                      loading={loading}
+                    />
+                  </div>
+                </div>
               </div>
-              <div
-                className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'
-                style={{ width: '100%' }}
-              >
-                <WidePlate
-                  title={'ABC-анализ'}
-                  titles={['Группа А', 'Группа В', 'Группа С']}
-                  data={
-                    wbData && wbData.sales ? abcAnalysis(wbData.sales.data) : []
-                  }
-                  dataDashBoard={dataDashBoard?.ABCAnalysis}
+              <div className='wrapper d-flex flex-column overflow-hidden'>
+                <div className='mb-3'>
+                  <ScheduleProfitabilityChart
+                    {...chartRoiMarginalityData}
+                    loading={loading}
+                  />
+                </div>
+                <div className='mb-3'>
+                  <FinanceTable
+                    title={'Прибыльность'}
+                    data={profitabilityData}
+                    sign={' %'}
+                    wbData={wbData}
+                    dataDashBoard={dataDashBoard}
+                    tableType={1}
+                    loading={loading}
+                  />
+                </div>
+                <div className='mb-3 flex-grow-1'>
+                  <RevenueStorageChart {...revenueByWarehouse} loading={loading} />
+                </div>
+                <ChartTable
+                  title={'Расходы'}
+                  data={costsData}
+                  wbData={wbData}
+                  dataDashBoard={dataDashBoard}
                   loading={loading}
                 />
               </div>
             </div>
-          )}
-          {activeBrand && !activeBrand.is_primary_collect && (
-            <div style={{marginTop: '20px', padding: '0 36px'}}>
-              <DataCollectionNotification
-                title={'Ваши данные еще формируются и обрабатываются.'}
+            <div
+              className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'
+              style={{ width: '100%' }}
+            >
+              <WidePlate
+                title={'ABC-анализ'}
+                titles={['Группа А', 'Группа В', 'Группа С']}
+                data={
+                  wbData && wbData.sales ? abcAnalysis(wbData.sales.data) : []
+                }
+                dataDashBoard={dataDashBoard?.ABCAnalysis}
+                loading={loading}
               />
             </div>
-          )}
-        </div>
-      </div>
-    )
+          </div>
+        )}
+        {activeBrand && !activeBrand.is_primary_collect && (
+          <div style={{ marginTop: '20px', padding: '0 36px' }}>
+            <DataCollectionNotification
+              title={'Ваши данные еще формируются и обрабатываются.'}
+            />
+          </div>
+        )}
+      </section>
+      {/* ---------------------- */}
+    </main>
+    // <div className='dashboard-page'>
+    //   <MobilePlug />
+    //   <SideNav />
+    //   <div className='dashboard-content pb-3'>
+
+    //   </div>
+    // </div>
+  )
 };
 
 export default DashboardPage;
