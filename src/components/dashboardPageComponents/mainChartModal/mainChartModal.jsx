@@ -15,7 +15,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 
 
-const MainChartModal = ({ isModalOpen, setIsModalOpen, loading }) => {
+const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => {
 
     const { authToken } = useContext(AuthContext)
     const [isDetailChartDataLoading, setIsDetailChartDataLoading] = useState(false)
@@ -71,20 +71,39 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading }) => {
         },
         onClick: (event, elements) => {
             if (elements.length > 0) {
+                // const index = elements[0].index;
+                // const chart = chartRef.current;
+                // const datasetIndex = elements[0].datasetIndex;
+
+                // if (chart) {
+                //     const bar = chart.getDatasetMeta(datasetIndex).data[index];
+                //     const x = bar.x;
+                //     const y = bar.y;
+
+                //     setTooltipPosition({ x, y });
+                //     setClickedIndex(index);
+                // }
+            } else {
+                setClickedIndex(null);
+            }
+        },
+        onHover: (event, elements) => {
+            if (elements.length > 0) {
                 const index = elements[0].index;
                 const chart = chartRef.current;
                 const datasetIndex = elements[0].datasetIndex;
 
-                if (chart) {
+                if (chart && index !== clickedIndex) {
                     const bar = chart.getDatasetMeta(datasetIndex).data[index];
                     const x = bar.x;
                     const y = bar.y;
 
                     setTooltipPosition({ x, y });
                     setClickedIndex(index);
+
                 }
             } else {
-                setClickedIndex(null);
+                //setHoveredIndex(null);
             }
         },
         scales: {
@@ -92,10 +111,9 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading }) => {
             y: { beginAtZero: true, min: 0, max: !!maxValue ? maxValue : 10, grid: { display: true }, ticks: { color: '#8C8C8C', stepSize: step } },
         },
     };
-
     const renderCustomTooltip = () => {
         if (clickedIndex === null) return null;
-        const total = chartData[clickedIndex]
+        const total = chartData[clickedIndex];
 
         const isLeftSide = clickedIndex > 11;
         const tooltipStyle = {
@@ -125,10 +143,10 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading }) => {
                     <div className="custom-tooltip-amount" style={{ fontWeight: '700' }}>{total}</div>
                 </div>
                 <div className="custom-tooltip-period">
-                    {labels[clickedIndex.toString()].map((time, i) => (
+                    {detailChartLabels[clickedIndex.toString()].map((time, i) => (
                         <div key={i} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ marginLeft: '5px' }}>{labels[clickedIndex.toString()][i]['time']}</span>
-                            <span style={{ marginRight: '5px' }}>{labels[clickedIndex.toString()][i]['count']}</span>
+                            <span style={{ marginLeft: '5px' }}>{detailChartLabels[clickedIndex.toString()][i]['time']}</span>
+                            <span style={{ marginRight: '5px' }}>{detailChartLabels[clickedIndex.toString()][i]['count']}</span>
                         </div>
                     ))}
                 </div>
