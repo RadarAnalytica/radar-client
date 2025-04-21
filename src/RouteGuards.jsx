@@ -6,7 +6,7 @@ import LoaderPage from './pages/LoaderPage';
 import { URL } from './service/config';
 import { Helmet } from 'react-helmet';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
-
+import NoSubscriptionPage from './pages/NoSubscriptionPage';
 
 /**
  * -----------------------------------------------
@@ -36,7 +36,7 @@ const config = {
       /** ... */
     },
     authGuardType: 'redirect', // 'redirect' | 'fallback'
-    expireGuardType: 'redirect', // 'redirect' | 'fallback'
+    expireGuardType: 'fallback', // 'redirect' | 'fallback'
     onboardGuardType: 'redirect', // 'redirect' | 'fallback'
     userRoleGuardType: 'redirect', // 'redirect' | 'fallback'
     subscriptionGuardType: 'redirect', // 'redirect' | 'fallback'
@@ -48,7 +48,7 @@ const config = {
     testPeriodFallback: (props) => (<NoSubscriptionPlugPage {...props} />),
     testPeriodRedirect: '/tariffs',
     expireProtected: false, // boolean
-    expireFallback: (props) => (<NoSubscriptionPlugPage {...props} />),
+    expireFallback: (props) => (<NoSubscriptionPage {...props} />),
     expireRedirect: '/tariffs',
     onboardProtected: false,
     onboardFallback: (props) => (<MainPage {...props} />),
