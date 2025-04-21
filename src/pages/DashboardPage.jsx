@@ -34,7 +34,8 @@ import DownloadButton from '../components/DownloadButton';
 import DetailChart from '../components/DetailChart';
 import { format, differenceInDays } from 'date-fns';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
-
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent'
 
 import { ScheduleProfitabilityChart, ScheduleBigChart, RevenueStorageChart, TaxTable, StructureRevenue } from '../components/dashboard';
@@ -85,7 +86,7 @@ const DashboardPage = () => {
     }
   }, [activeBrand, selectedRange]);
 
- 
+
   useEffect(() => {
     const updateChartDetailData = async () => {
       setIsDetailChartDataLoading(true)
@@ -140,7 +141,7 @@ const DashboardPage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  
+
 
   useEffect(() => {
     if (shops && shops.length === 0 && !firstLoading) {
@@ -148,7 +149,7 @@ const DashboardPage = () => {
     }
   }, [firstLoading, shops]);
 
- 
+
 
   const handleUpdateDashboard = () => {
     setTimeout(() => {
@@ -300,36 +301,36 @@ const DashboardPage = () => {
       //   localStorage.removeItem('activeShop')
       //   window.location.reload()
       // }
-     
-    if (activeBrand !== 'null' && activeBrand !== 'undefined') {
-       
 
-      const data = await ServiceFunctions.getDashBoard(
-        authToken,
-        selectedRange,
-        activeBrand
-      );
-      setDataDashboard(data);
+      if (activeBrand !== 'null' && activeBrand !== 'undefined') {
 
-      if (data?.salesAndProfit) {
-        const formattedData = processSalesAndProfit(data.salesAndProfit);
-        setSalesAndProfit(formattedData);
+
+        const data = await ServiceFunctions.getDashBoard(
+          authToken,
+          selectedRange,
+          activeBrand
+        );
+        setDataDashboard(data);
+
+        if (data?.salesAndProfit) {
+          const formattedData = processSalesAndProfit(data.salesAndProfit);
+          setSalesAndProfit(formattedData);
+        }
+        if (data?.marginalityRoiChart) {
+          const formattedData = processMarginalityRoiChart(data.marginalityRoiChart);
+          setChartRoiMarginalityData(formattedData);
+        }
+        if (data?.revenueByWarehouse) {
+          const formattedData = processRevenueData(data.revenueByWarehouse);
+          SetRevenueByWarehouse(formattedData);
+        }
+        if (data?.structure) {
+          const formattedData = processStructureData(data.structure);
+          setStructure(formattedData);
+        }
+
       }
-      if (data?.marginalityRoiChart) {
-        const formattedData = processMarginalityRoiChart(data.marginalityRoiChart);
-        setChartRoiMarginalityData(formattedData);
-      }
-      if (data?.revenueByWarehouse) {
-        const formattedData = processRevenueData(data.revenueByWarehouse);
-        SetRevenueByWarehouse(formattedData);
-      }
-      if (data?.structure) {
-        const formattedData = processStructureData(data.structure);
-        setStructure(formattedData);
-      }
-     
-    }
-   
+
     } catch (e) {
       console.error(e);
     } finally {
@@ -902,31 +903,37 @@ const DashboardPage = () => {
 
   const rangeDays = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period
   return (
-      <div className='dashboard-page'>
-        <MobilePlug />
-        <SideNav />
-        <div className='dashboard-content pb-3'>
-          <div style={{ width: '100%', padding: '0 36px'}}>
-          <div style={{ width: '100%'}} className="container dash-container px-3">
-           <TopNav title={'Сводка продаж'} mikeStarinaStaticProp />
+    <main className={styles.page}>
+      <MobilePlug />
+      {/* ------ SIDE BAR ------ */}
+      <section className={styles.page__sideNavWrapper}>
+        <Sidebar />
+      </section>
+      {/* ------ CONTENT ------ */}
+      <section className={styles.page__content}>
+        {/* header */}
+        <div className={styles.page__headerWrapper}>
+          <div className='container dash-container p-3 pt-0 d-flex gap-3'>
+            <Header title='Сводка продаж' />
           </div>
-          {
-            dataDashBoard &&
+        </div>
+
+        {
+          dataDashBoard &&
             !dataDashBoard.costPriceAmount &&
             activeBrand &&
             activeBrand.id !== 0 &&
             !loading ? (
-            <div style={{ marginBottom: '20px'}}>
+            <div style={{ marginBottom: '20px' }}>
               <SelfCostWarning
                 activeBrand={activeBrand.id}
                 onUpdateDashboard={handleUpdateDashboard}
               />
             </div>
-           
-          ) : null}
-           </div>
 
-          {/* {wbData?.initialCostsAndTax === null ||
+          ) : null}
+
+        {/* {wbData?.initialCostsAndTax === null ||
           wbData?.initialCostsAndTax?.data?.length === 0 ||
           wbData === null ? (
             <SelfCostWarning />
@@ -934,11 +941,10 @@ const DashboardPage = () => {
           {wbData === null ? <DataCollectionNotification /> : null} */}
 
 
-          <div className={styles.filtersWrapper} >
-            <Filters
-              setLoading={setLoading}
-            />
-          </div>
+        <div className='container dash-container p-3 pt-0 d-flex gap-3'>
+          <Filters
+            setLoading={setLoading}
+          />
 
           {activeBrand && activeBrand.is_primary_collect && (
             <div>
@@ -1117,92 +1123,92 @@ const DashboardPage = () => {
 
               </div>
 
-              <div className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'>
-                <div className='col' style={{ height: '14vh' }}>
-                  <SmallPlate
-                    name={'Себестоимость проданных товаров'}
-                    nochart={false}
-                    type={'price'}
-                    quantity={curOrders?.selectedPeriod?.buyoutsCount}
-                    dataDashBoard={dataDashBoard?.costPriceAmount}
-                    percent={dataDashBoard?.costPriceAmountCompare}
-                    pieces={dataDashBoard?.saleCount}
-                    loading={loading}
-                  />
-                </div>
-                <div className='col' style={{ height: '14vh' }}>
-                  <SmallPlate
-                    nochart={false}
-                    name={'Возвраты'}
-                    quantity={curOrders?.selectedPeriod?.cancelCount}
-                    type={'price'}
-                    dataDashBoard={dataDashBoard?.returnAmount}
-                    percent={dataDashBoard?.returnAmountCompare}
-                    pieces={dataDashBoard?.returnCount}
-                    loading={loading}
-                  />
-                </div>
-                <div className='col' style={{ height: '14vh' }}>
-                  <SmallPlate
-                    smallText={true}
-                    name={'Штрафы WB'}
-                    type={'price'}
-                    nochart={true}
-                    dataDashBoard={dataDashBoard?.penalty}
-                    allProps={dataDashBoard}
-                    loading={loading}
-                  />
-                </div>
-                <div className='col' style={{ height: '14vh' }}>
-                  <SmallPlate
-                    name={'Доплаты WB'}
-                    type={'price'}
-                    nochart={true}
-                    dataDashBoard={dataDashBoard?.additional}
-                    loading={loading}
-                  />
-                </div>
+            <div className='container dash-container p-4 pt-0 pb-3 d-flex gap-3'>
+              <div className='col' style={{ height: '14vh' }}>
+                <SmallPlate
+                  name={'Себестоимость проданных товаров'}
+                  nochart={false}
+                  type={'price'}
+                  quantity={curOrders?.selectedPeriod?.buyoutsCount}
+                  dataDashBoard={dataDashBoard?.costPriceAmount}
+                  percent={dataDashBoard?.costPriceAmountCompare}
+                  pieces={dataDashBoard?.saleCount}
+                  loading={loading}
+                />
               </div>
-              <div className='container dash-container p-4 pt-0 d-flex gap-3'>
-                <div className='col' style={{ height: '14vh' }}>
-                  <SmallPlate
-                    name={'Комиссия WB'}
-                    type={'price'}
-                    dataDashBoard={dataDashBoard?.commissionWB}
-                    percent={dataDashBoard?.commissionWBCompare}
-                    loading={loading}
-                  />
-                </div>
-                <div className='col' style={{ height: '14vh' }}>
-                  <SmallPlate
-                    name={'Расходы на логистику'}
-                    type={'price'}
-                    dataDashBoard={dataDashBoard?.logistics}
-                    percent={dataDashBoard?.logisticsCompare}
-                    loading={loading}
-                  />
-                </div>
-                <div className='col' style={{ height: '14vh' }}>
-                  <SmallPlate
-                    name={'Хранение'}
-                    type={'price'}
-                    dataDashBoard={dataDashBoard?.storageData}
-                    percent={dataDashBoard?.storageDataCompare}
-                    loading={loading}
-                  />
-                </div>
-                <div className='col' style={{ height: '14vh' }}>
-                  <SmallPlate
-                    nochart={false}
-                    name={'Упущенные продажи'}
-                    type={'price'}
-                    quantity={curOrders?.selectedPeriod?.cancelCount}
-                    dataDashBoard={dataDashBoard?.lostSalesAmount}
-                    pieces={dataDashBoard?.lostSalesCount}
-                    loading={loading}
-                  />
-                </div>
+              <div className='col' style={{ height: '14vh' }}>
+                <SmallPlate
+                  nochart={false}
+                  name={'Возвраты'}
+                  quantity={curOrders?.selectedPeriod?.cancelCount}
+                  type={'price'}
+                  dataDashBoard={dataDashBoard?.returnAmount}
+                  percent={dataDashBoard?.returnAmountCompare}
+                  pieces={dataDashBoard?.returnCount}
+                  loading={loading}
+                />
               </div>
+              <div className='col' style={{ height: '14vh' }}>
+                <SmallPlate
+                  smallText={true}
+                  name={'Штрафы WB'}
+                  type={'price'}
+                  nochart={true}
+                  dataDashBoard={dataDashBoard?.penalty}
+                  allProps={dataDashBoard}
+                  loading={loading}
+                />
+              </div>
+              <div className='col' style={{ height: '14vh' }}>
+                <SmallPlate
+                  name={'Доплаты WB'}
+                  type={'price'}
+                  nochart={true}
+                  dataDashBoard={dataDashBoard?.additional}
+                  loading={loading}
+                />
+              </div>
+            </div>
+            <div className='container dash-container p-4 pt-0 d-flex gap-3'>
+              <div className='col' style={{ height: '14vh' }}>
+                <SmallPlate
+                  name={'Комиссия WB'}
+                  type={'price'}
+                  dataDashBoard={dataDashBoard?.commissionWB}
+                  percent={dataDashBoard?.commissionWBCompare}
+                  loading={loading}
+                />
+              </div>
+              <div className='col' style={{ height: '14vh' }}>
+                <SmallPlate
+                  name={'Расходы на логистику'}
+                  type={'price'}
+                  dataDashBoard={dataDashBoard?.logistics}
+                  percent={dataDashBoard?.logisticsCompare}
+                  loading={loading}
+                />
+              </div>
+              <div className='col' style={{ height: '14vh' }}>
+                <SmallPlate
+                  name={'Хранение'}
+                  type={'price'}
+                  dataDashBoard={dataDashBoard?.storageData}
+                  percent={dataDashBoard?.storageDataCompare}
+                  loading={loading}
+                />
+              </div>
+              <div className='col' style={{ height: '14vh' }}>
+                <SmallPlate
+                  nochart={false}
+                  name={'Упущенные продажи'}
+                  type={'price'}
+                  quantity={curOrders?.selectedPeriod?.cancelCount}
+                  dataDashBoard={dataDashBoard?.lostSalesAmount}
+                  pieces={dataDashBoard?.lostSalesCount}
+                  loading={loading}
+                />
+              </div>
+            </div>
 
               <div
                 className='container dash-container p-4 pt-0 pb-3 mb-2 d-flex gap-3'

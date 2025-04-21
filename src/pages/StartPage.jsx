@@ -2,11 +2,11 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import AuthContext from "../service/AuthContext";
 import styles from './StartPage.module.css'
 import { Link } from "react-router-dom";
-import SideNav from "../components/SideNav";
 import PopupBanner from "../components/sharedComponents/popupBanner/PopupBanner";
 import TgBanner from "../components/startPageComponents/tgBanner/TgBanner";
 import CalcBanners from "../components/startPageComponents/calcBanners/calcBanners";
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
+import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 
 
 
@@ -15,8 +15,8 @@ import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 const StartPage = () => {
     const ref = useRef(null)
     const { user } = useContext(AuthContext);
-    const [ playVideo, setPlayVideo ] = useState(0)
-    const [ videoSource, setVideoSource ] = useState('https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50')
+    const [playVideo, setPlayVideo] = useState(0)
+    const [videoSource, setVideoSource] = useState('https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50')
 
     useEffect(() => {
         window.addEventListener('message', receiveMessage, false);
@@ -24,7 +24,7 @@ const StartPage = () => {
             if (event.origin !== "https://play.boomstream.com") {
                 return;
             }
-           
+
             if (event.data.method === 'play') {
                 setPlayVideo(1)
             }
@@ -32,15 +32,15 @@ const StartPage = () => {
             if (event.data.method === 'pause') {
                 setPlayVideo(0)
             }
-        }  
-        
-        return () => {window.removeEventListener('message', receiveMessage)}
+        }
+
+        return () => { window.removeEventListener('message', receiveMessage) }
     }, [])
 
     const playClickHandler = () => {
-            ref.current.contentWindow.postMessage({code: `https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50`, method: 'action', action: 'play', data: ''}, '*');
-            //
-            // setVideoSource('https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=1&volume=50')
+        ref.current.contentWindow.postMessage({ code: `https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50`, method: 'action', action: 'play', data: '' }, '*');
+        //
+        // setVideoSource('https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=1&volume=50')
     }
 
 
@@ -49,7 +49,7 @@ const StartPage = () => {
             className={styles.startPage}
         >
             <MobilePlug />
-      <SideNav />
+            <Sidebar />
             <section
                 className={styles.startPage__content}
             >
@@ -108,7 +108,8 @@ const StartPage = () => {
                                     </div>
                                 </div>
                                 <Link
-                                    to={{ pathname: user && user.is_onboarded ? '/report-main' : '/onboarding'}}
+                                    // to={{ pathname: '/report-main' }}
+                                    to={{ pathname: user ? '/report-main' : '/signup'}}
                                     className={styles.gallery__offerLink}
                                 >
                                     Попробовать
@@ -117,11 +118,11 @@ const StartPage = () => {
                         </div>
                     </div>
                     {/* -------------------------------------------------------------- */}
-                   
+
                 </div>
                 <div className={styles.startPage__bannersWrapper}>
                     <CalcBanners />
-                    </div>
+                </div>
                 <div className={styles.startPage__bannersWrapper}>
                     <PopupBanner
                         offerTitle='1 300 ₽'

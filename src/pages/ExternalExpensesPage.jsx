@@ -8,6 +8,7 @@ import DemonstrationSection from '../components/DemonstrationSection';
 import styles from './ExternalExpensesPage.module.css';
 import plFake from '../pages/images/external-fake.png';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const ExternalExpensesPage = () => {
   const { user } = useContext(AuthContext);
@@ -15,8 +16,11 @@ const ExternalExpensesPage = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
-      <SideNav />
-      <div className='dashboard-content'>
+      <div style={{ height: '100vh', zIndex: 999 }}>
+        <Sidebar />
+      </div>
+      {/* <SideNav /> */}
+      <div className='dashboard-content' style={{ padding: '0 32px'}}>
         <TopNav title={'Внешние расходы'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <div className='container dash-container'>

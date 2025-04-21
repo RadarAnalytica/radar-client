@@ -15,6 +15,7 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import { formatPrice } from '../service/utils';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 
 const WeeklyReportDashboard = () => {
@@ -30,7 +31,7 @@ const WeeklyReportDashboard = () => {
   //   subscription_status: 'Smart',
   //   is_report_downloaded: !null,
   // };
-  const {dashboardData} = useSelector(
+  const { dashboardData } = useSelector(
     (state) => state?.dashboardReportSlice
   );
   // const isLoading = useSelector((state) => state?.dashboardReportSlice?.loading);
@@ -49,11 +50,11 @@ const WeeklyReportDashboard = () => {
   }, [authToken, dispatch])
   console.log('dashboardData', dashboardData);
   console.log('IsLoading', isLoading);
-  
+
 
   // if (dashboardData === null || dashboardData === undefined || (Object.keys(dashboardData).length === 1 && isLoading === false)) {
   //   console.log('Start to dispatch dashboard Data');
-    
+
   //   dispatch(fetchDashboardFilters(
   //     authToken
   //   ))
@@ -121,7 +122,7 @@ const WeeklyReportDashboard = () => {
     // };
 
     dispatch(
-      fetchDashboardReport( { token: authToken } )
+      fetchDashboardReport({ token: authToken })
     ).then(() => {
       setIsLoading(false);
     });
@@ -153,8 +154,11 @@ const WeeklyReportDashboard = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
-      <SideNav />
-      <div className='dashboard-content pb-3'>
+      <div style={{ height: '100vh', zIndex: 999 }}>
+        <Sidebar />
+      </div>
+      {/* <SideNav /> */}
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
         <TopNav title={'Дашборд'} subTitle={'Отчёт /'} />
 
         {user.is_report_downloaded ? (
@@ -193,7 +197,7 @@ const WeeklyReportDashboard = () => {
                         <div className={styles.salesChartRow}>
                           <div className={styles.titleInRow}>Возвраты</div>
                           <div className={styles.mumbersInRow}>
-                            {formatPrice(dashboardData?.total_return?.quantity, 'шт')} / {formatPrice(dashboardData?.total_return?.rub, '₽')} 
+                            {formatPrice(dashboardData?.total_return?.quantity, 'шт')} / {formatPrice(dashboardData?.total_return?.rub, '₽')}
                           </div>
                         </div>
                         <div className={styles.salesChartRow}>
@@ -727,7 +731,7 @@ const WeeklyReportDashboard = () => {
             </span>
           </>
         )}
-           <BottomNavigation />
+        <BottomNavigation />
       </div>
     </div>
   );

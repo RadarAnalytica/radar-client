@@ -11,6 +11,7 @@
     align-items: flex-start;
     background: white;
     transition: all .2s ease-out;
+    z-index: 999;
 }
 
 .sidebar_hidden {
@@ -36,7 +37,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 40px;
+    gap: 20px;
 }
 
 .sidebar__mainLinklogo {

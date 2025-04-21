@@ -1,3 +1,7 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /*?
+Disallow: /?s=
+Sitemap: https://radar-analytica.ru/sitemap.xml
+Host:  https://radar-analytica.ru

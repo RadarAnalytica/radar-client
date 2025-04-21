@@ -187,10 +187,34 @@ export const TimeSelect = () => {
                     <Select
                         suffixIcon={icon}
                         className={styles.select}
-                        options={[...selectOptions].map(i => ({ value: i.value, label: i.title }))}
+                        options={[...selectOptions].map(i => {
+                                return ({ value: i.value, label: i.title })
+                        })}
+                        onDropdownVisibleChange={(visible) => {
+                            let newOptions = selectOptions;
+                            if (!visible && !selectedRange.period) {
+                                newOptions = [...newOptions].map(_ => {
+                                    if (_.value === 0) {
+                                        _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`
+                                    }
+                    
+                                    return _
+                                })
+                            } else if (visible) {
+                                newOptions = [...newOptions].map(_ => {
+                                    if (_.value === 0) {
+                                        _.title = `Произвольные даты`
+                                    }
+                    
+                                    return _
+                                })
+                            }
+                            setSelectOptions(newOptions)
+                        }}
                         value={selectValue}
                         onSelect={timeSelectChangeHandler}
                         disabled={isCalendarOpen}
+                        placeholder={'опция'}
                     />
                 </ConfigProvider>
             </div>

@@ -7,7 +7,7 @@ const MobilePlug = () => {
 
     return (
         <div className={styles.plug}>
-            <Link to='/' className={styles.plug__mainLink}>
+            <Link to='/main' className={styles.plug__mainLink}>
                 <img src={logo} alt='' />
             </Link>
                 <p className={styles.plug__title}>

@@ -14,6 +14,7 @@ import { unitCalcResultFunction, logisticsWithBuyoutPercentagePriceCalcFunc, enc
 import { tempWhouseData } from '../components/unitCalculatorPageComponents/tempWarehouseData';
 import { RETURN_PRICE, FBS_DEADLINE, FBS_DEADLIE_RATE } from '../components/unitCalculatorPageComponents/constatnts';
 import { Helmet } from 'react-helmet';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const UnitCalculatorPage = () => {
 
@@ -187,9 +188,12 @@ const UnitCalculatorPage = () => {
     return (
         <main className={styles.page}>
             <Helmet>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1.0, minimum-scale=1.0, maximum-scale=1.0" />
             </Helmet>
-            <SideNav />
+            <div className={styles.page__sidebarWrapper}>
+                <Sidebar />
+            </div>
+            {/* <SideNav /> */}
             <section className={styles.page__content} ref={sectionRef}>
                 <div className={styles.page__headerWrapper}>
                     <TopNav title={'Калькулятор unit-экономики товара'} mikeStarinaStaticProp />
