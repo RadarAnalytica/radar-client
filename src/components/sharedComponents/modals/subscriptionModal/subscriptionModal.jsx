@@ -18,6 +18,8 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
   );
   const navigate = useNavigate();
 
+
+
   useEffect(() => {
     const loadCloudPaymentsScript = () => {
       const script = document.createElement('script');
@@ -189,7 +191,6 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
         provision: 0.0, // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после точки)
       },
     };
-
     const data = {};
     data.CloudPayments = {
       CustomerReceipt: receipt, //чек для первого платежа
@@ -344,7 +345,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
           {/* lead block */}
           <div className={styles.modal__leadBlock}>
             <p className={styles.modal__leadText}>
-              Здесь вы можете активировать тестовый доступ на 3 дня. Стоимость активации – 1₽
+              Здесь вы можете активировать тестовый доступ на {user.test_days ? '7 дней' : '3 дня'}. Стоимость активации – 1₽
             </p>
             <svg width="85" height="74" viewBox="0 0 85 74" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="11.6211" y="0.702637" width="74.4054" height="60.2027" rx="8" transform="rotate(10.4261 11.6211 0.702637)" fill="#1A1A1A" />
