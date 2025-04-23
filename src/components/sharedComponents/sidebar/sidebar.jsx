@@ -12,7 +12,7 @@ import { newMenuConfig as menuConfig } from './shared/config/config';
 
 const Sidebar = () => {
 
-    const [isMenuHidden, setIsMenuHidden] = useState(false)
+    const [isMenuHidden, setIsMenuHidden] = useState(true)
 
     return (
         <nav className={isMenuHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
