@@ -15,7 +15,8 @@ const StockAnalysisPage = () => {
 
     const { authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
-    const [stockAnalysisData, setStockAnalysisData] = useState(); // это данные для таблицы
+    const [stockAnalysisData, setStockAnalysisData] = useState(); // это базовые данные для таблицы
+    const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -31,12 +32,10 @@ const StockAnalysisPage = () => {
                     activeBrand.id
                 );
                 setStockAnalysisData(data);
+                setStockAnalysisFilteredData(data)
                 setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
 
             }
-            //prevDays.current = selectedRange;
-            //prevActiveBrand.current = activeBrand.id;
-
 
             setLoading(false);
         };
@@ -91,11 +90,20 @@ const StockAnalysisPage = () => {
                         />
                     }
                     {/* !DATA COLLECT WARNING */}
-                    <SearchWidget />
+                    {activeBrand && activeBrand.is_primary_collect &&
+                        <SearchWidget
+                            stockAnalysisData={stockAnalysisData}
+                            setStockAnalysisFilteredData={setStockAnalysisFilteredData}
+                        />
+                    }
                 </div>
-                <TableWidget
-                    stockAnalysisData={stockAnalysisData}
-                />
+                {activeBrand && activeBrand.is_primary_collect &&
+                    <TableWidget
+                        stockAnalysisFilteredData={stockAnalysisFilteredData}
+                        loading={loading}
+                        setLoading={setLoading}
+                    />
+                }
             </section>
             {/* ---------------------- */}
         </main>

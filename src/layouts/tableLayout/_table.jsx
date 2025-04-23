@@ -1,6 +1,9 @@
+// Dont forget to renew imports
 import React, { useRef, useState, useEffect } from 'react'
 import styles from './tableWidget.module.css'
-import { tableConfig, sortTableDataFunc } from '../../shared'
+// Возможно будет удобнее передавать конфиг пропсом
+import { tableConfig } from './_config'
+import { sortTableDataFunc } from './_utils'
 import { formatPrice } from '../../../../../service/utils'
 
 

@@ -1,2 +1,4 @@
 import { tableConfig } from "./configs/tableConfig";
-export { tableConfig }
+import { sortTableDataFunc } from "./utils/tableUtils";
+import { getFilteredData } from "./utils/searchUtils";
+export { tableConfig, sortTableDataFunc, getFilteredData }
