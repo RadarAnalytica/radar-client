@@ -669,6 +669,15 @@ select {
   font-size: 22px;
   padding: 5px 10px 5px 10px;
 }
+.cardsBlockMain #btnDop{
+  font-size: 18px!important;
+}
+@media (max-width: 768px) {
+  .cardsBlockMain #btnDop{
+    display: block;
+    font-size: 15px!important;
+  }
+}
 
 .mainBlock-api {
   background-color: rgba(83, 41, 255, 1);
@@ -2211,6 +2220,7 @@ button.accordion-button.collapsed::after {
 }
 .steps-container-after-content img {
   width: 20%;
+  height: auto;
 }
 .landing-price-text {
   font-size: 42px;

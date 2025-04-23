@@ -88,6 +88,7 @@ export const AuthProvider = ({ children }) => {
 
       setAuthToken(value);
       setUser(decode(value));
+      window.location = `${URL}/main`;
     } catch (error) {
       setError('Произошла ошибка при входе');
       setShow(true);

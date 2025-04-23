@@ -15,6 +15,7 @@ import DemonstrationSection from '../components/DemonstrationSection';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import { formatPrice } from '../service/utils';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 
 const ReportAbcAnalysis = () => {
@@ -527,8 +528,11 @@ const ReportAbcAnalysis = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
-      <SideNav />
-      <div className={`${styles.scheduleMain} dashboard-content pb-3`}>
+      <div style={{ height: '100vh', zIndex: 999 }}>
+        <Sidebar />
+      </div>
+      {/* <SideNav /> */}
+      <div className={`${styles.scheduleMain} dashboard-content pb-3`} style={{ padding: '0 32px'}}>
         <TopNav
           title={
             <>

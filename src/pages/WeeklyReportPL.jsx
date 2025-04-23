@@ -14,12 +14,15 @@ import DemonstrationSection from '../components/DemonstrationSection';
 import plFake from '../pages/images/goods-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const WeeklyReportPL = () => {
   const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const { plData } = useSelector((state) => state?.plReportSlice);
+  
   const { plFilters, isFiltersLoading } = useSelector((state) => state?.plFiltersSlice);
+  console.log(plFilters)
   const [isLoading, setIsLoading] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     brand: [],
@@ -236,8 +239,11 @@ const WeeklyReportPL = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
-      <SideNav />
-      <div className='dashboard-content pb-3'>
+      <div style={{ height: '100vh', zIndex: 999 }}>
+        <Sidebar />
+      </div>
+      {/* <SideNav /> */}
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
         <TopNav title={'P&L'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <>

@@ -304,7 +304,6 @@ const BigChart = ({
                 mode: 'index',
                 axis: 'x',
                 callbacks: {},
-
                 external: function(context) {
                   // Tooltip Element
                   let tooltipEl = document.getElementById('chartjs-tooltip');

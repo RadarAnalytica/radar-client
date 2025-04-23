@@ -3,11 +3,10 @@ import AuthContext from './service/AuthContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
-import NoSubscriptionPage from './pages/NoSubscriptionPage';
 import { URL } from './service/config';
 import { Helmet } from 'react-helmet';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
-
+import NoSubscriptionPage from './pages/NoSubscriptionPage';
 
 /**
  * -----------------------------------------------
@@ -37,7 +36,7 @@ const config = {
       /** ... */
     },
     authGuardType: 'redirect', // 'redirect' | 'fallback'
-    expireGuardType: 'redirect', // 'redirect' | 'fallback'
+    expireGuardType: 'fallback', // 'redirect' | 'fallback'
     onboardGuardType: 'redirect', // 'redirect' | 'fallback'
     userRoleGuardType: 'redirect', // 'redirect' | 'fallback'
     subscriptionGuardType: 'redirect', // 'redirect' | 'fallback'
@@ -49,7 +48,7 @@ const config = {
     testPeriodFallback: (props) => (<NoSubscriptionPlugPage {...props} />),
     testPeriodRedirect: '/tariffs',
     expireProtected: false, // boolean
-    expireFallback: (props) => (<NoSubscriptionPlugPage {...props} />),
+    expireFallback: (props) => (<NoSubscriptionPage {...props} />),
     expireRedirect: '/tariffs',
     onboardProtected: false,
     onboardFallback: (props) => (<MainPage {...props} />),
@@ -109,7 +108,7 @@ export const ProtectedRoute = ({
   //   is_report_downloaded: true,
   //   is_test_used: true,
   //   role: "admin",
-  //   subscription_status: 'smart'
+  //   subscription_status: 'expired'
   // }
 
 //  const user = undefined
@@ -165,7 +164,7 @@ export const ProtectedRoute = ({
 }
 
   // ---------3. Subscription expiration protection (checking subscription) -------//
-  if (expireProtected && user && user.subscription_status.toLowerCase() === 'expired') {
+  if (expireProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'expired') {
     switch(expireGuardType) {
       case 'redirect': {
         return (<Navigate to={expireRedirect} />)
@@ -182,7 +181,7 @@ export const ProtectedRoute = ({
 }
 
     // ---------4. Onboarding protection (user should be onboarded) ------//
-    if (onboardProtected && user && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
+    if (onboardProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
       switch(onboardGuardType) {
         case 'redirect': {
           return (<Navigate to={onboardRedirect} />)

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Dropdown = ({ isMenuHidden }) => {
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     useEffect(() => {
         if (isMenuHidden) {

@@ -46,6 +46,7 @@ const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage")
 const _DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));
 const AdminPage = React.lazy(() => import("./pages/AdminPage/AdminPage"));
 const SkuAnalysisPage = React.lazy(() => import("./pages/skuAnalysisPage/skuAnalysisPage"));
+const StockAnalysisPage = React.lazy(() => import("./pages/apiServicePages/stockAnalysisPage/stockAnalysisPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -65,6 +66,7 @@ function App() {
         <Routes>
           {/* under development */}
           <Route path='/dev/dashboard2' element={<ProtectedRoute userRoleProtected routeRuName='Сводка продаж'><_DashboardPage /></ProtectedRoute>} />
+          <Route path='/dev/stock2' element={<ProtectedRoute userRoleProtected routeRuName='Товарная аналитика'><StockAnalysisPage /></ProtectedRoute>} />
           <Route path='/dev/sku-analysis' element={<ProtectedRoute routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
           {/* Protected routes */}
           <Route path='/admin' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
@@ -75,7 +77,7 @@ function App() {
           <Route path='/ai-generator' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
           <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Товарная аналитика'><StockAnalysis /></ProtectedRoute>} />
           <Route path='/orders-map' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
-          <Route path='/linked-shops' element={<ProtectedRoute expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
+          <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
           <Route path='/report-main' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
           <Route path='/weeklyreport-dashboard' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Дашборд'><WeeklyReportDashboard /></ProtectedRoute>} />
           <Route path='/weeklyreport-pl' element={<ProtectedRoute expireProtected routeRuName='Отчёт / P&L'><WeeklyReportPL /></ProtectedRoute>} />
@@ -92,7 +94,7 @@ function App() {
           <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect"><Onboarding /></ProtectedRoute>} />
           <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
           <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
-          <Route path='/subscription' element={<ProtectedRoute authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
+          <Route path='/subscription' element={<ProtectedRoute testPeriodProtected authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
           <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
           <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
           {/* Public routes */}

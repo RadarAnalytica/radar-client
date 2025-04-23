@@ -22,6 +22,7 @@ import warningIcon from '../assets/warning.png';
 import NoSubscriptionPage from './NoSubscriptionPage';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import FileUploader from '../components/sharedComponents/fileUploader/fileUploader';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const ReportMain = () => {
   const { user, authToken } = useContext(AuthContext);
@@ -133,8 +134,11 @@ const ReportMain = () => {
   return (
     <div className='dashboard-page notranslate'>
       <MobilePlug />
-      <SideNav />
-      <div className='dashboard-content pb-3'>
+      <div style={{ height: '100vh', zIndex: 999 }}>
+        <Sidebar />
+      </div>
+      {/* <SideNav /> */}
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
         <div style={{ width: '100%' }} className="container dash-container">
           <TopNav title={'Главная'} subTitle={'Отчёт /'} mikeStarinaStaticProp />
         </div>
@@ -296,17 +300,17 @@ const ReportMain = () => {
           {/* file uploader */}
           <div
             className={styles.uploadContainer}
-            //onDragOver={handleDragOver}
-            //onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
           >
-            <div className={styles.uploadWrapper}>
+            {/* <div className={styles.uploadWrapper}>
               <FileUploader
                 setShow={setShow}
                 setError={setError}
                 getListOfReports={getListOfReports}
               />
-            </div>
-            {/* <div
+            </div> */}
+            <div
               className={styles.uploadWrapper}
               onClick={() => !uploadingFile && fileInputRef.current.click()}
               style={{ cursor: uploadingFile ? 'not-allowed' : 'pointer' }}
@@ -359,7 +363,7 @@ const ReportMain = () => {
                 style={{ display: 'none' }}
                 multiple
               />
-            </div> */}
+            </div>
           </div>
 
 

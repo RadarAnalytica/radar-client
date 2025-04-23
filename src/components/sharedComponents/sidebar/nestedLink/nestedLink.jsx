@@ -7,6 +7,8 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
     const [isOpen, setIsOpen] = useState(true)
     const { pathname } = useLocation()
 
+    const isInList = links.some(_ => _.url === pathname);
+
     useEffect(() => {
         if (isMenuHidden) {
             setIsOpen(false)
@@ -28,7 +30,7 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
                 </div>
              }
             {!isMenuHidden &&
-                <div className={styles.nested__header} onClick={() => { setIsOpen(!isOpen) }}>
+                <div className={isInList ? `${styles.nested__header} ${styles.nested__header_active}` : styles.nested__header} onClick={() => { setIsOpen(!isOpen) }}>
 
                     <div className={styles.nested__titleWrapper}>
                         {icon}

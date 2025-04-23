@@ -29,6 +29,7 @@ import { Filters } from "../components/sharedComponents/apiServicePagesFiltersCo
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Header from '../components/sharedComponents/header/header'
 import SelfCostWarningBlock from "../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock";
+import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 
 
 
@@ -173,7 +174,9 @@ const StockAnalysis = () => {
     <>
       <div className="dashboard-page">
         <MobilePlug />
-        <SideNav />
+        <div style={{ height: '100vh' }}>
+          <Sidebar />
+        </div>
         <div className="dashboard-content" style={{ paddingBottom: '16px', paddingTop: '30px' }}>
           <div className="d-flex flex-column overflow-hidden gap-4" style={{ paddingLeft: '52px', justifyContent: 'stretch', overflow: 'auto' }}>
             <div style={{ paddingRight: '52px' }}>
@@ -241,8 +244,7 @@ const StockAnalysis = () => {
                   </div>
                 </div>
 
-                {/* <div style={{ height: "20px" }}></div> */}
-                <div style={{ overflow: 'hidden' }}>
+                <div style={{ overflow: 'hidden', height: '100%' }}>
                   <TableStock
                     data={dataTable}
                     setDataTable={setDataTable}

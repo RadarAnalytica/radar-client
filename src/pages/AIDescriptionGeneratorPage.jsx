@@ -21,6 +21,8 @@ import {
 import DragDropFile from '../components/DragAndDropFiles';
 import NoSubscriptionPage from './NoSubscriptionPage';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 
 const AiDescriptionGeneratorPage = () => {
   const {
@@ -393,9 +395,11 @@ const AiDescriptionGeneratorPage = () => {
   return (
     <div className='dashboard-page'>
       <MobilePlug />
-      <SideNav />
-      <div className={`${styles.generatorPage} dashboard-content pb-3 `}>
-      <div style={{ width: '100%', padding: '0 22px'}}>
+      <div style={{ height: '100vh' }}>
+            <Sidebar />
+        </div>
+      <div className={`${styles.generatorPage} dashboard-content pb-3 `} style={{ padding: '0 32px'}}>
+      <div style={{ width: '100%', padding: '0'}}>
         <TopNav title={'Генерация описания AI'} mikeStarinaStaticProp >
           <div className={styles.generatorWrapper}>
             <div

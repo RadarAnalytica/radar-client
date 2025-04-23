@@ -11,10 +11,21 @@ import { Filters } from '../../../../components/sharedComponents/apiServicePages
 import SelfCostWarningBlock from '../../../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock'
 import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import FirstBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/firstBarsGroup'
+import SecondBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/secondBarsGroup'
 import MainChart from '../../../../components/dashboardPageComponents/charts/mainChart/mainChart'
-import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import AbcDataBlock from '../../../../components/dashboardPageComponents/blocks/abcDataBlock/abcDataBlock'
+import FinanceBlock from '../../../../components/dashboardPageComponents/blocks/financeBlock/financeBlock'
+import ProfitBlock from '../../../../components/dashboardPageComponents/blocks/profitBlock/profitBlock'
+import MarginChartBlock from '../../../../components/dashboardPageComponents/blocks/marginChartBlock/marginChartBlock'
+import ProfitChartBlock from '../../../../components/dashboardPageComponents/blocks/profitChartBlock/profitChartBlock'
+import StorageBlock from '../../../../components/dashboardPageComponents/blocks/storageBlock/storageBlock'
+import StorageRevenueChartBlock from '../../../../components/dashboardPageComponents/blocks/storageRevenueChartBlock/storageRevenueChartBlock'
+import CostsBlock from '../../../../components/dashboardPageComponents/blocks/costsBlock/costsBlock'
+import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
+import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 
 const _DashboardPage = () => {
+    
     const { authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const [dataDashBoard, setDataDashboard] = useState();
@@ -33,24 +44,6 @@ const _DashboardPage = () => {
                     activeBrand
                 );
                 setDataDashboard(data);
-
-                //   if (data?.salesAndProfit) {
-                //     const formattedData = processSalesAndProfit(data.salesAndProfit);
-                //     setSalesAndProfit(formattedData);
-                //   }
-                //   if (data?.marginalityRoiChart) {
-                //     const formattedData = processMarginalityRoiChart(data.marginalityRoiChart);
-                //     setChartRoiMarginalityData(formattedData);
-                //   }
-                //   if (data?.revenueByWarehouse) {
-                //     const formattedData = processRevenueData(data.revenueByWarehouse);
-                //     SetRevenueByWarehouse(formattedData);
-                //   }
-                //   if (data?.structure) {
-                //     const formattedData = processStructureData(data.structure);
-                //     setStructure(formattedData);
-                //   }
-
             }
 
         } catch (e) {
@@ -83,10 +76,6 @@ const _DashboardPage = () => {
                 </div>
                 {/* !header */}
 
-                {/* NO SUBSCRIPTION WARNING BLOCK */}
-                {/* <NoSubscriptionWarningBlock /> */}
-                {/* !NO SUBSCRIPTION WARNING BLOCK */}
-
                 {/* SELF-COST WARNING */}
                 {dataDashBoard &&
                     !dataDashBoard.costPriceAmount &&
@@ -96,7 +85,7 @@ const _DashboardPage = () => {
                     <div>
                         <SelfCostWarningBlock
                             shopId={activeBrand.id}
-                        //onUpdateDashboard={handleUpdateDashboard} //
+                            onUpdateDashboard={updateDataDashBoard} //
                         />
                     </div>
                 }
@@ -137,6 +126,64 @@ const _DashboardPage = () => {
                             loading={loading}
                             dataDashBoard={dataDashBoard}
                             selectedRange={selectedRange}
+                        />
+                        {/* Second group of data bars */}
+                        <SecondBarsGroup
+                            dataDashBoard={dataDashBoard}
+                            loading={loading}
+                        />
+
+                        {/*  Grid group */}
+                        {/* Сетка построена гридами в две колонки и строками по 25px. Используй grid-row: span X для управления высотой блоков */}
+                        <div className={styles.page__chartGroup}>
+                            <FinanceBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <MarginChartBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <ProfitChartBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <ProfitBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <StorageRevenueChartBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <StorageBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+
+                            <div className={styles.page__doubleBlockWrapper}>
+                                <RevenueStructChartBlock
+                                    loading={loading}
+                                    dataDashBoard={dataDashBoard}
+                                />
+                                <TaxTableBlock
+                                    loading={loading}
+                                    dataDashBoard={dataDashBoard}
+                                    updateDashboard={updateDataDashBoard}
+                                />
+                            </div>
+
+                            <CostsBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                        </div>
+
+                        {/* ABC-analysis block */}
+                        <AbcDataBlock
+                            titles={['Группа А', 'Группа В', 'Группа С']}
+                            data={dataDashBoard?.ABCAnalysis}
+                            loading={loading}
                         />
                     </>
                 }

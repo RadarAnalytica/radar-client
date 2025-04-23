@@ -8,6 +8,10 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const DetailChart = ({ labels, chartData, isLoading }) => {
 
+
+
+
+
     const absoluteValue = chartData?.reduce((i, acc) => {
         return acc += i
     }, 0)
@@ -18,6 +22,7 @@ const DetailChart = ({ labels, chartData, isLoading }) => {
     const containerRef = useRef(null);
     const [clickedIndex, setClickedIndex] = useState(null);
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
 
     const data = {
         labels: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
@@ -48,6 +53,8 @@ const DetailChart = ({ labels, chartData, isLoading }) => {
         ],
     };
 
+
+
     const options = {
         responsive: true,
         plugins: {
@@ -56,20 +63,37 @@ const DetailChart = ({ labels, chartData, isLoading }) => {
         },
         onClick: (event, elements) => {
             if (elements.length > 0) {
+                // const index = elements[0].index;
+                // const chart = chartRef.current;
+                // const datasetIndex = elements[0].datasetIndex;
+
+                // if (chart) {
+                //     const bar = chart.getDatasetMeta(datasetIndex).data[index];
+                //     const x = bar.x;
+                //     const y = bar.y;
+
+                //     setTooltipPosition({ x, y });
+                //     setClickedIndex(index);
+                // }
+            } else {
+                setClickedIndex(null);
+            }
+        },
+        onHover: (event, elements) => {
+            if (elements.length > 0) {
                 const index = elements[0].index;
                 const chart = chartRef.current;
                 const datasetIndex = elements[0].datasetIndex;
 
-                if (chart) {
+                if (chart && index !== clickedIndex) {
                     const bar = chart.getDatasetMeta(datasetIndex).data[index];
                     const x = bar.x;
                     const y = bar.y;
 
                     setTooltipPosition({ x, y });
                     setClickedIndex(index);
+
                 }
-            } else {
-                setClickedIndex(null);
             }
         },
         scales: {
@@ -141,11 +165,11 @@ const DetailChart = ({ labels, chartData, isLoading }) => {
                     className={styles.chart__noData}
                 >
                     <div className={styles.chart__noDataWrapper}>
-                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
-                        <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
-                    </svg>
-                    Нет продаж за выбранный период
+                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+                            <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
+                        </svg>
+                        Нет продаж за выбранный период
                     </div>
                 </div>
             }
