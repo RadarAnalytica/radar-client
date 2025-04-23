@@ -4,39 +4,41 @@ import { Link } from 'react-router-dom'
 
 const Dropdown = ({ isMenuHidden }) => {
 
-    const [open, setOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(true);
 
     useEffect(() => {
         if (isMenuHidden) {
-            setOpen(false)
+            setIsOpen(false)
         }
     }, [isMenuHidden])
 
     return (
-        <div className={styles.dropdown} onClick={() => { setOpen(!open) }}>
+        <div className={isMenuHidden ? `${styles.dropdown} ${styles.dropdown_hidden}` : styles.dropdown}>
             {isMenuHidden &&
-                <div className={styles.dropdown__smallMenu}>
-                    <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 13L8 1V9H13L6 21V13H1Z" stroke="#F0AD00" strokeWidth="2" strokeLinejoin="round" />
-                    </svg>
+                <div
+                    className={isOpen ? `${styles.dropdown__iconWrapper} ${styles.dropdown__iconWrapper_active}` : styles.dropdown__iconWrapper}
+                    onClick={() => setIsOpen(!isOpen)}
+                >
+                     <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 13L8 1V9H13L6 21V13H1Z" stroke="#F0AD00" strokeWidth="2" strokeLinejoin="round" />
+                        </svg>
                 </div>
             }
             {!isMenuHidden &&
-                <div className={styles.dropdown__header}>
-                    <div className={styles.dropdown__iconWrapper}>
-                        <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div className={isOpen ? `${styles.dropdown__header} ${styles.dropdown__header_active}` : styles.dropdown__header} onClick={() => { setIsOpen(!isOpen) }}>
+
+                    <div className={styles.dropdown__titleWrapper}>
+                    <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 13L8 1V9H13L6 21V13H1Z" stroke="#F0AD00" strokeWidth="2" strokeLinejoin="round" />
                         </svg>
-                    </div>
-                    <span>
                         Дополнительные инструменты
-                    </span>
-                    <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" className={open ? `${styles.dropdown__marker} ${styles.dropdown__marker_open}` : styles.dropdown__marker}>
-                        <path fillRule="evenodd" clipRule="evenodd" d="M13.7071 8.91421C13.3166 9.30474 12.6834 9.30474 12.2929 8.91421L7 3.62132L1.70711 8.91421C1.31658 9.30474 0.683417 9.30474 0.292893 8.91421C-0.0976315 8.52369 -0.0976315 7.89052 0.292893 7.5L7 0.792893L13.7071 7.5C14.0976 7.89052 14.0976 8.52369 13.7071 8.91421Z" fill="#F0AD00" />
+                    </div>
+                    <svg width="10" height="10" viewBox="0 0 15 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={isOpen ? `${styles.dropdown__marker} ${styles.dropdown__marker_open}` : styles.dropdown__marker}>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M13.879 8.9142C13.4885 9.30472 12.8553 9.30472 12.4648 8.9142L7.17188 3.62131L1.87898 8.9142C1.48846 9.30472 0.855292 9.30472 0.464768 8.9142C0.0742435 8.52367 0.0742435 7.89051 0.464768 7.49999L7.17188 0.792878L13.879 7.49999C14.2695 7.89051 14.2695 8.52367 13.879 8.9142Z" />
                     </svg>
                 </div>}
 
-            <div className={open ? `${styles.dropdown__body} ${styles.dropdown__body_open}` : styles.dropdown__body}>
+            <div className={isOpen ? `${styles.dropdown__body} ${styles.dropdown__body_open}` : styles.dropdown__body}>
                 <Link
                     to='https://chromewebstore.google.com/detail/radar-%E2%80%93-%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D0%B0%D1%8F-%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D1%82/haelmohfdnapjehnhgncjdnjmchdahhb'
                     target='_blank'
@@ -45,7 +47,6 @@ const Dropdown = ({ isMenuHidden }) => {
                     Radar - плагин для браузера
                 </Link>
             </div>
-
         </div>
     )
 }

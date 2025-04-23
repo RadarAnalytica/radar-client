@@ -11,6 +11,7 @@
     color: #8C8C8C;
     text-decoration: none;
     transition: all .3s ease-out;
+    padding-left: 20px;
 }
 .navLink > svg {
     width: 19px;
@@ -26,13 +27,14 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     font-family: Mulish;
     font-weight: 700;
     font-size: 16px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
+    width: 100%;
 }
 .navLink_active > svg {
     color: #5329FF
@@ -41,6 +43,11 @@
 .navLink_activeNoIcon {
     font-weight: 700;
     color: #1A1A1A;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
 }
 
 .navLink_activeNoIcon::before {
