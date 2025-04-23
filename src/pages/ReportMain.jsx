@@ -23,6 +23,7 @@ import NoSubscriptionPage from './NoSubscriptionPage';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import FileUploader from '../components/sharedComponents/fileUploader/fileUploader';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import HowToLink from '../components/sharedComponents/howToLink/howToLink';
 
 const ReportMain = () => {
   const { user, authToken } = useContext(AuthContext);
@@ -218,6 +219,15 @@ const ReportMain = () => {
                   <div className={styles.blockCoverBottomBoldText}>
                     <span>Удачи в использовании сервиса!</span>
                   </div>
+
+
+                  <div className={styles.page__howToLinkWrapper}>
+                    <HowToLink
+                      text='Подробная текстовая инструкция'
+                      target='_blank'
+                    />
+                  </div>
+
                 </div>
                 <div className={styles.blockRight}>
                   <div className={styles.blockRightText}>

@@ -48,3 +48,11 @@
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
+
+.page__controlsWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+}

@@ -23,6 +23,7 @@ import StorageRevenueChartBlock from '../../../../components/dashboardPageCompon
 import CostsBlock from '../../../../components/dashboardPageComponents/blocks/costsBlock/costsBlock'
 import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
 import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
+import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
 
 const _DashboardPage = () => {
     
@@ -94,9 +95,14 @@ const _DashboardPage = () => {
 
 
                 {/* FILTERS */}
-                <div className={styles.page__wrapper}>
+                <div className={styles.page__controlsWrapper}>
                     <Filters
                         setLoading={setLoading}
+                    />
+
+                    <HowToLink
+                        text='Как проверить данные?'
+                        target='_blank'
                     />
                 </div>
                 {/* !FILTERS */}
