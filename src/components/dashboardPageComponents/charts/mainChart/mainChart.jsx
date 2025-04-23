@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 const MainChart = ({ title, loading, dataDashBoard, selectedRange }) => {
-
+    
     const [chartData, setChartData] = useState()
     const [days, setDays] = useState()
     const [controlsState, setControlsState] = useState({
