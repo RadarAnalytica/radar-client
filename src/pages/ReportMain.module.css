@@ -576,3 +576,10 @@
   .line.closed::after {
     transform: rotate(90deg);
   }
+
+  .page__howToLinkWrapper {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 16px;
+  }
