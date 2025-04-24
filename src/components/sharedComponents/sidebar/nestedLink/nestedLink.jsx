@@ -3,9 +3,23 @@ import NavLink from '../navLink/navLink';
 import { useLocation } from 'react-router-dom';
 import styles from './nestedLink.module.css'
 
+const finReportsUrls = [
+    '/weeklyreport-dashboard',
+    '/weeklyreport-pl',
+    '/weeklyreport-month',
+    '/weeklyreport-goods',
+    '/abc-data-reports',
+    '/weeklyreport-penalties',
+    '/schedule',
+    '/prime-cost',
+    '/buy-back',
+    '/external-expenses'
+]
+
 const NestedLink = ({ title, icon, links, isMenuHidden }) => {
     const { pathname } = useLocation()
-    const isInList = links.some(_ => _.url === pathname);
+    //const isInList = links.some(_ => _.url === pathname);
+    const [ isInList, setIsInList ] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
    
     useEffect(() => {
@@ -15,7 +29,16 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
         if (!isMenuHidden && isInList) {
             setIsOpen(true)
         }
-    }, [isMenuHidden])
+    }, [isMenuHidden, isInList])
+
+    useEffect(() => {
+        let isInList;
+        isInList = links.some(_ => _.url === pathname);
+        if (!isInList && title === 'Мои финансы' && finReportsUrls.some(_ => _ === pathname)) {
+            isInList = true;
+        }
+        setIsInList(isInList)
+    }, [pathname, links])
 
     return (
         <div className={isMenuHidden ? `${styles.nested} ${styles.nested_hidden}` : styles.nested}>
