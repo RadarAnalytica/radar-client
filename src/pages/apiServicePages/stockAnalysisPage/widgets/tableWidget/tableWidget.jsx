@@ -167,7 +167,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                         className={styles.table__row} key={id} id={`table_row_${id}`}
                                         onMouseOver={(e) => {
                                             const { id } = e.target
-                                            const rows = document.querySelectorAll(`#${id}`);
+                                            const rows = id && document.querySelectorAll(`#${id}`);
                                             if (rows) {
                                                 rows.forEach(row => {
                                                     row.style.background = '#F2F2F2'
@@ -176,7 +176,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                         }}
                                         onMouseLeave={(e) => {
                                             const { id } = e.target
-                                            const rows = document.querySelectorAll(`#${id}`);
+                                            const rows = id && document.querySelectorAll(`#${id}`);
                                             if (rows) {
                                                 rows.forEach(row => {
                                                     row.style.background = 'none'

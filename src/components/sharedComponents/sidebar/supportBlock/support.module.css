@@ -12,9 +12,10 @@
 }
 .support_hidden {
     width: 100%;
+    aspect-ratio: 1 / 1;
     justify-content: center;
-    padding: 10px;
     transition: all .1s ease-out;
+    padding: 0;
 }
 .support:hover {
     transform: translateY(-5px);
