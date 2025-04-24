@@ -103,6 +103,7 @@ const _DashboardPage = () => {
                     <HowToLink
                         text='Как проверить данные?'
                         target='_blank'
+                        url='https://radar.usedocs.com/article/75916'
                     />
                 </div>
                 {/* !FILTERS */}

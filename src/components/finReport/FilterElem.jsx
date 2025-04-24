@@ -200,7 +200,20 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
           </div>
         ) : (
           <div className={styles.optionsList}>
-            {options.map((option) => (
+            {options.map((option) => {
+              console.log(option)
+              console.log(filterIdent)
+              let monthValue;
+              if (filterIdent === 'month') {
+                const splittedValue = option.value.split('.')
+                monthValue = monthNames[parseInt(option.value.split('.')[0])]
+                if (splittedValue[1]) {
+                  monthValue += ` ${splittedValue[1]}`
+                } else {
+                  //
+                }
+              }
+              return (
               <label
                 key={option.key}
                 className={styles.optionLabel}
@@ -215,10 +228,10 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
                 style={{maxWidth: widthData ? '600px' : '180px'}}
                 ref={(el) => el && handleTitleDisplay({ currentTarget: el })}
                 >
-                  {filterIdent === 'month' ? `${monthNames[option.value.split('.')[0]]} ${option.value.split('.')[1]}` : option.value}
+                  {filterIdent === 'month' ? monthValue : option.value}
                 </span>
               </label>
-            ))}
+            )})}
           </div>
         )}
       </div>

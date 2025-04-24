@@ -24,7 +24,7 @@ const ReportBuyBack = React.lazy(() => import("./pages/ReportBuyBack"));
 const AbcAnalysisPage = React.lazy(() => import("./pages/AbcAnalysisPage"));
 const Onboarding = React.lazy(() => import("./pages/Onboarding"));
 const ConfirmationPage = React.lazy(() => import("./pages/ConfirmationPage"));
-const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
+// const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
 const ResetPage = React.lazy(() => import("./pages/ResetPage"));
 const RequestResetLink = React.lazy(() => import("./pages/RequestResetLink"));
 const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
@@ -43,7 +43,7 @@ const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashb
 const Schedule = React.lazy(() => import("./pages/Schedule"));
 const StartPage = React.lazy(() => import("./pages/StartPage"));
 const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage"));
-const _DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));
+const DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));
 const AdminPage = React.lazy(() => import("./pages/AdminPage/AdminPage"));
 const SkuAnalysisPage = React.lazy(() => import("./pages/skuAnalysisPage/skuAnalysisPage"));
 const StockAnalysisPage = React.lazy(() => import("./pages/apiServicePages/stockAnalysisPage/stockAnalysisPage"));
@@ -66,7 +66,6 @@ function App() {
       <ProductProvider>
         <Routes>
           {/* under development */}
-          <Route path='/dev/dashboard2' element={<ProtectedRoute userRoleProtected routeRuName='Сводка продаж'><_DashboardPage /></ProtectedRoute>} />
           <Route path='/dev/stock2' element={<ProtectedRoute userRoleProtected routeRuName='Товарная аналитика'><StockAnalysisPage /></ProtectedRoute>} />
           <Route path='/dev/sku-analysis' element={<ProtectedRoute userRoleProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
           <Route path='/dev/groups' element={<ProtectedRoute userRoleProtected routeRuName='Анализ артикула'><ProductGroupsPage /></ProtectedRoute>} />

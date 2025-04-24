@@ -225,6 +225,7 @@ const ReportMain = () => {
                     <HowToLink
                       text='Подробная текстовая инструкция'
                       target='_blank'
+                      url='https://radar.usedocs.com/article/75939'
                     />
                   </div>
 
