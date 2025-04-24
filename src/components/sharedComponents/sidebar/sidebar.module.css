@@ -21,6 +21,7 @@
     max-width:100px;
     overflow: hidden;
     transition: all .05s ease-in;
+    padding: 20px;
 }
 .sidebar__mainLinkWrapper {
     width: 100%;

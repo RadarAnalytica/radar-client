@@ -47,6 +47,7 @@ const _DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboar
 const AdminPage = React.lazy(() => import("./pages/AdminPage/AdminPage"));
 const SkuAnalysisPage = React.lazy(() => import("./pages/skuAnalysisPage/skuAnalysisPage"));
 const StockAnalysisPage = React.lazy(() => import("./pages/apiServicePages/stockAnalysisPage/stockAnalysisPage"));
+const ProductGroupsPage = React.lazy(() => import("./pages/productsGroupsPage/productsGroupsPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -67,7 +68,8 @@ function App() {
           {/* under development */}
           <Route path='/dev/dashboard2' element={<ProtectedRoute userRoleProtected routeRuName='Сводка продаж'><_DashboardPage /></ProtectedRoute>} />
           <Route path='/dev/stock2' element={<ProtectedRoute userRoleProtected routeRuName='Товарная аналитика'><StockAnalysisPage /></ProtectedRoute>} />
-          <Route path='/dev/sku-analysis' element={<ProtectedRoute routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
+          <Route path='/dev/sku-analysis' element={<ProtectedRoute userRoleProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
+          <Route path='/dev/groups' element={<ProtectedRoute userRoleProtected routeRuName='Анализ артикула'><ProductGroupsPage /></ProtectedRoute>} />
           {/* Protected routes */}
           <Route path='/admin' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
           <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />

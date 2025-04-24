@@ -1,0 +1,12 @@
+.footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer__button {
+    height: 46px;
+    font-weight: 600;
+}

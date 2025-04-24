@@ -11,7 +11,9 @@
     color: #8C8C8C;
     text-decoration: none;
     transition: all .3s ease-out;
-    padding-left: 20px;
+    padding: 8px 0 8px 20px;
+    border-radius: 4px;
+    width: 100%;
 }
 .navLink > svg {
     width: 19px;
@@ -19,6 +21,7 @@
 }
 .navLink:hover {
     color: #1A1A1A;
+    background: #F7F6FE;
 }
 .navLink:hover > svg {
     color: #5329FF;
@@ -48,6 +51,11 @@
     justify-content: flex-start;
     align-items: center;
     gap: 12px;
+    padding: 8px 0;
+}
+
+.navLink_activeNoIcon:hover {
+    background: none !important;
 }
 
 .navLink_activeNoIcon::before {
