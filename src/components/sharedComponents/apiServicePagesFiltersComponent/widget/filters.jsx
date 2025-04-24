@@ -10,7 +10,7 @@ import { actions as filterActions } from '../../../../redux/apiServicePagesFilte
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 
 export const Filters = ({
-  setLoading
+  setLoading, shopSelect = true
 }) => {
 
   // ------ база ------//
@@ -132,7 +132,7 @@ export const Filters = ({
         }
         </div>
         <div className={styles.filters__inputWrapper}>
-          {shops && activeBrand &&
+          {shops && activeBrand && shopSelect &&
             <PlainSelect
               selectId='store'
               label='Магазин:'

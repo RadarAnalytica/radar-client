@@ -1,0 +1,15 @@
+export const chartControlsConfig = [
+    { title: 'Выручка, руб', isActive: true, color: '#5329FF', hasTooltip: false, tooltipText: ''},
+    { title: 'Заказы, шт', isActive: true, color: '#F0AD00', hasTooltip: false, tooltipText: ''},
+    { title: 'Товарные остатки, шт', isActive: true, color: '#F93C94', hasTooltip: false, tooltipText: ''},
+    { title: 'Средняя цена, руб', isActive: true, color: '#1BC5D1', hasTooltip: false, tooltipText: ''},
+    { title: 'Всего запросов, шт', isActive: true, color: '#FFDC89', hasTooltip: true, tooltipText: 'test'},
+    { title: 'Средняя позиция', isActive: true, color: '#C7D61E', hasTooltip: true, tooltipText: 'test'},
+    { title: 'Всего показов, шт', isActive: true, color: '#F9813C', hasTooltip: true, tooltipText: 'test'},
+    { title: 'Среднедневная частотность, шт', isActive: true, color: '#00AF4F', hasTooltip: true, tooltipText: 'test'},
+    { title: 'Реклама бустер', isActive: true, color: '#D54AFF', hasTooltip: true, tooltipText: 'test'},
+    { title: 'Реклама в поиске/каталоге', isActive: true, color: '#F93C65', hasTooltip: true, tooltipText: 'test'},
+    { title: 'Частотность артикула', isActive: true, color: '#F9A43C', hasTooltip: false, tooltipText: ''},
+    { title: 'Акции', isActive: true, color: '#FF0000', hasTooltip: true, tooltipText: 'test'},
+    { title: 'Сезоны продаж', isActive: true, color: '#88E473', hasTooltip: false, tooltipText: ''},
+]

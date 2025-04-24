@@ -91,6 +91,15 @@ export const TimeSelect = () => {
     }
 
     useEffect(() => {
+        if (selectedRange && selectedRange.period && selectedRange.period !== selectValue) {
+            setSelectValue(selectedRange.period)
+        }
+        if (selectedRange && !selectedRange.period && selectValue !== 0) {
+            setSelectValue(0)
+        }
+    }, [selectedRange])
+
+    useEffect(() => {
         if (selectValue === undefined) {
             if (selectedRange.period) {
                 setSelectValue(selectedRange.period)

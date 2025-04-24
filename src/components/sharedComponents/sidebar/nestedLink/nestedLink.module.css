@@ -6,6 +6,10 @@
     align-items: flex-start;
 }
 
+.nested_hidden {
+    align-items: center;
+}
+
 .nested__header {
     width: 100%;
     cursor: pointer;
@@ -20,10 +24,14 @@
     justify-content: space-between;
     align-items: center;
     transition: all .3s ease-out;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .nested__header_active {
     color: #1A1A1A;
+    background: #F7F7F7;
 }
 .nested__header_active .nested__titleWrapper svg {
     color: #5329FF;
@@ -34,6 +42,7 @@
 }
 .nested__header:hover {
     color: #1A1A1A;
+    background: #F7F7F7;
 }
 
 .nested__titleWrapper {
@@ -66,20 +75,21 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 20px;
-    padding-left: 16px;
-    transition: all .1s ease-out;
+    gap: 8px;
+    transition: all .15s ease-out;
 }
 .nested__body_open {
     margin-top: 20px;
     width: 100%;
     max-height: 100vh;
     opacity: 1;
-    transition: all .3s ease-in;
+    transition: all .15s ease-in;
+    padding-bottom: 20px;
 }
 
 .nested__iconWrapper {
-    width: 100%;
+    cursor: pointer;
+    padding: 15px;
     aspect-ratio: 1 / 1;
     display: flex;
     justify-content: center;
@@ -89,7 +99,8 @@
 }
 
 .nested__iconWrapper_active {
-    color: #5329FF
+    color: #5329FF;
+    background: #F7F7F7;
 }
 .nested__iconWrapper:hover {
     background: #F7F7F7;

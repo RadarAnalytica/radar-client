@@ -4,33 +4,31 @@ import { useLocation } from 'react-router-dom';
 import styles from './nestedLink.module.css'
 
 const NestedLink = ({ title, icon, links, isMenuHidden }) => {
-    const [isOpen, setIsOpen] = useState(true)
     const { pathname } = useLocation()
-
     const isInList = links.some(_ => _.url === pathname);
-
+    const [isOpen, setIsOpen] = useState(false)
+   
     useEffect(() => {
         if (isMenuHidden) {
             setIsOpen(false)
         }
-    }, [isMenuHidden])
-
-    useEffect(() => {
-        const isInList = links.some(_ => pathname.substring(1) === _.url);
-        if (isInList) {
+        if (!isMenuHidden && isInList) {
             setIsOpen(true)
         }
-    }, [pathname])
+    }, [isMenuHidden])
 
     return (
-        <div className={styles.nested}>
+        <div className={isMenuHidden ? `${styles.nested} ${styles.nested_hidden}` : styles.nested}>
              {isMenuHidden &&
-                <div className={styles.nested__iconWrapper}>
+                <div 
+                    className={isInList ? `${styles.nested__iconWrapper} ${styles.nested__iconWrapper_active}` : styles.nested__iconWrapper}
+                    onClick={() => setIsOpen(!isOpen)}
+                >
                     {icon}
                 </div>
              }
             {!isMenuHidden &&
-                <div className={isInList ? `${styles.nested__header} ${styles.nested__header_active}` : styles.nested__header} onClick={() => { setIsOpen(!isOpen) }}>
+                <div className={isOpen || isInList ? `${styles.nested__header} ${styles.nested__header_active}` : styles.nested__header} onClick={() => { setIsOpen(!isOpen) }}>
 
                     <div className={styles.nested__titleWrapper}>
                         {icon}
@@ -43,7 +41,7 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
 
             <div className={isOpen ? `${styles.nested__body} ${styles.nested__body_open}` : styles.nested__body}>
                 {links.map((i, id) => {
-                    return (
+                    return i.isActive && (
                         <NavLink url={i.url} title={i.label} key={id} />
                     )
                 })}

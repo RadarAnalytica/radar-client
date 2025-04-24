@@ -3,22 +3,24 @@ import Modal from "react-bootstrap/Modal";
 import { getFileClickHandler, saveFileClickHandler } from "../../../service/getSaveFile";
 import DragDropFile from "../../../components/DragAndDropFiles";
 import AuthContext from "../../../service/AuthContext";
+import { useAppSelector } from "../../../redux/hooks";
 
 const SelfCostModal = ({ isModalVisible, setIsModalVisible, onUpdateDashboard, shopId }) => {
 
     const [file, setFile] = useState();
     const { authToken } = useContext(AuthContext)
+    const { selectedRange } = useAppSelector(store => store.filters)
 
     const handleCostPriceSave = () => {
         saveFileClickHandler(file, authToken, shopId);
         setFile(null);
-        onUpdateDashboard();
+        onUpdateDashboard(selectedRange, shopId, authToken);
         setIsModalVisible(false);
     };
 
     const modalCloseHandler = () => {
         setIsModalVisible(false);
-        onUpdateDashboard();
+        onUpdateDashboard(selectedRange, shopId, authToken);
     };
 
     return (

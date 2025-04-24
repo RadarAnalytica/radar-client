@@ -3,22 +3,25 @@
     max-width: 300px;
     width: 100%;
     height: 100%;
+    max-height: 100vh;
     box-shadow: 0px 0px 20px 0px #00000014;
-    padding: 28px 20px;
+    padding: 30px 8px 0 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
     background: white;
-    transition: all .2s ease-out;
+    transition: all .05s ease-out;
     z-index: 999;
+    gap: 20px;
 }
 
 .sidebar_hidden {
     min-width: 100px;
     max-width:100px;
     overflow: hidden;
-    transition: all .2s ease-in;
+    transition: all .05s ease-in;
+    padding: 20px;
 }
 .sidebar__mainLinkWrapper {
     width: 100%;
@@ -33,15 +36,50 @@
 }
 .sidebar__mainWrapper {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    gap: 45px;
+}
+
+.sidebar__scrollContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
     gap: 20px;
+    overflow-y: scroll;
+    padding-right: 20px;
+    padding-bottom: 30px;
+}
+
+.sidebar__scrollContainer::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-radius: 6px;
+}
+  
+.sidebar__scrollContainer::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
+}
+  
+.sidebar__scrollContainer::-webkit-scrollbar-thumb {
+    background: #5329ff80;
+    border-radius: 6px;
+}
+.sidebar__scrollContainer_hidden {
+    padding-right: 0;
+    align-items: center;
 }
 
 .sidebar__mainLinklogo {
-    width: 200px;
+    width: 124px;
     height: auto;
     transition: all .2s ease-in-out;
 }
@@ -61,8 +99,22 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 20px;
+    gap: 2px;
 }
 .sidebar__navListItem {
     width: 100%;
+}
+
+.sidebar__supportWrapper {
+    width: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.sidebar__dropdownWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
