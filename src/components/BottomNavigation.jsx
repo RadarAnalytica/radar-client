@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './BottomNavigation.module.css';
-import { offset } from 'highcharts';
+import { useAppSelector } from '../redux/hooks';
 
 
 const menuItemsArray = [
@@ -22,6 +22,7 @@ const menuItemsArray = [
 const BottomNavigation = () => {
 
   const ref = useRef(null)
+  const { isSidebarHidden } = useAppSelector(store => store.utils)
   const { pathname } = useLocation()
   const [ isMenuVisible, setIsMenuVisible ] = useState(false)
   const [ mainLinksList, setMainListLinks ] = useState([])
@@ -44,6 +45,13 @@ const BottomNavigation = () => {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
+  useEffect(() => {
+    if (!isSidebarHidden) {
+      setMenuWidth(ref.current.offsetWidth - 200)
+    } else {
+      setMenuWidth(ref.current.offsetWidth + 200)
+    }
+  }, [isSidebarHidden])
 
 
   useEffect(() => {
@@ -65,7 +73,7 @@ const BottomNavigation = () => {
   return (
     <>
     <div className={styles.bottomNavigation}>
-      <div className={styles.bNav__costil}></div>
+      <div className={isSidebarHidden ? `${styles.bNav__costil} ${styles.bNav__costil_thin}` : styles.bNav__costil}></div>
       <div className={styles.bNav__menuItemsWrapper} ref={ref}>
       {mainLinksList?.map((i, id) => 
         <Link 
