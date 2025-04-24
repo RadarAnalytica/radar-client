@@ -3,12 +3,13 @@ import styles from './productsGroupsPage.module.css'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import { NoGroupsWidget } from './widgets';
-import { AddSkuModal } from './features';
+import { NoGroupsWidget, GroupsMainWidget } from './widgets';
+import { AddSkuModal, AddGroupModal } from './features';
 
 const ProductGroupsPage = () => {
 
-    const [ isAddSkuModalVisible, setIsAddSkuModalVisible ] = useState(true)
+    const [ isAddSkuModalVisible, setIsAddSkuModalVisible ] = useState(false)
+    const [ isAddGroupModalVisible, setIsAddGroupModalVisible ] = useState(false)
 
     return (
         <main className={styles.page}>
@@ -24,13 +25,26 @@ const ProductGroupsPage = () => {
                     <Header title='Группы товаров' />
                 </div>
 
-                <NoGroupsWidget />
+                {/* <NoGroupsWidget
+                    setIsAddGroupModalVisible={setIsAddGroupModalVisible}
+                /> */}
                 {/* !header */}
+                <GroupsMainWidget
+                    setIsAddGroupModalVisible={setIsAddGroupModalVisible}
+                />
             </section>
             {/* ---------------------- */}
+
+
+
+            {/* MODALS */}
             <AddSkuModal
                 isAddSkuModalVisible={isAddSkuModalVisible}
                 setIsAddSkuModalVisible={setIsAddSkuModalVisible}
+            />
+             <AddGroupModal
+                isAddGroupModalVisible={isAddGroupModalVisible}
+                setIsAddGroupModalVisible={setIsAddGroupModalVisible}
             />
         </main>
     )

@@ -1,2 +1,3 @@
 import NoGroupsWidget from "./noGroupsWidget/noGroupsWidget";
-export { NoGroupsWidget }
+import GroupsMainWidget from "./groupsMainWidget/groupsMainWidget";
+export { NoGroupsWidget, GroupsMainWidget }

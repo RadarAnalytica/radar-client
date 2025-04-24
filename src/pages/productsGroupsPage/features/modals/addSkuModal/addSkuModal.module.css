@@ -34,6 +34,15 @@
     border-radius: 12px;
 }
 
+.modal__loaderWrapper {
+    width: 100%;
+    aspect-ratio: 4 / 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* table */
 
 .table {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './addGroupModal.module.css'
 import { Modal, Input, ConfigProvider, Button } from 'antd';
 
-const AddGroupModal = ({ isAddModalVisible, setIsAddModalVisible }) => {
+const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible }) => {
 
     const [inputValue, setInputValue] = useState('')
 
@@ -14,10 +14,10 @@ const AddGroupModal = ({ isAddModalVisible, setIsAddModalVisible }) => {
     return (
         <Modal
             footer={null}
-            onOk={() => setIsAddModalVisible(false)}
-            onCancel={() => setIsAddModalVisible(false)}
-            onClose={() => setIsAddModalVisible(false)}
-            open={isAddModalVisible}
+            onOk={() => setIsAddGroupModalVisible(false)}
+            onCancel={() => setIsAddGroupModalVisible(false)}
+            onClose={() => setIsAddGroupModalVisible(false)}
+            open={isAddGroupModalVisible}
             width={700}
             centered
         >

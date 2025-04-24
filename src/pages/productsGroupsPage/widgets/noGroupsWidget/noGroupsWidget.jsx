@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import styles from './noGroupsWidget.module.css'
 import { AddGroupModal } from '../../features'
 
-const NoGroupsWidget = () => {
-
-    const [ isAddModalVisible, setIsAddModalVisible ] = useState(false)
+const NoGroupsWidget = ({ setIsAddGroupModalVisible }) => {
 
     return (
         <div className={styles.widget}>
@@ -19,13 +17,8 @@ const NoGroupsWidget = () => {
                     <p className={styles.widget__subtitle}>Создайте первую группу, чтобы начать работу</p>
                 </div>
 
-                <button className={styles.widget__createButton} onClick={() => setIsAddModalVisible(true)}>Создать</button>
+                <button className={styles.widget__createButton} onClick={() => setIsAddGroupModalVisible(true)}>Создать</button>
             </div>
-
-            <AddGroupModal
-                isAddModalVisible={isAddModalVisible}
-                setIsAddModalVisible={setIsAddModalVisible}
-            />
         </div>
     )
 }
