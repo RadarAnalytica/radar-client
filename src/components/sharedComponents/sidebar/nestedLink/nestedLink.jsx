@@ -6,20 +6,16 @@ import styles from './nestedLink.module.css'
 const NestedLink = ({ title, icon, links, isMenuHidden }) => {
     const { pathname } = useLocation()
     const isInList = links.some(_ => _.url === pathname);
-    const [isOpen, setIsOpen] = useState(isInList)
+    const [isOpen, setIsOpen] = useState(false)
    
     useEffect(() => {
         if (isMenuHidden) {
             setIsOpen(false)
         }
-    }, [isMenuHidden])
-
-    useEffect(() => {
-        const isInList = links.some(_ => pathname.substring(1) === _.url);
-        if (isInList) {
+        if (!isMenuHidden && isInList) {
             setIsOpen(true)
         }
-    }, [pathname])
+    }, [isMenuHidden])
 
     return (
         <div className={isMenuHidden ? `${styles.nested} ${styles.nested_hidden}` : styles.nested}>

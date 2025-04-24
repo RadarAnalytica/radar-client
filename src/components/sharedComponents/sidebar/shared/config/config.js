@@ -195,6 +195,12 @@ export const newMenuConfig = [
                 label: 'Сравнение SEO с ТОПами',
                 isActive: true
             },
+            {
+                id: 3,
+                url: '/calculate',
+                label: 'Калькулятор unit-экономики товара',
+                isActive: true
+            },
         ]
     },
 ]

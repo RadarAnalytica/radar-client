@@ -11,7 +11,7 @@
     color: #8C8C8C;
     text-decoration: none;
     transition: all .3s ease-out;
-    padding: 8px 0 8px 20px;
+    padding: 8px 20px 8px 20px;
     border-radius: 4px;
     width: 100%;
 }
@@ -51,7 +51,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 12px;
-    padding: 8px 0;
+    padding: 8px 20px 8px 0;
 }
 
 .navLink_activeNoIcon:hover {
@@ -64,6 +64,8 @@
     height: 8px;
     border-radius: 50% 50%;
     background: #5329FF;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .navLink__iconWrapper {
