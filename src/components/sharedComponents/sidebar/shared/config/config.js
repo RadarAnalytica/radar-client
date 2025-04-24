@@ -99,6 +99,12 @@ export const newMenuConfig = [
                 label: 'Частотность артикула ',
                 isActive: true
             },
+            {
+                id: 4,
+                url: '/calculate',
+                label: 'Калькулятор unit-экономики товара',
+                isActive: true
+            },
         ]
     },
     {
@@ -193,12 +199,6 @@ export const newMenuConfig = [
                 id: 2,
                 url: '/seo',
                 label: 'Сравнение SEO с ТОПами',
-                isActive: true
-            },
-            {
-                id: 3,
-                url: '/calculate',
-                label: 'Калькулятор unit-экономики товара',
                 isActive: true
             },
         ]

@@ -16,7 +16,7 @@ const Sidebar = () => {
 
     return (
         <nav className={isMenuHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
-            onClick={() => setIsMenuHidden(false)}
+            onMouseEnter={() => setIsMenuHidden(false)}
             onMouseLeave={() => setIsMenuHidden(true)}
         >
 
