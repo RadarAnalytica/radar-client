@@ -24,6 +24,7 @@ import chartsFiltersSlice from './reportCharts/chartsFiltersSlice';
 import downloadReducer from './download/downloadSlice';
 import blogReducer from './blog/blogSlice'
 import { reducer as apiServicePagesFilterStateReducer } from './apiServicePagesFiltersState/apiServicePagesFilterState.slice'
+import { reducer as utilsReducer } from './utils/utilsSlice'
 
 const storeOptions = {
   reducer: {
@@ -51,6 +52,7 @@ const storeOptions = {
     downloadReducer,
     blog: blogReducer,
     filters: apiServicePagesFilterStateReducer,
+    utils: utilsReducer
   },
 };
 

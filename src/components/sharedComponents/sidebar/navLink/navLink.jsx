@@ -19,9 +19,16 @@ const NavLink = ({ url, title, icon, isMenuHidden }) => {
     const { pathname } = useLocation()
 
     let style = pathname !== url ? styles.navLink : icon ? `${styles.navLink} ${styles.navLink_active}` : `${styles.navLink} ${styles.navLink_activeNoIcon}`
-    if (title === 'Финансовые отчеты' && pathname !== url) {
+    if (title === 'Оцифровка еженедельных отчетов' && pathname !== url) {
         const isInArr = finReportsUrls.some(_ => _ === pathname);
-        style = isInArr ? `${styles.navLink} ${styles.navLink_active}` : styles.navLink
+        if (isInArr && icon) {
+            style = `${styles.navLink} ${styles.navLink_active}`
+        }
+        if (isInArr && !icon) {
+            style = `${styles.navLink} ${styles.navLink_activeNoIcon}`
+        }
+        if (!isInArr)
+            style = styles.navLink
     }
 
     return (
