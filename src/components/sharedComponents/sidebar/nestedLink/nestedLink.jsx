@@ -18,7 +18,6 @@ const finReportsUrls = [
 
 const NestedLink = ({ title, icon, links, isMenuHidden }) => {
     const { pathname } = useLocation()
-    //const isInList = links.some(_ => _.url === pathname);
     const [ isInList, setIsInList ] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
    

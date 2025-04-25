@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styles from './sidebar.module.css'
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.png';
@@ -6,7 +5,7 @@ import smallLogo from '../../../assets/small_logo.png';
 import Dropdown from './dropdown/dropdown';
 import Support from './supportBlock/support';
 import NestedLink from './nestedLink/nestedLink';
-import { newMenuConfig as menuConfig } from './shared/config/config';
+import { menuConfig } from './shared/config/config';
 import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 import { actions as utilsActions } from '../../../redux/utils/utilsSlice'
 
@@ -48,20 +47,6 @@ const Sidebar = () => {
                                 </li>)
 
                         })}
-                        {/* {menuConfig.map(i => {
-
-                        if (!i.children) {
-                            return (
-                                <li className={styles.sidebar__navListItem} key={i.id}>
-                                    <NavLink url={i.url} title={i.label} icon={i.icon} isMenuHidden={isMenuHidden} />
-                                </li>)
-                        } else {
-                            return (
-                                <li className={styles.sidebar__navListItem} key={i.id}>
-                                    <NestedLink title={i.label} icon={i.icon} links={i.children} isMenuHidden={isMenuHidden} />
-                                </li>)
-                        }
-                    })} */}
                         <li className={styles.sidebar__navListItem}>
                             <div className={styles.sidebar__dropdownWrapper}>
                                 <Dropdown isMenuHidden={isSidebarHidden} />
