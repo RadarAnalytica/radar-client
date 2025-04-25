@@ -10,7 +10,6 @@
     gap: 16px;
     grid-row: span 8;
     transition: all .1s ease-in-out;
-    width: 100%;
 }
 
 .block:hover {

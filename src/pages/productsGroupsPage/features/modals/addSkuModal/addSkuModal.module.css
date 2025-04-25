@@ -1,61 +1,31 @@
-.widget {
-    width: 100%;
+.modal {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: stretch;
-    gap: 20px;
+    align-items: flex-start;
+    gap: 16px;
 }
 
-.widget__controlsWrapper {
+.modal__header {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     gap: 16px;
 }
 
-.widget__addButton {
-    height: 46px;
-    border: none;
-    border-radius: 8px;
-    padding: 8px;
-    background: #5329FF;
+.modal__title {
     font-family: Mulish;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 160%;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
     letter-spacing: 0%;
-    color: white;
-    transition: all .1s ease-in-out;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
 }
 
-.widget__addButton:hover {
-    opacity: .95;
-    transform: translateY(-3px);
-}
-
-.widget__tableWrapper {
-    width: 100%;
-    height: auto;
-    max-height: 620px;
-    overflow-y: scroll;
-    box-shadow: 0px 0px 20px 0px #00000014;
-    border-radius: 12px;
-}
-
-.widget__loaderWrapper {
-    width: 100%;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0px 0px 20px 0px #00000014;
-    aspect-ratio: 4 / 1;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.widget__tableWrapper {
+.modal__tableWrapper {
     width: 100%;
     height: auto;
     max-height: 620px;
@@ -101,9 +71,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-}
-.table__headerItem:last-of-type {
-   justify-content: flex-end;
 }
 
 .table__headerItemTitle {
@@ -158,10 +125,6 @@
     padding-right: 20px;
     overflow: hidden;
 }
-.table__rowItem:last-of-type {
-    justify-content: flex-end;
-    padding-right: 0;
-}
 
 .table__rowTitle {
     font-family: Mulish;
@@ -188,14 +151,4 @@
     height: 100%;
     object-fit: cover;
     object-position: center center;
-}
-
-.table__actionButton {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    transition: all .1s ease-in-out;
-}
-.table__actionButton:hover {
-    transform: scale(103%);
 }
