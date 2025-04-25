@@ -1,7 +1,10 @@
-import React from 'react'
-import styles from './noDataWidget.module.css'
+import React, { useState } from 'react'
+import styles from './noGroupsWidget.module.css'
+import { AddGroupModal } from '../../features'
 
-const NoDataWidget = ({ mainTitle, mainText, buttonTitle, action }) => {
+const NoGroupsWidget = () => {
+
+    const [ isAddModalVisible, setIsAddModalVisible ] = useState(false)
 
     return (
         <div className={styles.widget}>
@@ -12,14 +15,19 @@ const NoDataWidget = ({ mainTitle, mainText, buttonTitle, action }) => {
                 </svg>
 
                 <div className={styles.widget__textWrapper}>
-                    <h2 className={styles.widget__title}>{mainTitle}</h2>
-                    <p className={styles.widget__subtitle}>{mainText}</p>
+                    <h2 className={styles.widget__title}>Здесь пока нет ни одной группы товаров</h2>
+                    <p className={styles.widget__subtitle}>Создайте первую группу, чтобы начать работу</p>
                 </div>
 
-                <button className={styles.widget__createButton} onClick={action}>{buttonTitle}</button>
+                <button className={styles.widget__createButton} onClick={() => setIsAddModalVisible(true)}>Создать</button>
             </div>
+
+            <AddGroupModal
+                isAddModalVisible={isAddModalVisible}
+                setIsAddModalVisible={setIsAddModalVisible}
+            />
         </div>
     )
 }
 
-export default NoDataWidget;
+export default NoGroupsWidget;

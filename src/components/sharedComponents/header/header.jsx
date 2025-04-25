@@ -36,7 +36,7 @@ const Header = ({ title = 'Radar Analytica', titlePrefix }) => {
 
     useEffect(() => {
         dispatch(fetchMessages(authToken));
-    }, []);
+      }, []);
 
     // пропс для кнопки внутри меню
     const menuPopoverCloseHandler = () => {
@@ -50,16 +50,12 @@ const Header = ({ title = 'Radar Analytica', titlePrefix }) => {
     return (
         <header className={styles.header}>
             <div className={styles.header__titleBlock}>
-                {typeof title === 'string' ?
-                    <h1 className={styles.header__title}>
-                        {titlePrefix &&
-                            <span className={styles.header__titlePrefix}>{titlePrefix}{' / '}</span>
-                        }
-                        {title}
-                    </h1>
-                    :
-                    <>{title}</>
-                }
+                <h1 className={styles.header__title}>
+                    {titlePrefix &&
+                        <span className={styles.header__titlePrefix}>{titlePrefix}{' / '}</span>
+                    }
+                    {title}
+                </h1>
             </div>
             {user &&
                 <div className={styles.header__menu}>
