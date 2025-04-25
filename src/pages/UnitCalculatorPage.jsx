@@ -94,14 +94,13 @@ const UnitCalculatorPage = () => {
             const package_width_int = parseInt(package_width)
             const package_length_int = parseInt(package_length)
             const package_height_int = parseInt(package_height)
-            const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2)
-
+            let volume = Math.ceil(((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000)
             if (volume && !Number.isNaN(volume)) {
                 let lprice = logisticsBase;
                 let sprice = storageBase
                 if (volume > 1) {
-                    lprice = lprice + (logisticsExtra * Math.ceil(volume))
-                    sprice = sprice + (storageExtra * Math.ceil(volume))
+                    lprice = lprice + (logisticsExtra * (volume - 1))
+                    sprice = sprice + (storageExtra * (volume - 1))
                 }
                 setStoragePrice(sprice)
                 setLastMileLogisticsPrice(lprice)
