@@ -5,7 +5,7 @@
     gap: 8px;
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #8C8C8C;
@@ -15,17 +15,21 @@
     border-radius: 4px;
     width: 100%;
 }
-.navLink > svg {
+
+.navLink>svg {
     width: 19px;
     height: 18px;
 }
+
 .navLink:hover {
     color: #1A1A1A;
     background: #F7F6FE;
 }
-.navLink:hover > svg {
+
+.navLink:hover>svg {
     color: #5329FF;
 }
+
 .navLink_active {
     display: flex;
     justify-content: flex-start;
@@ -39,7 +43,8 @@
     color: #1A1A1A;
     width: 100%;
 }
-.navLink_active > svg {
+
+.navLink_active>svg {
     color: #5329FF
 }
 
@@ -77,6 +82,7 @@
     aspect-ratio: 1 / 1;
     border-radius: 8px;
 }
+
 .navLink__iconWrapper:hover {
     background: #F7F7F7;
 }

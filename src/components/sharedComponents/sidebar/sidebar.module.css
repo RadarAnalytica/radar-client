@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: flex-start;
     background: white;
-    transition: all .1s ease-out;
+    transition: all .15s ease-out;
     z-index: 999;
     gap: 20px;
 }
@@ -20,19 +20,20 @@
     min-width: 100px;
     max-width:100px;
     overflow: hidden;
-    transition: all .1s ease-in;
-    padding: 20px;
+    transition: all .15s ease-in;
+    padding: 20px 20px 0 20px;
 }
 .sidebar__mainLinkWrapper {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.sidebar__mainLinkWrapper_hidden {
-    flex-direction: column;
     justify-content: flex-start;
-    gap: 20px;
+    align-items: center;
+    position: relative;
+    min-height: 55px;
+}
+.sidebar__mainLinkWrapper_hiden {
+    justify-content: center;
+    align-items: center;
 }
 .sidebar__mainWrapper {
     width: 100%;
@@ -53,8 +54,13 @@
     align-items: flex-start;
     gap: 20px;
     overflow-y: scroll;
+    overflow-x: hidden;
     padding-right: 20px;
     padding-bottom: 30px;
+}
+
+.sidebar__scrollContainer_hidden {
+    padding-right: 0;
 }
 
 .sidebar__scrollContainer::-webkit-scrollbar {
@@ -73,22 +79,49 @@
     background: #5329ff80;
     border-radius: 6px;
 }
-.sidebar__scrollContainer_hidden {
-    padding-right: 0;
-    align-items: center;
+
+.sidebar__mainLink {
+    text-decoration: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.sidebar__mainLink_bigHidden {
+    transform: translateX(-1000px) scale(0);
+    transition: all .2s ease-in;
+   
+}
+.sidebar__mainLink_bigVisible {
+    text-decoration: none;
+    transform: translateX(0px) scale(1);
+    transition: all .2s ease-out;
+}
+.sidebar__mainLink_smallHidden {
+    transform: translateY(-1000px);
+    transition: all .2s ease-in;
+    
+}
+.sidebar__mainLink_smallVisible {
+    text-decoration: none;
+    transform: translateY(0px);
+    transition: all .2s ease-out;
 }
 
 .sidebar__mainLinklogo {
     width: 124px;
     height: auto;
-    transition: all .2s ease-in-out;
 }
 .sidebar__mainLinklogo:hover {
     transform: scale(103%);
+    transition: all .2s ease-in-out;
 }
-.sidebar__mainLinklogo_hidden {
+.sidebar__mainLinkSmallLogo {
     width: 50px;
     height: 50px;
+}
+.sidebar__mainLinkSmallLogo:hover {
+    transform: scale(103%);
+    transition: all .2s ease-in-out;
 }
 .sidebar__navList {
     width: 100%;
