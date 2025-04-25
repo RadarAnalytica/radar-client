@@ -27,6 +27,7 @@ import { Filters } from '../components/sharedComponents/apiServicePagesFiltersCo
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
+import { mockGetGeographyData } from '../service/mockServiceFunctions'
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -63,7 +64,12 @@ const OrdersMap = () => {
     const updateGeoData = async () => {
       setLoading(true)
       if (activeBrand && selectedRange && authToken) {
-        const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
+        let data = null;
+        if (user.subscription_status === null) {
+          data = await mockGetGeographyData();
+        } else {
+          data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
+        }
         setGeoData(data);
       }
       setLoading(false)
@@ -107,6 +113,7 @@ const OrdersMap = () => {
     const timeToTarget = targetTime.getTime() - Date.now();
 
     const intervalId = setTimeout(() => {
+      
       dispatch(fetchShops(authToken));
       const updateGeoData = async () => {
         const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand);

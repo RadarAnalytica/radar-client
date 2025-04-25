@@ -30,13 +30,13 @@ import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Header from '../components/sharedComponents/header/header'
 import SelfCostWarningBlock from "../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
-
+import {mockGetAnalysisData} from '../service/mockServiceFunctions'
 
 
 const StockAnalysis = () => {
   // база
   // const dispatch = useAppDispatch();
-  const { authToken } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   // const shops = useAppSelector((state) => state.shopsSlice.shops); // магазины
   const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
 
@@ -60,12 +60,17 @@ const StockAnalysis = () => {
     const fetchAnalysisData = async () => {
       setLoading(true);
       if (activeBrand) {
-
-        const data = await ServiceFunctions.getAnalysisData(
-          authToken,
-          selectedRange,
-          activeBrand.id
-        );
+        let data = null;
+        if (user.subscription_status === null) {
+          data = await mockGetAnalysisData();
+        } else {
+          // updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
+          data = await ServiceFunctions.getAnalysisData(
+            authToken,
+            selectedRange,
+            activeBrand.id
+          );
+        }
         setStockAnalysisData(data);
         setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
 

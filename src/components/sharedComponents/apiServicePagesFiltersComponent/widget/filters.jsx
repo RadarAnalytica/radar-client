@@ -14,7 +14,7 @@ export const Filters = ({
 }) => {
 
   // ------ база ------//
-  const { authToken } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
   const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
   const shops = useAppSelector((state) => state.shopsSlice.shops);
@@ -39,7 +39,11 @@ export const Filters = ({
     const fetchShopData = async () => {
       setLoading(true)
       try {
-        dispatch(fetchShops(authToken));
+        if (user.subscription_status === null) {
+          dispatch(fetchShops('mockData'));
+        } else {
+          dispatch(fetchShops(authToken));
+        }
       } catch (error) {
         console.error("Error fetching initial data:", error);
       } finally {
