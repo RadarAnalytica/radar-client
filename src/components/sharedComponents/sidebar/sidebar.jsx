@@ -16,7 +16,6 @@ const Sidebar = () => {
     const dispatch = useAppDispatch()
     const { isSidebarHidden } = useAppSelector(store => store.utils)
 
-
     return (
         <nav className={isSidebarHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
             onMouseEnter={() => dispatch(utilsActions.setIsSidebarHidden(false))}
@@ -24,14 +23,12 @@ const Sidebar = () => {
         >
 
             <div className={styles.sidebar__mainWrapper}>
-                <div className={`${styles.sidebar__mainLinkWrapper} ${styles.sidebar__mainLinkWrapper_hidden}`} hidden={!isSidebarHidden}>
-                    <Link to='/main'>
-                        <img src={smallLogo} alt='логотип' className={`${styles.sidebar__mainLinklogo} ${styles.sidebar__mainLinklogo_hidden}`} />
+                <div className={isSidebarHidden ? `${styles.sidebar__mainLinkWrapper} ${styles.sidebar__mainLinkWrapper_hidden}` : styles.sidebar__mainLinkWrapper}>
+                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigHidden}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigVisible}`}>
+                        <img src={logo} alt='логотип' className={styles.sidebar__mainLinklogo} />
                     </Link>
-                </div>
-                <div className={styles.sidebar__mainLinkWrapper} hidden={isSidebarHidden}>
-                    <Link to='/main'>
-                        <img src={logo} alt='логотип' width={124} height={46} className={styles.sidebar__mainLinklogo} />
+                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallVisible}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallHidden}`}>
+                        <img src={smallLogo} alt='логотип' className={styles.sidebar__mainLinkSmallLogo}/>
                     </Link>
                 </div>
 
