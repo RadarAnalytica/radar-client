@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import styles from './addGroupModal.module.css'
 import { Modal, Input, ConfigProvider, Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible }) => {
 
     const [inputValue, setInputValue] = useState('')
+    const navigate = useNavigate()
 
 
     const createGroup = async () => {
-
+        navigate('/dev/groups/0')
     }
 
     return (
@@ -55,6 +57,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible }) =>
                         type='primary'
                         className={styles.modal__submitButton}
                         onClick={createGroup}
+                        disabled={!inputValue}
                     >
                         Создать
                     </Button>

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import styles from './productsGroupsPage.module.css'
-import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
-import Header from '../../components/sharedComponents/header/header';
-import { NoGroupsWidget, GroupsMainWidget } from './widgets';
-import { AddSkuModal, AddGroupModal } from './features';
+import MobilePlug from '../../../../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../../../../components/sharedComponents/sidebar/sidebar';
+import Header from '../../../../components/sharedComponents/header/header';
+import { NoDataWidget, GroupsMainWidget } from '../../widgets';
+import { AddGroupModal } from '../../features';
 
 const ProductGroupsPage = () => {
 
-    const [ isAddSkuModalVisible, setIsAddSkuModalVisible ] = useState(false)
     const [ isAddGroupModalVisible, setIsAddGroupModalVisible ] = useState(false)
 
     return (
@@ -25,8 +24,11 @@ const ProductGroupsPage = () => {
                     <Header title='Группы товаров' />
                 </div>
 
-                {/* <NoGroupsWidget
-                    setIsAddGroupModalVisible={setIsAddGroupModalVisible}
+                {/* <NoDataWidget
+                    mainTitle='Здесь пока нет ни одной группы товаров'
+                    mainText='Создайте первую группу, чтобы начать работу'
+                    buttonTitle='Создать'
+                    action={() => setIsAddGroupModalVisible(true)}
                 /> */}
                 {/* !header */}
                 <GroupsMainWidget
@@ -38,10 +40,6 @@ const ProductGroupsPage = () => {
 
 
             {/* MODALS */}
-            <AddSkuModal
-                isAddSkuModalVisible={isAddSkuModalVisible}
-                setIsAddSkuModalVisible={setIsAddSkuModalVisible}
-            />
              <AddGroupModal
                 isAddGroupModalVisible={isAddGroupModalVisible}
                 setIsAddGroupModalVisible={setIsAddGroupModalVisible}

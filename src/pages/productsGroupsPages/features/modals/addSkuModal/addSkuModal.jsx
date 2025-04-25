@@ -3,6 +3,7 @@ import styles from './addSkuModal.module.css'
 import { addSkuTableConfig } from '../../../shared';
 import { AddSkuModalFooter } from '../../../entities'
 import { Modal, Checkbox, ConfigProvider } from 'antd';
+import wb_icon from '../../../../../assets/wb_icon.png'
 
 const mockData = [
     {
@@ -31,8 +32,8 @@ const mockData = [
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
 
     const [tableData, setTableData] = useState()
-    const [checkedList, setCheckedList] = useState([]);
     const [isDataLoading, setIsDataLoading] = useState(false)
+    const [checkedList, setCheckedList] = useState([]);
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -158,6 +159,16 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
                                         >
                                             {/* Для каждого товара мапим заголовки таблицы еще раз и забираем из товара нужны данные (в первой колонке одновременно фото и название) */}
                                             {addSkuTableConfig.values.map(((v, id) => {
+
+                                                if (v.engName === 'sku') {
+                                                    return (
+                                                        <div className={styles.table__rowItem} key={id}>
+                                                            <img src={wb_icon} width={20} height={20} alt='' />
+                                                            {product[v.engName]}
+                                                        </div>
+                                                    )
+                                                }
+
                                                 return (
                                                     <div className={styles.table__rowItem} key={id}>
                                                         {v.hasPhoto ?
