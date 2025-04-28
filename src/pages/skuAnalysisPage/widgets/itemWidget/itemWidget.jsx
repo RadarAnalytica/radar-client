@@ -3,6 +3,8 @@ import { ItemHead, ItemInfo } from '../../features'
 
 const ItemWidget = () => {
 
+    
+
     return (
         <div className={styles.widget}>
             <ItemHead />

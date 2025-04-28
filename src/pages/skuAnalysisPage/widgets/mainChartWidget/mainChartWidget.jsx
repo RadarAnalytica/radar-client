@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './mainChartWidget.module.css'
 import { Segmented, ConfigProvider } from 'antd';
 import { ChartControls } from '../../features';
 import { Chart } from 'react-chartjs-2';
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
+import { fetchSkuAnalysisMainChartData } from '../../../../redux/skuAnalysis/skuAnalysisActions';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
+import AuthContext from '../../../../service/AuthContext';
+
 
 ChartJS.register(
     CategoryScale,
@@ -18,19 +22,23 @@ ChartJS.register(
 );
 
 
-const MainChartWidget = () => {
+const MainChartWidget = ({ id }) => {
+    const dispatch = useAppDispatch()
+    const [tabsState, setTabsState] = useState('Аналитика товара') // не удалять - стейт табов вариантов графика
+    const { selectedRange } = useAppSelector(store => store.filters)
+    const { skuChartData } = useAppSelector(store => store.skuAnalysis)
+    const { authToken } = useContext(AuthContext)
 
-    const [tabsState, setTabsState] = useState('Аналитика товара')
-    const [controlsState, setControlsState] = useState({
-        isOrderQuantityActive: true,
-        isSalesQuantityActive: true,
-        isOrderAmountActive: true,
-        isSalesAmountActive: true,
-    })
+    useEffect(() => {
+        if (id, authToken, selectedRange) {
+            dispatch(fetchSkuAnalysisMainChartData({token: authToken, id, selectedRange}))
+        }
+    }, [id])
 
     return (
         <div className={styles.widget}>
-            <div className={styles.widget__tabsWrapper}>
+            {/* Не удалять - это табы для переключения вариантов графика. Закоментил - Старина Михаил 28.04.25 */}
+            {/* <div className={styles.widget__tabsWrapper}>
                 <ConfigProvider
                     theme={{
                         token: {},
@@ -55,7 +63,7 @@ const MainChartWidget = () => {
                         onChange={(value) => setTabsState(value)}
                     />
                 </ConfigProvider>
-            </div>
+            </div> */}
             {tabsState === 'Аналитика товара' &&
                 <div className={styles.mainChart}>
                     <p className={styles.mainChart__title}>Сводные данные по дням</p>

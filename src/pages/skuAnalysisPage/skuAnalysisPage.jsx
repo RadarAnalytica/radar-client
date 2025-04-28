@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import styles from './skuAnalysisPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -8,8 +7,6 @@ import { Filters } from '../../components/sharedComponents/apiServicePagesFilter
 
 
 const SkuAnalysisPage = () => {
-
-    const [loading, setLoading] = useState(false);
 
     return (
         <main className={styles.page}>
@@ -30,18 +27,7 @@ const SkuAnalysisPage = () => {
 
 
                     <SearchBlock />
-                    <ItemWidget />
-                    <div>
-                        <Filters setLoading={setLoading} />
-                    </div>
-                    <BarsWidget />
-                    <MainChartWidget />
                 </div>
-                <TableWidget />
-                <TableWidget
-                    title='Структура входящих заказов'
-                    segments={['По цветам', 'По складам', 'По размерам']}
-                />
             </section>
             {/* ---------------------- */}
         </main>

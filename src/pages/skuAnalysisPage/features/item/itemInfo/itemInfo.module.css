@@ -29,6 +29,7 @@
     color: #8C8C8C;
     margin: 0;
     padding: 0;
+    text-decoration: none;
 
     @media (max-width: 1500px) {
         font-size: 14px;
