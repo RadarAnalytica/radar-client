@@ -34,6 +34,7 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
     try {
       const res = await createBlogCategory(data, token);
       setCategoriesState([res, ...categoriesState])
+      mainForm.setFieldValue('category', res.id)
       setCategoryFormStatus(statusInitialState)
       setIsAddCategoryModalVisible(false)
       categoryForm.resetFields()
@@ -77,21 +78,27 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
         },
         body: JSON.stringify(plainData)
       })
+     
 
       if (!plainDataRes.ok) {
         return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' })
       }
-      const filesDataRes = await fetch(`${URL}/api/admin/blog/articles/${post.id}/files`, {
-        method: 'PATCH',
-        headers: {
-          'authorization': 'JWT ' + token
-        },
-        body: filesData
-      })
 
-      if (!filesDataRes.ok) {
-        return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' })
+      if (Object.keys(filesData).length > 0) {
+        const filesDataRes = await fetch(`${URL}/api/admin/blog/articles/${post.id}/files`, {
+          method: 'PATCH',
+          headers: {
+            'authorization': 'JWT ' + token
+          },
+          body: filesData
+        })
+  
+        if (!filesDataRes.ok) {
+          return setMainFormStatus({ ...statusInitialState, isError: true, message: 'Не удалось обновить статью' })
+        }
+        
       }
+      
 
       setMainFormStatus({ ...statusInitialState, isSuccess: true, message: 'Статья успешно обновлена' })
       mainForm.resetFields()
@@ -270,7 +277,7 @@ const BlogUpdate = ({ categories, post, setPostIdForUpdate, token }) => {
             htmlType='submit'
             loading={mainFormStatus.isLoading}
           >
-            Создать
+            Сохранить
           </Button>
         </Form>
       </ConfigProvider>
