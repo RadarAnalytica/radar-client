@@ -18,7 +18,6 @@ const SearchBlock = () => {
     const dispatch = useAppDispatch()
     const [inputValue, setInputValue] = useState('')
     const [requestStatus, setRequestStatus] = useState(requestInitState)
-    const { selectedRange } = useAppSelector(store => store.filters)
     const { skuSearchHistory } = useAppSelector(store => store.skuAnalysis)
     const navigate = useNavigate()
 
@@ -46,7 +45,7 @@ const SearchBlock = () => {
             normilizedId = inputValue.substring(startId, endId)
         }
 
-        navigate(`/dev/sku-analysis/${normilizedId}`)
+        navigate(`/sku-analysis/${normilizedId}`)
     }
 
     return (
@@ -74,7 +73,6 @@ const SearchBlock = () => {
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onKeyDown={(e) => { searchSubmitHandler(e) }}
-                        foc
                     />
                     <Button
                         size='large'

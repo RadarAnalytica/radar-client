@@ -110,7 +110,7 @@ const MainChartWidget = ({ id }) => {
                         chartControls={chartControls}
                         setChartControls={setChartControls}
                     />
-                    {normilizedChartData &&
+                    {normilizedChartData && skuChartData && chartControls &&
                         <Chart
                             type='line'
                             data={{ ...normilizedChartData }}

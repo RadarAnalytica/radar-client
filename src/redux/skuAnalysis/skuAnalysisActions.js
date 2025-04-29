@@ -21,7 +21,7 @@ export const fetchSkuAnalysisMainChartData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail || 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
@@ -52,7 +52,7 @@ export const fetchSkuAnalysisSkuData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail || 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
@@ -82,7 +82,7 @@ export const fetchSkuAnalysisIndicatorsData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail || 'Что-то пошло не так :('}))
+          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
         dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
