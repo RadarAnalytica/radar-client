@@ -1,5 +1,4 @@
 import styles from './itemHead.module.css'
-import mockImage from './mockImage.png'
 import { useAppSelector } from '../../../../../redux/hooks';
 import { formatPrice } from '../../../../../service/utils';
 
@@ -29,13 +28,23 @@ import { formatPrice } from '../../../../../service/utils';
 
 const ItemHead = () => {
 
-    const { skuMainData } = useAppSelector(store => store.skuAnalysis);
+    const { skuMainData, dataStatus } = useAppSelector(store => store.skuAnalysis);
+
+    if (!skuMainData && dataStatus.isLoading) {
+        return (
+            <div className={styles.head}>
+                <div className={styles.loaderWrapper}>
+                    <span className='loader'></span>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <>
             {skuMainData && <div className={styles.head}>
                 <div className={styles.head__gallery}>
-                    {skuMainData.photo_urls.map((i, id) => {
+                    {skuMainData?.photo_urls.map((i, id) => {
                         if (id === 0) {
                             return (
                                 <div className={styles.head__mainPhotoWrapper} key={id}>
@@ -45,9 +54,9 @@ const ItemHead = () => {
                         } else {
 
                             return id < 4 && (
-                            <div className={styles.head__secPhotoWrapper} key={id}>
-                                <img src={i} alt='' width={39} height={54} className={styles.head__galleryImage} />
-                            </div>)
+                                <div className={styles.head__secPhotoWrapper} key={id}>
+                                    <img src={i} alt='' width={39} height={54} className={styles.head__galleryImage} />
+                                </div>)
                         }
                     })}
                 </div>

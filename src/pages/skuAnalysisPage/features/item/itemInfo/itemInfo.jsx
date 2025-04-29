@@ -31,7 +31,17 @@ import moment from 'moment';
 
 const ItemInfo = () => {
 
-    const { skuMainData } = useAppSelector(store => store.skuAnalysis);
+    const { skuMainData, dataStatus } = useAppSelector(store => store.skuAnalysis);
+
+    if (!skuMainData && dataStatus.isLoading) {
+        return (
+            <div className={styles.info}>
+                <div className={styles.loaderWrapper}>
+                    <span className='loader'></span>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -48,7 +58,7 @@ const ItemInfo = () => {
                             Дата появляения на WB <span className={styles.info__color_black}>{moment(skuMainData.created_date).format('DD.MM.YYYY')}</span>
                         </p>
                         <p className={styles.info__row}>
-                            Товар представлен <span className={styles.info__color_purple}>{skuMainData.color_amount}</span> {/** в х цветах */}
+                            Товар представлен <span className={styles.info__color_purple}>В {skuMainData.color_amount} цветах</span> {/** в х цветах */}
                         </p>
                         <p className={styles.info__row}>
                             Доля выручки относительно всех цветов <span className={styles.info__color_black}>{formatPrice(skuMainData.color_revenue_percent, '%')}</span>

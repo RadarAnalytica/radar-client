@@ -28,38 +28,25 @@ const SearchBlock = () => {
         setInputValue(id)
     }
 
-    const searchSubmitHandler = async (e) => {
+    const searchSubmitHandler = (e) => {
         if (e && e.key && e.key !== 'Enter') return
-        let queryString = `?wb_id=${inputValue}`
-        if (selectedRange.period) {
-            queryString += `&period=${selectedRange.period}`
-        }
-        if (selectedRange.from && selectedRange.to) {
-            queryString += `&from=${selectedRange.from}&to=${selectedRange.to}`
-        }
+       
 
-        try {
-            let res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/product-meta${queryString}`, {
-                method: 'GET',
-                headers: {
-                    'accept': 'application/json',
-                    'content-type': 'application/json'
-                }
-            })
-            if (!res.ok) {
-                res = await res.json()
-                setRequestStatus({ ...requestInitState, isError: true, message: res.detail || 'Что-то пошло не так :(' })
+        let normilizedId;
+        if (/^(|\d+)$/.test(inputValue)) {
+            normilizedId = inputValue
+        } else {
+            const startId = inputValue.indexOf('wildberries.ru/catalog/') + 'wildberries.ru/catalog/'.length
+            const endId = inputValue.indexOf('/detail.aspx')
+            if (startId === -1 || endId === -1) {
+                setRequestStatus({ ...requestInitState, isError: true, message: 'Не верный формат артикула. Вставьте только числа или ссылку вида: https://www.wildberries.ru/catalog/ID/detail.aspx' })
+                setInputValue('')
+                return
             }
-
-            res = await res.json()
-            setRequestStatus(requestInitState)
-            dispatch(skuAnalysisActions.skuSearchHistoryAdd(res.wb_id))
-            dispatch(skuAnalysisActions.setSkuMainData(res))
-            navigate(`/dev/sku-analysis/${res.wb_id}`)
-        } catch (e) {
-            setRequestStatus({ ...requestInitState, isError: true, message: e.message || 'Что-то пошло не так :(' })
+            normilizedId = inputValue.substring(startId, endId)
         }
 
+        navigate(`/dev/sku-analysis/${normilizedId}`)
     }
 
     return (
@@ -87,6 +74,7 @@ const SearchBlock = () => {
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onKeyDown={(e) => { searchSubmitHandler(e) }}
+                        foc
                     />
                     <Button
                         size='large'

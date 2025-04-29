@@ -1,10 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSkuAnalysisMainChartData } from './skuAnalysisActions'
+import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData } from './skuAnalysisActions'
 
 const initialState = {
     skuSearchHistory: [],
+    dataStatus: {
+        isLoading: true,
+        isError: false,
+        message: ''
+    },
     skuMainData: null,
-    skuChartData: null
+    skuChartData: null,
+    skuIndicatorsData: null,
 };
 
 const skuAnalysisSlice = createSlice({
@@ -21,6 +27,18 @@ const skuAnalysisSlice = createSlice({
                 }
             }
         },
+        deleteSkuFromHistory: (state, action) => {
+            const newHistory = state.skuSearchHistory;
+            const currId = newHistory.findIndex(_ => _ === action.payload)
+
+            if (currId !== -1) {
+                newHistory.splice(currId, 1)
+                return {
+                    ...state,
+                    skuSearchHistory: newHistory
+                }
+            }
+        },
         resetSkuSearchHistory: (state) => {
             return {
                 ...state,
@@ -32,12 +50,25 @@ const skuAnalysisSlice = createSlice({
                 ...state,
                 skuMainData: action.payload
             }
+        },
+        setDataStatus: (state, action) => {
+            return {
+                ...state,
+                dataStatus: action.payload
+            }
         }
     },
     extraReducers: (bulder) => {
-        bulder.addCase(fetchSkuAnalysisMainChartData.fulfilled, (state, action) => {
-                state.skuChartData = action.payload;
-        })
+        bulder
+            .addCase(fetchSkuAnalysisMainChartData.fulfilled, (state, action) => {
+                    state.skuChartData = action.payload;
+            })
+            .addCase(fetchSkuAnalysisSkuData.fulfilled, (state, action) => {
+                    state.skuMainData = action.payload;
+            })
+            .addCase(fetchSkuAnalysisIndicatorsData.fulfilled, (state, action) => {
+                    state.skuIndicatorsData = action.payload;
+            })
     }
 });
 
