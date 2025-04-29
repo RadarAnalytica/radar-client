@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styles from './UnitCalculatorPage.module.css'
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
 import MobileHeader from '../components/sharedComponents/mobileHeader/mobileHeader';
 import { useSearchParams } from 'react-router-dom';
 import { Form, Button, ConfigProvider } from 'antd';

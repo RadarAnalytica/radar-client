@@ -49,6 +49,7 @@ const SkuAnalysisPage = React.lazy(() => import("./pages/skuAnalysisPage/skuAnal
 const StockAnalysisPage = React.lazy(() => import("./pages/apiServicePages/stockAnalysisPage/stockAnalysisPage"));
 const ProductGroupsPage = React.lazy(() => import("./pages/productsGroupsPages/pages/mainGroupsPage/productsGroupsPage"));
 const SingleGroupPage = React.lazy(() => import("./pages/productsGroupsPages/pages/singleGroupPage/singleGroupPage"));
+const SkuIdPage = React.lazy(() => import("./pages/skuAnalysisPage/skuIdPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -69,6 +70,7 @@ function App() {
           {/* under development */}
           <Route path='/dev/stock2' element={<ProtectedRoute userRoleProtected routeRuName='Товарная аналитика'><StockAnalysisPage /></ProtectedRoute>} />
           <Route path='/dev/sku-analysis' element={<ProtectedRoute userRoleProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
+          <Route path='/dev/sku-analysis/:id' element={<ProtectedRoute userRoleProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
           <Route path='/dev/groups' element={<ProtectedRoute userRoleProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
           <Route path='/dev/groups/:group_id' element={<ProtectedRoute userRoleProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
           {/* Protected routes */}

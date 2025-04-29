@@ -13,10 +13,11 @@
     background: white;
     overscroll-behavior: none;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 768px) {
         display: flex;
     }
 }
+
 
 .plug__mainLink {
     width: 200px;
