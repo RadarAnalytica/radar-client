@@ -35,7 +35,7 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
 
     useEffect(() => {
         let isInList;
-        isInList = links.some(_ => _.url === pathname && pathname !== '/main');
+        isInList = links.some(_ => pathname.includes(_.url) && pathname !== '/main');
         if (!isInList && title === 'Мои финансы' && finReportsUrls.some(_ => _ === pathname) && pathname !== '/main') {
             isInList = true;
         }

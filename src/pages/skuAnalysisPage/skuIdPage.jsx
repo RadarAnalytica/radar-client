@@ -47,7 +47,7 @@ const SkuIdPage = () => {
                             title={
                                 <Breadcrumbs
                                     config={[
-                                        { slug: '/dev/sku-analysis', name: 'Анализ артикула' },
+                                        { slug: '/sku-analysis', name: 'Анализ артикула' },
                                         { name: `Товар ${params?.id}` },
                                     ]}
                                 />
@@ -72,20 +72,21 @@ const SkuIdPage = () => {
             {/* ---------------------- */}
 
             <ErrorModal
-                open={dataStatus.message}
+                open={dataStatus.isError}
                 footer={null}
                 onOk={() => {
                     dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }))
-                    navigate('/dev/sku-analysis')
+                    navigate('/sku-analysis')
                 }}
                 onClose={() => {
                     dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }))
-                    navigate('/dev/sku-analysis')
+                    navigate('/sku-analysis')
                 }}
                 onCancel={() => {
                     dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }))
-                    navigate('/dev/sku-analysis')
+                    navigate('/sku-analysis')
                 }}
+                message={dataStatus.message}
             />
         </main>
     )

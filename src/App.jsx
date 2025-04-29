@@ -69,11 +69,11 @@ function App() {
         <Routes>
           {/* under development */}
           <Route path='/dev/stock2' element={<ProtectedRoute userRoleProtected routeRuName='Товарная аналитика'><StockAnalysisPage /></ProtectedRoute>} />
-          <Route path='/dev/sku-analysis' element={<ProtectedRoute userRoleProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
-          <Route path='/dev/sku-analysis/:id' element={<ProtectedRoute userRoleProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
           <Route path='/dev/groups' element={<ProtectedRoute userRoleProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
           <Route path='/dev/groups/:group_id' element={<ProtectedRoute userRoleProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
           {/* Protected routes */}
+          <Route path='/sku-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
+          <Route path='/sku-analysis/:id' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
           <Route path='/admin' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
           <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
           <Route path='/abc-data' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
