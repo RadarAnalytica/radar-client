@@ -8,15 +8,22 @@ import { Filters } from '../../components/sharedComponents/apiServicePagesFilter
 import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData } from '../../redux/skuAnalysis/skuAnalysisActions'
+import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData, fetchSkuAnalysisMainTableData, fetchSkuAnalysisByColorTableData, fetchSkuAnalysisByWarehousesTableData, fetchSkuAnalysisBySizeTableData } from '../../redux/skuAnalysis/skuAnalysisActions'
 import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice'
+import { ConfigProvider, Segmented } from 'antd'
+import { mainTableConfig, byColorTableConfig, byWarehouseTableConfig, bySizeTableConfig } from './shared'
+import DownloadButton from '../../components/DownloadButton'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
+
+
+const segments = ['По цветам', 'По складам', 'По размерам']
 
 const SkuIdPage = () => {
     const dispatch = useAppDispatch()
     const { selectedRange } = useAppSelector(store => store.filters)
-    const { dataStatus } = useAppSelector(store => store.skuAnalysis)
+    const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis)
     const [loading, setLoading] = useState(false)
+    const [tabsState, setTabsState] = useState(segments[0])
     const params = useParams()
     const navigate = useNavigate()
 
@@ -28,6 +35,10 @@ const SkuIdPage = () => {
             dispatch(fetchSkuAnalysisSkuData({ id: params.id, selectedRange }))
             dispatch(fetchSkuAnalysisMainChartData({ id: params.id, selectedRange }))
             dispatch(fetchSkuAnalysisIndicatorsData({ id: params.id, selectedRange }))
+            dispatch(fetchSkuAnalysisMainTableData({ id: params.id, selectedRange }))
+            dispatch(fetchSkuAnalysisByColorTableData({ id: params.id, selectedRange }))
+            dispatch(fetchSkuAnalysisByWarehousesTableData({ id: params.id, selectedRange }))
+            dispatch(fetchSkuAnalysisBySizeTableData({ id: params.id, selectedRange }))
         }
     }, [params, selectedRange])
 
@@ -63,11 +74,70 @@ const SkuIdPage = () => {
                     <BarsWidget />
                     <MainChartWidget id={params?.id} />
                 </div>
-                {/* <TableWidget />
-                <TableWidget
-                    title='Структура входящих заказов'
-                    segments={['По цветам', 'По складам', 'По размерам']}
-                /> */}
+
+
+
+                <div className={styles.page__tableWrapper}>
+                    <TableWidget
+                        tableConfig={mainTableConfig}
+                        data={skuMainTableData}
+                    />
+                </div>
+
+                <div className={styles.page__tableWrapper}>
+                    <div className={styles.page__tableWrapperHeader}>
+                        <div className={styles.page__tableTitleWrapper}>
+                            <p className={styles.page__tableTitle}>Структура входящих заказов</p>
+                            {tabsState && segments &&
+                                <ConfigProvider
+                                    theme={{
+                                        token: {},
+                                        components: {
+                                            Segmented: {
+                                                itemActiveBg: '#E7E1FE',
+                                                itemSelectedBg: '#E7E1FE',
+                                                trackBg: 'transparent',
+                                                itemColor: '#1A1A1A80',
+                                                itemHoverBg: 'transparent',
+                                                itemHoverColor: '#1A1A1A',
+                                                itemSelectedColor: '#1A1A1A',
+                                                trackPadding: 0
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <Segmented
+                                        size='large'
+                                        options={segments}
+                                        value={tabsState}
+                                        onChange={(value) => setTabsState(value)}
+                                    />
+                                </ConfigProvider>
+                            }
+                        </div>
+                        <DownloadButton />
+                    </div>
+                    {tabsState === 'По цветам' &&
+                        <TableWidget
+                            data={skuByColorTableData}
+                            tableConfig={byColorTableConfig}
+                        />
+                    }
+                    {tabsState === 'По складам' &&
+                        <TableWidget
+                            data={skuByWarehouseTableData}
+                            tableConfig={byWarehouseTableConfig}
+                        />
+                    }
+                    {tabsState === 'По размерам' &&
+                        <TableWidget
+                            data={skuBySizeTableData}
+                            tableConfig={bySizeTableConfig}
+                        />
+                    }
+
+                </div>
+
             </section>
             {/* ---------------------- */}
 
