@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData } from './skuAnalysisActions'
+import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData, fetchSkuAnalysisMainTableData, fetchSkuAnalysisByColorTableData, fetchSkuAnalysisByWarehousesTableData, fetchSkuAnalysisBySizeTableData } from './skuAnalysisActions'
 
 const initialState = {
     skuSearchHistory: [],
@@ -11,6 +11,10 @@ const initialState = {
     skuMainData: null,
     skuChartData: null,
     skuIndicatorsData: null,
+    skuMainTableData: null,
+    skuByColorTableData: null,
+    skuByWarehouseTableData: null,
+    skuBySizeTableData: null,
 };
 
 const skuAnalysisSlice = createSlice({
@@ -68,6 +72,18 @@ const skuAnalysisSlice = createSlice({
             })
             .addCase(fetchSkuAnalysisIndicatorsData.fulfilled, (state, action) => {
                     state.skuIndicatorsData = action.payload;
+            })
+            .addCase(fetchSkuAnalysisMainTableData.fulfilled, (state, action) => {
+                    state.skuMainTableData = action.payload;
+            })
+            .addCase(fetchSkuAnalysisByColorTableData.fulfilled, (state, action) => {
+                    state.skuByColorTableData = action.payload;
+            })
+            .addCase(fetchSkuAnalysisByWarehousesTableData.fulfilled, (state, action) => {
+                    state.skuByWarehouseTableData = action.payload;
+            })
+            .addCase(fetchSkuAnalysisBySizeTableData.fulfilled, (state, action) => {
+                    state.skuBySizeTableData = action.payload;
             })
     }
 });
