@@ -61,6 +61,7 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         onHover: (event) => {
             event.native.target.style.cursor = 'pointer';
         },

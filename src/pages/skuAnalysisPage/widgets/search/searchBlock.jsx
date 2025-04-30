@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styles from './searchBlock.module.css'
 import { Input, ConfigProvider, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,7 @@ const requestInitState = {
 
 const SearchBlock = () => {
     const dispatch = useAppDispatch()
+    const inputRef = useRef(null)
     const [inputValue, setInputValue] = useState('')
     const [requestStatus, setRequestStatus] = useState(requestInitState)
     const { skuSearchHistory } = useAppSelector(store => store.skuAnalysis)
@@ -25,6 +26,7 @@ const SearchBlock = () => {
     const historyButtonClickHandler = (e) => {
         const { id } = e.target;
         setInputValue(id)
+        navigate(`/sku-analysis/${id}`)
     }
 
     const searchSubmitHandler = (e) => {
@@ -48,6 +50,12 @@ const SearchBlock = () => {
         navigate(`/sku-analysis/${normilizedId}`)
     }
 
+    useEffect(() => {
+        if (inputRef && inputRef.current) {
+            inputRef.current.focus()
+        }
+    }, [])
+
     return (
         <div className={styles.search}>
             <p className={styles.search__title}>Поиск по товару</p>
@@ -68,6 +76,7 @@ const SearchBlock = () => {
                     }}
                 >
                     <Input
+                        ref={inputRef}
                         placeholder='Артикул или ссылка'
                         size='large'
                         value={inputValue}
