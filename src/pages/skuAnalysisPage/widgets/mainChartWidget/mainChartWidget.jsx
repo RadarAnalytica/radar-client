@@ -116,7 +116,7 @@ const MainChartWidget = ({ id }) => {
                             data={{ ...normilizedChartData }}
                             width={100}
                             height={40}
-                            options={mainChartOptionsGenerator(skuChartData, chartControls.find(_ => _.isAnnotation))}
+                            options={mainChartOptionsGenerator(skuChartData, chartControls.find(_ => _.isAnnotation), chartControls.find(_ => _.engName === 'seasonality'))}
                         />}
                 </div>
             }

@@ -42,7 +42,7 @@ export const byColorTableConfig = [
             { ruName: 'Заказы, шт', engName: 'orders', units: 'шт', isSortable: true, isActive: true },
             { ruName: 'Остатки на конец периода, шт', engName: 'quantity', units: 'шт', isSortable: true, isActive: true },
             { ruName: 'Упущенная выручка, руб', engName: 'lost_revenue', units: '₽', isSortable: true, isActive: true },
-            { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: true },
+            { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: false },
         ]
     },
 ]
@@ -63,7 +63,7 @@ export const byWarehouseTableConfig = [
             { ruName: 'Динамика выручки', engName: 'revenue_dynamics', units: null, isSortable: false, isActive: true, isChart: true },
             { ruName: 'Заказы, шт', engName: 'orders', units: 'шт', isSortable: true, isActive: true },
             { ruName: 'Остатки на конец периода, шт', engName: 'quantity', units: 'шт', isSortable: true, isActive: true },
-            { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: true },
+            { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: false },
             { ruName: 'Оборачиваемость, дней', engName: 'lost_revenue', units: 'дн', isSortable: true, isActive: true },
         ]
     },
@@ -89,7 +89,7 @@ export const bySizeTableConfig = [
             { ruName: 'Заказы, шт', engName: 'orders', units: 'шт', isSortable: true, isActive: true },
             { ruName: 'Остатки на конец периода, шт', engName: 'quantity', units: 'шт', isSortable: true, isActive: true },
             { ruName: 'Упущенная выручка, руб', engName: 'lost_revenue', units: '₽', isSortable: true, isActive: true },
-            { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: true },
+            { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: false },
         ]
     },
 ]
