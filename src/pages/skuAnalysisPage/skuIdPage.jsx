@@ -115,7 +115,7 @@ const SkuIdPage = () => {
                                 </ConfigProvider>
                             }
                         </div>
-                        <DownloadButton />
+                        {/* <DownloadButton /> */}
                     </div>
                     {tabsState === 'По цветам' &&
                         <TableWidget
