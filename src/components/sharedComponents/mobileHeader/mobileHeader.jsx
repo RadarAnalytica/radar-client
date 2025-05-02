@@ -9,7 +9,6 @@ import AuthContext from '../../../service/AuthContext';
 const MobileHeader = ({ title }) => {
     const { user } = useContext(AuthContext)
     const [isMenuVisible, setIsMenuVisible] = useState(false)
-    console.log(URL)
     return (
         <header className={styles.header}>
             <div className={`${styles.header__block} ${styles.header__mainBlock}`}>
