@@ -48,6 +48,7 @@ const OrdersMap = () => {
   const prevselectedRange = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
+  const [primaryCollect, setPrimaryCollect] = useState(null)
 
   const radioOptions = [
     { value: 'region', label: 'По регионам' },
@@ -56,15 +57,24 @@ const OrdersMap = () => {
 
 
 
-  useEffect(() => {
-    const updateGeoData = async () => {
-      setLoading(true)
-      if (activeBrand && selectedRange && authToken) {
-        const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
-        setGeoData(data);
-      }
-      setLoading(false)
+  const updateGeoData = async () => {
+    setLoading(true)
+    if (activeBrand && selectedRange && authToken) {
+      const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
+      setGeoData(data);
     }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+      if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+          setPrimaryCollect(activeBrand.is_primary_collect)
+          updateGeoData()
+      }
+  }, [authToken]);
+
+  useEffect(() => {
+    setPrimaryCollect(activeBrand.is_primary_collect)
     if (activeBrand?.is_primary_collect) {
       updateGeoData();
     }
@@ -118,11 +128,11 @@ const OrdersMap = () => {
     };
   }, [dispatch, activeBrand, selectedRange, authToken]);
 
-  useEffect(() => {
-    if (authToken !== authTokenRef.current) {
+  // useEffect(() => {
+    // if (authToken !== authTokenRef.current) {
       //dispatch(fetchShops(authToken));
-    }
-  }, [dispatch]);
+    // }
+  // }, [dispatch]);
 
 
   const checkIdQueryParam = () => {
