@@ -10,11 +10,11 @@
 }
 
 .dropdown_hidden {
-    align-items: center;
     max-width: 50px;
     aspect-ratio: 1 / 1;
-    align-self: center;
     transition: all .1s ease-out;
+    justify-content: center;
+    align-items: center;
 }
 
 .dropdown:hover {

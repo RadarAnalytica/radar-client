@@ -1,8 +1,8 @@
 import styles from './addSkuModalFooter.module.css'
 import { Button, ConfigProvider } from 'antd'
 
-const AddSkuModalFooter = ({ setIsAddSkuModalVisible }) => {
-
+const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, isCheckedListEmpty }) => {
+    console.log(isCheckedListEmpty)
     return (
         <div className={styles.footer}>
             <ConfigProvider
@@ -36,6 +36,7 @@ const AddSkuModalFooter = ({ setIsAddSkuModalVisible }) => {
                 <Button
                     type='primary'
                     className={styles.footer__button}
+                    disabled={isDataLoading || isCheckedListEmpty}
                 >
                     Добавить
                 </Button>

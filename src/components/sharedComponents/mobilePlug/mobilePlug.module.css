@@ -13,8 +13,7 @@
     background: white;
     overscroll-behavior: none;
 
-    /* 
-    @media (max-width: 768px) {
+    /* @media (max-width: 768px) {
         display: flex;
     } */
 }

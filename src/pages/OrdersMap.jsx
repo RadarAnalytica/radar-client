@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import styles from './OrdersMap.module.css'
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
-import OrdersMapFilter from '../components/OrdersMapFilter';
 import './styles.css';
 import Map from '../components/Map';
 import OrderMapPieChart from '../containers/orderMap/OrderMapPieChart';
@@ -808,7 +805,7 @@ const OrdersMap = () => {
               ) : null}
               {byRegions && geoData?.geo_data ? (
                 <div className='map-data-content'>
-                  <div className=' pl-3 d-flex map-data-row'>
+                  <div className=' pl-3 d-flex map-data-row w-100'>
                     <div className='col'>
                       <OrderMapPieChart
                         sub={'Всего заказов'}
@@ -838,14 +835,15 @@ const OrdersMap = () => {
                       />
                     </div>
                   </div>
-                  <div className=' pl-3 map-data-row'>
+                  <div className='pl-3 map-data-row'>
                     <div
                       className='col'
-                      style={
-                        geoData?.geo_data?.length <= 5
-                          ? { visibility: 'hidden' }
-                          : {}
-                      }
+                      style={{
+                        visibility: geoData?.geo_data?.length <= 5 ? 'hidden' : 'visible',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'stretch'
+                      }}
                     >
                       <OrderMapTable
                         title={'Заказы в других регионах'}

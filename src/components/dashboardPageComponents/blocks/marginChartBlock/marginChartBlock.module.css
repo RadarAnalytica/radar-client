@@ -10,6 +10,9 @@
     gap: 10px;
     grid-row: span 9;
     transition: all .1s ease-in-out;
+    flex-shrink: 1;
+    width: 100%;
+    overflow: hidden;
 }
 
 .block:hover {
