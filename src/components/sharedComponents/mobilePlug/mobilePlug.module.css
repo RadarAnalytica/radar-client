@@ -1,5 +1,5 @@
 .plug {
-    display: none;
+    display: flex;
     position: fixed;
     top: 0;
     right: 0;
@@ -13,10 +13,16 @@
     background: white;
     overscroll-behavior: none;
 
+    /* 
     @media (max-width: 768px) {
         display: flex;
-    }
+    } */
 }
+
+.plug_hidden {
+    display: none;
+}
+
 
 .plug__mainLink {
     width: 200px;

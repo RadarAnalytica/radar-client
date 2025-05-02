@@ -13,7 +13,18 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
             setIsOpen(false)
         }
         if (!isMenuHidden && isInList) {
-            setIsOpen(true)
+
+            timeout = setTimeout(() => setIsOpen(true), 100)
+        }
+
+        return () => {timeout && clearTimeout(timeout)}
+    }, [isMenuHidden, isInList])
+
+    useEffect(() => {
+        let isInList;
+        isInList = links.some(_ => pathname.includes(_.url) && pathname !== '/main');
+        if (!isInList && title === 'Мои финансы' && finReportsUrls.some(_ => _ === pathname) && pathname !== '/main') {
+            isInList = true;
         }
     }, [isMenuHidden])
 

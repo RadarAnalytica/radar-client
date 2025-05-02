@@ -18,8 +18,9 @@ const finReportsUrls = [
 const NavLink = ({ url, title, icon, isMenuHidden }) => {
     const { pathname } = useLocation()
 
-    let style = pathname !== url ? styles.navLink : icon ? `${styles.navLink} ${styles.navLink_active}` : `${styles.navLink} ${styles.navLink_activeNoIcon}`
-    if (title === 'Финансовые отчеты' && pathname !== url) {
+
+    let style = !pathname.includes(url) ? styles.navLink : icon ? `${styles.navLink} ${styles.navLink_active}` : `${styles.navLink} ${styles.navLink_activeNoIcon}`
+    if (title === 'Оцифровка еженедельных отчетов' && pathname !== url) {
         const isInArr = finReportsUrls.some(_ => _ === pathname);
         style = isInArr ? `${styles.navLink} ${styles.navLink_active}` : styles.navLink
     }
