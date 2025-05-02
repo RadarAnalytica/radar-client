@@ -43,6 +43,7 @@ const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashb
 const Schedule = React.lazy(() => import("./pages/Schedule"));
 const StartPage = React.lazy(() => import("./pages/StartPage"));
 const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage"));
+const UnitCalculatorPageDesktop = React.lazy(() => import("./pages/UnitCalculatorPageDesktop"));
 const DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));
 const AdminPage = React.lazy(() => import("./pages/AdminPage/AdminPage"));
 const SkuAnalysisPage = React.lazy(() => import("./pages/skuAnalysisPage/skuAnalysisPage"));
@@ -62,7 +63,10 @@ import { ProtectedRoute } from "./RouteGuards";
 
 function App() {
 
-  
+  // нужно для определения какую страницу калькулятора показывать
+  const { userAgent } = navigator;
+  const deviceRegexp = /android|iphone|kindle|ipad/i
+
   return (
     <AuthProvider>
       <ProductProvider>
@@ -95,14 +99,14 @@ function App() {
           <Route path='/main' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
           <Route path='/home' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
           <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} />
-          <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect"testPeriodProtected testPeriodGuardType="redirect" testPeriodRedirect="/linked-shops" expireProtected><Onboarding /></ProtectedRoute>} /> 
+          <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect" testPeriodProtected testPeriodGuardType="redirect" testPeriodRedirect="/linked-shops" expireProtected><Onboarding /></ProtectedRoute>} />
           <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
           <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
           <Route path='/subscription' element={<ProtectedRoute testPeriodProtected authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
           <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
           <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
           {/* Public routes */}
-          <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{' '}<UnitCalculatorPage /></Suspense>} />
+          <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
           <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
           <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}>{' '}<Spasibo /></Suspense>} />
           <Route path='/app' element={<Suspense fallback={<LoaderPage />}>{' '}<MainWidget /></Suspense>} />

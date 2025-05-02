@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
-import styles from './UnitCalculatorPage.module.css'
+import styles from './UnitCalculatorPageDesktop.module.css'
 import MobileHeader from '../components/sharedComponents/mobileHeader/mobileHeader';
 import { useSearchParams } from 'react-router-dom';
 import { Form, Button, ConfigProvider } from 'antd';
-import BasicDataFormBlock from '../components/unitCalculatorPageComponents/BasicDataFormBlock';
-import LogisticsDataFormBlock from '../components/unitCalculatorPageComponents/LogisticsDataFormBlock';
-import MPFeesDataFormBlock from '../components/unitCalculatorPageComponents/MPFeesDataFormBlock';
-import AdditionalOptionsDataFormBlock from '../components/unitCalculatorPageComponents/AdditionalOptionsDataFormBlock';
-import ResultBlock from '../components/unitCalculatorPageComponents/ResultBlock';
+import BasicDataFormBlockDesktop from '../components/unitCalculatorPageComponents/BasicDataFormBlockDesktop';
+import LogisticsDataFormBlockDesktop from '../components/unitCalculatorPageComponents/LogisticsDataFormBlockDesktop';
+import MPFeesDataFormBlockDesktop from '../components/unitCalculatorPageComponents/MPFeesDataFormBlockDesktop';
+import AdditionalOptionsDataFormBlockDesktop from '../components/unitCalculatorPageComponents/AdditionalOptionsDataFormBlockDesktop';
+import ResultBlockDesktop from '../components/unitCalculatorPageComponents/ResultBlockDesktop';
 import { unitCalcResultFunction, logisticsWithBuyoutPercentagePriceCalcFunc, encodeUnicodeToBase64, decodeBase64ToUnicode } from '../components/unitCalculatorPageComponents/UnitCalcUtils';
 import { tempWhouseData } from '../components/unitCalculatorPageComponents/tempWarehouseData';
 import { RETURN_PRICE, FBS_DEADLINE, FBS_DEADLIE_RATE } from '../components/unitCalculatorPageComponents/constatnts';
@@ -15,7 +15,7 @@ import { Helmet } from 'react-helmet';
 import Header from '../components/sharedComponents/header/header';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
-const UnitCalculatorPage = () => {
+const UnitCalculatorPageDesktop = () => {
 
     const sectionRef = useRef(null)
     // states
@@ -250,10 +250,10 @@ const UnitCalculatorPage = () => {
 
 
 
-                                <BasicDataFormBlock form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} setIsProductFromToken={setIsProductFromToken} />
-                                <LogisticsDataFormBlock form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
-                                <MPFeesDataFormBlock mp_fee={mpMainFee} form={form} />
-                                <AdditionalOptionsDataFormBlock form={form} />
+                                <BasicDataFormBlockDesktop form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} setIsProductFromToken={setIsProductFromToken} />
+                                <LogisticsDataFormBlockDesktop form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
+                                <MPFeesDataFormBlockDesktop mp_fee={mpMainFee} form={form} />
+                                <AdditionalOptionsDataFormBlockDesktop form={form} />
 
 
 
@@ -280,7 +280,7 @@ const UnitCalculatorPage = () => {
 
 
                         <div className={styles.page__resultWrapper}>
-                            <ResultBlock result={result} token={token} investValue={investValue} setInvestValue={setInvestValue} />
+                            <ResultBlockDesktop result={result} token={token} investValue={investValue} setInvestValue={setInvestValue} />
                         </div>
 
                     </div>
@@ -290,7 +290,7 @@ const UnitCalculatorPage = () => {
     )
 }
 
-export default UnitCalculatorPage;
+export default UnitCalculatorPageDesktop;
 
 
 
