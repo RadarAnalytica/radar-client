@@ -23,8 +23,6 @@ import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const RequestMonitoringPage = () => {
 
-    console.log('RequestMonitoringPage', styles);
-
     // const [loading, setLoading] = useState(false);
     const { id } = useParams();
     const [productData, setProductData] = useState({});
@@ -122,7 +120,7 @@ const RequestMonitoringPage = () => {
         {/* <SideNav /> */}
         <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
             <div style={{ widht: '100%', padding: '0' }}>
-                <TopNav title={'Частотность запросов'} />
+                <TopNav title={'Частотность артикула'} />
             </div>
 
 

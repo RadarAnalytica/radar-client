@@ -7,6 +7,8 @@
     width: 100%;
     display: flex;
     box-sizing: border-box;
+    overflow-x: scroll;
+    min-width: 1200px;
 }
 .page__content {
     width: 100%;
@@ -18,8 +20,6 @@
     gap: 20px;
     box-sizing: border-box;
     height: 100%;
-    overflow-y: scroll;
-    
 }
 .page__sideNavWrapper {
     height: 100%;
