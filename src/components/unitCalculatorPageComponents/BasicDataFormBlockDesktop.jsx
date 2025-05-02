@@ -4,13 +4,14 @@ import { normilizeUnitsInputValue } from './UnitCalcUtils';
 import { getCalculatorSubjects } from '../../service/api/api';
 import styles from './BasicDataFormBlockDesktop.module.css'
 import useDebouncedFunction from '../../service/hooks/useDebounce';
+import { useAppSelector } from '../../redux/hooks';
 
 const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
     const [ autocompleteOptions, setAutocompleteOptions ] = useState();
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
     const [ error, setError ] = useState(false)
-    const dropdownRef = useRef(null)
+    const { isSidebarHidden } = useAppSelector(store => store.utils)
 
     const getSubjectsDataWSetter = async (value) => {
         const res = await getCalculatorSubjects({search_string: value.trim()})
@@ -268,7 +269,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                 />
             </Form.Item>
 
-            <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_3cols}`}>
+            <div className={isSidebarHidden ? `${styles.fieldset__wrapper} ${styles.fieldset__wrapper_3cols}` : `${styles.fieldset__wrapper}  ${styles.fieldset__wrapper_sidebar}`}>
                 <Form.Item
                     label='Длина упаковки'
                     name='package_length'
@@ -370,7 +371,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                     </Form.Item>
                 </ConfigProvider>
 
-                <div className={styles.fieldset__footer_span}>
+                <div className={isSidebarHidden ? styles.fieldset__footer_span : styles.fieldset__footer_plain}>
                     {Number.isNaN(sidesSum) ? '' : <p className={styles.fieldset__footerText}>Сумма трех сторон: {sidesSum} см</p>}
                     {volume === 'NaN' ? '' : <p className={styles.fieldset__footerText}>Расчетный объем: {volume} л</p>}
                     {isHeavy && <ConfigProvider

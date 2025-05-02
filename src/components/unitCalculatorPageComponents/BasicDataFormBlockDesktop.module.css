@@ -72,14 +72,27 @@
     width: 100%;
     display: grid;
     gap: 16px;
-    grid-template-rows: min-content;
+    grid-template-rows: auto;
     align-items: stretch;
+}
+.fieldset__wrapper_sidebar {
+    @media (max-width: 1250px) {
+        grid-template-columns: 1fr;
+    }
+    
 }
 .fieldset__wrapper_2cols {
     grid-template-columns: 1fr 1fr;
 }
 .fieldset__wrapper_3cols {
     grid-template-columns: 1fr 1fr 1fr;
+}
+.fieldset__footer_plain {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
 }
 
 .fieldset__footer_span {

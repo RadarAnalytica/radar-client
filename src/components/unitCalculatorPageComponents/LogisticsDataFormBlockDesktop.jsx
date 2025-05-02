@@ -3,8 +3,10 @@ import styles from './LogisticsDataFormBlockDesktop.module.css'
 import { Form, Input, Checkbox, Radio, ConfigProvider, Tooltip, AutoComplete } from 'antd';
 import { tempWhouseData } from './tempWarehouseData';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
+import { useAppSelector } from '../../redux/hooks';
 const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, buyout_log_price, storagePrice }) => {
 
+    const { isSidebarHidden } = useAppSelector(store => store.utils)
     const warehouse = Form.useWatch('warehouse', form);
     const cargo_acceptance_price = Form.useWatch('cargo_acceptance_price', form);
     const isHeavy = Form.useWatch('isHeavy', form);
@@ -162,7 +164,7 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
                             className={isPaidCargoAcceptance ? styles.formItem : `${styles.formItem} ${styles.formItem_wide}`}
                         >
                             <AutoComplete
-                                
+
                                 size='large'
                                 placeholder='Выберите склад'
                                 style={{ background: warehouse ? '#F2F2F2' : '' }}
