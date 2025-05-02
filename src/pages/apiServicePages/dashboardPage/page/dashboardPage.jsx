@@ -31,6 +31,7 @@ const _DashboardPage = () => {
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const [dataDashBoard, setDataDashboard] = useState();
     const [loading, setLoading] = useState(true);
+    const [primaryCollect, setPrimaryCollect] = useState(null)
 
     const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
         setLoading(true);
@@ -55,10 +56,18 @@ const _DashboardPage = () => {
     };
 
     useEffect(() => {
+        if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+            setPrimaryCollect(activeBrand.is_primary_collect)
+            updateDataDashBoard(selectedRange, activeBrand.id, authToken)
+        }
+    }, [authToken]);
+
+    useEffect(() => {
+        setPrimaryCollect(activeBrand.is_primary_collect)
         if (activeBrand && activeBrand.is_primary_collect) {
             updateDataDashBoard(selectedRange, activeBrand.id, authToken)
         }
-    }, [activeBrand, selectedRange, authToken]);
+    }, [activeBrand, selectedRange]);
 
 
 
