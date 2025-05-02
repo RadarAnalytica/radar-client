@@ -39,7 +39,7 @@ const StockAnalysisPage = () => {
 
     // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
     useEffect(() => {
-        setPrimaryCollect(activeBrand.is_primary_collect)
+        setPrimaryCollect(activeBrand?.is_primary_collect)
         if (activeBrand && activeBrand.is_primary_collect) {
             fetchAnalysisData();
         }

@@ -75,7 +75,7 @@ const AbcAnalysisPage = () => {
   // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
   
   useEffect(() => {
-    setPrimaryCollect(activeBrand.is_primary_collect)
+    setPrimaryCollect(activeBrand?.is_primary_collect)
     if (activeBrand?.is_primary_collect && viewType && days && authToken) {
       updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
     }
