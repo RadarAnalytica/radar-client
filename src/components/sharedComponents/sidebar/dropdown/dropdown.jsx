@@ -4,12 +4,16 @@ import { Link } from 'react-router-dom'
 
 const Dropdown = ({ isMenuHidden }) => {
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
     useEffect(() => {
+        let timeout;
         if (isMenuHidden) {
             setIsOpen(false)
+        } else {
+            timeout = setTimeout(() => setIsOpen(true), 100)
         }
+        return () => {timeout && clearTimeout(timeout)}
     }, [isMenuHidden])
 
     return (
@@ -17,7 +21,6 @@ const Dropdown = ({ isMenuHidden }) => {
             {isMenuHidden &&
                 <div
                     className={isOpen ? `${styles.dropdown__iconWrapper} ${styles.dropdown__iconWrapper_active}` : styles.dropdown__iconWrapper}
-                    onClick={() => setIsOpen(!isOpen)}
                 >
                      <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 13L8 1V9H13L6 21V13H1Z" stroke="#F0AD00" strokeWidth="2" strokeLinejoin="round" />

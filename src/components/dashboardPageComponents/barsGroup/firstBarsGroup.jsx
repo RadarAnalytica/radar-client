@@ -5,7 +5,6 @@ import { differenceInDays } from 'date-fns';
 const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
 
     const daysRange = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period
-
     return (
         <div className={styles.group}>
             <Bar
@@ -42,8 +41,8 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 <Bar
                     fixed={false}
                     title='Процент выкупа'
-                    buyOut={200000}
-                    butOutInPercent={20}
+                    buyOut={dataDashBoard?.buyoutPercent}
+                    butOutInPercent={dataDashBoard?.buyoutPercentCompare}
                     loading={loading}
                 />
                 <Bar

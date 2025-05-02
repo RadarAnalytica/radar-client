@@ -42,7 +42,7 @@ const Bar = ({ fixed = true, title, amount, amountInPercent, amountPerDay, quant
 
             {!fixed && butOutInPercent !== undefined && buyOut !== undefined &&
                 <div className={styles.bar__floatData}>
-                    <p className={styles.bar__mainData}>{formatPrice(buyOut, '₽')}</p>
+                    <p className={styles.bar__mainData}>{formatPrice(buyOut, '%')}</p>
                     <div className={styles.bar__contentWrapper}>
                         {getRateIcon(butOutInPercent)}
                         <p className={getRateStyle(parseInt(butOutInPercent), styles)}>{formatPrice(butOutInPercent, '%')}</p>

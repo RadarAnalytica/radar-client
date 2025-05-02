@@ -68,19 +68,18 @@ function App() {
       <ProductProvider>
         <Routes>
           {/* under development */}
-          <Route path='/dev/stock2' element={<ProtectedRoute userRoleProtected routeRuName='Товарная аналитика'><StockAnalysisPage /></ProtectedRoute>} />
           <Route path='/dev/groups' element={<ProtectedRoute userRoleProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
           <Route path='/dev/groups/:group_id' element={<ProtectedRoute userRoleProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
           {/* Protected routes */}
-          <Route path='/sku-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
-          <Route path='/sku-analysis/:id' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
+          <Route path='/sku-analysis' element={<ProtectedRoute userRoleProtected expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
+          <Route path='/sku-analysis/:id' element={<ProtectedRoute userRoleProtected expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
           <Route path='/admin' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
           <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
           <Route path='/abc-data' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
           <Route path='/seo' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
           <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Мониторинг запросов'><RequestMonitoringPage /></ProtectedRoute>} />
           <Route path='/ai-generator' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
-          <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Товарная аналитика'><StockAnalysis /></ProtectedRoute>} />
+          <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Товарная аналитика'><StockAnalysisPage /></ProtectedRoute>} />
           <Route path='/orders-map' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
           <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
           <Route path='/report-main' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />

@@ -55,12 +55,12 @@
 }
 
 .nested__marker {
-    transform: rotate(0);
+    transform: rotate(180deg);
     transition: transform .2s ease-out;
 }
 
 .nested__marker_open {
-    transform: rotate(180deg);
+    transform: rotate(360deg);
     transition: transform .2s ease-in;
 }
 
