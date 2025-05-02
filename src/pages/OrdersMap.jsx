@@ -74,7 +74,7 @@ const OrdersMap = () => {
   }, [authToken]);
 
   useEffect(() => {
-    setPrimaryCollect(activeBrand.is_primary_collect)
+    setPrimaryCollect(activeBrand?.is_primary_collect)
     if (activeBrand?.is_primary_collect) {
       updateGeoData();
     }

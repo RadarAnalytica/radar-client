@@ -63,7 +63,7 @@ const _DashboardPage = () => {
     }, [authToken]);
 
     useEffect(() => {
-        setPrimaryCollect(activeBrand.is_primary_collect)
+        setPrimaryCollect(activeBrand?.is_primary_collect)
         if (activeBrand && activeBrand.is_primary_collect) {
             updateDataDashBoard(selectedRange, activeBrand.id, authToken)
         }
