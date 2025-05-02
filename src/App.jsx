@@ -95,7 +95,7 @@ function App() {
           <Route path='/main' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
           <Route path='/home' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
           <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} />
-          <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect"><Onboarding /></ProtectedRoute>} />
+          <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect"testPeriodProtected testPeriodGuardType="redirect" testPeriodRedirect="/linked-shops" expireProtected><Onboarding /></ProtectedRoute>} /> 
           <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
           <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
           <Route path='/subscription' element={<ProtectedRoute testPeriodProtected authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
