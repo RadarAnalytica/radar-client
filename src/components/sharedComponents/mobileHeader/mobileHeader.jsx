@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styles from './mobileHeader.module.css'
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.png'
 import { Modal } from 'antd';
 import { URL } from '../../../service/config';
+import AuthContext from '../../../service/AuthContext';
 
 const MobileHeader = ({ title }) => {
-
+    const { user } = useContext(AuthContext)
     const [isMenuVisible, setIsMenuVisible] = useState(false)
-
+    console.log(URL)
     return (
         <header className={styles.header}>
             <div className={`${styles.header__block} ${styles.header__mainBlock}`}>
@@ -37,18 +38,23 @@ const MobileHeader = ({ title }) => {
                 onCancel={() => setIsMenuVisible(false)}
             >
                 <div className={styles.mobileMenu}>
-                    <Link
-                        to={`${URL}/signin`}
-                        className={styles.header__signin}
-                    >
-                        Вход
-                    </Link>
-                    <Link
-                        to={`${URL}/signup`}
-                        className={styles.header__signup}
-                    >
-                        Регистрация
-                    </Link>
+                    {user &&
+                        <Link
+                            to={`${URL}/signin`}
+                            className={styles.header__signin}
+                            target='_blank'
+                        >
+                            Вход
+                        </Link>}
+                    {!user &&
+                        <Link
+                            to={`${URL}/signup`}
+                            className={styles.header__signup}
+                            target='_blank'
+                        >
+                            Регистрация
+                        </Link>
+                    }
                 </div>
             </Modal>
         </header>

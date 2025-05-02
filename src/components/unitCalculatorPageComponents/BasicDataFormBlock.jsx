@@ -7,7 +7,6 @@ import useDebouncedFunction from '../../service/hooks/useDebounce';
 
 const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
     const [ autocompleteOptions, setAutocompleteOptions ] = useState();
-    console.log(autocompleteOptions)
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
     const [ error, setError ] = useState(false)
