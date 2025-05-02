@@ -122,7 +122,7 @@ const RequestMonitoringPage = () => {
         {/* <SideNav /> */}
         <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
             <div style={{ widht: '100%', padding: '0' }}>
-                <TopNav title={'Мониторинг запросов'} />
+                <TopNav title={'Частотность запросов'} />
             </div>
 
 
