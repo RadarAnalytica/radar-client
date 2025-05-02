@@ -39,7 +39,6 @@
     gap: 20px;
     grid-template-columns: 1fr 1fr;
     grid-auto-rows: 25px;
-    box-sizing: border-box;
 }
 
 .page__doubleBlockWrapper {

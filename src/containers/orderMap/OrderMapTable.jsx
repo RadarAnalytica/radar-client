@@ -11,7 +11,7 @@ const OrderMapTable = ({ title, data, totalAmount, totalCount }) => {
   };
 
   return (
-    <div className='order-map-table' style={{ width: '100%', maxWidth: '100%'}}>
+    <div className='order-map-table'>
       <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>
         {title}
       </h5>

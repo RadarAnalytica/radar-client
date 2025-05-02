@@ -50,6 +50,7 @@ const StockAnalysisPage = React.lazy(() => import("./pages/apiServicePages/stock
 const ProductGroupsPage = React.lazy(() => import("./pages/productsGroupsPages/pages/mainGroupsPage/productsGroupsPage"));
 const SingleGroupPage = React.lazy(() => import("./pages/productsGroupsPages/pages/singleGroupPage/singleGroupPage"));
 const SkuIdPage = React.lazy(() => import("./pages/skuAnalysisPage/skuIdPage"));
+const ProductGroupsPage = React.lazy(() => import("./pages/productsGroupsPage/productsGroupsPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 

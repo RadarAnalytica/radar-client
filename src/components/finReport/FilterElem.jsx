@@ -201,6 +201,8 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
         ) : (
           <div className={styles.optionsList}>
             {options.map((option) => {
+              console.log(option)
+              console.log(filterIdent)
               let monthValue;
               if (filterIdent === 'month') {
                 const splittedValue = option.value.split('.')

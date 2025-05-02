@@ -1,24 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import styles from './groupsMainWidget.module.css'
-import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
-import { groupsMainTableConfig, buttonIcons } from '../../shared';
-import { Checkbox, ConfigProvider } from 'antd';
-import { formatPrice } from '../../../../service/utils';
-import { Link } from 'react-router-dom';
+import styles from './addSkuModal.module.css'
+import { addSkuTableConfig } from '../../../shared';
+import { AddSkuModalFooter } from '../../../entities'
+import { Modal, Checkbox, ConfigProvider } from 'antd';
 
 const mockData = [
-    { group: 'Тест группа 1', sku: 20 },
-    { group: 'Тест группа 2', sku: 30 },
-    { group: 'Тест группа 3', sku: 40 },
+    {
+        product: 'Some product name',
+        brand: 'Some brand name',
+        shop: 'Some shop name',
+        sku: '0001',
+        photo: 'https://basket-16.wbbasket.ru/vol2567/part256714/256714767/images/c246x328/1.webp'
+    },
+    {
+        product: 'Some product name',
+        brand: 'Some brand name',
+        shop: 'Some shop name',
+        sku: '0002',
+        photo: 'https://basket-16.wbbasket.ru/vol2567/part256714/256714767/images/c246x328/1.webp'
+    },
+    {
+        product: 'Some product name',
+        brand: 'Some brand name',
+        shop: 'Some shop name',
+        sku: '0003',
+        photo: 'https://basket-16.wbbasket.ru/vol2567/part256714/256714767/images/c246x328/1.webp'
+    },
 ]
 
-const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
+const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
 
     const [tableData, setTableData] = useState()
-    const [isDataLoading, setIsDataLoading] = useState(false)
     const [checkedList, setCheckedList] = useState([]);
-    const checkAll = tableData && tableData.length === checkedList.length;
-    const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
+    const checkAll = mockData.length === checkedList.length;
+    const indeterminate = checkedList.length > 0 && checkedList.length < mockData.length;
 
     const onCheckboxChange = (e) => {
         const { value, checked } = e.target;
@@ -33,46 +48,44 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
     };
 
     const onCheckAllChange = e => {
-        setCheckedList(e.target.checked ? tableData.map(_ => _.group) : []);
+        setCheckedList(e.target.checked ? tableData.map(_ => _.sku) : []);
     };
 
     useEffect(() => {
         let timeout;
         const getTableData = async () => {
-            setIsDataLoading(true)
-            timeout = setTimeout(() => { setTableData(mockData); setIsDataLoading(false) }, 2000)
+            timeout = setTimeout(() => { setTableData(mockData) }, 2000)
         }
         getTableData()
         return () => { timeout && clearTimeout(timeout) }
     }, [])
 
     return (
-        <div className={styles.widget}>
-            <div className={styles.widget__controlsWrapper}>
-                <HowToLink
-                    text='Как использовать?'
-                    target='_blank'
-                    url='/'
+        <Modal
+            footer={
+                <AddSkuModalFooter
+                    setIsAddSkuModalVisible={setIsAddSkuModalVisible}
                 />
-                <button className={styles.widget__addButton} onClick={() => setIsAddGroupModalVisible(true)}>
-                    Создать группу
-                </button>
-            </div>
-            {isDataLoading &&
-                <div className={styles.widget__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
             }
-
-            {!isDataLoading && tableData &&
-                <div className={styles.widget__tableWrapper}>
+            onOk={() => setIsAddSkuModalVisible(false)}
+            onCancel={() => setIsAddSkuModalVisible(false)}
+            onClose={() => setIsAddSkuModalVisible(false)}
+            open={isAddSkuModalVisible}
+            width={1200}
+            centered
+        >
+            <div className={styles.modal}>
+                <div className={styles.modal__header}>
+                    <p className={styles.modal__title}>Добавьте артикулы</p>
+                </div>
+                <div className={styles.modal__tableWrapper}>
 
                     {/* table */}
                     <div className={styles.table}>
                         {/* Хэдер */}
                         <div className={styles.table__header}>
                             {/* Мапим массив значений заголовков */}
-                            {tableData && groupsMainTableConfig.values.map((v, id) => {
+                            {tableData && addSkuTableConfig.values.map((v, id) => {
                                 return (
                                     <>
                                         {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
@@ -132,49 +145,35 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
                                         }}
                                     >
                                         {/* Для каждого товара мапим заголовки таблицы еще раз и забираем из товара нужны данные (в первой колонке одновременно фото и название) */}
-                                        {groupsMainTableConfig.values.map(((v, id) => {
-
-                                            if (v.engName === 'actions') {
-
-                                                return (
-                                                    <div className={styles.table__rowItem} key={id}>
-                                                        {v.actionTypes.map((a, id) => {
-                                                            return (
-                                                                <button className={styles.table__actionButton} key={id}>
-                                                                    {buttonIcons[a]}
-                                                                </button>
-                                                            )
-                                                        })}
-                                                    </div>
-                                                )
-                                            }
-
+                                        {addSkuTableConfig.values.map(((v, id) => {
                                             return (
                                                 <div className={styles.table__rowItem} key={id}>
-                                                    {v.hasSelect ?
+                                                    {v.hasPhoto ?
                                                         <>
-                                                            <ConfigProvider
-                                                                theme={{
-                                                                    token: {
-                                                                        colorPrimary: '#5329FF',
-                                                                        colorBgContainer: 'transparent'
-                                                                    }
-                                                                }}
-                                                            >
-                                                                <Checkbox
-                                                                    checked={checkedList.some(_ => _ === product.group)}
-                                                                    value={product.group}
-                                                                    onChange={onCheckboxChange}
-                                                                />
-                                                            </ConfigProvider>
-                                                            <Link to={`/dev/groups/${id}`} className={styles.table__rowTitle}>{product[v.engName]}</Link>
+                                                            {v.hasSelect &&
+                                                                <ConfigProvider
+                                                                    theme={{
+                                                                        token: {
+                                                                            colorPrimary: '#5329FF',
+                                                                            colorBgContainer: 'transparent'
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <Checkbox
+                                                                        checked={checkedList.some(_ => _ === product.sku)}
+                                                                        value={product.sku}
+                                                                        onChange={onCheckboxChange}
+                                                                    />
+                                                                </ConfigProvider>
+                                                            }
+                                                            <div className={styles.table__rowImgWrapper}>
+                                                                <img src={product[v.photoFieldName]} width={30} height={40} />
+                                                            </div>
+                                                            <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                         </>
                                                         :
-                                                        <>
-                                                            {v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}
-                                                        </>
+                                                        <>{product[v.engName]}</>
                                                     }
-
                                                 </div>
                                             )
                                         }))}
@@ -194,9 +193,10 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
                     {/* !table */}
 
 
-                </div>}
-        </div>
+                </div>
+            </div>
+        </Modal>
     )
 }
 
-export default GroupsMainWidget;
+export default AddSkuModal;

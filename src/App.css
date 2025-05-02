@@ -695,7 +695,7 @@ select {
 
 .dash-container,
 .linked-shops-container {
-  max-width: 98vw !important;
+  max-width: 78vw !important;
 }
 .orders-map {
   overflow: hidden;
