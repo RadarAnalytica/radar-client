@@ -8,6 +8,7 @@ const utilsSlice = createSlice({
     name: "utils",
     initialState,
     reducers: {
+        
         setIsSidebarHidden: (state, action) => {
             return {
                 ...state,
