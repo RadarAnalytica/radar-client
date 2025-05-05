@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete, Modal } from 'antd';
+import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete, Modal, Select } from 'antd';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
 import { getCalculatorSubjects } from '../../service/api/api';
 import styles from './BasicDataFormBlockDesktop.module.css'
