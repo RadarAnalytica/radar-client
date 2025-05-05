@@ -43,12 +43,14 @@ const MobileHeader = ({ title }) => {
                         <Link
                             to={`${URL}/signin`}
                             className={styles.header__signin}
+                            target='_blank'
                         >
                             Вход
                         </Link>}
                     {!user &&
                         <Link
                             to={`${URL}/signup`}
+                            target='_blank'
                             className={styles.header__signup}
                         >
                             Регистрация

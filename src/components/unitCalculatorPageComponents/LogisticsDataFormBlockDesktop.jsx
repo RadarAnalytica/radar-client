@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './LogisticsDataFormBlockDesktop.module.css'
-import { Form, Input, Checkbox, Radio, ConfigProvider, Tooltip, AutoComplete } from 'antd';
+import { Form, Input, Checkbox, Radio, ConfigProvider, Tooltip, AutoComplete, Select } from 'antd';
 import { tempWhouseData } from './tempWarehouseData';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
 import { useAppSelector } from '../../redux/hooks';
