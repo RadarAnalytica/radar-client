@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isSidebarHidden: false
+    isSidebarHidden: true
 };
 
 const utilsSlice = createSlice({
