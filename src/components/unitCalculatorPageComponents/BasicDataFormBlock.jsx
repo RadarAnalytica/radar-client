@@ -27,6 +27,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
     }
     const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500)
     useEffect( () => {
+        setLoadingOptions(true);
         getSubjectsDataWSetter('');
     }, [])
 
