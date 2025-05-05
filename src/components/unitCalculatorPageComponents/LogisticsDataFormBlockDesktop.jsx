@@ -80,7 +80,7 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
             </ConfigProvider>
 
 
-            <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
+            <div className={isSidebarHidden ? `${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}` : styles.fieldset__wrapper}>
 
 
                 <ConfigProvider
@@ -261,7 +261,7 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
 
 
 
-            <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
+            <div className={isSidebarHidden ? `${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}` : styles.fieldset__wrapper}>
                 <Form.Item
                     label={
                         <div className={styles.label}>
@@ -358,7 +358,7 @@ const LogisticsDataFormBlockDesktop = ({ form, current_storage_logistic_price, b
                     />
                 </Form.Item>
 
-                <div className={styles.fieldset__footer}>
+                <div className={isSidebarHidden ? styles.fieldset__footer : styles.fieldset__footer_plain}>
                     <p className={styles.fieldset__footerText_price}>{Math.round(current_storage_logistic_price + buyout_log_price)} ₽</p>
                 </div>
             </div>

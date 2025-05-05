@@ -1,8 +1,10 @@
 import styles from './MPFeesDataFormBlockDesktop.module.css'
 import { Form, Input, ConfigProvider, Tooltip } from 'antd';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
-const MPFeesDataFormBlockDesktop = ({ mp_fee, form }) => {
+import { useAppSelector } from '../../redux/hooks';
 
+const MPFeesDataFormBlockDesktop = ({ mp_fee, form }) => {
+    const { isSidebarHidden } = useAppSelector(store => store.utils)
     const product_price = Form.useWatch('product_price', form);
     const additional_mp_fee = Form.useWatch('additional_mp_fee', form);
     const equiring_fee = Form.useWatch('equiring_fee', form);
@@ -23,7 +25,7 @@ const MPFeesDataFormBlockDesktop = ({ mp_fee, form }) => {
                 </div>
             </div>
 
-            <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
+            <div className={isSidebarHidden ? `${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}` : styles.fieldset__wrapper}>
                 <Form.Item
                     label={
                         <div className={styles.label}>
