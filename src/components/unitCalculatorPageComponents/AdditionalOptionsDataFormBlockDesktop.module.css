@@ -1,3 +1,4 @@
+
 .fieldset {
     width: 100%;
     display: flex;
@@ -54,11 +55,6 @@
 }
 .fieldset__wrapper_2cols {
     grid-template-columns: 1fr 1fr;
-
-    @media (max-width: 1200px) {
-        display: flex;
-        flex-direction: column;
-    }
 }
 .fieldset__wrapper_3cols {
     grid-template-columns: 1fr 1fr 1fr;
@@ -88,10 +84,6 @@
     font-size: 14px;
     line-height: 18px;
     color: #1A1A1A80;
-
-    @media (max-width: 900px) {
-        font-size: 12px;
-    }
 }
 
 .fieldset__footerText_price {
@@ -101,10 +93,6 @@
     font-size: 18px;
     line-height: 23px;
     color: #1A1A1A;
-
-    @media (max-width: 900px) {
-        font-size: 16px;
-    }
 }
 
 .fieldset__popupWrapper {
@@ -123,7 +111,25 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    /* gap: 16px; */
+}
+.fieldset__popup_closed {
+    gap: 0;
+}
+
+.fieldset__popupBody {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
     gap: 16px;
+}
+.fieldset__popupBody_closed {
+   visibility: hidden;
+   height: 0;
+   max-height: 0;
+   overflow: hidden;
 }
 
 .fieldset__popupHeader {
@@ -132,18 +138,6 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-}
-
-.fieldset__logWrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid #0000001A;
-    border-radius: 8px;
 }
 
 .fieldset__popupTitle {
@@ -164,24 +158,14 @@
     width: 100%;
     margin: 0;
     padding: 0;
-
-    @media (max-width: 900px) {
-        font-size: 12px !important;
-    }
 }
 
 .formItem_wide {
     grid-column: span 2;
-
-    @media (max-width: 900px) {
-        font-size: 12px !important;
-    }
 }
 
 .formItem__input {
-    @media (max-width: 900px) {
-        font-size: 12px !important;
-    }
+    
 }
 
 .radioLabel {
@@ -207,11 +191,7 @@
     color: #1A1A1A80;
     cursor: pointer;
 
-    @media (max-width: 900px) {
-        font-size: 12px;
-        width: 16px;
-        height: 16px;
-    }
+    
 }
 
 .tooltip_red {

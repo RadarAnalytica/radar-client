@@ -19,30 +19,41 @@ const StockAnalysisPage = () => {
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [primaryCollect, setPrimaryCollect] = useState(null)
+
+    const fetchAnalysisData = async () => {
+        setLoading(true);
+        if (activeBrand) {
+            const data = await ServiceFunctions.getAnalysisData(
+                authToken,
+                selectedRange,
+                activeBrand.id
+            );
+            setStockAnalysisData(data);
+            setStockAnalysisFilteredData(data)
+            setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
+        }
+
+        setLoading(false);
+    };
 
     // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
     useEffect(() => {
-        const fetchAnalysisData = async () => {
-            setLoading(true);
-            if (activeBrand) {
-
-                const data = await ServiceFunctions.getAnalysisData(
-                    authToken,
-                    selectedRange,
-                    activeBrand.id
-                );
-                setStockAnalysisData(data);
-                setStockAnalysisFilteredData(data)
-                setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
-
-            }
-
-            setLoading(false);
-        };
-        if (activeBrand?.is_primary_collect) {
+        setPrimaryCollect(activeBrand?.is_primary_collect)
+        if (activeBrand && activeBrand.is_primary_collect) {
             fetchAnalysisData();
         }
-    }, [selectedRange, activeBrand, authToken]);
+    }, [selectedRange, activeBrand]);
+
+    // 2.1.1 Проверяем изменился ли выбранный магазин при обновлении токена
+
+    useEffect(() => {
+        if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+            setPrimaryCollect(activeBrand.is_primary_collect)
+            fetchAnalysisData()
+        }
+    }, [authToken]);
+
 
     return (
         <main className={styles.page}>

@@ -22,6 +22,7 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
+        
         let timeout;
         if (isMenuHidden) {
             setIsOpen(false)

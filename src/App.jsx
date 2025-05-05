@@ -43,6 +43,7 @@ const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashb
 const Schedule = React.lazy(() => import("./pages/Schedule"));
 const StartPage = React.lazy(() => import("./pages/StartPage"));
 const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage"));
+const UnitCalculatorPageDesktop = React.lazy(() => import("./pages/UnitCalculatorPageDesktop"));
 const DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));
 const AdminPage = React.lazy(() => import("./pages/AdminPage/AdminPage"));
 const SkuAnalysisPage = React.lazy(() => import("./pages/skuAnalysisPage/skuAnalysisPage"));
@@ -63,7 +64,10 @@ import { ProtectedRoute } from "./RouteGuards";
 
 function App() {
 
-  
+  // нужно для определения какую страницу калькулятора показывать
+  const { userAgent } = navigator;
+  const deviceRegexp = /android|iphone|kindle|ipad/i
+
   return (
     <AuthProvider>
       <ProductProvider>
@@ -74,15 +78,15 @@ function App() {
           <Route path='/dev/groups' element={<ProtectedRoute userRoleProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
           <Route path='/dev/groups/:group_id' element={<ProtectedRoute userRoleProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
           {/* Protected routes */}
-          <Route path='/sku-analysis' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
-          <Route path='/sku-analysis/:id' element={<ProtectedRoute expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
+          <Route path='/sku-analysis' element={<ProtectedRoute userRoleProtected expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
+          <Route path='/sku-analysis/:id' element={<ProtectedRoute userRoleProtected expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
           <Route path='/admin' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
           <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
           <Route path='/abc-data' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
           <Route path='/seo' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
           <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Мониторинг запросов'><RequestMonitoringPage /></ProtectedRoute>} />
           <Route path='/ai-generator' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
-          <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Товарная аналитика'><StockAnalysis /></ProtectedRoute>} />
+          <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Товарная аналитика'><StockAnalysisPage /></ProtectedRoute>} />
           <Route path='/orders-map' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
           <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
           <Route path='/report-main' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
@@ -98,14 +102,14 @@ function App() {
           <Route path='/main' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
           <Route path='/home' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
           <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} />
-          <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect"><Onboarding /></ProtectedRoute>} />
+          <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect" testPeriodProtected testPeriodGuardType="redirect" testPeriodRedirect="/linked-shops" expireProtected><Onboarding /></ProtectedRoute>} />
           <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
           <Route path='/tariffs' element={<ProtectedRoute authGuardType="redirect"><TariffsPage /></ProtectedRoute>} />
           <Route path='/subscription' element={<ProtectedRoute testPeriodProtected authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
           <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
           <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
           {/* Public routes */}
-          <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{' '}<UnitCalculatorPage /></Suspense>} />
+          <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
           <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
           <Route path='/spasibo' element={<Suspense fallback={<LoaderPage />}>{' '}<Spasibo /></Suspense>} />
           <Route path='/app' element={<Suspense fallback={<LoaderPage />}>{' '}<MainWidget /></Suspense>} />

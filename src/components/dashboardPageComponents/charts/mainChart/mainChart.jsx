@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 const MainChart = ({ title, loading, dataDashBoard, selectedRange }) => {
-    
+
     const [chartData, setChartData] = useState()
     const [days, setDays] = useState()
     const [controlsState, setControlsState] = useState({
@@ -109,13 +109,14 @@ const MainChart = ({ title, loading, dataDashBoard, selectedRange }) => {
                 </div>
             }
 
-            {isModalOpen && 
-                <MainChartModal
-                    isModalOpen={isModalOpen}
-                    setIsModalOpen={setIsModalOpen}
-                    loading={loading}
-                    chartData={chartData}
-                />
+            {isModalOpen &&
+                
+                    <MainChartModal
+                        isModalOpen={isModalOpen}
+                        setIsModalOpen={setIsModalOpen}
+                        loading={loading}
+                        chartData={chartData}
+                    />
             }
 
             {/* {isModalOpen &&

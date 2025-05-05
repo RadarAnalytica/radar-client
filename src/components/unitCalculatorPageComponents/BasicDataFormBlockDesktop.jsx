@@ -1,18 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
-import { Form, Input, Checkbox, ConfigProvider, Tooltip, Select, Modal, AutoComplete } from 'antd';
+import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete, Modal, Select } from 'antd';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
 import { getCalculatorSubjects } from '../../service/api/api';
-import styles from './BasicDataFormBlock.module.css'
+import styles from './BasicDataFormBlockDesktop.module.css'
 import useDebouncedFunction from '../../service/hooks/useDebounce';
+import { useAppSelector } from '../../redux/hooks';
 
-const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
+const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
     const [ autocompleteOptions, setAutocompleteOptions ] = useState();
-    // console.log(autocompleteOptions)
     const [loadingOptions, setLoadingOptions] = useState(true);
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
     const [ error, setError ] = useState(false)
-    const dropdownRef = useRef(null)
+    const { isSidebarHidden } = useAppSelector(store => store.utils)
 
     const getSubjectsDataWSetter = async (value) => {
         setLoadingOptions(true);
@@ -23,7 +23,6 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
         } else {
             setError(true)
         }
-        setLoadingOptions(false);
     }
     const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500)
     useEffect( () => {
@@ -61,6 +60,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
 
 
     const handleSearch = (value) => { // обработка ввода пользователя вручную
+        setLoadingOptions(true);
         setIsProductFromToken(false)
         setIsOptionClicked(false)
         setInputValue(value);
@@ -76,7 +76,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
         setInputValue(value);
         // const currentOption = autocompleteOptions.find(_ => _.name === value)
         // if (currentOption) {
-            // setMpMainFee(currentOption.fbo)
+        //     setMpMainFee(currentOption.fbo)
         // }
     };
 
@@ -143,6 +143,8 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
                         // autoComplete='off'
+                        onChange={() => {setLoadingOptions(true)}}
+                        loading={loadingOptions}
                         notFoundContent={<div style={{color: 'black'}}>
                             {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}
                             {loadingOptions && 'Идет загрузка...'
@@ -157,7 +159,6 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                                 </div>
                             )
                         }}
-                        
                         // value={inputValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
@@ -284,7 +285,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                 />
             </Form.Item>
 
-            <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_3cols}`}>
+            <div className={isSidebarHidden ? `${styles.fieldset__wrapper} ${styles.fieldset__wrapper_3cols}` : `${styles.fieldset__wrapper}  ${styles.fieldset__wrapper_sidebar}`}>
                 <Form.Item
                     label='Длина упаковки'
                     name='package_length'
@@ -306,7 +307,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     }
                 >
                     <Input
-                        style={{background: package_length ? '#F2F2F2' : ''}}
+                        style={{background: package_length ? '#F2F2F2' : '', alignSelf: 'end'}}
                         size='large'
                         placeholder='Укажите длину упаковки'
                         className={styles.formItem__input}
@@ -386,7 +387,7 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                     </Form.Item>
                 </ConfigProvider>
 
-                <div className={styles.fieldset__footer_span}>
+                <div className={isSidebarHidden ? styles.fieldset__footer_span : styles.fieldset__footer_plain}>
                     {Number.isNaN(sidesSum) ? '' : <p className={styles.fieldset__footerText}>Сумма трех сторон: {sidesSum} см</p>}
                     {volume === 'NaN' ? '' : <p className={styles.fieldset__footerText}>Расчетный объем: {volume} л</p>}
                     {isHeavy && <ConfigProvider
@@ -421,4 +422,4 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
     )
 }
 
-export default BasicDataFormBlock;
+export default BasicDataFormBlockDesktop;

@@ -39,6 +39,7 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false,
@@ -137,7 +138,7 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
         <div className={styles.block}>
             <p className={styles.block__title}>Структура выручки</p>
             <div className={styles.block__chart}>
-                <Doughnut data={data} options={options} style={{ margin: "auto" }} />
+                <Doughnut data={data} options={options} />
             </div>
         </div >
     )

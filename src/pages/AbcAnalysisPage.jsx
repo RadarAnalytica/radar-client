@@ -23,6 +23,7 @@ const AbcAnalysisPage = () => {
   const [isNeedCost, setIsNeedCost] = useState([]);
   const [viewType, setViewType] = useState("proceeds");
   const [loading, setLoading] = useState(false);
+  const [primaryCollect, setPrimaryCollect] = useState(null)
 
   // console.log('---------- base ----------')
   // console.log(loading)
@@ -72,12 +73,23 @@ const AbcAnalysisPage = () => {
   };
 
   // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
+  
   useEffect(() => {
+    setPrimaryCollect(activeBrand?.is_primary_collect)
     if (activeBrand?.is_primary_collect && viewType && days && authToken) {
       updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
     }
-  }, [activeBrand, viewType, days, authToken]);
+  }, [activeBrand, viewType, days]);
   //---------------------------------------------------------------------------------------//
+
+  // 2.1.1 Проверям изменился ли магазин при обновлении токена
+
+  useEffect(() => {
+    if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+      setPrimaryCollect(activeBrand.is_primary_collect)
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
+    }
+  }, [authToken]);
 
   //for SelfCostWarning
   const handleUpdateAbcAnalysis = () => {

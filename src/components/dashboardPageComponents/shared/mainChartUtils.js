@@ -356,6 +356,8 @@ export const getChartTooltip = (context, chartData) => {
 
 export const getChartOptions = (chartData, days) => {
     const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
         animation: {
             duration: 0,
         },

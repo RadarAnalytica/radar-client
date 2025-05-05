@@ -163,14 +163,14 @@ export const AuthProvider = ({ children }) => {
     [user, authToken]
   );
 
-  useEffect(() => {
-    let interval = setInterval(() => {
-      if (user && user.exp * 1000 < Date.now()) {
-        logout();
-      }
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   let interval = setInterval(() => {
+  //     if (user && user.exp * 1000 < Date.now()) {
+  //       logout();
+  //     }
+  //   }, 6000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>

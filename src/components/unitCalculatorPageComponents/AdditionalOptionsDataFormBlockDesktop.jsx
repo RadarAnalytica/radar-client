@@ -1,10 +1,11 @@
 import { useState } from "react"
-import styles from './AdditionalOptionsDataFormBlock.module.css'
+import styles from './AdditionalOptionsDataFormBlockDesktop.module.css'
 import { Form, Input, Radio, ConfigProvider } from 'antd';
 import { normilizeUnitsInputValue } from "./UnitCalcUtils";
+import { useAppSelector } from "../../redux/hooks";
 
-const AdditionalOptionsDataFormBlock = ({ form }) => {
-
+const AdditionalOptionsDataFormBlockDesktop = ({ form }) => {
+    const { isSidebarHidden } = useAppSelector(store => store.utils)
     const inhouse_logistics_price = Form.useWatch('inhouse_logistics_price', form);
     const packaging_price = Form.useWatch('packaging_price', form);
     const mp_logistics_price = Form.useWatch('mp_logistics_price', form);
@@ -42,7 +43,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
 
                     </div>
                     <div className={popupState.isShippingCostsPopupVisible ? styles.fieldset__popupBody : styles.fieldset__popupBody_closed}>
-                        <div className={`${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}`}>
+                        <div className={isSidebarHidden ? `${styles.fieldset__wrapper} ${styles.fieldset__wrapper_2cols}` : styles.fieldset__wrapper}>
                             <Form.Item
                                 label='Логистика от производителя'
                                 className={styles.formItem}
@@ -286,4 +287,4 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
     )
 }
 
-export default AdditionalOptionsDataFormBlock;
+export default AdditionalOptionsDataFormBlockDesktop;

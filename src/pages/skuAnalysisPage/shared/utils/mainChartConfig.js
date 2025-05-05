@@ -9,11 +9,11 @@ export const chartCompareConfigObject = [
     { engName: 'avg_place', ruName: 'Средняя позиция', color: '#C7D61E', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, },
     { engName: 'total_shows', ruName: 'Всего показов', color: '#F9813C', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, },
     { engName: 'avg_frequency', ruName: 'Среднедневная частотность', color: '#00AF4F', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'ad_booster', ruName: 'Реклама бустер', color: '#D54AFF', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: false, isAnnotation: false, isControl: false, },
-    { engName: 'ad_search', ruName: 'Реклама в поиске', color: '#F93C65', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: false, isAnnotation: false, isControl: false, },
+    { engName: 'ad_booster', ruName: 'Реклама бустер', color: '#D54AFF', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, },
+    { engName: 'ad_search', ruName: 'Реклама в поиске', color: '#F93C65', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, },
     { engName: 'wb_id_frequency', ruName: 'Частотность артикула', color: '#F9A43C', isControlTooltip: false, hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, },
     { engName: 'promotions', ruName: 'Акции', color: '#FF0000', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: false, isAnnotation: true, isControl: true, },
-    { engName: 'seasonality', ruName: 'Сезоны продаж', color: '#88E473', isControlTooltip: false, hasUnits: false, isOnChart: false, isAnnotation: false, isControl: false, },
+    { engName: 'seasonality', ruName: 'Сезоны продаж', color: '#88E473', isControlTooltip: false, hasUnits: false, isOnChart: false, isAnnotation: false, isControl: true, },
 ]
 
 export const annotationColorsConfig = [
@@ -74,14 +74,68 @@ const getAnnotations = (initData) => {
     return annotations;
 }
 
+const getSeason = (seasonsData) => {
+    let normilizedArr = [];
+    seasonsData.forEach((i, id) => {
+        if (id === 0 && i.item === 0) return
+        if (id !== 0 && i.item === 0) return
+        if (id === 0 && i.item === 1) {
+            normilizedArr.push([i.date])
+            return
+        }
+        if (id !== 0 && i.item === 1) {
+            if (i.item === seasonsData[id - 1].item && normilizedArr.length > 0) {
+                normilizedArr[normilizedArr.length - 1].push(i.date);
+                return
+            }
+            if (i.item === seasonsData[id - 1].item && normilizedArr.length === 0) {
+                normilizedArr.push([i.date]);
+                return
+            }
+            if (i.item !== seasonsData[id - 1]) {
+                normilizedArr.push([i.date]);
+                return
+            }
+        }
+        
+    })
+    if (normilizedArr.length === 0) return {}
+    normilizedArr.forEach(i => i.sort((a,b) =>  moment(a) > moment(b) ? 1 : -1))
+    let seasonObject = {}
+    normilizedArr.forEach((i, id) => {
+        seasonObject[`season_${id}`] = {
+            drawTime: 'beforeDraw',
+            type: 'box',
+            xMin: moment(i[0]).format('DD.MM.YY'),
+            xMax: moment(i[i.length - 1]).format('DD.MM.YY'),
+            backgroundColor: '#88E47350',
+            borderWidth: 0,
+        }
+    })
 
 
-export const mainChartOptionsGenerator = (chartData, anotationField) => {
+    return seasonObject
+}
 
-   
+
+
+export const mainChartOptionsGenerator = (chartData, anotationField, seasonsField ) => {
+
     const annotationData = chartData[anotationField.engName]
-    const annotationObject = getAnnotations(annotationData)
-
+    const seasonsData = chartData[seasonsField.engName]
+    let annotationObject = anotationField.isActive && getAnnotations(annotationData);
+    if (anotationField.isActive) {
+        annotationObject = {
+            ...annotationObject,
+            ...getAnnotations(annotationData)
+        }
+    }
+    if (seasonsField.isActive) {
+        annotationObject = {
+            ...annotationObject,
+            ...getSeason(seasonsData)
+        }
+    }
 
 
     const chartOptions = {
@@ -98,7 +152,7 @@ export const mainChartOptionsGenerator = (chartData, anotationField) => {
             //     //external: (context) => {getChartTooltip(context, chartData)}
             // },
             annotation: {
-                annotations: anotationField.isActive && {...annotationObject}
+                annotations: {...annotationObject}
             },
         },
         scales: {

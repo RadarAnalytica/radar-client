@@ -1,10 +1,11 @@
 import styles from './barsGroup.module.css'
 import SmallBar from '../bars/smallBar';
+import { useAppSelector } from '../../../redux/hooks';
 
 const SecondBarsGroup = ({ dataDashBoard, loading }) => {
-
+    const { isSidebarHidden } = useAppSelector(store => store.utils)
     return (
-        <div className={styles.group}>
+        <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
             <SmallBar
                 title='Себестоимость проданных товаров'
                 loading={loading}
