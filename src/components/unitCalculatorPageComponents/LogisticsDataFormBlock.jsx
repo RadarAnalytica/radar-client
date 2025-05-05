@@ -3,6 +3,7 @@ import styles from './LogisticsDataFormBlock.module.css'
 import { Form, Input, Checkbox, Radio, ConfigProvider, Tooltip, Select, AutoComplete } from 'antd';
 import { tempWhouseData } from './tempWarehouseData';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
+
 const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_log_price, storagePrice }) => {
 
     const warehouse = Form.useWatch('warehouse', form);
