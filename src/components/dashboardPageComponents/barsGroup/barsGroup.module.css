@@ -9,6 +9,21 @@
     box-sizing: border-box;
 }
 
+.group_openSidebar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 20px;
+    justify-items: stretch;
+    justify-content: stretch;
+    box-sizing: border-box;
+
+    @media (max-width: 1400px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 .group__wrapper {
     display: flex;
     flex-direction: column;

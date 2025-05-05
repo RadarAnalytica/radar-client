@@ -1,12 +1,15 @@
 import styles from './barsGroup.module.css'
 import Bar from '../bars/bar';
 import { differenceInDays } from 'date-fns';
+import { useAppSelector } from '../../../redux/hooks';
 
 const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
 
+    const { isSidebarHidden } = useAppSelector(store => store.utils)
+
     const daysRange = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period
     return (
-        <div className={styles.group}>
+        <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
             <Bar
                 title='Заказы'
                 amount={dataDashBoard?.orderAmount}

@@ -29,6 +29,7 @@ const _DashboardPage = () => {
     
     const { authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [dataDashBoard, setDataDashboard] = useState();
     const [loading, setLoading] = useState(true);
     const [primaryCollect, setPrimaryCollect] = useState(null)
@@ -151,7 +152,7 @@ const _DashboardPage = () => {
 
                         {/*  Grid group */}
                         {/* Сетка построена гридами в две колонки и строками по 25px. Используй grid-row: span X для управления высотой блоков */}
-                        <div className={styles.page__chartGroup}>
+                        <div className={isSidebarHidden ? styles.page__chartGroup : styles.page__chartGroup_oneLine}>
                             <FinanceBlock
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}
