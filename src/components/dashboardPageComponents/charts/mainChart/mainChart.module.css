@@ -65,6 +65,7 @@
     color: #F0AD00;
     gap: 6px;
     width: auto;
+    text-align: left;
 }
 
 .chart__content {

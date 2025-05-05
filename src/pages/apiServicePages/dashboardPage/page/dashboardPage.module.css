@@ -44,6 +44,15 @@
     box-sizing: border-box;
 }
 
+.page__chartGroup_oneLine {
+    width: 100%;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 25px;
+    box-sizing: border-box;
+}
+
 .page__doubleBlockWrapper {
     width: 100%;
     grid-row: span 11;
