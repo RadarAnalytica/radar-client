@@ -26,9 +26,7 @@
     };
    
 }
-.result__shareButton {
-   
-}
+
 .result__tableWrapper {
     width: 100%;
     padding: 24px 32px;
@@ -38,7 +36,9 @@
     align-items: flex-start;
     gap: 20px;
 
-   
+    @media (max-width: 1400px) {
+        padding: 20px 0;
+    }
 }
 
 .result__title {

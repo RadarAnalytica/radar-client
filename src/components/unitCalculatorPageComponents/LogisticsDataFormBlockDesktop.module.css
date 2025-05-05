@@ -70,6 +70,13 @@
     align-items: center;
     gap: 20px;
 }
+.fieldset__footer_plain {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+}
 
 .fieldset__footerText {
     margin: 0;
@@ -150,9 +157,6 @@
 
 .formItem_wide {
     grid-column: span 2;
-}
-
-.formItem__input {
 }
 
 .radioLabel {
