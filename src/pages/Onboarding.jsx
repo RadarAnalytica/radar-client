@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, Suspense } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import TopNav from '../components/TopNav';
 import SideNav from '../components/SideNav';
@@ -101,7 +101,7 @@ const Onboarding = () => {
           <Sidebar />
         </div>
         {/* <SideNav /> */}
-        <div className='boarding-content w-100' style={{ padding: '0 32px'}}>
+        <div className='boarding-content w-100' style={{ padding: '0 32px' }}>
           <TopNav title={'Подключение API'} />
 
           <div
@@ -113,18 +113,22 @@ const Onboarding = () => {
                 Укажите токен нового образца, чтобы продолжить пользоваться
                 всеми возможностями нашего сервиса
               </p>
-              <InputField
-                type={'text'}
-                label={'Название'}
-                callback={getBrand}
-                placeholder={'Ваш бренд или юр. лицо'}
-              />
-              <InputField
-                type={'text'}
-                label={'Токен'}
-                callback={getToken}
-                placeholder={'Пример: GJys67G7sbNw178F'}
-              />
+              <Suspense fallback={null}>
+                <InputField
+                  type={'text'}
+                  label={'Название'}
+                  callback={getBrand}
+                  placeholder={'Ваш бренд или юр. лицо'}
+                />
+              </Suspense>
+              <Suspense fallback={null}>
+                <InputField
+                  type={'text'}
+                  label={'Токен'}
+                  callback={getToken}
+                  placeholder={'Пример: GJys67G7sbNw178F'}
+                />
+              </Suspense>
               <div
                 style={{
                   display: 'flex',
