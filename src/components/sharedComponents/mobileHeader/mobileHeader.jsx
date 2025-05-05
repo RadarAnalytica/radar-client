@@ -40,19 +40,19 @@ const MobileHeader = ({ title }) => {
             >
                 <div className={styles.mobileMenu}>
                     {user &&
-                        <button
-                            onClick={() => navigate(`${URL}/signin`)}
+                        <Link
+                            to={`${URL}/signin`}
                             className={styles.header__signin}
                         >
                             Вход
-                        </button>}
+                        </Link>}
                     {!user &&
-                        <button
-                            onClick={() => navigate(`${URL}/signup`)}
+                        <Link
+                            to={`${URL}/signup`}
                             className={styles.header__signup}
                         >
                             Регистрация
-                        </button>
+                        </Link>
                     }
                 </div>
             </Modal>
