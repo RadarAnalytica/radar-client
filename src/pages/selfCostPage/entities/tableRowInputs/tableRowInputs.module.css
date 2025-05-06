@@ -1,0 +1,40 @@
+.table__rowItem {
+    width: auto;
+    min-width: 160px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.table__rowItem_first {
+    max-width: 160px;
+}
+
+.table__saveButton {
+    border: none;
+    background: transparent;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #5329FF;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.table__saveButton:disabled {
+    opacity: .5;
+}
