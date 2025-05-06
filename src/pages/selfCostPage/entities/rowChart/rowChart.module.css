@@ -1,0 +1,9 @@
+.chart {
+    width: auto;
+    height: auto;
+    min-height: 200px;
+    margin-left: 80px;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+}

@@ -28,6 +28,7 @@ const SelfCostPage = () => {
                 <div className={styles.page__filtersWrapper}>
                     <Filters
                         setLoading={setLoading}
+                        timeSelect={false}
                     />
                     <HowToLink
                         text='Инструкция по загрузке себестоимости'
@@ -37,7 +38,6 @@ const SelfCostPage = () => {
                 </div>
 
                 <SelfCostTableWidget />
-                {/* !header */}
             </section>
             {/* ---------------------- */}
         </main>
