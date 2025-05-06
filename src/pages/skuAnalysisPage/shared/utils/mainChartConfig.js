@@ -1,19 +1,19 @@
 import moment from "moment";
 
 export const chartCompareConfigObject = [
-    { engName: 'revenue', ruName: 'Выручка', color: '#5329FF', isControlTooltip: false, hasUnits: true, units: '₽', isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'orders', ruName: 'Заказы', color: '#F0AD00', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'quantity', ruName: 'Товарные остатки', color: '#F93C94', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'avg_price', ruName: 'Средняя цена', color: '#1BC5D1', isControlTooltip: false, hasUnits: true, units: '₽', isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'requests_count', ruName: 'Всего запросов', color: '#FFDC89', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'avg_place', ruName: 'Средняя позиция', color: '#C7D61E', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'total_shows', ruName: 'Всего показов', color: '#F9813C', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'avg_frequency', ruName: 'Среднедневная частотность', color: '#00AF4F', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'ad_booster', ruName: 'Реклама бустер', color: '#D54AFF', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'ad_search', ruName: 'Реклама в поиске', color: '#F93C65', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'wb_id_frequency', ruName: 'Частотность артикула', color: '#F9A43C', isControlTooltip: false, hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, },
-    { engName: 'promotions', ruName: 'Акции', color: '#FF0000', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: false, isAnnotation: true, isControl: true, },
-    { engName: 'seasonality', ruName: 'Сезоны продаж', color: '#88E473', isControlTooltip: false, hasUnits: false, isOnChart: false, isAnnotation: false, isControl: true, },
+    { engName: 'revenue', ruName: 'Выручка', color: '#5329FF', isControlTooltip: false, hasUnits: true, units: '₽', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
+    { engName: 'orders', ruName: 'Заказы', color: '#F0AD00', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true},
+    { engName: 'quantity', ruName: 'Товарные остатки', color: '#F93C94', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true},
+    { engName: 'avg_price', ruName: 'Средняя цена', color: '#1BC5D1', isControlTooltip: false, hasUnits: true, units: '₽', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false},
+    { engName: 'requests_count', ruName: 'Всего запросов', color: '#FFDC89', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true},
+    { engName: 'avg_place', ruName: 'Средняя позиция', color: '#C7D61E', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true},
+    { engName: 'total_shows', ruName: 'Всего показов', color: '#F9813C', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false},
+    { engName: 'avg_frequency', ruName: 'Среднедневная частотность', color: '#00AF4F', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false},
+    { engName: 'ad_booster', ruName: 'Реклама бустер', color: '#D54AFF', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false},
+    { engName: 'ad_search', ruName: 'Реклама в поиске', color: '#F93C65', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false},
+    { engName: 'wb_id_frequency', ruName: 'Частотность артикула', color: '#F9A43C', isControlTooltip: false, hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false},
+    { engName: 'promotions', ruName: 'Акции', color: '#FF0000', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: false, isAnnotation: true, isControl: true, defaultActive: true},
+    { engName: 'seasonality', ruName: 'Сезоны продаж', color: '#88E473', isControlTooltip: false, hasUnits: false, isOnChart: false, isAnnotation: false, isControl: true, defaultActive: true},
 ]
 
 export const annotationColorsConfig = [

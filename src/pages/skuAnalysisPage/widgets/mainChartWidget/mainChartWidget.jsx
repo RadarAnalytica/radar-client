@@ -28,7 +28,7 @@ ChartJS.register(
 const MainChartWidget = ({ id }) => {
     const dispatch = useAppDispatch()
     const [tabsState, setTabsState] = useState('Аналитика товара') // не удалять - стейт табов вариантов графика
-    const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: true })))
+    const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
     const [normilizedChartData, setNormilizedChartData] = useState()
     const { skuChartData, dataStatus } = useAppSelector(store => store.skuAnalysis)
 
