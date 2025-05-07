@@ -3,15 +3,15 @@ export const tableConfig = [
         tableName: 'О товаре',
         values: [
             {ruName: 'Товар', engName: 'productName', units: null, isSortable: true},
+            {ruName: 'Артикул', engName: 'vendorСode', units: null, isSortable: true, isShortCell: true},
+            {ruName: 'SKU', engName: 'sku', units: null, isSortable: true, isShortCell: true},
+            {ruName: 'Размер', engName: 'size', units: null, isSortable: true, isShortCell: true},
         ]
     },
     {
         tableName: null,
         values: [
-            {ruName: 'Артикул', engName: 'vendorСode', units: null, isSortable: true},
             {ruName: 'Бренд', engName: 'brandName', units: null, isSortable: true},
-            {ruName: 'SKU', engName: 'sku', units: null, isSortable: true},
-            {ruName: 'Размер', engName: 'size', units: null, isSortable: true},
             {ruName: 'Категория', engName: 'category', units: null, isSortable: true},
         ]
     },

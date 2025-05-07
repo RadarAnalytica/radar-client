@@ -67,7 +67,7 @@ const StockAnalysisPage = () => {
                 <div className={styles.page__staticContentWrapper}>
                     {/* header */}
                     <div className={styles.page__headerWrapper}>
-                        <Header title='Товарная аналитика' />
+                        <Header title='Аналитика по товарам' />
                     </div>
                     {/* !header */}
 
