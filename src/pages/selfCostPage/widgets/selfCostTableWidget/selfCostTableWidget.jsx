@@ -58,10 +58,26 @@ const SelfCostTableWidget = () => {
         }
 
         const parsedData = await res.json();
-        console.log(parsedData.data)
+        const { items } = parsedData.data
         setDataStatus({ ...initDataStatus, isLoading: false })
         //setTableData(mockData)
-        setTableData(parsedData.data.items)
+        const transformedItems = items.map(i => {
+            const newItem = {
+                ...i,
+                cost: i.cost ? i.cost : 0,
+                fulfillment: i.fulfillment ? i.fulfillment : 0,
+                self_cost_change_history: i.self_cost_change_history.length > 0 ? i.self_cost_change_history.forEach(i => {
+                    const newHistoryItem = {
+                        ...i,
+                        cost: i.cost ? i.cost : 0,
+                        fulfillment: i.fulfillment ? i.fulfillment : 0
+                    }
+                    return newHistoryItem;
+                }) : i.self_cost_change_history,
+            }
+            return newItem
+        })
+        setTableData([...transformedItems])
     }
 
     //задаем начальную дату

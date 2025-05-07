@@ -45,6 +45,9 @@
     align-items: center;
     min-height: 44px;
 }
+.row__bodyContainer_chart {
+   min-height: 200px;
+}
 
 .row__bodyTitle {
     width: 220px;
