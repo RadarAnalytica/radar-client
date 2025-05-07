@@ -1,7 +1,7 @@
 import { ConfigProvider, Divider, Radio, Table } from 'antd';
-import styles from './ReportTable.module.css';
+import styles from './ReportWeekTable.module.css';
 
-export default function ReportTable({columns, data}) {
+export default function ReportWeekTable({columns, data}) {
   console.log('data', data)
 
 
@@ -22,7 +22,12 @@ export default function ReportTable({columns, data}) {
         cellFontSize: 16,
         borderColor: '#e8e8e8',
         cellPaddingInline: 20,
-        cellPaddingBlock: 8
+        cellPaddingBlock: 8,
+        bodySortBg: '#f7f6fe',
+        headerSortActiveBg: '#e7e1fe',
+        headerSortHoverBg: '#e7e1fe',
+        rowSelectedBg: '#f7f6fe',
+        rowSelectedHoverBg: '#e7e1fe',
       },
       Checkbox: {
         colorBorder: '#ccc',
@@ -41,6 +46,7 @@ export default function ReportTable({columns, data}) {
       rowSelection={{
         type: 'checkbox'
       }}
+      showSorterTooltip={false}
       scroll={true}
       ></Table>
       </ConfigProvider>

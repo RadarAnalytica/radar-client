@@ -1049,7 +1049,34 @@ export const ServiceFunctions = {
     } catch (error) {
       console.error('Ошибка при обновлении налоговой ставки:', error);
     }
-  }
+  },
 
+  reportWeekBrands: async () => {
+    try {
+      const response = new Promise( (resolve) => resolve([
+        {
+          id: 1,
+          name: 'brand1'
+        },
+        {
+          id: 2,
+          name: 'brand2'
+        },
+        {
+          id: 2,
+          name: 'brand3'
+        },
+      ]));
+
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Ошибка при обновлении налоговой ставки:', error);
+    }
+  }
+  
   
 };

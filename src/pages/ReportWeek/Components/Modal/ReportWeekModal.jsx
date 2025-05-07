@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ConfigProvider, Button, Popover, Modal } from 'antd';
 // import downloadIcon from ' ../pages/images/Download.svg';
 
-export default function reportModal({children}) {
+export default function reportWeekModal({children}) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isPopoverOpen, setPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(true);

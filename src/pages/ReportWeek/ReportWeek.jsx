@@ -1,25 +1,39 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-// import {SuperTable}
-import Filter from './Components/Filter/ReportFilter';
-import styles from './Report.module.css';
-import { ConfigProvider, Button, Popover } from 'antd';
+import Filter from './Components/Filter/ReportWeekFilter';
+
+import styles from './ReportWeek.module.css';
+import { ConfigProvider, Button, Popover, Modal, Form, Checkbox } from 'antd';
 // import downloadIcon from ' ../pages/images/Download.svg';
 import downloadIcon from '../images/Download.svg';
-import ReportTable from './Components/Table/ReportTable';
+import ReportModal from './Components/Config/ReportWeekConfig';
+import ReportTable from './Components/Table/ReportWeekTable';
 // import Modal from './Components/Modal/ReportModal';
+import { useAppSelector } from '../../redux/hooks'
+import { ServiceFunctions } from '../../service/serviceFunctions';
 
-import { COLUMNS } from './config';
 
-export default function Report() {
+import { COLUMNS } from './columnsConfig';
+
+export default function ReportWeek() {
+	const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isPopoverOpen, setPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(true);
-
+	const [config, setConfig] = useState();
+	const [data, setData] = useState();
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
+
+
+	useEffect(() => {
+			if (activeBrand && activeBrand.is_primary_collect) {
+					// updateDataDashBoard(selectedRange, activeBrand.id, authToken)
+			}
+	}, [activeBrand, selectedRange]);
+	
 
 	function popoverOpen() {
 		setPopoverOpen(true);
@@ -33,60 +47,72 @@ export default function Report() {
 		setPopoverOpen(status);
 	}
 
-  const popoverContent =
-      <ConfigProvider
-        theme={{
-          token: {
-            colorBorder: '#fff',
-            colorPrimary: '#5329FF',
-          },
-          components: {
-            Button: {
-              paddingBlock: 4,
-              paddingInline: 4,
-              fontWeight: 600,
-              fontSize: 16
-            }
-          }
-        }}
-      >
-        <div className={styles.popover}>
-          <Button
-            type='default'
-            variant='text'
-            onClick={() => configOpen}
-            >Настройки колонок</Button>
-          <Button
-            type='default'
-            variant='text'
-            // onClick={() => clear}
-          >Исходная таблица</Button>
-        </div>
-      </ConfigProvider>
+	function configClear() {
+		setTableColumns(COLUMNS)
+	}
 
-  const configOpen = () => {
-    setConfigOpen(true);
-    popoverClose();
-  };
+	const configOpen = () => {
+		console.log('configOpen')
+		setConfigOpen(true);
+		popoverClose();
+	};
 
-  const configOk = () => {
-    setConfigOpen(false);
-  };
+	const configOk = () => {
+		setConfigOpen(false);
+	};
 
-  const configCancel = () => {
-    setConfigOpen(false);
-  };  
+	const configCancel = () => {
+		setConfigOpen(false);
+	};
 
-	let tableData = new Array(10).fill(
-		COLUMNS.reduce((acc, el, i) => {
-		for (const col of COLUMNS){
-			acc[col.dataIndex] = 'test' + i
+	const PopoverContent = () => (
+		<ConfigProvider
+			theme={{
+				token: {
+					colorBorder: '#fff',
+					colorPrimary: '#5329FF',
+				},
+				components: {
+					Button: {
+						paddingBlock: 4,
+						paddingInline: 4,
+						fontWeight: 600,
+						fontSize: 16,
+					},
+				},
+			}}
+		>
+			<div className={styles.popover}>
+				<Button
+					type="default"
+					variant="text"
+					onClick={configOpen}
+				>
+					Настройки колонок
+				</Button>
+				<Button
+					type="default"
+					variant="text"
+					onClick={configClear}
+				>
+					Исходная таблица
+				</Button>
+			</div>
+		</ConfigProvider>
+	);
+
+	let tableData = new Array(10).fill(0);
+	tableData = tableData.map((el, i) => {
+		let res = {key: i};
+		for (const col of COLUMNS) {
+			res[col.dataIndex] = Math.ceil((Math.random() * 10) + i);
 		}
-		return acc;
-	}), {});
+		return res
+	})
+
 	return (
 		<main className={styles.page}>
-      {Loading(isLoading)}
+			{Loading(isLoading)}
 			<MobilePlug />
 			{/* ------ SIDE BAR ------ */}
 			<section className={styles.page__sideNavWrapper}>
@@ -100,7 +126,7 @@ export default function Report() {
 				</div>
 				<div className={styles.controls}>
 					<div className={styles.filter}>
-						<Filter />
+						<Filter setLoading={setIsLoading} setData={setData}/>
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider
@@ -119,14 +145,14 @@ export default function Report() {
 										primaryColor: '#5329FF',
 										paddingBlockLG: 10,
 										paddingInlineLG: 8,
-                    defaultShadow: false
+										defaultShadow: false,
 									},
 								},
 							}}
 						>
 							<Popover
 								arrow={false}
-								content={popoverContent}
+								content={PopoverContent}
 								trigger="click"
 								open={isPopoverOpen}
 								placement="bottomRight"
@@ -181,36 +207,43 @@ export default function Report() {
 						</ConfigProvider>
 					</div>
 				</div>
-					<div style={{flexGrow: 1, background: 'blue'}}>
-						<div>
-				<div className={styles.table_container}>
-					<ReportTable columns={tableColumns} data={tableData} />
-					</div>
+				<div style={{ flexGrow: 1, background: 'blue' }}>
+					<div>
+						<div className={styles.table_container}>
+							<ReportTable
+								columns={tableColumns}
+								data={tableData}
+							/>
+						</div>
 					</div>
 				</div>
 			</section>
-			{/* {isConfigOpen && <Modal><p>asd</p></Modal>} */}
+			<ReportModal
+				isConfigOpen={isConfigOpen}
+				configCancel={configCancel}
+				setConfig={setConfig}
+				columnsList={COLUMNS}
+			/>
 		</main>
 	);
 }
 
-
-function Loading(status){
-  if (!status){
-    return
-  }
-  return (
-    <div
-            className='d-flex flex-column align-items-center justify-content-center'
-            style={{
-              height: '100%',
-              width: '100%',
-              position: 'absolute',
-              backgroundColor: '#fff',
-              zIndex: 999
-            }}
-          >
-            <span className='loader'></span>
-          </div>
-  )
+function Loading(status) {
+	if (!status) {
+		return;
+	}
+	return (
+		<div
+			className="d-flex flex-column align-items-center justify-content-center"
+			style={{
+				height: '100%',
+				width: '100%',
+				position: 'absolute',
+				backgroundColor: '#fff',
+				zIndex: 999,
+			}}
+		>
+			<span className="loader"></span>
+		</div>
+	);
 }
