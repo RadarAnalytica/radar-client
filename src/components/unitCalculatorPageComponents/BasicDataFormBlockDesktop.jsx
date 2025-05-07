@@ -23,10 +23,11 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
         } else {
             setError(true)
         }
+        setLoadingOptions(false);
     }
+    
     const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500)
     useEffect( () => {
-        setLoadingOptions(true);
         getSubjectsDataWSetter('');
     }, [])
 
@@ -60,10 +61,10 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
 
 
     const handleSearch = (value) => { // обработка ввода пользователя вручную
-        setLoadingOptions(true);
+        setLoadingOptions(true)
         setIsProductFromToken(false)
         setIsOptionClicked(false)
-        setInputValue(value);
+        setInputValue(value)
         // if (value === '') {
             // setAutocompleteOptions([])
         // }
@@ -71,6 +72,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
     };
 
     const handleSelect = (value) => { // обработка клика на опцию
+        setLoadingOptions(false)
         setIsOptionClicked(true)
         setIsProductFromToken(null)
         setInputValue(value);
@@ -143,7 +145,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
                         // autoComplete='off'
-                        onChange={() => {setLoadingOptions(true)}}
+                        // onChange={() => {setLoadingOptions(true)}}
                         loading={loadingOptions}
                         notFoundContent={<div style={{color: 'black'}}>
                             {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}
