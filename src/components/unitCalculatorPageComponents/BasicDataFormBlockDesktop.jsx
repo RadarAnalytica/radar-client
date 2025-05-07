@@ -9,8 +9,6 @@ import { useAppSelector } from '../../redux/hooks';
 const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
     const [ autocompleteOptions, setAutocompleteOptions ] = useState();
     const [loadingOptions, setLoadingOptions] = useState(true);
-    const [inputValue, setInputValue] = useState('');
-    const [isOptionClicked, setIsOptionClicked] = useState(false);
     const [ error, setError ] = useState(false)
     const { isSidebarHidden } = useAppSelector(store => store.utils)
 
@@ -27,6 +25,7 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
     }
     
     const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500)
+
     useEffect( () => {
         getSubjectsDataWSetter('');
     }, [])
@@ -52,19 +51,18 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
         if (!value) {
             return Promise.reject('Пожалуйста, заполните это поле')
         // } else if (!isOptionClicked && !isProductFromToken) {
-        } else if (!isOptionClicked && isProductFromToken !== null && isProductFromToken === false) {
+        } else if (isProductFromToken !== null && isProductFromToken === false) {
             return Promise.reject('Пожалуйста, выберите опцию')
         } else {
             return Promise.resolve()
         }
     }
 
-
     const handleSearch = (value) => { // обработка ввода пользователя вручную
         setLoadingOptions(true)
         setIsProductFromToken(false)
-        setIsOptionClicked(false)
-        setInputValue(value)
+        // setIsOptionClicked(false)
+        // setInputValue(value)
         // if (value === '') {
             // setAutocompleteOptions([])
         // }
@@ -73,9 +71,9 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
 
     const handleSelect = (value) => { // обработка клика на опцию
         setLoadingOptions(false)
-        setIsOptionClicked(true)
+        // setIsOptionClicked(true)
         setIsProductFromToken(null)
-        setInputValue(value);
+        // setInputValue(value);
         // const currentOption = autocompleteOptions.find(_ => _.name === value)
         // if (currentOption) {
         //     setMpMainFee(currentOption.fbo)
@@ -133,9 +131,9 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                         const regex = /[<>:"/\\|?*]/;
                         return regex.test(value) ? value.replace(regex, '') : value;
                     }}
-                    rules={[
-                        { validator: isProductFromToken !== null && autocompleteValidation }
-                    ]}
+                    // rules={[
+                    //     { validator: isProductFromToken !== null && autocompleteValidation }
+                    // ]}
                 >
                     <Select 
                         showSearch
@@ -144,8 +142,6 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                         className={styles.formItem__input}
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
-                        // autoComplete='off'
-                        // onChange={() => {setLoadingOptions(true)}}
                         loading={loadingOptions}
                         notFoundContent={<div style={{color: 'black'}}>
                             {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}
