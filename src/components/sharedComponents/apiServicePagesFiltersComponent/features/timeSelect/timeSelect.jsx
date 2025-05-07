@@ -185,6 +185,7 @@ export const TimeSelect = () => {
                     }}
                 >
                     <Select
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         suffixIcon={icon}
                         className={styles.select}
                         options={[...selectOptions].map(i => {
