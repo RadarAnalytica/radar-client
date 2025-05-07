@@ -36,11 +36,15 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
 
     useEffect(() => {
         let isInList;
-        isInList = links.some(_ => pathname.includes(_.url) && pathname !== '/main');
-        if (!isInList && title === 'Мои финансы' && finReportsUrls.some(_ => _ === pathname) && pathname !== '/main') {
-            isInList = true;
+        if (title !== 'Мои финансы' && pathname !== '/abc-data-reports') {
+            isInList = links.some(_ => pathname.includes(_.url) && pathname !== '/main');
+            isInList && setIsInList(isInList)
         }
-        setIsInList(isInList)
+        if (!isInList && title === 'Мои финансы' && (links.some(_ => pathname.includes(_.url) && pathname !== '/main') || finReportsUrls.some(_ => _ === pathname) && pathname !== '/main')) {
+            isInList = true;
+            setIsInList(isInList)
+        }
+       
     }, [pathname, links])
 
     return (
