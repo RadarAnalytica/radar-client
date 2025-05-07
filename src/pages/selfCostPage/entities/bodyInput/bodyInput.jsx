@@ -7,9 +7,9 @@ const BodyInput = ({ item, setProduct, type, product }) => {
 
     useEffect(() => {
         const newProduct = product;
-        const index = newProduct.history.findIndex(_ => _.date === item.date)
+        const index = newProduct.self_cost_change_history.findIndex(_ => _.date === item.date)
         if (index !== -1) {
-            newProduct.history[index][type] = inputValue
+            newProduct.self_cost_change_history[index][type] = inputValue
             setProduct({...newProduct})
         }
     }, [inputValue])

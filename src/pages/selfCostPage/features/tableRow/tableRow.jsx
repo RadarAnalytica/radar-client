@@ -54,33 +54,47 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
         setDataStatus({ ...initDataStatus, isLoading: true })
         const newProduct = {
             ...product,
-            cost: selfCostValue,
-            fulfillment: fulfilmentValue
+            cost: parseInt(selfCostValue),
+            fulfillment: parseInt(fulfilmentValue),
+            date: moment().toISOString()
         }
+        // const newProduct = {
+        //     product: product.product,
+        //     user: product.user,
+        //     shop: product.shop,
+        //     cost: parseInt(selfCostValue),
+        //     fulfillment: parseInt(fulfilmentValue),
+        //     date: moment().toISOString()
+        //   }
 
-        const res = await fetch(`${URL}/api/product/self-costs`, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': 'JWT ' + authToken
-            },
-            body: JSON.stringify(newProduct)
-        })
+        console.log(newProduct)
+        try {
+            const res = await fetch(`${URL}/api/product/self-costs`, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'JWT ' + authToken
+                },
+                body: JSON.stringify(newProduct)
+            })
 
-        if (!res.ok) {
-            const parsedData = await res.json()
-            setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
-            return;
+            if (!res.ok) {
+                const parsedData = await res.json()
+                setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+                return;
+            }
+            setDataStatus({ ...initDataStatus })
+            getTableData(authToken, shopId)
+        } catch {
+            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
         }
-        setDataStatus({ ...initDataStatus })
-        getTableData(authToken, shopId)
     }
 
     const deleteButtonClickHandler = (item) => {
         let newProduct = product;
-        const index = newProduct.history.findIndex(_ => _.date === item.date);
+        const index = newProduct.self_cost_change_history.findIndex(_ => _.date === item.date);
         if (index !== -1) {
-            newProduct.history.splice(index, 1)
+            newProduct.self_cost_change_history.splice(index, 1)
             setProduct({ ...newProduct })
         }
     }
@@ -88,13 +102,13 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
     useEffect(() => {
         if (selectedDate) {
             let newProduct = product;
-            const index = newProduct.history.findIndex(_ => _.date === moment(selectedDate).format('YYYY-MM-DD'))
+            const index = newProduct.self_cost_change_history.findIndex(_ => _.date === moment(selectedDate).format('YYYY-MM-DD'))
             if (index !== -1) {
                 setSelectedDate(null);
                 return
             }
-            newProduct.history.push({ date: moment(selectedDate).format('YYYY-MM-DD'), cost: 0, fulfillment: 0 })
-            newProduct.history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
+            newProduct.self_cost_change_history.push({ date: moment(selectedDate).format('YYYY-MM-DD'), cost: 0, fulfillment: 0 })
+            newProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
             setSelectedDate(null)
             setProduct({ ...newProduct })
         }
@@ -238,7 +252,9 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                         <div className={styles.row__bodyTitle}>
                             {' '}
                         </div>
-                        <RowChart product={product} data={product.self_cost_change_history} />
+                        {product?.self_cost_change_history.length > 0 &&
+                            <RowChart product={product} data={product.self_cost_change_history} />
+                        }
                     </div>
                     <div className={styles.row__bodyContainer}>
                         <div className={styles.row__bodyTitle}>
@@ -255,7 +271,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
 
                             return (
                                 <div className={styles.row__bodyMainItem} key={moment(i.date).format('DD.MM.YY')}>
-                                    <BodyInput item={i} setProduct={setProduct} type='self_cost' product={product} />
+                                    <BodyInput item={i} setProduct={setProduct} type='cost' product={product} />
                                 </div>
                             )
                         })}
@@ -274,7 +290,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                         {product.self_cost_change_history?.map((i, id) => {
                             return (
                                 <div className={styles.row__bodyMainItem} key={moment(i.date).format('DD.MM.YY')}>
-                                    <BodyInput item={i} setProduct={setProduct} type='fullfillment' product={product} />
+                                    <BodyInput item={i} setProduct={setProduct} type='fulfillment' product={product} />
                                 </div>
                             )
                         })}
