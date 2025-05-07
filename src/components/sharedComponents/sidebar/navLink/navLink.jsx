@@ -19,7 +19,6 @@ const NavLink = ({ url, title, icon, isMenuHidden }) => {
     const { pathname } = useLocation()
 
     let style = styles.navLink
-    console.log(url)
     if (title !== 'Оцифровка еженедельных отчетов' && pathname !== '/abc-data-reports') {
         style = pathname.includes(url) ? `${styles.navLink} ${styles.navLink_activeNoIcon}` : style
     }

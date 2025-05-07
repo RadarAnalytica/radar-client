@@ -106,7 +106,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
     // }
     // setOptions(updatedList)
   }
-  console.log('Test one of Fin Report pages');
+  // console.log('Test one of Fin Report pages');
   
   useEffect(() =>  {
     const selectList = options.map(x => x.isSelected ? 1 : 0)
