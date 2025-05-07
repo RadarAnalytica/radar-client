@@ -5,12 +5,10 @@ import logo from '../../../assets/logo.png'
 import { Modal } from 'antd';
 import { URL } from '../../../service/config';
 import AuthContext from '../../../service/AuthContext';
-import { useNavigate } from 'react-router-dom';
 
 const MobileHeader = ({ title }) => {
     const { user } = useContext(AuthContext)
     const [isMenuVisible, setIsMenuVisible] = useState(false)
-    const navigate = useNavigate()
     return (
         <header className={styles.header}>
             <div className={`${styles.header__block} ${styles.header__mainBlock}`}>
@@ -41,16 +39,18 @@ const MobileHeader = ({ title }) => {
                 <div className={styles.mobileMenu}>
                     {user &&
                         <Link
-                            to={`${URL}/signin`}
+                            to='/signin'
                             className={styles.header__signin}
-                            target='_blank'
+                            //onClick={() => window.location.href('/signin')}
+                            //target='_blank'
                         >
                             Вход
                         </Link>}
                     {!user &&
                         <Link
-                            to={`${URL}/signup`}
-                            target='_blank'
+                            to='/signup'
+                            //target='_blank'
+                            //onClick={() => window.location.href('/signup')}
                             className={styles.header__signup}
                         >
                             Регистрация
