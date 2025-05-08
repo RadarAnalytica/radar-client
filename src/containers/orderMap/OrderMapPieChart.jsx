@@ -22,21 +22,21 @@ const OrderMapPieChart = ({
   const isOrders = title == 'Топ 5 по заказам';
   const getColorTooltip = (name) => {
     switch (name) {
-      case 'Сибирский фо':
+      case 'Сибирский ФО':
         return 'rgba(254, 197, 61, 1)';
-      case 'Уральский фо':
+      case 'Уральский ФО':
         return 'grey';
-      case 'Южный фо':
+      case 'Южный ФО':
         return 'rgba(74, 217, 145, 1)';
-      case 'Северо-Кавказский фо':
+      case 'Северо-Кавказский ФО':
         return 'orangered';
-      case 'Центральный фо':
+      case 'Центральный ФО':
         return 'rgba(129, 172, 255, 1)';
-      case 'Приволжский фо':
+      case 'Приволжский ФО':
         return 'rgb(255, 153, 114)';
-      case 'Северо-Западный фо':
+      case 'Северо-Западный ФО':
         return 'yellow';
-      case 'Дальневосточный фо':
+      case 'Дальневосточный ФО':
         return 'brown';
       case 'Другой округ':
         return 'rgba(196, 196, 196, 1)';
@@ -89,7 +89,7 @@ const OrderMapPieChart = ({
   };
 
   const updatedInfo = info.map((item) => {
-    let sub = item.districtName?.split('федеральный округ')?.join('фо');
+    let sub = item.districtName?.split('федеральный округ')?.join('ФО');
     return { ...item, districtName: sub };
   });
 
