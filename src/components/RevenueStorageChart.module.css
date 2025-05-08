@@ -1,10 +1,18 @@
 .revenueStrorage {
-    width: 68%;
-    min-height: 500px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  width: 100%;
+  box-shadow: 0px 0px 20px 0px #00000014;
+  border-radius: 16px;
+  background: white;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px
 }
 
 @media screen and (max-width: 1477px) {
-    .revenueStrorage {
-      width: 55%;
-    }
+  .revenueStrorage {
+    width: 55%;
   }
+}
