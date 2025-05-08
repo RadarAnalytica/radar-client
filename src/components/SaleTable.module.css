@@ -6,7 +6,8 @@
     box-shadow: rgba(0, 0, 0, 0.08);
     margin-top: 20px;
     margin-bottom: 80px;
-    overscroll-behavior: none;
+    max-height: 600px;
+    /* overscroll-behavior: none; */
 }
 
 .container::-webkit-scrollbar {
