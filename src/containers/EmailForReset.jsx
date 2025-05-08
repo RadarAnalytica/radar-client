@@ -65,15 +65,15 @@ const EmailForReset = () => {
                 onClick={() => {
                     alert('Сыылка на сброс пароля была направлена на Вашу почту')
                     email ? requestLink(email).then(data => {
-                        navigate(`${URL}/signin`)
+                       window.location.href = `${URL}/signin`
                     }) : console.log();
                 }}
 
             >Получить ссылку</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <p className='clue-text'>
-                    <Link className='link' style={{ marginRight: '20px' }} to={`${URL}/signup`}>Регистрация</Link>
-                    <Link className='link' to={`${URL}/signin`}>Вход</Link>
+                    <button className='link' style={{ marginRight: '20px' }} onClick={() => {window.location.href = `${URL}/signup`}}>Регистрация</button>
+                    <button className='link' onClick={() => {window.location.href = `${URL}/signin`}}>Вход</button>
                 </p>
             </div>
         </div>
