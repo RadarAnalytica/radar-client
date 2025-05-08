@@ -387,7 +387,7 @@
   }
   
   .rowHeader > div {
- 
+    flex-shrink: 0;
     padding: 0 8px;
     text-align: left;
   }

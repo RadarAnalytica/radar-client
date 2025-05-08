@@ -35,6 +35,7 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
     };
 
     const options = {
+        maintainAspectRatio: false,
         responsive: true,
         plugins: {
             legend: {
@@ -56,7 +57,7 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
                 }
             }
         },
-        cutout: '85%',
+        cutout: '100%',
         layout: {
             padding: 0,
         },
@@ -125,7 +126,9 @@ const StructureRevenue = ({ dataStructureRevenue, isLoading }) => {
                     <span className="loader"></span>
                 </div>
             ) : (
-                <Doughnut data={data} options={options} style={{ margin: "auto" }} />
+                <div className={styles.chartWrapper}>
+                    <Doughnut data={data} options={options} />
+                </div>
             )}
         </div>
     );

@@ -314,6 +314,7 @@ const ReportMain = () => {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
+            {/* Это закоменчен новый загрузчик файлов */}
             {/* <div className={styles.uploadWrapper}>
               <FileUploader
                 setShow={setShow}
@@ -358,12 +359,12 @@ const ReportMain = () => {
                       </div>
                     </>
                   ) : (
-                    <>
+                    <p className={styles.fileUploaderText}>
                       Перетащите мышкой файл или
                       <span className={styles.uploadTextBlue}>
                         загрузите с компьютера
                       </span>
-                    </>
+                    </p>
                   )}
                 </div>
               </div>
