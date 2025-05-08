@@ -46,7 +46,7 @@ const SalesTable = ({ tableData }) => {
       [key]: !prev[key],
     }));
   };
-  
+
 
   const renderWeekRow = (date, data) => {
     if (!data) {
@@ -55,17 +55,17 @@ const SalesTable = ({ tableData }) => {
 
     const formatDate = (dateStr) => {
       const date = new Date(dateStr);
-      
+
       // Check for invalid date
       if (isNaN(date.getTime())) {
         return 'Invalid Date';
       }
-    
+
       // Extract UTC components to avoid timezone issues
       const day = String(date.getUTCDate()).padStart(2, '0');
       const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
       const year = String(date.getUTCFullYear()).slice(-2); // Get last two digits of the year
-    
+
       return `${day}.${month}.${year}`;
     };
     return (
@@ -76,9 +76,9 @@ const SalesTable = ({ tableData }) => {
           >
             {formatDate(date)}
           </div>
-            <div key={date} className={styles.row}>
-              <TableSections data={data} cellWidths={calculateMaxCellWidths}/>
-            </div>
+          <div key={date} className={styles.row}>
+            <TableSections data={data} cellWidths={calculateMaxCellWidths} />
+          </div>
         </div>
       </div>
     );
@@ -97,25 +97,24 @@ const SalesTable = ({ tableData }) => {
           >
             <span>{year}</span>
             <span
-              className={`${styles.dropdownArrow} ${
-                expandedRows[year] ? styles.dropdownArrowExpanded : ''
-              }`}
+              className={`${styles.dropdownArrow} ${expandedRows[year] ? styles.dropdownArrowExpanded : ''
+                }`}
             >
               <img src={arrowDown} alt='Dropdown Arrow' />
             </span>
           </div>
-            {!expandedRows[year] ? (
-          <TableSections data={yearData.total} isYearTotal={true} cellWidths={calculateMaxCellWidths}/>
-        ) : (
-           <TableSectionsEmpty cellWidths={calculateMaxCellWidths}/>
-        )}
-       
+          {!expandedRows[year] ? (
+            <TableSections data={yearData.total} isYearTotal={true} cellWidths={calculateMaxCellWidths} />
+          ) : (
+            <TableSectionsEmpty cellWidths={calculateMaxCellWidths} />
+          )}
+
         </div>
         {expandedRows[year] && (
           <div>
             {Object.entries(groupWeeksByMonth(yearData)).map(
               ([month, monthData]) => {
-               
+
                 return (
                   <div key={`${year}-${month}`}>
                     {/* Month header */}
@@ -127,18 +126,17 @@ const SalesTable = ({ tableData }) => {
                         <div className={styles.weekCellDateMonth} >
                           <span className={styles.weekCellDateMonthText}>{month}</span>
                           <span
-                            className={`${styles.dropdownArrow} ${
-                              expandedRows[`month-${year}-${month}`] ? styles.dropdownArrowExpanded : ''
-                            }`}
+                            className={`${styles.dropdownArrow} ${expandedRows[`month-${year}-${month}`] ? styles.dropdownArrowExpanded : ''
+                              }`}
                           >
                             <img src={arrowDown} alt='Dropdown Arrow' />
                           </span>
                         </div>
                         {!expandedRows[`month-${year}-${month}`] && (
-                          <TableSections data={monthData.total} isMonthTotal={true} cellWidths={calculateMaxCellWidths}/>
+                          <TableSections data={monthData.total} isMonthTotal={true} cellWidths={calculateMaxCellWidths} />
                         )}
                         {expandedRows[`month-${year}-${month}`] && (
-                          <TableSectionsEmpty cellWidths={calculateMaxCellWidths}/>
+                          <TableSectionsEmpty cellWidths={calculateMaxCellWidths} />
                         )}
                       </div>
                     </div>
@@ -146,8 +144,8 @@ const SalesTable = ({ tableData }) => {
                     {expandedRows[`month-${year}-${month}`] && (
                       <div>
                         {Object.entries(monthData.weeks).map(([date, weekData]) =>
-                      renderWeekRow(date, weekData.data)
-                    )}
+                          renderWeekRow(date, weekData.data)
+                        )}
                       </div>
                     )}
                   </div>
@@ -172,23 +170,23 @@ const SalesTable = ({ tableData }) => {
         <div className={styles.headerSection}>
           <div className={styles.headerText}>Продажи</div>
           <div className={styles.flexContainer}>
-            <div className={`${styles.purchaseCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.purchaseCell)}}>
+            <div className={`${styles.purchaseCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.purchaseCell) }}>
               Выкупы
             </div>
-            <div className={`${styles.returnCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.returnCell)}}>
+            <div className={`${styles.returnCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.returnCell) }}>
               Возвраты
             </div>
-            <div className={`${styles.salesCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.salesCell)}}>
+            <div className={`${styles.salesCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.salesCell) }}>
               Продажи
             </div>
-            <div className={`${styles.revenueCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.revenueCell)}}>
+            <div className={`${styles.revenueCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.revenueCell) }}>
               Выручка
             </div>
-            <div className={`${styles.avgPriceCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.avgPriceCell)}}>
+            <div className={`${styles.avgPriceCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.avgPriceCell) }}>
               Ср. цена продажи
             </div>
-            <div className={`${styles.sppCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.sppCell)}}>СПП</div>
-            <div className={`${styles.buyoutCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.buyoutCell)}}>
+            <div className={`${styles.sppCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.sppCell) }}>СПП</div>
+            <div className={`${styles.buyoutCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.buyoutCell) }}>
               Выкуп
             </div>
           </div>
@@ -200,10 +198,10 @@ const SalesTable = ({ tableData }) => {
         >
           <div className={styles.headerText}>Себестоимость</div>
           <div className={`${styles.flexContainer} ${styles.costContainer}`}>
-            <div className={`${styles.costCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.costCell)}}>
+            <div className={`${styles.costCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.costCell) }}>
               Себестоимость
             </div>
-            <div className={`${styles.costPerUnitCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.costPerUnitCell)}}>
+            <div className={`${styles.costPerUnitCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.costPerUnitCell) }}>
               Себестоимость на единицу
             </div>
           </div>
@@ -213,25 +211,25 @@ const SalesTable = ({ tableData }) => {
         <div className={styles.headerSection}>
           <div className={styles.headerText}>Комиссии и логистика</div>
           <div className={styles.flexContainer}>
-            <div className={`${styles.deliveryCountCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.deliveryCountCell)}}>
+            <div className={`${styles.deliveryCountCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.deliveryCountCell) }}>
               Кол-во доставок
             </div>
-            <div className={`${styles.commissionCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.commissionCell)}}>
+            <div className={`${styles.commissionCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.commissionCell) }}>
               Комиссии
             </div>
-            <div className={`${styles.acquiringCell} ${styles.greyColor}`} style={{width: getMinWidth(calculateMaxCellWidths.acquiringCell)}}>
+            <div className={`${styles.acquiringCell} ${styles.greyColor}`} style={{ width: getMinWidth(calculateMaxCellWidths.acquiringCell) }}>
               Эквайринг
             </div>
-            <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticDeliveryCell}`} style={{width: getMinWidth(calculateMaxCellWidths.logisticDeliveryCell)}}>
+            <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticDeliveryCell}`} style={{ width: getMinWidth(calculateMaxCellWidths.logisticDeliveryCell) }}>
               Логистика доставок
             </div>
-            <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticReturnCell}`} style={{width: getMinWidth(calculateMaxCellWidths.logisticReturnCell)}}>
+            <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticReturnCell}`} style={{ width: getMinWidth(calculateMaxCellWidths.logisticReturnCell) }}>
               Логистика возвратов
             </div>
-            <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticStorageCell}`} style={{width: getMinWidth(calculateMaxCellWidths.logisticStorageCell)}}>
+            <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticStorageCell}`} style={{ width: getMinWidth(calculateMaxCellWidths.logisticStorageCell) }}>
               Логистика склад
             </div>
-            <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticUnitCell}`} style={{width: getMinWidth(calculateMaxCellWidths.logisticUnitCell)}}>
+            <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticUnitCell}`} style={{ width: getMinWidth(calculateMaxCellWidths.logisticUnitCell) }}>
               Логистика на единицу
             </div>
           </div>
@@ -243,40 +241,40 @@ const SalesTable = ({ tableData }) => {
           <div className={styles.flexContainer}>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor}`}
-              style={{width: getMinWidth(calculateMaxCellWidths.defectCompnesaitionCell)}}
+              style={{ width: getMinWidth(calculateMaxCellWidths.defectCompnesaitionCell) }}
             >
               Компенсации брака
             </div>
-            <div 
+            <div
               className={`${styles.defectQuantityCell} ${styles.greyColor}`}
-              style={{width: getMinWidth(calculateMaxCellWidths.defectQuantityCell)}}
+              style={{ width: getMinWidth(calculateMaxCellWidths.defectQuantityCell) }}
             >
               Кол-во брака
             </div>
             <div
               className={`${styles.damageCompensationCell} ${styles.greyColor}`}
-              style={{width: getMinWidth(calculateMaxCellWidths.damageCompensationCell)}}
+              style={{ width: getMinWidth(calculateMaxCellWidths.damageCompensationCell) }}
             >
               Компенсации ущерба
             </div>
-            <div 
+            <div
               className={`${styles.damageQuantityCell} ${styles.greyColor}`}
-              style={{width: getMinWidth(calculateMaxCellWidths.damageQuantityCell)}}
+              style={{ width: getMinWidth(calculateMaxCellWidths.damageQuantityCell) }}
             >
               Кол-во <br />
               ущерба
             </div>
-            <div 
+            <div
               className={`${styles.finesCell} ${styles.greyColor}`}
-              style={{width: getMinWidth(calculateMaxCellWidths.finesCell)}}
+              style={{ width: getMinWidth(calculateMaxCellWidths.finesCell) }}
             >
-                Штрафы
+              Штрафы
             </div>
-            <div 
+            <div
               className={`${styles.payMoreCell} ${styles.greyColor}`}
-              style={{width: getMinWidth(calculateMaxCellWidths.payMoreCell)}}
+              style={{ width: getMinWidth(calculateMaxCellWidths.payMoreCell) }}
             >
-                Доплаты
+              Доплаты
             </div>
           </div>
         </div>
@@ -384,7 +382,7 @@ const SalesTable = ({ tableData }) => {
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor} ${styles.marginProfitCell}`}
-              style={{ width: getMinWidth(calculateMaxCellWidths.marginProfitCell) }}
+              style={{ width: getMinWidth(calculateMaxCellWidths.marginProfitCell), wordBreak: 'break-all' }}
             >
               Маржинальность по прибыли
             </div>
