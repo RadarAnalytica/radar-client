@@ -42,7 +42,7 @@ const RestorePass = ({ email }) => {
         })
         .then(() => {
           alert('Пароль успешно обновлен');
-          navigate(`${URL}/signin`);
+          window.location.href = `${URL}/signin`
         });
     } else {
       e.preventDefault();
@@ -82,14 +82,8 @@ const RestorePass = ({ email }) => {
         Обновить
       </button>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <p className='clue-text'>
-          <Link className='link' to={'/signup'} style={{ marginRight: '20px' }}>
-            Регистрация
-          </Link>
-          <Link className='link' to={'/signin'}>
-            Вход
-          </Link>
-        </p>
+          <button className='link' style={{ marginRight: '20px' }} onClick={() => {window.location.href = `${URL}/signup`}}>Регистрация</button>
+          <button className='link' onClick={() => {window.location.href = `${URL}/signin`}}>Вход</button>
       </div>
     </div>
   );
