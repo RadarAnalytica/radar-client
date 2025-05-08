@@ -49,14 +49,24 @@ const MobileHeader = ({ title }) => {
                             Вход
                         </button>}
                     {!user &&
-                        <button
-                            //to={`${URL}/signup`}
-                            onClick={() => window.location.href = `${URL}/signup`}
-                            target='_blank'
-                            className={styles.header__signup}
-                        >
-                            Регистрация
-                        </button>
+                        <>
+                            <button
+                                //to={`${URL}/signin`}
+                                onClick={() => window.location.href = `${URL}/signin`}
+                                className={styles.header__signin}
+                                target='_blank'
+                            >
+                                Вход
+                            </button>
+                            <button
+                                //to={`${URL}/signup`}
+                                onClick={() => window.location.href = `${URL}/signup`}
+                                target='_blank'
+                                className={styles.header__signup}
+                            >
+                                Регистрация
+                            </button>
+                        </>
                     }
                 </div>
             </Modal>
