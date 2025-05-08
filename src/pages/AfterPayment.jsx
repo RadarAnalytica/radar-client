@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate, useLocation  } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './styles.css';
-import LimitedFooter from '../components/LimitedFooter';
+import styles from './AfterPayment.module.css'
 import NavbarMainHome from '../components/NavbarMainHome';
-import SuccessPayment from './images/SuccessPayment.svg';
-import SuccessPaymentLight from './images/SuccessPayment.png';
+//import SuccessPayment from './images/SuccessPayment.svg';
+import successPaymentImg from './images/SuccessPayment.png';
+import errorPaymentImg from './images/errorPayment.png';
 import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import CustomButton from '../components/utilsComponents/CustomButton';
 import AuthContext from '../service/AuthContext'
@@ -19,41 +20,32 @@ const AfterPayment = () => {
   const status = location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false;
 
   const refreshUserToken = async () => {
-        try {
-            const response = await fetch(`${URL}/api/user/refresh`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: 'JWT ' + authToken,
-                },
-            });
+    try {
+      const response = await fetch(`${URL}/api/user/refresh`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'JWT ' + authToken,
+        },
+      });
 
-            if (response.status === 200) {
-                const data = await response.json();
-                return data.token;
-            }
-        } catch (error) {
-            console.error(error);
-        }
-        return null;
-    };
+      if (response.status === 200) {
+        const data = await response.json();
+        return data.token;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return null;
+  };
 
   useEffect(() => {
-    setTimeout(() => {
-      if (status) {
-        refreshUserToken().then((res) => {
-          console.log(res);
-          
-          navigate('/main')
-        });
-      } else {
-        refreshUserToken().then((res) => {
-          console.log(res);
-          
-          navigate('/main')
-        });
-      }
+    const timeout = setTimeout(() => {
+      refreshUserToken().then((res) => {
+      navigate('/main')})
     }, 5000);
+
+    return () => {clearTimeout(timeout)}
   }, []);
 
   const paymentMessage = status
@@ -72,40 +64,25 @@ const AfterPayment = () => {
     console.log('Try again');
   };
 
-  const renderMessage = (message) =>
-    message.split('\n').map((str, index) => (
-      <React.Fragment key={index}>
-        {str}
-        {index < message.split('\n').length - 1 && <br />}
-      </React.Fragment>
-    ));
-
   return (
-    <div className='page-white'>
-      <div className='container widbody-container container-xlwidth column-container'>
+    // <div className='page-white'>
+    <div className={styles.page}>
+      <section className={styles.page__headerWrapper}>
         <NavbarMainHome onlyLogo />
-        <div
-          className={`result-payment ${
-            status ? 'result-payment_success' : 'result-payment_fail'
-          }`}
-        >
-          <div className='result-payment-box'>
-            <div className='result-payment-img'>
-              <ImageComponent
-                heavyImageSrc={SuccessPayment}
-                lightImageSrc={SuccessPaymentLight}
-              />
-            </div>
+      </section>
+      <section className={styles.page__content}>
 
-            <p className='result-payment-box-title'>
-              {renderMessage(paymentMessage)}
-            </p>
+        <div className={status ? `${styles.infoBox} ${styles.infoBox_success}` : `${styles.infoBox} ${styles.infoBox_error}`}>
+          <div className={styles.infoBox__header}>
+            <div className={styles.infoBox__headerImgWrapper}>
+              <img src={status ? successPaymentImg : errorPaymentImg} alt='' className={styles.infoBox__img} />
+            </div>
+            <h1 className={styles.infoBox__title}>{paymentMessage}</h1>
           </div>
-          <div className='result-payment-box result-payment-box_right'>
-            <p className='result-payment-box-title result-payment-box-title_blue'>
-              {renderMessage(boxTitle)}
-            </p>
-            <p className='result-payment-box-text'>{renderMessage(boxText)}</p>
+
+          <div className={styles.infoBox__boxContent}>
+            <h2 className={`${styles.infoBox__title} ${styles.infoBox__title_blue}`}>{boxTitle}</h2>
+            <p className={styles.infoBox__text}>{boxText}</p>
             {!status && (
               <CustomButton
                 text={'Попробовать еще раз'}
@@ -115,8 +92,7 @@ const AfterPayment = () => {
             )}
           </div>
         </div>
-        <LimitedFooter />
-      </div>
+      </section>
     </div>
   );
 };

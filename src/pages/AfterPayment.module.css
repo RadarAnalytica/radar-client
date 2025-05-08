@@ -1,0 +1,116 @@
+.page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 20px 100px;
+    background: white;
+    min-height: 100dvh;
+}
+
+.page__headerWrapper {
+    width: 100%;
+    flex-grow: 0;
+    flex-shrink: 1;
+}
+
+.page__content {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding: 0 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* box */
+
+.infoBox {
+    width: 100%;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 24px;
+    max-width: 700px;
+}
+
+.infoBox_success {
+    background: #00b69b26;
+}
+
+.infoBox_error {
+    background: #eb2f5026;
+}
+
+.infoBox__header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+}
+
+.infoBox__headerImgWrapper {
+    width: 60px;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.infoBox__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+}
+
+.infoBox__title {
+    margin: 0;
+    padding: 0;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 120%;
+    letter-spacing: 0%;
+    text-align: left;
+    color: #1A1A1A;
+}
+
+.infoBox__title_blue {
+    color: #5329FF
+}
+
+.infoBox__boxContent {
+    width: 100%;
+    border-radius: 12px;
+    background: white;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.infoBox__text {
+    margin: 0;
+    padding: 0;
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    text-align: left;
+    color: #1A1A1A;
+}
