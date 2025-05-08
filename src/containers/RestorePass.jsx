@@ -35,16 +35,14 @@ const RestorePass = ({ email }) => {
     if (pass && confPass && pass === confPass) {
       updatePass(email, pass)
         .then((data) => {
-          if (data) {
-            alert('Пароль успешно обновлен!');
-            navigate('/signin');
-          } else {
+          if (!data.ok) {
             alert('Возникла ошибка. Поторите попытку');
+            return
           }
         })
-        .then((data) => {
+        .then(() => {
           alert('Пароль успешно обновлен');
-          navigate('/signin');
+          navigate(`${URL}/signin`);
         });
     } else {
       e.preventDefault();
