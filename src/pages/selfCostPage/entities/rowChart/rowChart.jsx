@@ -29,7 +29,7 @@ const RowChart = ({ product, data }) => {
                     {
                         label: '1',
                         type: 'line',
-                        data: [product.cost, ...data.map(i => i.cost)],
+                        data: [product.cost, ...data.map(i => i.cost ? i.cost : 0)],
                         borderColor: '#00B69B',
                         pointBorderColor: 'white',
                         backgroundColor: '#00B69B',
@@ -41,7 +41,7 @@ const RowChart = ({ product, data }) => {
                     {
                         label: '2',
                         type: 'line',
-                        data: [product.fulfillment, ...data.map(i => i.fulfillment)],
+                        data: [product.fulfillment, ...data.map(i => i.fulfillment ? i.fulfillment : 0)],
                         borderColor: '#F93C65',
                         pointBorderColor: 'white',
                         backgroundColor: '#F93C65',

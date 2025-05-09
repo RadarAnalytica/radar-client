@@ -24,15 +24,16 @@ import { URL } from "../../../../service/config";
     },
  */
 
-const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId }) => {
+const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, compare }) => {
     const [product, setProduct] = useState(currentProduct)
     const [isOpen, setIsOpen] = useState(false) // стейт открытия аккордеона
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false) // стейт датапикера
     const [selectedDate, setSelectedDate] = useState(null) // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
-    const [selfCostValue, setSelfCostValue] = useState(product.cost)
-    const [fulfilmentValue, setFullfilmentValue] = useState(product.fulfillment)
-
+    const [selfCostValue, setSelfCostValue] = useState(currentProduct.cost)
+    const [fulfilmentValue, setFullfilmentValue] = useState(currentProduct.fulfillment)
+    const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
+    const [saveButtonStatus, setSaveButtonStatus] = useState(true)
     const customRuLocale = {
         ...ru,
         localize: {
@@ -81,24 +82,38 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
         }
     }
+
     const updateHistoryParams = async () => {
         setDataStatus({ ...initDataStatus, isLoading: true })
-        const newParams = product.self_cost_change_history[product.self_cost_change_history.length - 1]
-        const newProduct = {
-            ...product,
-            cost: parseInt(newParams.cost),
-            fulfillment: parseInt(newParams.fulfilmentValue),
-            date: moment(newParams.date).toISOString()
+
+        const object = {
+            items_to_update: product.self_cost_change_history.map(i => ({
+                product: product.product,
+                user: product.user,
+                shop: product.shop,
+                cost: i.cost ? parseInt(i.cost) : i.cost,
+                fulfillment: i.fulfillment ? parseInt(i.fulfillment) : i.fulfillment,
+                date: moment(i.date).format('YYYY-MM-DD')
+            })),
+            ids_to_delete: historyItemsToDelete.map(i => ({
+                product: product.product,
+                user: product.user,
+                shop: product.shop,
+                cost: i.cost ? parseInt(i.cost) : i.cost,
+                fulfillment: i.fulfillment ? parseInt(i.fulfillment) : i.fulfillment,
+                date: moment(i.date).format('YYYY-MM-DD')
+            }))
         }
 
         try {
+            updateDefaultParams()
             const res = await fetch(`${URL}/api/product/self-costs`, {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',
                     'authorization': 'JWT ' + authToken
                 },
-                body: JSON.stringify(newProduct)
+                body: JSON.stringify(object)
             })
 
             if (!res.ok) {
@@ -106,6 +121,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                 setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
                 return;
             }
+            setHistoryItemsToDelete([])
             setDataStatus({ ...initDataStatus })
             getTableData(authToken, shopId)
         } catch {
@@ -117,10 +133,46 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
         let newProduct = product;
         const index = newProduct.self_cost_change_history.findIndex(_ => _.date === item.date);
         if (index !== -1) {
+            setHistoryItemsToDelete([...historyItemsToDelete, newProduct.self_cost_change_history[index]])
             newProduct.self_cost_change_history.splice(index, 1)
             setProduct({ ...newProduct })
+
         }
     }
+
+    const getSaveButtonStatus = (compare) => {
+        let status = true;
+        // if (product.cost?.toString() !== selfCostValue) { 
+        //     console.log('hit 1')
+        //     status = false
+        // }
+        // if (product.fulfillment?.toString() !== fulfilmentValue) {
+        //     console.log('hit 1.1')
+        //     status = false
+        // }
+        if (historyItemsToDelete.length > 0) { console.log('hit 2'); status = false }
+        if (product.self_cost_change_history.length !== compare.self_cost_change_history.length) { console.log('hit 3'); status = false }
+        if (product.self_cost_change_history.length === compare.self_cost_change_history.length) {
+            product.self_cost_change_history.forEach((i, id) => {
+                const compareObj = compare.self_cost_change_history[id]
+                console.log(i.cost)
+                console.log(compareObj.cost)
+                if (moment(i.date).format('DD.MM.YY') !== moment(compareObj.date).format('DD.MM.YY')) {
+                    status = false
+                }
+                if (i.cost !== compareObj.cost) {
+                    status = false
+                }
+                if (i.fulfillment !== compareObj.fulfillment) {
+                    status = false
+                }
+            })
+        }
+       
+        return status
+    }
+
+
 
     useEffect(() => {
         if (selectedDate) {
@@ -146,9 +198,11 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
         setProduct({ ...newProduct })
     }, [selfCostValue, fulfilmentValue])
 
-
-
-
+    useEffect(() => {
+        if (product.self_cost_change_history) {
+            setSaveButtonStatus(getSaveButtonStatus({...compare}))
+        }
+    }, [product, historyItemsToDelete, selfCostValue, fulfilmentValue])
     return (
         <>
             {/* Основная строка */}
@@ -160,7 +214,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                     <div className={styles.row__imgWrapper}>
                         <img src={product.photo} width={30} height={40} />
                     </div>
-                    <p className={styles.row__title}>{product.vendor_code}</p>
+                    <p className={styles.row__title}>{product?.vendor_code}</p>
                 </div>
 
                 {/* Инпуты себестоимости и фулфилмента по умолчанию */}
