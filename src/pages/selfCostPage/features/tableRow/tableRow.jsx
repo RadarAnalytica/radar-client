@@ -291,6 +291,8 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                             )
                         })}
 
+
+
                         {/* кнопка добавить дату */}
                         <div className={styles.row__bodyMainItem}>
                             <button className={styles.row__dateAddButton} onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}>
