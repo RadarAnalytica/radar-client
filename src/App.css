@@ -214,8 +214,8 @@ label {
 .burger-menu-mobile{
   display: none
 }
-input,
-select {
+input:not(.ant-input),
+select:not(.ant-input) {
   outline: none !important;
   box-shadow: none !important;
   border: 1px solid rgba(232, 232, 232, 1) !important;

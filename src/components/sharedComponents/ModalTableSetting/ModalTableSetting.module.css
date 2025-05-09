@@ -1,13 +1,16 @@
-.list{
+.list {
+  width: 100%;
   column-gap: 16px;
   row-gap: 12px;
 }
-.item{
+
+.item {
   flex: 1 0 30%;
   margin: 0;
   padding: 8px 0;
 }
-.controls{
+
+.controls {
   flex: 1 0 30%;
   margin-left: auto;
 }

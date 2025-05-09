@@ -1,64 +1,55 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import AuthContext from '../../service/AuthContext';
+import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
 import Filter from './Components/Filter/ReportWeekFilter';
-
-import styles from './ReportWeek.module.css';
-import { ConfigProvider, Button, Popover, Modal, Form, Checkbox } from 'antd';
-// import downloadIcon from ' ../pages/images/Download.svg';
-import downloadIcon from '../images/Download.svg';
-import ReportModal from './Components/Config/ReportWeekConfig';
-import ReportTable from './Components/Table/ReportWeekTable';
-// import Modal from './Components/Modal/ReportModal';
-import { useAppSelector } from '../../redux/hooks'
 import { ServiceFunctions } from '../../service/serviceFunctions';
+import { fileDownload } from '../../service/utils';
 
+import { ConfigProvider, Button, Popover, Modal, Form, Checkbox } from 'antd';
+import styles from './ReportWeek.module.css';
+import downloadIcon from '../images/Download.svg';
+import ReportTable from './Components/Table/ReportWeekTable';
+import ModalTableSetting from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
+import { useAppSelector } from '../../redux/hooks';
 
 import { COLUMNS } from './columnsConfig';
 
 export default function ReportWeek() {
-	const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+	const { authToken } = useContext(AuthContext);
+	const { activeBrand, selectedRange } = useAppSelector(
+		(state) => state.filters
+	);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isPopoverOpen, setPopoverOpen] = useState(false);
-	const [isConfigOpen, setConfigOpen] = useState(true);
-	const [config, setConfig] = useState();
+	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [data, setData] = useState();
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 
+	useEffect(() => {
+		setData(ServiceFunctions.reportWeekBrands(COLUMNS));
+	}, []);
 
 	useEffect(() => {
-			if (activeBrand && activeBrand.is_primary_collect) {
-					// updateDataDashBoard(selectedRange, activeBrand.id, authToken)
-			}
+		if (activeBrand && activeBrand.is_primary_collect) {
+			setData(ServiceFunctions.reportWeekBrands(COLUMNS));
+		}
 	}, [activeBrand, selectedRange]);
-	
-
-	function popoverOpen() {
-		setPopoverOpen(true);
-	}
-
-	function popoverClose() {
-		setPopoverOpen(false);
-	}
 
 	function popoverHandler(status) {
 		setPopoverOpen(status);
 	}
 
 	function configClear() {
-		setTableColumns(COLUMNS)
+		setTableColumns(COLUMNS);
+		setPopoverOpen(false);
 	}
 
 	const configOpen = () => {
-		console.log('configOpen')
 		setConfigOpen(true);
-		popoverClose();
-	};
-
-	const configOk = () => {
-		setConfigOpen(false);
+		setPopoverOpen(false);
 	};
 
 	const configCancel = () => {
@@ -83,32 +74,24 @@ export default function ReportWeek() {
 			}}
 		>
 			<div className={styles.popover}>
-				<Button
-					type="default"
-					variant="text"
-					onClick={configOpen}
-				>
+				<Button type="default" variant="text" onClick={configOpen}>
 					Настройки колонок
 				</Button>
-				<Button
-					type="default"
-					variant="text"
-					onClick={configClear}
-				>
+				<Button type="default" variant="text" onClick={configClear}>
 					Исходная таблица
 				</Button>
 			</div>
 		</ConfigProvider>
 	);
 
-	let tableData = new Array(10).fill(0);
-	tableData = tableData.map((el, i) => {
-		let res = {key: i};
-		for (const col of COLUMNS) {
-			res[col.dataIndex] = Math.ceil((Math.random() * 10) + i);
-		}
-		return res
-	})
+	const handleDownload = async () => {
+		const fileBlob = await ServiceFunctions.reportWeekDownload(
+			authToken,
+			selectedRange,
+			123
+		);
+		fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+	};
 
 	return (
 		<main className={styles.page}>
@@ -126,7 +109,7 @@ export default function ReportWeek() {
 				</div>
 				<div className={styles.controls}>
 					<div className={styles.filter}>
-						<Filter setLoading={setIsLoading} setData={setData}/>
+						<Filter setLoading={setIsLoading} setData={setData} />
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider
@@ -160,15 +143,11 @@ export default function ReportWeek() {
 							>
 								<Button
 									type="primary"
-									//style={{ color: '#5329FF' }}
 									iconPosition="start"
-									// icon={result !== undefined && <ShareIcon />}
-									// disabled={result === undefined}
 									size="large"
 									onClick={() => {
-										popoverOpen();
+										setPopoverOpen(true);
 									}}
-									// className={styles.result__shareButton}
 								>
 									<svg
 										width="24"
@@ -195,35 +174,32 @@ export default function ReportWeek() {
 						>
 							<Button
 								type="primary"
-								// icon={result !== undefined && <DownloadIcon />}
 								iconPosition="start"
-								// disabled={result === undefined}
 								size="large"
-								// onClick={generateExcel}
-								// className={styles.result__shareButton}
+								onClick={handleDownload}
 							>
 								<img src={downloadIcon} /> Скачать Excel
 							</Button>
 						</ConfigProvider>
 					</div>
 				</div>
-				<div style={{ flexGrow: 1, background: 'blue' }}>
+				<div style={{ flexGrow: 1 }}>
 					<div>
 						<div className={styles.table_container}>
-							<ReportTable
-								columns={tableColumns}
-								data={tableData}
-							/>
+							<ReportTable columns={tableColumns} data={data} />
 						</div>
 					</div>
 				</div>
 			</section>
-			<ReportModal
-				isConfigOpen={isConfigOpen}
-				configCancel={configCancel}
-				setConfig={setConfig}
-				columnsList={COLUMNS}
-			/>
+			{isConfigOpen && (
+				<ModalTableSetting
+					isModalOpen={isConfigOpen}
+					closeModal={configCancel}
+					tableColumns={tableColumns}
+					setTableColumns={setTableColumns}
+					columnsList={COLUMNS}
+				/>
+			)}
 		</main>
 	);
 }
