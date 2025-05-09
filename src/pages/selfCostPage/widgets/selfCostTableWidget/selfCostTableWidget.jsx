@@ -18,13 +18,28 @@ const initDataStatus = {
     message: ''
 }
 
+/**
+ *  {
+                "product": 10559,
+                "user": 5,
+                "shop": 88,
+                "cost": 100.0,
+                "fulfillment": null,
+                "id": 462,
+                "date": "2025-02-20",
+                "vendor_code": "027 треугольник большой золото",
+                "photo": "https://basket-15.wbbasket.ru/vol2209/part220957/220957446/images/c246x328/1.webp",
+                "self_cost_change_history": []
+    },
+ */
+
 const SelfCostTableWidget = () => {
 
     const [tableData, setTableData] = useState() // данные для рендера таблицы
     const [dataStatus, setDataStatus] = useState(initDataStatus)
     const { authToken } = useContext(AuthContext)
     const { activeBrand } = useAppSelector(store => store.filters)
-
+    console.log(tableData)
 
     const getTableData = async (authToken, shopId) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
@@ -43,9 +58,10 @@ const SelfCostTableWidget = () => {
         }
 
         const parsedData = await res.json();
-        console.log(parsedData.data)
+        const { items } = parsedData.data
         setDataStatus({ ...initDataStatus, isLoading: false })
-        setTableData(mockData)
+        //setTableData(mockData)
+        setTableData([...items])
     }
 
     //задаем начальную дату
@@ -98,7 +114,7 @@ const SelfCostTableWidget = () => {
                 {/* Тело таблицы */}
                 <div className={styles.table__body}>
                     {/* Мапим данные о товарах */}
-                    {tableData && tableData.length > 0 && activeBrand && tableData.map((product, id) => {
+                    {tableData && tableData.length > 0 && activeBrand && tableData?.map((product, id) => {
                         return (
                             <TableRow
                                 tableConfig={tableConfig}
@@ -109,10 +125,11 @@ const SelfCostTableWidget = () => {
                                 setDataStatus={setDataStatus}
                                 initDataStatus={initDataStatus}
                                 shopId={activeBrand?.id}
+                                compare={product}
                             />
                         )
                     })}
-                    {tableData && tableData.length === 0 && id === 0 &&
+                    {tableData && tableData.length === 0 &&
                         <div className={styles.table__row}>
                             <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
                                 Ничего не найдено
