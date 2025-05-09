@@ -76,7 +76,7 @@ const AfterPayment = () => {
             <div className={styles.infoBox__headerImgWrapper}>
               <img src={status ? successPaymentImg : errorPaymentImg} alt='' className={styles.infoBox__img} />
             </div>
-            <h1 className={styles.infoBox__title}>{paymentMessage}</h1>
+            <h1 className={`${styles.infoBox__title} ${styles.infoBox__title_header}`}>{paymentMessage}</h1>
           </div>
 
           <div className={styles.infoBox__boxContent}>
