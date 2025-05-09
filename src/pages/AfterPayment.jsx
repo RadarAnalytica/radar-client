@@ -6,7 +6,6 @@ import NavbarMainHome from '../components/NavbarMainHome';
 //import SuccessPayment from './images/SuccessPayment.svg';
 import successPaymentImg from './images/SuccessPayment.png';
 import errorPaymentImg from './images/errorPayment.png';
-import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import CustomButton from '../components/utilsComponents/CustomButton';
 import AuthContext from '../service/AuthContext'
 import { URL } from '../service/config';
@@ -40,12 +39,12 @@ const AfterPayment = () => {
   };
 
   useEffect(() => {
-    // const timeout = setTimeout(() => {
-    //   refreshUserToken().then((res) => {
-    //   navigate('/main')})
-    // }, 5000);
+    const timeout = setTimeout(() => {
+      refreshUserToken().then((res) => {
+      navigate('/main')})
+    }, 5000);
 
-    // return () => {clearTimeout(timeout)}
+    return () => {clearTimeout(timeout)}
   }, []);
 
   const paymentMessage = status
