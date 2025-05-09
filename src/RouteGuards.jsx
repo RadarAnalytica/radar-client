@@ -108,7 +108,7 @@ export const ProtectedRoute = ({
   //   is_report_downloaded: true,
   //   is_test_used: true,
   //   role: "admin",
-  //   subscription_status: 'expired'
+  //   subscription_status: null
   // }
 
 //  const user = undefined
