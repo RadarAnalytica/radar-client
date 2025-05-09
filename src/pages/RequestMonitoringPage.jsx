@@ -87,7 +87,7 @@ const RequestMonitoringPage = () => {
                 "rate": data.rate,
                 "wb_id": data.wb_id,
                 "sku": data.sku,
-                "pages": data.pages,
+                "pages": data.pages - 1,
                 "page": data.page,
                 "page_limit": data.page_limit,
 

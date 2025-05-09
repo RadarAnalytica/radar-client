@@ -113,7 +113,7 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
                     {/* <div class="attention-icon">
                     <div class="exclamation-circle">!</div>
                 </div> */}
-                    <div class="page-info">
+                    <div className="page-info">
                         <div className="pagination">
                             {page > 1 && (
                                 <button className="arrow left-arrow" onClick={goToPreviousPage}>
@@ -279,7 +279,7 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
                                                                 marginLeft: '8px',
                                                             }}
                                                         >
-                                                            {console.log(filteredData)}
+                                                            {/* {console.log(filteredData)} */}
                                                             <span className='pb-1'>
                                                                 {item.details[colIndex].compare_flag !== null && (
                                                                     <img
