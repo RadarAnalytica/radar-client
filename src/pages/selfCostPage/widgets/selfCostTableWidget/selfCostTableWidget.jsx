@@ -39,7 +39,7 @@ const SelfCostTableWidget = () => {
     const [dataStatus, setDataStatus] = useState(initDataStatus)
     const { authToken } = useContext(AuthContext)
     const { activeBrand } = useAppSelector(store => store.filters)
-
+    console.log(tableData)
 
     const getTableData = async (authToken, shopId) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
@@ -61,23 +61,23 @@ const SelfCostTableWidget = () => {
         const { items } = parsedData.data
         setDataStatus({ ...initDataStatus, isLoading: false })
         //setTableData(mockData)
-        const transformedItems = items.map(i => {
-            const newItem = {
-                ...i,
-                cost: i.cost ? i.cost : 0,
-                fulfillment: i.fulfillment ? i.fulfillment : 0,
-                self_cost_change_history: i.self_cost_change_history.map(a => {
-                    const newHistoryItem = {
-                        ...a,
-                        cost: a.cost ? a.cost : 0,
-                        fulfillment: a.fulfillment ? a.fulfillment : 0
-                    }
-                    return newHistoryItem;
-                })
-            }
-            return newItem
-        })
-        setTableData([...transformedItems])
+        // const transformedItems = items.map(i => {
+        //     const newItem = {
+        //         ...i,
+        //         cost: i.cost ? i.cost : 0,
+        //         fulfillment: i.fulfillment ? i.fulfillment : 0,
+        //         self_cost_change_history: i.self_cost_change_history.map(a => {
+        //             const newHistoryItem = {
+        //                 ...a,
+        //                 cost: a.cost ? a.cost : 0,
+        //                 fulfillment: a.fulfillment ? a.fulfillment : 0
+        //             }
+        //             return newHistoryItem;
+        //         })
+        //     }
+        //     return newItem
+        // })
+        setTableData([...items])
     }
 
     //задаем начальную дату

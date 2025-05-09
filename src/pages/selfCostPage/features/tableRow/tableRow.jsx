@@ -52,10 +52,12 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
     const updateDefaultParams = async () => {
         setDataStatus({ ...initDataStatus, isLoading: true })
         const newProduct = {
-            ...product,
-            cost: parseInt(selfCostValue),
-            fulfillment: parseInt(fulfilmentValue),
-            date: moment().toISOString()
+            product: product.product,
+            user: product.user,
+            shop: product.shop,
+            cost: selfCostValue ? parseInt(selfCostValue) : selfCostValue,
+            fulfillment: fulfilmentValue ? parseInt(fulfilmentValue) : fulfilmentValue,
+            //date: "2010-01-01"
         }
 
         try {
@@ -184,7 +186,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                             <button
                                 onClick={updateDefaultParams}
                                 className={styles.row__saveButton}
-                                disabled={product.cost.toString() !== selfCostValue && product.fulfillment.toString() !== fulfilmentValue}
+                                disabled={isOpen || (product.cost?.toString() !== selfCostValue && product.fulfillment?.toString() !== fulfilmentValue)}
                             >
                                 <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6 4.25C5.58579 4.25 5.25 4.58579 5.25 5C5.25 5.41421 5.58579 5.75 6 5.75H12C12.4142 5.75 12.75 5.41421 12.75 5C12.75 4.58579 12.4142 4.25 12 4.25H6Z" fill="#5329FF" />
