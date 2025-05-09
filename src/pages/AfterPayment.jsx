@@ -40,12 +40,12 @@ const AfterPayment = () => {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      refreshUserToken().then((res) => {
-      navigate('/main')})
-    }, 5000);
+    // const timeout = setTimeout(() => {
+    //   refreshUserToken().then((res) => {
+    //   navigate('/main')})
+    // }, 5000);
 
-    return () => {clearTimeout(timeout)}
+    // return () => {clearTimeout(timeout)}
   }, []);
 
   const paymentMessage = status
@@ -61,11 +61,10 @@ const AfterPayment = () => {
     : 'Попробуйте вернуться и провести оплату еще раз';
 
   const tryAgain = () => {
-    console.log('Try again');
+    navigate('/main')
   };
 
   return (
-    // <div className='page-white'>
     <div className={styles.page}>
       <section className={styles.page__headerWrapper}>
         <NavbarMainHome onlyLogo />
