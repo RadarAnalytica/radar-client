@@ -66,14 +66,14 @@ const SelfCostTableWidget = () => {
                 ...i,
                 cost: i.cost ? i.cost : 0,
                 fulfillment: i.fulfillment ? i.fulfillment : 0,
-                self_cost_change_history: i.self_cost_change_history.length > 0 ? i.self_cost_change_history.forEach(i => {
+                self_cost_change_history: i.self_cost_change_history.map(a => {
                     const newHistoryItem = {
-                        ...i,
-                        cost: i.cost ? i.cost : 0,
-                        fulfillment: i.fulfillment ? i.fulfillment : 0
+                        ...a,
+                        cost: a.cost ? a.cost : 0,
+                        fulfillment: a.fulfillment ? a.fulfillment : 0
                     }
                     return newHistoryItem;
-                }) : i.self_cost_change_history,
+                })
             }
             return newItem
         })

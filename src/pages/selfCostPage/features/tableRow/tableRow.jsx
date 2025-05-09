@@ -25,7 +25,6 @@ import { URL } from "../../../../service/config";
  */
 
 const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId }) => {
-
     const [product, setProduct] = useState(currentProduct)
     const [isOpen, setIsOpen] = useState(false) // стейт открытия аккордеона
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false) // стейт датапикера
@@ -58,16 +57,38 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
             fulfillment: parseInt(fulfilmentValue),
             date: moment().toISOString()
         }
-        // const newProduct = {
-        //     product: product.product,
-        //     user: product.user,
-        //     shop: product.shop,
-        //     cost: parseInt(selfCostValue),
-        //     fulfillment: parseInt(fulfilmentValue),
-        //     date: moment().toISOString()
-        //   }
 
-        console.log(newProduct)
+        try {
+            const res = await fetch(`${URL}/api/product/self-costs`, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'JWT ' + authToken
+                },
+                body: JSON.stringify(newProduct)
+            })
+
+            if (!res.ok) {
+                const parsedData = await res.json()
+                setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+                return;
+            }
+            setDataStatus({ ...initDataStatus })
+            getTableData(authToken, shopId)
+        } catch {
+            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
+        }
+    }
+    const updateHistoryParams = async () => {
+        setDataStatus({ ...initDataStatus, isLoading: true })
+        const newParams = product.self_cost_change_history[product.self_cost_change_history.length - 1]
+        const newProduct = {
+            ...product,
+            cost: parseInt(newParams.cost),
+            fulfillment: parseInt(newParams.fulfilmentValue),
+            date: moment(newParams.date).toISOString()
+        }
+
         try {
             const res = await fetch(`${URL}/api/product/self-costs`, {
                 method: 'POST',
@@ -148,6 +169,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                                 value={selfCostValue}
                                 onChange={(e) => setSelfCostValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev } })}
                                 size='large'
+                                disabled={isOpen}
                             />
                         </div>
                         <div className={styles.row__item}>
@@ -156,6 +178,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                                 value={fulfilmentValue}
                                 onChange={(e) => setFullfilmentValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev } })}
                                 size='large'
+                                disabled={isOpen}
                             />
 
                             <button
@@ -306,6 +329,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                             type='primary'
                             size='large'
                             className={styles.row__bodySaveButton}
+                            onClick={updateHistoryParams}
                         >
                             Сохранить
                         </Button>
