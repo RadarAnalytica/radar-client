@@ -17,7 +17,7 @@ export const mainTableConfig = [
             { ruName: 'Общая скидка без СПП, %', engName: 'discount', units: '%', isSortable: true, isActive: true },
             { ruName: 'Количество отзывов на конец дня, шт', engName: 'feedbacks', units: 'шт', isSortable: true, isActive: true },
             { ruName: 'Динамика рейтинга', engName: 'rating', units: null, isSortable: true, isActive: true },
-            { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: true },
+            { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: false },
         ]
     },
 ]
