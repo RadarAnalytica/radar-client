@@ -8,6 +8,7 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import DatePickerCustomDropdown from "../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown";
 import { URL } from "../../../../service/config";
+import { getSaveButtonStatus } from "../../shared";
 
 /**
  *  {
@@ -24,14 +25,14 @@ import { URL } from "../../../../service/config";
     },
  */
 
-const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, compare }) => {
-    const [product, setProduct] = useState(currentProduct)
+
+
+const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId }) => {
+    const [product, setProduct] = useState(JSON.parse(JSON.stringify(currentProduct))) // присваиваем глубоким копированием
     const [isOpen, setIsOpen] = useState(false) // стейт открытия аккордеона
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false) // стейт датапикера
     const [selectedDate, setSelectedDate] = useState(null) // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
-    const [selfCostValue, setSelfCostValue] = useState(currentProduct.cost)
-    const [fulfilmentValue, setFullfilmentValue] = useState(currentProduct.fulfillment)
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
     const [saveButtonStatus, setSaveButtonStatus] = useState(true)
     const customRuLocale = {
@@ -56,8 +57,8 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
             product: product.product,
             user: product.user,
             shop: product.shop,
-            cost: selfCostValue ? parseInt(selfCostValue) : selfCostValue,
-            fulfillment: fulfilmentValue ? parseInt(fulfilmentValue) : fulfilmentValue,
+            cost: product.cost ? parseInt(product.cost) :product.cost,
+            fulfillment: product.fulfillment ? parseInt(product.fulfillment) : product.fulfillment,
             //date: "2010-01-01"
         }
 
@@ -140,37 +141,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
         }
     }
 
-    const getSaveButtonStatus = (compare) => {
-        let status = true;
-        // if (product.cost?.toString() !== selfCostValue) { 
-        //     console.log('hit 1')
-        //     status = false
-        // }
-        // if (product.fulfillment?.toString() !== fulfilmentValue) {
-        //     console.log('hit 1.1')
-        //     status = false
-        // }
-        if (historyItemsToDelete.length > 0) { console.log('hit 2'); status = false }
-        if (product.self_cost_change_history.length !== compare.self_cost_change_history.length) { console.log('hit 3'); status = false }
-        if (product.self_cost_change_history.length === compare.self_cost_change_history.length) {
-            product.self_cost_change_history.forEach((i, id) => {
-                const compareObj = compare.self_cost_change_history[id]
-                console.log(i.cost)
-                console.log(compareObj.cost)
-                if (moment(i.date).format('DD.MM.YY') !== moment(compareObj.date).format('DD.MM.YY')) {
-                    status = false
-                }
-                if (i.cost !== compareObj.cost) {
-                    status = false
-                }
-                if (i.fulfillment !== compareObj.fulfillment) {
-                    status = false
-                }
-            })
-        }
-       
-        return status
-    }
+
 
 
 
@@ -189,20 +160,10 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
         }
     }, [selectedDate])
 
-    useEffect(() => {
-        let newProduct = {
-            ...product,
-            cost: selfCostValue,
-            fulfillment: fulfilmentValue
-        };
-        setProduct({ ...newProduct })
-    }, [selfCostValue, fulfilmentValue])
 
     useEffect(() => {
-        if (product.self_cost_change_history) {
-            setSaveButtonStatus(getSaveButtonStatus({...compare}))
-        }
-    }, [product, historyItemsToDelete, selfCostValue, fulfilmentValue])
+        setSaveButtonStatus(getSaveButtonStatus(product, currentProduct, historyItemsToDelete))
+    }, [product, historyItemsToDelete])
     return (
         <>
             {/* Основная строка */}
@@ -218,12 +179,18 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                 </div>
 
                 {/* Инпуты себестоимости и фулфилмента по умолчанию */}
-                {selfCostValue !== undefined && fulfilmentValue !== undefined &&
+                {
                     <>
                         <div className={`${styles.row__item} ${styles.row__item_first}`}>
                             <Input
-                                value={selfCostValue}
-                                onChange={(e) => setSelfCostValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev } })}
+                                value={product.cost}
+                                onChange={(e) => {
+                                    let newProduct = {
+                                        ...product,
+                                        cost: /^(|\d+)$/.test(e.target.value) ? e.target.value : product.cost,
+                                    };
+                                    setProduct({ ...newProduct })
+                                }}
                                 size='large'
                                 disabled={isOpen}
                             />
@@ -231,8 +198,14 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                         <div className={styles.row__item}>
                             <Input
                                 style={{ maxWidth: '160px' }}
-                                value={fulfilmentValue}
-                                onChange={(e) => setFullfilmentValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev } })}
+                                value={product.fulfillment}
+                                onChange={(e) => {
+                                    let newProduct = {
+                                        ...product,
+                                        fulfillment: /^(|\d+)$/.test(e.target.value) ? e.target.value : product.fulfillment,
+                                    };
+                                    setProduct({ ...newProduct })
+                                }}
                                 size='large'
                                 disabled={isOpen}
                             />
@@ -240,7 +213,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                             <button
                                 onClick={updateDefaultParams}
                                 className={styles.row__saveButton}
-                                disabled={isOpen || (product.cost?.toString() !== selfCostValue && product.fulfillment?.toString() !== fulfilmentValue)}
+                                disabled={isOpen || saveButtonStatus}
                             >
                                 <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6 4.25C5.58579 4.25 5.25 4.58579 5.25 5C5.25 5.41421 5.58579 5.75 6 5.75H12C12.4142 5.75 12.75 5.41421 12.75 5C12.75 4.58579 12.4142 4.25 12 4.25H6Z" fill="#5329FF" />
@@ -341,8 +314,14 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                         </div>
                         <div className={`${styles.row__bodyMainItem} ${styles.row__bodyMainItem_short}`}>
                             <Input
-                                value={selfCostValue}
-                                onChange={(e) => setSelfCostValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev } })}
+                                value={product.cost}
+                                onChange={(e) => {
+                                    let newProduct = {
+                                        ...product,
+                                        cost: /^(|\d+)$/.test(e.target.value) ? e.target.value : product.cost,
+                                    };
+                                    setProduct({ ...newProduct })
+                                }}
                                 size='large'
                             />
                         </div>
@@ -361,8 +340,14 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                         </div>
                         <div className={`${styles.row__bodyMainItem} ${styles.row__bodyMainItem_short}`}>
                             <Input
-                                value={fulfilmentValue}
-                                onChange={(e) => setFullfilmentValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev } })}
+                                value={product.fulfillment}
+                                onChange={(e) => {
+                                    let newProduct = {
+                                        ...product,
+                                        fulfillment: /^(|\d+)$/.test(e.target.value) ? e.target.value : product.fulfillment,
+                                    };
+                                    setProduct({ ...newProduct })
+                                }}
                                 size='large'
                             />
                         </div>
@@ -386,6 +371,7 @@ const TableRow = ({ tableConfig, currentProduct, getTableData, authToken, setDat
                             size='large'
                             className={styles.row__bodySaveButton}
                             onClick={updateHistoryParams}
+                            disabled={saveButtonStatus}
                         >
                             Сохранить
                         </Button>
