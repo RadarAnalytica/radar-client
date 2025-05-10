@@ -36,14 +36,14 @@ const RestorePass = ({ email }) => {
       updatePass(email, pass)
         .then((data) => {
           if (!data.ok) {
+            console.log(data.json())
             alert('Возникла ошибка. Поторите попытку');
             return
+          } else {
+            alert('Пароль успешно обновлен');
+            window.location.href = `${URL}/signin`
           }
         })
-        .then(() => {
-          alert('Пароль успешно обновлен');
-          window.location.href = `${URL}/signin`
-        });
     } else {
       e.preventDefault();
     }
@@ -82,8 +82,8 @@ const RestorePass = ({ email }) => {
         Обновить
       </button>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button className='link' style={{ marginRight: '20px' }} onClick={() => {window.location.href = `${URL}/signup`}}>Регистрация</button>
-          <button className='link' onClick={() => {window.location.href = `${URL}/signin`}}>Вход</button>
+        <button className='link' style={{ marginRight: '20px' }} onClick={() => { window.location.href = `${URL}/signup` }}>Регистрация</button>
+        <button className='link' onClick={() => { window.location.href = `${URL}/signin` }}>Вход</button>
       </div>
     </div>
   );
