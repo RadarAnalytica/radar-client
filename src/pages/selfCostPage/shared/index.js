@@ -1,2 +1,3 @@
 import { tableConfig } from "./utils/tableWidgetUtils/config";
-export { tableConfig }
+import { getSaveButtonStatus } from "./utils/tableWidgetUtils/disabledStatus";
+export { tableConfig, getSaveButtonStatus }

@@ -39,7 +39,6 @@ const SelfCostTableWidget = () => {
     const [dataStatus, setDataStatus] = useState(initDataStatus)
     const { authToken } = useContext(AuthContext)
     const { activeBrand } = useAppSelector(store => store.filters)
-    console.log(tableData)
 
     const getTableData = async (authToken, shopId) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
@@ -117,7 +116,6 @@ const SelfCostTableWidget = () => {
                     {tableData && tableData.length > 0 && activeBrand && tableData?.map((product, id) => {
                         return (
                             <TableRow
-                                tableConfig={tableConfig}
                                 key={id}
                                 currentProduct={product}
                                 getTableData={getTableData}
@@ -125,7 +123,6 @@ const SelfCostTableWidget = () => {
                                 setDataStatus={setDataStatus}
                                 initDataStatus={initDataStatus}
                                 shopId={activeBrand?.id}
-                                compare={product}
                             />
                         )
                     })}
