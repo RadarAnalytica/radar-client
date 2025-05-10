@@ -7,7 +7,7 @@ import { URL } from '../service/config';
 
 const Page404 = () => {
   const navigate = useNavigate();
-
+  console.log('this is inner 404 page')
   return (
     <div className='page-header-404'>
       <div className='container page-container'>
@@ -97,20 +97,18 @@ const Page404 = () => {
               Главная
             </span>
           </Link>
-          <Link to={`${URL}/signin`} style={{ textDecoration: 'none', color: '#1A1A1A' }}>
             <span
               className='home-item'
+              onClick={() => window.location.href = `${URL}/signin`}
             >
               Войти
             </span>
-          </Link>
-          <Link to={`${URL}/signup`} style={{ textDecoration: 'none', color: '#1A1A1A' }}>
             <span
               className='home-item'
+              onClick={() => window.location.href = `${URL}/signup`}
             >
               Регистрация
             </span>
-          </Link>
         </div>
       </div>
       <div className='context404'>404</div>
