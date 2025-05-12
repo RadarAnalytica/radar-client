@@ -62,9 +62,6 @@
     /* padding: 24px 0; */
     background: white;
 }
-.table:last-of-type {
-    width: 100%;
-}
 
 .table_fixed {
     /* padding-left: 17px; */
@@ -81,7 +78,8 @@
     border: none
 }
 .table:last-of-type {
-    border: none
+    border: none;
+    flex-grow: 1;
 }
 
 .table__title {

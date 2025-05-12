@@ -64,7 +64,7 @@ export const byWarehouseTableConfig = [
             { ruName: 'Заказы, шт', engName: 'orders', units: 'шт', isSortable: true, isActive: true },
             { ruName: 'Остатки на конец периода, шт', engName: 'quantity', units: 'шт', isSortable: true, isActive: true },
             { ruName: 'Коэффициент демпинга, %', engName: 'dumping', units: '%', isSortable: true, isActive: false },
-            { ruName: 'Оборачиваемость, дней', engName: 'lost_revenue', units: 'дн', isSortable: true, isActive: true },
+            { ruName: 'Оборачиваемость, дней', engName: 'turnover', units: 'дн', isSortable: true, isActive: true },
         ]
     },
 ]
