@@ -268,10 +268,10 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
                                             {filteredData.map((item, rowIndex) => (
                                                 <div key={rowIndex} className={styles.tableRow}>
                                                     <div className="req-mon-td-wrapper">
-                                                        {(item.details[colIndex].quantity) !== 0
+                                                        {item?.details[colIndex]?.quantity && item?.details[colIndex]?.quantity !== 0
                                                             ? (<div className="req-mon-td-quantity">{Math.floor(item.details[colIndex].quantity / 100) + 1}</div>)
                                                             : <div className='req-mon-td-quantity-empty'></div>}
-                                                        <div>{formatQuantity(item.details[colIndex].quantity)}</div>
+                                                        <div>{formatQuantity(item?.details[colIndex]?.quantity)}</div>
                                                         <div
                                                             className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'
                                                             style={{
@@ -279,11 +279,11 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
                                                                 marginLeft: '8px',
                                                             }}
                                                         >
-                                                            {console.log(filteredData)}
+                                                            {/*console.log(filteredData)*/}
                                                             <span className='pb-1'>
-                                                                {item.details[colIndex].compare_flag !== null && (
+                                                                {item?.details[colIndex]?.compare_flag && (
                                                                     <img
-                                                                        src={item.details[colIndex].compare_flag ? GreenArrow : RedArrow}
+                                                                        src={item?.details[colIndex]?.compare_flag ? GreenArrow : RedArrow}
                                                                         alt=''
                                                                         style={{ width: '1.25vw' }}
                                                                     />
