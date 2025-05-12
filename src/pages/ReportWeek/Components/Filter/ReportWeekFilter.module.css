@@ -1,0 +1,11 @@
+.container{
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 16px;
+}
+.item{
+  flex: 1 0 auto;
+  max-width: 200px;
+  /* width: 100%; */
+}

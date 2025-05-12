@@ -52,6 +52,7 @@ const ProductGroupsPage = React.lazy(() => import("./pages/productsGroupsPages/p
 const SingleGroupPage = React.lazy(() => import("./pages/productsGroupsPages/pages/singleGroupPage/singleGroupPage"));
 const SkuIdPage = React.lazy(() => import("./pages/skuAnalysisPage/skuIdPage"));
 const SelfCostPage = React.lazy(() => import("./pages/selfCostPage/selfCostPage"));
+const ReportWeek = React.lazy(() => import("./pages/ReportWeek/ReportWeek"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -118,6 +119,7 @@ function App() {
           <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
           <Route path='/contacts' element={<Suspense fallback={<LoaderPage />}>{' '}<Contacts /></Suspense>} />
           <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />
+          <Route path='/report-week' element={<Suspense fallback={<LoaderPage />}>{' '}<ReportWeek /></Suspense>} />
           {/* 404 */}
           <Route path='*' element={<Page404 />} status={404} />
         </Routes>

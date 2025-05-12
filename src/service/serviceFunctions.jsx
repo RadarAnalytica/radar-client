@@ -1049,7 +1049,41 @@ export const ServiceFunctions = {
     } catch (error) {
       console.error('Ошибка при обновлении налоговой ставки:', error);
     }
-  }
+  },
 
+  reportWeekBrands: (COLUMNS) => {
+    try {
+      let tableData = new Array(10).fill(0).map((el, i) => {
+        let res = {key: i};
+        for (const col of COLUMNS) {
+          res[col.dataIndex] = Math.ceil((Math.random() * 10) + i);
+        }
+        return res
+      })
+
+      return tableData;
+
+      // if (!response.ok) {
+      //   throw new Error(`Ошибка запроса: ${response.status}`);
+      // }
+
+      // return await response.json();
+    } catch (error) {
+      console.error('Ошибка при обновлении данных:', error);
+    }
+  },
+
+  reportWeekDownload: async (token, selectedRange, shop) => {
+    let rangeParams = rangeApiFormat(selectedRange);
+    const res = await fetch(`${URL}/api/reportWeek/download?${rangeParams}&shop=${shop}`, {
+      method: 'GET',
+      headers: {
+        authorization: 'JWT ' + token,
+      },
+    });
+    const data = await res.blob()
+    return data;
+  },
+  
   
 };
