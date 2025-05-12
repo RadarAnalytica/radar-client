@@ -6,3 +6,9 @@
     align-content: stretch;
     gap: 20px;
 }
+
+.widget_1col {
+    @media (max-width: 1350px) {
+        grid-template-columns: 1fr;
+    }
+}
