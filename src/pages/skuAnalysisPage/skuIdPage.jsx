@@ -81,6 +81,7 @@ const SkuIdPage = () => {
                     <TableWidget
                         tableConfig={mainTableConfig}
                         data={skuMainTableData}
+                        tinyRows
                     />
                 </div>
 
@@ -91,7 +92,9 @@ const SkuIdPage = () => {
                             {tabsState && segments &&
                                 <ConfigProvider
                                     theme={{
-                                        token: {},
+                                        token: {
+                                            fontSize: '18px'
+                                        },
                                         components: {
                                             Segmented: {
                                                 itemActiveBg: '#E7E1FE',
