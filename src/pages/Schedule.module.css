@@ -179,8 +179,9 @@
   }
   .ScheduleFooter{
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 20px;
     margin-bottom: 80px;
   }
 

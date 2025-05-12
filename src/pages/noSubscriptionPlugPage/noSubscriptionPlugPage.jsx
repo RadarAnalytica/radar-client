@@ -45,7 +45,12 @@ import seo2 from '../../assets/plugs/seo/seo-2.svg'
 import shop1 from '../../assets/plugs/linked_shops/shop-1.svg'
 //subscription plugs
 import sub1 from '../../assets/plugs/subscription/subscriptions.svg'
-
+//sku analysis plug
+import sku1 from '../../assets/plugs/sku_analysis/1.webp'
+import sku2 from '../../assets/plugs/sku_analysis/2.svg'
+import sku3 from '../../assets/plugs/sku_analysis/3.svg'
+import sku4 from '../../assets/plugs/sku_analysis/4.svg'
+import sku5 from '../../assets/plugs/sku_analysis/5.webp'
 
 const plugsConfig = {
     "dashboard": [dashboard1, dashboard2, dashboard3, dashboard4],
@@ -57,14 +62,14 @@ const plugsConfig = {
     "monitoring": [monitor1, monitor2],
     "seo": [seo1, seo2],
     "linked-shops": [shop1],
-    "subscription": [sub1]
+    "subscription": [sub1],
+    'sku-analysis': [sku1, sku2, sku3, sku4, sku5]
 }
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
-
     const [isImageLoaded, setIsImageLoaded] = useState(false)
-    let currentImages = [...plugsConfig[pathname]]
-
+    let currentImages = [...plugsConfig[pathname]]  
+    
     useEffect(() => {
         setIsImageLoaded(false)
         return () => {
@@ -115,7 +120,6 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                                             }}
                                             hidden={!isImageLoaded}
                                             onLoad={() => {
-                                                console.log('loading')
                                                 setIsImageLoaded(true)
                                             }}
                                         />

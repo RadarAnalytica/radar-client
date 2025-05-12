@@ -39,7 +39,7 @@ export const TimeSelect = () => {
     const { selectedRange } = useAppSelector(store => store.filters)
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
-    const [localSelectedRange, setLocalSelectedRange] = useState(selectedRange);
+    const [localSelectedRange, setLocalSelectedRange] = useState({ from: null, to: null });
     const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
     const [selectValue, setSelectValue] = useState()
     const today = new Date();
@@ -84,8 +84,10 @@ export const TimeSelect = () => {
         if (value !== 0) {
             setSelectValue(value)
             setSelectOptions(predefinedRanges)
+            setLocalSelectedRange({ from: null, to: null })
             dispatch(filtersActions.setPeriod({ period: value }))
         } else {
+            setLocalSelectedRange({ from: null, to: null })
             setIsCalendarOpen(true)
         }
     }
@@ -146,6 +148,7 @@ export const TimeSelect = () => {
         const handleClickOutside = (event) => {
             if (periodRef.current && !periodRef.current.contains(event.target) && !event.target.classList.value.includes('ant')) {
                 setIsCalendarOpen(false);
+                setLocalSelectedRange({ from: null, to: null })
             }
         };
 
@@ -185,10 +188,11 @@ export const TimeSelect = () => {
                     }}
                 >
                     <Select
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         suffixIcon={icon}
                         className={styles.select}
                         options={[...selectOptions].map(i => {
-                                return ({ value: i.value, label: i.title })
+                            return ({ value: i.value, label: i.title })
                         })}
                         onDropdownVisibleChange={(visible) => {
                             let newOptions = selectOptions;
@@ -197,7 +201,7 @@ export const TimeSelect = () => {
                                     if (_.value === 0) {
                                         _.title = `${format(selectedRange.from, 'dd.MM.yyyy')} - ${format(selectedRange.to, 'dd.MM.yyyy')}`
                                     }
-                    
+
                                     return _
                                 })
                             } else if (visible) {
@@ -205,7 +209,7 @@ export const TimeSelect = () => {
                                     if (_.value === 0) {
                                         _.title = `Произвольные даты`
                                     }
-                    
+
                                     return _
                                 })
                             }
@@ -219,25 +223,26 @@ export const TimeSelect = () => {
                 </ConfigProvider>
             </div>
             <div className={`${styles.calendarPopup} ${isCalendarOpen ? styles.visible : ''}`}>
-                <DayPicker
-                    minDate={minDate}
-                    maxDate={today}
-                    mode="range"
-                    selected={localSelectedRange}
-                    month={month}
-                    onMonthChange={setMonth}
-                    captionLayout="dropdown"
-                    className={styles.customDayPicker}
-                    locale={customRuLocale}
-                    onDayClick={handleDayClick}
-                    disabled={[
-                        { before: minDate },
-                        { after: today },
-                    ]}
-                    components={{
-                        Dropdown: DatePickerCustomDropdown
-                    }}
-                />
+                {isCalendarOpen &&
+                    <DayPicker
+                        minDate={minDate}
+                        maxDate={today}
+                        mode="range"
+                        selected={localSelectedRange}
+                        month={month}
+                        onMonthChange={setMonth}
+                        captionLayout="dropdown"
+                        className={styles.customDayPicker}
+                        locale={customRuLocale}
+                        onDayClick={handleDayClick}
+                        disabled={[
+                            { before: minDate },
+                            { after: today },
+                        ]}
+                        components={{
+                            Dropdown: DatePickerCustomDropdown
+                        }}
+                    />}
             </div>
 
         </div>

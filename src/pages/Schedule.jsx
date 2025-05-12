@@ -1142,7 +1142,7 @@ const Schedule = () => {
             </div>
             {/* </div> */}
             <div
-              className={`${styles.ScheduleFooter} dash-container container`}
+              className={`${styles.ScheduleFooter}`}
             >
               <StructureRevenue
                 dataStructureRevenue={dataStructureRevenue}

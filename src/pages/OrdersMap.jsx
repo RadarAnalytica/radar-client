@@ -24,6 +24,7 @@ import { Filters } from '../components/sharedComponents/apiServicePagesFiltersCo
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
+import DataCollectWarningBlock from '../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -67,10 +68,10 @@ const OrdersMap = () => {
   }
 
   useEffect(() => {
-      if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-          setPrimaryCollect(activeBrand.is_primary_collect)
-          updateGeoData()
-      }
+    if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+      setPrimaryCollect(activeBrand.is_primary_collect)
+      updateGeoData()
+    }
   }, [authToken]);
 
   useEffect(() => {
@@ -129,9 +130,9 @@ const OrdersMap = () => {
   }, [dispatch, activeBrand, selectedRange, authToken]);
 
   // useEffect(() => {
-    // if (authToken !== authTokenRef.current) {
-      //dispatch(fetchShops(authToken));
-    // }
+  // if (authToken !== authTokenRef.current) {
+  //dispatch(fetchShops(authToken));
+  // }
   // }, [dispatch]);
 
 
@@ -915,13 +916,16 @@ const OrdersMap = () => {
           )}
 
           {activeBrand && !activeBrand.is_primary_collect && !loading &&
-            (
-              <div style={{ width: '100%', padding: '0 36px' }}>
-                <DataCollectionNotification
-                  title={'Ваши данные еще формируются и обрабатываются.'}
-                />
-              </div>
-            )}
+           
+          <div style={{ width: '100%', padding: '0 20px' }}>
+            {/* <DataCollectionNotification
+              title={'Ваши данные еще формируются и обрабатываются.'}
+            /> */}
+             <DataCollectWarningBlock
+              title='Ваши данные еще формируются и обрабатываются.'
+            />
+          </div>
+          }
         </section>
         {/* ---------------------- */}
       </main>

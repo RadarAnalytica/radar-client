@@ -114,6 +114,7 @@
     padding: 4px 12px 0 12px;
     width: 128px;
     border-bottom: 1px solid rgba(232, 232, 232, 1);
+    word-wrap: break-word;
 }
 
 .sppCell {

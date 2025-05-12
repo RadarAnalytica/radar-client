@@ -71,7 +71,7 @@ const FinanceBlock = ({ dataDashBoard, loading }) => {
                             </ConfigProvider>}
                         </div>
                         <div className={styles.block__tableRowContent}>
-                            <p className={styles.block__mainData}>{formatPrice(i.amount, '₽')}</p>
+                            <p className={i.amount > 1000000000 ? `${styles.block__mainData} ${styles.block__mainData_small}` : styles.block__mainData}>{formatPrice(i.amount, '₽')}</p>
                             <div className={styles.block__secDataWrapper}>
                                 {getRateIcon(i.rate)}
                                 <p className={getRateStyle(parseInt(i.rate), styles)}>{formatPrice(i.rate, '%')}</p>

@@ -2,8 +2,7 @@ import styles from './skuAnalysisPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import { SearchBlock, ItemWidget, BarsWidget, MainChartWidget, TableWidget } from './widgets'
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
+import { SearchBlock } from './widgets'
 
 
 const SkuAnalysisPage = () => {

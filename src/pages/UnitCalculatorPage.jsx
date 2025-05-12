@@ -192,7 +192,7 @@ const UnitCalculatorPage = () => {
                 <Sidebar />
             </div>
             {/* <SideNav /> */}
-            <section className={styles.page__content} ref={sectionRef}>
+            <section className={styles.page__content} ref={sectionRef} id='calc-content'>
                 <div className={styles.page__headerWrapper}>
                     <Header title={'Калькулятор unit-экономики товара'} />
                 </div>
