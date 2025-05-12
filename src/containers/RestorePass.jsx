@@ -15,35 +15,36 @@ const RestorePass = ({ email }) => {
 
   const updatePass = async (email, pass) => {
     let loc_string = window.location.href
-    const res = await fetch(`${URL}/api/user/restore_password`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password: pass,
-        confirm: pass,
-        confirm_code: loc_string.split('/').at(-1)
-      }),
-    });
-    const data = await res.json();
-    return data;
+    try {
+      const res = await fetch(`${URL}/api/user/restore_password`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password: pass,
+          confirm: pass,
+          confirm_code: loc_string.split('/').at(-1)
+        }),
+      });
+      if (!res.ok) {
+        alert('Возникла ошибка. Поторите попытку');
+        return
+      }
+
+      alert('Пароль успешно обновлен');
+      window.location.href = `${URL}/signin`
+      //const data = await res.json();
+      //return data;
+    } catch {
+      alert('Возникла ошибка. Поторите попытку');
+    }
   };
 
-  const handler = (e) => {
+  const handler = async (e) => {
     if (pass && confPass && pass === confPass) {
-      updatePass(email, pass)
-        .then((data) => {
-          if (!data.ok) {
-            console.log(data.json())
-            alert('Возникла ошибка. Поторите попытку');
-            return
-          } else {
-            alert('Пароль успешно обновлен');
-            window.location.href = `${URL}/signin`
-          }
-        })
+      await updatePass(email, pass)
     } else {
       e.preventDefault();
     }
