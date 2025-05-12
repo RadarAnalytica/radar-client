@@ -31,6 +31,19 @@
     gap: 8px;
 }
 
+.search__input {
+   height: 44px
+}
+.search__input::placeholder {
+    font-size: 16px;
+}
+
+.search__button {
+    padding: 0 11px;
+    height: 45px;
+    font-size: 16px;
+}
+
 .search__searchHistory {
     width: 100%;
     display: flex;

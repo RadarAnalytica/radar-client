@@ -14,7 +14,7 @@ const initSortState = {
     sortType: undefined,
 }
 
-const TableWidget = ({ data, tableConfig }) => {
+const TableWidget = ({ data, tableConfig, tinyRows = false }) => {
 
 
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
@@ -159,25 +159,7 @@ const TableWidget = ({ data, tableConfig }) => {
                             {tableData && tableData.length > 0 && tableData.map((product, id) => {
                                 return (
                                     <div
-                                        className={styles.table__row} key={id} id={`table_row_${id}`}
-                                    // onMouseOver={(e) => {
-                                    //     const { id } = e.target
-                                    //     const rows = document.querySelectorAll(`#${id}`);
-                                    //     if (rows) {
-                                    //         rows.forEach(row => {
-                                    //             row.style.background = '#F2F2F2'
-                                    //         })
-                                    //     }
-                                    // }}
-                                    // onMouseLeave={(e) => {
-                                    //     const { id } = e.target
-                                    //     const rows = document.querySelectorAll(`#${id}`);
-                                    //     if (rows) {
-                                    //         rows.forEach(row => {
-                                    //             row.style.background = 'none'
-                                    //         })
-                                    //     }
-                                    // }}
+                                        className={tinyRows ? `${styles.table__row} ${styles.table__row_tiny}` : styles.table__row} key={id} id={`table_row_${id}`}
                                     >
                                         {/* Для каждого товара мапим заголовки таблицы еще раз и забираем из товара нужны данные (в первой колонке одновременно фото и название) */}
                                         {t.values.map(((v, id) => {

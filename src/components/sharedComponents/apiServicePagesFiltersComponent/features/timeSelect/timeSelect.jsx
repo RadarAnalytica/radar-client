@@ -40,7 +40,6 @@ export const TimeSelect = () => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [month, setMonth] = useState(new Date());
     const [localSelectedRange, setLocalSelectedRange] = useState({ from: null, to: null });
-    console.log(localSelectedRange)
     const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
     const [selectValue, setSelectValue] = useState()
     const today = new Date();
