@@ -6,7 +6,10 @@ import roi from '../assets/roi.svg';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels, step, minValue, maxValue }) => {
-    console.log('dataProfitability', dataProfitability)
+    // console.log('dataProfitability', dataProfitability)
+    // console.log('dataProfitPlus', dataProfitPlus)
+    // console.log('dataProfitMinus', dataProfitMinus)
+    // console.log('labels', labels)
     const min = minValue
     const max = maxValue
     if (Math.abs(min) + Math.abs(max) < 300) {
@@ -47,7 +50,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
                 barPercentage: 0.3,
                 borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 3, bottomRight: 3 },
                 categoryPercentage: 1,
-                yAxisID: 'right-y',
+                yAxisID: 'left-y',
             },
             {
                 label: 'Маржинальность по прибыли,(Upper)',
