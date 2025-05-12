@@ -46,11 +46,11 @@ import shop1 from '../../assets/plugs/linked_shops/shop-1.svg'
 //subscription plugs
 import sub1 from '../../assets/plugs/subscription/subscriptions.svg'
 //sku analysis plug
-import sku1 from '../../assets/plugs/sku_analysis/1.svg'
+import sku1 from '../../assets/plugs/sku_analysis/1.webp'
 import sku2 from '../../assets/plugs/sku_analysis/2.svg'
 import sku3 from '../../assets/plugs/sku_analysis/3.svg'
 import sku4 from '../../assets/plugs/sku_analysis/4.svg'
-import sku5 from '../../assets/plugs/sku_analysis/5.svg'
+import sku5 from '../../assets/plugs/sku_analysis/5.webp'
 
 const plugsConfig = {
     "dashboard": [dashboard1, dashboard2, dashboard3, dashboard4],
