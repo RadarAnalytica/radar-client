@@ -196,7 +196,7 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
             setDetailChartAverages(averages);
             setIsDetailChartDataLoading(false)
         };
-        activeBrand?.id && updateChartDetailData();
+        activeBrand && updateChartDetailData();
     }, [selectedRange, activeBrand]);
 
     return (
