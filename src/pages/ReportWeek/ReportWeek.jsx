@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import Filter from './Components/Filter/ReportWeekFilter';
+import FilterBrandArticle from '../../components/sharedComponents/filterBrandArticle/FilterBrandArticle'
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
 
@@ -109,7 +109,7 @@ export default function ReportWeek() {
 				</div>
 				<div className={styles.controls}>
 					<div className={styles.filter}>
-						<Filter setLoading={setIsLoading} setData={setData} />
+						<FilterBrandArticle setLoading={setIsLoading} setData={setData} />
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider

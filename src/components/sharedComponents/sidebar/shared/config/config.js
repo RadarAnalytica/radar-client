@@ -75,6 +75,12 @@ export const menuConfig = [
                 label: 'Операционные расходы',
                 isActive: false
             },
+            {
+                id: 6,
+                url: '/report-week', // исправить
+                label: 'Отчет по неделям',
+                isActive: true
+            },
         ]
     },
     {

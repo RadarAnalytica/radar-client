@@ -1,16 +1,14 @@
-import {
-	TimeSelect,
-	PlainSelect,
-} from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
-import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
-import styles from './ReportWeekFilter.module.css';
+import { TimeSelect, PlainSelect, } from '../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
+// } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
+import { Filters } from '../../../components/sharedComponents/apiServicePagesFiltersComponent';
+import styles from './FilterBrandArticle.module.css';
 import { useState, useEffect, useContext } from 'react';
-import AuthContext from '../../../../service/AuthContext';
-import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { fetchShops } from '../../../../redux/shops/shopsActions';
-import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import AuthContext from '../../../service/AuthContext';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { fetchShops } from '../../../redux/shops/shopsActions';
+import { actions as filterActions } from '../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 
-function ReportWeekFilter({
+function FilterBrandArticle({
 	setLoading,
 	shopSelect = true,
 }) {
@@ -220,4 +218,4 @@ function ReportWeekFilter({
 	);
 }
 
-export default ReportWeekFilter;
+export default FilterBrandArticle;
