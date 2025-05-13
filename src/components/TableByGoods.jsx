@@ -464,7 +464,7 @@ const TableByGoods = ({ data }) => {
       {/* Data Rows */}
       {!data || Object.keys(data).length === 0 ? (
         <div className={styles.loaderContainer}>
-          <div className='loader'></div>
+          Ничего не найдено
         </div>
       ) : (
         <>{tableData.map((item) => renderRow(item))}</>
