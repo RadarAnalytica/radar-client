@@ -1084,6 +1084,100 @@ export const ServiceFunctions = {
     const data = await res.blob()
     return data;
   },
-  
+
+  getReportProfitLoss: async (token, taxRate, taxType) => {
+    try {
+
+      return await ({
+        periods: [
+          '2025',
+          'Апрель 2025',
+          'Март 2025',
+          'Февраль 2025',
+          'Январь 2025',
+          'Декабрь 2024',
+        ],
+        data: {
+          realisation: {
+            '2025': 123123,
+            'Апрель 2025': 123123,
+            'Март 2025': 123123,
+            'Февраль 2025': 123123,
+            'Январь 2025': 123123,
+            'Декабрь 2024': 123123,
+            // '2025': {
+            //   value: 123123,
+            //   procent: 13
+            // },
+            // 'Апрель 2025': {
+            //   value: 123123,
+            //   procent: 13
+            // },
+            // 'Март 2025': {
+            //   value: 123123,
+            //   procent: 13
+            // },
+            // 'Февраль 2025': {
+            //   value: 123123,
+            //   procent: 13
+            // },
+            // 'Январь 2025': {
+            //   value: 123123,
+            //   procent: 13
+            // },
+            // 'Декабрь 2024': {
+            //   value: 123123,
+            //   procent: 13
+            // },
+          },
+          saleMp: {
+            '2025': {
+              value: 123123,
+              procent: 20
+            },
+            'Апрель 2025': {
+              value: 321213,
+              procent: 13
+            },
+            'Март 2025': {
+              value: 55456,
+              procent: 4
+            },
+            'Февраль 2025': {
+              value: 7899,
+              procent: 6
+            },
+            'Январь 2025': {
+              value: 67903,
+              procent: 17
+            },
+            'Декабрь 2024': {
+              value: 31235,
+              procent: 10
+            },
+          },
+          fact: []
+        }
+      })
+
+      // const response = await fetch(`${URL}/api/shop/tax-rate/set`, {
+      //   method: 'POST',
+      //   headers: {
+      //     accept: 'application/json',
+      //     'Content-Type': 'application/json',
+      //     'Authorization': token // Исправлено
+      //   },
+      //   body: JSON.stringify({ tax_rate: taxRate, tax_type: taxType })
+      // });
+
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Ошибка при обновлении налоговой ставки:', error);
+    }
+  },
   
 };

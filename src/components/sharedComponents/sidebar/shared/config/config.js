@@ -75,6 +75,12 @@ export const menuConfig = [
                 label: 'Операционные расходы',
                 isActive: false
             },
+            {
+                id: 5,
+                url: '/report-profit-loss', // исправить
+                label: 'Отчет о прибылях и убытках',
+                isActive: true
+            },
         ]
     },
     {
