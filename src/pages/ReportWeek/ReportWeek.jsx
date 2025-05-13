@@ -4,14 +4,14 @@ import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import Filter from './Components/Filter/ReportWeekFilter';
+import FilterBrandArticle from '../../components/sharedComponents/filterBrandArticle/FilterBrandArticle'
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
 
-import { ConfigProvider, Button, Popover, Modal, Form, Checkbox } from 'antd';
+import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
 import downloadIcon from '../images/Download.svg';
-import ReportTable from './Components/Table/ReportWeekTable';
+import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import ModalTableSetting from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
 import { useAppSelector } from '../../redux/hooks';
 
@@ -109,7 +109,7 @@ export default function ReportWeek() {
 				</div>
 				<div className={styles.controls}>
 					<div className={styles.filter}>
-						<Filter setLoading={setIsLoading} setData={setData} />
+						<FilterBrandArticle setLoading={setIsLoading} setData={setData} />
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider
@@ -186,7 +186,7 @@ export default function ReportWeek() {
 				<div style={{ flexGrow: 1 }}>
 					<div>
 						<div className={styles.table_container}>
-							<ReportTable columns={tableColumns} data={data} />
+							<ReportTable columns={tableColumns} data={data} rowSelection={{ type: 'checkbox' }}/>
 						</div>
 					</div>
 				</div>
