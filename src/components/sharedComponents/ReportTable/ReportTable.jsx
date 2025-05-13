@@ -1,10 +1,11 @@
-import { ConfigProvider, Divider, Radio, Table } from 'antd';
-import styles from './ReportWeekTable.module.css';
+import { ConfigProvider, Table } from 'antd';
+import styles from './ReportTable.module.css';
 
-export default function ReportWeekTable({ columns, data }) {
+export default function ReportTable({ columns, data, rowSelection = false }) {
 	return (
 		<div className={styles.tableContainer}>
 			<ConfigProvider
+				renderEmpty={ () => (<div>Нет данных</div>)} 
 				theme={{
 					components: {
 						Table: {
@@ -36,9 +37,7 @@ export default function ReportWeekTable({ columns, data }) {
 					dataSource={data}
 					pagination={false}
 					tableLayout="fixed"
-					rowSelection={{
-						type: 'checkbox',
-					}}
+					rowSelection={rowSelection}
 					showSorterTooltip={false}
 					// scroll={true}
 					scroll={{ x: 'max-content' }}
