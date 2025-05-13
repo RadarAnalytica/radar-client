@@ -49,7 +49,7 @@ const ReportAbcAnalysis = () => {
   };
   const filterKeys = [
     'selectedYears',
-    'selectedMonths', 
+    'selectedMonths',
     'selectedArticles',
     'selectedBrands',
     'selectedGroups',
@@ -153,15 +153,15 @@ const ReportAbcAnalysis = () => {
     ))
 
     // }
-            
 
-      // const getData = async () => {
-      //   return await ServiceFunctions.postAbcReportsData(authToken);
-      // }
-      // const data = getData()
 
-      // console.log('!!!DATA ABC', data)
-      
+    // const getData = async () => {
+    //   return await ServiceFunctions.postAbcReportsData(authToken);
+    // }
+    // const data = getData()
+
+    // console.log('!!!DATA ABC', data)
+
   }, [authToken, dispatch])
 
 
@@ -297,14 +297,14 @@ const ReportAbcAnalysis = () => {
 
   // useEffect(() => {
   //   console.log('Настройка получения данных');
-    
+
   //   setIsRevenueLoading(true);
   //   setError(null);
   //   const getData = async () => {
   //     return await ServiceFunctions.postAbcReportsData(authToken);
   //   }
   //   const data = getData()
-    
+
   //   setDataRevenue(data || []);
   //   setIsRevenueLoading(false);
   // }, [authToken, isFiltersLoading]);
@@ -532,7 +532,7 @@ const ReportAbcAnalysis = () => {
         <Sidebar />
       </div>
       {/* <SideNav /> */}
-      <div className={`${styles.scheduleMain} dashboard-content pb-3`} style={{ padding: '0 32px'}}>
+      <div className={`${styles.scheduleMain} dashboard-content pb-3`} style={{ padding: '0 32px' }}>
         <TopNav
           title={
             <>
@@ -923,7 +923,7 @@ const ReportAbcAnalysis = () => {
                       className={styles.category}
                       style={{ color: '#8C8C8C' }}
                     >
-                      Категория<br></br> по выручке
+                      Категория по&nbsp;выручке
                     </div>
                     <div
                       className={styles.generalCategory}
@@ -1018,7 +1018,7 @@ const ReportAbcAnalysis = () => {
                                 <div
                                   className={styles.size}
                                   title={item.size}
-                                  style={{width: '90%'}}
+                                  style={{ width: '90%' }}
                                 >
                                   {item.size}
                                 </div>{' '}
@@ -1027,7 +1027,7 @@ const ReportAbcAnalysis = () => {
                                     key={i}
                                     className={styles.size}
                                     title={product.size}
-                                    style={{width: '90%'}}
+                                    style={{ width: '90%' }}
                                   >
                                     {product.size}
                                   </div>
@@ -1037,7 +1037,7 @@ const ReportAbcAnalysis = () => {
                               <div
                                 className={styles.size}
                                 title={item.size}
-                                style={{width: '90%'}}
+                                style={{ width: '90%' }}
                               >
                                 {item.size}
                               </div>
@@ -1076,6 +1076,7 @@ const ReportAbcAnalysis = () => {
                             {expandedRows[item.wb_id] ? (
                               <>
                                 <div
+                                  //className={styles.categoryColoredItem}
                                   style={{
                                     backgroundColor:
                                       colorMap[item.proceed_abc] ||
@@ -1090,6 +1091,7 @@ const ReportAbcAnalysis = () => {
                                 {item.items.map((product, i) => (
                                   <div key={i} style={{ padding: '6px 0' }}>
                                     <div
+                                      //className={styles.categoryColoredItem}
                                       style={{
                                         backgroundColor:
                                           colorMap[product.proceed_abc] ||
@@ -1106,12 +1108,13 @@ const ReportAbcAnalysis = () => {
                               </>
                             ) : (
                               <div
+                                className={styles.categoryColoredItem}
                                 style={{
                                   backgroundColor:
                                     colorMap[item.proceed_abc] || 'transparent',
-                                  padding: '4px 16px',
-                                  borderRadius: '8px',
-                                  marginRight: '75%',
+                                  //padding: '4px 16px',
+                                  //borderRadius: '8px',
+                                  //marginRight: '75%',
                                 }}
                               >
                                 {item.proceed_abc}
@@ -1174,7 +1177,7 @@ const ReportAbcAnalysis = () => {
                       className={styles.category}
                       style={{ color: '#8C8C8C' }}
                     >
-                      Категория<br></br>по прибыли
+                      Категория по&nbsp;прибыли
                     </div>
                     <div
                       className={styles.generalCategory}
@@ -1268,7 +1271,7 @@ const ReportAbcAnalysis = () => {
                                 <div
                                   className={styles.size}
                                   title={item.size}
-                                  style={{width: '90%'}}
+                                  style={{ width: '90%' }}
                                 >
                                   {item.size}
                                 </div>{' '}
@@ -1277,7 +1280,7 @@ const ReportAbcAnalysis = () => {
                                     key={i}
                                     className={styles.size}
                                     title={product.size}
-                                    style={{width: '90%'}}
+                                    style={{ width: '90%' }}
                                   >
                                     {product.size}
                                   </div>
@@ -1287,7 +1290,7 @@ const ReportAbcAnalysis = () => {
                               <div
                                 className={styles.size}
                                 title={item.size}
-                                style={{width: '90%'}}
+                                style={{ width: '90%' }}
                               >
                                 {item.size}
                               </div>
@@ -1327,13 +1330,14 @@ const ReportAbcAnalysis = () => {
                             {expandedRows[item.wb_id] ? (
                               <>
                                 <div
+                                  className={styles.categoryColoredItem}
                                   style={{
                                     backgroundColor:
                                       colorMap[item.profit_abc] ||
                                       'transparent',
-                                    padding: '4px 16px',
-                                    borderRadius: '8px',
-                                    marginRight: '75%',
+                                    // padding: '4px 16px',
+                                    // borderRadius: '8px',
+                                    // marginRight: '75%',
                                   }}
                                 >
                                   {item.profit_abc}
@@ -1341,28 +1345,30 @@ const ReportAbcAnalysis = () => {
                                 {item.items.map((product, i) => (
                                   <div key={i} style={{ padding: '6px 0' }}>
                                     <div
+                                      className={styles.categoryColoredItem}
                                       style={{
                                         backgroundColor:
                                           colorMap[product.proceed_abc] ||
                                           'transparent',
-                                        padding: '4px 16px',
-                                        borderRadius: '8px',
-                                        marginRight: '75%',
+                                        // padding: '4px 16px',
+                                        // borderRadius: '8px',
+                                        // marginRight: '75%',
                                       }}
                                     >
                                       {product.profit_abc}
-                                </div>
+                                    </div>
                                   </div>
                                 ))}
                               </>
                             ) : (
                               <div
+                                className={styles.categoryColoredItem}
                                 style={{
                                   backgroundColor:
                                     colorMap[item.proceed_abc] || 'transparent',
-                                  padding: '4px 16px',
-                                  borderRadius: '8px',
-                                  marginRight: '75%',
+                                  // padding: '4px 16px',
+                                  // borderRadius: '8px',
+                                  // marginRight: '75%',
                                 }}
                               >
                                 {item.profit_abc}
