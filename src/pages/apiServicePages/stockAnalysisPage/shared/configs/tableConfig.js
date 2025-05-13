@@ -91,7 +91,7 @@ export const tableConfig = [
         tableName: 'Скорость',
         values: [
             {ruName: 'Заказов', engName: 'orderCountDay', units: 'шт/день', isSortable: false},
-            {ruName: 'Продаж', engName: 'saleCountDay', units: '₽/день', isSortable: false},
+            {ruName: 'Продаж', engName: 'saleCountDay', units: 'шт/день', isSortable: false},
         ]
     },
     {
