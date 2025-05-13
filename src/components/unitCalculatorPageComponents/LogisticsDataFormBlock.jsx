@@ -171,14 +171,32 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                                 id='autocomp'
                                 options={whouseData?.map(_ => ({ value: _.name })) || null}
                                 onSelect={handleSelect}
+                                dropdownRender={menu => (
+                                    <div style={{ maxHeight: '200px', overflowY: 'auto', overscrollBehavior: 'none' }}>
+                                        {menu}
+                                    </div>
+                                )}
+                                getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                                onDropdownVisibleChange={(open) => {
+                                    const p = document.querySelector('#calc-content')
+                                    if (open) {
+                                        // Отключаем прокрутку при открытии
+                                        document.body.style.overflow = 'hidden';
+                                        p.style.overflow = 'hidden'
+                                    } else {
+                                        // Восстанавливаем прокрутку при закрытии
+                                        document.body.style.overflow = 'auto';
+                                        p.style.overflow = 'auto'
+                                    }
+                                }}
                                 allowClear={{
                                     clearIcon: (
-                                        <svg style={{marginLeft: -20}} width="10" height="10" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <svg style={{ marginLeft: -20 }} width="10" height="10" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z" fill="currentColor" />
                                         </svg>
                                     )
                                 }}
-                                notFoundContent={<div style={{color: 'black'}}>Ничего не найдено</div>}
+                                notFoundContent={<div style={{ color: 'black' }}>Ничего не найдено</div>}
                             //value={inputValue}
                             //onSearch={handleSearch}
                             //onSelect={handleSelect}

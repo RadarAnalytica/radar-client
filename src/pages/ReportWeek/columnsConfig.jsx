@@ -43,6 +43,7 @@ export const COLUMNS = [
 		title: 'Неделя',
 		dataIndex: 'week',
 		fixed: 'left',
+		width: 240
 	},
 	{
 		title: 'Заказы, руб',

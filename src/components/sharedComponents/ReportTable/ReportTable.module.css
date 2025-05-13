@@ -15,7 +15,10 @@
 
 .tableContainer thead>tr>th {
   height: 70px;
-  width: 240px;
+}
+
+.tableContainer thead>tr>th .ant-table-column-title{
+  gap: 8px
 }
 
 .tableContainer tr>th:first-child,

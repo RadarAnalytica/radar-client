@@ -22,6 +22,7 @@ import { formatPrice } from '../../../../service/utils';
 const BarsWidget = () => {
 
     const { skuIndicatorsData, dataStatus } = useAppSelector(store => store.skuAnalysis)
+    const { isSidebarHidden } = useAppSelector(store => store.utils)
 
     if (!skuIndicatorsData && dataStatus.isLoading) {
         return (
@@ -33,7 +34,7 @@ const BarsWidget = () => {
 
 
     return (
-        <div className={styles.widget}>
+        <div className={isSidebarHidden ? styles.widget : `${styles.widget} ${styles.widget_2cols}`}>
             {skuIndicatorsData && Object.keys(skuIndicatorsData).map((i, id) => {
 
                 return (

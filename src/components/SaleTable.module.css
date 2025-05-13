@@ -7,7 +7,6 @@
     margin-top: 20px;
     margin-bottom: 80px;
     max-height: 600px;
-    /* overscroll-behavior: none; */
 }
 
 .container::-webkit-scrollbar {

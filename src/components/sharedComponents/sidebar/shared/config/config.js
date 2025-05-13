@@ -76,7 +76,13 @@ export const menuConfig = [
                 isActive: false
             },
             {
-                id: 5,
+                id: 6,
+                url: '/report-week', // исправить
+                label: 'Отчет по неделям',
+                isActive: true
+            },
+            {
+                id: 7,
                 url: '/report-profit-loss', // исправить
                 label: 'Отчет о прибылях и убытках',
                 isActive: true

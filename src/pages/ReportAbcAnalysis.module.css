@@ -260,10 +260,12 @@
     border: none;
     min-height: 250px;
     /* min-width: 1275px; */
-    min-width: 100%;
+    /* min-width: 100%; */
+    width: 100%;
     max-height: 300px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .containerRevenue.expanded {
@@ -278,10 +280,11 @@
     border: none;
     min-height: 250px;
     /* min-width: 1275px; */
-    min-width: 100%;
+    width: 100%;
     max-height: 300px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 .containerProfit.expanded {
     min-height: 500px;
@@ -340,26 +343,51 @@
 } */
 
   .article {
-    width: 13%;
- 
+    /* width: 13%; */
+    width: auto;
+    min-width: 130px;
   }
   .product {
-    width: 35%;
+    width: 100%;
+    min-width: 150px;
+    flex-grow: 1;
+    flex-shrink: 1;
   }
   .size {
-    width: 10%
+    /* width: 10%; */
+    width: 75px;
+    min-width: 75px;
   }
   .profit {
-    width: 10%;
+    width: 170px;
+    min-width: 170px;
   }
   .profitAmount {
-    width: 13%;
+    width: 130px;
+    min-width: 130px;
   }
   .category {
-    width: 10%;
+    /* width: 10%; */
+    width: 100%;
+    min-width: 130px;
+    max-width: 200px;
   }
   .generalCategory {
-    width: 10%;
+    flex-shrink: 1;
+    flex-grow: 1;
+    width: 100%;
+    min-width: 130px;
+    max-width: 150px;
+  }
+
+  .categoryColoredItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 32px;
+    max-width: 40px;
+    border-radius: 8px;
   }
   
   .row {
@@ -368,27 +396,27 @@
     padding: 8px 0;
     align-items: flex-start;
     border-bottom: 1px solid #E8E8E8;
+    gap: 8px;
   }
   .row:last-child {
-   
     border-bottom: 0;
   }
   .rowHeader{
     display: flex;
     align-items: center;
+    align-items: flex-start;
     padding: 8px 0;
+    padding-right: 6px;
+    gap: 8px;
   }
   
   .row > div {
     font-size: 15px;
-    padding: 0 8px;
     text-align: left;
 
   }
   
   .rowHeader > div {
-    flex-shrink: 0;
-    padding: 0 8px;
     text-align: left;
   }
   
@@ -463,13 +491,10 @@
 .productName{
   color: rgba(26, 26, 26, 1);
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  text-wrap: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
   font-weight: 500;
-  
 }
 
 .responsiveImage {
