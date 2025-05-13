@@ -1076,7 +1076,7 @@ const ReportAbcAnalysis = () => {
                             {expandedRows[item.wb_id] ? (
                               <>
                                 <div
-                                  //className={styles.categoryColoredItem}
+                                  className={styles.categoryColoredItem}
                                   style={{
                                     backgroundColor:
                                       colorMap[item.proceed_abc] ||
@@ -1091,7 +1091,7 @@ const ReportAbcAnalysis = () => {
                                 {item.items.map((product, i) => (
                                   <div key={i} style={{ padding: '6px 0' }}>
                                     <div
-                                      //className={styles.categoryColoredItem}
+                                      className={styles.categoryColoredItem}
                                       style={{
                                         backgroundColor:
                                           colorMap[product.proceed_abc] ||
