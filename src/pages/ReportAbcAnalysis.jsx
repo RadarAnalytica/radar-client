@@ -939,6 +939,10 @@ const ReportAbcAnalysis = () => {
                     >
                       <span className='loader'></span>
                     </div>
+                  ) : (!dataRevenue || dataRevenue.length === 0) ? (
+                    <div className={styles.loaderContainer}>
+                      Ничего не найдено
+                    </div>
                   ) : (
                     <div
                       className={`${styles.rowsWrapper} ${isOpenFilters ? styles.expanded : ''
@@ -1192,6 +1196,10 @@ const ReportAbcAnalysis = () => {
                       style={{ height: '100px', marginTop: '40px' }}
                     >
                       <span className='loader'></span>
+                    </div>
+                  ) : (!dataRevenue || dataRevenue.length === 0) ? (
+                    <div className={styles.loaderContainer}>
+                      Ничего не найдено
                     </div>
                   ) : (
                     <div

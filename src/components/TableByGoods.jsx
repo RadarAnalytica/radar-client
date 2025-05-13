@@ -462,7 +462,7 @@ const TableByGoods = ({ data }) => {
       </div>
 
       {/* Data Rows */}
-      {!data || Object.keys(data).length === 0 ? (
+      {!data || Object.keys(data).length === 0 || (Object.keys(data).length === 1 && Object.keys(data)[0] === 'total')  ? (
         <div className={styles.loaderContainer}>
           Ничего не найдено
         </div>
