@@ -158,6 +158,7 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
     // получаем данные
     useEffect(() => {
         const updateChartDetailData = async () => {
+            
             setIsDetailChartDataLoading(true)
             const data = await ServiceFunctions.getChartDetailData(
                 authToken,
@@ -196,7 +197,7 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
             setDetailChartAverages(averages);
             setIsDetailChartDataLoading(false)
         };
-        activeBrand?.id && updateChartDetailData();
+        activeBrand && updateChartDetailData();
     }, [selectedRange, activeBrand]);
 
     return (
