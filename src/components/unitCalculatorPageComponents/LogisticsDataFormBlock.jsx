@@ -181,16 +181,12 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                                     const p = document.querySelector('#calc-content')
                                     if (open) {
                                         // Отключаем прокрутку при открытии
-
                                         document.body.style.overflow = 'hidden';
                                         p.style.overflow = 'hidden'
-                                        console.log(p)
-                                        console.log(document.body)
                                     } else {
                                         // Восстанавливаем прокрутку при закрытии
                                         document.body.style.overflow = 'auto';
                                         p.style.overflow = 'auto'
-                                        console.log(p)
                                     }
                                 }}
                                 allowClear={{
