@@ -143,6 +143,24 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
                         // autoComplete='off'
+                        dropdownRender={menu => (
+                            <div style={{ maxHeight: '200px', overflowY: 'auto', overscrollBehavior: 'none' }}>
+                                {menu}
+                            </div>
+                        )}
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                        onDropdownVisibleChange={(open) => {
+                            const p = document.querySelector('#calc-content')
+                            if (open) {
+                                // Отключаем прокрутку при открытии
+                                document.body.style.overflow = 'hidden';
+                                p.style.overflow = 'hidden'
+                            } else {
+                                // Восстанавливаем прокрутку при закрытии
+                                document.body.style.overflow = 'auto';
+                                p.style.overflow = 'auto'
+                            }
+                        }}
                         notFoundContent={<div style={{color: 'black'}}>
                             {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}
                             {loadingOptions && 'Идет загрузка...'

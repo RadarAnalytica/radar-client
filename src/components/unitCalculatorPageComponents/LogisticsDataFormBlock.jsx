@@ -171,22 +171,24 @@ const LogisticsDataFormBlock = ({ form, current_storage_logistic_price, buyout_l
                                 id='autocomp'
                                 options={whouseData?.map(_ => ({ value: _.name })) || null}
                                 onSelect={handleSelect}
-                                // onDropdownVisibleChange={(open) => {
-                                //     const p = document.querySelector('#calc-content')
-                                //     if (open) {
-                                //         // Отключаем прокрутку при открытии
-                                        
-                                //         document.body.style.overflow = 'hidden';
-                                //         p.style.overflow = 'hidden'
-                                //         console.log(p)
-                                //         console.log(document.body)
-                                //     } else {
-                                //         // Восстанавливаем прокрутку при закрытии
-                                //         document.body.style.overflow = 'auto';
-                                //         p.style.overflow = 'auto'
-                                //         console.log(p)
-                                //     }
-                                // }}
+                                dropdownRender={menu => (
+                                    <div style={{ maxHeight: '200px', overflowY: 'auto', overscrollBehavior: 'none' }}>
+                                        {menu}
+                                    </div>
+                                )}
+                                getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                                onDropdownVisibleChange={(open) => {
+                                    const p = document.querySelector('#calc-content')
+                                    if (open) {
+                                        // Отключаем прокрутку при открытии
+                                        document.body.style.overflow = 'hidden';
+                                        p.style.overflow = 'hidden'
+                                    } else {
+                                        // Восстанавливаем прокрутку при закрытии
+                                        document.body.style.overflow = 'auto';
+                                        p.style.overflow = 'auto'
+                                    }
+                                }}
                                 allowClear={{
                                     clearIcon: (
                                         <svg style={{ marginLeft: -20 }} width="10" height="10" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
