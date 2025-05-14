@@ -13,6 +13,7 @@ import { Filters } from "../components/sharedComponents/apiServicePagesFiltersCo
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Header from "../components/sharedComponents/header/header";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
+import { mockGetAbcData } from "../service/mockServiceFunctions";
 
 const AbcAnalysisPage = () => {
   const { activeBrand, selectedRange: days } = useAppSelector(store => store.filters)
@@ -41,12 +42,20 @@ const AbcAnalysisPage = () => {
   ) => {
     setLoading(true);
     try {
-      const data = await ServiceFunctions.getAbcData(
-        viewType,
-        authToken,
-        days,
-        activeBrand
-      );
+      let data = null;
+      if (user.subscription_status === null) {
+        data = await mockGetAbcData(
+          viewType,
+          activeBrand
+        );
+      } else {
+        data = await ServiceFunctions.getAbcData(
+          viewType,
+          authToken,
+          days,
+          activeBrand
+        );
+      }
 
       // console.log('---------- base ----------')
       // console.log(viewType)
@@ -99,8 +108,13 @@ const AbcAnalysisPage = () => {
   };
 
   const updateAbcAnalysisCaller = async () => {
-    activeBrand !== undefined &&
-      updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
+    if (activeBrand !== undefined) {
+      if (user.subscription_status === null) {
+        mockGetAbcData( viewType, activeBrand );
+      } else {
+        updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
+      }
+    }
   };
 
 

@@ -24,10 +24,11 @@ import CostsBlock from '../../../../components/dashboardPageComponents/blocks/co
 import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
 import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
+import { mockGetDashBoard, mockGetChartDetailData } from '../../../../service/mockServiceFunctions';
 
 const _DashboardPage = () => {
     
-    const { authToken } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [dataDashBoard, setDataDashboard] = useState();
@@ -37,10 +38,13 @@ const _DashboardPage = () => {
     const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
         setLoading(true);
         try {
-
             if (activeBrand !== null && activeBrand !== undefined) {
-
-
+                if (user.subscription_status === null) {;
+                    const data = await mockGetDashBoard(selectedRange, activeBrand);
+                    console.log(data)
+                    setDataDashboard(data);
+                    return 
+                }
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
                     selectedRange,

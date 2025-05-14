@@ -14,7 +14,7 @@ export const Filters = ({
 }) => {
 
   // ------ база ------//
-  const { authToken } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
   const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
   const shops = useAppSelector((state) => state.shopsSlice.shops);
@@ -35,27 +35,31 @@ export const Filters = ({
   }
   //- -----------------------------------------//
 
-  // ------- Фетч массива магазинов -------------//
-  const fetchShopData = async () => {
-    setLoading(true)
-    try {
-      dispatch(fetchShops(authToken));
-    } catch (error) {
-      console.error("Error fetching initial data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  //---------------------------------------------//
-
-
-  // 0. Получаем данные магазинов
-  useEffect(() => {
-    if (!shops || shops.length === 0) {
-      fetchShopData();
-    }
-  }, [shops]);
-  // ------
+    // ------- Фетч массива магазинов -------------//
+    const fetchShopData = async () => {
+      setLoading(true)
+      try {
+        if (user.subscription_status === null) {
+          dispatch(fetchShops('mockData'));
+        } else {
+          dispatch(fetchShops(authToken));
+        }
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    //---------------------------------------------//
+  
+  
+    // 0. Получаем данные магазинов
+    useEffect(() => {
+      if (!shops || shops.length === 0) {
+        fetchShopData();
+      }
+    }, [shops]);
+    // ------
 
 
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
