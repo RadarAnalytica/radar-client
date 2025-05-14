@@ -8996,9 +8996,7 @@ const mockDetailChartData = {
 ]
 }
 
-export async function mockGetAllShops(params) {
-  console.log('mockGetAllShops', params)
-
+export async function mockGetAllShops() {
   return mockShops
 }
 
