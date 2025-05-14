@@ -4,13 +4,13 @@ import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AuthContext from '../../../../service/AuthContext';
 import { fileDownload } from '../../../../service/utils';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 
 export const Filters = ({
-  setLoading, shopSelect = true, timeSelect = true
+  setLoading, shopSelect = true, timeSelect = true, skuFrequency = false
 }) => {
 
   // ------ база ------//
@@ -126,6 +126,9 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
+        {skuFrequency &&
+          <FrequencyModeSelect />
+        }
         {shops && activeBrand && timeSelect &&
           <div className={styles.filters__inputWrapper}>
             <TimeSelect />

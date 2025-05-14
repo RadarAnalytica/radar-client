@@ -35,3 +35,25 @@
 .page__headerWrapper {
     width: 100%;
 }
+
+.page__filtersWrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: auto;
+}
+
+.page__segmentsWrapper {
+    margin-top: 12px;
+}
+
+.page__controlsWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.page__widgetWrapper {
+    margin-top: 20px;
+}
