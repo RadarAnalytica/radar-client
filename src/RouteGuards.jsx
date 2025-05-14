@@ -149,7 +149,7 @@ export const ProtectedRoute = ({
     
     // ---------2.1 Mock data protection ------//
     const mockPages = ['Сводка продаж', 'ABC-анализ', 'География заказов и продаж', 'Товарная аналитика']
-    if (user && user.subscription_status === null && user.is_onboarded && mockPages.includes(routeRuName)) {
+    if (user && user.subscription_status === null && mockPages.includes(routeRuName)) {
       return ( 
         <Suspense fallback={<LoaderPage />}>
           <Helmet>
