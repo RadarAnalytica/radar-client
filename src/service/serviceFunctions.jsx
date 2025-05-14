@@ -1089,75 +1089,97 @@ export const ServiceFunctions = {
     try {
 
       return await ({
-        periods: [
-          '2025',
-          'Апрель 2025',
-          'Март 2025',
-          'Февраль 2025',
-          'Январь 2025',
-          'Декабрь 2024',
+        data: [
+          {
+            key: 1,
+            title: 'Реализация',
+            period_0: {value: 123123, procent: 10},
+            period_1: {value: 123123, procent: 10},
+            period_2: {value: 123123, procent: 10},
+            period_3: {value: 123123, procent: 10},
+            period_4: {value: 123123, procent: 10},
+            period_5: {value: 123123, procent: 10},
+          },
+          {
+            key: 2,
+            title: 'Скидка за счет МП',
+            period_0: {value: 123123, procent: 10},
+            period_1: {value: 123123, procent: 10},
+            period_2: {value: 123123, procent: 10},
+            period_3: {value: 123123, procent: 10},
+            period_4: {value: 123123, procent: 10},
+            period_5: {value: 123123, procent: 10},
+          },
+          {
+            key: 3,
+            title: 'Фактические продажи',
+            period_0: {value: 123123, procent: 10},
+            period_1: {value: 123123, procent: 10},
+            period_2: {value: 123123, procent: 10},
+            period_3: {value: 123123, procent: 10},
+            period_4: {value: 123123, procent: 10},
+            period_5: {value: 123123, procent: 10},
+          },
+          {
+            key: 4,
+            title: 'Прямые расходы',
+            period_0: {value: 123123, procent: 10},
+            period_1: {value: 123123, procent: 10},
+            period_2: {value: 123123, procent: 10},
+            period_3: {value: 123123, procent: 10},
+            period_4: {value: 123123, procent: 10},
+            period_5: {value: 123123, procent: 10},
+            children: [
+              {
+                key: 5,
+                title: 'Себестоимость',
+                period_0: {value: 123123, procent: 10},
+                period_1: {value: 123123, procent: 10},
+                period_2: {value: 123123, procent: 10},
+                period_3: {value: 123123, procent: 10},
+                period_4: {value: 123123, procent: 10},
+                period_5: {value: 123123, procent: 10},
+              },
+            ]
+          },
         ],
-        data: {
-          realisation: {
-            '2025': 123123,
-            'Апрель 2025': 123123,
-            'Март 2025': 123123,
-            'Февраль 2025': 123123,
-            'Январь 2025': 123123,
-            'Декабрь 2024': 123123,
-            // '2025': {
-            //   value: 123123,
-            //   procent: 13
-            // },
-            // 'Апрель 2025': {
-            //   value: 123123,
-            //   procent: 13
-            // },
-            // 'Март 2025': {
-            //   value: 123123,
-            //   procent: 13
-            // },
-            // 'Февраль 2025': {
-            //   value: 123123,
-            //   procent: 13
-            // },
-            // 'Январь 2025': {
-            //   value: 123123,
-            //   procent: 13
-            // },
-            // 'Декабрь 2024': {
-            //   value: 123123,
-            //   procent: 13
-            // },
+        columns: [
+          {
+            title: 'Статья',
+            dataIndex: 'title',
+            key: 'title',
           },
-          saleMp: {
-            '2025': {
-              value: 123123,
-              procent: 20
-            },
-            'Апрель 2025': {
-              value: 321213,
-              procent: 13
-            },
-            'Март 2025': {
-              value: 55456,
-              procent: 4
-            },
-            'Февраль 2025': {
-              value: 7899,
-              procent: 6
-            },
-            'Январь 2025': {
-              value: 67903,
-              procent: 17
-            },
-            'Декабрь 2024': {
-              value: 31235,
-              procent: 10
-            },
+          {
+            title: '2025',
+            dataIndex: 'period_0',
+            key: 'period_0',
           },
-          fact: []
-        }
+          {
+            title: 'Апрель 2025',
+            dataIndex: 'period_1',
+            key: 'period_1',
+          },
+          {
+            title: 'Март 2025',
+            dataIndex: 'period_2',
+            key: 'period_2',
+          },
+          {
+            title: 'Февраль 2025',
+            dataIndex: 'period_3',
+            key: 'period_3',
+          },
+          {
+            title: 'Январь 2025',
+            dataIndex: 'period_4',
+            key: 'period_4',
+          },
+          {
+            title: 'Декабрь 2024',
+            dataIndex: 'period_5',
+            key: 'period_5',
+          },
+        ]
       })
 
       // const response = await fetch(`${URL}/api/shop/tax-rate/set`, {

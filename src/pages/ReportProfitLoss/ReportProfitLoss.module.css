@@ -34,3 +34,12 @@
 .page__headerWrapper {
     width: 100%;
 }
+
+/* table */
+
+.cell {
+    font-weight: 700;
+}
+.cellProcent {
+    font-weight: 500;
+}
