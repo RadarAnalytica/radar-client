@@ -11,13 +11,28 @@ import { Filters } from '../../../../components/sharedComponents/apiServicePages
 import SelfCostWarningBlock from '../../../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock'
 import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import FirstBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/firstBarsGroup'
+import SecondBarsGroup from '../../../../components/dashboardPageComponents/barsGroup/secondBarsGroup'
 import MainChart from '../../../../components/dashboardPageComponents/charts/mainChart/mainChart'
+import AbcDataBlock from '../../../../components/dashboardPageComponents/blocks/abcDataBlock/abcDataBlock'
+import FinanceBlock from '../../../../components/dashboardPageComponents/blocks/financeBlock/financeBlock'
+import ProfitBlock from '../../../../components/dashboardPageComponents/blocks/profitBlock/profitBlock'
+import MarginChartBlock from '../../../../components/dashboardPageComponents/blocks/marginChartBlock/marginChartBlock'
+import ProfitChartBlock from '../../../../components/dashboardPageComponents/blocks/profitChartBlock/profitChartBlock'
+import StorageBlock from '../../../../components/dashboardPageComponents/blocks/storageBlock/storageBlock'
+import StorageRevenueChartBlock from '../../../../components/dashboardPageComponents/blocks/storageRevenueChartBlock/storageRevenueChartBlock'
+import CostsBlock from '../../../../components/dashboardPageComponents/blocks/costsBlock/costsBlock'
+import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
+import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
+import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
 
 const _DashboardPage = () => {
+    
     const { authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [dataDashBoard, setDataDashboard] = useState();
     const [loading, setLoading] = useState(true);
+    const [primaryCollect, setPrimaryCollect] = useState(null)
 
     const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
         setLoading(true);
@@ -32,24 +47,6 @@ const _DashboardPage = () => {
                     activeBrand
                 );
                 setDataDashboard(data);
-
-                //   if (data?.salesAndProfit) {
-                //     const formattedData = processSalesAndProfit(data.salesAndProfit);
-                //     setSalesAndProfit(formattedData);
-                //   }
-                //   if (data?.marginalityRoiChart) {
-                //     const formattedData = processMarginalityRoiChart(data.marginalityRoiChart);
-                //     setChartRoiMarginalityData(formattedData);
-                //   }
-                //   if (data?.revenueByWarehouse) {
-                //     const formattedData = processRevenueData(data.revenueByWarehouse);
-                //     SetRevenueByWarehouse(formattedData);
-                //   }
-                //   if (data?.structure) {
-                //     const formattedData = processStructureData(data.structure);
-                //     setStructure(formattedData);
-                //   }
-
             }
 
         } catch (e) {
@@ -60,10 +57,18 @@ const _DashboardPage = () => {
     };
 
     useEffect(() => {
+        if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+            setPrimaryCollect(activeBrand.is_primary_collect)
+            updateDataDashBoard(selectedRange, activeBrand.id, authToken)
+        }
+    }, [authToken]);
+
+    useEffect(() => {
+        setPrimaryCollect(activeBrand?.is_primary_collect)
         if (activeBrand && activeBrand.is_primary_collect) {
             updateDataDashBoard(selectedRange, activeBrand.id, authToken)
         }
-    }, [activeBrand, selectedRange, authToken]);
+    }, [activeBrand, selectedRange]);
 
 
 
@@ -82,10 +87,6 @@ const _DashboardPage = () => {
                 </div>
                 {/* !header */}
 
-                {/* NO SUBSCRIPTION WARNING BLOCK */}
-                {/* <NoSubscriptionWarningBlock /> */}
-                {/* !NO SUBSCRIPTION WARNING BLOCK */}
-
                 {/* SELF-COST WARNING */}
                 {dataDashBoard &&
                     !dataDashBoard.costPriceAmount &&
@@ -95,7 +96,7 @@ const _DashboardPage = () => {
                     <div>
                         <SelfCostWarningBlock
                             shopId={activeBrand.id}
-                        //onUpdateDashboard={handleUpdateDashboard} //
+                            onUpdateDashboard={updateDataDashBoard} //
                         />
                     </div>
                 }
@@ -104,9 +105,15 @@ const _DashboardPage = () => {
 
 
                 {/* FILTERS */}
-                <div className={styles.page__wrapper}>
+                <div className={styles.page__controlsWrapper}>
                     <Filters
                         setLoading={setLoading}
+                    />
+
+                    <HowToLink
+                        text='Как проверить данные?'
+                        target='_blank'
+                        url='https://radar.usedocs.com/article/75916'
                     />
                 </div>
                 {/* !FILTERS */}
@@ -136,6 +143,64 @@ const _DashboardPage = () => {
                             loading={loading}
                             dataDashBoard={dataDashBoard}
                             selectedRange={selectedRange}
+                        />
+                        {/* Second group of data bars */}
+                        <SecondBarsGroup
+                            dataDashBoard={dataDashBoard}
+                            loading={loading}
+                        />
+
+                        {/*  Grid group */}
+                        {/* Сетка построена гридами в две колонки и строками по 25px. Используй grid-row: span X для управления высотой блоков */}
+                        <div className={isSidebarHidden ? styles.page__chartGroup : styles.page__chartGroup_oneLine}>
+                            <FinanceBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <MarginChartBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <ProfitChartBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <ProfitBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <StorageRevenueChartBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                            <StorageBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+
+                            <div className={styles.page__doubleBlockWrapper}>
+                                <RevenueStructChartBlock
+                                    loading={loading}
+                                    dataDashBoard={dataDashBoard}
+                                />
+                                <TaxTableBlock
+                                    loading={loading}
+                                    dataDashBoard={dataDashBoard}
+                                    updateDashboard={updateDataDashBoard}
+                                />
+                            </div>
+
+                            <CostsBlock
+                                loading={loading}
+                                dataDashBoard={dataDashBoard}
+                            />
+                        </div>
+
+                        {/* ABC-analysis block */}
+                        <AbcDataBlock
+                            titles={['Группа А', 'Группа В', 'Группа С']}
+                            data={dataDashBoard?.ABCAnalysis}
+                            loading={loading}
                         />
                     </>
                 }

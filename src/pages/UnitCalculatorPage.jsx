@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styles from './UnitCalculatorPage.module.css'
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
 import MobileHeader from '../components/sharedComponents/mobileHeader/mobileHeader';
 import { useSearchParams } from 'react-router-dom';
 import { Form, Button, ConfigProvider } from 'antd';
@@ -14,6 +12,7 @@ import { unitCalcResultFunction, logisticsWithBuyoutPercentagePriceCalcFunc, enc
 import { tempWhouseData } from '../components/unitCalculatorPageComponents/tempWarehouseData';
 import { RETURN_PRICE, FBS_DEADLINE, FBS_DEADLIE_RATE } from '../components/unitCalculatorPageComponents/constatnts';
 import { Helmet } from 'react-helmet';
+import Header from '../components/sharedComponents/header/header';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const UnitCalculatorPage = () => {
@@ -93,14 +92,13 @@ const UnitCalculatorPage = () => {
             const package_width_int = parseInt(package_width)
             const package_length_int = parseInt(package_length)
             const package_height_int = parseInt(package_height)
-            const volume = (((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000).toFixed(2)
-
+            let volume = Math.ceil(((package_height_int / 100) * (package_length_int / 100) * (package_width_int / 100)) * 1000)
             if (volume && !Number.isNaN(volume)) {
                 let lprice = logisticsBase;
                 let sprice = storageBase
                 if (volume > 1) {
-                    lprice = lprice + (logisticsExtra * Math.ceil(volume))
-                    sprice = sprice + (storageExtra * Math.ceil(volume))
+                    lprice = lprice + (logisticsExtra * (volume - 1))
+                    sprice = sprice + (storageExtra * (volume - 1))
                 }
                 setStoragePrice(sprice)
                 setLastMileLogisticsPrice(lprice)
@@ -194,9 +192,9 @@ const UnitCalculatorPage = () => {
                 <Sidebar />
             </div>
             {/* <SideNav /> */}
-            <section className={styles.page__content} ref={sectionRef}>
+            <section className={styles.page__content} ref={sectionRef} id='calc-content'>
                 <div className={styles.page__headerWrapper}>
-                    <TopNav title={'Калькулятор unit-экономики товара'} mikeStarinaStaticProp />
+                    <Header title={'Калькулятор unit-экономики товара'} />
                 </div>
                 <div className={styles.page__mobileHeaderWrapper}>
                     <MobileHeader title='Калькулятор unit-экономики товара' />

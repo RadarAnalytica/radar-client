@@ -73,12 +73,12 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
   return (
     <div to='/' className={styles.card}>
       <div className={styles.card__coverWrapper}>
-        <img src={preview} alt='' />
+        <img src={`${URL}/blog_content/media/${preview}`} alt='' />
       </div>
       <div className={styles.card__info}>
         <div className={styles.card__tagsWrapper}>
           <div className={styles.card__tag}>
-            # {category.name}
+            # {category?.name}
           </div>
           <p className={`${styles.card__text} ${styles.card__text_gray}`}>{moment(date).format('DD.MM.YYYY')}</p>
         </div>
@@ -105,7 +105,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
             >
               <Button
                 loading={status.isLoading}
-                onClick={() => setPostIdForUpdate(rest.id)}
+                onClick={() => setPostIdForUpdate(rest?.id)}
               >Редактировать</Button>
               <Button
                 onClick={ArticleVisibilityHandler}

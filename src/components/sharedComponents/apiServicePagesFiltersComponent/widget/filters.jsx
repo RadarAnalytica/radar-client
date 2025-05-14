@@ -10,7 +10,7 @@ import { actions as filterActions } from '../../../../redux/apiServicePagesFilte
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 
 export const Filters = ({
-  setLoading
+  setLoading, shopSelect = true, timeSelect = true
 }) => {
 
   // ------ база ------//
@@ -30,7 +30,7 @@ export const Filters = ({
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
-    const selectedShop = shopArrayFormSelect?.find(_ => _.id=== value)
+    const selectedShop = shopArrayFormSelect?.find(_ => _.id === value)
     dispatch(filterActions.setActiveShop(selectedShop))
   }
   //- -----------------------------------------//
@@ -130,21 +130,22 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        <div className={styles.filters__inputWrapper}>
-        {shops && activeBrand &&
-          <TimeSelect />
+        {shops && activeBrand && timeSelect &&
+          <div className={styles.filters__inputWrapper}>
+            <TimeSelect />
+          </div>
         }
-        </div>
-        <div className={styles.filters__inputWrapper}>
-          {shops && activeBrand &&
+        {shops && activeBrand && shopSelect &&
+          <div className={styles.filters__inputWrapper}>
             <PlainSelect
               selectId='store'
               label='Магазин:'
               value={activeBrand.id}
               optionsData={shopArrayFormSelect}
               handler={shopChangeHandler}
-            />}
-        </div>
+            />
+          </div>
+        }
       </div>
       {/* {(!activeBrand?.is_primary_collect) && (
         <DownloadButton handleDownload={handleDownload} />

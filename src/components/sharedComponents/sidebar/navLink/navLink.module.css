@@ -5,42 +5,62 @@
     gap: 8px;
     font-family: Mulish;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #8C8C8C;
     text-decoration: none;
     transition: all .3s ease-out;
+    padding: 8px 20px 8px 20px;
+    border-radius: 4px;
+    width: 100%;
 }
-.navLink > svg {
+
+.navLink>svg {
     width: 19px;
     height: 18px;
 }
+
 .navLink:hover {
     color: #1A1A1A;
+    background: #F7F6FE;
 }
-.navLink:hover > svg {
+
+.navLink:hover>svg {
     color: #5329FF;
 }
+
 .navLink_active {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     font-family: Mulish;
     font-weight: 700;
     font-size: 16px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
+    width: 100%;
 }
-.navLink_active > svg {
+
+.navLink_active>svg {
     color: #5329FF
 }
 
 .navLink_activeNoIcon {
     font-weight: 700;
     color: #1A1A1A;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 20px 8px 0;
+}
+
+.navLink_activeNoIcon:hover {
+    background: none !important;
 }
 
 .navLink_activeNoIcon::before {
@@ -49,6 +69,8 @@
     height: 8px;
     border-radius: 50% 50%;
     background: #5329FF;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .navLink__iconWrapper {
@@ -60,6 +82,7 @@
     aspect-ratio: 1 / 1;
     border-radius: 8px;
 }
+
 .navLink__iconWrapper:hover {
     background: #F7F7F7;
 }

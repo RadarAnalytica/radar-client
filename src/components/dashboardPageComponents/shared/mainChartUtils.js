@@ -129,16 +129,19 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
             controlsState.isOrderQuantityActive
                 ? {
                     label: 'Заказы',
-                    borderRadius: 8,
+                    borderRadius: 3,
                     type: 'bar',
                     backgroundColor: (context) => {
                         const ctx = context.chart.ctx;
                         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                        gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                        gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                        gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+                        // gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+                        // gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+                        // gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+                        gradient.addColorStop(0, '#F0AD00');
+                        gradient.addColorStop(1, '#F0AD0080');
                         return gradient;
                     },
+                    borderColor: 'transparent',
                     borderWidth: 1,
                     hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                     yAxisID: 'B',
@@ -146,16 +149,19 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
                 }
                 : {
                     label: 'Заказы',
-                    borderRadius: 8,
+                    borderRadius: 3,
                     type: 'bar',
                     backgroundColor: (context) => {
                         const ctx = context.chart.ctx;
                         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                        gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
-                        gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
-                        gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+                        // gradient.addColorStop(0, 'rgba(240, 173, 0, 1)');
+                        // gradient.addColorStop(0.5, 'rgba(240, 173, 0, 0.9)');
+                        // gradient.addColorStop(1, 'rgba(240, 173, 0, 0.5)');
+                        gradient.addColorStop(0, '#F0AD00');
+                        gradient.addColorStop(1, '#F0AD0080');
                         return gradient;
                     },
+                    borderColor: 'transparent',
                     borderWidth: 1,
                     hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                     yAxisID: 'B',
@@ -164,16 +170,19 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
             controlsState.isSalesQuantityActive
                 ? {
                     label: 'Продажи',
-                    borderRadius: 8,
+                    borderRadius: 3,
                     type: 'bar',
                     backgroundColor: (context) => {
                         const ctx = context.chart.ctx;
                         const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                        gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                        gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                        gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+                        // gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+                        // gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+                        // gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+                        gradient.addColorStop(0, '#5329FF');
+                        gradient.addColorStop(1, '#5329FF80');
                         return gradient;
                     },
+                    borderColor: 'transparent',
                     borderWidth: 1,
                     hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
                     yAxisID: 'B',
@@ -181,16 +190,19 @@ export const getChartData = (dataDashBoard, selectedRange, controlsState) => {
                 }
                 : {
                     label: 'Продажи',
-                    borderRadius: 8,
+                    borderRadius: 3,
                     type: 'bar',
                     backgroundColor: (context) => {
                         const ctx = context.chart.ctx;
                         const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                        gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
-                        gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
-                        gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+                        // gradient.addColorStop(0, 'rgba(83, 41, 255, 1)');
+                        // gradient.addColorStop(0.5, 'rgba(83, 41, 255, 0.9)');
+                        // gradient.addColorStop(1, 'rgba(83, 41, 255, 0.5)');
+                        gradient.addColorStop(0, '#5329FF');
+                        gradient.addColorStop(1, '#5329FF80');
                         return gradient;
                     },
+                    borderColor: 'transparent',
                     borderWidth: 1,
                     hoverBackgroundColor: 'rgba(83, 41, 255, 0.7)',
                     yAxisID: 'B',
@@ -334,7 +346,7 @@ export const getChartTooltip = (context, chartData) => {
     tooltipEl.style.transition = 'all 0.2s ease';
     tooltipEl.style.backgroundColor = 'white';
     tooltipEl.style.borderRadius = '8px';
-    tooltipEl.style.boxShadow = '0 0 20px rgba(19,19, 19, 0.7)';
+    tooltipEl.style.boxShadow = '0px 0px 20px 0px #00000014;';
     tooltipEl.style.padding = '1rem';
     tooltipEl.style.pointerEvents = 'none';
     tooltipEl.style.zIndex = '1000';
@@ -344,6 +356,8 @@ export const getChartTooltip = (context, chartData) => {
 
 export const getChartOptions = (chartData, days) => {
     const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
         animation: {
             duration: 0,
         },

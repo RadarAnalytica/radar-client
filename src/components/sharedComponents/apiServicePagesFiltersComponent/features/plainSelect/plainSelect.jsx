@@ -24,6 +24,7 @@ export const PlainSelect = (
             </label>
             <div className={styles.plainSelect__selectWrapper}>
                 <ConfigProvider
+                    renderEmpty={ () => (<div>Нет данных</div>)} 
                     theme={{
                         token: {
                             //colorBgBase: '#EAEAF1',
@@ -53,6 +54,7 @@ export const PlainSelect = (
                         value={value}
                         id={selectId}
                         onChange={handler}
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
                     />
                 </ConfigProvider>
             </div>

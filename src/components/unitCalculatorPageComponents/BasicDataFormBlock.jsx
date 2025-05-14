@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Form, Input, Checkbox, ConfigProvider, Tooltip, AutoComplete, Modal } from 'antd';
+import { Form, Input, Checkbox, ConfigProvider, Tooltip, Select, Modal, AutoComplete } from 'antd';
 import { normilizeUnitsInputValue } from './UnitCalcUtils';
 import { getCalculatorSubjects } from '../../service/api/api';
 import styles from './BasicDataFormBlock.module.css'
@@ -7,13 +7,15 @@ import useDebouncedFunction from '../../service/hooks/useDebounce';
 
 const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProductFromToken }) => {
     const [ autocompleteOptions, setAutocompleteOptions ] = useState();
-    console.log(autocompleteOptions)
+    // console.log(autocompleteOptions)
+    const [loadingOptions, setLoadingOptions] = useState(true);
     const [inputValue, setInputValue] = useState('');
     const [isOptionClicked, setIsOptionClicked] = useState(false);
     const [ error, setError ] = useState(false)
     const dropdownRef = useRef(null)
 
     const getSubjectsDataWSetter = async (value) => {
+        setLoadingOptions(true);
         const res = await getCalculatorSubjects({search_string: value.trim()})
         
         if (res.rows) {
@@ -21,8 +23,13 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
         } else {
             setError(true)
         }
+        setLoadingOptions(false);
     }
     const debouncedDataFetch = useDebouncedFunction(getSubjectsDataWSetter, 500)
+    useEffect( () => {
+        setLoadingOptions(true);
+        getSubjectsDataWSetter('');
+    }, [])
 
     const isSPP = Form.useWatch('isSPP', form);
     const product = Form.useWatch('product', form);
@@ -57,19 +64,20 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
         setIsProductFromToken(false)
         setIsOptionClicked(false)
         setInputValue(value);
-        if (value === '') {
-            setAutocompleteOptions([])
-        }
+        // if (value === '') {
+            // setAutocompleteOptions([])
+        // }
         value && debouncedDataFetch(value)
     };
 
     const handleSelect = (value) => { // обработка клика на опцию
         setIsOptionClicked(true)
+        setIsProductFromToken(null)
         setInputValue(value);
-        const currentOption = autocompleteOptions.find(_ => _.name === value)
-        if (currentOption) {
-            setMpMainFee(currentOption.fbo)
-        }
+        // const currentOption = autocompleteOptions.find(_ => _.name === value)
+        // if (currentOption) {
+            // setMpMainFee(currentOption.fbo)
+        // }
     };
 
     return (
@@ -104,7 +112,8 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                             hoverBorderColor: 'rgba(232, 232, 232, 1)',
                             activeOutlineColor: 'rgba(0,0,0,0)',
                             selectorBg: product ? '#F2F2F2' : '',
-                            clearBg: 'black'
+                            clearBg: 'black',
+                            optionSelectedBg: 'rgba(232, 232, 232, 1)',
                         },
                         Input: {
                             activeBorderColor: '#5329FF',
@@ -126,24 +135,48 @@ const BasicDataFormBlock = ({ form, setMpMainFee, isProductFromToken, setIsProdu
                         { validator: isProductFromToken !== null && autocompleteValidation }
                     ]}
                 >
-                    <AutoComplete 
+                    <Select 
+                        showSearch
                         size='large'
                         placeholder='Введите название товара'
                         className={styles.formItem__input}
                         style={{background: product ? '#F2F2F2' : ''}}
                         id='autocomp'
-                        autoComplete='off'
-                        notFoundContent={autocompleteOptions && autocompleteOptions.length === 0 && <div style={{color: 'black'}}>Ничего не найдено</div>}
+                        // autoComplete='off'
+                        dropdownRender={menu => (
+                            <div style={{ maxHeight: '200px', overflowY: 'auto', overscrollBehavior: 'none' }}>
+                                {menu}
+                            </div>
+                        )}
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                        onDropdownVisibleChange={(open) => {
+                            const p = document.querySelector('#calc-content')
+                            if (open) {
+                                // Отключаем прокрутку при открытии
+                                document.body.style.overflow = 'hidden';
+                                p.style.overflow = 'hidden'
+                            } else {
+                                // Восстанавливаем прокрутку при закрытии
+                                document.body.style.overflow = 'auto';
+                                p.style.overflow = 'auto'
+                            }
+                        }}
+                        notFoundContent={<div style={{color: 'black'}}>
+                            {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}
+                            {loadingOptions && 'Идет загрузка...'
+                        }
+                        </div>}
                         allowClear={{
                             clearIcon: (
-                                <div style={{ background: 'transparent'}}>
-                                    <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z" fill="#8C8C8C"/>
+                                <div style={{ marginLeft: -20, background: 'transparent'}}>
+                                    <svg width="10" height="10" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z" fill="currentColor"/>
                                     </svg>
                                 </div>
                             )
                         }}
-                        value={inputValue}
+                        
+                        // value={inputValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
                         options={autocompleteOptions && autocompleteOptions.length > 0 ? autocompleteOptions.map(_ => ({ value: _.name})) : undefined}

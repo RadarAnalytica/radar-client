@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import styles from './OrdersMap.module.css'
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
-import OrdersMapFilter from '../components/OrdersMapFilter';
 import './styles.css';
 import Map from '../components/Map';
 import OrderMapPieChart from '../containers/orderMap/OrderMapPieChart';
@@ -28,6 +25,7 @@ import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
 import { mockGetGeographyData } from '../service/mockServiceFunctions'
+import DataCollectWarningBlock from '../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -52,6 +50,7 @@ const OrdersMap = () => {
   const prevselectedRange = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
+  const [primaryCollect, setPrimaryCollect] = useState(null)
 
   const radioOptions = [
     { value: 'region', label: 'По регионам' },
@@ -60,20 +59,29 @@ const OrdersMap = () => {
 
 
 
-  useEffect(() => {
-    const updateGeoData = async () => {
-      setLoading(true)
-      if (activeBrand && selectedRange && authToken) {
-        let data = null;
-        if (user.subscription_status === null) {
-          data = await mockGetGeographyData();
-        } else {
-          data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
-        }
-        setGeoData(data);
+  const updateGeoData = async () => {
+    setLoading(true)
+    if (activeBrand && selectedRange && authToken) {
+      let data = null;
+      if (user.subscription_status === null) {
+        data = await mockGetGeographyData();
+      } else {
+        data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
       }
-      setLoading(false)
+      setGeoData(data);
     }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+      setPrimaryCollect(activeBrand.is_primary_collect)
+      updateGeoData()
+    }
+  }, [authToken]);
+
+  useEffect(() => {
+    setPrimaryCollect(activeBrand?.is_primary_collect)
     if (activeBrand?.is_primary_collect) {
       updateGeoData();
     }
@@ -128,11 +136,11 @@ const OrdersMap = () => {
     };
   }, [dispatch, activeBrand, selectedRange, authToken]);
 
-  useEffect(() => {
-    if (authToken !== authTokenRef.current) {
-      //dispatch(fetchShops(authToken));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  // if (authToken !== authTokenRef.current) {
+  //dispatch(fetchShops(authToken));
+  // }
+  // }, [dispatch]);
 
 
   const checkIdQueryParam = () => {
@@ -815,7 +823,7 @@ const OrdersMap = () => {
               ) : null}
               {byRegions && geoData?.geo_data ? (
                 <div className='map-data-content'>
-                  <div className=' pl-3 d-flex map-data-row'>
+                  <div className=' pl-3 d-flex map-data-row w-100'>
                     <div className='col'>
                       <OrderMapPieChart
                         sub={'Всего заказов'}
@@ -845,14 +853,15 @@ const OrdersMap = () => {
                       />
                     </div>
                   </div>
-                  <div className=' pl-3 map-data-row'>
+                  <div className='pl-3 map-data-row'>
                     <div
                       className='col'
-                      style={
-                        geoData?.geo_data?.length <= 5
-                          ? { visibility: 'hidden' }
-                          : {}
-                      }
+                      style={{
+                        visibility: geoData?.geo_data?.length <= 5 ? 'hidden' : 'visible',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'stretch'
+                      }}
                     >
                       <OrderMapTable
                         title={'Заказы в других регионах'}
@@ -914,13 +923,16 @@ const OrdersMap = () => {
           )}
 
           {activeBrand && !activeBrand.is_primary_collect && !loading &&
-            (
-              <div style={{ width: '100%', padding: '0 36px' }}>
-                <DataCollectionNotification
-                  title={'Ваши данные еще формируются и обрабатываются.'}
-                />
-              </div>
-            )}
+           
+          <div style={{ width: '100%', padding: '0 20px' }}>
+            {/* <DataCollectionNotification
+              title={'Ваши данные еще формируются и обрабатываются.'}
+            /> */}
+             <DataCollectWarningBlock
+              title='Ваши данные еще формируются и обрабатываются.'
+            />
+          </div>
+          }
         </section>
         {/* ---------------------- */}
       </main>

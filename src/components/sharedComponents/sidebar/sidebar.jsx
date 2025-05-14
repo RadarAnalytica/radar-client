@@ -1,49 +1,61 @@
-import { useState } from 'react';
 import styles from './sidebar.module.css'
 import { Link } from 'react-router-dom';
-import NavLink from './navLink/navLink';
 import logo from '../../../assets/logo.png';
 import smallLogo from '../../../assets/small_logo.png';
 import Dropdown from './dropdown/dropdown';
 import Support from './supportBlock/support';
 import NestedLink from './nestedLink/nestedLink';
 import { menuConfig } from './shared/config/config';
+import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
+import { actions as utilsActions } from '../../../redux/utils/utilsSlice'
+
 
 
 
 const Sidebar = () => {
-
-    const [isMenuHidden, setIsMenuHidden] = useState(false)
+    const dispatch = useAppDispatch()
+    const { isSidebarHidden } = useAppSelector(store => store.utils)
 
     return (
-        <nav className={isMenuHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar} 
-            //onClick={() => setIsMenuHidden(false)} 
-            //onMouseLeave={() => setIsMenuHidden(true)}
+        <nav className={isSidebarHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
+            onMouseEnter={() => dispatch(utilsActions.setIsSidebarHidden(false))}
+            onMouseLeave={() => dispatch(utilsActions.setIsSidebarHidden(true))}
         >
+
             <div className={styles.sidebar__mainWrapper}>
-                <div className={isMenuHidden ? `${styles.sidebar__mainLinkWrapper} ${styles.sidebar__mainLinkWrapper_hidden}` : styles.sidebar__mainLinkWrapper}>
-                    <Link to='/main'>
-                        <img src={isMenuHidden ? smallLogo : logo} alt='логотип' className={isMenuHidden ? `${styles.sidebar__mainLinklogo} ${styles.sidebar__mainLinklogo_hidden}` : styles.sidebar__mainLinklogo} />
+                <div className={isSidebarHidden ? `${styles.sidebar__mainLinkWrapper} ${styles.sidebar__mainLinkWrapper_hidden}` : styles.sidebar__mainLinkWrapper}>
+                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigHidden}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_bigVisible}`}>
+                        <img src={logo} alt='логотип' className={styles.sidebar__mainLinklogo} />
+                    </Link>
+                    <Link to='/main' className={isSidebarHidden ? `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallVisible}` : `${styles.sidebar__mainLink} ${styles.sidebar__mainLink_smallHidden}`}>
+                        <img src={smallLogo} alt='логотип' className={styles.sidebar__mainLinkSmallLogo}/>
                     </Link>
                 </div>
-                <ul className={styles.sidebar__navList}>
-                    {menuConfig.map(i => {
-                        if (!i.children) {
-                            return (
+
+                <div className={isSidebarHidden ? `${styles.sidebar__scrollContainer} ${styles.sidebar__scrollContainer_hidden}` : styles.sidebar__scrollContainer}>
+                    <ul className={styles.sidebar__navList}>
+                        {menuConfig.map(i => {
+
+                            const isMenuActive = i.children.some(_ => _.isActive);
+
+                            return isMenuActive && (
                                 <li className={styles.sidebar__navListItem} key={i.id}>
-                                    <NavLink url={i.url} title={i.label} icon={i.icon} isMenuHidden={isMenuHidden} />
+                                    <NestedLink title={i.label} icon={i.icon} links={i.children} isMenuHidden={isSidebarHidden} />
                                 </li>)
-                        } else {
-                            return (
-                                <li className={styles.sidebar__navListItem} key={i.id}>
-                                    <NestedLink title={i.label} icon={i.icon} links={i.children} isMenuHidden={isMenuHidden} />
-                                </li>)
-                        }
-                    })}
-                </ul>
-                <Dropdown isMenuHidden={isMenuHidden} />
+
+                        })}
+                        <li className={styles.sidebar__navListItem}>
+                            <div className={styles.sidebar__dropdownWrapper}>
+                                <Dropdown isMenuHidden={isSidebarHidden} />
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div className={styles.sidebar__supportWrapper}>
+                        <Support isMenuHidden={isSidebarHidden} />
+                    </div>
+                </div>
             </div>
-            <Support isMenuHidden={isMenuHidden} />
         </nav>
     )
 }

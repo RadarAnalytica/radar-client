@@ -1,0 +1,132 @@
+.block {
+    background: white;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+    grid-row: span 6;
+    transition: all .1s ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.block:hover {
+    transform: scale(101%);
+}
+
+.block__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.bar__loaderWrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.block__table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.block__tableRow {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    padding: 8px;
+    border-bottom: 1px solid #E8E8E8;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+
+    @media (max-width: 1270px) {
+        grid-template-columns: 3fr 3fr;
+    }
+}
+
+.block__tableRow:hover {
+    background: #F2F2F2;
+}
+
+.block__tableRow:last-of-type {
+    border: none;
+}
+
+.block__tableRowTitle {
+    width: 100%;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    display: flex;
+    gap: 10px;
+}
+
+.block__tableRowContent {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 90px;
+    gap: 16px;
+}
+
+.block__mainData {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: right;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+}
+.block__mainData_small {
+    @media (max-width: 1270px) {
+        font-size: 12px !important;
+    }
+}
+
+.block__secDataWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.block__mainSubData {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.block__mainSubData_green {
+    color: #00B69B
+}
+
+.block__mainSubData_red {
+    color: #F93C65
+}
+
+.block__mainSubData_gray {
+    color: #8C8C8C
+}

@@ -23,6 +23,7 @@ import NoSubscriptionPage from './NoSubscriptionPage';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import FileUploader from '../components/sharedComponents/fileUploader/fileUploader';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import HowToLink from '../components/sharedComponents/howToLink/howToLink';
 
 const ReportMain = () => {
   const { user, authToken } = useContext(AuthContext);
@@ -218,6 +219,16 @@ const ReportMain = () => {
                   <div className={styles.blockCoverBottomBoldText}>
                     <span>Удачи в использовании сервиса!</span>
                   </div>
+
+
+                  <div className={styles.page__howToLinkWrapper}>
+                    <HowToLink
+                      text='Подробная текстовая инструкция'
+                      target='_blank'
+                      url='https://radar.usedocs.com/article/75939'
+                    />
+                  </div>
+
                 </div>
                 <div className={styles.blockRight}>
                   <div className={styles.blockRightText}>
@@ -303,6 +314,7 @@ const ReportMain = () => {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
+            {/* Это закоменчен новый загрузчик файлов */}
             {/* <div className={styles.uploadWrapper}>
               <FileUploader
                 setShow={setShow}
@@ -347,12 +359,12 @@ const ReportMain = () => {
                       </div>
                     </>
                   ) : (
-                    <>
+                    <p className={styles.fileUploaderText}>
                       Перетащите мышкой файл или
                       <span className={styles.uploadTextBlue}>
                         загрузите с компьютера
                       </span>
-                    </>
+                    </p>
                   )}
                 </div>
               </div>

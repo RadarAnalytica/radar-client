@@ -55,7 +55,7 @@
 .fieldset__wrapper_2cols {
     grid-template-columns: 1fr 1fr;
 
-    @media (max-width: 900px) {
+    @media (max-width: 1200px) {
         display: flex;
         flex-direction: column;
     }

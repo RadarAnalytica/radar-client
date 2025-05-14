@@ -106,7 +106,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
     // }
     // setOptions(updatedList)
   }
-  console.log('Test one of Fin Report pages');
+  // console.log('Test one of Fin Report pages');
   
   useEffect(() =>  {
     const selectList = options.map(x => x.isSelected ? 1 : 0)
@@ -200,7 +200,18 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
           </div>
         ) : (
           <div className={styles.optionsList}>
-            {options.map((option) => (
+            {options.map((option) => {
+              let monthValue;
+              if (filterIdent === 'month') {
+                const splittedValue = option.value.split('.')
+                monthValue = monthNames[parseInt(option.value.split('.')[0])]
+                if (splittedValue[1]) {
+                  monthValue += ` ${splittedValue[1]}`
+                } else {
+                  //
+                }
+              }
+              return (
               <label
                 key={option.key}
                 className={styles.optionLabel}
@@ -215,11 +226,10 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
                 style={{maxWidth: widthData ? '600px' : '180px'}}
                 ref={(el) => el && handleTitleDisplay({ currentTarget: el })}
                 >
-                  {filterIdent === 'month' ? monthNames[option.value] : option.value}
-                  
+                  {filterIdent === 'month' ? monthValue : option.value}
                 </span>
               </label>
-            ))}
+            )})}
           </div>
         )}
       </div>

@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styles from './mobileHeader.module.css'
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.png'
 import { Modal } from 'antd';
 import { URL } from '../../../service/config';
+import AuthContext from '../../../service/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const MobileHeader = ({ title }) => {
-
+    const { user } = useContext(AuthContext)
     const [isMenuVisible, setIsMenuVisible] = useState(false)
-
+    const navigate = useNavigate()
     return (
         <header className={styles.header}>
             <div className={`${styles.header__block} ${styles.header__mainBlock}`}>
@@ -37,18 +39,35 @@ const MobileHeader = ({ title }) => {
                 onCancel={() => setIsMenuVisible(false)}
             >
                 <div className={styles.mobileMenu}>
-                    <Link
-                        to={`${URL}/signin`}
-                        className={styles.header__signin}
-                    >
-                        Вход
-                    </Link>
-                    <Link
-                        to={`${URL}/signup`}
-                        className={styles.header__signup}
-                    >
-                        Регистрация
-                    </Link>
+                    {user &&
+                        <button
+                            //to={`${URL}/signin`}
+                            onClick={() => window.location.href = `${URL}/signin`}
+                            className={styles.header__signin}
+                            target='_blank'
+                        >
+                            Вход
+                        </button>}
+                    {!user &&
+                        <>
+                            <button
+                                //to={`${URL}/signin`}
+                                onClick={() => window.location.href = `${URL}/signin`}
+                                className={styles.header__signin}
+                                target='_blank'
+                            >
+                                Вход
+                            </button>
+                            <button
+                                //to={`${URL}/signup`}
+                                onClick={() => window.location.href = `${URL}/signup`}
+                                target='_blank'
+                                className={styles.header__signup}
+                            >
+                                Регистрация
+                            </button>
+                        </>
+                    }
                 </div>
             </Modal>
         </header>

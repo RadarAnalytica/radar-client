@@ -12,7 +12,7 @@ const BlogList = ({ posts, categories, setPostIdForUpdate }) => {
                       key={i} 
                       title={el.title} 
                       category={category} 
-                      preview={el.preview} 
+                      preview={el.cover} 
                       date={el.date} 
                       description={el.description} 
                       is_published={el.is_published}

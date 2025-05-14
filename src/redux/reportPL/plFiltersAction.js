@@ -19,6 +19,7 @@ export const fetchPLFilters = createAsyncThunk(
         return {
             'brand': data.brand_filter,
             'group': data.group_filter,
+            'month': data.month_filter
         }
     }
 );

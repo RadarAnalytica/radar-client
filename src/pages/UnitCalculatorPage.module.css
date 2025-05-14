@@ -10,7 +10,7 @@
 
 .page__content {
     width: 100%;
-    padding: 0 20px 25px 52px;
+    padding: 25px 20px 25px 52px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
