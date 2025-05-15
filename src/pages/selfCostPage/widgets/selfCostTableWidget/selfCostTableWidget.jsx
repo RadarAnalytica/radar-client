@@ -87,65 +87,66 @@ const SelfCostTableWidget = () => {
 
     return (
         <div className={styles.widget}>
+            <div className={styles.widget__container}>
+                <div className={`${styles.table} ${styles.table_leftMargin} ${styles.table_rightMargin}`}>
 
-            <div className={`${styles.table} ${styles.table_leftMargin} ${styles.table_rightMargin}`}>
+                    {/* Хэдер */}
+                    <div className={styles.table__header}>
+                        {/* Мапим массив значений заголовков */}
+                        <div className={styles.table__headerContainer}>
+                            {tableConfig.values.map((v, id) => {
 
-                {/* Хэдер */}
-                <div className={styles.table__header}>
-                    {/* Мапим массив значений заголовков */}
-                    <div className={styles.table__headerContainer}>
-                        {tableConfig.values.map((v, id) => {
+                                // определяем необходимые стили
+                                const headerCellStyle = v.ruName === 'Продукт' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
+                                return (
+                                    <>
+                                        {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
+                                        <div className={headerCellStyle} key={id}>
+                                            <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                        </div>
+                                    </>
+                                )
+                            })}
+                        </div>
+                    </div>
 
-                            // определяем необходимые стили
-                            const headerCellStyle = v.ruName === 'Продукт' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
+                    {/* Тело таблицы */}
+                    <div className={styles.table__body}>
+                        {/* Мапим данные о товарах */}
+                        {tableData && tableData.length > 0 && activeBrand && tableData?.map((product, id) => {
                             return (
-                                <>
-                                    {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
-                                    <div className={headerCellStyle} key={id}>
-                                        <p className={styles.table__headerItemTitle}>{v.ruName}</p>
-                                    </div>
-                                </>
+                                <TableRow
+                                    key={id}
+                                    currentProduct={product}
+                                    getTableData={getTableData}
+                                    authToken={authToken}
+                                    setDataStatus={setDataStatus}
+                                    initDataStatus={initDataStatus}
+                                    shopId={activeBrand?.id}
+                                />
                             )
                         })}
+                        {tableData && tableData.length === 0 &&
+                            <div className={styles.table__row}>
+                                <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
+                                    Ничего не найдено
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
 
-                {/* Тело таблицы */}
-                <div className={styles.table__body}>
-                    {/* Мапим данные о товарах */}
-                    {tableData && tableData.length > 0 && activeBrand && tableData?.map((product, id) => {
-                        return (
-                            <TableRow
-                                key={id}
-                                currentProduct={product}
-                                getTableData={getTableData}
-                                authToken={authToken}
-                                setDataStatus={setDataStatus}
-                                initDataStatus={initDataStatus}
-                                shopId={activeBrand?.id}
-                            />
-                        )
-                    })}
-                    {tableData && tableData.length === 0 &&
-                        <div className={styles.table__row}>
-                            <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
-                                Ничего не найдено
-                            </div>
-                        </div>
-                    }
-                </div>
+
+
+                <ErrorModal
+                    footer={null}
+                    open={dataStatus.isError}
+                    message={dataStatus.message}
+                    onOk={() => setDataStatus(initDataStatus)}
+                    onClose={() => setDataStatus(initDataStatus)}
+                    onCancel={() => setDataStatus(initDataStatus)}
+                />
             </div>
-
-
-
-            <ErrorModal
-                footer={null}
-                open={dataStatus.isError}
-                message={dataStatus.message}
-                onOk={() => setDataStatus(initDataStatus)}
-                onClose={() => setDataStatus(initDataStatus)}
-                onCancel={() => setDataStatus(initDataStatus)}
-            />
         </div>
     )
 }
