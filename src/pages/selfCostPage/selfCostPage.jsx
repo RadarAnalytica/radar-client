@@ -22,7 +22,7 @@ const SelfCostPage = () => {
             <section className={styles.page__content}>
                 {/* header */}
                 <div className={styles.page__headerWrapper}>
-                    <Header title='Себестоимость' />
+                    <Header title='Себестоимость товаров' />
                 </div>
 
                 <div className={styles.page__filtersWrapper}>

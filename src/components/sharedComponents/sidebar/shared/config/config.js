@@ -109,9 +109,9 @@ export const menuConfig = [
             },
             {
                 id: 4,
-                url: '/selfcost', //првоерить
+                url: '/selfcost',
                 label: 'Себестоимость товаров',
-                isActive: false
+                isActive: true
             },
             {
                 id: 5,
