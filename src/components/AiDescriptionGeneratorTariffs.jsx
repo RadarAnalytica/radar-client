@@ -24,6 +24,7 @@ import { ServiceFunctions } from "../service/serviceFunctions";
 
 const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
     const navigate = useNavigate()
+    const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
     const [selectedGenerationsAmount, setSelectedGenerationsAmount] = useState("5generations");
     const handleClose = () => {
@@ -34,6 +35,33 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
     };
     const { user, authToken } = useContext(AuthContext);
     console.log("SelectRate user:", user);
+
+    useEffect(() => {
+        const loadCloudPaymentsScript = () => {
+          const script = document.createElement('script');
+          script.src = 'https://widget.cloudpayments.ru/bundles/cloudpayments.js';
+          script.async = true;
+    
+          script.onload = () => {
+            setIsScriptLoaded(true);
+          };
+    
+          document.body.appendChild(script);
+        };
+    
+        if (!window.cp) {
+          loadCloudPaymentsScript();
+        } else {
+          setIsScriptLoaded(true);
+        }
+    
+        return () => {
+          const script = document.querySelector('script[src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"]');
+          if (script) {
+            document.body.removeChild(script);
+          }
+        };
+      }, []);
 
 
 
@@ -117,9 +145,25 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
             tinkoffPaySupport: true,
             tinkoffInstallmentSupport: false,
             sbpSupport: true,
-            // sberSupport: true,
-            // sberPaySupport: true,
+            sberSupport: true,
+            sberPaySupport: true,
         });
+        console.log(widget)
+
+        /**
+         * var widget = new cp.CloudPayments({
+      language: 'ru-RU',
+      email: user.email,
+      //applePaySupport: false,
+      //googlePaySupport: false,
+      //yandexPaySupport: true,
+      tinkoffPaySupport: true,
+      tinkoffInstallmentSupport: false,
+      //sbpSupport: true,
+      sberSupport: true,
+      sberPaySupport: true,
+    });
+         */
 
         const receipt = {
             Items: [
@@ -154,7 +198,7 @@ const AiDescriptionGeneratorTariffs = ({ redirect, setIsModalOpenNewGen }) => {
             {
                 // options
                 publicId: "pk_1359b4923cc282c6f76e05d9f138a", //id из личного кабинета
-                description: "Оплата подписки в Radar Analityca", //назначение
+                description: "Оплата генераций описаний в сервисе Радар Аналитика", //назначение
                 amount: amountSubscribe, //сумма
                 currency: "RUB", //валюта
                 invoiceId: invoiceId, //номер заказа  (необязательно)
