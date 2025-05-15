@@ -11,6 +11,7 @@ import { SearchWidget, TableWidget } from './widgets';
 import { ServiceFunctions } from '../../../service/serviceFunctions';
 import styles from './stockAnalysisPage.module.css'
 import { mockGetAnalysisData } from '../../../service/mockServiceFunctions';
+import NoSubscriptionWarningBlock from '../../../components/sharedComponents/noSubscriptionWarningBlock'
 
 const StockAnalysisPage = () => {
 
@@ -94,6 +95,10 @@ const StockAnalysisPage = () => {
                         </div>
                     }
                     {/* !SELF-COST WARNING */}
+
+                    {/* DEMO BLOCK */}
+                    { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                    {/* !DEMO BLOCK */}
 
                     {/* FILTERS */}
                     <div>

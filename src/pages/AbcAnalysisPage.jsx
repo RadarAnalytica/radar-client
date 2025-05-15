@@ -14,6 +14,7 @@ import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Header from "../components/sharedComponents/header/header";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import { mockGetAbcData } from "../service/mockServiceFunctions";
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const AbcAnalysisPage = () => {
   const { activeBrand, selectedRange: days } = useAppSelector(store => store.filters)
@@ -176,6 +177,11 @@ const AbcAnalysisPage = () => {
           <Header title='ABC-анализ' />
         </div>
         {/* !header */}
+
+        {/* DEMO BLOCK */}
+        { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+        {/* !DEMO BLOCK */}
+        
         {isNeedCost && activeBrand && activeBrand.is_primary_collect ? (
           <SelfCostWarning
             activeBrand={activeBrand.id}

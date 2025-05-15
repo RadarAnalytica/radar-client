@@ -24,7 +24,8 @@ import CostsBlock from '../../../../components/dashboardPageComponents/blocks/co
 import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
 import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
-import { mockGetDashBoard, mockGetChartDetailData } from '../../../../service/mockServiceFunctions';
+import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
+import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const _DashboardPage = () => {
     
@@ -39,9 +40,9 @@ const _DashboardPage = () => {
         setLoading(true);
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
+                // CHECK FOR MOCKDATA
                 if (user.subscription_status === null) {;
                     const data = await mockGetDashBoard(selectedRange, activeBrand);
-                    console.log(data)
                     setDataDashboard(data);
                     return 
                 }
@@ -106,19 +107,21 @@ const _DashboardPage = () => {
                 }
                 {/* !SELF-COST WARNING */}
 
-
+                {/* DEMO BLOCK */}
+                { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                {/*  */}
 
                 {/* FILTERS */}
                 <div className={styles.page__controlsWrapper}>
                     <Filters
                         setLoading={setLoading}
-                    />
+                        />
 
                     <HowToLink
                         text='Как проверить данные?'
                         target='_blank'
                         url='https://radar.usedocs.com/article/75916'
-                    />
+                        />
                 </div>
                 {/* !FILTERS */}
 
