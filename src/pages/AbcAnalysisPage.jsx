@@ -46,7 +46,7 @@ const AbcAnalysisPage = () => {
       if (user.subscription_status === null) {
         data = await mockGetAbcData(
           viewType,
-          activeBrand
+          days
         );
       } else {
         data = await ServiceFunctions.getAbcData(
@@ -109,11 +109,7 @@ const AbcAnalysisPage = () => {
 
   const updateAbcAnalysisCaller = async () => {
     if (activeBrand !== undefined) {
-      if (user.subscription_status === null) {
-        mockGetAbcData( viewType, activeBrand );
-      } else {
         updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
-      }
     }
   };
 
