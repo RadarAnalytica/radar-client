@@ -7,7 +7,7 @@ import { Filters } from '../../components/sharedComponents/apiServicePagesFilter
 import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { Segmented, ConfigProvider } from 'antd'
-import { BarsWidget } from './widgets'
+import { BarsWidget, ChartWidget } from './widgets'
 
 
 // dont forget to rename the component and its export
@@ -117,6 +117,11 @@ const SkuFrequencyRequestPage = () => {
                 {mainTabsState === 'Общая информация' &&
                     <div className={styles.page__widgetWrapper}>
                         <BarsWidget />
+                    </div>
+                }
+                {mainTabsState === 'Тренды' &&
+                    <div className={styles.page__widgetWrapper}>
+                        <ChartWidget />
                     </div>
                 }
             </div>
