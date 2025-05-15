@@ -98,6 +98,7 @@ const ProductGroupsPage = () => {
                 onClose={() => setDataFetchingStatus(initDataFetchingStatus)}
                 onCancel={() => setDataFetchingStatus(initDataFetchingStatus)}
                 message={dataFetchingStatus.message}
+                footer={null}
             />
         </main>
     )

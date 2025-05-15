@@ -99,9 +99,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
                             <div className={styles.table__header}>
                                 {/* Мапим массив значений заголовков */}
                                 {tableData && addSkuTableConfig.values.map((v, id) => {
+                                     /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
                                     return (
-                                        <>
-                                            {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
+                                           
                                             <div className={styles.table__headerItem} key={id}>
 
                                                 {v.hasSelect &&
@@ -124,7 +124,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
                                                 }
                                                 <p className={styles.table__headerItemTitle}>{v.ruName}</p>
                                             </div>
-                                        </>
                                     )
                                 })}
                             </div>
