@@ -513,14 +513,20 @@ const Schedule = () => {
         // Также как и года проверяем статус фильтров месяцев. Если он включен и текущий месяц выбран, то работаем с ним.
         if (months.length !== 0 && !months.some(_ => monthNames[parseInt(_) - 1] === month)) continue
         const currentMonthData = currentYearData[month]
-        if (currentMonthData.total_month_revenue > 0 || currentMonthData.total_month_profit > 0) {
-          // Подготавливаем массивы данных для графика
-          revenueArray.push(currentMonthData.total_month_revenue || 0);
-          profitArray.push(currentMonthData.total_month_profit || 0);
-          // Обязательно добавляем год к лейблу месяца
-          const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
-          labelsArray.push(monthLabel);
-        }
+         // Подготавливаем массивы данных для графика
+         revenueArray.push(currentMonthData.total_month_revenue || 0);
+         profitArray.push(currentMonthData.total_month_profit || 0);
+         // Обязательно добавляем год к лейблу месяца
+         const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
+         labelsArray.push(monthLabel);
+        // if (currentMonthData.total_month_revenue > 0 || currentMonthData.total_month_profit > 0) {
+        //   // Подготавливаем массивы данных для графика
+        //   revenueArray.push(currentMonthData.total_month_revenue || 0);
+        //   profitArray.push(currentMonthData.total_month_profit || 0);
+        //   // Обязательно добавляем год к лейблу месяца
+        //   const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
+        //   labelsArray.push(monthLabel);
+        // }
 
         // ЗДЕСЬ БУДЕТ ЧТО-ТО С НЕДЕЛЯМИ
       }
@@ -691,7 +697,6 @@ const Schedule = () => {
 
 
     const { years, months, weekdays } = filter.date_sale_filter;
-
     const roiArray = [];
     const marginalityHigh = [];
     const marginalityLow = [];
@@ -708,16 +713,27 @@ const Schedule = () => {
       // обходим месяца
       for (const month in currentYearData) {
         // Также как и года проверяем статус фильтров месяцев. Если он включен и текущий месяц выбран, то работаем с ним. Если нет, то переходим к следующему месяцу
-        if (months.length !== 0 && !months.some(_ => monthNames[parseInt(_)] === month)) continue;
+        //console.log(months)
+        const isInMonthsList = months.some(_ => {
+          const index = parseInt(_)
+          return monthNames[index - 1] === month
+        })
+        if (months.length !== 0 && !isInMonthsList) continue;
         const currentMonthData = currentYearData[month]
-        if (currentMonthData.average_month_roi > 0 || currentMonthData.max_month_marginality > 0 || currentMonthData.min_month_marginality > 0) {
-          // Подготавливаем массивы данных для графика
-          roiArray.push(currentMonthData.average_month_roi || 0);
-          marginalityHigh.push(currentMonthData.max_month_marginality || 0);
-          marginalityLow.push(currentMonthData.min_month_marginality || 0);
-          const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
-          marginChartLabels.push(monthLabel);
-        }
+        // Подготавливаем массивы данных для графика
+        roiArray.push(currentMonthData.average_month_roi || 0);
+        marginalityHigh.push(currentMonthData.max_month_marginality || 0);
+        marginalityLow.push(currentMonthData.min_month_marginality || 0);
+        const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
+        marginChartLabels.push(monthLabel);
+        // if (currentMonthData.average_month_roi > 0 || currentMonthData.max_month_marginality > 0 || currentMonthData.min_month_marginality > 0) {
+        //   // Подготавливаем массивы данных для графика
+        //   roiArray.push(currentMonthData.average_month_roi || 0);
+        //   marginalityHigh.push(currentMonthData.max_month_marginality || 0);
+        //   marginalityLow.push(currentMonthData.min_month_marginality || 0);
+        //   const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
+        //   marginChartLabels.push(monthLabel);
+        // }
 
 
         // ЗДЕСЬ БУДЕТ ЧТО-ТО С НЕДЕЛЯМИ
