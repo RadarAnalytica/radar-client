@@ -36,7 +36,6 @@ const SelfCostPage = () => {
                         target='_blank'
                     />
                 </div>
-
                 <SelfCostTableWidget />
             </section>
             {/* ---------------------- */}

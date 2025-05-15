@@ -1,38 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './singleGroupWidget.module.css'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
 import { Checkbox, ConfigProvider } from 'antd';
 import { singleGroupTableConfig, buttonIcons } from '../../shared';
 import wb_icon from '../../../../assets/wb_icon.png'
+import { URL } from '../../../../service/config';
+import AuthContext from '../../../../service/AuthContext';
 
-const mockData = [
-    {
-        product: 'Some product name',
-        brand: 'Some brand name',
-        shop: 'Some shop name',
-        sku: '0001',
-        photo: 'https://basket-16.wbbasket.ru/vol2567/part256714/256714767/images/c246x328/1.webp'
-    },
-    {
-        product: 'Some product name',
-        brand: 'Some brand name',
-        shop: 'Some shop name',
-        sku: '0002',
-        photo: 'https://basket-16.wbbasket.ru/vol2567/part256714/256714767/images/c246x328/1.webp'
-    },
-    {
-        product: 'Some product name',
-        brand: 'Some brand name',
-        shop: 'Some shop name',
-        sku: '0003',
-        photo: 'https://basket-16.wbbasket.ru/vol2567/part256714/256714767/images/c246x328/1.webp'
-    },
-]
 
-const SingleGroupWidget = ({ setIsAddSkuModalVisible }) => {
 
-    const [tableData, setTableData] = useState()
-    const [isDataLoading, setIsDataLoading] = useState(false)
+const SingleGroupWidget = ({
+    setIsAddSkuModalVisible,
+    data,
+    setDataFetchingStatus,
+    dataFetchingStatus,
+    initDataFetchingStatus,
+    groupId
+}) => {
+    const { authToken } = useContext(AuthContext)
+    const [tableData, setTableData] = useState([])
     const [checkedList, setCheckedList] = useState([]);
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
@@ -53,15 +39,40 @@ const SingleGroupWidget = ({ setIsAddSkuModalVisible }) => {
         setCheckedList(e.target.checked ? tableData.map(_ => _.sku) : []);
     };
 
-    useEffect(() => {
-        let timeout;
-        const getTableData = async () => {
-            setIsDataLoading(true)
-            timeout = setTimeout(() => { setTableData(mockData); setIsDataLoading(false) }, 2000)
+    const deleteSkuFromGroup = async (product) => {
+        const updatedTableData = tableData;
+        const index = updatedTableData.findIndex(_ => _.sku === product.sku);
+        updatedTableData.splice(index, 1)
+        const requestObject = {
+            product_ids: updatedTableData.map(_ => _.id)
         }
-        getTableData()
-        return () => { timeout && clearTimeout(timeout) }
-    }, [])
+        try {
+            const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'JWT ' + authToken
+                },
+                body: JSON.stringify(requestObject)
+            })
+
+            if (!res.ok) {
+                const parsedData = await res.json()
+                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                return;
+            }
+
+
+            // успешно обновлено
+
+        } catch {
+            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+        }
+    }
+
+    useEffect(() => {
+        data && setTableData(data)
+    }, [data])
 
     return (
         <div className={styles.widget}>
@@ -75,12 +86,7 @@ const SingleGroupWidget = ({ setIsAddSkuModalVisible }) => {
                     Добавить артикул
                 </button>
             </div>
-            {isDataLoading &&
-                <div className={styles.widget__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
-            }
-            {!isDataLoading && tableData &&
+            {tableData &&
                 <div className={styles.widget__tableWrapper}>
 
                     {/* table */}
@@ -89,32 +95,30 @@ const SingleGroupWidget = ({ setIsAddSkuModalVisible }) => {
                         <div className={styles.table__header}>
                             {/* Мапим массив значений заголовков */}
                             {tableData && singleGroupTableConfig.values.map((v, id) => {
+                                /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
                                 return (
-                                    <>
-                                        {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
-                                        <div className={styles.table__headerItem} key={id}>
+                                    <div className={styles.table__headerItem} key={id}>
 
-                                            {v.hasSelect &&
-                                                <div className={styles.sortControls}>
-                                                    <ConfigProvider
-                                                        theme={{
-                                                            token: {
-                                                                colorPrimary: '#5329FF',
-                                                                colorBgContainer: 'transparent'
-                                                            }
-                                                        }}
-                                                    >
-                                                        <Checkbox
-                                                            indeterminate={indeterminate}
-                                                            onChange={onCheckAllChange}
-                                                            checked={checkAll}
-                                                        />
-                                                    </ConfigProvider>
-                                                </div>
-                                            }
-                                            <p className={styles.table__headerItemTitle}>{v.ruName}</p>
-                                        </div>
-                                    </>
+                                        {v.hasSelect &&
+                                            <div className={styles.sortControls}>
+                                                <ConfigProvider
+                                                    theme={{
+                                                        token: {
+                                                            colorPrimary: '#5329FF',
+                                                            colorBgContainer: 'transparent'
+                                                        }
+                                                    }}
+                                                >
+                                                    <Checkbox
+                                                        indeterminate={indeterminate}
+                                                        onChange={onCheckAllChange}
+                                                        checked={checkAll}
+                                                    />
+                                                </ConfigProvider>
+                                            </div>
+                                        }
+                                        <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                    </div>
                                 )
                             })}
                         </div>
@@ -128,24 +132,6 @@ const SingleGroupWidget = ({ setIsAddSkuModalVisible }) => {
                                         className={styles.table__row}
                                         key={id}
                                         id={`table_row_${id}`}
-                                        onMouseOver={(e) => {
-                                            const { id } = e.target
-                                            const rows = id && document.querySelectorAll(`#${id}`);
-                                            if (rows) {
-                                                rows.forEach(row => {
-                                                    row.style.background = '#F2F2F2'
-                                                })
-                                            }
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            const { id } = e.target
-                                            const rows = id && document.querySelectorAll(`#${id}`);
-                                            if (rows) {
-                                                rows.forEach(row => {
-                                                    row.style.background = 'none'
-                                                })
-                                            }
-                                        }}
                                     >
                                         {/* Для каждого товара мапим заголовки таблицы еще раз и забираем из товара нужны данные (в первой колонке одновременно фото и название) */}
                                         {singleGroupTableConfig.values.map(((v, id) => {
@@ -165,7 +151,7 @@ const SingleGroupWidget = ({ setIsAddSkuModalVisible }) => {
                                                     <div className={styles.table__rowItem} key={id}>
                                                         {v.actionTypes.map((a, id) => {
                                                             return (
-                                                                <button className={styles.table__actionButton} key={id}>
+                                                                <button className={styles.table__actionButton} key={id} onClick={() => {deleteSkuFromGroup(product)}}>
                                                                     {buttonIcons[a]}
                                                                 </button>
                                                             )
@@ -208,14 +194,6 @@ const SingleGroupWidget = ({ setIsAddSkuModalVisible }) => {
                                     </div>
                                 )
                             })}
-                            {/* No data */}
-                            {tableData && tableData.length === 0 && id === 0 &&
-                                <div className={styles.table__row}>
-                                    <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
-                                        Товары отсутствуют
-                                    </div>
-                                </div>
-                            }
                         </div>
                     </div>
                     {/* !table */}
