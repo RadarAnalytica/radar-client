@@ -10,10 +10,11 @@ import AuthContext from '../../../service/AuthContext';
 import { SearchWidget, TableWidget } from './widgets';
 import { ServiceFunctions } from '../../../service/serviceFunctions';
 import styles from './stockAnalysisPage.module.css'
+import { mockGetAnalysisData } from '../../../service/mockServiceFunctions';
 
 const StockAnalysisPage = () => {
 
-    const { authToken } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState(); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
@@ -24,11 +25,19 @@ const StockAnalysisPage = () => {
     const fetchAnalysisData = async () => {
         setLoading(true);
         if (activeBrand) {
-            const data = await ServiceFunctions.getAnalysisData(
-                authToken,
-                selectedRange,
-                activeBrand.id
-            );
+            let data = null;
+            if (user.subscription_status === null) {
+                data = await mockGetAnalysisData(
+                    selectedRange,
+                    activeBrand.id
+                );
+            } else {
+                data = await ServiceFunctions.getAnalysisData(
+                    authToken,
+                    selectedRange,
+                    activeBrand.id
+                );
+            }
             setStockAnalysisData(data);
             setStockAnalysisFilteredData(data)
             setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))

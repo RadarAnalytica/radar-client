@@ -64,7 +64,7 @@ const OrdersMap = () => {
     if (activeBrand && selectedRange && authToken) {
       let data = null;
       if (user.subscription_status === null) {
-        data = await mockGetGeographyData();
+        data = await mockGetGeographyData(selectedRange);
       } else {
         data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
       }
