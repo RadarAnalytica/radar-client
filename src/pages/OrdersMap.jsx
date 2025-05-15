@@ -26,6 +26,7 @@ import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
 import { mockGetGeographyData } from '../service/mockServiceFunctions'
 import DataCollectWarningBlock from '../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -706,12 +707,16 @@ const OrdersMap = () => {
             </div>
           </div>
           {/* !header */}
+
+          {/* DEMO BLOCK */}
+          { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+          {/* !DEMO BLOCK */}
+
           <div style={{ width: '100%' }} className="map-container dash-container container p-3">
             <Filters
               setLoading={setLoading}
             />
           </div>
-
 
           {activeBrand && activeBrand.is_primary_collect && !loading && (
             <div className='map-container dash-container container p-3'>
