@@ -11,9 +11,9 @@ function FilterBrandArticle({
 	shopSelect = true,
 }) {
 
-	const [brandsOptions, setBrandsOptions] = useState([]);
-	const [articlesOptions, setArticlesOptions] = useState([]);
-	const [groupsOptions, setGroupsOptions] = useState([]);
+	const [brandsOptions, setBrandsOptions] = useState(null);
+	const [articlesOptions, setArticlesOptions] = useState(null);
+	const [groupsOptions, setGroupsOptions] = useState(null);
 	
 	// filters/shared дубликат
 	// ------ база ------//
@@ -146,14 +146,6 @@ function FilterBrandArticle({
 
 	//--------------------------------------------------------------------------------//
 
-	function updateReportData(){
-
-	}
-
-	useEffect(() => {
-		
-	}, [])
-
   function brandsHandler(){
     console.log('brandHandler')
   }
@@ -185,33 +177,33 @@ function FilterBrandArticle({
 						/>
 				</div>
 			)}
-					<div className={styles.item}>
-						<PlainSelect
-							id="brands"
-							label={'Бренды'}
-							optionsData={brandsOptions}
-              handler={brandsHandler}
-							notFoundContent={<div>Ничего не найдено</div>}
-							/>
-					</div>
-					<div className={styles.item}>
-						<PlainSelect
-							id="groups"
-							label={'Группы'}
-							optionsData={groupsOptions}
-              handler={groupsHandler}
-							notFoundContent={<div>Ничего не найдено</div>}
-							/>
-					</div>
-					<div className={styles.item}>
-						<PlainSelect
-							id="articles"
-							label={'Артикулы'}
-							optionsData={articlesOptions}
-              handler={articlesHandler}
-							notFoundContent={<div>Ничего не найдено</div>}
+			{brandsOptions && <div className={styles.item}>
+					<PlainSelect
+						id="brands"
+						label={'Бренды'}
+						optionsData={brandsOptions}
+						handler={brandsHandler}
+						notFoundContent={<div>Ничего не найдено</div>}
 						/>
-					</div>
+				</div>}
+			{groupsOptions && <div className={styles.item}>
+				<PlainSelect
+					id="groups"
+					label={'Группы'}
+					optionsData={groupsOptions}
+					handler={groupsHandler}
+					notFoundContent={<div>Ничего не найдено</div>}
+					/>
+			</div>}
+			{articlesOptions && <div className={styles.item}>
+				<PlainSelect
+					id="articles"
+					label={'Артикулы'}
+					optionsData={articlesOptions}
+					handler={articlesHandler}
+					notFoundContent={<div>Ничего не найдено</div>}
+				/>
+			</div>}
 		</div>
 	);
 }

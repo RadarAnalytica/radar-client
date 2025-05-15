@@ -22,17 +22,58 @@ export default function ReportWeek() {
 	const { activeBrand, selectedRange } = useAppSelector(
 		(state) => state.filters
 	);
-	const [isLoading, setIsLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [isPopoverOpen, setPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [data, setData] = useState();
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
+	const [primaryCollect, setPrimaryCollect] = useState(null)
+
+	const updateDataReportWeek = async () => {
+		try {
+			if (activeBrand !== null && activeBrand !== undefined) {
+				const response = await ServiceFunctions.getReportWeek(
+					authToken,
+					selectedRange,
+					activeBrand
+				);
+				const weeks = response.data[0]['weeks'];
+				const rows = weeks.map((el) => {
+					let row = {
+						key: el.week,
+						week_label: el.week_label
+					}
+					for (const key in el.data){
+						row[key] = el.data[key]
+						
+					}
+					return row
+				})
+				setData(rows)
+				// setData('updateDataReportWeek', response.data[0].weeks);
+			}
+		} catch (e) {
+			console.error(e);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	useEffect(() => {
-		setData(ServiceFunctions.reportWeekBrands(COLUMNS));
-	}, []);
+			if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+					setPrimaryCollect(activeBrand.is_primary_collect)
+					updateDataReportWeek(authToken, selectedRange, activeBrand.id)
+			}
+	}, [authToken]);
 
 	useEffect(() => {
+			if (activeBrand && activeBrand.is_primary_collect) {
+					updateDataReportWeek(authToken, selectedRange, activeBrand.id)
+			}
+	}, [activeBrand, selectedRange]);
+
+	useEffect(() => {
+		setPrimaryCollect(activeBrand?.is_primary_collect)
 		if (activeBrand && activeBrand.is_primary_collect) {
 			setData(ServiceFunctions.reportWeekBrands(COLUMNS));
 		}
@@ -85,17 +126,15 @@ export default function ReportWeek() {
 	);
 
 	const handleDownload = async () => {
-		const fileBlob = await ServiceFunctions.reportWeekDownload(
-			authToken,
-			selectedRange,
-			123
+		const fileBlob = await ServiceFunctions.getDownloadreportWeek(
+			authToken
 		);
 		fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
 	};
 
 	return (
 		<main className={styles.page}>
-			{Loading(isLoading)}
+			{Loading(loading)}
 			<MobilePlug />
 			{/* ------ SIDE BAR ------ */}
 			<section className={styles.page__sideNavWrapper}>
@@ -109,7 +148,7 @@ export default function ReportWeek() {
 				</div>
 				<div className={styles.controls}>
 					<div className={styles.filter}>
-						<FilterBrandArticle setLoading={setIsLoading} setData={setData} />
+						<FilterBrandArticle setLoading={setLoading} setData={setData} />
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider

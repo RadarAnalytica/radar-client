@@ -21,44 +21,51 @@ function SortIcon({ sortOrder }) {
 			viewBox="0 0 24 16"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
+			style={{marginLeft: 10, marginRight: 10}}
 		>
 			<path
 				fillRule="evenodd"
 				clipRule="evenodd"
 				d="M4.99264 0.46967C5.28553 0.176777 5.76041 0.176777 6.0533 0.46967L10.8263 5.24264C11.1192 5.53553 11.1192 6.01041 10.8263 6.3033C10.5334 6.59619 10.0585 6.59619 9.76561 6.3033L6.27297 2.81066V14.5H4.77297V2.81066L1.28033 6.3033C0.987437 6.59619 0.512563 6.59619 0.21967 6.3033C-0.0732234 6.01041 -0.0732234 5.53553 0.21967 5.24264L4.99264 0.46967Z"
-				fill={sortOrder === 'ascend' ? 'black' : 'currentColor'}
+				fill={sortOrder === 'ascend'? '#5329FF': 'currentColor'}
 			/>
 			<path
 				fillRule="evenodd"
 				clipRule="evenodd"
 				d="M16.773 13.1893V1.5H18.273V13.1893L21.7656 9.6967C22.0585 9.40381 22.5334 9.40381 22.8263 9.6967C23.1192 9.98959 23.1192 10.4645 22.8263 10.7574L18.0533 15.5303C17.7604 15.8232 17.2855 15.8232 16.9926 15.5303L12.2197 10.7574C11.9268 10.4645 11.9268 9.98959 12.2197 9.6967C12.5126 9.40381 12.9874 9.40381 13.2803 9.6967L16.773 13.1893Z"
-				fill={sortOrder === 'descend' ? 'black' : 'currentColor'}
+				fill={sortOrder === 'descend'? '#5329FF': 'currentColor'}
 			/>
 		</svg>
 	);
 }
 
+function formatNumber(num) {
+	return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+}
+
 export const COLUMNS = [
 	{
 		title: 'Неделя',
-		dataIndex: 'week',
+		dataIndex: 'week_label',
 		fixed: 'left',
 		width: 240
 	},
 	{
 		title: 'Заказы, руб',
 		dataIndex: 'ordersMoney',
-		sorter: (a, b) => Number(a.ordersMoney) - Number(b.ordersMoney),
+		sorter: (a, b) => Number(a.order_sum) - Number(b.order_sum),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Прибыль без опер. расходов',
-		dataIndex: 'profitWithout',
-		sorter: (a, b) => Number(a.profitWithout) - Number(b.profitWithout),
+		dataIndex: 'profit_no_op',
+		sorter: (a, b) => Number(a.profit_no_op) - Number(b.profit_no_op),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -67,6 +74,7 @@ export const COLUMNS = [
 		sorter: (a, b) => Number(a.commission) - Number(b.commission),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -75,39 +83,42 @@ export const COLUMNS = [
 		sorter: (a, b) => Number(a.roi) - Number(b.roi),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
-	{
-		title: 'Реализация (сумма продаж по СПП)',
-		dataIndex: 'salesSpp',
-		sorter: (a, b) => Number(a.salesAvarage) - Number(b.salesAvarage),
-		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-		filterOptions: true,
-		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
-	},
-
+	// {
+	// 	title: 'Реализация (сумма продаж по СПП)',
+	// 	dataIndex: 'salesSpp',
+	// 	sorter: (a, b) => Number(a.salesAvarage) - Number(b.salesAvarage),
+	// 	sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+	// 	filterOptions: true,
+	// 	// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
+	// },
 	{
 		title: 'Сред. стоимость логистики',
-		dataIndex: 'logisticAvarage',
-		sorter: (a, b) => Number(a.logisticAvarage) - Number(b.logisticAvarage),
+		dataIndex: 'avg_logistics',
+		sorter: (a, b) => Number(a.avg_logistics) - Number(b.avg_logistics),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Сред. цена продажи',
-		dataIndex: 'salesAvarage',
-		sorter: (a, b) => Number(a.salesAvarage) - Number(b.salesAvarage),
+		dataIndex: 'avg_price',
+		sorter: (a, b) => Number(a.avg_price) - Number(b.avg_price),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Маржинальность',
-		dataIndex: 'marginality',
-		sorter: (a, b) => Number(a.marginality) - Number(b.marginality),
+		dataIndex: 'margin',
+		sorter: (a, b) => Number(a.margin) - Number(b.margin),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -116,22 +127,25 @@ export const COLUMNS = [
 		sorter: (a, b) => Number(a.sales) - Number(b.sales),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Стоимость логистики',
-		dataIndex: 'logisticPrice',
-		sorter: (a, b) => Number(a.logisticPrice) - Number(b.logisticPrice),
+		dataIndex: 'logistics',
+		sorter: (a, b) => Number(a.logistics) - Number(b.logistics),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Расходы на рекламу',
-		dataIndex: 'adCost',
-		sorter: (a, b) => Number(a.adCost) - Number(b.adCost),
+		dataIndex: 'ad_expenses',
+		sorter: (a, b) => Number(a.ad_expenses) - Number(b.ad_expenses),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -140,6 +154,7 @@ export const COLUMNS = [
 		sorter: (a, b) => Number(a.due) - Number(b.due),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -156,63 +171,71 @@ export const COLUMNS = [
 		sorter: (a, b) => Number(a.drr) - Number(b.drr),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Возвраты',
-		dataIndex: 'back',
-		sorter: (a, b) => Number(a.back) - Number(b.back),
+		dataIndex: 'returns',
+		sorter: (a, b) => Number(a.returns) - Number(b.returns),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Кол-во отказов + возвраты',
-		dataIndex: 'countRejectsReturns',
+		dataIndex: 'reject_returns',
 		sorter: (a, b) =>
-			Number(a.countRejectsReturns) - Number(b.countRejectsReturns),
+			Number(a.reject_returns) - Number(b.reject_returns),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} шт</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Расходы на рекламу с бонусов',
-		dataIndex: 'adBonus',
-		sorter: (a, b) => Number(a.adBonus) - Number(b.adBonus),
+		dataIndex: 'ad_bonus',
+		sorter: (a, b) => Number(a.ad_bonus) - Number(b.ad_bonus),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Операционные расходы',
-		dataIndex: 'operating',
-		sorter: (a, b) => Number(a.operating) - Number(b.operating),
+		dataIndex: 'op_expenses',
+		sorter: (a, b) => Number(a.op_expenses) - Number(b.op_expenses),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Всего продаж',
-		dataIndex: 'sellAll',
-		sorter: (a, b) => Number(a.sellAll) - Number(b.sellAll),
+		dataIndex: 'total_sales',
+		sorter: (a, b) => Number(a.total_sales) - Number(b.total_sales),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} шт</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'ДРР бонусов',
-		dataIndex: 'drrBonus',
-		sorter: (a, b) => Number(a.drrBonus) - Number(b.drrBonus),
+		dataIndex: 'drr_bonus',
+		sorter: (a, b) => Number(a.drr_bonus) - Number(b.drr_bonus),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Прочие удержания',
 		dataIndex: 'deductions',
-		sorter: (a, b) => Number(a.deductions) - Number(b.deductions),
+		sorter: (a, b) => Number(a.other_retentions) - Number(b.other_retentions),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -221,38 +244,43 @@ export const COLUMNS = [
 		sorter: (a, b) => Number(a.buyout) - Number(b.buyout),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Общие расходы на рекламу',
-		dataIndex: 'ad',
-		sorter: (a, b) => Number(a.ad) - Number(b.ad),
+		dataIndex: 'total_ad',
+		sorter: (a, b) => Number(a.total_ad) - Number(b.total_ad),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Себестоимость продаж',
-		dataIndex: 'salesCost',
-		sorter: (a, b) => Number(a.salesCost) - Number(b.salesCost),
+		dataIndex: 'avg_purchase_pct',
+		sorter: (a, b) => Number(a.avg_purchase_pct) - Number(b.avg_purchase_pct),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Сред. прибыль на 1 шт',
-		dataIndex: 'profitOne',
-		sorter: (a, b) => Number(a.profitOne) - Number(b.profitOne),
+		dataIndex: 'avg_profit_per_piece',
+		sorter: (a, b) => Number(a.avg_profit_per_piece) - Number(b.avg_profit_per_piece),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Общая ДРР',
-		dataIndex: 'drrAll',
-		sorter: (a, b) => Number(a.drrAll) - Number(b.drrAll),
+		dataIndex: 'total_drr',
+		sorter: (a, b) => Number(a.total_drr) - Number(b.total_drr),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -261,14 +289,16 @@ export const COLUMNS = [
 		sorter: (a, b) => Number(a.penalties) - Number(b.penalties),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
 		title: 'Налоги',
-		dataIndex: 'tax',
-		sorter: (a, b) => Number(a.tax) - Number(b.tax),
+		dataIndex: 'taxes',
+		sorter: (a, b) => Number(a.taxes) - Number(b.taxes),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -281,10 +311,11 @@ export const COLUMNS = [
 	},
 	{
 		title: 'Заказы, шт',
-		dataIndex: 'ordersItems',
+		dataIndex: 'order_count',
 		sorter: (a, b) => Number(a.ordersItems) - Number(b.ordersItems),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} шт</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -293,6 +324,7 @@ export const COLUMNS = [
 		sorter: (a, b) => Number(a.profit) - Number(b.profit),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	},
 	{
@@ -301,6 +333,39 @@ export const COLUMNS = [
 		sorter: (a, b) => Number(a.compensation) - Number(b.compensation),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
+	},
+	{
+		title: 'realization',
+		dataIndex: 'realization',
+		sorter: (a, b) => Number(a.compensation) - Number(b.compensation),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
+	},
+	{
+		title: 'transfer',
+		dataIndex: 'transfer',
+		sorter: (a, b) => Number(a.compensation) - Number(b.compensation),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
+	},
+	{
+		title: 'cost',
+		dataIndex: 'cost',
+		sorter: (a, b) => Number(a.compensation) - Number(b.compensation),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
+	},
+	{
+		title: 'paid_accept',
+		dataIndex: 'paid_accept',
+		sorter: (a, b) => Number(a.compensation) - Number(b.compensation),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => value && <div>{formatNumber(value)} ₽</div>
 	},
 ];

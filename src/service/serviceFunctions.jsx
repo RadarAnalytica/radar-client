@@ -1073,9 +1073,29 @@ export const ServiceFunctions = {
     }
   },
 
-  reportWeekDownload: async (token, selectedRange, shop) => {
-    let rangeParams = rangeApiFormat(selectedRange);
-    const res = await fetch(`${URL}/api/reportWeek/download?${rangeParams}&shop=${shop}`, {
+  getReportWeek: async (token, selectedRange, shop) => {
+
+    const res = await fetch(
+      `${URL}/api/periodic_reports/weekly_report`,
+      {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          authorization: 'JWT ' + token,
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    return data;
+  },
+
+  getDownloadReportWeek: async (token, selectedRange, shop) => {
+    // let rangeParams = rangeApiFormat(selectedRange);
+    const res = await fetch(
+      `${URL}/api/periodic_reports/weekly_report/download`, {
+      // `${URL}/api/reportWeekreportWeek/download?${rangeParams}&shop=${shop}`, {
       method: 'GET',
       headers: {
         authorization: 'JWT ' + token,

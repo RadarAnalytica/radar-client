@@ -21,7 +21,8 @@ export default function ReportTable({ columns, data, rowSelection = false }) {
 							headerSortActiveBg: '#e7e1fe',
 							headerSortHoverBg: '#e7e1fe',
 							rowSelectedBg: '#f7f6fe',
-							rowSelectedHoverBg: '#e7e1fe',
+							rowSelectedHoverBg: '#f7f6fe',
+							rowHoverBg: '#f7f6fe'
 						},
 						Checkbox: {
 							colorBorder: '#ccc',
