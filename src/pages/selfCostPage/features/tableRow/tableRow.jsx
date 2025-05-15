@@ -34,6 +34,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [selectedDate, setSelectedDate] = useState(null) // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
+    console.log(historyItemsToDelete)
     const [saveButtonStatus, setSaveButtonStatus] = useState(true)
     const customRuLocale = {
         ...ru,
@@ -96,14 +97,15 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 fulfillment: i.fulfillment ? parseInt(i.fulfillment) : i.fulfillment,
                 date: moment(i.date).format('YYYY-MM-DD')
             })),
-            ids_to_delete: historyItemsToDelete.map(i => ({
-                product: product.product,
-                user: product.user,
-                shop: product.shop,
-                cost: i.cost ? parseInt(i.cost) : i.cost,
-                fulfillment: i.fulfillment ? parseInt(i.fulfillment) : i.fulfillment,
-                date: moment(i.date).format('YYYY-MM-DD')
-            }))
+            ids_to_delete: historyItemsToDelete?.map(i => i.id)
+            // ids_to_delete: historyItemsToDelete.map(i => ({
+            //     product: product.product,
+            //     user: product.user,
+            //     shop: product.shop,
+            //     cost: i.cost ? parseInt(i.cost) : i.cost,
+            //     fulfillment: i.fulfillment ? parseInt(i.fulfillment) : i.fulfillment,
+            //     date: moment(i.date).format('YYYY-MM-DD')
+            // }))
         }
 
         try {
@@ -134,10 +136,15 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         let newProduct = product;
         const index = newProduct.self_cost_change_history.findIndex(_ => _.date === item.date);
         if (index !== -1) {
-            setHistoryItemsToDelete([...historyItemsToDelete, newProduct.self_cost_change_history[index]])
+            setHistoryItemsToDelete((prev) => {
+                if (newProduct.self_cost_change_history[index].id) {
+                    return [...historyItemsToDelete, newProduct.self_cost_change_history[index]]
+                } else {
+                    return prev
+                }
+            })
             newProduct.self_cost_change_history.splice(index, 1)
             setProduct({ ...newProduct })
-
         }
     }
 
