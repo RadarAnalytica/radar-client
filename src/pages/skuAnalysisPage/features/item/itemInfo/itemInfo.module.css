@@ -29,6 +29,7 @@
     color: #8C8C8C;
     margin: 0;
     padding: 0;
+    text-decoration: none;
 
     @media (max-width: 1500px) {
         font-size: 14px;
@@ -62,4 +63,13 @@
     @media (max-width: 1500px) {
         font-size: 14px;
     }
+}
+
+
+.loaderWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -4,17 +4,17 @@ import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AuthContext from '../../../../service/AuthContext';
 import { fileDownload } from '../../../../service/utils';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 
 export const Filters = ({
-  setLoading, shopSelect = true
+  setLoading, shopSelect = true, timeSelect = true, skuFrequency = false
 }) => {
 
   // ------ база ------//
-  const { authToken } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
   const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
   const shops = useAppSelector((state) => state.shopsSlice.shops);
@@ -30,7 +30,7 @@ export const Filters = ({
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
-    const selectedShop = shopArrayFormSelect?.find(_ => _.id=== value)
+    const selectedShop = shopArrayFormSelect?.find(_ => _.id === value)
     dispatch(filterActions.setActiveShop(selectedShop))
   }
   //- -----------------------------------------//
@@ -39,7 +39,11 @@ export const Filters = ({
     const fetchShopData = async () => {
       setLoading(true)
       try {
-        dispatch(fetchShops(authToken));
+        if (user.subscription_status === null) {
+          dispatch(fetchShops('mockData'));
+        } else {
+          dispatch(fetchShops(authToken));
+        }
       } catch (error) {
         console.error("Error fetching initial data:", error);
       } finally {
@@ -126,21 +130,25 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        <div className={styles.filters__inputWrapper}>
-        {shops && activeBrand &&
-          <TimeSelect />
+        {skuFrequency &&
+          <FrequencyModeSelect />
         }
-        </div>
-        <div className={styles.filters__inputWrapper}>
-          {shops && activeBrand && shopSelect &&
+        {shops && activeBrand && timeSelect &&
+          <div className={styles.filters__inputWrapper}>
+            <TimeSelect />
+          </div>
+        }
+        {shops && activeBrand && shopSelect &&
+          <div className={styles.filters__inputWrapper}>
             <PlainSelect
               selectId='store'
               label='Магазин:'
               value={activeBrand.id}
               optionsData={shopArrayFormSelect}
               handler={shopChangeHandler}
-            />}
-        </div>
+            />
+          </div>
+        }
       </div>
       {/* {(!activeBrand?.is_primary_collect) && (
         <DownloadButton handleDownload={handleDownload} />

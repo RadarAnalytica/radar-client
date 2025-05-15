@@ -10,39 +10,60 @@ import AuthContext from '../../../service/AuthContext';
 import { SearchWidget, TableWidget } from './widgets';
 import { ServiceFunctions } from '../../../service/serviceFunctions';
 import styles from './stockAnalysisPage.module.css'
+import { mockGetAnalysisData } from '../../../service/mockServiceFunctions';
+import NoSubscriptionWarningBlock from '../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const StockAnalysisPage = () => {
 
-    const { authToken } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState(); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [primaryCollect, setPrimaryCollect] = useState(null)
 
-    // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
-    useEffect(() => {
-        const fetchAnalysisData = async () => {
-            setLoading(true);
-            if (activeBrand) {
-
-                const data = await ServiceFunctions.getAnalysisData(
+    const fetchAnalysisData = async () => {
+        setLoading(true);
+        if (activeBrand) {
+            let data = null;
+            if (user.subscription_status === null) {
+                data = await mockGetAnalysisData(
+                    selectedRange,
+                    activeBrand.id
+                );
+            } else {
+                data = await ServiceFunctions.getAnalysisData(
                     authToken,
                     selectedRange,
                     activeBrand.id
                 );
-                setStockAnalysisData(data);
-                setStockAnalysisFilteredData(data)
-                setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
-
             }
+            setStockAnalysisData(data);
+            setStockAnalysisFilteredData(data)
+            setHasSelfCostPrice(data.every(_ => _.costPriceOne !== null))
+        }
 
-            setLoading(false);
-        };
-        if (activeBrand?.is_primary_collect) {
+        setLoading(false);
+    };
+
+    // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
+    useEffect(() => {
+        setPrimaryCollect(activeBrand?.is_primary_collect)
+        if (activeBrand && activeBrand.is_primary_collect) {
             fetchAnalysisData();
         }
-    }, [selectedRange, activeBrand, authToken]);
+    }, [selectedRange, activeBrand]);
+
+    // 2.1.1 Проверяем изменился ли выбранный магазин при обновлении токена
+
+    useEffect(() => {
+        if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+            setPrimaryCollect(activeBrand.is_primary_collect)
+            fetchAnalysisData()
+        }
+    }, [authToken]);
+
 
     return (
         <main className={styles.page}>
@@ -56,7 +77,7 @@ const StockAnalysisPage = () => {
                 <div className={styles.page__staticContentWrapper}>
                     {/* header */}
                     <div className={styles.page__headerWrapper}>
-                        <Header title='Товарная аналитика' />
+                        <Header title='Аналитика по товарам' />
                     </div>
                     {/* !header */}
 
@@ -74,6 +95,10 @@ const StockAnalysisPage = () => {
                         </div>
                     }
                     {/* !SELF-COST WARNING */}
+
+                    {/* DEMO BLOCK */}
+                    { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                    {/* !DEMO BLOCK */}
 
                     {/* FILTERS */}
                     <div>

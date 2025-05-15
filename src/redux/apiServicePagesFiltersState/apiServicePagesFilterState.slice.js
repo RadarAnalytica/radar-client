@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     activeBrand: null,
+    skuFrequencyMode: 'Простой', // 'Простой' | 'Продвинутый'
     selectedRange: {
         period: 30
     }
@@ -24,7 +25,13 @@ const apiServicePagesFilterStateSlice = createSlice({
                 ...state,
                 selectedRange: action.payload
             }
-        }
+        },
+        setSkuFrequencyMode: (state, action) => {
+            return {
+                ...state,
+                skuFrequencyMode: action.payload
+            }
+        },
     }
 })
 

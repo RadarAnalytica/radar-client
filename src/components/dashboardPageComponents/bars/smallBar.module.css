@@ -38,6 +38,7 @@
 
 .bar__tooltipIcon {
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .bar__mainData {
@@ -49,6 +50,10 @@
     color: #1A1A1A;
     margin: 0;
     padding: 0;
+
+    @media (max-width: 1300px) {
+        font-size: 22px;
+    }
 }
 
 .bar__dataWrapper {

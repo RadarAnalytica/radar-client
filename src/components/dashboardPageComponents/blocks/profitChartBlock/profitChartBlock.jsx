@@ -61,6 +61,7 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         onHover: (event) => {
             event.native.target.style.cursor = 'pointer';
         },
@@ -157,7 +158,7 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
 
     return (
         <div className={styles.block}>
-            <p className={styles.block__title}>Рентабельность и маржинальность</p>
+            <p className={styles.block__title}>Продажи и прибыль</p>
             <div className={styles.block__legend}>
                 <div className={styles.block__legendWrapper}>
                     <div style={{ width: '20px', height: '20px', aspectRatio: '1 / 1', borderRadius: 3, background: '#F0AD00' }}></div>

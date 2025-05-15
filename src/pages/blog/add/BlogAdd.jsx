@@ -3,14 +3,17 @@ import styles from './BlogAdd.module.css';
 import { Form, Input, Upload, Select, Button, ConfigProvider, Modal } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { createBlogPost, createBlogCategory } from '../../../service/api/api';
+import { fetchPosts } from '../../../redux/blog/blogActions';
+import { useAppDispatch } from '../../../redux/hooks';
 
 const statusInitialState = { isLoading: false, isError: false, isSuccess: false, message: '' }
 
-const BlogAdd = ({ categories, token }) => {
+const BlogAdd = ({ categories, token, setActivePage }) => {
   const [categoriesState, setCategoriesState] = useState([...categories, { id: 'add', name: 'Создать категорию' }])
   const [mainFormStatus, setMainFormStatus] = useState(statusInitialState)
   const [categoryFormStatus, setCategoryFormStatus] = useState(statusInitialState)
   const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] = useState(false)
+  const dispatch = useAppDispatch()
   const [ mainForm ] = Form.useForm()
   const [ categoryForm ] = Form.useForm()
 
@@ -243,9 +246,9 @@ const BlogAdd = ({ categories, token }) => {
       <Modal
         open={mainFormStatus.isError || mainFormStatus.isSuccess}
         footer={null}
-        onOk={() => setMainFormStatus(statusInitialState)}
-        onClose={() => setMainFormStatus(statusInitialState)}
-        onCancel={() => setMainFormStatus(statusInitialState)}
+        onOk={() => {dispatch(fetchPosts(token)); setMainFormStatus(statusInitialState); setActivePage('articlesList')}}
+        onClose={() => { dispatch(fetchPosts(token)); setMainFormStatus(statusInitialState); setActivePage('articlesList')}}
+        onCancel={() => { dispatch(fetchPosts(token)); setMainFormStatus(statusInitialState); setActivePage('articlesList')}}
       >
         <div className={styles.form__modalBody}>
           {mainFormStatus.message}

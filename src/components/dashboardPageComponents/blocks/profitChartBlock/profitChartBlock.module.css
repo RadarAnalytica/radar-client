@@ -39,6 +39,10 @@
 
 .block__chart {
     width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
 }
 
 .block__legend {

@@ -29,6 +29,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
     const options = {
         indexAxis: 'y',
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false,
@@ -89,7 +90,7 @@ const RevenueStorageChart = ({ dataRevenueStorage, labels, isLoading, max }) => 
     };
 
     return (
-        <div className={`chart-container ${styles.revenueStrorage}`}>
+        <div className={`${styles.revenueStrorage}`}>
             <div className='chart-container-header'>
                 <div>
                     <div className='chart-title'>Выручка по складам</div>

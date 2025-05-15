@@ -115,13 +115,24 @@ export const logisticsWithBuyoutPercentagePriceCalcFunc = (current_storage_logis
     const bp = parseInt(buyout_percentage)
     const cslp = parseInt(current_storage_logistic_price)
     if (bp === 0 || Number.isNaN(bp)) { return 0 }
-    const counter = 100 - bp
-    const l = cslp * (counter / 100)
-    const r = return_price * (counter / 100)
+    const basisQty = 1000;
+    let price = 0
+    const f = (qty, boPercentage, cslp, returnPrice) => {
+        if (!boPercentage || boPercentage === 1) {price = cslp; return}
+        const returnQty = Math.floor(boPercentage * qty);
+        if (returnQty < 1) return
+        //console.log('qty: '+qty)
+        //console.log('retQty: '+returnQty)
+        price += (qty * cslp) + (returnQty * returnPrice);
+        //console.log('price: '+price)
+        
+        f(returnQty, boPercentage, cslp, returnPrice)
+    }
+    f(basisQty, ((100 - bp) / 100), cslp, return_price)
+    // console.log(price / basisQty)
 
-    const lp = ((l + r) * counter) 
-    return Math.round(lp)
-}   
+    return Math.round((price / basisQty) - cslp)
+}
 
 export function encodeUnicodeToBase64(str) {
     const utf8Str = encodeURIComponent(str); // Преобразуем в UTF-8

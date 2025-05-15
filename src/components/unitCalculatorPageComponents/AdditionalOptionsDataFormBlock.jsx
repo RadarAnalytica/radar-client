@@ -36,7 +36,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                 <div className={styles.fieldset__popup}>
                     <div className={styles.fieldset__popupHeader} onClick={() => { setPopupState({ ...popupState, isShippingCostsPopupVisible: !popupState.isShippingCostsPopupVisible }) }}>
                         <h3 className={styles.fieldset__popupTitle}>Организация поставки</h3>
-                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: popupState.isShippingCostsPopupVisible ? 'rotate(180deg' : '', transition: 'all .3s ease-out' }}>
+                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: popupState.isShippingCostsPopupVisible ? 'rotate(360deg)' : 'rotate(180deg)', transition: 'all .3s ease-out' }}>
                             <path d="M13 7.5L7 1.5L1 7.5" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
                         </svg>
 
@@ -139,7 +139,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                 <div className={styles.fieldset__popup}>
                     <div className={styles.fieldset__popupHeader} onClick={() => { setPopupState({ ...popupState, isTaxesPopupVisible: !popupState.isTaxesPopupVisible }) }}>
                         <h3 className={styles.fieldset__popupTitle}>Налоги</h3>
-                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: popupState.isTaxesPopupVisible ? 'rotate(180deg' : '', transition: 'all .3s ease-out' }}>
+                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: popupState.isTaxesPopupVisible ? 'rotate(360deg)' : 'rotate(180deg)', transition: 'all .3s ease-out' }}>
                             <path d="M13 7.5L7 1.5L1 7.5" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
                         </svg>
 
@@ -203,7 +203,7 @@ const AdditionalOptionsDataFormBlock = ({ form }) => {
                 <div className={styles.fieldset__popup}>
                     <div className={styles.fieldset__popupHeader} onClick={() => { setPopupState({ ...popupState, isOtherCostsPopupVisible: !popupState.isOtherCostsPopupVisible }) }}>
                         <h3 className={styles.fieldset__popupTitle}>Прочие расходы на товар</h3>
-                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: popupState.isOtherCostsPopupVisible ? 'rotate(180deg' : '', transition: 'all .3s ease-out' }}>
+                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: popupState.isOtherCostsPopupVisible ? 'rotate(360deg)' : 'rotate(180deg)', transition: 'all .3s ease-out' }}>
                             <path d="M13 7.5L7 1.5L1 7.5" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
                         </svg>
 

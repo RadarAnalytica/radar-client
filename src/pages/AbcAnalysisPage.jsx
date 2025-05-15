@@ -13,6 +13,8 @@ import { Filters } from "../components/sharedComponents/apiServicePagesFiltersCo
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Header from "../components/sharedComponents/header/header";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
+import { mockGetAbcData } from "../service/mockServiceFunctions";
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const AbcAnalysisPage = () => {
   const { activeBrand, selectedRange: days } = useAppSelector(store => store.filters)
@@ -23,6 +25,7 @@ const AbcAnalysisPage = () => {
   const [isNeedCost, setIsNeedCost] = useState([]);
   const [viewType, setViewType] = useState("proceeds");
   const [loading, setLoading] = useState(false);
+  const [primaryCollect, setPrimaryCollect] = useState(null)
 
   // console.log('---------- base ----------')
   // console.log(loading)
@@ -40,12 +43,20 @@ const AbcAnalysisPage = () => {
   ) => {
     setLoading(true);
     try {
-      const data = await ServiceFunctions.getAbcData(
-        viewType,
-        authToken,
-        days,
-        activeBrand
-      );
+      let data = null;
+      if (user.subscription_status === null) {
+        data = await mockGetAbcData(
+          viewType,
+          days
+        );
+      } else {
+        data = await ServiceFunctions.getAbcData(
+          viewType,
+          authToken,
+          days,
+          activeBrand
+        );
+      }
 
       // console.log('---------- base ----------')
       // console.log(viewType)
@@ -72,12 +83,23 @@ const AbcAnalysisPage = () => {
   };
 
   // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
+  
   useEffect(() => {
+    setPrimaryCollect(activeBrand?.is_primary_collect)
     if (activeBrand?.is_primary_collect && viewType && days && authToken) {
       updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
     }
-  }, [activeBrand, viewType, days, authToken]);
+  }, [activeBrand, viewType, days]);
   //---------------------------------------------------------------------------------------//
+
+  // 2.1.1 Проверям изменился ли магазин при обновлении токена
+
+  useEffect(() => {
+    if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+      setPrimaryCollect(activeBrand.is_primary_collect)
+      updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
+    }
+  }, [authToken]);
 
   //for SelfCostWarning
   const handleUpdateAbcAnalysis = () => {
@@ -87,8 +109,9 @@ const AbcAnalysisPage = () => {
   };
 
   const updateAbcAnalysisCaller = async () => {
-    activeBrand !== undefined &&
-      updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
+    if (activeBrand !== undefined) {
+        updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
+    }
   };
 
 
@@ -154,6 +177,11 @@ const AbcAnalysisPage = () => {
           <Header title='ABC-анализ' />
         </div>
         {/* !header */}
+
+        {/* DEMO BLOCK */}
+        { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+        {/* !DEMO BLOCK */}
+        
         {isNeedCost && activeBrand && activeBrand.is_primary_collect ? (
           <SelfCostWarning
             activeBrand={activeBrand.id}

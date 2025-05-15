@@ -7,7 +7,7 @@
 }
 
 .nested_hidden {
-    align-items: center;
+    /* align-items: center; */
 }
 
 .nested__header {
@@ -33,6 +33,7 @@
     color: #1A1A1A;
     background: #F7F7F7;
 }
+
 .nested__header_active .nested__titleWrapper svg {
     color: #5329FF;
 }
@@ -40,6 +41,7 @@
 .nested__header:hover .nested__titleWrapper svg {
     color: #5329FF;
 }
+
 .nested__header:hover {
     color: #1A1A1A;
     background: #F7F7F7;
@@ -52,17 +54,13 @@
     gap: 8px;
 }
 
-.nested__titleWrapper svg {
-    width: 20px;
-    height: 18px
-}
-
 .nested__marker {
-    transform: rotate(0);
+    transform: rotate(180deg);
     transition: transform .2s ease-out;
 }
+
 .nested__marker_open {
-    transform: rotate(180deg);
+    transform: rotate(360deg);
     transition: transform .2s ease-in;
 }
 
@@ -76,8 +74,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 8px;
-    transition: all .15s ease-out;
 }
+
 .nested__body_open {
     margin-top: 20px;
     width: 100%;
@@ -98,10 +96,35 @@
     color: #8C8C8C;
 }
 
+.nested__menuTitle {
+    width: 100%;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    margin: 0;
+    padding: 0;
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+.nested__menuTitle_active {
+   font-weight: 700;
+}
+
+.nested__fullMenuIconWrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+    min-width: 20px;
+    min-height: 20px;
+}
+
 .nested__iconWrapper_active {
     color: #5329FF;
     background: #F7F7F7;
 }
+
 .nested__iconWrapper:hover {
     background: #F7F7F7;
 }

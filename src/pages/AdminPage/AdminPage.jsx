@@ -13,7 +13,7 @@ import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 
 const AdminPage = () => {
     const { authToken } = useContext(AuthContext)
-    const [activePage, setActivePage] = useState('articlesList')
+    const [ activePage, setActivePage ] = useState('articlesList')
     const [ postIdForUpdate, setPostIdForUpdate ] = useState()
     const dispatch = useAppDispatch()
     const { categories, posts } = useAppSelector(store => store.blog);
@@ -86,7 +86,7 @@ const AdminPage = () => {
 
                     {activePage === 'articlesList' && !postIdForUpdate && <BlogList posts={posts} categories={categories} setPostIdForUpdate={setPostIdForUpdate} />}
                     {activePage === 'articlesList' && postIdForUpdate !== undefined && <BlogUpdate post={posts.find(_ => _.id === postIdForUpdate)} categories={categories} setPostIdForUpdate={setPostIdForUpdate} token={authToken} />}
-                    {activePage === 'addArticle' && <BlogAdd categories={categories} token={authToken} />}
+                    {activePage === 'addArticle' && <BlogAdd categories={categories} token={authToken} setActivePage={setActivePage} />}
                 </div>
             </section>
             {/* ---------------------- */}

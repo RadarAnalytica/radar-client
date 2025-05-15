@@ -9,6 +9,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import { chartYaxisMaxScale } from '../../../service/utils';
 import { ServiceFunctions } from '../../../service/serviceFunctions';
 
+import { mockGetChartDetailData } from '../../../service/mockServiceFunctions';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 
@@ -17,7 +18,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => {
 
-    const { authToken } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
     const [isDetailChartDataLoading, setIsDetailChartDataLoading] = useState(false)
     const [detailChartLabels, setDetailChartLabels] = useState([]);
     const [detailChartData, setDetailChartData] = useState([]);
@@ -158,12 +159,18 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
     // получаем данные
     useEffect(() => {
         const updateChartDetailData = async () => {
+            
             setIsDetailChartDataLoading(true)
-            const data = await ServiceFunctions.getChartDetailData(
-                authToken,
-                selectedRange,
-                activeBrand.id,
-            );
+            let data = null;
+            if (user.subscription_status === null) {;
+                data = await mockGetChartDetailData(selectedRange)
+            } else {
+                data = await ServiceFunctions.getChartDetailData(
+                    authToken,
+                    selectedRange,
+                    activeBrand.id,
+                );
+            }
             const counts = Array(24).fill(0);
             const averages = Array(24).fill(0);
 
@@ -196,7 +203,7 @@ const MainChartModal = ({ isModalOpen, setIsModalOpen, loading, chartData }) => 
             setDetailChartAverages(averages);
             setIsDetailChartDataLoading(false)
         };
-        activeBrand?.id && updateChartDetailData();
+        activeBrand && updateChartDetailData();
     }, [selectedRange, activeBrand]);
 
     return (

@@ -54,6 +54,7 @@ export const PlainSelect = (
                         value={value}
                         id={selectId}
                         onChange={handler}
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
                     />
                 </ConfigProvider>
             </div>

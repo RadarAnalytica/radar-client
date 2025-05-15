@@ -24,6 +24,9 @@ import { Filters } from '../components/sharedComponents/apiServicePagesFiltersCo
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
+import { mockGetGeographyData } from '../service/mockServiceFunctions'
+import DataCollectWarningBlock from '../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -48,6 +51,7 @@ const OrdersMap = () => {
   const prevselectedRange = useRef(selectedRange);
   const prevActiveBrand = useRef(activeBrand);
   const authTokenRef = useRef(authToken);
+  const [primaryCollect, setPrimaryCollect] = useState(null)
 
   const radioOptions = [
     { value: 'region', label: 'По регионам' },
@@ -56,15 +60,29 @@ const OrdersMap = () => {
 
 
 
-  useEffect(() => {
-    const updateGeoData = async () => {
-      setLoading(true)
-      if (activeBrand && selectedRange && authToken) {
-        const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
-        setGeoData(data);
+  const updateGeoData = async () => {
+    setLoading(true)
+    if (activeBrand && selectedRange && authToken) {
+      let data = null;
+      if (user.subscription_status === null) {
+        data = await mockGetGeographyData(selectedRange);
+      } else {
+        data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
       }
-      setLoading(false)
+      setGeoData(data);
     }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+      setPrimaryCollect(activeBrand.is_primary_collect)
+      updateGeoData()
+    }
+  }, [authToken]);
+
+  useEffect(() => {
+    setPrimaryCollect(activeBrand?.is_primary_collect)
     if (activeBrand?.is_primary_collect) {
       updateGeoData();
     }
@@ -104,6 +122,7 @@ const OrdersMap = () => {
     const timeToTarget = targetTime.getTime() - Date.now();
 
     const intervalId = setTimeout(() => {
+      
       dispatch(fetchShops(authToken));
       const updateGeoData = async () => {
         const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand);
@@ -118,11 +137,11 @@ const OrdersMap = () => {
     };
   }, [dispatch, activeBrand, selectedRange, authToken]);
 
-  useEffect(() => {
-    if (authToken !== authTokenRef.current) {
-      //dispatch(fetchShops(authToken));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  // if (authToken !== authTokenRef.current) {
+  //dispatch(fetchShops(authToken));
+  // }
+  // }, [dispatch]);
 
 
   const checkIdQueryParam = () => {
@@ -688,12 +707,16 @@ const OrdersMap = () => {
             </div>
           </div>
           {/* !header */}
+
+          {/* DEMO BLOCK */}
+          { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+          {/* !DEMO BLOCK */}
+
           <div style={{ width: '100%' }} className="map-container dash-container container p-3">
             <Filters
               setLoading={setLoading}
             />
           </div>
-
 
           {activeBrand && activeBrand.is_primary_collect && !loading && (
             <div className='map-container dash-container container p-3'>
@@ -905,13 +928,16 @@ const OrdersMap = () => {
           )}
 
           {activeBrand && !activeBrand.is_primary_collect && !loading &&
-            (
-              <div style={{ width: '100%', padding: '0 36px' }}>
-                <DataCollectionNotification
-                  title={'Ваши данные еще формируются и обрабатываются.'}
-                />
-              </div>
-            )}
+           
+          <div style={{ width: '100%', padding: '0 20px' }}>
+            {/* <DataCollectionNotification
+              title={'Ваши данные еще формируются и обрабатываются.'}
+            /> */}
+             <DataCollectWarningBlock
+              title='Ваши данные еще формируются и обрабатываются.'
+            />
+          </div>
+          }
         </section>
         {/* ---------------------- */}
       </main>

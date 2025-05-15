@@ -24,21 +24,28 @@ import CostsBlock from '../../../../components/dashboardPageComponents/blocks/co
 import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
 import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
+import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
+import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const _DashboardPage = () => {
     
-    const { authToken } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [dataDashBoard, setDataDashboard] = useState();
     const [loading, setLoading] = useState(true);
+    const [primaryCollect, setPrimaryCollect] = useState(null)
 
     const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
         setLoading(true);
         try {
-
             if (activeBrand !== null && activeBrand !== undefined) {
-
-
+                // CHECK FOR MOCKDATA
+                if (user.subscription_status === null) {;
+                    const data = await mockGetDashBoard(selectedRange, activeBrand);
+                    setDataDashboard(data);
+                    return 
+                }
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
                     selectedRange,
@@ -55,10 +62,18 @@ const _DashboardPage = () => {
     };
 
     useEffect(() => {
+        if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
+            setPrimaryCollect(activeBrand.is_primary_collect)
+            updateDataDashBoard(selectedRange, activeBrand.id, authToken)
+        }
+    }, [authToken]);
+
+    useEffect(() => {
+        setPrimaryCollect(activeBrand?.is_primary_collect)
         if (activeBrand && activeBrand.is_primary_collect) {
             updateDataDashBoard(selectedRange, activeBrand.id, authToken)
         }
-    }, [activeBrand, selectedRange, authToken]);
+    }, [activeBrand, selectedRange]);
 
 
 
@@ -92,19 +107,21 @@ const _DashboardPage = () => {
                 }
                 {/* !SELF-COST WARNING */}
 
-
+                {/* DEMO BLOCK */}
+                { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                {/*  */}
 
                 {/* FILTERS */}
                 <div className={styles.page__controlsWrapper}>
                     <Filters
                         setLoading={setLoading}
-                    />
+                        />
 
                     <HowToLink
                         text='Как проверить данные?'
                         target='_blank'
                         url='https://radar.usedocs.com/article/75916'
-                    />
+                        />
                 </div>
                 {/* !FILTERS */}
 
@@ -142,7 +159,7 @@ const _DashboardPage = () => {
 
                         {/*  Grid group */}
                         {/* Сетка построена гридами в две колонки и строками по 25px. Используй grid-row: span X для управления высотой блоков */}
-                        <div className={styles.page__chartGroup}>
+                        <div className={isSidebarHidden ? styles.page__chartGroup : styles.page__chartGroup_oneLine}>
                             <FinanceBlock
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}

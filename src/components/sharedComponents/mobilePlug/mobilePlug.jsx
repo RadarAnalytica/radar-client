@@ -5,8 +5,11 @@ import cover from '../../../assets/mobile_plug_cover.png'
 
 const MobilePlug = () => {
 
+    const { userAgent } = navigator;
+    const deviceRegexp = /android|iphone|kindle|ipad/i
+
     return (
-        <div className={styles.plug}>
+        <div className={deviceRegexp.test(userAgent) ? styles.plug : styles.plug_hidden}>
             <Link to='/main' className={styles.plug__mainLink}>
                 <img src={logo} alt='' />
             </Link>

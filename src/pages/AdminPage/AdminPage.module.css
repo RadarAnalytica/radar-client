@@ -8,6 +8,8 @@
     width: 100%;
     display: flex;
     box-sizing: border-box;
+    overflow-x: scroll;
+    min-width: 1200px;
 }
 .page__content {
     width: 100%;

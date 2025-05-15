@@ -5,6 +5,11 @@
     grid-auto-flow: dense;
     gap: 20px;
 }
+.widget_2cols {
+    @media (max-width: 1350px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
 .bar {
     width: 100%;
@@ -14,10 +19,11 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: flex-start;
     gap: 8px;
     position: relative;
+    min-height: 90px;
 }
 
 .bar__text {
@@ -47,4 +53,17 @@
     top: 8px;
     right: 8px;
     cursor: pointer;
+}
+
+
+.loaderWrapper {
+    width: 100%;
+    background: white;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 6 / 1;
 }

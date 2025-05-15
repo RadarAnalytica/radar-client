@@ -11,7 +11,7 @@ export const menuConfig = [
                 id: 1,
                 url: '/sku-analysis',
                 label: 'Анализ артикула',
-                isActive: false
+                isActive: true
             },
             {
                 id: 2,
