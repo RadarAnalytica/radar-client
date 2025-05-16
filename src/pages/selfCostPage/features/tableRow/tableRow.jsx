@@ -29,7 +29,6 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [selectedDate, setSelectedDate] = useState(null) // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
-    console.log(historyItemsToDelete)
     const [saveButtonStatus, setSaveButtonStatus] = useState(true)
     const [isUpdating, setIsUpdating] = useState(false)
     const customRuLocale = {
@@ -133,12 +132,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const deleteButtonClickHandler = (item) => {
         let newProduct = product;
         const index = newProduct.self_cost_change_history.findIndex(_ => _.id === item.id);
-        console.log('index', index)
-        console.log('length', newProduct)
-        console.log('item', item)
         if (index !== -1) {
-            console.log('hit')
-            console.log(newProduct.self_cost_change_history[index])
             if (newProduct.self_cost_change_history[index].id) {
                 setHistoryItemsToDelete([...historyItemsToDelete, newProduct.self_cost_change_history[index]])
             }
@@ -222,13 +216,14 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         };
                                         setProduct({ ...newProduct })
                                     }}
+                                    style={{ height: '44px'}}
                                     size='large'
                                     disabled={isOpen}
                                 />
                             </div>
                             <div className={styles.row__item}>
                                 <Input
-                                    style={{ maxWidth: '160px' }}
+                                    style={{ maxWidth: '160px', height: '44px' }}
                                     value={product.fulfillment}
                                     onChange={(e) => {
                                         let newProduct = {
@@ -412,6 +407,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             onClick={updateHistoryParams}
                             disabled={saveButtonStatus}
                             loading={isUpdating}
+                            style={{ width: '109px', height: '45px'}}
                         >
                             Сохранить
                         </Button>
