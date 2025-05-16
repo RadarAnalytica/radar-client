@@ -46,12 +46,10 @@ export default function ReportWeek() {
 					}
 					for (const key in el.data){
 						row[key] = el.data[key]
-						
 					}
 					return row
 				})
 				setData(rows)
-				// setData('updateDataReportWeek', response.data[0].weeks);
 			}
 		} catch (e) {
 			console.error(e);
@@ -74,8 +72,6 @@ export default function ReportWeek() {
 	}, [activeBrand, selectedRange]);
 
 	useEffect(() => {
-		console.log('activeBrand', activeBrand)
-		console.log('activeBrand', activeBrand?.is_primary_collect)
 		setPrimaryCollect(activeBrand?.is_primary_collect)
 		if (activeBrand && activeBrand.is_primary_collect) {
 					updateDataReportWeek(authToken, selectedRange, activeBrand.id)
