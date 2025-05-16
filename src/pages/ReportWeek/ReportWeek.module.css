@@ -45,13 +45,9 @@
     gap: 16px;
 }
 
-.table_container {
-    height: 100%;
-    padding: 16px;
-    background-color: #fff;
-    border-radius: 16px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
-    overflow: auto;
+.container {
+    flex-grow: 1;
+    max-height: calc(100% - 160px);
 }
 
 .btns{

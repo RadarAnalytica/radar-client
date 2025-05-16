@@ -26,7 +26,6 @@ export default function ModalTableSetting({
 
 	function filterColumns(data) {
 		const value = data.filter;
-		console.log(value, !value)
 		if (!value) {
 			setShownColumns(columnsList);
 			return
@@ -39,7 +38,6 @@ export default function ModalTableSetting({
 	}
 
 	function onFinish(data) {
-		console.log(data);
 		let result = [];
 		for (const column in data) {
 			console.log(form.getFieldValue(column))
@@ -229,12 +227,11 @@ export default function ModalTableSetting({
 								name={el.dataIndex}
 								valuePropName="checked"
 								value={el.dataIndex}
-							>
-								<Checkbox
-									defaultChecked={initialColumns.includes(
+								initialValue={initialColumns.includes(
 										el.dataIndex
 									)}
-								>
+							>
+								<Checkbox >
 									{el.title}
 								</Checkbox>
 							</Form.Item>
