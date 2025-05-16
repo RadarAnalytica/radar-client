@@ -27,12 +27,43 @@ export default function ReportWeek() {
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [data, setData] = useState();
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
+	const [primaryCollect, setPrimaryCollect] = useState(null)
+
+	const updateDataReportWeek = async () => {
+		setLoading(true)
+		try {
+			if (activeBrand !== null && activeBrand !== undefined) {
+				const response = await ServiceFunctions.getReportWeek(
+					authToken,
+					selectedRange,
+					activeBrand
+				);
+				const weeks = response.data[0]['weeks'];
+				const rows = weeks.map((el) => {
+					let row = {
+						key: el.week,
+						week_label: el.week_label
+					}
+					for (const key in el.data){
+						row[key] = el.data[key]
+					}
+					return row
+				})
+				setData(rows)
+			}
+		} catch (e) {
+			console.error(e);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	useEffect(() => {
 		setData(ServiceFunctions.reportWeekBrands(COLUMNS));
 	}, []);
 
 	useEffect(() => {
+		setPrimaryCollect(activeBrand?.is_primary_collect)
 		if (activeBrand && activeBrand.is_primary_collect) {
 			setData(ServiceFunctions.reportWeekBrands(COLUMNS));
 		}
