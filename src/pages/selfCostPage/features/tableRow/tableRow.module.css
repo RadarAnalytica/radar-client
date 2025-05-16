@@ -149,6 +149,7 @@
     overflow: hidden;
     flex-grow: 0;
     flex-shrink: 0;
+    background: #E5E5E5;
 }
 
 .row__imgWrapper img {
