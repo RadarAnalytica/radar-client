@@ -35,6 +35,11 @@
     width: 100%;
 }
 
+.container {
+    flex-grow: 1;
+    max-height: calc(100% - 82px);
+}
+
 /* table */
 
 .cell {

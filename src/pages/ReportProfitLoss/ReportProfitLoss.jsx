@@ -84,10 +84,12 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="Отчет о прибылях и убытках"></Header>
 				</div>
-				<ReportTable
-					columns={columns}
-					data={data}
-				></ReportTable>
+				<div className={styles.container}>
+					<ReportTable
+						columns={columns}
+						data={data}
+					></ReportTable>
+				</div>
 			</section>
 			
 		</main>
