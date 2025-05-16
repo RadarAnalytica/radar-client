@@ -191,7 +191,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             >
                 <div className={`${styles.row__item} ${styles.row__item_wide}`}>
                     <div className={styles.row__imgWrapper}>
-                        <img src={product.photo} width={30} height={40} />
+                        {product.photo && <img src={product.photo} width={30} height={40} />}
                     </div>
                     <p className={styles.row__title}>{product?.vendor_code}</p>
                 </div>
