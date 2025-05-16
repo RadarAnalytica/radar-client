@@ -22,7 +22,7 @@ export default function ReportWeek() {
 	const { activeBrand, selectedRange } = useAppSelector(
 		(state) => state.filters
 	);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [isPopoverOpen, setPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [data, setData] = useState();
@@ -30,6 +30,7 @@ export default function ReportWeek() {
 	const [primaryCollect, setPrimaryCollect] = useState(null)
 
 	const updateDataReportWeek = async () => {
+		setLoading(true)
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
@@ -73,9 +74,13 @@ export default function ReportWeek() {
 	}, [activeBrand, selectedRange]);
 
 	useEffect(() => {
+		console.log('activeBrand', activeBrand)
+		console.log('activeBrand', activeBrand?.is_primary_collect)
 		setPrimaryCollect(activeBrand?.is_primary_collect)
 		if (activeBrand && activeBrand.is_primary_collect) {
-			setData(ServiceFunctions.reportWeekBrands(COLUMNS));
+					updateDataReportWeek(authToken, selectedRange, activeBrand.id)
+		} else {
+			setData([])
 		}
 	}, [activeBrand, selectedRange]);
 
@@ -134,7 +139,6 @@ export default function ReportWeek() {
 
 	return (
 		<main className={styles.page}>
-			{Loading(loading)}
 			<MobilePlug />
 			{/* ------ SIDE BAR ------ */}
 			<section className={styles.page__sideNavWrapper}>
@@ -222,12 +226,8 @@ export default function ReportWeek() {
 						</ConfigProvider>
 					</div>
 				</div>
-				<div style={{ flexGrow: 1 }}>
-					<div>
-						<div className={styles.table_container}>
-							<ReportTable columns={tableColumns} data={data} rowSelection={{ type: 'checkbox' }}/>
-						</div>
-					</div>
+				<div className={styles.container}>
+					<ReportTable loading={loading} columns={tableColumns} data={data} rowSelection={{ type: 'checkbox' }}/>
 				</div>
 			</section>
 			{isConfigOpen && (
@@ -240,25 +240,5 @@ export default function ReportWeek() {
 				/>
 			)}
 		</main>
-	);
-}
-
-function Loading(status) {
-	if (!status) {
-		return;
-	}
-	return (
-		<div
-			className="d-flex flex-column align-items-center justify-content-center"
-			style={{
-				height: '100%',
-				width: '100%',
-				position: 'absolute',
-				backgroundColor: '#fff',
-				zIndex: 999,
-			}}
-		>
-			<span className="loader"></span>
-		</div>
 	);
 }

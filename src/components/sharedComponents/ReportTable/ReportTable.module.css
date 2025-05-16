@@ -1,12 +1,19 @@
 /*  */
 
+.loadingContainer{
+
+}
+
+/*  */
+
 .container {
-    height: 100%;
-    padding: 16px;
-    background-color: #fff;
-    border-radius: 16px;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
-  }
+  position: relative;
+  height: 100%;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+}
   
 .tableContainer {
   height: 100%;
