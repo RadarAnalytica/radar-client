@@ -16,11 +16,11 @@ const initDataFetchingStatus = {
     message: ''
 }
 
-const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible }) => {
+const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, dataFetchingStatus, initDataFetchingStatus, setDataFetchingStatus }) => {
     const { authToken, user } = useContext(AuthContext)
     const { activeBrand } = useAppSelector((state) => state.filters);
     const { shops } = useAppSelector((state) => state.shopsSlice);
-    const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
+    //const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [inputValue, setInputValue] = useState('')
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -32,7 +32,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible }) =>
             name: inputValue,
             description: "",
             user: user.id,
-            shop: 88,
+            shop: activeBrand.id,
             product_ids: []
         }
         try {
@@ -48,19 +48,15 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible }) =>
             if (!res.ok) {
                 const parsedData = await res.json()
                 setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
-                navigate(`/dev/groups/0`)
                 return;
             }
 
             const parsedData = await res.json()
-            console.log(parsedData)
             setDataFetchingStatus(initDataFetchingStatus)
-            navigate(`/dev/groups/0`)
+            navigate(`/dev/groups/${parsedData.data.id}`)
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
-            navigate(`/dev/groups/0`)
         }
-        navigate(`/dev/groups/0`)
     }
 
     // ------- Фетч массива магазинов -------------//
