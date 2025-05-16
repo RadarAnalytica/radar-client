@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './selfCostPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -9,7 +9,15 @@ import { SelfCostTableWidget } from './widgets'
 
 const SelfCostPage = () => {
 
-    const [ loading, setLoading ] = useState();
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        let timeout;
+        if (isSuccess) {
+            timeout = setTimeout(() => {setIsSuccess(false)}, 1500)
+        }
+    }, [isSuccess])
 
     return (
         <main className={styles.page}>
@@ -22,7 +30,7 @@ const SelfCostPage = () => {
             <section className={styles.page__content}>
                 {/* header */}
                 <div className={styles.page__headerWrapper}>
-                    <Header title='Себестоимость товаров' />
+                    <Header title='Себестоимость' />
                 </div>
 
                 <div className={styles.page__filtersWrapper}>
@@ -36,9 +44,18 @@ const SelfCostPage = () => {
                         target='_blank'
                     />
                 </div>
-                <SelfCostTableWidget />
+                <SelfCostTableWidget
+                    setIsSuccess={setIsSuccess}
+                />
             </section>
             {/* ---------------------- */}
+            {isSuccess && <div className={styles.page__successAlert}>
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="6.4" fill="#00B69B" fillOpacity="0.1" />
+                    <path d="M14.1999 19.1063L23.1548 10.1333L24.5333 11.5135L14.1999 21.8666L8 15.6549L9.37753 14.2748L14.1999 19.1063Z" fill="#00B69B" />
+                </svg>
+                Себестоимость установлена
+            </div>}
         </main>
     )
 }

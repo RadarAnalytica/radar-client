@@ -7,11 +7,6 @@ import ErrorModal from '../../../../components/sharedComponents/modals/errorModa
 import { URL } from '../../../../service/config'
 import AuthContext from '../../../../service/AuthContext'
 
-const mockData = [
-    { product: '1', self_cost: 0, fullfillment: 0, history: [{ date: '2024-04-18', self_cost: 20, fullfillment: 25 }, { date: '2024-08-18', self_cost: 30, fullfillment: 35 }, { date: '2024-11-18', self_cost: 25, fullfillment: 20 }] },
-    { product: '2', self_cost: 100, fullfillment: 100, history: [{ date: '2024-04-18', self_cost: 40, fullfillment: 50 }, { date: '2024-08-18', self_cost: 75, fullfillment: 60 }, { date: '2024-11-18', self_cost: 50, fullfillment: 50 }] }
-]
-
 const initDataStatus = {
     isError: false,
     isLoading: false,
@@ -33,7 +28,7 @@ const initDataStatus = {
     },
  */
 
-const SelfCostTableWidget = () => {
+const SelfCostTableWidget = ({ setIsSuccess }) => {
 
     const [tableData, setTableData] = useState() // данные для рендера таблицы
     const [dataStatus, setDataStatus] = useState(initDataStatus)
@@ -46,7 +41,8 @@ const SelfCostTableWidget = () => {
         const res = await fetch(`${URL}/api/product/self-costs?${queryString}`, {
             headers: {
                 'content-type': 'application/json',
-                'authorization': 'JWT ' + authToken
+                'cache': 'no-store',
+                'authorization': 'JWT ' + authToken,
             }
         })
 
@@ -59,13 +55,11 @@ const SelfCostTableWidget = () => {
         const parsedData = await res.json();
         const { items } = parsedData.data
         setDataStatus({ ...initDataStatus, isLoading: false })
-        //setTableData(mockData)
         setTableData([...items])
     }
 
     //задаем начальную дату
     useEffect(() => {
-        setTableData(mockData)
         if (activeBrand && authToken) {
             getTableData(authToken, activeBrand.id)
         }
@@ -99,12 +93,9 @@ const SelfCostTableWidget = () => {
                                 // определяем необходимые стили
                                 const headerCellStyle = v.ruName === 'Продукт' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
                                 return (
-                                    <>
-                                        {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
                                         <div className={headerCellStyle} key={id}>
                                             <p className={styles.table__headerItemTitle}>{v.ruName}</p>
                                         </div>
-                                    </>
                                 )
                             })}
                         </div>
@@ -123,6 +114,7 @@ const SelfCostTableWidget = () => {
                                     setDataStatus={setDataStatus}
                                     initDataStatus={initDataStatus}
                                     shopId={activeBrand?.id}
+                                    setIsSuccess={setIsSuccess}
                                 />
                             )
                         })}
@@ -146,6 +138,8 @@ const SelfCostTableWidget = () => {
                     onClose={() => setDataStatus(initDataStatus)}
                     onCancel={() => setDataStatus(initDataStatus)}
                 />
+
+               
             </div>
         </div>
     )

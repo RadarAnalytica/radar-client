@@ -30,6 +30,26 @@
     overflow-x: auto;
 }
 
+.row__body::-webkit-scrollbar {
+    height: 6px;
+    /* Ширина скроллбара */
+}
+
+.row__body::-webkit-scrollbar-track {
+    background: transparent;
+    /* Цвет фона трека */
+    margin: 0 20px;
+}
+
+.row__body::-webkit-scrollbar-thumb {
+    background-color: #5329FF80;
+    /* Цвет полосы прокрутки */
+    border-radius: 4px;
+    /* Скругленные углы */
+    border: 2px solid transparent;
+    /* Добавляем прозрачный отступ */
+}
+
 .row__body_visible {
     padding: 17px;
     max-height: 100vh;
@@ -199,7 +219,7 @@
 .row__dayPickerWrapper {
     position: absolute;
     top: calc(100% + 12px);
-    left: -50%;
+    left: -135%;
     width: auto;
     height: auto;
     background: white;
