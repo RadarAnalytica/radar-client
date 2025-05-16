@@ -10,8 +10,6 @@ const getNormilizedValue = (value) => {
 
 export const getSaveButtonStatus = (product, compare, historyItemsToDelete) => {
     let status = true;
-    console.log(product.fulfillment)
-    console.log(compare.fulfillment)
     if (product.cost !== compare.cost) { 
         status = false
     }

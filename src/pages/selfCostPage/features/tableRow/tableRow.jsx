@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import styles from './tableRow.module.css'
 import { RowChart, BodyInput } from '../../entities/index'
 import { Button, ConfigProvider, Input } from "antd"
@@ -20,14 +20,17 @@ const dataFetchingStatus = {
 }
 
 
-const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId }) => {
-    const [product, setProduct] = useState(JSON.parse(JSON.stringify(currentProduct))) // присваиваем глубоким копированием
+const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess }) => {
+    const datePickerContainerRef = useRef(null)
+    const rowRef = useRef(null)
+    const [product, setProduct] = useState() // присваиваем глубоким копированием
     const [isOpen, setIsOpen] = useState(false) // стейт открытия аккордеона
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false) // стейт датапикера
     const [selectedDate, setSelectedDate] = useState(null) // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
     const [saveButtonStatus, setSaveButtonStatus] = useState(true)
+    const [isUpdating, setIsUpdating] = useState(false)
     const customRuLocale = {
         ...ru,
         localize: {
@@ -38,6 +41,8 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             },
         },
     };
+    const disabledDatesArray = [{ after: new Date() }]
+    product?.self_cost_change_history.forEach(_ => disabledDatesArray.push(new Date(_.date)))
 
     const handleDayClick = (day) => {
         setSelectedDate(day)
@@ -45,7 +50,8 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     };
 
     const updateDefaultParams = async (shouldRefetchBasicData = true) => {
-        setDataStatus({ ...initDataStatus, isLoading: true })
+        //setDataStatus({ ...initDataStatus, isLoading: true })
+        //setIsUpdating(true)
         const newProduct = {
             product: product.product,
             user: product.user,
@@ -67,18 +73,22 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             if (!res.ok) {
                 const parsedData = await res.json()
                 setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+                //setIsUpdating(false)
                 return;
             }
             setDataStatus({ ...initDataStatus })
+            //setIsSuccess(true)
+            //setIsUpdating(false)
             shouldRefetchBasicData && getTableData(authToken, shopId)
         } catch {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
+            //setIsUpdating(false)
         }
     }
 
     const updateHistoryParams = async () => {
-        setDataStatus({ ...initDataStatus, isLoading: true })
-
+        //setDataStatus({ ...initDataStatus, isLoading: true })
+        //setIsUpdating(true)
         const object = {
             items_to_update: product.self_cost_change_history.map(i => ({
                 product: product.product,
@@ -92,7 +102,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         }
 
         try {
-            updateDefaultParams(false)
+            await updateDefaultParams(false)
             const res = await fetch(`${URL}/api/product/self-costs`, {
                 method: 'PATCH',
                 headers: {
@@ -105,13 +115,18 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             if (!res.ok) {
                 const parsedData = await res.json()
                 setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+                //setIsUpdating(false)
                 return;
             }
+            const parsed = await res.json()
             setHistoryItemsToDelete([])
             setDataStatus({ ...initDataStatus })
+            //setIsSuccess(true)
+            //setIsUpdating(false)
             getTableData(authToken, shopId)
         } catch {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
+            //setIsUpdating(false)
         }
     }
 
@@ -120,7 +135,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         const index = newProduct.self_cost_change_history.findIndex(_ => _.date === item.date);
         if (index !== -1) {
             setHistoryItemsToDelete((prev) => {
-                if (newProduct.self_cost_change_history[index].id) {
+                if (newProduct?.self_cost_change_history[index]?.id) {
                     return [...historyItemsToDelete, newProduct.self_cost_change_history[index]]
                 } else {
                     return prev
@@ -130,10 +145,6 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             setProduct({ ...newProduct })
         }
     }
-
-
-
-
 
     useEffect(() => {
         if (selectedDate) {
@@ -152,9 +163,31 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
 
 
     useEffect(() => {
-        setSaveButtonStatus(getSaveButtonStatus(product, currentProduct, historyItemsToDelete))
-    }, [product, historyItemsToDelete])
-    return (
+        if (product && currentProduct) {
+            setSaveButtonStatus(getSaveButtonStatus(product, currentProduct, historyItemsToDelete))
+        }
+    }, [product, historyItemsToDelete, currentProduct])
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (datePickerContainerRef.current && !datePickerContainerRef.current.contains(event.target) && !event.target.classList.value.includes('ant')) {
+                setIsDatePickerVisible(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    useEffect(() => {
+        setProduct(JSON.parse(JSON.stringify(currentProduct)))
+    }, [currentProduct])
+
+
+
+    return product && (
         <>
             {/* Основная строка */}
             <div
@@ -250,6 +283,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             <span className={styles.row__grayText}>По умолчанию</span>
                         </div>
                         {product.self_cost_change_history?.map((i, id) => {
+
                             return (
                                 <div className={styles.row__bodyMainItem} key={moment(i.date).format('DD.MM.YY')}>
                                     {moment(i.date).format('DD.MM.YY')}
@@ -272,7 +306,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                 Добавить
                             </button>
                             {isDatePickerVisible &&
-                                <div className={styles.row__dayPickerWrapper} onMouseLeave={() => setIsDatePickerVisible(false)}>
+                                <div className={styles.row__dayPickerWrapper} ref={datePickerContainerRef}>
                                     <DayPicker
                                         maxDate={new Date()}
                                         mode="single"
@@ -283,9 +317,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         //className={styles.customDayPicker}
                                         locale={customRuLocale}
                                         onDayClick={handleDayClick}
-                                        disabled={[
-                                            { after: new Date() },
-                                        ]}
+                                        disabled={disabledDatesArray}
                                         components={{
                                             Dropdown: DatePickerCustomDropdown
                                         }}
@@ -364,26 +396,27 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                 )
                             })}
                         </div>
-                        </ConfigProvider>
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorPrimary: '#5329FF'
-                                }
-                            }}
+                    </ConfigProvider>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorPrimary: '#5329FF'
+                            }
+                        }}
+                    >
+                        <Button
+                            type='primary'
+                            size='large'
+                            className={styles.row__bodySaveButton}
+                            onClick={updateHistoryParams}
+                            disabled={saveButtonStatus}
+                            loading={isUpdating}
                         >
-                            <Button
-                                type='primary'
-                                size='large'
-                                className={styles.row__bodySaveButton}
-                                onClick={updateHistoryParams}
-                                disabled={saveButtonStatus}
-                            >
-                                Сохранить
-                            </Button>
-                        </ConfigProvider>
+                            Сохранить
+                        </Button>
+                    </ConfigProvider>
                 </div>}
-                <ErrorModal />
+            <ErrorModal />
         </>
     )
 }
