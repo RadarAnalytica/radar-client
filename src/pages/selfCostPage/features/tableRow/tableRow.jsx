@@ -29,6 +29,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [selectedDate, setSelectedDate] = useState(null) // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
+    console.log(historyItemsToDelete)
     const [saveButtonStatus, setSaveButtonStatus] = useState(true)
     const [isUpdating, setIsUpdating] = useState(false)
     const customRuLocale = {
@@ -49,15 +50,15 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         setIsDatePickerVisible(false);
     };
 
-    const updateDefaultParams = async (shouldRefetchBasicData = true) => {
+    const updateDefaultParams = async () => {
         //setDataStatus({ ...initDataStatus, isLoading: true })
         //setIsUpdating(true)
         const newProduct = {
             product: product.product,
             user: product.user,
             shop: product.shop,
-            cost: product.cost ? parseInt(product.cost) : product.cost,
-            fulfillment: product.fulfillment ? parseInt(product.fulfillment) : product.fulfillment,
+            cost: product.cost ? parseInt(product.cost) : null,
+            fulfillment: product.fulfillment ? parseInt(product.fulfillment) : null,
         }
 
         try {
@@ -77,9 +78,9 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 return;
             }
             setDataStatus({ ...initDataStatus })
-            //setIsSuccess(true)
+            setIsSuccess(true)
             //setIsUpdating(false)
-            shouldRefetchBasicData && getTableData(authToken, shopId)
+            getTableData(authToken, shopId)
         } catch {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
             //setIsUpdating(false)
@@ -94,15 +95,14 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 product: product.product,
                 user: product.user,
                 shop: product.shop,
-                cost: i.cost ? parseInt(i.cost) : i.cost,
-                fulfillment: i.fulfillment ? parseInt(i.fulfillment) : i.fulfillment,
+                cost: i.cost ? parseInt(i.cost) : null,
+                fulfillment: i.fulfillment ? parseInt(i.fulfillment) : null,
                 date: moment(i.date).format('YYYY-MM-DD')
             })),
             ids_to_delete: historyItemsToDelete?.map(i => i.id)
         }
 
         try {
-            await updateDefaultParams(false)
             const res = await fetch(`${URL}/api/product/self-costs`, {
                 method: 'PATCH',
                 headers: {
@@ -118,10 +118,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 //setIsUpdating(false)
                 return;
             }
-            const parsed = await res.json()
+            await updateDefaultParams()
             setHistoryItemsToDelete([])
             setDataStatus({ ...initDataStatus })
-            //setIsSuccess(true)
+            setIsSuccess(true)
             //setIsUpdating(false)
             getTableData(authToken, shopId)
         } catch {
@@ -132,15 +132,16 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
 
     const deleteButtonClickHandler = (item) => {
         let newProduct = product;
-        const index = newProduct.self_cost_change_history.findIndex(_ => _.date === item.date);
+        const index = newProduct.self_cost_change_history.findIndex(_ => _.id === item.id);
+        console.log('index', index)
+        console.log('length', newProduct)
+        console.log('item', item)
         if (index !== -1) {
-            setHistoryItemsToDelete((prev) => {
-                if (newProduct?.self_cost_change_history[index]?.id) {
-                    return [...historyItemsToDelete, newProduct.self_cost_change_history[index]]
-                } else {
-                    return prev
-                }
-            })
+            console.log('hit')
+            console.log(newProduct.self_cost_change_history[index])
+            if (newProduct.self_cost_change_history[index].id) {
+                setHistoryItemsToDelete([...historyItemsToDelete, newProduct.self_cost_change_history[index]])
+            }
             newProduct.self_cost_change_history.splice(index, 1)
             setProduct({ ...newProduct })
         }
