@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './addSkuModal.module.css'
 import { addSkuTableConfig } from '../../../shared';
 import { AddSkuModalFooter } from '../../../entities'
 import { Modal, Checkbox, ConfigProvider } from 'antd';
 import wb_icon from '../../../../../assets/wb_icon.png'
+import { URL } from '../../../../../service/config';
+import AuthContext from '../../../../../service/AuthContext';
 
 const mockData = [
     {
@@ -29,8 +31,8 @@ const mockData = [
     },
 ]
 
-const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
-
+const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus }) => {
+    const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState()
     const [isDataLoading, setIsDataLoading] = useState(false)
     const [checkedList, setCheckedList] = useState([]);
@@ -53,22 +55,74 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
         setCheckedList(e.target.checked ? tableData.map(_ => _.sku) : []);
     };
 
-    useEffect(() => {
-        let timeout;
-        const getTableData = async () => {
-            setIsDataLoading(true)
-            timeout = setTimeout(() => { setTableData(mockData); setIsDataLoading(false) }, 2000)
+    const getProductsList = async (authToken, groupId) => {
+        //setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        try {
+            const res = await fetch(`${URL}/api/product/product_groups/${groupId}/products`, {
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'JWT ' + authToken
+                },
+            })
+
+            if (!res.ok) {
+                const parsedData = await res.json()
+                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                return;
+            }
+            const parsedRes = await res.json();
+            setTableData(parsedRes.data.products)
+            setCheckedList(parsedRes.data.products.filter(_ => _.in_group).map(_ => _.id))
+            //setGroupData(parsedRes.data)
+            setDataFetchingStatus(initDataFetchingStatus)
+        } catch {
+            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
         }
-        getTableData()
-        return () => { timeout && clearTimeout(timeout) }
-    }, [])
+    }
+
+    const addProducts = async () => {
+        const requestObject = {
+            name: groupData.name,
+            description: groupData.description,
+            product_ids: checkedList
+        }
+        try {
+            const res = await fetch(`${URL}/api/product/product_groups/${groupData.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'JWT ' + authToken
+                },
+                body: JSON.stringify(requestObject)
+            })
+
+            if (!res.ok) {
+                const parsedData = await res.json()
+                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                return;
+            }
+            setIsAddSkuModalVisible(false)
+            getGroupData(authToken, groupData.id)
+            //setGroupData(parsedRes.data)
+            //setDataFetchingStatus(initDataFetchingStatus)
+        } catch {
+            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+        }
+    }
+
+    useEffect(() => {
+        if (groupData && groupData.id) {
+            getProductsList(authToken, groupData.id)
+        }
+    }, [groupData])
 
     return (
         <Modal
             footer={
                 <AddSkuModalFooter
+                    addProducts={addProducts}
                     setIsAddSkuModalVisible={setIsAddSkuModalVisible}
-                    isDataLoading={isDataLoading}
+                    isDataLoading={dataFetchingStatus.isLoading}
                     isCheckedListEmpty={checkedList.length === 0}
                 />
             }
@@ -84,13 +138,13 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
                     <p className={styles.modal__title}>Добавьте артикулы</p>
                 </div>
                 {/* loader */}
-                {isDataLoading &&
+                {/* {isDataLoading &&
                     <div className={styles.modal__loaderWrapper}>
                         <span className='loader'></span>
                     </div>
-                }
+                } */}
                 {/* main data */}
-                {!isDataLoading && tableData &&
+                {tableData &&
                     <div className={styles.modal__tableWrapper}>
 
                         {/* table */}
@@ -99,31 +153,31 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
                             <div className={styles.table__header}>
                                 {/* Мапим массив значений заголовков */}
                                 {tableData && addSkuTableConfig.values.map((v, id) => {
-                                     /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
+                                    /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
                                     return (
-                                           
-                                            <div className={styles.table__headerItem} key={id}>
 
-                                                {v.hasSelect &&
-                                                    <div className={styles.sortControls}>
-                                                        <ConfigProvider
-                                                            theme={{
-                                                                token: {
-                                                                    colorPrimary: '#5329FF',
-                                                                    colorBgContainer: 'transparent'
-                                                                }
-                                                            }}
-                                                        >
-                                                            <Checkbox
-                                                                indeterminate={indeterminate}
-                                                                onChange={onCheckAllChange}
-                                                                checked={checkAll}
-                                                            />
-                                                        </ConfigProvider>
-                                                    </div>
-                                                }
-                                                <p className={styles.table__headerItemTitle}>{v.ruName}</p>
-                                            </div>
+                                        <div className={styles.table__headerItem} key={id}>
+
+                                            {v.hasSelect &&
+                                                <div className={styles.sortControls}>
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorPrimary: '#5329FF',
+                                                                colorBgContainer: 'transparent'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Checkbox
+                                                            indeterminate={indeterminate}
+                                                            onChange={onCheckAllChange}
+                                                            checked={checkAll}
+                                                        />
+                                                    </ConfigProvider>
+                                                </div>
+                                            }
+                                            <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                        </div>
                                     )
                                 })}
                             </div>
@@ -137,24 +191,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
                                             className={styles.table__row}
                                             key={id}
                                             id={`table_row_${id}`}
-                                            onMouseOver={(e) => {
-                                                const { id } = e.target
-                                                const rows = id && document.querySelectorAll(`#${id}`);
-                                                if (rows) {
-                                                    rows.forEach(row => {
-                                                        row.style.background = '#F2F2F2'
-                                                    })
-                                                }
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                const { id } = e.target
-                                                const rows = id && document.querySelectorAll(`#${id}`);
-                                                if (rows) {
-                                                    rows.forEach(row => {
-                                                        row.style.background = 'none'
-                                                    })
-                                                }
-                                            }}
                                         >
                                             {/* Для каждого товара мапим заголовки таблицы еще раз и забираем из товара нужны данные (в первой колонке одновременно фото и название) */}
                                             {addSkuTableConfig.values.map(((v, id) => {
@@ -182,8 +218,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
                                                                         }}
                                                                     >
                                                                         <Checkbox
-                                                                            checked={checkedList.some(_ => _ === product.sku)}
-                                                                            value={product.sku}
+                                                                            checked={checkedList.some(_ => _ === product.id)}
+                                                                            value={product.id}
                                                                             onChange={onCheckboxChange}
                                                                         />
                                                                     </ConfigProvider>
@@ -192,7 +228,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
                                                                     <img src={product[v.photoFieldName]} width={30} height={40} />
                                                                 </div>
                                                                 <p className={styles.table__rowTitle}>{product[v.engName]}</p>
-                                                            </>
+                                                            </> 
                                                             :
                                                             <>{product[v.engName]}</>
                                                         }
@@ -203,13 +239,13 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible }) => {
                                     )
                                 })}
                                 {/* No data */}
-                                {tableData && tableData.length === 0 && id === 0 &&
+                                {/* {tableData && tableData.length === 0 && id === 0 &&
                                     <div className={styles.table__row}>
                                         <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
                                             Товары отсутствуют
                                         </div>
                                     </div>
-                                }
+                                } */}
                             </div>
                         </div>
                         {/* !table */}

@@ -15,7 +15,8 @@ const SingleGroupWidget = ({
     setDataFetchingStatus,
     dataFetchingStatus,
     initDataFetchingStatus,
-    groupId
+    groupId,
+    getGroupData
 }) => {
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
@@ -62,7 +63,7 @@ const SingleGroupWidget = ({
                 return;
             }
 
-
+            getGroupData(authToken, groupId)
             // успешно обновлено
 
         } catch {
@@ -71,7 +72,7 @@ const SingleGroupWidget = ({
     }
 
     useEffect(() => {
-        data && setTableData(data)
+        data && setTableData(data.products)
     }, [data])
 
     return (

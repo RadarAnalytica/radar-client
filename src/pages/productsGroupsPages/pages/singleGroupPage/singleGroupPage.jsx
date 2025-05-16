@@ -10,6 +10,8 @@ import styles from './singleGroupPage.module.css'
 import AuthContext from '../../../../service/AuthContext';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
 import { useParams } from 'react-router-dom';
+import { URL } from '../../../../service/config';
+import { useAppSelector } from '../../../../redux/hooks';
 
 const initDataFetchingStatus = {
     isLoading: false,
@@ -42,6 +44,17 @@ const mockData = [
     },
 ]
 
+/**
+ * 
+ * "data": {
+        "name": "000",
+        "description": "",
+        "id": 8,
+        "shop_name": null,
+        "products": []
+    },
+ */
+
 const SingleGroupPage = () => {
     const { authToken } = useContext(AuthContext)
     const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
@@ -60,24 +73,42 @@ const SingleGroupPage = () => {
                 },
             })
 
-            // if (!res.ok) {
-            //     const parsedData = await res.json()
-            //     setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
-            //     return;
-            // }
+            if (!res.ok) {
+                const parsedData = await res.json()
+                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                return;
+            }
             const parsedRes = await res.json();
-            //setGroupData(parsedRes.data)
-            setGroupData(mockData)
+            setGroupData(parsedRes.data)
             setDataFetchingStatus(initDataFetchingStatus)
         } catch {
-            //setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
-            setGroupData(mockData)
-            setDataFetchingStatus(initDataFetchingStatus)
+            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+        }
+    }
+
+    const deleteGroup = async (authToken, groupId) => {
+        try {
+            const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
+                method: 'DELETE',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'JWT ' + authToken
+                },
+            })
+
+            if (!res.ok) {
+                const parsedData = await res.json()
+                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                return;
+            }
+            navigate('/dev/groups')
+        } catch {
+            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
         }
     }
 
     useEffect(() => {
-        params.group_id && getGroupData(authToken, params.group_id)
+        params?.group_id && getGroupData(authToken, params.group_id)
     }, [params])
 
     return (
@@ -96,11 +127,11 @@ const SingleGroupPage = () => {
                             <Breadcrumbs
                                 config={[
                                     { name: 'Группы товаров', slug: '/dev/groups' },
-                                    { name: 'Название' },
+                                    { name: groupData.name },
                                 ]}
                                 actions={[
                                     { type: 'edit', action: () => { setIsAddSkuModalVisible(true) } },
-                                    { type: 'delete', action: () => { navigate('/dev/groups') } },
+                                    { type: 'delete', action: () => { deleteGroup(authToken, params?.group_id) } },
                                 ]}
                             />
                         }
@@ -112,7 +143,7 @@ const SingleGroupPage = () => {
                         <span className='loader'></span>
                     </div>
                 }
-                {!dataFetchingStatus.isLoading && groupData && groupData.length === 0 &&
+                {!dataFetchingStatus.isLoading && groupData.products && groupData.products.length === 0 &&
                     <NoDataWidget
                         mainTitle='Здесь пока нет ни одного артикула'
                         mainText='Добавьте первый артикул, чтобы начать работу'
@@ -120,13 +151,14 @@ const SingleGroupPage = () => {
                         action={() => setIsAddSkuModalVisible(true)}
                     />
                 }
-                {!dataFetchingStatus.isLoading && groupData && groupData.length > 0 &&
+                {!dataFetchingStatus.isLoading && groupData.products && groupData.products.length > 0 &&
                     <SingleGroupWidget
                         setIsAddSkuModalVisible={setIsAddSkuModalVisible}
                         data={groupData}
                         dataFetchingStatus={dataFetchingStatus}
                         initDataFetchingStatus={initDataFetchingStatus}
                         groupId={params.group_id}
+                        getGroupData={getGroupData}
                     />
                 }
             </section>
@@ -138,6 +170,11 @@ const SingleGroupPage = () => {
                 isAddSkuModalVisible={isAddSkuModalVisible}
                 setIsAddSkuModalVisible={setIsAddSkuModalVisible}
                 setDataFetchingStatus={setDataFetchingStatus}
+                groupData={groupData}
+                authToken={authToken}
+                getGroupData={getGroupData}
+                initDataFetchingStatus={initDataFetchingStatus}
+                dataFetchingStatus={dataFetchingStatus}
             />
 
             <ErrorModal

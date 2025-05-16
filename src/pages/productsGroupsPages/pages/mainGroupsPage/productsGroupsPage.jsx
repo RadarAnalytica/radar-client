@@ -79,6 +79,10 @@ const ProductGroupsPage = () => {
                 {!dataFetchingStatus.isLoading && groupsMainData && groupsMainData.length > 0 &&
                     <GroupsMainWidget
                         setIsAddGroupModalVisible={setIsAddGroupModalVisible}
+                        groupsMainData={groupsMainData}
+                        getGroupsData={getGroupsData}
+                        setDataFetchingStatus={setDataFetchingStatus}
+                        initDataFetchingStatus={initDataFetchingStatus}
                     />
                 }
             </section>
@@ -90,6 +94,9 @@ const ProductGroupsPage = () => {
             <AddGroupModal
                 isAddGroupModalVisible={isAddGroupModalVisible}
                 setIsAddGroupModalVisible={setIsAddGroupModalVisible}
+                setDataFetchingStatus={setDataFetchingStatus}
+                initDataFetchingStatus={initDataFetchingStatus}
+                dataFetchingStatus={dataFetchingStatus}
             />
 
             <ErrorModal
