@@ -91,7 +91,7 @@ const SelfCostTableWidget = ({ setIsSuccess }) => {
                             {tableConfig.values.map((v, id) => {
 
                                 // определяем необходимые стили
-                                const headerCellStyle = v.ruName === 'Продукт' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
+                                const headerCellStyle = v.ruName === 'Продукт' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : v.ruName === 'Фулфилмент' ? `${styles.table__headerItem} ${styles.table__headerItem_full}` : styles.table__headerItem
                                 return (
                                         <div className={headerCellStyle} key={id}>
                                             <p className={styles.table__headerItemTitle}>{v.ruName}</p>
