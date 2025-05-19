@@ -1,13 +1,5 @@
 import moment from "moment";
 
-const getNormilizedValue = (value) => {
-    let normilizedValue = value
-    if (normilizedValue === undefined) {
-        normilizedValue = null
-    }
-    return normilizedValue
-}
-
 export const getSaveButtonStatus = (product, compare, historyItemsToDelete) => {
     let status = true;
     if (product.cost !== compare.cost) { 
@@ -28,4 +20,35 @@ export const getSaveButtonStatus = (product, compare, historyItemsToDelete) => {
     }
 
     return status
+}
+
+export const getAddDateButtonStatus = (product) => {
+     // начальное значение - не заблокировано
+     let status = false;
+     // Блокируем если:
+     // 1 - не задано значение себестоимости по умолчанию
+     if (!product.cost || !product.fulfillment) {status = true; return status};
+    // во всех остальных случаех кнопка активна
+    return status;
+}
+
+
+export const getRowSaveButtonStatus = (product, compare, isOpen) => {
+    // начальное значение - не заблокировано
+    let status = false;
+    // Блокируем если:
+    // 1 - строка раскрыта
+    if (isOpen) {status = true; return status};
+    // 2 - оба значения отстутствуют
+    if (!product.cost && !product.fulfillment) {status = true; return status};
+    // 3 - отсутствует себестоимость
+    if (!product.cost) {status = true; return status};
+    // 4 - отсутсвует фф, но изначально он был задан
+    if (product.cost && !product.fulfillment && compare.fulfillment) {status = true; return status};
+    // 5 - значения не изменились
+    if (product.cost && product.fulfillment && product.cost === compare.cost && product.fulfillment === compare.fulfillment) {status = true; return status};
+    if (product.cost && !product.fulfillment && product.cost === compare.cost && !compare.fulfillment) {status = true; return status};
+
+    // во всех остальных случаех кнопка активна
+    return status;
 }
