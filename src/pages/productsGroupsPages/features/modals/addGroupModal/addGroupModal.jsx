@@ -53,7 +53,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
 
             const parsedData = await res.json()
             setDataFetchingStatus(initDataFetchingStatus)
-            navigate(`/dev/groups/${parsedData.data.id}`)
+            navigate(`/groups/${parsedData.data.id}`)
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
         }

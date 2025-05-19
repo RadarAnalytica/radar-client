@@ -76,8 +76,6 @@ function App() {
       <ProductProvider>
         <Routes>
           {/* under development */}
-          <Route path='/dev/groups' element={<ProtectedRoute userRoleProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
-          <Route path='/dev/groups/:group_id' element={<ProtectedRoute userRoleProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
           <Route path='/dev/monitoring' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
           <Route path='/dev/monitoring/request' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />
           {/* Protected routes */}
