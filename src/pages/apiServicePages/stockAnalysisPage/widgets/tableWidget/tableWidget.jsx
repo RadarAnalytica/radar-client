@@ -135,8 +135,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                     // определяем необходимые стили
                                     const headerCellStyle = v.ruName === 'Товар' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : v.isShortCell ? `${styles.table__headerItem} ${styles.table__headerItem_short}` : styles.table__headerItem
                                     return (
-                                        <>
-                                            {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
                                             <div className={headerCellStyle} key={id}>
                                                 <p className={styles.table__headerItemTitle}>{v.ruName}</p>
                                                 {v.isSortable &&
@@ -163,7 +161,6 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                                     </div>
                                                 }
                                             </div>
-                                        </>
                                     )
                                 })}
                             </div>
