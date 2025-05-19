@@ -101,7 +101,7 @@ const SingleGroupPage = () => {
                 setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
                 return;
             }
-            navigate('/dev/groups')
+            navigate('/groups')
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
         }
@@ -126,7 +126,7 @@ const SingleGroupPage = () => {
                         title={
                             <Breadcrumbs
                                 config={[
-                                    { name: 'Группы товаров', slug: '/dev/groups' },
+                                    { name: 'Группы товаров', slug: '/groups' },
                                     { name: groupData.name },
                                 ]}
                                 actions={[

@@ -129,7 +129,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                         {v.actionTypes.map((a, id) => {
                                                             if (a === 'edit') {
                                                                 return (
-                                                                    <Link className={styles.table__actionButton} key={id} to={`/dev/groups/${product.id}`}>
+                                                                    <Link className={styles.table__actionButton} key={id} to={`/groups/${product.id}`}>
                                                                         {buttonIcons[a]}
                                                                     </Link>
                                                                 )
@@ -154,7 +154,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
 
                                                 return (
                                                     <div className={styles.table__rowItem} key={id}>
-                                                       <Link to={`/dev/groups/${product.id}`} className={styles.table__rowTitle}>{product[v.engName]}</Link>
+                                                       <Link to={`/groups/${product.id}`} className={styles.table__rowTitle}>{product[v.engName]}</Link>
                                                     </div>
                                                 )
                                             }

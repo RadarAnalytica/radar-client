@@ -356,9 +356,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     value={product.cost}
                                     style={{ height: '44px'}}
                                     onChange={(e) => {
+                                        let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
                                             ...product,
-                                            cost: /^(|\d+)$/.test(e.target.value) ? e.target.value : product.cost,
+                                            cost: /^(|\d+)$/.test(e.target.value) ? value : product.cost,
                                         };
                                         setProduct({ ...newProduct })
                                     }}
@@ -383,9 +384,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     value={product.fulfillment}
                                     style={{ height: '44px'}}
                                     onChange={(e) => {
+                                        let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
                                             ...product,
-                                            fulfillment: /^(|\d+)$/.test(e.target.value) ? e.target.value : product.fulfillment,
+                                            fulfillment: /^(|\d+)$/.test(e.target.value) ? value : product.fulfillment,
                                         };
                                         setProduct({ ...newProduct })
                                     }}
