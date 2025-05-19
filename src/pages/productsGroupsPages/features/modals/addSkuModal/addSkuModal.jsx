@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import styles from './addSkuModal.module.css'
 import { addSkuTableConfig } from '../../../shared';
 import { AddSkuModalFooter } from '../../../entities'
-import { Modal, Checkbox, ConfigProvider } from 'antd';
+import { Modal, Checkbox, ConfigProvider, Pagination } from 'antd';
 import wb_icon from '../../../../../assets/wb_icon.png'
 import { URL } from '../../../../../service/config';
 import AuthContext from '../../../../../service/AuthContext';
@@ -31,13 +31,15 @@ const mockData = [
     },
 ]
 
-const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus }) => {
+const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops }) => {
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState()
     const [isDataLoading, setIsDataLoading] = useState(false)
     const [checkedList, setCheckedList] = useState([]);
+    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
+
 
     const onCheckboxChange = (e) => {
         const { value, checked } = e.target;
@@ -52,7 +54,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     };
 
     const onCheckAllChange = e => {
-        setCheckedList(e.target.checked ? tableData.map(_ => _.sku) : []);
+        setCheckedList(e.target.checked ? tableData.map(_ => _.id) : []);
     };
 
     const getProductsList = async (authToken, groupId) => {
@@ -72,6 +74,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             }
             const parsedRes = await res.json();
             setTableData(parsedRes.data.products)
+            setPaginationState({ ...paginationState, total: parsedRes.data.products.length })
             setCheckedList(parsedRes.data.products.filter(_ => _.in_group).map(_ => _.id))
             //setGroupData(parsedRes.data)
             setDataFetchingStatus(initDataFetchingStatus)
@@ -108,6 +111,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
         }
+    }
+
+    const paginationHandler = (page) => {
+        setPaginationState({ ...paginationState, current: page })
     }
 
     useEffect(() => {
@@ -150,43 +157,48 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                         {/* table */}
                         <div className={styles.table}>
                             {/* Хэдер */}
-                            <div className={styles.table__header}>
-                                {/* Мапим массив значений заголовков */}
-                                {tableData && addSkuTableConfig.values.map((v, id) => {
-                                    /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
-                                    return (
+                            <div className={styles.table__headerContainer}>
+                                <div className={styles.table__header}>
+                                    {/* Мапим массив значений заголовков */}
+                                    {tableData && addSkuTableConfig.values.map((v, id) => {
+                                        /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
+                                        return (
 
-                                        <div className={styles.table__headerItem} key={id}>
+                                            <div className={styles.table__headerItem} key={id}>
 
-                                            {v.hasSelect &&
-                                                <div className={styles.sortControls}>
-                                                    <ConfigProvider
-                                                        theme={{
-                                                            token: {
-                                                                colorPrimary: '#5329FF',
-                                                                colorBgContainer: 'transparent'
-                                                            }
-                                                        }}
-                                                    >
-                                                        <Checkbox
-                                                            indeterminate={indeterminate}
-                                                            onChange={onCheckAllChange}
-                                                            checked={checkAll}
-                                                        />
-                                                    </ConfigProvider>
-                                                </div>
-                                            }
-                                            <p className={styles.table__headerItemTitle}>{v.ruName}</p>
-                                        </div>
-                                    )
-                                })}
+                                                {v.hasSelect &&
+                                                    <div className={styles.sortControls}>
+                                                        <ConfigProvider
+                                                            theme={{
+                                                                token: {
+                                                                    colorPrimary: '#5329FF',
+                                                                    colorBgContainer: 'transparent'
+                                                                }
+                                                            }}
+                                                        >
+                                                            <Checkbox
+                                                                indeterminate={indeterminate}
+                                                                onChange={onCheckAllChange}
+                                                                checked={checkAll}
+                                                            />
+                                                        </ConfigProvider>
+                                                    </div>
+                                                }
+                                                <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
                             </div>
 
                             {/* Тело таблицы */}
                             <div className={styles.table__body}>
                                 {/* Мапим данные о товарах */}
-                                {tableData && tableData.length > 0 && tableData.map((product, id) => {
-                                    return (
+                                {tableData && tableData.length > 0 && paginationState && shops && tableData.map((product, id) => {
+                                    const minRange = (paginationState.current - 1) * paginationState.pageSize;
+                                    const maxRange = paginationState.current * paginationState.pageSize;
+
+                                    return id >= minRange && id < maxRange && (
                                         <div
                                             className={styles.table__row}
                                             key={id}
@@ -200,6 +212,15 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                         <div className={styles.table__rowItem} key={id}>
                                                             <img src={wb_icon} width={20} height={20} alt='' />
                                                             {product[v.engName]}
+                                                        </div>
+                                                    )
+                                                }
+
+                                                if (v.engName === 'shop') {
+                                                    const currentShopName = shops.find(_ => _.id === product[v.engName])?.brand_name
+                                                    return (
+                                                        <div className={styles.table__rowItem} key={id}>
+                                                            {currentShopName ? currentShopName : product[v.engName]}
                                                         </div>
                                                     )
                                                 }
@@ -225,10 +246,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                                     </ConfigProvider>
                                                                 }
                                                                 <div className={styles.table__rowImgWrapper}>
-                                                                    <img src={product[v.photoFieldName]} width={30} height={40} />
+                                                                    {product[v.photoFieldName] && <img src={product[v.photoFieldName]} width={30} height={40} />}
                                                                 </div>
                                                                 <p className={styles.table__rowTitle}>{product[v.engName]}</p>
-                                                            </> 
+                                                            </>
                                                             :
                                                             <>{product[v.engName]}</>
                                                         }
@@ -252,6 +273,31 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
 
 
                     </div>}
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorText: '#5329FF',
+                            lineWidth: 0,
+                        },
+                        components: {
+                            Pagination: {
+                                itemActiveBg: '#EEEAFF',
+                                itemBg: '#F7F7F7',
+                                itemColor: '#8C8C8C',
+                            }
+                        }
+                    }}
+                >
+                    <Pagination
+                        defaultCurrent={1}
+                        current={paginationState.current}
+                        onChange={paginationHandler}
+                        total={paginationState.total}
+                        pageSize={paginationState.pageSize}
+                        showSizeChanger={false}
+                    //showTotal={(total) => `Всего ${total} товаров`}
+                    />
+                </ConfigProvider>
             </div>
         </Modal>
     )

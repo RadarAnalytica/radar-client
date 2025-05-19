@@ -16,7 +16,8 @@ const SingleGroupWidget = ({
     dataFetchingStatus,
     initDataFetchingStatus,
     groupId,
-    getGroupData
+    getGroupData,
+    shops
 }) => {
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
@@ -87,47 +88,49 @@ const SingleGroupWidget = ({
                     Добавить артикул
                 </button>
             </div>
-            {tableData &&
+            {tableData && shops &&
                 <div className={styles.widget__tableWrapper}>
 
                     {/* table */}
                     <div className={styles.table}>
                         {/* Хэдер */}
-                        <div className={styles.table__header}>
-                            {/* Мапим массив значений заголовков */}
-                            {tableData && singleGroupTableConfig.values.map((v, id) => {
-                                /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
-                                return (
-                                    <div className={styles.table__headerItem} key={id}>
+                        <div className={styles.table__headerContainer}>
+                            <div className={styles.table__header}>
+                                {/* Мапим массив значений заголовков */}
+                                {tableData && singleGroupTableConfig.values.map((v, id) => {
+                                    /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
+                                    return (
+                                        <div className={styles.table__headerItem} key={id}>
 
-                                        {v.hasSelect &&
-                                            <div className={styles.sortControls}>
-                                                <ConfigProvider
-                                                    theme={{
-                                                        token: {
-                                                            colorPrimary: '#5329FF',
-                                                            colorBgContainer: 'transparent'
-                                                        }
-                                                    }}
-                                                >
-                                                    <Checkbox
-                                                        indeterminate={indeterminate}
-                                                        onChange={onCheckAllChange}
-                                                        checked={checkAll}
-                                                    />
-                                                </ConfigProvider>
-                                            </div>
-                                        }
-                                        <p className={styles.table__headerItemTitle}>{v.ruName}</p>
-                                    </div>
-                                )
-                            })}
+                                            {v.hasSelect &&
+                                                <div className={styles.sortControls}>
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorPrimary: '#5329FF',
+                                                                colorBgContainer: 'transparent'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Checkbox
+                                                            indeterminate={indeterminate}
+                                                            onChange={onCheckAllChange}
+                                                            checked={checkAll}
+                                                        />
+                                                    </ConfigProvider>
+                                                </div>
+                                            }
+                                            <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
 
                         {/* Тело таблицы */}
                         <div className={styles.table__body}>
                             {/* Мапим данные о товарах */}
-                            {tableData && tableData.length > 0 && tableData.map((product, id) => {
+                            {tableData && tableData.length > 0 && shops && tableData.map((product, id) => {
                                 return (
                                     <div
                                         className={styles.table__row}
@@ -146,13 +149,22 @@ const SingleGroupWidget = ({
                                                 )
                                             }
 
+                                            if (v.engName === 'shop') {
+                                                const currentShopName = shops.find(_ => _.id === product[v.engName])?.brand_name
+                                                return (
+                                                    <div className={styles.table__rowItem} key={id}>
+                                                        {currentShopName ? currentShopName : product[v.engName]}
+                                                    </div>
+                                                )
+                                            }
+
                                             if (v.engName === 'actions') {
 
                                                 return (
                                                     <div className={styles.table__rowItem} key={id}>
                                                         {v.actionTypes.map((a, id) => {
                                                             return (
-                                                                <button className={styles.table__actionButton} key={id} onClick={() => {deleteSkuFromGroup(product)}}>
+                                                                <button className={styles.table__actionButton} key={id} onClick={() => { deleteSkuFromGroup(product) }}>
                                                                     {buttonIcons[a]}
                                                                 </button>
                                                             )
@@ -182,7 +194,7 @@ const SingleGroupWidget = ({
                                                                 </ConfigProvider>
                                                             }
                                                             <div className={styles.table__rowImgWrapper}>
-                                                                <img src={product[v.photoFieldName]} width={30} height={40} />
+                                                                {product[v.photoFieldName] && <img src={product[v.photoFieldName]} width={30} height={40} />}
                                                             </div>
                                                             <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                         </>

@@ -224,12 +224,14 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     style={{ height: '44px'}}
                                     size='large'
                                     disabled={isOpen}
+                                    placeholder={currentProduct.cost ? currentProduct.cost : 'Не установлено'}
                                 />
                             </div>
                             <div className={styles.row__item}>
                                 <Input
                                     style={{ maxWidth: '160px', height: '44px' }}
                                     value={product.fulfillment}
+                                    placeholder={currentProduct.fulfillment ? currentProduct.fulfillment : 'Не установлено'}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
@@ -355,6 +357,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                 <Input
                                     value={product.cost}
                                     style={{ height: '44px'}}
+                                    placeholder={currentProduct.cost ? currentProduct.cost : 'Не установлено'}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
@@ -367,10 +370,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                 />
                             </div>
                             {product.self_cost_change_history?.map((i, id) => {
-
+                                const prevValue = currentProduct.self_cost_change_history.find(_ => _.id === i.id)
                                 return (
                                     <div className={styles.row__bodyMainItem} key={moment(i.date).format('DD.MM.YY')}>
-                                        <BodyInput item={i} setProduct={setProduct} type='cost' product={product} />
+                                        <BodyInput item={i} setProduct={setProduct} type='cost' product={product} prevValue={prevValue} />
                                     </div>
                                 )
                             })}
@@ -382,6 +385,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             <div className={`${styles.row__bodyMainItem} ${styles.row__bodyMainItem_short}`}>
                                 <Input
                                     value={product.fulfillment}
+                                    placeholder={currentProduct.fulfillment ? currentProduct.fulfillment : 'Не установлено'}
                                     style={{ height: '44px'}}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
@@ -395,9 +399,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                 />
                             </div>
                             {product.self_cost_change_history?.map((i, id) => {
+                                const prevValue = currentProduct.self_cost_change_history.find(_ => _.id === i.id)
                                 return (
                                     <div className={styles.row__bodyMainItem} key={moment(i.date).format('DD.MM.YY')}>
-                                        <BodyInput item={i} setProduct={setProduct} type='fulfillment' product={product} />
+                                        <BodyInput item={i} setProduct={setProduct} type='fulfillment' product={product} prevValue={prevValue} />
                                     </div>
                                 )
                             })}

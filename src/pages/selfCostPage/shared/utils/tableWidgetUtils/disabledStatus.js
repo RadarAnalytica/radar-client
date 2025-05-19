@@ -38,7 +38,7 @@ export const getAddDateButtonStatus = (product) => {
     let status = false;
     // Блокируем если:
     // 1 - не задано значение себестоимости по умолчанию
-    if (!product.cost || !product.fulfillment) { status = true; return status };
+    if (!product.cost) { status = true; return status };
     // во всех остальных случаех кнопка активна
     return status;
 }
