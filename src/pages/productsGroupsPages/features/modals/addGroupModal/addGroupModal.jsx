@@ -142,6 +142,10 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
                                     <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                                 </svg>
                             }
+                            onChange={(value) => {
+                                const selectedShop = shops.find(_ => _.id === value)
+                                dispatch(filterActions.setActiveShop(selectedShop))
+                            }}
                         />
                     </ConfigProvider>
                 </div>
