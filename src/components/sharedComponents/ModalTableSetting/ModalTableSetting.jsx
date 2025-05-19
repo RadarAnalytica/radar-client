@@ -40,7 +40,6 @@ export default function ModalTableSetting({
 	function onFinish(data) {
 		let result = [];
 		for (const column in data) {
-			console.log(form.getFieldValue(column))
 			data[column] && result.push(column);
 		}
 		if (data.length == 0) {
@@ -219,7 +218,7 @@ export default function ModalTableSetting({
 					</Button>
 				</Flex>
 				<Form form={form} onFinish={onFinish}>
-					<Flex wrap className={styles.list}>
+					<Flex vertical wrap className={styles.list}>
 						{shownColumns.map((el, i) => (
 							<Form.Item
 								key={i}
