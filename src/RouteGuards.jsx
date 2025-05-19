@@ -4,7 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
 import { URL } from './service/config';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
 

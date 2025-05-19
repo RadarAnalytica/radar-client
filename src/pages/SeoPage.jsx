@@ -6,7 +6,7 @@ import InfoSeoPlate from '../components/InfoSeoPlate';
 import SeoCompaire from '../components/SeoCompaire';
 import NoSubscriptionPage from './NoSubscriptionPage';
 import AuthContext from '../service/AuthContext';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 
