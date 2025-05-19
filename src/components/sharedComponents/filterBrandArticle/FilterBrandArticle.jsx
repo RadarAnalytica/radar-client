@@ -151,20 +151,22 @@ function FilterBrandArticle({
   }
 
   function groupsHandler(){
-    console.log('brandHandler')
+    console.log('groupsHandler')
   }
 
   function articlesHandler(){
-    console.log('brandHandler')
+    console.log('articlesHandler')
   }
 
 	return (
 		<div className={styles.container}>
+			{/* закоменитил, пока нет поддержки периодов на беке для страницы Отчет по неделям
 			{shops && activeBrand && (
 				<div className={styles.item}>
 					<TimeSelect />
 				</div>
 			)}
+			*/}
 			{shops && activeBrand && shopSelect && (
 				<div className={styles.item}>
 					<PlainSelect
