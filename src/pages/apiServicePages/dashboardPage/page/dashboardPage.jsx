@@ -24,6 +24,7 @@ import CostsBlock from '../../../../components/dashboardPageComponents/blocks/co
 import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
 import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
+import TurnoverBlock from '../../../../components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock'
 import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
@@ -163,6 +164,9 @@ const _DashboardPage = () => {
                             <FinanceBlock
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}
+                            />
+                            <TurnoverBlock
+                                loading={loading}
                             />
                             <MarginChartBlock
                                 loading={loading}
