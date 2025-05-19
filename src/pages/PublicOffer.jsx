@@ -4,7 +4,7 @@ import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
 import FooterNewVersion from '../components/FooterNewVersion';
 import styles from '../pages/Politics.module.css'
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const PublicOffer = () => {
   return (

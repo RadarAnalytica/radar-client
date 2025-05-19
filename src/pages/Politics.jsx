@@ -5,7 +5,7 @@ import LimitedFooter from '../components/LimitedFooter';
 import NavbarMainHome from '../components/NavbarMainHome';
 import FooterNewVersion from '../components/FooterNewVersion';
 import TablePolitics from '../components/TablePolitics';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const Politics = () => {
   return (
