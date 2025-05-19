@@ -17,6 +17,7 @@ const BodyInput = ({ item, setProduct, type, product }) => {
     return (
         <div className={styles.input__wrapper}>
             <Input
+                style={{ height: '44px'}}
                 value={inputValue}
                 onChange={(e) => setInputValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev } })}
                 size='large'

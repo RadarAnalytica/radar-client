@@ -8,7 +8,7 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import DatePickerCustomDropdown from "../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown";
 import { URL } from "../../../../service/config";
-import { getSaveButtonStatus } from "../../shared";
+import { getSaveButtonStatus, getRowSaveButtonStatus, getAddDateButtonStatus } from "../../shared";
 import ErrorModal from "../../../../components/sharedComponents/modals/errorModal/errorModal";
 
 
@@ -30,6 +30,8 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
     const [saveButtonStatus, setSaveButtonStatus] = useState(true)
+    const [rowSaveButtonDisabledStatus, setRowSaveButtonDisabledStatus] = useState(true)
+    const [addDateButtonDisabledStatus, setAddDateButtonDisabledStatus] = useState(true)
     const [isUpdating, setIsUpdating] = useState(false)
     const customRuLocale = {
         ...ru,
@@ -94,8 +96,8 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 product: product.product,
                 user: product.user,
                 shop: product.shop,
-                cost: i.cost ? parseInt(i.cost) : null,
-                fulfillment: i.fulfillment ? parseInt(i.fulfillment) : null,
+                cost: i.cost ? parseInt(i.cost) : 0,
+                fulfillment: i.fulfillment ? parseInt(i.fulfillment) : 0,
                 date: moment(i.date).format('YYYY-MM-DD')
             })),
             ids_to_delete: historyItemsToDelete?.map(i => i.id)
@@ -160,8 +162,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     useEffect(() => {
         if (product && currentProduct) {
             setSaveButtonStatus(getSaveButtonStatus(product, currentProduct, historyItemsToDelete))
+            setRowSaveButtonDisabledStatus(getRowSaveButtonStatus(product, currentProduct, isOpen))
+            setAddDateButtonDisabledStatus(getAddDateButtonStatus(product))
         }
-    }, [product, historyItemsToDelete, currentProduct])
+    }, [product, historyItemsToDelete, currentProduct, isOpen])
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -210,9 +214,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                 <Input
                                     value={product.cost}
                                     onChange={(e) => {
+                                        let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
                                             ...product,
-                                            cost: /^(|\d+)$/.test(e.target.value) ? e.target.value : product.cost,
+                                            cost: /^(|\d+)$/.test(e.target.value) ? value : product.cost,
                                         };
                                         setProduct({ ...newProduct })
                                     }}
@@ -226,9 +231,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     style={{ maxWidth: '160px', height: '44px' }}
                                     value={product.fulfillment}
                                     onChange={(e) => {
+                                        let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
                                             ...product,
-                                            fulfillment: /^(|\d+)$/.test(e.target.value) ? e.target.value : product.fulfillment,
+                                            fulfillment: /^(|\d+)$/.test(e.target.value) ? value : product.fulfillment,
                                         };
                                         setProduct({ ...newProduct })
                                     }}
@@ -239,7 +245,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                 <button
                                     onClick={updateDefaultParams}
                                     className={styles.row__saveButton}
-                                    disabled={isOpen || saveButtonStatus}
+                                    disabled={rowSaveButtonDisabledStatus}
                                 >
                                     <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M6 4.25C5.58579 4.25 5.25 4.58579 5.25 5C5.25 5.41421 5.58579 5.75 6 5.75H12C12.4142 5.75 12.75 5.41421 12.75 5C12.75 4.58579 12.4142 4.25 12 4.25H6Z" fill="#5329FF" />
@@ -294,7 +300,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
 
                         {/* кнопка добавить дату */}
                         <div className={styles.row__bodyMainItem}>
-                            <button className={styles.row__dateAddButton} onClick={() => setIsDatePickerVisible(!isDatePickerVisible)}>
+                            <button className={styles.row__dateAddButton} onClick={() => setIsDatePickerVisible(!isDatePickerVisible)} disabled={addDateButtonDisabledStatus}>
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10.75 6C10.75 5.58579 10.4142 5.25 10 5.25C9.58579 5.25 9.25 5.58579 9.25 6V9.25H6C5.58579 9.25 5.25 9.58579 5.25 10C5.25 10.4142 5.58579 10.75 6 10.75H9.25V14C9.25 14.4142 9.58579 14.75 10 14.75C10.4142 14.75 10.75 14.4142 10.75 14V10.75H14C14.4142 10.75 14.75 10.4142 14.75 10C14.75 9.58579 14.4142 9.25 14 9.25H10.75V6Z" fill="#5329FF" />
                                     <path fillRule="evenodd" clipRule="evenodd" d="M20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10ZM18.5 10C18.5 14.6944 14.6944 18.5 10 18.5C5.30558 18.5 1.5 14.6944 1.5 10C1.5 5.30558 5.30558 1.5 10 1.5C14.6944 1.5 18.5 5.30558 18.5 10Z" fill="#5329FF" />
@@ -348,6 +354,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             <div className={`${styles.row__bodyMainItem} ${styles.row__bodyMainItem_short}`}>
                                 <Input
                                     value={product.cost}
+                                    style={{ height: '44px'}}
                                     onChange={(e) => {
                                         let newProduct = {
                                             ...product,
@@ -374,6 +381,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             <div className={`${styles.row__bodyMainItem} ${styles.row__bodyMainItem_short}`}>
                                 <Input
                                     value={product.fulfillment}
+                                    style={{ height: '44px'}}
                                     onChange={(e) => {
                                         let newProduct = {
                                             ...product,
