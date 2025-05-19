@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Input } from "antd"
 import styles from './bodyInput.module.css'
 
-const BodyInput = ({ item, setProduct, type, product }) => {
+const BodyInput = ({ item, setProduct, type, product, prevValue }) => {
     const [inputValue, setInputValue] = useState(item[type])
 
     useEffect(() => {
@@ -21,6 +21,7 @@ const BodyInput = ({ item, setProduct, type, product }) => {
                 value={inputValue}
                 onChange={(e) => setInputValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev } })}
                 size='large'
+                placeholder={prevValue ? prevValue[type] : 'Не установлено'}
             />
         </div>
     )

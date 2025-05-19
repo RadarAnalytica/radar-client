@@ -11,7 +11,9 @@ import AuthContext from '../../../../service/AuthContext';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
 import { useParams } from 'react-router-dom';
 import { URL } from '../../../../service/config';
-import { useAppSelector } from '../../../../redux/hooks';
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
+import { fetchShops } from '../../../../redux/shops/shopsActions';
+
 
 const initDataFetchingStatus = {
     isLoading: false,
@@ -56,12 +58,30 @@ const mockData = [
  */
 
 const SingleGroupPage = () => {
-    const { authToken } = useContext(AuthContext)
+    const { authToken, user } = useContext(AuthContext)
     const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [groupData, setGroupData] = useState([])
     const [isAddSkuModalVisible, setIsAddSkuModalVisible] = useState(false)
     const navigate = useNavigate()
     const params = useParams()
+    const dispatch = useAppDispatch()
+    const { shops } = useAppSelector((state) => state.shopsSlice);
+
+    // ------- Фетч массива магазинов -------------//
+    const fetchShopData = async () => {
+        try {
+            if (user.subscription_status === null) {
+                dispatch(fetchShops('mockData'));
+            } else {
+                dispatch(fetchShops(authToken));
+            }
+        } catch (error) {
+            console.error("Error fetching initial data:", error);
+        }
+    };
+    //---------------------------------------------//
+
+
 
     const getGroupData = async (authToken, groupId) => {
         setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
@@ -111,6 +131,13 @@ const SingleGroupPage = () => {
         params?.group_id && getGroupData(authToken, params.group_id)
     }, [params])
 
+    // 0. Получаем данные магазинов
+    useEffect(() => {
+        if (!shops || shops.length === 0) {
+            fetchShopData();
+        }
+    }, [shops]);
+
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -159,6 +186,7 @@ const SingleGroupPage = () => {
                         initDataFetchingStatus={initDataFetchingStatus}
                         groupId={params.group_id}
                         getGroupData={getGroupData}
+                        shops={shops}
                     />
                 }
             </section>
@@ -175,6 +203,7 @@ const SingleGroupPage = () => {
                 getGroupData={getGroupData}
                 initDataFetchingStatus={initDataFetchingStatus}
                 dataFetchingStatus={dataFetchingStatus}
+                shops={shops}
             />
 
             <ErrorModal

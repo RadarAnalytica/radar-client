@@ -26,7 +26,7 @@ export const singleGroupTableConfig = {
         // {ruName: 'Артикул', engName: 'sku', hasSelect: false},
         // {ruName: 'Бренд', engName: 'brand', hasSelect: false},
         // {ruName: 'Магазин', engName: 'shop', hasSelect: false},
-        {ruName: 'Продукт', engName: 'article', hasSelect: true, hasPhoto: true, photoFieldName: 'photo'},
+        {ruName: 'Продукт', engName: 'article', hasSelect: false, hasPhoto: true, photoFieldName: 'photo'},
         {ruName: 'Артикул', engName: 'id', hasSelect: false},
         {ruName: 'Бренд', engName: 'brand', hasSelect: false},
         {ruName: 'Магазин', engName: 'shop', hasSelect: false},
