@@ -53,6 +53,8 @@ import sku4 from '../../assets/plugs/sku_analysis/4.svg'
 import sku5 from '../../assets/plugs/sku_analysis/5.webp'
 //report week plug
 import reportWeek1 from '../../assets/plugs/report_week/1.jpg'
+//selfcost
+import ss1 from '../../assets/plugs/selfcost/ss_1.png'
 
 const plugsConfig = {
     "dashboard": [dashboard1, dashboard2, dashboard3, dashboard4],
@@ -66,7 +68,8 @@ const plugsConfig = {
     "linked-shops": [shop1],
     "subscription": [sub1],
     'sku-analysis': [sku1, sku2, sku3, sku4, sku5],
-    'report-week': [reportWeek1]
+    'report-week': [reportWeek1],
+    'selfcost': [ss1]
 }
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
