@@ -20,16 +20,19 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
 
     const inputKeydownHandler = (e) => {
         if (e && e.key !== 'Enter') return
-        setStockAnalysisFilteredData(getFilteredData(searchInputValue, stockAnalysisData))
+        setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData))
     }
     const searchButtonClickHandler = () => {
-        setStockAnalysisFilteredData(getFilteredData(searchInputValue, stockAnalysisData))
+        setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData))
     }
     const inputChangeHandler = (e) => {
         if (e.target.value === '') {
             setStockAnalysisFilteredData(stockAnalysisData)
         }
-        setSearchInputValue(e.target.value)
+        const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
+        if (regex.test(e.target.value)) {
+            setSearchInputValue(e.target.value)
+        }
     }
 
     const getProdAnalyticXlsxHandler = async () => {
@@ -65,6 +68,9 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
                         value={searchInputValue}
                         onKeyDown={(e) => inputKeydownHandler(e)}
                         onChange={inputChangeHandler}
+                        autoCorrect='off'
+                        spellCheck={false}
+                        autoComplete='off'
                     />
                 </ConfigProvider>
                 {/* SEARCH BUTTON */}
