@@ -44,8 +44,12 @@ export const TimeSelect = () => {
     const [selectValue, setSelectValue] = useState()
     const today = new Date();
     const minDate = new Date(today);
-
     minDate.setDate(today.getDate() - 90);
+
+
+    const startMonth = new Date(today);
+    startMonth.setDate(today.getDate() - 90);
+    const endMonth = new Date(today);
 
     const icon = <SelectIcon />
 
@@ -239,6 +243,8 @@ export const TimeSelect = () => {
                             { before: minDate },
                             { after: today },
                         ]}
+                        startMonth={startMonth}
+                        endMonth={endMonth}
                         components={{
                             Dropdown: DatePickerCustomDropdown
                         }}
