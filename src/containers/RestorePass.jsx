@@ -66,6 +66,7 @@ const RestorePass = ({ email }) => {
           label={'Новый пароль'}
           callback={handlePass}
           required={true}
+          hide={true}
         />
         <InputField
           type={'password'}
@@ -73,6 +74,7 @@ const RestorePass = ({ email }) => {
           label={'Подтвердите пароль'}
           callback={handleConfPass}
           required={true}
+          hide={true}
         />
       </div>
       <button

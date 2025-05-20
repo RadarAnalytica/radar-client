@@ -57,6 +57,18 @@ export const tableConfig = [
         ]
     },
     {
+        tableName: 'Прибыль',
+        values: [
+            {ruName: 'К выплате', engName: 'commissionWB', units: '₽', isSortable: true},
+            {ruName: 'Маржинальная прибыль', engName: 'marginalProfit', units: '₽', isSortable: false},
+            {ruName: 'Средняя прибыль', engName: 'averageProfit', units: '₽', isSortable: false},
+            {ruName: 'Рентабельность реализованной продукции', engName: 'profitabilityOfProductsSold', units: '%', isSortable: false},
+            {ruName: 'Маржинальность', engName: 'marginal', units: '%', isSortable: false},
+            {ruName: 'Годовая рентабельность товарных запасов', engName: 'annualReturnOnInventory', units: '%', isSortable: false},
+            {ruName: 'Упущенная выручка', engName: 'lostRevenue', units: '₽', isSortable: false},
+        ]
+    },
+    {
         tableName: 'АВС анализ',
         values: [
             {ruName: 'По выручке', engName: 'byRevenue', units: '₽', isSortable: true},
@@ -91,7 +103,7 @@ export const tableConfig = [
         tableName: 'Скорость',
         values: [
             {ruName: 'Заказов', engName: 'orderCountDay', units: 'шт/день', isSortable: false},
-            {ruName: 'Продаж', engName: 'saleCountDay', units: '₽/день', isSortable: false},
+            {ruName: 'Продаж', engName: 'saleCountDay', units: 'шт/день', isSortable: false},
         ]
     },
     {

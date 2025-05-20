@@ -53,7 +53,7 @@ const RowChart = ({ product, data }) => {
                 ]
             }
             setChartData({...chartNormilizedData })
-            setChartWidth(data.length * 160)
+            setChartWidth(data.length * 180)
         }
 
 

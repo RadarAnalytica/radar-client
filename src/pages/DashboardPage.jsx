@@ -37,8 +37,9 @@ import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
 import { Filters } from '../components/sharedComponents/apiServicePagesFiltersComponent'
-
 import { ScheduleProfitabilityChart, ScheduleBigChart, RevenueStorageChart, TaxTable, StructureRevenue } from '../components/dashboard';
+
+import { mockGetDashBoard, mockGetChartDetailData } from '../service/mockServiceFunctions';
 
 const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,15 +87,19 @@ const DashboardPage = () => {
     }
   }, [activeBrand, selectedRange]);
 
-
   useEffect(() => {
     const updateChartDetailData = async () => {
       setIsDetailChartDataLoading(true)
-      const data = await ServiceFunctions.getChartDetailData(
-        authToken,
-        selectedRangeDetail,
-        activeBrand.id,
-      );
+      let data = null;
+      if (user.subscription_status === null) {;
+        data = await mockGetChartDetailData(selectedRangeDetail);
+      } else {
+        data = await ServiceFunctions.getChartDetailData(
+          authToken,
+          selectedRangeDetail,
+          activeBrand.id,
+        );
+      }
       const counts = Array(24).fill(0);
       const averages = Array(24).fill(0);
 
@@ -304,12 +309,17 @@ const DashboardPage = () => {
 
       if (activeBrand !== 'null' && activeBrand !== 'undefined') {
 
+        // const data = await ServiceFunctions.getDashBoard(
+        //   authToken,
+        //   selectedRange,
+        //   activeBrand
+        // );
 
-        const data = await ServiceFunctions.getDashBoard(
-          authToken,
+        const data = await mockGetDashBoard(
           selectedRange,
           activeBrand
         );
+
         setDataDashboard(data);
 
         if (data?.salesAndProfit) {

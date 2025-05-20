@@ -11,7 +11,7 @@ import ResultBlockDesktop from '../components/unitCalculatorPageComponents/Resul
 import { unitCalcResultFunction, logisticsWithBuyoutPercentagePriceCalcFunc, encodeUnicodeToBase64, decodeBase64ToUnicode } from '../components/unitCalculatorPageComponents/UnitCalcUtils';
 import { tempWhouseData } from '../components/unitCalculatorPageComponents/tempWarehouseData';
 import { RETURN_PRICE, FBS_DEADLINE, FBS_DEADLIE_RATE } from '../components/unitCalculatorPageComponents/constatnts';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Header from '../components/sharedComponents/header/header';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 

@@ -4,7 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
 import { URL } from './service/config';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
 
@@ -144,25 +144,40 @@ export const ProtectedRoute = ({
     return (window.location.replace(`${URL}${authRedirect}`))
   }
 
-   // ---------2. Test period protection ------//
-   if (testPeriodProtected && user && user.subscription_status === null) {
-    switch(testPeriodGuardType) {
-      case 'redirect': {
-        return (<Navigate to={testPeriodRedirect} />)
-      }
-      case 'fallback': {
-        return (
-          <Suspense fallback={<LoaderPage />}>
+  // ---------2. Test period protection ------//
+  if (testPeriodProtected && user && user.subscription_status === null) {
+    
+    // ---------2.1 Mock data protection ------//
+    const mockPages = ['Сводка продаж', 'ABC-анализ', 'География заказов и продаж', 'Аналитика по товарам']
+    if (user && user.subscription_status === null && mockPages.includes(routeRuName)) {
+      return ( 
+        <Suspense fallback={<LoaderPage />}>
+          <Helmet>
+            <title>Radar Analityca</title>
+            <meta name="description" content={routeRuName} />
+          </Helmet>
+          { children }
+        </Suspense>
+      )
+    }
+    
+     switch(testPeriodGuardType) {
+       case 'redirect': {
+         return (<Navigate to={testPeriodRedirect} />)
+        }
+        case 'fallback': {
+          return (
+            <Suspense fallback={<LoaderPage />}>
             {testPeriodFallback({title: routeRuName, pathname: pathname.substring(1)})}
           </Suspense>
         )
       }
     }
-    
+
     return (<Navigate to={testPeriodRedirect} replace />)
   
-}
-
+  }
+  
   // ---------3. Subscription expiration protection (checking subscription) -------//
   if (expireProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'expired') {
     switch(expireGuardType) {
@@ -182,7 +197,7 @@ export const ProtectedRoute = ({
 
     // ---------4. Onboarding protection (user should be onboarded) ------//
     if (onboardProtected && user && user.subscription_status && user.subscription_status.toLowerCase() === 'smart' && !user.is_onboarded) {
-      switch(onboardGuardType) {
+    switch(onboardGuardType) {
         case 'redirect': {
           return (<Navigate to={onboardRedirect} />)
         }
@@ -206,7 +221,7 @@ export const ProtectedRoute = ({
 
   // ----------5. User role protection ------------//
   if (userRoleProtected && user && role && user.role !== role) {
-      switch(userRoleGuardType) {
+    switch(userRoleGuardType) {
         case 'redirect': {
           return (<Navigate to={userRoleRedirect} />)
         }

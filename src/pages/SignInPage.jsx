@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import SignInForm from '../containers/SignInForm';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../service/AuthContext';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const SignInPage = () => {
   const { user } = useContext(AuthContext);

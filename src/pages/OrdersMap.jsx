@@ -24,7 +24,9 @@ import { Filters } from '../components/sharedComponents/apiServicePagesFiltersCo
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
+import { mockGetGeographyData } from '../service/mockServiceFunctions'
 import DataCollectWarningBlock from '../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const OrdersMap = () => {
   const location = useLocation();
@@ -61,7 +63,12 @@ const OrdersMap = () => {
   const updateGeoData = async () => {
     setLoading(true)
     if (activeBrand && selectedRange && authToken) {
-      const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
+      let data = null;
+      if (user.subscription_status === null) {
+        data = await mockGetGeographyData(selectedRange);
+      } else {
+        data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
+      }
       setGeoData(data);
     }
     setLoading(false)
@@ -115,6 +122,7 @@ const OrdersMap = () => {
     const timeToTarget = targetTime.getTime() - Date.now();
 
     const intervalId = setTimeout(() => {
+      
       dispatch(fetchShops(authToken));
       const updateGeoData = async () => {
         const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand);
@@ -699,12 +707,16 @@ const OrdersMap = () => {
             </div>
           </div>
           {/* !header */}
+
+          {/* DEMO BLOCK */}
+          { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+          {/* !DEMO BLOCK */}
+
           <div style={{ width: '100%' }} className="map-container dash-container container p-3">
             <Filters
               setLoading={setLoading}
             />
           </div>
-
 
           {activeBrand && activeBrand.is_primary_collect && !loading && (
             <div className='map-container dash-container container p-3'>

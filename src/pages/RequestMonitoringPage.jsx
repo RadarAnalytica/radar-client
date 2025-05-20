@@ -140,6 +140,7 @@ const RequestMonitoringPage = () => {
                             className='search-input'
                             value={searchInputQuery}
                             onChange={handleSearchQuery}
+                            onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch() }}}
                             style={{ marginLeft: '20px' }}
                         />
                         <div style={{ marginLeft: '10px' }}>
@@ -160,7 +161,7 @@ const RequestMonitoringPage = () => {
 
                 <div>
                     <Modal show={showModal} onHide={handleCloseModal}>
-                        <Modal.Header closeButton>
+                        <Modal.Header closeButton style={{ border: 'none'}}>
                             <div>
                                 <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
                                     <img src={warningIcon} alt='' style={{ height: '3vh' }} />
@@ -186,6 +187,7 @@ const RequestMonitoringPage = () => {
                                 className='search-input'
                                 value={searchInputQuery}
                                 onChange={handleSearchQuery}
+                                onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch() }}}
                                 style={{ marginLeft: '20px' }}
                             />
                             <div style={{ marginLeft: '10px' }}>
@@ -211,6 +213,7 @@ const RequestMonitoringPage = () => {
                                 className='search-input'
                                 value={searchInputQuery}
                                 onChange={handleSearchQuery}
+                                onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch() }}}
                                 style={{ marginLeft: '20px' }}
                             />
                             <div style={{ marginLeft: '10px' }}>

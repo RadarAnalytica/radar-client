@@ -24,10 +24,13 @@ import CostsBlock from '../../../../components/dashboardPageComponents/blocks/co
 import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
 import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
+import TurnoverBlock from '../../../../components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock'
+import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
+import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
 const _DashboardPage = () => {
-    
-    const { authToken } = useContext(AuthContext)
+
+    const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [dataDashBoard, setDataDashboard] = useState();
@@ -37,10 +40,15 @@ const _DashboardPage = () => {
     const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
         setLoading(true);
         try {
-
             if (activeBrand !== null && activeBrand !== undefined) {
-
-
+                // CHECK FOR MOCKDATA
+                if (user.subscription_status === null) {
+                    ;
+                    const data = await mockGetDashBoard(selectedRange, activeBrand);
+                    setDataDashboard(data);
+                    return
+                }
+               
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
                     selectedRange,
@@ -102,7 +110,9 @@ const _DashboardPage = () => {
                 }
                 {/* !SELF-COST WARNING */}
 
-
+                {/* DEMO BLOCK */}
+                {user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                {/*  */}
 
                 {/* FILTERS */}
                 <div className={styles.page__controlsWrapper}>
@@ -156,6 +166,13 @@ const _DashboardPage = () => {
                             <FinanceBlock
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}
+                            />
+                            <TurnoverBlock
+                                loading={loading}
+                                turnover={dataDashBoard?.turnover}
+                                selectedRange={selectedRange}
+                                activeBrand={activeBrand}
+                                authToken={authToken}
                             />
                             <MarginChartBlock
                                 loading={loading}

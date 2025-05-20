@@ -382,7 +382,8 @@ const SalesTable = ({ tableData }) => {
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor} ${styles.marginProfitCell}`}
-              style={{ width: getMinWidth(calculateMaxCellWidths.marginProfitCell), wordBreak: 'break-all' }}
+              //style={{ width: getMinWidth(calculateMaxCellWidths.marginProfitCell), wordBreak: 'break-all' }}
+              style={{ width: getMinWidth(calculateMaxCellWidths.marginProfitCell) }}
             >
               Маржинальность по прибыли
             </div>
@@ -397,7 +398,7 @@ const SalesTable = ({ tableData }) => {
       </div>
       {!tableData || Object.keys(tableData).length === 0 ? (
         <div className={styles.loaderContainer}>
-          <div className='loader'></div>
+          Ничего не найдено
         </div>
       ) : (
         <div style={{ width: 'fit-content' }}>{tableData && renderYearData()}</div>

@@ -4,17 +4,17 @@ import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AuthContext from '../../../../service/AuthContext';
 import { fileDownload } from '../../../../service/utils';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 
 export const Filters = ({
-  setLoading, shopSelect = true, timeSelect = true
+  setLoading, shopSelect = true, timeSelect = true, skuFrequency = false
 }) => {
 
   // ------ база ------//
-  const { authToken } = useContext(AuthContext);
+  const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
   const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
   const shops = useAppSelector((state) => state.shopsSlice.shops);
@@ -35,27 +35,31 @@ export const Filters = ({
   }
   //- -----------------------------------------//
 
-  // ------- Фетч массива магазинов -------------//
-  const fetchShopData = async () => {
-    setLoading(true)
-    try {
-      dispatch(fetchShops(authToken));
-    } catch (error) {
-      console.error("Error fetching initial data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  //---------------------------------------------//
-
-
-  // 0. Получаем данные магазинов
-  useEffect(() => {
-    if (!shops || shops.length === 0) {
-      fetchShopData();
-    }
-  }, [shops]);
-  // ------
+    // ------- Фетч массива магазинов -------------//
+    const fetchShopData = async () => {
+      setLoading(true)
+      try {
+        if (user.subscription_status === null) {
+          dispatch(fetchShops('mockData'));
+        } else {
+          dispatch(fetchShops(authToken));
+        }
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    //---------------------------------------------//
+  
+  
+    // 0. Получаем данные магазинов
+    useEffect(() => {
+      if (!shops || shops.length === 0) {
+        fetchShopData();
+      }
+    }, [shops]);
+    // ------
 
 
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
@@ -126,6 +130,9 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
+        {skuFrequency &&
+          <FrequencyModeSelect />
+        }
         {shops && activeBrand && timeSelect &&
           <div className={styles.filters__inputWrapper}>
             <TimeSelect />

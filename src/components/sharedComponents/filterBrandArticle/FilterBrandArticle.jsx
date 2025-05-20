@@ -1,23 +1,19 @@
-import {
-	TimeSelect,
-	PlainSelect,
-} from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
-import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
-import styles from './ReportWeekFilter.module.css';
+import { TimeSelect, PlainSelect, } from '../../../components/sharedComponents/apiServicePagesFiltersComponent/features';
+import styles from './FilterBrandArticle.module.css';
 import { useState, useEffect, useContext } from 'react';
-import AuthContext from '../../../../service/AuthContext';
-import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { fetchShops } from '../../../../redux/shops/shopsActions';
-import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import AuthContext from '../../../service/AuthContext';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { fetchShops } from '../../../redux/shops/shopsActions';
+import { actions as filterActions } from '../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 
-function ReportWeekFilter({
+function FilterBrandArticle({
 	setLoading,
 	shopSelect = true,
 }) {
 
-	const [brandsOptions, setBrandsOptions] = useState([]);
-	const [articlesOptions, setArticlesOptions] = useState([]);
-	const [groupsOptions, setGroupsOptions] = useState([]);
+	const [brandsOptions, setBrandsOptions] = useState(null);
+	const [articlesOptions, setArticlesOptions] = useState(null);
+	const [groupsOptions, setGroupsOptions] = useState(null);
 	
 	// filters/shared дубликат
 	// ------ база ------//
@@ -150,33 +146,27 @@ function ReportWeekFilter({
 
 	//--------------------------------------------------------------------------------//
 
-	function updateReportData(){
-
-	}
-
-	useEffect(() => {
-		
-	}, [])
-
   function brandsHandler(){
     console.log('brandHandler')
   }
 
   function groupsHandler(){
-    console.log('brandHandler')
+    console.log('groupsHandler')
   }
 
   function articlesHandler(){
-    console.log('brandHandler')
+    console.log('articlesHandler')
   }
 
 	return (
 		<div className={styles.container}>
+			{/* закоменитил, пока нет поддержки периодов на беке для страницы Отчет по неделям
 			{shops && activeBrand && (
 				<div className={styles.item}>
 					<TimeSelect />
 				</div>
 			)}
+			*/}
 			{shops && activeBrand && shopSelect && (
 				<div className={styles.item}>
 					<PlainSelect
@@ -189,35 +179,35 @@ function ReportWeekFilter({
 						/>
 				</div>
 			)}
-					<div className={styles.item}>
-						<PlainSelect
-							id="brands"
-							label={'Бренды'}
-							optionsData={brandsOptions}
-              handler={brandsHandler}
-							notFoundContent={<div>Ничего не найдено</div>}
-							/>
-					</div>
-					<div className={styles.item}>
-						<PlainSelect
-							id="groups"
-							label={'Группы'}
-							optionsData={groupsOptions}
-              handler={groupsHandler}
-							notFoundContent={<div>Ничего не найдено</div>}
-							/>
-					</div>
-					<div className={styles.item}>
-						<PlainSelect
-							id="articles"
-							label={'Артикулы'}
-							optionsData={articlesOptions}
-              handler={articlesHandler}
-							notFoundContent={<div>Ничего не найдено</div>}
+			{brandsOptions && <div className={styles.item}>
+					<PlainSelect
+						id="brands"
+						label={'Бренды'}
+						optionsData={brandsOptions}
+						handler={brandsHandler}
+						notFoundContent={<div>Ничего не найдено</div>}
 						/>
-					</div>
+				</div>}
+			{groupsOptions && <div className={styles.item}>
+				<PlainSelect
+					id="groups"
+					label={'Группы'}
+					optionsData={groupsOptions}
+					handler={groupsHandler}
+					notFoundContent={<div>Ничего не найдено</div>}
+					/>
+			</div>}
+			{articlesOptions && <div className={styles.item}>
+				<PlainSelect
+					id="articles"
+					label={'Артикулы'}
+					optionsData={articlesOptions}
+					handler={articlesHandler}
+					notFoundContent={<div>Ничего не найдено</div>}
+				/>
+			</div>}
 		</div>
 	);
 }
 
-export default ReportWeekFilter;
+export default FilterBrandArticle;

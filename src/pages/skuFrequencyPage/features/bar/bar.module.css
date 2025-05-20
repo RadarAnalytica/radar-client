@@ -1,0 +1,130 @@
+.bar {
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+}
+
+.bar_small {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.bar_medium {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.bar_large {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 16px;
+}
+
+.bar__header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+}
+
+.bar__link {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    text-decoration: none;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #5329FF
+}
+
+.bar__heading {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+}
+
+.bar__dataWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.bar__dataLayout {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.bar__rateWrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.bar__rate {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.bar__title {
+    margin: 0;
+    padding: 0;
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+}
+
+.bar__title_small {
+    font-size: 16px;
+}
+
+.bar__data {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.bar__data_small {
+    font-size: 24px;
+}
+
+.bar__dataContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+}

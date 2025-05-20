@@ -206,6 +206,8 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                         borderRadius: "5px",
                         backgroundColor: "#D3D3D3",
                         marginRight: "8px",
+                        flexGrow: 0,
+                        flexShrink: 0
                       }}
                     >
                       {item.photo ? (

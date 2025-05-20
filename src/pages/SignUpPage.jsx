@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import SignUpForm from '../containers/SignUpForm'
 import AuthContext from '../service/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 const SignUpPage = () => {
 
