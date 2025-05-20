@@ -12,7 +12,7 @@ export const useCalculateMaxCellWidths = (tableData) => {
       avgPriceCell: 0,
       sppCell: 0,
       buyoutCell: 0,
-      costCell: 0,
+      costCell: 150,
       costPerUnitCell: 0,
       deliveryCountCell: 0,
       commissionCell: 0,
@@ -40,7 +40,7 @@ export const useCalculateMaxCellWidths = (tableData) => {
       payToRsCell: 0,
       pureProfitCell: 0,
       pureProfitPerUnitCell: 0,
-      marginProfitCell: 0,
+      marginProfitCell: 150,
       roiCell: 0,
     };
   
