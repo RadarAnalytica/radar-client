@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './turnoverBlock.module.css'
 import { formatPrice } from '../../../../service/utils';
 import { Tooltip, ConfigProvider, Modal } from 'antd';
+import { ServiceFunctions } from '../../../../service/serviceFunctions';
 
 export const addSkuTableConfig = {
     tableName: null,
     values: [
-        { ruName: 'Товар', engName: 'article', isSortable: true, hasSelect: true, hasPhoto: true, photoFieldName: 'photo' },
-        { ruName: 'Артикул', engName: 'sku', isSortable: false, hasSelect: false },
-        { ruName: 'Остаток', engName: 'stock', units: 'шт', isSortable: true, hasSelect: false },
-        { ruName: 'Продажи за период', engName: 'shop', units: 'шт', isSortable: true, hasSelect: false },
+        { ruName: 'Товар', engName: 'title', isSortable: true, hasSelect: true, hasPhoto: true, photoFieldName: 'photo' },
+        { ruName: 'Артикул', engName: 'vendor_code', isSortable: false, hasSelect: false },
+        { ruName: 'Остаток', engName: 'stocks', units: 'шт', isSortable: true, hasSelect: false },
+        { ruName: 'Продажи за период', engName: 'sales_count', units: 'шт', isSortable: true, hasSelect: false },
         { ruName: 'Обрачиваемость', engName: 'turnover', isSortable: false, hasSelect: false },
     ]
 }
@@ -17,6 +18,34 @@ export const addSkuTableConfig = {
 const initSortState = {
     sortedValue: 'saleSum',
     sortType: 'DESC',
+}
+
+const getTurnoverBarParams = (turnoverValue) => {
+    let params = {
+        title: 'Хорошо',
+        color: '#DBF7E9'
+    }
+
+    if (turnoverValue <= 30) { return params }
+    if (turnoverValue > 30 && turnoverValue <= 60) {
+        params = {
+            title: 'Умеренно',
+            color: '#F2F2F2'
+        }
+    }
+    if (turnoverValue > 60 && turnoverValue <= 90) {
+        params = {
+            title: 'Слабо',
+            color: '#FCEFCC'
+        }
+    }
+    if (turnoverValue > 90) {
+        params = {
+            title: 'Плохо',
+            color: '#FEDACC'
+        }
+    }
+    return params;
 }
 
 export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
@@ -45,10 +74,12 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
 }
 
 
-const TurnoverBlock = ({ loading }) => {
+const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToken }) => {
+
     const [tableData, setTableData] = useState([])
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
+    const [isTableDataLoading, setIsTableDataLoading] = useState(false)
 
     // хэндлер сортировки
     const sortButtonClickHandler = (e, value) => {
@@ -69,6 +100,39 @@ const TurnoverBlock = ({ loading }) => {
         })
         setTableData([...sortTableDataFunc(id, value, stockAnalysisFilteredData)])
     }
+
+    const getTurnoverTableData = async (selectedRange, activeBrand, authToken) => {
+        setIsTableDataLoading(true);
+        try {
+            if (activeBrand !== null && activeBrand !== undefined) {
+                // CHECK FOR MOCKDATA
+                // if (user.subscription_status === null) {
+                //     ;
+                //     const data = await mockGetDashBoard(selectedRange, activeBrand);
+                //     setDataDashboard(data);
+                //     return
+                // }
+
+                const data = await ServiceFunctions.getDashboardTurnoverData(
+                    authToken,
+                    selectedRange,
+                    activeBrand
+                );
+                setTableData(data);
+            }
+
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setIsTableDataLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isModalVisible && selectedRange && activeBrand && authToken) {
+            getTurnoverTableData(selectedRange, activeBrand.id, authToken)
+        }
+    }, [isModalVisible, selectedRange, activeBrand])
 
 
     if (loading) {
@@ -95,7 +159,7 @@ const TurnoverBlock = ({ loading }) => {
                     <Tooltip
                         arrow={false}
                         color='white'
-                        title={'text'}
+                        title={'Показатель, который показывает, за сколько дней продаются запасы. Он помогает оценить эффективность управления запасами'}
                     >
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }}>
                             <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
@@ -106,7 +170,7 @@ const TurnoverBlock = ({ loading }) => {
             </div>
 
             <div className={styles.block__body}>
-                <p className={styles.block__mainData}>54 дня</p>
+                {turnover && <p className={styles.block__mainData}>{turnover} дн.</p>}
                 <button className={styles.block__button} onClick={() => setIsModalVisible(true)}>
                     <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle opacity="0.2" cx="12.5" cy="12" r="12" fill="#9A81FF" />
@@ -131,7 +195,7 @@ const TurnoverBlock = ({ loading }) => {
                     <div className={styles.modal__header}>
                         <p className={styles.modal__title}>Оборачиваемость товара</p>
                     </div>
-                    {tableData &&
+                    {tableData && !isTableDataLoading &&
                         <div className={styles.modal__tableWrapper}>
 
                             {/* table */}
@@ -178,11 +242,9 @@ const TurnoverBlock = ({ loading }) => {
                                 {/* Тело таблицы */}
                                 <div className={styles.table__body}>
                                     {/* Мапим данные о товарах */}
-                                    {tableData && tableData.length > 0 && paginationState && shops && tableData.map((product, id) => {
-                                        const minRange = (paginationState.current - 1) * paginationState.pageSize;
-                                        const maxRange = paginationState.current * paginationState.pageSize;
+                                    {tableData && tableData.length > 0 && tableData.map((product, id) => {
 
-                                        return id >= minRange && id < maxRange && (
+                                        return (
                                             <div
                                                 className={styles.table__row}
                                                 key={id}
@@ -194,17 +256,16 @@ const TurnoverBlock = ({ loading }) => {
                                                     if (v.engName === 'sku') {
                                                         return (
                                                             <div className={styles.table__rowItem} key={id}>
-                                                                <img src={wb_icon} width={20} height={20} alt='' />
+                                                                {/* <img src={wb_icon} width={20} height={20} alt='' /> */}
                                                                 {product[v.engName]}
                                                             </div>
                                                         )
                                                     }
-
-                                                    if (v.engName === 'shop') {
-                                                        const currentShopName = shops.find(_ => _.id === product[v.engName])?.brand_name
+                                                    if (v.engName === 'turnover') {
+                                                        const params = getTurnoverBarParams(product[v.engName]);
                                                         return (
                                                             <div className={styles.table__rowItem} key={id}>
-                                                                {currentShopName ? currentShopName : product[v.engName]}
+                                                                <div className={styles.table__bar} style={{ background: params.color }}>{params.title}</div>
                                                             </div>
                                                         )
                                                     }
@@ -219,7 +280,7 @@ const TurnoverBlock = ({ loading }) => {
                                                                     <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                                 </>
                                                                 :
-                                                                <>{product[v.engName]}</>
+                                                                <>{v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}</>
                                                             }
                                                         </div>
                                                     )
@@ -242,6 +303,14 @@ const TurnoverBlock = ({ loading }) => {
 
                         </div>}
 
+                    {isTableDataLoading &&
+                        <div className={styles.table}>
+                            <div className={styles.table__loaderWrapper}>
+                                <span className='loader'></span>
+                            </div>
+                        </div>
+                    }
+
                     <div className={styles.modal__annotationWrapper}>
                         {'Логика подсчета'}
                         <ConfigProvider
@@ -254,7 +323,7 @@ const TurnoverBlock = ({ loading }) => {
                             <Tooltip
                                 arrow={false}
                                 color='white'
-                                title={'text'}
+                                title={'Оборачиваемость товара показывает, на сколько дней хватит текущего остатка товара при средних темпах продаж. Логика подсчета: Определяется среднее количество продаж в день (общие продажи за период делятся на количество дней). Текущий остаток товара делится на это среднее значение.'}
                             >
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }}>
                                     <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />

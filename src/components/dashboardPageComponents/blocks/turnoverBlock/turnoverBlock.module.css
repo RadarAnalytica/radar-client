@@ -292,6 +292,22 @@
     object-position: center center;
 }
 
+.table__bar {
+    padding: 4px 8px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table__loaderWrapper {
+    width: 100%;
+    aspect-ratio: 3 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 
 /* Sort */
