@@ -81,7 +81,8 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
             const colors = dataset.backgroundColor;
 
             // Определение респонсивного размера шрифта
-            const fontSize = 10; // Можете также сделать шрифт респонсивным
+            //const fontSize = 16; // Можете также сделать шрифт респонсивным
+            const fontSize = width / 20 > 10 ? width / 20 : 10; // Можете также сделать шрифт респонсивным
 
             ctx.restore();
             ctx.font = `${fontSize}px Arial`;
@@ -99,8 +100,9 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
                 const labelX = Math.round((width - ctx.measureText(labelText).width) / 2) + 15;
                 const valueX = Math.round((width - ctx.measureText(valueText).width) / 2) + 15;
 
-                const labelY = startY + index * 30; // уменьшено с 50 до 30
-                const valueY = labelY + 15;
+                //const labelY = startY + index * 30; // уменьшено с 50 до 30
+                const labelY = startY + index * fontSize * 2; // уменьшено с 50 до 30
+                const valueY = labelY + fontSize;
 
                 const circleX = labelX - 10;
                 const circleY = labelY;
