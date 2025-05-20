@@ -300,6 +300,14 @@
     align-items: center;
 }
 
+.table__loaderWrapper {
+    width: 100%;
+    aspect-ratio: 3 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 
 /* Sort */

@@ -159,7 +159,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                     <Tooltip
                         arrow={false}
                         color='white'
-                        title={'text'}
+                        title={'Показатель, который показывает, за сколько дней продаются запасы. Он помогает оценить эффективность управления запасами'}
                     >
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }}>
                             <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
@@ -304,8 +304,8 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                         </div>}
 
                     {isTableDataLoading &&
-                        <div className={styles.block}>
-                            <div className={styles.block__loaderWrapper}>
+                        <div className={styles.table}>
+                            <div className={styles.table__loaderWrapper}>
                                 <span className='loader'></span>
                             </div>
                         </div>
@@ -323,7 +323,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                             <Tooltip
                                 arrow={false}
                                 color='white'
-                                title={'text'}
+                                title={'Оборачиваемость товара показывает, на сколько дней хватит текущего остатка товара при средних темпах продаж. Логика подсчета: Определяется среднее количество продаж в день (общие продажи за период делятся на количество дней). Текущий остаток товара делится на это среднее значение.'}
                             >
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }}>
                                     <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
