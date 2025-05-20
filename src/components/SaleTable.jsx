@@ -382,7 +382,8 @@ const SalesTable = ({ tableData }) => {
             </div>
             <div
               className={`${styles.defectCompnesaitionCell} ${styles.greyColor} ${styles.marginProfitCell}`}
-              style={{ width: getMinWidth(calculateMaxCellWidths.marginProfitCell), wordBreak: 'break-all' }}
+              //style={{ width: getMinWidth(calculateMaxCellWidths.marginProfitCell), wordBreak: 'break-all' }}
+              style={{ width: getMinWidth(calculateMaxCellWidths.marginProfitCell) }}
             >
               Маржинальность по прибыли
             </div>
