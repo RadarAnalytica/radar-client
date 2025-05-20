@@ -69,6 +69,8 @@ function App() {
   const { userAgent } = navigator;
   const deviceRegexp = /android|iphone|kindle|ipad/i
 
+
+  
   return (
     <AuthProvider>
       <ProductProvider>
