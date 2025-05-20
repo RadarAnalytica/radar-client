@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './searchWidget.module.css'
 import { Input, ConfigProvider, Button } from 'antd';
 
@@ -7,35 +7,41 @@ const getFilteredData = (query, data) => {
 
     if (data && query) {
         filteredData = data.filter((item) =>
-            item?.sku?.toLowerCase().includes(query.toLowerCase()) ||
-            item?.vendorСode?.toLowerCase().includes(query.toLowerCase()) ||
-            item?.productName?.toLowerCase().includes(query.toLowerCase())
+            // item?.sku?.toLowerCase().includes(query.toLowerCase()) ||
+            item?.vendor_code?.toLowerCase().includes(query.toLowerCase())
+            // item?.productName?.toLowerCase().includes(query.toLowerCase())
         );
     }
 
     return filteredData;
 }
 
-const SearchWidget = ({ tableData, setTableData }) => {
-
+const SearchWidget = ({ tableData, setFilteredTableData }) => {
     const [searchInputValue, setSearchInputValue] = useState('')
+    console.log('render')
 
     const inputKeydownHandler = (e) => {
         if (e && e.key !== 'Enter') return
-        setTableData(getFilteredData(searchInputValue.trim(), tableData))
+        setFilteredTableData(getFilteredData(searchInputValue.trim(), tableData))
     }
     const searchButtonClickHandler = () => {
-        setTableData(getFilteredData(searchInputValue.trim(), tableData))
+        setFilteredTableData(getFilteredData(searchInputValue.trim(), tableData))
     }
     const inputChangeHandler = (e) => {
         if (e.target.value === '') {
-            setTableData(tableData)
+            setFilteredTableData([...tableData])
         }
         const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
         if (regex.test(e.target.value)) {
             setSearchInputValue(e.target.value)
         }
     }
+
+    useEffect(() => {
+        if (searchInputValue) {
+            setFilteredTableData(getFilteredData(searchInputValue.trim(), tableData))
+        }
+    }, [tableData])
 
     return (
         <div className={styles.widget}>

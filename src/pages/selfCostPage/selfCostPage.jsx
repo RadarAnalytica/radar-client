@@ -23,6 +23,7 @@ const SelfCostPage = () => {
     const [dataStatus, setDataStatus] = useState(initDataStatus)
     const [loading, setLoading] = useState(false);
     const [tableData, setTableData] = useState() // данные для рендера таблицы
+    const [filteredTableData, setFilteredTableData] = useState() // данные для рендера таблицы
     const { authToken } = useContext(AuthContext)
     const { activeBrand } = useAppSelector(store => store.filters)
 
@@ -47,6 +48,7 @@ const SelfCostPage = () => {
         const { items } = parsedData.data
         setDataStatus({ ...initDataStatus, isLoading: false })
         setTableData([...items])
+        setFilteredTableData([...items])
     }
 
     //задаем начальную дату
@@ -92,14 +94,14 @@ const SelfCostPage = () => {
                 <div className={styles.page__searchWrapper}>
                     <SearchWidget
                         tableData={tableData}
-                        setTableData={setTableData}
+                        setFilteredTableData={setFilteredTableData}
                     />
                 </div>
                 <SelfCostTableWidget
                     setIsSuccess={setIsSuccess}
                     dataStatus={dataStatus}
                     setDataStatus={setDataStatus}
-                    tableData={tableData}
+                    tableData={filteredTableData}
                     getTableData={getTableData}
                     authToken={authToken}
                     activeBrand={activeBrand}
