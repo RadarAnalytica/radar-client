@@ -126,12 +126,13 @@ export default function ReportWeek() {
 		</ConfigProvider>
 	);
 
-	const handleDownload = async () => {
-		const fileBlob = await ServiceFunctions.getDownloadreportWeek(
-			authToken
-		);
-		fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
-	};
+	// закомментил, пока нет бека
+	// const handleDownload = async () => {
+	// 	const fileBlob = await ServiceFunctions.getDownloadreportWeek(
+	// 		authToken
+	// 	);
+	// 	fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+	// };
 
 	return (
 		<main className={styles.page}>
@@ -203,6 +204,8 @@ export default function ReportWeek() {
 								</Button>
 							</Popover>
 						</ConfigProvider>
+						{/*
+						// закомментил, пока нет бека
 						<ConfigProvider
 							theme={{
 								token: {
@@ -220,6 +223,7 @@ export default function ReportWeek() {
 								<img src={downloadIcon} /> Скачать Excel
 							</Button>
 						</ConfigProvider>
+						*/}
 					</div>
 				</div>
 				<div className={styles.container}>
