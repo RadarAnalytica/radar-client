@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import FilterBrandArticle from '../../components/sharedComponents/filterBrandArticle/FilterBrandArticle'
+import FilterReportWeek from './components/filterBrandArticle/FilterReportWeek'
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
 
@@ -25,9 +25,12 @@ export default function ReportWeek() {
 	const [loading, setLoading] = useState(true);
 	const [isPopoverOpen, setPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
-	const [data, setData] = useState();
+	const [data, setData] = useState(null);
+	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 	const [primaryCollect, setPrimaryCollect] = useState(null)
+	const [period, setPeriod] = useState('all')
+	const [periodOptions, setPeriodOptions] = useState(null)
 
 	const updateDataReportWeek = async () => {
 		setLoading(true)
@@ -39,17 +42,17 @@ export default function ReportWeek() {
 					activeBrand
 				);
 				const weeks = response.data[0]['weeks'];
-				const rows = weeks.map((el) => {
-					let row = {
-						key: el.week,
-						week_label: el.week_label
-					}
-					for (const key in el.data){
-						row[key] = el.data[key]
-					}
-					return row
-				})
-				setData(rows)
+
+				const options = weeks.map((el) => ({
+						id: el.week,
+						brand_name: el.week_label
+				}))
+				options.unshift({id: 'all', brand_name: 'Весь период'});
+				setPeriodOptions(options)
+
+				setData(weeks);
+				dataToTableData(weeks);
+				// setData(rows)
 			}
 		} catch (e) {
 			console.error(e);
@@ -57,6 +60,69 @@ export default function ReportWeek() {
 			setLoading(false);
 		}
 	};
+
+	const dataToTableData = (weeks) => {
+
+		if (!weeks || weeks?.length === 0){
+			setTableRows([]);
+			return
+		}
+
+		const summary = {
+			key: 'summary',
+			week_label: 'Итого за период'
+		};
+
+		const summarySchema = {
+			avg_price: (summary) => summary.avg_price / summary.total_sales,
+			realization: (summary) => summary.sales / summary.total_sales,
+			cost: (summary) => summary.cost / summary.total_sales, //Себестоимость продаж
+			avg_logistics: (summary) => summary.logistics / summary.total_sales,
+			avg_purchase_pct: (summary) => summary.avg_purchase_pct / summary.total_sales, //Сред. процент выкупа
+			avg_profit_per_piece: (summary) => summary.profit / summary.total_sales,
+			roi: (summary) => (summary.profit/summary.total_expenses) * 100,
+			margin: (summary) => summary.sales - summary.cost,
+			drr: (summary) => summary.total_ad / summary.sales,
+		}
+
+		let rows = period !== 'all' ? weeks.filter((el) => el.week === period) : weeks;
+
+		rows = rows.map((el) => {
+			let row = {
+				key: el.week,
+				week_label: el.week_label
+			}
+			for (const key in el.data){
+				row[key] = el.data[key]
+				if (!summary[key]){
+					summary[key] = el.data[key]
+				} else {
+					summary[key] += el.data[key]
+				}
+			}
+			return row
+		})
+
+		for (const key in summary){
+			if (key in summarySchema){
+				summary[key] = summarySchema[key](summary)
+			}
+		}
+
+		// summary = summary.map((el) => {
+		// 	const map = {
+		// 		'avg_price': () => {}
+		// 	}
+		// 	return res
+		// })
+		
+		rows.unshift(summary)
+		setTableRows(rows);
+	}
+
+	useEffect(() => {
+		dataToTableData(data)
+	}, [period, data])
 
 	useEffect(() => {
 			if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
@@ -149,7 +215,7 @@ export default function ReportWeek() {
 				</div>
 				<div className={styles.controls}>
 					<div className={styles.filter}>
-						<FilterBrandArticle setLoading={setLoading} setData={setData} />
+						<FilterReportWeek period={period} periodOptions={periodOptions} setPeriod={setPeriod} setLoading={setLoading} setData={setData} />
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider
@@ -166,9 +232,9 @@ export default function ReportWeek() {
 									},
 									Button: {
 										primaryColor: '#5329FF',
-										paddingBlockLG: 10,
-										paddingInlineLG: 8,
+										paddingInlineLG: 9.5,
 										defaultShadow: false,
+										controlHeightLG: 45,
 									},
 								},
 							}}
@@ -227,7 +293,7 @@ export default function ReportWeek() {
 					</div>
 				</div>
 				<div className={styles.container}>
-					<ReportTable loading={loading} columns={tableColumns} data={data} rowSelection={{ type: 'checkbox' }}/>
+					<ReportTable loading={loading} columns={tableColumns} data={tableRows} />
 				</div>
 			</section>
 			{isConfigOpen && (

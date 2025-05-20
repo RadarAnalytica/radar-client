@@ -45,7 +45,9 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 								headerSortHoverBg: '#e7e1fe',
 								rowSelectedBg: '#f7f6fe',
 								rowSelectedHoverBg: '#e7e1fe',
-								colorText: '#1A1A1A'
+								colorText: '#1A1A1A',
+								lineHeight: 1.2,
+								fontWeightStrong: 500
 							},
 							Checkbox: {
 								colorBorder: '#ccc',
@@ -63,15 +65,15 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 						tableLayout="fixed"
 						rowSelection={rowSelection}
 						showSorterTooltip={false}
-						// scroll={true}
+						sticky={true}
 						expandable={{
 							// expandedRowRender: (record) => <p>{record.description}</p>,
 							expandIcon: ExpandIcon,
 							rowExpandable: (record) => !!record.description,
 							expandedRowClassName: styles.expandRow,
-
 						}}
-						scroll={{ x: 'max-content' }}
+						// scroll={{ x: 'max-content' }}
+						scroll={{ x: 'max-content', y: '100%' }}
 					></Table>
 				</ConfigProvider>
 			</div>}
@@ -137,4 +139,11 @@ function SortIcon({ sortOrder }) {
 	);
 }
 
-export {ExpandIcon, SortIcon}
+function formatNumber(num) {
+	return new Intl.NumberFormat('ru-RU', {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 2
+	}).format(num)
+}
+
+export {ExpandIcon, SortIcon, formatNumber}

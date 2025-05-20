@@ -29,6 +29,10 @@
     border-radius: 6px;
 }
 
+.tableContainer thead>tr>th {
+  border: none;
+}
+
 .tableContainer thead>tr>th:first-child {
   border-bottom-left-radius: 20px;
 }
