@@ -1,2 +1,3 @@
 import SelfCostTableWidget from "./selfCostTableWidget/selfCostTableWidget";
-export { SelfCostTableWidget }
+import SearchWidget from "./searchWidget/searchWidget";
+export { SelfCostTableWidget, SearchWidget }
