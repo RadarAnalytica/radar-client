@@ -1,7 +1,7 @@
 export const addSkuTableConfig =  {
     tableName: null,
     values: [
-        {ruName: 'Продукт', engName: 'article', hasSelect: true, hasPhoto: true, photoFieldName: 'photo'},
+        {ruName: 'Продукт', engName: 'article', hasSelect: true, hasSearch: true, hasPhoto: true, photoFieldName: 'photo'},
         {ruName: 'Артикул', engName: 'id', hasSelect: false},
         {ruName: 'Бренд', engName: 'brand', hasSelect: false},
         {ruName: 'Магазин', engName: 'shop', hasSelect: false},

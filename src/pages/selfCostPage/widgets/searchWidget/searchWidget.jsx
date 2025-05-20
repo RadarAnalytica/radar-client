@@ -18,7 +18,6 @@ const getFilteredData = (query, data) => {
 
 const SearchWidget = ({ tableData, setFilteredTableData }) => {
     const [searchInputValue, setSearchInputValue] = useState('')
-    console.log('render')
 
     const inputKeydownHandler = (e) => {
         if (e && e.key !== 'Enter') return
