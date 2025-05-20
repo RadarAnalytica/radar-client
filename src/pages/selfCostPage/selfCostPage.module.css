@@ -63,3 +63,7 @@
     top: 115px;
     background: white;
 }
+
+.page__searchWrapper {
+    width: 100%;
+}

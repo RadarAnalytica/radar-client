@@ -13,59 +13,15 @@ const initDataStatus = {
     message: ''
 }
 
-/**
- *  {
-                "product": 10559,
-                "user": 5,
-                "shop": 88,
-                "cost": 100.0,
-                "fulfillment": null,
-                "id": 462,
-                "date": "2025-02-20",
-                "vendor_code": "027 треугольник большой золото",
-                "photo": "https://basket-15.wbbasket.ru/vol2209/part220957/220957446/images/c246x328/1.webp",
-                "self_cost_change_history": []
-    },
- */
-
-const SelfCostTableWidget = ({ setIsSuccess }) => {
-
-    const [tableData, setTableData] = useState() // данные для рендера таблицы
-    const [dataStatus, setDataStatus] = useState(initDataStatus)
-    const { authToken } = useContext(AuthContext)
-    const { activeBrand } = useAppSelector(store => store.filters)
-
-    const getTableData = async (authToken, shopId) => {
-        setDataStatus({ ...initDataStatus, isLoading: true })
-        const queryString = `shop=${shopId}`
-        const res = await fetch(`${URL}/api/product/self-costs?${queryString}`, {
-            headers: {
-                'content-type': 'application/json',
-                'cache': 'no-store',
-                'authorization': 'JWT ' + authToken,
-            }
-        })
-
-        if (!res.ok) {
-            const parsedData = await res.json()
-            setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
-            return;
-        }
-
-        const parsedData = await res.json();
-        const { items } = parsedData.data
-        setDataStatus({ ...initDataStatus, isLoading: false })
-        setTableData([...items])
-    }
-
-    //задаем начальную дату
-    useEffect(() => {
-        if (activeBrand && authToken) {
-            getTableData(authToken, activeBrand.id)
-        }
-
-    }, [activeBrand])
-
+const SelfCostTableWidget = ({ 
+    setIsSuccess,
+    dataStatus,
+    tableData,
+    authToken,
+    activeBrand,
+    getTableData,
+    setDataStatus
+ }) => {
 
     if (dataStatus.isLoading) {
         return (
@@ -127,19 +83,6 @@ const SelfCostTableWidget = ({ setIsSuccess }) => {
                         }
                     </div>
                 </div>
-
-
-
-                <ErrorModal
-                    footer={null}
-                    open={dataStatus.isError}
-                    message={dataStatus.message}
-                    onOk={() => setDataStatus(initDataStatus)}
-                    onClose={() => setDataStatus(initDataStatus)}
-                    onCancel={() => setDataStatus(initDataStatus)}
-                />
-
-               
             </div>
         </div>
     )

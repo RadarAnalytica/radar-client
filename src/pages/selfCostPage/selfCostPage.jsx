@@ -1,21 +1,68 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styles from './selfCostPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
-import { SelfCostTableWidget } from './widgets'
+import { SelfCostTableWidget, SearchWidget } from './widgets'
+import AuthContext from '../../service/AuthContext'
+import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
+import { useAppSelector } from '../../redux/hooks'
+import { URL } from '../../service/config'
+
+const initDataStatus = {
+    isError: false,
+    isLoading: false,
+    message: ''
+}
 
 const SelfCostPage = () => {
 
     const [isSuccess, setIsSuccess] = useState(false);
+    const [dataStatus, setDataStatus] = useState(initDataStatus)
     const [loading, setLoading] = useState(false);
+    const [tableData, setTableData] = useState() // данные для рендера таблицы
+    const [filteredTableData, setFilteredTableData] = useState() // данные для рендера таблицы
+    const { authToken } = useContext(AuthContext)
+    const { activeBrand } = useAppSelector(store => store.filters)
+
+    const getTableData = async (authToken, shopId) => {
+        setDataStatus({ ...initDataStatus, isLoading: true })
+        const queryString = `shop=${shopId}`
+        const res = await fetch(`${URL}/api/product/self-costs?${queryString}`, {
+            headers: {
+                'content-type': 'application/json',
+                'cache': 'no-store',
+                'authorization': 'JWT ' + authToken,
+            }
+        })
+
+        if (!res.ok) {
+            const parsedData = await res.json()
+            setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+            return;
+        }
+
+        const parsedData = await res.json();
+        const { items } = parsedData.data
+        setDataStatus({ ...initDataStatus, isLoading: false })
+        setTableData([...items])
+        setFilteredTableData([...items])
+    }
+
+    //задаем начальную дату
+    useEffect(() => {
+        if (activeBrand && authToken) {
+            getTableData(authToken, activeBrand.id)
+        }
+
+    }, [activeBrand])
 
     useEffect(() => {
         let timeout;
         if (isSuccess) {
-            timeout = setTimeout(() => {setIsSuccess(false)}, 1500)
+            timeout = setTimeout(() => { setIsSuccess(false) }, 1500)
         }
     }, [isSuccess])
 
@@ -44,11 +91,24 @@ const SelfCostPage = () => {
                         target='_blank'
                     />
                 </div>
+                <div className={styles.page__searchWrapper}>
+                    <SearchWidget
+                        tableData={tableData}
+                        setFilteredTableData={setFilteredTableData}
+                    />
+                </div>
                 <SelfCostTableWidget
                     setIsSuccess={setIsSuccess}
+                    dataStatus={dataStatus}
+                    setDataStatus={setDataStatus}
+                    tableData={filteredTableData}
+                    getTableData={getTableData}
+                    authToken={authToken}
+                    activeBrand={activeBrand}
                 />
             </section>
             {/* ---------------------- */}
+
             {isSuccess && <div className={styles.page__successAlert}>
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="32" height="32" rx="6.4" fill="#00B69B" fillOpacity="0.1" />
@@ -56,6 +116,17 @@ const SelfCostPage = () => {
                 </svg>
                 Себестоимость установлена
             </div>}
+
+
+            <ErrorModal
+                footer={null}
+                open={dataStatus.isError}
+                message={dataStatus.message}
+                onOk={() => setDataStatus(initDataStatus)}
+                onClose={() => setDataStatus(initDataStatus)}
+                onCancel={() => setDataStatus(initDataStatus)}
+            />
+
         </main>
     )
 }
