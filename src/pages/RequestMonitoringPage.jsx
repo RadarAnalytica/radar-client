@@ -140,6 +140,7 @@ const RequestMonitoringPage = () => {
                             className='search-input'
                             value={searchInputQuery}
                             onChange={handleSearchQuery}
+                            onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch() }}}
                             style={{ marginLeft: '20px' }}
                         />
                         <div style={{ marginLeft: '10px' }}>
@@ -186,6 +187,7 @@ const RequestMonitoringPage = () => {
                                 className='search-input'
                                 value={searchInputQuery}
                                 onChange={handleSearchQuery}
+                                onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch() }}}
                                 style={{ marginLeft: '20px' }}
                             />
                             <div style={{ marginLeft: '10px' }}>
@@ -211,6 +213,7 @@ const RequestMonitoringPage = () => {
                                 className='search-input'
                                 value={searchInputQuery}
                                 onChange={handleSearchQuery}
+                                onKeyDown={(e) => {if (e.key && e.key === 'Enter') { handleFilterSearch() }}}
                                 style={{ marginLeft: '20px' }}
                             />
                             <div style={{ marginLeft: '10px' }}>
