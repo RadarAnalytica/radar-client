@@ -136,6 +136,9 @@
     margin: 0;
     padding: 0;
 }
+.row__title_black {
+    color: #1A1A1A;
+}
 
 .row__item_wide {
     width: 100%;

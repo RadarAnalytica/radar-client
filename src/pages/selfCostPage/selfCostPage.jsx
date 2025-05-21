@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import styles from './selfCostPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -10,6 +10,7 @@ import AuthContext from '../../service/AuthContext'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
 import { useAppSelector } from '../../redux/hooks'
 import { URL } from '../../service/config'
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 
 const initDataStatus = {
     isError: false,
@@ -26,6 +27,7 @@ const SelfCostPage = () => {
     const [filteredTableData, setFilteredTableData] = useState() // данные для рендера таблицы
     const { authToken } = useContext(AuthContext)
     const { activeBrand } = useAppSelector(store => store.filters)
+    //const prevShop = useRef(activeBrand)
 
     const getTableData = async (authToken, shopId) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
@@ -47,12 +49,34 @@ const SelfCostPage = () => {
         const parsedData = await res.json();
         const { items } = parsedData.data
         setDataStatus({ ...initDataStatus, isLoading: false })
-        setTableData([...items])
-        setFilteredTableData([...items])
+        // sorting the data
+        let sortedData = items.sort((a, b) => a.product - b.product);
+        sortedData = sortedData.sort((a, b) => {
+            if (a.photo && b.photo) {
+                if (a.cost && b.cost) return 0;
+                if (a.cost) return -1;
+                if (b.cost) return 1;
+                return 0;
+            }
+            if (!a.photo && !b.photo) {
+                if (a.cost && b.cost) return 0;
+                if (a.cost) return -1;
+                if (b.cost) return 1;
+                return 0;
+            }
+            if (a.photo) return -1;
+            if (b.photo) return 1;
+            return 0;
+        })
+        setTableData([...sortedData])
+        setFilteredTableData([...sortedData])
+        //prevShop.current = activeBrand
     }
 
     //задаем начальную дату
     useEffect(() => {
+        //console.log('prevShop.current.id', prevShop?.current?.id)
+        //console.log('activeBrand.id', activeBrand?.id)
         if (activeBrand && authToken) {
             getTableData(authToken, activeBrand.id)
         }
@@ -91,21 +115,34 @@ const SelfCostPage = () => {
                         target='_blank'
                     />
                 </div>
-                <div className={styles.page__searchWrapper}>
-                    <SearchWidget
-                        tableData={tableData}
-                        setFilteredTableData={setFilteredTableData}
+                {/* DATA COLLECT WARNING */}
+                {activeBrand && !activeBrand.is_primary_collect &&
+                    <DataCollectWarningBlock
+                        title='Ваши данные еще формируются и обрабатываются.'
                     />
-                </div>
-                <SelfCostTableWidget
-                    setIsSuccess={setIsSuccess}
-                    dataStatus={dataStatus}
-                    setDataStatus={setDataStatus}
-                    tableData={filteredTableData}
-                    getTableData={getTableData}
-                    authToken={authToken}
-                    activeBrand={activeBrand}
-                />
+                }
+                {/* !DATA COLLECT WARNING */}
+                {activeBrand && activeBrand.is_primary_collect &&
+                    <>
+                        <div className={styles.page__searchWrapper}>
+                            <SearchWidget
+                                tableData={tableData}
+                                setFilteredTableData={setFilteredTableData}
+                            />
+                        </div>
+
+                        <SelfCostTableWidget
+                            setIsSuccess={setIsSuccess}
+                            dataStatus={dataStatus}
+                            setDataStatus={setDataStatus}
+                            tableData={filteredTableData}
+                            getTableData={getTableData}
+                            authToken={authToken}
+                            activeBrand={activeBrand}
+                            setTableData={setTableData}
+                        />
+                    </>
+                }
             </section>
             {/* ---------------------- */}
 

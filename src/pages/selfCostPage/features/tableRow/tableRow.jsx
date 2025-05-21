@@ -8,7 +8,7 @@ import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
 import DatePickerCustomDropdown from "../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown";
 import { URL } from "../../../../service/config";
-import { getSaveButtonStatus, getRowSaveButtonStatus, getAddDateButtonStatus } from "../../shared";
+import { getSaveButtonStatus, getRowSaveButtonStatus, getAddDateButtonStatus, getRowSaveButtonForLastHistoryParamsStatus } from "../../shared";
 import ErrorModal from "../../../../components/sharedComponents/modals/errorModal/errorModal";
 
 
@@ -20,7 +20,7 @@ const dataFetchingStatus = {
 }
 
 
-const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess }) => {
+const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess, dataStatus, setTableData, tableData }) => {
     const datePickerContainerRef = useRef(null)
     const rowRef = useRef(null)
     const [product, setProduct] = useState() // присваиваем глубоким копированием
@@ -31,6 +31,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
     const [saveButtonStatus, setSaveButtonStatus] = useState(true)
     const [rowSaveButtonDisabledStatus, setRowSaveButtonDisabledStatus] = useState(true)
+    const [rowSaveButtonForLastHistoryParamsDisabledStatus, setRowSaveButtonForLastHistoryParamsDisabledStatus] = useState(true)
     const [addDateButtonDisabledStatus, setAddDateButtonDisabledStatus] = useState(true)
     const [isUpdating, setIsUpdating] = useState(false)
     const customRuLocale = {
@@ -44,7 +45,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         },
     };
     const disabledDatesArray = [{ after: new Date() }]
-    product?.self_cost_change_history.forEach(_ => disabledDatesArray.push(new Date(_.date)))
+    product?.self_cost_change_history?.forEach(_ => disabledDatesArray.push(new Date(_.date)))
 
     const handleDayClick = (day) => {
         setSelectedDate(day)
@@ -52,7 +53,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     };
 
     const updateDefaultParams = async () => {
-        //setDataStatus({ ...initDataStatus, isLoading: true })
+        setDataStatus({ ...initDataStatus, isLoading: true })
         //setIsUpdating(true)
         const newProduct = {
             product: product.product,
@@ -78,18 +79,27 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 //setIsUpdating(false)
                 return;
             }
+            const parsedData = await res.json()
+            const updatedCurrentProduct = {
+                ...parsedData,
+                self_cost_change_history: product.self_cost_change_history
+            }
+            let newTableData = tableData;
+            const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
+            newTableData[index] = updatedCurrentProduct
+            setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)
             //setIsUpdating(false)
-            getTableData(authToken, shopId)
+            //getTableData(authToken, shopId)
         } catch {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
             //setIsUpdating(false)
         }
     }
 
-    const updateHistoryParams = async () => {
-        //setDataStatus({ ...initDataStatus, isLoading: true })
+    const updateHistoryParams = async (shouldUpdateDefaultParams = true) => {
+        setDataStatus({ ...initDataStatus, isLoading: true })
         //setIsUpdating(true)
         const object = {
             items_to_update: product.self_cost_change_history.map(i => ({
@@ -119,8 +129,16 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 //setIsUpdating(false)
                 return;
             }
-            await updateDefaultParams()
+            if (shouldUpdateDefaultParams) {
+                await updateDefaultParams()
+            }
             setHistoryItemsToDelete([])
+            const parsedData = await res.json()
+            const updatedCurrentProduct = parsedData.updated_items[0]
+            let newTableData = tableData;
+            const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
+            newTableData[index] = updatedCurrentProduct
+            setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)
             //setIsUpdating(false)
@@ -155,6 +173,13 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             newProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
             setSelectedDate(null)
             setProduct({ ...newProduct })
+           
+            let newTableData = tableData;
+            const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
+            if (mainIndex !== -1) {
+                newTableData[mainIndex] = newProduct;
+                setTableData(newTableData)
+            }
         }
     }, [selectedDate])
 
@@ -162,10 +187,11 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     useEffect(() => {
         if (product && currentProduct) {
             setSaveButtonStatus(getSaveButtonStatus(product, currentProduct, historyItemsToDelete))
-            setRowSaveButtonDisabledStatus(getRowSaveButtonStatus(product, currentProduct, isOpen))
-            setAddDateButtonDisabledStatus(getAddDateButtonStatus(product))
+            setRowSaveButtonDisabledStatus(getRowSaveButtonStatus(product, currentProduct, isOpen, dataStatus))
+            setAddDateButtonDisabledStatus(getAddDateButtonStatus(product, dataStatus))
+            setRowSaveButtonForLastHistoryParamsDisabledStatus(getRowSaveButtonForLastHistoryParamsStatus(product, currentProduct, isOpen, dataStatus))
         }
-    }, [product, historyItemsToDelete, currentProduct, isOpen])
+    }, [product, historyItemsToDelete, currentProduct, isOpen, dataStatus])
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -193,6 +219,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 className={styles.row}
                 style={{ borderBottom: isOpen ? 'none' : '1px solid #E8E8E8' }}
             >
+                {/* photo and title */}
                 <div className={`${styles.row__item} ${styles.row__item_wide}`}>
                     <div className={styles.row__imgWrapper}>
                         {product.photo && <img 
@@ -202,14 +229,40 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             onError={(e) => {
                                 e.target.onerror = null;
                                 e.target.style.display = 'none'
+                                let newTableData = tableData;
+                                const currIndex = tableData.findIndex(_ => _.product === product.product);
+                                newTableData[currIndex].photo = null
+                                newTableData.sort((a, b) => {
+                                    if (a.photo && b.photo) {
+                                        if (a.cost && b.cost) return 0;
+                                        if (a.cost) return -1;
+                                        if (b.cost) return 1;
+                                        return 0;
+                                    }
+                                    if (!a.photo && !b.photo) {
+                                        if (a.cost && b.cost) return 0;
+                                        if (a.cost) return -1;
+                                        if (b.cost) return 1;
+                                        return 0;
+                                    }
+                                    if (a.photo) return -1;
+                                    if (b.photo) return 1;
+                                    return 0;
+                                })
+                                setTableData([...newTableData])
                             }}
                         />}
                     </div>
                     <p className={styles.row__title}>{product?.vendor_code}</p>
                 </div>
 
-                {/* Инпуты себестоимости и фулфилмента по умолчанию */}
-                {
+                {/* size */}
+                <div className={styles.row__item}>
+                    <p className={`${styles.row__title} ${styles.row__title_black}`}>{product.tech_size}</p>
+                </div>
+
+                {/* Инпуты себестоимости и фулфилмента по умолчанию (если нет исторических данных) */}
+                {product?.self_cost_change_history?.length === 0 &&
                     <>
                         <ConfigProvider
                             theme={{
@@ -225,7 +278,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
                                             ...product,
-                                            cost: /^(|\d+)$/.test(e.target.value) ? value : product.cost,
+                                            cost: /^(?:|\d+)$/.test(e.target.value) ? value : product.cost,
                                         };
                                         setProduct({ ...newProduct })
                                     }}
@@ -244,7 +297,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
                                             ...product,
-                                            fulfillment: /^(|\d+)$/.test(e.target.value) ? value : product.fulfillment,
+                                            fulfillment: /^(?:|\d+)$/.test(e.target.value) ? value : product.fulfillment,
                                         };
                                         setProduct({ ...newProduct })
                                     }}
@@ -256,6 +309,72 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     onClick={updateDefaultParams}
                                     className={styles.row__saveButton}
                                     disabled={rowSaveButtonDisabledStatus}
+                                >
+                                    <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 4.25C5.58579 4.25 5.25 4.58579 5.25 5C5.25 5.41421 5.58579 5.75 6 5.75H12C12.4142 5.75 12.75 5.41421 12.75 5C12.75 4.58579 12.4142 4.25 12 4.25H6Z" fill="#5329FF" />
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M0.25 5C0.25 2.37665 2.37665 0.25 5 0.25H10.6659C11.9995 0.25 13.2716 0.810613 14.1715 1.79485L16.5056 4.3478C17.3061 5.22332 17.75 6.36667 17.75 7.55295V15C17.75 17.6234 15.6234 19.75 13 19.75H5C2.37665 19.75 0.25 17.6234 0.25 15V5ZM16.25 15C16.25 16.5368 15.1833 17.8245 13.75 18.163V16C13.75 14.4812 12.5188 13.25 11 13.25H7C5.48122 13.25 4.25 14.4812 4.25 16V18.163C2.81665 17.8245 1.75 16.5368 1.75 15V5C1.75 3.20507 3.20507 1.75 5 1.75H10.6659C11.5783 1.75 12.4488 2.13358 13.0645 2.807L15.3986 5.35995C15.9463 5.95899 16.25 6.74128 16.25 7.55295V15ZM5.75 16V18.25H12.25V16C12.25 15.3096 11.6904 14.75 11 14.75H7C6.30964 14.75 5.75 15.3096 5.75 16Z" fill="#5329FF" />
+                                    </svg>
+                                    Сохранить
+                                </button>
+                            </div>
+                        </ConfigProvider>
+                    </>
+                }
+
+
+
+                {/* Инпуты себестоимости и фулфилмента - последние исторические значения */}
+                {product?.self_cost_change_history?.length > 0 &&
+                    <>
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    colorPrimary: '#5329FF'
+                                }
+                            }}
+                        >
+                            <div className={`${styles.row__item} ${styles.row__item_first}`}>
+                                <Input
+                                    value={product.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1].cost}
+                                    onChange={(e) => {
+                                        let value = e.target.value ? parseInt(e.target.value) : e.target.value;
+                                        let newHistory = product.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)
+                                        newHistory[newHistory.length - 1].cost = /^(?:|\d+)$/.test(e.target.value) ? value : newHistory[newHistory.length - 1].cost;
+                                        let newProduct = {
+                                            ...product,
+                                            self_cost_change_history: newHistory
+                                        };
+                                        setProduct({ ...newProduct })
+                                    }}
+                                    style={{ height: '44px'}}
+                                    size='large'
+                                    disabled={isOpen}
+                                    placeholder={currentProduct.self_cost_change_history?.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1]?.cost}
+                                />
+                            </div>
+                            <div className={styles.row__item}>
+                                <Input
+                                    style={{ maxWidth: '160px', height: '44px' }}
+                                    value={product.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1].fulfillment}
+                                    placeholder={currentProduct.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1]?.fulfillment}
+                                    onChange={(e) => {
+                                        let value = e.target.value ? parseInt(e.target.value) : e.target.value;
+                                        let newHistory = product.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)
+                                        newHistory[newHistory.length - 1].fulfillment = /^(?:|\d+)$/.test(e.target.value) ? value : newHistory[newHistory.length - 1].fulfillment;
+                                        let newProduct = {
+                                            ...product,
+                                            self_cost_change_history: newHistory
+                                        };
+                                        setProduct({ ...newProduct })
+                                    }}
+                                    size='large'
+                                    disabled={isOpen}
+                                />
+
+                                <button
+                                    onClick={() => updateHistoryParams(false)}
+                                    className={styles.row__saveButton}
+                                    disabled={rowSaveButtonForLastHistoryParamsDisabledStatus}
                                 >
                                     <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M6 4.25C5.58579 4.25 5.25 4.58579 5.25 5C5.25 5.41421 5.58579 5.75 6 5.75H12C12.4142 5.75 12.75 5.41421 12.75 5C12.75 4.58579 12.4142 4.25 12 4.25H6Z" fill="#5329FF" />
@@ -370,7 +489,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
                                             ...product,
-                                            cost: /^(|\d+)$/.test(e.target.value) ? value : product.cost,
+                                            cost: /^(?:|\d+)$/.test(e.target.value) ? value : product.cost,
                                         };
                                         setProduct({ ...newProduct })
                                     }}
@@ -399,7 +518,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
                                             ...product,
-                                            fulfillment: /^(|\d+)$/.test(e.target.value) ? value : product.fulfillment,
+                                            fulfillment: /^(?:|\d+)$/.test(e.target.value) ? value : product.fulfillment,
                                         };
                                         setProduct({ ...newProduct })
                                     }}
@@ -429,7 +548,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             className={styles.row__bodySaveButton}
                             onClick={updateHistoryParams}
                             disabled={saveButtonStatus}
-                            loading={isUpdating}
+                            loading={isUpdating || dataStatus.isLoading}
                             style={{ width: '109px', height: '45px'}}
                         >
                             Сохранить
