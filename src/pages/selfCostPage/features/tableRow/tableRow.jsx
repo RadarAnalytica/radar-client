@@ -22,7 +22,7 @@ const dataFetchingStatus = {
 
 const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess, dataStatus, setTableData, tableData }) => {
     const datePickerContainerRef = useRef(null)
-    const rowRef = useRef(null)
+    //const rowRef = useRef(null)
     const [product, setProduct] = useState() // присваиваем глубоким копированием
     const [isOpen, setIsOpen] = useState(false) // стейт открытия аккордеона
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false) // стейт датапикера
@@ -129,22 +129,28 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 //setIsUpdating(false)
                 return;
             }
-            if (shouldUpdateDefaultParams) {
-                await updateDefaultParams()
-            }
+
             setHistoryItemsToDelete([])
-            const parsedData = await res.json()
-            const updatedCurrentProduct = parsedData.updated_items[0]
-            let newTableData = tableData;
-            const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
-            newTableData[index] = updatedCurrentProduct
-            setTableData(newTableData)
-            setDataStatus({ ...initDataStatus })
-            setIsSuccess(true)
+            // const parsedData = await res.json()
+            // let newTableData = tableData;
+            // if (parsedData.updated_items.length > 0) {
+            //     const updatedCurrentProduct = parsedData.updated_items[0]
+            //     const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
+            //     newTableData[index] = updatedCurrentProduct
+            // } else {
+            //     const index = newTableData.findIndex(_ => _.product === product.product);
+            //     newTableData[index].self_cost_change_history = []
+            // }
+
+            // setTableData(newTableData)
+            // setDataStatus({ ...initDataStatus })
+            //setIsSuccess(true)
             //setIsUpdating(false)
-            getTableData(authToken, shopId)
+            //getTableData(authToken, shopId)
+
+            await updateDefaultParams()
         } catch {
-            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
+            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то1 пошло не так :(' })
             //setIsUpdating(false)
         }
     }
@@ -173,7 +179,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             newProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
             setSelectedDate(null)
             setProduct({ ...newProduct })
-           
+
             let newTableData = tableData;
             const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
             if (mainIndex !== -1) {
@@ -222,10 +228,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 {/* photo and title */}
                 <div className={`${styles.row__item} ${styles.row__item_wide}`}>
                     <div className={styles.row__imgWrapper}>
-                        {product.photo && <img 
-                            src={product.photo} 
-                            width={45} 
-                            height={60} 
+                        {product.photo && <img
+                            src={product.photo}
+                            width={45}
+                            height={60}
                             onError={(e) => {
                                 e.target.onerror = null;
                                 e.target.style.display = 'none'
@@ -282,7 +288,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         };
                                         setProduct({ ...newProduct })
                                     }}
-                                    style={{ height: '44px'}}
+                                    style={{ height: '44px' }}
                                     size='large'
                                     disabled={isOpen}
                                     placeholder={currentProduct.cost ? currentProduct.cost : 'Не установлено'}
@@ -335,10 +341,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                         >
                             <div className={`${styles.row__item} ${styles.row__item_first}`}>
                                 <Input
-                                    value={product.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1].cost}
+                                    value={product.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1].cost}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
-                                        let newHistory = product.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)
+                                        let newHistory = product.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
                                         newHistory[newHistory.length - 1].cost = /^(?:|\d+)$/.test(e.target.value) ? value : newHistory[newHistory.length - 1].cost;
                                         let newProduct = {
                                             ...product,
@@ -346,20 +352,20 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         };
                                         setProduct({ ...newProduct })
                                     }}
-                                    style={{ height: '44px'}}
+                                    style={{ height: '44px' }}
                                     size='large'
                                     disabled={isOpen}
-                                    placeholder={currentProduct.self_cost_change_history?.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1]?.cost}
+                                    placeholder={currentProduct.self_cost_change_history?.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1]?.cost}
                                 />
                             </div>
                             <div className={styles.row__item}>
                                 <Input
                                     style={{ maxWidth: '160px', height: '44px' }}
-                                    value={product.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1].fulfillment}
-                                    placeholder={currentProduct.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1]?.fulfillment}
+                                    value={product.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1].fulfillment}
+                                    placeholder={currentProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1]?.fulfillment}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
-                                        let newHistory = product.self_cost_change_history.sort((a,b) => moment(a.date) > moment(b.date) ? 1 : -1)
+                                        let newHistory = product.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
                                         newHistory[newHistory.length - 1].fulfillment = /^(?:|\d+)$/.test(e.target.value) ? value : newHistory[newHistory.length - 1].fulfillment;
                                         let newProduct = {
                                             ...product,
@@ -483,7 +489,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             <div className={`${styles.row__bodyMainItem} ${styles.row__bodyMainItem_short}`}>
                                 <Input
                                     value={product.cost}
-                                    style={{ height: '44px'}}
+                                    style={{ height: '44px' }}
                                     placeholder={currentProduct.cost ? currentProduct.cost : 'Не установлено'}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
@@ -513,7 +519,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                 <Input
                                     value={product.fulfillment}
                                     placeholder={currentProduct.fulfillment ? currentProduct.fulfillment : 'Не установлено'}
-                                    style={{ height: '44px'}}
+                                    style={{ height: '44px' }}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
@@ -549,7 +555,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             onClick={updateHistoryParams}
                             disabled={saveButtonStatus}
                             loading={isUpdating || dataStatus.isLoading}
-                            style={{ width: '109px', height: '45px'}}
+                            style={{ width: '109px', height: '45px' }}
                         >
                             Сохранить
                         </Button>
