@@ -16,7 +16,7 @@ export const addSkuTableConfig = {
 }
 
 const initSortState = {
-    sortedValue: 'saleSum',
+    sortedValue: '',
     sortType: 'DESC',
 }
 
@@ -80,8 +80,8 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
 
 
 const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToken }) => {
-
-    const [tableData, setTableData] = useState([])
+    const [ initData, setInitData ] = useState([])
+    const [ tableData, setTableData ] = useState([])
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
     const [isTableDataLoading, setIsTableDataLoading] = useState(false)
@@ -93,7 +93,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
             setSortState(initSortState)
-            setTableData(stockAnalysisFilteredData)
+            setTableData(initData)
             return
         }
 
@@ -103,7 +103,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
             sortedValue: value,
             sortType: id,
         })
-        setTableData([...sortTableDataFunc(id, value, stockAnalysisFilteredData)])
+        setTableData([...sortTableDataFunc(id, value, initData)])
     }
 
     const getTurnoverTableData = async (selectedRange, activeBrand, authToken) => {
@@ -124,6 +124,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                     activeBrand
                 );
                 setTableData(data);
+                setInitData(data)
             }
 
         } catch (e) {
@@ -149,7 +150,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
             </div>
         )
     }
-
+    console.log(turnover)
     return (
         <div className={styles.block}>
             <div className={styles.block__header}>
@@ -175,7 +176,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
             </div>
 
             <div className={styles.block__body}>
-                {turnover && <p className={styles.block__mainData}>{turnover} дн.</p>}
+                {turnover !== null && turnover !== undefined && <p className={styles.block__mainData}>{formatPrice(turnover, 'дн.')}</p>}
                 <button className={styles.block__button} onClick={() => setIsModalVisible(true)}>
                     <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle opacity="0.2" cx="12.5" cy="12" r="12" fill="#9A81FF" />
@@ -294,13 +295,13 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                         )
                                     })}
                                     {/* No data */}
-                                    {/* {tableData && tableData.length === 0 && id === 0 &&
+                                    {tableData && tableData.length === 0 &&
                                     <div className={styles.table__row}>
                                         <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
                                             Товары отсутствуют
                                         </div>
                                     </div>
-                                } */}
+                                }
                                 </div>
                             </div>
                             {/* !table */}
