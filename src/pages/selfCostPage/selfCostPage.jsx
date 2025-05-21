@@ -111,7 +111,7 @@ const SelfCostPage = () => {
                     />
                     <HowToLink
                         text='Инструкция по загрузке себестоимости'
-                        url='/'
+                        url='https://radar.usedocs.com/article/76556'
                         target='_blank'
                     />
                 </div>
