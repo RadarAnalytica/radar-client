@@ -25,7 +25,12 @@ const getTurnoverBarParams = (turnoverValue) => {
         title: 'Хорошо',
         color: '#DBF7E9'
     }
-
+    if (turnoverValue === 0)  {
+        params = {
+            title: 'Плохо',
+            color: '#FEDACC'
+        }
+    }
     if (turnoverValue <= 30) { return params }
     if (turnoverValue > 30 && turnoverValue <= 60) {
         params = {
