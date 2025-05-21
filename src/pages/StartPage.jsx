@@ -16,7 +16,7 @@ const StartPage = () => {
     const ref = useRef(null)
     const { user } = useContext(AuthContext);
     const [playVideo, setPlayVideo] = useState(0)
-    const [videoSource, setVideoSource] = useState('https://play.boomstream.com/QLwHwcta?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50')
+    const [videoSource, setVideoSource] = useState('https://play.boomstream.com/I4yecQZ8?size=cover&title=0&start=1&color=%23F7F6FE&autostart=0&volume=50')
 
     useEffect(() => {
         window.addEventListener('message', receiveMessage, false);
