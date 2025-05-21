@@ -25,7 +25,7 @@ const getTurnoverBarParams = (turnoverValue) => {
         title: 'Хорошо',
         color: '#DBF7E9'
     }
-    if (turnoverValue === 0)  {
+    if (turnoverValue === 0) {
         params = {
             title: 'Плохо',
             color: '#FEDACC'
@@ -80,8 +80,8 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
 
 
 const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToken }) => {
-    const [ initData, setInitData ] = useState([])
-    const [ tableData, setTableData ] = useState([])
+    const [initData, setInitData] = useState([])
+    const [tableData, setTableData] = useState([])
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
     const [isTableDataLoading, setIsTableDataLoading] = useState(false)
@@ -123,8 +123,17 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                     selectedRange,
                     activeBrand
                 );
-                setTableData(data);
-                setInitData(data)
+                let sortedData = data.sort((a, b) => a.product - b.product);
+                sortedData = sortedData.sort((a, b) => {
+                    if (a.photo && b.photo) {
+                        return 0;
+                    }
+                    if (a.photo) return -1;
+                    if (b.photo) return 1;
+                    return 0;
+                })
+                setTableData(sortedData);
+                setInitData(sortedData)
             }
 
         } catch (e) {
@@ -150,7 +159,6 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
             </div>
         )
     }
-    console.log(turnover)
     return (
         <div className={styles.block}>
             <div className={styles.block__header}>
@@ -195,6 +203,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                 onClose={() => setIsModalVisible(false)}
                 onCancel={() => setIsModalVisible(false)}
                 width={1200}
+                style={{ top: 20 }}
             >
 
                 <div className={styles.modal}>
@@ -214,7 +223,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                             /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
                                             return (
 
-                                                <div className={styles.table__headerItem} key={id}>
+                                                <div className={v.engName === 'title' ? styles.table__headerItem_wide : styles.table__headerItem} key={id}>
                                                     <p className={styles.table__headerItemTitle}>{v.ruName}</p>
                                                     {v.isSortable &&
                                                         <div className={styles.sortControls}>
@@ -277,11 +286,33 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                                     }
 
                                                     return (
-                                                        <div className={styles.table__rowItem} key={id}>
+                                                        <div className={v.engName === 'title' ? styles.table__rowItem_wide : styles.table__rowItem} key={id}>
                                                             {v.hasPhoto ?
                                                                 <>
                                                                     <div className={styles.table__rowImgWrapper}>
-                                                                        {product[v.photoFieldName] && <img src={product[v.photoFieldName]} width={30} height={40} />}
+                                                                        {product[v.photoFieldName] &&
+                                                                            <img
+                                                                                src={product[v.photoFieldName]}
+                                                                                width={30}
+                                                                                height={40}
+                                                                                onError={(e) => {
+                                                                                    e.target.onerror = null;
+                                                                                    e.target.style.display = 'none'
+                                                                                    let newTableData = tableData;
+                                                                                    const currIndex = tableData.findIndex(_ => _.product === product.product);
+                                                                                    newTableData[currIndex].photo = null
+                                                                                    newTableData.sort((a, b) => {
+                                                                                        if (a.photo && b.photo) {
+                                                                                            return 0;
+                                                                                        }
+                                                                                        if (a.photo) return -1;
+                                                                                        if (b.photo) return 1;
+                                                                                        return 0;
+                                                                                    })
+                                                                                    setTableData([...newTableData])
+                                                                                }}
+                                                                            />
+                                                                        }
                                                                     </div>
                                                                     <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                                 </>
@@ -296,12 +327,12 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                     })}
                                     {/* No data */}
                                     {tableData && tableData.length === 0 &&
-                                    <div className={styles.table__row}>
-                                        <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
-                                            Товары отсутствуют
+                                        <div className={styles.table__row}>
+                                            <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
+                                                Товары отсутствуют
+                                            </div>
                                         </div>
-                                    </div>
-                                }
+                                    }
                                 </div>
                             </div>
                             {/* !table */}
