@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SelfCostModal from '../selfCostModal/selfCostModal';
 import styles from './selfCostWarningBlock.module.css'
+import { Link } from 'react-router-dom';
 
 const SelfCostWarningBlock = ({ shopId, onUpdateDashboard }) => {
 
@@ -38,16 +39,16 @@ const SelfCostWarningBlock = ({ shopId, onUpdateDashboard }) => {
                 Для правильного расчета данных нам нужно знать себестоимость ваших товаров. Данные в блоках «прибыль», «финансы», «себестоимость проданных товаров» не учитывают себестоимость товаров, для которых она неизвестна.
             </p>
 
-            <button className={styles.block__addButton} onClick={() => setIsModalVisible(true)}>
+            <Link className={styles.block__addButton} to='/selfcost'>
                 Заполнить себестоимость
-            </button>
+            </Link>
 
-            <SelfCostModal
+            {/* <SelfCostModal
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
                 onUpdateDashboard={onUpdateDashboard}
                 shopId={shopId}
-            />
+            /> */}
         </div>
     )
 }
