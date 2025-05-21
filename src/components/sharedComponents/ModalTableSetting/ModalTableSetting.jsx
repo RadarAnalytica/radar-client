@@ -38,24 +38,24 @@ export default function ModalTableSetting({
 	}
 
 	function onFinish(data) {
-		let result = [];
-		for (const column in data) {
-			data[column] && result.push(column);
-		}
+
 		if (data.length == 0) {
 			closeModal();
 			return;
 		}
-
+		
 		setTableColumns(() => {
 			return columnsList.reduce((res, el) => {
-				// if (result.includes(el.dataIndex) || tableColumns.find((column) => column.dataIndex === el.dataIndex)) {
-				if (result.includes(el.dataIndex)) {
+				if (
+					el.dataIndex in data && data[el.dataIndex] || 
+					( Object.keys(data).length !== columnsList.length && tableColumns.find((column) => column.dataIndex === el.dataIndex))
+				){
 					res.push(el);
 				}
 				return res;
 			}, []);
 		});
+
 		closeModal();
 	}
 
