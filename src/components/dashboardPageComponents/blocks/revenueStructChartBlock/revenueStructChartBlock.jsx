@@ -90,8 +90,8 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
             ctx.fillStyle = '#000';
 
             // Уменьшаем расстояние между строками
-            const startY = height / 2 - ((labels.length - 1) * 20) + 15; // уменьшено с 30 до 20
-
+            //const startY = height / 2 - ((labels.length - 1) * 20) + 15; // уменьшено с 30 до 20
+            const startY = height / 2 - labels.length / 2 * fontSize * 2; // уменьшено с 30 до 20
             labels.forEach((label, index) => {
                 const value = dataset.data[index];
                 const labelText = label;
@@ -101,8 +101,8 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
                 const valueX = Math.round((width - ctx.measureText(valueText).width) / 2) + 15;
 
                 //const labelY = startY + index * 30; // уменьшено с 50 до 30
-                const labelY = startY + index * fontSize * 2; // уменьшено с 50 до 30
-                const valueY = labelY + fontSize;
+                const labelY = startY + index * fontSize * 2.5;
+                const valueY = labelY + fontSize + 6;
 
                 const circleX = labelX - 10;
                 const circleY = labelY;
