@@ -37,9 +37,6 @@ export default function ModalTableSetting({
 		));
 	}
 
-	console.log('columnsList', columnsList)
-	console.log('tableColumns', tableColumns)
-
 	function onFinish(data) {
 		let result = [];
 		for (const column in data) {
@@ -117,7 +114,7 @@ export default function ModalTableSetting({
 					},
 					Input: {
 						controlHeight: 45,
-						paddingBlockLG: 8,
+						paddingBlockLG: 9,
 						paddingInlineLG: 16,
 						borderRadiusLG: 8,
 						fontSize: 16,
