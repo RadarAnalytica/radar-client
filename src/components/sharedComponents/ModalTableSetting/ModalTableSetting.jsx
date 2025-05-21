@@ -25,7 +25,7 @@ export default function ModalTableSetting({
 	const [form] = useForm();
 
 	function filterColumns(data) {
-		const value = data.filter;
+		const value = data.filter.trim();
 		if (!value) {
 			setShownColumns(columnsList);
 			return
@@ -36,6 +36,9 @@ export default function ModalTableSetting({
 			})
 		));
 	}
+
+	console.log('columnsList', columnsList)
+	console.log('tableColumns', tableColumns)
 
 	function onFinish(data) {
 		let result = [];
@@ -49,6 +52,7 @@ export default function ModalTableSetting({
 
 		setTableColumns(() => {
 			return columnsList.reduce((res, el) => {
+				// if (result.includes(el.dataIndex) || tableColumns.find((column) => column.dataIndex === el.dataIndex)) {
 				if (result.includes(el.dataIndex)) {
 					res.push(el);
 				}
