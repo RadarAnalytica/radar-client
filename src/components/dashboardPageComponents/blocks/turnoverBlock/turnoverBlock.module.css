@@ -90,6 +90,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 16px;
+    height: calc(100vh - 80px)
 }
 
 .modal__header {
@@ -113,8 +114,8 @@
 
 .modal__tableWrapper {
     width: 100%;
-    height: auto;
-    max-height: 80vh;
+    height: 100%;
+    /* max-height: 80vh; */
     overflow-y: scroll;
     /* box-shadow: 0px 0px 20px 0px #00000014; */
     border-radius: 12px;

@@ -86,7 +86,7 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
             const fontSize = width / 20 > 10 ? width / 20 : 10; // Можете также сделать шрифт респонсивным
 
             ctx.restore();
-            ctx.font = `${fontSize}px Arial`;
+            ctx.font = `${fontSize}px Mulish`;
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#000';
             
@@ -119,10 +119,10 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
                 ctx.fillStyle = '#000';
                 ctx.fillText(labelText, labelX, labelY);
 
-                ctx.font = `bold ${fontSize}px Arial`;
+                ctx.font = `bold ${fontSize}px Mulish`;
                 ctx.fillText(valueText, valueX - 10, valueY);
 
-                ctx.font = `${fontSize}px Arial`;
+                ctx.font = `${fontSize}px Mulish`;
             });
 
             ctx.save();
