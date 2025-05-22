@@ -1,20 +1,14 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useContext, useState, useEffect } from 'react';
 import TopNav from '../components/TopNav';
-import SideNav from '../components/SideNav'
 import glitterStar from '../pages/images/glitterstar.svg';
 import glityellow from '../pages/images/glityellow.svg';
 import glitFile from '../pages/images/glitfile.svg';
 import SearchButton from '../assets/searchstock.svg'
-import DownloadFile from '../assets/downloadxlfile.svg'
 import RequestMonitoringFilter from '../components/RequestMonitoringFilter'
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import TableRequestMonitoring from '../components/TableRequestMonitoring'
-import DataCollectionNotification from '../components/DataCollectionNotification'
 import enteringQueries from "../pages/images/enteringQueries.svg"
 import { ServiceFunctions } from "../service/serviceFunctions";
 import AuthContext from "../service/AuthContext";
-import MessageWindow from '../components/MessageWindow';
 import warningIcon from "../assets/warning.png"
 import Modal from 'react-bootstrap/Modal';
 import styles from './RequestMonitoringPage.module.css';
@@ -23,19 +17,13 @@ import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 
 const RequestMonitoringPage = () => {
 
-    // const [loading, setLoading] = useState(false);
-    const { id } = useParams();
-    const [productData, setProductData] = useState({});
-    const [searchQuery, setSearchQuery] = useState('');
     const [filteredData, setFilteredData] = useState();
     const [monitorData, setMonitorData] = useState([]);
     const [days, setDays] = useState(30);
     const [page, setPage] = useState(1);
     const [searchInputQuery, setSearchInputQuery] = useState('');
     const [hasSearched, setHasSearched] = useState(false); // Track whether a search has been performed
-    const [isLoading, setIsLoading] = useState(false);
-    const [isLoadingSearch, setIsLoadingSearch] = useState(false);
-    const { user, authToken } = useContext(AuthContext);
+    const { authToken } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [sort, setSort] = useState("desc");
@@ -44,23 +32,30 @@ const RequestMonitoringPage = () => {
     // Функции для открытия и закрытия модального окна
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
-    //for Main Search
+    // Обновление поиского запроса
     const handleSearchQuery = (e) => {
         setSearchInputQuery(e.target.value);
     };
 
+    // Функция для обработки
     const handleFilterSearch = async () => {
         if (searchInputQuery) {
-            await updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25, sort)
-
+            await updateRequestMonitoring(authToken, searchInputQuery, Number(days), 1, monitorData.page_limit ?? 25, sort)
         } else {
             setErrorMessage("Введите артикул или ссылку на карточку товара.");
             handleShowModal();
         }
     };
 
+    // Функция для обновления данных
+    const handleUpdate = async () => {
+        await updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25, sort)
+    }
+
     useEffect(() => {
-        handleFilterSearch()
+        if (searchInputQuery) {
+            handleUpdate()
+        }
     }, [days, page, sort])
 
     const updateRequestMonitoring = async (
@@ -93,7 +88,6 @@ const RequestMonitoringPage = () => {
 
             });
             setFilteredData(result);
-
         } catch (e) {
             if (e.response) {
                 setErrorMessage(`Ошибка сервера.`);
@@ -117,7 +111,6 @@ const RequestMonitoringPage = () => {
         <div style={{ height: '100vh' }}>
             <Sidebar />
         </div>
-        {/* <SideNav /> */}
         <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
             <div style={{ widht: '100%', padding: '0' }}>
                 <TopNav title={'Частотность артикула'} />
@@ -152,10 +145,6 @@ const RequestMonitoringPage = () => {
                             />
                         </div>
                     </div>
-                </div>
-            ) : isLoading ? (
-                <div className="loader-wrapper">
-                    <span className="loader"></span>
                 </div>
             ) : errorMessage ? (
 
@@ -407,14 +396,13 @@ const RequestMonitoringPage = () => {
                     >
                         <RequestMonitoringFilter setDays={setDays} days={days} />
                     </div>
-                    {/* {shouldDisplay ? ( */}
                     {isTableLoading ? (
                         <div className="loader-wrapper">
                             <span className="loader"></span>
                         </div>
                     ) : (
                         filteredData.length > 0 ? (
-                            <TableRequestMonitoring sort={sort} setSort={setSort} dataTable={filteredData} monitoringData={monitorData} setPage={setPage} page={page} />
+                            <TableRequestMonitoring sort={sort} setSort={setSort} dataTable={filteredData} monitorData={monitorData} setPage={setPage} />
                         ) : (
                             <div className='noResulstFound'><p>Результаты не найдены.</p></div>
                         )

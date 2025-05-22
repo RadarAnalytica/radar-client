@@ -1,23 +1,18 @@
 // import { useState } from 'react'
-import React, { useState, useCallback, useEffect } from 'react';
-import SortArrows from './SortArrows';
+import { useState, useEffect } from 'react';
 import ArrowUp from "../assets/ArrowDown.svg";
 import ArrowDown from "../assets/ArrowUp.svg";
 import pageIcon from "../assets/page-icon.svg"
-import rankIcon from "../assets/rank-icon.svg"
-import attentionIcon from "../assets/attention.svg"
 import GreenArrow from '../assets/greenarrow.svg';
 import RedArrow from '../assets/redarrow.svg';
-import { fetchStockAnalysisData } from '../redux/stockAnalysis/stockAnalysisDataActions';
 import styles from './TableRequestMonitoring.module.css';
 
-const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort, setSort }) => {
-    // const [sortConfig, setSortConfig] = useState({ column: null, direction: null });
+const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort }) => {
     const [filteredData, setFilteredData] = useState(dataTable);
     const [filteredDayLenght, setFilteredDayLenght] = useState(null);
-    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const [isScrolled, setIsScrolled] = useState(false);
-    const totalPages = monitoringData.pages;
+    const totalPages = monitorData.pages;
+    const page = monitorData.page;
 
 
     // Function to go to the previous page
@@ -109,10 +104,6 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
         <div className="table-wrapper-req-monitoring">
             <div className={styles.tableWrapperHeadder}>
                 <div className="infoOfTable">
-                    {/* tooltip */}
-                    {/* <div class="attention-icon">
-                    <div class="exclamation-circle">!</div>
-                </div> */}
                     <div class="page-info">
                         <div className="pagination">
                             {page > 1 && (
@@ -296,59 +287,6 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
                                         </div>
                                     ))}
                                 </div>
-
-                                {/* <div className='scrollable-columns'>
-                                    {console.log(filteredData)}
-                                   
-                                    {filteredData[0].details.map((_, rowIndex) => (
-                                        <div key={rowIndex} className={styles.row}>
-                                            {filteredData.map((item, colIndex) => (
-                                                <div key={colIndex} className={styles.columnWidthN}>
-                                                    <>
-                                                        {colIndex === 0 && (
-                                                            <>
-                                                                <div className={styles.tableOverHeader}></div>
-                                                                <div className={styles.tableHeaderScrollable}>
-                                                                    {item.details[rowIndex]?.date}
-                                                                </div>
-                                                            </>
-                                                        )}
-
-                                                        <>
-                                                            <div className={styles.tableRow}>
-                                                                <div className="req-mon-td-wrapper">
-                                                                    <div className="req-mon-td-quantity">1{"  "}</div>
-                                                                    <div>{filteredData[colIndex].details[rowIndex].quantity}</div>
-                                                                    <div
-                                                                        className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'
-                                                                        style={{
-                                                                            fontSize: '1.85vh',
-                                                                            marginLeft: '8px',
-                                                                        }}
-                                                                    >
-                                                                        <span className='pb-1'>
-                                                                            <img
-                                                                                src={(filteredData[colIndex]?.details[rowIndex]?.quantity || 0) > 30 ? GreenArrow : RedArrow}
-                                                                                alt=''
-                                                                                style={{ width: '1.25vw' }}
-                                                                            />
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </>
-                                                    </>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    ))}
-
-                                    <div>
-                                        <div className={styles.tableOverHeader}></div>
-                                        <div className={styles.tableHeaderScrollablLast}></div>
-                                    </div>
-                                </div> */}
-
                             </div>
                         )}
                     </div>
