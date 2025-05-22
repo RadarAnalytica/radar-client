@@ -268,7 +268,7 @@ const SignUpForm = () => {
         />
         <InputField
           type={'text'}
-          placeholder={'На него придет подтвеждение'}
+          placeholder={'На него придет подтверждение'}
           label={'Email'}
           emailErrorText={emailErrorText}
           callback={getEmail}
@@ -316,7 +316,7 @@ const SignUpForm = () => {
             className='fw-bold'
             style={{ textDecoration: 'underline', color: 'grey' }}
           >
-            Договором публичной аферты
+            Договором публичной оферты
           </a>{' '}
           и{' '}
           <a
