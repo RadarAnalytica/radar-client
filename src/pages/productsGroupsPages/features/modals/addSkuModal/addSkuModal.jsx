@@ -16,6 +16,8 @@ const getFilteredData = (query, data) => {
             item?.article?.toLowerCase().includes(query.toLowerCase())
             // item?.productName?.toLowerCase().includes(query.toLowerCase())
         );
+
+        filteredData.sort((a,b) => a.article.localeCompare(b.article))
     }
 
     return filteredData;
@@ -65,8 +67,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                 return;
             }
             const parsedRes = await res.json();
-            setTableData(parsedRes.data.products)
-            setInitData(parsedRes.data.products)
+            setTableData(parsedRes.data.products.sort((a,b) => a.article.localeCompare(b.article)))
+            setInitData(parsedRes.data.products.sort((a,b) => a.article.localeCompare(b.article)))
             setPaginationState({ ...paginationState, total: parsedRes.data.products.length })
             setCheckedList(parsedRes.data.products.filter(_ => _.in_group).map(_ => _.id))
             //setGroupData(parsedRes.data)

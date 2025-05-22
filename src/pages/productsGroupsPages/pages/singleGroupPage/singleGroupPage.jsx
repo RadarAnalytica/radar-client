@@ -78,7 +78,12 @@ const SingleGroupPage = () => {
                 return;
             }
             const parsedRes = await res.json();
-            setGroupData(parsedRes.data)
+            let sortedData = parsedRes.data
+            sortedData = {
+                ...sortedData,
+                products: sortedData.products.sort((a,b) => a.article.localeCompare(b.article))
+            }
+            setGroupData(sortedData)
             setDataFetchingStatus(initDataFetchingStatus)
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
