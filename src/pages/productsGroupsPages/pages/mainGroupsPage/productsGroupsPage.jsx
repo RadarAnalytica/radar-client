@@ -4,7 +4,7 @@ import MobilePlug from '../../../../components/sharedComponents/mobilePlug/mobil
 import Sidebar from '../../../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../../../components/sharedComponents/header/header';
 import { NoDataWidget, GroupsMainWidget } from '../../widgets';
-import { AddGroupModal } from '../../features';
+import { AddGroupModal, GroupEditModal } from '../../features';
 import AuthContext from '../../../../service/AuthContext';
 import { URL } from '../../../../service/config';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
@@ -19,6 +19,7 @@ const initDataFetchingStatus = {
 const ProductGroupsPage = () => {
     const { authToken } = useContext(AuthContext)
     const [isAddGroupModalVisible, setIsAddGroupModalVisible] = useState(false)
+
     const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [groupsMainData, setGroupsMainData] = useState([])
 
@@ -83,6 +84,7 @@ const ProductGroupsPage = () => {
                         getGroupsData={getGroupsData}
                         setDataFetchingStatus={setDataFetchingStatus}
                         initDataFetchingStatus={initDataFetchingStatus}
+                        dataFetchingStatus={dataFetchingStatus}
                     />
                 }
             </section>
