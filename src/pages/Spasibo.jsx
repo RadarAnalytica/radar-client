@@ -126,8 +126,7 @@ const Spasibo = () => {
               <h2 className='fw-bold'>
                 <span style={{ color: 'rgba(83, 41, 255, 1)' }}>
                   Переходите
-                </span>
-                 на любую страницу товара на Wildberries и изучайте данные
+                </span>{` `}на любую страницу товара на Wildberries и изучайте данные
               </h2>
               <a
                 href='https://www.wildberries.ru/catalog/154750075/detail.aspx'

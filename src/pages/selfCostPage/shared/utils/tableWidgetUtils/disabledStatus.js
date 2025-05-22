@@ -33,10 +33,12 @@ export const getSaveButtonStatus = (product, compare, historyItemsToDelete) => {
     return status
 }
 
-export const getAddDateButtonStatus = (product) => {
+export const getAddDateButtonStatus = (product, dataStatus) => {
     // начальное значение - не заблокировано
     let status = false;
     // Блокируем если:
+    // 0 - данные загружаются
+    if (dataStatus.isLoading) { status = true; return status };
     // 1 - не задано значение себестоимости по умолчанию
     if (!product.cost) { status = true; return status };
     // во всех остальных случаех кнопка активна
@@ -44,12 +46,14 @@ export const getAddDateButtonStatus = (product) => {
 }
 
 
-export const getRowSaveButtonStatus = (product, compare, isOpen) => {
+export const getRowSaveButtonStatus = (product, compare, isOpen, dataStatus) => {
     // начальное значение - не заблокировано
     let status = false;
     // Блокируем если:
     // 1 - строка раскрыта
     if (isOpen) { status = true; return status };
+    // 1.1 Данные загружаются
+    if (dataStatus.isLoading) { status = true; return status };
     // 2 - оба значения отстутствуют
     if (!product.cost && !product.fulfillment) { status = true; return status };
     // 3 - отсутствует себестоимость
@@ -59,6 +63,25 @@ export const getRowSaveButtonStatus = (product, compare, isOpen) => {
     // 5 - значения не изменились
     if (product.cost && product.fulfillment && product.cost === compare.cost && product.fulfillment === compare.fulfillment) { status = true; return status };
     if (product.cost && !product.fulfillment && product.cost === compare.cost && !compare.fulfillment) { status = true; return status };
+
+    // во всех остальных случаех кнопка активна
+    return status;
+}
+
+export const getRowSaveButtonForLastHistoryParamsStatus = (product, compare, isOpen, dataStatus) => {
+    const currentObject = product.self_cost_change_history[product.self_cost_change_history.length - 1];
+    const compareObject = compare.self_cost_change_history[compare.self_cost_change_history.length - 1];
+    // начальное значение - не заблокировано
+    let status = false;
+    // Блокируем если:
+    // 1 - строка раскрыта
+    if (isOpen) { status = true; return status };
+    // 1.1 Данные загружаются
+    if (dataStatus.isLoading) { status = true; return status };
+    // 2 - одно из значений отстутствуют
+    if (!currentObject?.cost || !currentObject?.fulfillment) { status = true; return status };
+    // 3 - значения не изменились
+    if (currentObject?.cost && currentObject?.fulfillment && currentObject.cost === compareObject.cost && currentObject.fulfillment === compareObject.fulfillment) { status = true; return status };
 
     // во всех остальных случаех кнопка активна
     return status;

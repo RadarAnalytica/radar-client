@@ -3,9 +3,6 @@ import { useAppSelector } from '../../../../redux/hooks'
 import styles from './selfCostTableWidget.module.css'
 import { tableConfig } from '../../shared'
 import { TableRow } from '../../features'
-import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal'
-import { URL } from '../../../../service/config'
-import AuthContext from '../../../../service/AuthContext'
 
 const initDataStatus = {
     isError: false,
@@ -20,10 +17,11 @@ const SelfCostTableWidget = ({
     authToken,
     activeBrand,
     getTableData,
-    setDataStatus
+    setDataStatus,
+    setTableData
  }) => {
 
-    if (dataStatus.isLoading) {
+    if (!tableData && dataStatus.isLoading) {
         return (
             <div className={styles.widget}>
                 <div className={styles.widget__loaderWrapper}>
@@ -63,7 +61,7 @@ const SelfCostTableWidget = ({
                         {tableData && tableData.length > 0 && activeBrand && tableData?.map((product, id) => {
                             return (
                                 <TableRow
-                                    key={id}
+                                    key={product.product}
                                     currentProduct={product}
                                     getTableData={getTableData}
                                     authToken={authToken}
@@ -71,6 +69,9 @@ const SelfCostTableWidget = ({
                                     initDataStatus={initDataStatus}
                                     shopId={activeBrand?.id}
                                     setIsSuccess={setIsSuccess}
+                                    dataStatus={dataStatus}
+                                    setTableData={setTableData}
+                                    tableData={tableData}
                                 />
                             )
                         })}

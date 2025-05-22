@@ -618,16 +618,12 @@ const LinkedShops = () => {
                         <circle cx="15" cy="18" r="5" fill="#00B69B" />
                         <text x="30" y="25" font-family="Arial" font-size="18" font-weight="400" fill="black">Установлена</text>
                     </svg> */}
-              <a
-                onClick={() => {
-                  setShowSelfcost(true);
-                  setShowEdit(false);
-                }}
-                href='#'
+              <Link
+                to='/selfcost'
                 className='link'
               >
                 Изменить
-              </a>
+              </Link>
             </div>
           </div>
           {/* <div className="mt-3 d-flex align-items-center justify-content-between">

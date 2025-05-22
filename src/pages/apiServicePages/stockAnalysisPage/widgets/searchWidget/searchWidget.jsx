@@ -9,6 +9,7 @@ import AuthContext from '../../../../../service/AuthContext';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { ServiceFunctions } from '../../../../../service/serviceFunctions';
 import { fileDownload } from '../../../../../service/utils';
+import { useNavigate } from 'react-router-dom';
 
 const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
 
@@ -17,6 +18,7 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
     const [searchInputValue, setSearchInputValue] = useState('')
     const [isSelfCostModalVisible, setIsSelfCostModalVisible] = useState(false)
     const [file, setFile] = useState(); // это видимо загрузка файла себестоимости
+    const navigate = useNavigate()
 
     const inputKeydownHandler = (e) => {
         if (e && e.key !== 'Enter') return
@@ -29,10 +31,11 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
         if (e.target.value === '') {
             setStockAnalysisFilteredData(stockAnalysisData)
         }
-        const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
-        if (regex.test(e.target.value)) {
-            setSearchInputValue(e.target.value)
-        }
+        setSearchInputValue(e.target.value)
+        // const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
+        // if (regex.test(e.target.value)) {
+        //     setSearchInputValue(e.target.value)
+        // }
     }
 
     const getProdAnalyticXlsxHandler = async () => {
@@ -120,7 +123,7 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
                     <Button
                         type='primary'
                         size='large'
-                        onClick={() => setIsSelfCostModalVisible(true)}
+                        onClick={() => navigate('/selfcost')}
                     >
                         <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 18.5C4.0293 18.5 0 14.4707 0 9.5C0 4.5293 4.0293 0.5 9 0.5C13.9707 0.5 18 4.5293 18 9.5C18 14.4707 13.9707 18.5 9 18.5ZM9 16.7C10.9096 16.7 12.7409 15.9414 14.0912 14.5912C15.4414 13.2409 16.2 11.4096 16.2 9.5C16.2 7.59044 15.4414 5.75909 14.0912 4.40883C12.7409 3.05857 10.9096 2.3 9 2.3C7.09044 2.3 5.25909 3.05857 3.90883 4.40883C2.55857 5.75909 1.8 7.59044 1.8 9.5C1.8 11.4096 2.55857 13.2409 3.90883 14.5912C5.25909 15.9414 7.09044 16.7 9 16.7ZM9 5.045L13.455 9.5L9 13.955L4.545 9.5L9 5.045ZM9 7.5911L7.0911 9.5L9 11.4089L10.9089 9.5L9 7.5911Z" fill="#5329FF" />

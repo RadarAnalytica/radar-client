@@ -30,10 +30,11 @@ const SearchWidget = ({ tableData, setFilteredTableData }) => {
         if (e.target.value === '') {
             setFilteredTableData([...tableData])
         }
-        const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
-        if (regex.test(e.target.value)) {
-            setSearchInputValue(e.target.value)
-        }
+        setSearchInputValue(e.target.value)
+        // const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
+        // if (regex.test(e.target.value)) {
+        //     setSearchInputValue(e.target.value)
+        // }
     }
 
     useEffect(() => {
@@ -62,7 +63,7 @@ const SearchWidget = ({ tableData, setFilteredTableData }) => {
                 >
                     <Input
                         size='large'
-                        placeholder='Поиск по SKU или артикулу'
+                        placeholder='Поиск по артикулу'
                         value={searchInputValue}
                         onKeyDown={(e) => inputKeydownHandler(e)}
                         onChange={inputChangeHandler}

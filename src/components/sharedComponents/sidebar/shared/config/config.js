@@ -79,7 +79,7 @@ export const menuConfig = [
                 id: 6,
                 url: '/report-week', // исправить
                 label: 'Отчет по неделям',
-                isActive: true
+                isActive: false
             },
         ]
     },
@@ -117,7 +117,7 @@ export const menuConfig = [
                 id: 5,
                 url: '/groups',
                 label: 'Группы товаров',
-                isActive: true
+                isActive: false
             },
         ]
     },

@@ -6,6 +6,7 @@ import {
   saveFileClickHandler,
 } from "../service/getSaveFile";
 import DragDropFile from "./DragAndDropFiles";
+import { Link } from "react-router-dom";
 
 const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
   const { user, authToken } = useContext(AuthContext);
@@ -65,9 +66,12 @@ const SelfCostWarning = ({ activeBrand, onUpdateDashboard }) => {
           проданных товаров» не учитывают себестоимость товаров, для которых она
           неизвестна.
         </p>
-        <button className='link' onClick={handleCostPriceShow}>
+        {/* <button className='link' onClick={handleCostPriceShow}>
           Заполнить себестоимость
-        </button>
+        </button> */}
+        <Link className='link' style={{ textDecoration: 'none'}} to='/selfcost'>
+          Заполнить себестоимость
+        </Link>
       </div>
       <Modal
         show={costPriceShow}

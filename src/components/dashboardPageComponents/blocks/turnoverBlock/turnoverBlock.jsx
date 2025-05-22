@@ -16,7 +16,7 @@ export const addSkuTableConfig = {
 }
 
 const initSortState = {
-    sortedValue: 'saleSum',
+    sortedValue: '',
     sortType: 'DESC',
 }
 
@@ -25,7 +25,12 @@ const getTurnoverBarParams = (turnoverValue) => {
         title: 'Хорошо',
         color: '#DBF7E9'
     }
-
+    if (turnoverValue === 0) {
+        params = {
+            title: 'Плохо',
+            color: '#FEDACC'
+        }
+    }
     if (turnoverValue <= 30) { return params }
     if (turnoverValue > 30 && turnoverValue <= 60) {
         params = {
@@ -75,7 +80,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
 
 
 const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToken }) => {
-
+    const [initData, setInitData] = useState([])
     const [tableData, setTableData] = useState([])
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
@@ -88,7 +93,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
             setSortState(initSortState)
-            setTableData(stockAnalysisFilteredData)
+            setTableData(initData)
             return
         }
 
@@ -98,7 +103,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
             sortedValue: value,
             sortType: id,
         })
-        setTableData([...sortTableDataFunc(id, value, stockAnalysisFilteredData)])
+        setTableData([...sortTableDataFunc(id, value, initData)])
     }
 
     const getTurnoverTableData = async (selectedRange, activeBrand, authToken) => {
@@ -118,7 +123,17 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                     selectedRange,
                     activeBrand
                 );
-                setTableData(data);
+                let sortedData = data.sort((a, b) => a.product - b.product);
+                sortedData = sortedData.sort((a, b) => {
+                    if (a.photo && b.photo) {
+                        return 0;
+                    }
+                    if (a.photo) return -1;
+                    if (b.photo) return 1;
+                    return 0;
+                })
+                setTableData(sortedData);
+                setInitData(sortedData)
             }
 
         } catch (e) {
@@ -144,7 +159,6 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
             </div>
         )
     }
-
     return (
         <div className={styles.block}>
             <div className={styles.block__header}>
@@ -170,7 +184,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
             </div>
 
             <div className={styles.block__body}>
-                {turnover && <p className={styles.block__mainData}>{turnover} дн.</p>}
+                {turnover !== null && turnover !== undefined && <p className={styles.block__mainData}>{formatPrice(turnover, 'дн.')}</p>}
                 <button className={styles.block__button} onClick={() => setIsModalVisible(true)}>
                     <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle opacity="0.2" cx="12.5" cy="12" r="12" fill="#9A81FF" />
@@ -189,6 +203,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                 onClose={() => setIsModalVisible(false)}
                 onCancel={() => setIsModalVisible(false)}
                 width={1200}
+                style={{ top: 20 }}
             >
 
                 <div className={styles.modal}>
@@ -208,7 +223,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                             /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
                                             return (
 
-                                                <div className={styles.table__headerItem} key={id}>
+                                                <div className={v.engName === 'title' ? styles.table__headerItem_wide : styles.table__headerItem} key={id}>
                                                     <p className={styles.table__headerItemTitle}>{v.ruName}</p>
                                                     {v.isSortable &&
                                                         <div className={styles.sortControls}>
@@ -271,11 +286,33 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                                     }
 
                                                     return (
-                                                        <div className={styles.table__rowItem} key={id}>
+                                                        <div className={v.engName === 'title' ? styles.table__rowItem_wide : styles.table__rowItem} key={id}>
                                                             {v.hasPhoto ?
                                                                 <>
                                                                     <div className={styles.table__rowImgWrapper}>
-                                                                        {product[v.photoFieldName] && <img src={product[v.photoFieldName]} width={30} height={40} />}
+                                                                        {product[v.photoFieldName] &&
+                                                                            <img
+                                                                                src={product[v.photoFieldName]}
+                                                                                width={30}
+                                                                                height={40}
+                                                                                onError={(e) => {
+                                                                                    e.target.onerror = null;
+                                                                                    e.target.style.display = 'none'
+                                                                                    let newTableData = tableData;
+                                                                                    const currIndex = tableData.findIndex(_ => _.product === product.product);
+                                                                                    newTableData[currIndex].photo = null
+                                                                                    newTableData.sort((a, b) => {
+                                                                                        if (a.photo && b.photo) {
+                                                                                            return 0;
+                                                                                        }
+                                                                                        if (a.photo) return -1;
+                                                                                        if (b.photo) return 1;
+                                                                                        return 0;
+                                                                                    })
+                                                                                    setTableData([...newTableData])
+                                                                                }}
+                                                                            />
+                                                                        }
                                                                     </div>
                                                                     <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                                 </>
@@ -289,13 +326,13 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                         )
                                     })}
                                     {/* No data */}
-                                    {/* {tableData && tableData.length === 0 && id === 0 &&
-                                    <div className={styles.table__row}>
-                                        <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
-                                            Товары отсутствуют
+                                    {tableData && tableData.length === 0 &&
+                                        <div className={styles.table__row}>
+                                            <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
+                                                Товары отсутствуют
+                                            </div>
                                         </div>
-                                    </div>
-                                } */}
+                                    }
                                 </div>
                             </div>
                             {/* !table */}
@@ -323,7 +360,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                             <Tooltip
                                 arrow={false}
                                 color='white'
-                                title={'Оборачиваемость товара показывает, на сколько дней хватит текущего остатка товара при средних темпах продаж. Логика подсчета: Определяется среднее количество продаж в день (общие продажи за период делятся на количество дней). Текущий остаток товара делится на это среднее значение.'}
+                                title={'Оборачиваемость товара показывает, на сколько дней хватит текущего остатка товара при средних темпах продаж. Логика подсчета: Определяется среднее количество продаж в день (общие продажи за период делятся на количество дней). Текущий остаток товара (включая возвращенный товар на пути от клиента на склад) делится на это среднее значение.'}
                             >
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }}>
                                     <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
