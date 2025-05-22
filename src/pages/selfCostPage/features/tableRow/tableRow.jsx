@@ -153,14 +153,22 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     }
 
     const deleteButtonClickHandler = (item) => {
+
         let newProduct = product;
-        const index = newProduct.self_cost_change_history.findIndex(_ => _.id === item.id);
+        const index = newProduct.self_cost_change_history.findIndex(_ => _.date === moment(item.date).format('YYYY-MM-DD'));
+       
         if (index !== -1) {
             if (newProduct.self_cost_change_history[index].id) {
                 setHistoryItemsToDelete([...historyItemsToDelete, newProduct.self_cost_change_history[index]])
             }
             newProduct.self_cost_change_history.splice(index, 1)
             setProduct({ ...newProduct })
+        }
+        let newTableData = tableData;
+        const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
+        if (mainIndex !== -1) {
+            newTableData[mainIndex] = newProduct;
+            setTableData(newTableData)
         }
     }
 
