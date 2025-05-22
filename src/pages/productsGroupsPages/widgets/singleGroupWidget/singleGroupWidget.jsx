@@ -168,6 +168,7 @@ const SingleGroupWidget = ({
                                                             return (
                                                                 <button 
                                                                     className={styles.table__actionButton} 
+                                                                    style={{ marginRight: '25px'}}
                                                                     key={id} 
                                                                     //onClick={() => { deleteSkuFromGroup(product) }}
                                                                     onClick={() => {setConfirmationModalState({open: true, title: 'Удаление товара', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить товар "${product.article}"?`, mainAction: () => {deleteSkuFromGroup(product)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}})}}
