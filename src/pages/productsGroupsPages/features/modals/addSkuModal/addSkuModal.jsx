@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import styles from './addSkuModal.module.css'
 import { addSkuTableConfig } from '../../../shared';
 import { AddSkuModalFooter } from '../../../entities'
@@ -24,6 +24,7 @@ const getFilteredData = (query, data) => {
 }
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops }) => {
+    const scrollContainerRef = useRef(null) 
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState()
     const [initData, setInitData] = useState()
@@ -146,6 +147,11 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
 
     }, [isAddSkuModalVisible])
 
+    useEffect(() => {
+        const { current } = scrollContainerRef;
+        current?.scrollTo({top: 0, behavior: 'smooth', duration: 100})
+    } ,[paginationState.current])
+
     return (
         <Modal
             footer={
@@ -175,7 +181,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                 } */}
                 {/* main data */}
                 {tableData &&
-                    <div className={styles.modal__tableWrapper}>
+                    <div className={styles.modal__tableWrapper} ref={scrollContainerRef}>
 
                         {/* table */}
                         <div className={styles.table}>
