@@ -31,10 +31,11 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
         if (e.target.value === '') {
             setStockAnalysisFilteredData(stockAnalysisData)
         }
-        const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
-        if (regex.test(e.target.value)) {
-            setSearchInputValue(e.target.value)
-        }
+        setSearchInputValue(e.target.value)
+        // const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
+        // if (regex.test(e.target.value)) {
+        //     setSearchInputValue(e.target.value)
+        // }
     }
 
     const getProdAnalyticXlsxHandler = async () => {

@@ -131,24 +131,21 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             }
 
             setHistoryItemsToDelete([])
-            // const parsedData = await res.json()
-            // let newTableData = tableData;
-            // if (parsedData.updated_items.length > 0) {
-            //     const updatedCurrentProduct = parsedData.updated_items[0]
-            //     const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
-            //     newTableData[index] = updatedCurrentProduct
-            // } else {
-            //     const index = newTableData.findIndex(_ => _.product === product.product);
-            //     newTableData[index].self_cost_change_history = []
-            // }
+            if (!shouldUpdateDefaultParams) {
+                const parsedData = await res.json()
+                let newTableData = tableData;
+                const updatedCurrentProduct = parsedData.updated_items[0]
+                const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
+                newTableData[index] = updatedCurrentProduct
+                setTableData(newTableData)
+                setDataStatus({ ...initDataStatus })
+                setIsSuccess(true)
+                //setIsUpdating(false)
+            }
 
-            // setTableData(newTableData)
-            // setDataStatus({ ...initDataStatus })
-            //setIsSuccess(true)
-            //setIsUpdating(false)
-            //getTableData(authToken, shopId)
-
-            await updateDefaultParams()
+            if (shouldUpdateDefaultParams) {
+                await updateDefaultParams()
+            }
         } catch {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то1 пошло не так :(' })
             //setIsUpdating(false)
@@ -235,27 +232,27 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             onError={(e) => {
                                 e.target.onerror = null;
                                 e.target.style.display = 'none'
-                                let newTableData = tableData;
-                                const currIndex = tableData.findIndex(_ => _.product === product.product);
-                                newTableData[currIndex].photo = null
-                                newTableData.sort((a, b) => {
-                                    if (a.photo && b.photo) {
-                                        if (a.cost && b.cost) return 0;
-                                        if (a.cost) return -1;
-                                        if (b.cost) return 1;
-                                        return 0;
-                                    }
-                                    if (!a.photo && !b.photo) {
-                                        if (a.cost && b.cost) return 0;
-                                        if (a.cost) return -1;
-                                        if (b.cost) return 1;
-                                        return 0;
-                                    }
-                                    if (a.photo) return -1;
-                                    if (b.photo) return 1;
-                                    return 0;
-                                })
-                                setTableData([...newTableData])
+                                // let newTableData = tableData;
+                                // const currIndex = tableData.findIndex(_ => _.product === product.product);
+                                // newTableData[currIndex].photo = null
+                                // newTableData.sort((a, b) => {
+                                //     if (a.photo && b.photo) {
+                                //         if (a.cost && b.cost) return 0;
+                                //         if (a.cost) return -1;
+                                //         if (b.cost) return 1;
+                                //         return 0;
+                                //     }
+                                //     if (!a.photo && !b.photo) {
+                                //         if (a.cost && b.cost) return 0;
+                                //         if (a.cost) return -1;
+                                //         if (b.cost) return 1;
+                                //         return 0;
+                                //     }
+                                //     if (a.photo) return -1;
+                                //     if (b.photo) return 1;
+                                //     return 0;
+                                // })
+                                // setTableData([...newTableData])
                             }}
                         />}
                     </div>

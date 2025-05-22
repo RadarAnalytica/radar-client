@@ -63,7 +63,7 @@ const SearchWidget = ({ tableData, setFilteredTableData }) => {
                 >
                     <Input
                         size='large'
-                        placeholder='Поиск по SKU или артикулу'
+                        placeholder='Поиск по артикулу'
                         value={searchInputValue}
                         onKeyDown={(e) => inputKeydownHandler(e)}
                         onChange={inputChangeHandler}
