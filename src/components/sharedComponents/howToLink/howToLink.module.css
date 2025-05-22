@@ -1,6 +1,6 @@
 .link {
     text-decoration: none;
-    padding: 4px;
+    padding: 4px 3px;
     border-radius: 4px;
     color: #5329FF;
     font-family: Mulish;
@@ -11,7 +11,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     background: #5329FF0D;
     width: auto;
     flex-grow: 0;

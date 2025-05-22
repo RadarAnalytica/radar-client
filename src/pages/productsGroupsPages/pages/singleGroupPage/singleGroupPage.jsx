@@ -176,6 +176,7 @@ const SingleGroupPage = () => {
                         mainText='Добавьте первый артикул, чтобы начать работу'
                         buttonTitle='Добавить'
                         action={() => setIsAddSkuModalVisible(true)}
+                        type='sku'
                     />
                 }
                 {!dataFetchingStatus.isLoading && groupData.products && groupData.products.length > 0 &&
