@@ -70,6 +70,8 @@ const RevenueStructChartBlock = ({ dataDashBoard, loading }) => {
         displayCenterText: true,
     };
 
+
+    
     ChartJS.register({
         id: 'centerText',
         beforeDraw: (chart) => {
