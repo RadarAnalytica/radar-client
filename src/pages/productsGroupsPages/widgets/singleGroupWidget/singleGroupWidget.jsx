@@ -17,7 +17,9 @@ const SingleGroupWidget = ({
     initDataFetchingStatus,
     groupId,
     getGroupData,
-    shops
+    shops,
+    setConfirmationModalState,
+    initConfirmationState
 }) => {
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
@@ -164,7 +166,12 @@ const SingleGroupWidget = ({
                                                     <div className={styles.table__rowItem} key={id}>
                                                         {v.actionTypes.map((a, id) => {
                                                             return (
-                                                                <button className={styles.table__actionButton} key={id} onClick={() => { deleteSkuFromGroup(product) }}>
+                                                                <button 
+                                                                    className={styles.table__actionButton} 
+                                                                    key={id} 
+                                                                    //onClick={() => { deleteSkuFromGroup(product) }}
+                                                                    onClick={() => {setConfirmationModalState({open: true, title: 'Удаление товара', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить товар "${product.article}"?`, mainAction: () => {deleteSkuFromGroup(product)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}})}}
+                                                                >
                                                                     {buttonIcons[a]}
                                                                 </button>
                                                             )

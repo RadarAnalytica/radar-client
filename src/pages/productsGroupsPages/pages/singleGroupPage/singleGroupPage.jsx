@@ -3,7 +3,7 @@ import MobilePlug from '../../../../components/sharedComponents/mobilePlug/mobil
 import Header from '../../../../components/sharedComponents/header/header';
 import Breadcrumbs from '../../../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
 import Sidebar from '../../../../components/sharedComponents/sidebar/sidebar';
-import { AddSkuModal } from '../../features';
+import { AddSkuModal, ConfirmationModal } from '../../features';
 import { SingleGroupWidget, NoDataWidget } from '../../widgets';
 import { useNavigate } from 'react-router-dom';
 import styles from './singleGroupPage.module.css'
@@ -22,29 +22,7 @@ const initDataFetchingStatus = {
     message: ''
 }
 
-const mockData = [
-    {
-        product: 'Some product name',
-        brand: 'Some brand name',
-        shop: 'Some shop name',
-        sku: '0001',
-        photo: 'https://basket-16.wbbasket.ru/vol2567/part256714/256714767/images/c246x328/1.webp'
-    },
-    {
-        product: 'Some product name',
-        brand: 'Some brand name',
-        shop: 'Some shop name',
-        sku: '0002',
-        photo: 'https://basket-16.wbbasket.ru/vol2567/part256714/256714767/images/c246x328/1.webp'
-    },
-    {
-        product: 'Some product name',
-        brand: 'Some brand name',
-        shop: 'Some shop name',
-        sku: '0003',
-        photo: 'https://basket-16.wbbasket.ru/vol2567/part256714/256714767/images/c246x328/1.webp'
-    },
-]
+const initConfirmationState = { open: false, title: '', message: '', mainAction: '', returnAction: '', actionTitle: '' }
 
 /**
  * 
@@ -62,6 +40,7 @@ const SingleGroupPage = () => {
     const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [groupData, setGroupData] = useState([])
     const [isAddSkuModalVisible, setIsAddSkuModalVisible] = useState(false)
+    const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
     const navigate = useNavigate()
     const params = useParams()
     const dispatch = useAppDispatch()
@@ -158,7 +137,8 @@ const SingleGroupPage = () => {
                                 ]}
                                 actions={[
                                     { type: 'edit', action: () => { setIsAddSkuModalVisible(true) } },
-                                    { type: 'delete', action: () => { deleteGroup(authToken, params?.group_id) } },
+                                    //{ type: 'delete', action: () => { deleteGroup(authToken, params?.group_id) } },
+                                    { type: 'delete', action: () => { setConfirmationModalState({open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${groupData.name}"?`, mainAction: () => {deleteGroup(authToken, params?.group_id)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}}) } },
                                 ]}
                             />
                         }
@@ -187,6 +167,8 @@ const SingleGroupPage = () => {
                         groupId={params.group_id}
                         getGroupData={getGroupData}
                         shops={shops}
+                        setConfirmationModalState={setConfirmationModalState}
+                        initConfirmationState={initConfirmationState}
                     />
                 }
             </section>
@@ -213,6 +195,10 @@ const SingleGroupPage = () => {
                 onCancel={() => setDataFetchingStatus(initDataFetchingStatus)}
                 onClose={() => setDataFetchingStatus(initDataFetchingStatus)}
                 footer={null}
+            />
+
+            <ConfirmationModal
+                {...confirmationModalState}
             />
         </main>
     )

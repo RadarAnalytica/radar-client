@@ -7,15 +7,17 @@ import { formatPrice } from '../../../../service/utils';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../../../service/AuthContext';
 import { URL } from '../../../../service/config';
-import { GroupEditModal } from '../../features';
+import { GroupEditModal, ConfirmationModal } from '../../features';
+
+const initConfirmationState = { open: false, title: '', message: '', mainAction: '', returnAction: '', actionTitle: '' }
 
 
 const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroupsData, setDataFetchingStatus, initDataFetchingStatus, dataFetchingStatus }) => {
-    console.log(groupsMainData)
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
     const [checkedList, setCheckedList] = useState([]);
     const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
+    const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -142,7 +144,12 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                             }
                                                             if (a === 'delete') {
                                                                 return (
-                                                                    <button className={styles.table__actionButton} key={id} onClick={() => deleteGroup(authToken, product.id)}>
+                                                                    <button
+                                                                        className={styles.table__actionButton}
+                                                                        key={id}
+                                                                        //onClick={() => deleteGroup(authToken, product.id)}
+                                                                        onClick={() => setConfirmationModalState({open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${product.name}"?`, mainAction: () => {deleteGroup(authToken, product.id)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}})}
+                                                                    >
                                                                         {buttonIcons[a]}
                                                                     </button>
                                                                 )
@@ -218,6 +225,10 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                 dataFetchingStatus={dataFetchingStatus}
                 setDataFetchingStatus={setDataFetchingStatus}
             /> */}
+
+            <ConfirmationModal
+                {...confirmationModalState}
+            />
         </div>
     )
 }

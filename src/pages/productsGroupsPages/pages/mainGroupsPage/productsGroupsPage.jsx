@@ -16,6 +16,8 @@ const initDataFetchingStatus = {
     message: ''
 }
 
+
+
 const ProductGroupsPage = () => {
     const { authToken } = useContext(AuthContext)
     const [isAddGroupModalVisible, setIsAddGroupModalVisible] = useState(false)
