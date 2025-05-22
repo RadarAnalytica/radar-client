@@ -80,13 +80,9 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 return;
             }
             const parsedData = await res.json()
-            const updatedCurrentProduct = {
-                ...parsedData,
-                self_cost_change_history: product.self_cost_change_history
-            }
             let newTableData = tableData;
-            const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
-            newTableData[index] = updatedCurrentProduct
+            const index = newTableData.findIndex(_ => _.product === parsedData.product);
+            newTableData[index] = parsedData
             setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)
