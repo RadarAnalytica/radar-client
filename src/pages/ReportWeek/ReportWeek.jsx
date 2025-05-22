@@ -74,15 +74,12 @@ export default function ReportWeek() {
 		};
 
 		const summarySchema = {
-			avg_price: (summary) => summary.avg_price / summary.total_sales,
-			realization: (summary) => summary.sales / summary.total_sales,
-			cost: (summary) => summary.cost / summary.total_sales, //Себестоимость продаж
-			avg_logistics: (summary) => summary.logistics / summary.total_sales,
-			avg_purchase_pct: (summary) => summary.avg_purchase_pct / summary.total_sales, //Сред. процент выкупа
-			avg_profit_per_piece: (summary) => summary.profit / summary.total_sales,
-			roi: (summary) => (summary.profit/summary.total_expenses) * 100,
+			avg_price: (summary) => summary.sales / summary.total_sales,
+			avg_purchase_pct: (summary) => (summary.avg_purchase_pct / summary.total_sales) * 100,
+			avg_profit_per_piece: (summary) => (summary.total_sales / summary.order_count) * 100,
+			roi: (summary) => (summary.profit / (summary.cost + summary.ad_expenses + summary.logistics + summary.penalties - summary.compensation + summary.commission + summary.storage) ) * 100,
 			margin: (summary) => summary.sales - summary.cost,
-			drr: (summary) => summary.total_ad / summary.sales,
+			drr: (summary) => (summary.total_ad / summary.sales) * 100,
 		}
 
 		let rows = period !== 'all' ? weeks.filter((el) => el.week === period) : weeks;
