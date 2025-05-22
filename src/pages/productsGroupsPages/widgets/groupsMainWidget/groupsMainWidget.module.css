@@ -93,6 +93,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-grow: 1;
+    flex-shrink: 1;
 }
 
 .table__headerItem:last-of-type {
@@ -150,6 +152,9 @@
     color: #1A1A1A;
     padding-right: 20px;
     overflow: hidden;
+    flex-grow: 1;
+    flex-shrink: 1;
+   
 }
 
 .table__rowItem:last-of-type {
@@ -167,6 +172,11 @@
     margin: 0;
     padding: 0;
     text-decoration: none;
+    width: 100%;
+    max-width: 300px;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
 }
 
 .table__rowImgWrapper {

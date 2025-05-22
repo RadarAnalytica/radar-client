@@ -38,6 +38,10 @@
     color: #1A1A1A;
     margin: 0;
     padding: 0;
+    text-wrap: nowrap;
+    max-width: 400px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .breadcrumbs__actionsWrapper {
