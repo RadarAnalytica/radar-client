@@ -45,7 +45,7 @@ const SingleGroupWidget = ({
 
     const deleteSkuFromGroup = async (product) => {
         const updatedTableData = tableData;
-        const index = updatedTableData.findIndex(_ => _.sku === product.sku);
+        const index = updatedTableData.findIndex(_ => _.id === product.id);
         updatedTableData.splice(index, 1)
         const requestObject = {
             product_ids: updatedTableData.map(_ => _.id)
@@ -65,8 +65,8 @@ const SingleGroupWidget = ({
                 setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
                 return;
             }
-
-            getGroupData(authToken, groupId)
+            setTableData(updatedTableData)
+            //getGroupData(authToken, groupId)
             // успешно обновлено
 
         } catch {
