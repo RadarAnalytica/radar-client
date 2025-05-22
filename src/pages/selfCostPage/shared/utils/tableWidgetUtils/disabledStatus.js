@@ -1,31 +1,51 @@
 import moment from "moment";
 
 export const getSaveButtonStatus = (product, compare, historyItemsToDelete) => {
+
     // начальное значение - заблокировано
     let status = true;
     // Блокируем если:
     // 1 - оба значения отстутствуют
-    if (!product.cost && !product.fulfillment) { return status };
+    //if (!product.cost && !product.fulfillment) { return status };
     // 2 - отсутствует себестоимость
     if (!product.cost) { return status };
     // 3 - отсутсвует фф по умолчанию, но изначально он был задан
     if (product.cost && !product.fulfillment && compare.fulfillment) { return status };
 
+    const arr = []
+    product?.self_cost_change_history?.forEach((i, id) => {
+        //const compareObj = compare.self_cost_change_history[id]
+        if (i.cost !== '' && i.fulfillment !== '') {
+            arr.push(false)
+        } else {
+            arr.push(true)
+        }
+    })
+    if (arr.some(_ => _ === true)) { return status }
+
+
+    product?.self_cost_change_history?.forEach((i, id) => {
+        const compareObj = compare.self_cost_change_history[id]
+        if (i.id && (i.cost !== compareObj.cost || i.fulfillment !== compareObj.fulfillment)) {
+            status = false
+        }
+
+        if (!i.id) {
+            status = false
+        }
+    })
+
+    if (historyItemsToDelete?.length > 0) { status = false }
 
     // Разблокируем если
     // 1 -Удалены исторические данные
-    if (historyItemsToDelete?.length > 0) { status = false }
     // 2 - Добавлена новая дата в исторические данные
-    if (product?.self_cost_change_history?.length !== compare?.self_cost_change_history?.length) { status = false }
+    //if (product?.self_cost_change_history?.length !== compare?.self_cost_change_history?.length) { status = false }
     // 3 - изменились данные в истории
-    if (product?.self_cost_change_history?.length === compare?.self_cost_change_history?.length) {
-        product?.self_cost_change_history?.forEach((i, id) => {
-            const compareObj = compare.self_cost_change_history[id]
-            if (moment(i.date).format('DD.MM.YY') !== moment(compareObj.date).format('DD.MM.YY') || i.cost !== compareObj.cost || i.fulfillment !== compareObj.fulfillment) {
-                status = false
-            }
-        })
-    }
+    // if (product?.self_cost_change_history?.length === compare?.self_cost_change_history?.length) {
+
+    // }
+
     // 4 - изменилось значение сс
     if (product.cost && product.cost !== compare.cost) { status = false };
     // 4 - изменилось значение фф
@@ -55,7 +75,7 @@ export const getRowSaveButtonStatus = (product, compare, isOpen, dataStatus) => 
     // 1.1 Данные загружаются
     if (dataStatus.isLoading) { status = true; return status };
     // 2 - оба значения отстутствуют
-    if (!product.cost && !product.fulfillment) { status = true; return status };
+    //if (!product.cost && !product.fulfillment) { status = true; return status };
     // 3 - отсутствует себестоимость
     if (!product.cost) { status = true; return status };
     // 4 - отсутсвует фф, но изначально он был задан
@@ -79,9 +99,12 @@ export const getRowSaveButtonForLastHistoryParamsStatus = (product, compare, isO
     // 1.1 Данные загружаются
     if (dataStatus.isLoading) { status = true; return status };
     // 2 - одно из значений отстутствуют
-    if (!currentObject?.cost || !currentObject?.fulfillment) { status = true; return status };
+    //if (!currentObject?.cost || !currentObject?.fulfillment) { status = true; return status };
+    if (!currentObject?.cost) { status = true; return status };
     // 3 - значения не изменились
     if (currentObject?.cost && currentObject?.fulfillment && currentObject.cost === compareObject.cost && currentObject.fulfillment === compareObject.fulfillment) { status = true; return status };
+     // 4 - отсутсвует фф, но изначально он был задан
+     if (currentObject.cost && !currentObject.fulfillment && compareObject.fulfillment) { status = true; return status };
 
     // во всех остальных случаех кнопка активна
     return status;

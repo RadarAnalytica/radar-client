@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react'
-import { useAppSelector } from '../../../../redux/hooks'
+import React from 'react'
 import styles from './selfCostTableWidget.module.css'
 import { tableConfig } from '../../shared'
 import { TableRow } from '../../features'

@@ -153,10 +153,8 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     }
 
     const deleteButtonClickHandler = (item) => {
-
         let newProduct = product;
-        const index = newProduct.self_cost_change_history.findIndex(_ => _.date === moment(item.date).format('YYYY-MM-DD'));
-       
+        const index = newProduct.self_cost_change_history.findIndex(_ => moment(_.date).format('YYYY-MM-DD') === moment(item.date).format('YYYY-MM-DD'));
         if (index !== -1) {
             if (newProduct.self_cost_change_history[index].id) {
                 setHistoryItemsToDelete([...historyItemsToDelete, newProduct.self_cost_change_history[index]])
@@ -182,15 +180,15 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             }
             newProduct.self_cost_change_history.push({ date: moment(selectedDate).format('YYYY-MM-DD'), cost: 0, fulfillment: 0 })
             newProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
-            setSelectedDate(null)
             setProduct({ ...newProduct })
 
             let newTableData = tableData;
             const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
             if (mainIndex !== -1) {
                 newTableData[mainIndex] = newProduct;
-                setTableData(newTableData)
+                setTableData([...newTableData])
             }
+            setSelectedDate(null)
         }
     }, [selectedDate])
 
