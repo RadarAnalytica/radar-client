@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styles from './singleGroupWidget.module.css'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
-import { Checkbox, ConfigProvider } from 'antd';
+import { Checkbox, ConfigProvider, message } from 'antd';
 import { singleGroupTableConfig, buttonIcons } from '../../shared';
 import wb_icon from '../../../../assets/wb_icon.png'
 import { URL } from '../../../../service/config';
@@ -17,7 +17,10 @@ const SingleGroupWidget = ({
     initDataFetchingStatus,
     groupId,
     getGroupData,
-    shops
+    shops,
+    setConfirmationModalState,
+    initConfirmationState,
+    setAlertState
 }) => {
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
@@ -43,7 +46,7 @@ const SingleGroupWidget = ({
 
     const deleteSkuFromGroup = async (product) => {
         const updatedTableData = tableData;
-        const index = updatedTableData.findIndex(_ => _.sku === product.sku);
+        const index = updatedTableData.findIndex(_ => _.id === product.id);
         updatedTableData.splice(index, 1)
         const requestObject = {
             product_ids: updatedTableData.map(_ => _.id)
@@ -63,8 +66,9 @@ const SingleGroupWidget = ({
                 setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
                 return;
             }
-
-            getGroupData(authToken, groupId)
+            setTableData(updatedTableData)
+            setAlertState({isVisible: true, message: 'Товар успешно удален'})
+            //getGroupData(authToken, groupId)
             // успешно обновлено
 
         } catch {
@@ -164,7 +168,13 @@ const SingleGroupWidget = ({
                                                     <div className={styles.table__rowItem} key={id}>
                                                         {v.actionTypes.map((a, id) => {
                                                             return (
-                                                                <button className={styles.table__actionButton} key={id} onClick={() => { deleteSkuFromGroup(product) }}>
+                                                                <button 
+                                                                    className={styles.table__actionButton} 
+                                                                    style={{ marginRight: '25px'}}
+                                                                    key={id} 
+                                                                    //onClick={() => { deleteSkuFromGroup(product) }}
+                                                                    onClick={() => {setConfirmationModalState({open: true, title: 'Удаление товара', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить товар "${product.article}"?`, mainAction: () => {deleteSkuFromGroup(product)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}})}}
+                                                                >
                                                                     {buttonIcons[a]}
                                                                 </button>
                                                             )

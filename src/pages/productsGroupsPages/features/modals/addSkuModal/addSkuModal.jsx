@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import styles from './addSkuModal.module.css'
 import { addSkuTableConfig } from '../../../shared';
 import { AddSkuModalFooter } from '../../../entities'
@@ -16,12 +16,15 @@ const getFilteredData = (query, data) => {
             item?.article?.toLowerCase().includes(query.toLowerCase())
             // item?.productName?.toLowerCase().includes(query.toLowerCase())
         );
+
+        filteredData.sort((a, b) => a.article.localeCompare(b.article))
     }
 
     return filteredData;
 }
 
-const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops }) => {
+const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops, setAlertState }) => {
+    const scrollContainerRef = useRef(null) 
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState()
     const [initData, setInitData] = useState()
@@ -65,8 +68,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                 return;
             }
             const parsedRes = await res.json();
-            setTableData(parsedRes.data.products)
-            setInitData(parsedRes.data.products)
+            setTableData(parsedRes.data.products.sort((a, b) => a.article.localeCompare(b.article)))
+            setInitData(parsedRes.data.products.sort((a, b) => a.article.localeCompare(b.article)))
             setPaginationState({ ...paginationState, total: parsedRes.data.products.length })
             setCheckedList(parsedRes.data.products.filter(_ => _.in_group).map(_ => _.id))
             //setGroupData(parsedRes.data)
@@ -99,6 +102,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             }
             setIsAddSkuModalVisible(false)
             getGroupData(authToken, groupData.id)
+            setAlertState({ isVisible: true, message: 'Товар успешно добавлен'})
             //setGroupData(parsedRes.data)
             //setDataFetchingStatus(initDataFetchingStatus)
         } catch {
@@ -137,6 +141,18 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
         setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 })
     }, [tableData])
 
+    useEffect(() => {
+        if (!isAddSkuModalVisible) {
+            setCheckedList(tableData?.filter(_ => _.in_group).map(_ => _.id));
+        }
+
+    }, [isAddSkuModalVisible])
+
+    useEffect(() => {
+        const { current } = scrollContainerRef;
+        current?.scrollTo({top: 0, behavior: 'smooth', duration: 100})
+    } ,[paginationState.current])
+
     return (
         <Modal
             footer={
@@ -144,7 +160,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                     addProducts={addProducts}
                     setIsAddSkuModalVisible={setIsAddSkuModalVisible}
                     isDataLoading={dataFetchingStatus.isLoading}
-                    isCheckedListEmpty={checkedList.length === 0}
+                    isCheckedListEmpty={checkedList?.length === 0}
                 />
             }
             onOk={() => setIsAddSkuModalVisible(false)}
@@ -166,7 +182,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                 } */}
                 {/* main data */}
                 {tableData &&
-                    <div className={styles.modal__tableWrapper}>
+                    <div className={styles.modal__tableWrapper} ref={scrollContainerRef}>
 
                         {/* table */}
                         <div className={styles.table}>
@@ -216,10 +232,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                             autoCorrect='off'
                                                             spellCheck={false}
                                                             autoComplete='off'
-                                                            style={{paddingRight: 0}}
+                                                            style={{ paddingRight: 0 }}
                                                             suffix={
                                                                 <button className={styles.table__searchButton} onClick={searchButtonClickHandler}>
-                                                                    <svg width="10" height="10" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '20px', height: '20px'}}>
+                                                                    <svg width="10" height="10" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '20px', height: '20px' }}>
                                                                         <path fillRule="evenodd" clipRule="evenodd" d="M1.5 9.60353C1.5 5.25398 5.02601 1.72797 9.37556 1.72797C13.7251 1.72797 17.2511 5.25398 17.2511 9.60353C17.2511 13.9531 13.7251 17.4791 9.37556 17.4791C5.02601 17.4791 1.5 13.9531 1.5 9.60353ZM9.37556 0.227966C4.19758 0.227966 0 4.42555 0 9.60353C0 14.7815 4.19758 18.9791 9.37556 18.9791C11.6946 18.9791 13.8169 18.1371 15.4537 16.7423L19.4834 20.772L20.5441 19.7114L16.5143 15.6816C17.9092 14.0449 18.7511 11.9225 18.7511 9.60353C18.7511 4.42555 14.5535 0.227966 9.37556 0.227966Z" fill="#5329FF" />
                                                                     </svg>
 

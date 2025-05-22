@@ -117,7 +117,7 @@ export const menuConfig = [
                 id: 5,
                 url: '/groups',
                 label: 'Группы товаров',
-                isActive: false
+                isActive: true
             },
         ]
     },

@@ -19,7 +19,6 @@ const initDataStatus = {
 }
 
 const SelfCostPage = () => {
-
     const [isSuccess, setIsSuccess] = useState(false);
     const [dataStatus, setDataStatus] = useState(initDataStatus)
     const [loading, setLoading] = useState(false);

@@ -2,17 +2,22 @@ import React, { useState, useContext, useEffect } from 'react';
 import styles from './groupsMainWidget.module.css'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
 import { groupsMainTableConfig, buttonIcons } from '../../shared';
-import { Checkbox, ConfigProvider } from 'antd';
+import { Checkbox, ConfigProvider, message } from 'antd';
 import { formatPrice } from '../../../../service/utils';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../../../service/AuthContext';
 import { URL } from '../../../../service/config';
+import { GroupEditModal, ConfirmationModal } from '../../features';
+
+const initConfirmationState = { open: false, title: '', message: '', mainAction: '', returnAction: '', actionTitle: '' }
 
 
-const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroupsData, setDataFetchingStatus, initDataFetchingStatus }) => {
+const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroupsData, setDataFetchingStatus, initDataFetchingStatus, dataFetchingStatus }) => {
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
     const [checkedList, setCheckedList] = useState([]);
+    const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
+    const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -44,7 +49,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                 setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
                 return;
             }
-
+            setAlertState({isVisible: true, message: 'Группа успешно удалена'})
             getGroupsData(authToken)
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
@@ -83,28 +88,28 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                             {/* Мапим массив значений заголовков */}
                             {tableData && groupsMainTableConfig.values.map((v, id) => {
                                 return (
-                                        <div className={styles.table__headerItem} key={id}>
+                                    <div className={styles.table__headerItem} key={id}>
 
-                                            {v.hasSelect &&
-                                                <div className={styles.sortControls}>
-                                                    <ConfigProvider
-                                                        theme={{
-                                                            token: {
-                                                                colorPrimary: '#5329FF',
-                                                                colorBgContainer: 'transparent'
-                                                            }
-                                                        }}
-                                                    >
-                                                        <Checkbox
-                                                            indeterminate={indeterminate}
-                                                            onChange={onCheckAllChange}
-                                                            checked={checkAll}
-                                                        />
-                                                    </ConfigProvider>
-                                                </div>
-                                            }
-                                            <p className={styles.table__headerItemTitle}>{v.ruName}</p>
-                                        </div>
+                                        {v.hasSelect &&
+                                            <div className={styles.sortControls}>
+                                                <ConfigProvider
+                                                    theme={{
+                                                        token: {
+                                                            colorPrimary: '#5329FF',
+                                                            colorBgContainer: 'transparent'
+                                                        }
+                                                    }}
+                                                >
+                                                    <Checkbox
+                                                        indeterminate={indeterminate}
+                                                        onChange={onCheckAllChange}
+                                                        checked={checkAll}
+                                                    />
+                                                </ConfigProvider>
+                                            </div>
+                                        }
+                                        <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                    </div>
                                 )
                             })}
                         </div>
@@ -129,6 +134,9 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                         {v.actionTypes.map((a, id) => {
                                                             if (a === 'edit') {
                                                                 return (
+                                                                    // <button className={styles.table__actionButton} key={id} onClick={() => setIsEditGroupModalVisible(true)}>
+                                                                    //     {buttonIcons[a]}
+                                                                    // </button>
                                                                     <Link className={styles.table__actionButton} key={id} to={`/groups/${product.id}`}>
                                                                         {buttonIcons[a]}
                                                                     </Link>
@@ -136,7 +144,12 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                             }
                                                             if (a === 'delete') {
                                                                 return (
-                                                                    <button className={styles.table__actionButton} key={id} onClick={() => deleteGroup(authToken, product.id)}>
+                                                                    <button
+                                                                        className={styles.table__actionButton}
+                                                                        key={id}
+                                                                        //onClick={() => deleteGroup(authToken, product.id)}
+                                                                        onClick={() => setConfirmationModalState({open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${product.name}"?`, mainAction: () => {deleteGroup(authToken, product.id)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}})}
+                                                                    >
                                                                         {buttonIcons[a]}
                                                                     </button>
                                                                 )
@@ -154,7 +167,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
 
                                                 return (
                                                     <div className={styles.table__rowItem} key={id}>
-                                                       <Link to={`/groups/${product.id}`} className={styles.table__rowTitle}>{product[v.engName]}</Link>
+                                                        <Link to={`/groups/${product.id}`} className={styles.table__rowTitle}>{product[v.engName]}</Link>
                                                     </div>
                                                 )
                                             }
@@ -177,7 +190,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                                     onChange={onCheckboxChange}
                                                                 />
                                                             </ConfigProvider>
-                                                            
+
                                                         </>
                                                         :
                                                         <>
@@ -205,6 +218,17 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
 
 
                 </div>}
+
+            {/* <GroupEditModal
+                setIsEditGroupModalVisible={setIsEditGroupModalVisible}
+                isEditGroupModalVisible={isEditGroupModalVisible}
+                dataFetchingStatus={dataFetchingStatus}
+                setDataFetchingStatus={setDataFetchingStatus}
+            /> */}
+
+            <ConfirmationModal
+                {...confirmationModalState}
+            />
         </div>
     )
 }
