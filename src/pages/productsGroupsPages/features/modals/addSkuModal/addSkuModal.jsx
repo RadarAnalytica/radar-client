@@ -23,7 +23,7 @@ const getFilteredData = (query, data) => {
     return filteredData;
 }
 
-const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops }) => {
+const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops, setAlertState }) => {
     const scrollContainerRef = useRef(null) 
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState()
@@ -102,6 +102,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             }
             setIsAddSkuModalVisible(false)
             getGroupData(authToken, groupData.id)
+            setAlertState({ isVisible: true, message: 'Товар успешно добавлен'})
             //setGroupData(parsedRes.data)
             //setDataFetchingStatus(initDataFetchingStatus)
         } catch {

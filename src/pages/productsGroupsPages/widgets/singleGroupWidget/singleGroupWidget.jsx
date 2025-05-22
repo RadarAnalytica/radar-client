@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styles from './singleGroupWidget.module.css'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
-import { Checkbox, ConfigProvider } from 'antd';
+import { Checkbox, ConfigProvider, message } from 'antd';
 import { singleGroupTableConfig, buttonIcons } from '../../shared';
 import wb_icon from '../../../../assets/wb_icon.png'
 import { URL } from '../../../../service/config';
@@ -19,7 +19,8 @@ const SingleGroupWidget = ({
     getGroupData,
     shops,
     setConfirmationModalState,
-    initConfirmationState
+    initConfirmationState,
+    setAlertState
 }) => {
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
@@ -66,6 +67,7 @@ const SingleGroupWidget = ({
                 return;
             }
             setTableData(updatedTableData)
+            setAlertState({isVisible: true, message: 'Товар успешно удален'})
             //getGroupData(authToken, groupId)
             // успешно обновлено
 

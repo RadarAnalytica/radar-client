@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import styles from './groupsMainWidget.module.css'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
 import { groupsMainTableConfig, buttonIcons } from '../../shared';
-import { Checkbox, ConfigProvider } from 'antd';
+import { Checkbox, ConfigProvider, message } from 'antd';
 import { formatPrice } from '../../../../service/utils';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../../../service/AuthContext';
@@ -49,7 +49,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                 setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
                 return;
             }
-
+            setAlertState({isVisible: true, message: 'Группа успешно удалена'})
             getGroupsData(authToken)
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
