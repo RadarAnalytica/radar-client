@@ -202,7 +202,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                             theme={{
                                                                 token: {
                                                                     colorPrimary: '#5329FF',
-                                                                    colorBgContainer: 'transparent'
+                                                                    colorBgContainer: 'transparent',
+                                                                    controlInteractiveSize: 20
                                                                 }
                                                             }}
                                                         >
@@ -293,7 +294,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                                         theme={{
                                                                             token: {
                                                                                 colorPrimary: '#5329FF',
-                                                                                colorBgContainer: 'transparent'
+                                                                                colorBgContainer: 'transparent',
+                                                                                controlInteractiveSize: 20
                                                                             }
                                                                         }}
                                                                     >
@@ -305,7 +307,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                                     </ConfigProvider>
                                                                 }
                                                                 <div className={styles.table__rowImgWrapper}>
-                                                                    {product[v.photoFieldName] && <img src={product[v.photoFieldName]} width={30} height={40} />}
+                                                                    {product[v.photoFieldName] && <img src={product[v.photoFieldName]} width={45} height={60} />}
                                                                 </div>
                                                                 <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                             </>
