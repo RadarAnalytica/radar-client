@@ -69,7 +69,7 @@ const SingleGroupPage = () => {
 
 
     const getGroupData = async (authToken, groupId) => {
-        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        groupData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         try {
             const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
                 headers: {
@@ -198,7 +198,7 @@ const SingleGroupPage = () => {
 
 
             {/*  modals */}
-            <AddSkuModal
+             <AddSkuModal
                 isAddSkuModalVisible={isAddSkuModalVisible}
                 setIsAddSkuModalVisible={setIsAddSkuModalVisible}
                 setDataFetchingStatus={setDataFetchingStatus}

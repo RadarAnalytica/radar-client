@@ -4,6 +4,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 24px;
+    overflow: hidden;
 }
 
 .modal__header {
@@ -62,4 +63,16 @@
     line-height: 120%;
     letter-spacing: 0%;
     color: #1A1A1A;
+    width: 100%;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.modal__buttonsWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
 }
