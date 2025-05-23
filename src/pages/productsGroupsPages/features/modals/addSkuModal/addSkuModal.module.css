@@ -35,7 +35,7 @@
 .modal__tableWrapper {
     width: 100%;
     height: auto;
-    max-height: 630px;
+    max-height: 590px;
     overflow-y: scroll;
     box-shadow: 0px 0px 20px 0px #00000014;
     border-radius: 12px;

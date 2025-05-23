@@ -25,7 +25,7 @@ const getFilteredData = (query, data) => {
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops, setAlertState }) => {
     let checkedListRef = useRef(null)
-    const scrollContainerRef = useRef(null) 
+    const scrollContainerRef = useRef(null)
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState()
     const [initData, setInitData] = useState()
@@ -41,27 +41,49 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
         const { value, checked } = e.target;
         if (checked) {
             setCheckedList([...checkedList, value])
+            // if (searchInputValue && checkedListRef?.current && checkedListRef?.current.some(_ => _ === value)) {
+            //     let newSavedList = checkedListRef.current;
+            //     const index = newSavedList.findIndex(_ => _ === value);
+            //     checkedListRef.current = newSavedList.splice(index, 1)
+            // }
         } else {
             const index = checkedList.findIndex(_ => _ === value)
             const newList = checkedList
             newList.splice(index, 1)
+
+            if (searchInputValue && checkedListRef?.current && checkedListRef?.current.some(_ => _ === value)) {
+                let newSavedList = checkedListRef.current;
+                const index = newSavedList.findIndex(_ => _ === value);
+                newSavedList.splice(index, 1)
+                checkedListRef.current = newSavedList
+            }
             setCheckedList([...newList])
         }
     };
 
     const onCheckAllChange = e => {
+        if (searchInputValue && checkedListRef?.current) {
+            const newSavedList = checkedListRef?.current;
+            tableData.forEach(i => {
+                if (newSavedList.some(_ => _ === i.id)) {
+                    const index = newSavedList.findIndex(_ => _ === i.id);
+                    newSavedList.splice(index, 1)
+                }
+            })
+            checkedListRef.current = newSavedList
+        }
         setCheckedList(e.target.checked ? tableData.map(_ => _.id) : []);
     };
 
     const getProductsList = async (authToken, groupId) => {
         console.log('hit')
-        !tableData && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true})
+        !tableData && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         try {
             const res = await fetch(`${URL}/api/product/product_groups/${groupId}/products`, {
                 headers: {
                     'content-type': 'application/json',
                     'authorization': 'JWT ' + authToken,
-                     'cache': 'no-store'
+                    'cache': 'no-store'
                 },
             })
 
@@ -88,7 +110,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             description: groupData.description,
             product_ids: searchInputValue ? [...checkedList, ...checkedListRef.current] : checkedList
         }
-      
+
         try {
             const res = await fetch(`${URL}/api/product/product_groups/${groupData.id}`, {
                 method: 'PATCH',
@@ -106,7 +128,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             }
             setIsAddSkuModalVisible(false)
             getGroupData(authToken, groupData.id)
-            setAlertState({ isVisible: true, message: 'Артикул успешно добавлен'})
+            setAlertState({ isVisible: true, message: 'Артикул успешно добавлен' })
             //setGroupData(parsedRes.data)
             //setDataFetchingStatus(initDataFetchingStatus)
         } catch {
@@ -121,22 +143,26 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     const inputKeydownHandler = (e) => {
         if (e && e.key !== 'Enter') return
         searchButtonClickHandler()
-        //setTableData(getFilteredData(searchInputValue.trim(), initData))
     }
     const searchButtonClickHandler = () => {
-        setTableData(getFilteredData(searchInputValue.trim(), initData))
+        const filteredData = getFilteredData(searchInputValue.trim(), initData)
+        const newCheckedList = []
+        checkedList.forEach(i => {
+            if (filteredData.some(_ => _.id === i)) {
+                newCheckedList.push(i)
+            }
+        })
         // Store current checked items before clearing
         checkedListRef.current = [...checkedList];
-        setCheckedList([])
+        setCheckedList(newCheckedList)
+        setTableData(filteredData)
     }
     const inputChangeHandler = (e) => {
         if (e.target.value === '') {
             setTableData([...initData])
-            
-            // Restore previous checked items when search is cleared
+
             if (checkedListRef.current) {
-                console.log(checkedList)
-               setCheckedList([...checkedListRef.current, ...checkedList])
+                setCheckedList([...checkedListRef.current, ...checkedList])
             }
         }
         setSearchInputValue(e.target.value)
@@ -162,8 +188,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
 
     useEffect(() => {
         const { current } = scrollContainerRef;
-        current?.scrollTo({top: 0, behavior: 'smooth', duration: 100})
-    } ,[paginationState.current])
+        current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 })
+    }, [paginationState.current])
 
     return (
         <Modal
@@ -319,7 +345,17 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                                     </ConfigProvider>
                                                                 }
                                                                 <div className={styles.table__rowImgWrapper}>
-                                                                    {product[v.photoFieldName] && <img src={product[v.photoFieldName]} width={45} height={60} />}
+                                                                    {product[v.photoFieldName] &&
+                                                                        <img
+                                                                            src={product[v.photoFieldName]}
+                                                                            width={45}
+                                                                            height={60} 
+                                                                            onError={(e) => {
+                                                                                e.target.onerror = null;
+                                                                                e.target.style.display = 'none'
+                                                                            }}
+                                                                        />
+                                                                    }
                                                                 </div>
                                                                 <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                             </>

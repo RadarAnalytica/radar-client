@@ -204,7 +204,17 @@ const SingleGroupWidget = ({
                                                                 </ConfigProvider>
                                                             }
                                                             <div className={styles.table__rowImgWrapper}>
-                                                                {product[v.photoFieldName] && <img src={product[v.photoFieldName]} width={30} height={40} />}
+                                                                {product[v.photoFieldName] && 
+                                                                    <img 
+                                                                        src={product[v.photoFieldName]} 
+                                                                        width={30} 
+                                                                        height={40} 
+                                                                        onError={(e) => {
+                                                                            e.target.onerror = null;
+                                                                            e.target.style.display = 'none'
+                                                                        }}
+                                                                    />
+                                                                }
                                                             </div>
                                                             <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                         </>
