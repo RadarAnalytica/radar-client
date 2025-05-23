@@ -140,6 +140,9 @@ function SortIcon({ sortOrder }) {
 }
 
 function formatNumber(num) {
+	if (!num){
+		return '0'
+	}
 	return new Intl.NumberFormat('ru-RU', {
 		minimumFractionDigits: 0,
 		maximumFractionDigits: 2

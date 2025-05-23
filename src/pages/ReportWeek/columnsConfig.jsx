@@ -16,9 +16,6 @@ function summaryRender(value, row) {
 	return value
 }
 
-		// sorter: (a, b) => Number(a.avg_price) - Number(b.avg_price),
-
-
 function sorter(a, b, key) {
 	if (a.key == 'summary' || b.key == 'summary'){
 		return 0
@@ -57,6 +54,7 @@ export const COLUMNS = [
 	{
 		title: 'Продажи',
 		dataIndex: 'sales',
+		// dataIndex: 'sales_amount',
 		sorter: (a, b) => sorter(a, b, 'sales'), // Number(a.sales) - Number(b.sales),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
@@ -126,6 +124,7 @@ export const COLUMNS = [
 	{
 		title: 'Заказы, шт',
 		dataIndex: 'order_count',
+		// dataIndex: 'orders_count',
 		sorter: (a, b) => sorter(a, b, 'order_count'), // Number(a.order_count) - Number(b.order_count),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
@@ -136,6 +135,7 @@ export const COLUMNS = [
 	{
 		title: 'Заказы, руб',
 		dataIndex: 'order_sum',
+		// dataIndex: 'orders_amount',
 		sorter: (a, b) => sorter(a, b, 'order_sum'), // Number(a.order_sum) - Number(b.order_sum),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
@@ -196,6 +196,7 @@ export const COLUMNS = [
 	{
 		title: 'Всего продаж',
 		dataIndex: 'total_sales',
+		// dataIndex: 'sales_count',
 		sorter: (a, b) => sorter(a, b, 'total_sales'), // Number(a.total_sales) - Number(b.total_sales),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
