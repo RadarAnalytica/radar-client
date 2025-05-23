@@ -71,15 +71,15 @@ export const menuConfig = [
             },
             {
                 id: 5,
-                url: '/main', // исправить
+                url: '/main', 
                 label: 'Операционные расходы',
                 isActive: false
             },
             {
                 id: 6,
-                url: '/report-week', // исправить
+                url: '/report-week', 
                 label: 'Отчет по неделям',
-                isActive: false
+                isActive: true
             },
         ]
     },
