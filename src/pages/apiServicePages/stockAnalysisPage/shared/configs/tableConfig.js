@@ -30,6 +30,7 @@ export const tableConfig = [
         values: [
             {ruName: 'Сумма', engName: 'returnsSum', units: '₽', isSortable: true},
             {ruName: 'Количество', engName: 'returnsQuantity', units: 'шт', isSortable: true},
+            {ruName: 'Себестоимость возвращенных товаров', engName: 'return_cost', units: '₽', isSortable: false},
             {ruName: 'Себестоимость возвращенных товаров', engName: 'returnsCostSold', units: '₽', isSortable: false},
         ]
     },
