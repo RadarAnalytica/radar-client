@@ -130,8 +130,10 @@ export const ProtectedRoute = ({
 3& smart + !onboardig
  */
 
+
+
   //------- 0. Under development protection ----------//
-  if (underDevProtected) {
+  if (underDevProtected && process.env.NODE_ENV === 'production') {
     switch(underDevGuardType) {
       case 'redirect': {
         return navigate(underDevRedirect)
