@@ -32,13 +32,13 @@ const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
 const OrdersMap = React.lazy(() => import("./pages/OrdersMap"));
 const Spasibo = React.lazy(() => import("./pages/Spasibo"));
 const Instructions = React.lazy(() => import("./pages/Instructions"));
-const StockAnalysis = React.lazy(() => import("./pages/StockAnalysis"));
+//const StockAnalysis = React.lazy(() => import("./pages/StockAnalysis"));
 const MainWidget = React.lazy(() => import("./pages/MainWidget"));
 const StubPage = React.lazy(() => import("./pages/StubPage"));
 const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
 const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
-const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
+//const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashboard"));
 const Schedule = React.lazy(() => import("./pages/Schedule"));
@@ -56,6 +56,7 @@ const SelfCostPage = React.lazy(() => import("./pages/selfCostPage/selfCostPage"
 const ReportWeek = React.lazy(() => import("./pages/ReportWeek/ReportWeek"));
 const SkuFrequencyPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyPage"));
 const SkuFrequencyRequestPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyRequestPage"));
+const UnderDevelopmentPlugPage = React.lazy(() => import("./pages/underDevelopmentPlugPage/underDevelopmentPlugPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -80,6 +81,7 @@ function App() {
             {/* under development */}
             <Route path='/dev/monitoring' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/dev/monitoring/request' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />
+            <Route path='/dev' element={<ProtectedRoute routeRuName='Частотность артикула'><UnderDevelopmentPlugPage /></ProtectedRoute>} />
             {/* Protected routes */}
             <Route path='/groups' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
             <Route path='/groups/:group_id' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
