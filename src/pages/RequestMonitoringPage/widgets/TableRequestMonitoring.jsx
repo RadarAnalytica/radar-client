@@ -1,10 +1,10 @@
-// import { useState } from 'react'
 import { useState, useEffect } from 'react';
-import ArrowUp from "../assets/ArrowDown.svg";
-import ArrowDown from "../assets/ArrowUp.svg";
-import pageIcon from "../assets/page-icon.svg"
-import GreenArrow from '../assets/greenarrow.svg';
-import RedArrow from '../assets/redarrow.svg';
+// import ArrowUp from "../assets/ArrowDown.svg";
+import ArrowUp from "../../../assets/ArrowDown.svg";
+import ArrowDown from "../../../assets/ArrowUp.svg";
+import pageIcon from "../../../assets/page-icon.svg"
+import GreenArrow from '../../../assets/greenarrow.svg';
+import RedArrow from '../../../assets/redarrow.svg';
 import styles from './TableRequestMonitoring.module.css';
 
 const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort }) => {
@@ -13,7 +13,6 @@ const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort
     const [isScrolled, setIsScrolled] = useState(false);
     const totalPages = monitorData.pages;
     const page = monitorData.page;
-
 
     // Function to go to the previous page
     const goToPreviousPage = () => {
@@ -28,7 +27,6 @@ const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort
             setPage(page + 1);
         }
     };
-
 
     const sortData = (key) => {
         if (key === "asc") {
@@ -101,53 +99,49 @@ const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort
     };
 
     return (
-        <div className="table-wrapper-req-monitoring">
-            <div className={styles.tableWrapperHeadder}>
-                <div className="infoOfTable">
-                    <div class="page-info">
-                        <div className="pagination">
-                            {page > 1 && (
-                                <button className="arrow left-arrow" onClick={goToPreviousPage}>
-                                    &lang;
-                                </button>
-                            )}
+        <div className={styles.wrapper}>
+            <div className={styles.wrapper__header}>
+                <div className={styles.table__info}>
+                    <div className={styles.pagination}>
+                        {page > 1 && (
+                            <button className={styles.arrow_left} onClick={goToPreviousPage}>
+                                &lang;
+                            </button>
+                        )}
 
-
-                            <div className="page">
-                                <img src={pageIcon} alt="Page Icon" style={{ marginRight: "5px" }} />
-                                <span>{page}<span style={{ fontWeight: "400" }}> стр. из {totalPages}</span></span>
-                            </div>
-
-                            {page < totalPages && (
-                                <button className="arrow right-arrow" onClick={goToNextPage}>
-                                    &rang;
-                                </button>
-                            )}
+                        <div className="page">
+                            <img src={pageIcon} alt="Page Icon" className={styles.page__icon} />
+                            <span>{page}<span className={styles.page__numbers}> стр. из {totalPages}</span></span>
                         </div>
-                        {/* <div style={{ marginLeft: "15px" }} class="rank">
-                        <img src={rankIcon} />
-                        <span style={{ marginLeft: "5px" }}>{totalTrueFlags} место</span>
-                        <img
-                            src={GreenArrow}
-                            alt=''
-                            style={{ width: '1.25vw', marginLeft: "5px" }}
-                        />
-                    </div> */}
-                    </div>
 
+                        {page < totalPages && (
+                            <button className={styles.arrow_left} onClick={goToNextPage}>
+                                &rang;
+                            </button>
+                        )}
+                    </div>
+                    {/* <div style={{ marginLeft: "15px" }} class="rank">
+                    <img src={rankIcon} />
+                    <span style={{ marginLeft: "5px" }}>{totalTrueFlags} место</span>
+                    <img
+                        src={GreenArrow}
+                        alt=''
+                        style={{ width: '1.25vw', marginLeft: "5px" }}
+                    />
+                </div> */}
                 </div>
-                <div className={styles.infoAboutDigits}>
-                    <div className={styles.quantityWrapperInfo}>
-                        <div className="req-mon-td-quantity">1</div>
-                        <div style={{ marginLeft: "5px" }}>–</div>
-                        <div style={{ marginLeft: "10px" }}>страница выдачи</div>
+                <div className={styles.table__info_digits}>
+                    <div className={styles.table__info_item}>
+                        <div className={styles.table__info_item_quantity}>1</div>
+                        <div>–</div>
+                        <div>страница выдачи</div>
                     </div>
-                    <div className={styles.quantityWrapperInfo}>
-                        <div style={{ marginRight: "10px" }}>10</div>
-                        <div style={{ marginLeft: "5px" }}>–</div>
-                        <div style={{ marginLeft: "10px" }}>позиция товара</div>
+                    <div className={styles.table__info_item}>
+                        <div>10</div>
+                        <div>–</div>
+                        <div>позиция товара</div>
                     </div>
-                    <div className={styles.quantityWrapperInfo}>
+                    <div className={styles.table__info_item}>
                         <div
                             className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'
                             style={{
@@ -162,8 +156,8 @@ const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort
                                 style={{ width: '1.5vw' }}
                             />
                         </div>
-                        <div style={{ marginLeft: "5px" }}>–</div>
-                        <div style={{ marginLeft: "10px" }}>динамика позиции</div>
+                        <div>–</div>
+                        <div>динамика позиции</div>
                     </div>
                 </div>
             </div>

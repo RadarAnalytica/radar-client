@@ -1,19 +1,20 @@
 import { useContext, useState, useEffect } from 'react';
-import TopNav from '../components/TopNav';
-import glitterStar from '../pages/images/glitterstar.svg';
-import glityellow from '../pages/images/glityellow.svg';
-import glitFile from '../pages/images/glitfile.svg';
-import SearchButton from '../assets/searchstock.svg'
-import RequestMonitoringFilter from '../components/RequestMonitoringFilter'
-import TableRequestMonitoring from '../components/TableRequestMonitoring'
-import enteringQueries from "../pages/images/enteringQueries.svg"
-import { ServiceFunctions } from "../service/serviceFunctions";
-import AuthContext from "../service/AuthContext";
-import warningIcon from "../assets/warning.png"
+// import TopNav from '../../components/TopNav';
+import TopNav from '../../components/TopNav';;
+import glitterStar from '../../pages/images/glitterstar.svg';
+import glityellow from '../../pages/images/glityellow.svg';
+import glitFile from '../../pages/images/glitfile.svg';
+import SearchButton from '../../assets/searchstock.svg'
+import RequestMonitoringFilter from '../../components/RequestMonitoringFilter'
+import TableRequestMonitoring from './widgets/TableRequestMonitoring'
+import enteringQueries from "../../pages/images/enteringQueries.svg"
+import { ServiceFunctions } from "../../service/serviceFunctions";
+import AuthContext from "../../service/AuthContext";
+import warningIcon from "../../assets/warning.png"
 import Modal from 'react-bootstrap/Modal';
 import styles from './RequestMonitoringPage.module.css';
-import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
-import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
+import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 
 const RequestMonitoringPage = () => {
 
@@ -53,10 +54,14 @@ const RequestMonitoringPage = () => {
     }
 
     useEffect(() => {
+        handleFilterSearch()
+    }, [days])
+
+    useEffect(() => {
         if (searchInputQuery) {
-            handleUpdate()
+            updateRequestMonitoring(authToken, searchInputQuery, Number(days), page, monitorData.page_limit ?? 25, sort)
         }
-    }, [days, page, sort])
+    }, [page, sort])
 
     const updateRequestMonitoring = async (
         token, product, period, page, page_limit, sort
@@ -394,7 +399,7 @@ const RequestMonitoringPage = () => {
                         className='container dash-container pt-0 d-flex'
                         style={{ marginBottom: '4px' }}
                     >
-                        <RequestMonitoringFilter setDays={setDays} days={days} />
+                        <RequestMonitoringFilter loading={isTableLoading} setDays={setDays} days={days} />
                     </div>
                     {isTableLoading ? (
                         <div className="loader-wrapper">

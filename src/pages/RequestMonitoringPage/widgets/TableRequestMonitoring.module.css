@@ -3,7 +3,7 @@
     flex-direction: row;
     /* margin-top: 21px; */
     width: 100%;
-    padding: 0px 15px;
+    /* padding: 0px 15px; */
 }
 
 .customTable {
@@ -81,26 +81,57 @@
     border-bottom-left-radius: 12px;
 }
 
-.tableWrapperHeadder{
+.wrapper{
+  margin: auto;
+  padding: 20px;
+  height:max-content;
+  display: flex;
+  flex-direction: column;
+  max-width: 78vw !important;
+  --bs-gutter-x:0!important;
+  border-radius: 10px;
+  background-color: #ffffff;
+  /* margin: 0px 0px 0px 60px; */
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08)
+}
+
+@media screen and (max-width: 1080px) {
+  .wrapper{
+    min-width: 90vw !important;
+  }
+}
+
+.wrapper__header{
     display: flex;
     flex-direction: row;
-
     align-items: center;
+    gap: 40px;
+    margin-bottom: 10px;
 }
-.infoAboutDigits{
+
+.table__info {
+  display: flex;
+  align-items: center;
+  background-color: #5329FF08;
+  padding: 14px 18px;
+  border-radius: 10px;
+  max-width: max-content;
+}
+
+.table__info_digits{
     display: flex;
     align-items: center;
     padding: 10px;
-    border-radius: 10px;
+    gap: 40px;
     max-width: max-content;
-    margin:20px 20px 10px 20px;
 }
+.table__info_item,
 .quantityWrapperInfo{
-    font-weight: 500;
     display: flex;
     align-items: center;
     flex-direction: row;
-    margin: 0px 20px 0px 20px;
+    gap: 10px;
+    font-weight: 500;
 }
 .tableHeaderNotFirst {
     color: #8c8c8c;
@@ -183,4 +214,70 @@
   background: #f7f6fe;
   border-top-right-radius: 16px;
   border-bottom-right-radius: 16px;
+}
+
+.page {
+  display: flex;
+  align-items: center;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.page__info {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+}
+.page__icon{
+    margin-right: 5px;
+}
+
+.page__numbers{
+    font-weight: 400!important;
+}
+
+.arrow_left {
+  margin-right: 5px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.arrow_right {
+  margin-left: 5px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.table__info_item_quantity,
+.req-mon-td-quantity{
+  margin-right: 10px;
+  background-color: #00000008;
+  padding: 4px 16px 4px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.req-mon-td-quantity-empty {
+  margin-right: 10px;
+  background-color: transparent; /* Transparent background */
+  padding: 4px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  min-width: 42px; /* Adjust this to match the expected width */
+}
+
+.pagination {
+  /* background-color:  #00000008; */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 166px;
 }

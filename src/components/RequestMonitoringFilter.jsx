@@ -1,6 +1,6 @@
 import React from "react";
 
-const RequestMonitoringFilter = ({ setDays, days }) => {
+const RequestMonitoringFilter = ({ loading, setDays, days }) => {
     // const currentShop = shops?.find((item) => item.id == activeShopId);
     // const shopName = activeShopId == 0 ? 'Все' : currentShop?.brand_name;
 
@@ -28,6 +28,7 @@ const RequestMonitoringFilter = ({ setDays, days }) => {
                             className='form-control'
                             id='period'
                             value={days}
+                            disabled={loading}
                             // defaultValue={30}
                             onChange={(e) => {
                                 setDays(e.target.value);
