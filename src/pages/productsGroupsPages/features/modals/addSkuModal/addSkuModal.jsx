@@ -31,7 +31,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     const [initData, setInitData] = useState()
     const [isDataLoading, setIsDataLoading] = useState(false)
     const [checkedList, setCheckedList] = useState([]);
-    console.log(checkedList)
     const [searchInputValue, setSearchInputValue] = useState('')
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
     const checkAll = tableData && tableData.length === checkedList.length;
@@ -52,25 +51,17 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
 
     const onCheckAllChange = e => {
         setCheckedList(e.target.checked ? tableData.map(_ => _.id) : []);
-
-        // if (searchInputValue) {
-        //     setCheckedList(e.target.checked ? [...checkedList, ...tableData.map(_ => _.id)] : tableData.filter(_ => _.in_group).map(_ => _.id));
-        // }
-
-        // if (!searchInputValue) {
-        //     //setCheckedList(e.target.checked ? tableData.map(_ => _.id) : tableData.filter(_ => _.in_group).map(_ => _.id));
-        //     setCheckedList(e.target.checked ? tableData.map(_ => _.id) : []);
-        // }
-        
     };
 
     const getProductsList = async (authToken, groupId) => {
-        //setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        console.log('hit')
+        !tableData && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true})
         try {
             const res = await fetch(`${URL}/api/product/product_groups/${groupId}/products`, {
                 headers: {
                     'content-type': 'application/json',
-                    'authorization': 'JWT ' + authToken
+                    'authorization': 'JWT ' + authToken,
+                     'cache': 'no-store'
                 },
             })
 
@@ -95,14 +86,15 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
         const requestObject = {
             name: groupData.name,
             description: groupData.description,
-            product_ids: checkedList
+            product_ids: searchInputValue ? [...checkedList, ...checkedListRef.current] : checkedList
         }
+      
         try {
             const res = await fetch(`${URL}/api/product/product_groups/${groupData.id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',
-                    'authorization': 'JWT ' + authToken
+                    'authorization': 'JWT ' + authToken,
                 },
                 body: JSON.stringify(requestObject)
             })
@@ -114,7 +106,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             }
             setIsAddSkuModalVisible(false)
             getGroupData(authToken, groupData.id)
-            setAlertState({ isVisible: true, message: 'Товар успешно добавлен'})
+            setAlertState({ isVisible: true, message: 'Артикул успешно добавлен'})
             //setGroupData(parsedRes.data)
             //setDataFetchingStatus(initDataFetchingStatus)
         } catch {
@@ -152,10 +144,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
 
     useEffect(() => {
         if (groupData && groupData.id) {
-            console.log('hit')
             getProductsList(authToken, groupData.id)
         }
-    }, [groupData])
+    }, [groupData, groupData.products])
 
     useEffect(() => {
         setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 })
@@ -163,9 +154,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
 
     useEffect(() => {
         if (!isAddSkuModalVisible) {
-            setCheckedList(tableData?.filter(_ => _.in_group).map(_ => _.id));
+            setSearchInputValue('')
+            setTableData(initData)
+            setCheckedList(initData?.filter(_ => _.in_group).map(_ => _.id));
         }
-
     }, [isAddSkuModalVisible])
 
     useEffect(() => {
@@ -195,11 +187,11 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                     <p className={styles.modal__title}>Добавьте артикулы</p>
                 </div>
                 {/* loader */}
-                {/* {isDataLoading &&
+                {dataFetchingStatus.isLoading && !tableData &&
                     <div className={styles.modal__loaderWrapper}>
                         <span className='loader'></span>
                     </div>
-                } */}
+                }
                 {/* main data */}
                 {tableData &&
                     <div className={styles.modal__tableWrapper} ref={scrollContainerRef}>

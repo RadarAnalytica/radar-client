@@ -67,8 +67,8 @@ const SingleGroupWidget = ({
                 return;
             }
             setTableData(updatedTableData)
-            setAlertState({isVisible: true, message: 'Товар успешно удален'})
-            //getGroupData(authToken, groupId)
+            setAlertState({isVisible: true, message: 'Артикул успешно удален'})
+            getGroupData(authToken, groupId)
             // успешно обновлено
 
         } catch {
