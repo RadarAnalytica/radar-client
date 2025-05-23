@@ -105,10 +105,21 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     }
 
     const addProducts = async () => {
-        const requestObject = {
+        let requestObject = {
             name: groupData.name,
             description: groupData.description,
-            product_ids: searchInputValue ? [...checkedList, ...checkedListRef.current] : checkedList
+            product_ids: checkedList
+        }
+        if (searchInputValue) {
+            let ids = [...checkedList, ...checkedListRef.current]
+            let normalizedIds = []
+            ids.forEach(i => {
+                if (!normalizedIds.some(_ => _ === i)) {
+                    normalizedIds.push(i)
+                }
+            })
+
+            requestObject.product_ids = normalizedIds
         }
 
         try {
