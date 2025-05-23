@@ -29,7 +29,7 @@ const initSortState = {
 
 
 const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
-
+    
 
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState() // данные для рендера таблицы
