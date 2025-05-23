@@ -39,7 +39,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 								cellFontSize: 16,
 								borderColor: '#e8e8e8',
 								cellPaddingInline: 16,
-								cellPaddingBlock: 18,
+								cellPaddingBlock: 17,
 								bodySortBg: '#f7f6fe',
 								headerSortActiveBg: '#e7e1fe',
 								headerSortHoverBg: '#e7e1fe',
