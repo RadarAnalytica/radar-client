@@ -12,7 +12,7 @@ import { GroupEditModal, ConfirmationModal } from '../../features';
 const initConfirmationState = { open: false, title: '', message: '', mainAction: '', returnAction: '', actionTitle: '' }
 
 
-const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroupsData, setDataFetchingStatus, initDataFetchingStatus, dataFetchingStatus }) => {
+const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroupsData, setDataFetchingStatus, initDataFetchingStatus, dataFetchingStatus, setAlertState }) => {
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
     const [checkedList, setCheckedList] = useState([]);

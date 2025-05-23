@@ -24,12 +24,14 @@ const getFilteredData = (query, data) => {
 }
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, shops, setAlertState }) => {
+    let checkedListRef = useRef(null)
     const scrollContainerRef = useRef(null) 
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState()
     const [initData, setInitData] = useState()
     const [isDataLoading, setIsDataLoading] = useState(false)
     const [checkedList, setCheckedList] = useState([]);
+    console.log(checkedList)
     const [searchInputValue, setSearchInputValue] = useState('')
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
     const checkAll = tableData && tableData.length === checkedList.length;
@@ -49,7 +51,17 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     };
 
     const onCheckAllChange = e => {
-        setCheckedList(e.target.checked ? tableData.map(_ => _.id) : tableData.filter(_ => _.in_group).map(_ => _.id));
+        setCheckedList(e.target.checked ? tableData.map(_ => _.id) : []);
+
+        // if (searchInputValue) {
+        //     setCheckedList(e.target.checked ? [...checkedList, ...tableData.map(_ => _.id)] : tableData.filter(_ => _.in_group).map(_ => _.id));
+        // }
+
+        // if (!searchInputValue) {
+        //     //setCheckedList(e.target.checked ? tableData.map(_ => _.id) : tableData.filter(_ => _.in_group).map(_ => _.id));
+        //     setCheckedList(e.target.checked ? tableData.map(_ => _.id) : []);
+        // }
+        
     };
 
     const getProductsList = async (authToken, groupId) => {
@@ -116,23 +128,31 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
 
     const inputKeydownHandler = (e) => {
         if (e && e.key !== 'Enter') return
-        setTableData(getFilteredData(searchInputValue.trim(), initData))
+        searchButtonClickHandler()
+        //setTableData(getFilteredData(searchInputValue.trim(), initData))
     }
     const searchButtonClickHandler = () => {
         setTableData(getFilteredData(searchInputValue.trim(), initData))
+        // Store current checked items before clearing
+        checkedListRef.current = [...checkedList];
+        setCheckedList([])
     }
     const inputChangeHandler = (e) => {
         if (e.target.value === '') {
             setTableData([...initData])
+            
+            // Restore previous checked items when search is cleared
+            if (checkedListRef.current) {
+                console.log(checkedList)
+               setCheckedList([...checkedListRef.current, ...checkedList])
+            }
         }
-        const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
-        if (regex.test(e.target.value)) {
-            setSearchInputValue(e.target.value)
-        }
+        setSearchInputValue(e.target.value)
     }
 
     useEffect(() => {
         if (groupData && groupData.id) {
+            console.log('hit')
             getProductsList(authToken, groupData.id)
         }
     }, [groupData])
