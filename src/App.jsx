@@ -56,7 +56,6 @@ const SelfCostPage = React.lazy(() => import("./pages/selfCostPage/selfCostPage"
 const ReportWeek = React.lazy(() => import("./pages/ReportWeek/ReportWeek"));
 const SkuFrequencyPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyPage"));
 const SkuFrequencyRequestPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyRequestPage"));
-const UnderDevelopmentPlugPage = React.lazy(() => import("./pages/underDevelopmentPlugPage/underDevelopmentPlugPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -81,8 +80,8 @@ function App() {
             {/* under development */}
             <Route path='/dev/monitoring' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/dev/monitoring/request' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />
-            <Route path='/dev' element={<ProtectedRoute routeRuName='Частотность артикула'><UnderDevelopmentPlugPage /></ProtectedRoute>} />
             {/* Protected routes */}
+            <Route path='/new-monitoring' element={<ProtectedRoute underDevProtected routeRuName='В разработке'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/groups' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
             <Route path='/groups/:group_id' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
             <Route path='/selfcost' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
