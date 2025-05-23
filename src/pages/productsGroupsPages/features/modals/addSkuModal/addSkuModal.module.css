@@ -239,4 +239,11 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    color: #CCCCCC;
+}
+.table__searchInput:hover button {
+    color: #5329FF;
+}
+.table__searchButton:hover {
+    color: #5329FF;
 }

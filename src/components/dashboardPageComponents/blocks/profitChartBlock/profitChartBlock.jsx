@@ -11,7 +11,8 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 const ProfitChartBlock = ({ dataDashBoard, loading }) => {
 
     const { labels, dataRevenue, dataNetProfit, minDataRevenue, maxDataRevenue, stepSizeRevenue } = processSalesAndProfit(dataDashBoard?.salesAndProfit);
-
+    //console.log('minDataRevenue', minDataRevenue)
+    //console.log('maxDataRevenue', maxDataRevenue)
     const data = {
         labels: labels ? labels : [],
         datasets: [
@@ -117,8 +118,8 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                 }
             },
             y: {
-                beginAtZero: true,
-                min: minDataRevenue,
+                //beginAtZero: true,
+                //min: minDataRevenue,
                 max: maxDataRevenue,
                 grid: {
                     display: true,
