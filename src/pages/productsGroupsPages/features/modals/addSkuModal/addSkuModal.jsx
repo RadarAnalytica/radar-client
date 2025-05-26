@@ -76,7 +76,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     };
 
     const getProductsList = async (authToken, groupId) => {
-        console.log('hit')
         !tableData && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         try {
             const res = await fetch(`${URL}/api/product/product_groups/${groupId}/products`, {
