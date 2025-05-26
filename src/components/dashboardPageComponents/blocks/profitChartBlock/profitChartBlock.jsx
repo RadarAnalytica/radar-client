@@ -117,8 +117,8 @@ const ProfitChartBlock = ({ dataDashBoard, loading }) => {
                 }
             },
             y: {
-                beginAtZero: true,
-                min: minDataRevenue,
+                //beginAtZero: true,
+                //min: minDataRevenue,
                 max: maxDataRevenue,
                 grid: {
                     display: true,
