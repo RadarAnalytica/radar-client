@@ -27,7 +27,6 @@ import HowToLink from '../../../../components/sharedComponents/howToLink/howToLi
 import TurnoverBlock from '../../../../components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock'
 import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
-import { getFiltersQuery } from '../../../../service/utils'
 
 
 const _DashboardPage = () => {
@@ -56,7 +55,7 @@ const _DashboardPage = () => {
                     authToken,
                     selectedRange,
                     activeBrand,
-                    getFiltersQuery(filters)
+                    filters
                 );
                 setDataDashboard(data);
             }

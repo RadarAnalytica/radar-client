@@ -1,8 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import DownloadButton from '../../../DownloadButton';
-import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AuthContext from '../../../../service/AuthContext';
-import { fileDownload } from '../../../../service/utils';
 import styles from './filters.module.css'
 import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';

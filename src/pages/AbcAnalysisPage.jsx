@@ -18,6 +18,7 @@ import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscri
 
 const AbcAnalysisPage = () => {
   const { activeBrand, selectedRange: days } = useAppSelector(store => store.filters)
+  const filters = useAppSelector(store => store.filters)
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch();
@@ -54,7 +55,8 @@ const AbcAnalysisPage = () => {
           viewType,
           authToken,
           days,
-          activeBrand
+          activeBrand,
+          filters
         );
       }
 
@@ -89,7 +91,7 @@ const AbcAnalysisPage = () => {
     if (activeBrand?.is_primary_collect && viewType && days && authToken) {
       updateDataAbcAnalysis(viewType, authToken, days, activeBrand.id.toString())
     }
-  }, [activeBrand, viewType, days]);
+  }, [activeBrand, viewType, days, filters]);
   //---------------------------------------------------------------------------------------//
 
   // 2.1.1 Проверям изменился ли магазин при обновлении токена
