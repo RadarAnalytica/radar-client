@@ -11,10 +11,10 @@ const MobilePlug = () => {
     const getPlugStyles = () => {
         const body = document.querySelector('body');
         if (deviceRegexp.test(userAgent)) {
-            body?.styles.overflow = 'hidden'
+            if (body) {body.styles.overflow = 'hidden'}
             return styles.plug
         }
-        body?.styles.overflow = 'auto'
+        if (body) {body.styles.overflow = 'auto'}
         return styles.plug_hidden
     }
 

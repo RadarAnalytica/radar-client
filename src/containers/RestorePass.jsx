@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import logo from '../assets/logo.png';
 import InputField from '../components/InputField';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,6 +8,8 @@ import { URL } from '../service/config';
 const RestorePass = ({ email }) => {
   const [pass, setPass] = useState();
   const [confPass, setConfPass] = useState();
+  const [ passInputErrMessage, setPassInputErrMessage ] = useState('')
+  const [ confPassInputErrMessage, setConfPassInputErrMessage ] = useState('')
 
   const handlePass = (e) => setPass(e.target.value);
   const handleConfPass = (e) => setConfPass(e.target.value);
@@ -43,13 +45,35 @@ const RestorePass = ({ email }) => {
   };
 
   const handler = async (e) => {
-    if (pass && confPass && pass === confPass) {
+    if (pass?.length < 6) {
+      setPassInputErrMessage('Пожалуйста, введите не мене 6 символов')
+    }
+    if (pass !== confPass) {
+      setConfPassInputErrMessage('Пароли не совпадают')
+    }
+    if (pass && confPass && pass === confPass && pass?.length >= 6) {
+      setPassInputErrMessage('')
+      setConfPassInputErrMessage('')
       await updatePass(email, pass)
     } else {
       e.preventDefault();
     }
   };
   localStorage.removeItem('authToken')
+
+
+  useEffect(() => {
+    if (pass?.length < 6) {
+      setPassInputErrMessage('Пожалуйста, введите не мене 6 символов')
+    } else {
+      setPassInputErrMessage('')
+    }
+    if (pass !== confPass) {
+      setConfPassInputErrMessage('Пароли не совпадают')
+    } else {
+      setConfPassInputErrMessage('')
+    }
+  }, [pass, confPass])
 
   return (
     <div className='signin-form'>
@@ -67,6 +91,7 @@ const RestorePass = ({ email }) => {
           callback={handlePass}
           required={true}
           hide={true}
+          passErrorText={passInputErrMessage}
         />
         <InputField
           type={'password'}
@@ -75,6 +100,7 @@ const RestorePass = ({ email }) => {
           callback={handleConfPass}
           required={true}
           hide={true}
+          passErrorText={confPassInputErrMessage}
         />
       </div>
       <button
