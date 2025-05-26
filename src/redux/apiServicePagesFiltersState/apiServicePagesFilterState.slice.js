@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchFilters } from "./filterActions";
 
 const initialState = {
     activeBrand: null,
+    activeBrandName: null,
+    activeArticle: null,
+    activeGroup: null,
     skuFrequencyMode: 'Простой', // 'Простой' | 'Продвинутый'
     selectedRange: {
         period: 30
-    }
+    },
+    filters: null
 }
 
 
@@ -32,6 +37,19 @@ const apiServicePagesFilterStateSlice = createSlice({
                 skuFrequencyMode: action.payload
             }
         },
+        setActiveFilters: (state, action) => {
+            const { stateKey, data } = action.payload;
+            return {
+                ...state,
+                [stateKey]: data
+            }
+        }
+    },
+    extraReducers: (bulder) => {
+        bulder
+            .addCase(fetchFilters.fulfilled, (state, action) => {
+                state.filters = action.payload;
+            })
     }
 })
 
