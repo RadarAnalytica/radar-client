@@ -39,15 +39,15 @@ const createFiltersDTO = (data) => {
         const isInObject = Object.keys(filtersDTO).some(_ => _ === key);
         if (isInObject && key !== 'shops') {
             let normilizedData = [];
-            if (key === 'articles') {normilizedData = data[key].map(_ => ({ value: _.article}))}
+            if (key === 'articles') {normilizedData = [{ value: 'Все' },...data[key].map(_ => ({ value: _.article}))]}
             if (key === 'product_groups') {normilizedData = [{id: 0, value: 'Все'},...data[key].map(_ => ({ value: _.name, id: _.id}))]}
-            if (key === 'brands') {normilizedData = data[key].map(_ => ({ value: _.brand}))}
+            if (key === 'brands') {normilizedData = [{ value: 'Все' },...data[key].map(_ => ({ value: _.brand}))]}
             //if (key === 'shops') {normilizedData = [{id: 0, value: 'Все'},...data[key].map(_ => ({ value: _.name, id: _.id}))]}
             filtersDTO[key].data = normilizedData;
         }
     })
 
-    return filtersDTO
+    return {filtersData: filtersDTO, initState: {activeBrandName: {value: 'Все'}, activeArticle: {value: 'Все'}, activeGroup: {id: 0, value: 'Все'}}}
 }
 
 export const fetchFilters = createAsyncThunk(

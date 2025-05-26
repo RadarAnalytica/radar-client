@@ -48,7 +48,11 @@ const apiServicePagesFilterStateSlice = createSlice({
     extraReducers: (bulder) => {
         bulder
             .addCase(fetchFilters.fulfilled, (state, action) => {
-                state.filters = action.payload;
+                return {
+                    ...state,
+                    filters: action.payload.filtersData,
+                    ...action.payload.initState
+                }
             })
     }
 })

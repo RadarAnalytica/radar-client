@@ -26,11 +26,18 @@ const SelfCostPage = () => {
     const [filteredTableData, setFilteredTableData] = useState() // данные для рендера таблицы
     const { authToken } = useContext(AuthContext)
     const { activeBrand } = useAppSelector(store => store.filters)
+    const filters = useAppSelector(store => store.filters)
     //const prevShop = useRef(activeBrand)
 
-    const getTableData = async (authToken, shopId) => {
+    const getTableData = async (authToken, shopId, filters) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
-        const queryString = `shop=${shopId}`
+        let queryString = `shop=${shopId}`
+        if (filters?.activeBrandName && filters?.activeBrandName.value !== 'Все') {
+            queryString += `&brand=${filters.activeBrandName.value}`
+          }
+          if (filters?.activeGroup && filters?.activeGroup.id !== 0) {
+            queryString += `&product_group=${filters.activeGroup.id}`
+          }
         const res = await fetch(`${URL}/api/product/self-costs?${queryString}`, {
             headers: {
                 'content-type': 'application/json',
@@ -74,13 +81,11 @@ const SelfCostPage = () => {
 
     //задаем начальную дату
     useEffect(() => {
-        //console.log('prevShop.current.id', prevShop?.current?.id)
-        //console.log('activeBrand.id', activeBrand?.id)
         if (activeBrand && authToken) {
-            getTableData(authToken, activeBrand.id)
+            getTableData(authToken, activeBrand.id, filters)
         }
 
-    }, [activeBrand])
+    }, [activeBrand, filters])
 
     useEffect(() => {
         let timeout;
@@ -107,6 +112,7 @@ const SelfCostPage = () => {
                     <Filters
                         setLoading={setLoading}
                         timeSelect={false}
+                        articleSelect={false}
                     />
                     <HowToLink
                         text='Инструкция по загрузке себестоимости'

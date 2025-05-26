@@ -1,6 +1,30 @@
 import { URL } from './config';
 import { formatFromIsoDate, rangeApiFormat } from './utils'
 import { store } from '../redux/store'
+import moment from 'moment';
+
+export const getRequestObject = (filters, selectedRange, shopId) => {
+  let requestObject = {
+    articles: [],
+    product_groups: [],
+    brands: [],
+    shop: shopId,
+    period: selectedRange?.period && selectedRange.period,
+    date_from: selectedRange?.from && selectedRange.from,
+    date_to: selectedRange?.to && selectedRange.to
+  }
+
+  if (filters?.activeBrandName && filters?.activeBrandName.value !== 'Все') {
+    requestObject.brands = [filters.activeBrandName.value]
+  }
+  if (filters?.activeArticle && filters?.activeArticle.value !== 'Все') {
+    requestObject.articles = [filters.activeArticle.value]
+  }
+  if (filters?.activeGroup && filters?.activeGroup.id !== 0) {
+    requestObject.product_groups = [filters.activeGroup.id]
+  }
+  return requestObject;
+}
 
 export const ServiceFunctions = {
   register: async (object) => {
@@ -161,18 +185,19 @@ export const ServiceFunctions = {
   //   return data;
   // },
 
-  getDashBoard: async (token, selectedRange, idShop) => {
+  getDashBoard: async (token, selectedRange, idShop, filters) => {
 
-    let rangeParams = rangeApiFormat(selectedRange);
-
+    //let rangeParams = rangeApiFormat(selectedRange);
+    const body = getRequestObject(filters, selectedRange, idShop)
     const res = await fetch(
-      `${URL}/api/dashboard/?${rangeParams}&shop=${idShop}`,
+      `${URL}/api/dashboard/`,
       {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'content-type': 'application/json',
           authorization: 'JWT ' + token,
         },
+        body: JSON.stringify(body)
       }
     );
 
@@ -189,7 +214,7 @@ export const ServiceFunctions = {
   getDashboardTurnoverData: async (token, selectedRange, idShop) => {
     let rangeParams = rangeApiFormat(selectedRange);
     try {
-      const res = await fetch(`${URL}/api/dashboard/turnover?${rangeParams}&shop=${idShop}`,  {
+      const res = await fetch(`${URL}/api/dashboard/turnover?${rangeParams}&shop=${idShop}`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -234,30 +259,33 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getGeographyData: async (token, selectedRange, idShop) => {
-    let rangeParams = rangeApiFormat(selectedRange);
-    const res = await fetch(`${URL}/api/geo/?${rangeParams}&shop=${idShop}`, {
-      method: 'GET',
+  getGeographyData: async (token, selectedRange, idShop, filters) => {
+    //let rangeParams = rangeApiFormat(selectedRange);
+    const body = getRequestObject(filters, selectedRange, idShop)
+    const res = await fetch(`${URL}/api/geo/`, {
+      method: 'POST',
       headers: {
         'content-type': 'application/json',
         authorization: 'JWT ' + token,
       },
+      body: JSON.stringify(body)
     });
     const data = await res.json();
     return data;
   },
 
-  getAbcData: async (viewType, token, day, idShop) => {
-    let rangeParams = rangeApiFormat(day);
-
+  getAbcData: async (viewType, token, selectedRange, idShop, filters) => {
+    //let rangeParams = rangeApiFormat(day);
+    const body = getRequestObject(filters, selectedRange, idShop)
     const res = await fetch(
-      `${URL}/api/abc_data/${viewType}?${rangeParams}&shop=${idShop}`,
+      `${URL}/api/abc_data/${viewType}`,
       {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'content-type': 'application/json',
           authorization: 'JWT ' + token,
         },
+        body: JSON.stringify(body)
       }
     );
     const data = await res.json();
@@ -446,14 +474,16 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getAnalysisData: async (token, selectedRange, shop) => {
-    let rangeParams = rangeApiFormat(selectedRange);
-    const res = await fetch(`${URL}/api/prod_analytic/?${rangeParams}&shop=${shop}`, {
-      method: 'GET',
+  getAnalysisData: async (token, selectedRange, shop, filters) => {
+    //let rangeParams = rangeApiFormat(selectedRange);
+    const body = getRequestObject(filters, selectedRange, shop)
+    const res = await fetch(`${URL}/api/prod_analytic/`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'JWT ' + token,
       },
+      body: JSON.stringify(body)
     });
     const data = await res.json();
     return data;
