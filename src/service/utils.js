@@ -641,3 +641,18 @@ export function detectBrowser() {
       return 'Unknown';
   }
 }
+
+
+export const getFiltersQuery = (filters) => {
+  let query = '';
+  if (filters.activeBrandName) {
+      query += `&brand=${filters.activeBrandName.value}`
+  }
+  if (filters.activeArticle) {
+      query += `&article=${filters.activeArticle.value}`
+  }
+  if (filters.activeGroup) {
+      query += `&product_group=${filters.activeGroup.id}`
+  }
+  return query;
+}

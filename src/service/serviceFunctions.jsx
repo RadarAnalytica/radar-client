@@ -161,12 +161,11 @@ export const ServiceFunctions = {
   //   return data;
   // },
 
-  getDashBoard: async (token, selectedRange, idShop) => {
+  getDashBoard: async (token, selectedRange, idShop, query) => {
 
     let rangeParams = rangeApiFormat(selectedRange);
-
     const res = await fetch(
-      `${URL}/api/dashboard/?${rangeParams}&shop=${idShop}`,
+      `${URL}/api/dashboard/?${rangeParams}&shop=${idShop}${query}`,
       {
         method: 'GET',
         headers: {
