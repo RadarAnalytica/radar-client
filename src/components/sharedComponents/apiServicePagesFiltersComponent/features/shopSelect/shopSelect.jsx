@@ -1,8 +1,8 @@
-import styles from './plainSelect.module.css'
+import styles from './shopSelect.module.css'
 import { SelectIcon } from '../../shared'
 import { Select, ConfigProvider } from 'antd'
 
-export const PlainSelect = (
+export const ShopSelect = (
     {
         selectId, //string
         label, //string
@@ -50,7 +50,7 @@ export const PlainSelect = (
                     <Select
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
-                        options={optionsData}
+                        options={optionsData?.map(brand => ({ value: brand.id, label: brand.brand_name }))}
                         value={value}
                         id={selectId}
                         onChange={handler}

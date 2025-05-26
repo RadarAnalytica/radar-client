@@ -4,7 +4,7 @@ import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AuthContext from '../../../../service/AuthContext';
 import { fileDownload } from '../../../../service/utils';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
@@ -14,23 +14,20 @@ export const Filters = ({
   setLoading,
   shopSelect = true,
   timeSelect = true,
-  skuFrequency = false
+  skuFrequency = false,
+  brandSelect = true,
+  articleSelect = true,
+  groupSelect = true
 }) => {
 
   // ------ база ------//
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
   const { activeBrand, selectedRange, filters } = useAppSelector(store => store.filters)
+  const filtersState = useAppSelector(store => store.filters)
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
 
-
-  // ---- хэндлер скачивания шаблона сс -----//
-  const handleDownload = async () => {
-    const fileBlob = await ServiceFunctions.getDownloadDashBoard(authToken, selectedRange, activeBrand.id);
-    fileDownload(fileBlob, 'Сводка_продаж.xlsx');
-  };
-  //----------------------------------------//
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
@@ -41,7 +38,6 @@ export const Filters = ({
 
   // ------- Фетч массива магазинов -------------//
   const fetchShopData = async () => {
-    setLoading(true)
     try {
       if (user.subscription_status === null) {
         dispatch(fetchShops('mockData'));
@@ -50,8 +46,19 @@ export const Filters = ({
       }
     } catch (error) {
       console.error("Error fetching initial data:", error);
-    } finally {
-      setLoading(false);
+    }
+  };
+  //---------------------------------------------//
+  // ------- Фетч фильтров -------------//
+  const fetchFiltersData = async () => {
+    try {
+      if (user.subscription_status === null) {
+        //dispatch(fetchShops('mockData'));
+      } else {
+        dispatch(fetchFilters(authToken))
+      }
+    } catch (error) {
+      console.error("Error fetching initial data:", error);
     }
   };
   //---------------------------------------------//
@@ -61,15 +68,10 @@ export const Filters = ({
   useEffect(() => {
     if (!shops || shops.length === 0) {
       fetchShopData();
+      fetchFiltersData();
     }
   }, [shops]);
-  useEffect(() => {
-    const fetchFiltersFunc = async () => {
-      dispatch(fetchFilters(authToken))
-    }
-    fetchFiltersFunc()
-  }, [authToken]);
-  // ------
+
 
 
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
@@ -150,7 +152,7 @@ export const Filters = ({
         }
         {shops && activeBrand && shopSelect &&
           <div className={styles.filters__inputWrapper}>
-            <PlainSelect
+            <ShopSelect
               selectId='store'
               label='Магазин:'
               value={activeBrand.id}
@@ -161,22 +163,23 @@ export const Filters = ({
         }
         {filters && Object.keys(filters)?.map((i, id) => {
           const data = filters[i];
-          return (
+          const isActive = (brandSelect && i === 'brands') || (articleSelect && i === 'articles') || (groupSelect && i === 'product_groups')
+          return isActive && (
             <div className={styles.filters__inputWrapper} key={id}>
               <PlainSelect
-                selectId={i}
-                label={i}
-                value={'1'}
-                optionsData={shopArrayFormSelect}
-                handler={shopChangeHandler}
+                selectId={data.enLabel}
+                label={`${data.ruLabel}:`}
+                value={filtersState[data.stateKey]}
+                optionsData={data.data}
+                handler={(value) => {
+                  const current = data.data.find(_ => _.value === value);
+                  dispatch(filterActions.setActiveFilters({ stateKey: data.stateKey, data: current }))
+                }}
               />
             </div>
           )
         })}
       </div>
-      {/* {(!activeBrand?.is_primary_collect) && (
-        <DownloadButton handleDownload={handleDownload} />
-      )} */}
     </div>
   );
 };

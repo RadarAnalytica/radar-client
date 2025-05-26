@@ -1,3 +1,8 @@
+:global(.rc-virtual-list-scrollbar-thumb) {
+  background-color: #A994FF !important;
+}
+
+
 .calendarContainer {
   position: relative;
   width: 100%;

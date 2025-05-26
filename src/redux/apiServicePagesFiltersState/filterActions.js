@@ -5,46 +5,49 @@ import { setLoading } from '../loading/loadingSlice';
 const createFiltersDTO = (data) => {
     if (!data) return
     let filtersDTO = {
+        // shops: {
+        //     stateKey: 'activeBrand',
+        //     ruLabel: 'Магазин',
+        //     enLabel: 'shops',
+        //     data: [],
+        //     hasAllValue: true
+        // },
+        brands: {
+            stateKey: 'activeBrandName',
+            ruLabel: 'Бренд',
+            enLabel: 'brands',
+            data: [],
+            hasAllValue: false
+        },
         articles: {
+            stateKey: 'activeArticle',
             ruLabel: 'Артикул',
             enLabel: 'articles',
             data: [],
             hasAllValue: false
         },
         product_groups: {
+            stateKey: 'activeGroup',
             ruLabel: 'Группа товаров',
             enLabel: 'product_groups',
             data: [],
             hasAllValue: false
         },
-        brands: {
-            ruLabel: 'Бренд',
-            enLabel: 'brands',
-            data: [],
-            hasAllValue: false
-        },
-        shops: {
-            ruLabel: 'Магазин',
-            enLabel: 'shops',
-            data: [],
-            hasAllValue: true
-        },
     }
 
     Object.keys(data).forEach(key => {
         const isInObject = Object.keys(filtersDTO).some(_ => _ === key);
-        if (isInObject) {
+        if (isInObject && key !== 'shops') {
             let normilizedData = [];
             if (key === 'articles') {normilizedData = data[key].map(_ => ({ value: _.article}))}
-            if (key === 'product_groups') {normilizedData = data[key].map(_ => ({ value: _.name}))}
+            if (key === 'product_groups') {normilizedData = [{id: 0, value: 'Все'},...data[key].map(_ => ({ value: _.name, id: _.id}))]}
             if (key === 'brands') {normilizedData = data[key].map(_ => ({ value: _.brand}))}
-            if (key === 'shops') {normilizedData = data[key].map(_ => ({ value: _.name}))}
-
+            //if (key === 'shops') {normilizedData = [{id: 0, value: 'Все'},...data[key].map(_ => ({ value: _.name, id: _.id}))]}
             filtersDTO[key].data = normilizedData;
         }
     })
 
-    
+    return filtersDTO
 }
 
 export const fetchFilters = createAsyncThunk(
@@ -62,7 +65,7 @@ export const fetchFilters = createAsyncThunk(
         },
       });
       data = await res.json();
-      return data.data;
+      return createFiltersDTO(data?.data);
     } catch (e) {
       throw e;
     } finally {
