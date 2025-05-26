@@ -5,9 +5,9 @@ import moment from 'moment';
 
 export const getRequestObject = (filters, selectedRange, shopId) => {
   let requestObject = {
-    articles: [],
-    product_groups: [],
-    brands: [],
+    articles: null,
+    product_groups: null,
+    brands: null,
     shop: shopId,
     period: selectedRange?.period && selectedRange.period,
     date_from: selectedRange?.from && selectedRange.from,
