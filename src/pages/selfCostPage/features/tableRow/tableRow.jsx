@@ -80,13 +80,9 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 return;
             }
             const parsedData = await res.json()
-            const updatedCurrentProduct = {
-                ...parsedData,
-                self_cost_change_history: product.self_cost_change_history
-            }
             let newTableData = tableData;
-            const index = newTableData.findIndex(_ => _.product === updatedCurrentProduct.product);
-            newTableData[index] = updatedCurrentProduct
+            const index = newTableData.findIndex(_ => _.product === parsedData.product);
+            newTableData[index] = parsedData
             setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)
@@ -154,13 +150,19 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
 
     const deleteButtonClickHandler = (item) => {
         let newProduct = product;
-        const index = newProduct.self_cost_change_history.findIndex(_ => _.id === item.id);
+        const index = newProduct.self_cost_change_history.findIndex(_ => moment(_.date).format('YYYY-MM-DD') === moment(item.date).format('YYYY-MM-DD'));
         if (index !== -1) {
             if (newProduct.self_cost_change_history[index].id) {
                 setHistoryItemsToDelete([...historyItemsToDelete, newProduct.self_cost_change_history[index]])
             }
             newProduct.self_cost_change_history.splice(index, 1)
             setProduct({ ...newProduct })
+        }
+        let newTableData = tableData;
+        const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
+        if (mainIndex !== -1) {
+            newTableData[mainIndex] = newProduct;
+            setTableData(newTableData)
         }
     }
 
@@ -174,15 +176,15 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             }
             newProduct.self_cost_change_history.push({ date: moment(selectedDate).format('YYYY-MM-DD'), cost: 0, fulfillment: 0 })
             newProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
-            setSelectedDate(null)
             setProduct({ ...newProduct })
 
             let newTableData = tableData;
             const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
             if (mainIndex !== -1) {
                 newTableData[mainIndex] = newProduct;
-                setTableData(newTableData)
+                setTableData([...newTableData])
             }
+            setSelectedDate(null)
         }
     }, [selectedDate])
 

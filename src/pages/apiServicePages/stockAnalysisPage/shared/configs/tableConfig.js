@@ -21,7 +21,8 @@ export const tableConfig = [
             {ruName: 'Сумма', engName: 'saleSum', units: '₽', isSortable: true},
             {ruName: 'Количество', engName: 'quantity', units: 'шт', isSortable: true},
             {ruName: 'За вычетом возвратов', engName: 'lessReturns', units: '₽', isSortable: true},
-            {ruName: 'Себестоимость проданных товаров', engName: 'costGoodsSold', units: '₽', isSortable: false},
+            {ruName: 'Себестоимость проданных товаров', engName: 'sold_cost', units: '₽', isSortable: false},
+            //{ruName: 'Себестоимость проданных товаров', engName: 'costGoodsSold', units: '₽', isSortable: false},
         ]
     },
     {
@@ -29,14 +30,17 @@ export const tableConfig = [
         values: [
             {ruName: 'Сумма', engName: 'returnsSum', units: '₽', isSortable: true},
             {ruName: 'Количество', engName: 'returnsQuantity', units: 'шт', isSortable: true},
+            {ruName: 'Себестоимость возвращенных товаров', engName: 'return_cost', units: '₽', isSortable: false},
             {ruName: 'Себестоимость возвращенных товаров', engName: 'returnsCostSold', units: '₽', isSortable: false},
         ]
     },
     {
         tableName: 'Себестоимость',
         values: [
-            {ruName: 'За единицу', engName: 'costPriceOne', units: '₽', isSortable: false},
-            {ruName: 'Себестоимость товарного запаса (сегодня)', engName: 'costOfProductStockToday', units: '₽', isSortable: false},
+            {ruName: 'За единицу', engName: 'product_cost', units: '₽', isSortable: false},
+            //{ruName: 'За единицу', engName: 'costPriceOne', units: '₽', isSortable: false},
+            {ruName: 'Себестоимость товарного запаса (сегодня)', engName: 'product_cost_stock', units: '₽', isSortable: false},
+            //{ruName: 'Себестоимость товарного запаса (сегодня)', engName: 'costOfProductStockToday', units: '₽', isSortable: false},
         ]
     },
     {

@@ -11,10 +11,13 @@ const BodyInput = ({ item, setProduct, type, product, prevValue }) => {
                 value={item[type]}
                 onChange={(e) => {
                     let value = e.target.value ? parseInt(e.target.value) : e.target.value;
+                    console.log('value', value)
                     const newProduct = product;
+                   
                     const index = newProduct.self_cost_change_history.findIndex(_ => _.date === item.date)
+                    console.log('v', newProduct.self_cost_change_history[index][type])
                     if (index !== -1) {
-                        newProduct.self_cost_change_history[index][type] = /^(?:|\d+)$/.test(e.target.value) ? value : newProduct.self_cost_change_history[index][type]
+                        newProduct.self_cost_change_history[index][type] = (/^(?:|\d+)$/.test(e.target.value) || value === '') ? value : newProduct.self_cost_change_history[index][type]
                         setProduct({ ...newProduct })
                     }
                 }}
