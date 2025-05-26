@@ -46,7 +46,7 @@ const RestorePass = ({ email }) => {
 
   const handler = async (e) => {
     if (pass?.length < 6) {
-      setPassInputErrMessage('Пожалуйста, введите не мене 6 символов')
+      setPassInputErrMessage('Пожалуйста, введите не менеe 6 символов')
     }
     if (pass !== confPass) {
       setConfPassInputErrMessage('Пароли не совпадают')
@@ -64,13 +64,11 @@ const RestorePass = ({ email }) => {
 
   useEffect(() => {
     if (pass?.length < 6) {
-      setPassInputErrMessage('Пожалуйста, введите не мене 6 символов')
+      setPassInputErrMessage('Пожалуйста, введите не менеe 6 символов')
     } else {
       setPassInputErrMessage('')
     }
-    if (pass !== confPass) {
-      setConfPassInputErrMessage('Пароли не совпадают')
-    } else {
+    if (pass === confPass) {
       setConfPassInputErrMessage('')
     }
   }, [pass, confPass])

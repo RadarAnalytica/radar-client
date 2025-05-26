@@ -71,8 +71,8 @@ export const tableConfig = [
     {
         tableName: 'АВС анализ',
         values: [
-            {ruName: 'По выручке', engName: 'byRevenue', units: '₽', isSortable: true},
-            {ruName: 'По прибыли', engName: 'byProfit', units: '₽', isSortable: true},
+            {ruName: 'По выручке', engName: 'byRevenue', units: null, isSortable: true},
+            {ruName: 'По прибыли', engName: 'byProfit', units: null, isSortable: true},
         ]
     },
     {
