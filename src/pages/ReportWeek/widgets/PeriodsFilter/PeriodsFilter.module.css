@@ -1,0 +1,39 @@
+.item{
+  padding: 4px 12px;
+}
+.title{
+  margin-bottom: 10px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.list{
+  overflow: auto;
+  max-height: 400px;
+}
+
+.list::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-radius: 6px!important;
+  opacity: 1;
+}
+
+.list::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background: #5329ff80;
+    border-radius: 6px;
+}
+
+.arrow{
+  margin-top: -2px;
+  width: 14px;
+  height: 9px;
+  pointer-events: none;
+  stroke: rgba(140, 140, 140, 1);
+}

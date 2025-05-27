@@ -5,6 +5,8 @@ import AuthContext from '../../../../service/AuthContext';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { fetchShops } from '../../../../redux/shops/shopsActions';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import {ConfigProvider, Popover, Button, Checkbox} from 'antd'
+import PeriodsFilter from '../PeriodsFilter/PeriodsFilter';
 
 function FilterReportWeek({
 	period,
@@ -14,7 +16,6 @@ function FilterReportWeek({
 	setData,
 	shopSelect = true,
 }) {
-
 	const [brandsOptions, setBrandsOptions] = useState(null);
 	const [articlesOptions, setArticlesOptions] = useState(null);
 	const [groupsOptions, setGroupsOptions] = useState(null);
@@ -139,10 +140,6 @@ function FilterReportWeek({
 
 	//--------------------------------------------------------------------------------//
 
-  function periodHandler(value){
-		setPeriod(value)
-  }
-
   function groupsHandler(){
     console.log('groupsHandler')
   }
@@ -150,6 +147,8 @@ function FilterReportWeek({
   function articlesHandler(){
     console.log('articlesHandler')
   }
+
+	console.log('filterRerportWeek', period)
 
 	return (
 		<div className={styles.container}>
@@ -160,16 +159,14 @@ function FilterReportWeek({
 				</div>
 			)}
 			*/}
-			{periodOptions && <div className={styles.item}>
-				<PlainSelect
-					id="period"
-					label={'Период'}
-					optionsData={periodOptions}
-					handler={periodHandler}
-					value={period}
-					notFoundContent={<div>Ничего не найдено</div>}
+			{periodOptions && (
+				<div className={styles.item}>
+					<PeriodsFilter 
+						period={period} 
+						periodOptions={periodOptions} 
+						setPeriod={setPeriod}
 					/>
-			</div>}
+				</div>)}
 			{shops && activeBrand && shopSelect && (
 				<div className={styles.item}>
 					<PlainSelect

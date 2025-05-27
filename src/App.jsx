@@ -53,7 +53,7 @@ const ProductGroupsPage = React.lazy(() => import("./pages/productsGroupsPages/p
 const SingleGroupPage = React.lazy(() => import("./pages/productsGroupsPages/pages/singleGroupPage/singleGroupPage"));
 const SkuIdPage = React.lazy(() => import("./pages/skuAnalysisPage/skuIdPage"));
 const SelfCostPage = React.lazy(() => import("./pages/selfCostPage/selfCostPage"));
-const ReportWeek = React.lazy(() => import("./pages/ReportWeek/ReportWeek"));
+const ReportWeek = React.lazy(() => import("./pages/ReportWeek"));
 const SkuFrequencyPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyPage"));
 const SkuFrequencyRequestPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyRequestPage"));
 import LoaderPage from "./pages/LoaderPage";
