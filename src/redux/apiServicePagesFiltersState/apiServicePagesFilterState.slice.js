@@ -23,7 +23,10 @@ const apiServicePagesFilterStateSlice = createSlice({
         setActiveShop: (state, action) => {
             return {
                 ...state,
-                activeBrand: action.payload
+                activeBrand: action.payload,
+                activeBrandName: {value: 'Все'},
+                activeArticle: {value: 'Все'},
+                activeGroup: {id: 0, value: 'Все'},
             }
         },
         setPeriod: (state, action) => {
@@ -40,6 +43,22 @@ const apiServicePagesFilterStateSlice = createSlice({
         },
         setActiveFilters: (state, action) => {
             const { stateKey, data } = action.payload;
+            if (stateKey === 'activeBrandName' || stateKey === 'activeArticle') {
+                return {
+                    ...state,
+                    [stateKey]: data,
+                    activeGroup: { value: 'Все', id: 0},
+                }
+            }
+            if (stateKey === 'activeGroup') {
+                return {
+                    ...state,
+                    [stateKey]: data,
+                    activeBrandName: {value: 'Все'},
+                    activeArticle: {value: 'Все'},
+                }
+            }
+            
             return {
                 ...state,
                 [stateKey]: data
@@ -52,8 +71,8 @@ const apiServicePagesFilterStateSlice = createSlice({
                 return {
                     ...state,
                     filters: action.payload.filtersData,
-                    shops: action.payload.shops
-                    //...action.payload.initState
+                    shops: action.payload.shops,
+                    ...action.payload.initState
                 }
             })
     }

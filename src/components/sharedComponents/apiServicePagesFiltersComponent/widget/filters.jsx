@@ -28,7 +28,7 @@ export const Filters = ({
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
-    const selectedShop = shopArrayFormSelect?.find(_ => _.id === value)
+    const selectedShop = shops?.find(_ => _.id === value)
     dispatch(filterActions.setActiveShop(selectedShop))
   }
   //- -----------------------------------------//
@@ -159,38 +159,47 @@ export const Filters = ({
           </div>
         }
         {filters && activeBrand && filters.map((i, id) => {
-          return (
+          return activeBrand.id === i.shop.id && (
             <React.Fragment key={id}>
-              {/* <div className={styles.filters__inputWrapper}>
-                <ShopSelect
-                  selectId='store'
-                  label='Магазин:'
-                  value={activeBrand?.id}
-                  optionsData={_.shop}
-                  handler={shopChangeHandler}
+              <div className={styles.filters__inputWrapper}>
+                <PlainSelect
+                  selectId={i.brands.enLabel}
+                  label={`${i.brands.ruLabel}:`}
+                  value={filtersState[i.brands.stateKey]}
+                  optionsData={i.brands.data}
+                  handler={(value) => {
+                    const current = i.brands.data.find(_ => _.value === value);
+                    dispatch(filterActions.setActiveFilters({ stateKey: i.brands.stateKey, data: current }))
+                  }}
                 />
-              </div> */}
+              </div>
+              <div className={styles.filters__inputWrapper}>
+                <PlainSelect
+                  selectId={i.articles.enLabel}
+                  label={`${i.articles.ruLabel}:`}
+                  value={filtersState[i.articles.stateKey]}
+                  optionsData={filtersState.activeBrandName.value === 'Все' ? i.articles.data : i.articles.data.filter(_ => _.brand === filtersState.activeBrandName.value)}
+                  handler={(value) => {
+                    const current = i.articles.data.find(_ => _.value === value);
+                    dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: current }))
+                  }}
+                />
+              </div>
+              <div className={styles.filters__inputWrapper}>
+                <PlainSelect
+                  selectId={i.groups.enLabel}
+                  label={`${i.groups.ruLabel}:`}
+                  value={filtersState[i.groups.stateKey]}
+                  optionsData={i.groups.data}
+                  handler={(value) => {
+                    const current = i.groups.data.find(_ => _.value === value);
+                    dispatch(filterActions.setActiveFilters({ stateKey: i.groups.stateKey, data: current }))
+                  }}
+                />
+              </div>
             </React.Fragment>
           )
         })}
-        {/* {filters && Object.keys(filters)?.map((i, id) => {
-          const data = filters[i];
-          const isActive = (brandSelect && i === 'brands') || (articleSelect && i === 'articles') || (groupSelect && i === 'product_groups')
-          return isActive && (
-            <div className={styles.filters__inputWrapper} key={id}>
-              <PlainSelect
-                selectId={data.enLabel}
-                label={`${data.ruLabel}:`}
-                value={filtersState[data.stateKey]}
-                optionsData={data.data}
-                handler={(value) => {
-                  const current = data.data.find(_ => _.value === value);
-                  dispatch(filterActions.setActiveFilters({ stateKey: data.stateKey, data: current }))
-                }}
-              />
-            </div>
-          )
-        })} */}
       </div>
     </div>
   );
