@@ -6,6 +6,7 @@
 }
 .item{
   flex: 1 0 auto;
-  max-width: 200px;
+  min-width: 190px;
+  max-width: 240px;
   /* width: 100%; */
 }
