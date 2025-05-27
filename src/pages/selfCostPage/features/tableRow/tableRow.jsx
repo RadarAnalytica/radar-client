@@ -20,7 +20,7 @@ const dataFetchingStatus = {
 }
 
 
-const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess, dataStatus, setTableData, tableData }) => {
+const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess, dataStatus, setTableData, tableData, resetSearch }) => {
     const datePickerContainerRef = useRef(null)
     //const rowRef = useRef(null)
     const [product, setProduct] = useState() // присваиваем глубоким копированием
@@ -86,6 +86,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)
+            resetSearch()
             //setIsUpdating(false)
             //getTableData(authToken, shopId)
         } catch {
@@ -136,6 +137,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 setTableData(newTableData)
                 setDataStatus({ ...initDataStatus })
                 setIsSuccess(true)
+                resetSearch()
                 //setIsUpdating(false)
             }
 

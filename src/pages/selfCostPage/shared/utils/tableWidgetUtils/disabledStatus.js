@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export const getSaveButtonStatus = (product, compare, historyItemsToDelete) => {
   // начальное значение - заблокировано
   let status = true;
