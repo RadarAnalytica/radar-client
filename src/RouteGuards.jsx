@@ -4,7 +4,9 @@ import { Navigate, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import LoaderPage from './pages/LoaderPage';
 import { URL } from './service/config';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
+import UnderDevelopmentPlugPage from './pages/underDevelopmentPlugPage/underDevelopmentPlugPage';
 import NoSubscriptionPlugPage from './pages/noSubscriptionPlugPage/noSubscriptionPlugPage';
 import NoSubscriptionPage from './pages/NoSubscriptionPage';
 
@@ -41,6 +43,10 @@ const config = {
     userRoleGuardType: 'redirect', // 'redirect' | 'fallback'
     subscriptionGuardType: 'redirect', // 'redirect' | 'fallback'
     testPeriodGuardType: 'fallback', // 'redirect' | 'fallback'
+    underDevGuardType: 'fallback',
+    underDevProtected: false,
+    underDevRedirect: '/main',
+    underDevFallback: (props) => (<UnderDevelopmentPlugPage {...props} />),
     authProtected: true, // default protection level is auth
     authFallback: (props) => (<MainPage {...props} />), // (props: any) => ReactNode
     authRedirect: `/signin`, // any url
@@ -76,6 +82,10 @@ export const ProtectedRoute = ({
   testPeriodProtected = config.testPeriodProtected,
   testPeriodFallback = config.testPeriodFallback,
   testPeriodRedirect = config.testPeriodRedirect,
+  underDevGuardType = config.underDevGuardType,
+  underDevProtected = config.underDevProtected,
+  underDevFallback = config.underDevFallback,
+  underDevRedirect = config.underDevRedirect,
   authProtected = config.authProtected,
   authFallback = config.authFallback,
   authRedirect = config.authRedirect,
@@ -96,6 +106,7 @@ export const ProtectedRoute = ({
 }) => {
   const { user } = useContext(AuthContext);
   const { pathname } = useLocation()
+  const navigate = useNavigate()
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl'); // это устанавливается в калькуляторе. Необходимо для коррекного редиректа не авторизованного юзера
 
   // -------this is test user object for dev purposes ------//
@@ -119,7 +130,24 @@ export const ProtectedRoute = ({
 3& smart + !onboardig
  */
 
-  // ----------------------------------------------------------//
+
+
+  //------- 0. Under development protection ----------//
+  if (underDevProtected && process.env.NODE_ENV === 'production') {
+    switch(underDevGuardType) {
+      case 'redirect': {
+        return navigate(underDevRedirect)
+      }
+      case 'fallback': {
+        return (
+          <Suspense fallback={<LoaderPage />}>
+            {underDevFallback()}
+          </Suspense>
+        )
+      }
+    }
+    return (underDevFallback())
+  }
 
 
   //------- 1. Auth protection (checking is user exists) ----------//

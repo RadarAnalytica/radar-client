@@ -193,8 +193,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
         </div>
         {isLoading ? (
           <div
-            className='d-flex flex-column align-items-center justify-content-center'
-            style={{ height: '100px', marginTop: '40px' }}
+            className={styles.loaderWrapper}
           >
             <span className='loader'></span>
           </div>

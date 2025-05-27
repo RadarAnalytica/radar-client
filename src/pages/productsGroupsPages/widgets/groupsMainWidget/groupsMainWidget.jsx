@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styles from './groupsMainWidget.module.css'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
 import { groupsMainTableConfig, buttonIcons } from '../../shared';
-import { Checkbox, ConfigProvider } from 'antd';
+import { Checkbox, ConfigProvider, message } from 'antd';
 import { formatPrice } from '../../../../service/utils';
 import { Link } from 'react-router-dom';
+import AuthContext from '../../../../service/AuthContext';
+import { URL } from '../../../../service/config';
+import { GroupEditModal, ConfirmationModal } from '../../features';
 
-const mockData = [
-    { group: 'Тест группа 1', sku: 20 },
-    { group: 'Тест группа 2', sku: 30 },
-    { group: 'Тест группа 3', sku: 40 },
-]
+const initConfirmationState = { open: false, title: '', message: '', mainAction: '', returnAction: '', actionTitle: '' }
 
-const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
 
-    const [tableData, setTableData] = useState()
-    const [isDataLoading, setIsDataLoading] = useState(false)
+const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroupsData, setDataFetchingStatus, initDataFetchingStatus, dataFetchingStatus, setAlertState }) => {
+    const { authToken } = useContext(AuthContext)
+    const [tableData, setTableData] = useState([])
     const [checkedList, setCheckedList] = useState([]);
+    const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
+    const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -32,19 +33,37 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
         }
     };
 
+    const deleteGroup = async (authToken, groupId) => {
+        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        try {
+            const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
+                method: 'DELETE',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'JWT ' + authToken
+                },
+            })
+
+            if (!res.ok) {
+                const parsedData = await res.json()
+                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                return;
+            }
+            setAlertState({isVisible: true, message: 'Группа успешно удалена'})
+            getGroupsData(authToken)
+        } catch {
+            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+        }
+    }
+
+
     const onCheckAllChange = e => {
         setCheckedList(e.target.checked ? tableData.map(_ => _.group) : []);
     };
 
     useEffect(() => {
-        let timeout;
-        const getTableData = async () => {
-            setIsDataLoading(true)
-            timeout = setTimeout(() => { setTableData(mockData); setIsDataLoading(false) }, 2000)
-        }
-        getTableData()
-        return () => { timeout && clearTimeout(timeout) }
-    }, [])
+        groupsMainData && setTableData(groupsMainData)
+    }, [groupsMainData])
 
     return (
         <div className={styles.widget}>
@@ -58,13 +77,8 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
                     Создать группу
                 </button>
             </div>
-            {isDataLoading &&
-                <div className={styles.widget__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
-            }
 
-            {!isDataLoading && tableData &&
+            {tableData &&
                 <div className={styles.widget__tableWrapper}>
 
                     {/* table */}
@@ -74,31 +88,28 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
                             {/* Мапим массив значений заголовков */}
                             {tableData && groupsMainTableConfig.values.map((v, id) => {
                                 return (
-                                    <>
-                                        {/* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */}
-                                        <div className={styles.table__headerItem} key={id}>
+                                    <div className={styles.table__headerItem} key={id}>
 
-                                            {v.hasSelect &&
-                                                <div className={styles.sortControls}>
-                                                    <ConfigProvider
-                                                        theme={{
-                                                            token: {
-                                                                colorPrimary: '#5329FF',
-                                                                colorBgContainer: 'transparent'
-                                                            }
-                                                        }}
-                                                    >
-                                                        <Checkbox
-                                                            indeterminate={indeterminate}
-                                                            onChange={onCheckAllChange}
-                                                            checked={checkAll}
-                                                        />
-                                                    </ConfigProvider>
-                                                </div>
-                                            }
-                                            <p className={styles.table__headerItemTitle}>{v.ruName}</p>
-                                        </div>
-                                    </>
+                                        {v.hasSelect &&
+                                            <div className={styles.sortControls}>
+                                                <ConfigProvider
+                                                    theme={{
+                                                        token: {
+                                                            colorPrimary: '#5329FF',
+                                                            colorBgContainer: 'transparent'
+                                                        }
+                                                    }}
+                                                >
+                                                    <Checkbox
+                                                        indeterminate={indeterminate}
+                                                        onChange={onCheckAllChange}
+                                                        checked={checkAll}
+                                                    />
+                                                </ConfigProvider>
+                                            </div>
+                                        }
+                                        <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                    </div>
                                 )
                             })}
                         </div>
@@ -112,24 +123,6 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
                                         className={styles.table__row}
                                         key={id}
                                         id={`table_row_${id}`}
-                                        onMouseOver={(e) => {
-                                            const { id } = e.target
-                                            const rows = id && document.querySelectorAll(`#${id}`);
-                                            if (rows) {
-                                                rows.forEach(row => {
-                                                    row.style.background = '#F2F2F2'
-                                                })
-                                            }
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            const { id } = e.target
-                                            const rows = id && document.querySelectorAll(`#${id}`);
-                                            if (rows) {
-                                                rows.forEach(row => {
-                                                    row.style.background = 'none'
-                                                })
-                                            }
-                                        }}
                                     >
                                         {/* Для каждого товара мапим заголовки таблицы еще раз и забираем из товара нужны данные (в первой колонке одновременно фото и название) */}
                                         {groupsMainTableConfig.values.map(((v, id) => {
@@ -139,12 +132,42 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
                                                 return (
                                                     <div className={styles.table__rowItem} key={id}>
                                                         {v.actionTypes.map((a, id) => {
+                                                            if (a === 'edit') {
+                                                                return (
+                                                                    // <button className={styles.table__actionButton} key={id} onClick={() => setIsEditGroupModalVisible(true)}>
+                                                                    //     {buttonIcons[a]}
+                                                                    // </button>
+                                                                    <Link className={styles.table__actionButton} key={id} to={`/groups/${product.id}`}>
+                                                                        {buttonIcons[a]}
+                                                                    </Link>
+                                                                )
+                                                            }
+                                                            if (a === 'delete') {
+                                                                return (
+                                                                    <button
+                                                                        className={styles.table__actionButton}
+                                                                        key={id}
+                                                                        //onClick={() => deleteGroup(authToken, product.id)}
+                                                                        onClick={() => setConfirmationModalState({open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${product.name}"?`, mainAction: () => {deleteGroup(authToken, product.id)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}})}
+                                                                    >
+                                                                        {buttonIcons[a]}
+                                                                    </button>
+                                                                )
+                                                            }
                                                             return (
                                                                 <button className={styles.table__actionButton} key={id}>
                                                                     {buttonIcons[a]}
                                                                 </button>
                                                             )
                                                         })}
+                                                    </div>
+                                                )
+                                            }
+                                            if (v.engName === 'name') {
+
+                                                return (
+                                                    <div className={styles.table__rowItem} key={id}>
+                                                        <Link to={`/groups/${product.id}`} className={styles.table__rowTitle}>{product[v.engName]}</Link>
                                                     </div>
                                                 )
                                             }
@@ -167,11 +190,11 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
                                                                     onChange={onCheckboxChange}
                                                                 />
                                                             </ConfigProvider>
-                                                            <Link to={`/dev/groups/${id}`} className={styles.table__rowTitle}>{product[v.engName]}</Link>
+
                                                         </>
                                                         :
                                                         <>
-                                                            {v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}
+                                                            {product[v.engName]}
                                                         </>
                                                     }
 
@@ -182,7 +205,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
                                 )
                             })}
                             {/* No data */}
-                            {tableData && tableData.length === 0 && id === 0 &&
+                            {tableData && tableData.length === 0 &&
                                 <div className={styles.table__row}>
                                     <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
                                         Товары отсутствуют
@@ -195,6 +218,17 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible }) => {
 
 
                 </div>}
+
+            {/* <GroupEditModal
+                setIsEditGroupModalVisible={setIsEditGroupModalVisible}
+                isEditGroupModalVisible={isEditGroupModalVisible}
+                dataFetchingStatus={dataFetchingStatus}
+                setDataFetchingStatus={setDataFetchingStatus}
+            /> */}
+
+            <ConfirmationModal
+                {...confirmationModalState}
+            />
         </div>
     )
 }

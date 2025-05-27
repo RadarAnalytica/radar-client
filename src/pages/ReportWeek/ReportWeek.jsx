@@ -4,13 +4,13 @@ import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import FilterReportWeek from './widgets/filterBrandArticle/FilterReportWeek'
+import FilterReportWeek from './widgets/FilterReportWeek/FilterReportWeek'
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
 
 import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
-import downloadIcon from '../images/Download.svg';
+// import downloadIcon from '../images/Download.svg';
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import ModalTableSetting from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
 import { useAppSelector } from '../../redux/hooks';

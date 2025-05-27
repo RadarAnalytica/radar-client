@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Input } from "antd"
 import styles from './bodyInput.module.css'
 
-const BodyInput = ({ item, setProduct, type, product }) => {
-    const [inputValue, setInputValue] = useState(item[type])
-
-    useEffect(() => {
-        const newProduct = product;
-        const index = newProduct.self_cost_change_history.findIndex(_ => _.date === item.date)
-        if (index !== -1) {
-            newProduct.self_cost_change_history[index][type] = inputValue
-            setProduct({...newProduct})
-        }
-    }, [inputValue])
+const BodyInput = ({ item, setProduct, type, product, prevValue }) => {
 
     return (
         <div className={styles.input__wrapper}>
             <Input
-                value={inputValue}
-                onChange={(e) => setInputValue((prev) => { if (/^(|\d+)$/.test(e.target.value)) { return e.target.value } else { return prev } })}
+                style={{ height: '44px' }}
+                value={item[type]}
+                onChange={(e) => {
+                    let value = e.target.value ? parseInt(e.target.value) : e.target.value;
+                    console.log('value', value)
+                    const newProduct = product;
+                   
+                    const index = newProduct.self_cost_change_history.findIndex(_ => _.date === item.date)
+                    console.log('v', newProduct.self_cost_change_history[index][type])
+                    if (index !== -1) {
+                        newProduct.self_cost_change_history[index][type] = (/^(?:|\d+)$/.test(e.target.value) || value === '') ? value : newProduct.self_cost_change_history[index][type]
+                        setProduct({ ...newProduct })
+                    }
+                }}
                 size='large'
+                placeholder={prevValue ? prevValue[type] : 'Не установлено'}
             />
         </div>
     )

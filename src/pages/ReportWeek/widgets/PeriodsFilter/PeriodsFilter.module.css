@@ -1,6 +1,13 @@
 .item{
   padding: 4px 12px;
 }
+
+.button{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .title{
   margin-bottom: 10px;
   line-height: 1;

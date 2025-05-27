@@ -641,3 +641,4 @@ export function detectBrowser() {
       return 'Unknown';
   }
 }
+

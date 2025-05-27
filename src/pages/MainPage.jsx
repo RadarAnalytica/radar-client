@@ -38,7 +38,7 @@ import ApiBlockContainer from "../components/ApiBlockContainer"
 import ImageComponent from '../components/utilsComponents/ImageComponent ';
 import BlockImg_x1 from './images/Dashboard_x1.png';
 import BlockImg_x3 from './images/Dashboard_x3.png';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import VideoComponent from '../components/utilsComponents/VideoComponent';
 import lowQualityVideo from "../assets/video/WebmLow.webm";

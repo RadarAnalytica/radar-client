@@ -1,6 +1,30 @@
 import { URL } from './config';
 import { formatFromIsoDate, rangeApiFormat } from './utils'
 import { store } from '../redux/store'
+import moment from 'moment';
+
+export const getRequestObject = (filters, selectedRange, shopId) => {
+  let requestObject = {
+    articles: null,
+    product_groups: null,
+    brands: null,
+    shop: shopId,
+    period: selectedRange?.period && selectedRange.period,
+    date_from: selectedRange?.from && selectedRange.from,
+    date_to: selectedRange?.to && selectedRange.to
+  }
+
+  if (filters?.activeBrandName && filters?.activeBrandName.value !== 'Все') {
+    requestObject.brands = [filters.activeBrandName.value]
+  }
+  if (filters?.activeArticle && filters?.activeArticle.value !== 'Все') {
+    requestObject.articles = [filters.activeArticle.value]
+  }
+  if (filters?.activeGroup && filters?.activeGroup.id !== 0) {
+    requestObject.product_groups = [filters.activeGroup.id]
+  }
+  return requestObject;
+}
 
 export const ServiceFunctions = {
   register: async (object) => {
@@ -161,18 +185,19 @@ export const ServiceFunctions = {
   //   return data;
   // },
 
-  getDashBoard: async (token, selectedRange, idShop) => {
+  getDashBoard: async (token, selectedRange, idShop, filters) => {
 
-    let rangeParams = rangeApiFormat(selectedRange);
-
+    //let rangeParams = rangeApiFormat(selectedRange);
+    const body = getRequestObject(filters, selectedRange, idShop)
     const res = await fetch(
-      `${URL}/api/dashboard/?${rangeParams}&shop=${idShop}`,
+      `${URL}/api/dashboard/`,
       {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'content-type': 'application/json',
           authorization: 'JWT ' + token,
         },
+        body: JSON.stringify(body)
       }
     );
 
@@ -184,6 +209,30 @@ export const ServiceFunctions = {
     const data = await res.json();
 
     return data;
+  },
+
+  getDashboardTurnoverData: async (token, selectedRange, idShop) => {
+    let rangeParams = rangeApiFormat(selectedRange);
+    try {
+      const res = await fetch(`${URL}/api/dashboard/turnover?${rangeParams}&shop=${idShop}`, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          authorization: 'JWT ' + token,
+        },
+      })
+
+      if (!res.ok) {
+        const parsed = await res.json()
+        localStorage.removeItem('activeShop');
+        throw new Error(parsed.detail || 'Invalid shop data');
+      }
+      const parsed = await res.json()
+      return parsed.items
+
+    } catch {
+      throw new Error('Something went wrong');
+    }
   },
 
   getDownloadDashBoard: async (token, selectedRange, shop) => {
@@ -210,30 +259,33 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getGeographyData: async (token, selectedRange, idShop) => {
-    let rangeParams = rangeApiFormat(selectedRange);
-    const res = await fetch(`${URL}/api/geo/?${rangeParams}&shop=${idShop}`, {
-      method: 'GET',
+  getGeographyData: async (token, selectedRange, idShop, filters) => {
+    //let rangeParams = rangeApiFormat(selectedRange);
+    const body = getRequestObject(filters, selectedRange, idShop)
+    const res = await fetch(`${URL}/api/geo/`, {
+      method: 'POST',
       headers: {
         'content-type': 'application/json',
         authorization: 'JWT ' + token,
       },
+      body: JSON.stringify(body)
     });
     const data = await res.json();
     return data;
   },
 
-  getAbcData: async (viewType, token, day, idShop) => {
-    let rangeParams = rangeApiFormat(day);
-
+  getAbcData: async (viewType, token, selectedRange, idShop, filters) => {
+    //let rangeParams = rangeApiFormat(day);
+    const body = getRequestObject(filters, selectedRange, idShop)
     const res = await fetch(
-      `${URL}/api/abc_data/${viewType}?${rangeParams}&shop=${idShop}`,
+      `${URL}/api/abc_data/${viewType}`,
       {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'content-type': 'application/json',
           authorization: 'JWT ' + token,
         },
+        body: JSON.stringify(body)
       }
     );
     const data = await res.json();
@@ -422,20 +474,22 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getAnalysisData: async (token, selectedRange, shop) => {
-      let rangeParams = rangeApiFormat(selectedRange);
-      const res = await fetch(`${URL}/api/prod_analytic/?${rangeParams}&shop=${shop}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'JWT ' + token,
-          },
-      });
-      const data = await res.json();
-      return data;
+  getAnalysisData: async (token, selectedRange, shop, filters) => {
+    //let rangeParams = rangeApiFormat(selectedRange);
+    const body = getRequestObject(filters, selectedRange, shop)
+    const res = await fetch(`${URL}/api/prod_analytic/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'JWT ' + token,
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    return data;
   },
 
-  getProdAnalyticXlsx: async (token, selectedRange, shop) => { 
+  getProdAnalyticXlsx: async (token, selectedRange, shop) => {
     let rangeParams = rangeApiFormat(selectedRange);
     const res = await fetch(`${URL}/api/prod_analytic/download?${rangeParams}&shop=${shop}`, {
       method: 'GET',
@@ -448,8 +502,8 @@ export const ServiceFunctions = {
   },
 
   getChartDetailData: async (token, selectedRange, shop) => {
-    let rangeParams = rangeApiFormat(selectedRange);    
-    
+    let rangeParams = rangeApiFormat(selectedRange);
+
     const res = await fetch(
       `${URL}/api/dashboard/hourly?shops=${shop}&${rangeParams}`,
       {
@@ -567,9 +621,9 @@ export const ServiceFunctions = {
 
   scheduleFilterChartData: async (token) => {
     const storeFilterData = store.getState().chartsFiltersSlice.chartsFilters
-                   
+
     if (Object.keys(storeFilterData).length === 0) {
-        return {}
+      return {}
     }
 
     const brandFilterData = storeFilterData.brand
@@ -587,46 +641,46 @@ export const ServiceFunctions = {
     const weekFilter = []
 
     if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
-        for (let _key of Object.keys(groupFilterData)) {
-            if (!!groupFilterData[_key]) {
-                groupFilter.push(_key)
-            }
+      for (let _key of Object.keys(groupFilterData)) {
+        if (!!groupFilterData[_key]) {
+          groupFilter.push(_key)
         }
+      }
     }
     if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
-        for (let _key of Object.keys(brandFilterData)) {
-            if (!!brandFilterData[_key]) {
-                brandFilter.push(_key)
-            }
+      for (let _key of Object.keys(brandFilterData)) {
+        if (!!brandFilterData[_key]) {
+          brandFilter.push(_key)
         }
+      }
     }
     if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
       for (let _key of Object.keys(wbIdFilterData)) {
-          if (!!wbIdFilterData[_key]) {
-              wbIdFilter.push(_key)
-          }
+        if (!!wbIdFilterData[_key]) {
+          wbIdFilter.push(_key)
+        }
       }
     }
     if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
-        for (let _key of Object.keys(yearFilterData)) {
-            if (!!yearFilterData[_key]) {
-                yearFilter.push(_key)
-            }
+      for (let _key of Object.keys(yearFilterData)) {
+        if (!!yearFilterData[_key]) {
+          yearFilter.push(_key)
         }
+      }
     }
     if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
-        for (let _key of Object.keys(monthFilterData)) {
-            if (!!monthFilterData[_key]) {
-                monthFilter.push(_key)
-            }
+      for (let _key of Object.keys(monthFilterData)) {
+        if (!!monthFilterData[_key]) {
+          monthFilter.push(_key)
         }
+      }
     }
     if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
-        for (let _key of Object.keys(weekFilterData)) {
-            if (!!weekFilterData[_key]) {
-                weekFilter.push(_key)
-            }
+      for (let _key of Object.keys(weekFilterData)) {
+        if (!!weekFilterData[_key]) {
+          weekFilter.push(_key)
         }
+      }
     }
 
     const filter = {
@@ -654,8 +708,8 @@ export const ServiceFunctions = {
     }
 
     const data = await response.json();
-    
-    return {data, filter}
+
+    return { data, filter }
   },
 
   getMonthProductFilters: async (token) => {
@@ -776,7 +830,7 @@ export const ServiceFunctions = {
     };
   },
 
-  getCostPriceStatus: async(token) => {
+  getCostPriceStatus: async (token) => {
     const res = await fetch(`${URL}/api/report/cost/status`, {
       method: 'GET',
       headers: {
@@ -786,7 +840,7 @@ export const ServiceFunctions = {
     });
     const data = await res.json()
     data.updated_at = data.updated_at === '' ? null : `Последняя загрузка ${formatFromIsoDate(data.updated_at)}г.`
-    
+
     return data;
   },
 
@@ -838,9 +892,9 @@ export const ServiceFunctions = {
 
   postAbcReportsData: async (token) => {
     const storeFilterData = store.getState().abcFiltersSlice.abcFilters
-                    
+
     if (Object.keys(storeFilterData).length === 0) {
-        return []
+      return []
     }
     const brandFilterData = storeFilterData.brand
     const wbIdFilterData = storeFilterData.wbId
@@ -859,53 +913,53 @@ export const ServiceFunctions = {
     const weekFilter = []
 
     if (!!productFilterData && Object.keys(productFilterData).length > 0) {
-        for (let _key of Object.keys(productFilterData)) {
-            if (!!productFilterData[_key]) {
-                productFilter.push(_key)
-            }
+      for (let _key of Object.keys(productFilterData)) {
+        if (!!productFilterData[_key]) {
+          productFilter.push(_key)
         }
+      }
     }
     if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
-        for (let _key of Object.keys(groupFilterData)) {
-            if (!!groupFilterData[_key]) {
-                groupFilter.push(_key)
-            }
+      for (let _key of Object.keys(groupFilterData)) {
+        if (!!groupFilterData[_key]) {
+          groupFilter.push(_key)
         }
+      }
     }
     if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
-        for (let _key of Object.keys(brandFilterData)) {
-            if (!!brandFilterData[_key]) {
-                brandFilter.push(_key)
-            }
+      for (let _key of Object.keys(brandFilterData)) {
+        if (!!brandFilterData[_key]) {
+          brandFilter.push(_key)
         }
+      }
     }
     if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
       for (let _key of Object.keys(wbIdFilterData)) {
-          if (!!wbIdFilterData[_key]) {
-              wbIdFilter.push(_key)
-          }
+        if (!!wbIdFilterData[_key]) {
+          wbIdFilter.push(_key)
+        }
       }
     }
     if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
-        for (let _key of Object.keys(yearFilterData)) {
-            if (!!yearFilterData[_key]) {
-                yearFilter.push(_key)
-            }
+      for (let _key of Object.keys(yearFilterData)) {
+        if (!!yearFilterData[_key]) {
+          yearFilter.push(_key)
         }
+      }
     }
     if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
-        for (let _key of Object.keys(monthFilterData)) {
-            if (!!monthFilterData[_key]) {
-                monthFilter.push(_key)
-            }
+      for (let _key of Object.keys(monthFilterData)) {
+        if (!!monthFilterData[_key]) {
+          monthFilter.push(_key)
         }
+      }
     }
     if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
-        for (let _key of Object.keys(weekFilterData)) {
-            if (!!weekFilterData[_key]) {
-                weekFilter.push(_key)
-            }
+      for (let _key of Object.keys(weekFilterData)) {
+        if (!!weekFilterData[_key]) {
+          weekFilter.push(_key)
         }
+      }
     }
 
     const filter = {
@@ -947,7 +1001,7 @@ export const ServiceFunctions = {
     return await response.json();
   },
 
-  getSelfBuyoutStatus: async(token) => {
+  getSelfBuyoutStatus: async (token) => {
     const res = await fetch(`${URL}/api/report/self-buyout/status`, {
       method: 'GET',
       headers: {
@@ -956,7 +1010,7 @@ export const ServiceFunctions = {
       },
     });
     const data = await res.json()
-        
+
     return data.status;
   },
 
@@ -1016,7 +1070,7 @@ export const ServiceFunctions = {
     return await response.json();
   },
 
-  getFailPaymentStatus: async(token) => {
+  getFailPaymentStatus: async (token) => {
     const res = await fetch(`${URL}/api/user/check-fail-transaction`, {
       method: 'GET',
       headers: {
@@ -1028,7 +1082,7 @@ export const ServiceFunctions = {
 
     return data;
   },
-  
+
   postTaxRateUpdateDashboard: async (token, taxRate, taxType) => {
     try {
       const response = await fetch(`${URL}/api/shop/tax-rate/set`, {
@@ -1054,7 +1108,7 @@ export const ServiceFunctions = {
   reportWeekBrands: (COLUMNS) => {
     try {
       let tableData = new Array(10).fill(0).map((el, i) => {
-        let res = {key: i};
+        let res = { key: i };
         for (const col of COLUMNS) {
           res[col.dataIndex] = Math.ceil((Math.random() * 10) + i);
         }
@@ -1104,6 +1158,6 @@ export const ServiceFunctions = {
     const data = await res.blob()
     return data;
   },
-  
-  
+
+
 };

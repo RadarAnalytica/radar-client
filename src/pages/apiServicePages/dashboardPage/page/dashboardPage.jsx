@@ -24,13 +24,16 @@ import CostsBlock from '../../../../components/dashboardPageComponents/blocks/co
 import RevenueStructChartBlock from '../../../../components/dashboardPageComponents/blocks/revenueStructChartBlock/revenueStructChartBlock'
 import TaxTableBlock from '../../../../components/dashboardPageComponents/blocks/taxTableBlock/taxTableBlock'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
+import TurnoverBlock from '../../../../components/dashboardPageComponents/blocks/turnoverBlock/turnoverBlock'
 import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
+
 const _DashboardPage = () => {
-    
+
     const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [dataDashBoard, setDataDashboard] = useState();
     const [loading, setLoading] = useState(true);
@@ -41,15 +44,18 @@ const _DashboardPage = () => {
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
                 // CHECK FOR MOCKDATA
-                if (user.subscription_status === null) {;
+                if (user.subscription_status === null) {
+                    ;
                     const data = await mockGetDashBoard(selectedRange, activeBrand);
                     setDataDashboard(data);
-                    return 
+                    return
                 }
+               
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
                     selectedRange,
-                    activeBrand
+                    activeBrand,
+                    filters
                 );
                 setDataDashboard(data);
             }
@@ -73,7 +79,7 @@ const _DashboardPage = () => {
         if (activeBrand && activeBrand.is_primary_collect) {
             updateDataDashBoard(selectedRange, activeBrand.id, authToken)
         }
-    }, [activeBrand, selectedRange]);
+    }, [activeBrand, selectedRange, filters]);
 
 
 
@@ -108,20 +114,20 @@ const _DashboardPage = () => {
                 {/* !SELF-COST WARNING */}
 
                 {/* DEMO BLOCK */}
-                { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                {user.subscription_status === null && <NoSubscriptionWarningBlock />}
                 {/*  */}
 
                 {/* FILTERS */}
                 <div className={styles.page__controlsWrapper}>
                     <Filters
                         setLoading={setLoading}
-                        />
+                    />
 
                     <HowToLink
                         text='Как проверить данные?'
                         target='_blank'
                         url='https://radar.usedocs.com/article/75916'
-                        />
+                    />
                 </div>
                 {/* !FILTERS */}
 
@@ -163,6 +169,13 @@ const _DashboardPage = () => {
                             <FinanceBlock
                                 loading={loading}
                                 dataDashBoard={dataDashBoard}
+                            />
+                            <TurnoverBlock
+                                loading={loading}
+                                turnover={dataDashBoard?.turnover}
+                                selectedRange={selectedRange}
+                                activeBrand={activeBrand}
+                                authToken={authToken}
                             />
                             <MarginChartBlock
                                 loading={loading}

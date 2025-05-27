@@ -71,13 +71,13 @@ export const menuConfig = [
             },
             {
                 id: 5,
-                url: '/main', // исправить
+                url: '/main', 
                 label: 'Операционные расходы',
                 isActive: false
             },
             {
                 id: 6,
-                url: '/report-week', // исправить
+                url: '/report-week', 
                 label: 'Отчет по неделям',
                 isActive: true
             },
@@ -109,15 +109,15 @@ export const menuConfig = [
             },
             {
                 id: 4,
-                url: '/selfcost', //првоерить
-                label: 'Себестоимость товаров',
-                isActive: false
+                url: '/selfcost',
+                label: 'Себестоимость',
+                isActive: true
             },
             {
                 id: 5,
-                url: '/groups', //проверить
+                url: '/groups',
                 label: 'Группы товаров',
-                isActive: false
+                isActive: true
             },
         ]
     },
