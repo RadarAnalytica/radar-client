@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import FilterReportWeek from './components/filterBrandArticle/FilterReportWeek'
+import FilterReportWeek from './widgets/filterBrandArticle/FilterReportWeek'
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
 
@@ -29,7 +29,7 @@ export default function ReportWeek() {
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 	const [primaryCollect, setPrimaryCollect] = useState(null)
-	const [period, setPeriod] = useState('all')
+	const [period, setPeriod] = useState([])
 	const [periodOptions, setPeriodOptions] = useState(null)
 
 	const updateDataReportWeek = async () => {
@@ -44,10 +44,10 @@ export default function ReportWeek() {
 				const weeks = response.data[0]['weeks'];
 
 				const options = weeks.map((el) => ({
-						id: el.week,
-						brand_name: el.week_label
+						value: el.week,
+						label: el.week_label
 				}))
-				options.unshift({id: 'all', brand_name: 'Весь период'});
+				// options.unshift({value: 'all', label: 'Весь период'});
 				setPeriodOptions(options)
 
 				setData(weeks);
@@ -82,7 +82,7 @@ export default function ReportWeek() {
 			drr: (summary) => (summary.total_ad / summary.sales) * 100,
 		}
 
-		let rows = period !== 'all' ? weeks.filter((el) => el.week === period) : weeks;
+		let rows = period.length > 0 ? weeks.filter((el) => period.includes(el.week)) : weeks;
 
 		rows = rows.map((el) => {
 			let row = {

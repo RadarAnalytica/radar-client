@@ -154,6 +154,16 @@ export const COLUMNS = [
 		width: 240,
 	},
 	{
+		title: 'Компенсация',
+		dataIndex: 'compensation',
+		sorter: (a, b) => sorter(a, b, 'compensation'), // Number(a.compensation) - Number(b.compensation),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => <div>{formatNumber(value)} ₽</div>,
+		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
+		width: 240,
+	},
+	{
 		title: 'Сред. стоимость логистики',
 		dataIndex: 'avg_logistics',
 		sorter: (a, b) => sorter(a, b, 'avg_logistics'), // Number(a.avg_logistics) - Number(b.avg_logistics),
@@ -334,16 +344,6 @@ export const COLUMNS = [
 	// 	// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 	// 	width: 240,
 	// },
-	{
-		title: 'Компенсация',
-		dataIndex: 'compensation',
-		sorter: (a, b) => sorter(a, b, 'compensation'), // Number(a.compensation) - Number(b.compensation),
-		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-		filterOptions: true,
-		render: (value) => <div>{formatNumber(value)} ₽</div>,
-		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
-		width: 240,
-	},
 	{
 		title: 'Платная приемка',
 		dataIndex: 'paid_accept',
