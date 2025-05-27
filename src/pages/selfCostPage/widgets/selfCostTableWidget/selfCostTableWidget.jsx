@@ -17,7 +17,8 @@ const SelfCostTableWidget = ({
     activeBrand,
     getTableData,
     setDataStatus,
-    setTableData
+    setTableData,
+    resetSearch
  }) => {
 
     if (!tableData && dataStatus.isLoading) {
@@ -71,6 +72,7 @@ const SelfCostTableWidget = ({
                                     dataStatus={dataStatus}
                                     setTableData={setTableData}
                                     tableData={tableData}
+                                    resetSearch={resetSearch}
                                 />
                             )
                         })}

@@ -20,7 +20,7 @@ const dataFetchingStatus = {
 }
 
 
-const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess, dataStatus, setTableData, tableData }) => {
+const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, initDataStatus, shopId, setIsSuccess, dataStatus, setTableData, tableData, resetSearch }) => {
     const datePickerContainerRef = useRef(null)
     //const rowRef = useRef(null)
     const [product, setProduct] = useState() // присваиваем глубоким копированием
@@ -86,6 +86,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)
+            resetSearch()
             //setIsUpdating(false)
             //getTableData(authToken, shopId)
         } catch {
@@ -136,6 +137,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 setTableData(newTableData)
                 setDataStatus({ ...initDataStatus })
                 setIsSuccess(true)
+                resetSearch()
                 //setIsUpdating(false)
             }
 
@@ -161,8 +163,13 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         let newTableData = tableData;
         const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
         if (mainIndex !== -1) {
-            newTableData[mainIndex] = newProduct;
-            setTableData(newTableData)
+            let oldProduct = newTableData[mainIndex];
+            const oldIndex = oldProduct.self_cost_change_history.findIndex(_ => moment(_.date).format('YYYY-MM-DD') === moment(item.date).format('YYYY-MM-DD'));
+            if (oldIndex !== -1) {
+                oldProduct.self_cost_change_history.splice(oldIndex, 1)
+            }
+            newTableData[mainIndex] = oldProduct;
+            setTableData(JSON.parse(JSON.stringify(newTableData)))
         }
     }
 
@@ -181,8 +188,11 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             let newTableData = tableData;
             const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
             if (mainIndex !== -1) {
-                newTableData[mainIndex] = newProduct;
-                setTableData([...newTableData])
+                let oldProduct = newTableData[mainIndex];
+                oldProduct.self_cost_change_history.push({ date: moment(selectedDate).format('YYYY-MM-DD'), cost: 0, fulfillment: 0 })
+                oldProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
+                newTableData[mainIndex] = oldProduct;
+                setTableData(JSON.parse(JSON.stringify(newTableData)))
             }
             setSelectedDate(null)
         }
