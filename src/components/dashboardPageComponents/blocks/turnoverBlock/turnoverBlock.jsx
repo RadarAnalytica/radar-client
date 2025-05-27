@@ -59,9 +59,9 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
     if (sortType === 'ASC') {
         sortedData = [...dataToSort].sort((a, b) => {
             if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
-                return a[sortedValue] - b[sortedValue]
+                return b[sortedValue] - a[sortedValue]
             } else {
-                return a[sortedValue].localeCompare(b[sortedValue])
+                return b[sortedValue].localeCompare(a[sortedValue])
             }
         })
     }
@@ -69,9 +69,9 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
     if (sortType === 'DESC') {
         sortedData = [...dataToSort].sort((a, b) => {
             if (typeof a[sortedValue] === 'number' && typeof b[sortedValue] === 'number') {
-                return b[sortedValue] - a[sortedValue]
+                return a[sortedValue] - b[sortedValue]
             } else {
-                return b[sortedValue].localeCompare(a[sortedValue])
+                return a[sortedValue].localeCompare(b[sortedValue])
             }
         })
     }
@@ -132,8 +132,19 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                     if (b.photo) return 1;
                     return 0;
                 })
-                setTableData(sortedData);
-                setInitData(sortedData)
+                const arrWODoubled = []
+                sortedData.forEach(i => {
+                    if (arrWODoubled.length === 0) {
+                        arrWODoubled.push(i)
+                    } else {
+                        const isExist = arrWODoubled.some(_ => JSON.stringify(_) === JSON.stringify(i))
+                        if (!isExist) {
+                            arrWODoubled.push(i)
+                        }
+                    }
+                })
+                setTableData(arrWODoubled);
+                setInitData(arrWODoubled)
             }
 
         } catch (e) {
@@ -146,6 +157,10 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
     useEffect(() => {
         if (isModalVisible && selectedRange && activeBrand && authToken) {
             getTurnoverTableData(selectedRange, activeBrand.id, authToken)
+        }
+
+        if (!isModalVisible) {
+            setSortState(initSortState)
         }
     }, [isModalVisible, selectedRange, activeBrand])
 
