@@ -20,9 +20,9 @@ export const Filters = ({
   // ------ база ------//
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
-  const { activeBrand, selectedRange, filters } = useAppSelector(store => store.filters)
+  const { activeBrand, selectedRange, filters, shops } = useAppSelector(store => store.filters)
   const filtersState = useAppSelector(store => store.filters)
-  const shops = useAppSelector((state) => state.shopsSlice.shops);
+  //const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
 
 
@@ -123,16 +123,16 @@ export const Filters = ({
   }, [activeBrand, selectedRange]);
 
   // это обект, который представляет опцию "все" ввиде магазина
-  const allShopOptionAsShopObject = {
-    id: 0,
-    brand_name: "Все",
-    is_active: true,
-    is_primary_collect: shops?.some(_ => _.is_primary_collect),
-    is_valid: true,
-  };
+  // const allShopOptionAsShopObject = {
+  //   id: 0,
+  //   brand_name: "Все",
+  //   is_active: true,
+  //   is_primary_collect: shops?.some(_ => _.is_primary_collect),
+  //   is_valid: true,
+  // };
 
   // это массив магазинов с добавлением опции "все"
-  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
+  //const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
 
 
 
@@ -153,12 +153,27 @@ export const Filters = ({
               selectId='store'
               label='Магазин:'
               value={activeBrand.id}
-              optionsData={shopArrayFormSelect}
+              optionsData={shops}
               handler={shopChangeHandler}
             />
           </div>
         }
-        {filters && Object.keys(filters)?.map((i, id) => {
+        {filters && activeBrand && filters.map((i, id) => {
+          return (
+            <React.Fragment key={id}>
+              {/* <div className={styles.filters__inputWrapper}>
+                <ShopSelect
+                  selectId='store'
+                  label='Магазин:'
+                  value={activeBrand?.id}
+                  optionsData={_.shop}
+                  handler={shopChangeHandler}
+                />
+              </div> */}
+            </React.Fragment>
+          )
+        })}
+        {/* {filters && Object.keys(filters)?.map((i, id) => {
           const data = filters[i];
           const isActive = (brandSelect && i === 'brands') || (articleSelect && i === 'articles') || (groupSelect && i === 'product_groups')
           return isActive && (
@@ -175,7 +190,7 @@ export const Filters = ({
               />
             </div>
           )
-        })}
+        })} */}
       </div>
     </div>
   );

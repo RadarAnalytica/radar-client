@@ -2,15 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 import { fetchFilters } from "./filterActions";
 
 const initialState = {
-    activeBrand: null,
-    activeBrandName: null,
-    activeArticle: null,
-    activeGroup: null,
+    activeBrand: undefined,
+    activeBrandName: undefined,
+    activeArticle: undefined,
+    activeGroup: undefined,
     skuFrequencyMode: 'Простой', // 'Простой' | 'Продвинутый'
+    shops: undefined,
     selectedRange: {
         period: 30
     },
-    filters: null
+    filters: undefined
 }
 
 
@@ -51,7 +52,8 @@ const apiServicePagesFilterStateSlice = createSlice({
                 return {
                     ...state,
                     filters: action.payload.filtersData,
-                    ...action.payload.initState
+                    shops: action.payload.shops
+                    //...action.payload.initState
                 }
             })
     }
