@@ -133,7 +133,7 @@ export const Filters = ({
         {skuFrequency &&
           <FrequencyModeSelect />
         }
-        {shops && activeBrand && timeSelect &&
+        {timeSelect &&
           <div className={styles.filters__inputWrapper}>
             <TimeSelect />
           </div>
