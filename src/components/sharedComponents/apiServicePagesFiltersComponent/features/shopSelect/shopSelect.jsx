@@ -48,6 +48,7 @@ export const ShopSelect = (
                     }}
                 >
                     <Select
+                        size='large'
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
                         options={optionsData?.map(brand => ({ value: brand.id, label: brand.brand_name }))}

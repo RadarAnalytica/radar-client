@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
@@ -20,15 +20,15 @@ export const Filters = ({
   // ------ база ------//
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
-  const { activeBrand, selectedRange, filters } = useAppSelector(store => store.filters)
+  const { activeBrand, selectedRange, filters, shops } = useAppSelector(store => store.filters)
   const filtersState = useAppSelector(store => store.filters)
-  const shops = useAppSelector((state) => state.shopsSlice.shops);
+  //const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
 
 
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
-    const selectedShop = shopArrayFormSelect?.find(_ => _.id === value)
+    const selectedShop = shops?.find(_ => _.id === value)
     dispatch(filterActions.setActiveShop(selectedShop))
   }
   //- -----------------------------------------//
@@ -123,16 +123,16 @@ export const Filters = ({
   }, [activeBrand, selectedRange]);
 
   // это обект, который представляет опцию "все" ввиде магазина
-  const allShopOptionAsShopObject = {
-    id: 0,
-    brand_name: "Все",
-    is_active: true,
-    is_primary_collect: shops?.some(_ => _.is_primary_collect),
-    is_valid: true,
-  };
+  // const allShopOptionAsShopObject = {
+  //   id: 0,
+  //   brand_name: "Все",
+  //   is_active: true,
+  //   is_primary_collect: shops?.some(_ => _.is_primary_collect),
+  //   is_valid: true,
+  // };
 
   // это массив магазинов с добавлением опции "все"
-  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
+  //const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
 
 
 
@@ -153,27 +153,60 @@ export const Filters = ({
               selectId='store'
               label='Магазин:'
               value={activeBrand.id}
-              optionsData={shopArrayFormSelect}
+              optionsData={shops}
               handler={shopChangeHandler}
             />
           </div>
         }
-        {filters && Object.keys(filters)?.map((i, id) => {
-          const data = filters[i];
-          const isActive = (brandSelect && i === 'brands') || (articleSelect && i === 'articles') || (groupSelect && i === 'product_groups')
-          return isActive && (
-            <div className={styles.filters__inputWrapper} key={id}>
-              <PlainSelect
-                selectId={data.enLabel}
-                label={`${data.ruLabel}:`}
-                value={filtersState[data.stateKey]}
-                optionsData={data.data}
-                handler={(value) => {
-                  const current = data.data.find(_ => _.value === value);
-                  dispatch(filterActions.setActiveFilters({ stateKey: data.stateKey, data: current }))
-                }}
-              />
-            </div>
+        {filters && activeBrand && filters.map((i, id) => {
+          return activeBrand.id === i.shop.id && (
+            <React.Fragment key={id}>
+              {brandSelect && <div className={styles.filters__inputWrapper}>
+                <MultiSelect
+                  dispatch={dispatch}
+                  filterActions={filterActions}
+                  params={i.brands}
+                  selectId={i.brands.enLabel}
+                  label={`${i.brands.ruLabel}:`}
+                  value={filtersState[i.brands.stateKey]}
+                  optionsData={i.brands.data}
+                />
+              </div>}
+              {articleSelect &&<div className={styles.filters__inputWrapper}>
+                <MultiSelect
+                  dispatch={dispatch}
+                  filterActions={filterActions}
+                  params={i.articles}
+                  selectId={i.articles.enLabel}
+                  label={`${i.articles.ruLabel}:`}
+                  value={filtersState[i.articles.stateKey]}
+                  optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
+                />
+              </div>}
+              {groupSelect && <div className={styles.filters__inputWrapper}>
+                <MultiSelect
+                  dispatch={dispatch}
+                  filterActions={filterActions}
+                  params={i.groups}
+                  selectId={i.groups.enLabel}
+                  label={`${i.groups.ruLabel}:`}
+                  value={filtersState[i.groups.stateKey]}
+                  optionsData={i.groups.data}
+                />
+              </div>}
+              {/* <div className={styles.filters__inputWrapper}>
+                <PlainSelect
+                  selectId={i.groups.enLabel}
+                  label={`${i.groups.ruLabel}:`}
+                  value={filtersState[i.groups.stateKey]}
+                  optionsData={i.groups.data}
+                  handler={(value) => {
+                    const current = i.groups.data.find(_ => _.value === value);
+                    dispatch(filterActions.setActiveFilters({ stateKey: i.groups.stateKey, data: current }))
+                  }}
+                />
+              </div> */}
+            </React.Fragment>
           )
         })}
       </div>

@@ -2,52 +2,133 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { URL } from '../../service/config';
 import { setLoading } from '../loading/loadingSlice';
 
+
+
+/**
+ * "shops": [
+            {
+                "shop_data": {
+                    "id": 81,
+                    "brand_name": "Test (no collect)",
+                    "is_active": true,
+                    "is_valid": false,
+                    "is_primary_collect": true,
+                    "updated_at": "2024-10-18T03:28:29.901783"
+                },
+                "brands": [
+                    {
+                        "name": "Nike",
+                        "wb_id": [
+                            "NE23D-S982C/172",
+                            "NE23D-S982C/391",
+                            "NE23D-S982C/596",
+                            "NE23D-S982C/701",
+                            "NE23D-S982C/882",
+                            "NE23MD-S991C/354",
+                            "NE23MD-S991C/530",
+                            "NE23MD-S991C/596",
+                            "NE23MD-S991C/701",
+                            "NE23MD-S991C/882"
+                        ]
+                },
+                "groups": [
+                    {
+                        "id": 2,
+                        "name": "1"
+                    },
+                    {
+                        "id": 15,
+                        "name": "123"
+                    }
+                ]
+ */
 const createFiltersDTO = (data) => {
-    if (!data) return
-    let filtersDTO = {
-        // shops: {
-        //     stateKey: 'activeBrand',
-        //     ruLabel: 'Магазин',
-        //     enLabel: 'shops',
-        //     data: [],
-        //     hasAllValue: true
-        // },
-        brands: {
-            stateKey: 'activeBrandName',
-            ruLabel: 'Бренд',
-            enLabel: 'brands',
-            data: [],
-            hasAllValue: false
-        },
-        articles: {
-            stateKey: 'activeArticle',
-            ruLabel: 'Артикул',
-            enLabel: 'articles',
-            data: [],
-            hasAllValue: false
-        },
-        product_groups: {
-            stateKey: 'activeGroup',
-            ruLabel: 'Группа товаров',
-            enLabel: 'product_groups',
-            data: [],
-            hasAllValue: false
-        },
+  // 1 - создаем массив всех магазинов + опцию "Все магазины"
+  const shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect) }, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
+  // 2 - Трансформируем дату для опции "все магазины"
+  // 2.1 - выцепляем все бренды по всем магазинам
+  // 2.2 - выцепляем все артикулы всех брендов по всем магазинам
+  // 2.3  - выцепляем все группы всех магазинов
+  const allBransdData = []
+  const allArticlesData = []
+  const allGroupsData = []
+  data.forEach((_, id) => {
+    _.groups.forEach(g => {
+      allGroupsData.push({...g, value: g.name, key: g.id })
+    })
+    _.brands.forEach((b, barndId) => {
+      allBransdData.push({
+        name: b.name ? b.name : `Без названия-${_.shop_data.id}${barndId}`,
+        value: b.name ? b.name : `Без названия-${_.shop_data.id}${barndId}`,
+      })
+      b.wb_id.forEach(a => {
+        allArticlesData.push({ name: a, value: a, brand: b.name ? b.name :`Без названия-${_.shop_data.id}${barndId}`})
+      })
+    })
+  })
+  // 2.4 - собираем обьект для "все магазины"
+  const allShopsOption = {
+    shop: shops[0],
+    brands: {
+      stateKey: 'activeBrandName',
+      ruLabel: 'Бренд',
+      enLabel: 'brands',
+      data: allBransdData
+    },
+    articles: {
+      stateKey: 'activeArticle',
+      ruLabel: 'Артикул',
+      enLabel: 'articles',
+      data: allArticlesData
+    },
+    groups: {
+      stateKey: 'activeGroup',
+      ruLabel: 'Группа товаров',
+      enLabel: 'product_groups',
+      data: allGroupsData
+    }
+  }
+
+  // формируем итоговый массив для всех данных
+  const DTO = [allShopsOption, ...data?.map(i => {
+    //let articlesData = [{ value: 'Все', brand: 'Все' }]
+    let articlesData = []
+    i.brands.forEach((item, bId) => {
+      const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия-${i.shop_data.id}${bId}`}))
+      articlesData = [...articlesData, ...items]
+    })
+    let newItem = {
+      shop: {
+        ...i.shop_data,
+        value: i.shop_data.name
+      },
+      brands: {
+        stateKey: 'activeBrandName',
+        ruLabel: 'Бренд',
+        enLabel: 'brands',
+        data: i.brands?.map((_, id) => ({
+          name: _.name ? _.name : `Без названия-${i.shop_data.id}${id}`,
+          value: _.name ? _.name : `Без названия-${i.shop_data.id}${id}`,
+        })),
+      },
+      articles: {
+        stateKey: 'activeArticle',
+        ruLabel: 'Артикул',
+        enLabel: 'articles',
+        data: articlesData
+      },
+      groups: {
+        stateKey: 'activeGroup',
+        ruLabel: 'Группа товаров',
+        enLabel: 'product_groups',
+        data: i.groups.map(_ => ({ ..._, value: _.name, key: _.id }))
+      }
     }
 
-    Object.keys(data).forEach(key => {
-        const isInObject = Object.keys(filtersDTO).some(_ => _ === key);
-        if (isInObject && key !== 'shops') {
-            let normilizedData = [];
-            if (key === 'articles') {normilizedData = [{ value: 'Все' },...data[key].map(_ => ({ value: _.article}))]}
-            if (key === 'product_groups') {normilizedData = [{id: 0, value: 'Все'},...data[key].map(_ => ({ value: _.name, id: _.id}))]}
-            if (key === 'brands') {normilizedData = [{ value: 'Все' },...data[key].map(_ => ({ value: _.brand}))]}
-            //if (key === 'shops') {normilizedData = [{id: 0, value: 'Все'},...data[key].map(_ => ({ value: _.name, id: _.id}))]}
-            filtersDTO[key].data = normilizedData;
-        }
-    })
+    return newItem
+  })]
 
-    return {filtersData: filtersDTO, initState: {activeBrandName: {value: 'Все'}, activeArticle: {value: 'Все'}, activeGroup: {id: 0, value: 'Все'}}}
+  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }] } }
 }
 
 export const fetchFilters = createAsyncThunk(
@@ -65,7 +146,10 @@ export const fetchFilters = createAsyncThunk(
         },
       });
       data = await res.json();
-      return createFiltersDTO(data?.data);
+      if (data?.data?.shops) {
+        return createFiltersDTO(data.data.shops);
+      }
+
     } catch (e) {
       throw e;
     } finally {
