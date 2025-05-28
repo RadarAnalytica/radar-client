@@ -4,9 +4,9 @@
   align-items: center;
   gap: 16px;
 }
+
 .item{
   flex: 1 0 auto;
   min-width: 190px;
   max-width: 240px;
-  /* width: 100%; */
 }
