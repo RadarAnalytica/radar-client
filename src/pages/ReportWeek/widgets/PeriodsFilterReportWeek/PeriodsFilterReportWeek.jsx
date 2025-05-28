@@ -1,7 +1,6 @@
 import { ConfigProvider, Popover, Button, Form, Checkbox} from 'antd';
-import { useState } from 'react';
 import { useForm } from 'antd/es/form/Form';
-import styles from './PeriodsFilter.module.css';
+import styles from './PeriodsFilterReportWeek.module.css';
 
 function PeriodForm({periodOptions, setPeriod}) {
 
@@ -16,6 +15,11 @@ function PeriodForm({periodOptions, setPeriod}) {
       }
       return result
     })
+  }
+
+  function clearFormHandler(){
+    form.resetFields();
+    setPeriod([]);
   }
   
   const list = periodOptions.map((el, i) => (
@@ -43,15 +47,26 @@ function PeriodForm({periodOptions, setPeriod}) {
             colorPrimaryHover: '#5329ff',
             fontSize: 16
           },
+          Button: {
+            fontSize: 16,
+            colorPrimary: '#5329ff',
+          }
         },
       }}
     >
       <Form form={form} className={styles.list}>
+        <Button
+          className={styles.item}
+          type='button'
+          onClick={clearFormHandler}
+        >
+          Все время
+        </Button>
         {periodOptions.map((el, i) =>
           <Form.Item
             key={el.value}
             name={el.value}
-            className={styles.item}
+            className={styles.list__item}
             valuePropName="checked"
             value={el.value}
             onChange={formChangeHandler}
@@ -66,7 +81,7 @@ function PeriodForm({periodOptions, setPeriod}) {
 }
 
 
-export default function PeriodsFilter({period, periodOptions, setPeriod}) {
+export default function PeriodsFilterReportWeek({period, periodOptions, setPeriod}) {
 
 	return (
 		<div>
@@ -112,7 +127,7 @@ export default function PeriodsFilter({period, periodOptions, setPeriod}) {
 						iconPosition="start"
 						size="large"
 					>
-            {period?.length > 0 ? 'Выбрано недель: ' + period.length : 'Весь период'}
+            {period?.length > 0 ? `Выбрано недель: ${period.length}` : 'Все время'}
             <span className="ant-select-arrow" unselectable="on"><svg className={styles.arrow} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg" ><path d="M2 2L14 14L26 2" stroke="" strokeWidth="4" strokeLinecap="round"></path></svg></span>
 					</Button>
 				</Popover>
