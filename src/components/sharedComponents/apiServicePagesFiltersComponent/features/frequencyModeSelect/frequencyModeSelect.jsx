@@ -42,6 +42,7 @@ export const FrequencyModeSelect = () => {
                     }}
                 >
                     <Select
+                        size='large'
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
                         options={[{ value: 'Простой' }, { value: 'Продвинутый' }]}

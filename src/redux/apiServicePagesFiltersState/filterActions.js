@@ -49,21 +49,20 @@ const createFiltersDTO = (data) => {
   // 2.1 - выцепляем все бренды по всем магазинам
   // 2.2 - выцепляем все артикулы всех брендов по всем магазинам
   // 2.3  - выцепляем все группы всех магазинов
-  const allBransdData = [{ value: 'Все' }]
-  const allArticlesData = [{ value: 'Все', brand: 'Все' }]
-  const allGroupsData = [{ value: 'Все', id: 0 }]
+  const allBransdData = []
+  const allArticlesData = []
+  const allGroupsData = []
   data.forEach((_, id) => {
-    console.log(id)
     _.groups.forEach(g => {
-      allGroupsData.push({...g, value: g.name })
+      allGroupsData.push({...g, value: g.name, key: g.id })
     })
-    _.brands.forEach(b => {
+    _.brands.forEach((b, barndId) => {
       allBransdData.push({
-        name: b.name ? b.name : `Без названия-${id}`,
-        value: b.name ? b.name : `Без названия-${id}`,
+        name: b.name ? b.name : `Без названия-${_.shop_data.id}${barndId}`,
+        value: b.name ? b.name : `Без названия-${_.shop_data.id}${barndId}`,
       })
       b.wb_id.forEach(a => {
-        allArticlesData.push({ name: a, value: a, brand: b.name })
+        allArticlesData.push({ name: a, value: a, brand: b.name ? b.name :`Без названия-${_.shop_data.id}${barndId}`})
       })
     })
   })
@@ -89,12 +88,13 @@ const createFiltersDTO = (data) => {
       data: allGroupsData
     }
   }
-  console.log(allShopsOption)
+
   // формируем итоговый массив для всех данных
   const DTO = [allShopsOption, ...data?.map(i => {
-    let articlesData = [{ value: 'Все', brand: 'Все' }]
-    i.brands.forEach(i => {
-      const items = i.wb_id.map(_ => ({ name: _, value: _, brand: i.name }))
+    //let articlesData = [{ value: 'Все', brand: 'Все' }]
+    let articlesData = []
+    i.brands.forEach((item, bId) => {
+      const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия-${i.shop_data.id}${bId}`}))
       articlesData = [...articlesData, ...items]
     })
     let newItem = {
@@ -106,10 +106,10 @@ const createFiltersDTO = (data) => {
         stateKey: 'activeBrandName',
         ruLabel: 'Бренд',
         enLabel: 'brands',
-        data: [{ value: 'Все' }, ...i.brands?.map((_, id) => ({
-          name: _.name ? _.name : `Без названия-${id}`,
-          value: _.name ? _.name : `Без названия-${id}`,
-        }))],
+        data: i.brands?.map((_, id) => ({
+          name: _.name ? _.name : `Без названия-${i.shop_data.id}${id}`,
+          value: _.name ? _.name : `Без названия-${i.shop_data.id}${id}`,
+        })),
       },
       articles: {
         stateKey: 'activeArticle',
@@ -121,15 +121,14 @@ const createFiltersDTO = (data) => {
         stateKey: 'activeGroup',
         ruLabel: 'Группа товаров',
         enLabel: 'product_groups',
-        data: [{ value: 'Все', id: 0 }, ...i.groups.map(_ => ({ ..._, value: _.name }))]
+        data: i.groups.map(_ => ({ ..._, value: _.name, key: _.id }))
       }
     }
 
     return newItem
   })]
-  console.log(DTO)
 
-  return { shops, filtersData: DTO, initState: { activeBrandName: { value: 'Все' }, activeArticle: { value: 'Все' }, activeGroup: { id: 0, value: 'Все' } } }
+  return { shops, filtersData: DTO, initState: { activeBrandName: [{ value: 'Все' }], activeArticle: [{ value: 'Все' }], activeGroup: [{ id: 0, value: 'Все' }] } }
 }
 
 export const fetchFilters = createAsyncThunk(

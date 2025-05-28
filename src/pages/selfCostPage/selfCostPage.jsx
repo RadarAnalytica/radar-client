@@ -32,12 +32,13 @@ const SelfCostPage = () => {
     const getTableData = async (authToken, shopId, filters) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
         let queryString = `shop=${shopId}`
-        if (filters?.activeBrandName && filters?.activeBrandName.value !== 'Все') {
-            queryString += `&brand=${filters.activeBrandName.value}`
-          }
-          if (filters?.activeGroup && filters?.activeGroup.id !== 0) {
-            queryString += `&product_group=${filters.activeGroup.id}`
-          }
+        // if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
+        //     queryString += `&brand=${JSON.stringify(filters.activeBrandName.map(_ => _.value))}`
+        //     //queryString += `&brand=${filters.activeBrandName.map(_ => _.value).toString(',')}`
+        // }
+        // if (filters?.activeGroup && filters?.activeGroup.id !== 0) {
+        //     //queryString += `&product_group=${filters.activeGroup.id}`
+        // }
         const res = await fetch(`${URL}/api/product/self-costs?${queryString}`, {
             headers: {
                 'content-type': 'application/json',
@@ -113,6 +114,8 @@ const SelfCostPage = () => {
                         setLoading={setLoading}
                         timeSelect={false}
                         articleSelect={false}
+                        brandSelect={false}
+                        groupSelect={false}
                     />
                     <HowToLink
                         text='Инструкция по загрузке себестоимости'

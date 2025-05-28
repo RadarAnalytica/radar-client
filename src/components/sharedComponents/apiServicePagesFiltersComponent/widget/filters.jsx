@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
@@ -161,31 +161,40 @@ export const Filters = ({
         {filters && activeBrand && filters.map((i, id) => {
           return activeBrand.id === i.shop.id && (
             <React.Fragment key={id}>
-              <div className={styles.filters__inputWrapper}>
-                <PlainSelect
+              {brandSelect && <div className={styles.filters__inputWrapper}>
+                <MultiSelect
+                  dispatch={dispatch}
+                  filterActions={filterActions}
+                  params={i.brands}
                   selectId={i.brands.enLabel}
                   label={`${i.brands.ruLabel}:`}
                   value={filtersState[i.brands.stateKey]}
                   optionsData={i.brands.data}
-                  handler={(value) => {
-                    const current = i.brands.data.find(_ => _.value === value);
-                    dispatch(filterActions.setActiveFilters({ stateKey: i.brands.stateKey, data: current }))
-                  }}
                 />
-              </div>
-              <div className={styles.filters__inputWrapper}>
-                <PlainSelect
+              </div>}
+              {articleSelect &&<div className={styles.filters__inputWrapper}>
+                <MultiSelect
+                  dispatch={dispatch}
+                  filterActions={filterActions}
+                  params={i.articles}
                   selectId={i.articles.enLabel}
                   label={`${i.articles.ruLabel}:`}
                   value={filtersState[i.articles.stateKey]}
-                  optionsData={filtersState.activeBrandName.value === 'Все' ? i.articles.data : i.articles.data.filter(_ => _.brand === filtersState.activeBrandName.value)}
-                  handler={(value) => {
-                    const current = i.articles.data.find(_ => _.value === value);
-                    dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: current }))
-                  }}
+                  optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
                 />
-              </div>
-              <div className={styles.filters__inputWrapper}>
+              </div>}
+              {groupSelect && <div className={styles.filters__inputWrapper}>
+                <MultiSelect
+                  dispatch={dispatch}
+                  filterActions={filterActions}
+                  params={i.groups}
+                  selectId={i.groups.enLabel}
+                  label={`${i.groups.ruLabel}:`}
+                  value={filtersState[i.groups.stateKey]}
+                  optionsData={i.groups.data}
+                />
+              </div>}
+              {/* <div className={styles.filters__inputWrapper}>
                 <PlainSelect
                   selectId={i.groups.enLabel}
                   label={`${i.groups.ruLabel}:`}
@@ -196,7 +205,7 @@ export const Filters = ({
                     dispatch(filterActions.setActiveFilters({ stateKey: i.groups.stateKey, data: current }))
                   }}
                 />
-              </div>
+              </div> */}
             </React.Fragment>
           )
         })}

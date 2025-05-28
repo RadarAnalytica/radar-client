@@ -14,14 +14,15 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
     date_to: selectedRange?.to && selectedRange.to
   }
 
-  if (filters?.activeBrandName && filters?.activeBrandName.value !== 'Все') {
-    requestObject.brands = [filters.activeBrandName.value]
+  if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
+    requestObject.brands = filters.activeBrandName.map(_ => _.value)
   }
-  if (filters?.activeArticle && filters?.activeArticle.value !== 'Все') {
-    requestObject.articles = [filters.activeArticle.value]
+  // filters?.activeArticle.value !== 'Все'
+  if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
+    requestObject.articles = filters.activeArticle.map(_ => _.value)
   }
-  if (filters?.activeGroup && filters?.activeGroup.id !== 0) {
-    requestObject.product_groups = [filters.activeGroup.id]
+  if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
+    requestObject.product_groups = filters.activeGroup.map(_ => _.id)
   }
   return requestObject;
 }

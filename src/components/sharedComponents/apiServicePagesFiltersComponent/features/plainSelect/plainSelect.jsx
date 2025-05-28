@@ -9,6 +9,8 @@ export const PlainSelect = (
         value, //string | number
         optionsData, //array
         handler, // (e) => void
+        mode,
+        allowClear
     }
 ) => {
 
@@ -48,6 +50,8 @@ export const PlainSelect = (
                     }}
                 >
                     <Select
+                        size='large'
+                        allowClear={allowClear}
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
                         options={optionsData}

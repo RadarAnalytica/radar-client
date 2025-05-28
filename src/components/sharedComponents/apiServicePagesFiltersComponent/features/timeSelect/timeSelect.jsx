@@ -192,6 +192,7 @@ export const TimeSelect = () => {
                     }}
                 >
                     <Select
+                        size='large'
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         suffixIcon={icon}
                         className={styles.select}

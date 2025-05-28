@@ -30,6 +30,9 @@ const SkuFrequencyPage = () => {
                             setLoading={() => { }}
                             shopSelect={false}
                             skuFrequency={true}
+                            brandSelect={false}
+                            articleSelect={false}
+                            groupSelect={false}
                         />
                     </div>
                     <OptionsWidget />
