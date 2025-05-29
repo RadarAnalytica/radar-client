@@ -39,20 +39,6 @@ const EmailForReset = () => {
         setIsSubmitDisabled(false)
     }
 
-    const requestLink = async (email) => {
-        const res = await fetch(`${URL}/api/user/reset`, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                email
-            })
-        })
-        const data = await res.json()
-        return data
-    }
-
     const submitHandler = async () => {
         setRequestState({ ...initRequestStatus, isLoading: true })
         try {
@@ -74,18 +60,6 @@ const EmailForReset = () => {
             console.log(e)
             setRequestState({ ...initRequestStatus, isError: true, message: res.detail || 'Что-то пошло не так :(' })
         }
-    }
-
-    const submitHandler = () => {
-        if (!isValidEmail(email)){
-            setEmailErrorText('Введите корректный Email')
-            return
-        }
-        
-        requestLink(email).then(data => {
-            window.location.href = `${URL}/signin`
-        })
-
     }
 
     return (
