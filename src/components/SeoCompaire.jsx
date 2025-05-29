@@ -181,7 +181,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
       </div>
       </div>
       <div className={styles.topBlock}>
-        <div style={{ position: 'relative' }}>
+        <div className={styles.topBlock__content}>
           <IntersectingCircles 
              color1={color1} 
              color2={color2} 

@@ -8,6 +8,11 @@
     margin-bottom: 40px;
 }
 
+.topBlock__content{
+  position: relative;
+  align-self: flex-start;
+}
+
 .seoTableHeader {
   display: grid;
   grid-template-columns: 1fr 1fr;
