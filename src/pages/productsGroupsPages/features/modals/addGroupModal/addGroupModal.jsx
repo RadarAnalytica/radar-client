@@ -8,6 +8,7 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import { useAppDispatch } from '../../../../../redux/hooks';
 import { fetchShops } from '../../../../../redux/shops/shopsActions';
 import { actions as filterActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import { fetchFilters } from '../../../../../redux/apiServicePagesFiltersState/filterActions';
 
 const initDataFetchingStatus = {
     isLoading: false,
@@ -53,6 +54,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
 
             const parsedData = await res.json()
             setDataFetchingStatus(initDataFetchingStatus)
+            dispatch(fetchFilters(authToken))
             navigate(`/groups/${parsedData.data.id}`)
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
@@ -81,11 +83,11 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
     }, [shops]);
 
     // устанавливаем первый магазин как выбранный если выбранного нет
-    useEffect(() => {
-        if (shops && shops.length > 0 && !activeBrand) {
-            dispatch(filterActions.setActiveShop(shops[0]))
-        }
-    }, [shops, activeBrand]);
+    // useEffect(() => {
+    //     if (shops && shops.length > 0 && !activeBrand) {
+    //         dispatch(filterActions.setActiveShop(shops[0]))
+    //     }
+    // }, [shops, activeBrand]);
 
     return (
         <Modal
@@ -134,6 +136,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
                     >
                         <Select
                             size='large'
+                            placeholder='Выберите магазин'
                             style={{ height: 56 }}
                             value={activeBrand?.id}
                             options={shops.map(i => ({ value: i.id, label: i.brand_name }))}
