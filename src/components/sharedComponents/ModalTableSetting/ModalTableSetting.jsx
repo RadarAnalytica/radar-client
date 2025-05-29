@@ -12,15 +12,14 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'antd/es/form/Form';
 
 export default function ModalTableSetting({
-	isModalOpen,
+	isModalOpen = true,
 	closeModal,
 	columnsList,
 	tableColumns,
 	setTableColumns,
 }) {
 	const [shownColumns, setShownColumns] = useState(columnsList);
-
-	const initialColumns = tableColumns.map((el) => el.dataIndex);
+	const [checked, setChecked] = useState(tableColumns.map((el) => el.dataIndex));
 
 	const [form] = useForm();
 
@@ -38,7 +37,6 @@ export default function ModalTableSetting({
 	}
 
 	function onFinish(data) {
-
 		if (data.length == 0) {
 			closeModal();
 			return;
@@ -59,11 +57,30 @@ export default function ModalTableSetting({
 		closeModal();
 	}
 
-	function checkAll() {
-		for (const column of shownColumns) {
-			form.setFieldValue(column.dataIndex, true);
+	function сheckAllHandler(){
+		console.log('сheckAllHandler')
+		const data = form.getFieldsValue()
+		for (const check in data) {
+      form.setFieldValue(check, shownColumns.length > checked.length ? true : false)
+    }
+		if (checked.length == shownColumns.length){
+			setChecked([])
+		} else {
+			setChecked(shownColumns.map((el) => el.dataIndex))
 		}
 	}
+
+	function checkChangeHandler(){
+		const data = form.getFieldsValue()
+    let result = [];
+    for (const week in data){
+      data[week] && result.push(Number(week))
+    }
+		setChecked(result)
+	}
+	
+	const checkAll = checked.length == columnsList.length
+	const indeterminateAll = checked.length > 0 && checked.length < columnsList.length
 
 	return (
 		<ConfigProvider
@@ -204,10 +221,20 @@ export default function ModalTableSetting({
 							</Button>
 						</Flex>
 					</Form>
-					<Button type="link" size="large" onClick={checkAll}>
+					{/* <Button type="link" size="large" onClick={checkAllHandler}>
 						Выбрать все
-					</Button>
+					</Button> */}
 				</Flex>
+				<div >
+					<Checkbox
+						className={styles.item}
+						indeterminate={indeterminateAll}
+						onChange={сheckAllHandler}
+						defaultChecked={checkAll}
+					>
+						Выбоать все
+					</Checkbox>
+				</div>
 				<Form form={form} onFinish={onFinish}>
 					<Flex vertical wrap className={styles.list}>
 						{shownColumns.map((el, i) => (
@@ -217,15 +244,17 @@ export default function ModalTableSetting({
 								name={el.dataIndex}
 								valuePropName="checked"
 								value={el.dataIndex}
-								initialValue={initialColumns.includes(
+								initialValue={checked.includes(
 										el.dataIndex
-									)}
+								)}
+								onChange={checkChangeHandler}
 							>
 								<Checkbox >
 									{el.title}
 								</Checkbox>
 							</Form.Item>
 						))}
+
 						<Flex
 							gap={12}
 							justify="end"
