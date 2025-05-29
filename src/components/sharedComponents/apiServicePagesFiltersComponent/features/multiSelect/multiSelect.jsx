@@ -80,7 +80,7 @@ export const MultiSelect = (
                 onMouseDown={onPreventMouseDown}
                 closable={false}
                 onClose={onClose}
-                style={{ background: 'transparent', color: 'black', fontSize: '18px' }}
+                style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center' }}
             >
                 {label}
             </Tag>
@@ -90,8 +90,8 @@ export const MultiSelect = (
     const selectHandler = value => {
         const isAllOptionIndex = value.findIndex(_ => _ === 'Все')
         if ((isAllOptionIndex !== -1 && isAllOptionIndex === value.length - 1) || value.length === 0) {
-            const current = params.data.find(_ => _.value === 'Все');
-            setSelectState([current])
+            //const current = params.data.find(_ => _.value === 'Все');
+            setSelectState([{value: 'Все', id: 0}])
             //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: [current] }))
             return
         }
@@ -160,6 +160,7 @@ export const MultiSelect = (
                 >
                     <Select
                         maxTagCount={0}
+                        maxTagTextLength={5}
                         showSearch={false}
                         size='large'
                         mode='multiple'
@@ -193,13 +194,10 @@ export const MultiSelect = (
                             }
                         }}
                         maxTagPlaceholder={omittedValues => (
-                            <Tooltip
-                                styles={{ root: { pointerEvents: 'none' } }}
-                                title={omittedValues.map(({ label }) => label).join(', ')}
-                            >
-                                {omittedValues.length > 1 && <span>Выбрано: {omittedValues.length}</span>}
-                                {omittedValues.length === 1 && <span>{omittedValues[0].value}</span>}
-                            </Tooltip>
+                            <>
+                                {omittedValues.length > 1 && <p className={styles.plainSelect__multiLabel}>Выбрано: {omittedValues.length}</p>}
+                                {omittedValues.length === 1 && <p className={styles.plainSelect__multiLabel}>{omittedValues[0].value}</p>}
+                            </>
                         )}
                         menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}
                     />
