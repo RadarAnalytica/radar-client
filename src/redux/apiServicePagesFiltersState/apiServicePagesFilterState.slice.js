@@ -43,7 +43,15 @@ const apiServicePagesFilterStateSlice = createSlice({
         },
         setActiveFilters: (state, action) => {
             const { stateKey, data } = action.payload;
-            if (stateKey === 'activeBrandName' || stateKey === 'activeArticle') {
+            if (stateKey === 'activeBrandName') {
+                return {
+                    ...state,
+                    [stateKey]: data,
+                    activeGroup: [{value: 'Все', id: 0}],
+                    activeArticle: [{value: 'Все', id: 0}]
+                }
+            }
+            if (stateKey === 'activeArticle') {
                 return {
                     ...state,
                     [stateKey]: data,

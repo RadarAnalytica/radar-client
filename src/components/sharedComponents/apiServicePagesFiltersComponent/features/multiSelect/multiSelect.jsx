@@ -21,12 +21,13 @@ export const MultiSelect = (
 
     const renderPopup = (menu) => {
         let action
-        if (selectState.length < optionsData.length) {
+        if (selectState.length < optionsData.length && !searchState) {
             action = () => { setSelectState(optionsData.filter(_ => _.value !== 'Все')) }
         }
         if (selectState.length === optionsData.length) {
             action = () => { setSelectState([{ value: 'Все' }]) }
         }
+       
         return (
             <>
                 <ConfigProvider
@@ -55,15 +56,16 @@ export const MultiSelect = (
                         }
                     }}
                 >
-                    <Button
+                    {!searchState && <Button
                         style={{ width: '100%' }}
                         type='primary'
                         size='large'
                         onClick={action}
+                        disabled={optionsData.length === 0}
                     >
                         {selectState.length < optionsData.length && 'Выбрать все'}
                         {selectState.length === optionsData.length && 'Снять все'}
-                    </Button>
+                    </Button>}
                 </ConfigProvider>
             </>)
     }
@@ -168,7 +170,7 @@ export const MultiSelect = (
                         tagRender={tagRender}
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
-                        options={optionsData.filter((_) => _.value.includes(searchState)).map((option, id) => ({
+                        options={optionsData.filter((_) => _.value.toLowerCase().includes(searchState.toLowerCase())).map((option, id) => ({
                             ...option,
                             key: option.id || option.value
                         }))}
@@ -180,6 +182,7 @@ export const MultiSelect = (
                         dropdownRender={renderPopup}
                         onDropdownVisibleChange={(open) => {
                             if (!open) {
+                                setSearchState('')
                                 if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return
                                 dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }))
                                 prevSelectState.current = selectState
