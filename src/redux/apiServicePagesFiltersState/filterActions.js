@@ -58,11 +58,11 @@ const createFiltersDTO = (data) => {
     })
     _.brands.forEach((b, barndId) => {
       allBransdData.push({
-        name: b.name ? b.name : `Без названия-${_.shop_data.id}${barndId}`,
-        value: b.name ? b.name : `Без названия-${_.shop_data.id}${barndId}`,
+        name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
+        value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
       })
       b.wb_id.forEach(a => {
-        allArticlesData.push({ name: a, value: a, brand: b.name ? b.name :`Без названия-${_.shop_data.id}${barndId}`})
+        allArticlesData.push({ name: a, value: a, brand: b.name ? b.name :`Без названия-${_.shop_data.id}`})
       })
     })
   })
@@ -94,7 +94,7 @@ const createFiltersDTO = (data) => {
     //let articlesData = [{ value: 'Все', brand: 'Все' }]
     let articlesData = []
     i.brands.forEach((item, bId) => {
-      const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия-${i.shop_data.id}${bId}`}))
+      const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия-${i.shop_data.id}`}))
       articlesData = [...articlesData, ...items]
     })
     let newItem = {
@@ -107,8 +107,8 @@ const createFiltersDTO = (data) => {
         ruLabel: 'Бренд',
         enLabel: 'brands',
         data: i.brands?.map((_, id) => ({
-          name: _.name ? _.name : `Без названия-${i.shop_data.id}${id}`,
-          value: _.name ? _.name : `Без названия-${i.shop_data.id}${id}`,
+          name: _.name ? _.name : `Без названия&${i.shop_data.id}`,
+          value: _.name ? _.name : `Без названия (${i.shop_data.brand_name})`,
         })),
       },
       articles: {

@@ -1,13 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styles from './groupEditModal.module.css'
-import { Modal, Input, ConfigProvider, Button, Select } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Modal, Input, ConfigProvider, Button } from 'antd';
 import { URL } from '../../../../../service/config';
 import AuthContext from '../../../../../service/AuthContext';
-import { useAppSelector } from '../../../../../redux/hooks';
 import { useAppDispatch } from '../../../../../redux/hooks';
-import { fetchShops } from '../../../../../redux/shops/shopsActions';
-import { actions as filterActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
+import { fetchFilters } from '../../../../../redux/apiServicePagesFiltersState/filterActions';
 
 const initDataFetchingStatus = {
     isLoading: false,
@@ -16,23 +13,21 @@ const initDataFetchingStatus = {
     message: ''
 }
 
-const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, dataFetchingStatus, setDataFetchingStatus }) => {
-    const { authToken, user } = useContext(AuthContext)
-    const { activeBrand } = useAppSelector((state) => state.filters);
-    const { shops } = useAppSelector((state) => state.shopsSlice);
-    //const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
+const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, dataFetchingStatus, setDataFetchingStatus, groupData, getGroupData }) => {
+    const { authToken } = useContext(AuthContext)
     const [inputValue, setInputValue] = useState('')
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
 
 
     const updateGroup = async () => {
         setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         const requestObject = {
             name: inputValue,
+            description: groupData?.description,
+            product_ids: groupData?.products.map(_ => _.id)
         }
         try {
-            const res = await fetch(`${URL}/api/product/product_groups/2`, {
+            const res = await fetch(`${URL}/api/product/product_groups/${groupData.id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',
@@ -46,42 +41,20 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
                 setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
                 return;
             }
-
-            const parsedData = await res.json()
             setDataFetchingStatus(initDataFetchingStatus)
-            navigate(`/groups/${parsedData.data.id}`)
+            getGroupData(authToken, groupData.id)
+            dispatch(fetchFilters(authToken))
+            setIsEditGroupModalVisible(false)
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
         }
     }
 
-    // ------- Фетч массива магазинов -------------//
-    const fetchShopData = async () => {
-        try {
-            if (user.subscription_status === null) {
-                dispatch(fetchShops('mockData'));
-            } else {
-                dispatch(fetchShops(authToken));
-            }
-        } catch (error) {
-            console.error("Error fetching initial data:", error);
-        }
-    };
-    //---------------------------------------------//
 
     // 0. Получаем данные магазинов
     useEffect(() => {
-        if (!shops || shops.length === 0) {
-            fetchShopData();
-        }
-    }, [shops]);
-
-    // устанавливаем первый магазин как выбранный если выбранного нет
-    useEffect(() => {
-        if (shops && shops.length > 0 && !activeBrand) {
-            dispatch(filterActions.setActiveShop(shops[0]))
-        }
-    }, [shops, activeBrand]);
+        setInputValue(groupData?.name)
+    }, [groupData]);
 
     return (
         <Modal
@@ -134,7 +107,7 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
                         type='primary'
                         className={styles.modal__submitButton}
                         onClick={updateGroup}
-                        disabled={!inputValue || !activeBrand}
+                        disabled={!inputValue}
                         loading={dataFetchingStatus.isLoading}
                     >
                         Редактировать

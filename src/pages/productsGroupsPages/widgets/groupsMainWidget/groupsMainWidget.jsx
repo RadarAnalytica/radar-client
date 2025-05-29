@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import AuthContext from '../../../../service/AuthContext';
 import { URL } from '../../../../service/config';
 import { GroupEditModal, ConfirmationModal } from '../../features';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 
 const initConfirmationState = { open: false, title: '', message: '', mainAction: '', returnAction: '', actionTitle: '' }
 
@@ -18,6 +20,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
     const [checkedList, setCheckedList] = useState([]);
     const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
     const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
+    const dispatch = useAppDispatch()
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -50,6 +53,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                 return;
             }
             setAlertState({isVisible: true, message: 'Группа успешно удалена'})
+            dispatch(fetchFilters(authToken))
             getGroupsData(authToken)
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })

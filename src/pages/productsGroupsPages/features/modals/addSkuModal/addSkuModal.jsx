@@ -6,6 +6,8 @@ import { Modal, Checkbox, ConfigProvider, Pagination, Input } from 'antd';
 import wb_icon from '../../../../../assets/wb_icon.png'
 import { URL } from '../../../../../service/config';
 import AuthContext from '../../../../../service/AuthContext';
+import { fetchFilters } from '../../../../../redux/apiServicePagesFiltersState/filterActions';
+import { useAppDispatch } from '../../../../../redux/hooks';
 
 const getFilteredData = (query, data) => {
     let filteredData = data;
@@ -33,6 +35,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     const [checkedList, setCheckedList] = useState([]);
     const [searchInputValue, setSearchInputValue] = useState('')
     const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
+    const dispatch = useAppDispatch()
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -139,6 +142,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             setIsAddSkuModalVisible(false)
             getGroupData(authToken, groupData.id)
             setAlertState({ isVisible: true, message: 'Артикул успешно добавлен' })
+            dispatch(fetchFilters(authToken))
             //setGroupData(parsedRes.data)
             //setDataFetchingStatus(initDataFetchingStatus)
         } catch {

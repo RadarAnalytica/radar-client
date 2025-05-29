@@ -91,7 +91,7 @@ export const MultiSelect = (
         const isAllOptionIndex = value.findIndex(_ => _ === 'Все')
         if ((isAllOptionIndex !== -1 && isAllOptionIndex === value.length - 1) || value.length === 0) {
             //const current = params.data.find(_ => _.value === 'Все');
-            setSelectState([{value: 'Все', id: 0}])
+            setSelectState([{ value: 'Все', id: 0 }])
             //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: [current] }))
             return
         }
@@ -196,7 +196,9 @@ export const MultiSelect = (
                         maxTagPlaceholder={omittedValues => (
                             <>
                                 {omittedValues.length > 1 && <p className={styles.plainSelect__multiLabel}>Выбрано: {omittedValues.length}</p>}
-                                {omittedValues.length === 1 && <p className={styles.plainSelect__multiLabel}>{omittedValues[0].value}</p>}
+                                {omittedValues.length === 1 &&
+                                    <p className={styles.plainSelect__multiLabel} title={omittedValues[0].value}>{omittedValues[0].value}</p>
+                                }
                             </>
                         )}
                         menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}
