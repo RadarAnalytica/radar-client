@@ -31,7 +31,7 @@ const ProductGroupsPage = () => {
     const [groupsMainData, setGroupsMainData] = useState([])
 
     const getGroupsData = async (authToken) => {
-        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        groupsMainData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         try {
             const res = await fetch(`${URL}/api/product/product_groups`, {
                 headers: {

@@ -234,7 +234,7 @@ const SingleGroupPage = () => {
                 dataFetchingStatus={dataFetchingStatus}
                 setDataFetchingStatus={setDataFetchingStatus}
                 groupData={groupData}
-                getGroupData={getGroupData}
+                updateMainData={getGroupData}
             />
 
             {alertState.isVisible && <div className={styles.page__successAlert}>
