@@ -211,6 +211,21 @@ export const ServiceFunctions = {
 
     return data;
   },
+  getSelfCostData: async (token, idShop, filters) => {
+    const body = getRequestObject(filters, undefined, idShop)
+    const res = await fetch(
+      `${URL}/api/product/self-costs/list`,
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          authorization: 'JWT ' + token,
+        },
+        body: JSON.stringify(body)
+      }
+    );
+    return res;
+  },
 
   getDashboardTurnoverData: async (token, selectedRange, idShop) => {
     let rangeParams = rangeApiFormat(selectedRange);

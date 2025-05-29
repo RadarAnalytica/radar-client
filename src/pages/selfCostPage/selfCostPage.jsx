@@ -11,6 +11,7 @@ import ErrorModal from '../../components/sharedComponents/modals/errorModal/erro
 import { useAppSelector } from '../../redux/hooks'
 import { URL } from '../../service/config'
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
+import { ServiceFunctions } from '../../service/serviceFunctions'
 
 const initDataStatus = {
     isError: false,
@@ -32,25 +33,9 @@ const SelfCostPage = () => {
 
     const getTableData = async (authToken, shopId, filters) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
-        let queryString = `shop=${shopId}`
-        // if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
-        //     queryString += `&brand=${JSON.stringify(filters.activeBrandName.map(_ => _.value))}`
-        //     //queryString += `&brand=${filters.activeBrandName.map(_ => _.value).toString(',')}`
-        // }
-        // if (filters?.activeGroup && filters?.activeGroup.id !== 0) {
-        //     //queryString += `&product_group=${filters.activeGroup.id}`
-        // }
-        const res = await fetch(`${URL}/api/product/self-costs?${queryString}`, {
-            headers: {
-                'content-type': 'application/json',
-                'cache': 'no-store',
-                'authorization': 'JWT ' + authToken,
-            }
-        })
-
+        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters)
         if (!res.ok) {
-            const parsedData = await res.json()
-            setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' })
             return;
         }
 
@@ -122,8 +107,6 @@ const SelfCostPage = () => {
                         setLoading={setLoading}
                         timeSelect={false}
                         articleSelect={false}
-                        brandSelect={false}
-                        groupSelect={false}
                     />
                     <HowToLink
                         text='Инструкция по загрузке себестоимости'
@@ -154,7 +137,7 @@ const SelfCostPage = () => {
                             dataStatus={dataStatus}
                             setDataStatus={setDataStatus}
                             tableData={filteredTableData}
-                            getTableData={getTableData}
+                            //getTableData={getTableData}
                             authToken={authToken}
                             activeBrand={activeBrand}
                             setTableData={setFilteredTableData}
