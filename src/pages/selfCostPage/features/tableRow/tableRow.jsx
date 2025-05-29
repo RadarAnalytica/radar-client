@@ -30,7 +30,6 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
     const [saveButtonStatus, setSaveButtonStatus] = useState(false)
-    console.log(saveButtonStatus)
     const [rowSaveButtonDisabledStatus, setRowSaveButtonDisabledStatus] = useState(true)
     const [rowSaveButtonForLastHistoryParamsDisabledStatus, setRowSaveButtonForLastHistoryParamsDisabledStatus] = useState(true)
     const [addDateButtonDisabledStatus, setAddDateButtonDisabledStatus] = useState(true)
@@ -87,7 +86,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)
-            resetSearch()
+            //resetSearch()
             //setIsUpdating(false)
             //getTableData(authToken, shopId)
         } catch {
@@ -138,7 +137,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 setTableData(newTableData)
                 setDataStatus({ ...initDataStatus })
                 setIsSuccess(true)
-                resetSearch()
+                //resetSearch()
                 //setIsUpdating(false)
             }
 
