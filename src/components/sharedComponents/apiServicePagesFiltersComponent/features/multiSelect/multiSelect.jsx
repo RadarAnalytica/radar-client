@@ -21,10 +21,10 @@ export const MultiSelect = (
 
     const renderPopup = (menu) => {
         let action
-        if (selectState.length < optionsData.length && !searchState) {
+        if (selectState.filter(_ => _.value !== 'Все').length < optionsData.length && !searchState) {
             action = () => { setSelectState(optionsData.filter(_ => _.value !== 'Все')) }
         }
-        if (selectState.length === optionsData.length) {
+        if (selectState.filter(_ => _.value !== 'Все').length === optionsData.length) {
             action = () => { setSelectState([{ value: 'Все' }]) }
         }
        
@@ -63,8 +63,8 @@ export const MultiSelect = (
                         onClick={action}
                         disabled={optionsData.length === 0}
                     >
-                        {selectState.length < optionsData.length && 'Выбрать все'}
-                        {selectState.length === optionsData.length && 'Снять все'}
+                        {selectState.filter(_ => _.value !== 'Все').length < optionsData.length && 'Выбрать все'}
+                        {selectState.filter(_ => _.value !== 'Все').length === optionsData.length && 'Снять все'}
                     </Button>}
                 </ConfigProvider>
             </>)
