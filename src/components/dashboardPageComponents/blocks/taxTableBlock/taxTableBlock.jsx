@@ -10,7 +10,7 @@ import { ServiceFunctions } from '../../../../service/serviceFunctions'
 const taxOption = ['УСН Д-Р', 'УСН-доходы', 'Не считать налог', 'Считать от РС']
 
 const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
-    const data = dataDashBoard?.taxInfo[0] || {}
+    const data = dataDashBoard?.taxInfo || {}
     const { authToken } = useContext(AuthContext)
     const [taxType, setTaxType] = useState(taxOption[0])
     const [taxRate, setTaxRate] = useState(data.taxRate || 6)

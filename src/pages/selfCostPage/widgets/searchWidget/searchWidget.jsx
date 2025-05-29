@@ -16,8 +16,7 @@ const getFilteredData = (query, data) => {
     return filteredData;
 }
 
-const SearchWidget = ({ tableData, setFilteredTableData }) => {
-    const [searchInputValue, setSearchInputValue] = useState('')
+const SearchWidget = ({ tableData, setFilteredTableData, searchInputValue, setSearchInputValue }) => {
 
     const inputKeydownHandler = (e) => {
         if (e && e.key !== 'Enter') return
@@ -28,7 +27,7 @@ const SearchWidget = ({ tableData, setFilteredTableData }) => {
     }
     const inputChangeHandler = (e) => {
         if (e.target.value === '') {
-            setFilteredTableData([...tableData])
+            setFilteredTableData(JSON.parse(JSON.stringify(tableData)))
         }
         setSearchInputValue(e.target.value)
         // const regex = /^[a-zA-Zа-яА-Я0-9\s]*$/;
