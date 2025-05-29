@@ -24,13 +24,17 @@ export default function ReportWeek() {
 	);
 	const [loading, setLoading] = useState(true);
 	const [isPopoverOpen, setPopoverOpen] = useState(false);
-	const [isConfigOpen, setConfigOpen] = useState(false);
+	const [isConfigOpen, setConfigOpen] = useState(true);
 	const [data, setData] = useState(null);
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 	const [primaryCollect, setPrimaryCollect] = useState(null)
 	const [period, setPeriod] = useState([])
-	const [periodOptions, setPeriodOptions] = useState(null)
+	const [periodOptions, setPeriodOptions] = useState([])
+
+	function periodHandler(data){
+		setPeriod(data)
+	}
 
 	const updateDataReportWeek = async () => {
 		setLoading(true)
@@ -49,6 +53,7 @@ export default function ReportWeek() {
 				}))
 				// options.unshift({value: 'all', label: 'Весь период'});
 				setPeriodOptions(options)
+				setPeriod(options.map((el) => el.value))
 
 				setData(weeks);
 				dataToTableData(weeks);
@@ -82,7 +87,7 @@ export default function ReportWeek() {
 			drr: (summary) => (summary.total_ad / summary.sales) * 100,
 		}
 
-		let rows = period.length > 0 ? weeks.filter((el) => period.includes(el.week)) : weeks;
+		let rows = weeks.filter((el) => period.includes(el.week));
 
 		rows = rows.map((el) => {
 			let row = {
@@ -106,13 +111,6 @@ export default function ReportWeek() {
 			}
 		}
 
-		// summary = summary.map((el) => {
-		// 	const map = {
-		// 		'avg_price': () => {}
-		// 	}
-		// 	return res
-		// })
-		
 		rows.unshift(summary)
 		setTableRows(rows);
 	}

@@ -2,36 +2,27 @@ import { ConfigProvider, Popover, Button, Form, Checkbox} from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import styles from './PeriodsFilterReportWeek.module.css';
 
-function PeriodForm({periodOptions, setPeriod}) {
+function PeriodForm({period, periodOptions, setPeriod}) {
 
   const [form] = useForm();
 
   function formChangeHandler(){
     const data = form.getFieldsValue()
-    setPeriod(() => {
-      let result = [];
-      for (const week in data){
-        data[week] && result.push(Number(week))
-      }
-      return result
-    })
+    let result = [];
+    for (const week in data){
+      data[week] && result.push(Number(week))
+    }
+    setPeriod(result)
   }
 
-  function clearFormHandler(){
-    form.resetFields();
-    setPeriod([]);
+  function checkAllHandler() {
+    for (const check of periodOptions) {
+      form.setFieldValue(check.value, periodOptions.length > period.length ? true : false)
+    }
+    formChangeHandler();
   }
   
-  const list = periodOptions.map((el, i) => (
-    <div key={i} className={styles.item}>
-      <Checkbox
-        value={el.value}
-        onChange={formChangeHandler}
-      >
-        {el.label}
-      </Checkbox>
-    </div>
-  ));
+  const indeterminate = periodOptions.length > 0 && period.length < periodOptions.length && period.length > 0;
 
   return (
     <ConfigProvider
@@ -54,28 +45,34 @@ function PeriodForm({periodOptions, setPeriod}) {
         },
       }}
     >
-      <Form form={form} className={styles.list}>
-        <Button
-          className={styles.item}
-          type='button'
-          onClick={clearFormHandler}
+      <div className={styles.list}>
+        <Checkbox
+          name='all'
+          className={styles.list__item}
+          onChange={checkAllHandler}
+          indeterminate={indeterminate}
+          defaultChecked={periodOptions.length === period.length}
         >
-          Все время
-        </Button>
-        {periodOptions.map((el, i) =>
-          <Form.Item
-            key={el.value}
-            name={el.value}
-            className={styles.list__item}
-            valuePropName="checked"
-            value={el.value}
-            onChange={formChangeHandler}
+          Весь период
+        </Checkbox>
+        <Form form={form}>
+          {periodOptions.map((el) =>
+            <Form.Item
+              key={el.value}
+              className={styles.list__item}
+              name={el.value}
+              valuePropName="checked"
+              value={el.value}
+              onChange={formChangeHandler}
+              // defaultChecked={period.includes(el.value) ? true : false}
+              initialValue={period.includes(el.value) ? true : false}
             >
-            <Checkbox>
-              {el.label}
-            </Checkbox>
-          </Form.Item>)}
-      </Form>
+              <Checkbox>
+                {el.label}
+              </Checkbox>
+            </Form.Item>)}
+        </Form>
+      </div>
     </ConfigProvider>
   );
 }
@@ -85,7 +82,7 @@ export default function PeriodsFilterReportWeek({period, periodOptions, setPerio
 
 	return (
 		<div>
-			<div className={styles.title}>Период</div>
+			<div className={styles.title}>Период:</div>
 			<ConfigProvider
 				theme={{
 					token: {
@@ -118,7 +115,7 @@ export default function PeriodsFilterReportWeek({period, periodOptions, setPerio
 			>
 				<Popover
 					arrow={false}
-					content={<PeriodForm periodOptions={periodOptions} setPeriod={setPeriod}/>}
+					content={<PeriodForm period={period} periodOptions={periodOptions} setPeriod={setPeriod}/>}
 					trigger="click"
 					placement="bottomLeft"
 				>
@@ -127,7 +124,7 @@ export default function PeriodsFilterReportWeek({period, periodOptions, setPerio
 						iconPosition="start"
 						size="large"
 					>
-            {period?.length > 0 ? `Выбрано недель: ${period.length}` : 'Все время'}
+            {period.length === periodOptions.length ? 'Весь период' : `Выбрано недель: ${period.length}`}
             <span className="ant-select-arrow" unselectable="on"><svg className={styles.arrow} viewBox="0 0 28 17" fill="none" xmlns="http://www.w3.org/2000/svg" ><path d="M2 2L14 14L26 2" stroke="" strokeWidth="4" strokeLinecap="round"></path></svg></span>
 					</Button>
 				</Popover>

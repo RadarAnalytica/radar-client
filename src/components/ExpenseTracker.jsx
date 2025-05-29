@@ -10,6 +10,8 @@ import styles from './ExpenseTracker.module.css';
 import { URL } from '../service/config';
 import CustomDayPicker from './CustomDayPicker';
 
+import { Tooltip } from "antd";
+
 const ExpenseTracker = () => {
   const dispatch = useDispatch();
   const [hasChanges, setHasChanges] = useState({});
@@ -397,19 +399,23 @@ const ExpenseTracker = () => {
                     </div>
                   </div>
                 ))}
-                <span
-                  className={`${styles.saveIcon} ${hasChanges[row.id] ? styles.saveIconActive : ''
+                <Tooltip title="Сохранить">
+                  <span
+                    className={`${styles.saveIcon} ${hasChanges[row.id] ? styles.saveIconActive : ''
                     }`}
-                  onClick={() => handleSave(row)}
-                >
-                  <img src={saveIcon} alt='Save Row' />
-                </span>
-                <span
-                  className={styles.deleteIcon}
-                  onClick={() => handleDeleteRow(row.id)}
-                >
-                  <img src={trashIcon} alt='Delete Row' />
-                </span>
+                    onClick={() => handleSave(row)}
+                    >
+                    <img src={saveIcon} alt='Save Row' />
+                  </span>
+                </Tooltip>
+                <Tooltip title="Удалить">
+                  <span
+                    className={styles.deleteIcon}
+                    onClick={() => handleDeleteRow(row.id)}
+                    >
+                    <img src={trashIcon} alt='Delete Row' />
+                  </span>
+                </Tooltip>
               </div>
             ))}
             <button onClick={addRow} className={styles.addButton}>

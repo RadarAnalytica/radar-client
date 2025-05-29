@@ -25,6 +25,8 @@ import FileUploader from '../components/sharedComponents/fileUploader/fileUpload
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import HowToLink from '../components/sharedComponents/howToLink/howToLink';
 
+import { Tooltip } from "antd";
+
 const ReportMain = () => {
   const { user, authToken } = useContext(AuthContext);
   const fileInputRef = useRef(null);
@@ -473,14 +475,16 @@ const ReportMain = () => {
                     {formatFullDate(row.end_date)}
                   </div>
                   <div className={styles.emptyTitle}>
-                    <img
-                      src={trashIcon}
-                      alt='Delete icon'
-                      onClick={() => {
-                        setSelectedRowId(row.report_number);
-                        setOpenModal(true);
-                      }}
-                    />
+                    <Tooltip title="Удалить">
+                      <img
+                        src={trashIcon}
+                        alt='Delete icon'
+                        onClick={() => {
+                          setSelectedRowId(row.report_number);
+                          setOpenModal(true);
+                        }}
+                      />
+                    </Tooltip>
                   </div>
                 </div>
               ))}
