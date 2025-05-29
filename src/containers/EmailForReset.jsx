@@ -62,18 +62,6 @@ const EmailForReset = () => {
         }
     }
 
-    const submitHandler = () => {
-        if (!isValidEmail(email)){
-            setEmailErrorText('Введите корректный Email')
-            return
-        }
-        
-        requestLink(email).then(data => {
-            window.location.href = `${URL}/signin`
-        })
-
-    }
-
     return (
         <div className='signin-form'>
             <div className='d-flex flex-column align-items-center'>
