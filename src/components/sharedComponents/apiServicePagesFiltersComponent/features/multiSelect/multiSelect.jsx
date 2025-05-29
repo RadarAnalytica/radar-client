@@ -90,7 +90,7 @@ export const MultiSelect = (
     const selectHandler = value => {
         const isAllOptionIndex = value.findIndex(_ => _ === 'Все')
         if ((isAllOptionIndex !== -1 && isAllOptionIndex === value.length - 1) || value.length === 0) {
-            const current = params.data.find(_ => _.value === 'Все');
+            //const current = params.data.find(_ => _.value === 'Все');
             setSelectState([{value: 'Все', id: 0}])
             //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: [current] }))
             return
