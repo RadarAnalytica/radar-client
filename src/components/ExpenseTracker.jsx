@@ -9,12 +9,15 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import styles from './ExpenseTracker.module.css';
 import { URL } from '../service/config';
 import CustomDayPicker from './CustomDayPicker';
+import { Modal } from 'antd';
 
 const ExpenseTracker = () => {
   const dispatch = useDispatch();
   const [hasChanges, setHasChanges] = useState({});
   const [selectedDate, setSelectedDate] = useState({
   });
+
+  const [deleteId, setDeleteId] = useState();
 
 
   const { data, loading } = useSelector((state) => state.externalExpensesSlice);
@@ -231,7 +234,6 @@ const ExpenseTracker = () => {
     }
   };
 
-
   const handleDeleteRow = async (id) => {
     console.log('Delete row:', id)
     if (id < 0) {
@@ -281,6 +283,10 @@ const ExpenseTracker = () => {
       console.error('Ошибка при удалении строки:', error);
     }
   };
+
+  const handleDeleteSubmit = () => {
+    setDeleteId();
+  }
 
   return (
     <div
@@ -406,7 +412,8 @@ const ExpenseTracker = () => {
                 </span>
                 <span
                   className={styles.deleteIcon}
-                  onClick={() => handleDeleteRow(row.id)}
+                  // onClick={() => handleDeleteRow(row.id)}
+                  onClick={() => setDeleteId(row.id)}
                 >
                   <img src={trashIcon} alt='Delete Row' />
                 </span>
@@ -427,6 +434,7 @@ const ExpenseTracker = () => {
           <span className='loader'></span>
         </div>
       )}
+      {!loading && deleteId && <Modal open={deleteId} onCancel={() => setDeleteId()} onOk={() => handleDeleteSubmit()}>Удалить</Modal>}
       
     </div>
   );
