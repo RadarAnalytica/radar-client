@@ -9,6 +9,7 @@ const EmailForReset = () => {
     const [email, setEmail] = useState()
 
     const emailHandler = (e) => {
+        console.log('emailHandler')
         setEmail(e.target.value);
     }
 
@@ -44,6 +45,18 @@ const EmailForReset = () => {
         }
     }, [email])
 
+    const submitHandler = () => {
+        if (!isValidEmail(email)){
+            setEmailErrorText('Введите корректный Email')
+            return
+        }
+        
+        requestLink(email).then(data => {
+            window.location.href = `${URL}/signin`
+        })
+
+    }
+
     return (
         <div className='signin-form'>
             <div className='d-flex flex-column align-items-center'>
@@ -62,12 +75,13 @@ const EmailForReset = () => {
             </div>
             <button className='prime-btn'
                 style={{ height: '7vh', width: '100%' }}
-                onClick={() => {
-                    alert('Сыылка на сброс пароля была направлена на Вашу почту')
-                    email ? requestLink(email).then(data => {
-                       window.location.href = `${URL}/signin`
-                    }) : console.log();
-                }}
+                onClick={submitHandler}
+                // onClick={() => {
+                //     email && alert('Сcылка на сброс пароля была направлена на Вашу почту')
+                //     email ? requestLink(email).then(data => {
+                //        window.location.href = `${URL}/signin`
+                //     }) : console.log();
+                // }}
 
             >Получить ссылку</button>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
