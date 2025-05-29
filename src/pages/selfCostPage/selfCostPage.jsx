@@ -19,6 +19,7 @@ const initDataStatus = {
 }
 
 const SelfCostPage = () => {
+    const [searchInputValue, setSearchInputValue] = useState('')
     const [isSuccess, setIsSuccess] = useState(false);
     const [dataStatus, setDataStatus] = useState(initDataStatus)
     const [loading, setLoading] = useState(false);
@@ -80,6 +81,13 @@ const SelfCostPage = () => {
         //prevShop.current = activeBrand
     }
 
+    const resetSearch = () => {
+        if (searchInputValue) {
+            setSearchInputValue('')
+            setFilteredTableData(tableData)
+        }
+    }
+
     //задаем начальную дату
     useEffect(() => {
         if (activeBrand && authToken) {
@@ -136,6 +144,8 @@ const SelfCostPage = () => {
                             <SearchWidget
                                 tableData={tableData}
                                 setFilteredTableData={setFilteredTableData}
+                                searchInputValue={searchInputValue}
+                                setSearchInputValue={setSearchInputValue}
                             />
                         </div>
 
@@ -147,7 +157,8 @@ const SelfCostPage = () => {
                             getTableData={getTableData}
                             authToken={authToken}
                             activeBrand={activeBrand}
-                            setTableData={setTableData}
+                            setTableData={setFilteredTableData}
+                            resetSearch={resetSearch}
                         />
                     </>
                 }
