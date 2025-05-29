@@ -20,6 +20,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
     const [checkedList, setCheckedList] = useState([]);
     const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
     const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
+    const [ editedGroupId, setEditedGroupId ] = useState()
     const dispatch = useAppDispatch()
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
@@ -68,6 +69,10 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
     useEffect(() => {
         groupsMainData && setTableData(groupsMainData)
     }, [groupsMainData])
+
+    useEffect(() => {
+        editedGroupId && setIsEditGroupModalVisible(true)
+    }, [editedGroupId])
 
     return (
         <div className={styles.widget}>
@@ -138,12 +143,12 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                         {v.actionTypes.map((a, id) => {
                                                             if (a === 'edit') {
                                                                 return (
-                                                                    // <button className={styles.table__actionButton} key={id} onClick={() => setIsEditGroupModalVisible(true)}>
-                                                                    //     {buttonIcons[a]}
-                                                                    // </button>
-                                                                    <Link className={styles.table__actionButton} key={id} to={`/groups/${product.id}`}>
+                                                                    <button className={styles.table__actionButton} key={id} onClick={() => setEditedGroupId(product.id)}>
                                                                         {buttonIcons[a]}
-                                                                    </Link>
+                                                                    </button>
+                                                                    // <Link className={styles.table__actionButton} key={id} to={`/groups/${product.id}`}>
+                                                                    //     {buttonIcons[a]}
+                                                                    // </Link>
                                                                 )
                                                             }
                                                             if (a === 'delete') {
@@ -223,12 +228,14 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
 
                 </div>}
 
-            {/* <GroupEditModal
+            <GroupEditModal
                 setIsEditGroupModalVisible={setIsEditGroupModalVisible}
                 isEditGroupModalVisible={isEditGroupModalVisible}
                 dataFetchingStatus={dataFetchingStatus}
                 setDataFetchingStatus={setDataFetchingStatus}
-            /> */}
+                groupId={editedGroupId}
+                updateMainData={getGroupsData}
+            />
 
             <ConfirmationModal
                 {...confirmationModalState}

@@ -13,21 +13,46 @@ const initDataFetchingStatus = {
     message: ''
 }
 
-const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, dataFetchingStatus, setDataFetchingStatus, groupData, getGroupData }) => {
+const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, dataFetchingStatus, setDataFetchingStatus, groupData, updateMainData, groupId }) => {
     const { authToken } = useContext(AuthContext)
     const [inputValue, setInputValue] = useState('')
+    const [groupDataState, setGroupDataState ] = useState()
     const dispatch = useAppDispatch()
+
+    const getGroupData = async (authToken, groupId) => {
+        //setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        try {
+            const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'JWT ' + authToken
+                },
+            })
+
+            if (!res.ok) {
+                const parsedData = await res.json()
+                setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
+                return;
+            }
+            const parsedRes = await res.json();
+            setGroupDataState(parsedRes.data)
+            setInputValue(parsedRes.data.name)
+            setDataFetchingStatus(initDataFetchingStatus)
+        } catch {
+            setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
+        }
+    }
 
 
     const updateGroup = async () => {
         setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         const requestObject = {
             name: inputValue,
-            description: groupData?.description,
-            product_ids: groupData?.products.map(_ => _.id)
+            description: groupDataState?.description,
+            product_ids: groupDataState?.products.map(_ => _.id)
         }
         try {
-            const res = await fetch(`${URL}/api/product/product_groups/${groupData.id}`, {
+            const res = await fetch(`${URL}/api/product/product_groups/${groupDataState.id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',
@@ -42,7 +67,7 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
                 return;
             }
             setDataFetchingStatus(initDataFetchingStatus)
-            getGroupData(authToken, groupData.id)
+            updateMainData(authToken, groupDataState.id)
             dispatch(fetchFilters(authToken))
             setIsEditGroupModalVisible(false)
         } catch {
@@ -53,8 +78,16 @@ const GroupEditModal = ({ isEditGroupModalVisible, setIsEditGroupModalVisible, d
 
     // 0. Получаем данные магазинов
     useEffect(() => {
-        setInputValue(groupData?.name)
-    }, [groupData]);
+        console.log(groupId)
+        if (groupData) {
+            setInputValue(groupData?.name)
+            setGroupDataState(groupData)
+        }
+        if (!groupData && groupId) {
+            getGroupData(authToken, groupId)
+        }
+       
+    }, [groupData, groupId]);
 
     return (
         <Modal
