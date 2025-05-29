@@ -7,9 +7,24 @@ import { URL } from '../service/config'
 const EmailForReset = () => {
 
     const [email, setEmail] = useState()
-
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
+    const [emailErrorText, setEmailErrorText] = useState()
     const emailHandler = (e) => {
-        setEmail(e.target.value);
+        const { value } = e.target;
+        setEmail(value);
+
+        if (!value) {
+            setEmailErrorText('Пожалуйста, заполните это поле!')
+            setIsSubmitDisabled(true)
+            return
+        }
+        if (!isValidEmail(value)) {
+            setEmailErrorText('Пожалуйста, введите корректный Email')
+            setIsSubmitDisabled(true)
+            return
+        }
+        setEmailErrorText('')
+        setIsSubmitDisabled(false)
     }
 
     const requestLink = async (email) => {
@@ -27,22 +42,10 @@ const EmailForReset = () => {
         return data
     }
 
-    const navigate = useNavigate()
-
-    const [emailErrorText, setEmailErrorText] = useState()
 
     const isValidEmail = (email) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
-
-    useEffect(() => {
-        if (email && !isValidEmail(email)) {
-            setEmailErrorText('Введите корректный Email')
-        }
-        else {
-            setEmailErrorText()
-        }
-    }, [email])
 
     return (
         <div className='signin-form'>
@@ -63,7 +66,8 @@ const EmailForReset = () => {
                 />
             </div>
             <button className='prime-btn'
-                style={{ height: '7vh', width: '100%' }}
+                style={{ height: '7vh', width: '100%', background: isSubmitDisabled && '#E8E8E8' }}
+                disabled={isSubmitDisabled}
                 onClick={() => {
                     alert('Сыылка на сброс пароля была направлена на Вашу почту')
                     email ? requestLink(email).then(data => {
@@ -72,7 +76,7 @@ const EmailForReset = () => {
                 }}
 
             >Получить ссылку</button>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <p className='clue-text'>
                     <button className='link' style={{ marginRight: '20px' }} onClick={() => {window.location.href = `${URL}/signup`}}>Регистрация</button>
                     <button className='link' onClick={() => {window.location.href = `${URL}/signin`}}>Вход</button>
