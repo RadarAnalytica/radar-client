@@ -11,7 +11,7 @@ function FilterReportWeek({
 	
 	return (
 		<div className={styles.container}>
-			{periodOptions && (
+			{periodOptions.length > 0 && (
 				<div className={styles.item}>
 					<PeriodsFilterReportWeek 
 						period={period} 
