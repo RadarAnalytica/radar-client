@@ -31,6 +31,7 @@ import { addShop } from "../service/api/api";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import Header from "../components/sharedComponents/header/header";
 import { fetchFilters } from "../redux/apiServicePagesFiltersState/filterActions";
+import { actions as filterActions } from '../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 
 const LinkedShops = () => {
   const { user, authToken, logout } = useContext(AuthContext);
@@ -626,6 +627,7 @@ const LinkedShops = () => {
                     </svg> */}
               <Link
                 to='/selfcost'
+                onClick={() => activeShop && dispatch(filterActions.setActiveShop(activeShop))}
                 className='link'
               >
                 Изменить

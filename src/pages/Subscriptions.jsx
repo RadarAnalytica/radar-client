@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
+import Header from "../components/sharedComponents/header/header";
 
 const Subscriptions = () => {
   const navigate = useNavigate();
@@ -154,7 +155,10 @@ const Subscriptions = () => {
         </div>
       {/* <SideNav /> */}
       <div className="sub-page-content" style={{ padding: '0 32px'}}>
-        <TopNav title={"Моя подписка"} />
+        <div style={{margin: '20px 0'}}>
+          <Header title={"Моя подписка"} />
+        </div>
+        {/* <TopNav title={"Моя подписка"} /> */}
         <div className="container dash-container sub-page-grid">
           {subscriptions.map((item) => {
             const activeText = item.active ? "Активна" : "Неактивна";

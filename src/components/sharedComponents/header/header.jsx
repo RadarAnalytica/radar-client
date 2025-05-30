@@ -14,7 +14,7 @@ const popoverOptions = {
     placement: 'bottomLeft'
 }
 
-const Header = ({ title = 'Radar Analytica', titlePrefix }) => {
+const Header = ({ title = 'Radar Analytica', titlePrefix, children }) => {
     const dispatch = useAppDispatch();
     const { user, logout, authToken } = useContext(AuthContext)
     // стейт видимости поповера меню
@@ -61,6 +61,7 @@ const Header = ({ title = 'Radar Analytica', titlePrefix }) => {
                     <>{title}</>
                 }
             </div>
+            {children && children}
             {user &&
                 <div className={styles.header__menu}>
                     <Popover
