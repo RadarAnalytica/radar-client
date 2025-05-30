@@ -8,8 +8,18 @@ const MobilePlug = () => {
     const { userAgent } = navigator;
     const deviceRegexp = /android|iphone|kindle|ipad/i
 
+    const getPlugStyles = () => {
+        const body = document.querySelector('body');
+        if (deviceRegexp.test(userAgent)) {
+            if (body) {body.style.overflow = 'hidden'}
+            return styles.plug
+        }
+        if (body) {body.style.overflow = 'auto'}
+        return styles.plug_hidden
+    }
+
     return (
-        <div className={deviceRegexp.test(userAgent) ? styles.plug : styles.plug_hidden}>
+        <div className={getPlugStyles()}>
             <Link to='/main' className={styles.plug__mainLink}>
                 <img src={logo} alt='' />
             </Link>

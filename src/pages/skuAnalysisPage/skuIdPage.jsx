@@ -69,7 +69,13 @@ const SkuIdPage = () => {
 
                     <ItemWidget />
                     <div>
-                        <Filters setLoading={setLoading} shopSelect={false} />
+                        <Filters
+                            setLoading={setLoading}
+                            shopSelect={false}
+                            brandSelect={false}
+                            articleSelect={false}
+                            groupSelect={false}
+                        />
                     </div>
                     <BarsWidget />
                     <MainChartWidget id={params?.id} />

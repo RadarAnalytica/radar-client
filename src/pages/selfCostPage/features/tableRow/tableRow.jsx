@@ -29,7 +29,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [selectedDate, setSelectedDate] = useState(null) // значение датапикера
     const [month, setMonth] = useState(new Date()); // стейт месяца датапикера
     const [historyItemsToDelete, setHistoryItemsToDelete] = useState([])
-    const [saveButtonStatus, setSaveButtonStatus] = useState(true)
+    const [saveButtonStatus, setSaveButtonStatus] = useState(false)
     const [rowSaveButtonDisabledStatus, setRowSaveButtonDisabledStatus] = useState(true)
     const [rowSaveButtonForLastHistoryParamsDisabledStatus, setRowSaveButtonForLastHistoryParamsDisabledStatus] = useState(true)
     const [addDateButtonDisabledStatus, setAddDateButtonDisabledStatus] = useState(true)
@@ -86,7 +86,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)
-            resetSearch()
+            //resetSearch()
             //setIsUpdating(false)
             //getTableData(authToken, shopId)
         } catch {
@@ -137,7 +137,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 setTableData(newTableData)
                 setDataStatus({ ...initDataStatus })
                 setIsSuccess(true)
-                resetSearch()
+                //resetSearch()
                 //setIsUpdating(false)
             }
 
@@ -500,7 +500,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                 <Input
                                     value={product.cost}
                                     style={{ height: '44px' }}
-                                    placeholder={currentProduct.cost ? currentProduct.cost : 'Не установлено'}
+                                    placeholder={(currentProduct.cost || currentProduct.cost === 0) ? currentProduct.cost : 'Не установлено'}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;
                                         let newProduct = {
@@ -528,7 +528,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             <div className={`${styles.row__bodyMainItem} ${styles.row__bodyMainItem_short}`}>
                                 <Input
                                     value={product.fulfillment}
-                                    placeholder={currentProduct.fulfillment ? currentProduct.fulfillment : 'Не установлено'}
+                                    placeholder={(currentProduct.fulfillment || currentProduct.fulfillment === 0) ? currentProduct.fulfillment : 'Не установлено'}
                                     style={{ height: '44px' }}
                                     onChange={(e) => {
                                         let value = e.target.value ? parseInt(e.target.value) : e.target.value;

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styles from './chartWidget.module.css'
 import { Chart } from 'react-chartjs-2';
 

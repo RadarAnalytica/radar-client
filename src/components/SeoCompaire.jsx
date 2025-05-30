@@ -14,6 +14,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [sortedData, setSortedData] = useState([]);
+  const [ isExelLoading, setIsExelLoading ] = useState(false)
 
   const contentA = compaireData?.products_a ?? [];
   const contentB = compaireData?.products_b ?? [];
@@ -157,6 +158,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
   };
 
   const handleDownload = async () => {
+    setIsExelLoading(true)
     try {
       const response = await ServiceFunctions.postSeoLinksToGetExcel(authToken, linksToSend);
       const blob = await response.blob();
@@ -168,8 +170,10 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
+      setIsExelLoading(false)
     } catch (e) {
       console.error('Error downloading file:', e);
+      setIsExelLoading(false)
     }
   }
 
@@ -177,11 +181,11 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
     <div className={styles.seoCompaireWrapper}>
       <div className={styles.buttonWrapper}>
       <div className={styles.downloadButton}>
-        <DownloadButton handleDownload={handleDownload}/>
+        <DownloadButton handleDownload={handleDownload} isLoading={isExelLoading}/>
       </div>
       </div>
       <div className={styles.topBlock}>
-        <div style={{ position: 'relative' }}>
+        <div className={styles.topBlock__content}>
           <IntersectingCircles 
              color1={color1} 
              color2={color2} 

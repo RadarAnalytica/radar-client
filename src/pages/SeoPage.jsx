@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
 import styles from './SeoPage.module.css';
 import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
 import InfoSeoPlate from '../components/InfoSeoPlate';
 import SeoCompaire from '../components/SeoCompaire';
 import NoSubscriptionPage from './NoSubscriptionPage';
@@ -9,6 +8,7 @@ import AuthContext from '../service/AuthContext';
 import { Helmet } from 'react-helmet-async';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
+import Header from '../components/sharedComponents/header/header';
 
 const SeoPage = () => {
   const [compaireData, setCompaireData] = useState({});
@@ -29,9 +29,9 @@ const SeoPage = () => {
         <Sidebar />
       </div>
       {/* <SideNav /> */}
-      <div className={styles.scrollableContent} style={{ padding: '0 32px'}}>
-        <div style={{ width: '100%', padding: '0' }}>
-          <TopNav title={'Сравнение SEO'}>
+      <div className={styles.scrollableContent} style={{ padding: '0 32px' }}>
+        <div style={{ width: '100%', padding: '0', margin: '20px 0' }}>
+          <Header title={'Сравнение SEO'}>
             {Object.keys(compaireData).length > 0 && (
               <div
                 className={styles.newTopNavButton}
@@ -40,7 +40,7 @@ const SeoPage = () => {
                 <span>Новый запрос</span>
               </div>
             )}
-          </TopNav>
+          </Header>
         </div>
         <div className='container dash-container'>
           {Object.keys(compaireData).length <= 0 && (

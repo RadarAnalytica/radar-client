@@ -4,7 +4,7 @@ import MobilePlug from '../../../../components/sharedComponents/mobilePlug/mobil
 import Sidebar from '../../../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../../../components/sharedComponents/header/header';
 import { NoDataWidget, GroupsMainWidget } from '../../widgets';
-import { AddGroupModal } from '../../features';
+import { AddGroupModal, GroupEditModal } from '../../features';
 import AuthContext from '../../../../service/AuthContext';
 import { URL } from '../../../../service/config';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
@@ -16,14 +16,22 @@ const initDataFetchingStatus = {
     message: ''
 }
 
+const initAlertState = {
+    isVisible: false,
+    message: '',
+}
+
+
+
 const ProductGroupsPage = () => {
     const { authToken } = useContext(AuthContext)
     const [isAddGroupModalVisible, setIsAddGroupModalVisible] = useState(false)
+    const [alertState, setAlertState] = useState(initAlertState);
     const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [groupsMainData, setGroupsMainData] = useState([])
 
     const getGroupsData = async (authToken) => {
-        setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
+        groupsMainData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         try {
             const res = await fetch(`${URL}/api/product/product_groups`, {
                 headers: {
@@ -48,6 +56,13 @@ const ProductGroupsPage = () => {
     useEffect(() => {
         getGroupsData(authToken)
     }, [])
+
+    useEffect(() => {
+        let timeout;
+        if (alertState.isVisible) {
+            timeout = setTimeout(() => { setAlertState(initAlertState) }, 1500)
+        }
+    }, [alertState])
 
     return (
         <main className={styles.page}>
@@ -83,6 +98,8 @@ const ProductGroupsPage = () => {
                         getGroupsData={getGroupsData}
                         setDataFetchingStatus={setDataFetchingStatus}
                         initDataFetchingStatus={initDataFetchingStatus}
+                        dataFetchingStatus={dataFetchingStatus}
+                        setAlertState={setAlertState}
                     />
                 }
             </section>
@@ -107,6 +124,14 @@ const ProductGroupsPage = () => {
                 message={dataFetchingStatus.message}
                 footer={null}
             />
+
+            {alertState.isVisible && <div className={styles.page__successAlert}>
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="6.4" fill="#00B69B" fillOpacity="0.1" />
+                    <path d="M14.1999 19.1063L23.1548 10.1333L24.5333 11.5135L14.1999 21.8666L8 15.6549L9.37753 14.2748L14.1999 19.1063Z" fill="#00B69B" />
+                </svg>
+                {alertState.message}
+            </div>}
         </main>
     )
 }

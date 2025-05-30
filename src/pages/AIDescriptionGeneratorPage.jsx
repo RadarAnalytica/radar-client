@@ -220,9 +220,9 @@ const AiDescriptionGeneratorPage = () => {
     if (!!!productName || !!!shortDescription || competitorsLinks.length === 0) {
       setErrorMessage('Пожалуйста, заполните все поля!');
       handleShowModalError();
-      return; 
+      return;
     }
-    
+
     const linksArray = competitorsLinks
       .split('\n')
       .map((link) => link.trim())
@@ -396,33 +396,35 @@ const AiDescriptionGeneratorPage = () => {
     <div className='dashboard-page'>
       <MobilePlug />
       <div style={{ height: '100vh' }}>
-            <Sidebar />
-        </div>
-      <div className={`${styles.generatorPage} dashboard-content pb-3 `} style={{ padding: '0 32px'}}>
-      <div style={{ width: '100%', padding: '0'}}>
-        <TopNav title={'Генерация описания AI'} mikeStarinaStaticProp >
-          <div className={styles.generatorWrapper}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'space-between',
-              }}
-            >
-              <p className={styles.topNavTitle}>
-                Вам {amountGenerations === 1 ? 'доступнa' : 'доступно'}{' '}
-                <span style={{ color: '#74717f' }}>
-                  {amountGenerations}{' '}
-                  {amountGenerations === 1 ? 'генерация' : 'генераций'}
-                </span>
-              </p>
-              <div className={styles.topNavAdd} onClick={handleNewGenerator}>
-                Добавить генерации
+        <Sidebar />
+      </div>
+      <div className={`${styles.generatorPage} dashboard-content pb-3 `} style={{ padding: '0 32px' }}>
+        <div style={{ width: '100%', padding: '0', margin: '20px 0' }}>
+          <Header
+            title={'Генерация описания AI'}
+          >
+            <div className={styles.generatorWrapper}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <p className={styles.topNavTitle}>
+                  Вам {amountGenerations === 1 ? 'доступнa' : 'доступно'}{' '}
+                  <span style={{ color: '#74717f' }}>
+                    {amountGenerations}{' '}
+                    {amountGenerations === 1 ? 'генерация' : 'генераций'}
+                  </span>
+                </p>
+                <div className={styles.topNavAdd} onClick={handleNewGenerator}>
+                  Добавить генерации
+                </div>
               </div>
             </div>
-          </div>
-        </TopNav>
+          </Header>
         </div>
         {isModalOpenNewGen && (
           <AiDescriptionGeneratorTariffs
@@ -450,23 +452,19 @@ const AiDescriptionGeneratorPage = () => {
           {isVisible && (
             <div className={styles.generatorParagsWrapper}>
               <div className={styles.generatorParag}>
-                Заполните все необходимые поля указав название товара, описание
-                и прикрепите до 5 ссылок на карточки успешных конкурентов.
+                Заполните все необходимые поля, указав название товара, описание и прикрепив до 5 ссылок на карточки успешных конкурентов.
               </div>
               <div className={styles.generatorParag}>
-                После этого система подберет и согласует с вами самые частотные
-                запросы, на которых будет выстраиваться текст. При необходимости
-                удалите ненужные запросы, или добавьте недостающие.
+                После этого система подберет и согласует с вами самые частотные запросы, на которых будет выстраиваться текст. При необходимости удалите ненужные запросы или добавьте недостающие.
               </div>
               <div className={styles.generatorParag}>
-                Далее будет сгенерирован уникальный текст-описание, которое вы
-                сможете использовать для своих целей.
+                Далее будет сгенерирован уникальный текст-описание, который вы сможете использовать для своих целей.
               </div>
             </div>
           )}
         </div>
         <Modal show={showModalError} onHide={handleCloseModalError}>
-          <Modal.Header closeButton style={{border: 'none'}}>
+          <Modal.Header closeButton style={{ border: 'none' }}>
             <div>
               <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
                 <img src={warningIcon} alt='' style={{ height: '3vh' }} />

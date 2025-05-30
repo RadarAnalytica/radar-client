@@ -53,10 +53,13 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    /* overflow-y: scroll;
+    overflow-x: hidden; */
+    overflow: auto;
     padding-right: 20px;
     padding-bottom: 30px;
+    scrollbar-color: #5329ff80 #5329ff80;
+    scrollbar-width: thin;
 }
 
 .sidebar__scrollContainer_hidden {

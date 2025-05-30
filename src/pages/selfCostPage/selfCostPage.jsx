@@ -11,6 +11,7 @@ import ErrorModal from '../../components/sharedComponents/modals/errorModal/erro
 import { useAppSelector } from '../../redux/hooks'
 import { URL } from '../../service/config'
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
+import { ServiceFunctions } from '../../service/serviceFunctions'
 
 const initDataStatus = {
     isError: false,
@@ -27,22 +28,15 @@ const SelfCostPage = () => {
     const [filteredTableData, setFilteredTableData] = useState() // данные для рендера таблицы
     const { authToken } = useContext(AuthContext)
     const { activeBrand } = useAppSelector(store => store.filters)
+    const filters = useAppSelector(store => store.filters)
     //const prevShop = useRef(activeBrand)
 
-    const getTableData = async (authToken, shopId) => {
-        setDataStatus({ ...initDataStatus, isLoading: true })
-        const queryString = `shop=${shopId}`
-        const res = await fetch(`${URL}/api/product/self-costs?${queryString}`, {
-            headers: {
-                'content-type': 'application/json',
-                'cache': 'no-store',
-                'authorization': 'JWT ' + authToken,
-            }
-        })
 
+    const getTableData = async (authToken, shopId, filters) => {
+        setDataStatus({ ...initDataStatus, isLoading: true })
+        const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters)
         if (!res.ok) {
-            const parsedData = await res.json()
-            setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
+            setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :( Попробуйте оновить страницу' })
             return;
         }
 
@@ -73,6 +67,10 @@ const SelfCostPage = () => {
         //prevShop.current = activeBrand
     }
 
+    const noSearchAction = () => {
+        getTableData(authToken, activeBrand.id, filters)
+    }
+
     const resetSearch = () => {
         if (searchInputValue) {
             setSearchInputValue('')
@@ -82,13 +80,11 @@ const SelfCostPage = () => {
 
     //задаем начальную дату
     useEffect(() => {
-        //console.log('prevShop.current.id', prevShop?.current?.id)
-        //console.log('activeBrand.id', activeBrand?.id)
         if (activeBrand && authToken) {
-            getTableData(authToken, activeBrand.id)
+            getTableData(authToken, activeBrand.id, filters)
         }
 
-    }, [activeBrand])
+    }, [activeBrand, filters])
 
     useEffect(() => {
         let timeout;
@@ -115,6 +111,7 @@ const SelfCostPage = () => {
                     <Filters
                         setLoading={setLoading}
                         timeSelect={false}
+                        articleSelect={false}
                     />
                     <HowToLink
                         text='Инструкция по загрузке себестоимости'
@@ -137,6 +134,7 @@ const SelfCostPage = () => {
                                 setFilteredTableData={setFilteredTableData}
                                 searchInputValue={searchInputValue}
                                 setSearchInputValue={setSearchInputValue}
+                                noSearchAction={noSearchAction}
                             />
                         </div>
 
@@ -145,7 +143,7 @@ const SelfCostPage = () => {
                             dataStatus={dataStatus}
                             setDataStatus={setDataStatus}
                             tableData={filteredTableData}
-                            getTableData={getTableData}
+                            //getTableData={getTableData}
                             authToken={authToken}
                             activeBrand={activeBrand}
                             setTableData={setFilteredTableData}

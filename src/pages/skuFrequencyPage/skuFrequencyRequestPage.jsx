@@ -83,6 +83,9 @@ const SkuFrequencyRequestPage = () => {
                         <Filters
                             setLoading={() => { }}
                             shopSelect={false}
+                            brandSelect={false}
+                            articleSelect={false}
+                            groupSelect={false}
                         />
                     </div>
                     {mainTabsState === 'Тренды' &&

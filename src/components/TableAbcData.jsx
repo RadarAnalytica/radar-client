@@ -15,18 +15,30 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
 
   const sortData = (key) => {
     const { column, direction } = sortConfig;
-    const newDirection =
-      column === key ? (direction === "asc" ? "desc" : "asc") : "asc";
+    const newDirection = column === key ? (direction === "asc" ? "desc" : "asc") : "asc";
+    let sortedData = []
+    if (column === 'category') {
+      sortedData = [...dataTable].sort((a, b) => {
+        if (typeof b[key] === "number" && typeof a[key] === "number") {
+          return newDirection === "asc" ? b[key] - a[key] : a[key] - b[key];
+        } else {
+          return newDirection === "asc"
+            ? b[key].localeCompare(a[key])
+            : a[key].localeCompare(b[key]);
+        }
+      });
+    } else {
+      sortedData = [...dataTable].sort((a, b) => {
+        if (typeof a[key] === "number" && typeof b[key] === "number") {
+          return newDirection === "asc" ? a[key] - b[key] : b[key] - a[key];
+        } else {
+          return newDirection === "asc"
+            ? a[key].localeCompare(b[key])
+            : b[key].localeCompare(a[key]);
+        }
+      });
+    }
 
-    const sortedData = [...dataTable].sort((a, b) => {
-      if (typeof a[key] === "number" && typeof b[key] === "number") {
-        return newDirection === "asc" ? a[key] - b[key] : b[key] - a[key];
-      } else {
-        return newDirection === "asc"
-          ? a[key].localeCompare(b[key])
-          : b[key].localeCompare(a[key]);
-      }
-    });
 
     setSortConfig({ column: key, direction: newDirection });
     setDataTable(sortedData);
@@ -69,7 +81,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
   return (
     <div
       className='abcAnalysis dash-container table-content'
-      style={{ 
+      style={{
         // maxHeight: "700px", 
         marginTop: "25px"
       }}
@@ -246,11 +258,11 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                   </div>
                   <div style={{ width: "20%" }}>{item.amount_percent}%</div>
                   <div className={styles.category}>
-                    <span 
+                    <span
                       className={
                         item.category === 'A' ? `${styles.category__icon} ${styles.category__icon_green}` :
-                        item.category === 'B' ? `${styles.category__icon} ${styles.category__icon_yellow}` :
-                        item.category === 'C' ? `${styles.category__icon} ${styles.category__icon_red}` : styles.category__icon
+                          item.category === 'B' ? `${styles.category__icon} ${styles.category__icon_yellow}` :
+                            item.category === 'C' ? `${styles.category__icon} ${styles.category__icon_red}` : styles.category__icon
                       }
                     >
                       {item.category}

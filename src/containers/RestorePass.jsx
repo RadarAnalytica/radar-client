@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import logo from '../assets/logo.png';
 import InputField from '../components/InputField';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,6 +8,8 @@ import { URL } from '../service/config';
 const RestorePass = ({ email }) => {
   const [pass, setPass] = useState();
   const [confPass, setConfPass] = useState();
+  const [ passInputErrMessage, setPassInputErrMessage ] = useState('')
+  const [ confPassInputErrMessage, setConfPassInputErrMessage ] = useState('')
 
   const handlePass = (e) => setPass(e.target.value);
   const handleConfPass = (e) => setConfPass(e.target.value);
@@ -43,7 +45,15 @@ const RestorePass = ({ email }) => {
   };
 
   const handler = async (e) => {
-    if (pass && confPass && pass === confPass) {
+    if (pass?.length < 6) {
+      setPassInputErrMessage('Пожалуйста, введите не менеe 6 символов')
+    }
+    if (pass !== confPass) {
+      setConfPassInputErrMessage('Пароли не совпадают')
+    }
+    if (pass && confPass && pass === confPass && pass?.length >= 6) {
+      setPassInputErrMessage('')
+      setConfPassInputErrMessage('')
       await updatePass(email, pass)
     } else {
       e.preventDefault();
@@ -51,10 +61,24 @@ const RestorePass = ({ email }) => {
   };
   localStorage.removeItem('authToken')
 
+
+  useEffect(() => {
+    if (pass?.length < 6) {
+      setPassInputErrMessage('Пожалуйста, введите не менеe 6 символов')
+    } else {
+      setPassInputErrMessage('')
+    }
+    if (pass === confPass) {
+      setConfPassInputErrMessage('')
+    }
+  }, [pass, confPass])
+
   return (
     <div className='signin-form'>
       <div className='d-flex flex-column align-items-center'>
-        <img src={logo} alt='' className='logo' />
+        <a href={`${URL}`}>
+          <img src={logo} alt='' className='logo' />
+        </a>
         <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>
           Восстановление пароля
         </h1>
@@ -67,6 +91,7 @@ const RestorePass = ({ email }) => {
           callback={handlePass}
           required={true}
           hide={true}
+          passErrorText={passInputErrMessage}
         />
         <InputField
           type={'password'}
@@ -75,12 +100,14 @@ const RestorePass = ({ email }) => {
           callback={handleConfPass}
           required={true}
           hide={true}
+          passErrorText={confPassInputErrMessage}
         />
       </div>
       <button
         className='prime-btn'
         onClick={(e) => handler(e)}
         style={{ height: '7vh', width: '100%' }}
+        disabled={!pass || !confPass}
       >
         Обновить
       </button>

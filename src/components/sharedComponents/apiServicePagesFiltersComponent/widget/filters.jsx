@@ -1,65 +1,97 @@
-import React, { useContext, useEffect } from 'react';
-import DownloadButton from '../../../DownloadButton';
-import { ServiceFunctions } from '../../../../service/serviceFunctions';
+import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
-import { fileDownload } from '../../../../service/utils';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
+import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 
 export const Filters = ({
-  setLoading, shopSelect = true, timeSelect = true, skuFrequency = false
+  setLoading,
+  shopSelect = true,
+  timeSelect = true,
+  skuFrequency = false,
+  brandSelect = true,
+  articleSelect = true,
+  groupSelect = true
 }) => {
 
   // ------ база ------//
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
-  const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
-  const shops = useAppSelector((state) => state.shopsSlice.shops);
+  const { activeBrand, selectedRange, filters, shops } = useAppSelector(store => store.filters)
+  const { messages } = useAppSelector((state) => state.messagesSlice);
+  const prevMessages = useRef()
+  const filtersState = useAppSelector(store => store.filters)
+  //const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
 
 
-  // ---- хэндлер скачивания шаблона сс -----//
-  const handleDownload = async () => {
-    const fileBlob = await ServiceFunctions.getDownloadDashBoard(authToken, selectedRange, activeBrand.id);
-    fileDownload(fileBlob, 'Сводка_продаж.xlsx');
-  };
-  //----------------------------------------//
-
   // ---- хэндлер выбора магазина -----------//
   const shopChangeHandler = (value) => {
-    const selectedShop = shopArrayFormSelect?.find(_ => _.id === value)
+    const selectedShop = shops?.find(_ => _.id === value)
     dispatch(filterActions.setActiveShop(selectedShop))
   }
   //- -----------------------------------------//
 
-    // ------- Фетч массива магазинов -------------//
-    const fetchShopData = async () => {
-      setLoading(true)
-      try {
-        if (user.subscription_status === null) {
-          dispatch(fetchShops('mockData'));
-        } else {
-          dispatch(fetchShops(authToken));
+  // ------- Фетч массива магазинов -------------//
+  const fetchShopData = async () => {
+    try {
+      if (user.subscription_status === null) {
+        dispatch(fetchShops('mockData'));
+      } else {
+        dispatch(fetchShops(authToken));
+      }
+    } catch (error) {
+      console.error("Error fetching initial data:", error);
+    }
+  };
+  //---------------------------------------------//
+  // ------- Фетч фильтров -------------//
+  const fetchFiltersData = async () => {
+    try {
+      if (user.subscription_status === null) {
+        //dispatch(fetchShops('mockData'));
+      } else {
+        dispatch(fetchFilters(authToken))
+      }
+    } catch (error) {
+      console.error("Error fetching initial data:", error);
+    }
+  };
+  //---------------------------------------------//
+
+
+  // 0. Получаем данные магазинов
+  useEffect(() => {
+    if (!shops || shops.length === 0) {
+      fetchShopData();
+      fetchFiltersData();
+    }
+  }, [shops]);
+
+
+  //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
+  useEffect(() => {
+    if (!prevMessages?.current) {
+        prevMessages.current = messages;
+        return
+    }
+    if (messages && activeBrand?.id === 0 && prevMessages?.current) {
+      let filteredMessages = messages.filter(m => !prevMessages.current.some(_ => _.id === m.id))
+      if (!filteredMessages || filteredMessages.length === 0) {return}
+      else {
+        filteredMessages = filteredMessages.filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
+        if (!filteredMessages || filteredMessages.length === 0) {return}
+        else {
+          fetchFiltersData();
         }
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    //---------------------------------------------//
-  
-  
-    // 0. Получаем данные магазинов
-    useEffect(() => {
-      if (!shops || shops.length === 0) {
-        fetchShopData();
-      }
-    }, [shops]);
-    // ------
+      } 
+    }
+    prevMessages.current = messages
+  }, [messages])
+
 
 
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
@@ -114,16 +146,16 @@ export const Filters = ({
   }, [activeBrand, selectedRange]);
 
   // это обект, который представляет опцию "все" ввиде магазина
-  const allShopOptionAsShopObject = {
-    id: 0,
-    brand_name: "Все",
-    is_active: true,
-    is_primary_collect: shops?.some(_ => _.is_primary_collect),
-    is_valid: true,
-  };
+  // const allShopOptionAsShopObject = {
+  //   id: 0,
+  //   brand_name: "Все",
+  //   is_active: true,
+  //   is_primary_collect: shops?.some(_ => _.is_primary_collect),
+  //   is_valid: true,
+  // };
 
   // это массив магазинов с добавлением опции "все"
-  const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
+  //const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
 
 
 
@@ -140,19 +172,67 @@ export const Filters = ({
         }
         {shops && activeBrand && shopSelect &&
           <div className={styles.filters__inputWrapper}>
-            <PlainSelect
+            <ShopSelect
               selectId='store'
               label='Магазин:'
               value={activeBrand.id}
-              optionsData={shopArrayFormSelect}
+              optionsData={shops}
               handler={shopChangeHandler}
             />
           </div>
         }
+        {filters && activeBrand && filters.map((i, id) => {
+          return activeBrand.id === i.shop.id && (
+            <React.Fragment key={id}>
+              {brandSelect && <div className={styles.filters__inputWrapper}>
+                <MultiSelect
+                  dispatch={dispatch}
+                  filterActions={filterActions}
+                  params={i.brands}
+                  selectId={i.brands.enLabel}
+                  label={`${i.brands.ruLabel}:`}
+                  value={filtersState[i.brands.stateKey]}
+                  optionsData={i.brands.data}
+                />
+              </div>}
+              {articleSelect &&<div className={styles.filters__inputWrapper}>
+                <MultiSelect
+                  dispatch={dispatch}
+                  filterActions={filterActions}
+                  params={i.articles}
+                  selectId={i.articles.enLabel}
+                  label={`${i.articles.ruLabel}:`}
+                  value={filtersState[i.articles.stateKey]}
+                  optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
+                />
+              </div>}
+              {groupSelect && <div className={styles.filters__inputWrapper}>
+                <MultiSelect
+                  dispatch={dispatch}
+                  filterActions={filterActions}
+                  params={i.groups}
+                  selectId={i.groups.enLabel}
+                  label={`${i.groups.ruLabel}:`}
+                  value={filtersState[i.groups.stateKey]}
+                  optionsData={i.groups.data}
+                />
+              </div>}
+              {/* <div className={styles.filters__inputWrapper}>
+                <PlainSelect
+                  selectId={i.groups.enLabel}
+                  label={`${i.groups.ruLabel}:`}
+                  value={filtersState[i.groups.stateKey]}
+                  optionsData={i.groups.data}
+                  handler={(value) => {
+                    const current = i.groups.data.find(_ => _.value === value);
+                    dispatch(filterActions.setActiveFilters({ stateKey: i.groups.stateKey, data: current }))
+                  }}
+                />
+              </div> */}
+            </React.Fragment>
+          )
+        })}
       </div>
-      {/* {(!activeBrand?.is_primary_collect) && (
-        <DownloadButton handleDownload={handleDownload} />
-      )} */}
     </div>
   );
 };

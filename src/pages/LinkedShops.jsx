@@ -30,6 +30,8 @@ import MobilePlug from "../components/sharedComponents/mobilePlug/mobilePlug";
 import { addShop } from "../service/api/api";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import Header from "../components/sharedComponents/header/header";
+import { fetchFilters } from "../redux/apiServicePagesFiltersState/filterActions";
+import { actions as filterActions } from '../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 
 const LinkedShops = () => {
   const { user, authToken, logout } = useContext(AuthContext);
@@ -179,6 +181,8 @@ const LinkedShops = () => {
 
   const handleDeleteShop = () => {
     dispatch(deleteShop(deleteShopData));
+    dispatch(fetchShops(authToken));
+    dispatch(fetchFilters(authToken));
   };
 
   const handleVisitDashboard = () => {
@@ -199,6 +203,7 @@ const LinkedShops = () => {
       handleClose();
       setShowSuccess(true);
       dispatch(fetchShops(authToken));
+      dispatch(fetchFilters(authToken));
 
     } catch {
       setError("Не удалось добавить магазин. Проверьте корректность введенных данных.");
@@ -214,6 +219,8 @@ const LinkedShops = () => {
       return;
     }
     dispatch(editShop(editData));
+    dispatch(fetchShops(authToken));
+    dispatch(fetchFilters(authToken));
     setShowEdit(false);
   };
 
@@ -620,6 +627,7 @@ const LinkedShops = () => {
                     </svg> */}
               <Link
                 to='/selfcost'
+                onClick={() => activeShop && dispatch(filterActions.setActiveShop(activeShop))}
                 className='link'
               >
                 Изменить

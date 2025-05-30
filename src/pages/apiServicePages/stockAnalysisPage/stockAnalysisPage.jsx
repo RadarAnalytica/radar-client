@@ -17,6 +17,7 @@ const StockAnalysisPage = () => {
 
     const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const filters = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState(); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
@@ -36,7 +37,8 @@ const StockAnalysisPage = () => {
                 data = await ServiceFunctions.getAnalysisData(
                     authToken,
                     selectedRange,
-                    activeBrand.id
+                    activeBrand.id,
+                    filters
                 );
             }
             setStockAnalysisData(data);
@@ -53,7 +55,7 @@ const StockAnalysisPage = () => {
         if (activeBrand && activeBrand.is_primary_collect) {
             fetchAnalysisData();
         }
-    }, [selectedRange, activeBrand]);
+    }, [selectedRange, activeBrand, filters]);
 
     // 2.1.1 Проверяем изменился ли выбранный магазин при обновлении токена
 
@@ -97,7 +99,7 @@ const StockAnalysisPage = () => {
                     {/* !SELF-COST WARNING */}
 
                     {/* DEMO BLOCK */}
-                    { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                    {user.subscription_status === null && <NoSubscriptionWarningBlock />}
                     {/* !DEMO BLOCK */}
 
                     {/* FILTERS */}

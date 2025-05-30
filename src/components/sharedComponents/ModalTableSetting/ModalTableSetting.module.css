@@ -1,8 +1,25 @@
+.filter{
+  margin-bottom: 16px;
+}
+
+.form{
+  flex-grow: 1;
+}
+
+.input{
+  flex-grow: 1;
+}
+
+.clear__icon{
+  width: 15px;
+  fill: #8C8C8C;
+}
+
 .list {
   width: 100%;
   column-gap: 16px;
   row-gap: 12px;
-  max-height: 600px;
+  max-height: 560px;
 }
 
 .item {

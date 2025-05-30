@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styles from './singleGroupWidget.module.css'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
-import { Checkbox, ConfigProvider } from 'antd';
+import { Checkbox, ConfigProvider, message } from 'antd';
 import { singleGroupTableConfig, buttonIcons } from '../../shared';
 import wb_icon from '../../../../assets/wb_icon.png'
 import { URL } from '../../../../service/config';
 import AuthContext from '../../../../service/AuthContext';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 
 
 
@@ -17,11 +19,15 @@ const SingleGroupWidget = ({
     initDataFetchingStatus,
     groupId,
     getGroupData,
-    shops
+    shops,
+    setConfirmationModalState,
+    initConfirmationState,
+    setAlertState
 }) => {
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
     const [checkedList, setCheckedList] = useState([]);
+    const dispatch = useAppDispatch()
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -43,7 +49,7 @@ const SingleGroupWidget = ({
 
     const deleteSkuFromGroup = async (product) => {
         const updatedTableData = tableData;
-        const index = updatedTableData.findIndex(_ => _.sku === product.sku);
+        const index = updatedTableData.findIndex(_ => _.id === product.id);
         updatedTableData.splice(index, 1)
         const requestObject = {
             product_ids: updatedTableData.map(_ => _.id)
@@ -63,7 +69,9 @@ const SingleGroupWidget = ({
                 setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
                 return;
             }
-
+            setTableData(updatedTableData)
+            setAlertState({isVisible: true, message: 'Артикул успешно удален'})
+            dispatch(fetchFilters(authToken))
             getGroupData(authToken, groupId)
             // успешно обновлено
 
@@ -79,11 +87,11 @@ const SingleGroupWidget = ({
     return (
         <div className={styles.widget}>
             <div className={styles.widget__controlsWrapper}>
-                <HowToLink
+                {/* <HowToLink
                     text='Как использовать?'
                     target='_blank'
                     url='/'
-                />
+                /> */}
                 <button className={styles.widget__addButton} onClick={() => setIsAddSkuModalVisible(true)}>
                     Добавить артикул
                 </button>
@@ -164,7 +172,13 @@ const SingleGroupWidget = ({
                                                     <div className={styles.table__rowItem} key={id}>
                                                         {v.actionTypes.map((a, id) => {
                                                             return (
-                                                                <button className={styles.table__actionButton} key={id} onClick={() => { deleteSkuFromGroup(product) }}>
+                                                                <button 
+                                                                    className={styles.table__actionButton} 
+                                                                    style={{ marginRight: '25px'}}
+                                                                    key={id} 
+                                                                    //onClick={() => { deleteSkuFromGroup(product) }}
+                                                                    onClick={() => {setConfirmationModalState({open: true, title: 'Удаление товара', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить товар "${product.article}"?`, mainAction: () => {deleteSkuFromGroup(product)}, returnAction: () => {setConfirmationModalState(initConfirmationState)}})}}
+                                                                >
                                                                     {buttonIcons[a]}
                                                                 </button>
                                                             )
@@ -194,7 +208,17 @@ const SingleGroupWidget = ({
                                                                 </ConfigProvider>
                                                             }
                                                             <div className={styles.table__rowImgWrapper}>
-                                                                {product[v.photoFieldName] && <img src={product[v.photoFieldName]} width={30} height={40} />}
+                                                                {product[v.photoFieldName] && 
+                                                                    <img 
+                                                                        src={product[v.photoFieldName]} 
+                                                                        width={30} 
+                                                                        height={40} 
+                                                                        onError={(e) => {
+                                                                            e.target.onerror = null;
+                                                                            e.target.style.display = 'none'
+                                                                        }}
+                                                                    />
+                                                                }
                                                             </div>
                                                             <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                         </>

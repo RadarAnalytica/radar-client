@@ -28,10 +28,12 @@ import TurnoverBlock from '../../../../components/dashboardPageComponents/blocks
 import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
+
 const _DashboardPage = () => {
 
     const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [dataDashBoard, setDataDashboard] = useState();
     const [loading, setLoading] = useState(true);
@@ -52,7 +54,8 @@ const _DashboardPage = () => {
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
                     selectedRange,
-                    activeBrand
+                    activeBrand,
+                    filters
                 );
                 setDataDashboard(data);
             }
@@ -76,7 +79,7 @@ const _DashboardPage = () => {
         if (activeBrand && activeBrand.is_primary_collect) {
             updateDataDashBoard(selectedRange, activeBrand.id, authToken)
         }
-    }, [activeBrand, selectedRange]);
+    }, [activeBrand, selectedRange, filters]);
 
 
 

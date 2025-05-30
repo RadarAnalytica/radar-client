@@ -1,24 +1,18 @@
-// import { useState } from 'react'
-import React, { useState, useCallback, useEffect } from 'react';
-import SortArrows from './SortArrows';
-import ArrowUp from "../assets/ArrowDown.svg";
-import ArrowDown from "../assets/ArrowUp.svg";
-import pageIcon from "../assets/page-icon.svg"
-import rankIcon from "../assets/rank-icon.svg"
-import attentionIcon from "../assets/attention.svg"
-import GreenArrow from '../assets/greenarrow.svg';
-import RedArrow from '../assets/redarrow.svg';
-import { fetchStockAnalysisData } from '../redux/stockAnalysis/stockAnalysisDataActions';
+import { useState, useEffect } from 'react';
+// import ArrowUp from "../assets/ArrowDown.svg";
+import ArrowUp from "../../../assets/ArrowDown.svg";
+import ArrowDown from "../../../assets/ArrowUp.svg";
+import pageIcon from "../../../assets/page-icon.svg"
+import GreenArrow from '../../../assets/greenarrow.svg';
+import RedArrow from '../../../assets/redarrow.svg';
 import styles from './TableRequestMonitoring.module.css';
 
-const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort, setSort }) => {
-    // const [sortConfig, setSortConfig] = useState({ column: null, direction: null });
+const TableRequestMonitoring = ({ dataTable, monitorData, setPage, sort, setSort }) => {
     const [filteredData, setFilteredData] = useState(dataTable);
     const [filteredDayLenght, setFilteredDayLenght] = useState(null);
-    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const [isScrolled, setIsScrolled] = useState(false);
-    const totalPages = monitoringData.pages;
-
+    const totalPages = monitorData.pages;
+    const page = monitorData.page;
 
     // Function to go to the previous page
     const goToPreviousPage = () => {
@@ -33,7 +27,6 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
             setPage(page + 1);
         }
     };
-
 
     const sortData = (key) => {
         if (key === "asc") {
@@ -106,57 +99,49 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
     };
 
     return (
-        <div className="table-wrapper-req-monitoring">
-            <div className={styles.tableWrapperHeadder}>
-                <div className="infoOfTable">
-                    {/* tooltip */}
-                    {/* <div class="attention-icon">
-                    <div class="exclamation-circle">!</div>
-                </div> */}
-                    <div class="page-info">
-                        <div className="pagination">
-                            {page > 1 && (
-                                <button className="arrow left-arrow" onClick={goToPreviousPage}>
-                                    &lang;
-                                </button>
-                            )}
+        <div className={styles.wrapper}>
+            <div className={styles.wrapper__header}>
+                <div className={styles.table__info}>
+                    <div className={styles.pagination}>
+                        {page > 1 && (
+                            <button className={styles.arrow_left} onClick={goToPreviousPage}>
+                                &lang;
+                            </button>
+                        )}
 
-
-                            <div className="page">
-                                <img src={pageIcon} alt="Page Icon" style={{ marginRight: "5px" }} />
-                                <span>{page}<span style={{ fontWeight: "400" }}> стр. из {totalPages}</span></span>
-                            </div>
-
-                            {page < totalPages && (
-                                <button className="arrow right-arrow" onClick={goToNextPage}>
-                                    &rang;
-                                </button>
-                            )}
+                        <div className="page">
+                            <img src={pageIcon} alt="Page Icon" className={styles.page__icon} />
+                            <span>{page}<span className={styles.page__numbers}> стр. из {totalPages}</span></span>
                         </div>
-                        {/* <div style={{ marginLeft: "15px" }} class="rank">
-                        <img src={rankIcon} />
-                        <span style={{ marginLeft: "5px" }}>{totalTrueFlags} место</span>
-                        <img
-                            src={GreenArrow}
-                            alt=''
-                            style={{ width: '1.25vw', marginLeft: "5px" }}
-                        />
-                    </div> */}
-                    </div>
 
+                        {page < totalPages && (
+                            <button className={styles.arrow_left} onClick={goToNextPage}>
+                                &rang;
+                            </button>
+                        )}
+                    </div>
+                    {/* <div style={{ marginLeft: "15px" }} class="rank">
+                    <img src={rankIcon} />
+                    <span style={{ marginLeft: "5px" }}>{totalTrueFlags} место</span>
+                    <img
+                        src={GreenArrow}
+                        alt=''
+                        style={{ width: '1.25vw', marginLeft: "5px" }}
+                    />
+                </div> */}
                 </div>
-                <div className={styles.infoAboutDigits}>
-                    <div className={styles.quantityWrapperInfo}>
-                        <div className="req-mon-td-quantity">1</div>
-                        <div style={{ marginLeft: "5px" }}>–</div>
-                        <div style={{ marginLeft: "10px" }}>страница выдачи</div>
+                <div className={styles.table__info_digits}>
+                    <div className={styles.table__info_item}>
+                        <div className={styles.table__info_item_quantity}>1</div>
+                        <div>–</div>
+                        <div>страница выдачи</div>
                     </div>
-                    <div className={styles.quantityWrapperInfo}>
-                        <div style={{ marginRight: "10px" }}>10</div>
-                        <div style={{ marginLeft: "5px" }}>–</div>
-                        <div style={{ marginLeft: "10px" }}>позиция товара</div>
+                    <div className={styles.table__info_item}>
+                        <div>10</div>
+                        <div>–</div>
+                        <div>позиция товара</div>
                     </div>
-                    <div className={styles.quantityWrapperInfo}>
+                    <div className={styles.table__info_item}>
                         <div
                             className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'
                             style={{
@@ -171,8 +156,8 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
                                 style={{ width: '1.5vw' }}
                             />
                         </div>
-                        <div style={{ marginLeft: "5px" }}>–</div>
-                        <div style={{ marginLeft: "10px" }}>динамика позиции</div>
+                        <div>–</div>
+                        <div>динамика позиции</div>
                     </div>
                 </div>
             </div>
@@ -296,59 +281,6 @@ const TableRequestMonitoring = ({ dataTable, monitoringData, setPage, page, sort
                                         </div>
                                     ))}
                                 </div>
-
-                                {/* <div className='scrollable-columns'>
-                                    {console.log(filteredData)}
-                                   
-                                    {filteredData[0].details.map((_, rowIndex) => (
-                                        <div key={rowIndex} className={styles.row}>
-                                            {filteredData.map((item, colIndex) => (
-                                                <div key={colIndex} className={styles.columnWidthN}>
-                                                    <>
-                                                        {colIndex === 0 && (
-                                                            <>
-                                                                <div className={styles.tableOverHeader}></div>
-                                                                <div className={styles.tableHeaderScrollable}>
-                                                                    {item.details[rowIndex]?.date}
-                                                                </div>
-                                                            </>
-                                                        )}
-
-                                                        <>
-                                                            <div className={styles.tableRow}>
-                                                                <div className="req-mon-td-wrapper">
-                                                                    <div className="req-mon-td-quantity">1{"  "}</div>
-                                                                    <div>{filteredData[colIndex].details[rowIndex].quantity}</div>
-                                                                    <div
-                                                                        className='mb-0 ol-2 text-end d-flex justify-content-around align-items-start'
-                                                                        style={{
-                                                                            fontSize: '1.85vh',
-                                                                            marginLeft: '8px',
-                                                                        }}
-                                                                    >
-                                                                        <span className='pb-1'>
-                                                                            <img
-                                                                                src={(filteredData[colIndex]?.details[rowIndex]?.quantity || 0) > 30 ? GreenArrow : RedArrow}
-                                                                                alt=''
-                                                                                style={{ width: '1.25vw' }}
-                                                                            />
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </>
-                                                    </>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    ))}
-
-                                    <div>
-                                        <div className={styles.tableOverHeader}></div>
-                                        <div className={styles.tableHeaderScrollablLast}></div>
-                                    </div>
-                                </div> */}
-
                             </div>
                         )}
                     </div>

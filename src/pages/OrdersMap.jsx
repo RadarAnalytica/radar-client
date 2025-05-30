@@ -35,6 +35,7 @@ const OrdersMap = () => {
   const { user, authToken, logout } = useContext(AuthContext);
   const shops = useAppSelector((state) => state.shopsSlice.shops);
   const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
+  const filters = useAppSelector(store => store.filters)
 
   // const [geoData, setGeoData] = useState([]);
   // const { geoData, loading, error } = useAppSelector(
@@ -67,10 +68,11 @@ const OrdersMap = () => {
       if (user.subscription_status === null) {
         data = await mockGetGeographyData(selectedRange);
       } else {
-        data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id);
+        data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand.id, filters);
       }
       setGeoData(data);
     }
+    setByRegions(true)
     setLoading(false)
   }
 
@@ -86,7 +88,7 @@ const OrdersMap = () => {
     if (activeBrand?.is_primary_collect) {
       updateGeoData();
     }
-  }, [activeBrand, selectedRange]);
+  }, [activeBrand, selectedRange, filters]);
 
 
 

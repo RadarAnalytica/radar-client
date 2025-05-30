@@ -313,18 +313,6 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                                                                                 onError={(e) => {
                                                                                     e.target.onerror = null;
                                                                                     e.target.style.display = 'none'
-                                                                                    let newTableData = tableData;
-                                                                                    const currIndex = tableData.findIndex(_ => _.product === product.product);
-                                                                                    newTableData[currIndex].photo = null
-                                                                                    newTableData.sort((a, b) => {
-                                                                                        if (a.photo && b.photo) {
-                                                                                            return 0;
-                                                                                        }
-                                                                                        if (a.photo) return -1;
-                                                                                        if (b.photo) return 1;
-                                                                                        return 0;
-                                                                                    })
-                                                                                    setTableData([...newTableData])
                                                                                 }}
                                                                             />
                                                                         }
