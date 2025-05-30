@@ -24,6 +24,7 @@ import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import FileUploader from '../components/sharedComponents/fileUploader/fileUploader';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import HowToLink from '../components/sharedComponents/howToLink/howToLink';
+import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm"
 
 import { Tooltip } from "antd";
 
@@ -38,6 +39,7 @@ const ReportMain = () => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [openBlock, setOpenBlock] = useState(true);
   const [uploadingFile, setUploadingFile] = useState(false);
+  const [deleteId, setDeleteId] = useState();
 
   const getListOfReports = async () => {
     try {
@@ -111,6 +113,9 @@ const ReportMain = () => {
       await getListOfReports();
     } catch (error) {
       console.error('Error fetching data:', error);
+    }
+    finally{
+      setDeleteId();
     }
   };
 
@@ -480,8 +485,8 @@ const ReportMain = () => {
                         src={trashIcon}
                         alt='Delete icon'
                         onClick={() => {
-                          setSelectedRowId(row.report_number);
-                          setOpenModal(true);
+                          setDeleteId(row.report_number);
+                          // setOpenModal(true);
                         }}
                       />
                     </Tooltip>
@@ -493,6 +498,11 @@ const ReportMain = () => {
         </div>
         <BottomNavigation />
       </div>
+      {deleteId && <ModalDeleteConfirm
+        onCancel={() => setDeleteId()}
+        onOk={() => { handleDelete(deleteId); }}
+        title='Вы уверены, что хотите удалить отчет?'
+      />}
       <Modal
         show={openModal}
         onHide={() => setOpenModal(false)}
