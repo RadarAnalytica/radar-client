@@ -90,6 +90,23 @@ const EmailForReset = () => {
                     <button className='link' onClick={() => {window.location.href = `${URL}/signin`}}>Вход</button>
                 </p>
             </div>
+
+            <ErrorModal
+                open={requestState.isError}
+                onOk={() => setRequestState(initRequestStatus)}
+                onCancel={() => setRequestState(initRequestStatus)}
+                onClose={() => setRequestState(initRequestStatus)}
+                footer={null}
+                message={requestState.message}
+            />
+            <SuccessModal
+                open={requestState.isSuccess}
+                onOk={() => {setRequestState(initRequestStatus); navigate(`/signin`)}}
+                onClose={() => {setRequestState(initRequestStatus); navigate(`/signin`)}}
+                onCancel={() => {setRequestState(initRequestStatus); navigate(`/signin`)}}
+                footer={null}
+                message={'Ссылка на сброс пароля была направлена на Вашу почту'}
+            />
         </div>
     )
 }
