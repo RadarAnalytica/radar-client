@@ -69,12 +69,13 @@ const plugsConfig = {
     "subscription": [sub1],
     'sku-analysis': [sku1, sku2, sku3, sku4, sku5],
     'report-week': [reportWeek1],
-    'selfcost': [ss1]
+    'selfcost': [ss1],
+    'groups': []
 }
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false)
-    let currentImages = [...plugsConfig[pathname]]  
+    let currentImages = plugsConfig[pathname] ? [...plugsConfig[pathname]] : []
     
     useEffect(() => {
         setIsImageLoaded(false)

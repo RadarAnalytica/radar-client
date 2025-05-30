@@ -21,7 +21,6 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
     const { authToken, user } = useContext(AuthContext)
     const { activeBrand } = useAppSelector((state) => state.filters);
     const { shops } = useAppSelector((state) => state.shopsSlice);
-    console.log(shops)
     //const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [inputValue, setInputValue] = useState('')
     const dispatch = useAppDispatch()

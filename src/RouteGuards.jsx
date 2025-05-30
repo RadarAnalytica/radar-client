@@ -104,25 +104,25 @@ export const ProtectedRoute = ({
   subscription = config.subscription,
   role = config.role,
 }) => {
-  const { user } = useContext(AuthContext);
+  //const { user } = useContext(AuthContext);
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const isCalculateEntryUrl = sessionStorage.getItem('isCalculateEntryUrl'); // это устанавливается в калькуляторе. Необходимо для коррекного редиректа не авторизованного юзера
 
   // -------this is test user object for dev purposes ------//
 
-  // let user = {
-  //   email: "modinsv@yandex.ru",
-  //   id: 2,
-  //   is_confirmed: true,
-  //   is_onboarded: false,
-  //   is_report_downloaded: true,
-  //   is_test_used: true,
-  //   role: "admin",
-  //   subscription_status: null
-  // }
+  let user = {
+    email: "modinsv@yandex.ru",
+    id: 2,
+    is_confirmed: true,
+    is_onboarded: false,
+    is_report_downloaded: true,
+    is_test_used: true,
+    role: "admin",
+    subscription_status: null
+  }
 
-//  const user = undefined
+ //const user = undefined
 
 /**
 1. null
@@ -176,18 +176,18 @@ export const ProtectedRoute = ({
   if (testPeriodProtected && user && user.subscription_status === null) {
     
     // ---------2.1 Mock data protection ------//
-    const mockPages = ['Сводка продаж', 'ABC-анализ', 'География заказов и продаж', 'Аналитика по товарам']
-    if (user && user.subscription_status === null && mockPages.includes(routeRuName)) {
-      return ( 
-        <Suspense fallback={<LoaderPage />}>
-          <Helmet>
-            <title>Radar Analityca</title>
-            <meta name="description" content={routeRuName} />
-          </Helmet>
-          { children }
-        </Suspense>
-      )
-    }
+    // const mockPages = ['Сводка продаж', 'ABC-анализ', 'География заказов и продаж', 'Аналитика по товарам']
+    // if (user && user.subscription_status === null && mockPages.includes(routeRuName)) {
+    //   return ( 
+    //     <Suspense fallback={<LoaderPage />}>
+    //       <Helmet>
+    //         <title>Radar Analityca</title>
+    //         <meta name="description" content={routeRuName} />
+    //       </Helmet>
+    //       { children }
+    //     </Suspense>
+    //   )
+    // }
     
      switch(testPeriodGuardType) {
        case 'redirect': {
