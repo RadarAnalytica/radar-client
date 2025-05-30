@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
 
-    const { authToken } = useContext(AuthContext)
+    const { authToken, user } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
     const [searchInputValue, setSearchInputValue] = useState('')
     const [isSelfCostModalVisible, setIsSelfCostModalVisible] = useState(false)
@@ -142,7 +142,7 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
                 </ConfigProvider>
 
                 {/* EXEL DOWNLOAD BUTTON */}
-                <ConfigProvider
+                {user && user.subscription_status !== null && <ConfigProvider
                     wave={{ disabled: true }}
                     theme={{
                         token: {
@@ -167,7 +167,7 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
                         </svg>
                         Скачать Excel
                     </Button>
-                </ConfigProvider>
+                </ConfigProvider>}
             </div>
 
             <Modal
