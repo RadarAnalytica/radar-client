@@ -56,6 +56,7 @@ const SelfCostPage = React.lazy(() => import("./pages/selfCostPage/selfCostPage"
 const ReportWeek = React.lazy(() => import("./pages/ReportWeek"));
 const SkuFrequencyPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyPage"));
 const SkuFrequencyRequestPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyRequestPage"));
+
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 

@@ -1,14 +1,13 @@
 import { useContext } from 'react';
 import AuthContext from '../service/AuthContext';
 import ExpenseTracker from '../components/ExpenseTracker';
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
 import BottomNavigation from '../components/BottomNavigation';
 import DemonstrationSection from '../components/DemonstrationSection';
 import styles from './ExternalExpensesPage.module.css';
 import plFake from '../pages/images/external-fake.png';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 
 const ExternalExpensesPage = () => {
   const { user } = useContext(AuthContext);
@@ -20,8 +19,10 @@ const ExternalExpensesPage = () => {
         <Sidebar />
       </div>
       {/* <SideNav /> */}
-      <div className='dashboard-content' style={{ padding: '0 32px'}}>
-        <TopNav title={'Внешние расходы'} subTitle={'Отчёт /'} />
+      <div className='dashboard-content' style={{ padding: '0 32px' }}>
+        <div style={{ margin: '20px 0' }}>
+          <Header title={'Внешние расходы'} titlePrefix={'Отчёт'} />
+        </div>
         {user.is_report_downloaded ? (
           <div className='container dash-container'>
             <ExpenseTracker />

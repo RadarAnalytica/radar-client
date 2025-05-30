@@ -16,6 +16,7 @@ import NewFilterGroup from '../components/finReport/FilterGroup'
 import { formatPrice } from '../service/utils';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 
 
 const ReportAbcAnalysis = () => {
@@ -533,13 +534,9 @@ const ReportAbcAnalysis = () => {
       </div>
       {/* <SideNav /> */}
       <div className={`${styles.scheduleMain} dashboard-content pb-3`} style={{ padding: '0 32px' }}>
-        <TopNav
-          title={
-            <>
-              <span style={{ color: '#1A1A1A4D' }}>Отчет /</span> ABC-анализ
-            </>
-          }
-        />
+        <div style={{ margin: '20px 0' }}>
+          <Header title={'ABC-анализ'} titlePrefix={'Отчёт'} />
+        </div>
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
