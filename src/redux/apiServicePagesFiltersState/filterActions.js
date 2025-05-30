@@ -62,7 +62,7 @@ const createFiltersDTO = (data) => {
         value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
       })
       b.wb_id.forEach(a => {
-        allArticlesData.push({ name: a, value: a, brand: b.name ? b.name :`Без названия-${_.shop_data.id}`})
+        allArticlesData.push({ name: a, value: a, brand: b.name ? b.name :`Без названия (${_.shop_data.brand_name})`})
       })
     })
   })
@@ -91,10 +91,10 @@ const createFiltersDTO = (data) => {
 
   // формируем итоговый массив для всех данных
   const DTO = [allShopsOption, ...data?.map(i => {
-    //let articlesData = [{ value: 'Все', brand: 'Все' }]
     let articlesData = []
     i.brands.forEach((item, bId) => {
-      const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия-${i.shop_data.id}`}))
+      
+      const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия (${i.shop_data.brand_name})`}))
       articlesData = [...articlesData, ...items]
     })
     let newItem = {
