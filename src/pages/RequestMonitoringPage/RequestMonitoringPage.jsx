@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 // import TopNav from '../../components/TopNav';
+import Header from '../../components/sharedComponents/header/header';
 import TopNav from '../../components/TopNav';;
 import glitterStar from '../../pages/images/glitterstar.svg';
 import glityellow from '../../pages/images/glityellow.svg';
@@ -117,8 +118,11 @@ const RequestMonitoringPage = () => {
             <Sidebar />
         </div>
         <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
-            <div style={{ widht: '100%', padding: '0' }}>
-                <TopNav title={'Частотность артикула'} />
+            <div style={{ widht: '100%', padding: '0', margin: '20px 0' }}>
+                <Header
+                    title={'Частотность артикула'}
+                />
+                {/* <TopNav title={'Частотность артикула'} /> */}
             </div>
 
 
