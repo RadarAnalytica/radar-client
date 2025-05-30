@@ -102,11 +102,11 @@ const EmailForReset = () => {
             />
             <SuccessModal
                 open={requestState.isSuccess}
-                onOk={() => {setRequestState(initRequestStatus); navigate(`${URL}/signin`)}}
-                onClose={() => {setRequestState(initRequestStatus); navigate(`${URL}/signin`)}}
-                onCancel={() => {setRequestState(initRequestStatus); navigate(`${URL}/signin`)}}
+                onOk={() => {setRequestState(initRequestStatus); navigate(`/signin`)}}
+                onClose={() => {setRequestState(initRequestStatus); navigate(`/signin`)}}
+                onCancel={() => {setRequestState(initRequestStatus); navigate(`/signin`)}}
                 footer={null}
-                message={requestState.message}
+                message={'Ссылка на сброс пароля была направлена на Вашу почту'}
             />
         </div>
     )
