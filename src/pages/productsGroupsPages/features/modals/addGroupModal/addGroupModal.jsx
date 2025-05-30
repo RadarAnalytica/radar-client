@@ -21,6 +21,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
     const { authToken, user } = useContext(AuthContext)
     const { activeBrand } = useAppSelector((state) => state.filters);
     const { shops } = useAppSelector((state) => state.shopsSlice);
+    console.log(shops)
     //const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [inputValue, setInputValue] = useState('')
     const dispatch = useAppDispatch()
@@ -139,7 +140,7 @@ const AddGroupModal = ({ isAddGroupModalVisible, setIsAddGroupModalVisible, data
                             placeholder='Выберите магазин'
                             style={{ height: 56 }}
                             value={activeBrand?.id}
-                            options={shops.map(i => ({ value: i.id, label: i.brand_name }))}
+                            options={shops.filter(_ => _.is_primary_collect).map(i => ({ value: i.id, label: i.brand_name }))}
                             suffixIcon={
                                 <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
