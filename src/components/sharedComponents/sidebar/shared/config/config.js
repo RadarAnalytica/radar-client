@@ -79,7 +79,7 @@ export const menuConfig = [
                 id: 6,
                 url: '/report-week', 
                 label: 'Отчет по неделям',
-                isActive: true
+                isActive: false
             },
         ]
     },

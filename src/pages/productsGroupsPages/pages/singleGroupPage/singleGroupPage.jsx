@@ -45,7 +45,7 @@ const SingleGroupPage = () => {
     const { authToken, user } = useContext(AuthContext)
     const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [groupData, setGroupData] = useState([])
-    const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
+    const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(true)
     const [isAddSkuModalVisible, setIsAddSkuModalVisible] = useState(false)
     const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
     const [alertState, setAlertState] = useState(initAlertState);

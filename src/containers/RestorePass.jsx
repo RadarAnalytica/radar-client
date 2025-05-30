@@ -76,9 +76,9 @@ const RestorePass = ({ email }) => {
   return (
     <div className='signin-form'>
       <div className='d-flex flex-column align-items-center'>
-        <Link to={`${URL}`}>
+        <a href={`${URL}`}>
           <img src={logo} alt='' className='logo' />
-        </Link>
+        </a>
         <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>
           Восстановление пароля
         </h1>
