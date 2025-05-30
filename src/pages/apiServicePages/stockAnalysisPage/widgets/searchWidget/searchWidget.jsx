@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styles from './searchWidget.module.css'
 import { Input, ConfigProvider, Button } from 'antd'
 import { getFilteredData } from '../../shared'
@@ -17,6 +17,7 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
     const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
     const [searchInputValue, setSearchInputValue] = useState('')
     const [isSelfCostModalVisible, setIsSelfCostModalVisible] = useState(false)
+    const [ isExelLoading, setIsExelLoading ] = useState(false)
     const [file, setFile] = useState(); // это видимо загрузка файла себестоимости
     const navigate = useNavigate()
 
@@ -39,13 +40,20 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
     }
 
     const getProdAnalyticXlsxHandler = async () => {
+        setIsExelLoading(true)
         const fileBlob = await ServiceFunctions.getProdAnalyticXlsx(
           authToken,
           selectedRange,
           activeBrand.id
         );
-        fileDownload(fileBlob, "Товарная_аналитика.xlsx");
+        fileDownload(fileBlob, "Товарная_аналитика.xlsx", setIsExelLoading);
       };
+
+    useEffect(() => {
+        if (stockAnalysisData && searchInputValue) {
+            setStockAnalysisFilteredData(getFilteredData(searchInputValue.trim(), stockAnalysisData))
+        }
+    }, [stockAnalysisData])
 
     return (
         <div className={styles.widget}>
@@ -151,6 +159,7 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
                     <Button
                         type='primary'
                         size='large'
+                        loading={isExelLoading}
                         onClick={getProdAnalyticXlsxHandler}
                     >
                         <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
