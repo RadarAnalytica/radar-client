@@ -17,6 +17,7 @@ import DemonstrationSection from '../components/DemonstrationSection';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 
 
 const WeeklyReportByGoods = () => {
@@ -38,11 +39,11 @@ const WeeklyReportByGoods = () => {
   const [filterIsLoading, setFilterIsLoading] = useState(false);
 
   useEffect(() => {
-          
+
     dispatch(fetchByGoodsFilters(
       authToken
     ))
-    
+
   }, [authToken, dispatch])
   // useEffect(() => {
   //   const fetchFilters = async () => {
@@ -191,8 +192,10 @@ const WeeklyReportByGoods = () => {
         <Sidebar />
       </div>
       {/* <SideNav /> */}
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
-        <TopNav title={'По товарам'} subTitle={'Отчёт /'} />
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
+        <div style={{ margin: '20px 0' }}>
+          <Header title={'По месяцам'} titlePrefix={'Отчёт'} />
+        </div>
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
@@ -676,7 +679,7 @@ const WeeklyReportByGoods = () => {
               </>
             )} */}
             <div className='container dash-container'>
-            {!isLoading ? (
+              {!isLoading ? (
                 <TableByGoods data={weeklyData} />
               ) : (
                 <div
@@ -713,7 +716,7 @@ const WeeklyReportByGoods = () => {
             </span>
           </>
         )}
-           <BottomNavigation />
+        <BottomNavigation />
       </div>
     </div>
   );

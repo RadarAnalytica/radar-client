@@ -13,6 +13,7 @@ import plFake from '../pages/images/penalties-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 
 const WeeklyReportPenaltiesPage = () => {
   const dispatch = useDispatch();
@@ -23,10 +24,10 @@ const WeeklyReportPenaltiesPage = () => {
   const { authToken, user } = useContext(AuthContext);
 
   useEffect(() => {
-      dispatch(fetchPenaltyFilters(
-        authToken
-      ))
-    }, [authToken, dispatch])
+    dispatch(fetchPenaltyFilters(
+      authToken
+    ))
+  }, [authToken, dispatch])
 
   const handleApplyFilters = useCallback(() => {
     dispatch(
@@ -43,15 +44,17 @@ const WeeklyReportPenaltiesPage = () => {
         <Sidebar />
       </div>
       {/* <SideNav /> */}
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
-        <TopNav title={'Штрафы'} subTitle={'Отчёт /'} />
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
+        <div style={{ margin: '20px 0' }}>
+          <Header title={'Штрафы'} titlePrefix={'Отчёт'} />
+        </div>
         {user.is_report_downloaded ? (
           <>
-          <div className='container dash-container'>
-              <NewFilterGroup pageIdent='penalty' filtersData={penaltyFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
-          </div>
             <div className='container dash-container'>
-              <LogisticsTable data={penaltiesData} loading={loading}/>
+              <NewFilterGroup pageIdent='penalty' filtersData={penaltyFilters} isLoading={isFiltersLoading} getData={handleApplyFilters} />
+            </div>
+            <div className='container dash-container'>
+              <LogisticsTable data={penaltiesData} loading={loading} />
             </div>
           </>
         ) : (
@@ -69,7 +72,7 @@ const WeeklyReportPenaltiesPage = () => {
             </span>
           </>
         )}
-           <BottomNavigation />
+        <BottomNavigation />
       </div>
     </div>
   );

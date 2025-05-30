@@ -4,8 +4,6 @@ import { fetchDashboardReport } from '../redux/dashboardReport/dashboardReportAc
 import { fetchDashboardFilters } from '../redux/dashboardReport/dashboardFiltersAction';
 import BottomNavigation from '../components/BottomNavigation';
 import FilterSection from '../components/FilterSection';
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
 import styles from './WeeklyReportDashboard.module.css';
 import TooltipInfo from '../components/TooltipInfo';
 import DemonstrationSection from '../components/DemonstrationSection';
@@ -16,6 +14,7 @@ import { formatPrice } from '../service/utils';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 
 
 const WeeklyReportDashboard = () => {
@@ -159,7 +158,9 @@ const WeeklyReportDashboard = () => {
       </div>
       {/* <SideNav /> */}
       <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
-        <TopNav title={'Дашборд'} subTitle={'Отчёт /'} />
+        <div style={{ margin: '20px 0'}}>
+          <Header title={'Дашборд'} titlePrefix={'Отчёт'} />
+        </div>
 
         {user.is_report_downloaded ? (
           <>
