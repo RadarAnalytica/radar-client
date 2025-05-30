@@ -513,6 +513,7 @@ export const ServiceFunctions = {
         authorization: 'JWT ' + token,
       },
     });
+    console.log(res)
     const data = await res.blob()
     return data;
   },

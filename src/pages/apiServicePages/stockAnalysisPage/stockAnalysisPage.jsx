@@ -99,7 +99,7 @@ const StockAnalysisPage = () => {
                     {/* !SELF-COST WARNING */}
 
                     {/* DEMO BLOCK */}
-                    { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+                    {user.subscription_status === null && <NoSubscriptionWarningBlock />}
                     {/* !DEMO BLOCK */}
 
                     {/* FILTERS */}

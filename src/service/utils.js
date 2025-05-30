@@ -597,7 +597,7 @@ export const rangeApiFormat = (range) => {
   return params
 }
 
-export const fileDownload = (blob, title) => {
+export const fileDownload = (blob, title, setLoading) => {
   const url = window.URL.createObjectURL(new Blob([blob]));
   const link = document.createElement('a');
   link.href = url;
@@ -605,6 +605,9 @@ export const fileDownload = (blob, title) => {
   document.body.appendChild(link);
   link.click();
   link.parentNode.removeChild(link);
+  if (setLoading) {
+    setLoading(false)
+  }
 }
 
 
