@@ -88,7 +88,7 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
         {children}
         <span className='col-2 d-flex justify-content-around top-menu top-wrapper'>
           <span className='error-notification' ref={componentRef}>
-            <span onClick={(event) => handleErrorClick(event)}>
+            <span onClick={(event) => handleErrorClick(event)} style={{ border: '1px solid red'}} className={styles.icon}>
               <svg
                 width='24'
                 height='24'
@@ -129,7 +129,7 @@ const TopNav = ({ title, children, subTitle, mikeStarinaStaticProp }) => {
           <MdOutlineSettings
             id='settings-icon'
             onClick={() => setMenuShown(true)}
-            style={{ maxWidth: "3vw", cursor: "pointer", fontSize: "28px" }}
+            style={{ maxWidth: "3vw", cursor: "pointer", fontSize: "28px", userSelect: 'none' }}
           />
         </span>
 

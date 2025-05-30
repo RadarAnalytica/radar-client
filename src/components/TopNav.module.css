@@ -113,3 +113,10 @@
     border-radius: 8px;
     border: 1px solid silver
   }
+
+  .icon {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
