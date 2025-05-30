@@ -107,6 +107,7 @@ const RestorePass = ({ email }) => {
         className='prime-btn'
         onClick={(e) => handler(e)}
         style={{ height: '7vh', width: '100%' }}
+        disabled={!pass || !confPass}
       >
         Обновить
       </button>
