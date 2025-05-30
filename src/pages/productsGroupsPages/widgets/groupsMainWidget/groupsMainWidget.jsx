@@ -73,15 +73,20 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
     useEffect(() => {
         editedGroupId && setIsEditGroupModalVisible(true)
     }, [editedGroupId])
+    useEffect(() => {
+        if (!isEditGroupModalVisible) {
+            setEditedGroupId(undefined)
+        }
+    }, [isEditGroupModalVisible])
 
     return (
         <div className={styles.widget}>
             <div className={styles.widget__controlsWrapper}>
-                <HowToLink
+                {/* <HowToLink
                     text='Как использовать?'
                     target='_blank'
                     url='/'
-                />
+                /> */}
                 <button className={styles.widget__addButton} onClick={() => setIsAddGroupModalVisible(true)}>
                     Создать группу
                 </button>

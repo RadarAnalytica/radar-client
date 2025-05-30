@@ -79,7 +79,7 @@ export const MultiSelect = (
         return (
             <Tag
                 color={value}
-                onMouseDown={onPreventMouseDown}
+                //onMouseDown={onPreventMouseDown}
                 closable={false}
                 onClose={onClose}
                 style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center' }}
@@ -138,7 +138,7 @@ export const MultiSelect = (
             </label>
             <div className={styles.plainSelect__selectWrapper}>
                 <ConfigProvider
-                    renderEmpty={() => (<div>Нет данных</div>)}
+                    renderEmpty={() => (<div style={{ cursor: 'default'}}>Нет данных</div>)}
                     theme={{
                         token: {
                             colorBgContainer: '#EAEAF1',
