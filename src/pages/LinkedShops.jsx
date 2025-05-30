@@ -251,16 +251,16 @@ const LinkedShops = () => {
 
   return (
     <main className={styles.page}>
-    <MobilePlug />
-    {/* ------ SIDE BAR ------ */}
-    <section className={styles.page__sideNavWrapper}>
+      <MobilePlug />
+      {/* ------ SIDE BAR ------ */}
+      <section className={styles.page__sideNavWrapper}>
         <Sidebar />
-    </section>
-    {/* ------ CONTENT ------ */}
-    <section className={styles.page__content}>
+      </section>
+      {/* ------ CONTENT ------ */}
+      <section className={styles.page__content}>
         {/* header */}
         <div className={styles.page__headerWrapper}>
-            <Header title='Подключенные магазины' />
+          <Header title='Подключенные магазины' />
         </div>
         {/* !header */}
         <div className={styles.content}>
@@ -539,9 +539,9 @@ const LinkedShops = () => {
             </div>
           )}
         </div>
-    </section>
+      </section>
 
-    <Modal show={show} onHide={handleClose} className='add-token-modal'>
+      <Modal show={show} onHide={handleClose} className='add-token-modal'>
         <Modal.Header closeButton>
           <div className='d-flex align-items-center gap-2'>
             <WbIcon />
@@ -618,21 +618,26 @@ const LinkedShops = () => {
               alignItems: "center",
             }}
           >
-            <span>Себестоимость</span>
-            <div className='d-flex token-status'>
-              {/* <svg width="150" height="40" fill='#00B69B' xmlns="http://www.w3.org/2000/svg">
+            {activeShop?.is_primary_collect &&
+              <>
+                <span>Себестоимость</span>
+                <div className='d-flex token-status'>
+                  {/* <svg width="150" height="40" fill='#00B69B' xmlns="http://www.w3.org/2000/svg">
                         <rect width="150" height="40" rx="8" fill="#00B69B" fillOpacity="0.15" />
                         <circle cx="15" cy="18" r="5" fill="#00B69B" />
                         <text x="30" y="25" font-family="Arial" font-size="18" font-weight="400" fill="black">Установлена</text>
                     </svg> */}
-              <Link
-                to='/selfcost'
-                onClick={() => activeShop && dispatch(filterActions.setActiveShop(activeShop))}
-                className='link'
-              >
-                Изменить
-              </Link>
-            </div>
+                  <Link
+                    to='/selfcost'
+                    onClick={() => activeShop && dispatch(filterActions.setActiveShop(activeShop))}
+                    className='link'
+                  >
+                    Изменить
+                  </Link>
+
+                </div>
+              </>
+            }
           </div>
           {/* <div className="mt-3 d-flex align-items-center justify-content-between">
                         <span>Себестоимость</span>
@@ -864,8 +869,8 @@ const LinkedShops = () => {
           </div>
         </Modal.Header>
       </Modal>
-    {/* ---------------------- */}
-</main>
+      {/* ---------------------- */}
+    </main>
 
     // <div className='linked-shops-page'>
     //   <MobilePlug />
@@ -879,10 +884,10 @@ const LinkedShops = () => {
     //   >
     //     <TopNav title={"Подключенные магазины"} mikeStarinaStaticProp />
     //     {/* <div className='sub-page-grid linked-wrap p-0' style={{ border: '1px solid red'}}> */}
-        
+
     //   </div>
 
-      
+
     // </div>
   );
 };
