@@ -432,7 +432,7 @@ const ReportMain = () => {
                           <img src={failcheck} alt='Fail' />
                         )}
                       </span>
-                      <span className={styles.reportText}>
+                      <span className={styles.reportText} title={row.main_report_name}>
                         {row.main_report_name}
                       </span>
                     </div>
