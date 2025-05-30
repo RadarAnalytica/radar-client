@@ -3,7 +3,7 @@ import MobilePlug from '../../../../components/sharedComponents/mobilePlug/mobil
 import Header from '../../../../components/sharedComponents/header/header';
 import Breadcrumbs from '../../../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs';
 import Sidebar from '../../../../components/sharedComponents/sidebar/sidebar';
-import { AddSkuModal, ConfirmationModal } from '../../features';
+import { AddSkuModal, ConfirmationModal, GroupEditModal } from '../../features';
 import { SingleGroupWidget, NoDataWidget } from '../../widgets';
 import { useNavigate } from 'react-router-dom';
 import styles from './singleGroupPage.module.css'
@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { URL } from '../../../../service/config';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { fetchShops } from '../../../../redux/shops/shopsActions';
+import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 
 
 const initDataFetchingStatus = {
@@ -44,6 +45,7 @@ const SingleGroupPage = () => {
     const { authToken, user } = useContext(AuthContext)
     const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [groupData, setGroupData] = useState([])
+    const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
     const [isAddSkuModalVisible, setIsAddSkuModalVisible] = useState(false)
     const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
     const [alertState, setAlertState] = useState(initAlertState);
@@ -65,8 +67,6 @@ const SingleGroupPage = () => {
         }
     };
     //---------------------------------------------//
-
-
 
     const getGroupData = async (authToken, groupId) => {
         groupData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
@@ -111,6 +111,7 @@ const SingleGroupPage = () => {
                 setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: parsedData?.detail || 'Что-то пошло не так :(' })
                 return;
             }
+            dispatch(fetchFilters(authToken))
             navigate('/groups')
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
@@ -128,7 +129,7 @@ const SingleGroupPage = () => {
         }
     }, [shops]);
 
-     useEffect(() => {
+    useEffect(() => {
         let timeout;
         if (alertState.isVisible) {
             timeout = setTimeout(() => { setAlertState(initAlertState) }, 1500)
@@ -154,11 +155,14 @@ const SingleGroupPage = () => {
                                     { name: groupData.name },
                                 ]}
                                 actions={[
-                                    { type: 'edit', action: () => { setIsAddSkuModalVisible(true) } },
+                                    //{ type: 'edit', action: () => { setIsAddSkuModalVisible(true) } },
+                                    { type: 'edit', action: () => { setIsEditGroupModalVisible(true) } },
                                     //{ type: 'delete', action: () => { deleteGroup(authToken, params?.group_id) } },
-                                    { type: 'delete', action: () => { 
-                                        setConfirmationModalState({ open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${groupData.name}"?`, mainAction: () => { deleteGroup(authToken, params?.group_id) }, returnAction: () => { setConfirmationModalState(initConfirmationState) } });
-                                    }},
+                                    {
+                                        type: 'delete', action: () => {
+                                            setConfirmationModalState({ open: true, title: 'Удаление группы', actionTitle: 'Удалить', message: `Вы уверены, что хотите удалить группу "${groupData.name}"?`, mainAction: () => { deleteGroup(authToken, params?.group_id) }, returnAction: () => { setConfirmationModalState(initConfirmationState) } });
+                                        }
+                                    },
                                 ]}
                             />
                         }
@@ -198,7 +202,7 @@ const SingleGroupPage = () => {
 
 
             {/*  modals */}
-             <AddSkuModal
+            <AddSkuModal
                 isAddSkuModalVisible={isAddSkuModalVisible}
                 setIsAddSkuModalVisible={setIsAddSkuModalVisible}
                 setDataFetchingStatus={setDataFetchingStatus}
@@ -222,6 +226,15 @@ const SingleGroupPage = () => {
 
             <ConfirmationModal
                 {...confirmationModalState}
+            />
+
+            <GroupEditModal
+                isEditGroupModalVisible={isEditGroupModalVisible}
+                setIsEditGroupModalVisible={setIsEditGroupModalVisible}
+                dataFetchingStatus={dataFetchingStatus}
+                setDataFetchingStatus={setDataFetchingStatus}
+                groupData={groupData}
+                updateMainData={getGroupData}
             />
 
             {alertState.isVisible && <div className={styles.page__successAlert}>

@@ -24,6 +24,9 @@ import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import FileUploader from '../components/sharedComponents/fileUploader/fileUploader';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import HowToLink from '../components/sharedComponents/howToLink/howToLink';
+import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm"
+
+import { Tooltip } from "antd";
 
 const ReportMain = () => {
   const { user, authToken } = useContext(AuthContext);
@@ -36,6 +39,7 @@ const ReportMain = () => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [openBlock, setOpenBlock] = useState(true);
   const [uploadingFile, setUploadingFile] = useState(false);
+  const [deleteId, setDeleteId] = useState();
 
   const getListOfReports = async () => {
     try {
@@ -109,6 +113,9 @@ const ReportMain = () => {
       await getListOfReports();
     } catch (error) {
       console.error('Error fetching data:', error);
+    }
+    finally{
+      setDeleteId();
     }
   };
 
@@ -425,7 +432,7 @@ const ReportMain = () => {
                           <img src={failcheck} alt='Fail' />
                         )}
                       </span>
-                      <span className={styles.reportText}>
+                      <span className={styles.reportText} title={row.main_report_name}>
                         {row.main_report_name}
                       </span>
                     </div>
@@ -473,14 +480,16 @@ const ReportMain = () => {
                     {formatFullDate(row.end_date)}
                   </div>
                   <div className={styles.emptyTitle}>
-                    <img
-                      src={trashIcon}
-                      alt='Delete icon'
-                      onClick={() => {
-                        setSelectedRowId(row.report_number);
-                        setOpenModal(true);
-                      }}
-                    />
+                    <Tooltip title="Удалить">
+                      <img
+                        src={trashIcon}
+                        alt='Delete icon'
+                        onClick={() => {
+                          setDeleteId(row.report_number);
+                          // setOpenModal(true);
+                        }}
+                      />
+                    </Tooltip>
                   </div>
                 </div>
               ))}
@@ -489,6 +498,11 @@ const ReportMain = () => {
         </div>
         <BottomNavigation />
       </div>
+      {deleteId && <ModalDeleteConfirm
+        onCancel={() => setDeleteId()}
+        onOk={() => { handleDelete(deleteId); }}
+        title='Вы уверены, что хотите удалить отчет?'
+      />}
       <Modal
         show={openModal}
         onHide={() => setOpenModal(false)}

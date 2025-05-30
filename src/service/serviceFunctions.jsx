@@ -15,7 +15,7 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
   }
 
   if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
-    requestObject.brands = filters.activeBrandName.map(_ => _.value)
+    requestObject.brands = filters.activeBrandName.map(_ => _.name)
   }
   // filters?.activeArticle.value !== 'Все'
   if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
@@ -513,6 +513,7 @@ export const ServiceFunctions = {
         authorization: 'JWT ' + token,
       },
     });
+    console.log(res)
     const data = await res.blob()
     return data;
   },

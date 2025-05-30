@@ -10,11 +10,15 @@ import styles from './ExpenseTracker.module.css';
 import { URL } from '../service/config';
 import CustomDayPicker from './CustomDayPicker';
 
+import { Tooltip } from "antd";
+import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm"
+
 const ExpenseTracker = () => {
   const dispatch = useDispatch();
   const [hasChanges, setHasChanges] = useState({});
   const [selectedDate, setSelectedDate] = useState({
   });
+  const [deleteId, setDeleteId] = useState();
 
 
   const { data, loading } = useSelector((state) => state.externalExpensesSlice);
@@ -231,7 +235,6 @@ const ExpenseTracker = () => {
     }
   };
 
-
   const handleDeleteRow = async (id) => {
     console.log('Delete row:', id)
     if (id < 0) {
@@ -241,6 +244,7 @@ const ExpenseTracker = () => {
         delete updatedChanges[id];
         return updatedChanges;
       });
+      setDeleteId();
       return
     }
     try {
@@ -279,6 +283,8 @@ const ExpenseTracker = () => {
       }
     } catch (error) {
       console.error('Ошибка при удалении строки:', error);
+    } finally {
+      setDeleteId();
     }
   };
 
@@ -397,19 +403,24 @@ const ExpenseTracker = () => {
                     </div>
                   </div>
                 ))}
-                <span
-                  className={`${styles.saveIcon} ${hasChanges[row.id] ? styles.saveIconActive : ''
+                <Tooltip title="Сохранить">
+                  <span
+                    className={`${styles.saveIcon} ${hasChanges[row.id] ? styles.saveIconActive : ''
                     }`}
-                  onClick={() => handleSave(row)}
-                >
-                  <img src={saveIcon} alt='Save Row' />
-                </span>
-                <span
-                  className={styles.deleteIcon}
-                  onClick={() => handleDeleteRow(row.id)}
-                >
-                  <img src={trashIcon} alt='Delete Row' />
-                </span>
+                    onClick={() => handleSave(row)}
+                    >
+                    <img src={saveIcon} alt='Save Row' />
+                  </span>
+                </Tooltip>
+                <Tooltip title="Удалить">
+                  <span
+                    className={styles.deleteIcon}
+                    // onClick={() => handleDeleteRow(row.id)}
+                  onClick={() => setDeleteId(row.id)}
+                    >
+                    <img src={trashIcon} alt='Delete Row' />
+                  </span>
+                </Tooltip>
               </div>
             ))}
             <button onClick={addRow} className={styles.addButton}>
@@ -427,6 +438,8 @@ const ExpenseTracker = () => {
           <span className='loader'></span>
         </div>
       )}
+      {/* {!loading && deleteId && <Modal open={deleteId} onCancel={() => setDeleteId()} onOk={() => handleDeleteSubmit()}>Удалить</Modal>} */}
+      {!loading && deleteId && <ModalDeleteConfirm onCancel={() => setDeleteId()} onOk={() => handleDeleteRow(deleteId)} title='Удалить?' />}
       
     </div>
   );

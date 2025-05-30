@@ -76,7 +76,9 @@ const RestorePass = ({ email }) => {
   return (
     <div className='signin-form'>
       <div className='d-flex flex-column align-items-center'>
-        <img src={logo} alt='' className='logo' />
+        <a href={`${URL}`}>
+          <img src={logo} alt='' className='logo' />
+        </a>
         <h1 style={{ fontWeight: 700, fontSize: '24px' }} className='mt-3'>
           Восстановление пароля
         </h1>
@@ -105,6 +107,7 @@ const RestorePass = ({ email }) => {
         className='prime-btn'
         onClick={(e) => handler(e)}
         style={{ height: '7vh', width: '100%' }}
+        disabled={!pass || !confPass}
       >
         Обновить
       </button>

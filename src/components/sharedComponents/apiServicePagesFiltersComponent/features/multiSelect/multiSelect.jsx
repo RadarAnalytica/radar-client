@@ -21,12 +21,13 @@ export const MultiSelect = (
 
     const renderPopup = (menu) => {
         let action
-        if (selectState.length < optionsData.length) {
+        if (selectState.filter(_ => _.value !== 'Все').length < optionsData.length && !searchState) {
             action = () => { setSelectState(optionsData.filter(_ => _.value !== 'Все')) }
         }
-        if (selectState.length === optionsData.length) {
+        if (selectState.filter(_ => _.value !== 'Все').length === optionsData.length) {
             action = () => { setSelectState([{ value: 'Все' }]) }
         }
+       
         return (
             <>
                 <ConfigProvider
@@ -55,15 +56,16 @@ export const MultiSelect = (
                         }
                     }}
                 >
-                    <Button
+                    {!searchState && <Button
                         style={{ width: '100%' }}
                         type='primary'
                         size='large'
                         onClick={action}
+                        disabled={optionsData.length === 0}
                     >
-                        {selectState.length < optionsData.length && 'Выбрать все'}
-                        {selectState.length === optionsData.length && 'Снять все'}
-                    </Button>
+                        {selectState.filter(_ => _.value !== 'Все').length < optionsData.length && 'Выбрать все'}
+                        {selectState.filter(_ => _.value !== 'Все').length === optionsData.length && 'Снять все'}
+                    </Button>}
                 </ConfigProvider>
             </>)
     }
@@ -77,7 +79,7 @@ export const MultiSelect = (
         return (
             <Tag
                 color={value}
-                onMouseDown={onPreventMouseDown}
+                //onMouseDown={onPreventMouseDown}
                 closable={false}
                 onClose={onClose}
                 style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center' }}
@@ -91,7 +93,7 @@ export const MultiSelect = (
         const isAllOptionIndex = value.findIndex(_ => _ === 'Все')
         if ((isAllOptionIndex !== -1 && isAllOptionIndex === value.length - 1) || value.length === 0) {
             //const current = params.data.find(_ => _.value === 'Все');
-            setSelectState([{value: 'Все', id: 0}])
+            setSelectState([{ value: 'Все', id: 0 }])
             //dispatch(filterActions.setActiveFilters({ stateKey: i.articles.stateKey, data: [current] }))
             return
         }
@@ -136,7 +138,7 @@ export const MultiSelect = (
             </label>
             <div className={styles.plainSelect__selectWrapper}>
                 <ConfigProvider
-                    renderEmpty={() => (<div>Нет данных</div>)}
+                    renderEmpty={() => (<div style={{ cursor: 'default'}}>Нет данных</div>)}
                     theme={{
                         token: {
                             colorBgContainer: '#EAEAF1',
@@ -168,7 +170,7 @@ export const MultiSelect = (
                         tagRender={tagRender}
                         suffixIcon={icon}
                         className={styles.plainSelect__select}
-                        options={optionsData.filter((_) => _.value.includes(searchState)).map((option, id) => ({
+                        options={optionsData.filter((_) => _.value.toLowerCase().includes(searchState.toLowerCase())).map((option, id) => ({
                             ...option,
                             key: option.id || option.value
                         }))}
@@ -180,6 +182,7 @@ export const MultiSelect = (
                         dropdownRender={renderPopup}
                         onDropdownVisibleChange={(open) => {
                             if (!open) {
+                                setSearchState('')
                                 if (JSON.stringify(prevSelectState.current) === JSON.stringify(selectState)) return
                                 dispatch(filterActions.setActiveFilters({ stateKey: params.stateKey, data: selectState }))
                                 prevSelectState.current = selectState
@@ -196,7 +199,9 @@ export const MultiSelect = (
                         maxTagPlaceholder={omittedValues => (
                             <>
                                 {omittedValues.length > 1 && <p className={styles.plainSelect__multiLabel}>Выбрано: {omittedValues.length}</p>}
-                                {omittedValues.length === 1 && <p className={styles.plainSelect__multiLabel}>{omittedValues[0].value}</p>}
+                                {omittedValues.length === 1 &&
+                                    <p className={styles.plainSelect__multiLabel} title={omittedValues[0].value}>{omittedValues[0].value}</p>
+                                }
                             </>
                         )}
                         menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}

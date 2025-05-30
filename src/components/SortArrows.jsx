@@ -4,7 +4,7 @@ import ArrowDown from '../assets/ArrowDown.svg';
 
 const SortArrows = ({ columnKey, sortConfig }) => {
   return (
-    <span style={{ marginLeft: '3px' }}>
+    <span style={{ marginLeft: '3px', cursor: 'pointer' }}>
       <img
         src={ArrowUp}
         alt='Up'

@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import AuthContext from '../../../../service/AuthContext';
 import { URL } from '../../../../service/config';
 import { GroupEditModal, ConfirmationModal } from '../../features';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 
 const initConfirmationState = { open: false, title: '', message: '', mainAction: '', returnAction: '', actionTitle: '' }
 
@@ -18,6 +20,8 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
     const [checkedList, setCheckedList] = useState([]);
     const [isEditGroupModalVisible, setIsEditGroupModalVisible] = useState(false)
     const [confirmationModalState, setConfirmationModalState] = useState(initConfirmationState)
+    const [ editedGroupId, setEditedGroupId ] = useState()
+    const dispatch = useAppDispatch()
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -50,6 +54,7 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                 return;
             }
             setAlertState({isVisible: true, message: 'Группа успешно удалена'})
+            dispatch(fetchFilters(authToken))
             getGroupsData(authToken)
         } catch {
             setDataFetchingStatus({ ...initDataFetchingStatus, isError: true, message: 'Что-то пошло не так :(' })
@@ -65,14 +70,23 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
         groupsMainData && setTableData(groupsMainData)
     }, [groupsMainData])
 
+    useEffect(() => {
+        editedGroupId && setIsEditGroupModalVisible(true)
+    }, [editedGroupId])
+    useEffect(() => {
+        if (!isEditGroupModalVisible) {
+            setEditedGroupId(undefined)
+        }
+    }, [isEditGroupModalVisible])
+
     return (
         <div className={styles.widget}>
             <div className={styles.widget__controlsWrapper}>
-                <HowToLink
+                {/* <HowToLink
                     text='Как использовать?'
                     target='_blank'
                     url='/'
-                />
+                /> */}
                 <button className={styles.widget__addButton} onClick={() => setIsAddGroupModalVisible(true)}>
                     Создать группу
                 </button>
@@ -134,12 +148,12 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                                                         {v.actionTypes.map((a, id) => {
                                                             if (a === 'edit') {
                                                                 return (
-                                                                    // <button className={styles.table__actionButton} key={id} onClick={() => setIsEditGroupModalVisible(true)}>
-                                                                    //     {buttonIcons[a]}
-                                                                    // </button>
-                                                                    <Link className={styles.table__actionButton} key={id} to={`/groups/${product.id}`}>
+                                                                    <button className={styles.table__actionButton} key={id} onClick={() => setEditedGroupId(product.id)}>
                                                                         {buttonIcons[a]}
-                                                                    </Link>
+                                                                    </button>
+                                                                    // <Link className={styles.table__actionButton} key={id} to={`/groups/${product.id}`}>
+                                                                    //     {buttonIcons[a]}
+                                                                    // </Link>
                                                                 )
                                                             }
                                                             if (a === 'delete') {
@@ -219,12 +233,14 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
 
                 </div>}
 
-            {/* <GroupEditModal
+            <GroupEditModal
                 setIsEditGroupModalVisible={setIsEditGroupModalVisible}
                 isEditGroupModalVisible={isEditGroupModalVisible}
                 dataFetchingStatus={dataFetchingStatus}
                 setDataFetchingStatus={setDataFetchingStatus}
-            /> */}
+                groupId={editedGroupId}
+                updateMainData={getGroupsData}
+            />
 
             <ConfirmationModal
                 {...confirmationModalState}

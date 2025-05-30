@@ -6,6 +6,8 @@ import { singleGroupTableConfig, buttonIcons } from '../../shared';
 import wb_icon from '../../../../assets/wb_icon.png'
 import { URL } from '../../../../service/config';
 import AuthContext from '../../../../service/AuthContext';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 
 
 
@@ -25,6 +27,7 @@ const SingleGroupWidget = ({
     const { authToken } = useContext(AuthContext)
     const [tableData, setTableData] = useState([])
     const [checkedList, setCheckedList] = useState([]);
+    const dispatch = useAppDispatch()
     const checkAll = tableData && tableData.length === checkedList.length;
     const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
 
@@ -68,6 +71,7 @@ const SingleGroupWidget = ({
             }
             setTableData(updatedTableData)
             setAlertState({isVisible: true, message: 'Артикул успешно удален'})
+            dispatch(fetchFilters(authToken))
             getGroupData(authToken, groupId)
             // успешно обновлено
 
@@ -83,11 +87,11 @@ const SingleGroupWidget = ({
     return (
         <div className={styles.widget}>
             <div className={styles.widget__controlsWrapper}>
-                <HowToLink
+                {/* <HowToLink
                     text='Как использовать?'
                     target='_blank'
                     url='/'
-                />
+                /> */}
                 <button className={styles.widget__addButton} onClick={() => setIsAddSkuModalVisible(true)}>
                     Добавить артикул
                 </button>

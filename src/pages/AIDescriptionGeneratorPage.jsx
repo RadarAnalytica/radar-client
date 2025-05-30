@@ -220,9 +220,9 @@ const AiDescriptionGeneratorPage = () => {
     if (!!!productName || !!!shortDescription || competitorsLinks.length === 0) {
       setErrorMessage('Пожалуйста, заполните все поля!');
       handleShowModalError();
-      return; 
+      return;
     }
-    
+
     const linksArray = competitorsLinks
       .split('\n')
       .map((link) => link.trim())
@@ -396,33 +396,35 @@ const AiDescriptionGeneratorPage = () => {
     <div className='dashboard-page'>
       <MobilePlug />
       <div style={{ height: '100vh' }}>
-            <Sidebar />
-        </div>
-      <div className={`${styles.generatorPage} dashboard-content pb-3 `} style={{ padding: '0 32px'}}>
-      <div style={{ width: '100%', padding: '0'}}>
-        <TopNav title={'Генерация описания AI'} mikeStarinaStaticProp >
-          <div className={styles.generatorWrapper}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'space-between',
-              }}
-            >
-              <p className={styles.topNavTitle}>
-                Вам {amountGenerations === 1 ? 'доступнa' : 'доступно'}{' '}
-                <span style={{ color: '#74717f' }}>
-                  {amountGenerations}{' '}
-                  {amountGenerations === 1 ? 'генерация' : 'генераций'}
-                </span>
-              </p>
-              <div className={styles.topNavAdd} onClick={handleNewGenerator}>
-                Добавить генерации
+        <Sidebar />
+      </div>
+      <div className={`${styles.generatorPage} dashboard-content pb-3 `} style={{ padding: '0 32px' }}>
+        <div style={{ width: '100%', padding: '0', margin: '20px 0' }}>
+          <Header
+            title={'Генерация описания AI'}
+          >
+            <div className={styles.generatorWrapper}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <p className={styles.topNavTitle}>
+                  Вам {amountGenerations === 1 ? 'доступнa' : 'доступно'}{' '}
+                  <span style={{ color: '#74717f' }}>
+                    {amountGenerations}{' '}
+                    {amountGenerations === 1 ? 'генерация' : 'генераций'}
+                  </span>
+                </p>
+                <div className={styles.topNavAdd} onClick={handleNewGenerator}>
+                  Добавить генерации
+                </div>
               </div>
             </div>
-          </div>
-        </TopNav>
+          </Header>
         </div>
         {isModalOpenNewGen && (
           <AiDescriptionGeneratorTariffs
@@ -462,7 +464,7 @@ const AiDescriptionGeneratorPage = () => {
           )}
         </div>
         <Modal show={showModalError} onHide={handleCloseModalError}>
-          <Modal.Header closeButton style={{border: 'none'}}>
+          <Modal.Header closeButton style={{ border: 'none' }}>
             <div>
               <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
                 <img src={warningIcon} alt='' style={{ height: '3vh' }} />

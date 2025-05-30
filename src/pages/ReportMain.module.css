@@ -307,8 +307,9 @@
 
 .uploadTableHeader {
     display: flex;
-    justify-content: space-between ;
+    justify-content: flex-start;
     align-items: center;
+    gap: 8px;
     padding-bottom: 4px;
     font-size: 16px;
     font-weight: 500;
@@ -325,22 +326,23 @@
 
 .id {
     min-width: 150px;
+    max-width: 200px;
+    flex-grow: 1;
     padding-left: 4px;
-    margin-right: 8px;
     display: flex;
     align-items: center;
 }
 
 .reports {
     min-width: 500px;
-    margin-right: 8px;
+    max-width: 640px;
+    flex-grow: 1;
 }
 
 .startDate {
     display: flex;
     align-items: center;
-    min-width: 125px;
-    margin-right: 8px;
+    min-width: 150px;
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
@@ -355,15 +357,13 @@
 }
 
 .startDateHead {
-    min-width: 125px;
-    margin-right: 8px;
+    min-width: 150px;
 }
 
 .endDate {
     display: flex;
     align-items: center;
     min-width: 125px;
-    margin-right: 8px;
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
@@ -378,24 +378,23 @@
 }
 
 .emptyTitle {
-    margin-right: 8px;
-    min-width: 25px;
+    margin-left: auto;
+    padding-right: 4px;
     display: flex;
     align-items: center;
 }
 
 .emptyTitle img {
+    width: 24px;
     cursor: pointer;
 }
 
 .endDateHead {
     min-width: 150px;
-    margin-right: 8px;
 }
 
 .emptyTitleHead {
     min-width: 25px;
-    min-height: 20px;
 }
 
 .tableTitle {
@@ -416,7 +415,8 @@
 
 .uploadTableRow {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 8px;
     padding: 11px 0 11px 0;
     border-bottom: 1px solid #e5e7eb;
 }
@@ -441,6 +441,10 @@
 
 .reportRow {
     padding: 3px 0 3px 0;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .deleteSectionText {
@@ -516,10 +520,14 @@
 }
 
 .reportText {
+    display: inline-block;
+    max-width: calc(100% - 24px);
     font-size: 16px;
     font-weight: 500;
     line-height: 25.5px;
     color: rgba(26, 26, 26, 1);
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 @media screen and (min-width: 2000px) {

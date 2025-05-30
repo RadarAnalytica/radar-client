@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
 import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect } from '../features'
@@ -21,6 +21,8 @@ export const Filters = ({
   const { user, authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
   const { activeBrand, selectedRange, filters, shops } = useAppSelector(store => store.filters)
+  const { messages } = useAppSelector((state) => state.messagesSlice);
+  const prevMessages = useRef()
   const filtersState = useAppSelector(store => store.filters)
   //const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
@@ -68,6 +70,27 @@ export const Filters = ({
       fetchFiltersData();
     }
   }, [shops]);
+
+
+  //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
+  useEffect(() => {
+    if (!prevMessages?.current) {
+        prevMessages.current = messages;
+        return
+    }
+    if (messages && activeBrand?.id === 0 && prevMessages?.current) {
+      let filteredMessages = messages.filter(m => !prevMessages.current.some(_ => _.id === m.id))
+      if (!filteredMessages || filteredMessages.length === 0) {return}
+      else {
+        filteredMessages = filteredMessages.filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
+        if (!filteredMessages || filteredMessages.length === 0) {return}
+        else {
+          fetchFiltersData();
+        }
+      } 
+    }
+    prevMessages.current = messages
+  }, [messages])
 
 
 

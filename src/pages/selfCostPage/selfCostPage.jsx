@@ -31,6 +31,7 @@ const SelfCostPage = () => {
     const filters = useAppSelector(store => store.filters)
     //const prevShop = useRef(activeBrand)
 
+
     const getTableData = async (authToken, shopId, filters) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
         const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters)
@@ -64,6 +65,10 @@ const SelfCostPage = () => {
         setTableData([...sortedData])
         setFilteredTableData([...sortedData])
         //prevShop.current = activeBrand
+    }
+
+    const noSearchAction = () => {
+        getTableData(authToken, activeBrand.id, filters)
     }
 
     const resetSearch = () => {
@@ -129,6 +134,7 @@ const SelfCostPage = () => {
                                 setFilteredTableData={setFilteredTableData}
                                 searchInputValue={searchInputValue}
                                 setSearchInputValue={setSearchInputValue}
+                                noSearchAction={noSearchAction}
                             />
                         </div>
 
