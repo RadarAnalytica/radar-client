@@ -9,14 +9,13 @@ import { ServiceFunctions } from '../service/serviceFunctions';
 import styles from './ExpenseTracker.module.css';
 import { URL } from '../service/config';
 import CustomDayPicker from './CustomDayPicker';
-import { Modal } from 'antd';
+import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm"
 
 const ExpenseTracker = () => {
   const dispatch = useDispatch();
   const [hasChanges, setHasChanges] = useState({});
   const [selectedDate, setSelectedDate] = useState({
   });
-
   const [deleteId, setDeleteId] = useState();
 
 
@@ -243,6 +242,7 @@ const ExpenseTracker = () => {
         delete updatedChanges[id];
         return updatedChanges;
       });
+      setDeleteId();
       return
     }
     try {
@@ -281,12 +281,10 @@ const ExpenseTracker = () => {
       }
     } catch (error) {
       console.error('Ошибка при удалении строки:', error);
+    } finally {
+      setDeleteId();
     }
   };
-
-  const handleDeleteSubmit = () => {
-    setDeleteId();
-  }
 
   return (
     <div
@@ -434,7 +432,8 @@ const ExpenseTracker = () => {
           <span className='loader'></span>
         </div>
       )}
-      {!loading && deleteId && <Modal open={deleteId} onCancel={() => setDeleteId()} onOk={() => handleDeleteSubmit()}>Удалить</Modal>}
+      {/* {!loading && deleteId && <Modal open={deleteId} onCancel={() => setDeleteId()} onOk={() => handleDeleteSubmit()}>Удалить</Modal>} */}
+      {!loading && deleteId && <ModalDeleteConfirm onCancel={() => setDeleteId()} onOk={() => handleDeleteRow(deleteId)} title='Удалить?' />}
       
     </div>
   );
