@@ -72,6 +72,7 @@ const OrdersMap = () => {
       }
       setGeoData(data);
     }
+    setByRegions(true)
     setLoading(false)
   }
 
