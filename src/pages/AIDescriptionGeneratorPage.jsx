@@ -385,6 +385,10 @@ const AiDescriptionGeneratorPage = () => {
       handleCloseAddKeywordFile(); // Закрываем модалку
     } catch (error) {
       console.error('Ошибка при отправке файла:', error);
+      setModalisShowKeywordsFile(false);
+      setErrorMessage('Ошибка при отправке файла');
+      setShowModalError(true);
+      setTimeout(() => {setFile();}, 500)
     }
   };
 
