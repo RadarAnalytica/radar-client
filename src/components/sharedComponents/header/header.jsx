@@ -67,9 +67,10 @@ const Header = ({ title = 'Radar Analytica', titlePrefix, children }) => {
                     <Popover
                         {...popoverOptions}
                         content={<HeaderAlerts messages={messages} />}
+                        className={styles.header__menuIcon}
                     >
                         <>
-                            <Icon type='alert' counter={messages?.length} />
+                            <Icon type='alert' counter={messages?.length} className={styles.header__menuIcon} />
                         </>
                     </Popover>
 
@@ -77,10 +78,11 @@ const Header = ({ title = 'Radar Analytica', titlePrefix, children }) => {
                         {...popoverOptions}
                         content={<HeaderMenu popoverCloseHandler={menuPopoverCloseHandler} logout={logout} />}
                         open={isMenuPopoverVisible}
+                        className={styles.header__menuIcon}
                         onOpenChange={menuPopoverOpenHandler}
                     >
                         <>
-                            <Icon type='menu' />
+                            <Icon type='menu' className={styles.header__menuIcon} />
                         </>
                     </Popover>
                 </div>
