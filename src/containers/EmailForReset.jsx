@@ -40,26 +40,29 @@ const EmailForReset = () => {
     }
 
     const submitHandler = async () => {
-        setRequestState({ ...initRequestStatus, isLoading: true })
-        try {
-            let res = await fetch(`${URL}/api/user/reset`, {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({ email })
-            })
+        // setRequestState({ ...initRequestStatus, isLoading: true })
+        
+        setRequestState({...initRequestStatus, isSuccess: true, message: 'success'})
 
-            if (!res.ok) {
-                res = await res.json()
-                return setRequestState({ ...initRequestStatus, isError: true, message: res?.detail && typeof (res.detail) === 'string' ? res.detail : 'Что-то пошло не так :(' })
-            }
-            setRequestState({...initRequestStatus, isSuccess: true, message: 'success'})
-            setEmail('')
-        } catch (e) {
-            console.log(e)
-            setRequestState({ ...initRequestStatus, isError: true, message: res.detail || 'Что-то пошло не так :(' })
-        }
+        // try {
+        //     let res = await fetch(`${URL}/api/user/reset`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'content-type': 'application/json'
+        //         },
+        //         body: JSON.stringify({ email })
+        //     })
+
+        //     if (!res.ok) {
+        //         res = await res.json()
+        //         return setRequestState({ ...initRequestStatus, isError: true, message: res?.detail && typeof (res.detail) === 'string' ? res.detail : 'Что-то пошло не так :(' })
+        //     }
+        //     setRequestState({...initRequestStatus, isSuccess: true, message: 'success'})
+        //     setEmail('')
+        // } catch (e) {
+        //     console.log(e)
+        //     setRequestState({ ...initRequestStatus, isError: true, message: res.detail || 'Что-то пошло не так :(' })
+        // }
     }
 
     return (
@@ -102,9 +105,9 @@ const EmailForReset = () => {
             />
             <SuccessModal
                 open={requestState.isSuccess}
-                onOk={() => {setRequestState(initRequestStatus); navigate(`/signin`)}}
-                onClose={() => {setRequestState(initRequestStatus); navigate(`/signin`)}}
-                onCancel={() => {setRequestState(initRequestStatus); navigate(`/signin`)}}
+                onOk={() => { location.href = '/signin' }}
+                onClose={() => { location.href = '/signin' }}
+                onCancel={() => { location.href = '/signin' }}
                 footer={null}
                 message={'Ссылка на сброс пароля была направлена на Вашу почту'}
             />
