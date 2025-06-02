@@ -40,29 +40,27 @@ const EmailForReset = () => {
     }
 
     const submitHandler = async () => {
-        // setRequestState({ ...initRequestStatus, isLoading: true })
+        setRequestState({ ...initRequestStatus, isLoading: true })        
         
-        setRequestState({...initRequestStatus, isSuccess: true, message: 'success'})
+        try {
+            let res = await fetch(`${URL}/api/user/reset`, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            })
 
-        // try {
-        //     let res = await fetch(`${URL}/api/user/reset`, {
-        //         method: 'POST',
-        //         headers: {
-        //             'content-type': 'application/json'
-        //         },
-        //         body: JSON.stringify({ email })
-        //     })
-
-        //     if (!res.ok) {
-        //         res = await res.json()
-        //         return setRequestState({ ...initRequestStatus, isError: true, message: res?.detail && typeof (res.detail) === 'string' ? res.detail : 'Что-то пошло не так :(' })
-        //     }
-        //     setRequestState({...initRequestStatus, isSuccess: true, message: 'success'})
-        //     setEmail('')
-        // } catch (e) {
-        //     console.log(e)
-        //     setRequestState({ ...initRequestStatus, isError: true, message: res.detail || 'Что-то пошло не так :(' })
-        // }
+            if (!res.ok) {
+                res = await res.json()
+                return setRequestState({ ...initRequestStatus, isError: true, message: res?.detail && typeof (res.detail) === 'string' ? res.detail : 'Что-то пошло не так :(' })
+            }
+            setRequestState({...initRequestStatus, isSuccess: true, message: 'success'})
+            setEmail('')
+        } catch (e) {
+            console.log(e)
+            setRequestState({ ...initRequestStatus, isError: true, message: res.detail || 'Что-то пошло не так :(' })
+        }
     }
 
     return (
