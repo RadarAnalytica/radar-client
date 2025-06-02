@@ -19,3 +19,7 @@
 .category__icon_red {
     background: #FEDACC;
 }
+
+.empty{
+    flex-basis: 100%;
+}
