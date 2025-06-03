@@ -8,7 +8,7 @@ import {
 	Input,
 } from 'antd';
 import styles from './ModalTableSetting.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'antd/es/form/Form';
 
 export default function ModalTableSetting({
@@ -20,6 +20,12 @@ export default function ModalTableSetting({
 }) {
 	const [shownColumns, setShownColumns] = useState(columnsList);
 	const [checked, setChecked] = useState(tableColumns.map((el) => el.dataIndex));
+		
+	// const checkAll = useMemo(() => checked.length == shownColumns.length, [shownColumns])
+	
+	const checkAll = checked.length == columnsList.length
+	const indeterminateAll = checked.length > 0 && checked.length < shownColumns.length
+
 
 	const [form] = useForm();
 
@@ -58,7 +64,6 @@ export default function ModalTableSetting({
 	}
 
 	function сheckAllHandler(){
-		console.log('сheckAllHandler')
 		const data = form.getFieldsValue()
 		for (const check in data) {
       form.setFieldValue(check, shownColumns.length > checked.length ? true : false)
@@ -78,9 +83,6 @@ export default function ModalTableSetting({
     }
 		setChecked(result)
 	}
-	
-	const checkAll = checked.length == columnsList.length
-	const indeterminateAll = checked.length > 0 && checked.length < columnsList.length
 
 	return (
 		<ConfigProvider
@@ -225,14 +227,14 @@ export default function ModalTableSetting({
 						Выбрать все
 					</Button> */}
 				</Flex>
-				<div >
+				<div className={styles.check_all}>
 					<Checkbox
 						className={styles.item}
 						indeterminate={indeterminateAll}
 						onChange={сheckAllHandler}
 						defaultChecked={checkAll}
 					>
-						Выбоать все
+						Выбрать все
 					</Checkbox>
 				</div>
 				<Form form={form} onFinish={onFinish}>

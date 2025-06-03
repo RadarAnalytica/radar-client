@@ -22,7 +22,7 @@ export default function ReportWeek() {
 	const { authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters ); const filters = useAppSelector((state) => state.filters);
 	const [loading, setLoading] = useState(true);
-	const [isPopoverOpen, setPopoverOpen] = useState(false);
+	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [data, setData] = useState(null);
 	const [tableRows, setTableRows] = useState(data);
@@ -142,17 +142,17 @@ export default function ReportWeek() {
 	}, [activeBrand, selectedRange, filters]);
 
 	function popoverHandler(status) {
-		setPopoverOpen(status);
+		setIsPopoverOpen(status);
 	}
 
 	function configClear() {
 		setTableColumns(COLUMNS);
-		setPopoverOpen(false);
+		setIsPopoverOpen(false);
 	}
 
 	const configOpen = () => {
 		setConfigOpen(true);
-		setPopoverOpen(false);
+		setIsPopoverOpen(false);
 	};
 
 	const configCancel = () => {
@@ -250,9 +250,6 @@ export default function ReportWeek() {
 									type="primary"
 									iconPosition="start"
 									size="large"
-									onClick={() => {
-										setPopoverOpen(true);
-									}}
 								>
 									<svg
 										width="24"
