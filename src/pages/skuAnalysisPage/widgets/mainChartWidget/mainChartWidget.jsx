@@ -8,8 +8,7 @@ import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, Po
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { chartCompareConfigObject, mainChartOptionsGenerator } from '../../shared';
 import moment from 'moment';
-
-
+import { verticalDashedLinePlugin } from '../../../../service/utils';
 
 ChartJS.register(
     annotationPlugin,
@@ -21,7 +20,8 @@ ChartJS.register(
     BarElement,
     LineController,
     LineElement,
-    [Tooltip]
+    [Tooltip],
+    verticalDashedLinePlugin
 );
 
 
@@ -116,7 +116,7 @@ const MainChartWidget = ({ id }) => {
                             data={{ ...normilizedChartData }}
                             width={100}
                             height={40}
-                            options={mainChartOptionsGenerator(skuChartData, chartControls.find(_ => _.isAnnotation), chartControls.find(_ => _.engName === 'seasonality'))}
+                            options={mainChartOptionsGenerator(skuChartData, chartControls.find(_ => _.isAnnotation), chartControls.find(_ => _.engName === 'seasonality'), normilizedChartData)}
                         />}
                 </div>
             }
