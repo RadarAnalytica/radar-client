@@ -4,14 +4,16 @@ import {
 	Form,
 	Checkbox,
 	Flex,
+	Row,
+	Col,
 	Button,
 	Input,
 } from 'antd';
-import styles from './ModalTableSetting.module.css';
+import styles from './TableSettingModal.module.css';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'antd/es/form/Form';
 
-export default function ModalTableSetting({
+export default function TableSettingModal({
 	isModalOpen = true,
 	closeModal,
 	columnsList,
@@ -98,10 +100,13 @@ export default function ModalTableSetting({
 						titleColor: '#1a1a1a',
 					},
 					Button: {
+						paddingInlineSM: 0,
 						paddingBlockLG: 9.5,
 						paddingInlineLG: 12,
 						controlHeightLG: 44,
 						defaultShadow: false,
+						contentFontSize: 16,
+						contentFontSizeSM: 16,
 						colorBorder: '#00000033',
 						defaultColor: '#5329FF',
 						defaultBg: '#e7e1fe',
@@ -119,6 +124,7 @@ export default function ModalTableSetting({
 						colorPrimaryBorderHover: '#7a52ff',
 						colorPrimaryHover: '#7a52ff',
 						colorPrimaryActive: '#3818d9',
+						LinkInlinePadding: 0,
 						colorLink: '#5329FF',
 						colorLinkHover: '#7a52ff',
 						colorLinkActive: '#3818d9',
@@ -228,33 +234,36 @@ export default function ModalTableSetting({
 					</Button> */}
 				</Flex>
 				<div className={styles.check_all}>
-					<Checkbox
+					<Button type='link' size='small' onClick={сheckAllHandler}>Выбрать все</Button>
+					{/* <Checkbox
 						className={styles.item}
 						indeterminate={indeterminateAll}
 						onChange={сheckAllHandler}
 						defaultChecked={checkAll}
 					>
 						Выбрать все
-					</Checkbox>
+					</Checkbox> */}
 				</div>
 				<Form form={form} onFinish={onFinish}>
-					<Flex vertical wrap className={styles.list}>
+					<Row gutter={[16, 12]} vertical wrap className={styles.list}>
 						{shownColumns.map((el, i) => (
-							<Form.Item
-								key={i}
-								className={styles.item}
-								name={el.dataIndex}
-								valuePropName="checked"
-								value={el.dataIndex}
-								initialValue={checked.includes(
-										el.dataIndex
-								)}
-								onChange={checkChangeHandler}
-							>
-								<Checkbox >
-									{el.title}
-								</Checkbox>
-							</Form.Item>
+							<Col span={8}>
+								<Form.Item
+									key={i}
+									className={styles.item}
+									name={el.dataIndex}
+									valuePropName="checked"
+									value={el.dataIndex}
+									initialValue={checked.includes(
+											el.dataIndex
+									)}
+									onChange={checkChangeHandler}
+								>
+									<Checkbox >
+										{el.title}
+									</Checkbox>
+								</Form.Item>
+							</Col>
 						))}
 
 						<Flex
@@ -274,7 +283,7 @@ export default function ModalTableSetting({
 								Применить
 							</Button>
 						</Flex>
-					</Flex>
+					</Row>
 				</Form>
 			</Modal>
 		</ConfigProvider>

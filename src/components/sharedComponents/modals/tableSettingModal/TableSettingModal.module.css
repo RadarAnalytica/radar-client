@@ -21,16 +21,11 @@
 
 .list {
   width: 100%;
-  column-gap: 16px;
-  row-gap: 12px;
-  max-height: 560px;
 }
 
 .item {
   padding-top: 2px;
   padding-bottom: 2px;
-  width: 30%;
-  margin: 0;
 }
 
 .controls {
