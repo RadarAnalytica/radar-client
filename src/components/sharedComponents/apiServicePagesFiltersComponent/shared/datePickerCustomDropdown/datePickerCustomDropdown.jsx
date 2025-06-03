@@ -28,36 +28,56 @@ const DatePickerCustomDropdown = (props) => {
             <ConfigProvider
                 theme={{
                     token: {
-                        //colorBgBase: '#EAEAF1',
-                        colorBgContainer: '#EAEAF1',
-                        colorBorder: 'transparent',
+                        colorPrimary: 'white',
+                        colorBgContainer: 'white',
+                        colorBorder: 'white !important',
                         borderRadius: 8,
                         fontFamily: 'Mulish',
-                        fontSize: 16
+                        colorTextPlaceholder: 'black !important',
+                        fontSize: 16,
+                        controlOutlineWidth: 0,
+                        lineWidth: 0,
+                        controlOutline: 'none',
+                        controlItemBgActive: 'transparent',
                     },
                     components: {
                         Select: {
-                            activeBorderColor: 'transparent',
-                            activeOutlineColor: 'transparent',
-                            hoverBorderColor: 'transparent',
-                            optionActiveBg: 'transparent',
+                            activeOutlineColor: 'white !important',
+                            controlOutline: 'white !important',
+                            activeBorderColor: 'white !important',
+                            activeOutlineColor: 'white !important',
+                            hoverBorderColor: 'white !important',
+                            optionActiveBg: 'white',
                             optionFontSize: 16,
                             optionSelectedBg: 'transparent',
                             optionSelectedColor: '#5329FF',
                             paddingSM: 0,
+                            controlOutlineWidth: 0,
+                            controlOutline: 'none',
                         }
                     }
                 }}
             >
                 <Select
                     size='middle'
-                    variant='borderless'
+                    variant='outlined'
                     onChange={selectChangeHandler}
                     value={value}
                     options={options}
                     suffixIcon={<Suffix />}
                     className={styles.dropdown__select}
                     dropdownStyle={{ minWidth: '120px'}}
+                    styles={{
+                        root: {
+                            color: 'black'
+                        }
+                    }}
+                    style={{ 
+                        border: 'none', 
+                        color: 'black',
+                        outline: 'none',
+                        boxShadow: 'none'
+                    }}
                 />
             </ConfigProvider>
         </div>

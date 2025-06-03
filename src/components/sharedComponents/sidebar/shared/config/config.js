@@ -2,7 +2,7 @@ import { newIcons } from "../icons/icons"
 
 export const menuConfig = [
     {
-        id: 1,
+        id: 0,
         name: 'analysis',
         label: 'Анализ конкурентов',
         icon: newIcons.analysis,
@@ -35,6 +35,20 @@ export const menuConfig = [
                 id: 4,
                 url: '/calculate',
                 label: 'Калькулятор unit-экономики товара',
+                isActive: true
+            },
+        ]
+    },
+    {
+        id: 1,
+        name: 'trends_analysis',
+        label: 'Анализ ниши и трендов',
+        icon: newIcons.trends_analysis,
+        children: [
+            {
+                id: 1,
+                url: '/trending-requests',
+                label: 'Поиск трендовых запросов',
                 isActive: true
             },
         ]
