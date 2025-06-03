@@ -50,6 +50,25 @@
     max-height: calc(100% - 170px);
 }
 
+:global(.table__arrow){
+    font-size: 14px;
+}
+
+:global(.table__arrow svg){
+    margin-inline-start: 8px;
+}
+
+:global(.table__arrow_positive){
+    color: #00b6b9;
+}
+
+:global(.table__arrow_negative){
+    color: #f93c65;
+}
+:global(.table__arrow_negative svg){
+    transform: rotate(180deg) scale(-1, 1);
+}
+
 .btns{
     display: flex;
     flex-flow: row nowrap;

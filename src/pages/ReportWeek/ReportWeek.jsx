@@ -13,7 +13,8 @@ import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
 // import downloadIcon from '../images/Download.svg';
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
-import ModalTableSetting from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
+import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal'
+// import TableSettingModal from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
 import { useAppSelector } from '../../redux/hooks';
 
 import { COLUMNS } from './columnsConfig';
@@ -293,7 +294,7 @@ export default function ReportWeek() {
 				</div>
 			</section>
 			{isConfigOpen && (
-				<ModalTableSetting
+				<TableSettingModal
 					isModalOpen={isConfigOpen}
 					closeModal={configCancel}
 					tableColumns={tableColumns}
