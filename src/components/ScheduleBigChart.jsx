@@ -1,10 +1,10 @@
 import React from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { verticalDashedLinePlugin } from '../service/utils';
 
 
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, verticalDashedLinePlugin);
 
 const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, maxDataRevenue, stepSizeRevenue, isLoading }) => {
     //console.log('dataRevenue', dataRevenue);
@@ -64,6 +64,7 @@ const ScheduleBigChart = ({ labels, dataRevenue, dataNetProfit, minDataRevenue, 
             legend: {
                 display: false
             },
+            verticalDashedLine: { enabled: true },
             tooltip: {
                 backgroundColor: '#FFFFFF',
                 borderWidth: 1,

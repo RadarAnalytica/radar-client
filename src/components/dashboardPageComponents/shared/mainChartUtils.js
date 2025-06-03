@@ -372,7 +372,8 @@ export const getChartOptions = (chartData, days) => {
                 axis: 'x',
                 callbacks: {},
                 external: (context) => {getChartTooltip(context, chartData)}
-            }
+            },
+            verticalDashedLine: { enabled: true }
         },
         elements: {
             line: {

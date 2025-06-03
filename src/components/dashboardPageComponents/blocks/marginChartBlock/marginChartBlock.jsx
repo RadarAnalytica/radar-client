@@ -3,6 +3,7 @@ import { processMarginalityRoiChart } from '../blockUtils'
 import roi from '../../../../assets/roi.svg';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+import { verticalDashedLinePlugin } from '../../../../service/utils';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -100,7 +101,7 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
             legend: {
                 display: false,
             },
-
+            verticalDashedLine: { enabled: true },
             tooltip: {
                 backgroundColor: '#FFFFFF',
                 borderWidth: 1,

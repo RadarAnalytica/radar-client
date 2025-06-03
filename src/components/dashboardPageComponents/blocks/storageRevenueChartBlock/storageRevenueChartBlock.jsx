@@ -72,6 +72,7 @@ const StorageRevenueChartBlock = ({ dataDashBoard, loading }) => {
                     },
                 },
             },
+            verticalDashedLine: { enabled: false }
         },
         scales: {
             y: {

@@ -79,7 +79,7 @@ export function filterArraysNoData(obj, days) {
 // func that format any value to display (e.g, prices, percents...)
 export const formatPrice = (value, literal) => {
   // define a value to return
-  let formattedPriceString = '-' 
+  let formattedPriceString = '-'
   // checking if value exists
   if (value !== undefined && value !== null) {
     //in case if value is a string
@@ -574,11 +574,11 @@ export const getMonthNumbers = (monthArray) => {
 export const periodStringFormat = (period) => {
   /* TODO подумать про склонения или использовать date-fns */
 
-  if (!period){
+  if (!period) {
     return '3 дня'
   }
 
-  if (period >= 6 ){
+  if (period >= 6) {
     return `${period} дней`
   } else {
     return `${period} дня`
@@ -588,7 +588,7 @@ export const periodStringFormat = (period) => {
 
 export const rangeApiFormat = (range) => {
   let params = '';
-  if (!!range.period ){
+  if (!!range.period) {
     params += 'period=' + range.period;
   } else {
     params += `date_from=${range.from}`;
@@ -631,17 +631,38 @@ export const chartYaxisMaxScale = (maxChartValue) => {
 export function detectBrowser() {
   const userAgent = navigator.userAgent.toLowerCase();
   if (userAgent.indexOf('firefox') > -1) {
-      return 'Firefox';
+    return 'Firefox';
   } else if (userAgent.indexOf('chrome') > -1) {
-      return 'Chrome';
+    return 'Chrome';
   } else if (userAgent.indexOf('safari') > -1) {
-      return 'Safari';
+    return 'Safari';
   } else if (userAgent.indexOf('opera') > -1 || userAgent.indexOf('opr') > -1) {
-      return 'Opera';
+    return 'Opera';
   } else if (userAgent.indexOf('msie') > -1 || userAgent.indexOf('trident') > -1) {
-      return 'Internet Explorer';
+    return 'Internet Explorer';
   } else {
-      return 'Unknown';
+    return 'Unknown';
   }
 }
+
+export const verticalDashedLinePlugin = {
+  id: 'verticalDashedLine',
+  beforeDraw: function (chart) {
+    const enabled = chart?.config?._config?.options?.plugins?.verticalDashedLine?.enabled
+    if (chart.tooltip?._active && chart.tooltip._active.length && enabled) {
+      const ctx = chart.ctx;
+      ctx.save();
+      const activePoint = chart.tooltip._active[0];
+      ctx.beginPath();
+      ctx.setLineDash([6, 6]);
+      ctx.moveTo(activePoint.element.x, chart.chartArea.top);
+      ctx.lineTo(activePoint.element.x, chart.chartArea.bottom);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#8B8B8B';
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+}
+
 

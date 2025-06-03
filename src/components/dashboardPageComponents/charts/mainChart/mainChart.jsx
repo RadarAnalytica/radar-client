@@ -6,6 +6,7 @@ import { differenceInDays } from 'date-fns';
 import { Chart } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 import MainChartModal from '../../mainChartModal/mainChartModal';
+import { verticalDashedLinePlugin } from '../../../../service/utils';
 
 
 ChartJS.register(
@@ -17,7 +18,8 @@ ChartJS.register(
     BarElement,
     LineController,
     LineElement,
-    [Tooltip]
+    [Tooltip],
+    verticalDashedLinePlugin
 );
 
 const MainChart = ({ title, loading, dataDashBoard, selectedRange }) => {

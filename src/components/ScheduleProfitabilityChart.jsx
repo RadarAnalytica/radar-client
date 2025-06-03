@@ -2,8 +2,9 @@ import React from 'react';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import roi from '../assets/roi.svg';
+import { verticalDashedLinePlugin } from '../service/utils';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, verticalDashedLinePlugin);
 
 const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataProfitMinus, isLoading, labels, step, minValue, maxValue }) => {
     // console.log('dataProfitability', dataProfitability)
@@ -84,6 +85,7 @@ const ScheduleProfitabilityChart = ({ dataProfitability, dataProfitPlus, dataPro
             legend: {
                 display: false,
             },
+            verticalDashedLine: { enabled: true },
             tooltip: {
                 backgroundColor: '#FFFFFF',
                 borderWidth: 1,
