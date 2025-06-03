@@ -4,9 +4,10 @@ import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import FilterReportWeek from './widgets/FilterReportWeek/FilterReportWeek'
+// import FilterReportWeek from './widgets/FilterReportWeek/FilterReportWeek'
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
+import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 
 import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
@@ -19,12 +20,10 @@ import { COLUMNS } from './columnsConfig';
 
 export default function ReportWeek() {
 	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector(
-		(state) => state.filters
-	);
+	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters ); const filters = useAppSelector((state) => state.filters);
 	const [loading, setLoading] = useState(true);
 	const [isPopoverOpen, setPopoverOpen] = useState(false);
-	const [isConfigOpen, setConfigOpen] = useState(true);
+	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [data, setData] = useState(null);
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
@@ -43,7 +42,8 @@ export default function ReportWeek() {
 				const response = await ServiceFunctions.getReportWeek(
 					authToken,
 					selectedRange,
-					activeBrand
+					activeBrand.id,
+					filters
 				);
 				const weeks = response.data[0]['weeks'];
 
@@ -122,24 +122,24 @@ export default function ReportWeek() {
 	useEffect(() => {
 			if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
 					setPrimaryCollect(activeBrand.is_primary_collect)
-					updateDataReportWeek(authToken, selectedRange, activeBrand.id)
+					updateDataReportWeek()
 			}
 	}, [authToken]);
 
-	useEffect(() => {
-			if (activeBrand && activeBrand.is_primary_collect) {
-					updateDataReportWeek(authToken, selectedRange, activeBrand.id)
-			}
-	}, [activeBrand, selectedRange]);
+	// useEffect(() => {
+	// 		if (activeBrand && activeBrand.is_primary_collect) {
+	// 				updateDataReportWeek(authToken, selectedRange, activeBrand.id)
+	// 		}
+	// }, [activeBrand, selectedRange, filters]);
 
 	useEffect(() => {
 		setPrimaryCollect(activeBrand?.is_primary_collect)
 		if (activeBrand && activeBrand.is_primary_collect) {
-					updateDataReportWeek(authToken, selectedRange, activeBrand.id)
+					updateDataReportWeek()
 		} else {
 			setData([])
 		}
-	}, [activeBrand, selectedRange]);
+	}, [activeBrand, selectedRange, filters]);
 
 	function popoverHandler(status) {
 		setPopoverOpen(status);
@@ -210,7 +210,11 @@ export default function ReportWeek() {
 				</div>
 				<div className={styles.controls}>
 					<div className={styles.filter}>
-						<FilterReportWeek period={period} periodOptions={periodOptions} setPeriod={setPeriod} setLoading={setLoading} setData={setData} />
+						<Filters
+							timeSelect={false}
+							setLoading={setLoading}
+						/>
+						{/* <FilterReportWeek period={period} periodOptions={periodOptions} setPeriod={setPeriod} setLoading={setLoading} setData={setData} /> */}
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider
