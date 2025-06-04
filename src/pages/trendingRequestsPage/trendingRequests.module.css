@@ -48,4 +48,5 @@
 
 .page__widgetWrapper {
     width: 100%;
+    z-index: 1;
 }

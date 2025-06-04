@@ -32,17 +32,13 @@ export const DatePicker = ({ selectedDate, setSelectedDate }) => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            console.log(event.target)
             const dropdown = document.querySelector('#dropdown');
             const isClickInsideDropdown = dropdown?.contains(event.target);
 
             if (!isClickInsideDropdown && event.target.className !== 'ant-select-selection-item' && event.target.className !== 'ant-select-item-option-content') {
                 return setIsDropdownOpen(false);
             }
-            console.log(event.target.className === 'ant-select-selection-item')
-            console.log(event.target.title === selectedDate)
             if (event.target.className === 'ant-select-selection-item' && event.target.title === selectedDate) {
-                console.log(isDropdownOpen)
                 return setIsDropdownOpen(!isDropdownOpen);
             }            
         };

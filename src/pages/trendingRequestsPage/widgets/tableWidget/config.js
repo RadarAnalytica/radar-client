@@ -2,18 +2,18 @@ export const tableConfig = [
     {
         //tableName: 'Прочие расходы',
         values: [
-            {ruName: 'Товар', engName: 'productName', units: null, isSortable: true},
+            {ruName: 'Товар', engName: 'subject', units: null, isSortable: true},
         ]
     },
     {
         values: [
-            {ruName: 'Приоритетный предмет', engName: 'prefered_item', units: null, isSortable: false},
-            {ruName: 'Частотность за 30 дней', engName: '30_days_frequency', units: null, isSortable: true},
-            {ruName: 'Кол-во артикулов по запросу, шт', engName: 'sku_amount', units: 'шт', isSortable: true},
-            {ruName: 'Динамика за 30 дней, %', engName: '30_days_dynamic', units: '%', isSortable: true},
-            {ruName: 'Динамика за 60 дней, %', engName: '60_days_dynamic', units: '%', isSortable: true},
-            {ruName: 'Динамика за 90 дней, %', engName: '90_days_dynamic', units: '%', isSortable: true},
-            {ruName: 'Частотность за 30 дней на 1 артикул,шт', engName: '30_days_frequency_per_sku', units: null, isSortable: true},
+            {ruName: 'Приоритетный предмет', engName: 'query', units: null, isSortable: false},
+            {ruName: 'Частотность за 30 дней', engName: 'frequency', units: null, isSortable: true},
+            {ruName: 'Кол-во артикулов по запросу, шт', engName: 'goods_quantity', units: 'шт', isSortable: true},
+            {ruName: 'Динамика за 30 дней, %', engName: 'g30', units: '%', isSortable: true},
+            {ruName: 'Динамика за 60 дней, %', engName: 'g60', units: '%', isSortable: true},
+            {ruName: 'Динамика за 90 дней, %', engName: 'g90', units: '%', isSortable: true},
+            {ruName: 'Частотность за 30 дней на 1 артикул,шт', engName: 'goods_quantity', units: null, isSortable: true},
         ]
     },
   
