@@ -23,6 +23,7 @@ import NoSubscriptionPage from './NoSubscriptionPage';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
+import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
 
 const AiDescriptionGeneratorPage = () => {
   const {
@@ -64,6 +65,8 @@ const AiDescriptionGeneratorPage = () => {
   const [idGenerator, setIdGenerator] = useState(null);
   const [modalIsShowKeywordsFile, setModalisShowKeywordsFile] = useState(false);
   const [file, setFile] = useState();
+  const [isFileUpload, setIsFileUpload] = useState();
+
 
   const handleNewGenerator = () => {
     setIsModalOpenNewGen(true);
@@ -378,17 +381,21 @@ const AiDescriptionGeneratorPage = () => {
     setModalisShowKeywordsFile(false);
   };
   const handleSaveClick = async () => {
+    setIsFileUpload(true)
     try {
       const newKeywords = await saveFileClickHandler(file, authToken); // Отправляем файл и получаем ключевые слова
       addKeyword(newKeywords); // Обновляем ключевые слова в контексте
       setFile(null); // Сбрасываем состояние файла после отправки
       handleCloseAddKeywordFile(); // Закрываем модалку
     } catch (error) {
+      // Обработка ошибки
       console.error('Ошибка при отправке файла:', error);
       setModalisShowKeywordsFile(false);
-      setErrorMessage('Ошибка при отправке файла');
+      setErrorMessage(error == 'Error: Unprocessable Entity' ? 'Некорректный формат файла' : 'Ошибка при загрузке файла');
       setShowModalError(true);
-      setTimeout(() => {setFile();}, 500)
+      setTimeout(() => setFile, 500)
+    } finally {
+      setIsFileUpload(false)
     }
   };
 
@@ -467,19 +474,6 @@ const AiDescriptionGeneratorPage = () => {
             </div>
           )}
         </div>
-        <Modal show={showModalError} onHide={handleCloseModalError}>
-          <Modal.Header closeButton style={{ border: 'none' }}>
-            <div>
-              <div className='d-flex gap-3 mb-2 mt-2 align-items-center'>
-                <img src={warningIcon} alt='' style={{ height: '3vh' }} />
-                <p className='fw-bold mb-0'>Ошибка!</p>
-              </div>
-              <p className='fs-6 mb-1' style={{ fontWeight: 600 }}>
-                {errorMessage}
-              </p>
-            </div>
-          </Modal.Header>
-        </Modal>
         <div className={`${styles.stepsWrapper} dash-container`}>
           <div className={styles.formContainer}>
             <div className={styles.stepIndicator}>
@@ -596,60 +590,58 @@ const AiDescriptionGeneratorPage = () => {
           )}
         </div>
       </div>
-      <div>
-        {isModalOpen && (
-          <div className={styles.modalOverlay}>
-            <div className={styles.modalContent}>
-              <div className={styles.modalHeader}>
-                <div className={styles.modalHeaderTitle}>
-                  Сгенерированное описание
-                </div>
-                <div onClick={onClose}>
-                  <img src={closeBtnModal} className={styles.closeBtnModal} />
-                </div>
+      {isModalOpen && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <div className={styles.modalHeader}>
+              <div className={styles.modalHeaderTitle}>
+                Сгенерированное описание
               </div>
-              <div className={styles.modalBody}>
-                {isLoading ? (
-                  <div className={styles.modalContentLoad}>
-                    <div className={styles.modalTextLoad}>
-                      Не закрывайте это окно, генерация занимает несколько
-                      минут.
-                    </div>
-                    <div className={styles.loaderContainer}>
-                      <span className='loader'></span>
-                    </div>
-                  </div>
-                ) : (
-                  <p>{description}</p>
-                )}
+              <div onClick={onClose}>
+                <img src={closeBtnModal} className={styles.closeBtnModal} />
               </div>
-              <div className={styles.modalFooter}>
-                <button
-                  className={styles.modalFooterBtnNew}
-                  onClick={onCloseNew}
-                >
-                  Новая генерация
-                </button>
-                <button
-                  className={
-                    isCopied
-                      ? styles.modalFooterBtnCopied
-                      : styles.modalFooterBtnCopy
-                  }
-                  onClick={handleCopy}
-                >
-                  {isCopied ? 'Скопировано!' : 'Скопировать'}
-                </button>
-              </div>
-              {/* {isTooltipVisible && (
-                            <div className={styles.tooltip}>
-                                Скопировано!
-                            </div>
-                        )} */}
             </div>
+            <div className={styles.modalBody}>
+              {isLoading ? (
+                <div className={styles.modalContentLoad}>
+                  <div className={styles.modalTextLoad}>
+                    Не закрывайте это окно, генерация занимает несколько
+                    минут.
+                  </div>
+                  <div className={styles.loaderContainer}>
+                    <span className='loader'></span>
+                  </div>
+                </div>
+              ) : (
+                <p>{description}</p>
+              )}
+            </div>
+            <div className={styles.modalFooter}>
+              <button
+                className={styles.modalFooterBtnNew}
+                onClick={onCloseNew}
+              >
+                Новая генерация
+              </button>
+              <button
+                className={
+                  isCopied
+                    ? styles.modalFooterBtnCopied
+                    : styles.modalFooterBtnCopy
+                }
+                onClick={handleCopy}
+              >
+                {isCopied ? 'Скопировано!' : 'Скопировать'}
+              </button>
+            </div>
+            {/* {isTooltipVisible && (
+                          <div className={styles.tooltip}>
+                              Скопировано!
+                          </div>
+                      )} */}
           </div>
-        )}
-      </div>
+        </div>
+      )}
       <Modal
         show={modalIsShowKeywordsFile}
         onHide={handleCloseAddKeywordFile}
@@ -706,6 +698,7 @@ const AiDescriptionGeneratorPage = () => {
                   onClick={handleSaveClick}
                   className='prime-btn'
                   style={{ height: '52px' }}
+                  disabled={isFileUpload}
                 >
                   Сохранить
                 </button>
@@ -725,14 +718,22 @@ const AiDescriptionGeneratorPage = () => {
               <DragDropFile files={file} setFiles={setFile} />
               <div className={styles.fileDescription}>
                 <div className={styles.fileDescriptionText}>
-                  Слова в файле расположить построчно в первой колонке первого
-                  листа.
+                  Слова в файле расположить построчно в первой колонке первого листа.
                 </div>
               </div>
             </div>
           )}
         </Modal.Body>
       </Modal>
+
+      <ErrorModal
+        open={showModalError}
+        message={errorMessage}
+        onClose={handleCloseModalError}
+        onCancel={handleCloseModalError}
+        onOk={handleCloseModalError}
+        footer={null}
+      />
     </div>
   );
 };

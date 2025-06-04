@@ -20,7 +20,7 @@ export const saveFileClickHandler = async (file, token) => {
             return keywords; // Возвращаем ключевые слова
         } else {
             console.error('Ошибка при загрузке файла:', res.statusText);
-            throw new Error('Ошибка при загрузке файла');
+            throw new Error(res.statusText);
         }
     } catch (error) {
         console.error('Ошибка сети или запроса:', error);
