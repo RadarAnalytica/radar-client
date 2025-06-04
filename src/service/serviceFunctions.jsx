@@ -869,26 +869,34 @@ export const ServiceFunctions = {
         authorization: 'JWT ' + token,
       },
     });
-    return res;
+    const data = await res.blob()
+    return data;
   },
 
   postCostUpdate: async (token, file) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`${URL}/api/report/cost/update`, {
-      method: 'POST',
-      headers: {
-        Authorization: 'JWT ' + token,
-      },
-      body: formData,
-    });
+    try {
+      const response = await fetch(`${URL}/api/report/cost/update`, {
+        method: 'POST',
+        headers: {
+          Authorization: 'JWT ' + token,
+        },
+        body: formData,
+      });
 
-    if (!response.ok) {
-      throw new Error('Failed to update cost data');
+      if (response.ok) {
+        return await response.json();
+      } else {
+        console.error('Ошибка при загрузке файла:', response.statusText);
+        throw new Error(response.statusText);
+      }
+
+    } catch (error) {
+      console.error('Ошибка сети или запроса:', error);
+      throw error; // Прокидываем ошибку выше
     }
-
-    return await response.json();
   },
 
   getAbcReportsFilters: async (token) => {
