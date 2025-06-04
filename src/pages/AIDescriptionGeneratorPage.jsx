@@ -385,7 +385,6 @@ const AiDescriptionGeneratorPage = () => {
     try {
       const newKeywords = await saveFileClickHandler(file, authToken); // Отправляем файл и получаем ключевые слова
       addKeyword(newKeywords); // Обновляем ключевые слова в контексте
-      setFile(null); // Сбрасываем состояние файла после отправки
       handleCloseAddKeywordFile(); // Закрываем модалку
     } catch (error) {
       // Обработка ошибки
@@ -393,8 +392,8 @@ const AiDescriptionGeneratorPage = () => {
       setModalisShowKeywordsFile(false);
       setErrorMessage(error == 'Error: Unprocessable Entity' ? 'Некорректный формат файла' : 'Ошибка при загрузке файла');
       setShowModalError(true);
-      setTimeout(() => setFile, 500)
     } finally {
+      setTimeout(() => setFile(null), 500)  // Сбрасываем состояние файла после отправки
       setIsFileUpload(false)
     }
   };
