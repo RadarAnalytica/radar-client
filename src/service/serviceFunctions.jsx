@@ -1047,7 +1047,8 @@ export const ServiceFunctions = {
         Authorization: token,
       },
     });
-    return res;
+    const data = await res.blob()
+    return data;
   },
 
   // Add to ServiceFunctions object
@@ -1055,15 +1056,28 @@ export const ServiceFunctions = {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`${URL}/api/report/self-buyout/update`, {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        Authorization: token,
-      },
-      body: formData,
-    });
-    return await response.json();
+    try {
+      const response = await fetch(`${URL}/api/report/self-buyout/update`, {
+        method: 'POST',
+        headers: {
+          Authorization: token,
+          // Authorization: 'JWT ' + token,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        return await response.json();
+      } else {
+        console.error('Ошибка при загрузке файла:', response.statusText);
+        throw new Error(response.statusText);
+      }
+
+    } catch (error) {
+      console.error('Ошибка сети или запроса:', error);
+      throw error; // Прокидываем ошибку выше
+    }
+
   },
 
   getPenaltiesFilters: async (token) => {
