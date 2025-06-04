@@ -48,16 +48,15 @@ const PrimeCost = () => {
     setIsFileUpload(true)
     try {
       await ServiceFunctions.postCostUpdate(authToken, file);
-      setCostPriceShow(false);
       setShowSuccessPopup(true);
       getCostPiceStatus()
     } catch (error) {
       // Обработка ошибки
       console.error('Ошибка при загрузке файла:', error);
-      setCostPriceShow(false);
       setErrorMessage(error == 'Error: Unprocessable Entity' ? 'Некорректный формат файла' : 'Ошибка при загрузке файла');
       setShowModalError(true);
     } finally {
+      setCostPriceShow(false);
       setTimeout(() => setFile(null), 500)
       setIsFileUpload(false)
     }
