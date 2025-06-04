@@ -1,7 +1,4 @@
-import {
-	SortIcon,
-	formatNumber,
-} from '../../components/sharedComponents/ReportTable/ReportTable';
+import { SortIcon } from '../../components/sharedComponents/ReportTable/ReportTable';
 import { formatPrice } from '../../service/utils';
 import { Tooltip, Flex } from 'antd';
 
@@ -38,7 +35,7 @@ function summaryRender(value, row) {
 			</Flex>
 		);
 	}
-	return value;
+	return value.rub || value;
 }
 
 function arrowRender(value) {
@@ -79,67 +76,6 @@ function sorter(a, b, key) {
 	return Number(v1 - v2);
 }
 
-export const COLUMNS_SCHEMA = {
-	week_label: {
-		key: 'week_label',
-		value: '',
-	},
-	purchases: {
-		key: 'purchases',
-		value: '',
-	},
-	returns: {
-		key: 'returns',
-		value: '',
-	},
-	revenue: {
-		key: 'revenue',
-		data: 'quantity',
-		value: '',
-	},
-	revenue_rub: {
-		key: 'revenue',
-		data: 'rub',
-		value: 'r',
-	},
-	avg_check: {
-		key: 'avg_check',
-		value: 'r',
-	},
-	avg_spp: {
-		key: 'avg_spp',
-		value: 'r',
-	},
-	purchase_percent: {
-		key: 'purchase_percent',
-		value: 'r',
-	},
-	cost_price: {
-		key: 'cost_price',
-		value: 'r',
-	},
-	cost_price_percent: {
-		key: 'cost_price_percent',
-		value: 'r',
-	},
-	'': {
-		key: '',
-		value: 'r',
-	},
-	'': {
-		key: '',
-		value: 'r',
-	},
-	'': {
-		key: '',
-		value: 'r',
-	},
-	'': {
-		key: '',
-		value: 'r',
-	},
-};
-
 export const COLUMNS = [
 	{
 		title: 'Неделя',
@@ -158,24 +94,23 @@ export const COLUMNS = [
 			<div>
 				{formatPrice(value?.rub, '₽')}{' '}
 				<div className="table__arrow">
-					{formatPrice(value?.quantity, 'шт')}
+					{arrowRender(value?.quantity, 'шт')}
 				</div>
 			</div>
 		),
-		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 		width: 240,
 	},
 	{
 		title: 'Возвраты',
 		dataIndex: 'return',
-		sorter: (a, b) => sorter(a, b, 'return'), // Number(a.returns) - Number(b.returns),
+		sorter: (a, b) => sorter(a, b, 'return'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
 			<div>
 				{formatPrice(value?.rub, '₽')}
 				<div className="table__arrow">
-					{formatPrice(value?.quantity, 'шт')}
+					{arrowRender(value?.quantity, 'шт')}
 				</div>
 			</div>
 		),
@@ -183,31 +118,26 @@ export const COLUMNS = [
 	},
 	{
 		title: 'Продажи',
-		// dataIndex: 'sales',
-		dataIndex: 'revenue',
+		dataIndex: 'sales',
 		sorter: (a, b) => sorter(a, b, 'revenue'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{formatPrice(value?.quantity, 'шт')}
-				</div>
+				{formatPrice(value, 'шт')}
 			</div>
 		),
 		width: 240,
 	},
-	// {
-	// 	title: 'Выручка',
-	// 	dataIndex: 'revenue',
-	// 	sorter: (a, b) => sorter(a, b, 'revenue'),
-	// 	sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-	// 	filterOptions: true,
-	// 	render: (value) => <div>{formatPrice(value?.rub, '₽' )} ₽<div className='table__arrow'>{formatPrice(value?.quantity, 'шт')}</div></div>,
-	// 	// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
-	// 	width: 240,
-	// },
+	{
+		title: 'Выручка',
+		dataIndex: 'gains',
+		sorter: (a, b) => sorter(a, b, 'revenue'),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => <div>{formatPrice(value, '₽' )}</div>,
+		width: 240,
+	},
 	{
 		title: 'Ср. цена продажи',
 		dataIndex: 'avg_check',
@@ -215,28 +145,24 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => <div>{formatPrice(value, '₽')}</div>,
-		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 		width: 240,
 	},
 	{
 		title: 'СПП',
-		// dataIndex: 'realization',
 		dataIndex: 'avg_spp',
-		sorter: (a, b) => sorter(a, b, 'avg_spp'), // Number(a.realization) - Number(b.realization),
+		sorter: (a, b) => sorter(a, b, 'avg_spp'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
-		render: (value) => <div>{formatPrice(value, '₽')}</div>,
+		render: (value) => <div>{formatPrice(value, '%')}</div>,
 		width: 240,
 	},
 	{
 		title: 'Выкуп',
-		// dataIndex: 'avg_purchase_pct',
 		dataIndex: 'purchase_percent',
 		sorter: (a, b) => sorter(a, b, 'purchase_percent'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => <div>{formatPrice(value, '%')}</div>,
-		// filterIcon: ({filtered}) => <FilterIcon filtered={filtered}/>,
 		width: 240,
 	},
 	{
@@ -245,7 +171,12 @@ export const COLUMNS = [
 		sorter: (a, b) => sorter(a, b, 'cost_price'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
-		render: (value) => <div>{formatPrice(value, '₽')}</div>,
+		render: (value) => <div>
+			{formatPrice(value?.rub, '₽')}
+			<div className="table__arrow">
+				{arrowRender(value?.percent)}
+			</div>
+		</div>,
 		width: 240,
 	},
 	{
@@ -257,17 +188,6 @@ export const COLUMNS = [
 		render: (value) => <div>{formatPrice(value, '₽')}</div>,
 		width: 240,
 	},
-	// {
-	// 	title: 'Себестоимость на единицу',
-	// 	dataIndex: 'cost_price',
-	// 	sorter: (a, b) => sorter(a, b, 'cost_price'),
-	// 	sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-	// 	filterOptions: true,
-	// 	render: (value) => <div>{formatPrice(value?.rub, '₽' )} ₽
-	// 		<div className='table__arrow'>{arrowRender(value?.cost_price_percent)}</div>
-	// 	</div>,
-	// 	width: 240,
-	// },
 	{
 		title: 'Кол-во доставок',
 		dataIndex: 'deliveries',
@@ -285,10 +205,7 @@ export const COLUMNS = [
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent)}
-				</div>
+				{formatPrice(value?.percent)}
 			</div>
 		),
 		width: 240,
@@ -301,10 +218,7 @@ export const COLUMNS = [
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent)}
-				</div>
+				{formatPrice(value?.percent, '%')}
 			</div>
 		),
 		width: 240,
@@ -318,9 +232,6 @@ export const COLUMNS = [
 		render: (value) => (
 			<div>
 				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent)}
-				</div>
 			</div>
 		),
 		width: 240,
@@ -334,9 +245,6 @@ export const COLUMNS = [
 		render: (value) => (
 			<div>
 				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent)}
-				</div>
 			</div>
 		),
 		width: 240,
@@ -375,9 +283,19 @@ export const COLUMNS = [
 		render: (value) => (
 			<div>
 				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{formatPrice(value?.quantity, 'шт')}
-				</div>
+			</div>
+		),
+		width: 240,
+	},
+	{
+		title: 'Кол-во брака',
+		dataIndex: 'compensation_defects_quantity',
+		sorter: (a, b) => sorter(a, b, 'compensation_defects'),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => (
+			<div>
+				{formatPrice(value, 'шт')}
 			</div>
 		),
 		width: 240,
@@ -392,8 +310,21 @@ export const COLUMNS = [
 			<div>
 				{formatPrice(value?.rub, '₽')}
 				<div className="table__arrow">
-					{formatPrice(value?.quantity, 'шт')}
+					{arrowRender(value?.quantity, 'шт')}
 				</div>
+			</div>
+		),
+		width: 240,
+	},
+	{
+		title: 'Кол-во ущерба',
+		dataIndex: 'compensation_damage_quantity',
+		sorter: (a, b) => sorter(a, b, 'compensation_damage_quantity'),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => (
+			<div>
+				{formatPrice(value, 'шт')}
 			</div>
 		),
 		width: 240,
@@ -498,7 +429,12 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
-			<div>{formatPrice(value, '₽')}</div>
+			<div>
+				{formatPrice(value?.rub, '₽')}
+				<div className="table__arrow">
+					{arrowRender(value?.percent)}
+				</div>
+			</div>
 		),
 		width: 240,
 	},
@@ -510,10 +446,7 @@ export const COLUMNS = [
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent)}
-				</div>
+				{formatPrice(value, '₽')}
 			</div>
 		),
 		width: 240,
@@ -534,11 +467,7 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
-			<div>{formatPrice(value, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent)}
-				</div>
-			</div>
+			<div>{formatPrice(value, '₽')}</div>
 		),
 		width: 240,
 	},
@@ -584,7 +513,7 @@ export const COLUMNS = [
 		sorter: (a, b) => sorter(a, b, 'marginality'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
-		render: (value) => <div>{formatNumber(value)}</div>,
+		render: (value) => <div>{formatPrice(value, '%')}</div>,
 		width: 240,
 	},
 	{
@@ -593,7 +522,7 @@ export const COLUMNS = [
 		sorter: (a, b) => sorter(a, b, 'return_on_investment'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
-		render: (value) => <div>{formatNumber(value)}</div>,
+		render: (value) => <div>{formatPrice(value, '%')}</div>,
 		width: 240,
 	},
 ];

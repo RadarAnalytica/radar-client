@@ -113,6 +113,24 @@ export default function ReportWeek() {
 					summary[key] += summaryValue
 				}
 			}
+
+			// кастомные значения таблицы из данных
+			row = {
+				...row,
+				sales: el.data.revenue.quantity,
+				gains: el.data.revenue.rub,
+				cost_price: {
+					rub: el.data.cost_price,
+					percent: el.data.cost_price_percent,
+				},
+				compensation_defects_quantity: el.data.compensation_defects.quantity,
+				compensation_damage_quantity: el.data.compensation_damage.quantity,
+				external_expenses: {
+					rub: el.data.external_expenses,
+					percent: el.data.expenses_percent,
+				}
+
+			}
 			return row
 		})
 
