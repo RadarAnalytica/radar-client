@@ -46,13 +46,20 @@ export default function ReportWeek() {
 					activeBrand.id,
 					filters
 				);
-				const weeks = response.data[0]['weeks'];
+
+				let weeks = [];
+
+				for (const year of response.data){
+					for (const week of year.weeks){
+						weeks.push(week);
+					}
+				}
 
 				const options = weeks.map((el) => ({
 						value: el.week,
 						label: el.week_label
 				}))
-				// options.unshift({value: 'all', label: 'Весь период'});
+				options.unshift({value: 'all', label: 'Весь период'});
 				setPeriodOptions(options)
 				setPeriod(options.map((el) => el.value))
 
@@ -73,7 +80,7 @@ export default function ReportWeek() {
 			setTableRows([]);
 			return
 		}
-
+		
 		const summary = {
 			key: 'summary',
 			week_label: 'Итого за период'
@@ -90,17 +97,20 @@ export default function ReportWeek() {
 
 		let rows = weeks.filter((el) => period.includes(el.week));
 
-		rows = rows.map((el) => {
+		rows = rows.map((el, i) => {
 			let row = {
-				key: el.week,
+				key: i,
+				// key: el.week,
 				week_label: el.week_label
 			}
 			for (const key in el.data){
-				row[key] = el.data[key]
+				row[key] = el.data[key];
+				const summaryValue = typeof el.data[key] === 'object' ? el.data[key]?.rub : el.data[key];
+				console.log('summaryValue', summaryValue, typeof el.data[key] === 'object')
 				if (!summary[key]){
-					summary[key] = el.data[key]
+					summary[key] = summaryValue
 				} else {
-					summary[key] += el.data[key]
+					summary[key] += summaryValue
 				}
 			}
 			return row
@@ -112,7 +122,7 @@ export default function ReportWeek() {
 			}
 		}
 
-		rows.unshift(summary)
+		// rows.unshift(summary);
 		setTableRows(rows);
 	}
 
