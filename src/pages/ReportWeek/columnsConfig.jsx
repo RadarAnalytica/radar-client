@@ -35,6 +35,7 @@ function summaryRender(value, row) {
 			</Flex>
 		);
 	}
+	// console.log('summaryRender', row)
 	return value.rub || value;
 }
 
@@ -49,7 +50,7 @@ function arrowRender(value, literal) {
 	return (
 		<span className={`table__arrow ${status}`}>
 			{formatPrice(value, literal)}
-			{ value && <svg
+			{ !!value && <svg
 				width="16"
 				height="12"
 				viewBox="0 0 20 12"
@@ -99,26 +100,26 @@ export const COLUMNS = [
 	},
 	{
 		title: 'Выкупы, шт',
-		dataIndex: 'purchases',
+		dataIndex: 'purchases_quantity',
 		sorter: (a, b) => sorter(a, b, 'purchases'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.quantity)}
+				{formatPrice(value)}
 			</div>
 		),
 		width: 240,
 	},
 	{
 		title: 'Возвраты, руб',
-		dataIndex: 'return',
-		sorter: (a, b) => sorter(a, b, 'return'),
+		dataIndex: 'return_rub',
+		sorter: (a, b) => sorter(a, b, 'return_rub'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value.rub)}
+				{formatPrice(value)}
 			</div>
 		),
 		width: 240,
@@ -126,7 +127,7 @@ export const COLUMNS = [
 	{
 		title: 'Возвраты, шт',
 		dataIndex: 'return_quantity',
-		sorter: (a, b) => sorter(a, b, 'return'),
+		sorter: (a, b) => sorter(a, b, 'return_quantity'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
@@ -139,7 +140,7 @@ export const COLUMNS = [
 	{
 		title: 'Продажи',
 		dataIndex: 'sales',
-		sorter: (a, b) => sorter(a, b, 'revenue'),
+		sorter: (a, b) => sorter(a, b, 'sales'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
@@ -152,7 +153,7 @@ export const COLUMNS = [
 	{
 		title: 'Выручка',
 		dataIndex: 'gains',
-		sorter: (a, b) => sorter(a, b, 'revenue'),
+		sorter: (a, b) => sorter(a, b, 'gains'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => <div>{formatPrice(value, '₽' )}</div>,
@@ -191,12 +192,16 @@ export const COLUMNS = [
 		sorter: (a, b) => sorter(a, b, 'cost_price'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
-		render: (value) => <div>
-			{formatPrice(value?.rub, '₽')}
-			<div className="table__arrow">
-				{arrowRender(value?.percent, '%')}
-			</div>
-		</div>,
+		render: (value) => 
+			typeof value === 'object' ?
+				<div>
+					{formatPrice(value?.rub, '₽')}
+					<div className="table__arrow">
+						{arrowRender(value?.percent, '%')}
+					</div>
+				</div>
+			: 
+				<div>{formatPrice(value, '₽')}</div>,
 		width: 240,
 	},
 	{
@@ -224,12 +229,15 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
-			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent, '%')}
+			typeof value === 'object' ?
+				<div>
+					{formatPrice(value?.rub, '₽')}
+					<div className="table__arrow">
+						{arrowRender(value?.percent, '%')}
+					</div>
 				</div>
-			</div>
+			: 
+				<div>{formatPrice(value, '₽')}</div>
 		),
 		width: 240,
 	},
@@ -240,12 +248,15 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
-			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent, '%')}
+			typeof value === 'object' ?
+				<div>
+					{formatPrice(value?.rub, '₽')}
+					<div className="table__arrow">
+						{arrowRender(value?.percent, '%')}
+					</div>
 				</div>
-			</div>
+			: 
+				<div>{formatPrice(value, '₽')}</div>
 		),
 		width: 240,
 	},
@@ -257,7 +268,7 @@ export const COLUMNS = [
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.rub, '₽')}
+				{formatPrice(value, '₽')}
 			</div>
 		),
 		width: 240,
@@ -270,7 +281,7 @@ export const COLUMNS = [
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.rub, '₽')}
+				{formatPrice(value, '₽')}
 			</div>
 		),
 		width: 240,
@@ -282,12 +293,15 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
-			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent, '%')}
+			typeof value === 'object' ?
+				<div>
+					{formatPrice(value?.rub, '₽')}
+					<div className="table__arrow">
+						{arrowRender(value?.percent, '%')}
+					</div>
 				</div>
-			</div>
+			: 
+				<div>{formatPrice(value, '₽')}</div>
 		),
 		width: 240,
 	},
@@ -302,7 +316,7 @@ export const COLUMNS = [
 	},
 	{
 		title: 'Компенсации брака',
-		dataIndex: 'compensation_defects',
+		dataIndex: 'compensation_defects_rub',
 		sorter: (a, b) => sorter(a, b, 'compensation_defects'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
@@ -333,12 +347,15 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
+			typeof value === 'object' ?
 			<div>
 				{formatPrice(value?.rub, '₽')}
 				<div className="table__arrow">
 					{arrowRender(value?.quantity, 'шт')}
 				</div>
 			</div>
+			: 
+			<div>{formatPrice(value, '₽')}</div>
 		),
 		width: 240,
 	},
@@ -380,31 +397,60 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
-			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent, '%')}
+			typeof value === 'object' ?
+				<div>
+					{formatPrice(value?.rub, '₽')}
+					<div className="table__arrow">
+						{arrowRender(value?.percent, '%')}
+					</div>
 				</div>
+			: 
+				<div>{formatPrice(value, '₽')}</div>
+		),
+		width: 240,
+	},
+	{
+		title: 'Реклама',
+		dataIndex: 'reklama',
+		sorter: (a, b) => sorter(a, b, 'reklama'),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => (
+			<div>
+				{formatPrice(value, '₽')}
 			</div>
 		),
 		width: 240,
 	},
 	{
-		title: 'Прочие удержания',
-		dataIndex: 'other_retentions',
-		sorter: (a, b) => sorter(a, b, 'other_retentions'),
+		title: 'ДРР',
+		dataIndex: 'drr',
+		sorter: (a, b) => sorter(a, b, 'drr'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent, '%')}
-				</div>
+				{formatPrice(value, '%')}
 			</div>
 		),
 		width: 240,
 	},
+	// {
+	// 	title: 'Прочие удержания',
+	// 	dataIndex: 'other_retentions',
+	// 	sorter: (a, b) => sorter(a, b, 'other_retentions'),
+	// 	sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+	// 	filterOptions: true,
+	// 	render: (value) => (
+	// 		<div>
+	// 			{formatPrice(value?.rub, '₽')}
+	// 			<div className="table__arrow">
+	// 				{arrowRender(value?.percent, '%')}
+	// 			</div>
+	// 		</div>
+	// 	),
+	// 	width: 240,
+	// },
 	{
 		title: 'Платная приёмка',
 		dataIndex: 'acceptance',
@@ -412,12 +458,15 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
-			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent, '%')}
+			typeof value === 'object' ?
+				<div>
+					{formatPrice(value?.rub, '₽')}
+					<div className="table__arrow">
+						{arrowRender(value?.percent, '%')}
+					</div>
 				</div>
-			</div>
+			: 
+				<div>{formatPrice(value, '₽')}</div>
 		),
 		width: 240,
 	},
@@ -428,12 +477,15 @@ export const COLUMNS = [
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
-			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent, '%')}
+			typeof value === 'object' ?
+				<div>
+					{formatPrice(value?.rub, '₽')}
+					<div className="table__arrow">
+						{arrowRender(value?.percent, '%')}
+					</div>
 				</div>
-			</div>
+			: 
+				<div>{formatPrice(value, '₽')}</div>
 		),
 		width: 240,
 	},
