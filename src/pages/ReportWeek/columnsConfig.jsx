@@ -322,7 +322,7 @@ export const COLUMNS = [
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.rub, '₽')}
+				{formatPrice(value, '₽')}
 			</div>
 		),
 		width: 240,
@@ -411,8 +411,8 @@ export const COLUMNS = [
 	},
 	{
 		title: 'Реклама',
-		dataIndex: 'reklama',
-		sorter: (a, b) => sorter(a, b, 'reklama'),
+		dataIndex: 'advert_amount',
+		sorter: (a, b) => sorter(a, b, 'advert_amount'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
