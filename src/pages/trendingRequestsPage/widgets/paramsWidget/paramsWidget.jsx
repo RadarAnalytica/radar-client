@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { Form, ConfigProvider, Select, Input, Button, Tag, message } from 'antd'
 import { DatePicker } from '../../features'
 import styles from './paramsWidget.module.css'
 import moment from 'moment'
-import { CacheManager, ApiService } from '../../shared'
+import { ApiService } from '../../shared'
 
 
 const dynamicOptions = [
@@ -23,14 +23,14 @@ const validateDynamicValues = (type, from, to) => {
 }
 
 
-export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible }) => {
+export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible }) => {
     const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
     const [searchState, setSearchState] = useState('')
     const [preferedItemsData, setPreferedItemsData] = useState([])
     const [form] = Form.useForm()
 
 
-    const getPreferedItemsTest = async () => {
+    const getPreferedItemsTest = useCallback(async () => {
         const apiService = new ApiService({
             name: 'trendingQueriesCache',
             defaultTTL: 24 * 60 * 60 * 1000 // 24 часа
@@ -52,7 +52,7 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
         } catch (error) {
             console.error('Error fetching preferred items:', error);
         }
-    }
+    }, [])
     
 
     
@@ -68,12 +68,12 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
     const dynamic_90_days_to = Form.useWatch('dynamic_90_days_to', form)
     const prefered_items = Form.useWatch('prefered_items', form)
 
-    const resetFieldsHandler = () => {
+    const resetFieldsHandler = useCallback(() => {
         form.resetFields()
         setSelectedDate(moment().subtract(30, 'days').format('YYYY-MM-DD'))
-    }
+    }, [form])
 
-    const submitHandler = (fields) => {
+    const submitHandler = useCallback((fields) => {
         setRequestState({
             date_from: selectedDate,
             g30: {
@@ -105,7 +105,7 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
             page: 1,
             limit: 25
         })
-    }
+    }, [selectedDate, setRequestState])
 
     const getPreferedItems = async () => {
         preferedItemsData.length === 0 && setRequestStatus({ ...initRequestStatus, isLoading: true })
@@ -167,7 +167,7 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
         dynamic_90_days_to
     ])
 
-    const tagRender = props => {
+    const tagRender = useCallback(props => {
         const { label, value, closable, onClose } = props;
         return (
             <Tag
@@ -179,9 +179,9 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
                 {label}
             </Tag>
         );
-    };
+    }, [])
 
-    const renderPopup = (menu) => {
+    const renderPopup = useCallback((menu) => {
         let action;
         const acc = preferedItemsData?.reduce((total, item) => {
             return total + item.children.length
@@ -240,9 +240,25 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
                     </Button>}
                 </ConfigProvider>
             </div>)
-    }
+    }, [preferedItemsData, prefered_items, searchState, form])
 
-
+    const memoizedConfigProviderTheme = useMemo(() => ({
+        token: {
+            colorPrimary: '#5329FF'
+        },
+        components: {
+            Form: {
+                labelFontSize: 15
+            },
+            Select: {
+                activeOutlineColor: 'transparent',
+                optionActiveBg: 'transparent',
+                optionFontSize: 16,
+                optionSelectedBg: 'transparent',
+                optionSelectedColor: '#5329FF',
+            }
+        }
+    }), [])
 
     return (
         <div className={styles.widget}>
@@ -270,25 +286,7 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
                     />
                 </div>
                 <ConfigProvider
-                    theme={{
-                        token: {
-                            colorPrimary: '#5329FF'
-                        },
-                        components: {
-                            Form: {
-                                labelFontSize: 15
-                            },
-                            Select: {
-                                //activeBorderColor: 'transparent',
-                                activeOutlineColor: 'transparent',
-                                //hoverBorderColor: 'transparent',
-                                optionActiveBg: 'transparent',
-                                optionFontSize: 16,
-                                optionSelectedBg: 'transparent',
-                                optionSelectedColor: '#5329FF',
-                            }
-                        }
-                    }}
+                    theme={memoizedConfigProviderTheme}
                 >
                     <Form
                         layout='vertical'
@@ -843,4 +841,4 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
             </div>
         </div >
     )
-}
+})

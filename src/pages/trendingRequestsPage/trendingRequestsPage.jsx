@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import styles from './trendingRequests.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -20,7 +20,7 @@ const TrendingRequestsPage = () => {
     const [requestStatus, setRequestStatus] = useState(initRequestStatus)
     const [tablePaginationState, setTablePaginationState] = useState({ limit: 25, page: 1, total_pages: 1 })
 
-    const getTableData = async (request) => {
+    const getTableData = useCallback(async (request) => {
         tableData && setRequestStatus({ ...initRequestStatus, isLoading: true })
         try {
             let res = await fetch(`https://radarmarket.ru/api/web-service/trending-queries/get`, {
@@ -42,13 +42,22 @@ const TrendingRequestsPage = () => {
         } catch {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные таблицы Попробуйте перезагрузить страницу.' })
         }
-    }
+    }, [])
 
     useEffect(() => {
         if (requestState) {
             getTableData(requestState)
         }
-    }, [requestState])
+    }, [requestState, getTableData])
+
+    const handleErrorModalClose = useCallback(() => {
+        setRequestStatus(initRequestStatus)
+    }, [])
+
+    const memoizedHeaderProps = useMemo(() => ({
+        title: tableData ? 'Результаты' : 'Поиск трендовых запросов',
+        titlePrefix: tableData ? 'Поиск трендовых запросов' : undefined
+    }), [tableData])
 
     return (
         <main className={styles.page}>
@@ -61,10 +70,7 @@ const TrendingRequestsPage = () => {
             <section className={styles.page__content}>
                 <div className={styles.page__wrapper}>
                     <div className={styles.page__headerWrapper}>
-                        <Header 
-                            title={tableData ? 'Результаты' : 'Поиск трендовых запросов'}
-                            titlePrefix={tableData ? 'Поиск трендовых запросов' : undefined}
-                        />
+                        <Header {...memoizedHeaderProps} />
                     </div>
                     <div className={styles.page__widgetWrapper}>
                         <ParamsWidget
@@ -93,9 +99,9 @@ const TrendingRequestsPage = () => {
             <ErrorModal
                 open={requestStatus.isError}
                 message={requestStatus.message}
-                onOk={() => setRequestStatus(initRequestStatus)}
-                onClose={() => setRequestStatus(initRequestStatus)}
-                onCancel={() => setRequestStatus(initRequestStatus)}
+                onOk={handleErrorModalClose}
+                onClose={handleErrorModalClose}
+                onCancel={handleErrorModalClose}
                 footer={null}
             />
         </main>

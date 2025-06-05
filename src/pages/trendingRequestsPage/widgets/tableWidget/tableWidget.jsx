@@ -1,5 +1,5 @@
 // Dont forget to renew imports
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import styles from './tableWidget.module.css'
 // Возможно будет удобнее передавать конфиг пропсом
 import { tableConfig } from './config'
@@ -34,7 +34,7 @@ const initSortState = {
 
 
 
-export const TableWidget = ({ rawData, loading, tablePaginationState, setRequestState, requestState, initRequestStatus, setRequestStatus }) => {
+export const TableWidget = React.memo(({ rawData, loading, tablePaginationState, setRequestState, requestState, initRequestStatus, setRequestStatus }) => {
 
 
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
@@ -50,13 +50,13 @@ export const TableWidget = ({ rawData, loading, tablePaginationState, setRequest
         setTableData(rawData)
     }, [rawData])
 
-    const paginationHandler = (page) => {
+    const paginationHandler = useCallback((page) => {
         setRequestState({ ...requestState, page })
-    }
+    }, [requestState, setRequestState])
 
 
     // отслеживаем скролл в контейнере
-    const scrollHandler = () => {
+    const scrollHandler = useCallback(() => {
         if (containerRef && containerRef.current) {
 
             // если скроллим вправо
@@ -74,10 +74,10 @@ export const TableWidget = ({ rawData, loading, tablePaginationState, setRequest
                 setIsEndOfXScroll(false)
             }
         }
-    }
+    }, [])
 
     // хэндлер сортировки
-    const sortButtonClickHandler = (e, value) => {
+    const sortButtonClickHandler = useCallback((e, value) => {
         const { id } = e.currentTarget;
 
         // выключаем сортировку если нажата уже активная клавиша
@@ -94,9 +94,9 @@ export const TableWidget = ({ rawData, loading, tablePaginationState, setRequest
             sortType: id,
         })
         setTableData([...sortTableDataFunc(id, value, rawData)])
-    }
+    }, [sortState, rawData])
 
-    const downloadButtonHandler = async () => {
+    const downloadButtonHandler = useCallback(async () => {
         setIsExelLoading(true)
         try {
             let res = await fetch(`https://radarmarket.ru/api/web-service/trending-queries/download`, {
@@ -118,7 +118,21 @@ export const TableWidget = ({ rawData, loading, tablePaginationState, setRequest
             setIsExelLoading(false)
             setRequestStatus({...initRequestStatus, isError: true, message: 'Не удалось скачать таблицу.'})
         }
-    }
+    }, [requestState, initRequestStatus, setRequestStatus])
+
+    const memoizedPaginationTheme = useMemo(() => ({
+        token: {
+            colorText: '#5329FF',
+            lineWidth: 0,
+        },
+        components: {
+            Pagination: {
+                itemActiveBg: '#EEEAFF',
+                itemBg: '#F7F7F7',
+                itemColor: '#8C8C8C',
+            }
+        }
+    }), [])
 
     if (loading) {
         return (
@@ -249,21 +263,7 @@ export const TableWidget = ({ rawData, loading, tablePaginationState, setRequest
                     })}
 
                 </div>
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorText: '#5329FF',
-                            lineWidth: 0,
-                        },
-                        components: {
-                            Pagination: {
-                                itemActiveBg: '#EEEAFF',
-                                itemBg: '#F7F7F7',
-                                itemColor: '#8C8C8C',
-                            }
-                        }
-                    }}
-                >
+                <ConfigProvider theme={memoizedPaginationTheme}>
                     <Pagination
                         defaultCurrent={1}
                         current={tablePaginationState.page}
@@ -277,16 +277,16 @@ export const TableWidget = ({ rawData, loading, tablePaginationState, setRequest
             </div>
         </>
     )
-}
+})
 
-const CopyButton = ({ url }) => {
+const CopyButton = React.memo(({ url }) => {
 
     const [isCopied, setIsCopied] = useState(false)
 
-    const copyHandler = () => {
+    const copyHandler = useCallback(() => {
         navigator.clipboard.writeText(url).catch(err => console.log('Error'))
         setIsCopied(true)
-    }
+    }, [url])
 
     useEffect(() => {
         let timeout;
@@ -314,4 +314,4 @@ const CopyButton = ({ url }) => {
             }
         </button>
     )
-}
+})
