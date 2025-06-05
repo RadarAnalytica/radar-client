@@ -84,12 +84,12 @@ export default function ReportWeek() {
 		let summary = {};
 
 		const summarySchema = {
-			avg_price: (summary) => summary.sales / summary.total_sales,
-			avg_purchase_pct: (summary) => (summary.avg_purchase_pct / summary.total_sales) * 100,
-			avg_profit_per_piece: (summary) => (summary.total_sales / summary.order_count) * 100,
-			roi: (summary) => (summary.profit / (summary.cost + summary.ad_expenses + summary.logistics + summary.penalties - summary.compensation + summary.commission + summary.storage) ) * 100,
-			margin: (summary) => summary.sales - summary.cost,
-			drr: (summary) => (summary.total_ad / summary.sales) * 100,
+			// avg_price: (summary) => summary.sales / summary.total_sales,
+			// avg_purchase_pct: (summary) => (summary.avg_purchase_pct / summary.total_sales) * 100,
+			// avg_profit_per_piece: (summary) => (summary.total_sales / summary.order_count) * 100,
+			// roi: (summary) => (summary.profit / (summary.cost + summary.ad_expenses + summary.logistics + summary.penalties - summary.compensation + summary.commission + summary.storage) ) * 100,
+			// margin: (summary) => summary.sales - summary.cost,
+			// drr: (summary) => (summary.total_ad / summary.sales) * 100,
 		}
 
 		let rows = weeks.filter((el) => period.includes(el.week));
@@ -135,26 +135,26 @@ export default function ReportWeek() {
 					const summaryValue = typeof row[key] === 'object' ? row[key]?.rub : row[key];
 					// console.log('summaryValue', summaryValue, typeof el.data[key] === 'object')
 					if (!summary[key]){
-						summary[key] = summaryValue
+						summary[key] = Number(summaryValue)
 					} else {
-						summary[key] += summaryValue
+						summary[key] += Number(summaryValue)
 					}
 			}
 		}
 
+		// for (const key in summary){
+		// 	if (key in summarySchema){
+		// 		summary[key] = summarySchema[key](summary)
+		// 	}
+		// }
 
-		for (const key in summary){
-			if (key in summarySchema){
-				summary[key] = summarySchema[key](summary)
-			}
-		}
-
+		// примвоение уникальных значений
 		summary = {
 			...summary,
 			key: 'summary',
-			week_label: 'Итого за период'
+			week_label: 'Итого за период',
+			drr: (summary.advert_amount / summary.gains) * 100,
 		}
-		console.log(summary)
 		rows.unshift(summary);
 		setTableRows(rows);
 	}
@@ -257,6 +257,9 @@ export default function ReportWeek() {
 						<Filters
 							timeSelect={false}
 							setLoading={setLoading}
+							brandSelect={false}
+							articleSelect={false}
+							groupSelect={false}
 						/>
 						{/* <FilterReportWeek period={period} periodOptions={periodOptions} setPeriod={setPeriod} setLoading={setLoading} setData={setData} /> */}
 					</div>
