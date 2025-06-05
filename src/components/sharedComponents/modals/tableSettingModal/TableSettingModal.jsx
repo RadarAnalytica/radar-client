@@ -19,6 +19,7 @@ export default function TableSettingModal({
 	columnsList,
 	tableColumns,
 	setTableColumns,
+	filter = true
 }) {
 	const [shownColumns, setShownColumns] = useState(columnsList);
 	const [checked, setChecked] = useState(tableColumns.map((el) => el.dataIndex));
@@ -173,7 +174,7 @@ export default function TableSettingModal({
 				width={1200}
 				footer={false}
 			>
-				<Flex className={styles.filter} gap={8}>
+				{filter && <Flex className={styles.filter} gap={8}>
 					<Form
 						className={styles.form} 
 						onFinish={filterColumns} 
@@ -232,9 +233,11 @@ export default function TableSettingModal({
 					{/* <Button type="link" size="large" onClick={checkAllHandler}>
 						Выбрать все
 					</Button> */}
-				</Flex>
+				</Flex>}
 				<div className={styles.check_all}>
-					<Button type='link' size='small' onClick={сheckAllHandler}>Выбрать все</Button>
+					<Button type='link' size='small' onClick={сheckAllHandler}>
+						{shownColumns.every( (el) => checked.includes(el.dataIndex)) ? 'Снять все' : 'Выбрать все'}
+					</Button>
 					{/* <Checkbox
 						className={styles.item}
 						indeterminate={indeterminateAll}

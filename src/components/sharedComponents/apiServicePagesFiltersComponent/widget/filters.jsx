@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, WeekSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
@@ -14,7 +14,11 @@ export const Filters = ({
   skuFrequency = false,
   brandSelect = true,
   articleSelect = true,
-  groupSelect = true
+  groupSelect = true,
+  weekSelect = false,
+  weekOptions,
+  weekValue,
+  weekHandler
 }) => {
 
   // ------ база ------//
@@ -162,6 +166,16 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
+        {weekSelect && weekOptions.length > 0 && <div className={styles.filters__inputWrapper}>
+            <WeekSelect
+              selectId='week'
+              label='Период'
+              value={weekValue}
+              optionsData={weekOptions}
+              handler={weekHandler}
+            />
+          </div>
+        }
         {skuFrequency &&
           <FrequencyModeSelect />
         }

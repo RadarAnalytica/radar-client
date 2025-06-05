@@ -29,11 +29,11 @@ export default function ReportWeek() {
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 	const [primaryCollect, setPrimaryCollect] = useState(null)
-	const [period, setPeriod] = useState([])
-	const [periodOptions, setPeriodOptions] = useState([])
+	const [weekSelected, setWeekSelected] = useState([{value: 'Все'}])
+	const [weekOptions, setweekOptions] = useState([])
 
-	function periodHandler(data){
-		setPeriod(data)
+	function weekSelectedHandler(data){
+		setWeekSelected(data)
 	}
 
 	const updateDataReportWeek = async () => {
@@ -55,16 +55,8 @@ export default function ReportWeek() {
 					}
 				}
 
-				const options = weeks.map((el) => ({
-						value: el.week,
-						label: el.week_label
-				}))
-				options.unshift({value: 'all', label: 'Весь период'});
-				setPeriodOptions(options)
-				setPeriod(options.map((el) => el.value))
-
 				setData(weeks);
-				dataToTableData(weeks);
+				//dataToTableData(weeks);
 				// setData(rows)
 			}
 		} catch (e) {
@@ -80,20 +72,31 @@ export default function ReportWeek() {
 			setTableRows([]);
 			return
 		}
-		
+
+		const options = weeks.map((el, i) => (
+			{
+				key: i,
+				value: i,
+				label: el.week_label
+			}
+		))
 		let summary = {};
 
-		const summarySchema = {
+		// const summarySchema = {
 			// avg_price: (summary) => summary.sales / summary.total_sales,
 			// avg_purchase_pct: (summary) => (summary.avg_purchase_pct / summary.total_sales) * 100,
 			// avg_profit_per_piece: (summary) => (summary.total_sales / summary.order_count) * 100,
 			// roi: (summary) => (summary.profit / (summary.cost + summary.ad_expenses + summary.logistics + summary.penalties - summary.compensation + summary.commission + summary.storage) ) * 100,
 			// margin: (summary) => summary.sales - summary.cost,
 			// drr: (summary) => (summary.total_ad / summary.sales) * 100,
+		// }
+
+		let rows = [];
+		if (weekSelected.length > 0 && !weekSelected.find((el) => el.value === 'Все' )){
+			rows = weeks.filter((el, i) => !!weekSelected.find((elem) => elem.value === i));
+		} else {
+			rows = weeks;
 		}
-
-		let rows = weeks.filter((el) => period.includes(el.week));
-
 		rows = rows.map((el, i) => {
 			let row = {
 				key: i,
@@ -154,14 +157,16 @@ export default function ReportWeek() {
 			key: 'summary',
 			week_label: 'Итого за период',
 			drr: (summary.advert_amount / summary.gains) * 100,
+
 		}
 		rows.unshift(summary);
 		setTableRows(rows);
+		setweekOptions(options);
 	}
 
 	useEffect(() => {
 		dataToTableData(data)
-	}, [period, data])
+	}, [weekSelected, data])
 
 	useEffect(() => {
 			if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
@@ -169,12 +174,6 @@ export default function ReportWeek() {
 					updateDataReportWeek()
 			}
 	}, [authToken]);
-
-	// useEffect(() => {
-	// 		if (activeBrand && activeBrand.is_primary_collect) {
-	// 				updateDataReportWeek(authToken, selectedRange, activeBrand.id)
-	// 		}
-	// }, [activeBrand, selectedRange, filters]);
 
 	useEffect(() => {
 		setPrimaryCollect(activeBrand?.is_primary_collect)
@@ -257,11 +256,14 @@ export default function ReportWeek() {
 						<Filters
 							timeSelect={false}
 							setLoading={setLoading}
-							brandSelect={false}
-							articleSelect={false}
-							groupSelect={false}
+							// brandSelect={false}
+							// articleSelect={false}
+							// groupSelect={false}
+							weekSelect={true}
+							weekValue={weekSelected}
+							weekOptions={weekOptions}
+							weekHandler={weekSelectedHandler}
 						/>
-						{/* <FilterReportWeek period={period} periodOptions={periodOptions} setPeriod={setPeriod} setLoading={setLoading} setData={setData} /> */}
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider
