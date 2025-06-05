@@ -130,28 +130,14 @@ export const AuthProvider = ({ children }) => {
   //     user && user.id ? ServiceFunctions.getOneUser(user.id, authToken.token).then(data => setUserImage(data.image)) : setUserImage()
   // }, [])
   const logout = async () => {
-    // document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=${URL.split('://')[1]}`;
-    // document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${URL.split('://')[1]}`;
-    // document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=${window.location.hostname}`;
-    // document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${window.location.hostname}`;
+    document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=${URL.split('://')[1]}`;
+    document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${URL.split('://')[1]}`;
+    document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=${window.location.hostname}`;
+    document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=.${window.location.hostname}`;
     // Delete cookie using the hook's deleteCookie function
     deleteCookie();
     
-    // Additional cookie deletion for different domains/paths to ensure complete removal
-    const domains = [
-      URL.split('://')[1],
-      `.${URL.split('://')[1]}`,
-      window.location.hostname,
-      `.${window.location.hostname}`
-    ];
     
-    const paths = ['/', '/main', '/auth'];
-    
-    domains.forEach(domain => {
-      paths.forEach(path => {
-        document.cookie = `radar=;max-age=-1;expires=Thu, 01 Jan 1970 00:00:00 GMT;domain=${domain};path=${path}`;
-      });
-    });
 
     setAuthToken(null);
     setUser(null);
