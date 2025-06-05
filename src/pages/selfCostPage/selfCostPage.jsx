@@ -61,7 +61,6 @@ const SelfCostPage = () => {
             if (b.photo) return 1;
             return 0;
         })
-        console.log(sortedData.length)
         setTableData([...sortedData])
         setFilteredTableData([...sortedData])
         //prevShop.current = activeBrand
