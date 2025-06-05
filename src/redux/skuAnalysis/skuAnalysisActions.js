@@ -24,7 +24,7 @@ export const fetchSkuAnalysisMainChartData = createAsyncThunk(
           dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
+        //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
         dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
         return data;
       } catch (e) {
@@ -55,7 +55,7 @@ export const fetchSkuAnalysisSkuData = createAsyncThunk(
           dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
+        //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
         dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
         return data;
       } catch {
@@ -85,7 +85,7 @@ export const fetchSkuAnalysisIndicatorsData = createAsyncThunk(
           dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
+        //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
         dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
         return data;
       } catch {
@@ -115,7 +115,7 @@ export const fetchSkuAnalysisMainTableData = createAsyncThunk(
           dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
+        //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
         dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
         return data;
       } catch {
@@ -145,7 +145,7 @@ export const fetchSkuAnalysisByColorTableData = createAsyncThunk(
           dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
+        //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
         dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
         return data;
       } catch {
@@ -175,7 +175,7 @@ export const fetchSkuAnalysisByWarehousesTableData = createAsyncThunk(
           dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
+        //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
         dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
         return data;
       } catch {
@@ -205,7 +205,7 @@ export const fetchSkuAnalysisBySizeTableData = createAsyncThunk(
           dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
         }
         const data = await res.json();
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
+        //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
         dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
         return data;
       } catch {
