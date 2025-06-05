@@ -128,7 +128,9 @@ export default function ReportWeek() {
 				external_expenses: {
 					rub: el.data.external_expenses,
 					percent: el.data.expenses_percent,
-				}
+				},
+				purchases_rub: el.data.purchases.rub,
+				return_quantity: el.data.return.quantity
 
 			}
 			return row
