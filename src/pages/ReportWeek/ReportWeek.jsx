@@ -81,10 +81,7 @@ export default function ReportWeek() {
 			return
 		}
 		
-		const summary = {
-			key: 'summary',
-			week_label: 'Итого за период'
-		};
+		let summary = {};
 
 		const summarySchema = {
 			avg_price: (summary) => summary.sales / summary.total_sales,
@@ -105,13 +102,6 @@ export default function ReportWeek() {
 			}
 			for (const key in el.data){
 				row[key] = el.data[key];
-				const summaryValue = typeof el.data[key] === 'object' ? el.data[key]?.rub : el.data[key];
-				console.log('summaryValue', summaryValue, typeof el.data[key] === 'object')
-				if (!summary[key]){
-					summary[key] = summaryValue
-				} else {
-					summary[key] += summaryValue
-				}
 			}
 
 			// кастомные значения таблицы из данных
@@ -123,6 +113,7 @@ export default function ReportWeek() {
 					rub: el.data.cost_price,
 					percent: el.data.cost_price_percent,
 				},
+				compensation_defects_rub: el.data.compensation_defects.rub,
 				compensation_defects_quantity: el.data.compensation_defects.quantity,
 				compensation_damage_quantity: el.data.compensation_damage.quantity,
 				external_expenses: {
@@ -130,11 +121,27 @@ export default function ReportWeek() {
 					percent: el.data.expenses_percent,
 				},
 				purchases_rub: el.data.purchases.rub,
-				return_quantity: el.data.return.quantity
-
+				purchases_quantity: el.data.purchases.quantity,
+				return_rub: el.data.return.rub,
+				return_quantity: el.data.return.quantity,
+				logistics_straight: el.data.logistics_straight.rub,
+				logistics_reverse: el.data.logistics_reverse.rub,
 			}
 			return row
 		})
+
+		for (const row of rows ){
+			for (const key in row){
+					const summaryValue = typeof row[key] === 'object' ? row[key]?.rub : row[key];
+					// console.log('summaryValue', summaryValue, typeof el.data[key] === 'object')
+					if (!summary[key]){
+						summary[key] = summaryValue
+					} else {
+						summary[key] += summaryValue
+					}
+			}
+		}
+
 
 		for (const key in summary){
 			if (key in summarySchema){
@@ -142,7 +149,13 @@ export default function ReportWeek() {
 			}
 		}
 
-		// rows.unshift(summary);
+		summary = {
+			...summary,
+			key: 'summary',
+			week_label: 'Итого за период'
+		}
+		console.log(summary)
+		rows.unshift(summary);
 		setTableRows(rows);
 	}
 
