@@ -512,10 +512,8 @@ export function useCookie(name) {
   });
 
   const deleteCookie = useCallback(() => {
-    document.cookie = 'radar=; Max-Age=-1;';
+    console.log(name)
     Cookies.remove(name);
-    const url = new URL(URL);
-    Cookies.remove(name, { path: '/', domain: `.${url.hostname}` });
     setValue(null);
   }, [name]);
 
