@@ -33,7 +33,8 @@ export default function ReportWeek() {
 	const [weekOptions, setweekOptions] = useState([])
 
 	function weekSelectedHandler(data){
-		setWeekSelected(data)
+		localStorage.setItem('reportWeekFilterWeek', JSON.stringify(data));
+		setWeekSelected(data);
 	}
 
 	const updateDataReportWeek = async () => {
@@ -163,6 +164,13 @@ export default function ReportWeek() {
 		setTableRows(rows);
 		setweekOptions(options);
 	}
+
+	useEffect(() => {
+		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
+		if (savedFilterWeek){
+			setWeekSelected(JSON.parse(savedFilterWeek))
+		}
+	}, [])
 
 	useEffect(() => {
 		dataToTableData(data)
