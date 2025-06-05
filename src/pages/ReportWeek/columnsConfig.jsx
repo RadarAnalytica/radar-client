@@ -472,8 +472,8 @@ export const COLUMNS = [
 	},
 	{
 		title: 'Все удержания WB',
-		dataIndex: 'compensation_penalties',
-		sorter: (a, b) => sorter(a, b, 'compensation_penalties'),
+		dataIndex: 'wb_retentions_amount',
+		sorter: (a, b) => sorter(a, b, 'wb_retentions_amount'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
