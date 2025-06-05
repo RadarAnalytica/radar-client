@@ -3,6 +3,7 @@ import { Form, ConfigProvider, Select, Input, Button, Tag, message } from 'antd'
 import { DatePicker } from '../../features'
 import styles from './paramsWidget.module.css'
 import moment from 'moment'
+import { CacheManager, ApiService } from '../../shared'
 
 
 const dynamicOptions = [
@@ -27,6 +28,34 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
     const [searchState, setSearchState] = useState('')
     const [preferedItemsData, setPreferedItemsData] = useState([])
     const [form] = Form.useForm()
+
+
+    const getPreferedItemsTest = async () => {
+        const apiService = new ApiService({
+            name: 'trendingQueriesCache',
+            defaultTTL: 24 * 60 * 60 * 1000 // 24 часа
+        });
+        try {
+            const data = await apiService.fetch(
+                'https://radarmarket.ru/api/web-service/trending-queries/subjects-tree',
+                {
+                    onCacheHit: (data) => {
+                        console.log('Using cached data');
+                        setPreferedItemsData(data);
+                    },
+                    onCacheMiss: () => {
+                        console.log('Fetching fresh data');
+                    }
+                }
+            );
+            setPreferedItemsData(data)
+        } catch (error) {
+            console.error('Error fetching preferred items:', error);
+        }
+    }
+    
+
+    
 
     const dynamic_30_days = Form.useWatch('dynamic_30_days', form)
     const dynamic_60_days = Form.useWatch('dynamic_60_days', form)
@@ -84,7 +113,7 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
             let res = await fetch(`https://radarmarket.ru/api/web-service/trending-queries/subjects-tree`, {
                 headers: {
                     'content-type': 'application/json',
-                    'cache-control': 'public, max-age=86400'
+                    'cache-control': 'public, must-revalidate, max-age=86400'
                 }
             })
             if (!res.ok) {
@@ -99,8 +128,11 @@ export const ParamsWidget = ({ setRequestState, initRequestStatus, setRequestSta
     }
 
     useEffect(() => {
-        getPreferedItems()
-    }, [])
+        if (preferedItemsData.length === 0 && !requestStatus.isLoading) {
+            getPreferedItemsTest()
+            //getPreferedItems()
+        }
+    }, [preferedItemsData])
 
     useEffect(() => {
         if (dynamic_30_days || dynamic_60_days || dynamic_90_days) {
