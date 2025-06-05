@@ -512,10 +512,10 @@ export function useCookie(name) {
   });
 
   const deleteCookie = useCallback(() => {
-    // document.cookie = 'radar=; Max-Age=-1;';
-    // Cookies.remove(name, { path: '/' });
-    // const url = new URL(URL);
-    // Cookies.remove(name, { path: '/', domain: `.${url.hostname}` });
+    document.cookie = 'radar=; Max-Age=-1;';
+    Cookies.remove(name);
+    const url = new URL(URL);
+    Cookies.remove(name, { path: '/', domain: `.${url.hostname}` });
     setValue(null);
   }, [name]);
 
