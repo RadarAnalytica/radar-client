@@ -163,7 +163,10 @@ export class ApiService {
 
             // Если данных нет в кэше или требуется обновление, делаем запрос
             onCacheMiss();
-            const response = await fetch(url);
+            const response = await fetch(url, {headers: {
+                'cache-control': 'public, must-revalidate, max-age=86400',
+                'content-type': 'application/json'
+            }});
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

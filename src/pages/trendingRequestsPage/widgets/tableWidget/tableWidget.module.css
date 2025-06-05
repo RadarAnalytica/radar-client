@@ -67,7 +67,8 @@
     align-items: flex-start;
     gap: 20px;
     border-right: 1px solid #E8E8E8;
-    padding: 24px 0;
+    padding: 0;
+    padding-bottom: 24px;
     background: white;
 }
 
@@ -105,6 +106,13 @@
     margin-left: 60px;
 }
 
+.table__headerWrapper {
+    background: white;
+    padding-top: 17px;
+    position: sticky;
+    top: 0
+}
+
 .table__header {
     width: auto;
     background: #F7F6FE;
@@ -116,8 +124,6 @@
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-    position: sticky;
-    top: 17px
 }
 
 .table__header_leftRounded {

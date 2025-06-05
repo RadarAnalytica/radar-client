@@ -21,12 +21,13 @@ const TrendingRequestsPage = () => {
     const [tablePaginationState, setTablePaginationState] = useState({ limit: 25, page: 1, total_pages: 1 })
 
     const getTableData = useCallback(async (request) => {
-        tableData && setRequestStatus({ ...initRequestStatus, isLoading: true })
+        setRequestStatus({ ...initRequestStatus, isLoading: true })
         try {
             let res = await fetch(`https://radarmarket.ru/api/web-service/trending-queries/get`, {
                 method: 'POST',
                 headers: {
-                    'content-type': 'application/json'
+                    'content-type': 'application/json',
+                    'cache-control': 'public, must-revalidate, max-age=86400',
                 },
                 body: JSON.stringify(request)
             })
