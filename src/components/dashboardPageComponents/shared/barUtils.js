@@ -144,18 +144,18 @@ export const getRateIcon = (rate) => {
       </svg>
     )
   }
-  if (parseInt(rate) === 0) {
-    return (
-      <div
-        style={{
-          width: '12px',
-          marginRight: '10px',
-          height: '2px',
-          background: '#8C8C8C'
-        }}
-      ></div>
-    )
-  }
+  // if (parseInt(rate) === 0) {
+  //   return (
+  //     <div
+  //       style={{
+  //         width: '12px',
+  //         marginRight: '10px',
+  //         height: '2px',
+  //         background: '#8C8C8C'
+  //       }}
+  //     ></div>
+  //   )
+  // }
 
   return null
 }
