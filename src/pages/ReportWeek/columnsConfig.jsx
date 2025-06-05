@@ -390,21 +390,47 @@ export const COLUMNS = [
 		width: 240,
 	},
 	{
-		title: 'Прочие удержания',
-		dataIndex: 'other_retentions',
-		sorter: (a, b) => sorter(a, b, 'other_retentions'),
+		title: 'Реклама',
+		dataIndex: 'reklama',
+		sorter: (a, b) => sorter(a, b, 'reklama'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
 		filterOptions: true,
 		render: (value) => (
 			<div>
-				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
-					{arrowRender(value?.percent, '%')}
-				</div>
+				{formatPrice(value, '₽')}
 			</div>
 		),
 		width: 240,
 	},
+	{
+		title: 'ДРР',
+		dataIndex: 'drr',
+		sorter: (a, b) => sorter(a, b, 'drr'),
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+		filterOptions: true,
+		render: (value) => (
+			<div>
+				{formatPrice(value, '%')}
+			</div>
+		),
+		width: 240,
+	},
+	// {
+	// 	title: 'Прочие удержания',
+	// 	dataIndex: 'other_retentions',
+	// 	sorter: (a, b) => sorter(a, b, 'other_retentions'),
+	// 	sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+	// 	filterOptions: true,
+	// 	render: (value) => (
+	// 		<div>
+	// 			{formatPrice(value?.rub, '₽')}
+	// 			<div className="table__arrow">
+	// 				{arrowRender(value?.percent, '%')}
+	// 			</div>
+	// 		</div>
+	// 	),
+	// 	width: 240,
+	// },
 	{
 		title: 'Платная приёмка',
 		dataIndex: 'acceptance',
