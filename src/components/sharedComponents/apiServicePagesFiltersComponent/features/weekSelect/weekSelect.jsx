@@ -73,7 +73,6 @@ export const WeekSelect = (
 
     const tagRender = props => {
         const { label, value, closable, onClose } = props;
-        // console.log(la)
         const onPreventMouseDown = event => {
             event.preventDefault();
             event.stopPropagation();
@@ -92,7 +91,6 @@ export const WeekSelect = (
 
     const selectHandler = value => {
         const isAllOptionIndex = value.findIndex(_ => _ === 'Все')
-        console.log('selectHandler', value, isAllOptionIndex)
         if ((isAllOptionIndex !== -1 && isAllOptionIndex === value.length - 1) || value.length === 0) {
             setSelectState([{ value: 'Все', id: 0 }])
             return
