@@ -158,8 +158,11 @@ export default function ReportWeek() {
 			key: 'summary',
 			week_label: 'Итого за период',
 			drr: (summary.advert_amount / summary.gains) * 100,
-
+			wb_retentions_amount: summary.wb_retentions_amount + summary.storage + summary.penalties + summary.wb_commission,
+			avg_spp: (summary.avg_spp / summary.sales) * 100,
+			purchases_rub: (summary.purchases_rub / summary.sales) * 100
 		}
+		
 		rows.unshift(summary);
 		setTableRows(rows);
 		setweekOptions(options);
