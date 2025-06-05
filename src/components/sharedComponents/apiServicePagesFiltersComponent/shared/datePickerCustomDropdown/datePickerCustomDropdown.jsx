@@ -45,7 +45,6 @@ const DatePickerCustomDropdown = (props) => {
                             activeOutlineColor: 'white !important',
                             controlOutline: 'white !important',
                             activeBorderColor: 'white !important',
-                            activeOutlineColor: 'white !important',
                             hoverBorderColor: 'white !important',
                             optionActiveBg: 'white',
                             optionFontSize: 16,
@@ -53,7 +52,7 @@ const DatePickerCustomDropdown = (props) => {
                             optionSelectedColor: '#5329FF',
                             paddingSM: 0,
                             controlOutlineWidth: 0,
-                            controlOutline: 'none',
+                            //controlOutline: 'none',
                         }
                     }
                 }}
