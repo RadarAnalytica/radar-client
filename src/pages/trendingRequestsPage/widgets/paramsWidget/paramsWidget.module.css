@@ -1,0 +1,237 @@
+.widget {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background: white;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    padding: 24px;
+    position: relative
+}
+.widget__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer
+}
+
+.widget__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.widget__openButton {
+    border: none;
+    background: transparent;
+}
+
+.widget__openButton_opened svg {
+    transform: rotate(0deg);
+    transition: all .2s ease-in-out;
+}
+
+.widget__openButton_closed svg {
+    transform: rotate(180deg);
+    transition: all .2s ease-in-out;
+}
+
+.widget__body {
+    width: 100%;
+    overflow: hidden;
+    height: auto;
+    max-height: 0;
+    transform: scale(0) translateY(-100);
+    opacity: .25;
+    transform-origin: top;
+    transition: all .3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+   justify-content: flex-start;
+   align-items: flex-start;
+   gap: 16px;
+}
+
+.widget__body_visible {
+    margin-top: 16px;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transition: all .3s ease-in-out;
+}
+
+.widget__datapicker {
+  padding-bottom: 16px;
+  width: 100%;
+  border-bottom: 1px solid #0000001A;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px
+}
+
+.widget__loaderWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* backdrop-filter: blur(2px); */
+    z-index: 9999;
+    border-radius: 16px;
+    background: rgba(255,255,255,.4);
+    
+  }
+  
+
+/* FORM */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+}
+
+.form__fieldset {
+    width: 100%;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #0000001A;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.form__fieldset:last-of-type {
+    border: none;
+}
+
+.form__fieldsetHeader {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.form__fieldsetTitle {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+}
+
+.form__fieldsetText {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A50;
+}
+
+.form__fieldsetLayout {
+    width: 100%;
+    display: grid;
+}
+
+.form__fieldsetLayout_3cols {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.form__fieldsetLayout_5cols {
+    grid-template-columns: repeat(5, 1fr);
+    align-items: stretch;
+    gap: 10px;
+}
+
+.form__doudleWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.form__twoInputsWrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 10px;
+}
+
+.form__doubledLabel {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1A1A1A
+}
+
+.form__controlButtonsWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.form__dateSelectWrapper {
+  width: 240px;
+  position: relative;
+}
+
+.form__multiLabel {
+  max-width: 170px;
+  overflow: hidden;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  line-height: 100%;
+  /* display: flex; */
+  /* align-items: center; */
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.form__dynamicSelectBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 8px;
+}
+.form__dynamicSelectWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
