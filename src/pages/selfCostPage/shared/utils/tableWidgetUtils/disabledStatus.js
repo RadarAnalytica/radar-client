@@ -21,7 +21,7 @@ export const getSaveButtonStatus = (product, compare, historyItemsToDelete) => {
   // 4 - Проверяем есть ли изменившиеся значения или новые добавленные даты
   product?.self_cost_change_history?.forEach((i, id) => {
       const compareObj = compare.self_cost_change_history[id]
-      if (i.id && (i.cost !== compareObj.cost || i.fulfillment !== compareObj.fulfillment)) {
+      if (i?.id && (i?.cost !== compareObj?.cost || i?.fulfillment !== compareObj?.fulfillment)) {
           status = false
       }
       if (!i.id) {
