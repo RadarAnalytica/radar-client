@@ -30,17 +30,34 @@ const SkuIdPage = () => {
 
 
     useEffect(() => {
-        if (params?.id) {
-            dispatch(skuAnalysisActions.setDataStatus({ isLoading: true, isisError: false, message: '' }))
-            dispatch(fetchSkuAnalysisSkuData({ id: params.id, selectedRange }))
-            dispatch(fetchSkuAnalysisMainChartData({ id: params.id, selectedRange }))
-            dispatch(fetchSkuAnalysisIndicatorsData({ id: params.id, selectedRange }))
-            dispatch(fetchSkuAnalysisMainTableData({ id: params.id, selectedRange }))
-            dispatch(fetchSkuAnalysisByColorTableData({ id: params.id, selectedRange }))
-            dispatch(fetchSkuAnalysisByWarehousesTableData({ id: params.id, selectedRange }))
-            dispatch(fetchSkuAnalysisBySizeTableData({ id: params.id, selectedRange }))
-        }
-    }, [params, selectedRange])
+        const loadSkuAnalysisData = async () => {
+            if (!params?.id) return;
+            
+            try {
+                dispatch(skuAnalysisActions.setDataStatus({ isLoading: true, isError: false, message: '' }));
+                
+                await Promise.all([
+                    dispatch(fetchSkuAnalysisSkuData({ id: params.id, selectedRange })),
+                    dispatch(fetchSkuAnalysisMainChartData({ id: params.id, selectedRange })),
+                    dispatch(fetchSkuAnalysisIndicatorsData({ id: params.id, selectedRange })),
+                    dispatch(fetchSkuAnalysisMainTableData({ id: params.id, selectedRange })),
+                    dispatch(fetchSkuAnalysisByColorTableData({ id: params.id, selectedRange })),
+                    dispatch(fetchSkuAnalysisByWarehousesTableData({ id: params.id, selectedRange })),
+                    dispatch(fetchSkuAnalysisBySizeTableData({ id: params.id, selectedRange }))
+                ]);
+                
+                dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
+            } catch (error) {
+                dispatch(skuAnalysisActions.setDataStatus({ 
+                    isLoading: false, 
+                    isError: true, 
+                    message: 'Failed to load SKU analysis data. Please try again.' 
+                }));
+            }
+        };
+
+        loadSkuAnalysisData();
+    }, [params, selectedRange]);
 
     return (
         <main className={styles.page}>

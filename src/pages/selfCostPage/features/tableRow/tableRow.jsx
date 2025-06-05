@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import styles from './tableRow.module.css'
 import { RowChart, BodyInput } from '../../entities/index'
 import { Button, ConfigProvider, Input } from "antd"
@@ -34,7 +34,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [rowSaveButtonForLastHistoryParamsDisabledStatus, setRowSaveButtonForLastHistoryParamsDisabledStatus] = useState(true)
     const [addDateButtonDisabledStatus, setAddDateButtonDisabledStatus] = useState(true)
     const [isUpdating, setIsUpdating] = useState(false)
-    const customRuLocale = {
+    const customRuLocale = useMemo(() => ({
         ...ru,
         localize: {
             ...ru.localize,
@@ -43,18 +43,20 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 return monthName.charAt(0).toUpperCase() + monthName.slice(1);
             },
         },
-    };
-    const disabledDatesArray = [{ after: new Date() }]
-    product?.self_cost_change_history?.forEach(_ => disabledDatesArray.push(new Date(_.date)))
+    }), []);
+    const disabledDatesArray = useMemo(() => {
+        const dates = [{ after: new Date() }];
+        product?.self_cost_change_history?.forEach(_ => dates.push(new Date(_.date)));
+        return dates;
+    }, [product?.self_cost_change_history]);
 
-    const handleDayClick = (day) => {
+    const handleDayClick = useCallback((day) => {
         setSelectedDate(day)
         setIsDatePickerVisible(false);
-    };
+    }, []);
 
-    const updateDefaultParams = async () => {
+    const updateDefaultParams = useCallback(async () => {
         setDataStatus({ ...initDataStatus, isLoading: true })
-        //setIsUpdating(true)
         const newProduct = {
             product: product.product,
             user: product.user,
@@ -76,7 +78,6 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             if (!res.ok) {
                 const parsedData = await res.json()
                 setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
-                //setIsUpdating(false)
                 return;
             }
             const parsedData = await res.json()
@@ -86,18 +87,13 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)
-            //resetSearch()
-            //setIsUpdating(false)
-            //getTableData(authToken, shopId)
         } catch {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то пошло не так :(' })
-            //setIsUpdating(false)
         }
-    }
+    }, [product, authToken, initDataStatus, setDataStatus, setTableData, tableData, setIsSuccess]);
 
-    const updateHistoryParams = async (shouldUpdateDefaultParams = true) => {
+    const updateHistoryParams = useCallback(async (shouldUpdateDefaultParams = true) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
-        //setIsUpdating(true)
         const object = {
             items_to_update: product.self_cost_change_history.map(i => ({
                 product: product.product,
@@ -123,7 +119,6 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             if (!res.ok) {
                 const parsedData = await res.json()
                 setDataStatus({ ...initDataStatus, isError: true, message: parsedData.detail || 'Что-то пошло не так :(' })
-                //setIsUpdating(false)
                 return;
             }
 
@@ -137,8 +132,6 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                 setTableData(newTableData)
                 setDataStatus({ ...initDataStatus })
                 setIsSuccess(true)
-                //resetSearch()
-                //setIsUpdating(false)
             }
 
             if (shouldUpdateDefaultParams) {
@@ -146,11 +139,10 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             }
         } catch {
             setDataStatus({ ...initDataStatus, isError: true, message: 'Что-то1 пошло не так :(' })
-            //setIsUpdating(false)
         }
-    }
+    }, [product, historyItemsToDelete, authToken, initDataStatus, setDataStatus, setTableData, tableData, setIsSuccess, updateDefaultParams]);
 
-    const deleteButtonClickHandler = (item) => {
+    const deleteButtonClickHandler = useCallback((item) => {
         let newProduct = product;
         const index = newProduct.self_cost_change_history.findIndex(_ => moment(_.date).format('YYYY-MM-DD') === moment(item.date).format('YYYY-MM-DD'));
         if (index !== -1) {
@@ -160,19 +152,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             newProduct.self_cost_change_history.splice(index, 1)
             setProduct({ ...newProduct })
         }
-        // let newTableData = tableData;
-        // const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
-        // if (mainIndex !== -1) {
-        //     let oldProduct = newTableData[mainIndex];
-        //     const oldIndex = oldProduct.self_cost_change_history.findIndex(_ => moment(_.date).format('YYYY-MM-DD') === moment(item.date).format('YYYY-MM-DD'));
-        //     if (oldIndex !== -1) {
-        //         oldProduct.self_cost_change_history.splice(oldIndex, 1)
-        //     }
-        //     console.log(oldProduct.self_cost_change_history)
-        //     newTableData[mainIndex] = oldProduct;
-        //     setTableData(JSON.parse(JSON.stringify(newTableData)))
-        // }
-    }
+    }, [product, historyItemsToDelete]);
 
     useEffect(() => {
         if (selectedDate) {
@@ -185,20 +165,9 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             newProduct.self_cost_change_history.push({ date: moment(selectedDate).format('YYYY-MM-DD'), cost: 0, fulfillment: 0 })
             newProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
             setProduct({ ...newProduct })
-
-            // let newTableData = tableData;
-            // const mainIndex = newTableData.findIndex(_ => _.product === newProduct.product);
-            // if (mainIndex !== -1) {
-            //     let oldProduct = newTableData[mainIndex];
-            //     oldProduct.self_cost_change_history.push({ date: moment(selectedDate).format('YYYY-MM-DD'), cost: 0, fulfillment: 0 })
-            //     oldProduct.self_cost_change_history.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)
-            //     newTableData[mainIndex] = oldProduct;
-            //     setTableData(JSON.parse(JSON.stringify(newTableData)))
-            // }
             setSelectedDate(null)
         }
-    }, [selectedDate])
-
+    }, [selectedDate, product])
 
     useEffect(() => {
         if (product && currentProduct) {
@@ -226,14 +195,20 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
         setProduct(JSON.parse(JSON.stringify(currentProduct)))
     }, [currentProduct])
 
-
+    const memoizedProduct = useMemo(() => product, [product]);
+    const memoizedIsOpen = useMemo(() => isOpen, [isOpen]);
+    const memoizedIsDatePickerVisible = useMemo(() => isDatePickerVisible, [isDatePickerVisible]);
+    const memoizedSaveButtonStatus = useMemo(() => saveButtonStatus, [saveButtonStatus]);
+    const memoizedRowSaveButtonDisabledStatus = useMemo(() => rowSaveButtonDisabledStatus, [rowSaveButtonDisabledStatus]);
+    const memoizedRowSaveButtonForLastHistoryParamsDisabledStatus = useMemo(() => rowSaveButtonForLastHistoryParamsDisabledStatus, [rowSaveButtonForLastHistoryParamsDisabledStatus]);
+    const memoizedAddDateButtonDisabledStatus = useMemo(() => addDateButtonDisabledStatus, [addDateButtonDisabledStatus]);
 
     return product && (
         <>
             {/* Основная строка */}
             <div
                 className={styles.row}
-                style={{ borderBottom: isOpen ? 'none' : '1px solid #E8E8E8' }}
+                style={{ borderBottom: memoizedIsOpen ? 'none' : '1px solid #E8E8E8' }}
             >
                 {/* photo and title */}
                 <div className={`${styles.row__item} ${styles.row__item_wide}`}>
@@ -245,27 +220,6 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             onError={(e) => {
                                 e.target.onerror = null;
                                 e.target.style.display = 'none'
-                                // let newTableData = tableData;
-                                // const currIndex = tableData.findIndex(_ => _.product === product.product);
-                                // newTableData[currIndex].photo = null
-                                // newTableData.sort((a, b) => {
-                                //     if (a.photo && b.photo) {
-                                //         if (a.cost && b.cost) return 0;
-                                //         if (a.cost) return -1;
-                                //         if (b.cost) return 1;
-                                //         return 0;
-                                //     }
-                                //     if (!a.photo && !b.photo) {
-                                //         if (a.cost && b.cost) return 0;
-                                //         if (a.cost) return -1;
-                                //         if (b.cost) return 1;
-                                //         return 0;
-                                //     }
-                                //     if (a.photo) return -1;
-                                //     if (b.photo) return 1;
-                                //     return 0;
-                                // })
-                                // setTableData([...newTableData])
                             }}
                         />}
                     </div>
@@ -300,7 +254,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     }}
                                     style={{ height: '44px' }}
                                     size='large'
-                                    disabled={isOpen}
+                                    disabled={memoizedIsOpen}
                                     placeholder={currentProduct.cost ? currentProduct.cost : 'Не установлено'}
                                 />
                             </div>
@@ -318,13 +272,13 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         setProduct({ ...newProduct })
                                     }}
                                     size='large'
-                                    disabled={isOpen}
+                                    disabled={memoizedIsOpen}
                                 />
 
                                 <button
                                     onClick={updateDefaultParams}
                                     className={styles.row__saveButton}
-                                    disabled={rowSaveButtonDisabledStatus}
+                                    disabled={memoizedRowSaveButtonDisabledStatus}
                                 >
                                     <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M6 4.25C5.58579 4.25 5.25 4.58579 5.25 5C5.25 5.41421 5.58579 5.75 6 5.75H12C12.4142 5.75 12.75 5.41421 12.75 5C12.75 4.58579 12.4142 4.25 12 4.25H6Z" fill="#5329FF" />
@@ -364,7 +318,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     }}
                                     style={{ height: '44px' }}
                                     size='large'
-                                    disabled={isOpen}
+                                    disabled={memoizedRowSaveButtonForLastHistoryParamsDisabledStatus}
                                     placeholder={currentProduct.self_cost_change_history?.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1]?.cost}
                                 />
                             </div>
@@ -384,13 +338,13 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         setProduct({ ...newProduct })
                                     }}
                                     size='large'
-                                    disabled={isOpen}
+                                    disabled={memoizedRowSaveButtonForLastHistoryParamsDisabledStatus}
                                 />
 
                                 <button
                                     onClick={() => updateHistoryParams(false)}
                                     className={styles.row__saveButton}
-                                    disabled={rowSaveButtonForLastHistoryParamsDisabledStatus}
+                                    disabled={memoizedRowSaveButtonForLastHistoryParamsDisabledStatus}
                                 >
                                     <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M6 4.25C5.58579 4.25 5.25 4.58579 5.25 5C5.25 5.41421 5.58579 5.75 6 5.75H12C12.4142 5.75 12.75 5.41421 12.75 5C12.75 4.58579 12.4142 4.25 12 4.25H6Z" fill="#5329FF" />
@@ -405,9 +359,9 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
 
                 {/* Кнопка показать больше */}
                 {product.self_cost_change_history &&
-                    <button className={styles.row__moreButton} onClick={() => setIsOpen(!isOpen)}>
+                    <button className={styles.row__moreButton} onClick={() => setIsOpen(!memoizedIsOpen)}>
                         Добавить
-                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" className={isOpen ? `${styles.row__openIcon} ${styles.row__openIcon_isOpen}` : styles.row__openIcon}>
+                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" className={memoizedIsOpen ? `${styles.row__openIcon} ${styles.row__openIcon_isOpen}` : styles.row__openIcon}>
                             <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                         </svg>
                     </button>
@@ -417,7 +371,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             {/* body */}
             {product.self_cost_change_history &&
                 <div
-                    className={isOpen ? `${styles.row__body} ${styles.row__body_visible}` : styles.row__body}
+                    className={memoizedIsOpen ? `${styles.row__body} ${styles.row__body_visible}` : styles.row__body}
                 >
 
 
@@ -445,14 +399,14 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
 
                         {/* кнопка добавить дату */}
                         <div className={styles.row__bodyMainItem}>
-                            <button className={styles.row__dateAddButton} onClick={() => setIsDatePickerVisible(!isDatePickerVisible)} disabled={addDateButtonDisabledStatus}>
+                            <button className={styles.row__dateAddButton} onClick={() => setIsDatePickerVisible(!memoizedIsDatePickerVisible)} disabled={memoizedAddDateButtonDisabledStatus}>
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10.75 6C10.75 5.58579 10.4142 5.25 10 5.25C9.58579 5.25 9.25 5.58579 9.25 6V9.25H6C5.58579 9.25 5.25 9.58579 5.25 10C5.25 10.4142 5.58579 10.75 6 10.75H9.25V14C9.25 14.4142 9.58579 14.75 10 14.75C10.4142 14.75 10.75 14.4142 10.75 14V10.75H14C14.4142 10.75 14.75 10.4142 14.75 10C14.75 9.58579 14.4142 9.25 14 9.25H10.75V6Z" fill="#5329FF" />
                                     <path fillRule="evenodd" clipRule="evenodd" d="M20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10ZM18.5 10C18.5 14.6944 14.6944 18.5 10 18.5C5.30558 18.5 1.5 14.6944 1.5 10C1.5 5.30558 5.30558 1.5 10 1.5C14.6944 1.5 18.5 5.30558 18.5 10Z" fill="#5329FF" />
                                 </svg>
                                 Добавить
                             </button>
-                            {isDatePickerVisible &&
+                            {memoizedIsDatePickerVisible &&
                                 <div className={styles.row__dayPickerWrapper} ref={datePickerContainerRef}>
                                     <DayPicker
                                         maxDate={new Date()}
@@ -461,7 +415,6 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         month={month}
                                         onMonthChange={setMonth}
                                         captionLayout="dropdown"
-                                        //className={styles.customDayPicker}
                                         locale={customRuLocale}
                                         onDayClick={handleDayClick}
                                         disabled={disabledDatesArray}
@@ -563,7 +516,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                             size='large'
                             className={styles.row__bodySaveButton}
                             onClick={updateHistoryParams}
-                            disabled={saveButtonStatus}
+                            disabled={memoizedSaveButtonStatus}
                             loading={isUpdating || dataStatus.isLoading}
                             style={{ width: '109px', height: '45px' }}
                         >
@@ -576,4 +529,4 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     )
 }
 
-export default TableRow;
+export default React.memo(TableRow);
