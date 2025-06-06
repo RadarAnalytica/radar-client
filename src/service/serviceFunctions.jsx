@@ -862,7 +862,7 @@ export const ServiceFunctions = {
   },
 
   getCostTemplate: async (token) => {
-    const res = await fetch(`${URL}/api/report/cost/get-template`, {
+    const res = await fetch(`${URL}/api/report/self-buyout/get-template`, {
       method: 'GET',
       headers: {
         accept: 'application/json',

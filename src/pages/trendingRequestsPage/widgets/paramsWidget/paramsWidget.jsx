@@ -178,16 +178,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     const tagRender = useCallback(props => {
         const { label, value, closable, onClose } = props;
         return (
-            // <div 
-            // style={{
-            //     border: '1px solid black',
-            //     width: '100%',
-            //     display: 'flex',
-            // }}>
-            //     {/* {label} */}
-            //     <p className={styles.form__multiLabel} title={label}>{label}</p>
-            // </div>
-            // <>{label}</>
             <Tag
                 //color={value}
                 closable={false}
@@ -195,7 +185,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 bordered={false}
                 style={{ background: 'transparent', color: 'black', fontSize: '16px' }}
             >
-                <p className={styles.form__multiLabel} title={label}>{label}</p>
+                <p className={styles.form__multiLabel} title={label.props.children}>{label}</p>
             </Tag>
         );
     }, [])
