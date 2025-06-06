@@ -59,10 +59,11 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 					}}
 				>
 					<Table
+						virtual
 						columns={columns}
 						dataSource={data}
 						pagination={false}
-						tableLayout="fixed"
+						// tableLayout="fixed"
 						rowSelection={rowSelection}
 						showSorterTooltip={false}
 						sticky={true}
