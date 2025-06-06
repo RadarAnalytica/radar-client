@@ -1065,13 +1065,13 @@ export const ServiceFunctions = {
         },
         body: formData,
       });
-
-      if (response.ok) {
-        return await response.json();
-      } else {
-        console.error('Ошибка при загрузке файла:', response.statusText);
-        throw new Error(response.statusText);
-      }
+      return response;
+      // if (response.ok) {
+      //   return await response.json();
+      // } else {
+      //   console.error('Ошибка при загрузке файла:', response.statusText);
+      //   throw new Error(response.statusText);
+      // }
 
     } catch (error) {
       console.error('Ошибка сети или запроса:', error);
