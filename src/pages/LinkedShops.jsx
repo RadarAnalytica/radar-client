@@ -558,7 +558,7 @@ const LinkedShops = () => {
             placeholder={"Например, тестовый"}
             label={"Название магазина"}
             required={true}
-            callback={(e) => setBrandName(e.target.value)}
+            callback={(e) => setBrandName(e.target.value.trim())}
           />
           <InputField
             type={"text"}
