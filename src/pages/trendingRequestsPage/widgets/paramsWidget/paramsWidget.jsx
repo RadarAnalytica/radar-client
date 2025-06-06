@@ -24,7 +24,7 @@ const validateDynamicValues = (type, from, to) => {
 
 
 export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible }) => {
-    const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
+    const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
     const [searchState, setSearchState] = useState('')
     const [preferedItemsData, setPreferedItemsData] = useState([])
     const [form] = Form.useForm()
@@ -70,12 +70,13 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
 
     const resetFieldsHandler = useCallback(() => {
         form.resetFields()
-        setSelectedDate(moment().subtract(30, 'days').format('YYYY-MM-DD'))
+        setSelectedDate(moment().subtract(30, 'days').format('DD.MM.YYYY'))
     }, [form])
 
     const submitHandler = useCallback((fields) => {
         setRequestState({
-            date_from: selectedDate,
+            date_from: moment(selectedDate, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+            //date_from: selectedDate,
             g30: {
                 start: fields.dynamic_30_days_from || 0,
                 end: fields.dynamic_30_days_to || 0

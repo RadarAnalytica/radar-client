@@ -50,7 +50,7 @@ export const DatePicker = ({ selectedDate, setSelectedDate }) => {
     }, [isDropdownOpen]);
 
     const handleDayClick = (day) => {
-        setSelectedDate(format(day, 'yyyy-MM-dd'))
+        setSelectedDate(format(day, 'dd.MM.yyyy'))
         setIsDropdownOpen(false)
     };
 
@@ -72,6 +72,7 @@ export const DatePicker = ({ selectedDate, setSelectedDate }) => {
                 popupMatchSelectWidth={false}
                 getPopupContainer={(triggerNode) => triggerNode.parentNode}
                 value={selectedDate}
+                //value={selectedDate}
                 // onClick={() => {
                 //     if (!isDropdownOpen) {
                 //         //setIsDropdownOpen(true)
