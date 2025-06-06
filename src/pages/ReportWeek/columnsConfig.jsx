@@ -40,7 +40,7 @@ function summaryRender(value, row) {
 }
 
 function arrowRender(value, literal) {
-	let status = '';
+	let status = 'table__arrow_static';
 	if (value > 0) {
 		status = 'table__arrow_positive';
 	}
