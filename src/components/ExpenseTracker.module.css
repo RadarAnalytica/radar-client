@@ -7,7 +7,7 @@
   width: 100%;
   height: auto;
   height: 78vh;
-  overflow: clip;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .rowContainer::-webkit-scrollbar {
-  width: 6px; 
+  width: 6px;
 }
 
 .rowContainer::-webkit-scrollbar-thumb {
@@ -28,7 +28,7 @@
   border-radius: 6px;
 }
 
-  
+
 .table {
   display: flex;
   flex-direction: column;
@@ -36,248 +36,304 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  margin-bottom: 16px;
+  margin: 16px 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.table__row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  height: 50px;
+  padding: 4px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.table__item {
+  flex-grow: 1;
+  flex-shrink: 2;
+  width: 13%;
+  min-width: 100px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 14px;
+  color: rgba(140, 140, 140, 1);
+  font-weight: 500;
+  line-height: 1.25;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  @media (max-width: 1680px) {
+    width: 12%
+  }
+
+  @media (max-width: 1550px) {
+    min-width: 100px;
+  }
+
+  @media (max-width: 1400px) {
+    min-width: 80px;
+  }
+}
+
+.table__item_actions {
+  gap: 8px;
+  min-width: 75px;
+}
+
+.table__item input {
+  width: 100%;
+}
+
+.table__item_wide {
+  min-width: 160px;
 }
 
 
-  
+
 .headerRow,
 .dataRow {
-    display: flex;
-    gap: clamp(4px, 1vw, 16px);
-    align-items: center;
-    padding: 8px 12px;
+  display: flex;
+  gap: clamp(4px, 1vw, 16px);
+  align-items: center;
+  padding: 8px 12px;
 }
-  
-  .headerRow {
-    font-size: 14px;
-    color: rgba(140, 140, 140, 1);
-    font-weight: 500;
-    line-height: 1.25;
-  }
-  
-  @media screen and (min-width: 2000px) {
-    .headerRow{
-      font-size: 0.875rem;
-    }
-  }
-  
-  .yearCell {
-    width: 230px;
-  }
 
-  @media screen and (min-width: 2000px) {
-    .yearCell {
-      width: 330px;
-    }
+.headerRow {
+  font-size: 14px;
+  color: rgba(140, 140, 140, 1);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+@media screen and (min-width: 2000px) {
+  .headerRow {
+    font-size: 0.875rem;
   }
-  
-  /* .monthCell {
+}
+
+.yearCell {
+  min-width: 150px;
+}
+
+@media screen and (min-width: 2000px) {
+  .yearCell {
+    min-width: 330px;
+  }
+}
+
+/* .monthCell {
     width: 130px;
   } */
-  
+
+.articleCell {
+  width: 160px;
+}
+
+@media screen and (min-width: 2000px) {
   .articleCell {
-    width: 160px;
+    width: 200px;
   }
+}
 
-  @media screen and (min-width: 2000px) {
-    .articleCell {
-      width: 200px;
-    }
-  }
+.articleCell input {
+  width: 100%;
+}
 
-  .articleCell input{
-    width: 160px;
-  }
-
-  @media screen and (min-width: 2000px) {
-    .articleCell input{
-      width: 200px;
-    }
-  }
-  
-  .expenseCell {
-    width: 130px;
-  }
-
-  @media screen and (min-width: 2000px) {
-    .expenseCell {
-      width: 180px;
-    }
-  }
-  
-  .totalCell {
-    width: 130px;
-    text-align: right;
-  }
-
-  @media screen and (min-width: 2000px) {
-    .totalCell {
-      width: 180px;
-    }
-
-  }
-
-  .inputWrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .input {
-    padding: 6px 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
+@media screen and (min-width: 2000px) {
+  .articleCell input {
     width: 100%;
-    min-width: 80px;
-    max-width: 130px;
-    background: white;
+  }
+}
+
+.expenseCell {
+  width: 130px;
+}
+
+@media screen and (min-width: 2000px) {
+  .expenseCell {
+    width: 180px;
+  }
+}
+
+.totalCell {
+  width: 130px;
+  text-align: right;
+}
+
+@media screen and (min-width: 2000px) {
+  .totalCell {
+    width: 180px;
   }
 
-  @media screen and (min-width: 2000px) {
-    .input{
-      padding: 0.375rem 0.5rem;
-      font-size: 0.875rem;
-      max-width: 200px;
-    }
+}
+
+.inputWrapper {
+  width: 100%;
+  position: relative;
+  display: inline-block;
+}
+
+.input {
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+  background: white;
+}
+
+@media screen and (min-width: 2000px) {
+  .input {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.875rem;
+    max-width: 200px;
   }
-  
+}
+
+.rubSign {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #ccc;
+  font-size: 16px;
+  pointer-events: none;
+  transition: color 0.3s;
+}
+
+@media screen and (min-width: 2000px) {
   .rubSign {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    color: #ccc;
-    font-size: 16px;
-    pointer-events: none;
-    transition: color 0.3s;
+    font-size: 1rem;
   }
-  
-  @media screen and (min-width: 2000px) {
-    .rubSign{
-      font-size: 1rem;
-    }
-  }
+}
 
-  .input.active,
-  .rubSign.active {
-    color: #000;
-  }
-  
-  .expense {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 4px;
-    padding: 6px 8px;
-    background-color: white;
-  }
-  
-  .currency {
-    margin-left: 4px;
-    color: #666;
-  }
-  
-  .addButton {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 12px;
-    padding: 9px ;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    background-color: #1A1A1A0D;
-  }
+.input.active,
+.rubSign.active {
+  color: #000;
+}
 
-  .addButton::after {
-    content: "Добавить строку";
-    position: absolute;
-    bottom: 9%;
-    left: 300%;
-    transform: translateX(-50%);
-    background-color: rgba(255, 255, 255, 1); 
-    color: rgba(140, 140, 140, 1);
-    padding: 4px;
-    border-radius: 4px;
-    font-size: 11px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s;
-    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+.expense {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  padding: 6px 8px;
+  background-color: white;
+}
 
-  }
-  
-  .addButton:hover::after {
-    opacity: 1;
-    visibility: visible;
-  }
-  
-  .addButton:hover {
-    color: #333;
-  }
-  
-  .plusIcon {
-    width: 16px;
-    height: 16px;
-  }
-  
-  /* Add hover states */
-  .select:hover,
-  .input:hover,
-  .expense:hover {
-    border-color: #bbb;
-  }
-  
-  /* Add focus states */
-  .input:focus {
-    outline: none;
-    border-color: #999;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
-  }
+.currency {
+  margin-left: 4px;
+  color: #666;
+}
 
-  .select {
-    /* width: 100%; */
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: white;
-    cursor: pointer;
-  }
+.addButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: #1A1A1A0D;
+}
 
-  .select option {
-    color: #000000; /* Set default option text color to black */
-  }
+.addButton::after {
+  content: "Добавить строку";
+  position: absolute;
+  bottom: 9%;
+  left: 300%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(140, 140, 140, 1);
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
 
-  .textInSelect {
-    color: #000000; /* Set default option text color to black */
-  }
+}
 
-  .selected {
-    color: #000000; /* Set the text color of the selected option to black */
-  }
- 
-  .expense {
-    position: relative;
-  }
-  
-  .expense::after {
-    content: '₽';
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
+.addButton:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
 
-  .deleteIcon {
-    display: flex;
-    align-items: center;
-    min-width: 24px;
-    margin-left: 4px;
+.addButton:hover {
+  color: #333;
+}
+
+.plusIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Add hover states */
+.select:hover,
+.input:hover,
+.expense:hover {
+  border-color: #bbb;
+}
+
+/* Add focus states */
+.input:focus {
+  outline: none;
+  border-color: #999;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.select {
+  /* width: 100%; */
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.select option {
+  color: #000000;
+  /* Set default option text color to black */
+}
+
+.textInSelect {
+  color: #000000;
+  /* Set default option text color to black */
+}
+
+.selected {
+  color: #000000;
+  /* Set the text color of the selected option to black */
+}
+
+.expense {
+  position: relative;
+}
+
+.expense::after {
+  content: '₽';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.deleteIcon {
+  display: flex;
+  align-items: center;
+  min-width: 24px;
+  margin-left: 4px;
 }
 
 .deleteIcon img {
@@ -286,20 +342,19 @@
   cursor: pointer;
 }
 
-  .saveIcon {
-    display: flex;
-    align-items: center;
-    min-width: 24px;
-    margin-left: 8px;
+.saveIcon {
+  display: flex;
+  align-items: center;
+  min-width: 24px;
 }
 
-  .saveIcon img {
-    width: 20px;
-    height: 20px;
-    filter: brightness(0) saturate(100%) invert(55%) sepia(9%) saturate(13%) hue-rotate(201deg) brightness(94%) contrast(91%);
-    cursor: pointer;
+.saveIcon img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) saturate(100%) invert(55%) sepia(9%) saturate(13%) hue-rotate(201deg) brightness(94%) contrast(91%);
+  cursor: pointer;
 }
-  
+
 .saveIconActive {
   opacity: 1;
   transform: scale(1.1);
@@ -323,7 +378,7 @@
   .yearCell {
     width: 210px;
   }
-  
+
   /* .monthCell {
     width: 120px;
   }
@@ -332,14 +387,14 @@
     width: 150px;
   }
 
-  .articleCell input{
+  .articleCell input {
     width: 150px;
   }
-  
+
   .expenseCell {
     width: 120px;
   }
-  
+
   .totalCell {
     width: 120px;
     text-align: right;

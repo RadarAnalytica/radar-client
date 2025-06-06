@@ -63,7 +63,7 @@ export const tableConfig = [
     {
         tableName: 'Прибыль',
         values: [
-            {ruName: 'К выплате', engName: 'commissionWB', units: '₽', isSortable: true},
+            {ruName: 'К выплате', engName: 'toPayoff', units: '₽', isSortable: true},
             {ruName: 'Маржинальная прибыль', engName: 'marginalProfit', units: '₽', isSortable: false},
             {ruName: 'Средняя прибыль', engName: 'averageProfit', units: '₽', isSortable: false},
             {ruName: 'Рентабельность реализованной продукции', engName: 'profitabilityOfProductsSold', units: '%', isSortable: false},
