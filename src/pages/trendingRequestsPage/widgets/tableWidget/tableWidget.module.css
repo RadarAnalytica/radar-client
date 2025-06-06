@@ -8,7 +8,7 @@
     border-bottom-left-radius: 16px;
     overflow: scroll;
     display: flex;;
-    justify-content: flex-start;
+    justify-content: stretch;
     align-items: flex-start;
     position: relative;
     transform: scale(100%);
@@ -81,6 +81,7 @@
 
 .table_rightMargin {
     padding-right: 17px;
+    width: 100%;
 }
 
 .table:first-of-type {
@@ -110,18 +111,18 @@
     background: white;
     padding-top: 17px;
     position: sticky;
-    top: 0
+    top: 0;
+    width: 100%
 }
 
 .table__header {
-    width: auto;
     background: #F7F6FE;
     min-height: 80px;
     max-height: 80px;
     height: 80px;
     padding: 17px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: stretch;
     align-items: center;
     gap: 20px;
 }
@@ -136,12 +137,15 @@
 
 .table__headerItem {
     height: 100%;
-    width: auto;
+    /* width: auto;
     min-width: 200px;
-    max-width: 200px;
+    max-width: 200px; */
+    width: 200px;
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-grow: 2;
+    flex-shrink: 1;
 }
 
 .table__headerItem_wide {
@@ -188,9 +192,10 @@
 }
 
 .table__rowItem {
-    width: auto;
+    /* width: auto;
     min-width: 200px;
-    max-width: 200px;
+    max-width: 200px; */
+    width: 200px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -203,6 +208,8 @@
     color: #1A1A1A;
     padding-right: 20px;
     overflow: hidden;
+    flex-grow: 2;
+    flex-shrink: 1;
 }
 
 .table__rowTitle {
