@@ -1,10 +1,33 @@
 import { ConfigProvider, Table, Button } from 'antd';
+import { useRef, useState, useEffect } from 'react';
 import styles from './ReportTable.module.css';
 
 export default function ReportTable({ loading, columns, data, rowSelection = false }) {
+	const containerRef = useRef(null);
+  const [scrollY, setScrollY] = useState(0);
+
+	useEffect(() => {
+		const updateHeight = () => {
+      if (containerRef.current) {
+				// ref контейнера который занимает всю высоту
+        const container = containerRef.current;
+        
+				// расчет высоты шапки и добавление отступов контейнера
+        const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
+        const paddings = 32;
+        
+				// расчет и сохранение высоты таблицы
+        const availableHeight = container.offsetHeight - headerHeight - paddings;
+        setScrollY(availableHeight);
+      }
+    };
+
+    updateHeight();
+
+	}, [columns, data])
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} ref={containerRef}>
 			{loading && <div className={styles.loadingContainer}
 					style={{
 					position: 'relative',
@@ -74,7 +97,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							expandedRowClassName: styles.expandRow,
 						}}
 						// scroll={{ x: 'max-content' }}
-						scroll={{ x: 'max-content', y: '100%' }}
+						scroll={{ x: 'max-content', y: scrollY }}
 					></Table>
 				</ConfigProvider>
 			</div>}
