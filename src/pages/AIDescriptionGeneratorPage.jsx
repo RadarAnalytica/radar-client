@@ -99,6 +99,7 @@ const AiDescriptionGeneratorPage = () => {
   ) => {
     setIsLoading(true);
     setIsLoadingNext(true);
+    setIsButtonVisible(false);
     setErrorMessage('');
     try {
       const data = await ServiceFunctions.postAiDescriptionGeneratorKeywords(
@@ -119,23 +120,24 @@ const AiDescriptionGeneratorPage = () => {
         addKeyword(result);
         setInputValue('');
         setNextStep(true);
-        setIsLoading(false);
       } else {
         setErrorMessage('Не правильная ссылка или артикул.');
         handleShowModalError();
       }
     } catch (e) {
+      console.error('Ошибка сервера:', e)
       if (e.response) {
         setErrorMessage(`Ошибка сервера.`);
       } else if (e.request) {
         setErrorMessage('Ошибка сети: сервер не отвечает.');
       } else {
-        console.log(e.errorMessage);
         setErrorMessage(`Ошибка: не удалось найти данный товар.`);
       }
-      console.error(e);
+      handleShowModalError();
     } finally {
+      setIsLoading(false);
       setIsLoadingNext(false);
+      setIsButtonVisible(true);
     }
   };
 
@@ -231,8 +233,6 @@ const AiDescriptionGeneratorPage = () => {
       .map((link) => link.trim())
       .filter((link) => link !== '');
     if (linksArray.length != 0 && linksArray.length < 6) {
-      setIsLoading(true);
-      setIsButtonVisible(false);
       await updateAiDescriptionGeneratorKeyword(authToken, linksArray);
     } else {
       setErrorMessage('Введите до 5 ссылок на карточки товаров конкурентов');
