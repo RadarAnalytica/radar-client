@@ -83,28 +83,28 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
             date_from: moment(selectedDate, 'DD.MM.YYYY').format('YYYY-MM-DD'),
             //date_from: selectedDate,
             g30: {
-                start: fields.dynamic_30_days_from || 0,
-                end: fields.dynamic_30_days_to || 0
+                start: parseInt(fields.dynamic_30_days_from) || 0,
+                end: parseInt(fields.dynamic_30_days_to) || 0
             },
             g60: {
-                start: fields.dynamic_60_days_from || 0,
-                end: fields.dynamic_60_days_to || 0
+                start: parseInt(fields.dynamic_60_days_from) || 0,
+                end: parseInt(fields.dynamic_60_days_to) || 0
             },
             g90: {
-                start: fields.dynamic_90_days_from || 0,
-                end: fields.dynamic_90_days_to || 0
+                start: parseInt(fields.dynamic_90_days_from) || 0,
+                end: parseInt(fields.dynamic_90_days_to) || 0
             },
             frequency: {
-                start: fields.frequency_30_days_from || 0,
-                end: fields.frequency_30_days_to || 0
+                start: parseInt(fields.frequency_30_days_from) || 0,
+                end: parseInt(fields.frequency_30_days_to) || 0
             },
             goods_quantity: {
-                start: fields.sku_quantity_from || 0,
-                end: fields.sku_quantity_to || 0
+                start: parseInt(fields.sku_quantity_from) || 0,
+                end: parseInt(fields.sku_quantity_to) || 0
             },
             freq_per_good: {
-                start: fields.requests_to_sku_30_days_from || 0,
-                end: fields.requests_to_sku_30_days_to || 0
+                start: parseInt(fields.requests_to_sku_30_days_from) || 0,
+                end: parseInt(fields.requests_to_sku_30_days_to) || 0
             },
             subjects: fields.prefered_items, // [0]
             query: fields.request_example,

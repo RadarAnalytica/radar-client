@@ -26,6 +26,7 @@ const ReportBuyBack = () => {
   const [showModalError, setShowModalError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isFileUpload, setIsFileUpload] = useState();
+  const [ uploadError, setUploadError ] = useState('')
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -46,7 +47,12 @@ const ReportBuyBack = () => {
   const handleCostPriceSave = async () => {
     setIsFileUpload(true);
     try {
-      await ServiceFunctions.postSelfBuyoutUpdate(authToken, file);
+      let res = await ServiceFunctions.postSelfBuyoutUpdate(authToken, file);
+      if (!res.ok) {
+        res = await res.json()
+        setErrorMessage(res.message || 'Не удалось загрузить данные');
+        return setShowModalError(true)
+      }
       setShowSuccessPopup(true);
       getselfBuyoutStatus()
     } catch (error) {
