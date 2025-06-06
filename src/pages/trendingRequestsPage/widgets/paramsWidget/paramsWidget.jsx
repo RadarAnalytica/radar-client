@@ -74,6 +74,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     }, [form])
 
     const submitHandler = useCallback((fields) => {
+
         setRequestState({
             date_from: moment(selectedDate, 'DD.MM.YYYY').format('YYYY-MM-DD'),
             //date_from: selectedDate,
@@ -94,12 +95,12 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 end: fields.frequency_30_days_to || 0
             },
             goods_quantity: {
-                start: fields.frequency_30_days_from || 0,
-                end: fields.frequency_30_days_from || 0
+                start: fields.sku_quantity_from || 0,
+                end: fields.sku_quantity_to || 0
             },
             freq_per_good: {
-                start: fields.frequency_30_days_from || 0,
-                end: fields.frequency_30_days_from || 0
+                start: fields.requests_to_sku_30_days_from || 0,
+                end: fields.requests_to_sku_30_days_to || 0
             },
             subjects: fields.prefered_items, // [0]
             query: fields.request_example,
