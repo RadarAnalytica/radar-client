@@ -162,11 +162,11 @@ export default function ReportWeek() {
 			drr: (summary.advert_amount / summary.gains) * 100,
 			// wb_retentions_amount: summary.wb_retentions_amount + summary.storage + summary.penalties + summary.wb_commission,
 			avg_spp: summary.avg_spp / rows.length,
-			purchases_rub: summary.purchases_rub / rows.length,
+			// purchases_rub: summary.purchases_rub / summary.purchases_quantity,
 			return_on_investment: summary.return_on_investment / rows.length,
 			marginality: summary.marginality / rows.length,
 			purchase_percent: summary.purchase_percent / rows.length,
-			logistics_per_product: (summary.logistics_total + summary.logistics_reverse + summary.logistics_straight) / summary.sales,
+			logistics_per_product: summary.logistics_total / summary.sales,
 			cost_price_per_one: summary.cost_price / summary.sales,
 			profit_per_one: summary.profit / summary.sales
 
