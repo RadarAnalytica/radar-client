@@ -10,6 +10,7 @@
     padding: 24px;
     position: relative
 }
+
 .widget__header {
     width: 100%;
     display: flex;
@@ -55,9 +56,9 @@
     transition: all .3s ease-in-out;
     display: flex;
     flex-direction: column;
-   justify-content: flex-start;
-   align-items: flex-start;
-   gap: 16px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
 }
 
 .widget__body_visible {
@@ -71,14 +72,14 @@
 }
 
 .widget__datapicker {
-  padding-bottom: 16px;
-  width: 100%;
-  border-bottom: 1px solid #0000001A;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 8px
+    padding-bottom: 16px;
+    width: 100%;
+    border-bottom: 1px solid #0000001A;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px
 }
 
 .widget__loaderWrapper {
@@ -93,10 +94,10 @@
     /* backdrop-filter: blur(2px); */
     z-index: 9999;
     border-radius: 16px;
-    background: rgba(255,255,255,.4);
-    
-  }
-  
+    background: rgba(255, 255, 255, .4);
+
+}
+
 
 /* FORM */
 
@@ -202,21 +203,20 @@
 }
 
 .form__dateSelectWrapper {
-  width: 240px;
-  position: relative;
+    width: 240px;
+    position: relative;
 }
 
 .form__multiLabel {
-  max-width: 170px;
-  overflow: hidden;
-  text-wrap: nowrap;
-  text-overflow: ellipsis;
-  line-height: 100%;
-  /* display: flex; */
-  /* align-items: center; */
-  margin: 0;
-  padding: 0;
-  font-size: 16px;
+    display: block;
+    max-width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 110%;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
 }
 
 .form__dynamicSelectBlock {
@@ -227,6 +227,7 @@
     align-items: stretch;
     gap: 8px;
 }
+
 .form__dynamicSelectWrapper {
     width: 100%;
     display: flex;
@@ -235,3 +236,13 @@
     gap: 10px;
 }
 
+:global(.ant-select-selection-overflow) {
+   flex-wrap: nowrap !important;
+   justify-content: stretch !important;
+}
+:global(.ant-select-selection-overflow-item) span {
+    display: flex;
+    width: 100% !important;
+    flex-shrink: 1;
+    flex-grow: 1;
+}

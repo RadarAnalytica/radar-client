@@ -14,11 +14,15 @@ const dynamicOptions = [
 const validateDynamicValues = (type, from, to) => {
     const parsedFrom = parseInt(from)
     const parsedTo = parseInt(to)
-    switch (type) {
-        case 'Рост': return parsedTo > parsedFrom
-        case 'Падение': return parsedFrom > parsedTo
-    }
 
+    if (from && to) {
+        switch (type) {
+            case 'Рост': return parsedTo > parsedFrom
+            case 'Падение': return parsedFrom > parsedTo
+        }
+    } else {
+        return true
+    }
     return false
 }
 
@@ -109,25 +113,27 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         })
     }, [selectedDate, setRequestState])
 
-    const getPreferedItems = async () => {
-        preferedItemsData.length === 0 && setRequestStatus({ ...initRequestStatus, isLoading: true })
-        try {
-            let res = await fetch(`https://radarmarket.ru/api/web-service/trending-queries/subjects-tree`, {
-                headers: {
-                    'content-type': 'application/json',
-                    'cache-control': 'public, must-revalidate, max-age=86400'
-                }
-            })
-            if (!res.ok) {
-                return setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список предметов. Попробуйте перезагрузить страницу.' })
-            }
-            res = await res.json()
-            setPreferedItemsData(res)
-            setRequestStatus(initRequestStatus)
-        } catch {
-            setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список предметов. Попробуйте перезагрузить страницу.' })
-        }
-    }
+
+    // Прямой запрос, не удалять. Старина М, 06.06.25
+    // const getPreferedItems = async () => {
+    //     preferedItemsData.length === 0 && setRequestStatus({ ...initRequestStatus, isLoading: true })
+    //     try {
+    //         let res = await fetch(`https://radarmarket.ru/api/web-service/trending-queries/subjects-tree`, {
+    //             headers: {
+    //                 'content-type': 'application/json',
+    //                 'cache-control': 'public, must-revalidate, max-age=86400'
+    //             }
+    //         })
+    //         if (!res.ok) {
+    //             return setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список предметов. Попробуйте перезагрузить страницу.' })
+    //         }
+    //         res = await res.json()
+    //         setPreferedItemsData(res)
+    //         setRequestStatus(initRequestStatus)
+    //     } catch {
+    //         setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить список предметов. Попробуйте перезагрузить страницу.' })
+    //     }
+    // }
 
     useEffect(() => {
         if (preferedItemsData.length === 0 && !requestStatus.isLoading) {
@@ -172,13 +178,24 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     const tagRender = useCallback(props => {
         const { label, value, closable, onClose } = props;
         return (
+            // <div 
+            // style={{
+            //     border: '1px solid black',
+            //     width: '100%',
+            //     display: 'flex',
+            // }}>
+            //     {/* {label} */}
+            //     <p className={styles.form__multiLabel} title={label}>{label}</p>
+            // </div>
+            // <>{label}</>
             <Tag
-                color={value}
+                //color={value}
                 closable={false}
                 onClose={onClose}
-                style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center', border: 'none' }}
+                bordered={false}
+                style={{ background: 'transparent', color: 'black', fontSize: '16px' }}
             >
-                {label}
+                <p className={styles.form__multiLabel} title={label}>{label}</p>
             </Tag>
         );
     }, [])
@@ -346,7 +363,13 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
                                                                 if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''));
+                                                                    return Promise.reject(new Error(''))
+                                                                }
+                                                                if (value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_to')) {
+                                                                    return Promise.resolve()
+                                                                }
+                                                                if (!value && getFieldValue('dynamic_30_days') && getFieldValue('dynamic_30_days_to')) {
+                                                                    return Promise.resolve()
                                                                 }
                                                                 if (value && getFieldValue('dynamic_30_days') && getFieldValue('dynamic_30_days_to')) {
                                                                     return validateDynamicValues(getFieldValue('dynamic_30_days'), value, getFieldValue('dynamic_30_days_to')) ? Promise.resolve() : Promise.reject(new Error(''))
@@ -371,6 +394,12 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                                 const regex = /^(|\d+)$/ // только целые числа
                                                                 if (value && !regex.test(value)) {
                                                                     return Promise.reject(new Error(''));
+                                                                }
+                                                                if (value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_from')) {
+                                                                    return Promise.resolve()
+                                                                }
+                                                                if (!value && getFieldValue('dynamic_30_days') && getFieldValue('dynamic_30_days_from')) {
+                                                                    return Promise.resolve()
                                                                 }
                                                                 if (value && getFieldValue('dynamic_30_days') && getFieldValue('dynamic_30_days_from')) {
                                                                     return validateDynamicValues(getFieldValue('dynamic_30_days'), getFieldValue('dynamic_30_days_from'), value) ? Promise.resolve() : Promise.reject(new Error(''))
@@ -428,7 +457,13 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
                                                                 if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''));
+                                                                    return Promise.reject(new Error(''))
+                                                                }
+                                                                if (value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_to')) {
+                                                                    return Promise.resolve()
+                                                                }
+                                                                if (!value && getFieldValue('dynamic_60_days') && getFieldValue('dynamic_60_days_to')) {
+                                                                    return Promise.resolve()
                                                                 }
                                                                 if (value && getFieldValue('dynamic_60_days') && getFieldValue('dynamic_60_days_to')) {
                                                                     return validateDynamicValues(getFieldValue('dynamic_60_days'), value, getFieldValue('dynamic_60_days_to')) ? Promise.resolve() : Promise.reject(new Error(''))
@@ -452,7 +487,13 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
                                                                 if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''));
+                                                                    return Promise.reject(new Error(''))
+                                                                }
+                                                                if (value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_from')) {
+                                                                    return Promise.resolve()
+                                                                }
+                                                                if (!value && getFieldValue('dynamic_60_days') && getFieldValue('dynamic_60_days_from')) {
+                                                                    return Promise.resolve()
                                                                 }
                                                                 if (value && getFieldValue('dynamic_60_days') && getFieldValue('dynamic_60_days_from')) {
                                                                     return validateDynamicValues(getFieldValue('dynamic_60_days'), getFieldValue('dynamic_60_days_from'), value) ? Promise.resolve() : Promise.reject(new Error(''))
@@ -511,7 +552,13 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
                                                                 if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''));
+                                                                    return Promise.reject(new Error(''))
+                                                                }
+                                                                if (value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_to')) {
+                                                                    return Promise.resolve()
+                                                                }
+                                                                if (!value && getFieldValue('dynamic_90_days') && getFieldValue('dynamic_90_days_to')) {
+                                                                    return Promise.resolve()
                                                                 }
                                                                 if (value && getFieldValue('dynamic_90_days') && getFieldValue('dynamic_90_days_to')) {
                                                                     return validateDynamicValues(getFieldValue('dynamic_90_days'), value, getFieldValue('dynamic_90_days_to')) ? Promise.resolve() : Promise.reject(new Error(''))
@@ -535,7 +582,13 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
                                                                 if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''));
+                                                                    return Promise.reject(new Error(''))
+                                                                }
+                                                                if (value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_from')) {
+                                                                    return Promise.resolve()
+                                                                }
+                                                                if (!value && getFieldValue('dynamic_90_days') && getFieldValue('dynamic_90_days_from')) {
+                                                                    return Promise.resolve()
                                                                 }
                                                                 if (value && getFieldValue('dynamic_90_days') && getFieldValue('dynamic_90_days_from')) {
                                                                     return validateDynamicValues(getFieldValue('dynamic_90_days'), getFieldValue('dynamic_90_days_from'), value) ? Promise.resolve() : Promise.reject(new Error(''))
@@ -578,9 +631,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         if (value && !regex.test(value)) {
                                                             return Promise.reject(new Error(''));
                                                         }
-                                                        if (!value && getFieldValue('frequency_30_days_to')) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
+                                                        // if (!value && getFieldValue('frequency_30_days_to')) {
+                                                        //     return Promise.reject(new Error(''));
+                                                        // }
                                                         return Promise.resolve();
                                                     },
                                                 }),
@@ -601,9 +654,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         if (value && !regex.test(value)) {
                                                             return Promise.reject(new Error(''));
                                                         }
-                                                        if (!value && getFieldValue('frequency_30_days_from')) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
+                                                        // if (!value && getFieldValue('frequency_30_days_from')) {
+                                                        //     return Promise.reject(new Error(''));
+                                                        // }
                                                         return Promise.resolve();
                                                     },
                                                 }),
@@ -629,9 +682,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         if (value && !regex.test(value)) {
                                                             return Promise.reject(new Error(''));
                                                         }
-                                                        if (!value && getFieldValue('sku_quantity_to')) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
+                                                        // if (!value && getFieldValue('sku_quantity_to')) {
+                                                        //     return Promise.reject(new Error(''));
+                                                        // }
                                                         return Promise.resolve();
                                                     },
                                                 }),
@@ -652,9 +705,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         if (value && !regex.test(value)) {
                                                             return Promise.reject(new Error(''));
                                                         }
-                                                        if (!value && getFieldValue('sku_quantity_from')) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
+                                                        // if (!value && getFieldValue('sku_quantity_from')) {
+                                                        //     return Promise.reject(new Error(''));
+                                                        // }
                                                         return Promise.resolve();
                                                     },
                                                 }),
@@ -680,9 +733,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         if (value && !regex.test(value)) {
                                                             return Promise.reject(new Error(''));
                                                         }
-                                                        if (!value && getFieldValue('requests_to_sku_30_days_to')) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
+                                                        // if (!value && getFieldValue('requests_to_sku_30_days_to')) {
+                                                        //     return Promise.reject(new Error(''));
+                                                        // }
                                                         return Promise.resolve();
                                                     },
                                                 }),
@@ -703,9 +756,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         if (value && !regex.test(value)) {
                                                             return Promise.reject(new Error(''));
                                                         }
-                                                        if (!value && getFieldValue('requests_to_sku_30_days_from')) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
+                                                        // if (!value && getFieldValue('requests_to_sku_30_days_from')) {
+                                                        //     return Promise.reject(new Error(''));
+                                                        // }
                                                         return Promise.resolve();
                                                     },
                                                 }),
@@ -749,7 +802,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         >
                                             <Select
                                                 maxTagCount={0}
-                                                maxTagTextLength={5}
+                                                //maxTagCount='responsive'
+                                                //maxTagTextLength={20}
                                                 showSearch={false}
                                                 mode='multiple'
                                                 size='large'
@@ -764,7 +818,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 dropdownRender={renderPopup}
                                                 options={preferedItemsData.filter(i => i.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).length > 0).map(_ => {
                                                     return {
-                                                        label: <span>{_.name}</span>,
+                                                        label: <>{_.name}</>,
                                                         title: _.name,
                                                         options: _.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).map(c => ({ value: c.id, label: c.name }))
                                                     }
@@ -772,7 +826,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 maxTagPlaceholder={omittedValues => {
                                                     if (omittedValues.length > 1) {
                                                         return (
-                                                            <p className={styles.form__multiLabel}>Выбрано: {omittedValues.length}</p>
+                                                            // <p className={styles.form__multiLabel}>Выбрано: {omittedValues.length}</p>
+                                                            <>Выбрано: {omittedValues.length}</>
                                                         )
                                                     }
                                                     if (omittedValues.length === 1) {
@@ -784,7 +839,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             }
                                                         })
                                                         return (
-                                                            <p className={styles.form__multiLabel} title={omittedValues[0].value}>{valueName}</p>
+                                                            // <p className={styles.form__multiLabel} title={valueName}>{valueName}</p>
+                                                            <>{valueName}</>
                                                         )
                                                     }
                                                 }}
