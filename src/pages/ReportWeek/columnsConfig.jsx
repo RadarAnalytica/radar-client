@@ -350,9 +350,9 @@ export const COLUMNS = [
 			typeof value === 'object' ?
 			<div>
 				{formatPrice(value?.rub, '₽')}
-				<div className="table__arrow">
+				{/* <div className="table__arrow">
 					{arrowRender(value?.quantity, 'шт')}
-				</div>
+				</div> */}
 			</div>
 			: 
 			<div>{formatPrice(value, '₽')}</div>
