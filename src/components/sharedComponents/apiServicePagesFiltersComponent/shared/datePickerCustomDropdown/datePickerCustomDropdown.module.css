@@ -20,3 +20,8 @@
     outline: none !important;
     box-shadow: none !important;
 }
+
+
+:global(.ant-select-selection-item) {
+    color: black !important;
+}

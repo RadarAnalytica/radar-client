@@ -1,5 +1,6 @@
+import { useCallback } from 'react';
 import styles from './datePickerCustomDropdown.module.css'
-import { Select, ConfigProvider } from 'antd'
+import { Select, ConfigProvider, Tag } from 'antd'
 
 const DatePickerCustomDropdown = (props) => {
     const { options, value } = props;
@@ -22,6 +23,20 @@ const DatePickerCustomDropdown = (props) => {
 
         )
     }
+
+    const tagRender = useCallback(props => {
+        const { label, value, closable, onClose } = props;
+        return (
+            <Tag
+                color={'black'}
+                closable={false}
+                onClose={onClose}
+                style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center', border: 'none' }}
+            >
+                <div style={{color: 'black'}}>{label}</div>
+            </Tag>
+        );
+    }, [])
 
     return (
         <div className={styles.dropdown}>
@@ -66,6 +81,7 @@ const DatePickerCustomDropdown = (props) => {
                     suffixIcon={<Suffix />}
                     className={styles.dropdown__select}
                     dropdownStyle={{ minWidth: '120px'}}
+                    tagRender={tagRender}
                     styles={{
                         root: {
                             color: 'black'
