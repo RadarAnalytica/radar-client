@@ -169,7 +169,7 @@ export const Filters = ({
         {weekSelect && weekOptions.length > 0 && <div className={styles.filters__inputWrapper}>
             <WeekSelect
               selectId='week'
-              label='Период'
+              label='Период:'
               value={weekValue}
               optionsData={weekOptions}
               handler={weekHandler}
