@@ -9,9 +9,8 @@
   
 .tableContainer {
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
 }
-
 
 .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
 .tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
@@ -25,6 +24,10 @@
 
 .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb){
   width: 3px!important;
+}
+
+.tableContainer :global(.ant-table-tbody-virtual-holder){
+  /* max-height: 100%!important; */
 }
 /* 
 .tableContainer::-webkit-scrollbar {
