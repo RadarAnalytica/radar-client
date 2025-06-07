@@ -1,44 +1,11 @@
-/* ExpenseTracker.module.css */
-.container {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
-  border-radius: 18px;
-  padding: 12px;
-  width: 100%;
-  height: auto;
-  height: 78vh;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.rowContainer {
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  padding-bottom: 20px;
-}
-
-.rowContainer::-webkit-scrollbar {
-  width: 6px;
-}
-
-.rowContainer::-webkit-scrollbar-thumb {
-  background: #5329ff80 !important;
-  border-radius: 6px;
-}
-
-
 .table {
   display: flex;
   flex-direction: column;
-  gap: 8px;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  margin: 16px 0;
-  padding: 0 16px;
   box-sizing: border-box;
+  overflow-y: scroll;
+  max-height: 100%;
 }
 
 .table__row {
@@ -48,16 +15,22 @@
   align-items: center;
   gap: 8px;
   height: 50px;
+  min-height: 50px;
   padding: 4px 0;
   box-sizing: border-box;
   overflow: hidden;
+
+  @media (max-width: 1300px) {
+    gap: 4px;
+    /* min-width: 75px; */
+  }
 }
 
 .table__item {
   flex-grow: 1;
   flex-shrink: 2;
   width: 13%;
-  min-width: 100px;
+  /* min-width: 100px; */
   flex-grow: 0;
   flex-shrink: 0;
   font-size: 14px;
@@ -73,17 +46,21 @@
   }
 
   @media (max-width: 1550px) {
-    min-width: 100px;
+    /* min-width: 100px; */
   }
 
   @media (max-width: 1400px) {
-    min-width: 80px;
+    /* min-width: 80px; */
   }
 }
 
 .table__item_actions {
   gap: 8px;
-  min-width: 75px;
+  /* min-width: 75px; */
+  @media (max-width: 1300px) {
+    gap: 0;
+    /* min-width: 75px; */
+  }
 }
 
 .table__item input {
@@ -91,7 +68,10 @@
 }
 
 .table__item_wide {
-  min-width: 160px;
+  /* min-width: 160px; */
+  @media (max-width: 1300px) {
+    /* min-width: 120px; */
+  }
 }
 
 

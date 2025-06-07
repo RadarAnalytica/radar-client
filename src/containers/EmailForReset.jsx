@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { URL } from '../service/config'
 import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal'
 import SuccessModal from '../components/sharedComponents/modals/successModal/successModal'
+import styles from './EmailForReset.module.css'
 
 const initRequestStatus = {
     isLoading: false,
@@ -81,8 +82,7 @@ const EmailForReset = () => {
                     emailErrorText={emailErrorText}
                 />
             </div>
-            <button className='prime-btn'
-                style={{ height: '7vh', width: '100%', background: isSubmitDisabled && '#E8E8E8' }}
+            <button className={styles.button}
                 disabled={isSubmitDisabled || requestState.isLoading}
                 onClick={submitHandler}
             >Получить ссылку</button>

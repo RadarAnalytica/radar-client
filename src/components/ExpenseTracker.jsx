@@ -289,9 +289,7 @@ const ExpenseTracker = () => {
   };
 
   return (
-    <div
-      className={styles.container}
-    >
+    <>
       {!loading ? (
         <div className={styles.table}>
           {/* Header */}
@@ -309,7 +307,7 @@ const ExpenseTracker = () => {
 
           {/* Body */}
           {rows.map((row) => (
-            <div className={styles.table__row}>
+            <div className={styles.table__row} key={row.id}>
               <div className={`${styles.table__item} ${styles.table__item_wide}`}>
                 <CustomDayPicker
                   selectedDate={{ from: row.date || new Date() }}
@@ -399,8 +397,7 @@ const ExpenseTracker = () => {
       )}
       {/* {!loading && deleteId && <Modal open={deleteId} onCancel={() => setDeleteId()} onOk={() => handleDeleteSubmit()}>Удалить</Modal>} */}
       {!loading && deleteId && <ModalDeleteConfirm onCancel={() => setDeleteId()} onOk={() => handleDeleteRow(deleteId)} title='Удалить?' />}
-
-    </div>
+      </>
   );
 };
 
