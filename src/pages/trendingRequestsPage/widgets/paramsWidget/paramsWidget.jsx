@@ -185,7 +185,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 bordered={false}
                 style={{ background: 'transparent', color: 'black', fontSize: '16px' }}
             >
-                <p className={styles.form__multiLabel} title={label.props.children}>{label}</p>
+                {/* <p className={styles.form__multiLabel} title={label.props.children}>{label}</p> */}
+                <p className={styles.form__multiLabel} title={label.props.children.toString().replace(',', '')}>{label}</p>
             </Tag>
         );
     }, [])
