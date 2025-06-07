@@ -13,18 +13,20 @@ const ExternalExpensesPage = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className='dashboard-page'>
+    <main className={styles.page}>
       <MobilePlug />
-      <div style={{ height: '100vh', zIndex: 999 }}>
+      {/* ------ SIDE BAR ------ */}
+      <section className={styles.page__sideNavWrapper}>
         <Sidebar />
-      </div>
-      {/* <SideNav /> */}
-      <div className='dashboard-content' style={{ padding: '0 32px' }}>
-        <div style={{ margin: '20px 0' }}>
-          <Header title={'Внешние расходы'} titlePrefix={'Отчёт'} />
+      </section>
+      {/* ------ CONTENT ------ */}
+      <section className={styles.page__content}>
+        {/* header */}
+        <div className={styles.page__headerWrapper}>
+          <Header title='Внешние расходы' />
         </div>
         {user.is_report_downloaded ? (
-          <div className='container dash-container'>
+          <div className={styles.page__widgetWrapper}>
             <ExpenseTracker />
           </div>
         ) : (
@@ -42,10 +44,13 @@ const ExternalExpensesPage = () => {
             </span>
           </>
         )}
+
+        {/* !header */}
         <BottomNavigation />
-      </div>
-    </div>
-  );
+      </section>
+      {/* ---------------------- */}
+    </main>
+  )
 };
 
 export default ExternalExpensesPage;

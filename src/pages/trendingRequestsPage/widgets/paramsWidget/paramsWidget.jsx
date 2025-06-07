@@ -14,15 +14,16 @@ const dynamicOptions = [
 const validateDynamicValues = (type, from, to) => {
     const parsedFrom = parseInt(from)
     const parsedTo = parseInt(to)
-
+    if ((from && !to) || (!to && from)) {
+        return true
+    }
     if (from && to) {
         switch (type) {
             case 'Рост': return parsedTo > parsedFrom
             case 'Падение': return parsedFrom > parsedTo
         }
-    } else {
-        return true
     }
+   
     return false
 }
 
@@ -32,7 +33,6 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     const [searchState, setSearchState] = useState('')
     const [preferedItemsData, setPreferedItemsData] = useState([])
     const [form] = Form.useForm()
-
 
     const getPreferedItemsTest = useCallback(async () => {
         const apiService = new ApiService({
@@ -349,6 +349,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 <Form.Item
                                                     style={{ margin: 0, width: '100%' }}
                                                     name='dynamic_30_days_from'
+                                                    //help=""
                                                     rules={[
                                                         ({ getFieldValue }) => ({
                                                             validator(_, value) {
@@ -379,6 +380,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 <Form.Item
                                                     style={{ margin: 0, width: '100%' }}
                                                     name='dynamic_30_days_to'
+                                                    //help=''
                                                     rules={[
                                                         ({ getFieldValue }) => ({
                                                             validator(_, value) {
@@ -409,6 +411,11 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             </>
                                         }
                                     </div>
+                                    {/* Заготовка под кастомное отображение ошибок */}
+                                    {/* <div style={{color: 'red'}}>
+                                    {form.getFieldError('dynamic_30_days_to').toString()}
+                                    {form.getFieldError('dynamic_30_days_from').toString()}
+                                    </div> */}
                                 </div>
                                 <div className={styles.form__dynamicSelectBlock}>
                                     <label className={styles.form__doubledLabel}>От даты отсчета за 60 дней, %</label>
