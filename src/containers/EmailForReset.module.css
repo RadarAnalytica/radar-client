@@ -1,0 +1,21 @@
+.button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #5329FF;
+    border-radius: 8px;
+    color: white;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    border: none;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.button:disabled {
+    opacity: .5;
+}
