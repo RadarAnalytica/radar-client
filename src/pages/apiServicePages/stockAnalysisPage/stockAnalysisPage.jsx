@@ -121,6 +121,7 @@ const StockAnalysisPage = () => {
                         <SearchWidget
                             stockAnalysisData={stockAnalysisData}
                             setStockAnalysisFilteredData={setStockAnalysisFilteredData}
+                            filters={filters}
                         />
                     }
                 </div>
