@@ -174,6 +174,7 @@ export default function TableSettingModal({
 				}
 				width={1200}
 				footer={footer}
+				centered={true}
 			>
 				{filter && <Flex className={styles.filter} gap={8}>
 					<Form
