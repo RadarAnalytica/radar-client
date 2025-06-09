@@ -33,10 +33,24 @@ export default function ReportWeek() {
 	const [weekOptions, setweekOptions] = useState([]);
 
 	function weekSelectedHandler(data){
-		const savedFilter = JSON.parse(localStorage.getItem('reportWeekFilterWeek'));
-		savedFilter[activeBrand.id] = date;
-		localStorage.setItem('reportWeekFilterWeek', JSON.stringify(savedFilter));
-		setWeekSelected(data);
+		console.log('weekSelectedHandler', data)
+		let savedFilterWeek = JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {}
+		// проверка на старую версию сохранения
+		if (Array.isArray(savedFilterWeek)){
+			localStorage.removeItem('reportWeekFilterWeek')
+			savedFilterWeek = {}
+		}
+		if (!data.find((el) => el.value === 'Все' )){
+			savedFilterWeek[activeBrand.id] = data
+		} else {
+			delete savedFilterWeek[activeBrand.id]
+		}
+		if (Object.keys(savedFilterWeek).length > 0){
+			localStorage.setItem('reportWeekFilterWeek', JSON.stringify(savedFilterWeek))
+		} else {
+			localStorage.removeItem('reportWeekFilterWeek')
+		}
+		setWeekSelected(data)
 	}
 
 	const updateDataReportWeek = async () => {
@@ -179,12 +193,17 @@ export default function ReportWeek() {
 		setweekOptions(options);
 	}
 
-	useEffect(() => {
-		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
-		if (savedFilterWeek){
-			setWeekSelected(JSON.parse(savedFilterWeek))
-		}
-	}, [])
+	const updateSavedFilterWeek = () => {
+		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek')
+			if (savedFilterWeek){
+				const data = JSON.parse(savedFilterWeek)
+				if (activeBrand?.id in data ){
+					setWeekSelected(data[activeBrand.id])
+				} else {
+					setWeekSelected([{value: 'Все'}])
+				}
+			}
+	}
 
 	useEffect(() => {
 		dataToTableData(data)
@@ -198,6 +217,7 @@ export default function ReportWeek() {
 	}, [authToken]);
 
 	useEffect(() => {
+		updateSavedFilterWeek();
 		setPrimaryCollect(activeBrand?.is_primary_collect)
 		if (activeBrand && activeBrand.is_primary_collect) {
 					updateDataReportWeek()

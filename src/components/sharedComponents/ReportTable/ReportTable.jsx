@@ -99,7 +99,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							expandedRowClassName: styles.expandRow,
 						}}
 						// scroll={{ x: 'max-content' }}
-						scroll={{ x: 'max-content', y: scrollY }}
+						scroll={{ x: scrollX, y: scrollY }}
 					></Table>
 				</ConfigProvider>
 			</div>}
