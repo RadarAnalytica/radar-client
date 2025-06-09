@@ -5,6 +5,7 @@ import styles from './ReportTable.module.css';
 export default function ReportTable({ loading, columns, data, rowSelection = false }) {
 	const containerRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
+  const [scrollX, setScrollX] = useState(0);
 
 	useEffect(() => {
 		const updateHeight = () => {
@@ -15,10 +16,11 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 				// расчет высоты шапки и добавление отступов контейнера
         const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
         const paddings = 32;
-        
 				// расчет и сохранение высоты таблицы
         const availableHeight = container.offsetHeight - headerHeight - paddings;
         setScrollY(availableHeight);
+        // расчет ширины контейнера
+        setScrollX(container.offsetWidth - 32);
       }
     };
 
@@ -97,7 +99,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							expandedRowClassName: styles.expandRow,
 						}}
 						// scroll={{ x: 'max-content' }}
-						scroll={{ x: 'max-content', y: scrollY }}
+						scroll={{ x: scrollX, y: scrollY }}
 					></Table>
 				</ConfigProvider>
 			</div>}
@@ -145,7 +147,8 @@ function SortIcon({ sortOrder }) {
 			viewBox="0 0 24 16"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			style={{ marginLeft: 10, marginRight: 10 }}
+			// style={{ marginLeft: 10, marginRight: 10 }}
+			className={styles.sortIcons}
 		>
 			<path
 				fillRule="evenodd"
