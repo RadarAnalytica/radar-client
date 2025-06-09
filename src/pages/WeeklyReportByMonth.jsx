@@ -13,7 +13,6 @@ import DemonstrationSection from '../components/DemonstrationSection';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
-import Header from '../components/sharedComponents/header/header';
 
 
 const WeeklyReportByMonth = () => {
@@ -50,9 +49,7 @@ const WeeklyReportByMonth = () => {
       </div>
       {/* <SideNav /> */}
       <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
-        <div style={{ margin: '20px 0'}}>
-          <Header title={'По месяцам'} titlePrefix={'Отчёт'} />
-        </div>
+        <TopNav title={'По месяцам'} subTitle={'Отчёт /'} />
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>

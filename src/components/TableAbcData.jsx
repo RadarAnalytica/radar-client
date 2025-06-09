@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import sortArrow from "../assets/sortarrow.svg";
 import ArrowUp from "../assets/ArrowUp.svg";
 import ArrowDown from "../assets/ArrowDown.svg";
@@ -13,34 +13,30 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
     direction: "desc", // 'asc' or 'desc'
   });
 
-  const sortData = (key) => {
-    const { column, direction } = sortConfig;
-    const newDirection = column === key ? (direction === "asc" ? "desc" : "asc") : "asc";
+  const sortData = (config) => {
+    const { column, direction } = config;
     let sortedData = []
     if (column === 'category') {
       sortedData = [...dataTable].sort((a, b) => {
-        if (typeof b[key] === "number" && typeof a[key] === "number") {
-          return newDirection === "asc" ? b[key] - a[key] : a[key] - b[key];
+        if (typeof b[column] === "number" && typeof a[column] === "number") {
+          return direction === "asc" ? b[column] - a[column] : a[column] - b[column];
         } else {
-          return newDirection === "asc"
-            ? b[key].localeCompare(a[key])
-            : a[key].localeCompare(b[key]);
+          return direction === "asc"
+            ? b[column].localeCompare(a[column])
+            : a[column].localeCompare(b[column]);
         }
       });
     } else {
       sortedData = [...dataTable].sort((a, b) => {
-        if (typeof a[key] === "number" && typeof b[key] === "number") {
-          return newDirection === "asc" ? a[key] - b[key] : b[key] - a[key];
+        if (typeof a[column] === "number" && typeof b[column] === "number") {
+          return direction === "asc" ? a[column] - b[column] : b[column] - a[column];
         } else {
-          return newDirection === "asc"
-            ? a[key].localeCompare(b[key])
-            : b[key].localeCompare(a[key]);
+          return direction === "asc"
+            ? a[column].localeCompare(b[column])
+            : b[column].localeCompare(a[column]);
         }
       });
     }
-
-
-    setSortConfig({ column: key, direction: newDirection });
     setDataTable(sortedData);
   };
   const getIconStyle = (key, direction) => {
@@ -56,15 +52,6 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
     }
     return { filter: "none" };
   };
-  const handleSort = (element, columnName) => {
-    sortData(columnName);
-  };
-  // const toggleRotate = (element) => {
-  //   const iconUp = element.querySelector(".icon-sort-up");
-  //   const iconDown = element.querySelector(".icon-sort-down");
-  //   iconUp.classList.toggle("sort-icon_rotate");
-  //   iconDown.classList.toggle("sort-icon_rotate");
-  // };
 
   const handleViewType = (viewType) => {
     setViewType(viewType);
@@ -77,6 +64,10 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
+
+  useEffect(() => {
+    sortData(sortConfig)
+  }, [sortConfig])
 
   return (
     <div
@@ -141,7 +132,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                 <div
                   className='icon-sort-wrap'
                   style={{ background: "transparent" }}
-                  onClick={() => sortData("amount")}
+                  onClick={() => setSortConfig({column: "amount", direction: sortConfig.column === "amount" ? (sortConfig.direction === "asc" ? "desc" : "asc") : "asc"})}
                 >
                   <img
                     style={{
@@ -164,7 +155,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                 <div
                   className='icon-sort-wrap'
                   style={{ background: "transparent" }}
-                  onClick={() => sortData("amount_percent")}
+                  onClick={() => setSortConfig({column: "amount_percent", direction: sortConfig.column === "amount_percent" ? (sortConfig.direction === "asc" ? "desc" : "asc") : "asc"})}
                 >
                   <img
                     style={{
@@ -190,7 +181,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                 <div
                   className='icon-sort-wrap'
                   style={{ background: "transparent" }}
-                  onClick={() => sortData("category")}
+                  onClick={() => setSortConfig({column: "category", direction: sortConfig.column === "category" ? (sortConfig.direction === "asc" ? "desc" : "asc") : "asc"})}
                 >
                   <img
                     style={{

@@ -47,7 +47,7 @@
     flex-shrink: 0;
 }
 
-.header__menuIcon {
+.header__popover {
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
