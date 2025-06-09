@@ -309,15 +309,15 @@ const ExpenseTracker = () => {
           {rows.map((row) => (
             <div className={styles.table__row} key={row.id}>
               <div className={`${styles.table__item} ${styles.table__item_wide}`}>
-                <CustomDayPicker
-                  selectedDate={{ from: row.date || new Date() }}
-                  setSelectedDate={(range) => {
-                    console.log('Selected range:', range);
-                    if (range?.from) {
-                      handleDateChange(row.id, new Date(range.from));
-                    }
-                  }}
-                />
+                  <CustomDayPicker
+                    selectedDate={{ from: row.date || new Date() }}
+                    setSelectedDate={(range) => {
+                      console.log('Selected range:', range);
+                      if (range?.from) {
+                        handleDateChange(row.id, new Date(range.from));
+                      }
+                    }}
+                  />
               </div>
               <div className={styles.table__item}>
                 <input
@@ -397,7 +397,7 @@ const ExpenseTracker = () => {
       )}
       {/* {!loading && deleteId && <Modal open={deleteId} onCancel={() => setDeleteId()} onOk={() => handleDeleteSubmit()}>Удалить</Modal>} */}
       {!loading && deleteId && <ModalDeleteConfirm onCancel={() => setDeleteId()} onOk={() => handleDeleteRow(deleteId)} title='Удалить?' />}
-      </>
+    </>
   );
 };
 
