@@ -53,8 +53,16 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     useEffect(() => {
        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+       const paginationSingleNextButton = document.querySelector('.ant-pagination-prev')
+       const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
        if (paginationNextButton) {
         paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+       }
+       if (paginationSingleNextButton) {
+        paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+       }
+       if (paginationSinglePrevButton) {
+        paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
        }
        if (paginationPrevButton) {
         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
@@ -237,7 +245,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                             >
                                                 {/* Для каждого товара мапим заголовки таблицы еще раз и забираем из товара нужны данные (в первой колонке одновременно фото и название) */}
                                                 {t.values.map(((v, id) => {
-                                                    if (v.ruName === 'Товар') {
+                                                    if (v.ruName === 'Запрос') {
                                                         return (
                                                             <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`} key={id}>
                                                                 <div className={styles.table__mainTitleWrapper}>
@@ -255,11 +263,15 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
 
                                                             </div>
                                                         )
-                                                    } else {
+                                                    } 
+                                                    if (v.ruName === 'Приоритетный предмет') {
                                                         return (
-                                                            <div className={styles.table__rowItem} key={id}>{v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}</div>
+                                                            <div className={styles.table__rowItem} key={id}>{product[v.engName]}</div>
                                                         )
                                                     }
+                                                    return (
+                                                        <div className={styles.table__rowItem} key={id}>{formatPrice(product[v.engName], v.units)}</div>
+                                                    )
                                                 }))}
                                             </div>
                                         )
