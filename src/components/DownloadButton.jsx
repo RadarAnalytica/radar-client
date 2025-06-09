@@ -2,7 +2,8 @@ import React from 'react';
 import downloadIcon from '../pages/images/Download.svg';
 import { Button, ConfigProvider } from 'antd';
 
-const DownloadButton = ({ handleDownload, isLoading, styles }) => {
+const DownloadButton = ({ handleDownload, loading, styles }) => {
+  console.log(loading)
   return (
     <>
       {/* <button
@@ -35,8 +36,8 @@ const DownloadButton = ({ handleDownload, isLoading, styles }) => {
         <Button
           type='primary'
           size='large'
-          loading={isLoading}
-          onClick={() => !isLoading && handleDownload()}
+          loading={loading}
+          onClick={() => !loading && handleDownload()}
           style={{ fontWeight: 600}}
         >
           <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">

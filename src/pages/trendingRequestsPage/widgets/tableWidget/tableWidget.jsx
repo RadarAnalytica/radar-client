@@ -42,7 +42,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
     const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
     const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
-    const [isExelLoading, setIsExelLoading] = useState(false)
+    const [isExelLoading, setIsExelLoading] = useState(true)
 
 
     // задаем начальную дату
