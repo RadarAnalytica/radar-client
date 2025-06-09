@@ -8,6 +8,23 @@
   max-height: 100%;
 }
 
+.table::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+}
+
+.table::-webkit-scrollbar-track {
+  background: transparent;
+  height: 50%;
+  margin: 10px 20px;
+}
+
+.table::-webkit-scrollbar-thumb {
+  background: #5329ff80;
+  border-radius: 6px;
+}
+
 .table__row {
   width: 100%;
   display: flex;
@@ -51,6 +68,7 @@
 
   @media (max-width: 1400px) {
     /* min-width: 80px; */
+    /* max-width: 75px; */
   }
 }
 
@@ -68,9 +86,9 @@
 }
 
 .table__item_wide {
-  /* min-width: 160px; */
+  min-width: 160px;
   @media (max-width: 1300px) {
-    /* min-width: 120px; */
+    min-width: 120px;
   }
 }
 
