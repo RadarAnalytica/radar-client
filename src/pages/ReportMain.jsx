@@ -25,7 +25,6 @@ import FileUploader from '../components/sharedComponents/fileUploader/fileUpload
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import HowToLink from '../components/sharedComponents/howToLink/howToLink';
 import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm"
-import Header from '../components/sharedComponents/header/header';
 
 import { Tooltip } from "antd";
 
@@ -148,8 +147,8 @@ const ReportMain = () => {
       </div>
       {/* <SideNav /> */}
       <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
-        <div style={{ width: '100%', margin: '20px 0' }} className="container dash-container">
-          <Header titlePrefix={'Отчёт'} title={'Главная'} />
+        <div style={{ width: '100%' }} className="container dash-container">
+          <TopNav title={'Главная'} subTitle={'Отчёт /'} mikeStarinaStaticProp />
         </div>
         <div className='container dash-container'>
           <div className={styles.instructionWrapper}>

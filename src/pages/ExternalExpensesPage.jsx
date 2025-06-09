@@ -1,13 +1,14 @@
 import { useContext } from 'react';
 import AuthContext from '../service/AuthContext';
 import ExpenseTracker from '../components/ExpenseTracker';
+import SideNav from '../components/SideNav';
+import TopNav from '../components/TopNav';
 import BottomNavigation from '../components/BottomNavigation';
 import DemonstrationSection from '../components/DemonstrationSection';
 import styles from './ExternalExpensesPage.module.css';
 import plFake from '../pages/images/external-fake.png';
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
-import Header from '../components/sharedComponents/header/header';
 
 const ExternalExpensesPage = () => {
   const { user } = useContext(AuthContext);
