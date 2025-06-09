@@ -3,7 +3,6 @@ import downloadIcon from '../pages/images/Download.svg';
 import { Button, ConfigProvider } from 'antd';
 
 const DownloadButton = ({ handleDownload, loading, styles }) => {
-  console.log(loading)
   return (
     <>
       {/* <button
