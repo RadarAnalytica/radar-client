@@ -53,8 +53,16 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     useEffect(() => {
        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+       const paginationSingleNextButton = document.querySelector('.ant-pagination-prev')
+       const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
        if (paginationNextButton) {
         paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+       }
+       if (paginationSingleNextButton) {
+        paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+       }
+       if (paginationSinglePrevButton) {
+        paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
        }
        if (paginationPrevButton) {
         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
