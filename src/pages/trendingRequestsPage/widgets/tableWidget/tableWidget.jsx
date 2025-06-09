@@ -237,7 +237,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                             >
                                                 {/* Для каждого товара мапим заголовки таблицы еще раз и забираем из товара нужны данные (в первой колонке одновременно фото и название) */}
                                                 {t.values.map(((v, id) => {
-                                                    if (v.ruName === 'Товар') {
+                                                    if (v.ruName === 'Запрос') {
                                                         return (
                                                             <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`} key={id}>
                                                                 <div className={styles.table__mainTitleWrapper}>
@@ -255,11 +255,15 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
 
                                                             </div>
                                                         )
-                                                    } else {
+                                                    } 
+                                                    if (v.ruName === 'Приоритетный предмет') {
                                                         return (
-                                                            <div className={styles.table__rowItem} key={id}>{v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}</div>
+                                                            <div className={styles.table__rowItem} key={id}>{product[v.engName]}</div>
                                                         )
                                                     }
+                                                    return (
+                                                        <div className={styles.table__rowItem} key={id}>{formatPrice(product[v.engName], v.units)}</div>
+                                                    )
                                                 }))}
                                             </div>
                                         )

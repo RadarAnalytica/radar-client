@@ -13,7 +13,7 @@ export const tableConfig = [
             {ruName: 'Динамика за 30 дней, %', engName: 'g30', units: '%', isSortable: true},
             {ruName: 'Динамика за 60 дней, %', engName: 'g60', units: '%', isSortable: true},
             {ruName: 'Динамика за 90 дней, %', engName: 'g90', units: '%', isSortable: true},
-            {ruName: 'Частотность за 30 дней на 1 артикул,шт', engName: 'goods_quantity', units: null, isSortable: true},
+            {ruName: 'Частотность за 30 дней на 1 артикул, шт', engName: 'goods_quantity', units: null, isSortable: true},
         ]
     },
   

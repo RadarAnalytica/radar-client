@@ -7,6 +7,7 @@
   overflow-x: hidden;
   overflow-y: scroll;
   max-height: 100%;
+  padding: 8px;
 }
 
 .table::-webkit-scrollbar {

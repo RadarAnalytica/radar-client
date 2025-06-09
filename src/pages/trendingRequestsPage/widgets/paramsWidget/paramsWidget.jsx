@@ -23,7 +23,7 @@ const validateDynamicValues = (type, from, to) => {
             case 'Падение': return parsedFrom > parsedTo
         }
     }
-   
+
     return false
 }
 
@@ -69,9 +69,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
             console.error('Error fetching preferred items:', error);
         }
     }, [])
-    
 
-    
+
+
 
     const dynamic_30_days = Form.useWatch('dynamic_30_days', form)
     const dynamic_60_days = Form.useWatch('dynamic_60_days', form)
@@ -347,6 +347,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         >
                                             <Select
                                                 size='large'
+                                                style={{ height: '44px' }}
                                                 placeholder='Изменение'
                                                 options={dynamicOptions}
                                                 suffixIcon={
@@ -382,6 +383,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         placeholder={dynamic_30_days === 'Рост' ? 'от 20' : 'от 100'}
                                                         suffix={<>%</>}
                                                         type="number"
+                                                        style={{ height: '44px' }}
                                                     />
                                                 </Form.Item>
                                                 <Form.Item
@@ -403,11 +405,12 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         }),
                                                     ]}
                                                 >
-                                                    <Input  
+                                                    <Input
                                                         size='large'
                                                         placeholder={dynamic_30_days === 'Рост' ? 'до 100' : 'до 20'}
                                                         suffix={<>%</>}
                                                         type="number"
+                                                        style={{ height: '44px' }}
                                                     />
                                                 </Form.Item>
                                             </>
@@ -440,6 +443,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 size='large'
                                                 placeholder='Изменение'
                                                 options={dynamicOptions}
+                                                style={{ height: '44px' }}
                                                 suffixIcon={
                                                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
@@ -470,6 +474,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
+                                                        style={{ height: '44px' }}
                                                         placeholder={dynamic_60_days === 'Рост' ? 'от 20' : 'от 100'}
                                                         suffix={<>%</>}
                                                         type="number"
@@ -495,6 +500,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
+                                                        style={{ height: '44px' }}
                                                         placeholder={dynamic_60_days === 'Рост' ? 'до 100' : 'до 20'}
                                                         suffix={<>%</>}
                                                         type="number"
@@ -526,6 +532,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 size='large'
                                                 placeholder='Изменение'
                                                 options={dynamicOptions}
+                                                style={{ height: '44px' }}
                                                 suffixIcon={
                                                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
@@ -555,6 +562,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
+                                                        style={{ height: '44px' }}
                                                         placeholder={dynamic_90_days === 'Рост' ? 'от 20' : 'от 100'}
                                                         suffix={<>%</>}
                                                         type="number"
@@ -580,6 +588,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
+                                                        style={{ height: '44px' }}
                                                         placeholder={dynamic_90_days === 'Рост' ? 'до 100' : 'до 20'}
                                                         suffix={<>%</>}
                                                         type="number"
@@ -622,6 +631,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         >
                                             <Input
                                                 size='large'
+                                                style={{ height: '44px' }}
                                                 placeholder='от'
                                                 type="number"
                                             />
@@ -646,6 +656,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         >
                                             <Input
                                                 size='large'
+                                                style={{ height: '44px' }}
                                                 placeholder='до'
                                                 type="number"
                                             />
@@ -675,6 +686,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         >
                                             <Input
                                                 size='large'
+                                                style={{ height: '44px' }}
                                                 placeholder='от'
                                                 type="number"
                                             />
@@ -699,6 +711,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         >
                                             <Input
                                                 size='large'
+                                                style={{ height: '44px' }}
                                                 placeholder='до'
                                                 type="number"
                                             />
@@ -728,6 +741,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         >
                                             <Input
                                                 size='large'
+                                                style={{ height: '44px' }}
                                                 placeholder='от'
                                                 type="number"
                                             />
@@ -752,6 +766,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         >
                                             <Input
                                                 size='large'
+                                                style={{ height: '44px' }}
                                                 placeholder='до'
                                                 type="number"
                                             />
@@ -769,6 +784,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 //borderRadius: 8,
                                                 fontFamily: 'Mulish',
                                                 fontSize: 14,
+                                                controlHeightLG: 44
                                             },
                                             components: {
                                                 Select: {
@@ -779,6 +795,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     optionFontSize: 16,
                                                     optionSelectedBg: 'transparent',
                                                     optionSelectedColor: '#5329FF',
+                                                    singleItemHeightLG: 44
                                                 }
                                             }
                                         }}
@@ -788,6 +805,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             name='prefered_items'
                                         >
                                             <Select
+                                                //style={{ height: '44px' }}
                                                 maxTagCount={0}
                                                 //maxTagCount='responsive'
                                                 //maxTagTextLength={20}
@@ -845,6 +863,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                         <Input
                                             size='large'
                                             placeholder='Введите слово/фразу'
+                                            style={{ height: '44px' }}
                                         />
                                     </Form.Item>
                                 </div>
@@ -874,6 +893,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                 </Button>
                             </ConfigProvider>
                             <Button
+                                style={{ width: '202px', height: '45px' }}
                                 htmlType='submit'
                                 type='primary'
                                 size='large'
