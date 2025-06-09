@@ -27,6 +27,18 @@ const validateDynamicValues = (type, from, to) => {
     return false
 }
 
+const getDynamicNormilizedValue = (type, value) => {
+    let normilizedValue = 0;
+    if (!value) return normilizedValue;
+    if (type === 'Рост') {
+        normilizedValue = parseInt(value)
+    }
+    if (type === 'Падение') {
+        normilizedValue = parseInt(value) * -1
+    }
+    return normilizedValue;
+}
+
 
 export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible }) => {
     const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
@@ -83,16 +95,16 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
             date_from: moment(selectedDate, 'DD.MM.YYYY').format('YYYY-MM-DD'),
             //date_from: selectedDate,
             g30: {
-                start: parseInt(fields.dynamic_30_days_from) || 0,
-                end: parseInt(fields.dynamic_30_days_to) || 0
+                start: getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_from),
+                end: getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_to)
             },
             g60: {
-                start: parseInt(fields.dynamic_60_days_from) || 0,
-                end: parseInt(fields.dynamic_60_days_to) || 0
+                start: getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_from),
+                end: getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_to)
             },
             g90: {
-                start: parseInt(fields.dynamic_90_days_from) || 0,
-                end: parseInt(fields.dynamic_90_days_to) || 0
+                start: getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_from),
+                end: getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_to)
             },
             frequency: {
                 start: parseInt(fields.frequency_30_days_from) || 0,
@@ -354,27 +366,22 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         ({ getFieldValue }) => ({
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
+                                                                if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_to')) {
+                                                                    return Promise.reject(new Error(''))
+                                                                }
                                                                 if (value && !regex.test(value)) {
                                                                     return Promise.reject(new Error(''))
                                                                 }
-                                                                if (value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_to')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (!value && getFieldValue('dynamic_30_days') && getFieldValue('dynamic_30_days_to')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (value && getFieldValue('dynamic_30_days') && getFieldValue('dynamic_30_days_to')) {
-                                                                    return validateDynamicValues(getFieldValue('dynamic_30_days'), value, getFieldValue('dynamic_30_days_to')) ? Promise.resolve() : Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.reject(new Error(''));
+                                                                return Promise.resolve()
                                                             },
                                                         }),
                                                     ]}
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='от'
+                                                        placeholder={dynamic_30_days === 'Рост' ? 'от 20' : 'от 100'}
                                                         suffix={<>%</>}
+                                                        type="number"
                                                     />
                                                 </Form.Item>
                                                 <Form.Item
@@ -385,27 +392,22 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         ({ getFieldValue }) => ({
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
+                                                                if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_from')) {
+                                                                    return Promise.reject(new Error(''))
+                                                                }
                                                                 if (value && !regex.test(value)) {
                                                                     return Promise.reject(new Error(''));
                                                                 }
-                                                                if (value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_from')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (!value && getFieldValue('dynamic_30_days') && getFieldValue('dynamic_30_days_from')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (value && getFieldValue('dynamic_30_days') && getFieldValue('dynamic_30_days_from')) {
-                                                                    return validateDynamicValues(getFieldValue('dynamic_30_days'), getFieldValue('dynamic_30_days_from'), value) ? Promise.resolve() : Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.reject(new Error(''));
+                                                                return Promise.resolve()
                                                             },
                                                         }),
                                                     ]}
                                                 >
-                                                    <Input
+                                                    <Input  
                                                         size='large'
-                                                        placeholder='до'
+                                                        placeholder={dynamic_30_days === 'Рост' ? 'до 100' : 'до 20'}
                                                         suffix={<>%</>}
+                                                        type="number"
                                                     />
                                                 </Form.Item>
                                             </>
@@ -454,18 +456,13 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         ({ getFieldValue }) => ({
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
+                                                                if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_to')) {
+                                                                    return Promise.reject(new Error(''))
+                                                                }
                                                                 if (value && !regex.test(value)) {
                                                                     return Promise.reject(new Error(''))
                                                                 }
-                                                                if (value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_to')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (!value && getFieldValue('dynamic_60_days') && getFieldValue('dynamic_60_days_to')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (value && getFieldValue('dynamic_60_days') && getFieldValue('dynamic_60_days_to')) {
-                                                                    return validateDynamicValues(getFieldValue('dynamic_60_days'), value, getFieldValue('dynamic_60_days_to')) ? Promise.resolve() : Promise.reject(new Error(''))
-                                                                }
+                                                                return Promise.resolve()
                                                                 return Promise.reject(new Error(''));
                                                             },
                                                         }),
@@ -473,8 +470,9 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='от'
+                                                        placeholder={dynamic_60_days === 'Рост' ? 'от 20' : 'от 100'}
                                                         suffix={<>%</>}
+                                                        type="number"
                                                     />
                                                 </Form.Item>
                                                 <Form.Item
@@ -484,27 +482,22 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         ({ getFieldValue }) => ({
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
+                                                                if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_from')) {
+                                                                    return Promise.reject(new Error(''))
+                                                                }
                                                                 if (value && !regex.test(value)) {
                                                                     return Promise.reject(new Error(''))
                                                                 }
-                                                                if (value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_from')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (!value && getFieldValue('dynamic_60_days') && getFieldValue('dynamic_60_days_from')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (value && getFieldValue('dynamic_60_days') && getFieldValue('dynamic_60_days_from')) {
-                                                                    return validateDynamicValues(getFieldValue('dynamic_60_days'), getFieldValue('dynamic_60_days_from'), value) ? Promise.resolve() : Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.reject(new Error(''));
+                                                                return Promise.resolve()
                                                             },
                                                         }),
                                                     ]}
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='до'
+                                                        placeholder={dynamic_60_days === 'Рост' ? 'до 100' : 'до 20'}
                                                         suffix={<>%</>}
+                                                        type="number"
                                                     />
                                                 </Form.Item>
                                             </>
@@ -549,27 +542,22 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         ({ getFieldValue }) => ({
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
+                                                                if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_to')) {
+                                                                    return Promise.reject(new Error(''))
+                                                                }
                                                                 if (value && !regex.test(value)) {
                                                                     return Promise.reject(new Error(''))
                                                                 }
-                                                                if (value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_to')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (!value && getFieldValue('dynamic_90_days') && getFieldValue('dynamic_90_days_to')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (value && getFieldValue('dynamic_90_days') && getFieldValue('dynamic_90_days_to')) {
-                                                                    return validateDynamicValues(getFieldValue('dynamic_90_days'), value, getFieldValue('dynamic_90_days_to')) ? Promise.resolve() : Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.reject(new Error(''));
+                                                                return Promise.resolve()
                                                             },
                                                         }),
                                                     ]}
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='от'
+                                                        placeholder={dynamic_90_days === 'Рост' ? 'от 20' : 'от 100'}
                                                         suffix={<>%</>}
+                                                        type="number"
                                                     />
                                                 </Form.Item>
                                                 <Form.Item
@@ -579,27 +567,22 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                         ({ getFieldValue }) => ({
                                                             validator(_, value) {
                                                                 const regex = /^(|\d+)$/ // только целые числа
+                                                                if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_from')) {
+                                                                    return Promise.reject(new Error(''))
+                                                                }
                                                                 if (value && !regex.test(value)) {
                                                                     return Promise.reject(new Error(''))
                                                                 }
-                                                                if (value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_from')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (!value && getFieldValue('dynamic_90_days') && getFieldValue('dynamic_90_days_from')) {
-                                                                    return Promise.resolve()
-                                                                }
-                                                                if (value && getFieldValue('dynamic_90_days') && getFieldValue('dynamic_90_days_from')) {
-                                                                    return validateDynamicValues(getFieldValue('dynamic_90_days'), getFieldValue('dynamic_90_days_from'), value) ? Promise.resolve() : Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.reject(new Error(''));
+                                                                return Promise.resolve()
                                                             },
                                                         }),
                                                     ]}
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='до'
+                                                        placeholder={dynamic_90_days === 'Рост' ? 'до 100' : 'до 20'}
                                                         suffix={<>%</>}
+                                                        type="number"
                                                     />
                                                 </Form.Item>
                                             </>
@@ -640,6 +623,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             <Input
                                                 size='large'
                                                 placeholder='от'
+                                                type="number"
                                             />
                                         </Form.Item>
                                         <Form.Item
@@ -663,6 +647,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             <Input
                                                 size='large'
                                                 placeholder='до'
+                                                type="number"
                                             />
                                         </Form.Item>
                                     </div>
@@ -691,6 +676,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             <Input
                                                 size='large'
                                                 placeholder='от'
+                                                type="number"
                                             />
                                         </Form.Item>
                                         <Form.Item
@@ -714,6 +700,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             <Input
                                                 size='large'
                                                 placeholder='до'
+                                                type="number"
                                             />
                                         </Form.Item>
                                     </div>
@@ -742,6 +729,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             <Input
                                                 size='large'
                                                 placeholder='от'
+                                                type="number"
                                             />
                                         </Form.Item>
                                         <Form.Item
@@ -765,6 +753,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                             <Input
                                                 size='large'
                                                 placeholder='до'
+                                                type="number"
                                             />
                                         </Form.Item>
                                     </div>
@@ -805,7 +794,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 showSearch={false}
                                                 mode='multiple'
                                                 size='large'
-                                                placeholder='Выберите предмет'
+                                                placeholder='Выберите'
                                                 getPopupContainer={(triggerNode) => triggerNode.parentNode}
                                                 tagRender={tagRender}
                                                 suffixIcon={

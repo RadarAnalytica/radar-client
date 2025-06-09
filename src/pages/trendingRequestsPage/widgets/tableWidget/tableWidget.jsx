@@ -50,6 +50,17 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
         setTableData(rawData)
     }, [rawData])
 
+    useEffect(() => {
+       const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
+       const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+       if (paginationNextButton) {
+        paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+       }
+       if (paginationPrevButton) {
+        paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+       }
+    }, [tablePaginationState])
+
     const paginationHandler = useCallback((page) => {
         setRequestState({ ...requestState, page })
     }, [requestState, setRequestState])
@@ -124,6 +135,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
         token: {
             colorText: '#5329FF',
             lineWidth: 0,
+            colorPrimary: '#5329FF'
         },
         components: {
             Pagination: {
@@ -273,6 +285,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                         total={tablePaginationState.total_pages}
                         pageSize={tablePaginationState.limit}
                         showSizeChanger={false}
+                        hideOnSinglePage={true}
                     //showTotal={(total) => `Всего ${total} товаров`}
                     />
                 </ConfigProvider>

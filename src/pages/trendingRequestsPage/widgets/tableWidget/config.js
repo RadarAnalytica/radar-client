@@ -2,7 +2,7 @@ export const tableConfig = [
     {
         //tableName: 'Прочие расходы',
         values: [
-            {ruName: 'Товар', engName: 'subject', units: null, isSortable: true},
+            {ruName: 'Запрос', engName: 'subject', units: null, isSortable: true},
         ]
     },
     {

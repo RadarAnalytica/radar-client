@@ -34,6 +34,18 @@ const SelfCostTableWidget = ({
         console.log(tableData?.length)
     }, [tableData])
 
+    useEffect(() => {
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+        if (paginationNextButton) {
+            paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+        }
+        if (paginationPrevButton) {
+            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+        }
+    }, [paginationState])
+
+
     if (!tableData && dataStatus.isLoading) {
         return (
             <div className={styles.widget}>
@@ -106,6 +118,7 @@ const SelfCostTableWidget = ({
                     token: {
                         colorText: '#5329FF',
                         lineWidth: 0,
+                        colorPrimary: '#5329FF'
                     },
                     components: {
                         Pagination: {

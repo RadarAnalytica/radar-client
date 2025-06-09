@@ -4,14 +4,14 @@ import { Select, ConfigProvider } from 'antd'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css';
 import { ru } from 'date-fns/locale';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import moment from 'moment';
 import DatePickerCustomDropdown from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown';
 
 export const DatePicker = ({ selectedDate, setSelectedDate }) => {
-    const [ month, setMonth ] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-    const [ isDropdownOpen, setIsDropdownOpen ] = useState(false)
-    const selectRef = useRef(null);
+    const [month, setMonth] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const datePickerRef = useRef(null);
     const dropdownRef = useRef(null);
     const customRuLocale = {
         ...ru,
@@ -30,24 +30,39 @@ export const DatePicker = ({ selectedDate, setSelectedDate }) => {
     startMonth.setDate(today.getDate() - 365 * 3);
     const endMonth = new Date(today);
 
+    // Parse selectedDate string to Date object
+    const parsedSelectedDate = selectedDate ? parse(selectedDate, 'dd.MM.yyyy', new Date()) : undefined;
+
     useEffect(() => {
         const handleClickOutside = (event) => {
-            const dropdown = document.querySelector('#dropdown');
-            const isClickInsideDropdown = dropdown?.contains(event.target);
-
-            if (!isClickInsideDropdown && event.target.className !== 'ant-select-selection-item' && event.target.className !== 'ant-select-item-option-content') {
-                return setIsDropdownOpen(false);
+            // Проверяем все возможные селекты и их выпадающие списки
+            const isSelectElement = 
+                event.target.closest('.ant-select') !== null ||
+                event.target.closest('.ant-select-dropdown') !== null ||
+                event.target.closest('.ant-select-item') !== null ||
+                event.target.closest('.rdp-dropdown') !== null ||
+                event.target.closest('.rdp-caption_dropdowns') !== null;
+            
+            if (
+                datePickerRef.current && 
+                !datePickerRef.current.contains(event.target) &&
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target) &&
+                !isSelectElement
+            ) {
+                setIsDropdownOpen(false);
             }
-            if (event.target.className === 'ant-select-selection-item' && event.target.title === selectedDate) {
-                return setIsDropdownOpen(!isDropdownOpen);
-            }            
         };
 
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('click', handleClickOutside);
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('click', handleClickOutside);
         };
     }, [isDropdownOpen]);
+
+    const selectClickHandler = (e) => {
+        setIsDropdownOpen(!isDropdownOpen)
+    }
 
     const handleDayClick = (day) => {
         setSelectedDate(format(day, 'dd.MM.yyyy'))
@@ -55,62 +70,42 @@ export const DatePicker = ({ selectedDate, setSelectedDate }) => {
     };
 
     return (
-        <ConfigProvider
-            theme={{
-                token: {
-                    colorPrimary: '#5329FF'
-                }
-            }}
-        >
-            <Select
-                ref={selectRef}
-                size='large'
-                open={isDropdownOpen}
-                style={{ maxWidth: '240px', width: '240px', fontSize: '20px' }}
-                placeholder='Выберите дату'
-                placement='bottomLeft'
-                popupMatchSelectWidth={false}
-                getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                value={selectedDate}
-                //value={selectedDate}
-                // onClick={() => {
-                //     if (!isDropdownOpen) {
-                //         //setIsDropdownOpen(true)
-                //     } else {
-                //         //setIsDropdownOpen(false)
-                //     }
-                   
-                // }}
-                suffixIcon={
+        <>
+            <div className={styles.datePicker} ref={datePickerRef}>
+                <div className={styles.datePicker__select} onClick={selectClickHandler}>
+                    <span>{selectedDate}</span>
                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                     </svg>
+                </div>
+
+                {isDropdownOpen &&
+                    <div ref={dropdownRef} className={styles.datePicker__dropdown}>
+                        <DayPicker
+                            minDate={minDate}
+                            maxDate={today}
+                            mode="single"
+                            selected={parsedSelectedDate}
+                            month={month}
+                            onMonthChange={setMonth}
+                            captionLayout="dropdown"
+                            className={styles.customDayPicker}
+                            locale={customRuLocale}
+                            onDayClick={handleDayClick}
+                            disabled={[
+                                { before: minDate },
+                                { after: today },
+                            ]}
+                            startYear={startMonth}
+                            startMonth={startMonth}
+                            endMonth={endMonth}
+                            components={{
+                                Dropdown: DatePickerCustomDropdown
+                            }}
+                        />
+                    </div>
                 }
-                dropdownRender={() => <div ref={dropdownRef} id='dropdown'>
-                    <DayPicker
-                        minDate={minDate}
-                        maxDate={today}
-                        mode="single"
-                        selected={selectedDate}
-                        month={month}
-                        onMonthChange={setMonth}
-                        captionLayout="dropdown"
-                        className={styles.customDayPicker}
-                        locale={customRuLocale}
-                        onDayClick={handleDayClick}
-                        disabled={[
-                            { before: minDate },
-                            { after: today },
-                        ]}
-                        startYear={startMonth}
-                        startMonth={startMonth}
-                        endMonth={endMonth}
-                        components={{
-                            Dropdown: DatePickerCustomDropdown
-                        }}
-                    />
-                </div>}
-            />
-        </ConfigProvider>
+            </div>
+        </>
     )
 }
