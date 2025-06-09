@@ -1,9 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { ServiceFunctions } from '../service/serviceFunctions';
-import {fileDownload} from '../service/utils';
-import SideNav from '../components/SideNav';
+import { fileDownload } from '../service/utils';
 import AuthContext from '../service/AuthContext';
-import TopNav from '../components/TopNav';
 import primeCost from './images/prime-cost.svg';
 import Modal from 'react-bootstrap/Modal';
 import DragDropFile from '../components/DragAndDropFiles';
@@ -85,8 +83,10 @@ const PrimeCost = () => {
         <Sidebar />
       </div>
       {/* <SideNav /> */}
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
-        <TopNav title={'Себестоимость'} subTitle={'Отчёт /'} />
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
+        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
+          <Header title={'Себестоимость'} titlePrefix={'Отчёт'} />
+        </div>
         <div className='container dash-container'>
           <div className={styles.primeCost}>
             <div className={styles.primeCostBox}>

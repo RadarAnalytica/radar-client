@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchReportByMonth } from '../redux/reportByMonth/reportByMonthActions';
 import { fetchByMonthFilters } from '../redux/reportByMonth/byMonthFiltersAction';
 import AuthContext from '../service/AuthContext';
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
 import styles from './WeeklyReportByMonth.module.css';
 import SalesTable from '../components/SaleTable';
 import BottomNavigation from '../components/BottomNavigation';
@@ -13,6 +11,7 @@ import DemonstrationSection from '../components/DemonstrationSection';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 
 
 const WeeklyReportByMonth = () => {
@@ -24,7 +23,7 @@ const WeeklyReportByMonth = () => {
   );
   const { byMonthFilters, isFiltersLoading } = useSelector((state) => state?.byMonthFiltersSlice);
 
-  useEffect(() => {  
+  useEffect(() => {
     dispatch(fetchByMonthFilters(
       authToken
     ))
@@ -48,8 +47,10 @@ const WeeklyReportByMonth = () => {
         <Sidebar />
       </div>
       {/* <SideNav /> */}
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
-        <TopNav title={'По месяцам'} subTitle={'Отчёт /'} />
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
+        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
+          <Header title={'По месяцам'} titlePrefix={'Отчёт'} />
+        </div>
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
@@ -93,7 +94,7 @@ const WeeklyReportByMonth = () => {
             </span>
           </>
         )}
-           <BottomNavigation />
+        <BottomNavigation />
       </div>
     </div>
   );
