@@ -19,7 +19,8 @@ export default function TableSettingModal({
 	columnsList,
 	tableColumns,
 	setTableColumns,
-	filter = true
+	filter = true,
+	footer = null
 }) {
 	const [shownColumns, setShownColumns] = useState(columnsList);
 	const [checked, setChecked] = useState(tableColumns.map((el) => el.dataIndex));
@@ -172,7 +173,7 @@ export default function TableSettingModal({
 					</svg>
 				}
 				width={1200}
-				footer={false}
+				footer={footer}
 			>
 				{filter && <Flex className={styles.filter} gap={8}>
 					<Form
@@ -248,12 +249,11 @@ export default function TableSettingModal({
 					</Checkbox> */}
 				</div>
 				<Form form={form} onFinish={onFinish}>
-					<Row gutter={[16, 12]} vertical wrap className={styles.list}>
+					<Flex gap={[16, 12]} vertical wrap className={styles.list}>
 						{shownColumns.map((el, i) => (
-							<Col span={8}>
+							<Col span={8} className={styles.item}>
 								<Form.Item
 									key={i}
-									className={styles.item}
 									name={el.dataIndex}
 									valuePropName="checked"
 									value={el.dataIndex}
@@ -269,24 +269,24 @@ export default function TableSettingModal({
 							</Col>
 						))}
 
-						<Flex
-							gap={12}
-							justify="end"
-							align="end"
-							className={styles.controls}
+					</Flex>
+					<Flex
+						gap={12}
+						justify="end"
+						align="end"
+						className={styles.controls}
+					>
+						<Button size="large" onClick={closeModal}>
+							Отменить
+						</Button>
+						<Button
+							type="primary"
+							size="large"
+							htmlType="submit"
 						>
-							<Button size="large" onClick={closeModal}>
-								Отменить
-							</Button>
-							<Button
-								type="primary"
-								size="large"
-								htmlType="submit"
-							>
-								Применить
-							</Button>
-						</Flex>
-					</Row>
+							Применить
+						</Button>
+					</Flex>
 				</Form>
 			</Modal>
 		</ConfigProvider>
