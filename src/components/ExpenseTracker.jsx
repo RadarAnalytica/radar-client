@@ -289,126 +289,75 @@ const ExpenseTracker = () => {
   };
 
   return (
-    <div
-      className={styles.container}
-    >
+    <>
       {!loading ? (
         <div className={styles.table}>
-          {/* Header Row */}
-          <div className={styles.headerRow}>
-            <div className={styles.yearCell}>Дата</div>
-            {/* <div className={styles.monthCell}>Месяц</div> */}
-            <div className={styles.articleCell}>
-              <span className={styles.articleText}>
-                Артикул{'\n'}поставщика
-              </span>
-            </div>
+          {/* Header */}
+          <div className={styles.table__row}>
+            <div className={`${styles.table__item} ${styles.table__item_wide}`}>Дата</div>
+            <div className={styles.table__item}>Артикул{'\n'}поставщика</div>
             {[1, 2, 3, 4, 5].map((num) => (
               <div
                 key={num}
-                className={styles.expenseCell}
+                className={styles.table__item}
               >{`Расход №${num}`}</div>
             ))}
-            {/* <div className={styles.totalCell}>Итого Общих</div>
-          <div className={styles.totalCell}>Поартикульных</div>
-          <div className={styles.totalCell}>Расходов</div> */}
+            <div className={`${styles.table__item} ${styles.table__item_actions}`}></div>
           </div>
 
-          {/* Data Rows */}
-          <div className={styles.rowContainer}>
-            {rows.map((row) => (
-              <div key={row.id} className={styles.dataRow}>
-                {/* <div className={styles.yearCell}>
-                <select
-                  value={row.year || ''}
-                  onChange={(e) => handleYearChange(row.id, e.target.value)}
-                  className={styles.select}
-                >
-                  <option value=''>Выбрать</option>
-                  {years.map((year) => (
-                    <option
-                      key={year}
-                      value={year}
-                      className={`${styles.textInSelect} ${
-                        row.year === year ? styles.selected : ''
-                      }`}
-                    >
-                      {year}
-                    </option>
-                  ))}
-                </select>
-              </div> */}
-
-                <div className={styles.yearCell}>
-                  <div className={styles.inputWrapper}>
-                    <CustomDayPicker
-                      selectedDate={{ from: row.date || new Date() }}
-                      setSelectedDate={(range) => {
-                        console.log('Selected range:', range);
-                        if (range?.from) {
-                          handleDateChange(row.id, new Date(range.from));
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* <div className={styles.monthCell}>
-                <select
-                  value={row.month}
-                  onChange={(e) => handleMonthChange(row.id, e.target.value)}
-                  className={styles.select}
-                >
-                  <option value=''>Выбрать</option>
-                  {months.map((month) => (
-                    <option key={month} value={month}>
-                      {month}handleExpenseChange(row.id, index, e.target.value)
-                    </option>
-                  ))}
-                </select>
-              </div> */}
-
-                <div className={styles.articleCell}>
+          {/* Body */}
+          {rows.map((row) => (
+            <div className={styles.table__row} key={row.id}>
+              <div className={`${styles.table__item} ${styles.table__item_wide}`}>
+                  <CustomDayPicker
+                    selectedDate={{ from: row.date || new Date() }}
+                    setSelectedDate={(range) => {
+                      console.log('Selected range:', range);
+                      if (range?.from) {
+                        handleDateChange(row.id, new Date(range.from));
+                      }
+                    }}
+                  />
+              </div>
+              <div className={styles.table__item}>
+                <input
+                  type='text'
+                  value={row.article}
+                  className={styles.input}
+                  onChange={(e) =>
+                    handleArticleChange(row.id, e.target.value)
+                  }
+                />
+              </div>
+              {row.expenses.map((expense, index) => (
+                <div className={styles.table__item} key={index}>
                   <div className={styles.inputWrapper}>
                     <input
-                      type='text'
-                      value={row.article}
-                      className={styles.input}
+                      type='number'
+                      value={expense === undefined ? '-' : expense || ''}
                       onChange={(e) =>
-                        handleArticleChange(row.id, e.target.value)
+                        handleExpenseChange(row.id, index, e.target.value)
                       }
+                      className={`${styles.input} ${expense ? styles.active : ''
+                        }`}
+                      placeholder='0'
                     />
+                    <span
+                      className={`${styles.rubSign} ${expense ? styles.active : ''
+                        }`}
+                    >
+                      ₽
+                    </span>
                   </div>
                 </div>
-
-                {row.expenses.map((expense, index) => (
-                  <div key={index} className={styles.expenseCell}>
-                    <div className={styles.inputWrapper}>
-                      <input
-                        type='number'
-                        value={expense === undefined ? '-' : expense || ''}
-                        onChange={(e) =>
-                          handleExpenseChange(row.id, index, e.target.value)
-                        }
-                        className={`${styles.input} ${expense ? styles.active : ''
-                          }`}
-                        placeholder='0'
-                      />
-                      <span
-                        className={`${styles.rubSign} ${expense ? styles.active : ''
-                          }`}
-                      >
-                        ₽
-                      </span>
-                    </div>
-                  </div>
-                ))}
+              ))}
+              <div className={`${styles.table__item} ${styles.table__item_actions}`}>
                 <Tooltip title="Сохранить">
                   <span
                     className={`${styles.saveIcon} ${hasChanges[row.id] ? styles.saveIconActive : ''
-                    }`}
+                      }`}
                     onClick={() => handleSave(row)}
-                    >
+                  >
                     <img src={saveIcon} alt='Save Row' />
                   </span>
                 </Tooltip>
@@ -416,18 +365,26 @@ const ExpenseTracker = () => {
                   <span
                     className={styles.deleteIcon}
                     // onClick={() => handleDeleteRow(row.id)}
-                  onClick={() => setDeleteId(row.id)}
-                    >
+                    onClick={() => setDeleteId(row.id)}
+                  >
                     <img src={trashIcon} alt='Delete Row' />
                   </span>
                 </Tooltip>
               </div>
-            ))}
+            </div>))}
+
+
+
+
+
+          {/* add Rows */}
+          <div className={styles.rowContainer}>
+
             <button onClick={addRow} className={styles.addButton}>
-            <img src={crossGrey} alt='Добавить строку'
-            // onClick={createRow}
-            />
-          </button>
+              <img src={crossGrey} alt='Добавить строку'
+              // onClick={createRow}
+              />
+            </button>
           </div>
         </div>
       ) : (
@@ -440,8 +397,7 @@ const ExpenseTracker = () => {
       )}
       {/* {!loading && deleteId && <Modal open={deleteId} onCancel={() => setDeleteId()} onOk={() => handleDeleteSubmit()}>Удалить</Modal>} */}
       {!loading && deleteId && <ModalDeleteConfirm onCancel={() => setDeleteId()} onOk={() => handleDeleteRow(deleteId)} title='Удалить?' />}
-      
-    </div>
+    </>
   );
 };
 

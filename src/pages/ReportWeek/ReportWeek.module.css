@@ -50,6 +50,37 @@
     max-height: calc(100% - 170px);
 }
 
+:global(.table__arrow){
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    font-size: 14px;
+}
+
+:global(.table__arrow_static::after){
+    content: "";
+    width: 12px;
+    height: 2px;
+    background: #8C8C8C;
+}
+:global(.table__arrow_static svg){
+    display: none;
+}
+
+:global(.table__arrow_positive){
+    color: #00b6b9;
+}
+
+:global(.table__arrow_negative){
+    color: #f93c65;
+}
+
+:global(.table__arrow_negative svg){
+    transform: rotate(180deg) scale(-1, 1);
+}
+
 .btns{
     display: flex;
     flex-flow: row nowrap;

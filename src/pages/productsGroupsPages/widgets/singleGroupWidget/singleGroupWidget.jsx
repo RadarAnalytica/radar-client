@@ -87,11 +87,11 @@ const SingleGroupWidget = ({
     return (
         <div className={styles.widget}>
             <div className={styles.widget__controlsWrapper}>
-                {/* <HowToLink
+                <HowToLink
                     text='Как использовать?'
                     target='_blank'
-                    url='/'
-                /> */}
+                    url='https://radar.usedocs.com/article/76887'
+                />
                 <button className={styles.widget__addButton} onClick={() => setIsAddSkuModalVisible(true)}>
                     Добавить артикул
                 </button>

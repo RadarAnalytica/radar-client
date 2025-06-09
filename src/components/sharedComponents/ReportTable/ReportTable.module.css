@@ -9,17 +9,27 @@
   
 .tableContainer {
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
 }
 
-.tableContainer :global(.ant-table-sticky-scroll-bar){
-  width: 3px;
-  height: 3px;
+.tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
+.tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
   border-radius: 6px!important;
-  opacity: 1;
-  background: #5329ff80;
+  background: #5329ff80!important;
 }
 
+.tableContainer :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
+  height: 3px!important;
+}
+
+.tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb){
+  width: 3px!important;
+}
+
+.tableContainer :global(.ant-table-tbody-virtual-holder){
+  /* max-height: 100%!important; */
+}
+/* 
 .tableContainer::-webkit-scrollbar {
   width: 3px;
   height: 3px;
@@ -36,7 +46,7 @@
 .tableContainer::-webkit-scrollbar-thumb {
     background: #5329ff80;
     border-radius: 6px;
-}
+} */
 
 .tableContainer thead>tr>th {
   border: none;
@@ -82,4 +92,27 @@
 
 .expandRow{
   opacity: 0.5;
+}
+
+/* :global(.ant-table-container),
+:global(.ant-table-header), 
+:global(.ant-table-body) {
+  scroll-behavior: auto !important;
+  scroll-behavior: auto;       /* Отключает плавный скролл *
+  overscroll-behavior: none;   /* Отключает эффекты overscroll *
+  -webkit-overflow-scrolling: auto; /* Для Safari *
+} */
+
+.sortIcons{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+:global(.ant-table-column-has-sorters){
+  margin-left: 10px;
+  margin-right: 10px;
+  user-select: none; /* Стандартное свойство */
+  -webkit-user-select: none; /* Для Safari */
+  -moz-user-select: none; /* Для Firefox */
+  -ms-user-select: none; /* Для IE/Edge */
 }

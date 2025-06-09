@@ -2,7 +2,7 @@ import { newIcons } from "../icons/icons"
 
 export const menuConfig = [
     {
-        id: 1,
+        id: 0,
         name: 'analysis',
         label: 'Анализ конкурентов',
         icon: newIcons.analysis,
@@ -11,31 +11,51 @@ export const menuConfig = [
                 id: 1,
                 url: '/sku-analysis',
                 label: 'Анализ артикула',
-                isActive: true
+                isActive: true,
+                isNew: false
             },
             {
                 id: 2,
                 url: '/supplier-analysis',
                 label: 'Анализ поставщика',
-                isActive: false
+                isActive: false,
+                isNew: false
             },
             {
                 id: 3,
                 url: '/category-analysis',
                 label: 'Анализ категории',
-                isActive: false
+                isActive: false,
+                isNew: false
             },
             {
                 id: 3,
                 url: '/monitoring',
                 label: 'Частотность артикула ',
-                isActive: true
+                isActive: true,
+                isNew: false
             },
             {
                 id: 4,
                 url: '/calculate',
                 label: 'Калькулятор unit-экономики товара',
-                isActive: true
+                isActive: true,
+                isNew: false
+            },
+        ]
+    },
+    {
+        id: 1,
+        name: 'trends_analysis',
+        label: 'Анализ ниши и трендов',
+        icon: newIcons.trends_analysis,
+        children: [
+            {
+                id: 1,
+                url: '/trending-requests',
+                label: 'Поиск трендовых запросов',
+                isActive: true,
+                isNew: true
             },
         ]
     },
@@ -49,37 +69,43 @@ export const menuConfig = [
                 id: 1,
                 url: '/dashboard',
                 label: 'Сводка продаж',
-                isActive: true
+                isActive: true,
+                isNew: false
             },
             {
                 id: 2,
                 url: '/main', //исправить
                 label: 'По неделям',
-                isActive: false
+                isActive: false,
+                isNew: false
             },
             {
                 id: 3,
                 url: '/main', // исправить
                 label: 'ОПиУ',
-                isActive: false
+                isActive: false,
+                isNew: false
             },
             {
                 id: 4,
                 url: '/report-main',
                 label: 'Оцифровка еженедельных отчетов',
-                isActive: true
+                isActive: true,
+                isNew: false
             },
             {
                 id: 5,
                 url: '/main', 
                 label: 'Операционные расходы',
-                isActive: false
+                isActive: false,
+                isNew: false
             },
             {
                 id: 6,
                 url: '/report-week', 
                 label: 'Отчет по неделям',
-                isActive: true
+                isActive: true,
+                isNew: true
             },
         ]
     },
@@ -93,31 +119,35 @@ export const menuConfig = [
                 id: 1,
                 url: '/orders-map',
                 label: 'География заказов',
-                isActive: true
+                isActive: true,
+                isNew: false
             },
             {
                 id: 2,
                 url: '/abc-data',
                 label: 'ABC-анализ',
-                isActive: true
+                isActive: true,
+                isNew: false
             },
             {
                 id: 3,
                 url: '/stock-analysis',
                 label: 'Аналитика по товарам',
-                isActive: true
+                isActive: true,
+                isNew: false
             },
             {
                 id: 4,
                 url: '/selfcost',
                 label: 'Себестоимость',
-                isActive: true
+                isActive: true,
             },
             {
                 id: 5,
                 url: '/groups',
                 label: 'Группы товаров',
-                isActive: true
+                isActive: true,
+                isNew: true,
             },
         ]
     },
@@ -131,13 +161,15 @@ export const menuConfig = [
                 id: 1,
                 url: '/ai-generator',
                 label: 'Генерация описания',
-                isActive: true
+                isActive: true,
+                isNew: false
             },
             {
                 id: 2,
                 url: '/seo',
                 label: 'Сравнение SEO с ТОПами',
-                isActive: true
+                isActive: true,
+                isNew: false
             },
         ]
     },

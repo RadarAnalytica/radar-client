@@ -862,33 +862,41 @@ export const ServiceFunctions = {
   },
 
   getCostTemplate: async (token) => {
-    const res = await fetch(`${URL}/api/report/cost/get-template`, {
+    const res = await fetch(`${URL}/api/report/self-buyout/get-template`, {
       method: 'GET',
       headers: {
         accept: 'application/json',
         authorization: 'JWT ' + token,
       },
     });
-    return res;
+    const data = await res.blob()
+    return data;
   },
 
   postCostUpdate: async (token, file) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`${URL}/api/report/cost/update`, {
-      method: 'POST',
-      headers: {
-        Authorization: 'JWT ' + token,
-      },
-      body: formData,
-    });
+    try {
+      const response = await fetch(`${URL}/api/report/cost/update`, {
+        method: 'POST',
+        headers: {
+          Authorization: 'JWT ' + token,
+        },
+        body: formData,
+      });
 
-    if (!response.ok) {
-      throw new Error('Failed to update cost data');
+      if (response.ok) {
+        return await response.json();
+      } else {
+        console.error('Ошибка при загрузке файла:', response.statusText);
+        throw new Error(response.statusText);
+      }
+
+    } catch (error) {
+      console.error('Ошибка сети или запроса:', error);
+      throw error; // Прокидываем ошибку выше
     }
-
-    return await response.json();
   },
 
   getAbcReportsFilters: async (token) => {
@@ -1039,7 +1047,8 @@ export const ServiceFunctions = {
         Authorization: token,
       },
     });
-    return res;
+    const data = await res.blob()
+    return data;
   },
 
   // Add to ServiceFunctions object
@@ -1047,15 +1056,28 @@ export const ServiceFunctions = {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`${URL}/api/report/self-buyout/update`, {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        Authorization: token,
-      },
-      body: formData,
-    });
-    return await response.json();
+    try {
+      const response = await fetch(`${URL}/api/report/self-buyout/update`, {
+        method: 'POST',
+        headers: {
+          Authorization: token,
+          // Authorization: 'JWT ' + token,
+        },
+        body: formData,
+      });
+      return response;
+      // if (response.ok) {
+      //   return await response.json();
+      // } else {
+      //   console.error('Ошибка при загрузке файла:', response.statusText);
+      //   throw new Error(response.statusText);
+      // }
+
+    } catch (error) {
+      console.error('Ошибка сети или запроса:', error);
+      throw error; // Прокидываем ошибку выше
+    }
+
   },
 
   getPenaltiesFilters: async (token) => {
@@ -1144,16 +1166,18 @@ export const ServiceFunctions = {
     }
   },
 
-  getReportWeek: async (token, selectedRange, shop) => {
+  getReportWeek: async (token, selectedRange, shopId, filters) => {
+    const body = getRequestObject(filters, selectedRange, shopId)
 
     const res = await fetch(
       `${URL}/api/periodic_reports/weekly_report`,
       {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'content-type': 'application/json',
           authorization: 'JWT ' + token,
         },
+        body: JSON.stringify(body)
       }
     );
 
@@ -1162,16 +1186,20 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getDownloadReportWeek: async (token, selectedRange, shop) => {
-    // let rangeParams = rangeApiFormat(selectedRange);
+  getDownloadReportWeek: async (token, selectedRange, shopId, filters) => {
+    const body = getRequestObject(filters, selectedRange, shopId)
+
     const res = await fetch(
-      `${URL}/api/periodic_reports/weekly_report/download`, {
-      // `${URL}/api/reportWeekreportWeek/download?${rangeParams}&shop=${shop}`, {
-      method: 'GET',
-      headers: {
-        authorization: 'JWT ' + token,
-      },
-    });
+      `${URL}/api/periodic_reports/weekly_report/download`,
+      {
+        method: 'POST',
+        headers: {
+          authorization: 'JWT ' + token,
+        },
+        body: JSON.stringify(body)
+      }
+    );
+
     const data = await res.blob()
     return data;
   },

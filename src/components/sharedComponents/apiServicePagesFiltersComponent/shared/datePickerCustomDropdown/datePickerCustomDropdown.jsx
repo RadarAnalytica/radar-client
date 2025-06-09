@@ -1,5 +1,6 @@
+import { useCallback } from 'react';
 import styles from './datePickerCustomDropdown.module.css'
-import { Select, ConfigProvider } from 'antd'
+import { Select, ConfigProvider, Tag } from 'antd'
 
 const DatePickerCustomDropdown = (props) => {
     const { options, value } = props;
@@ -23,41 +24,75 @@ const DatePickerCustomDropdown = (props) => {
         )
     }
 
+    const tagRender = useCallback(props => {
+        const { label, value, closable, onClose } = props;
+        return (
+            <Tag
+                color={'black'}
+                closable={false}
+                onClose={onClose}
+                style={{ background: 'transparent', color: 'black', fontSize: '18px', display: 'flex', alignItems: 'center', border: 'none' }}
+            >
+                <div style={{color: 'black'}}>{label}</div>
+            </Tag>
+        );
+    }, [])
+
     return (
         <div className={styles.dropdown}>
             <ConfigProvider
                 theme={{
                     token: {
-                        //colorBgBase: '#EAEAF1',
-                        colorBgContainer: '#EAEAF1',
-                        colorBorder: 'transparent',
+                        colorPrimary: 'white',
+                        colorBgContainer: 'white',
+                        colorBorder: 'white !important',
                         borderRadius: 8,
                         fontFamily: 'Mulish',
-                        fontSize: 16
+                        colorTextPlaceholder: 'black !important',
+                        fontSize: 16,
+                        controlOutlineWidth: 0,
+                        lineWidth: 0,
+                        controlOutline: 'none',
+                        controlItemBgActive: 'transparent',
                     },
                     components: {
                         Select: {
-                            activeBorderColor: 'transparent',
-                            activeOutlineColor: 'transparent',
-                            hoverBorderColor: 'transparent',
-                            optionActiveBg: 'transparent',
+                            activeOutlineColor: 'white !important',
+                            controlOutline: 'white !important',
+                            activeBorderColor: 'white !important',
+                            hoverBorderColor: 'white !important',
+                            optionActiveBg: 'white',
                             optionFontSize: 16,
                             optionSelectedBg: 'transparent',
                             optionSelectedColor: '#5329FF',
                             paddingSM: 0,
+                            controlOutlineWidth: 0,
+                            //controlOutline: 'none',
                         }
                     }
                 }}
             >
                 <Select
                     size='middle'
-                    variant='borderless'
+                    variant='outlined'
                     onChange={selectChangeHandler}
                     value={value}
                     options={options}
                     suffixIcon={<Suffix />}
                     className={styles.dropdown__select}
                     dropdownStyle={{ minWidth: '120px'}}
+                    tagRender={tagRender}
+                    styles={{
+                        root: {
+                            color: 'black'
+                        }
+                    }}
+                    style={{ 
+                        border: 'none', 
+                        color: 'black',
+                        outline: 'none',
+                        boxShadow: 'none'
+                    }}
                 />
             </ConfigProvider>
         </div>

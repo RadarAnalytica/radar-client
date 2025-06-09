@@ -4,22 +4,32 @@ import {
 	Form,
 	Checkbox,
 	Flex,
+	Row,
+	Col,
 	Button,
 	Input,
 } from 'antd';
-import styles from './ModalTableSetting.module.css';
-import { useEffect, useState } from 'react';
+import styles from './TableSettingModal.module.css';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'antd/es/form/Form';
 
-export default function ModalTableSetting({
+export default function TableSettingModal({
 	isModalOpen = true,
 	closeModal,
 	columnsList,
 	tableColumns,
 	setTableColumns,
+	filter = true,
+	footer = null
 }) {
 	const [shownColumns, setShownColumns] = useState(columnsList);
 	const [checked, setChecked] = useState(tableColumns.map((el) => el.dataIndex));
+		
+	// const checkAll = useMemo(() => checked.length == shownColumns.length, [shownColumns])
+	
+	const checkAll = checked.length == columnsList.length
+	const indeterminateAll = checked.length > 0 && checked.length < shownColumns.length
+
 
 	const [form] = useForm();
 
@@ -58,7 +68,6 @@ export default function ModalTableSetting({
 	}
 
 	function сheckAllHandler(){
-		console.log('сheckAllHandler')
 		const data = form.getFieldsValue()
 		for (const check in data) {
       form.setFieldValue(check, shownColumns.length > checked.length ? true : false)
@@ -78,9 +87,6 @@ export default function ModalTableSetting({
     }
 		setChecked(result)
 	}
-	
-	const checkAll = checked.length == columnsList.length
-	const indeterminateAll = checked.length > 0 && checked.length < columnsList.length
 
 	return (
 		<ConfigProvider
@@ -96,10 +102,13 @@ export default function ModalTableSetting({
 						titleColor: '#1a1a1a',
 					},
 					Button: {
+						paddingInlineSM: 0,
 						paddingBlockLG: 9.5,
 						paddingInlineLG: 12,
 						controlHeightLG: 44,
 						defaultShadow: false,
+						contentFontSize: 16,
+						contentFontSizeSM: 16,
 						colorBorder: '#00000033',
 						defaultColor: '#5329FF',
 						defaultBg: '#e7e1fe',
@@ -117,6 +126,7 @@ export default function ModalTableSetting({
 						colorPrimaryBorderHover: '#7a52ff',
 						colorPrimaryHover: '#7a52ff',
 						colorPrimaryActive: '#3818d9',
+						LinkInlinePadding: 0,
 						colorLink: '#5329FF',
 						colorLinkHover: '#7a52ff',
 						colorLinkActive: '#3818d9',
@@ -163,9 +173,9 @@ export default function ModalTableSetting({
 					</svg>
 				}
 				width={1200}
-				footer={false}
+				footer={footer}
 			>
-				<Flex className={styles.filter} gap={8}>
+				{filter && <Flex className={styles.filter} gap={8}>
 					<Form
 						className={styles.form} 
 						onFinish={filterColumns} 
@@ -224,54 +234,58 @@ export default function ModalTableSetting({
 					{/* <Button type="link" size="large" onClick={checkAllHandler}>
 						Выбрать все
 					</Button> */}
-				</Flex>
-				<div >
-					<Checkbox
+				</Flex>}
+				<div className={styles.check_all}>
+					<Button type='link' size='small' onClick={сheckAllHandler}>
+						{shownColumns.every( (el) => checked.includes(el.dataIndex)) ? 'Снять все' : 'Выбрать все'}
+					</Button>
+					{/* <Checkbox
 						className={styles.item}
 						indeterminate={indeterminateAll}
 						onChange={сheckAllHandler}
 						defaultChecked={checkAll}
 					>
-						Выбоать все
-					</Checkbox>
+						Выбрать все
+					</Checkbox> */}
 				</div>
 				<Form form={form} onFinish={onFinish}>
-					<Flex vertical wrap className={styles.list}>
+					<Flex gap={[16, 12]} vertical wrap className={styles.list}>
 						{shownColumns.map((el, i) => (
-							<Form.Item
-								key={i}
-								className={styles.item}
-								name={el.dataIndex}
-								valuePropName="checked"
-								value={el.dataIndex}
-								initialValue={checked.includes(
-										el.dataIndex
-								)}
-								onChange={checkChangeHandler}
-							>
-								<Checkbox >
-									{el.title}
-								</Checkbox>
-							</Form.Item>
+							<Col span={8} className={styles.item}>
+								<Form.Item
+									key={i}
+									name={el.dataIndex}
+									valuePropName="checked"
+									value={el.dataIndex}
+									initialValue={checked.includes(
+											el.dataIndex
+									)}
+									onChange={checkChangeHandler}
+								>
+									<Checkbox >
+										{el.title}
+									</Checkbox>
+								</Form.Item>
+							</Col>
 						))}
 
-						<Flex
-							gap={12}
-							justify="end"
-							align="end"
-							className={styles.controls}
+					</Flex>
+					<Flex
+						gap={12}
+						justify="end"
+						align="end"
+						className={styles.controls}
+					>
+						<Button size="large" onClick={closeModal}>
+							Отменить
+						</Button>
+						<Button
+							type="primary"
+							size="large"
+							htmlType="submit"
 						>
-							<Button size="large" onClick={closeModal}>
-								Отменить
-							</Button>
-							<Button
-								type="primary"
-								size="large"
-								htmlType="submit"
-							>
-								Применить
-							</Button>
-						</Flex>
+							Применить
+						</Button>
 					</Flex>
 				</Form>
 			</Modal>

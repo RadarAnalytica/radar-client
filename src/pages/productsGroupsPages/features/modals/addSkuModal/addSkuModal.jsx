@@ -188,6 +188,27 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
         }
     }, [groupData, groupData.products])
 
+
+
+    useEffect(() => {
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        if (paginationNextButton) {
+         paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+        }
+        if (paginationSingleNextButton) {
+         paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+        }
+        if (paginationSinglePrevButton) {
+         paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+        }
+        if (paginationPrevButton) {
+         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+        }
+     }, [paginationState])
+
     useEffect(() => {
         setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 })
     }, [tableData])
@@ -363,7 +384,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                                                                         <img
                                                                             src={product[v.photoFieldName]}
                                                                             width={45}
-                                                                            height={60} 
+                                                                            height={60}
                                                                             onError={(e) => {
                                                                                 e.target.onerror = null;
                                                                                 e.target.style.display = 'none'
@@ -401,6 +422,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                         token: {
                             colorText: '#5329FF',
                             lineWidth: 0,
+                            colorPrimary: '#5329FF'
                         },
                         components: {
                             Pagination: {

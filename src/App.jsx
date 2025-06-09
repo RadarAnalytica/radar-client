@@ -56,6 +56,7 @@ const SelfCostPage = React.lazy(() => import("./pages/selfCostPage/selfCostPage"
 const ReportWeek = React.lazy(() => import("./pages/ReportWeek"));
 const SkuFrequencyPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyPage"));
 const SkuFrequencyRequestPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyRequestPage"));
+const TrendingRequestsPage = React.lazy(() => import("./pages/trendingRequestsPage/trendingRequestsPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -81,6 +82,7 @@ function App() {
             <Route path='/dev/monitoring' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/dev/monitoring/request' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />
             {/* Protected routes */}
+            <Route path='/trending-requests' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск трендовых запросов'><TrendingRequestsPage /></ProtectedRoute>} />
             <Route path='/new-monitoring' element={<ProtectedRoute underDevProtected routeRuName='В разработке'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/groups' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
             <Route path='/groups/:group_id' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
@@ -91,7 +93,7 @@ function App() {
             <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
             <Route path='/abc-data' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
             <Route path='/seo' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />
-            <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Частотность артикула'><RequestMonitoringPage /></ProtectedRoute>} />
+            <Route path='/monitoring' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><RequestMonitoringPage /></ProtectedRoute>} />
             <Route path='/ai-generator' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
             <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
             <Route path='/orders-map' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />

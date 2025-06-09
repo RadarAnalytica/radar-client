@@ -5,3 +5,23 @@
     width: 100%;
     padding: 0;
 }
+
+.dropdown__select :global(.ant-select-selector) {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.dropdown__select :global(.ant-select-focused) {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.dropdown__select :global(.ant-select-focused .ant-select-selector) {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+:global(.ant-select-selection-item) {
+    color: black !important;
+}

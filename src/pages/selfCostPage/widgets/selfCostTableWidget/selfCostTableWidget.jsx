@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './selfCostTableWidget.module.css'
 import { tableConfig } from '../../shared'
 import { TableRow } from '../../features'
+import { Pagination, ConfigProvider } from 'antd'
 
 const initDataStatus = {
     isError: false,
@@ -9,7 +10,7 @@ const initDataStatus = {
     message: ''
 }
 
-const SelfCostTableWidget = ({ 
+const SelfCostTableWidget = ({
     setIsSuccess,
     dataStatus,
     tableData,
@@ -19,7 +20,39 @@ const SelfCostTableWidget = ({
     setDataStatus,
     setTableData,
     resetSearch
- }) => {
+}) => {
+
+    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
+
+
+    const paginationHandler = (page) => {
+        setPaginationState({ ...paginationState, current: page })
+    }
+
+    useEffect(() => {
+        setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 })
+        console.log(tableData?.length)
+    }, [tableData])
+
+    useEffect(() => {
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        if (paginationNextButton) {
+         paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+        }
+        if (paginationSingleNextButton) {
+         paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+        }
+        if (paginationSinglePrevButton) {
+         paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+        }
+        if (paginationPrevButton) {
+         paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+        }
+     }, [paginationState])
+
 
     if (!tableData && dataStatus.isLoading) {
         return (
@@ -47,9 +80,9 @@ const SelfCostTableWidget = ({
                                 // определяем необходимые стили
                                 const headerCellStyle = v.ruName === 'Продукт' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : v.ruName === 'Фулфилмент' ? `${styles.table__headerItem} ${styles.table__headerItem_full}` : styles.table__headerItem
                                 return (
-                                        <div className={headerCellStyle} key={id}>
-                                            <p className={styles.table__headerItemTitle}>{v.ruName}</p>
-                                        </div>
+                                    <div className={headerCellStyle} key={id}>
+                                        <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                    </div>
                                 )
                             })}
                         </div>
@@ -59,7 +92,9 @@ const SelfCostTableWidget = ({
                     <div className={styles.table__body}>
                         {/* Мапим данные о товарах */}
                         {tableData && tableData.length > 0 && activeBrand && tableData?.map((product, id) => {
-                            return (
+                            const minRange = (paginationState.current - 1) * paginationState.pageSize;
+                            const maxRange = paginationState.current * paginationState.pageSize;
+                            return id >= minRange && id < maxRange && (
                                 <TableRow
                                     key={product.product}
                                     currentProduct={product}
@@ -86,6 +121,32 @@ const SelfCostTableWidget = ({
                     </div>
                 </div>
             </div>
+            <ConfigProvider
+                theme={{
+                    token: {
+                        colorText: '#5329FF',
+                        lineWidth: 0,
+                        colorPrimary: '#5329FF'
+                    },
+                    components: {
+                        Pagination: {
+                            itemActiveBg: '#EEEAFF',
+                            itemBg: '#F7F7F7',
+                            itemColor: '#8C8C8C',
+                        }
+                    }
+                }}
+            >
+                <Pagination
+                    defaultCurrent={1}
+                    current={paginationState.current}
+                    onChange={paginationHandler}
+                    total={paginationState.total}
+                    pageSize={paginationState.pageSize}
+                    showSizeChanger={false}
+                //showTotal={(total) => `Всего ${total} товаров`}
+                />
+            </ConfigProvider>
         </div>
     )
 }

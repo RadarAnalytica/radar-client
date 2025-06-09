@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useContext, useRef, useMemo, useCallback } from 'react'
 import styles from './selfCostPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -31,8 +31,7 @@ const SelfCostPage = () => {
     const filters = useAppSelector(store => store.filters)
     //const prevShop = useRef(activeBrand)
 
-
-    const getTableData = async (authToken, shopId, filters) => {
+    const getTableData = useCallback(async (authToken, shopId, filters) => {
         setDataStatus({ ...initDataStatus, isLoading: true })
         const res = await ServiceFunctions.getSelfCostData(authToken, shopId, filters)
         if (!res.ok) {
@@ -65,33 +64,40 @@ const SelfCostPage = () => {
         setTableData([...sortedData])
         setFilteredTableData([...sortedData])
         //prevShop.current = activeBrand
-    }
+    }, [])
 
-    const noSearchAction = () => {
+    const noSearchAction = useCallback(() => {
         getTableData(authToken, activeBrand.id, filters)
-    }
+    }, [authToken, activeBrand, filters, getTableData])
 
-    const resetSearch = () => {
+    const resetSearch = useCallback(() => {
         if (searchInputValue) {
             setSearchInputValue('')
             setFilteredTableData(tableData)
         }
-    }
+    }, [searchInputValue, tableData])
 
     //задаем начальную дату
     useEffect(() => {
         if (activeBrand && authToken) {
             getTableData(authToken, activeBrand.id, filters)
         }
-
-    }, [activeBrand, filters])
+    }, [activeBrand, filters, getTableData, authToken])
 
     useEffect(() => {
         let timeout;
         if (isSuccess) {
             timeout = setTimeout(() => { setIsSuccess(false) }, 1500)
         }
+        return () => {
+            if (timeout) clearTimeout(timeout)
+        }
     }, [isSuccess])
+
+    const memoizedDataStatus = useMemo(() => dataStatus, [dataStatus])
+    const memoizedFilteredTableData = useMemo(() => filteredTableData, [filteredTableData])
+    const memoizedTableData = useMemo(() => tableData, [tableData])
+    const memoizedSearchInputValue = useMemo(() => searchInputValue, [searchInputValue])
 
     return (
         <main className={styles.page}>
@@ -130,9 +136,9 @@ const SelfCostPage = () => {
                     <>
                         <div className={styles.page__searchWrapper}>
                             <SearchWidget
-                                tableData={tableData}
+                                tableData={memoizedTableData}
                                 setFilteredTableData={setFilteredTableData}
-                                searchInputValue={searchInputValue}
+                                searchInputValue={memoizedSearchInputValue}
                                 setSearchInputValue={setSearchInputValue}
                                 noSearchAction={noSearchAction}
                             />
@@ -140,10 +146,9 @@ const SelfCostPage = () => {
 
                         <SelfCostTableWidget
                             setIsSuccess={setIsSuccess}
-                            dataStatus={dataStatus}
+                            dataStatus={memoizedDataStatus}
                             setDataStatus={setDataStatus}
-                            tableData={filteredTableData}
-                            //getTableData={getTableData}
+                            tableData={memoizedFilteredTableData}
                             authToken={authToken}
                             activeBrand={activeBrand}
                             setTableData={setFilteredTableData}
@@ -165,8 +170,8 @@ const SelfCostPage = () => {
 
             <ErrorModal
                 footer={null}
-                open={dataStatus.isError}
-                message={dataStatus.message}
+                open={memoizedDataStatus.isError}
+                message={memoizedDataStatus.message}
                 onOk={() => setDataStatus(initDataStatus)}
                 onClose={() => setDataStatus(initDataStatus)}
                 onCancel={() => setDataStatus(initDataStatus)}

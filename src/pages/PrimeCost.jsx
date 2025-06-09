@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { ServiceFunctions } from '../service/serviceFunctions';
+import {fileDownload} from '../service/utils';
 import SideNav from '../components/SideNav';
 import AuthContext from '../service/AuthContext';
 import TopNav from '../components/TopNav';
@@ -11,6 +12,9 @@ import styles from './PrimeCost.module.css';
 import doneIcon from "../assets/tick-active.png"
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
+import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
+import SuccessModal from '../components/sharedComponents/modals/successModal/successModal';
 
 const PrimeCost = () => {
   const [file, setFile] = useState();
@@ -20,6 +24,9 @@ const PrimeCost = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [costPriceStatus, setCostPriceStatus] = useState();
   const [costPriceUpdated, setCostPriceUpdated] = useState();
+  const [showModalError, setShowModalError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isFileUpload, setIsFileUpload] = useState();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -33,29 +40,25 @@ const PrimeCost = () => {
   };
 
   const handleTemplateDownload = async () => {
-    const response = await ServiceFunctions.getCostTemplate(authToken);
-    const blob = await response.blob();
-    const downloadUrl = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = 'Себестоимость.xlsx';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const fileBlob = await ServiceFunctions.getCostTemplate(authToken);
+    fileDownload(fileBlob, 'Себестоимость.xlsx');
   };
 
   const handleCostPriceSave = async () => {
+    setIsFileUpload(true)
     try {
       await ServiceFunctions.postCostUpdate(authToken, file);
-      setFile(null);
-      setCostPriceShow(false);
       setShowSuccessPopup(true);
-
-
-      setTimeout(() => setShowSuccessPopup(false), 3000);
       getCostPiceStatus()
     } catch (error) {
-      console.error('Error updating cost:', error);
+      // Обработка ошибки
+      console.error('Ошибка при загрузке файла:', error);
+      setErrorMessage(error == 'Error: Unprocessable Entity' ? 'Некорректный формат файла' : 'Ошибка при загрузке файла');
+      setShowModalError(true);
+    } finally {
+      setCostPriceShow(false);
+      setTimeout(() => setFile(null), 500)
+      setIsFileUpload(false)
     }
   };
 
@@ -162,6 +165,7 @@ const PrimeCost = () => {
                   onClick={handleCostPriceSave}
                   className='prime-btn'
                   style={{ height: '52px' }}
+                  disabled={isFileUpload}
                 >
                   Сохранить
                 </button>
@@ -200,19 +204,22 @@ const PrimeCost = () => {
           )}
         </Modal.Body>
       </Modal>
-      <Modal
-        show={showSuccessPopup}
-        className="custom-modal-success"
-      >
-        <Modal.Header style={{ borderBottom: "none" }}>
-          <div>
-            <div className='d-flex gap-2 mb-2 mt-2 align-items-center'>
-              <img src={doneIcon} alt='' style={{ height: '3vh' }} />
-              <p className='fw-bold mb-0'> Файл успешно загружен!</p>
-            </div>
-          </div>
-        </Modal.Header>
-      </Modal>
+      <SuccessModal
+        open={showSuccessPopup}
+        message='Файл успешно загружен!'
+        onClose={() => setShowSuccessPopup(false)}
+        onCancel={() => setShowSuccessPopup(false)}
+        onOk={() => setShowSuccessPopup(false)}
+        footer={null}
+      />
+      <ErrorModal
+        open={showModalError}
+        message={errorMessage}
+        onClose={() => setShowModalError(false)}
+        onCancel={() => setShowModalError(false)}
+        onOk={() => setShowModalError(false)}
+        footer={null}
+      />
     </div>
   );
 };
