@@ -24,7 +24,8 @@ export default function ReportWeek() {
 	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters ); const filters = useAppSelector((state) => state.filters);
 	const [loading, setLoading] = useState(true);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-	const [isConfigOpen, setConfigOpen] = useState(false);
+	// const [isConfigOpen, setConfigOpen] = useState(false);
+	const [isConfigOpen, setConfigOpen] = useState(true);
 	const [data, setData] = useState(null);
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
