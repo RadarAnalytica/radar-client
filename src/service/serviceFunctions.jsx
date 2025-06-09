@@ -505,15 +505,18 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getProdAnalyticXlsx: async (token, selectedRange, shop) => {
+  getProdAnalyticXlsx: async (token, selectedRange, shop, filters) => {
     let rangeParams = rangeApiFormat(selectedRange);
-    const res = await fetch(`${URL}/api/prod_analytic/download?${rangeParams}&shop=${shop}`, {
-      method: 'GET',
+    const body = getRequestObject(filters, selectedRange, shop)
+    const res = await fetch(`${URL}/api/prod_analytic/download`, {
+      method: 'POST',
       headers: {
-        authorization: 'JWT ' + token,
+        'authorization': 'JWT ' + token,
+        'content-type': 'application/json'
       },
+      body: JSON.stringify(body),
     });
-    console.log(res)
+
     const data = await res.blob()
     return data;
   },
