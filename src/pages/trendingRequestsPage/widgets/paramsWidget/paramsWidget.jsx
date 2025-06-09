@@ -373,7 +373,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='от'
+                                                        placeholder={dynamic_30_days === 'Рост' ? 'от 20' : 'от 100'}
                                                         suffix={<>%</>}
                                                     />
                                                 </Form.Item>
@@ -404,7 +404,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='до'
+                                                        placeholder={dynamic_30_days === 'Рост' ? 'до 100' : 'до 20'}
                                                         suffix={<>%</>}
                                                     />
                                                 </Form.Item>
@@ -473,7 +473,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='от'
+                                                        placeholder={dynamic_60_days === 'Рост' ? 'от 20' : 'от 100'}
                                                         suffix={<>%</>}
                                                     />
                                                 </Form.Item>
@@ -503,7 +503,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='до'
+                                                        placeholder={dynamic_60_days === 'Рост' ? 'до 100' : 'до 20'}
                                                         suffix={<>%</>}
                                                     />
                                                 </Form.Item>
@@ -568,7 +568,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='от'
+                                                        placeholder={dynamic_90_days === 'Рост' ? 'от 20' : 'от 100'}
                                                         suffix={<>%</>}
                                                     />
                                                 </Form.Item>
@@ -598,7 +598,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder='до'
+                                                        placeholder={dynamic_90_days === 'Рост' ? 'до 100' : 'до 20'}
                                                         suffix={<>%</>}
                                                     />
                                                 </Form.Item>
