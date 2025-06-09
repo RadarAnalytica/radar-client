@@ -74,7 +74,7 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
             <div className={isOpen ? `${styles.nested__body} ${styles.nested__body_open}` : styles.nested__body}>
                 {links.map((i, id) => {
                     return i.isActive && (
-                        <NavLink url={i.url} title={i.label} key={id} />
+                        <NavLink url={i.url} title={i.label} key={id} item={i} />
                     )
                 })}
             </div>

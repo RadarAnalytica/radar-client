@@ -16,9 +16,9 @@
     width: 100%;
 }
 
-.navLink>svg {
-    width: 19px;
-    height: 18px;
+.navLink > svg {
+    /* width: 19px; */
+    /* height: 18px; */
 }
 
 .navLink:hover {
@@ -89,4 +89,15 @@
 
 .navLink__iconWrapper_active {
     color: #5329FF
+}
+
+.navLink__newIcon {
+    width: 39px;
+    min-width: 39px;
+    max-width: 39px;
+    height: 26px;
+    min-height: 26px;
+    max-height: 26px;
+    /* height: 100% !important; */
+    /* min-height: 44px; */
 }
