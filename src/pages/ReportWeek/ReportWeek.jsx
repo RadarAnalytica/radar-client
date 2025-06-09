@@ -28,12 +28,14 @@ export default function ReportWeek() {
 	const [data, setData] = useState(null);
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
-	const [primaryCollect, setPrimaryCollect] = useState(null)
-	const [weekSelected, setWeekSelected] = useState([{value: 'Все'}])
-	const [weekOptions, setweekOptions] = useState([])
+	const [primaryCollect, setPrimaryCollect] = useState(null);
+	const [weekSelected, setWeekSelected] = useState([{value: 'Все'}]);
+	const [weekOptions, setweekOptions] = useState([]);
 
 	function weekSelectedHandler(data){
-		localStorage.setItem('reportWeekFilterWeek', JSON.stringify(data));
+		const savedFilter = JSON.parse(localStorage.getItem('reportWeekFilterWeek'));
+		savedFilter[activeBrand.id] = date;
+		localStorage.setItem('reportWeekFilterWeek', JSON.stringify(savedFilter));
 		setWeekSelected(data);
 	}
 

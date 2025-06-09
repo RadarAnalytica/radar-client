@@ -103,6 +103,16 @@
   -webkit-overflow-scrolling: auto; /* Для Safari *
 } */
 
-.ant-table-body {
+.sortIcons{
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
+:global(.ant-table-column-has-sorters){
+  margin-left: 10px;
+  margin-right: 10px;
+  user-select: none; /* Стандартное свойство */
+  -webkit-user-select: none; /* Для Safari */
+  -moz-user-select: none; /* Для Firefox */
+  -ms-user-select: none; /* Для IE/Edge */
 }
