@@ -184,7 +184,8 @@ export default function ReportWeek() {
 			purchase_percent: summary.purchase_percent / rows.length,
 			logistics_per_product: summary.logistics_total / summary.sales,
 			cost_price_per_one: summary.cost_price / summary.sales,
-			profit_per_one: summary.profit / summary.sales
+			profit_per_one: summary.profit / summary.sales,
+			avg_check: summary.gains / summary.sales,
 
 		}
 		
