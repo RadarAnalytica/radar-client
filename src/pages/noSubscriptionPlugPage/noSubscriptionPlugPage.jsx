@@ -52,7 +52,7 @@ import sku3 from '../../assets/plugs/sku_analysis/3.svg'
 import sku4 from '../../assets/plugs/sku_analysis/4.svg'
 import sku5 from '../../assets/plugs/sku_analysis/5.webp'
 //report week plug
-import reportWeek1 from '../../assets/plugs/report_week/1.jpg'
+import reportWeek1 from '../../assets/plugs/report_week/report_1.svg'
 //selfcost
 import ss1 from '../../assets/plugs/selfcost/ss_1.png'
 

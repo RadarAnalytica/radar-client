@@ -25,9 +25,9 @@ export const DatePicker = ({ selectedDate, setSelectedDate }) => {
     };
     const today = new Date();
     const minDate = new Date(today);
-    minDate.setDate(today.getDate() - 365 * 3);
+    minDate.setFullYear(2023, 4, 1);
     const startMonth = new Date(today);
-    startMonth.setDate(today.getDate() - 365 * 3);
+    startMonth.setFullYear(2023, 4, 1);
     const endMonth = new Date(today);
 
     // Parse selectedDate string to Date object

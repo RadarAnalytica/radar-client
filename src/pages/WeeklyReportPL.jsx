@@ -15,12 +15,13 @@ import plFake from '../pages/images/goods-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 
 const WeeklyReportPL = () => {
   const { authToken, user } = useContext(AuthContext);
   const dispatch = useDispatch();
   const { plData } = useSelector((state) => state?.plReportSlice);
-  
+
   const { plFilters, isFiltersLoading } = useSelector((state) => state?.plFiltersSlice);
   const [isLoading, setIsLoading] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
@@ -34,18 +35,18 @@ const WeeklyReportPL = () => {
     dispatch(fetchPLFilters(
       authToken
     ))
-    
+
   }, [authToken, dispatch])
 
   // const getPLFilters = useCallback((token) => {
-       
+
   //   dispatch(
   //     fetchPLFilters({
   //       token: token,
   //     })
   //   );
   //   console.log('plFilters', plFilters);
-    
+
   // })
 
   const handleApplyFilters = useCallback(() => {
@@ -59,19 +60,19 @@ const WeeklyReportPL = () => {
     // const brandFilter = currentPageData.brand;
     // const groupFilter = currentPageData.group;
     dispatch(
-      fetchPLReport({token: authToken}
+      fetchPLReport({ token: authToken }
       )
     ).then(() => {
       setIsLoading(false);
     })
-    
+
     return
-    
+
     if (isFiltersLoading === false) {
       console.log('plFilters in get PL data', plFilters);
       // console.log('==DATA== in get PL data', data);
-      
-      
+
+
       const brandFilter = []
       const groupFilter = []
       console.log('brandFilterList', brandFilter);
@@ -90,10 +91,10 @@ const WeeklyReportPL = () => {
           }
         }
       }
-      
-      
+
+
     }
-    
+
   }, [authToken, dispatch, isFiltersLoading]);
 
   // useEffect(() => {
@@ -242,8 +243,10 @@ const WeeklyReportPL = () => {
         <Sidebar />
       </div>
       {/* <SideNav /> */}
-      <div className='dashboard-content pb-3' style={{ padding: '0 32px'}}>
-        <TopNav title={'P&L'} subTitle={'Отчёт /'} />
+      <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
+        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
+          <Header title={'P&L'} titlePrefix={'Отчёт'} />
+        </div>
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>
@@ -268,7 +271,7 @@ const WeeklyReportPL = () => {
             <span></span>
           </>
         )}
-           <BottomNavigation />
+        <BottomNavigation />
       </div>
     </div>
   );

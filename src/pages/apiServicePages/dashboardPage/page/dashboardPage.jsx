@@ -176,6 +176,7 @@ const _DashboardPage = () => {
                                 selectedRange={selectedRange}
                                 activeBrand={activeBrand}
                                 authToken={authToken}
+                                filters={filters}
                             />
                             <MarginChartBlock
                                 loading={loading}

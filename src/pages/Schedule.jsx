@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChartsFilters } from '../redux/reportCharts/chartsFiltersActions';
 import styles from './Schedule.module.css';
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
 import { useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import BigChart from '../components/BigChart';
 import ScheduleBigChart from '../components/ScheduleBigChart';
@@ -17,6 +15,7 @@ import plFake from '../pages/images/schedule-fake.png';
 import NewFilterGroup from '../components/finReport/FilterGroup'
 import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
+import Header from '../components/sharedComponents/header/header';
 
 const Schedule = () => {
   const { authToken, user } = useContext(AuthContext);
@@ -513,12 +512,12 @@ const Schedule = () => {
         // Также как и года проверяем статус фильтров месяцев. Если он включен и текущий месяц выбран, то работаем с ним.
         if (months.length !== 0 && !months.some(_ => monthNames[parseInt(_) - 1] === month)) continue
         const currentMonthData = currentYearData[month]
-         // Подготавливаем массивы данных для графика
-         revenueArray.push(currentMonthData.total_month_revenue || 0);
-         profitArray.push(currentMonthData.total_month_profit || 0);
-         // Обязательно добавляем год к лейблу месяца
-         const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
-         labelsArray.push(monthLabel);
+        // Подготавливаем массивы данных для графика
+        revenueArray.push(currentMonthData.total_month_revenue || 0);
+        profitArray.push(currentMonthData.total_month_profit || 0);
+        // Обязательно добавляем год к лейблу месяца
+        const monthLabel = monthNameMap[month] ? `${monthNameMap[month]} ${year}` : `${month} ${year}`
+        labelsArray.push(monthLabel);
         // if (currentMonthData.total_month_revenue > 0 || currentMonthData.total_month_profit > 0) {
         //   // Подготавливаем массивы данных для графика
         //   revenueArray.push(currentMonthData.total_month_revenue || 0);
@@ -1116,13 +1115,9 @@ const Schedule = () => {
       </div>
       {/* <SideNav /> */}
       <div className={`${styles.scheduleMain} dashboard-content pb-3 `} style={{ padding: '0 32px' }}>
-        <TopNav
-          title={
-            <>
-              <span style={{ color: '#1A1A1A4D' }}>Отчет /</span> Графики
-            </>
-          }
-        />
+        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
+          <Header title={'Графики'} titlePrefix={'Отчёт'} />
+        </div>
         {user.is_report_downloaded ? (
           <>
             <div className='container dash-container'>

@@ -56,7 +56,7 @@ export const tableConfig = [
         values: [
             {ruName: 'Комиссия WB', engName: 'commissionWB', units: '₽', isSortable: true},
             {ruName: 'Штрафы', engName: 'fines', units: '₽', isSortable: true},
-            {ruName: 'Доплаты', engName: 'additionalpayment', units: '₽', isSortable: true},
+            {ruName: 'Доплаты', engName: 'additionalPayment', units: '₽', isSortable: true},
         ]
     },
     {

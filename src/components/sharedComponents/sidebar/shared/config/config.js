@@ -12,7 +12,7 @@ export const menuConfig = [
                 url: '/sku-analysis',
                 label: 'Анализ артикула',
                 isActive: true,
-                isNew: false
+                isNew: true
             },
             {
                 id: 2,
@@ -54,7 +54,7 @@ export const menuConfig = [
                 id: 1,
                 url: '/trending-requests',
                 label: 'Поиск трендовых запросов',
-                isActive: true,
+                isActive: false,
                 isNew: true
             },
         ]
@@ -89,7 +89,7 @@ export const menuConfig = [
             {
                 id: 4,
                 url: '/report-main',
-                label: 'Оцифровка еженедельных отчетов',
+                label: 'Оцифровка еженедельных отчетов (ручная)',
                 isActive: true,
                 isNew: false
             },

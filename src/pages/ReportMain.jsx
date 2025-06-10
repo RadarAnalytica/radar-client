@@ -2,8 +2,6 @@ import { useRef, useState, useContext, useEffect } from 'react';
 import { URL } from '../service/config';
 import AuthContext from '../service/AuthContext';
 import { formatFullDate } from '../service/utils';
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
 import cursor from './images/cursor.svg';
 import upload from './images/upload.svg';
 import sucessround from './images/sucessround.svg';
@@ -25,6 +23,7 @@ import FileUploader from '../components/sharedComponents/fileUploader/fileUpload
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import HowToLink from '../components/sharedComponents/howToLink/howToLink';
 import ModalDeleteConfirm from "../components/sharedComponents/ModalDeleteConfirm"
+import Header from '../components/sharedComponents/header/header';
 
 import { Tooltip } from "antd";
 
@@ -147,8 +146,8 @@ const ReportMain = () => {
       </div>
       {/* <SideNav /> */}
       <div className='dashboard-content pb-3' style={{ padding: '0 32px' }}>
-        <div style={{ width: '100%' }} className="container dash-container">
-          <TopNav title={'Главная'} subTitle={'Отчёт /'} mikeStarinaStaticProp />
+        <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
+          <Header title={'Главная'} titlePrefix={'Отчёт'} />
         </div>
         <div className='container dash-container'>
           <div className={styles.instructionWrapper}>

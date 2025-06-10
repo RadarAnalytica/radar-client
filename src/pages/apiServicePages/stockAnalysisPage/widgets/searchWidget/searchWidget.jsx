@@ -11,7 +11,7 @@ import { ServiceFunctions } from '../../../../../service/serviceFunctions';
 import { fileDownload } from '../../../../../service/utils';
 import { useNavigate } from 'react-router-dom';
 
-const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
+const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData, filters }) => {
 
     const { authToken, user } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector(store => store.filters)
@@ -44,7 +44,8 @@ const SearchWidget = ({ stockAnalysisData, setStockAnalysisFilteredData }) => {
         const fileBlob = await ServiceFunctions.getProdAnalyticXlsx(
           authToken,
           selectedRange,
-          activeBrand.id
+          activeBrand.id,
+          filters
         );
         fileDownload(fileBlob, "Товарная_аналитика.xlsx", setIsExelLoading);
       };
