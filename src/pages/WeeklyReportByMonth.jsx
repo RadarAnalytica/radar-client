@@ -16,7 +16,7 @@ import Header from '../components/sharedComponents/header/header';
 
 const WeeklyReportByMonth = () => {
   const { authToken, user } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const { weeklyData } = useSelector(
     (state) => state.reportByMonthSlice
