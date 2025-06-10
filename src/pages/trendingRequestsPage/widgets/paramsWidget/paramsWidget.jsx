@@ -719,7 +719,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                     </div>
                                 </div>
                                 <div className={styles.form__doudleWrapper}>
-                                    <label className={styles.form__doubledLabel}>Количество за 30 дней на 1 артикул, шт</label>
+                                    <label className={styles.form__doubledLabel}>Частотность за 30 дней на 1 артикул, шт</label>
                                     <div className={styles.form__twoInputsWrapper}>
                                         <Form.Item
                                             style={{ margin: 0 }}
