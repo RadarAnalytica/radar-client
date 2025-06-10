@@ -47,7 +47,11 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
 
     // задаем начальную дату
     useEffect(() => {
-        setTableData(rawData)
+        if (sortState.sortedValue) {
+            return setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, rawData)])
+        } else {
+            return setTableData(rawData)
+        }
     }, [rawData])
 
     useEffect(() => {
