@@ -160,6 +160,15 @@
     display: grid;
 }
 
+.form__fieldsetLayout_1col {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+
+    @media (max-width: 1376px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
+   
+}
 .form__fieldsetLayout_3cols {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
@@ -169,6 +178,10 @@
     grid-template-columns: repeat(5, 1fr);
     align-items: stretch;
     gap: 10px;
+
+    @media (max-width: 1376px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .form__doudleWrapper {

@@ -4,6 +4,7 @@ import { DatePicker } from '../../features'
 import styles from './paramsWidget.module.css'
 import moment from 'moment'
 import { ApiService } from '../../shared'
+import { useAppSelector } from '../../../../redux/hooks'
 
 
 const dynamicOptions = [
@@ -45,6 +46,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     const [searchState, setSearchState] = useState('')
     const [preferedItemsData, setPreferedItemsData] = useState([])
     const [form] = Form.useForm()
+    const { isSidebarHidden } = useAppSelector((state) => state.utils);
 
     const getPreferedItemsTest = useCallback(async () => {
         const apiService = new ApiService({
@@ -327,7 +329,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                 <p className={styles.form__fieldsetTitle}>Динамика популярности запросов</p>
                                 <p className={styles.form__fieldsetText}>Выберите хотя бы 1 значение</p>
                             </div>
-                            <div className={`${styles.form__fieldsetLayout} ${styles.form__fieldsetLayout_3cols}`}>
+                            <div className={isSidebarHidden ? `${styles.form__fieldsetLayout} ${styles.form__fieldsetLayout_3cols}` : `${styles.form__fieldsetLayout} ${styles.form__fieldsetLayout_1col}`}>
                                 <div className={styles.form__dynamicSelectBlock}>
                                     <label className={styles.form__doubledLabel}>От даты отсчета за 30 дней, %</label>
                                     <div className={styles.form__dynamicSelectWrapper}>
