@@ -179,7 +179,6 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
     }
   };
 
-  console.log(options)
   return (
       <div
         className={styles.filterGroup}
