@@ -121,7 +121,8 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             let res = await fetch(`https://radarmarket.ru/api/web-service/trending-queries/download`, {
                 method: 'POST',
                 headers: {
-                    'content-type': 'application/json'
+                    'content-type': 'application/json',
+                    'accept': 'application/json'
                 },
                 body: JSON.stringify(requestState)
             })
@@ -131,7 +132,8 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                 return setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось скачать таблицу.' })
             }
 
-            fileDownload(res, "Поиск_трендовых_запросов.xlsx", setIsExelLoading);
+            const blob = await res.blob()
+            fileDownload(blob, "Поиск_трендовых_запросов.xlsx", setIsExelLoading);
 
         } catch {
             setIsExelLoading(false)
