@@ -70,6 +70,7 @@
     padding: 0;
     padding-bottom: 24px;
     background: white;
+    
 }
 
 .table_leftMargin {
@@ -81,7 +82,8 @@
 
 .table_rightMargin {
     padding-right: 17px;
-    width: 100%;
+    /* width: 100%; */
+   
 }
 
 .table:first-of-type {
@@ -112,10 +114,11 @@
     padding-top: 17px;
     position: sticky;
     top: 0;
-    width: 100%
+    width: 100%;
 }
 
 .table__header {
+    width: 100%;
     background: #F7F6FE;
     min-height: 80px;
     max-height: 80px;
@@ -137,6 +140,7 @@
 
 .table__headerItem {
     height: 100%;
+    min-width: 150px;
     /* width: auto;
     min-width: 200px;
     max-width: 200px; */
@@ -196,6 +200,7 @@
     min-width: 200px;
     max-width: 200px; */
     width: 200px;
+    min-width: 150px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
