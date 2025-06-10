@@ -47,12 +47,8 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
 
     // задаем начальную дату
     useEffect(() => {
-        if (sortState.sortedValue) {
-            return setTableData([...sortTableDataFunc(sortState.sortType, sortState.sortedValue, rawData)])
-        } else {
-            return setTableData(rawData)
-        }
-    }, [rawData])
+        setTableData(rawData)
+    }, [rawData])//рубашка мужская
 
     useEffect(() => {
        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
