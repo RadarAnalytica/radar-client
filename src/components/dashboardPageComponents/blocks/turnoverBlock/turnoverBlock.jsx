@@ -79,7 +79,7 @@ export const sortTableDataFunc = (sortType, sortedValue, dataToSort) => {
 }
 
 
-const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToken }) => {
+const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToken, filters }) => {
     const [initData, setInitData] = useState([])
     const [tableData, setTableData] = useState([])
     const [isModalVisible, setIsModalVisible] = useState(false)
@@ -106,7 +106,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
         setTableData([...sortTableDataFunc(id, value, initData)])
     }
 
-    const getTurnoverTableData = async (selectedRange, activeBrand, authToken) => {
+    const getTurnoverTableData = async (selectedRange, activeBrand, authToken, filters) => {
         setIsTableDataLoading(true);
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
@@ -121,7 +121,8 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
                 const data = await ServiceFunctions.getDashboardTurnoverData(
                     authToken,
                     selectedRange,
-                    activeBrand
+                    activeBrand,
+                    filters
                 );
                 let sortedData = data.sort((a, b) => a.product - b.product);
                 sortedData = sortedData.sort((a, b) => {
@@ -156,7 +157,7 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
 
     useEffect(() => {
         if (isModalVisible && selectedRange && activeBrand && authToken) {
-            getTurnoverTableData(selectedRange, activeBrand.id, authToken)
+            getTurnoverTableData(selectedRange, activeBrand.id, authToken, filters)
         }
 
         if (!isModalVisible) {

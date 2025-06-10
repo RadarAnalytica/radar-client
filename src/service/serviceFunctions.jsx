@@ -227,15 +227,17 @@ export const ServiceFunctions = {
     return res;
   },
 
-  getDashboardTurnoverData: async (token, selectedRange, idShop) => {
+  getDashboardTurnoverData: async (token, selectedRange, idShop, filters) => {
     let rangeParams = rangeApiFormat(selectedRange);
+    const body = getRequestObject(filters, selectedRange, idShop)
     try {
-      const res = await fetch(`${URL}/api/dashboard/turnover?${rangeParams}&shop=${idShop}`, {
-        method: 'GET',
+      const res = await fetch(`${URL}/api/dashboard/turnover`, {
+        method: 'POST',
         headers: {
           'content-type': 'application/json',
-          authorization: 'JWT ' + token,
+          'authorization': 'JWT ' + token,
         },
+        body: JSON.stringify(body)
       })
 
       if (!res.ok) {
