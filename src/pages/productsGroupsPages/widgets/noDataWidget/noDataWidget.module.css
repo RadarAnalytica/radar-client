@@ -2,9 +2,26 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    transition: all .2s ease-in-out;
+}
+
+.widget__howtoWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.widget__barWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
-    transition: all .2s ease-in-out;
 }
 
 .widget__bar {
