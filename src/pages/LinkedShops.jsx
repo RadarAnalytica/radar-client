@@ -565,7 +565,7 @@ const LinkedShops = () => {
             placeholder={"Что-то вроде: GJys67G7sbNw178F"}
             label={"Токен"}
             required={true}
-            callback={(e) => setTkn(e.target.value)}
+            callback={(e) => setTkn(e.target.value.trim())}
           />
           <div className='d-flex justify-content-between w-100 mt-2'>
             <button
