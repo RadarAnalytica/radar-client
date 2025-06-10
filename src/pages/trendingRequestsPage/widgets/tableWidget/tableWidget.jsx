@@ -106,7 +106,8 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
             setSortState(initSortState)
-            setTableData(rawData)
+            //setTableData(rawData)
+            setRequestState({...requestState, sorting: undefined, page: 1, limit: 25})
             return
         }
 
@@ -116,7 +117,8 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             sortedValue: value,
             sortType: id,
         })
-        setTableData([...sortTableDataFunc(id, value, rawData)])
+        setRequestState({...requestState, sorting: { sort_field: value, sort_order: id}, page: 1, limit: 25})
+        //setTableData([...sortTableDataFunc(id, value, rawData)])
     }, [sortState, rawData])
 
     const downloadButtonHandler = useCallback(async () => {
@@ -215,8 +217,8 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                     {v.isSortable &&
                                                         <div className={styles.sortControls}>
                                                             <button
-                                                                className={sortState.sortType === 'DESC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
-                                                                id='DESC'
+                                                                className={sortState.sortType === 'ASC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
+                                                                id='ASC'
                                                                 onClick={(e) => sortButtonClickHandler(e, v.engName)}
                                                             >
                                                                 <svg width="12" height="15" viewBox="0 0 12 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -224,8 +226,8 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
                                                                 </svg>
                                                             </button>
                                                             <button
-                                                                className={sortState.sortType === 'ASC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
-                                                                id='ASC'
+                                                                className={sortState.sortType === 'DESC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
+                                                                id='DESC'
                                                                 onClick={(e) => sortButtonClickHandler(e, v.engName)}
                                                             >
                                                                 <svg width="12" height="15" viewBox="0 0 12 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
