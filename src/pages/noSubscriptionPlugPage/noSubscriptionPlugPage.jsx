@@ -71,7 +71,7 @@ const plugsConfig = {
     "linked-shops": [shop1],
     "subscription": [sub1],
     'sku-analysis': [sku1, sku2, sku3, sku4, sku5],
-    'report-week': [reportWeek1],
+    'report-week': [fin1, fin2],
     'selfcost': [ss1],
     'groups': [],
     "trending-requests": [tr1, tr2]
@@ -123,7 +123,7 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                                             decoding='async'
                                             fetchpriority='high'
                                             style={{
-                                                padding: pathname === 'report-main' ? '0 12px'
+                                                padding: pathname === 'report-main' || pathname === 'report-week' ? '0 12px'
                                                     : pathname === 'orders-map' || pathname === 'abc-data' ? '0 16px' : '0',
                                                 display: 'block',
                                                 width: '100%',
