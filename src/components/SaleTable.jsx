@@ -227,7 +227,7 @@ const SalesTable = ({ tableData }) => {
               Логистика возвратов
             </div>
             <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticStorageCell}`} style={{ width: getMinWidth(calculateMaxCellWidths.logisticStorageCell) }}>
-              Логистика склад
+              Логистика итого
             </div>
             <div className={`${styles.logisticsCell} ${styles.greyColor} ${styles.logisticUnitCell}`} style={{ width: getMinWidth(calculateMaxCellWidths.logisticUnitCell) }}>
               Логистика на единицу
