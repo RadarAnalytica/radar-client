@@ -1192,8 +1192,10 @@ export const ServiceFunctions = {
     return data;
   },
 
-  getDownloadReportWeek: async (token, selectedRange, shopId, filters) => {
+  getDownloadReportWeek: async (token, selectedRange, shopId, filters, weekStart) => {
     const body = getRequestObject(filters, selectedRange, shopId)
+
+    body.week_starts = weekStart
 
     const res = await fetch(
       `${URL}/api/periodic_reports/weekly_report/download`,
@@ -1201,6 +1203,7 @@ export const ServiceFunctions = {
         method: 'POST',
         headers: {
           authorization: 'JWT ' + token,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(body)
       }

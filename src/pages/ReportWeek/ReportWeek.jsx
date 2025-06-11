@@ -16,6 +16,7 @@ import TableSettingModal from '../../components/sharedComponents/modals/tableSet
 import { useAppSelector } from '../../redux/hooks';
 import SelfCostWarning from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import { eachWeekOfInterval, format } from 'date-fns';
+import downloadIcon from '../images/Download.svg';
 
 import { COLUMNS } from './columnsConfig';
 
@@ -81,10 +82,8 @@ export default function ReportWeek() {
 
 	const [weekOptions, setweekOptions] = useState(initWeekOptions());
 
-	console.log('weekStart', weekStart)
 	const weekSelectedFormat = () => {
-		console.log('weekSelectedFormat', weekSelected)
-		if (!data?.find((el) => el.value === 'Все')) {
+		if (!weekSelected?.find((el) => el.value === 'Все')) {
 			setWeekStart(() => weekSelected.map((el) => el.value))
 		} else {
 			setWeekStart([])
@@ -327,13 +326,16 @@ export default function ReportWeek() {
 		</ConfigProvider>
 	);
 
-	// закомментил, пока нет бека
-	// const handleDownload = async () => {
-	// 	const fileBlob = await ServiceFunctions.getDownloadreportWeek(
-	// 		authToken
-	// 	);
-	// 	fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
-	// };
+	const handleDownload = async () => {
+		const fileBlob = await ServiceFunctions.getDownloadReportWeek(
+			authToken,
+			selectedRange,
+			activeBrand.id,
+			filters,
+			weekStart
+		);
+		fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+	};
 	const costWarning = shops?.find((shop) => shop?.is_self_cost_set === false);
 
 	return (
@@ -398,8 +400,8 @@ export default function ReportWeek() {
 									type="primary"
 									iconPosition="start"
 									size="large"
-								>
-									<svg
+									icon={
+										<svg
 										width="24"
 										height="24"
 										viewBox="0 0 24 24"
@@ -411,17 +413,23 @@ export default function ReportWeek() {
 											fill="currentColor"
 										/>
 									</svg>
-								</Button>
+									}
+								></Button>
 							</Popover>
 						</ConfigProvider>
-						{/*
-						// закомментил, пока нет бека
 						<ConfigProvider
 							theme={{
 								token: {
 									colorBorder: '#00000033',
 									colorPrimary: '#5329FF',
 								},
+								components: {
+									Button: {
+										paddingInlineLG: 9.5,
+										defaultShadow: false,
+										controlHeightLG: 45,
+									}
+								}
 							}}
 						>
 							<Button
@@ -433,7 +441,6 @@ export default function ReportWeek() {
 								<img src={downloadIcon} /> Скачать Excel
 							</Button>
 						</ConfigProvider>
-						*/}
 					</div>
 				</div>
 				<div className={styles.container}>
