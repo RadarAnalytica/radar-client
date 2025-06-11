@@ -92,6 +92,9 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 						rowSelection={rowSelection}
 						showSorterTooltip={false}
 						sticky={true}
+						rowClassName={(record) => {
+							return record.key === 'summary' ? styles.summaryRow : '';
+						}}
 						expandable={{
 							// expandedRowRender: (record) => <p>{record.description}</p>,
 							expandIcon: ExpandIcon,

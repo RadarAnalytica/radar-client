@@ -112,7 +112,7 @@ const SalesTable = () => {
                 <div className={styles.acquiringCell}>Эквайринг</div>
                 <div className={styles.logisticsCell}>Логистика доставок</div>
                 <div className={styles.logisticsCell}>Логистика возвратов</div>
-                <div className={styles.logisticsCell}>Логистика склад</div>
+                <div className={styles.logisticsCell}>Логистика итого</div>
                 <div className={styles.logisticsCell}>Логистика на единицу</div>
               </div>
             </div>

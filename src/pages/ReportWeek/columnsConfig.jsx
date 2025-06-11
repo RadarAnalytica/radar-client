@@ -287,7 +287,7 @@ export const COLUMNS = [
 		width: 240,
 	},
 	{
-		title: 'Логистика склад',
+		title: 'Логистика итого',
 		dataIndex: 'logistics_total',
 		sorter: (a, b) => sorter(a, b, 'logistics_total'),
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
