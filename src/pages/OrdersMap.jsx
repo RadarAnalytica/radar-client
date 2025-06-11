@@ -124,7 +124,7 @@ const OrdersMap = () => {
     const timeToTarget = targetTime.getTime() - Date.now();
 
     const intervalId = setTimeout(() => {
-      
+
       dispatch(fetchShops(authToken));
       const updateGeoData = async () => {
         const data = await ServiceFunctions.getGeographyData(authToken, selectedRange, activeBrand);
@@ -711,7 +711,7 @@ const OrdersMap = () => {
           {/* !header */}
 
           {/* DEMO BLOCK */}
-          { user.subscription_status === null && <NoSubscriptionWarningBlock />}
+          {user.subscription_status === null && <NoSubscriptionWarningBlock />}
           {/* !DEMO BLOCK */}
 
           <div style={{ width: '100%' }} className="map-container dash-container container p-3">
@@ -829,69 +829,48 @@ const OrdersMap = () => {
                 </div>
               ) : null}
               {byRegions && geoData?.geo_data ? (
-                <div className='map-data-content'>
-                  <div className=' pl-3 d-flex map-data-row w-100'>
-                    <div className='col'>
-                      <OrderMapPieChart
-                        sub={'Всего заказов'}
-                        info={geoData.geo_data}
-                        title={'Топ 5 по заказам'}
-                        totalAmount={totalOrderAmount}
-                        totalCount={totalOrderSum}
-                        titleTooltipAmount={'Заказы, руб  '}
-                        titleTooltipCount={'Заказы, шт  '}
-                        getColor={getColor}
-                        tooltipData={tooltipOrderDataGeo}
-                      // link={'Смотреть все регионы*'}
-                      />
-                    </div>
-                    <div className='col'>
-                      <OrderMapPieChart
-                        sub={'Всего продаж'}
-                        info={geoData.geo_data}
-                        title={'Топ 5 по продажам'}
-                        totalAmount={totalSaleAmount}
-                        totalCount={totalSaleSum}
-                        titleTooltipAmount={'Продажи, руб'}
-                        titleTooltipCount={'Продажи, шт  '}
-                        getColor={getColor}
-                        tooltipData={tooltipSalesDataGeo}
-                      // link={'Место для кнопки-ссылки'}
-                      />
-                    </div>
+                <div className={styles.page__warehouseContent}>
+                  <div className={styles.page__pieWrapper}>
+                    <OrderMapPieChart
+                      sub={'Всего заказов'}
+                      info={geoData.geo_data}
+                      title={'Топ 5 по заказам'}
+                      totalAmount={totalOrderAmount}
+                      totalCount={totalOrderSum}
+                      titleTooltipAmount={'Заказы, руб  '}
+                      titleTooltipCount={'Заказы, шт  '}
+                      getColor={getColor}
+                      tooltipData={tooltipOrderDataGeo}
+                    // link={'Смотреть все регионы*'}
+                    />
+                    <OrderMapPieChart
+                      sub={'Всего продаж'}
+                      info={geoData.geo_data}
+                      title={'Топ 5 по продажам'}
+                      totalAmount={totalSaleAmount}
+                      totalCount={totalSaleSum}
+                      titleTooltipAmount={'Продажи, руб'}
+                      titleTooltipCount={'Продажи, шт  '}
+                      getColor={getColor}
+                      tooltipData={tooltipSalesDataGeo}
+                    // link={'Место для кнопки-ссылки'}
+                    />
                   </div>
-                  <div className='pl-3 map-data-row'>
-                    <div
-                      className='col'
-                      style={{
-                        visibility: geoData?.geo_data?.length <= 5 ? 'hidden' : 'visible',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'stretch'
-                      }}
-                    >
-                      <OrderMapTable
-                        title={'Заказы в других регионах'}
-                        data={totalOrdersOther}
-                      />
-                    </div>
-                    <div
-                      className='col'
-                      style={
-                        geoData?.geo_data?.length <= 5
-                          ? { visibility: 'hidden' }
-                          : {}
-                      }
-                    >
-                      <OrderMapTable
-                        title={'Продажи в других регионах'}
-                        data={totalSalesOther}
-                      />
-                    </div>
+                  <div className={styles.page__pieWrapper}>
+                    <OrderMapTable
+                      visibility={geoData?.geo_data?.length <= 5}
+                      title={'Заказы в других регионах'}
+                      data={totalOrdersOther}
+                    />
+                    <OrderMapTable
+                      visibility={geoData?.geo_data?.length <= 5}
+                      title={'Продажи в других регионах'}
+                      data={totalSalesOther}
+                    />
                   </div>
                 </div>
               ) : !byRegions && geoData?.stock_data ? (
-                <div className='map-data-content'>
+                <div className={styles.page__warehouseContent}>
                   <OrderSalesPieCharts
                     geoData={geoData}
                     orderData={{
@@ -909,8 +888,8 @@ const OrdersMap = () => {
                       tooltipSalesDataStock,
                     }}
                   />
-                  <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>
-                    Детализация по заказам
+                  <h5 className={styles.page__warehouseTitle}>
+                    Детализация по складам
                   </h5>
                   {geoData?.stock_data && geoData?.stock_data.length
                     ? geoData?.stock_data.map((stockData, i) => {
@@ -930,15 +909,15 @@ const OrdersMap = () => {
           )}
 
           {activeBrand && !activeBrand.is_primary_collect && !loading &&
-           
-          <div style={{ width: '100%', padding: '0 20px' }}>
-            {/* <DataCollectionNotification
+
+            <div style={{ width: '100%', padding: '0 20px' }}>
+              {/* <DataCollectionNotification
               title={'Ваши данные еще формируются и обрабатываются.'}
             /> */}
-             <DataCollectWarningBlock
-              title='Ваши данные еще формируются и обрабатываются.'
-            />
-          </div>
+              <DataCollectWarningBlock
+                title='Ваши данные еще формируются и обрабатываются.'
+              />
+            </div>
           }
         </section>
         {/* ---------------------- */}

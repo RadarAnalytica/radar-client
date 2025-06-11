@@ -55,7 +55,7 @@ const ItemInfo = () => {
                             Предмет <span className={styles.info__color_purple}>{skuMainData.subject_name}</span>
                         </p>
                         <p className={styles.info__row}>
-                            Дата появляения на WB <span className={styles.info__color_black}>{moment(skuMainData.created_date).format('DD.MM.YYYY')}</span>
+                            Дата появления на WB <span className={styles.info__color_black}>{moment(skuMainData.created_date).format('DD.MM.YYYY')}</span>
                         </p>
                         <p className={styles.info__row}>
                             Товар представлен <span className={styles.info__color_purple}>В {skuMainData.color_amount} цветах</span> {/** в х цветах */}
