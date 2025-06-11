@@ -1,10 +1,11 @@
 import React from 'react';
 import OrderMapPieChart from '../containers/orderMap/OrderMapPieChart';
+import styles from './OrderSalesPieCharts.module.css'
 
 const OrderSalesPieCharts = ({ geoData, orderData, salesData }) => {
   return (
-    <div className='pl-3 d-flex map-data-row'>
-      <div className='col'>
+    <div className={styles.block}>
+      <div className={styles.block__chartWrapper}>
         <OrderMapPieChart
           info={geoData.stock_data}
           title={'Топ 5 по заказам'}
@@ -19,7 +20,7 @@ const OrderSalesPieCharts = ({ geoData, orderData, salesData }) => {
           tooltipData={orderData.tooltipOrderDataStock}
         />
       </div>
-      <div className='col'>
+      <div className={styles.block__chartWrapper}>
         <OrderMapPieChart
           info={geoData.stock_data}
           title={'Топ 5 по продажам'}

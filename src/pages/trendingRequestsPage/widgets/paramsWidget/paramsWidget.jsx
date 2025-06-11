@@ -382,7 +382,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder={dynamic_30_days === 'Рост' ? 'от 20' : 'от 100'}
+                                                        placeholder={'от 20'}
                                                         suffix={<>%</>}
                                                         type="number"
                                                         style={{ height: '44px' }}
@@ -409,7 +409,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 >
                                                     <Input
                                                         size='large'
-                                                        placeholder={dynamic_30_days === 'Рост' ? 'до 100' : 'до 20'}
+                                                        placeholder={'до 100'}
                                                         suffix={<>%</>}
                                                         type="number"
                                                         style={{ height: '44px' }}
@@ -477,7 +477,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     <Input
                                                         size='large'
                                                         style={{ height: '44px' }}
-                                                        placeholder={dynamic_60_days === 'Рост' ? 'от 20' : 'от 100'}
+                                                        placeholder={'от 20'}
                                                         suffix={<>%</>}
                                                         type="number"
                                                     />
@@ -503,7 +503,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     <Input
                                                         size='large'
                                                         style={{ height: '44px' }}
-                                                        placeholder={dynamic_60_days === 'Рост' ? 'до 100' : 'до 20'}
+                                                        placeholder={'до 100'}
                                                         suffix={<>%</>}
                                                         type="number"
                                                     />
@@ -565,7 +565,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     <Input
                                                         size='large'
                                                         style={{ height: '44px' }}
-                                                        placeholder={dynamic_90_days === 'Рост' ? 'от 20' : 'от 100'}
+                                                        placeholder={'от 20'}
                                                         suffix={<>%</>}
                                                         type="number"
                                                     />
@@ -591,7 +591,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                     <Input
                                                         size='large'
                                                         style={{ height: '44px' }}
-                                                        placeholder={dynamic_90_days === 'Рост' ? 'до 100' : 'до 20'}
+                                                        placeholder={'до 100'}
                                                         suffix={<>%</>}
                                                         type="number"
                                                     />
