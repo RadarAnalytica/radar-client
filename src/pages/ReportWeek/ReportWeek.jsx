@@ -12,15 +12,19 @@ import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
 
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
-import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal'
+import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal';
 import { useAppSelector } from '../../redux/hooks';
 import SelfCostWarning from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import { eachWeekOfInterval, format } from 'date-fns';
 
 import { COLUMNS } from './columnsConfig';
 
 export default function ReportWeek() {
 	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange, shops } = useAppSelector( (state) => state.filters ); const filters = useAppSelector((state) => state.filters);
+	const { activeBrand, selectedRange, shops } = useAppSelector(
+		(state) => state.filters
+	);
+	const filters = useAppSelector((state) => state.filters);
 	const [loading, setLoading] = useState(true);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
@@ -28,52 +32,111 @@ export default function ReportWeek() {
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
-	const [weekSelected, setWeekSelected] = useState([{value: 'Все'}]);
-	const [weekOptions, setweekOptions] = useState([]);
+	const [weekSelected, setWeekSelected] = useState([{ value: 'Все' }]);
+	const [weekStart, setWeekStart] = useState([]);
 
-	const weekSelectedHandler = (data) => {
-		console.log('weekSelectedHandler', data)
-		let savedFilterWeek = JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {}
-		// проверка на старую версию сохранения
-		if (Array.isArray(savedFilterWeek)){
-			localStorage.removeItem('reportWeekFilterWeek')
-			savedFilterWeek = {}
-		}
-		if (!data.find((el) => el.value === 'Все' )){
-			savedFilterWeek[activeBrand.id] = data
-		} else {
-			delete savedFilterWeek[activeBrand.id]
-		}
-		if (Object.keys(savedFilterWeek).length > 0){
-			localStorage.setItem('reportWeekFilterWeek', JSON.stringify(savedFilterWeek))
-		} else {
-			localStorage.removeItem('reportWeekFilterWeek')
-		}
-		setWeekSelected(data)
+	const initWeekOptions = () => {
+
+		// Выборка дат начианется с начала отсчета 2024-01-29
+		// Для нумерации по годам, делаем два массива
+		let weeks24 = eachWeekOfInterval(
+			{
+				start: new Date(2024, 0, 29),
+				end: new Date(2024, 11, 31),
+			},
+			{
+				weekStartsOn: 1,
+			}
+		);
+		weeks24 = weeks24.map((el, i) => (
+			{
+				key: i,
+				value: format(el, 'yyyy-MM-dd'),
+				label: `${i + 1} неделя (${format(el, 'yyyy-MM-dd')})`
+			}
+		))
+		
+		let weeks25 = eachWeekOfInterval(
+			{
+				start: new Date(2025, 0, 7),
+				end: new Date(),
+			},
+			{
+				weekStartsOn: 1,
+			}
+		);
+		// удаляем последнюю неделю
+		weeks25.pop();
+		weeks25 = weeks25.map((el, i) => (
+			{
+				key: i,
+				value: format(el, 'yyyy-MM-dd'),
+				label: `${i + 1} неделя (${format(el, 'dd.MM.yyyy')})`
+			}
+		))
+
+		return weeks24.concat(weeks25).reverse();
+
 	}
 
+	const [weekOptions, setweekOptions] = useState(initWeekOptions());
+
+	console.log('weekStart', weekStart)
+	const weekSelectedFormat = () => {
+		console.log('weekSelectedFormat', weekSelected)
+		if (!data?.find((el) => el.value === 'Все')) {
+			setWeekStart(() => weekSelected.map((el) => el.value))
+		} else {
+			setWeekStart([])
+		}
+	}
+
+	const weekSelectedHandler = (data) => {
+		let savedFilterWeek =
+			JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
+		// проверка на старую версию сохранения
+		if (Array.isArray(savedFilterWeek)) {
+			localStorage.removeItem('reportWeekFilterWeek');
+			savedFilterWeek = {};
+		}
+		if (!data.find((el) => el.value === 'Все')) {
+			savedFilterWeek[activeBrand.id] = data;
+		} else {
+			delete savedFilterWeek[activeBrand.id];
+		}
+		if (Object.keys(savedFilterWeek).length > 0) {
+			localStorage.setItem(
+				'reportWeekFilterWeek',
+				JSON.stringify(savedFilterWeek)
+			);
+		} else {
+			localStorage.removeItem('reportWeekFilterWeek');
+		}
+		setWeekSelected(data);
+	};
+
 	const updateDataReportWeek = async () => {
-		setLoading(true)
+		setLoading(true);
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
 					authToken,
 					selectedRange,
 					activeBrand.id,
-					filters
+					filters,
+					weekStart
 				);
 
+				// Собираем общий массив неделей по всем годам из ответа
 				let weeks = [];
 
-				for (const year of response.data){
-					for (const week of year.weeks){
+				for (const year of response.data) {
+					for (const week of year.weeks) {
 						weeks.push(week);
 					}
 				}
 
 				setData(weeks);
-				//dataToTableData(weeks);
-				// setData(rows)
 			}
 		} catch (e) {
 			console.error(e);
@@ -85,43 +148,22 @@ export default function ReportWeek() {
 	};
 
 	const dataToTableData = (weeks) => {
-
-		if (!weeks || weeks?.length === 0){
+		if (!weeks || weeks?.length === 0) {
 			setTableRows([]);
-			return
+			return;
 		}
 
-		const options = weeks.map((el, i) => (
-			{
-				key: i,
-				value: i,
-				label: el.week_label
-			}
-		))
 		let summary = {};
 
-		// const summarySchema = {
-			// avg_price: (summary) => summary.sales / summary.total_sales,
-			// avg_purchase_pct: (summary) => (summary.avg_purchase_pct / summary.total_sales) * 100,
-			// avg_profit_per_piece: (summary) => (summary.total_sales / summary.order_count) * 100,
-			// roi: (summary) => (summary.profit / (summary.cost + summary.ad_expenses + summary.logistics + summary.penalties - summary.compensation + summary.commission + summary.storage) ) * 100,
-			// margin: (summary) => summary.sales - summary.cost,
-			// drr: (summary) => (summary.total_ad / summary.sales) * 100,
-		// }
+		let rows = weeks;
 
-		let rows = [];
-		if (weekSelected.length > 0 && !weekSelected.find((el) => el.value === 'Все' )){
-			rows = weeks.filter((el, i) => !!weekSelected.find((elem) => elem.value === i));
-		} else {
-			rows = weeks;
-		}
 		rows = rows.map((el, i) => {
 			let row = {
 				key: i,
 				// key: el.week,
-				week_label: el.week_label
-			}
-			for (const key in el.data){
+				week_label: el.week_label,
+			};
+			for (const key in el.data) {
 				row[key] = el.data[key];
 			}
 
@@ -135,8 +177,10 @@ export default function ReportWeek() {
 					percent: el.data.cost_price_percent,
 				},
 				compensation_defects_rub: el.data.compensation_defects.rub,
-				compensation_defects_quantity: el.data.compensation_defects.quantity,
-				compensation_damage_quantity: el.data.compensation_damage.quantity,
+				compensation_defects_quantity:
+					el.data.compensation_defects.quantity,
+				compensation_damage_quantity:
+					el.data.compensation_damage.quantity,
 				external_expenses: {
 					rub: el.data.external_expenses,
 					percent: el.data.expenses_percent,
@@ -147,19 +191,20 @@ export default function ReportWeek() {
 				return_quantity: el.data.return.quantity,
 				logistics_straight: el.data.logistics_straight.rub,
 				logistics_reverse: el.data.logistics_reverse.rub,
-			}
-			return row
-		})
+			};
+			return row;
+		});
 
-		for (const row of rows ){
-			for (const key in row){
-					const summaryValue = typeof row[key] === 'object' ? row[key]?.rub : row[key];
-					// console.log('summaryValue', summaryValue, typeof el.data[key] === 'object')
-					if (!summary[key]){
-						summary[key] = Number(summaryValue)
-					} else {
-						summary[key] += Number(summaryValue)
-					}
+		for (const row of rows) {
+			for (const key in row) {
+				const summaryValue =
+					typeof row[key] === 'object' ? row[key]?.rub : row[key];
+				// console.log('summaryValue', summaryValue, typeof el.data[key] === 'object')
+				if (!summary[key]) {
+					summary[key] = Number(summaryValue);
+				} else {
+					summary[key] += Number(summaryValue);
+				}
 			}
 		}
 
@@ -169,7 +214,7 @@ export default function ReportWeek() {
 		// 	}
 		// }
 
-		// примвоение уникальных значений
+		// приcвоение расчетных значений
 		summary = {
 			...summary,
 			key: 'summary',
@@ -185,55 +230,65 @@ export default function ReportWeek() {
 			cost_price_per_one: summary.cost_price / summary.sales,
 			profit_per_one: summary.profit / summary.sales,
 			avg_check: summary.gains / summary.sales,
+		};
 
-		}
-		
 		rows.unshift(summary);
 		setTableRows(rows);
-		setweekOptions(options);
-	}
+	};
 
 	const updateSavedFilterWeek = () => {
-		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek')
-			if (savedFilterWeek){
-				const data = JSON.parse(savedFilterWeek)
-				if (activeBrand?.id in data ){
-					setWeekSelected(data[activeBrand.id])
-				} else {
-					setWeekSelected([{value: 'Все'}])
-				}
+		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
+		if (savedFilterWeek) {
+			const data = JSON.parse(savedFilterWeek);
+			if (activeBrand?.id in data) {
+				setWeekSelected(data[activeBrand.id]);
+			} else {
+				setWeekSelected([{ value: 'Все' }]);
 			}
-	}
+		}
+	};
 
 	useEffect(() => {
-		dataToTableData(data)
-	}, [weekSelected, data])
+		dataToTableData(data);
+	}, [data]);
 
 	useEffect(() => {
-			if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-					setPrimaryCollect(activeBrand.is_primary_collect)
-					updateDataReportWeek()
-			}
+		updateDataReportWeek();
+	}, [weekStart]);
+
+	useEffect(() => {
+		weekSelectedFormat();
+	}, [weekSelected]);
+
+	useEffect(() => {
+		if (
+			activeBrand &&
+			activeBrand.is_primary_collect &&
+			activeBrand.is_primary_collect !== primaryCollect
+		) {
+			setPrimaryCollect(activeBrand.is_primary_collect);
+			updateDataReportWeek();
+		}
 	}, [authToken]);
 
 	useEffect(() => {
 		updateSavedFilterWeek();
-		setPrimaryCollect(activeBrand?.is_primary_collect)
+		setPrimaryCollect(activeBrand?.is_primary_collect);
 		if (activeBrand && activeBrand.is_primary_collect) {
-					updateDataReportWeek()
+			updateDataReportWeek();
 		} else {
-			setData([])
+			setData([]);
 		}
 	}, [activeBrand, selectedRange, filters]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
-	}
+	};
 
 	const configClear = () => {
 		setTableColumns(COLUMNS);
 		setIsPopoverOpen(false);
-	}
+	};
 
 	const configOpen = () => {
 		setConfigOpen(true);
@@ -300,8 +355,8 @@ export default function ReportWeek() {
 						<Filters
 							timeSelect={false}
 							setLoading={setLoading}
-							// brandSelect={false}
-							// articleSelect={false}
+							brandSelect={false}
+							articleSelect={false}
 							// groupSelect={false}
 							weekSelect={true}
 							weekValue={weekSelected}
@@ -382,7 +437,11 @@ export default function ReportWeek() {
 					</div>
 				</div>
 				<div className={styles.container}>
-					<ReportTable loading={loading} columns={tableColumns} data={tableRows} />
+					<ReportTable
+						loading={loading}
+						columns={tableColumns}
+						data={tableRows}
+					/>
 				</div>
 			</section>
 			{isConfigOpen && (

@@ -1171,8 +1171,9 @@ export const ServiceFunctions = {
     }
   },
 
-  getReportWeek: async (token, selectedRange, shopId, filters) => {
+  getReportWeek: async (token, selectedRange, shopId, filters, weekStart) => {
     const body = getRequestObject(filters, selectedRange, shopId)
+    body.week_starts = weekStart
 
     const res = await fetch(
       `${URL}/api/periodic_reports/weekly_report`,
