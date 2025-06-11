@@ -4,24 +4,23 @@ import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-// import FilterReportWeek from './widgets/FilterReportWeek/FilterReportWeek'
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 
 import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
-// import downloadIcon from '../images/Download.svg';
+
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal'
-// import TableSettingModal from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
 import { useAppSelector } from '../../redux/hooks';
+import SelfCostWarning from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 
 import { COLUMNS } from './columnsConfig';
 
 export default function ReportWeek() {
 	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters ); const filters = useAppSelector((state) => state.filters);
+	const { activeBrand, selectedRange, shops } = useAppSelector( (state) => state.filters ); const filters = useAppSelector((state) => state.filters);
 	const [loading, setLoading] = useState(true);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
@@ -32,7 +31,7 @@ export default function ReportWeek() {
 	const [weekSelected, setWeekSelected] = useState([{value: 'Все'}]);
 	const [weekOptions, setweekOptions] = useState([]);
 
-	function weekSelectedHandler(data){
+	const weekSelectedHandler = (data) => {
 		console.log('weekSelectedHandler', data)
 		let savedFilterWeek = JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {}
 		// проверка на старую версию сохранения
@@ -227,11 +226,11 @@ export default function ReportWeek() {
 		}
 	}, [activeBrand, selectedRange, filters]);
 
-	function popoverHandler(status) {
+	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
 	}
 
-	function configClear() {
+	const configClear = () => {
 		setTableColumns(COLUMNS);
 		setIsPopoverOpen(false);
 	}
@@ -280,6 +279,7 @@ export default function ReportWeek() {
 	// 	);
 	// 	fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
 	// };
+	const costWarning = shops?.find((shop) => shop?.is_self_cost_set === false);
 
 	return (
 		<main className={styles.page}>
@@ -294,6 +294,7 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
+				{!loading && costWarning && <SelfCostWarning />}
 				<div className={styles.controls}>
 					<div className={styles.filter}>
 						<Filters
