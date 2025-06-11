@@ -44,7 +44,7 @@ import { setLoading } from '../loading/loadingSlice';
  */
 const createFiltersDTO = (data) => {
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
-  const shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect) }, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
+  const shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data.some(_ => !_.shop_data.is_self_cost_set)  }, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
   // 2 - Трансформируем дату для опции "все магазины"
   // 2.1 - выцепляем все бренды по всем магазинам
   // 2.2 - выцепляем все артикулы всех брендов по всем магазинам
