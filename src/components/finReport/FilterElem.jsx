@@ -190,15 +190,19 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
             {isAllSelected ? 'Снять все' : 'Выбрать все'}
           </button>
         </div>
-        {(!options || options.length === 0) && isLoading && (
-          <div
+        <div
             className={styles.loaderWrapper}
           >
             <Loader />
-            {/* <span className='loader'></span> */}
           </div>
-        )}
-        {options && options.length > 0 && !isLoading && (
+        {/* {(!options || options.length === 0) && isLoading && (
+          <div
+            className={styles.loaderWrapper}
+          >
+            <span className='loader'></span>
+          </div>
+        )} */}
+        {/* {options && options.length > 0 && !isLoading && (
           <div className={styles.optionsList}>
             {options.map((option) => {
               let monthValue;
@@ -231,7 +235,7 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
               </label>
             )})}
           </div>
-        )}
+        )} */}
       </div>
   );
 };

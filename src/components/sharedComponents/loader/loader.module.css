@@ -1,5 +1,4 @@
 @keyframes mulShdSpin {
-
     0%,
     100% {
         box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em,
@@ -43,11 +42,13 @@
 }
 
 .loader {
-    /* color: var(--primary-color); */
-    color: red;
-    width: 100px;
-    height: 100px;
+    color: var(--red);
+    font-size: 8px;
+    width: 1em;
+    height: 1em;
     border-radius: 50%;
+    position: relative;
+    text-indent: -9999em;
     animation: mulShdSpin 1.3s infinite linear;
     transform: translateZ(0);
 }
