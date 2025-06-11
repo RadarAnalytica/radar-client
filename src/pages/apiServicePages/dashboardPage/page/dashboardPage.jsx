@@ -96,13 +96,10 @@ const _DashboardPage = () => {
                 <div className={styles.page__headerWrapper}>
                     <Header title='Сводка продаж' />
                 </div>
-                {/* !header */}
-
                 {/* SELF-COST WARNING */}
-                {dataDashBoard &&
-                    !dataDashBoard.costPriceAmount &&
+                {
                     activeBrand &&
-                    activeBrand.id !== 0 &&
+                    !activeBrand.is_self_cost_set &&
                     !loading &&
                     <div>
                         <SelfCostWarningBlock
@@ -111,8 +108,6 @@ const _DashboardPage = () => {
                         />
                     </div>
                 }
-                {/* !SELF-COST WARNING */}
-
                 {/* DEMO BLOCK */}
                 {user.subscription_status === null && <NoSubscriptionWarningBlock />}
                 {/*  */}

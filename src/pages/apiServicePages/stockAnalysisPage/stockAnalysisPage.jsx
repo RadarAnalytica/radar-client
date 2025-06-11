@@ -81,23 +81,18 @@ const StockAnalysisPage = () => {
                     <div className={styles.page__headerWrapper}>
                         <Header title='Аналитика по товарам' />
                     </div>
-                    {/* !header */}
-
                     {/* SELF-COST WARNING */}
-                    {stockAnalysisData &&
-                        !hasSelfCostPrice &&
+                    {
                         activeBrand &&
-                        activeBrand.id !== 0 &&
+                        !activeBrand.is_self_cost_set &&
                         !loading &&
                         <div>
                             <SelfCostWarningBlock
                                 shopId={activeBrand.id}
-                            //onUpdateDashboard={updateDataDashBoard} //
+                                onUpdateDashboard={fetchAnalysisData} //
                             />
                         </div>
                     }
-                    {/* !SELF-COST WARNING */}
-
                     {/* DEMO BLOCK */}
                     {user.subscription_status === null && <NoSubscriptionWarningBlock />}
                     {/* !DEMO BLOCK */}

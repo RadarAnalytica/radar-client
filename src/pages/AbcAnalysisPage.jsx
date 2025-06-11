@@ -15,6 +15,7 @@ import Header from "../components/sharedComponents/header/header";
 import Sidebar from "../components/sharedComponents/sidebar/sidebar";
 import { mockGetAbcData } from "../service/mockServiceFunctions";
 import NoSubscriptionWarningBlock from '../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
+import SelfCostWarningBlock from "../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock";
 
 const AbcAnalysisPage = () => {
   const { activeBrand, selectedRange: days } = useAppSelector(store => store.filters)
@@ -85,7 +86,7 @@ const AbcAnalysisPage = () => {
   };
 
   // 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
-  
+
   useEffect(() => {
     setPrimaryCollect(activeBrand?.is_primary_collect)
     if (activeBrand?.is_primary_collect && viewType && days && authToken) {
@@ -112,7 +113,7 @@ const AbcAnalysisPage = () => {
 
   const updateAbcAnalysisCaller = async () => {
     if (activeBrand !== undefined) {
-        updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
+      updateDataAbcAnalysis(viewType, days, activeBrand, authToken);
     }
   };
 
@@ -181,15 +182,19 @@ const AbcAnalysisPage = () => {
         {/* !header */}
 
         {/* DEMO BLOCK */}
-        { user.subscription_status === null && <NoSubscriptionWarningBlock />}
-        {/* !DEMO BLOCK */}
-        
-        {isNeedCost && activeBrand && activeBrand.is_primary_collect ? (
-          <SelfCostWarning
-            activeBrand={activeBrand.id}
-            onUpdateDashboard={handleUpdateAbcAnalysis}
-          />
-        ) : null}
+        {user.subscription_status === null && <NoSubscriptionWarningBlock />}
+        {/* SELF-COST WARNING */}
+        {
+          activeBrand &&
+          !activeBrand.is_self_cost_set &&
+          !loading &&
+          <div>
+            <SelfCostWarningBlock
+              shopId={activeBrand.id}
+              onUpdateDashboard={handleUpdateAbcAnalysis} //
+            />
+          </div>
+        }
 
         <div>
           <Filters
