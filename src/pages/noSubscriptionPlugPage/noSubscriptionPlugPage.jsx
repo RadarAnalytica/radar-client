@@ -52,7 +52,7 @@ import sku3 from '../../assets/plugs/sku_analysis/3.svg'
 import sku4 from '../../assets/plugs/sku_analysis/4.svg'
 import sku5 from '../../assets/plugs/sku_analysis/5.webp'
 //report week plug
-import reportWeek1 from '../../assets/plugs/report_week/report_1.svg'
+import reportWeek1 from '../../assets/plugs/report_week/week_report.svg'
 //selfcost
 import ss1 from '../../assets/plugs/selfcost/ss_1.png'
 //trending-requests
@@ -71,7 +71,7 @@ const plugsConfig = {
     "linked-shops": [shop1],
     "subscription": [sub1],
     'sku-analysis': [sku1, sku2, sku3, sku4, sku5],
-    'report-week': [fin1, fin2],
+    'report-week': [reportWeek1],
     'selfcost': [ss1],
     'groups': [],
     "trending-requests": [tr1, tr2]
@@ -123,7 +123,7 @@ const NoSubscriptionPlugPage = ({ title, pathname }) => {
                                             decoding='async'
                                             fetchpriority='high'
                                             style={{
-                                                padding: pathname === 'report-main' || pathname === 'report-week' ? '0 12px'
+                                                padding: pathname === 'report-main' ? '0 12px'
                                                     : pathname === 'orders-map' || pathname === 'abc-data' ? '0 16px' : '0',
                                                 display: 'block',
                                                 width: '100%',
