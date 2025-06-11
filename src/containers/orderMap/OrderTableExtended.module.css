@@ -31,7 +31,7 @@
 .table {
     width: 100%;
     display: grid;
-    grid-template-columns: 4fr 1fr 1fr 1fr;
+    grid-template-columns: 4fr 1.5fr 1fr 1fr;
     grid-template-rows: auto;
     column-gap: 12px;
     row-gap: 8px;

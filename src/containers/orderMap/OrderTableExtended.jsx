@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './OrderMapTable.module.css'
+import styles from './OrderTableExtended.module.css'
 import { formatPrice } from '../../service/utils'
 
 const OrderTableExtended = ({ title, data, geoData }) => {
@@ -15,49 +15,48 @@ const OrderTableExtended = ({ title, data, geoData }) => {
     //       percentRegion: filteredGeoData[index].percent
     //     };
     //   });
-    
-    data?.forEach((...item) => {
-            let sub = item?.district?.split('федеральный округ')?.join('фо')
-            item.district = sub
-        })
-        
-        // stok?.forEach(item => {
-        //     if (item.stockName && item.stockName.length) {
-        //         let name = item.stockName.split(' ')?.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-        //         item.stockName = name
-        //     }
-        //     else {
-        //         item.stockName = "Регион не определен"
-        //     }
-        // })
-        
-        return (
-        <div className='order-table-extended'>
-            <h5 className='fw-bold' style={{ fontSize: '2.5vh' }}>{title}</h5>
 
-            <div className={styles.table_extended}>
-            {/* <div className='d-flex justify-content-between'> */}
-                <p className="mb-2 clue-text col-5 pe-2">Регион</p>
-                <p className="mb-2 clue-text col">Рубли</p>
-                <p className="mb-2 clue-text col">Общая доля</p>
-                <p className="mb-2 clue-text col text-end">По складу</p>
-            {/* </div> */}
-           
-            {
-                data  && data.length ?
-                data.map((item, key) =>   (
-                        // <div key={key} className='d-flex' >
-                            <>
-                            <p style={{ fontWeight: 600 }} className={styles.table__rowTitle}>{item.district}</p>
-                            <p style={{ fontWeight: 600, textWrap: 'nowrap'}} className="mb-2 col">{formatPrice(item.amount) || '0'} ₽</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col">{(item.common_percent)?.toFixed(1) || '0'}%</p>
-                            <p style={{ fontWeight: 600 }} className="mb-2 col fw-bold text-end">{(item.stock_percent)?.toFixed(1) || '0'}%</p>
-                            </>
-                        // </div>
-                    )) : null
-            }
+    data?.forEach((...item) => {
+        let sub = item?.district?.split('федеральный округ')?.join('фо')
+        item.district = sub
+    })
+
+    // stok?.forEach(item => {
+    //     if (item.stockName && item.stockName.length) {
+    //         let name = item.stockName.split(' ')?.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    //         item.stockName = name
+    //     }
+    //     else {
+    //         item.stockName = "Регион не определен"
+    //     }
+    // })
+
+    return (
+        <>
+            <h5 className={styles.block__title}>{title}</h5>
+
+            <div className={styles.table}>
+                <p className={styles.table__title}>Регион</p>
+                <p className={styles.table__title}>Рубли</p>
+                <p className={styles.table__title}>Общая доля</p>
+                <p className={styles.table__title}>По складу</p>
+                <div className={styles.table__border}></div>
+                {data && data.length > 0 &&
+                    data.map((item, key) => (
+                        <React.Fragment key={key}>
+                            <p className={styles.table__item}>{item.district.replace('федеральный округ', 'ФО')}</p>
+                            <p className={styles.table__item}>{formatPrice(item.amount, '₽') || '0'}</p>
+                            <p className={styles.table__item}>{formatPrice(item.common_percent, '%') || '0'}</p>
+                            <p className={`${styles.table__item} ${styles.table__item_bolder}`}>{formatPrice(item.stock_percent, '%') || '0'}</p>
+                            {key !== data.length - 1 && <div className={styles.table__border}></div>}
+                        </React.Fragment>
+                    ))
+                }
+                {data && data.length === 0 &&
+                     <p className={styles.table__item}>Нет данных</p>
+                }
             </div>
-        </div>
+        </>
     )
 }
 

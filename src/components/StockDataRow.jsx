@@ -1,16 +1,17 @@
 import React from 'react';
 import OrderTableExtended from '../containers/orderMap/OrderTableExtended';
+import styles from './StockDataRow.module.css';
 
 const StockDataRow = ({ stockName, orderDetails, saleDetails }) => {
-  return (
-    <div className='pl-3 map-data-row'>
-      <div className='col'>
+  return (orderDetails.length > 0 || saleDetails.length > 0) && (
+    <div className={styles.block}>
+      <div className={styles.block__wrapper}>
         <OrderTableExtended
           title={`Заказы из ${stockName}`}
           data={orderDetails}
         />
       </div>
-      <div className='col'>
+      <div className={styles.block__wrapper}>
         <OrderTableExtended
           title={`Продажи из ${stockName}`}
           data={saleDetails}
