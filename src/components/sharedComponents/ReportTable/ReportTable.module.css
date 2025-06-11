@@ -116,3 +116,13 @@
   -moz-user-select: none; /* Для Firefox */
   -ms-user-select: none; /* Для IE/Edge */
 }
+
+.summaryRow,
+.summaryRow :global(.ant-table-cell-fix-left){
+  background-color: rgb(238 234 255);
+}
+
+.summaryRow:hover,
+.summaryRow:hover :global(.ant-table-cell-fix-left){
+  background-color: #f7f6fe;
+}
