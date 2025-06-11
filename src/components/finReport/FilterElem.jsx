@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
+import Loader from '../sharedComponents/loader/loader';
 import styles from './FilterElem.module.css';
 import { monthNames } from '../../service/reportConfig'
 import { switchPLFilter, switchAllPLFilter } from '../../redux/reportPL/plFiltersSlice'
@@ -194,7 +194,8 @@ const FilterElem = ({title, pageIdent, filterIdent, items, isLoading, widthData,
           <div
             className={styles.loaderWrapper}
           >
-            <span className='loader'></span>
+            <Loader />
+            {/* <span className='loader'></span> */}
           </div>
         )}
         {options && options.length > 0 && !isLoading && (
