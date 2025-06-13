@@ -28,6 +28,7 @@ const AbcAnalysisPage = () => {
   const [viewType, setViewType] = useState("proceeds");
   const [loading, setLoading] = useState(false);
   const [primaryCollect, setPrimaryCollect] = useState(null)
+  const [shopStatus, setShopStatus] = useState(null)
 
   // console.log('---------- base ----------')
   // console.log(loading)
@@ -153,6 +154,25 @@ const AbcAnalysisPage = () => {
     };
   }, [dispatch, viewType, authToken, days, activeBrand]);
 
+  useEffect(() => {
+    if (activeBrand && activeBrand.id === 0 && shops) {
+        const allShop = {
+            id: 0,
+            brand_name: 'Все',
+            is_active: shops.some(_ => _.is_primary_collect),
+            is_valid: true,
+            is_primary_collect: shops.some(_ => _.is_primary_collect),
+            is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
+        }
+        setShopStatus(allShop)
+    }
+
+    if (activeBrand && activeBrand.id !== 0 && shops) {
+        const currShop = shops.find(_ => _.id === activeBrand.id)
+        setShopStatus(currShop)
+    }
+}, [activeBrand, shops, filters])
+
 
 
 
@@ -185,8 +205,8 @@ const AbcAnalysisPage = () => {
         {user.subscription_status === null && <NoSubscriptionWarningBlock />}
         {/* SELF-COST WARNING */}
         {
-          activeBrand &&
-          !activeBrand.is_self_cost_set &&
+          shopStatus &&
+          !shopStatus.is_self_cost_set &&
           !loading &&
           <div>
             <SelfCostWarningBlock
@@ -202,7 +222,7 @@ const AbcAnalysisPage = () => {
           />
         </div>
 
-        {activeBrand && activeBrand.is_primary_collect ? (
+        {shopStatus && shopStatus.is_primary_collect ? (
           <TableAbcData
             dataTable={dataAbcAnalysis}
             setDataTable={setDataAbcAnalysis}

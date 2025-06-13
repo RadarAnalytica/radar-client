@@ -17,12 +17,15 @@ const StockAnalysisPage = () => {
 
     const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const { shops } = useAppSelector((state) => state.shopsSlice);
     const filters = useAppSelector((state) => state.filters);
     const [stockAnalysisData, setStockAnalysisData] = useState(); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
     const [loading, setLoading] = useState(true);
     const [primaryCollect, setPrimaryCollect] = useState(null)
+    const [shopStatus, setShopStatus] = useState(null)
+
 
     const fetchAnalysisData = async () => {
         setLoading(true);
@@ -66,6 +69,25 @@ const StockAnalysisPage = () => {
         }
     }, [authToken]);
 
+    useEffect(() => {
+        if (activeBrand && activeBrand.id === 0 && shops) {
+            const allShop = {
+                id: 0,
+                brand_name: 'Все',
+                is_active: shops.some(_ => _.is_primary_collect),
+                is_valid: true,
+                is_primary_collect: shops.some(_ => _.is_primary_collect),
+                is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
+            }
+            setShopStatus(allShop)
+        }
+
+        if (activeBrand && activeBrand.id !== 0 && shops) {
+            const currShop = shops.find(_ => _.id === activeBrand.id)
+            setShopStatus(currShop)
+        }
+    }, [activeBrand, shops, filters])
+
 
     return (
         <main className={styles.page}>
@@ -83,8 +105,8 @@ const StockAnalysisPage = () => {
                     </div>
                     {/* SELF-COST WARNING */}
                     {
-                        activeBrand &&
-                        !activeBrand.is_self_cost_set &&
+                        shopStatus &&
+                        !shopStatus.is_self_cost_set &&
                         !loading &&
                         <div>
                             <SelfCostWarningBlock
@@ -106,13 +128,13 @@ const StockAnalysisPage = () => {
                     {/* !FILTERS */}
 
                     {/* DATA COLLECT WARNING */}
-                    {activeBrand && !activeBrand.is_primary_collect &&
+                    {shopStatus && !shopStatus.is_primary_collect &&
                         <DataCollectWarningBlock
                             title='Ваши данные еще формируются и обрабатываются.'
                         />
                     }
                     {/* !DATA COLLECT WARNING */}
-                    {activeBrand && activeBrand.is_primary_collect &&
+                    {shopStatus && shopStatus.is_primary_collect &&
                         <SearchWidget
                             stockAnalysisData={stockAnalysisData}
                             setStockAnalysisFilteredData={setStockAnalysisFilteredData}
@@ -120,7 +142,7 @@ const StockAnalysisPage = () => {
                         />
                     }
                 </div>
-                {activeBrand && activeBrand.is_primary_collect &&
+                {shopStatus && shopStatus.is_primary_collect &&
                     <TableWidget
                         stockAnalysisFilteredData={stockAnalysisFilteredData}
                         loading={loading}

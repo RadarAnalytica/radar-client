@@ -33,11 +33,13 @@ const _DashboardPage = () => {
 
     const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const { shops } = useAppSelector((state) => state.shopsSlice);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const [dataDashBoard, setDataDashboard] = useState();
     const [loading, setLoading] = useState(true);
     const [primaryCollect, setPrimaryCollect] = useState(null)
+    const [shopStatus, setShopStatus] = useState(null)
 
     const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
         setLoading(true);
@@ -81,6 +83,25 @@ const _DashboardPage = () => {
         }
     }, [activeBrand, selectedRange, filters]);
 
+    useEffect(() => {
+        if (activeBrand && activeBrand.id === 0 && shops) {
+            const allShop = {
+                id: 0,
+                brand_name: 'Все',
+                is_active: shops.some(_ => _.is_primary_collect),
+                is_valid: true,
+                is_primary_collect: shops.some(_ => _.is_primary_collect),
+                is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
+            }
+            setShopStatus(allShop)
+        }
+
+        if (activeBrand && activeBrand.id !== 0 && shops) {
+            const currShop = shops.find(_ => _.id === activeBrand.id)
+            setShopStatus(currShop)
+        }
+    }, [activeBrand, shops, filters])
+
 
 
     return (
@@ -98,8 +119,8 @@ const _DashboardPage = () => {
                 </div>
                 {/* SELF-COST WARNING */}
                 {
-                    activeBrand &&
-                    !activeBrand.is_self_cost_set &&
+                    shopStatus &&
+                    !shopStatus.is_self_cost_set &&
                     !loading &&
                     <div>
                         <SelfCostWarningBlock
@@ -127,7 +148,7 @@ const _DashboardPage = () => {
                 {/* !FILTERS */}
 
                 {/* DATA COLLECT WARNING */}
-                {activeBrand && !activeBrand.is_primary_collect &&
+                {shopStatus && !shopStatus.is_primary_collect &&
                     <DataCollectWarningBlock
                         title='Ваши данные еще формируются и обрабатываются.'
                     />
@@ -136,7 +157,7 @@ const _DashboardPage = () => {
 
 
                 {/* ----------- MAIN CONTENT -------------- */}
-                {activeBrand && activeBrand.is_primary_collect &&
+                {shopStatus && shopStatus.is_primary_collect &&
                     <>
                         {/* First group of data bars */}
                         <FirstBarsGroup
