@@ -1,11 +1,22 @@
 import styles from './marginChartBlock.module.css'
 import { processMarginalityRoiChart } from '../blockUtils'
 import roi from '../../../../assets/roi.svg';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+import { Chart } from 'react-chartjs-2';
+import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    Filler,
+    BarController,
+    PointElement,
+    BarElement,
+    LineController,
+    LineElement,
+    [Tooltip],
+    verticalDashedLinePlugin
+);
 
 const MarginChartBlock = ({ dataDashBoard, loading }) => {
 
@@ -36,38 +47,17 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                 borderWidth: 2,
                 fill: false,
                 tension: 0.4,
-                type: 'line',
+                //type: 'line',
                 pointBackgroundColor: '#5329FF',
                 pointBorderColor: 'white',
                 pointRadius: 4,
                 pointBorderWidth: 1,
                 yAxisID: 'A',
-                //yAxisID: 'left-y',
             },
             {
-                label: 'Маржинальность по прибыли,(Lower)',
-                data: dataProfitMinus,
-                backgroundColor: function (context) {
-                    const chart = context.chart;
-                    const { ctx, chartArea } = chart;
-                    if (!chartArea) {
-                        return null;
-                    }
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    gradient.addColorStop(0.3, '#F0AD0080');
-                    gradient.addColorStop(1, '#F0AD00');
-                    return gradient;
-                },
-                borderWidth: 0,
-                barPercentage: 0.3,
-                borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 3, bottomRight: 3 },
-                categoryPercentage: 1,
-                yAxisID: 'B'
-                //yAxisID: 'right-y',
-            },
-            {
-                label: 'Маржинальность по прибыли,(Upper)',
+                label: 'Маржинальность по прибыли',
                 data: dataProfitPlus,
+                type: 'bar',
                 backgroundColor: function (context) {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
@@ -169,22 +159,18 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
         scales: {
             A: {
                 id: 'A',
-                min,
-                max,
                 position: 'left',
                 grid: {
                     drawOnChartArea: true, // only want the grid lines for one axis to show up
                 },
                 ticks: {
-                    stepSize: step,
+                    //stepSize: step,
                 },
             },
             B: {
                 id: 'B',
                 type: 'linear',
                 position: 'right',
-                min: marginMin,
-                max: marginMax,
                 suggestedMax: marginMax,
                 grid: {
                     drawOnChartArea: false,
@@ -240,7 +226,7 @@ const MarginChartBlock = ({ dataDashBoard, loading }) => {
                 </div>
             </div>
             <div className={styles.block__chart}>
-                <Bar data={data} options={options} />
+                <Chart type='line' data={data} options={options} />
             </div>
         </div >
     )
