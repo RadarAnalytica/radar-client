@@ -14,7 +14,8 @@ import styles from './ReportWeek.module.css';
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal';
 import { useAppSelector } from '../../redux/hooks';
-import SelfCostWarning from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+// import SelfCostWarning from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import { eachWeekOfInterval, format } from 'date-fns';
 import downloadIcon from '../images/Download.svg';
 
@@ -22,10 +23,11 @@ import { COLUMNS } from './columnsConfig';
 
 export default function ReportWeek() {
 	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange, shops } = useAppSelector(
+	const { activeBrand, selectedRange } = useAppSelector(
 		(state) => state.filters
 	);
 	const filters = useAppSelector((state) => state.filters);
+	const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
@@ -35,6 +37,7 @@ export default function ReportWeek() {
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [weekSelected, setWeekSelected] = useState([{ value: 'Все' }]);
 	const [weekStart, setWeekStart] = useState([]);
+	const [shopStatus, setShopStatus] = useState(null)
 
 	const initWeekOptions = () => {
 
@@ -280,6 +283,25 @@ export default function ReportWeek() {
 		}
 	}, [activeBrand, selectedRange, filters]);
 
+	useEffect(() => {
+        if (activeBrand && activeBrand.id === 0 && shops) {
+            const allShop = {
+                id: 0,
+                brand_name: 'Все',
+                is_active: shops.some(_ => _.is_primary_collect),
+                is_valid: true,
+                is_primary_collect: shops.some(_ => _.is_primary_collect),
+                is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
+            }
+            setShopStatus(allShop)
+        }
+
+        if (activeBrand && activeBrand.id !== 0 && shops) {
+            const currShop = shops.find(_ => _.id === activeBrand.id)
+            setShopStatus(currShop)
+        }
+    }, [activeBrand, shops, filters])
+
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
 	};
@@ -336,7 +358,6 @@ export default function ReportWeek() {
 		);
 		fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
 	};
-	const costWarning = shops?.find((shop) => shop?.is_self_cost_set === false);
 
 	return (
 		<main className={styles.page}>
@@ -351,7 +372,7 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
-				{!loading && !costWarning && <SelfCostWarning />}
+				{!loading && shopStatus && !shopStatus.is_self_cost_set && <SelfCostWarningBlock />}
 				<div className={styles.controls}>
 					<div className={styles.filter}>
 						<Filters
