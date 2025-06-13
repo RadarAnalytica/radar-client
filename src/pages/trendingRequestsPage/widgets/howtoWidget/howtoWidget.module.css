@@ -1,0 +1,92 @@
+.widget {
+    width: 100%;
+    background: #5329FF0D;
+    border-radius: 16px;
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.widget__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+}
+
+.widget__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+}
+
+.widget__openButton {
+    border: none;
+    background: transparent;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    transition: all .2s ease-in-out;
+}
+
+.widget__openButton_open svg {
+    transform: rotate(0);
+    transition: all .2s ease-in-out;
+}
+
+.widget__openButton_closed svg {
+    transform: rotate(180deg);
+    transition: all .2s ease-in-out;
+}
+
+.widget__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+
+}
+
+.widget__footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.widget__text {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+}
+
+.widget__link {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF;
+    text-decoration: none;
+}

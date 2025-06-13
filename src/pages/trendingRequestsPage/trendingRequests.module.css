@@ -50,3 +50,10 @@
     width: 100%;
     z-index: 1;
 }
+
+.page__howtoBlock {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
