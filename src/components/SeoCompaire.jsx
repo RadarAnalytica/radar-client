@@ -114,7 +114,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
         .map(([key, value]) => ({ key, value })),
     };
     setSortedData(dataMap[byOptions] || []);
-    setPaginationState({ ...paginationState, total: dataMap[byOptions].length || 0 })
+    setPaginationState({ ...paginationState, total: dataMap[byOptions]?.length || 0 })
   }, [byOptions, compaireData]);
 
   useEffect(() => {
