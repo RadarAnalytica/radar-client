@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useContext } from 'react';
+import { useState, useMemo, useCallback, useEffect, useContext, useRef } from 'react';
 import styles from './SeoCompaire.module.css';
 import RadioGroup from './RadioGroup';
 import Union from '../assets/union.svg';
@@ -7,14 +7,17 @@ import IntersectingCircles from './IntersectingCircles';
 import AuthContext from '../service/AuthContext';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import DownloadButton from './DownloadButton';
+import { ConfigProvider, Pagination } from 'antd';
 
 const SeoCompaire = ({ compaireData, linksToSend }) => {
+  const scrollContainerRef = useRef(null)
   const { authToken } = useContext(AuthContext);
   const [byOptions, setByOptions] = useState('onlyA');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [sortedData, setSortedData] = useState([]);
-  const [ isExelLoading, setIsExelLoading ] = useState(false)
+  const [isExelLoading, setIsExelLoading] = useState(false)
+  const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
 
   const contentA = compaireData?.products_a ?? [];
   const contentB = compaireData?.products_b ?? [];
@@ -38,9 +41,9 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
       case 'differenceAB':
         return { color1: '#f0ae03', color2: '#00B69B1A', colorIntersection: '#dff2f5', textColor: 'white', textColorA: 'white', textColorB: 'rgba(26, 26, 26, 1)', strockA: 'transparent', strockB: 'rgb(0, 182, 155, 1)' };
       case 'differenceBA':
-        return { color1: '#00B69B1A', color2: '#f0ae03', colorIntersection: '#00B69B1', textColor: 'white', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgb(0, 182, 155, 1)', strockB: 'transparent'};
+        return { color1: '#00B69B1A', color2: '#f0ae03', colorIntersection: '#00B69B1', textColor: 'white', textColorA: 'rgba(26, 26, 26, 1)', textColorB: 'white', strockA: 'rgb(0, 182, 155, 1)', strockB: 'transparent' };
       default:
-        return { color1: 'purple', color2: 'blue', colorIntersection: 'white',textColor: 'white' };
+        return { color1: 'purple', color2: 'blue', colorIntersection: 'white', textColor: 'white' };
     }
   };
 
@@ -69,9 +72,14 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
 
       setSortConfig({ key, direction: newDirection });
       setSortedData(newSortedData);
+      setPaginationState({ ...paginationState, total: newSortedData.length })
     },
     [sortedData, sortConfig]
   );
+
+  const paginationHandler = (page) => {
+    setPaginationState({ ...paginationState, current: page })
+  }
 
   useEffect(() => {
     const keywordsA = Object.keys(compaireData?.keywords_a || {}).map((x) =>
@@ -106,13 +114,43 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
         .map(([key, value]) => ({ key, value })),
     };
     setSortedData(dataMap[byOptions] || []);
+    setPaginationState({ ...paginationState, total: dataMap[byOptions].length || 0 })
   }, [byOptions, compaireData]);
+
+  useEffect(() => {
+    const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
+    const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+    const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
+    const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+    if (paginationNextButton) {
+      paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+    }
+    if (paginationSingleNextButton) {
+      paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+    }
+    if (paginationSinglePrevButton) {
+      paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+    }
+    if (paginationPrevButton) {
+      paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+    }
+  }, [paginationState])
+
+  useEffect(() => {
+    const { current } = scrollContainerRef;
+    current?.scrollTo({ top: 0, behavior: 'smooth', duration: 100 })
+}, [paginationState.current])
 
   const handleRadioChange = (value) => {
     setByOptions(value);
   };
 
   const handleSearchQuery = (e) => {
+    if (e.target.value) {
+      setPaginationState({...paginationState, total: sortedData.filter((item) => {
+        return item.key.toLowerCase().includes(e.target.value.toLowerCase());
+      }).length })
+    }
     setSearchQuery(e.target.value);
   };
 
@@ -132,7 +170,10 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
       }
 
       return filteredData.map((item, index) => {
-        return (
+        const minRange = (paginationState.current - 1) * paginationState.pageSize;
+        const maxRange = paginationState.current * paginationState.pageSize;
+
+        return index >= minRange && index < maxRange && (
           <div className={styles.tableContentItem} key={index}>
             <div
               className={styles.tableContentItemKey}
@@ -146,7 +187,7 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
       });
     }
     return <div>Ничего не найдено</div>;
-  }, [sortedData, searchQuery]);
+  }, [sortedData, searchQuery, paginationState]);
 
   const renderSortArrows = (columnKey) => {
     return <SortArrows columnKey={columnKey} sortConfig={sortConfig} />;
@@ -180,34 +221,34 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
   return (
     <div className={styles.seoCompaireWrapper}>
       <div className={styles.buttonWrapper}>
-      <div className={styles.downloadButton}>
-        <DownloadButton handleDownload={handleDownload} isLoading={isExelLoading}/>
-      </div>
+        <div className={styles.downloadButton}>
+          <DownloadButton handleDownload={handleDownload} isLoading={isExelLoading} />
+        </div>
       </div>
       <div className={styles.topBlock}>
         <div className={styles.topBlock__content}>
-          <IntersectingCircles 
-             color1={color1} 
-             color2={color2} 
-             colorIntersection={colorIntersection}
-             textColorA={textColorA}
-             textColorB={textColorB}
-             strockA={strockA}
-             strockB={strockB}
+          <IntersectingCircles
+            color1={color1}
+            color2={color2}
+            colorIntersection={colorIntersection}
+            textColorA={textColorA}
+            textColorB={textColorB}
+            strockA={strockA}
+            strockB={strockB}
           />
-         <div 
-         className={styles.keywordCount}
-    >
-      <span className={styles.keywordCountNumber}>{sortedData.length }</span>
-      <span className={styles.keywordCountText}>ключевых слов</span>
-    </div>
+          <div
+            className={styles.keywordCount}
+          >
+            <span className={styles.keywordCountNumber}>{sortedData.length}</span>
+            <span className={styles.keywordCountText}>ключевых слов</span>
+          </div>
         </div>
         <div className={styles.seoTableWrapper}>
           <div className={styles.seoTableHeader}>
             <div className={styles.seoTableHeaderItem}>Группа А</div>
             <div className={styles.seoTableHeaderItem}>Группа B</div>
           </div>
-          <div className={styles.seoTableContent}>
+          <div className={styles.seoTableContent} ref={scrollContainerRef}>
             <div className={styles.seoTableContentRowWrapper}>
               {contentA.map((item) => (
                 <div className={styles.seoTableContentItem} key={item.wb_id}>
@@ -259,6 +300,10 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
           </div>
         </div>
       </div>
+
+
+
+
       <div className={styles.bottomBlock}>
         <div className={styles.radioButtonsWrapper}>
           <RadioGroup
@@ -278,12 +323,12 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
           />
           <button>
             <span className={styles.unionImage}>
-              <img src={Union} alt='Search button'/>
+              <img src={Union} alt='Search button' />
             </span>
             <span className={styles.searchButtonText}>Найти</span>
           </button>
         </div>
-        <div className={styles.tableWrapper}>
+        <div className={styles.tableWrapper} ref={scrollContainerRef}>
           <div className={styles.tableHeader}>
             <div>Ключевые слова</div>
             <div onClick={() => sortData('wb')}>
@@ -292,6 +337,35 @@ const SeoCompaire = ({ compaireData, linksToSend }) => {
             </div>
           </div>
           <div className={styles.tableContent}>{renderData}</div>
+        </div>
+        {/* Pagination here */}
+        <div className={styles.paginationWrapper}>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorText: '#5329FF',
+                lineWidth: 0,
+                colorPrimary: '#5329FF'
+              },
+              components: {
+                Pagination: {
+                  itemActiveBg: '#EEEAFF',
+                  itemBg: '#F7F7F7',
+                  itemColor: '#8C8C8C',
+                }
+              }
+            }}
+          >
+            <Pagination
+              defaultCurrent={1}
+              current={paginationState.current}
+              onChange={paginationHandler}
+              total={paginationState.total}
+              pageSize={paginationState.pageSize}
+              showSizeChanger={false}
+            //showTotal={(total) => `Всего ${total} товаров`}
+            />
+          </ConfigProvider>
         </div>
       </div>
     </div>
