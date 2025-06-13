@@ -28,9 +28,18 @@ const validateDynamicValues = (type, from, to) => {
     return false
 }
 
-const getDynamicNormilizedValue = (type, value) => {
+const getDynamicNormilizedValue = (type, value, periodType) => {
     let normilizedValue = 0;
-    if (!value) return normilizedValue;
+    if (!value) {
+        switch (type) {
+            case 'Рост':
+                return periodType === 'start' ? 0 : 10000000
+            case 'Падение':
+                return periodType === 'end' ? 0 : - 10000000
+            default:
+                return normilizedValue
+        }
+    };
     if (type === 'Рост') {
         normilizedValue = parseInt(value)
     }
@@ -41,7 +50,7 @@ const getDynamicNormilizedValue = (type, value) => {
 }
 
 
-export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible }) => {
+export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible, setSortState, initSortState }) => {
     const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
     const [searchState, setSearchState] = useState('')
     const [preferedItemsData, setPreferedItemsData] = useState([])
@@ -92,39 +101,40 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
     }, [form])
 
     const submitHandler = useCallback((fields) => {
-
         setRequestState({
             date_from: moment(selectedDate, 'DD.MM.YYYY').format('YYYY-MM-DD'),
             //date_from: selectedDate,
             g30: {
-                start: getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_from),
-                end: getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_to)
+                start: getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_from, 'start'),
+                end: getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_to, 'end')
             },
             g60: {
-                start: getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_from),
-                end: getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_to)
+                start: getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_from, 'start'),
+                end: getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_to, 'end')
             },
             g90: {
-                start: getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_from),
-                end: getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_to)
+                start: getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_from, 'start'),
+                end: getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_to, 'end')
             },
             frequency: {
                 start: parseInt(fields.frequency_30_days_from) || 0,
-                end: parseInt(fields.frequency_30_days_to) || 0
+                end: parseInt(fields.frequency_30_days_to) || 10000000
             },
             goods_quantity: {
                 start: parseInt(fields.sku_quantity_from) || 0,
-                end: parseInt(fields.sku_quantity_to) || 0
+                end: parseInt(fields.sku_quantity_to) || 1000000000
             },
             freq_per_good: {
                 start: parseInt(fields.requests_to_sku_30_days_from) || 0,
-                end: parseInt(fields.requests_to_sku_30_days_to) || 0
+                end: parseInt(fields.requests_to_sku_30_days_to) || 10000000
             },
+            sorting: { sort_field: 'frequency', sort_order: 'DESC' },
             subjects: fields.prefered_items, // [0]
             query: fields.request_example,
             page: 1,
             limit: 25
         })
+        setSortState(initSortState)
     }, [selectedDate, setRequestState])
 
 
@@ -817,6 +827,11 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                 placeholder='Выберите'
                                                 getPopupContainer={(triggerNode) => triggerNode.parentNode}
                                                 tagRender={tagRender}
+                                                onDropdownVisibleChange={(open) => {
+                                                    if (!open) {
+                                                        setSearchState('')
+                                                    }
+                                                }}
                                                 suffixIcon={
                                                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
