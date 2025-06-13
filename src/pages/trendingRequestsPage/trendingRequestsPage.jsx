@@ -13,12 +13,19 @@ const initRequestStatus = {
     message: ''
 }
 
+//инит стейт сортировки
+const initSortState = {
+    sortedValue: undefined,
+    sortType: undefined,
+}
+
 const TrendingRequestsPage = () => {
     const [isParamsVisible, setIsParamsVisible] = useState(true)
     const [requestState, setRequestState] = useState()
     const [tableData, setTableData] = useState()
     const [requestStatus, setRequestStatus] = useState(initRequestStatus)
     const [tablePaginationState, setTablePaginationState] = useState({ limit: 25, page: 1, total_pages: 1 })
+    const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
 
     const getTableData = useCallback(async (request) => {
         setRequestStatus({ ...initRequestStatus, isLoading: true })
@@ -81,6 +88,8 @@ const TrendingRequestsPage = () => {
                             setRequestStatus={setRequestStatus}
                             requestStatus={requestStatus}
                             initRequestStatus={initRequestStatus}
+                            setSortState={setSortState}
+                            initSortState={initSortState}
                         />
                     </div>
                 </div>
@@ -93,6 +102,9 @@ const TrendingRequestsPage = () => {
                         requestState={requestState}
                         setRequestStatus={setRequestStatus}
                         initRequestStatus={initRequestStatus}
+                        sortState={sortState}
+                        setSortState={setSortState}
+                        initSortState={initSortState}
                     />
                 }
             </section>
