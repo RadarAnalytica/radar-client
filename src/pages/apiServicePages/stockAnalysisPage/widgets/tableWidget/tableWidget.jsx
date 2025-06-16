@@ -81,7 +81,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
         if (sortState.sortType === id && sortState.sortedValue === value) {
             setSortState(initSortState)
             setTableData(stockAnalysisFilteredData)
-            setPaginationState({...paginationState, total: stockAnalysisFilteredData.length})
+            setPaginationState({...paginationState, total: stockAnalysisFilteredData.length, current: 1})
             return
         }
 
@@ -92,7 +92,7 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
             sortType: id,
         })
         setTableData([...sortTableDataFunc(id, value, stockAnalysisFilteredData)])
-        setPaginationState({...paginationState, total: [...sortTableDataFunc(id, value, stockAnalysisFilteredData)].length})
+        setPaginationState({...paginationState, total: [...sortTableDataFunc(id, value, stockAnalysisFilteredData)].length, current: 1})
     }
 
     const paginationHandler = (page) => {
@@ -173,8 +173,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                                 {v.isSortable &&
                                                     <div className={styles.sortControls}>
                                                         <button
-                                                            className={sortState.sortType === 'DESC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
-                                                            id='DESC'
+                                                            className={sortState.sortType === 'ASC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
+                                                            id='ASC'
                                                             onClick={(e) => sortButtonClickHandler(e, v.engName)}
                                                         >
                                                             <svg width="12" height="15" viewBox="0 0 12 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -182,8 +182,8 @@ const TableWidget = ({ stockAnalysisFilteredData, loading }) => {
                                                             </svg>
                                                         </button>
                                                         <button
-                                                            className={sortState.sortType === 'ASC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
-                                                            id='ASC'
+                                                            className={sortState.sortType === 'DESC' && sortState.sortedValue === v.engName ? `${styles.sortControls__button} ${styles.sortControls__button_active}` : styles.sortControls__button}
+                                                            id='DESC'
                                                             onClick={(e) => sortButtonClickHandler(e, v.engName)}
                                                         >
                                                             <svg width="12" height="15" viewBox="0 0 12 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
