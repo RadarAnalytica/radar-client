@@ -147,6 +147,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         form.setFieldValue('dynamic_60_days_from', 100)
         form.setFieldValue('frequency_30_days_from', 6000)
         setIsExampleDataSet(true)
+        setIsParamsVisible(true)
     }
 
 
@@ -953,6 +954,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                     htmlType='submit'
                                     type='primary'
                                     size='large'
+                                    className={isExampleDataSet ? styles.form__exampleDataButton : ''}
                                 >
                                     Сформировать список
                                 </Button>

@@ -10,6 +10,18 @@
     }
 }
 
+@keyframes buttonWave {
+    0% {
+        box-shadow: 0 0 0 0 rgba(83, 41, 255, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(83, 41, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(83, 41, 255, 0);
+    }
+}
+
 .widget {
     width: 100%;
     display: flex;
@@ -275,7 +287,11 @@
 
 .form__exampleDataInput {
     border-radius: 8px;
-   animation: bgColor 3s ease-in-out;
+    animation: bgColor 3s ease-in-out;
+}
+
+.form__exampleDataButton {
+    animation: buttonWave 2s infinite;
 }
 
 :global(.ant-select-selection-overflow) {
