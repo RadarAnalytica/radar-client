@@ -5,6 +5,8 @@ import styles from './paramsWidget.module.css'
 import moment from 'moment'
 import { ApiService } from '../../shared'
 import { useAppSelector } from '../../../../redux/hooks'
+import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
+import { HowtoWidget } from '../howtoWidget/howtoWidget'
 
 
 const dynamicOptions = [
@@ -53,6 +55,7 @@ const getDynamicNormilizedValue = (type, value, periodType) => {
 export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible, setSortState, initSortState }) => {
     const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
     const [searchState, setSearchState] = useState('')
+    const [ isExampleDataSet, setIsExampleDataSet ] = useState(false)
     const [preferedItemsData, setPreferedItemsData] = useState([])
     const [form] = Form.useForm()
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
@@ -137,6 +140,16 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         setSortState(initSortState)
     }, [selectedDate, setRequestState])
 
+    const setExampleData = () => {
+        setSelectedDate(moment().subtract(3, 'days').format('DD.MM.YYYY'))
+        form.setFieldValue('dynamic_60_days', 'Рост')
+        form.setFieldValue('dynamic_60_days_from', 100)
+        form.setFieldValue('dynamic_60_days_from', 100)
+        form.setFieldValue('frequency_30_days_from', 6000)
+        setIsExampleDataSet(true)
+        setIsParamsVisible(true)
+    }
+
 
     // Прямой запрос, не удалять. Старина М, 06.06.25
     // const getPreferedItems = async () => {
@@ -171,6 +184,15 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
             form.validateFields(['dynamic_30_days', 'dynamic_60_days', 'dynamic_90_days'])
         }
     }, [dynamic_30_days, dynamic_60_days, dynamic_90_days])
+
+    useEffect(() => {
+        let timeout;
+        if (isExampleDataSet) {
+            timeout = setTimeout(() => {setIsExampleDataSet(false)}, 3000)
+        }
+
+        return () => {timeout && clearTimeout(timeout)}
+    }, [isExampleDataSet])
 
     useEffect(() => {
         if (
@@ -290,637 +312,657 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                 optionFontSize: 16,
                 optionSelectedBg: 'transparent',
                 optionSelectedColor: '#5329FF',
+                selectorBg: 'transparent'
             }
         }
     }), [])
 
     return (
-        <div className={styles.widget}>
-            {requestStatus.isLoading && isParamsVisible &&
-                <div className={styles.widget__loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
-            }
-            {/* header */}
-            <div className={styles.widget__header} onClick={() => setIsParamsVisible(!isParamsVisible)}>
-                <p className={styles.widget__title}>Параметры</p>
-                <button className={isParamsVisible ? `${styles.widget__openButton} ${styles.widget__openButton_opened}` : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>
-                    <svg width="18" height="11" viewBox="0 0 18 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1L9 9L17 1" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                </button>
+        <>
+            <div className={styles.widget__howtoWrapper}>
+                <HowtoWidget
+                    setExampleData={setExampleData}
+                />
             </div>
-            {/* body */}
-            <div className={isParamsVisible ? `${styles.widget__body} ${styles.widget__body_visible}` : styles.widget__body}>
-                <div className={styles.widget__datapicker}>
-                    <label className={styles.form__doubledLabel}>Дата отсчета</label>
-                    <DatePicker
-                        selectedDate={selectedDate}
-                        setSelectedDate={setSelectedDate}
-                    />
+            <div className={styles.widget}>
+                {requestStatus.isLoading && isParamsVisible &&
+                    <div className={styles.widget__loaderWrapper}>
+                        <span className='loader'></span>
+                    </div>
+                }
+                {/* header */}
+                <div className={styles.widget__header} onClick={() => setIsParamsVisible(!isParamsVisible)}>
+                    <p className={styles.widget__title}>Параметры</p>
+                    <div className={styles.widget__headerWrapper}>
+                        <HowToLink
+                            url='https://radar.usedocs.com/article/77127'
+                            text='Как использовать?'
+                            target='_blank'
+                        />
+                        <button className={isParamsVisible ? `${styles.widget__openButton} ${styles.widget__openButton_opened}` : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>
+                            <svg width="18" height="11" viewBox="0 0 18 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L9 9L17 1" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                <ConfigProvider
-                    theme={memoizedConfigProviderTheme}
-                >
-                    <Form
-                        layout='vertical'
-                        form={form}
-                        className={styles.form}
-                        scrollToFirstError
-                        onFinish={submitHandler}
-                        initialValues={{
-                            prefered_items: [],
-                        }}
+                {/* body */}
+                <div className={isParamsVisible ? `${styles.widget__body} ${styles.widget__body_visible}` : styles.widget__body}>
+                    <div className={styles.widget__datapicker}>
+                        <label className={styles.form__doubledLabel}>Дата отсчета</label>
+                        <DatePicker
+                            selectedDate={selectedDate}
+                            setSelectedDate={setSelectedDate}
+                            isExampleDataSet={isExampleDataSet}
+                        />
+                    </div>
+                    <ConfigProvider
+                        theme={memoizedConfigProviderTheme}
                     >
-                        <fieldset
-                            className={styles.form__fieldset}
+                        <Form
+                            layout='vertical'
+                            form={form}
+                            className={styles.form}
+                            scrollToFirstError
+                            onFinish={submitHandler}
+                            initialValues={{
+                                prefered_items: [],
+                            }}
                         >
-                            <div className={styles.form__fieldsetHeader}>
-                                <p className={styles.form__fieldsetTitle}>Динамика популярности запросов</p>
-                                <p className={styles.form__fieldsetText}>Выберите хотя бы 1 значение</p>
-                            </div>
-                            <div className={isSidebarHidden ? `${styles.form__fieldsetLayout} ${styles.form__fieldsetLayout_3cols}` : `${styles.form__fieldsetLayout} ${styles.form__fieldsetLayout_1col}`}>
-                                <div className={styles.form__dynamicSelectBlock}>
-                                    <label className={styles.form__doubledLabel}>От даты отсчета за 30 дней, %</label>
-                                    <div className={styles.form__dynamicSelectWrapper}>
-                                        <Form.Item
-                                            style={{ margin: 0, width: '100%' }}
-                                            name='dynamic_30_days'
-                                            rules={[
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        if (value || getFieldValue('dynamic_60_days') || getFieldValue('dynamic_90_days')) {
-                                                            return Promise.resolve();
-                                                        }
-                                                        return Promise.reject(new Error('Пожалуйста, заполните хотя бы одно поле!'));
-                                                    },
-                                                }),
-                                            ]}
-                                        >
-                                            <Select
-                                                size='large'
-                                                style={{ height: '44px' }}
-                                                placeholder='Изменение'
-                                                options={dynamicOptions}
-                                                suffixIcon={
-                                                    <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
-                                                    </svg>
-                                                }
-                                            />
-                                        </Form.Item>
-                                        {dynamic_30_days &&
-                                            <>
-                                                <Form.Item
-                                                    style={{ margin: 0, width: '100%' }}
-                                                    name='dynamic_30_days_from'
-                                                    //help=""
-                                                    rules={[
-                                                        ({ getFieldValue }) => ({
-                                                            validator(_, value) {
-                                                                const regex = /^(|\d+)$/ // только целые числа
-                                                                if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_to')) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.resolve()
-                                                            },
-                                                        }),
-                                                    ]}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        placeholder={'от 20'}
-                                                        suffix={<>%</>}
-                                                        type="number"
-                                                        style={{ height: '44px' }}
-                                                    />
-                                                </Form.Item>
-                                                <Form.Item
-                                                    style={{ margin: 0, width: '100%' }}
-                                                    name='dynamic_30_days_to'
-                                                    //help=''
-                                                    rules={[
-                                                        ({ getFieldValue }) => ({
-                                                            validator(_, value) {
-                                                                const regex = /^(|\d+)$/ // только целые числа
-                                                                if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_from')) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''));
-                                                                }
-                                                                return Promise.resolve()
-                                                            },
-                                                        }),
-                                                    ]}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        placeholder={'до 100'}
-                                                        suffix={<>%</>}
-                                                        type="number"
-                                                        style={{ height: '44px' }}
-                                                    />
-                                                </Form.Item>
-                                            </>
-                                        }
-                                    </div>
-                                    {/* Заготовка под кастомное отображение ошибок */}
-                                    {/* <div style={{color: 'red'}}>
+                            <fieldset
+                                className={styles.form__fieldset}
+                            >
+                                <div className={styles.form__fieldsetHeader}>
+                                    <p className={styles.form__fieldsetTitle}>Динамика популярности запросов</p>
+                                    <p className={styles.form__fieldsetText}>Выберите хотя бы 1 значение</p>
+                                </div>
+                                <div className={isSidebarHidden ? `${styles.form__fieldsetLayout} ${styles.form__fieldsetLayout_3cols}` : `${styles.form__fieldsetLayout} ${styles.form__fieldsetLayout_1col}`}>
+                                    <div className={styles.form__dynamicSelectBlock}>
+                                        <label className={styles.form__doubledLabel}>От даты отсчета за 30 дней, %</label>
+                                        <div className={styles.form__dynamicSelectWrapper}>
+                                            <Form.Item
+                                                style={{ margin: 0, width: '100%' }}
+                                                name='dynamic_30_days'
+                                                rules={[
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            if (value || getFieldValue('dynamic_60_days') || getFieldValue('dynamic_90_days')) {
+                                                                return Promise.resolve();
+                                                            }
+                                                            return Promise.reject(new Error('Пожалуйста, заполните хотя бы одно поле!'));
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <Select
+                                                    size='large'
+                                                    style={{ height: '44px' }}
+                                                    placeholder='Изменение'
+                                                    options={dynamicOptions}
+                                                    suffixIcon={
+                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                                                        </svg>
+                                                    }
+                                                />
+                                            </Form.Item>
+                                            {dynamic_30_days &&
+                                                <>
+                                                    <Form.Item
+                                                        style={{ margin: 0, width: '100%' }}
+                                                        name='dynamic_30_days_from'
+                                                        //help=""
+                                                        rules={[
+                                                            ({ getFieldValue }) => ({
+                                                                validator(_, value) {
+                                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                                    if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_to')) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    if (value && !regex.test(value)) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    return Promise.resolve()
+                                                                },
+                                                            }),
+                                                        ]}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            placeholder={'от 20'}
+                                                            suffix={<>%</>}
+                                                            type="number"
+                                                            style={{ height: '44px' }}
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        style={{ margin: 0, width: '100%' }}
+                                                        name='dynamic_30_days_to'
+                                                        //help=''
+                                                        rules={[
+                                                            ({ getFieldValue }) => ({
+                                                                validator(_, value) {
+                                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                                    if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_from')) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    if (value && !regex.test(value)) {
+                                                                        return Promise.reject(new Error(''));
+                                                                    }
+                                                                    return Promise.resolve()
+                                                                },
+                                                            }),
+                                                        ]}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            placeholder={'до 100'}
+                                                            suffix={<>%</>}
+                                                            type="number"
+                                                            style={{ height: '44px' }}
+                                                        />
+                                                    </Form.Item>
+                                                </>
+                                            }
+                                        </div>
+                                        {/* Заготовка под кастомное отображение ошибок */}
+                                        {/* <div style={{color: 'red'}}>
                                     {form.getFieldError('dynamic_30_days_to').toString()}
                                     {form.getFieldError('dynamic_30_days_from').toString()}
                                     </div> */}
-                                </div>
-                                <div className={styles.form__dynamicSelectBlock}>
-                                    <label className={styles.form__doubledLabel}>От даты отсчета за 60 дней, %</label>
-                                    <div className={styles.form__dynamicSelectWrapper}>
-                                        <Form.Item
-                                            style={{ margin: 0, width: '100%' }}
-                                            name='dynamic_60_days'
-                                            rules={[
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        if (value || getFieldValue('dynamic_30_days') || getFieldValue('dynamic_90_days')) {
-                                                            return Promise.resolve();
-                                                        }
-                                                        return Promise.reject(new Error('Пожалуйста, заполните хотя бы одно поле!'));
-                                                    },
-                                                }),
-                                            ]}
-                                        >
-                                            <Select
-                                                size='large'
-                                                placeholder='Изменение'
-                                                options={dynamicOptions}
-                                                style={{ height: '44px' }}
-                                                suffixIcon={
-                                                    <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
-                                                    </svg>
-                                                }
-                                            />
-                                        </Form.Item>
-                                        {dynamic_60_days &&
-                                            <>
-                                                <Form.Item
-                                                    style={{ margin: 0, width: '100%' }}
-                                                    name='dynamic_60_days_from'
-                                                    rules={[
-                                                        ({ getFieldValue }) => ({
-                                                            validator(_, value) {
-                                                                const regex = /^(|\d+)$/ // только целые числа
-                                                                if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_to')) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.resolve()
-                                                                return Promise.reject(new Error(''));
-                                                            },
-                                                        }),
-                                                    ]}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        style={{ height: '44px' }}
-                                                        placeholder={'от 20'}
-                                                        suffix={<>%</>}
-                                                        type="number"
-                                                    />
-                                                </Form.Item>
-                                                <Form.Item
-                                                    style={{ margin: 0, width: '100%' }}
-                                                    name='dynamic_60_days_to'
-                                                    rules={[
-                                                        ({ getFieldValue }) => ({
-                                                            validator(_, value) {
-                                                                const regex = /^(|\d+)$/ // только целые числа
-                                                                if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_from')) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.resolve()
-                                                            },
-                                                        }),
-                                                    ]}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        style={{ height: '44px' }}
-                                                        placeholder={'до 100'}
-                                                        suffix={<>%</>}
-                                                        type="number"
-                                                    />
-                                                </Form.Item>
-                                            </>
-                                        }
                                     </div>
-                                </div>
-                                <div className={styles.form__dynamicSelectBlock}>
-                                    <label className={styles.form__doubledLabel}>От даты отсчета за 90 дней, %</label>
-                                    <div className={styles.form__dynamicSelectWrapper}>
-                                        <Form.Item
-                                            //label='От даты отсчета за 90 дней, %'
-                                            style={{ margin: 0, width: '100%' }}
-                                            name='dynamic_90_days'
-                                            rules={[
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        if (value || getFieldValue('dynamic_60_days') || getFieldValue('dynamic_30_days')) {
-                                                            return Promise.resolve();
-                                                        }
-                                                        return Promise.reject(new Error('Пожалуйста, заполните хотя бы одно поле!'));
-                                                    },
-                                                }),
-                                            ]}
-                                        >
-                                            <Select
-                                                size='large'
-                                                placeholder='Изменение'
-                                                options={dynamicOptions}
-                                                style={{ height: '44px' }}
-                                                suffixIcon={
-                                                    <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
-                                                    </svg>
-                                                }
-                                            />
-                                        </Form.Item>
-                                        {dynamic_90_days &&
-                                            <>
-                                                <Form.Item
-                                                    style={{ margin: 0, width: '100%' }}
-                                                    name='dynamic_90_days_from'
-                                                    rules={[
-                                                        ({ getFieldValue }) => ({
-                                                            validator(_, value) {
-                                                                const regex = /^(|\d+)$/ // только целые числа
-                                                                if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_to')) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.resolve()
-                                                            },
-                                                        }),
-                                                    ]}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        style={{ height: '44px' }}
-                                                        placeholder={'от 20'}
-                                                        suffix={<>%</>}
-                                                        type="number"
-                                                    />
-                                                </Form.Item>
-                                                <Form.Item
-                                                    style={{ margin: 0, width: '100%' }}
-                                                    name='dynamic_90_days_to'
-                                                    rules={[
-                                                        ({ getFieldValue }) => ({
-                                                            validator(_, value) {
-                                                                const regex = /^(|\d+)$/ // только целые числа
-                                                                if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_from')) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                if (value && !regex.test(value)) {
-                                                                    return Promise.reject(new Error(''))
-                                                                }
-                                                                return Promise.resolve()
-                                                            },
-                                                        }),
-                                                    ]}
-                                                >
-                                                    <Input
-                                                        size='large'
-                                                        style={{ height: '44px' }}
-                                                        placeholder={'до 100'}
-                                                        suffix={<>%</>}
-                                                        type="number"
-                                                    />
-                                                </Form.Item>
-                                            </>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset
-                            className={styles.form__fieldset}
-                        >
-                            <div className={styles.form__fieldsetHeader}>
-                                <p className={styles.form__fieldsetTitle}>Дополнительные параметры</p>
-                                <p className={styles.form__fieldsetText}>Необязательные поля</p>
-                            </div>
-                            <div className={`${styles.form__fieldsetLayout} ${styles.form__fieldsetLayout_5cols}`}>
-                                <div className={styles.form__doudleWrapper}>
-                                    <label className={styles.form__doubledLabel}>Частотность запроса за 30 дней до выбранной даты отсчета, шт</label>
-                                    <div className={styles.form__twoInputsWrapper}>
-                                        <Form.Item
-                                            style={{ margin: 0 }}
-                                            name='frequency_30_days_from'
-                                            rules={[
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        const regex = /^(|\d+)$/ // только целые числа
-                                                        if (value && !regex.test(value)) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
-                                                        // if (!value && getFieldValue('frequency_30_days_to')) {
-                                                        //     return Promise.reject(new Error(''));
-                                                        // }
-                                                        return Promise.resolve();
-                                                    },
-                                                }),
-                                            ]}
-                                        >
-                                            <Input
-                                                size='large'
-                                                style={{ height: '44px' }}
-                                                placeholder='от'
-                                                type="number"
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
-                                            style={{ margin: 0 }}
-                                            name='frequency_30_days_to'
-                                            rules={[
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        const regex = /^(|\d+)$/ // только целые числа
-                                                        if (value && !regex.test(value)) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
-                                                        // if (!value && getFieldValue('frequency_30_days_from')) {
-                                                        //     return Promise.reject(new Error(''));
-                                                        // }
-                                                        return Promise.resolve();
-                                                    },
-                                                }),
-                                            ]}
-                                        >
-                                            <Input
-                                                size='large'
-                                                style={{ height: '44px' }}
-                                                placeholder='до'
-                                                type="number"
-                                            />
-                                        </Form.Item>
-                                    </div>
-                                </div>
-                                <div className={styles.form__doudleWrapper}>
-                                    <label className={styles.form__doubledLabel}>Количество артикулов по запросу, шт</label>
-                                    <div className={styles.form__twoInputsWrapper}>
-                                        <Form.Item
-                                            style={{ margin: 0 }}
-                                            name='sku_quantity_from'
-                                            rules={[
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        const regex = /^(|\d+)$/ // только целые числа
-                                                        if (value && !regex.test(value)) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
-                                                        // if (!value && getFieldValue('sku_quantity_to')) {
-                                                        //     return Promise.reject(new Error(''));
-                                                        // }
-                                                        return Promise.resolve();
-                                                    },
-                                                }),
-                                            ]}
-                                        >
-                                            <Input
-                                                size='large'
-                                                style={{ height: '44px' }}
-                                                placeholder='от'
-                                                type="number"
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
-                                            style={{ margin: 0 }}
-                                            name='sku_quantity_to'
-                                            rules={[
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        const regex = /^(|\d+)$/ // только целые числа
-                                                        if (value && !regex.test(value)) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
-                                                        // if (!value && getFieldValue('sku_quantity_from')) {
-                                                        //     return Promise.reject(new Error(''));
-                                                        // }
-                                                        return Promise.resolve();
-                                                    },
-                                                }),
-                                            ]}
-                                        >
-                                            <Input
-                                                size='large'
-                                                style={{ height: '44px' }}
-                                                placeholder='до'
-                                                type="number"
-                                            />
-                                        </Form.Item>
-                                    </div>
-                                </div>
-                                <div className={styles.form__doudleWrapper}>
-                                    <label className={styles.form__doubledLabel}>Частотность за 30 дней на 1 артикул, шт</label>
-                                    <div className={styles.form__twoInputsWrapper}>
-                                        <Form.Item
-                                            style={{ margin: 0 }}
-                                            name='requests_to_sku_30_days_from'
-                                            rules={[
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        const regex = /^(|\d+)$/ // только целые числа
-                                                        if (value && !regex.test(value)) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
-                                                        // if (!value && getFieldValue('requests_to_sku_30_days_to')) {
-                                                        //     return Promise.reject(new Error(''));
-                                                        // }
-                                                        return Promise.resolve();
-                                                    },
-                                                }),
-                                            ]}
-                                        >
-                                            <Input
-                                                size='large'
-                                                style={{ height: '44px' }}
-                                                placeholder='от'
-                                                type="number"
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
-                                            style={{ margin: 0 }}
-                                            name='requests_to_sku_30_days_to'
-                                            rules={[
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        const regex = /^(|\d+)$/ // только целые числа
-                                                        if (value && !regex.test(value)) {
-                                                            return Promise.reject(new Error(''));
-                                                        }
-                                                        // if (!value && getFieldValue('requests_to_sku_30_days_from')) {
-                                                        //     return Promise.reject(new Error(''));
-                                                        // }
-                                                        return Promise.resolve();
-                                                    },
-                                                }),
-                                            ]}
-                                        >
-                                            <Input
-                                                size='large'
-                                                style={{ height: '44px' }}
-                                                placeholder='до'
-                                                type="number"
-                                            />
-                                        </Form.Item>
-                                    </div>
-                                </div>
-                                <div className={styles.form__doudleWrapper}>
-                                    <label className={styles.form__doubledLabel}>Приоритетные предметы</label>
-                                    <ConfigProvider
-                                        renderEmpty={() => (<div style={{ cursor: 'default' }}>Нет данных</div>)}
-                                        theme={{
-                                            token: {
-                                                colorBgContainer: 'white',
-                                                //colorBorder: 'transparent',
-                                                //borderRadius: 8,
-                                                fontFamily: 'Mulish',
-                                                fontSize: 14,
-                                                controlHeightLG: 44
-                                            },
-                                            components: {
-                                                Select: {
-                                                    //activeBorderColor: 'transparent',
-                                                    activeOutlineColor: 'transparent',
-                                                    //hoverBorderColor: 'transparent',
-                                                    optionActiveBg: 'transparent',
-                                                    optionFontSize: 16,
-                                                    optionSelectedBg: 'transparent',
-                                                    optionSelectedColor: '#5329FF',
-                                                    singleItemHeightLG: 44
-                                                }
-                                            }
-                                        }}
-                                    >
-                                        <Form.Item
-                                            style={{ margin: 0, width: '100%' }}
-                                            name='prefered_items'
-                                        >
-                                            <Select
-                                                //style={{ height: '44px' }}
-                                                maxTagCount={0}
-                                                //maxTagCount='responsive'
-                                                //maxTagTextLength={20}
-                                                showSearch={false}
-                                                mode='multiple'
-                                                size='large'
-                                                placeholder='Выберите'
-                                                getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                                                tagRender={tagRender}
-                                                onDropdownVisibleChange={(open) => {
-                                                    if (!open) {
-                                                        setSearchState('')
-                                                    }
-                                                }}
-                                                suffixIcon={
-                                                    <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
-                                                    </svg>
-                                                }
-                                                dropdownRender={renderPopup}
-                                                options={preferedItemsData.filter(i => i.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).length > 0).map(_ => {
-                                                    return {
-                                                        label: <>{_.name}</>,
-                                                        title: _.name,
-                                                        options: _.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).map(c => ({ value: c.id, label: c.name }))
-                                                    }
-                                                })}
-                                                maxTagPlaceholder={omittedValues => {
-                                                    if (omittedValues.length > 1) {
-                                                        return (
-                                                            // <p className={styles.form__multiLabel}>Выбрано: {omittedValues.length}</p>
-                                                            <>Выбрано: {omittedValues.length}</>
-                                                        )
-                                                    }
-                                                    if (omittedValues.length === 1) {
-                                                        let valueName = '';
-                                                        preferedItemsData.forEach(_ => {
-                                                            const index = _.children.findIndex(c => c.id === omittedValues[0].value);
-                                                            if (index !== -1) {
-                                                                valueName = _.children[index].name
+                                    <div className={styles.form__dynamicSelectBlock}>
+                                        <label className={styles.form__doubledLabel}>От даты отсчета за 60 дней, %</label>
+                                        <div className={styles.form__dynamicSelectWrapper}>
+                                            <Form.Item
+                                                style={{ margin: 0, width: '100%' }}
+                                                name='dynamic_60_days'
+                                                rules={[
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            if (value || getFieldValue('dynamic_30_days') || getFieldValue('dynamic_90_days')) {
+                                                                return Promise.resolve();
                                                             }
-                                                        })
-                                                        return (
-                                                            // <p className={styles.form__multiLabel} title={valueName}>{valueName}</p>
-                                                            <>{valueName}</>
-                                                        )
+                                                            return Promise.reject(new Error('Пожалуйста, заполните хотя бы одно поле!'));
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <Select
+                                                    size='large'
+                                                    placeholder='Изменение'
+                                                    options={dynamicOptions}
+                                                    style={{ height: '44px' }}
+                                                    className={isExampleDataSet ? styles.form__exampleDataInput : ''}
+                                                    suffixIcon={
+                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                                                        </svg>
                                                     }
-                                                }}
-                                                menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}
+                                                />
+                                            </Form.Item>
+                                            {dynamic_60_days &&
+                                                <>
+                                                    <Form.Item
+                                                        style={{ margin: 0, width: '100%' }}
+                                                        name='dynamic_60_days_from'
+                                                        rules={[
+                                                            ({ getFieldValue }) => ({
+                                                                validator(_, value) {
+                                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                                    if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_to')) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    if (value && !regex.test(value)) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    return Promise.resolve()
+                                                                    //return Promise.reject(new Error(''));
+                                                                },
+                                                            }),
+                                                        ]}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            className={isExampleDataSet ? styles.form__exampleDataInput : ''}
+                                                            style={{ height: '44px' }}
+                                                            placeholder={'от 20'}
+                                                            suffix={<>%</>}
+                                                            type="number"
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        style={{ margin: 0, width: '100%' }}
+                                                        name='dynamic_60_days_to'
+                                                        rules={[
+                                                            ({ getFieldValue }) => ({
+                                                                validator(_, value) {
+                                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                                    if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_from')) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    if (value && !regex.test(value)) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    return Promise.resolve()
+                                                                },
+                                                            }),
+                                                        ]}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            style={{ height: '44px' }}
+                                                            placeholder={'до 100'}
+                                                            suffix={<>%</>}
+                                                            type="number"
+                                                        />
+                                                    </Form.Item>
+                                                </>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className={styles.form__dynamicSelectBlock}>
+                                        <label className={styles.form__doubledLabel}>От даты отсчета за 90 дней, %</label>
+                                        <div className={styles.form__dynamicSelectWrapper}>
+                                            <Form.Item
+                                                //label='От даты отсчета за 90 дней, %'
+                                                style={{ margin: 0, width: '100%' }}
+                                                name='dynamic_90_days'
+                                                rules={[
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            if (value || getFieldValue('dynamic_60_days') || getFieldValue('dynamic_30_days')) {
+                                                                return Promise.resolve();
+                                                            }
+                                                            return Promise.reject(new Error('Пожалуйста, заполните хотя бы одно поле!'));
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <Select
+                                                    size='large'
+                                                    placeholder='Изменение'
+                                                    options={dynamicOptions}
+                                                    style={{ height: '44px' }}
+                                                    suffixIcon={
+                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                                                        </svg>
+                                                    }
+                                                />
+                                            </Form.Item>
+                                            {dynamic_90_days &&
+                                                <>
+                                                    <Form.Item
+                                                        style={{ margin: 0, width: '100%' }}
+                                                        name='dynamic_90_days_from'
+                                                        rules={[
+                                                            ({ getFieldValue }) => ({
+                                                                validator(_, value) {
+                                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                                    if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_to')) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    if (value && !regex.test(value)) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    return Promise.resolve()
+                                                                },
+                                                            }),
+                                                        ]}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            style={{ height: '44px' }}
+                                                            placeholder={'от 20'}
+                                                            suffix={<>%</>}
+                                                            type="number"
+                                                        />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        style={{ margin: 0, width: '100%' }}
+                                                        name='dynamic_90_days_to'
+                                                        rules={[
+                                                            ({ getFieldValue }) => ({
+                                                                validator(_, value) {
+                                                                    const regex = /^(|\d+)$/ // только целые числа
+                                                                    if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_from')) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    if (value && !regex.test(value)) {
+                                                                        return Promise.reject(new Error(''))
+                                                                    }
+                                                                    return Promise.resolve()
+                                                                },
+                                                            }),
+                                                        ]}
+                                                    >
+                                                        <Input
+                                                            size='large'
+                                                            style={{ height: '44px' }}
+                                                            placeholder={'до 100'}
+                                                            suffix={<>%</>}
+                                                            type="number"
+                                                        />
+                                                    </Form.Item>
+                                                </>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset
+                                className={styles.form__fieldset}
+                            >
+                                <div className={styles.form__fieldsetHeader}>
+                                    <p className={styles.form__fieldsetTitle}>Дополнительные параметры</p>
+                                    <p className={styles.form__fieldsetText}>Необязательные поля</p>
+                                </div>
+                                <div className={`${styles.form__fieldsetLayout} ${styles.form__fieldsetLayout_5cols}`}>
+                                    <div className={styles.form__doudleWrapper}>
+                                        <label className={styles.form__doubledLabel}>Частотность запроса за 30 дней до выбранной даты отсчета, шт</label>
+                                        <div className={styles.form__twoInputsWrapper}>
+                                            <Form.Item
+                                                style={{ margin: 0 }}
+                                                name='frequency_30_days_from'
+                                                rules={[
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            if (value && !regex.test(value)) {
+                                                                return Promise.reject(new Error(''));
+                                                            }
+                                                            // if (!value && getFieldValue('frequency_30_days_to')) {
+                                                            //     return Promise.reject(new Error(''));
+                                                            // }
+                                                            return Promise.resolve();
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <Input
+                                                    size='large'
+                                                    style={{ height: '44px' }}
+                                                    placeholder='от'
+                                                    className={isExampleDataSet ? styles.form__exampleDataInput : ''}
+                                                    type="number"
+                                                />
+                                            </Form.Item>
+                                            <Form.Item
+                                                style={{ margin: 0 }}
+                                                name='frequency_30_days_to'
+                                                rules={[
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            if (value && !regex.test(value)) {
+                                                                return Promise.reject(new Error(''));
+                                                            }
+                                                            // if (!value && getFieldValue('frequency_30_days_from')) {
+                                                            //     return Promise.reject(new Error(''));
+                                                            // }
+                                                            return Promise.resolve();
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <Input
+                                                    size='large'
+                                                    style={{ height: '44px' }}
+                                                    placeholder='до'
+                                                    type="number"
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                    </div>
+                                    <div className={styles.form__doudleWrapper}>
+                                        <label className={styles.form__doubledLabel}>Количество артикулов по запросу, шт</label>
+                                        <div className={styles.form__twoInputsWrapper}>
+                                            <Form.Item
+                                                style={{ margin: 0 }}
+                                                name='sku_quantity_from'
+                                                rules={[
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            if (value && !regex.test(value)) {
+                                                                return Promise.reject(new Error(''));
+                                                            }
+                                                            // if (!value && getFieldValue('sku_quantity_to')) {
+                                                            //     return Promise.reject(new Error(''));
+                                                            // }
+                                                            return Promise.resolve();
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <Input
+                                                    size='large'
+                                                    style={{ height: '44px' }}
+                                                    placeholder='от'
+                                                    type="number"
+                                                />
+                                            </Form.Item>
+                                            <Form.Item
+                                                style={{ margin: 0 }}
+                                                name='sku_quantity_to'
+                                                rules={[
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            if (value && !regex.test(value)) {
+                                                                return Promise.reject(new Error(''));
+                                                            }
+                                                            // if (!value && getFieldValue('sku_quantity_from')) {
+                                                            //     return Promise.reject(new Error(''));
+                                                            // }
+                                                            return Promise.resolve();
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <Input
+                                                    size='large'
+                                                    style={{ height: '44px' }}
+                                                    placeholder='до'
+                                                    type="number"
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                    </div>
+                                    <div className={styles.form__doudleWrapper}>
+                                        <label className={styles.form__doubledLabel}>Частотность за 30 дней на 1 артикул, шт</label>
+                                        <div className={styles.form__twoInputsWrapper}>
+                                            <Form.Item
+                                                style={{ margin: 0 }}
+                                                name='requests_to_sku_30_days_from'
+                                                rules={[
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            if (value && !regex.test(value)) {
+                                                                return Promise.reject(new Error(''));
+                                                            }
+                                                            // if (!value && getFieldValue('requests_to_sku_30_days_to')) {
+                                                            //     return Promise.reject(new Error(''));
+                                                            // }
+                                                            return Promise.resolve();
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <Input
+                                                    size='large'
+                                                    style={{ height: '44px' }}
+                                                    placeholder='от'
+                                                    type="number"
+                                                />
+                                            </Form.Item>
+                                            <Form.Item
+                                                style={{ margin: 0 }}
+                                                name='requests_to_sku_30_days_to'
+                                                rules={[
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            const regex = /^(|\d+)$/ // только целые числа
+                                                            if (value && !regex.test(value)) {
+                                                                return Promise.reject(new Error(''));
+                                                            }
+                                                            // if (!value && getFieldValue('requests_to_sku_30_days_from')) {
+                                                            //     return Promise.reject(new Error(''));
+                                                            // }
+                                                            return Promise.resolve();
+                                                        },
+                                                    }),
+                                                ]}
+                                            >
+                                                <Input
+                                                    size='large'
+                                                    style={{ height: '44px' }}
+                                                    placeholder='до'
+                                                    type="number"
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                    </div>
+                                    <div className={styles.form__doudleWrapper}>
+                                        <label className={styles.form__doubledLabel}>Приоритетные предметы</label>
+                                        <ConfigProvider
+                                            renderEmpty={() => (<div style={{ cursor: 'default' }}>Нет данных</div>)}
+                                            theme={{
+                                                token: {
+                                                    colorBgContainer: 'white',
+                                                    //colorBorder: 'transparent',
+                                                    //borderRadius: 8,
+                                                    fontFamily: 'Mulish',
+                                                    fontSize: 14,
+                                                    controlHeightLG: 44
+                                                },
+                                                components: {
+                                                    Select: {
+                                                        //activeBorderColor: 'transparent',
+                                                        activeOutlineColor: 'transparent',
+                                                        //hoverBorderColor: 'transparent',
+                                                        optionActiveBg: 'transparent',
+                                                        optionFontSize: 16,
+                                                        optionSelectedBg: 'transparent',
+                                                        optionSelectedColor: '#5329FF',
+                                                        singleItemHeightLG: 44
+                                                    }
+                                                }
+                                            }}
+                                        >
+                                            <Form.Item
+                                                style={{ margin: 0, width: '100%' }}
+                                                name='prefered_items'
+                                            >
+                                                <Select
+                                                    //style={{ height: '44px' }}
+                                                    maxTagCount={0}
+                                                    //maxTagCount='responsive'
+                                                    //maxTagTextLength={20}
+                                                    showSearch={false}
+                                                    mode='multiple'
+                                                    size='large'
+                                                    placeholder='Выберите'
+                                                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                                                    tagRender={tagRender}
+                                                    onDropdownVisibleChange={(open) => {
+                                                        if (!open) {
+                                                            setSearchState('')
+                                                        }
+                                                    }}
+                                                    suffixIcon={
+                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                                                        </svg>
+                                                    }
+                                                    dropdownRender={renderPopup}
+                                                    options={preferedItemsData.filter(i => i.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).length > 0).map(_ => {
+                                                        return {
+                                                            label: <>{_.name}</>,
+                                                            title: _.name,
+                                                            options: _.children.filter(c => c.name.toLowerCase().includes(searchState.toLowerCase())).map(c => ({ value: c.id, label: c.name }))
+                                                        }
+                                                    })}
+                                                    maxTagPlaceholder={omittedValues => {
+                                                        if (omittedValues.length > 1) {
+                                                            return (
+                                                                // <p className={styles.form__multiLabel}>Выбрано: {omittedValues.length}</p>
+                                                                <>Выбрано: {omittedValues.length}</>
+                                                            )
+                                                        }
+                                                        if (omittedValues.length === 1) {
+                                                            let valueName = '';
+                                                            preferedItemsData.forEach(_ => {
+                                                                const index = _.children.findIndex(c => c.id === omittedValues[0].value);
+                                                                if (index !== -1) {
+                                                                    valueName = _.children[index].name
+                                                                }
+                                                            })
+                                                            return (
+                                                                // <p className={styles.form__multiLabel} title={valueName}>{valueName}</p>
+                                                                <>{valueName}</>
+                                                            )
+                                                        }
+                                                    }}
+                                                    menuItemSelectedIcon={<span style={{ background: '#5329FF', width: 4, height: 4, borderRadius: '50% 50%' }}></span>}
+                                                />
+                                            </Form.Item>
+                                        </ConfigProvider>
+                                    </div>
+                                    <div className={styles.form__doudleWrapper}>
+                                        <label className={styles.form__doubledLabel}>Показать запросы, содержащие слово/фразу</label>
+                                        <Form.Item
+                                            style={{ margin: 0, width: '100%' }}
+                                            name='request_example'
+                                        >
+                                            <Input
+                                                size='large'
+                                                placeholder='Введите слово/фразу'
+                                                style={{ height: '44px' }}
                                             />
                                         </Form.Item>
-                                    </ConfigProvider>
+                                    </div>
                                 </div>
-                                <div className={styles.form__doudleWrapper}>
-                                    <label className={styles.form__doubledLabel}>Показать запросы, содержащие слово/фразу</label>
-                                    <Form.Item
-                                        style={{ margin: 0, width: '100%' }}
-                                        name='request_example'
-                                    >
-                                        <Input
-                                            size='large'
-                                            placeholder='Введите слово/фразу'
-                                            style={{ height: '44px' }}
-                                        />
-                                    </Form.Item>
-                                </div>
-                            </div>
-                        </fieldset>
+                            </fieldset>
 
-                        <div className={styles.form__controlButtonsWrapper}>
-                            <ConfigProvider
-                                theme={{
-                                    token: {
-                                        colorPrimary: '#5329FF',
-                                        colorText: '#5329FF'
-                                    },
-                                    components: {
-                                        Button: {
-                                            textHoverBg: 'transparent'
+                            <div className={styles.form__controlButtonsWrapper}>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: '#5329FF',
+                                            colorText: '#5329FF'
+                                        },
+                                        components: {
+                                            Button: {
+                                                textHoverBg: 'transparent'
+                                            }
                                         }
-                                    }
-                                }}
-                            >
-                                <Button
-                                    type='text'
-                                    size='large'
-                                    onClick={resetFieldsHandler}
+                                    }}
                                 >
-                                    Очистить
+                                    <Button
+                                        type='text'
+                                        size='large'
+                                        onClick={resetFieldsHandler}
+                                    >
+                                        Очистить
+                                    </Button>
+                                </ConfigProvider>
+                                <Button
+                                    style={{ width: '202px', height: '45px' }}
+                                    htmlType='submit'
+                                    type='primary'
+                                    size='large'
+                                    className={isExampleDataSet ? styles.form__exampleDataButton : ''}
+                                >
+                                    Сформировать список
                                 </Button>
-                            </ConfigProvider>
-                            <Button
-                                style={{ width: '202px', height: '45px' }}
-                                htmlType='submit'
-                                type='primary'
-                                size='large'
-                            >
-                                Сформировать список
-                            </Button>
-                        </div>
-                    </Form>
-                </ConfigProvider>
-            </div>
-        </div >
+                            </div>
+                        </Form>
+                    </ConfigProvider>
+                </div>
+            </div >
+        </>
     )
 })

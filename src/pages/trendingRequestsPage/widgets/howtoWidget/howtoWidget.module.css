@@ -16,6 +16,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 32px;
+    cursor: pointer;
 }
 
 .widget__title {
@@ -89,4 +90,6 @@
     letter-spacing: 0%;
     color: #5329FF;
     text-decoration: none;
+    border: none;
+    background: transparent;
 }

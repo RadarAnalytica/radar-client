@@ -3,7 +3,7 @@ import styles from './howtoWidget.module.css'
 import { Link } from 'react-router-dom'
 import { Tooltip, ConfigProvider } from 'antd'
 
-export const HowtoWidget = () => {
+export const HowtoWidget = ({ setExampleData }) => {
 
     const [isBodyOpen, setIsBodyOpen] = useState(false)
 
@@ -26,13 +26,12 @@ export const HowtoWidget = () => {
                 <div className={styles.widget__body}>
                     <p className={styles.widget__text}>Он позволяет выявлять поисковые запросы, а значит и товары, пользующиеся спросом и демонстрирующие восходящий тренд.</p>
                     <div className={styles.widget__footer}>
-                        <Link
+                        <button
                             className={styles.widget__link}
-                            to='https://radar.usedocs.com/article/77127'
-                            target='_blank'
+                            onClick={setExampleData}
                         >
-                            Посмотреть пример заполнения
-                        </Link>
+                            Нажмите для заполнения по примеру
+                        </button>
                         <ConfigProvider
                             theme={{
                                 token: {

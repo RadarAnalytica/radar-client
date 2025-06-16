@@ -81,9 +81,11 @@ const TrendingRequestsPage = () => {
                     <div className={styles.page__headerWrapper}>
                         <Header {...memoizedHeaderProps} />
                     </div>
-                    <div className={styles.page__howtoBlock}>
-                        <HowtoWidget />
-                    </div>
+                    {/* <div className={styles.page__howtoBlock}>
+                        <HowtoWidget
+                            setRequestState={setRequestState}
+                        />
+                    </div> */}
                     <div className={styles.page__widgetWrapper}>
                         <ParamsWidget
                             isParamsVisible={isParamsVisible}

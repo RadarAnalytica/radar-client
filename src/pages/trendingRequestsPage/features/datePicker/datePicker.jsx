@@ -8,7 +8,7 @@ import { format, parse } from 'date-fns';
 import moment from 'moment';
 import DatePickerCustomDropdown from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/shared/datePickerCustomDropdown/datePickerCustomDropdown';
 
-export const DatePicker = ({ selectedDate, setSelectedDate }) => {
+export const DatePicker = ({ selectedDate, setSelectedDate, isExampleDataSet }) => {
     const [month, setMonth] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'));
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const datePickerRef = useRef(null);
@@ -72,7 +72,7 @@ export const DatePicker = ({ selectedDate, setSelectedDate }) => {
     return (
         <>
             <div className={styles.datePicker} ref={datePickerRef}>
-                <div className={styles.datePicker__select} onClick={selectClickHandler}>
+                <div className={isExampleDataSet ? `${styles.datePicker__select} ${styles.datePicker_bg}` : styles.datePicker__select} onClick={selectClickHandler}>
                     <span>{selectedDate}</span>
                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 1L7 7L13 1" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
