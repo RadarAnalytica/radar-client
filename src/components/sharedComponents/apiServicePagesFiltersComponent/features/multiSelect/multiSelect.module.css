@@ -79,3 +79,24 @@
     margin: 0;
     padding: 0;
 }
+
+.plainSelect__ddLink {
+    width: 100%;
+    border-radius: 10px;
+    background: #5329FF;
+    color: white;
+    text-decoration: none;
+    padding: 0 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    font-size: 18px;
+    transition: all .1s ease-in-out;
+}
+
+.plainSelect__ddLink:hover {
+    color: white;
+    opacity: .75;
+    
+}

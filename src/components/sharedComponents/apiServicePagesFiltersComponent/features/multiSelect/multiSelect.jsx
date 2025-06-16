@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from './multiSelect.module.css'
 import { SelectIcon } from '../../shared'
-import { Select, ConfigProvider, Divider, Space, Input, Button, Tag, Tooltip } from 'antd'
+import { Select, ConfigProvider, Input, Button, Tag } from 'antd'
+import { Link } from 'react-router-dom'
 
 export const MultiSelect = (
     {
@@ -27,7 +28,26 @@ export const MultiSelect = (
         if (selectState.filter(_ => _.value !== 'Все').length === optionsData.length) {
             action = () => { setSelectState([{ value: 'Все' }]) }
         }
-       
+
+
+        if (selectId === 'product_groups' && (!optionsData || optionsData.length === 0)) {
+            return (
+                <>
+                    <div style={{ width: '100%', padding: '10px 0' }}>
+                        {menu}
+                    </div>
+                    <div style={{ width: '100%' }}>
+                        <Link
+                            to='/groups'
+                            target='_blank'
+                            className={styles.plainSelect__ddLink}
+                        >
+                            Создать
+                        </Link>
+                    </div>
+                </>)
+        }
+
         return (
             <>
                 <ConfigProvider
@@ -138,7 +158,7 @@ export const MultiSelect = (
             </label>
             <div className={styles.plainSelect__selectWrapper}>
                 <ConfigProvider
-                    renderEmpty={() => (<div style={{ cursor: 'default'}}>Нет данных</div>)}
+                    renderEmpty={() => (<div style={{ cursor: 'default' }}>{selectId === 'product_groups' ? 'Нет групп' : 'Нет данных'}</div>)}
                     theme={{
                         token: {
                             colorBgContainer: '#EAEAF1',
