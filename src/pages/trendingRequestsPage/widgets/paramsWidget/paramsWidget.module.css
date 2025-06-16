@@ -1,3 +1,15 @@
+@keyframes bgColor {
+    0% {
+        background-color: #E7E1FE50;
+    }
+    2% {
+        background-color: #E7E1FE75;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
 .widget {
     width: 100%;
     display: flex;
@@ -98,6 +110,18 @@
 
 }
 
+
+.widget__headerWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px
+}
+
+.widget__howtoWrapper {
+    width: 100%;
+    margin-bottom: 20px;
+}
 
 /* FORM */
 
@@ -247,6 +271,11 @@
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+}
+
+.form__exampleDataInput {
+    border-radius: 8px;
+   animation: bgColor 3s ease-in-out;
 }
 
 :global(.ant-select-selection-overflow) {
