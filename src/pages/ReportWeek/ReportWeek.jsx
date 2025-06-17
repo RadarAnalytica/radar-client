@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
@@ -14,9 +14,14 @@ import styles from './ReportWeek.module.css';
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal';
 import { useAppSelector } from '../../redux/hooks';
-// import SelfCostWarning from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import { eachWeekOfInterval, format } from 'date-fns';
+import {
+	eachWeekOfInterval,
+	format,
+	formatISO,
+	endOfWeek,
+	getISOWeek,
+} from 'date-fns';
 import downloadIcon from '../images/Download.svg';
 
 import { COLUMNS } from './columnsConfig';
@@ -35,72 +40,58 @@ export default function ReportWeek() {
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
-	const [weekSelected, setWeekSelected] = useState([{ value: 'Все' }]);
-	const [weekStart, setWeekStart] = useState([]);
-	const [shopStatus, setShopStatus] = useState(null)
+	const [weekSelected, setWeekSelected] = useState(null);
+	// const [weekSelected, setWeekSelected] = useState(null);
+	// const [weekStart, setWeekStart] = useState(null);
+	const [shopStatus, setShopStatus] = useState(null);
 
-	const initWeekOptions = () => {
+	const weekOptions = useMemo(() => {
+		// шаблон для создания списка опций для фильтра
+		const optionTemplate = (date) => {
+			const weekValue = formatISO(date, { representation: 'date' });
+			const weekStart = format(date, 'dd.MM.yyyy');
+			const weekEnd = format(
+				endOfWeek(date, { weekStartsOn: 1 }),
+				'dd.MM.yyyy'
+			);
+			const weekNumber = getISOWeek(date);
+			return {
+				key: date.getTime(),
+				value: weekValue,
+				label: `${weekNumber} неделя (${weekStart} - ${weekEnd})`,
+			};
+		};
 
-		// Выборка дат начианется с начала отсчета 2024-01-29
-		// Для нумерации по годам, делаем два массива
-		let weeks24 = eachWeekOfInterval(
+		// Выборка дат с 2024-01-29
+		const weeks = eachWeekOfInterval(
 			{
 				start: new Date(2024, 0, 29),
-				end: new Date(2024, 11, 31),
+				end: Date.now(),
 			},
 			{
 				weekStartsOn: 1,
 			}
 		);
-		weeks24 = weeks24.map((el, i) => (
-			{
-				key: i,
-				value: format(el, 'yyyy-MM-dd'),
-				label: `${i + 1} неделя (${format(el, 'yyyy-MM-dd')})`
-			}
-		))
-		
-		let weeks25 = eachWeekOfInterval(
-			{
-				start: new Date(2025, 0, 7),
-				end: new Date(),
-			},
-			{
-				weekStartsOn: 1,
-			}
-		);
+
 		// удаляем последнюю неделю
-		weeks25.pop();
-		weeks25 = weeks25.map((el, i) => (
-			{
-				key: i,
-				value: format(el, 'yyyy-MM-dd'),
-				label: `${i + 1} неделя (${format(el, 'dd.MM.yyyy')})`
-			}
-		))
-
-		return weeks24.concat(weeks25).reverse();
-
-	}
-
-	const [weekOptions, setweekOptions] = useState(initWeekOptions());
+		weeks.pop();
+		return weeks.map((el, i) => optionTemplate(el)).reverse();
+	}, []);
 
 	const weekSelectedFormat = () => {
 		if (!weekSelected?.find((el) => el.value === 'Все')) {
-			setWeekStart(() => weekSelected.map((el) => el.value))
-		} else {
-			setWeekStart([])
+			return weekSelected.map((el) => el.value);
 		}
-	}
+	};
 
 	const weekSelectedHandler = (data) => {
 		let savedFilterWeek =
 			JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
 		// проверка на старую версию сохранения
-		if (Array.isArray(savedFilterWeek)) {
-			localStorage.removeItem('reportWeekFilterWeek');
-			savedFilterWeek = {};
-		}
+		// if (Array.isArray(savedFilterWeek)) {
+		// 	localStorage.removeItem('reportWeekFilterWeek');
+		// 	savedFilterWeek = {};
+		// }
 		if (!data.find((el) => el.value === 'Все')) {
 			savedFilterWeek[activeBrand.id] = data;
 		} else {
@@ -118,7 +109,11 @@ export default function ReportWeek() {
 	};
 
 	const updateDataReportWeek = async () => {
+		if (!weekSelected){
+			return
+		}
 		setLoading(true);
+		const weekStart = weekSelectedFormat();
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
@@ -139,6 +134,7 @@ export default function ReportWeek() {
 				}
 
 				setData(weeks);
+				dataToTableData(weeks);
 			}
 		} catch (e) {
 			console.error(e);
@@ -201,7 +197,6 @@ export default function ReportWeek() {
 			for (const key in row) {
 				const summaryValue =
 					typeof row[key] === 'object' ? row[key]?.rub : row[key];
-				// console.log('summaryValue', summaryValue, typeof el.data[key] === 'object')
 				if (!summary[key]) {
 					summary[key] = Number(summaryValue);
 				} else {
@@ -209,12 +204,6 @@ export default function ReportWeek() {
 				}
 			}
 		}
-
-		// for (const key in summary){
-		// 	if (key in summarySchema){
-		// 		summary[key] = summarySchema[key](summary)
-		// 	}
-		// }
 
 		// приcвоение расчетных значений
 		summary = {
@@ -244,22 +233,26 @@ export default function ReportWeek() {
 			const data = JSON.parse(savedFilterWeek);
 			if (activeBrand?.id in data) {
 				setWeekSelected(data[activeBrand.id]);
-			} else {
-				setWeekSelected([{ value: 'Все' }]);
+				return
 			}
 		}
+		setWeekSelected(weekOptions.slice(0, 12));
 	};
 
 	useEffect(() => {
-		dataToTableData(data);
-	}, [data]);
+		updateSavedFilterWeek()
+	}, [])
+
+	if (!weekSelected){
+		updateDataReportWeek();
+	}
+
+	// useEffect(() => {
+	// 	updateDataReportWeek();
+	// }, []);
 
 	useEffect(() => {
 		updateDataReportWeek();
-	}, [weekStart]);
-
-	useEffect(() => {
-		weekSelectedFormat();
 	}, [weekSelected]);
 
 	useEffect(() => {
@@ -284,23 +277,23 @@ export default function ReportWeek() {
 	}, [activeBrand, selectedRange, filters]);
 
 	useEffect(() => {
-        if (activeBrand && activeBrand.id === 0 && shops) {
-            const allShop = {
-                id: 0,
-                brand_name: 'Все',
-                is_active: shops.some(_ => _.is_primary_collect),
-                is_valid: true,
-                is_primary_collect: shops.some(_ => _.is_primary_collect),
-                is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
-            }
-            setShopStatus(allShop)
-        }
+		if (activeBrand && activeBrand.id === 0 && shops) {
+			const allShop = {
+				id: 0,
+				brand_name: 'Все',
+				is_active: shops.some((_) => _.is_primary_collect),
+				is_valid: true,
+				is_primary_collect: shops.some((_) => _.is_primary_collect),
+				is_self_cost_set: !shops.some((_) => !_.is_self_cost_set),
+			};
+			setShopStatus(allShop);
+		}
 
-        if (activeBrand && activeBrand.id !== 0 && shops) {
-            const currShop = shops.find(_ => _.id === activeBrand.id)
-            setShopStatus(currShop)
-        }
-    }, [activeBrand, shops, filters])
+		if (activeBrand && activeBrand.id !== 0 && shops) {
+			const currShop = shops.find((_) => _.id === activeBrand.id);
+			setShopStatus(currShop);
+		}
+	}, [activeBrand, shops, filters]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -372,10 +365,12 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
-				{!loading && shopStatus && !shopStatus.is_self_cost_set && <SelfCostWarningBlock />}
+				{!loading && shopStatus && !shopStatus.is_self_cost_set && (
+					<SelfCostWarningBlock />
+				)}
 				<div className={styles.controls}>
 					<div className={styles.filter}>
-						<Filters
+						{weekSelected && <Filters
 							timeSelect={false}
 							setLoading={setLoading}
 							// brandSelect={false}
@@ -385,7 +380,7 @@ export default function ReportWeek() {
 							weekValue={weekSelected}
 							weekOptions={weekOptions}
 							weekHandler={weekSelectedHandler}
-						/>
+						/>}
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider
@@ -422,13 +417,13 @@ export default function ReportWeek() {
 									iconPosition="start"
 									size="large"
 								>
-										<svg
-											width="24"
-											height="24"
-											viewBox="0 0 24 24"
-											fill="none"
-											xmlns="http://www.w3.org/2000/svg"
-										>
+									<svg
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
 										<path
 											d="M1.23731 14.2714C0.920898 12.777 0.920898 11.233 1.23731 9.73858C2.45853 9.88161 3.52573 9.47783 3.87339 8.63728C4.22216 7.79562 3.75457 6.75593 2.78859 5.99349C3.62149 4.71321 4.71321 3.62149 5.99349 2.78859C6.75483 3.75347 7.79562 4.22216 8.63728 3.87339C9.47893 3.52463 9.88271 2.45853 9.73858 1.23731C11.233 0.920898 12.777 0.920898 14.2714 1.23731C14.1284 2.45853 14.5322 3.52573 15.3727 3.87339C16.2144 4.22216 17.2541 3.75457 18.0165 2.78859C19.2968 3.62149 20.3885 4.71321 21.2214 5.99349C20.2565 6.75483 19.7878 7.79562 20.1366 8.63728C20.4854 9.47893 21.5515 9.88271 22.7727 9.73858C23.0891 11.233 23.0891 12.777 22.7727 14.2714C21.5515 14.1284 20.4843 14.5322 20.1366 15.3727C19.7878 16.2144 20.2554 17.2541 21.2214 18.0165C20.3885 19.2968 19.2968 20.3885 18.0165 21.2214C17.2552 20.2565 16.2144 19.7878 15.3727 20.1366C14.5311 20.4854 14.1273 21.5515 14.2714 22.7727C12.777 23.0891 11.233 23.0891 9.73858 22.7727C9.88161 21.5515 9.47783 20.4843 8.63728 20.1366C7.79562 19.7878 6.75593 20.2554 5.99349 21.2214C4.71321 20.3885 3.62149 19.2968 2.78859 18.0165C3.75347 17.2552 4.22216 16.2144 3.87339 15.3727C3.52463 14.5311 2.45853 14.1273 1.23731 14.2714ZM3.20337 12.236C4.41359 12.5716 5.41148 13.3384 5.90657 14.5311C6.40056 15.7248 6.23663 16.9735 5.61832 18.0649C5.72394 18.1771 5.83286 18.2861 5.94508 18.3917C7.03758 17.7734 8.28521 17.6105 9.47893 18.1034C10.6716 18.5985 11.4384 19.5964 11.774 20.8066C11.928 20.811 12.082 20.811 12.236 20.8066C12.5716 19.5964 13.3384 18.5985 14.5311 18.1034C15.7248 17.6094 16.9735 17.7734 18.0649 18.3917C18.1771 18.2861 18.2861 18.1771 18.3917 18.0649C17.7734 16.9724 17.6105 15.7248 18.1034 14.5311C18.5985 13.3384 19.5964 12.5716 20.8066 12.236C20.811 12.082 20.811 11.928 20.8066 11.774C19.5964 11.4384 18.5985 10.6716 18.1034 9.47893C17.6094 8.28521 17.7734 7.03648 18.3917 5.94508C18.2857 5.83329 18.1767 5.72433 18.0649 5.61832C16.9724 6.23663 15.7248 6.39946 14.5311 5.90657C13.3384 5.41148 12.5716 4.41359 12.236 3.20337C12.082 3.19929 11.928 3.19929 11.774 3.20337C11.4384 4.41359 10.6716 5.41148 9.47893 5.90657C8.28521 6.40056 7.03648 6.23663 5.94508 5.61832C5.83286 5.72394 5.72394 5.83286 5.61832 5.94508C6.23663 7.03758 6.39946 8.28521 5.90657 9.47893C5.41148 10.6716 4.41359 11.4384 3.20337 11.774C3.19897 11.928 3.19897 12.082 3.20337 12.236ZM12.005 15.3056C11.1296 15.3056 10.2901 14.9579 9.67111 14.3389C9.05213 13.7199 8.70439 12.8804 8.70439 12.005C8.70439 11.1296 9.05213 10.2901 9.67111 9.67111C10.2901 9.05213 11.1296 8.70439 12.005 8.70439C12.8804 8.70439 13.7199 9.05213 14.3389 9.67111C14.9579 10.2901 15.3056 11.1296 15.3056 12.005C15.3056 12.8804 14.9579 13.7199 14.3389 14.3389C13.7199 14.9579 12.8804 15.3056 12.005 15.3056ZM12.005 13.1052C12.2968 13.1052 12.5766 12.9893 12.783 12.783C12.9893 12.5766 13.1052 12.2968 13.1052 12.005C13.1052 11.7132 12.9893 11.4334 12.783 11.227C12.5766 11.0207 12.2968 10.9048 12.005 10.9048C11.7132 10.9048 11.4334 11.0207 11.227 11.227C11.0207 11.4334 10.9048 11.7132 10.9048 12.005C10.9048 12.2968 11.0207 12.5766 11.227 12.783C11.4334 12.9893 11.7132 13.1052 12.005 13.1052Z"
 											fill="currentColor"
@@ -448,8 +443,8 @@ export default function ReportWeek() {
 										paddingInlineLG: 9.5,
 										defaultShadow: false,
 										controlHeightLG: 45,
-									}
-								}
+									},
+								},
 							}}
 						>
 							<Button
