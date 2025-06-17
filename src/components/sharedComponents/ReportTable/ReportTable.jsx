@@ -4,56 +4,56 @@ import styles from './ReportTable.module.css';
 
 export default function ReportTable({ loading, columns, data, rowSelection = false }) {
 	const containerRef = useRef(null);
-  const [scrollY, setScrollY] = useState(0);
-  const [scrollX, setScrollX] = useState(0);
+	const [scrollY, setScrollY] = useState(0);
+	const [scrollX, setScrollX] = useState(0);
 
 	useEffect(() => {
 		const updateHeight = () => {
-      if (containerRef.current) {
+			if (containerRef.current) {
 				// ref контейнера который занимает всю высоту
-        const container = containerRef.current;
-        
-				// расчет высоты шапки и добавление отступов контейнера
-        const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-        const paddings = 32;
-				// расчет и сохранение высоты таблицы
-        const availableHeight = container.offsetHeight - headerHeight - paddings;
-        setScrollY(availableHeight);
-        // расчет ширины контейнера
-        setScrollX(container.offsetWidth - 32);
-      }
-    };
+				const container = containerRef.current;
 
-    updateHeight();
+				// расчет высоты шапки и добавление отступов контейнера
+				const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
+				const paddings = 32;
+				// расчет и сохранение высоты таблицы
+				const availableHeight = container.offsetHeight - headerHeight - paddings;
+				setScrollY(availableHeight);
+				// расчет ширины контейнера
+				setScrollX(container.offsetWidth - 32);
+			}
+		};
+
+		updateHeight();
 
 	}, [columns, data])
 
 	return (
 		<div className={styles.container} ref={containerRef}>
 			{loading && <div className={styles.loadingContainer}
-					style={{
+				style={{
 					position: 'relative',
 					height: '100%',
 					width: '100%',
 					paddingTop: '20%',
-					}}
+				}}
 			>
-					<div
-							className='d-flex flex-column align-items-center justify-content-center'
-							style={{
-									height: '100%',
-									width: '100%',
-									position: 'absolute',
-									top: 0,
-									left: 0
-							}}
-					>
-							<span className='loader'></span>
-					</div>
+				<div
+					className='d-flex flex-column align-items-center justify-content-center'
+					style={{
+						height: '100%',
+						width: '100%',
+						position: 'absolute',
+						top: 0,
+						left: 0
+					}}
+				>
+					<span className='loader'></span>
+				</div>
 			</div>}
 			{!loading && <div className={styles.tableContainer}>
 				<ConfigProvider
-					renderEmpty={ () => (<div>Нет данных</div>)} 
+					renderEmpty={() => (<div>Нет данных</div>)}
 					theme={{
 						components: {
 							Table: {
@@ -110,7 +110,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 function ExpandIcon({ expanded, onExpand, record }) {
 	const canExpand = !!record?.children && record?.children?.length > 0;
 	// const canExpand = false;
-	return canExpand && 
+	return canExpand &&
 		<ConfigProvider
 			theme={{
 				token: {
@@ -133,7 +133,7 @@ function ExpandIcon({ expanded, onExpand, record }) {
 				}}
 			>
 				<svg className={`${styles.expandIcon} ${expanded ? styles.expandIconExpanded : ''}`} viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M1 1L7 7L13 1" stroke='currentColor' stroke-width="2" stroke-linecap="round"/>
+					<path d="M1 1L7 7L13 1" stroke='currentColor' stroke-width="2" stroke-linecap="round" />
 				</svg>
 			</Button>
 		</ConfigProvider>
@@ -167,7 +167,7 @@ function SortIcon({ sortOrder }) {
 }
 
 function formatNumber(num) {
-	if (!num){
+	if (!num) {
 		return '0'
 	}
 	return new Intl.NumberFormat('ru-RU', {
@@ -176,4 +176,4 @@ function formatNumber(num) {
 	}).format(num)
 }
 
-export {ExpandIcon, SortIcon, formatNumber}
+export { ExpandIcon, SortIcon, formatNumber }
