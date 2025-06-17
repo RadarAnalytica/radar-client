@@ -40,7 +40,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 				</div>}
 				{!loading && 
 				<ConfigProvider
-					renderEmpty={ () => (<div>Нет данных</div>)} 
+					renderEmpty={() => (<div>Нет данных</div>)}
 					theme={{
 						components: {
 							Table: {
@@ -101,7 +101,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 function ExpandIcon({ expanded, onExpand, record }) {
 	const canExpand = !!record?.children && record?.children?.length > 0;
 	// const canExpand = false;
-	return canExpand && 
+	return canExpand &&
 		<ConfigProvider
 			theme={{
 				token: {

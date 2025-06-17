@@ -65,6 +65,8 @@ const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferal
 const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts/OperationsCosts"));
 const MainPage = React.lazy(() => import('./pages/homePage'))
 const ReferalPage = React.lazy(() => import("./pages/Referal"));
+const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierAnalysisPage"));
+const SupplierIdPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierIdPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -94,6 +96,8 @@ function App() {
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
             <Route path='/admin-referal' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Реферальная программа'><AdminReferalPage /></ProtectedRoute>} />
             {/* Protected routes */}
+            <Route path='/supplier-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
+            <Route path='/supplier-analysis/:id' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
             <Route path='/sku-frequency' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><RequestMonitoringPage /></ProtectedRoute>} />
             <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyRequestPage /></ProtectedRoute>} />
