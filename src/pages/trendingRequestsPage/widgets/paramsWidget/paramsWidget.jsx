@@ -108,16 +108,16 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
             date_from: moment(selectedDate, 'DD.MM.YYYY').format('YYYY-MM-DD'),
             //date_from: selectedDate,
             g30: {
-                start: getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_from, 'start'),
-                end: getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_to, 'end')
+                start: !fields.dynamic_30_days_from && !fields.dynamic_30_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_from, 'start'),
+                end: !fields.dynamic_30_days_from && !fields.dynamic_30_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_to, 'end')
             },
             g60: {
-                start: getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_from, 'start'),
-                end: getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_to, 'end')
+                start: !fields.dynamic_60_days_from && !fields.dynamic_60_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_from, 'start'),
+                end: !fields.dynamic_60_days_from && !fields.dynamic_60_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_to, 'end')
             },
             g90: {
-                start: getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_from, 'start'),
-                end: getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_to, 'end')
+                start: !fields.dynamic_90_days_from && !fields.dynamic_90_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_from, 'start'),
+                end: !fields.dynamic_90_days_from && !fields.dynamic_90_days_to ? 0 :  getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_to, 'end')
             },
             frequency: {
                 start: parseInt(fields.frequency_30_days_from) || 0,
@@ -336,7 +336,7 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                     <div className={styles.widget__headerWrapper}>
                         <HowToLink
                             url='https://radar.usedocs.com/article/77127'
-                            text='Как использовать?'
+                            text='Как использовать раздел'
                             target='_blank'
                         />
                         <button className={isParamsVisible ? `${styles.widget__openButton} ${styles.widget__openButton_opened}` : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>
@@ -416,7 +416,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
                                                                     const regex = /^(|\d+)$/ // только целые числа
-                                                                    if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_to')) {
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_60_days_to'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')]
+                                                                    if (!value && getFieldValue('dynamic_30_days') && !valuesArr.some(_ => _)) {
                                                                         return Promise.reject(new Error(''))
                                                                     }
                                                                     if (value && !regex.test(value)) {
@@ -443,7 +444,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
                                                                     const regex = /^(|\d+)$/ // только целые числа
-                                                                    if (!value && getFieldValue('dynamic_30_days') && !getFieldValue('dynamic_30_days_from')) {
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_60_days_to'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')]
+                                                                    if (!value && getFieldValue('dynamic_30_days') && !valuesArr.some(_ => _)) {
                                                                         return Promise.reject(new Error(''))
                                                                     }
                                                                     if (value && !regex.test(value)) {
@@ -510,7 +512,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
                                                                     const regex = /^(|\d+)$/ // только целые числа
-                                                                    if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_to')) {
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_to'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')]
+                                                                    if (!value && getFieldValue('dynamic_60_days') && !valuesArr.some(_ => _)) {
                                                                         return Promise.reject(new Error(''))
                                                                     }
                                                                     if (value && !regex.test(value)) {
@@ -538,7 +541,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
                                                                     const regex = /^(|\d+)$/ // только целые числа
-                                                                    if (!value && getFieldValue('dynamic_60_days') && !getFieldValue('dynamic_60_days_from')) {
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_90_days_from')]
+                                                                    if (!value && getFieldValue('dynamic_60_days') && !valuesArr.some(_ => _)) {
                                                                         return Promise.reject(new Error(''))
                                                                     }
                                                                     if (value && !regex.test(value)) {
@@ -600,7 +604,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
                                                                     const regex = /^(|\d+)$/ // только целые числа
-                                                                    if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_to')) {
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_90_days_to'), getFieldValue('dynamic_60_days_from')]
+                                                                    if (!value && getFieldValue('dynamic_90_days') && !valuesArr.some(_ => _)) {
                                                                         return Promise.reject(new Error(''))
                                                                     }
                                                                     if (value && !regex.test(value)) {
@@ -626,7 +631,8 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
                                                             ({ getFieldValue }) => ({
                                                                 validator(_, value) {
                                                                     const regex = /^(|\d+)$/ // только целые числа
-                                                                    if (!value && getFieldValue('dynamic_90_days') && !getFieldValue('dynamic_90_days_from')) {
+                                                                    const valuesArr = [getFieldValue('dynamic_30_days_from'), getFieldValue('dynamic_30_days_to'), getFieldValue('dynamic_60_days_from'), getFieldValue('dynamic_90_days_from'), getFieldValue('dynamic_60_days_from')]
+                                                                    if (!value && getFieldValue('dynamic_90_days') && !valuesArr.some(_ => _)) {
                                                                         return Promise.reject(new Error(''))
                                                                     }
                                                                     if (value && !regex.test(value)) {
