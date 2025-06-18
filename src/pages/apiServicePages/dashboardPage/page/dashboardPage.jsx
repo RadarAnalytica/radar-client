@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react'
 import styles from './dashboardPage.module.css'
 import { useAppSelector } from '../../../../redux/hooks'
 import AuthContext from '../../../../service/AuthContext'
@@ -28,99 +28,206 @@ import TurnoverBlock from '../../../../components/dashboardPageComponents/blocks
 import { mockGetDashBoard } from '../../../../service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock'
 
+const WarningBlocks = React.memo(({ shopStatus, loading, activeBrand, updateDataDashBoard }) => {
+    if (!shopStatus) return null;
+    
+    return (
+        <>
+            {!shopStatus.is_self_cost_set && !loading && (
+                <SelfCostWarningBlock
+                    shopId={activeBrand.id}
+                    onUpdateDashboard={updateDataDashBoard}
+                />
+            )}
+            {!shopStatus.is_primary_collect && (
+                <DataCollectWarningBlock
+                    title='Ваши данные еще формируются и обрабатываются.'
+                />
+            )}
+        </>
+    );
+});
+
+const MainContent = React.memo(({ 
+    shopStatus, 
+    loading, 
+    dataDashBoard, 
+    selectedRange, 
+    activeBrand, 
+    authToken, 
+    filters, 
+    updateDataDashBoard,
+    isSidebarHidden 
+}) => {
+    if (!shopStatus?.is_primary_collect) return null;
+    
+    return (
+        <>
+            <FirstBarsGroup
+                dataDashBoard={dataDashBoard}
+                selectedRange={selectedRange}
+                loading={loading}
+            />
+
+            <MainChart
+                title='Заказы и продажи'
+                loading={loading}
+                dataDashBoard={dataDashBoard}
+                selectedRange={selectedRange}
+            />
+
+            <SecondBarsGroup
+                dataDashBoard={dataDashBoard}
+                loading={loading}
+            />
+
+            <div className={isSidebarHidden ? styles.page__chartGroup : styles.page__chartGroup_oneLine}>
+                <FinanceBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <TurnoverBlock
+                    loading={loading}
+                    turnover={dataDashBoard?.turnover}
+                    selectedRange={selectedRange}
+                    activeBrand={activeBrand}
+                    authToken={authToken}
+                    filters={filters}
+                />
+                <MarginChartBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <ProfitChartBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <ProfitBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <StorageRevenueChartBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+                <StorageBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+
+                <div className={styles.page__doubleBlockWrapper}>
+                    <RevenueStructChartBlock
+                        loading={loading}
+                        dataDashBoard={dataDashBoard}
+                    />
+                    <TaxTableBlock
+                        loading={loading}
+                        dataDashBoard={dataDashBoard}
+                        updateDashboard={updateDataDashBoard}
+                    />
+                </div>
+
+                <CostsBlock
+                    loading={loading}
+                    dataDashBoard={dataDashBoard}
+                />
+            </div>
+
+            <AbcDataBlock
+                titles={['Группа А', 'Группа В', 'Группа С']}
+                data={dataDashBoard?.ABCAnalysis}
+                loading={loading}
+            />
+        </>
+    );
+});
 
 const _DashboardPage = () => {
-
     const { user, authToken } = useContext(AuthContext)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
+    const { shops } = useAppSelector((state) => state.shopsSlice);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
-    const [dataDashBoard, setDataDashboard] = useState();
-    const [loading, setLoading] = useState(true);
-    const [primaryCollect, setPrimaryCollect] = useState(null)
+    
+    const [pageState, setPageState] = useState({
+        dataDashBoard: null,
+        loading: true,
+        primaryCollect: null,
+        shopStatus: null
+    });
 
-    const updateDataDashBoard = async (selectedRange, activeBrand, authToken) => {
-        setLoading(true);
+    const updateDataDashBoard = useCallback(async (selectedRange, activeBrand, authToken) => {
+        setPageState(prev => ({ ...prev, loading: true }));
         try {
             if (activeBrand !== null && activeBrand !== undefined) {
-                // CHECK FOR MOCKDATA
                 if (user.subscription_status === null) {
-                    ;
                     const data = await mockGetDashBoard(selectedRange, activeBrand);
-                    setDataDashboard(data);
-                    return
+                    setPageState(prev => ({ ...prev, dataDashBoard: data }));
+                    return;
                 }
-               
+                
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
                     selectedRange,
                     activeBrand,
                     filters
                 );
-                setDataDashboard(data);
+                setPageState(prev => ({ ...prev, dataDashBoard: data }));
             }
-
         } catch (e) {
             console.error(e);
         } finally {
-            setLoading(false);
+            setPageState(prev => ({ ...prev, loading: false }));
         }
-    };
+    }, [user.subscription_status, filters]);
+
+    const shopStatus = useMemo(() => {
+        if (!activeBrand || !shops) return null;
+        
+        if (activeBrand.id === 0) {
+            return {
+                id: 0,
+                brand_name: 'Все',
+                is_active: shops.some(_ => _.is_primary_collect),
+                is_valid: true,
+                is_primary_collect: shops.some(_ => _.is_primary_collect),
+                is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
+            };
+        }
+        
+        return shops.find(_ => _.id === activeBrand.id);
+    }, [activeBrand, shops]);
 
     useEffect(() => {
-        if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-            setPrimaryCollect(activeBrand.is_primary_collect)
-            updateDataDashBoard(selectedRange, activeBrand.id, authToken)
+        if (activeBrand?.is_primary_collect) {
+            setPageState(prev => ({ ...prev, primaryCollect: activeBrand.is_primary_collect }));
+            updateDataDashBoard(selectedRange, activeBrand.id, authToken);
         }
-    }, [authToken]);
-
-    useEffect(() => {
-        setPrimaryCollect(activeBrand?.is_primary_collect)
-        if (activeBrand && activeBrand.is_primary_collect) {
-            updateDataDashBoard(selectedRange, activeBrand.id, authToken)
-        }
-    }, [activeBrand, selectedRange, filters]);
-
-
+    }, [activeBrand, selectedRange, filters, updateDataDashBoard]);
 
     return (
         <main className={styles.page}>
             <MobilePlug />
-            {/* ------ SIDE BAR ------ */}
             <section className={styles.page__sideNavWrapper}>
                 <Sidebar />
             </section>
-            {/* ------ CONTENT ------ */}
             <section className={styles.page__content}>
-                {/* header */}
                 <div className={styles.page__headerWrapper}>
                     <Header title='Сводка продаж' />
                 </div>
-                {/* !header */}
 
-                {/* SELF-COST WARNING */}
-                {dataDashBoard &&
-                    !dataDashBoard.costPriceAmount &&
-                    activeBrand &&
-                    activeBrand.id !== 0 &&
-                    !loading &&
-                    <div>
-                        <SelfCostWarningBlock
-                            shopId={activeBrand.id}
-                            onUpdateDashboard={updateDataDashBoard} //
-                        />
-                    </div>
-                }
-                {/* !SELF-COST WARNING */}
+                <WarningBlocks 
+                    shopStatus={shopStatus}
+                    loading={pageState.loading}
+                    activeBrand={activeBrand}
+                    updateDataDashBoard={updateDataDashBoard}
+                />
 
-                {/* DEMO BLOCK */}
                 {user.subscription_status === null && <NoSubscriptionWarningBlock />}
-                {/*  */}
 
-                {/* FILTERS */}
                 <div className={styles.page__controlsWrapper}>
                     <Filters
-                        setLoading={setLoading}
+                        setLoading={(loading) => setPageState(prev => ({ ...prev, loading }))}
                     />
 
                     <HowToLink
@@ -129,107 +236,22 @@ const _DashboardPage = () => {
                         url='https://radar.usedocs.com/article/75916'
                     />
                 </div>
-                {/* !FILTERS */}
 
-                {/* DATA COLLECT WARNING */}
-                {activeBrand && !activeBrand.is_primary_collect &&
-                    <DataCollectWarningBlock
-                        title='Ваши данные еще формируются и обрабатываются.'
-                    />
-                }
-                {/* !DATA COLLECT WARNING */}
-
-
-                {/* ----------- MAIN CONTENT -------------- */}
-                {activeBrand && activeBrand.is_primary_collect &&
-                    <>
-                        {/* First group of data bars */}
-                        <FirstBarsGroup
-                            dataDashBoard={dataDashBoard}
-                            selectedRange={selectedRange}
-                            loading={loading}
-                        />
-
-                        {/* Main chart */}
-                        <MainChart
-                            title='Заказы и продажи'
-                            loading={loading}
-                            dataDashBoard={dataDashBoard}
-                            selectedRange={selectedRange}
-                        />
-                        {/* Second group of data bars */}
-                        <SecondBarsGroup
-                            dataDashBoard={dataDashBoard}
-                            loading={loading}
-                        />
-
-                        {/*  Grid group */}
-                        {/* Сетка построена гридами в две колонки и строками по 25px. Используй grid-row: span X для управления высотой блоков */}
-                        <div className={isSidebarHidden ? styles.page__chartGroup : styles.page__chartGroup_oneLine}>
-                            <FinanceBlock
-                                loading={loading}
-                                dataDashBoard={dataDashBoard}
-                            />
-                            <TurnoverBlock
-                                loading={loading}
-                                turnover={dataDashBoard?.turnover}
-                                selectedRange={selectedRange}
-                                activeBrand={activeBrand}
-                                authToken={authToken}
-                                filters={filters}
-                            />
-                            <MarginChartBlock
-                                loading={loading}
-                                dataDashBoard={dataDashBoard}
-                            />
-                            <ProfitChartBlock
-                                loading={loading}
-                                dataDashBoard={dataDashBoard}
-                            />
-                            <ProfitBlock
-                                loading={loading}
-                                dataDashBoard={dataDashBoard}
-                            />
-                            <StorageRevenueChartBlock
-                                loading={loading}
-                                dataDashBoard={dataDashBoard}
-                            />
-                            <StorageBlock
-                                loading={loading}
-                                dataDashBoard={dataDashBoard}
-                            />
-
-                            <div className={styles.page__doubleBlockWrapper}>
-                                <RevenueStructChartBlock
-                                    loading={loading}
-                                    dataDashBoard={dataDashBoard}
-                                />
-                                <TaxTableBlock
-                                    loading={loading}
-                                    dataDashBoard={dataDashBoard}
-                                    updateDashboard={updateDataDashBoard}
-                                />
-                            </div>
-
-                            <CostsBlock
-                                loading={loading}
-                                dataDashBoard={dataDashBoard}
-                            />
-                        </div>
-
-                        {/* ABC-analysis block */}
-                        <AbcDataBlock
-                            titles={['Группа А', 'Группа В', 'Группа С']}
-                            data={dataDashBoard?.ABCAnalysis}
-                            loading={loading}
-                        />
-                    </>
-                }
-
+                <MainContent 
+                    shopStatus={shopStatus}
+                    loading={pageState.loading}
+                    dataDashBoard={pageState.dataDashBoard}
+                    selectedRange={selectedRange}
+                    activeBrand={activeBrand}
+                    authToken={authToken}
+                    filters={filters}
+                    updateDataDashBoard={updateDataDashBoard}
+                    isSidebarHidden={isSidebarHidden}
+                />
             </section>
-            {/* ---------------------- */}
         </main>
     )
 }
 
-export default _DashboardPage
+const DashboardPage = React.memo(_DashboardPage);
+export default DashboardPage;

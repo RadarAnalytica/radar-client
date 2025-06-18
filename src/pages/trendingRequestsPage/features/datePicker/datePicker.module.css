@@ -1,3 +1,12 @@
+@keyframes bgColor {
+  0% {
+      background-color: #E7E1FE75;
+  }
+  100% {
+      background-color: transparent;
+  }
+}
+
 .datepicker_dd {
   width: auto;
   padding: 16px 10px;
@@ -383,6 +392,11 @@
   width: 100%;
   max-width: 240px;
   position: relative;
+}
+
+.datePicker_bg {
+  animation: bgColor 3s ease-in-out;
+  overflow: hidden;
 }
 
 .datePicker__select {

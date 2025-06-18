@@ -10,6 +10,8 @@ import DatePickerCustomDropdown from "../../../../components/sharedComponents/ap
 import { URL } from "../../../../service/config";
 import { getSaveButtonStatus, getRowSaveButtonStatus, getAddDateButtonStatus, getRowSaveButtonForLastHistoryParamsStatus } from "../../shared";
 import ErrorModal from "../../../../components/sharedComponents/modals/errorModal/errorModal";
+import { fetchShops } from "../../../../redux/shops/shopsActions";
+import { useAppDispatch } from "../../../../redux/hooks";
 
 
 const dataFetchingStatus = {
@@ -34,6 +36,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
     const [rowSaveButtonForLastHistoryParamsDisabledStatus, setRowSaveButtonForLastHistoryParamsDisabledStatus] = useState(true)
     const [addDateButtonDisabledStatus, setAddDateButtonDisabledStatus] = useState(true)
     const [isUpdating, setIsUpdating] = useState(false)
+    const dispatch = useAppDispatch()
     const customRuLocale = useMemo(() => ({
         ...ru,
         localize: {
@@ -84,6 +87,11 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
             let newTableData = tableData;
             const index = newTableData.findIndex(_ => _.product === parsedData.product);
             newTableData[index] = parsedData
+            const isAllProductsHasSelfCost = !newTableData.some(_ => _.cost === null )
+
+            if (isAllProductsHasSelfCost) {
+                dispatch(fetchShops(authToken))
+            }
             setTableData(newTableData)
             setDataStatus({ ...initDataStatus })
             setIsSuccess(true)

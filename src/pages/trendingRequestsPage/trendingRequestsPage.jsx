@@ -3,8 +3,9 @@ import styles from './trendingRequests.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import { ParamsWidget, TableWidget } from './widgets'
+import { ParamsWidget, TableWidget, HowtoWidget } from './widgets'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
+import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
 
 const initRequestStatus = {
     isError: false,
@@ -13,12 +14,19 @@ const initRequestStatus = {
     message: ''
 }
 
+//инит стейт сортировки
+const initSortState = {
+    sortedValue: undefined,
+    sortType: undefined,
+}
+
 const TrendingRequestsPage = () => {
     const [isParamsVisible, setIsParamsVisible] = useState(true)
     const [requestState, setRequestState] = useState()
     const [tableData, setTableData] = useState()
     const [requestStatus, setRequestStatus] = useState(initRequestStatus)
     const [tablePaginationState, setTablePaginationState] = useState({ limit: 25, page: 1, total_pages: 1 })
+    const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
 
     const getTableData = useCallback(async (request) => {
         setRequestStatus({ ...initRequestStatus, isLoading: true })
@@ -38,7 +46,7 @@ const TrendingRequestsPage = () => {
             res = await res.json()
             setTableData(res.queries)
             setRequestStatus(initRequestStatus)
-            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.total_pages })
+            setTablePaginationState({ limit: res.limit, page: res.page, total_pages: res.limit * res.total_pages })
             setIsParamsVisible(false)
         } catch {
             setRequestStatus({ ...initRequestStatus, isError: true, message: 'Не удалось получить данные таблицы. Попробуйте перезагрузить страницу.' })
@@ -73,6 +81,11 @@ const TrendingRequestsPage = () => {
                     <div className={styles.page__headerWrapper}>
                         <Header {...memoizedHeaderProps} />
                     </div>
+                    {/* <div className={styles.page__howtoBlock}>
+                        <HowtoWidget
+                            setRequestState={setRequestState}
+                        />
+                    </div> */}
                     <div className={styles.page__widgetWrapper}>
                         <ParamsWidget
                             isParamsVisible={isParamsVisible}
@@ -81,6 +94,8 @@ const TrendingRequestsPage = () => {
                             setRequestStatus={setRequestStatus}
                             requestStatus={requestStatus}
                             initRequestStatus={initRequestStatus}
+                            setSortState={setSortState}
+                            initSortState={initSortState}
                         />
                     </div>
                 </div>
@@ -93,6 +108,9 @@ const TrendingRequestsPage = () => {
                         requestState={requestState}
                         setRequestStatus={setRequestStatus}
                         initRequestStatus={initRequestStatus}
+                        sortState={sortState}
+                        setSortState={setSortState}
+                        initSortState={initSortState}
                     />
                 }
             </section>

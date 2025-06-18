@@ -26,22 +26,17 @@ import { Link } from 'react-router-dom'
  */
 
 
-//инит стейт сортировки
-const initSortState = {
-    sortedValue: undefined,
-    sortType: undefined,
-}
 
 
 
-export const TableWidget = React.memo(({ rawData, loading, tablePaginationState, setRequestState, requestState, initRequestStatus, setRequestStatus }) => {
+
+export const TableWidget = React.memo(({ rawData, loading, tablePaginationState, setRequestState, requestState, initRequestStatus, setRequestStatus, setSortState, sortState, initSortState }) => {
 
 
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     const [tableData, setTableData] = useState() // данные для рендера таблицы
     const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
     const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
-    const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
     const [isExelLoading, setIsExelLoading] = useState(false)
 
 
@@ -51,22 +46,22 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
     }, [rawData])//рубашка мужская
 
     useEffect(() => {
-       const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
-       const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
-       const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
-       const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
-       if (paginationNextButton) {
-        paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
-       }
-       if (paginationSingleNextButton) {
-        paginationSingleNextButton.setAttribute('title', 'Следующая страница')
-       }
-       if (paginationSinglePrevButton) {
-        paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
-       }
-       if (paginationPrevButton) {
-        paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
-       }
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        if (paginationNextButton) {
+            paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+        }
+        if (paginationSingleNextButton) {
+            paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+        }
+        if (paginationSinglePrevButton) {
+            paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+        }
+        if (paginationPrevButton) {
+            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+        }
     }, [tablePaginationState])
 
     const paginationHandler = useCallback((page) => {
@@ -103,7 +98,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
         if (sortState.sortType === id && sortState.sortedValue === value) {
             setSortState(initSortState)
             //setTableData(rawData)
-            setRequestState({...requestState, sorting: undefined, page: 1, limit: 25})
+            setRequestState({ ...requestState, sorting: { sort_field: 'frequency', sort_order: 'DESC' }, page: 1, limit: 25 })
             return
         }
 
@@ -113,7 +108,7 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
             sortedValue: value,
             sortType: id,
         })
-        setRequestState({...requestState, sorting: { sort_field: value, sort_order: id}, page: 1, limit: 25})
+        setRequestState({ ...requestState, sorting: { sort_field: value, sort_order: id }, page: 1, limit: 25 })
         //setTableData([...sortTableDataFunc(id, value, rawData)])
     }, [sortState, rawData])
 
@@ -267,12 +262,28 @@ export const TableWidget = React.memo(({ rawData, loading, tablePaginationState,
 
                                                             </div>
                                                         )
-                                                    } 
+                                                    }
                                                     if (v.ruName === 'Приоритетный предмет') {
                                                         return (
                                                             <div className={styles.table__rowItem} key={id}>{product[v.engName]}</div>
                                                         )
                                                     }
+
+                                                    if (v.units === '%' && product[v.engName] < 0) {
+                                                        return (
+                                                            <div className={styles.table__rowItem} key={id}>{formatPrice(product[v.engName], v.units)}</div>
+                                                        )
+                                                    }
+
+                                                    if (v.units === '%' && product[v.engName] >= 0) {
+                                                        return (
+                                                            <div className={styles.table__rowItem} key={id}>
+                                                                <span style={{ marginLeft: 8}}>{formatPrice(product[v.engName], v.units)}</span>
+                                                            </div>
+                                                        )
+                                                    }
+
+
                                                     return (
                                                         <div className={styles.table__rowItem} key={id}>{formatPrice(product[v.engName], v.units)}</div>
                                                     )

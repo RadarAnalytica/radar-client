@@ -78,18 +78,27 @@ export const Filters = ({
 
   //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
   useEffect(() => {
+    // Если это первая пачка сообщений, то данные актуальны и мы просто записываем сообщения для последующего сравнения
     if (!prevMessages?.current) {
         prevMessages.current = messages;
         return
     }
+    
+    // Если это последующие сообщения ....
     if (messages && activeBrand?.id === 0 && prevMessages?.current) {
+      // Ищем свежие сообщения
       let filteredMessages = messages.filter(m => !prevMessages.current.some(_ => _.id === m.id))
+      // Выходим если свежих нет
       if (!filteredMessages || filteredMessages.length === 0) {return}
       else {
+        // Если свежие есть, то ищем интересующее нас (про сбор данных магазина)
         filteredMessages = filteredMessages.filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
+        // Если выходим если таких нет
         if (!filteredMessages || filteredMessages.length === 0) {return}
         else {
+          // Если такие есить то перезапрашиваем фильтры и магазины
           fetchFiltersData();
+          fetchShopData();
         }
       } 
     }
