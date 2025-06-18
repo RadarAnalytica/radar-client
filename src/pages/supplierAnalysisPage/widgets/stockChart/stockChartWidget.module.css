@@ -35,3 +35,40 @@
     align-items: stretch;
     gap: 16px;
 }
+
+.widget__controls {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.widget__checkbox {
+    padding: 8px 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* gap: 8px; */
+
+    @media (max-width: 1500px) {
+        padding: 4px 0;
+        /* gap: 4px; */
+    }
+}
+
+.widget__checkboxLabel {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+}
+
+.widget__checkboxLabel span {
+    color: #1A1A1A80
+}

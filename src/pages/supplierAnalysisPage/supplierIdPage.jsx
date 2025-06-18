@@ -3,28 +3,22 @@ import styles from './supplierIdPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import { ItemWidget, BarsWidget, MainChartWidget, TableWidget, StockChartWidget } from './widgets'
+import { BarsWidget, MainChartWidget, TableWidget, StockChartWidget } from './widgets'
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
 import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcrumbs/breadcrumbs'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { fetchSkuAnalysisMainChartData, fetchSkuAnalysisSkuData, fetchSkuAnalysisIndicatorsData, fetchSkuAnalysisMainTableData, fetchSkuAnalysisByColorTableData, fetchSkuAnalysisByWarehousesTableData, fetchSkuAnalysisBySizeTableData } from '../../redux/skuAnalysis/skuAnalysisActions'
 import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice'
-import { ConfigProvider, Segmented } from 'antd'
 import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByColorsTableConfig } from './shared'
 import { GoodsTableCustomHeader, OrdersTableCustomHeader, StockChartCustomHeader } from './entities'
-import DownloadButton from '../../components/DownloadButton'
+import { fetchSupplierAnalysisBarsData, fetchSupplierAnalysisMainChartData } from '../../redux/supplierAnalysis/supplierAnalysisActions'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
-
-
-const segments = ['По цветам', 'По складам', 'По размерам']
 
 const SupplierIdPage = () => {
     const dispatch = useAppDispatch()
     const { selectedRange } = useAppSelector(store => store.filters)
     const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData } = useAppSelector(store => store.skuAnalysis)
     const [loading, setLoading] = useState(false)
-    const [tabsState, setTabsState] = useState(segments[0])
     const params = useParams()
     const navigate = useNavigate()
 
@@ -35,7 +29,7 @@ const SupplierIdPage = () => {
             if (!params?.id) return;
             try {
                 dispatch(skuAnalysisActions.setDataStatus({ isLoading: true, isError: false, message: '' }));
-                
+
                 // await Promise.all([
                 //     dispatch(fetchSkuAnalysisSkuData({ id: params.id, selectedRange })),
                 //     dispatch(fetchSkuAnalysisMainChartData({ id: params.id, selectedRange })),
@@ -45,13 +39,13 @@ const SupplierIdPage = () => {
                 //     dispatch(fetchSkuAnalysisByWarehousesTableData({ id: params.id, selectedRange })),
                 //     dispatch(fetchSkuAnalysisBySizeTableData({ id: params.id, selectedRange }))
                 // ]);
-                
+
                 dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
             } catch (error) {
-                dispatch(skuAnalysisActions.setDataStatus({ 
-                    isLoading: false, 
-                    isError: true, 
-                    message: 'Failed to load SKU analysis data. Please try again.' 
+                dispatch(skuAnalysisActions.setDataStatus({
+                    isLoading: false,
+                    isError: true,
+                    message: 'Failed to load SKU analysis data. Please try again.'
                 }));
             }
         };
@@ -85,6 +79,8 @@ const SupplierIdPage = () => {
                     {/* !header */}
                     <BarsWidget
                         quantity={4}
+                        dataHandler={fetchSupplierAnalysisBarsData}
+                        dataType='barsData'
                     />
                     <div className={styles.page__filtersWrapper}>
                         <Filters
@@ -97,8 +93,14 @@ const SupplierIdPage = () => {
                     </div>
                     <BarsWidget
                         quantity={8}
+                        dataHandler={fetchSupplierAnalysisBarsData}
+                        dataType='barsData'
                     />
-                    <MainChartWidget id={params?.id} />
+                    <MainChartWidget 
+                        id={params?.id}
+                        dataType='mainChartData'
+                        dataHandler={fetchSupplierAnalysisMainChartData}
+                    />
                 </div>
 
 
@@ -137,12 +139,14 @@ const SupplierIdPage = () => {
 
                 <div className={styles.page__additionalWrapper}>
                     <StockChartWidget
+                        supplier={params.id}
                         downloadButton
                         title='Распределение товарных остатков по складам'
                     />
                 </div>
                 <div className={styles.page__additionalWrapper}>
                     <StockChartWidget
+                        supplier={params.id}
                         downloadButton
                         customHeader={<StockChartCustomHeader />}
                     />
@@ -151,7 +155,7 @@ const SupplierIdPage = () => {
             </section>
             {/* ---------------------- */}
 
-            <ErrorModal
+            {/* <ErrorModal
                 open={dataStatus.isError}
                 footer={null}
                 onOk={() => {
@@ -167,7 +171,7 @@ const SupplierIdPage = () => {
                     navigate('/sku-analysis')
                 }}
                 message={dataStatus.message}
-            />
+            /> */}
         </main>
     )
 }

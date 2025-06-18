@@ -83,6 +83,8 @@ function App() {
             {/* under development */}
             <Route path='/dev/monitoring' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/dev/monitoring/request' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />
+            {/* Admin */}
+            <Route path='/admin/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
             {/* Protected routes */}
             <Route path='/supplier-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
             <Route path='/supplier-analysis/:id' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
@@ -93,7 +95,6 @@ function App() {
             <Route path='/selfcost' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
             <Route path='/sku-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
             <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
-            <Route path='/admin' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
             <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
             <Route path='/abc-data' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
             <Route path='/seo' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />

@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchSupplierAnalysisBarsData, fetchSupplierAnalysisMainChartData } from "./supplierAnalysisActions";
 
 const mockOptions = [
-    {value: 'Все бренды'},
-    {value: '1'},
-    {value: '2'},
-    {value: '3'},
+    { value: 'Все бренды' },
+    { value: '1' },
+    { value: '2' },
+    { value: '3' },
 ]
 
 
@@ -12,7 +13,21 @@ const initialState = {
     supplierCurrentBrand: 'Все бренды',
     ordersStructureTab: 'По группам цветов',
     stockChartTab: 'Входящие заказы',
-    supplierBrands: mockOptions
+    supplierBrands: mockOptions,
+    barsData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    mainChartData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    }
 };
 
 const supplierAnalysisSlice = createSlice({
@@ -37,31 +52,26 @@ const supplierAnalysisSlice = createSlice({
                 stockChartTab: action.payload
             }
         },
+        setDataFetchingStatus: (state, action) => {
+            const { dataType, statusObject } = action.payload;
+            return {
+                ...state,
+                [dataType]: {
+                    ...state[dataType],
+                    ...statusObject
+                }
+            }
+        }
     },
-    // extraReducers: (bulder) => {
-    //     bulder
-    //         .addCase(fetchSkuAnalysisMainChartData.fulfilled, (state, action) => {
-    //             state.skuChartData = action.payload;
-    //         })
-    //     .addCase(fetchSkuAnalysisSkuData.fulfilled, (state, action) => {
-    //             state.skuMainData = action.payload;
-    //     })
-    //     .addCase(fetchSkuAnalysisIndicatorsData.fulfilled, (state, action) => {
-    //             state.skuIndicatorsData = action.payload;
-    //     })
-    //     .addCase(fetchSkuAnalysisMainTableData.fulfilled, (state, action) => {
-    //             state.skuMainTableData = action.payload;
-    //     })
-    //     .addCase(fetchSkuAnalysisByColorTableData.fulfilled, (state, action) => {
-    //             state.skuByColorTableData = action.payload;
-    //     })
-    //     .addCase(fetchSkuAnalysisByWarehousesTableData.fulfilled, (state, action) => {
-    //             state.skuByWarehouseTableData = action.payload;
-    //     })
-    //     .addCase(fetchSkuAnalysisBySizeTableData.fulfilled, (state, action) => {
-    //             state.skuBySizeTableData = action.payload;
-    //     })
-    // }
+    extraReducers: (bulder) => {
+        bulder
+            .addCase(fetchSupplierAnalysisBarsData.fulfilled, (state, action) => {
+                state.barsData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisMainChartData.fulfilled, (state, action) => {
+                state.mainChartData.data = action.payload;
+            })
+    }
 });
 
 export const { reducer, actions } = supplierAnalysisSlice;

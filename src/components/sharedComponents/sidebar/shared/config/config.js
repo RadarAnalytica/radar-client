@@ -173,4 +173,27 @@ export const menuConfig = [
             },
         ]
     },
+    {
+        id: 5,
+        name: 'admin',
+        label: 'Администратору',
+        icon: newIcons.admin,
+        isAdminOnly: true,
+        children: [
+            {
+                id: 1,
+                url: '/admin/blog',
+                label: 'Блог',
+                isActive: true,
+                isNew: false
+            },
+            {
+                id: 2,
+                url: '/admin/dashboard',
+                label: 'Панель управления',
+                isActive: true,
+                isNew: false
+            },
+        ]
+    },
 ]
