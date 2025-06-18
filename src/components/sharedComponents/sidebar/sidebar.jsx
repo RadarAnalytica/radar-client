@@ -18,6 +18,7 @@ const Sidebar = () => {
     const dispatch = useAppDispatch()
     const { user } = useContext(AuthContext)
     const { isSidebarHidden } = useAppSelector(store => store.utils)
+    const { user } = useContext(AuthContext)
 
     return (
         <nav className={isSidebarHidden ? `${styles.sidebar} ${styles.sidebar_hidden}` : styles.sidebar}
@@ -38,9 +39,8 @@ const Sidebar = () => {
                 <div className={isSidebarHidden ? `${styles.sidebar__scrollContainer} ${styles.sidebar__scrollContainer_hidden}` : styles.sidebar__scrollContainer}>
                     <ul className={styles.sidebar__navList}>
                         {menuConfig.map(i => {
-
+                            if (i.isAdminOnly && user.role !== 'admin') return
                             const isMenuActive = i.children.some(_ => _.isActive);
-
                             return isMenuActive && (
                                 <li className={styles.sidebar__navListItem} key={i.id}>
                                     <NestedLink title={i.label} icon={i.icon} links={i.children} isMenuHidden={isSidebarHidden} />

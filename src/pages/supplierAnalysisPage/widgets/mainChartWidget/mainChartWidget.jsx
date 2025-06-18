@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styles from './mainChartWidget.module.css'
-import { Segmented, ConfigProvider } from 'antd';
 import { ChartControls } from '../../features';
 import { Chart } from 'react-chartjs-2';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
@@ -25,49 +24,68 @@ ChartJS.register(
 );
 
 
-const MainChartWidget = ({ id }) => {
+const MainChartWidget = ({ id, dataType, dataHandler }) => {
     const dispatch = useAppDispatch()
-    const [tabsState, setTabsState] = useState('Аналитика товара') // не удалять - стейт табов вариантов графика
     const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
     const [normilizedChartData, setNormilizedChartData] = useState()
-    const { skuChartData, dataStatus } = useAppSelector(store => store.skuAnalysis)
+    //const { skuChartData, dataStatus } = useAppSelector(store => store.skuAnalysis)
+    const widgetData = useAppSelector(store => store.supplierAnalysis[dataType])
 
     useEffect(() => {
-        if (skuChartData && chartControls) {
-            const data = {
-                labels: skuChartData.dates.map(i => moment(i).format('DD.MM.YY')),
-                datasets: chartControls.map(i => {
-                    let yAxis = 'y1';
-                    if (i.hasUnits && i.units === '₽') {
-                        yAxis = 'y'
-                    }
-                    if (i.isOnChart && i.isActive) {
-                        return {
-                            label: i.ruName,
-                            type: 'line',
-                            data: skuChartData[i.engName]?.map(i => i.item),
-                            borderColor: i.color,
-                            yAxisID: yAxis,
-                            tension: 0.4,
-                            pointBorderColor: 'white',
-                            backgroundColor: i.color,
-                            pointRadius: 6,
-                            hoverRadius: 8,
-                            borderWidth: 2
-                        }
-                    } else {
-                        return {}
-                    }
-                })
-            }
-            setNormilizedChartData({ ...data })
+        if (!widgetData.data) {
+            dispatch(dataHandler())
         }
-    }, [skuChartData, chartControls])
+    }, [widgetData?.data])
 
-    if (!skuChartData && dataStatus.isLoading) {
+    // useEffect(() => {
+    //     if (skuChartData && chartControls) {
+    //         const data = {
+    //             labels: skuChartData.dates.map(i => moment(i).format('DD.MM.YY')),
+    //             datasets: chartControls.map(i => {
+    //                 let yAxis = 'y1';
+    //                 if (i.hasUnits && i.units === '₽') {
+    //                     yAxis = 'y'
+    //                 }
+    //                 if (i.isOnChart && i.isActive) {
+    //                     return {
+    //                         label: i.ruName,
+    //                         type: 'line',
+    //                         data: skuChartData[i.engName]?.map(i => i.item),
+    //                         borderColor: i.color,
+    //                         yAxisID: yAxis,
+    //                         tension: 0.4,
+    //                         pointBorderColor: 'white',
+    //                         backgroundColor: i.color,
+    //                         pointRadius: 6,
+    //                         hoverRadius: 8,
+    //                         borderWidth: 2
+    //                     }
+    //                 } else {
+    //                     return {}
+    //                 }
+    //             })
+    //         }
+    //         setNormilizedChartData({ ...data })
+    //     }
+    // }, [skuChartData, chartControls])
+
+    if (widgetData.isLoading) {
         return (
             <div className={styles.loaderWrapper}>
                 <span className='loader'></span>
+            </div>
+        )
+    }
+    if (widgetData.isError) {
+        return (
+            <div className={styles.errorWrapper}>
+                <div className={styles.errorWrapper__message}>
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+                        <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
+                    </svg>
+                    {widgetData.message || 'Не удалось загрузить данные'}
+                </div>
             </div>
         )
     }
@@ -76,54 +94,21 @@ const MainChartWidget = ({ id }) => {
 
     return (
         <div className={styles.widget}>
-            {/* Не удалять - это табы для переключения вариантов графика. Закоментил - Старина Михаил 28.04.25 */}
-            {/* <div className={styles.widget__tabsWrapper}>
-                <ConfigProvider
-                    theme={{
-                        token: {},
-                        components: {
-                            Segmented: {
-                                itemActiveBg: '#E7E1FE',
-                                itemSelectedBg: '#E7E1FE',
-                                trackBg: 'transparent',
-                                itemColor: '#1A1A1A80',
-                                itemHoverBg: 'transparent',
-                                itemHoverColor: '#1A1A1A',
-                                itemSelectedColor: '#1A1A1A',
-                                trackPadding: 0
-                            }
-                        }
-                    }}
-                >
-                    <Segmented
-                        size='large'
-                        options={['Аналитика товара', 'Тренды']}
-                        value={tabsState}
-                        onChange={(value) => setTabsState(value)}
-                    />
-                </ConfigProvider>
-            </div> */}
-            {tabsState === 'Аналитика товара' &&
-                <div className={styles.mainChart}>
-                    <p className={styles.mainChart__title}>Сводные данные по дням</p>
-                    <ChartControls
-                        chartControls={chartControls}
-                        setChartControls={setChartControls}
-                    />
-                    {normilizedChartData && skuChartData && chartControls &&
-                        <Chart
-                            type='line'
-                            data={{ ...normilizedChartData }}
-                            width={100}
-                            height={40}
-                            options={mainChartOptionsGenerator(skuChartData, chartControls.find(_ => _.isAnnotation), chartControls.find(_ => _.engName === 'seasonality'), normilizedChartData)}
-                        />}
-                </div>
-            }
-            {tabsState === 'Тренды' &&
-                <div className={styles.mainChart}>
-                </div>
-            }
+            <div className={styles.mainChart}>
+                <p className={styles.mainChart__title}>Сводные данные по дням</p>
+                <ChartControls
+                    chartControls={chartControls}
+                    setChartControls={setChartControls}
+                />
+                {normilizedChartData && widgetData?.data && chartControls &&
+                    <Chart
+                        type='line'
+                        data={{ ...normilizedChartData }}
+                        width={100}
+                        height={40}
+                        options={mainChartOptionsGenerator(widgetData, chartControls.find(_ => _.isAnnotation), chartControls.find(_ => _.engName === 'seasonality'), normilizedChartData)}
+                    />}
+            </div>
         </div>
     )
 }

@@ -1,19 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { actions as skuAnalysisActions } from './supplierAnalysisSlice'
+import { actions as supplierAnalysisActions } from './supplierAnalysisSlice';
 
 
-export const fetchSkuAnalysisMainChartData = createAsyncThunk(
-    'skuChartData',
+export const fetchSupplierAnalysisBarsData = createAsyncThunk(
+    'supplierAnalysisBarsData',
     async (reqData, { dispatch }) => {
+      dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'barsData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
       try {
-        let queryString = `?wb_id=${reqData.id}`
-        if (reqData.selectedRange.period) {
-            queryString += `&period=${reqData.selectedRange.period}`
-        }
-        if (reqData.selectedRange.from && reqData.selectedRange.to) {
-             queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
-        }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/charts${queryString}`, {
+        // let queryString = `?wb_id=${reqData.id}`
+        // if (reqData.selectedRange.period) {
+        //     queryString += `&period=${reqData.selectedRange.period}`
+        // }
+        // if (reqData.selectedRange.from && reqData.selectedRange.to) {
+        //      queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
+        // }
+        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/charts`, {
           method: 'GET',
           headers: {
             'content-type': 'application/json',
@@ -21,14 +23,43 @@ export const fetchSkuAnalysisMainChartData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'barsData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
         }
         const data = await res.json();
-        //dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: false, message: ''}))
-        dispatch(skuAnalysisActions.skuSearchHistoryAdd(reqData.id))
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'barsData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
         return data;
       } catch (e) {
-        dispatch(skuAnalysisActions.setDataStatus({isLoading: false, isError: true, message: 'Что-то пошло не так :('}))
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'barsData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+      }
+    }
+);
+export const fetchSupplierAnalysisMainChartData = createAsyncThunk(
+    'supplierAnalysisMainChartData',
+    async (reqData, { dispatch }) => {
+      dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'mainChartData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
+      try {
+        // let queryString = `?wb_id=${reqData.id}`
+        // if (reqData.selectedRange.period) {
+        //     queryString += `&period=${reqData.selectedRange.period}`
+        // }
+        // if (reqData.selectedRange.from && reqData.selectedRange.to) {
+        //      queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
+        // }
+        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/charts`, {
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json',
+          },
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'mainChartData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+        }
+        const data = await res.json();
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'mainChartData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
+        return data;
+      } catch (e) {
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'mainChartData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
       }
     }
 );
