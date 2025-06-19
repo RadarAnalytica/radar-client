@@ -66,9 +66,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
         fileList.forEach((file, id) => {
             formData.append(`files`, file);
         });
-        const interval = setInterval(() => {
-            checkAllUploads(authToken, 4, interval)
-        }, 3000)
+        // const interval = setInterval(() => {
+        //     checkAllUploads(authToken, 4, interval)
+        // }, 3000)
         try {
             let response = await fetch(`${URL}/api/report/upload/test`, {
                 method: 'POST',
