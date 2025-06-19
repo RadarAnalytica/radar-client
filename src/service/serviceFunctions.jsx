@@ -1214,26 +1214,21 @@ export const ServiceFunctions = {
   },
 
 	getTrendAnalysisQuery: async (
-		token,
-		selectedRange,
-		// shopId,
-		// filters,
 		query,
-		period
+		timeFrame,
+		period,
 	) => {
-		// const body = getRequestObject(filters, selectedRange, shopId);
-    console.log('getTrendAnalysisQuery')
+		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}?query_string=${encodeURIComponent( query )}`;
+		if (timeFrame == 'day'){
+			url += `&period=${period}`
+		}
 		const res = await fetch(
-			`https://radarmarket.ru/api/analytic/query-dynamics/${period}?query_string=${encodeURIComponent(
-				query
-			)}`,
+			url,
 			{
 				method: 'GET',
 				headers: {
 					'content-type': 'application/json',
-					authorization: 'JWT ' + token,
 				},
-				// body: JSON.stringify(body),
 			}
 		);
 
@@ -1241,22 +1236,22 @@ export const ServiceFunctions = {
 
 		return data;
 	},
-	getDownloadTrendAnalysisQuery: async (
-		token,
-		selectedRange,
-		// shopId,
-		// filters,
-		query,
-		period
-	) => {
 
+	getDownloadTrendAnalysisQuery: async (
+		query,
+		timeFrame,
+		period,
+	) => {
+		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}/download?query_string=${encodeURIComponent( query )}`;
+		if (timeFrame == 'day'){
+			url += `&period=${period}`
+		}
 		const res = await fetch(
-      `https://radarmarket.ru/api/analytic/query-dynamics/${period}/download?query_string=${encodeURIComponent(query)}`,
+			url,
       {
         method: 'GET',
         headers: {
 					'content-type': 'application/json',
-          authorization: 'JWT ' + token,
         },
       }
     );

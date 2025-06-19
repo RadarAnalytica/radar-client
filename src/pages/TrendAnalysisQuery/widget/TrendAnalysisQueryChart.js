@@ -49,7 +49,7 @@ export default function TrendAnalysisQueryChart({ data }) {
 				// external: (context) => {getChartTooltip(context, context.tooltip)},
 				callbacks: {
 					label: function (context) {
-						return 'Частотность запроса ' + context.formattedValue;
+						return ' Частотность запроса   ' + context.formattedValue;
 					},
 				},
 				// стилизация
