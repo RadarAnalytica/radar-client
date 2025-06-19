@@ -11,23 +11,26 @@ import { useAppSelector } from '../../redux/hooks';
 // page
 import { ConfigProvider, Form, Input, Button, Flex, Table } from 'antd';
 import TrendAnalysisQueryChart from './widget/TrendAnalysisQueryChart';
-import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import { setDate } from 'date-fns';
-import { fileDownload } from '../../service/utils';
+import { differenceInDays } from 'date-fns';
+import { formatPrice, fileDownload } from '../../service/utils';
 
 export default function TrendAnalysisQuery() {
-	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector(
+	const { selectedRange } = useAppSelector(
 		(state) => state.filters
 	);
-	const filters = useAppSelector((state) => state.filters);
-	const { shops } = useAppSelector((state) => state.shopsSlice);
-	const [shopStatus, setShopStatus] = useState(null);
-	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [loading, setLoading] = useState(false);
-	const [period, setPeriod] = useState('month');
+	const [timeFrame, setTimeFrame] = useState('month');
 	const [data, setData] = useState(null)
+
+	const formatPeriod = () => {
+		if (selectedRange.period){
+			return selectedRange.period;
+		}
+		if (selectedRange.from || selectedRange.to){
+			return differenceInDays(selectedRange.to, selectedRange.from);
+		}
+	}
 
 	const COLUMNS = [
 		{
@@ -39,6 +42,7 @@ export default function TrendAnalysisQuery() {
 			title: 'Частотность запроса',
 			dataIndex: 'quantity',
 			key: 'quantity',
+			render: (value) => <b>{formatPrice(value)}</b>
 		},
 	];
 
@@ -51,21 +55,23 @@ export default function TrendAnalysisQuery() {
 	};
 	const [query, setQuery] = useState(initQuery());
 
-	useEffect(() => {
-		const url = new URL(location.href);
-		if (url.searchParams.get('query')) {
-			setQuery(url.searchParams.get('query'));
-		}
-	}, []);
-
 	const submitQuery = (data) => {
+		// проверка на пустоту
+		if (!data.query.trim()){
+			return
+		}
+		// Обновление ссылки с поисковым запросом
+		const url = new URL(location);
+		url.searchParams.set('query', data.query)
+		window.history.pushState({}, '', url);
+
 		setQuery(data.query);
-		setPeriod('month');
+		setTimeFrame('month');
 	};
 
 	useEffect(() => {
 		updateData();
-	}, [query, period]);
+	}, [query, timeFrame, selectedRange]);
 
 	const mapResponseToData = (response) => {
 
@@ -73,7 +79,6 @@ export default function TrendAnalysisQuery() {
 		const values = response[query].map((el) => Object.values(el)[0])
 
 		const data = {
-			table: null,
 			chart: {
 				labels: labels,
 				data: values
@@ -81,6 +86,7 @@ export default function TrendAnalysisQuery() {
 		}
 
 		data.table = response[query].map((el, i) => ({
+			key: i,
 			month: labels[i],
 			quantity: values[i],
 		}))
@@ -96,12 +102,9 @@ export default function TrendAnalysisQuery() {
 
 		try {
 				const response = await ServiceFunctions.getTrendAnalysisQuery(
-					authToken,
-					selectedRange,
-					// activeBrand.id,
-					// filters,
 					query,
-					period
+					timeFrame,
+					formatPeriod(selectedRange),
 				);
 
 				mapResponseToData(response)
@@ -116,12 +119,9 @@ export default function TrendAnalysisQuery() {
 
 	const handleDownload = async () => {
 		const fileBlob = await ServiceFunctions.getDownloadTrendAnalysisQuery(
-				authToken,
-				selectedRange,
-				// activeBrand.id,
-				// filters,
 				query,
-				period
+				timeFrame,
+				formatPeriod(selectedRange),
 			);
 		fileDownload(fileBlob, `Статистика_запроса.xlsx`);
 	}
@@ -146,8 +146,8 @@ export default function TrendAnalysisQuery() {
 								itemMarginBottom: 0,
 							},
 							Input: {
-								controlHeight: 45,
-								paddingBlockLG: 9,
+								controlHeightLG: 40,
+								paddingBlockLG: 7,
 								paddingInlineLG: 16,
 								borderRadiusLG: 8,
 								fontSize: 16,
@@ -159,7 +159,7 @@ export default function TrendAnalysisQuery() {
 							Button: {
 								paddingInlineLg: 12,
 								paddingBlockLg: 8,
-								controlHeightLG: 45,
+								controlHeightLG: 40,
 								defaultShadow: false,
 								defaultBorderColor: 'transparent',
 								defaultHoverBorderColor: 'transparent',
@@ -186,6 +186,7 @@ export default function TrendAnalysisQuery() {
 									initialValue={query}
 									name="query"
 									className={styles.input}
+									required={true}
 								>
 									<Input
 										size="large"
@@ -229,6 +230,7 @@ export default function TrendAnalysisQuery() {
 										</svg>
 									}
 									htmlType="submit"
+									disabled={loading}
 								>
 									Найти
 								</Button>
@@ -259,34 +261,34 @@ export default function TrendAnalysisQuery() {
 									<Button
 										size="large"
 										className={
-											period === 'month'
+											timeFrame === 'month'
 												? styles.btn_active
 												: ''
 										}
-										onClick={() => setPeriod('month')}
+										onClick={() => setTimeFrame('month')}
 									>
 										По месяцам
 									</Button>
 									<Button
 										size="large"
 										className={
-											period === 'day'
+											timeFrame === 'day'
 												? styles.btn_active
 												: ''
 										}
-										onClick={() => setPeriod('day')}
+										onClick={() => setTimeFrame('day')}
 									>
 										По дням
 									</Button>
 								</Flex>
 								<Flex align="end" gap={16}>
-									{/* <Filters
+									{timeFrame === 'day' && <Filters
 										shopSelect={false}
 										timeSelect={true}
 										brandSelect={false}
 										articleSelect={false}
 										groupSelect={false}
-									/> */}
+									/>}
 									<Button
 										type="primary"
 										size="large"
@@ -358,7 +360,7 @@ export default function TrendAnalysisQuery() {
 											dataSource={data?.table}
 											pagination={false}
 											showSorterTooltip={false}
-											// sticky={true}
+											tableLayout='fixed'
 										></Table>
 									</ConfigProvider>
 								</div>
