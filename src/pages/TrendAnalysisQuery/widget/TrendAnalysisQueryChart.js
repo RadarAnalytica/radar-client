@@ -81,11 +81,6 @@ export default function TrendAnalysisQueryChart({ data }) {
 				tension: 0.5,
 			},
 		},
-		scales: {
-			x: {
-				display: false,
-			},
-		},
 	};
 
 	return (
