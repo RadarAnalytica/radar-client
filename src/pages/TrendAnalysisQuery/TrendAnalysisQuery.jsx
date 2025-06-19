@@ -12,7 +12,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { ConfigProvider, Form, Input, Button, Flex, Table } from 'antd';
 import TrendAnalysisQueryChart from './widget/TrendAnalysisQueryChart';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import { differenceInDays, set } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import { formatPrice, fileDownload } from '../../service/utils';
 
 export default function TrendAnalysisQuery() {
@@ -55,9 +55,13 @@ export default function TrendAnalysisQuery() {
 	};
 	const [query, setQuery] = useState(initQuery());
 
+	const [form] = Form.useForm();
+
+  const formQuery = Form.useWatch('query', form);
+
 	const submitQuery = (data) => {
 		// проверка на пустоту
-		if (!data.query.trim()){
+		if (data.query && !data.query.trim()){
 			return
 		}
 		// Обновление ссылки с поисковым запросом
@@ -94,6 +98,16 @@ export default function TrendAnalysisQuery() {
 		})).reverse()
 
 		setData(dataResult);
+	}
+
+	const checkQuery = (query) => {
+		if (!query){
+			return true
+		}
+		if (query?.trim()){
+			return query.trim().length == 0;
+		}
+		return true
 	}
 
 	const updateData = async () => {
@@ -183,7 +197,7 @@ export default function TrendAnalysisQuery() {
 					}}
 				>
 					<div className={styles.control}>
-						<Form className={styles.form} onFinish={submitQuery}>
+						<Form form={form} className={styles.form} onFinish={submitQuery}>
 							<Flex gap={8}>
 								<Form.Item
 									initialValue={query}
@@ -234,7 +248,8 @@ export default function TrendAnalysisQuery() {
 										</svg>
 									}
 									htmlType="submit"
-									disabled={loading}
+									// disabled={loading || (!formQuery && !(formQuery?.trim()))}
+									disabled={loading || checkQuery(formQuery)}
 								>
 									Найти
 								</Button>
