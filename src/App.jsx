@@ -119,7 +119,7 @@ function App() {
             <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
-            <Route path='/trend-analysis-query' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск трендовых запросов'><TrendAnalysisQuery /></ProtectedRoute>} />
+            <Route path='/trend-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск трендовых запросов'><TrendAnalysisQuery /></ProtectedRoute>} />
             {/* Public routes */}
             <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
