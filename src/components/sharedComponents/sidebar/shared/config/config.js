@@ -59,7 +59,7 @@ export const menuConfig = [
             },
             {
                 id: 2,
-                url: '/trend-analysis-query',
+                url: '/trend-analysis',
                 label: 'Анализ тренда у запроса',
                 isActive: true,
                 isNew: true
