@@ -4,6 +4,8 @@ import { Upload, ConfigProvider, Button, Progress } from 'antd'
 import uploadIcon from '../../../pages/images/upload.svg'
 import AuthContext from '../../../service/AuthContext'
 import { URL } from '../../../service/config'
+import ErrorModal from '../modals/errorModal/errorModal'
+import SuccessModal from '../modals/successModal/successModal'
 
 const initUploadStatus = {
     isUploading: false,
