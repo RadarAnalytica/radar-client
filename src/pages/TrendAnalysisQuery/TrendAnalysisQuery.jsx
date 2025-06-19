@@ -23,15 +23,6 @@ export default function TrendAnalysisQuery() {
 	const [timeFrame, setTimeFrame] = useState('month');
 	const [data, setData] = useState(null)
 
-	const formatPeriod = () => {
-		if (selectedRange.period){
-			return selectedRange.period;
-		}
-		if (selectedRange.from || selectedRange.to){
-			return differenceInDays(selectedRange.to, selectedRange.from);
-		}
-	}
-
 	const COLUMNS = [
 		{
 			title: timeFrame === 'month' ? 'Месяц' : 'День',
@@ -120,7 +111,7 @@ export default function TrendAnalysisQuery() {
 				const response = await ServiceFunctions.getTrendAnalysisQuery(
 					query,
 					timeFrame,
-					formatPeriod(selectedRange),
+					selectedRange,
 				);
 
 				mapResponseToData(response)
@@ -138,7 +129,7 @@ export default function TrendAnalysisQuery() {
 		const fileBlob = await ServiceFunctions.getDownloadTrendAnalysisQuery(
 				query,
 				timeFrame,
-				formatPeriod(selectedRange),
+				selectedRange,
 			);
 		fileDownload(fileBlob, `Статистика_запроса.xlsx`);
 	}

@@ -1216,11 +1216,11 @@ export const ServiceFunctions = {
 	getTrendAnalysisQuery: async (
 		query,
 		timeFrame,
-		period,
+		selectedRange,
 	) => {
 		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}?query_string=${encodeURIComponent( query )}`;
 		if (timeFrame == 'day'){
-			url += `&period=${period}`
+			url += '&' + rangeApiFormat(selectedRange)
 		}
 		const res = await fetch(
 			url,
@@ -1240,11 +1240,11 @@ export const ServiceFunctions = {
 	getDownloadTrendAnalysisQuery: async (
 		query,
 		timeFrame,
-		period,
+		selectedRange
 	) => {
 		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}/download?query_string=${encodeURIComponent( query )}`;
 		if (timeFrame == 'day'){
-			url += `&period=${period}`
+			url += '&' + rangeApiFormat(selectedRange)
 		}
 		const res = await fetch(
 			url,
