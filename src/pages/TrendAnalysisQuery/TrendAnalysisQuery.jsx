@@ -34,9 +34,9 @@ export default function TrendAnalysisQuery() {
 
 	const COLUMNS = [
 		{
-			title: 'Месяц',
-			dataIndex: 'month',
-			key: 'month',
+			title: timeFrame === 'month' ? 'Месяц' : 'День',
+			dataIndex: 'timeFrame',
+			key: 'timeFrame',
 		},
 		{
 			title: 'Частотность запроса',
@@ -87,7 +87,7 @@ export default function TrendAnalysisQuery() {
 
 		data.table = response[query].map((el, i) => ({
 			key: i,
-			month: labels[i],
+			timeFrame: labels[i],
 			quantity: values[i],
 		}))
 
