@@ -52,3 +52,8 @@
 .uploader__uploadButton {
     margin: 0 0 16px 16px;
 }
+
+.progressWrapper {
+    width: 100%;
+    padding: 16px;
+}
