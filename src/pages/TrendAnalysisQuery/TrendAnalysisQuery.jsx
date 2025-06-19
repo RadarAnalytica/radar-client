@@ -39,6 +39,7 @@ export default function TrendAnalysisQuery() {
 			title: 'Частотность запроса',
 			dataIndex: 'quantity',
 			key: 'quantity',
+			render: (value) => <b>{value}</b>
 		},
 	];
 
@@ -51,14 +52,16 @@ export default function TrendAnalysisQuery() {
 	};
 	const [query, setQuery] = useState(initQuery());
 
-	useEffect(() => {
-		const url = new URL(location.href);
-		if (url.searchParams.get('query')) {
-			setQuery(url.searchParams.get('query'));
-		}
-	}, []);
-
 	const submitQuery = (data) => {
+		// проверка на пустоту
+		if (!data.query.trim()){
+			return
+		}
+		// Обновление ссылки с поисковым запросом
+		const url = new URL(location);
+		url.searchParams.set('query', data.query)
+		window.history.pushState({}, '', url);
+
 		setQuery(data.query);
 		setPeriod('month');
 	};
@@ -81,6 +84,7 @@ export default function TrendAnalysisQuery() {
 		}
 
 		data.table = response[query].map((el, i) => ({
+			key: i,
 			month: labels[i],
 			quantity: values[i],
 		}))
@@ -119,7 +123,7 @@ export default function TrendAnalysisQuery() {
 				authToken,
 				selectedRange,
 				// activeBrand.id,
-				// filters,
+				filters,
 				query,
 				period
 			);
@@ -186,6 +190,7 @@ export default function TrendAnalysisQuery() {
 									initialValue={query}
 									name="query"
 									className={styles.input}
+									required={true}
 								>
 									<Input
 										size="large"
@@ -229,6 +234,7 @@ export default function TrendAnalysisQuery() {
 										</svg>
 									}
 									htmlType="submit"
+									disabled={loading}
 								>
 									Найти
 								</Button>
@@ -280,13 +286,13 @@ export default function TrendAnalysisQuery() {
 									</Button>
 								</Flex>
 								<Flex align="end" gap={16}>
-									{/* <Filters
+									{period === 'day' && <Filters
 										shopSelect={false}
 										timeSelect={true}
 										brandSelect={false}
 										articleSelect={false}
 										groupSelect={false}
-									/> */}
+									/>}
 									<Button
 										type="primary"
 										size="large"
