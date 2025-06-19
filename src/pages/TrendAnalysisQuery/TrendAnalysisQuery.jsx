@@ -14,7 +14,7 @@ import TrendAnalysisQueryChart from './widget/TrendAnalysisQueryChart';
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { setDate } from 'date-fns';
-import { fileDownload } from '../../service/utils';
+import { formatPrice, fileDownload } from '../../service/utils';
 
 export default function TrendAnalysisQuery() {
 	const { authToken } = useContext(AuthContext);
@@ -39,7 +39,7 @@ export default function TrendAnalysisQuery() {
 			title: 'Частотность запроса',
 			dataIndex: 'quantity',
 			key: 'quantity',
-			render: (value) => <b>{value}</b>
+			render: (value) => <b>{formatPrice(value)}</b>
 		},
 	];
 
