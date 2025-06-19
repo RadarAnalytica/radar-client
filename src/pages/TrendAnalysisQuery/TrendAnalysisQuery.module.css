@@ -79,3 +79,11 @@
 .chart{
   margin-bottom: 16px;
 }
+
+.btn{
+  padding: 9.5px 8px!important;
+}
+.btn_timeFrame{
+  padding: 8px 12px!important;
+  font-size: 18px!important;
+}

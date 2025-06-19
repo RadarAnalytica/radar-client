@@ -163,7 +163,7 @@ export default function TrendAnalysisQuery() {
 								paddingInlineLg: 12,
 								paddingBlockLg: 8,
 								controlHeightLG: 40,
-								defaultShadow: false,
+								defaultShadow: 'none',
 								defaultBorderColor: 'transparent',
 								defaultHoverBorderColor: 'transparent',
 								defaultColor: '#1A1A1A80',
@@ -214,6 +214,7 @@ export default function TrendAnalysisQuery() {
 									></Input>
 								</Form.Item>
 								<Button
+									className={styles.btn}
 									type="primary"
 									size="large"
 									icon={
@@ -228,7 +229,7 @@ export default function TrendAnalysisQuery() {
 												fillRule="evenodd"
 												clipRule="evenodd"
 												d="M1.95312 9.60359C1.95312 5.25404 5.47914 1.72803 9.82869 1.72803C14.1782 1.72803 17.7043 5.25404 17.7043 9.60359C17.7043 13.9531 14.1782 17.4792 9.82869 17.4792C5.47914 17.4792 1.95312 13.9531 1.95312 9.60359ZM9.82869 0.228027C4.65071 0.228027 0.453125 4.42561 0.453125 9.60359C0.453125 14.7816 4.65071 18.9792 9.82869 18.9792C12.1477 18.9792 14.2701 18.1372 15.9068 16.7423L19.9365 20.7721L20.9972 19.7114L16.9674 15.6817C18.3623 14.0449 19.2043 11.9226 19.2043 9.60359C19.2043 4.42561 15.0067 0.228027 9.82869 0.228027Z"
-												fill="white"
+												fill="currentColor"
 											/>
 										</svg>
 									}
@@ -263,22 +264,19 @@ export default function TrendAnalysisQuery() {
 								<Flex>
 									<Button
 										size="large"
-										className={
-											timeFrame === 'month'
-												? styles.btn_active
-												: ''
-										}
+										className={`${styles.btn_timeFrame} ${timeFrame === 'month'
+												? `${styles.btn_active}`
+												: ''}`}
 										onClick={() => setTimeFrame('month')}
 									>
 										По месяцам
 									</Button>
 									<Button
 										size="large"
-										className={
-											timeFrame === 'day'
-												? styles.btn_active
-												: ''
-										}
+										className={`${styles.btn_timeFrame} ${timeFrame === 'day'
+												? `${styles.btn_active}`
+												: ''}
+										`}
 										onClick={() => setTimeFrame('day')}
 									>
 										По дням
@@ -293,6 +291,7 @@ export default function TrendAnalysisQuery() {
 										groupSelect={false}
 									/>}
 									<Button
+										className={styles.btn}
 										type="primary"
 										size="large"
 										icon={
@@ -305,7 +304,7 @@ export default function TrendAnalysisQuery() {
 											>
 												<path
 													d="M9.9 6.70002H14.4L9 12.1L3.6 6.70002H8.1V0.400024H9.9V6.70002ZM1.8 14.8H16.2V8.50002H18V15.7C18 15.9387 17.9052 16.1676 17.7364 16.3364C17.5676 16.5052 17.3387 16.6 17.1 16.6H0.9C0.661305 16.6 0.432387 16.5052 0.263604 16.3364C0.0948211 16.1676 0 15.9387 0 15.7V8.50002H1.8V14.8Z"
-													fill="white"
+													fill="currentColor"
 												/>
 											</svg>
 										}
