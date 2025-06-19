@@ -12,7 +12,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { ConfigProvider, Form, Input, Button, Flex, Table } from 'antd';
 import TrendAnalysisQueryChart from './widget/TrendAnalysisQueryChart';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, set } from 'date-fns';
 import { formatPrice, fileDownload } from '../../service/utils';
 
 export default function TrendAnalysisQuery() {
@@ -75,23 +75,25 @@ export default function TrendAnalysisQuery() {
 
 	const mapResponseToData = (response) => {
 
-		const labels = response[query].map((el) => Object.keys(el)[0].split(' ').reverse().join(' '))
-		const values = response[query].map((el) => Object.values(el)[0])
+		const data = response[query].reverse();
 
-		const data = {
+		const labels = data.map((el) => Object.keys(el)[0].split(' ').reverse().join(' '))
+		const values = data.map((el) => Object.values(el)[0])
+
+		const dataResult = {
 			chart: {
 				labels: labels,
 				data: values
 			}
 		}
 
-		data.table = response[query].map((el, i) => ({
+		dataResult.table = response[query].map((el, i) => ({
 			key: i,
 			timeFrame: labels[i],
 			quantity: values[i],
 		}))
 
-		setData(data);
+		setData(dataResult);
 	}
 
 	const updateData = async () => {
@@ -110,6 +112,7 @@ export default function TrendAnalysisQuery() {
 				mapResponseToData(response)
 		} catch (e) {
 			console.error(e);
+			setData([]);
 		} finally {
 			setTimeout(() => {
 				setLoading(false);
