@@ -92,18 +92,12 @@ export default function ReportWeek() {
 		// 	localStorage.removeItem('reportWeekFilterWeek');
 		// 	savedFilterWeek = {};
 		// }
-		if (!data.find((el) => el.value === 'Все')) {
-			savedFilterWeek[activeBrand.id] = data;
-		} else {
-			delete savedFilterWeek[activeBrand.id];
-		}
+		savedFilterWeek[activeBrand.id] = data;
 		if (Object.keys(savedFilterWeek).length > 0) {
 			localStorage.setItem(
 				'reportWeekFilterWeek',
 				JSON.stringify(savedFilterWeek)
 			);
-		} else {
-			localStorage.removeItem('reportWeekFilterWeek');
 		}
 		setWeekSelected(data);
 	};
