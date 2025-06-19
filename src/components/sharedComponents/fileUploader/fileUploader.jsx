@@ -79,12 +79,12 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             });
 
             if (!response.ok) {
-                setUploadStatus({ ...initUploadStatus,isSuccess: true, isUploading: false, message: '' });
-                setFileList([])
-                // setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: 'Что-то пошло не так :(' });
-                // setError(data.message);
-                // setShow(true);
-                // throw new Error('Upload failed');
+                // setUploadStatus({ ...initUploadStatus,isSuccess: true, isUploading: false, message: '' });
+                // setFileList([])
+                setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: 'Что-то пошло не так :(' });
+                setError(data.message);
+                setShow(true);
+                throw new Error('Upload failed');
             }
             response = await response.json()
 
@@ -96,11 +96,11 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             //await getListOfReports();
 
         } catch (error) {
-            setUploadStatus({ ...initUploadStatus,isSuccess: true, isUploading: false, message: '' });
-            setFileList([])
-            // setUploadStatus({ ...initUploadStatus, isError: true, message: 'Что-то пошло не так :(' })
-            // setError('Что-то пошло не так :(');
-            // setShow(true);
+            // setUploadStatus({ ...initUploadStatus,isSuccess: true, isUploading: false, message: '' });
+            // setFileList([])
+            setUploadStatus({ ...initUploadStatus, isError: true, message: 'Что-то пошло не так :(' })
+            setError('Что-то пошло не так :(');
+            setShow(true);
         }
     }
 
