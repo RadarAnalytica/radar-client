@@ -75,7 +75,7 @@ export default function TrendAnalysisQuery() {
 
 	const mapResponseToData = (response) => {
 
-		const data = response[query].reverse();
+		const data = response[query];
 
 		const labels = data.map((el) => Object.keys(el)[0].split(' ').reverse().join(' '))
 		const values = data.map((el) => Object.values(el)[0])
@@ -87,11 +87,11 @@ export default function TrendAnalysisQuery() {
 			}
 		}
 
-		dataResult.table = response[query].map((el, i) => ({
+		dataResult.table = data.map((el, i) => ({
 			key: i,
 			timeFrame: labels[i],
 			quantity: values[i],
-		}))
+		})).reverse()
 
 		setData(dataResult);
 	}
