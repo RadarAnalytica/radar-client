@@ -119,12 +119,17 @@ const SkuFrequencyRequestPage = () => {
                 </div>
                 {mainTabsState === 'Общая информация' &&
                     <div className={styles.page__widgetWrapper}>
-                        <BarsWidget />
+                        <BarsWidget
+                            currentQuery={currentQuery}
+                        />
                     </div>
                 }
                 {mainTabsState === 'Тренды' &&
                     <div className={styles.page__widgetWrapper}>
-                        <ChartWidget />
+                        <ChartWidget
+                            chartTabsState={chartTabsState}
+                            currentQuery={currentQuery}
+                        />
                     </div>
                 }
             </div>

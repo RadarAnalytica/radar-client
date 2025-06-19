@@ -1,7 +1,11 @@
 import styles from './barsWidget.module.css'
 import Bar from '../../features/bar/bar';
+import { useAppSelector } from '../../../../redux/hooks';
 
-const BarsWidget = () => {
+const BarsWidget = ({currentQuery}) => {
+
+    const { requestData } = useAppSelector(store => store.requestsMonitoring)
+    const currentQueryData = requestData?.find(_ => _.query === currentQuery)
 
     return (
         <section className={styles.widget}>

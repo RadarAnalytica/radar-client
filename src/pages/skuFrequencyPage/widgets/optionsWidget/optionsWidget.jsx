@@ -1,17 +1,28 @@
 import { useEffect } from 'react'
 import styles from './optionsWidget.module.css'
-import { useAppSelector } from '../../../../redux/hooks'
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
 import { Form, ConfigProvider, Input, Select, Button } from 'antd'
-import { optionsConfig } from '../../shared'
+import { complexRequestObjectGenerator } from '../../shared'
+import { actions as requestsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice'
 
 
 const OptionsWidget = () => {
-
+    const dispatch = useAppDispatch()
     const [simpleForm] = Form.useForm();
     const [complexForm] = Form.useForm();
-
-
     const { skuFrequencyMode } = useAppSelector(store => store.filters) // 'Простой' | 'Продвинутый'
+    const { optionsConfig } = useAppSelector(store => store.requestsMonitoring) // 'Простой' | 'Продвинутый'
+
+
+    const simpleFormSubmitHandler = (fields) => {
+        //submit of simple form
+    }
+
+    const complexFormSubmitHandler = (fields) => {
+        const requestObject = complexRequestObjectGenerator(fields);
+        dispatch(requestsMonitoringActions.setRequestObject(requestObject))
+    }
+
 
     return (
         <section className={styles.widget}>
@@ -157,31 +168,16 @@ const OptionsWidget = () => {
                     className={`${styles.form} ${styles.form_complexLayout}`}
                     scrollToFirstError
                     layout='vertical'
-                    //onFinish={submitHandler}
+                    onFinish={complexFormSubmitHandler}
                     form={complexForm}
-                    //onFieldsChange={onFieldsChanged}
-                    initialValues={{
-                        // product_price: 3000,
-                        // product_cost: 1000,
-                        // isSPP: false,
-                        // isHeavy: false,
-                        // is_paid_cargo_acceptance: false,
-                        // storage_price: 'daily',
-                        // tax_state: 'УСН-доходы',
-                        // tax_rate: 6,
-                        // defective_percentage: 2,
-                        // equiring_fee: 1,
-                        // package_length: 10,
-                        // package_width: 10,
-                        // package_height: 10,
-                        // PackageType: 'Короб'
-                    }}
+                //initialValues={{}}
                 >
                     <ConfigProvider
                         theme={{
                             token: {
                                 colorPrimary: '#5329FF',
-                                colorBorder: '#5329FF'
+                                colorBorder: '#5329FF',
+                                fontFamily: 'Mulish'
                             },
                             components: {
                                 Input: {}
@@ -222,13 +218,13 @@ const OptionsWidget = () => {
                         }}
                     >
                         {optionsConfig.map((i, id) => {
-                            return (
+                            return i.isActive && (
                                 <div className={styles.form__complexInputWrapper} key={id}>
                                     <label className={styles.form__complexWrapperLabel}>{i.label}</label>
                                     <div className={styles.form__inputsContainer}>
                                         <Form.Item
                                             className={styles.form__item}
-                                            name={`${i.name}From`}
+                                            name={`${i.name}_start`}
                                         >
                                             <Input
                                                 size='large'
@@ -237,7 +233,7 @@ const OptionsWidget = () => {
                                         </Form.Item>
                                         <Form.Item
                                             className={styles.form__item}
-                                            name={`${i.name}To`}
+                                            name={`${i.name}_end`}
                                         >
                                             <Input
                                                 size='large'
@@ -266,6 +262,7 @@ const OptionsWidget = () => {
                             <Button
                                 type='text'
                                 size='large'
+                                onClick={() => complexForm.resetFields()}
                             >
                                 Очистить
                             </Button>
@@ -278,6 +275,7 @@ const OptionsWidget = () => {
                             }}
                         >
                             <Button
+                                htmlType='submit'
                                 type='primary'
                                 size='large'
                             >

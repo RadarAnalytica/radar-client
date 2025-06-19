@@ -1,16 +1,19 @@
-// dont forget to renew imports
 import styles from './skuFrequencyPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
-import { OptionsWidget, TableWidget } from './widgets'
+import { OptionsWidget, TableWidget, OptionsSettingsWidget, TableSettingsWidget } from './widgets'
+import { useAppSelector } from '../../redux/hooks'
+import DownloadButton from '../../components/DownloadButton'
+
 
 
 
 // dont forget to rename the component and its export
 const SkuFrequencyPage = () => {
-
+    const { skuFrequencyMode } = useAppSelector(store => store.filters)
+    const { requestData } = useAppSelector(store => store.requestsMonitoring)
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -33,9 +36,17 @@ const SkuFrequencyPage = () => {
                             brandSelect={false}
                             articleSelect={false}
                             groupSelect={false}
+                            timeSelect={false}
                         />
+                        {skuFrequencyMode === 'Продвинутый' &&
+                            <OptionsSettingsWidget />
+                        }
                     </div>
                     <OptionsWidget />
+                    {requestData && <div className={styles.page__tableSettingsBlock}>
+                        <DownloadButton />
+                        <TableSettingsWidget />
+                    </div>}
                 </div>
                 <TableWidget />
                 {/* !header */}
