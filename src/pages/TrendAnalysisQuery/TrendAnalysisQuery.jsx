@@ -75,7 +75,7 @@ export default function TrendAnalysisQuery() {
 
 	const mapResponseToData = (response) => {
 
-		const labels = response[query].map((el) => Object.keys(el)[0])
+		const labels = response[query].map((el) => Object.keys(el)[0].split(' ').reverse().join(' '))
 		const values = response[query].map((el) => Object.values(el)[0])
 
 		const data = {
