@@ -17,14 +17,14 @@ const initUploadStatus = {
 
 const checkFinalStatus = async (token) => {
     try {
-        let res = await fetch(`${URL}/api/file-process?per_page=100`, {
+        let res = await fetch(`${URL}/api/file-process`, {
             headers: {
                 authorization: 'JWT ' + token
             }
         })
 
         if (!res.ok) {
-
+            return
         }
 
         res = await res.json()
@@ -43,6 +43,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
 
     const intervalRef = useRef(null)
+
 
 
     const checkAllUploads = async (token, counter, interval) => {
@@ -70,7 +71,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
                 const filteredArr = []
                 fileList.forEach(_ => {
-                    const item = finalResult?.find(i => i.original_filename === _.name)
+                    const item = finalResult?.filter(i => i.original_filename === _.name).sort((a,b) => a.id - b.id).pop()
                     if (item) {
                         filteredArr.push(item)
                     }
@@ -80,6 +81,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 await getListOfReports();
                 intervalRef?.current && clearInterval(intervalRef.current)
                 intervalRef.current = null
+                localStorage.removeItem('isFilesUploading')
             }
         } catch {
             setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось загрузить файлы' })
@@ -89,7 +91,8 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     }
 
     const uploadHandler = async () => {
-
+        const filenamesArr = fileList.map(_ => ({name: _.name}))
+        localStorage.setItem('isFilesUploading', JSON.stringify(filenamesArr))
         setUploadStatus({ ...initUploadStatus, isUploading: true })
         setProgressBarState(1)
         const formData = new FormData();
@@ -107,9 +110,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
             if (!response.ok) {
                 setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.detail || 'Не удалось загрузить файлы' });
+                localStorage.removeItem('isFilesUploading')
             }
             response = await response.json()
-
             setProgressBarState(2)
             intervalRef.current = setInterval(() => {
                 checkAllUploads(authToken, response.processed_files_count)
@@ -117,6 +120,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
         } catch (error) {
             setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.detail || 'Не удалось загрузить файлы' });
+            localStorage.removeItem('isFilesUploading')
         }
     }
 
