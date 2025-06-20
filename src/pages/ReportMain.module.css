@@ -213,12 +213,6 @@
     border-radius: 16px;
 }
 
-@media screen and (min-width: 2000px) {
-    .uploadWrapper {
-      padding: 0 1.5rem;
-    }
-}
-
 .uploadTitle {
     display: flex;
     align-items: center;
