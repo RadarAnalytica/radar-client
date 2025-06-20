@@ -149,7 +149,7 @@ const NewFilterGroup = ({pageIdent, filtersData, isLoading, getData}) => {
                 >
                     {!isCollapsed ? 'Свернуть фильтры' : 'Развернуть фильтры'}
                 </button>
-                <DownloadButton handleDownload={handleDownload} isLoading={isDownloading}/>
+                <DownloadButton handleDownload={handleDownload} loading={isDownloading}/>
             </div>
             
             {!isCollapsed && (
