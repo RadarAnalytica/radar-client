@@ -79,6 +79,7 @@ function App() {
     <AuthProvider>
       <ProductProvider>
         <HelmetProvider>
+
           <UploadProvider>
             <Routes>
               {/* under development */}
@@ -136,6 +137,7 @@ function App() {
               <Route path='*' element={<Page404 />} status={404} />
             </Routes>
           </UploadProvider>
+
         </HelmetProvider>
       </ProductProvider>
     </AuthProvider>

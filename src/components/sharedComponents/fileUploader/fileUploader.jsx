@@ -45,6 +45,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     const intervalRef = useRef(null)
 
 
+
     const checkAllUploads = async (token, counter, interval) => {
         try {
             let res = await fetch(`${URL}/api/file-process/status-count`, {
