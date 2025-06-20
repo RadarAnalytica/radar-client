@@ -97,16 +97,16 @@ export const getCostsData = (dataDashBoard) => {
       {
         name: 'Комиссия (от выручки)',
         amount: dataDashBoard?.commissionWB || '0',
-        percent: dataDashBoard?.commissionWBPercent || '0',
+        percent:dataDashBoard?.commissionWBPercentCompare || '0',
         percentRate: dataDashBoard?.commissionWBCompare || '0',
-        percentRate2: dataDashBoard?.commissionWBPercentCompare || '0',
+        percentRate2: dataDashBoard?.commissionWBPercent || '0',
       },
       {
         name: 'Логистика (от выручки)',
         amount: dataDashBoard?.logistics || '0',
-        percent: dataDashBoard?.logisticsPercent || '0',
+        percent: dataDashBoard?.logisticsPercentCompare || '0',
         percentRate: dataDashBoard?.logisticsCompare || '0',
-        percentRate2: dataDashBoard?.logisticsPercentCompare || '0',
+        percentRate2:  dataDashBoard?.logisticsPercent || '0',
       },
     ];
   }
