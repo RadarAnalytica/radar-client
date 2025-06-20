@@ -57,6 +57,13 @@ export const menuConfig = [
                 isActive: true,
                 isNew: true
             },
+            {
+                id: 2,
+                url: '/trend-analysis',
+                label: 'Анализ трендовых запросов',
+                isActive: true,
+                isNew: true
+            },
         ]
     },
     {
