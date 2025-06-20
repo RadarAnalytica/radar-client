@@ -40,7 +40,7 @@ export default function TrendAnalysisQuery() {
 	const initQuery = () => {
 		const url = new URL(location.href);
 		if (url.searchParams.get('query')) {
-			return url.searchParams.get('query');
+			return url.searchParams.get('query').trim();
 		}
 		return null;
 	};
@@ -55,12 +55,13 @@ export default function TrendAnalysisQuery() {
 		if (data.query && !data.query.trim()){
 			return
 		}
+		const query = data.query.trim();
 		// Обновление ссылки с поисковым запросом
 		const url = new URL(location);
-		url.searchParams.set('query', data.query)
+		url.searchParams.set('query', query)
 		window.history.pushState({}, '', url);
 
-		setQuery(data.query);
+		setQuery(query);
 		setTimeFrame('month');
 	};
 
