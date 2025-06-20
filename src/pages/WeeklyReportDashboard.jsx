@@ -47,8 +47,8 @@ const WeeklyReportDashboard = () => {
     ))
 
   }, [authToken, dispatch])
-  console.log('dashboardData', dashboardData);
-  console.log('IsLoading', isLoading);
+  //console.log('dashboardData', dashboardData);
+  //console.log('IsLoading', isLoading);
 
 
   // if (dashboardData === null || dashboardData === undefined || (Object.keys(dashboardData).length === 1 && isLoading === false)) {
