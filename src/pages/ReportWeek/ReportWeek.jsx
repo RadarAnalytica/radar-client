@@ -40,7 +40,6 @@ export default function ReportWeek() {
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
-	const [weekSelected, setWeekSelected] = useState(null);
 	// const [weekSelected, setWeekSelected] = useState(null);
 	// const [weekStart, setWeekStart] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
@@ -226,27 +225,18 @@ export default function ReportWeek() {
 		if (savedFilterWeek) {
 			const data = JSON.parse(savedFilterWeek);
 			if (activeBrand?.id in data) {
-				setWeekSelected(data[activeBrand.id]);
-				return
+				return (data[activeBrand.id]);
 			}
 		}
-		setWeekSelected(weekOptions.slice(0, 12));
+		return (weekOptions.slice(0, 12));
 	};
+	
+	const [weekSelected, setWeekSelected] = useState(updateSavedFilterWeek());
 
 	useEffect(() => {
-		updateSavedFilterWeek()
-	}, [])
-
-	if (!weekSelected){
-		updateDataReportWeek();
-	}
-
-	// useEffect(() => {
-	// 	updateDataReportWeek();
-	// }, []);
-
-	useEffect(() => {
-		updateDataReportWeek();
+		if (activeBrand){
+			updateDataReportWeek();
+		}
 	}, [weekSelected]);
 
 	useEffect(() => {
@@ -261,7 +251,7 @@ export default function ReportWeek() {
 	}, [authToken]);
 
 	useEffect(() => {
-		updateSavedFilterWeek();
+		setWeekSelected(updateSavedFilterWeek());
 		setPrimaryCollect(activeBrand?.is_primary_collect);
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportWeek();

@@ -175,7 +175,7 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        {weekSelect && weekOptions.length > 0 && <div className={styles.filters__inputWrapper}>
+        {activeBrand && weekSelect && weekOptions.length > 0 && <div className={styles.filters__inputWrapper}>
             <WeekSelect
               selectId='week'
               label='Период:'
