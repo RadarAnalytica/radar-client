@@ -39,12 +39,31 @@ export default function TrendAnalysisQuery() {
 
 	const initQuery = () => {
 		const url = new URL(location.href);
-		if (url.searchParams.get('query')) {
+		const urlQuery = url.searchParams.get('query');
+		if (window.history.state?.visited == urlQuery){
+			return null
+		}
+		if (urlQuery) {
 			return url.searchParams.get('query').trim();
 		}
 		return null;
 	};
 	const [query, setQuery] = useState(initQuery());
+
+	
+	const updateHistoryState = () => {
+		const url = new URL(location.href);
+		if (query !== window.history.state?.visited && query){
+			url.searchParams.set('query', query);
+		} else {
+			url.searchParams.delete('query');
+		}
+		window.history.pushState({visited: query}, '', url)
+	}
+	
+	useEffect(() => {
+		updateHistoryState()
+	}, [query])
 
 	const [form] = Form.useForm();
 
@@ -56,10 +75,6 @@ export default function TrendAnalysisQuery() {
 			return
 		}
 		const query = data.query.trim();
-		// Обновление ссылки с поисковым запросом
-		const url = new URL(location);
-		url.searchParams.set('query', query)
-		window.history.pushState({}, '', url);
 
 		setQuery(query);
 		setTimeFrame('month');
@@ -107,6 +122,10 @@ export default function TrendAnalysisQuery() {
 			return;
 		}
 		setLoading(true);
+		// Обновление ссылки с поисковым запросом
+		// const url = new URL(location);
+		// url.searchParams.set('query', query)
+		// window.history.pushState({visited: query}, '', url);
 
 		try {
 				const response = await ServiceFunctions.getTrendAnalysisQuery(
