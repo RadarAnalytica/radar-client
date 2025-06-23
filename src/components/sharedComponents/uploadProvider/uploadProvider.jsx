@@ -29,9 +29,19 @@ const UploadProvider = ({ children }) => {
     const { authToken } = useContext(AuthContext)
     const { pathname } = useLocation()
     const [finalStatus, setFinalStatus] = useState()
+    const [requestCounter, setRequestCounter] = useState(0)
     const intervalRef = useRef(null)
 
     const initialCheck = async (counter, list) => {
+        if (requestCounter >= 600) {
+            intervalRef?.current && clearInterval(intervalRef.current)
+            intervalRef.current = null
+            setRequestCounter(0)
+            setFinalStatus(undefined)
+        }
+        if (intervalRef && intervalRef.current) {
+            setRequestCounter((prev) => prev + 1)
+        }
         try {
             let res = await fetch(`${URL}/api/file-process/status-count`, {
                 headers: {
@@ -45,6 +55,9 @@ const UploadProvider = ({ children }) => {
                     intervalRef.current = null
                 }
                 setFinalStatus(undefined)
+
+                setRequestCounter(0)
+
                 return
             }
 
@@ -65,6 +78,7 @@ const UploadProvider = ({ children }) => {
                     }
                 })
                 setFinalStatus(filteredArr)
+                setRequestCounter(0)
                 return
             }
             if (!intervalRef?.current) {
@@ -78,6 +92,7 @@ const UploadProvider = ({ children }) => {
                 intervalRef.current = null
             }
             setFinalStatus(undefined)
+            setRequestCounter(0)
             throw new Error('Не удалось получить статус загрузок')
         }
     }

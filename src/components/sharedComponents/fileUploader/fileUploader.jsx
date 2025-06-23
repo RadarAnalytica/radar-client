@@ -40,13 +40,24 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     const [uploadStatus, setUploadStatus] = useState(initUploadStatus);
     const [progressBarState, setProgressBarState] = useState(0)
     const [finalResult, setFinalResult] = useState()
-
+    const [requestCounter, setRequestCounter] = useState(0)
 
     const intervalRef = useRef(null)
 
 
 
-    const checkAllUploads = async (token, counter, interval) => {
+    const checkAllUploads = async (token, counter) => {
+        if (requestCounter >= 600) {
+            setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось обработать файлы. Пожалуйста, обратитесь в поддержку' })
+            intervalRef?.current && clearInterval(intervalRef.current)
+            intervalRef.current = null
+            setProgressBarState(0)
+            setRequestCounter(0)
+        }
+        if (intervalRef && intervalRef.current) {
+            setRequestCounter((prev) => prev + 1)
+        }
+
         try {
             let res = await fetch(`${URL}/api/file-process/status-count`, {
                 headers: {
@@ -57,6 +68,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             if (!res.ok) {
                 setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось загрузить файлы' })
                 setProgressBarState(0)
+                setRequestCounter(0)
                 intervalRef?.current && clearInterval(intervalRef.current)
                 intervalRef.current = null
                 return
@@ -82,11 +94,13 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 intervalRef?.current && clearInterval(intervalRef.current)
                 intervalRef.current = null
                 localStorage.removeItem('isFilesUploading')
+                setRequestCounter(0)
             }
         } catch {
             setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось загрузить файлы' })
             intervalRef?.current && clearInterval(intervalRef.current)
             intervalRef.current = null
+            setRequestCounter(0)
         }
     }
 
@@ -123,7 +137,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             localStorage.removeItem('isFilesUploading')
         }
     }
-    
+
     useEffect(() => {
         const initialCheck = async () => {
             setUploadStatus({ ...initUploadStatus, isUploading: true })
