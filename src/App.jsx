@@ -79,7 +79,6 @@ function App() {
     <AuthProvider>
       <ProductProvider>
         <HelmetProvider>
-
           <UploadProvider>
             <Routes>
               {/* under development */}
