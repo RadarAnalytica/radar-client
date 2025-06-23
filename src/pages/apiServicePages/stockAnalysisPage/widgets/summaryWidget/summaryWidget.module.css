@@ -1,0 +1,139 @@
+.widget {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.widget__bar {
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    padding: 16px;
+    height: 200px;
+    max-height: 200px;
+    display: flex;
+}
+
+.widget__bar_main {
+    padding: 8px;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+.widget__bar_rating {
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+.widget__bar_meta {
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.widget__picWrapper {
+    width: 140px;
+    max-width: 140px;
+    height: 100%;
+    border: 1px solid #0000001A;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.widget__picWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.widget__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.widget__text {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.widget__text_gray {
+    color: #8C8C8C
+}
+
+.widget__barTextWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+}
+
+.widget__barRating {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.widget__iconWrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.widget__iconWrapper_gold {
+    background: #F0AD0021;
+}
+
+.widget__iconWrapper_gray {
+    background: #7E7E7E21;
+}
+
+.widget__ratingTitleWrapper {
+    display: flex;
+    gap: 8px
+}
+
+.widget__ratingTextWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.widget__wbLink {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    text-decoration: none;
+    color: #5329FF
+}
+
+.widget__metaWrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+}

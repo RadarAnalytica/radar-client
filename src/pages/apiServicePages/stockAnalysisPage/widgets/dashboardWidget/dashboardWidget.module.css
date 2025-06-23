@@ -1,0 +1,27 @@
+.widget {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.widget__layout {
+    width: 100%;
+    display: grid;
+    gap: 20px;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr;
+}
+
+.widget__layout_2cols {
+    grid-template-columns: repeat(2, 1fr);
+}
+.widget__layout_3cols {
+    grid-template-columns: repeat(3, 1fr);
+}
+.widget__layout_4cols {
+    grid-template-columns: repeat(4, 1fr);
+}
+.widget__layout_3rows {
+    grid-template-rows: repeat(3, 1fr);
+}
