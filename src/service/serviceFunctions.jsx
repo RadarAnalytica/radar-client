@@ -1259,5 +1259,26 @@ export const ServiceFunctions = {
     const data = await res.blob()
     return data;
 	},
+	getReportProfitLoss: async (token, selectedRange, shopId, filters, weekStart) => {
+    const body = getRequestObject(filters, selectedRange, shopId)
+
+    const res = await fetch(
+      `${URL}/api/profit_loss/report`,
+      {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+        body: JSON.stringify(body)
+      }
+    );
+
+		console.log('getReportProfitLoss')
+
+		const data = await res.json();
+
+		return data;
+	}
 };
 

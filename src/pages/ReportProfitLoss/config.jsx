@@ -35,7 +35,7 @@ const renderTitle = (value, row) => {
 		);
 	}
 	// console.log('summaryRender', row)
-	return value?.rub || value;
+	return value;
 };
 
 export const COLUMNS = [
@@ -48,6 +48,114 @@ export const COLUMNS = [
 		render: renderTitle,
 	},
 ];
+
+export const ROWS = [
+	{
+		key: 'realization',
+		dataIndex: 'realization',
+		title: 'Реализация',
+	},
+	{
+		key: 'mp_discount',
+		dataIndex: 'mp_discount',
+		title: 'Скидка за счет МП',
+	},
+	{
+		key: 'sales',
+		dataIndex: 'sales',
+		title: 'Фактические продажи',
+	},
+	{
+		key: 'direct_expenses',
+		dataIndex: 'direct_expenses',
+		title: 'Прямые расходы',
+		children: [
+			{
+				key: 'cost',
+				dataIndex: 'cost',
+				title: 'Себестоимость',
+			},
+			{
+				key: 'logistic',
+				dataIndex: 'logistic',
+				title: 'Логистика',
+			},
+			{
+				key: 'commission',
+				dataIndex: 'commission',
+				title: 'Комиссия',
+				
+			},
+			{
+				key: 'penalties',
+				dataIndex: 'penalties',
+				title: 'Штрафы',
+			},
+			{
+				key: 'storage',
+				dataIndex: 'storage',
+				title: 'Хранение',
+				
+			},
+			{
+				key: 'advert',
+				dataIndex: 'advert',
+				title: 'Внутренняя реклама',
+				
+			},
+			{
+				key: 'other_retentions',
+				dataIndex: 'other_retentions',
+				title: 'Прочие удержания',
+				
+			},
+			{
+				key: 'paid_acceptance',
+				dataIndex: 'paid_acceptance',
+				title: 'Платная приемка',
+				
+			},
+		]
+	},
+	{
+		key: 'compensation',
+		dataIndex: 'compensation',
+		title: 'Компенсация',
+	},
+	{
+		key: 'gross_margin',
+		dataIndex: 'gross_margin',
+		title: 'Валовая маржа',
+	},
+	{
+		key: 'operating_expenses',
+		dataIndex: 'operating_expenses',
+		title: 'Операционные расходы',
+		children: [
+			{
+				key: 'operating_expenses0',
+				dataIndex: 'operating_expenses0',
+				title: 'Персонал',
+			},
+		]
+	},
+	{
+		key: 'operating_profit',
+		dataIndex: 'operating_profit',
+		title: 'Операционная прибыль (EBITDA)',
+	},
+	{
+		key: 'tax',
+		dataIndex: 'tax',
+		title: 'Налоги (кроме зарплатных)',
+	},
+	{
+		key: 'net_profit',
+		dataIndex: 'net_profit',
+		title: 'Чистая прибыль',
+	},
+
+]
 
 export const SCHEMA = {
 	realization: {
@@ -146,3 +254,162 @@ export const RenderCell = (value) =>
 	) : (
 		<b>{value}</b>
 	);
+
+
+	export const TESTDATA = {
+	data: [
+		{
+			year: 2025,
+			data: {
+				realization: 3123.01,
+				mp_discount: {
+					rub: 3123.01,
+					percent: 50.1,
+				},
+				sales: {
+					rub: 3123.01,
+					percent: 50.1,
+				},
+				direct_expenses: {
+					cost: {
+						rub: 3123.01,
+						percent: 50.1,
+					},
+					logistic: {
+						rub: 3123.01,
+						percent: 50.1,
+					},
+					commission: {
+						rub: 3123.01,
+						percent: 50.1,
+					},
+					penalties: {
+						rub: 3123.01,
+						percent: 50.1,
+					},
+					storage: {
+						rub: 3123.01,
+						percent: 50.1,
+					},
+					advert: {
+						rub: 3123.01,
+						percent: 50.1,
+					},
+					other_retentions: {
+						rub: 3123.01,
+						percent: 50.1,
+					},
+					paid_acceptance: {
+						rub: 3123.01,
+						percent: 50.1,
+					},
+				},
+				compensation: {
+					rub: 3123.01,
+					percent: 50.1,
+				},
+				gross_margin: {
+					rub: 3123.01,
+					percent: 50.1,
+				},
+				operating_expenses: [
+					{
+						rub: 3123.01,
+						percent: 50.1,
+						name: 'Персонал',
+					},
+				],
+				operating_profit: {
+					rub: 3123.01,
+					percent: 50.1,
+				},
+				tax: {
+					rub: 3123.01,
+					percent: 50.1,
+				},
+				net_profit: {
+					rub: 3123.01,
+					percent: 50.1,
+				},
+			},
+			months: [
+				{
+					month_label: 'Апрель 2025',
+					data: {
+						realization: 3123.01,
+						mp_discount: {
+							rub: 3123.01,
+							percent: 50.1,
+						},
+						sales: {
+							rub: 3123.01,
+							percent: 50.1,
+						},
+						direct_expenses: {
+							cost: {
+								rub: 3123.01,
+								percent: 50.1,
+							},
+							logistic: {
+								rub: 3123.01,
+								percent: 50.1,
+							},
+							commission: {
+								rub: 3123.01,
+								percent: 50.1,
+							},
+							penalties: {
+								rub: 3123.01,
+								percent: 50.1,
+							},
+							storage: {
+								rub: 3123.01,
+								percent: 50.1,
+							},
+							advert: {
+								rub: 3123.01,
+								percent: 50.1,
+							},
+							other_retentions: {
+								rub: 3123.01,
+								percent: 50.1,
+							},
+							paid_acceptance: {
+								rub: 3123.01,
+								percent: 50.1,
+							},
+						},
+						compensation: {
+							rub: 3123.01,
+							percent: 50.1,
+						},
+						gross_margin: {
+							rub: 3123.01,
+							percent: 50.1,
+						},
+						operating_expenses: [
+							{
+								rub: 3123.01,
+								percent: 50.1,
+								name: 'Персонал',
+							},
+						],
+						operating_profit: {
+							rub: 3123.01,
+							percent: 50.1,
+						},
+						tax: {
+							rub: 3123.01,
+							percent: 50.1,
+						},
+						net_profit: {
+							rub: 3123.01,
+							percent: 50.1,
+						},
+					},
+				},
+			],
+		},
+	],
+	message: 'Success',
+};

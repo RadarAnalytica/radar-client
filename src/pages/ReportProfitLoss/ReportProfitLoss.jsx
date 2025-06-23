@@ -7,112 +7,149 @@ import Header from '../../components/sharedComponents/header/header';
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 // import { fileDownload } from '../../service/utils';
-
-import { ConfigProvider, Table, Button, Popover, Modal, Form, Checkbox, Flex } from 'antd';
+import { formatPrice } from '../../service/utils';
+import {
+	ConfigProvider,
+	Table,
+	Button,
+	Popover,
+	Modal,
+	Form,
+	Checkbox,
+	Flex,
+} from 'antd';
 import styles from './ReportProfitLoss.module.css';
 // import downloadIcon from '../images/Download.svg';
 // import ReportTable from './Components/Table/ReportWeekTable';
 // import ModalTableSetting from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
 import { useAppSelector } from '../../redux/hooks';
+import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 
-import { COLUMNS, SCHEMA, RenderCell } from './config';
+import { COLUMNS, ROWS, SCHEMA, RenderCell, TESTDATA } from './config';
 
 export default function ReportProfitLoss() {
 	const { authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector(
 		(state) => state.filters
 	);
-	// const [isPopoverOpen, setPopoverOpen] = useState(false);
-	// const [isConfigOpen, setConfigOpen] = useState(false);
-	// const [data, setData] = useState();
-	// const [tableColumns, setTableColumns] = useState(COLUMNS);
-	
-	const [loading, setLoading] = useState(false);
+	const filters = useAppSelector((state) => state.filters);
+	const { shops } = useAppSelector((state) => state.shopsSlice);
+	const [primaryCollect, setPrimaryCollect] = useState(null);
+	const [shopStatus, setShopStatus] = useState(null);
+
+	const [loading, setLoading] = useState(true);
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
 
-	function renderColumn(data) {
-		console.log('renderColumn', data)
-		if (data.value || data.procent){
-			return (<Flex
-				className={styles.cell}
-				justify='space-between'
-				gap={8}
-				><span>{data.value} ₽</span> {data.procent && <span className={styles.cellProcent}>{data.procent} %</span>}
-			</Flex>)
-		}
-		return data
+	function renderColumn(data, row) {
+		return (
+			<Flex className={styles.cell} justify="space-between" gap={8}>
+				<span>{formatPrice(3123.01)} ₽</span>{' '}
+				<span className={styles.cellProcent}>
+					{formatPrice(50.1)} %
+				</span>
+			</Flex>
+		);
 	}
 
 	const dataToTableData = (response) => {
-		let columns = [...COLUMNS];
-		// let columns = [];
-		for (const date in response){
-			// console.log('date', date)
+		// тестовые данные
+		const data2025 = TESTDATA.data[0];
+
+		const columns = [...COLUMNS];
+
+		columns.push({
+			title: '2025',
+			key: 'year',
+			dataIndex: 'year',
+			width: 200,
+			render: renderColumn,
+		});
+
+		for (const month of data2025.months) {
 			columns.push({
-				title: date,
-				key: date,
-				dataIndex: date,
+				title: month.month_label,
+				key: 'month',
+				dataIndex: 'month',
 				width: 200,
-				render: RenderCell
-			})
-		}
-		console.log('dataToTableData columns', columns);
-		console.log('dataToTableData response', response);
-
-		const data = [];
-
-		for (const rowKey in SCHEMA){
-			const row = {
-				key: rowKey,
-				// title: 
-				// title: SCHEMA[rowKey]['title'],
-			}
-			for (const column of columns){
-				console.log('column of columns', column)
-				if (column.key === 'title'){
-					row[column.key] = SCHEMA[column.key]['title'];
-				} else {
-					console.log('response[column]', response[column.key])
-					// row[rowKey] = response[column.key][rowKey];
-				}
-				console.log('column.key', column.key)
-				// console.log('response[column]', response[column.key])
-				// if (SCHEMA[rowKey]?.children){
-					
-				// } else {
-					// row[column.key] = response[column.key][rowKey]
-				// }
-			}
-			data.push(row);
+				render: renderColumn,
+			});
 		}
 
-		console.log('data', data)
+		// const tableData = [];
+		const tableData = ROWS.map((el, i) => {
+			const rowData = {
+				...el,
+			};
+			// for (const column of columns){
+			// 	console.log(column)
+			// 	if (column.title == '2025'){
+			// 		// rowData[column.key] = data2025.data[el.key]
+			// 		console.log(data2025.data[el.key])
+			// 	} else {
+			// 		const monthData = data2025.months.find((el) => el.title === 'column.title');
+			// 		console.log('monthData', monthData)
+			// 	}
+			// }
 
+			return rowData;
+		});
+
+		console.log('tableData', tableData);
+		console.log('columns', columns);
 		setColumns(columns);
-		setData(data.map( (el, i) => ({key: i, ...el})))
-	}
+		setData(tableData);
+	};
 
 	const updateDataReportProfitLoss = async () => {
-		setLoading(true)
+		setLoading(true);
 		try {
-			const response = await ServiceFunctions.getReportProfitLoss()
-			dataToTableData(response)
-				// setColumns(columns)
-				// setData(dataToTableData(columns, response))
-				setLoading(false)
+			if (activeBrand !== null && activeBrand !== undefined) {
+				const response = await ServiceFunctions.getReportProfitLoss(
+					authToken,
+					selectedRange,
+					activeBrand.id,
+					filters
+				);
+
+				dataToTableData(response);
+				// setData(weeks);
+				// dataToTableData(weeks);
+			}
+		} catch (e) {
+			console.error(e);
+		} finally {
+			setLoading(false);
 		}
-		catch (e) {
-			console.error(e)
-		}
-		finally {
-				setLoading(false)
-		}
-	}
+	};
 
 	useEffect(() => {
-		updateDataReportProfitLoss()
-	}, [])
+		setPrimaryCollect(activeBrand?.is_primary_collect);
+		if (activeBrand && activeBrand.is_primary_collect) {
+			updateDataReportProfitLoss();
+		} else {
+			setData([]);
+		}
+	}, [activeBrand, selectedRange, filters]);
+
+	useEffect(() => {
+		if (activeBrand && activeBrand.id === 0 && shops) {
+			const allShop = {
+				id: 0,
+				brand_name: 'Все',
+				is_active: shops.some((_) => _.is_primary_collect),
+				is_valid: true,
+				is_primary_collect: shops.some((_) => _.is_primary_collect),
+				is_self_cost_set: !shops.some((_) => !_.is_self_cost_set),
+			};
+			setShopStatus(allShop);
+		}
+
+		if (activeBrand && activeBrand.id !== 0 && shops) {
+			const currShop = shops.find((_) => _.id === activeBrand.id);
+			setShopStatus(currShop);
+		}
+	}, [activeBrand, shops, filters]);
 
 	return (
 		<main className={styles.page}>
@@ -128,14 +165,23 @@ export default function ReportProfitLoss() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="Отчет о прибылях и убытках"></Header>
 				</div>
+				<div className={styles.controls}>
+					<Filters
+						timeSelect={false}
+						setLoading={setLoading}
+						// brandSelect={false}
+						// articleSelect={false}
+						// groupSelect={false}
+					/>
+				</div>
 				<div className={styles.container}>
 					<ReportTable
+						loading={loading}
 						columns={columns}
 						data={data}
 					></ReportTable>
 				</div>
 			</section>
-			
 		</main>
 	);
 }
