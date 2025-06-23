@@ -55,7 +55,9 @@ const UploadProvider = ({ children }) => {
                     intervalRef.current = null
                 }
                 setFinalStatus(undefined)
+
                 setRequestCounter(0)
+
                 return
             }
 
