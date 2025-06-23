@@ -40,6 +40,11 @@ const UploadProvider = ({ children }) => {
                 }
             })
             if (!res.ok) {
+                if (intervalRef?.current) {
+                    clearInterval(intervalRef.current)
+                    intervalRef.current = null
+                }
+                setFinalStatus(undefined)
                 return
             }
 
@@ -68,9 +73,23 @@ const UploadProvider = ({ children }) => {
                 }, 1000)
             }
         } catch {
+            if (intervalRef?.current) {
+                clearInterval(intervalRef.current)
+                intervalRef.current = null
+            }
+            setFinalStatus(undefined)
             throw new Error('Не удалось получить статус загрузок')
         }
     }
+
+    useEffect(() => {
+        return () => {
+            if (intervalRef?.current) {
+                clearInterval(intervalRef.current)
+                intervalRef.current = null
+            }
+        }
+    }, [])
 
 
     useEffect(() => {

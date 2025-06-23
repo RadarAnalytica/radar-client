@@ -65,13 +65,13 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             const totalAmount = res.pending + res.processing;
             const step = 100 / counter
             const progress = step * (counter - totalAmount)
-            setProgressBarState(progress)
+            setProgressBarState((prev) => prev > progress ? prev : progress)
             if (progress >= 100) {
                 const finalResult = await checkFinalStatus(token)
 
                 const filteredArr = []
                 fileList.forEach(_ => {
-                    const item = finalResult?.filter(i => i.original_filename === _.name).sort((a,b) => a.id - b.id).pop()
+                    const item = finalResult?.filter(i => i.original_filename === _.name).sort((a, b) => a.id - b.id).pop()
                     if (item) {
                         filteredArr.push(item)
                     }
@@ -91,7 +91,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     }
 
     const uploadHandler = async () => {
-        const filenamesArr = fileList.map(_ => ({name: _.name}))
+        const filenamesArr = fileList.map(_ => ({ name: _.name }))
         localStorage.setItem('isFilesUploading', JSON.stringify(filenamesArr))
         setUploadStatus({ ...initUploadStatus, isUploading: true })
         setProgressBarState(1)
@@ -123,12 +123,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             localStorage.removeItem('isFilesUploading')
         }
     }
-
-
-    useEffect(() => {
-        return () => { intervalRef?.current && clearInterval(intervalRef.current); intervalRef.current = null }
-    }, [])
-
+    
     useEffect(() => {
         const initialCheck = async () => {
             setUploadStatus({ ...initUploadStatus, isUploading: true })
@@ -141,6 +136,8 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 })
                 if (!res.ok) {
                     setUploadStatus(initUploadStatus)
+                    intervalRef?.current && clearInterval(intervalRef.current)
+                    intervalRef.current = null
                     return
                 }
 
@@ -155,10 +152,17 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 }, 1000)
             } catch {
                 setUploadStatus(initUploadStatus)
+                intervalRef?.current && clearInterval(intervalRef.current)
+                intervalRef.current = null
             }
         }
 
         initialCheck()
+
+        return () => {
+            intervalRef?.current && clearInterval(intervalRef.current)
+            intervalRef.current = null
+        }
     }, [])
 
 
@@ -247,7 +251,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
                         <div className={styles.modal__table}>
                             {finalResult.map((_, id) => {
-                                const statusMessage = _.status === 'failed' ? 'Ошибка' : _.status === 'success' ? 'Успешно' : 'Неизвестно';
+                                const statusMessage = _.status === 'failed' ? 'Ошибка' : _.status === 'completed' ? 'Успешно' : 'Неизвестно';
                                 let statusColor = '#E8E8E8'
                                 if (statusMessage === 'Ошибка') {
                                     statusColor = '#F93C65'
@@ -259,7 +263,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                     <div key={id} className={styles.modal__tableItem}>
                                         <p className={styles.modal__filename} title={_.original_filename}>{_.original_filename}</p>
                                         <div className={styles.modal__statusWrapper}>
-                                            <span className={styles.modal__filename} style={{ fontWeight: 700, color: statusColor }}>{_.status === 'failed' ? 'Ошибка' : _.status === 'success' ? 'Успешно' : 'Неизвестно'}</span>
+                                            <span className={styles.modal__filename} style={{ fontWeight: 700, color: statusColor }}>{_.status === 'failed' ? 'Ошибка' : _.status === 'completed' ? 'Успешно' : 'Неизвестно'}</span>
                                             <div className={styles.modal__icon} style={{ background: statusColor }}></div>
                                         </div>
 
