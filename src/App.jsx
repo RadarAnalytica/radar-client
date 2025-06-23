@@ -82,8 +82,8 @@ function App() {
           <UploadProvider>
             <Routes>
               {/* under development */}
-              <Route path='/dev/monitoring' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
-              <Route path='/dev/monitoring/request' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />
+              <Route path='/dev/monitoring' element={<ProtectedRoute routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
+              <Route path='/dev/monitoring/request' element={<ProtectedRoute routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />
               {/* Protected routes */}
               <Route path='/trending-requests' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск трендовых запросов'><TrendingRequestsPage /></ProtectedRoute>} />
               <Route path='/new-monitoring' element={<ProtectedRoute underDevProtected routeRuName='В разработке'><SkuFrequencyPage /></ProtectedRoute>} />

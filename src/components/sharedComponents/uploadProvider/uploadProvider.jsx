@@ -33,7 +33,7 @@ const UploadProvider = ({ children }) => {
     const intervalRef = useRef(null)
 
     const initialCheck = async (counter, list) => {
-        if (requestCounter >= 600) {
+        if (requestCounter >= 60) {
             intervalRef?.current && clearInterval(intervalRef.current)
             intervalRef.current = null
             setRequestCounter(0)
