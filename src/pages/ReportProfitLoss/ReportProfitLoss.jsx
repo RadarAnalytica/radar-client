@@ -24,7 +24,7 @@ import styles from './ReportProfitLoss.module.css';
 // import ModalTableSetting from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
 import { useAppSelector } from '../../redux/hooks';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
-
+import dayjs from 'dayjs';
 import { COLUMNS, ROWS, SCHEMA, RenderCell, TESTDATA } from './config';
 
 export default function ReportProfitLoss() {
@@ -40,6 +40,10 @@ export default function ReportProfitLoss() {
 	const [loading, setLoading] = useState(true);
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
+	const [monthRange, setMonthRange] = useState({
+		month_to: dayjs().format('YYYY-MM'),
+		month_from: dayjs('2024-02-01').format('YYYY-MM')
+	});
 
 	function renderColumn(data, row) {
 		return (
@@ -54,6 +58,7 @@ export default function ReportProfitLoss() {
 
 	const dataToTableData = (response) => {
 		// тестовые данные
+		const data = TESTDATA.data.map((el) => el)
 		const data2025 = TESTDATA.data[0];
 
 		const columns = [...COLUMNS];
@@ -63,6 +68,7 @@ export default function ReportProfitLoss() {
 			key: 'year',
 			dataIndex: 'year',
 			width: 200,
+			className: styles.summary,
 			render: renderColumn,
 		});
 
@@ -109,7 +115,8 @@ export default function ReportProfitLoss() {
 					authToken,
 					selectedRange,
 					activeBrand.id,
-					filters
+					filters,
+					monthRange
 				);
 
 				dataToTableData(response);
@@ -130,7 +137,7 @@ export default function ReportProfitLoss() {
 		} else {
 			setData([]);
 		}
-	}, [activeBrand, selectedRange, filters]);
+	}, [activeBrand, selectedRange, filters, monthRange]);
 
 	useEffect(() => {
 		if (activeBrand && activeBrand.id === 0 && shops) {
@@ -151,6 +158,14 @@ export default function ReportProfitLoss() {
 		}
 	}, [activeBrand, shops, filters]);
 
+	const monthHandler = (data) => {
+		const [start, end] = data;
+		setMonthRange({
+			month_from: dayjs(start).format('YYYY-MM'),
+			month_to: dayjs(end).format('YYYY-MM')
+		})
+	}
+
 	return (
 		<main className={styles.page}>
 			{/* {Loading(isLoading)} */}
@@ -169,6 +184,8 @@ export default function ReportProfitLoss() {
 					<Filters
 						timeSelect={false}
 						setLoading={setLoading}
+						monthSelect={true}
+						monthHandler={monthHandler}
 						// brandSelect={false}
 						// articleSelect={false}
 						// groupSelect={false}
