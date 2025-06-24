@@ -1,17 +1,51 @@
 import { useEffect } from 'react'
 import styles from './optionsWidget.module.css'
-import { useAppSelector } from '../../../../redux/hooks'
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
 import { Form, ConfigProvider, Input, Select, Button } from 'antd'
-import { optionsConfig } from '../../shared'
+import { complexRequestObjectGenerator } from '../../shared'
+import { actions as requestsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice'
+
+
+const competitionLevelValues = [
+    {value: 1, label: 'Легко'},
+    {value: 2, label: 'Средне'},
+    {value: 3, label: 'Сложно'},
+    {value: 4, label: 'Очень сложно'},
+]
+
+const priceValues = [
+    {value: JSON.stringify({start: 1, end: 500}), label: '1 - 500 ₽'},
+    {value: JSON.stringify({start: 500, end: 1500}), label: '500 - 1500 ₽'},
+    {value: JSON.stringify({start: 1500, end: 3000}), label: '1500 - 3000 ₽'},
+    {value: JSON.stringify({start: 3000, end: 3500}), label: '3000 - 3500 ₽'},
+    {value: JSON.stringify({start: 3500, end: 5500}), label: '3500 - 5500 ₽'},
+    {value: JSON.stringify({start: 5500, end: 8500}), label: '5500 - 8500 ₽'},
+    {value: JSON.stringify({start: 8500, end: 0}), label: '8500 ₽ +'},
+]
 
 
 const OptionsWidget = () => {
-
+    const dispatch = useAppDispatch()
     const [simpleForm] = Form.useForm();
     const [complexForm] = Form.useForm();
-
-
     const { skuFrequencyMode } = useAppSelector(store => store.filters) // 'Простой' | 'Продвинутый'
+    const { optionsConfig } = useAppSelector(store => store.requestsMonitoring) // 'Простой' | 'Продвинутый'
+
+
+    const simpleFormSubmitHandler = (fields) => {
+        const requestObject = {
+            query: fields.query,
+            price: JSON.parse(fields.preferedProductPrice),
+            competition_level: fields.competitionLevel
+        }
+        dispatch(requestsMonitoringActions.setRequestObject({data: requestObject, formType: 'easy'}))
+    }
+
+    const complexFormSubmitHandler = (fields) => {
+        const requestObject = complexRequestObjectGenerator(fields);
+        dispatch(requestsMonitoringActions.setRequestObject({data: requestObject, formType: 'complex'}))
+    }
+
 
     return (
         <section className={styles.widget}>
@@ -21,24 +55,11 @@ const OptionsWidget = () => {
                     className={`${styles.form} ${styles.form_simpleLayout}`}
                     scrollToFirstError
                     layout='vertical'
-                    //onFinish={submitHandler}
+                    onFinish={simpleFormSubmitHandler}
                     form={simpleForm}
-                    //onFieldsChange={onFieldsChanged}
                     initialValues={{
-                        // product_price: 3000,
-                        // product_cost: 1000,
-                        // isSPP: false,
-                        // isHeavy: false,
-                        // is_paid_cargo_acceptance: false,
-                        // storage_price: 'daily',
-                        // tax_state: 'УСН-доходы',
-                        // tax_rate: 6,
-                        // defective_percentage: 2,
-                        // equiring_fee: 1,
-                        // package_length: 10,
-                        // package_width: 10,
-                        // package_height: 10,
-                        // PackageType: 'Короб'
+                        competitionLevel: 2,
+                        preferedProductPrice: JSON.stringify({start: 500, end: 1500})
                     }}
                 >
                     <ConfigProvider
@@ -74,10 +95,18 @@ const OptionsWidget = () => {
                     </ConfigProvider>
                     <ConfigProvider
                         theme={{
+                            token: {
+                                colorPrimary: '#5329FF',
+                            },
                             components: {
                                 Select: {
-                                    activeBorderColor: '#5329FF',
-                                    hoverBorderColor: '#d9d9d9'
+                                    //activeBorderColor: 'transparent',
+                                    activeOutlineColor: 'transparent',
+                                    //hoverBorderColor: 'transparent',
+                                    optionActiveBg: 'transparent',
+                                    optionFontSize: 16,
+                                    optionSelectedBg: 'transparent',
+                                    optionSelectedColor: '#5329FF',
                                 }
                             }
                         }}
@@ -90,6 +119,7 @@ const OptionsWidget = () => {
                             <Select
                                 placeholder='Выберите цену'
                                 size='large'
+                                options={priceValues}
                                 suffixIcon={
                                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M1 1.27197L7 7.27197L13 1.27197" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
@@ -105,6 +135,7 @@ const OptionsWidget = () => {
                             <Select
                                 placeholder='Выберите уровень конкуренции'
                                 size='large'
+                                options={competitionLevelValues}
                                 suffixIcon={
                                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M1 1.27197L7 7.27197L13 1.27197" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
@@ -128,6 +159,7 @@ const OptionsWidget = () => {
                             }}
                         >
                             <Button
+                                onClick={() => simpleForm.resetFields()}
                                 type='text'
                                 size='large'
                             >
@@ -142,6 +174,7 @@ const OptionsWidget = () => {
                             }}
                         >
                             <Button
+                                htmlType='submit'
                                 type='primary'
                                 size='large'
                             >
@@ -157,31 +190,16 @@ const OptionsWidget = () => {
                     className={`${styles.form} ${styles.form_complexLayout}`}
                     scrollToFirstError
                     layout='vertical'
-                    //onFinish={submitHandler}
+                    onFinish={complexFormSubmitHandler}
                     form={complexForm}
-                    //onFieldsChange={onFieldsChanged}
-                    initialValues={{
-                        // product_price: 3000,
-                        // product_cost: 1000,
-                        // isSPP: false,
-                        // isHeavy: false,
-                        // is_paid_cargo_acceptance: false,
-                        // storage_price: 'daily',
-                        // tax_state: 'УСН-доходы',
-                        // tax_rate: 6,
-                        // defective_percentage: 2,
-                        // equiring_fee: 1,
-                        // package_length: 10,
-                        // package_width: 10,
-                        // package_height: 10,
-                        // PackageType: 'Короб'
-                    }}
+                //initialValues={{}}
                 >
                     <ConfigProvider
                         theme={{
                             token: {
                                 colorPrimary: '#5329FF',
-                                colorBorder: '#5329FF'
+                                colorBorder: '#5329FF',
+                                fontFamily: 'Mulish'
                             },
                             components: {
                                 Input: {}
@@ -222,13 +240,13 @@ const OptionsWidget = () => {
                         }}
                     >
                         {optionsConfig.map((i, id) => {
-                            return (
+                            return i.isActive && (
                                 <div className={styles.form__complexInputWrapper} key={id}>
                                     <label className={styles.form__complexWrapperLabel}>{i.label}</label>
                                     <div className={styles.form__inputsContainer}>
                                         <Form.Item
                                             className={styles.form__item}
-                                            name={`${i.name}From`}
+                                            name={`${i.name}_start`}
                                         >
                                             <Input
                                                 size='large'
@@ -237,7 +255,7 @@ const OptionsWidget = () => {
                                         </Form.Item>
                                         <Form.Item
                                             className={styles.form__item}
-                                            name={`${i.name}To`}
+                                            name={`${i.name}_end`}
                                         >
                                             <Input
                                                 size='large'
@@ -266,6 +284,7 @@ const OptionsWidget = () => {
                             <Button
                                 type='text'
                                 size='large'
+                                onClick={() => complexForm.resetFields()}
                             >
                                 Очистить
                             </Button>
@@ -278,6 +297,7 @@ const OptionsWidget = () => {
                             }}
                         >
                             <Button
+                                htmlType='submit'
                                 type='primary'
                                 size='large'
                             >

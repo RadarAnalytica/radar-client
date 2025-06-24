@@ -1213,6 +1213,34 @@ export const ServiceFunctions = {
     return data;
   },
 
+
+  getMonitoringChartData: async (periodState, query, setChartData, setRequestStatus, chartDataNormalizer) => {
+    setRequestStatus({isLoading: true, isError: false, isSuccess: false, message: ''})
+    const period = periodState === 'По дням' ? 'day' : 'month';
+    try {
+      let res = await fetch(`https://radarmarket.ru/api/analytic/query-dynamics/${period}?query_string=${query}`,
+        {
+          headers: {
+            'content-type': 'application/json',
+            'cache-control': 'public, must-revalidate, max-age=86400'
+          },
+        }
+      );
+      if (!res.ok) {
+        res = await res.json()
+        setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: res.detail || 'Не удалось загрузить данные'})
+        return
+      }
+      setRequestStatus({isLoading: false, isError: false, isSuccess: true, message: ''})
+      res = await res.json()
+      const normalizedData = chartDataNormalizer(res[query])
+      setChartData(normalizedData)
+      return res;
+    } catch {
+      setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Не удалось загрузить данные'})
+    }
+  },
+
 	getTrendAnalysisQuery: async (
 		query,
 		timeFrame,

@@ -1,52 +1,83 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './chartWidget.module.css'
 import { Chart } from 'react-chartjs-2';
+import { ServiceFunctions } from '../../../../service/serviceFunctions';
+import { chartDataNormalizer } from '../../shared';
+import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
+import { verticalDashedLinePlugin } from '../../../../service/utils';
 
-const ChartWidget = () => {
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    Filler,
+    BarController,
+    PointElement,
+    BarElement,
+    LineController,
+    LineElement,
+    [Tooltip],
+    verticalDashedLinePlugin
+);
+
+const initRequestStatus = {
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    message: ''
+}
+
+const chartOptions = {
+    plugins: {
+        legend: {
+            display: false,
+        },
+        tooltip: {
+            //enabled: false,
+            intersect: false,
+            mode: 'index',
+            axis: 'x',
+            //callbacks: {},
+            //external: (context) => { getChartTooltip(context, normilizedChartData) }
+        },
+        verticalDashedLine: { enabled: true }
+    },
+    scales: {
+        x: {
+            display: true,
+            grid: {
+                drawOnChartArea: false,
+            },
+        },
+    }
+}
+
+const ChartWidget = ({ chartTabsState, currentQuery }) => {
+
+    const [chartData, setChartData] = useState();
+    const [requestStatus, setRequestStatus] = useState(initRequestStatus);
 
     useEffect(() => {
-        if (skuChartData && chartControls) {
-            const data = {
-                labels: skuChartData.dates.map(i => moment(i).format('DD.MM.YY')),
-                datasets: chartControls.map(i => {
-                    let yAxis = 'y1';
-                    if (i.hasUnits && i.units === '₽') {
-                        yAxis = 'y'
-                    }
-                    if (i.isOnChart && i.isActive) {
-                        return {
-                            label: i.ruName,
-                            type: 'line',
-                            data: skuChartData[i.engName]?.map(i => i.item),
-                            borderColor: i.color,
-                            yAxisID: yAxis,
-                            tension: 0.4,
-                            pointBorderColor: 'white',
-                            backgroundColor: i.color,
-                            pointRadius: 6,
-                            hoverRadius: 8,
-                            borderWidth: 2
-                        }
-                    } else {
-                        return {}
-                    }
-                })
-            }
-            setNormilizedChartData({ ...data })
-        }
-    }, [skuChartData, chartControls])
+        !requestStatus.isLoading && ServiceFunctions.getMonitoringChartData(chartTabsState, currentQuery, setChartData, setRequestStatus, chartDataNormalizer)
+    }, [currentQuery, chartTabsState])
 
-    if (!skuChartData && dataStatus.isLoading) {
+
+    if (requestStatus.isLoading) {
         return (
-            <div className={styles.loaderWrapper}>
+            <div className={styles.widget__loaderWrapper}>
                 <span className='loader'></span>
             </div>
         )
     }
 
-    return (
+    return chartData && (
         <section className={styles.widget}>
-            {/* <Chart /> */}
+            <Chart
+                type='line'
+                data={chartData}
+                width={100}
+                height={40}
+                options={chartOptions}
+            />
         </section>
     )
 }
