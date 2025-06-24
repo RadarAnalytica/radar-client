@@ -19,9 +19,12 @@ const SkuFrequencyRequestPage = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
+
+
     useEffect(() => {
         const query = searchParams.get('query')
         if (query) {
+            console.log(query)
             setCurrentQuery(query)
         } else {
             navigate('/dev/monitoring')
@@ -79,7 +82,7 @@ const SkuFrequencyRequestPage = () => {
                     </ConfigProvider>
                 </div>
                 <div className={styles.page__controlsWrapper}>
-                    <div className={styles.page__filtersWrapper}>
+                    {/* <div className={styles.page__filtersWrapper}>
                         <Filters
                             setLoading={() => { }}
                             shopSelect={false}
@@ -87,7 +90,7 @@ const SkuFrequencyRequestPage = () => {
                             articleSelect={false}
                             groupSelect={false}
                         />
-                    </div>
+                    </div> */}
                     {mainTabsState === 'Тренды' &&
                         <ConfigProvider
                             theme={{

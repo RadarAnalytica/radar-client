@@ -10,10 +10,10 @@ import DownloadButton from '../../components/DownloadButton'
 
 
 
-// dont forget to rename the component and its export
 const SkuFrequencyPage = () => {
     const { skuFrequencyMode } = useAppSelector(store => store.filters)
     const { requestData } = useAppSelector(store => store.requestsMonitoring)
+    console.log(encodeURIComponent('Кожаный+ремень'))
     return (
         <main className={styles.page}>
             <MobilePlug />

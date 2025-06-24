@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchRequestsMonitoringData } from './requestsMonitoringActions'
+import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from './requestsMonitoringActions'
 import { optionsConfig } from "../../pages/skuFrequencyPage/shared";
 import { tableConfig } from "../../pages/skuFrequencyPage/shared";
 
@@ -13,6 +13,7 @@ const initialState = {
         isSuccess: false,
         message: ''
     },
+    formType: undefined,
     requestData: undefined
 };
 
@@ -21,7 +22,11 @@ const requestsMonitoringSlice = createSlice({
     initialState,
     reducers: {
         setRequestObject: (state, action) => {
-            state.requestObject = action.payload
+            return {
+                ...state,
+                requestObject: action.payload.data,
+                formType: action.payload.formType
+            }
         },
         updateRequestObject: (state, action) => {
             return {
@@ -57,6 +62,9 @@ const requestsMonitoringSlice = createSlice({
     extraReducers: (bulder) => {
         bulder
         .addCase(fetchRequestsMonitoringData.fulfilled, (state, action) => {
+                state.requestData = action.payload;
+        })
+        .addCase(fetchRequestsMonitoringDataEasy.fulfilled, (state, action) => {
                 state.requestData = action.payload;
         })
     }
