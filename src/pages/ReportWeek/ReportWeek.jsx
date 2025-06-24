@@ -1,27 +1,38 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-// import FilterReportWeek from './widgets/FilterReportWeek/FilterReportWeek'
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 
 import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
-// import downloadIcon from '../images/Download.svg';
+
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
-import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal'
-// import TableSettingModal from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
+import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal';
 import { useAppSelector } from '../../redux/hooks';
+import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import {
+	eachWeekOfInterval,
+	format,
+	formatISO,
+	endOfWeek,
+	getISOWeek,
+} from 'date-fns';
+import downloadIcon from '../images/Download.svg';
 
 import { COLUMNS } from './columnsConfig';
 
 export default function ReportWeek() {
 	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters ); const filters = useAppSelector((state) => state.filters);
+	const { activeBrand, selectedRange } = useAppSelector(
+		(state) => state.filters
+	);
+	const filters = useAppSelector((state) => state.filters);
+	const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
@@ -29,52 +40,101 @@ export default function ReportWeek() {
 	const [tableRows, setTableRows] = useState(data);
 	const [tableColumns, setTableColumns] = useState(COLUMNS);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
-	const [weekSelected, setWeekSelected] = useState([{value: 'Все'}]);
-	const [weekOptions, setweekOptions] = useState([]);
+	const [weekSelected, setWeekSelected] = useState(null);
+	// const [weekSelected, setWeekSelected] = useState(null);
+	// const [weekStart, setWeekStart] = useState(null);
+	const [shopStatus, setShopStatus] = useState(null);
 
-	function weekSelectedHandler(data){
-		console.log('weekSelectedHandler', data)
-		let savedFilterWeek = JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {}
+	const weekOptions = useMemo(() => {
+		// шаблон для создания списка опций для фильтра
+		const optionTemplate = (date) => {
+			const weekValue = formatISO(date, { representation: 'date' });
+			const weekStart = format(date, 'dd.MM.yyyy');
+			const weekEnd = format(
+				endOfWeek(date, { weekStartsOn: 1 }),
+				'dd.MM.yyyy'
+			);
+			const weekNumber = getISOWeek(date);
+			return {
+				key: date.getTime(),
+				value: weekValue,
+				label: `${weekNumber} неделя (${weekStart} - ${weekEnd})`,
+			};
+		};
+
+		// Выборка дат с 2024-01-29
+		const weeks = eachWeekOfInterval(
+			{
+				start: new Date(2024, 0, 29),
+				end: Date.now(),
+			},
+			{
+				weekStartsOn: 1,
+			}
+		);
+
+		// удаляем последнюю неделю
+		weeks.pop();
+		return weeks.map((el, i) => optionTemplate(el)).reverse();
+	}, []);
+
+	const weekSelectedFormat = () => {
+		if (!weekSelected?.find((el) => el.value === 'Все')) {
+			return weekSelected.map((el) => el.value);
+		}
+	};
+
+	const weekSelectedHandler = (data) => {
+		let savedFilterWeek =
+			JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
 		// проверка на старую версию сохранения
-		if (Array.isArray(savedFilterWeek)){
-			localStorage.removeItem('reportWeekFilterWeek')
-			savedFilterWeek = {}
-		}
-		if (!data.find((el) => el.value === 'Все' )){
-			savedFilterWeek[activeBrand.id] = data
+		// if (Array.isArray(savedFilterWeek)) {
+		// 	localStorage.removeItem('reportWeekFilterWeek');
+		// 	savedFilterWeek = {};
+		// }
+		if (!data.find((el) => el.value === 'Все')) {
+			savedFilterWeek[activeBrand.id] = data;
 		} else {
-			delete savedFilterWeek[activeBrand.id]
+			delete savedFilterWeek[activeBrand.id];
 		}
-		if (Object.keys(savedFilterWeek).length > 0){
-			localStorage.setItem('reportWeekFilterWeek', JSON.stringify(savedFilterWeek))
+		if (Object.keys(savedFilterWeek).length > 0) {
+			localStorage.setItem(
+				'reportWeekFilterWeek',
+				JSON.stringify(savedFilterWeek)
+			);
 		} else {
-			localStorage.removeItem('reportWeekFilterWeek')
+			localStorage.removeItem('reportWeekFilterWeek');
 		}
-		setWeekSelected(data)
-	}
+		setWeekSelected(data);
+	};
 
 	const updateDataReportWeek = async () => {
-		setLoading(true)
+		if (!weekSelected){
+			return
+		}
+		setLoading(true);
+		const weekStart = weekSelectedFormat();
 		try {
 			if (activeBrand !== null && activeBrand !== undefined) {
 				const response = await ServiceFunctions.getReportWeek(
 					authToken,
 					selectedRange,
 					activeBrand.id,
-					filters
+					filters,
+					weekStart
 				);
 
+				// Собираем общий массив неделей по всем годам из ответа
 				let weeks = [];
 
-				for (const year of response.data){
-					for (const week of year.weeks){
+				for (const year of response.data) {
+					for (const week of year.weeks) {
 						weeks.push(week);
 					}
 				}
 
 				setData(weeks);
-				//dataToTableData(weeks);
-				// setData(rows)
+				dataToTableData(weeks);
 			}
 		} catch (e) {
 			console.error(e);
@@ -86,43 +146,22 @@ export default function ReportWeek() {
 	};
 
 	const dataToTableData = (weeks) => {
-
-		if (!weeks || weeks?.length === 0){
+		if (!weeks || weeks?.length === 0) {
 			setTableRows([]);
-			return
+			return;
 		}
 
-		const options = weeks.map((el, i) => (
-			{
-				key: i,
-				value: i,
-				label: el.week_label
-			}
-		))
 		let summary = {};
 
-		// const summarySchema = {
-			// avg_price: (summary) => summary.sales / summary.total_sales,
-			// avg_purchase_pct: (summary) => (summary.avg_purchase_pct / summary.total_sales) * 100,
-			// avg_profit_per_piece: (summary) => (summary.total_sales / summary.order_count) * 100,
-			// roi: (summary) => (summary.profit / (summary.cost + summary.ad_expenses + summary.logistics + summary.penalties - summary.compensation + summary.commission + summary.storage) ) * 100,
-			// margin: (summary) => summary.sales - summary.cost,
-			// drr: (summary) => (summary.total_ad / summary.sales) * 100,
-		// }
+		let rows = weeks;
 
-		let rows = [];
-		if (weekSelected.length > 0 && !weekSelected.find((el) => el.value === 'Все' )){
-			rows = weeks.filter((el, i) => !!weekSelected.find((elem) => elem.value === i));
-		} else {
-			rows = weeks;
-		}
 		rows = rows.map((el, i) => {
 			let row = {
 				key: i,
 				// key: el.week,
-				week_label: el.week_label
-			}
-			for (const key in el.data){
+				week_label: el.week_label,
+			};
+			for (const key in el.data) {
 				row[key] = el.data[key];
 			}
 
@@ -136,8 +175,10 @@ export default function ReportWeek() {
 					percent: el.data.cost_price_percent,
 				},
 				compensation_defects_rub: el.data.compensation_defects.rub,
-				compensation_defects_quantity: el.data.compensation_defects.quantity,
-				compensation_damage_quantity: el.data.compensation_damage.quantity,
+				compensation_defects_quantity:
+					el.data.compensation_defects.quantity,
+				compensation_damage_quantity:
+					el.data.compensation_damage.quantity,
 				external_expenses: {
 					rub: el.data.external_expenses,
 					percent: el.data.expenses_percent,
@@ -148,29 +189,23 @@ export default function ReportWeek() {
 				return_quantity: el.data.return.quantity,
 				logistics_straight: el.data.logistics_straight.rub,
 				logistics_reverse: el.data.logistics_reverse.rub,
-			}
-			return row
-		})
+			};
+			return row;
+		});
 
-		for (const row of rows ){
-			for (const key in row){
-					const summaryValue = typeof row[key] === 'object' ? row[key]?.rub : row[key];
-					// console.log('summaryValue', summaryValue, typeof el.data[key] === 'object')
-					if (!summary[key]){
-						summary[key] = Number(summaryValue)
-					} else {
-						summary[key] += Number(summaryValue)
-					}
+		for (const row of rows) {
+			for (const key in row) {
+				const summaryValue =
+					typeof row[key] === 'object' ? row[key]?.rub : row[key];
+				if (!summary[key]) {
+					summary[key] = Number(summaryValue);
+				} else {
+					summary[key] += Number(summaryValue);
+				}
 			}
 		}
 
-		// for (const key in summary){
-		// 	if (key in summarySchema){
-		// 		summary[key] = summarySchema[key](summary)
-		// 	}
-		// }
-
-		// примвоение уникальных значений
+		// приcвоение расчетных значений
 		summary = {
 			...summary,
 			key: 'summary',
@@ -186,55 +221,88 @@ export default function ReportWeek() {
 			cost_price_per_one: summary.cost_price / summary.sales,
 			profit_per_one: summary.profit / summary.sales,
 			avg_check: summary.gains / summary.sales,
+		};
 
-		}
-		
 		rows.unshift(summary);
 		setTableRows(rows);
-		setweekOptions(options);
-	}
+	};
 
 	const updateSavedFilterWeek = () => {
-		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek')
-			if (savedFilterWeek){
-				const data = JSON.parse(savedFilterWeek)
-				if (activeBrand?.id in data ){
-					setWeekSelected(data[activeBrand.id])
-				} else {
-					setWeekSelected([{value: 'Все'}])
-				}
+		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
+		if (savedFilterWeek) {
+			const data = JSON.parse(savedFilterWeek);
+			if (activeBrand?.id in data) {
+				setWeekSelected(data[activeBrand.id]);
+				return
 			}
+		}
+		setWeekSelected(weekOptions.slice(0, 12));
+	};
+
+	useEffect(() => {
+		updateSavedFilterWeek()
+	}, [])
+
+	if (!weekSelected){
+		updateDataReportWeek();
 	}
 
-	useEffect(() => {
-		dataToTableData(data)
-	}, [weekSelected, data])
+	// useEffect(() => {
+	// 	updateDataReportWeek();
+	// }, []);
 
 	useEffect(() => {
-			if (activeBrand && activeBrand.is_primary_collect && activeBrand.is_primary_collect !== primaryCollect) {
-					setPrimaryCollect(activeBrand.is_primary_collect)
-					updateDataReportWeek()
-			}
+		updateDataReportWeek();
+	}, [weekSelected]);
+
+	useEffect(() => {
+		if (
+			activeBrand &&
+			activeBrand.is_primary_collect &&
+			activeBrand.is_primary_collect !== primaryCollect
+		) {
+			setPrimaryCollect(activeBrand.is_primary_collect);
+			updateDataReportWeek();
+		}
 	}, [authToken]);
 
 	useEffect(() => {
 		updateSavedFilterWeek();
-		setPrimaryCollect(activeBrand?.is_primary_collect)
+		setPrimaryCollect(activeBrand?.is_primary_collect);
 		if (activeBrand && activeBrand.is_primary_collect) {
-					updateDataReportWeek()
+			updateDataReportWeek();
 		} else {
-			setData([])
+			setData([]);
 		}
 	}, [activeBrand, selectedRange, filters]);
 
-	function popoverHandler(status) {
-		setIsPopoverOpen(status);
-	}
+	useEffect(() => {
+		if (activeBrand && activeBrand.id === 0 && shops) {
+			const allShop = {
+				id: 0,
+				brand_name: 'Все',
+				is_active: shops.some((_) => _.is_primary_collect),
+				is_valid: true,
+				is_primary_collect: shops.some((_) => _.is_primary_collect),
+				is_self_cost_set: !shops.some((_) => !_.is_self_cost_set),
+			};
+			setShopStatus(allShop);
+		}
 
-	function configClear() {
+		if (activeBrand && activeBrand.id !== 0 && shops) {
+			const currShop = shops.find((_) => _.id === activeBrand.id);
+			setShopStatus(currShop);
+		}
+	}, [activeBrand, shops, filters]);
+
+	const popoverHandler = (status) => {
+		setIsPopoverOpen(status);
+	};
+
+	const configClear = () => {
 		setTableColumns(COLUMNS);
 		setIsPopoverOpen(false);
-	}
+	};
 
 	const configOpen = () => {
 		setConfigOpen(true);
@@ -273,13 +341,16 @@ export default function ReportWeek() {
 		</ConfigProvider>
 	);
 
-	// закомментил, пока нет бека
-	// const handleDownload = async () => {
-	// 	const fileBlob = await ServiceFunctions.getDownloadreportWeek(
-	// 		authToken
-	// 	);
-	// 	fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
-	// };
+	const handleDownload = async () => {
+		const fileBlob = await ServiceFunctions.getDownloadReportWeek(
+			authToken,
+			selectedRange,
+			activeBrand.id,
+			filters,
+			weekStart
+		);
+		fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+	};
 
 	return (
 		<main className={styles.page}>
@@ -294,9 +365,12 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
+				{!loading && shopStatus && !shopStatus.is_self_cost_set && (
+					<SelfCostWarningBlock />
+				)}
 				<div className={styles.controls}>
 					<div className={styles.filter}>
-						<Filters
+						{weekSelected && <Filters
 							timeSelect={false}
 							setLoading={setLoading}
 							// brandSelect={false}
@@ -306,7 +380,7 @@ export default function ReportWeek() {
 							weekValue={weekSelected}
 							weekOptions={weekOptions}
 							weekHandler={weekSelectedHandler}
-						/>
+						/>}
 					</div>
 					<div className={styles.btns}>
 						<ConfigProvider
@@ -358,13 +432,18 @@ export default function ReportWeek() {
 								</Button>
 							</Popover>
 						</ConfigProvider>
-						{/*
-						// закомментил, пока нет бека
 						<ConfigProvider
 							theme={{
 								token: {
 									colorBorder: '#00000033',
 									colorPrimary: '#5329FF',
+								},
+								components: {
+									Button: {
+										paddingInlineLG: 9.5,
+										defaultShadow: false,
+										controlHeightLG: 45,
+									},
 								},
 							}}
 						>
@@ -377,11 +456,14 @@ export default function ReportWeek() {
 								<img src={downloadIcon} /> Скачать Excel
 							</Button>
 						</ConfigProvider>
-						*/}
 					</div>
 				</div>
 				<div className={styles.container}>
-					<ReportTable loading={loading} columns={tableColumns} data={tableRows} />
+					<ReportTable
+						loading={loading}
+						columns={tableColumns}
+						data={tableRows}
+					/>
 				</div>
 			</section>
 			{isConfigOpen && (

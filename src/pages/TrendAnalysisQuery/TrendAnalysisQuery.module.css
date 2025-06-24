@@ -1,0 +1,89 @@
+/* Page */
+
+.page {
+    background-color: #F7F6FE;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+}
+.page__content {
+    width: 100%;
+    padding: 30px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: scroll;
+    
+}
+.page__sideNavWrapper {
+    height: 100%;
+    width: auto;
+    overflow: visible;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+.page__headerWrapper {
+    width: 100%;
+}
+
+/* TrandAnalusisQuery */
+
+.control{
+  width: 100%;
+  border-radius: 16px;
+  background-color: white;
+  filter: drop-shadow(0px 0px 20px #00000014);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 18px 32px;
+}
+
+.form{
+  width: 50%;
+}
+
+.input{
+  flex-grow: 1;
+}
+
+.container_loading {
+  min-height: 450px;
+}
+.container_loading,
+.container {
+  position: relative;
+  /* min-height: 450px; */
+  /* height: 100%; */
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+}
+
+.btn_active{
+  color: #1A1A1A!important;
+  background-color: #5329FF1A!important;
+}
+
+.chart{
+  margin-bottom: 16px;
+}
+
+.btn{
+  padding: 9.5px 8px!important;
+}
+.btn_timeFrame{
+  padding: 8px 12px!important;
+  font-size: 18px!important;
+}

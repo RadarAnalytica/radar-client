@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { HelmetProvider } from 'react-helmet-async';
 import { ProductProvider } from "./service/ProductContext";
+import UploadProvider from "./components/sharedComponents/uploadProvider/uploadProvider";
 
 const Contacts = React.lazy(() => import("./components/Contacts"));
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
@@ -57,6 +58,7 @@ const ReportWeek = React.lazy(() => import("./pages/ReportWeek"));
 const SkuFrequencyPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyPage"));
 const SkuFrequencyRequestPage = React.lazy(() => import("./pages/skuFrequencyPage/skuFrequencyRequestPage"));
 const TrendingRequestsPage = React.lazy(() => import("./pages/trendingRequestsPage/trendingRequestsPage"));
+const TrendAnalysisQuery = React.lazy(() => import("./pages/TrendAnalysisQuery"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -77,6 +79,7 @@ function App() {
     <AuthProvider>
       <ProductProvider>
         <HelmetProvider>
+
           <Routes>
             {/* under development */}
             <Route path='/dev/monitoring' element={<ProtectedRoute userRoleProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />

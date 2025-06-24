@@ -31,7 +31,6 @@ const SelfCostTableWidget = ({
 
     useEffect(() => {
         setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 })
-        console.log(tableData?.length)
     }, [tableData])
 
     useEffect(() => {
