@@ -40,17 +40,11 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     const [uploadStatus, setUploadStatus] = useState(initUploadStatus);
     const [progressBarState, setProgressBarState] = useState(0)
     const [finalResult, setFinalResult] = useState()
-    const [requestCounter, setRequestCounter] = useState(0)
-    console.log(requestCounter)
     const intervalRef = useRef(null)
 
 
 
     const checkAllUploads = async (token, counter) => {
-        if (intervalRef && intervalRef.current) {
-            setRequestCounter((prev) => prev + 1)
-        }
-
         try {
             let res = await fetch(`${URL}/api/file-process/status-count`, {
                 headers: {
@@ -67,9 +61,10 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 return
             }
             res = await res.json()
-            const totalAmount = res.pending + res.processing;
+            const totalAmount = res.pending.count + res.processing.count;
             const step = 100 / counter
             const progress = step * (counter - totalAmount)
+            console.log(counter)
             setProgressBarState((prev) => prev > progress ? prev : progress)
             if (progress >= 100) {
                 const finalResult = await checkFinalStatus(token)
@@ -123,7 +118,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             response = await response.json()
             setProgressBarState(2)
             intervalRef.current = setInterval(() => {
-                checkAllUploads(authToken, response.processed_files_count)
+                checkAllUploads(authToken, response.processed_files_count || fileList.length)
             }, 1000)
 
         } catch (error) {
@@ -133,46 +128,46 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     }
 
     useEffect(() => {
-        const initialCheck = async () => {
-            setUploadStatus({ ...initUploadStatus, isUploading: true })
-            setProgressBarState(1)
-            try {
-                let res = await fetch(`${URL}/api/file-process/status-count`, {
-                    headers: {
-                        'content-type': 'application/json',
-                        'authorization': 'JWT ' + authToken
-                    }
-                })
-                if (!res.ok) {
-                    setUploadStatus(initUploadStatus)
-                    setProgressBarState(0)
-                    intervalRef?.current && clearInterval(intervalRef.current)
-                    intervalRef.current = null
-                    return
-                }
+        // const initialCheck = async () => {
+        //     setUploadStatus({ ...initUploadStatus, isUploading: true })
+        //     setProgressBarState(1)
+        //     try {
+        //         let res = await fetch(`${URL}/api/file-process/status-count`, {
+        //             headers: {
+        //                 'content-type': 'application/json',
+        //                 'authorization': 'JWT ' + authToken
+        //             }
+        //         })
+        //         if (!res.ok) {
+        //             setUploadStatus(initUploadStatus)
+        //             setProgressBarState(0)
+        //             intervalRef?.current && clearInterval(intervalRef.current)
+        //             intervalRef.current = null
+        //             return
+        //         }
 
-                res = await res.json()
-                const totalAmount = res.pending + res.processing;
-                if (totalAmount === 0) {
-                    setUploadStatus(initUploadStatus)
-                    setProgressBarState(0)
-                    return
-                }
-                setProgressBarState(2)
-                if (!intervalRef?.current) {
-                    intervalRef.current = setInterval(() => {
-                        checkAllUploads(authToken, totalAmount)
-                    }, 1000)
-                }
+        //         res = await res.json()
+        //         const totalAmount = res.pending + res.processing;
+        //         if (totalAmount === 0) {
+        //             setUploadStatus(initUploadStatus)
+        //             setProgressBarState(0)
+        //             return
+        //         }
+        //         setProgressBarState(2)
+        //         if (!intervalRef?.current) {
+        //             intervalRef.current = setInterval(() => {
+        //                 checkAllUploads(authToken, totalAmount)
+        //             }, 1000)
+        //         }
               
-            } catch {
-                setUploadStatus(initUploadStatus)
-                intervalRef?.current && clearInterval(intervalRef.current)
-                intervalRef.current = null
-            }
-        }
+        //     } catch {
+        //         setUploadStatus(initUploadStatus)
+        //         intervalRef?.current && clearInterval(intervalRef.current)
+        //         intervalRef.current = null
+        //     }
+        // }
 
-        initialCheck()
+        // initialCheck()
 
         return () => {
             intervalRef?.current && clearInterval(intervalRef.current)
@@ -186,16 +181,6 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             delButton.title = 'Удалить файл'
         }
     }, [fileList])
-
-    useEffect(() => {
-        if (intervalRef?.current && requestCounter >= 60) {
-            setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось обработать файлы. Пожалуйста, обратитесь в поддержку' })
-            intervalRef?.current && clearInterval(intervalRef.current)
-            intervalRef.current = null
-            setProgressBarState(0)
-            setRequestCounter(0)
-        }
-    }, [requestCounter, intervalRef])
 
 
     return (
