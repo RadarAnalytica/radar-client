@@ -139,39 +139,39 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     }
 
     useEffect(() => {
-        const initialCheck = async () => {
-            setUploadStatus({ ...initUploadStatus, isUploading: true })
-            try {
-                let res = await fetch(`${URL}/api/file-process/status-count`, {
-                    headers: {
-                        'content-type': 'application/json',
-                        'authorization': 'JWT ' + authToken
-                    }
-                })
-                if (!res.ok) {
-                    setUploadStatus(initUploadStatus)
-                    intervalRef?.current && clearInterval(intervalRef.current)
-                    intervalRef.current = null
-                    return
-                }
+        // const initialCheck = async () => {
+        //     setUploadStatus({ ...initUploadStatus, isUploading: true })
+        //     try {
+        //         let res = await fetch(`${URL}/api/file-process/status-count`, {
+        //             headers: {
+        //                 'content-type': 'application/json',
+        //                 'authorization': 'JWT ' + authToken
+        //             }
+        //         })
+        //         if (!res.ok) {
+        //             setUploadStatus(initUploadStatus)
+        //             intervalRef?.current && clearInterval(intervalRef.current)
+        //             intervalRef.current = null
+        //             return
+        //         }
 
-                res = await res.json()
-                const totalAmount = res.pending + res.processing;
-                if (totalAmount === 0) {
-                    setUploadStatus(initUploadStatus)
-                    return
-                }
-                intervalRef.current = setInterval(() => {
-                    checkAllUploads(authToken, totalAmount)
-                }, 1000)
-            } catch {
-                setUploadStatus(initUploadStatus)
-                intervalRef?.current && clearInterval(intervalRef.current)
-                intervalRef.current = null
-            }
-        }
+        //         res = await res.json()
+        //         const totalAmount = res.pending + res.processing;
+        //         if (totalAmount === 0) {
+        //             setUploadStatus(initUploadStatus)
+        //             return
+        //         }
+        //         intervalRef.current = setInterval(() => {
+        //             checkAllUploads(authToken, totalAmount)
+        //         }, 1000)
+        //     } catch {
+        //         setUploadStatus(initUploadStatus)
+        //         intervalRef?.current && clearInterval(intervalRef.current)
+        //         intervalRef.current = null
+        //     }
+        // }
 
-        initialCheck()
+        // initialCheck()
 
         return () => {
             intervalRef?.current && clearInterval(intervalRef.current)

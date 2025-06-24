@@ -17,16 +17,29 @@
     color: #8C8C8C;
 }
 
-.simpleBar__amount {
-    margin: 0;
-    padding: 0;
+.bar__amount {
     font-family: Mulish;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 24px;
     line-height: 100%;
     letter-spacing: 0%;
-    text-align: right;
-    color: #1A1A1A
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.bar__rate {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.bar__rateWrapper {
+    display: flex;
 }
 
 /* main bar */
@@ -35,7 +48,13 @@
     min-height: 205px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+}
 
+.mainBar__data {
+    display: flex;
+    flex-direction: column;
 }
 
 .mainBar__iconWrapper {
@@ -50,10 +69,124 @@
     border-radius: 10px;
 }
 
+.mainBar__dataItem {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
 /* simple bar */
 .simpleBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
+}
+
+
+.simpleBar__amount {
+    margin: 0;
+    padding: 0;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: right;
+    color: #1A1A1A
+}
+
+
+/* rate bar */
+.rateBar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rateBar__dataWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+/* tableBar */
+
+.tableBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 16px;
+}
+
+.tableBar__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+}
+
+.tableBar__table {
+    display: flex;
+    flex-direction: column;
+}
+
+.tableBar__tableRow {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 4px;
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.tableBar__tableRow:last-of-type {
+    border: none
+}
+
+.tableBar__rowTitle {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.tableBar__rowDataWrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.tableBar__summary {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+    margin: 0;
+    padding: 0
+}
+
+/* chart bar */
+
+.chartBar {
+    display: flex;
+    flex-direction: column;
+}
+
+.chartBar__header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }

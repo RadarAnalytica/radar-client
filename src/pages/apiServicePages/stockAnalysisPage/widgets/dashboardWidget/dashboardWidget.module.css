@@ -16,12 +16,33 @@
 .widget__layout_2cols {
     grid-template-columns: repeat(2, 1fr);
 }
+
 .widget__layout_3cols {
     grid-template-columns: repeat(3, 1fr);
 }
+
 .widget__layout_4cols {
     grid-template-columns: repeat(4, 1fr);
 }
+
 .widget__layout_3rows {
     grid-template-rows: repeat(3, 1fr);
+}
+
+.widget__barFooterLink {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #5329FF0D;
+    text-decoration: none;
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF;
+    border-radius: 8px;
+    padding: 14px 0;
 }
