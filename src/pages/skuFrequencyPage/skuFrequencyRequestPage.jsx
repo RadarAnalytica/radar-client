@@ -24,10 +24,9 @@ const SkuFrequencyRequestPage = () => {
     useEffect(() => {
         const query = searchParams.get('query')
         if (query) {
-            console.log(query)
             setCurrentQuery(query)
         } else {
-            navigate('/dev/monitoring')
+            navigate('/monitoring')
         }
     }, [searchParams])
 
@@ -46,7 +45,7 @@ const SkuFrequencyRequestPage = () => {
                         title={
                             <Breadcrumbs
                                 config={[
-                                    { name: 'Частотность артикула', slug: '/dev/monitoring' },
+                                    { name: 'Частотность артикула', slug: '/monitoring' },
                                     { name: currentQuery },
                                 ]}
                             />
