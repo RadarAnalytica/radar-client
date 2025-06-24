@@ -1,6 +1,6 @@
 import React from 'react';
 import AuthContext from '../../service/AuthContext';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
@@ -8,16 +8,7 @@ import ReportTable from '../../components/sharedComponents/ReportTable/ReportTab
 import { ServiceFunctions } from '../../service/serviceFunctions';
 // import { fileDownload } from '../../service/utils';
 import { formatPrice } from '../../service/utils';
-import {
-	ConfigProvider,
-	Table,
-	Button,
-	Popover,
-	Modal,
-	Form,
-	Checkbox,
-	Flex,
-} from 'antd';
+import { Flex } from 'antd';
 import styles from './ReportProfitLoss.module.css';
 // import downloadIcon from '../images/Download.svg';
 // import ReportTable from './Components/Table/ReportWeekTable';
@@ -40,10 +31,11 @@ export default function ReportProfitLoss() {
 	const [loading, setLoading] = useState(true);
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
-	const [monthRange, setMonthRange] = useState({
+	const initialRange = useMemo(() => ({
 		month_to: dayjs().format('YYYY-MM'),
 		month_from: dayjs('2024-02-01').format('YYYY-MM')
-	});
+	}))
+	const [monthRange, setMonthRange] = useState(initialRange);
 
 	function renderColumn(data, row) {
 		if (typeof data !== 'object'){
@@ -181,6 +173,10 @@ export default function ReportProfitLoss() {
 	}, [activeBrand, shops, filters]);
 
 	const monthHandler = (data) => {
+		if (!data){
+			setMonthRange(initialRange)
+			return
+		}
 		const [start, end] = data;
 		setMonthRange({
 			month_from: dayjs(start).format('YYYY-MM'),
