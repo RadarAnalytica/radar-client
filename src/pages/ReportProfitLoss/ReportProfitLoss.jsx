@@ -46,63 +46,85 @@ export default function ReportProfitLoss() {
 	});
 
 	function renderColumn(data, row) {
+		if (typeof data !== 'object'){
+			return(
+				// <span>{formatPrice(data)} ₽</span>
+				<div className={styles.cell}>{formatPrice(data, '₽')}</div>
+			)
+		}
 		return (
 			<Flex className={styles.cell} justify="space-between" gap={8}>
-				<span>{formatPrice(3123.01)} ₽</span>{' '}
+				<span>{formatPrice(data?.rub, '₽')}</span>{' '}
 				<span className={styles.cellProcent}>
-					{formatPrice(50.1)} %
+					{formatPrice(data?.percent, '%')}
 				</span>
 			</Flex>
 		);
 	}
 
 	const dataToTableData = (response) => {
-		// тестовые данные
-		const data = TESTDATA.data.map((el) => el)
-		const data2025 = TESTDATA.data[0];
+		if (!response.data.length){
+			setData([])
+			return
+		}
+		// !!!!! перепроверить ключ operating_expenses
+
+		const data = response.data.map((el) => el);
 
 		const columns = [...COLUMNS];
-
-		columns.push({
-			title: '2025',
-			key: 'year',
-			dataIndex: 'year',
-			width: 200,
-			className: styles.summary,
-			render: renderColumn,
-		});
-
-		for (const month of data2025.months) {
+		const tableData = [];
+		data.forEach((year, i) => {
+			// собираем колонки по месяцам
 			columns.push({
-				title: month.month_label,
-				key: 'month',
-				dataIndex: 'month',
-				width: 200,
+				title: year.year,
+				key: year.year,
+				dataIndex: year.year,
+				width: 240,
+				className: styles.summary,
 				render: renderColumn,
-			});
-		}
+			})
+			for (const month of year.months.reverse()) {
+				columns.push({
+					title: month.month_label,
+					key: month.month_label,
+					dataIndex: month.month_label,
+					width: 240,
+					render: renderColumn,
+				});
+			}
 
-		// const tableData = [];
-		const tableData = ROWS.map((el, i) => {
-			const rowData = {
-				...el,
-			};
-			// for (const column of columns){
-			// 	console.log(column)
-			// 	if (column.title == '2025'){
-			// 		// rowData[column.key] = data2025.data[el.key]
-			// 		console.log(data2025.data[el.key])
-			// 	} else {
-			// 		const monthData = data2025.months.find((el) => el.title === 'column.title');
-			// 		console.log('monthData', monthData)
-			// 	}
-			// }
+			ROWS.forEach((el, i) => {
+				// console.log('ROWS.map', el)
+				const rowData = {
+					...el,
+				};
+				for (const column of columns){
+					if (column.key == 'title'){
+						continue
+					}
 
-			return rowData;
-		});
+					if (column.key === year.year){
+						rowData[column.key] = year.data[el.key]
+						continue
+					}
 
-		console.log('tableData', tableData);
-		console.log('columns', columns);
+					const month = year.months.find((el) => el.month_label == column.key);
+					if (el?.children){
+						el.children.forEach((childrenRow) => {
+							rowData[childrenRow.key] = month.data[el.key][childrenRow.key]
+						})
+						continue
+					}
+					rowData[column.key] = month.data[el.key]
+
+				}
+				tableData.push(rowData)
+				
+			})
+		})
+
+		// console.log('tableData', tableData);
+		// console.log('columns', columns);
 		setColumns(columns);
 		setData(tableData);
 	};
