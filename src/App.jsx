@@ -82,6 +82,8 @@ function App() {
         <HelmetProvider>
 
           <Routes>
+            {/* dev */}
+            <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
             {/* Protected routes */}
             <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />

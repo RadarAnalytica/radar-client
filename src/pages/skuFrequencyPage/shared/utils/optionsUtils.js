@@ -36,10 +36,10 @@ export const complexRequestObjectGenerator = (fields) => {
             start: fields.avg_price_start || 0,
             end: fields.avg_price_end || 0
         },
-        goods_quantity: {
-            start: fields.productsQuantityFrom || 0,
-            end: fields.productsQuantityTo || 0
-        },
+        // goods_quantity: {
+        //     start: fields.productsQuantityFrom || 0,
+        //     end: fields.productsQuantityTo || 0
+        // },
         freq_per_good: {
             start: fields.freq_per_good_start || 0,
             end: fields.freq_per_good_end || 0
