@@ -250,7 +250,8 @@ const OptionsWidget = () => {
                                         >
                                             <Input
                                                 size='large'
-                                                prefix={<span className={styles.form__inputTextSuffix}>от</span>}
+                                                placeholder='от'
+                                                //prefix={<span className={styles.form__inputTextSuffix}>от</span>}
                                             />
                                         </Form.Item>
                                         <Form.Item
@@ -259,7 +260,8 @@ const OptionsWidget = () => {
                                         >
                                             <Input
                                                 size='large'
-                                                prefix={<span className={styles.form__inputTextSuffix}>до</span>}
+                                                  placeholder='до'
+                                                //prefix={<span className={styles.form__inputTextSuffix}>до</span>}
                                             />
                                         </Form.Item>
                                     </div>
