@@ -27,22 +27,6 @@
 
 .calendarPopup {
   position: absolute;
-  top: calc(100% + 5px);
-  z-index: 10;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 16px;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-  pointer-events: none;
-}
-.calendarPopup.visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  transition: opacity 0.4s ease-in-out 0.2s, transform 0.4s ease-in-out 0.2s; /* при появлении без задержки */
 }
 
 
@@ -319,4 +303,9 @@
 .selectMonth:focus,
 .selectYear:focus {
   border-color: #007bff;
+}
+
+:global(.ant-picker-dropdown .ant-picker-header .ant-picker-super-prev-icon),
+:global(.ant-picker-dropdown .ant-picker-header .ant-picker-super-next-icon){
+  color: #5329FF;
 }

@@ -62,19 +62,21 @@ export const MonthSelect = ({monthHandler, value}) => {
                         }
                     }}
                 >
-                    <RangePicker
-                        size='large'
-                        picker='month'
-                        format={'MM.YYYY'}
-                        onChange={monthHandler}
-                        disabledTime={{start: dayjs('2024-02'), end: dayjs()}}
-                        disabledDate={(current) => {
-                            const minDate = dayjs('2024-02');
-                            const maxDate = dayjs();
-                            return current && (current < minDate || current > maxDate);
-                        }}
-                        defaultValue={initialValue}
-                    />
+                    <div className={styles.calendarPopup}>
+                        <RangePicker
+                            size='large'
+                            picker='month'
+                            format={'MM.YYYY'}
+                            onChange={monthHandler}
+                            disabledTime={{start: dayjs('2024-02'), end: dayjs()}}
+                            disabledDate={(current) => {
+                                const minDate = dayjs('2024-02');
+                                const maxDate = dayjs();
+                                return current && (current < minDate || current > maxDate);
+                            }}
+                            defaultValue={initialValue}
+                        />
+                    </div>
                 </ConfigProvider>
             </div>
 
