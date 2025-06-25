@@ -59,7 +59,6 @@ const TableSettingsWidget = () => {
                 }
             }
         }
-        console.log(currValues)
         const updatedConfig = [
             tableConfig[0],
             {
@@ -188,7 +187,7 @@ const TableSettingsWidget = () => {
                     }
                 >
                     <div className={styles.modal}>
-                        <p className={styles.modal__title}>Настройки фильтров</p>
+                        <p className={styles.modal__title}>Настройки таблицы</p>
                         <Flex className={styles.modal__filter} gap={8}>
                             <Form
                                 className={styles.modal__searchForm}
