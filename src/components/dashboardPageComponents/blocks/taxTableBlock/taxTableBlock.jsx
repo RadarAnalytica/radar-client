@@ -12,14 +12,14 @@ const taxOption = ['УСН Д-Р', 'УСН-доходы', 'Не считать �
 const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
     const data = dataDashBoard?.taxInfo || {}
     const { authToken } = useContext(AuthContext)
-    const [taxType, setTaxType] = useState(taxOption[0])
-    const [taxRate, setTaxRate] = useState(data.taxRate || 6)
-    const [isButtonVisible, setIsButtonVisible ] = useState(false)
+    const [taxType, setTaxType] = useState()
+    const [taxRate, setTaxRate] = useState()
+    const [isButtonVisible, setIsButtonVisible] = useState(false)
     const { activeBrand, selectedRange } = useAppSelector((state) => state.filters);
-    
 
 
-    const handleTaxSubmit = async ( type, submit ) => {
+
+    const handleTaxSubmit = async (type, submit) => {
         const currentTaxType = type || taxType;
         const currentTaxRate = taxType === 'Не считать налог' ? 0 : parseFloat(taxRate) || 0;
 
@@ -34,6 +34,13 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
             console.error('Ошибка при обновлении налоговой ставки:', error);
         }
     };
+
+    useEffect(() => {
+        if (dataDashBoard) {
+            setTaxType(dataDashBoard.taxInfo.taxType)
+            setTaxRate(dataDashBoard.taxInfo.taxRate)
+        }
+    }, [dataDashBoard])
 
 
     if (loading) {
@@ -83,6 +90,12 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                                     setTaxType(value)
                                 }}
                                 options={taxOption.map(_ => ({ value: _, label: _ }))}
+                                suffixIcon={
+                                    <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 1L7 7L13 1" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
+                                    </svg>
+
+                                }
                             />
                         </ConfigProvider>
                     </div>
@@ -91,14 +104,26 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                             Ставка налога:
                         </label>
                         <div className={styles.block__specWrapper}>
-                            <Input
-                                value={taxRate}
-                                placeholder={`${taxRate} %`}
-                                onChange={(e) => {
-                                    setTaxRate((prevValue) => e.target.value.replace(/[^0-9.-]+|\.(?=\D)/g, ''))
+                            <ConfigProvider
+                                theme={{
+                                    token: {
+                                        colorPrimary: '#5329FF',
+                                        borderRadius: 8,
+                                        fontFamily: 'Mulish',
+                                        fontSize: 14
+                                    },
                                 }}
-                                onFocus={() => { setIsButtonVisible(true) }}
-                            />
+                            >
+                                <Input
+                                    disabled={taxType === 'Не считать налог'}
+                                    value={taxRate}
+                                    placeholder={`${taxRate} %`}
+                                    onChange={(e) => {
+                                        setTaxRate((prevValue) => e.target.value.replace(/[^0-9.-]+|\.(?=\D)/g, ''))
+                                    }}
+                                    onFocus={() => { setIsButtonVisible(true) }}
+                                />
+                            </ConfigProvider>
                             {isButtonVisible &&
                                 <ConfigProvider
                                     theme={{
@@ -108,6 +133,7 @@ const TaxTableBlock = ({ dataDashBoard, loading, updateDashboard }) => {
                                     }}
                                 >
                                     <Button
+                                        disabled={taxType === 'Не считать налог'}
                                         type='primary'
                                         size='medium'
                                         onClick={() => handleTaxSubmit(undefined, true)}

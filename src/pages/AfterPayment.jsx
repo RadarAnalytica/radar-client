@@ -11,12 +11,13 @@ import AuthContext from '../service/AuthContext'
 import { URL } from '../service/config';
 
 
-const AfterPayment = () => {
+const AfterPayment = (devMode) => {
   const { authToken, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [ status, setStatus ] = useState(location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false)
 
-  const status = location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false;
+  //const status = location?.state?.paymentStatus && location?.state?.paymentStatus === 'success' ? true : false;
 
   const refreshUserToken = async () => {
     try {
@@ -41,7 +42,7 @@ const AfterPayment = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       refreshUserToken().then((res) => {
-      navigate('/main')})
+      !devMode && navigate('/main')})
     }, 5000);
 
     return () => {clearTimeout(timeout)}
@@ -91,6 +92,9 @@ const AfterPayment = () => {
           </div>
         </div>
       </section>
+      {devMode &&
+        <button className={styles.switcher} onClick={() => devMode && setStatus(!status)}>Switcher</button>
+      }
     </div>
   );
 };
