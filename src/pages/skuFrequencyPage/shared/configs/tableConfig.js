@@ -11,7 +11,7 @@ export const tableConfig = [
         isMain: false,
         values: [
             //default
-            { ruName: 'Частотность WB', engName: 'frequency_30', isSortable: true, isActive: true, hasRate: false }, //
+            { ruName: 'Частотность WB', engName: 'frequency', isSortable: true, isActive: true, hasRate: false }, //
             { ruName: 'Коэффициент cпроса', engName: 'freq_per_good', isSortable: true, isActive: true, hasRate: false },
             { ruName: 'Кол-во продавцов', engName: 'suppliers_quantity', isSortable: true, isActive: true, hasRate: false },
             { ruName: 'Кол-во товаров в ТОП-750 за 30 дней', engName: 'top_goods_quantity', units: 'шт', isSortable: true, isActive: true, hasRate: false },
