@@ -108,16 +108,10 @@ export const ROWS = [
 		key: 'gross_margin',
 		title: 'Валовая маржа',
 	},
-	{
-		key: 'operating_expenses',
-		title: 'Операционные расходы',
-		// children: [
-		// 	{
-		// 		key: 'operating_expenses0',
-		// 		title: 'Персонал',
-		// 	},
-		// ]
-	},
+	// {
+	// 	key: 'operating_expenses',
+	// 	title: 'Операционные расходы',
+	// },
 	{
 		key: 'operating_profit',
 		title: 'Операционная прибыль (EBITDA)',

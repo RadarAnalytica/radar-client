@@ -49,7 +49,7 @@ export default function ReportProfitLoss() {
 		}
 		return (
 			<Flex className={styles.cell} justify="space-between" gap={8}>
-				<span>{formatPrice(data?.rub, '₽')}</span>{' '}
+				<span>{formatPrice(data?.rub, '₽')}</span>
 				<span className={styles.cellProcent}>
 					{formatPrice(data?.percent, '%')}
 				</span>
@@ -204,16 +204,43 @@ export default function ReportProfitLoss() {
 	}, [activeBrand, shops, filters]);
 
 	const monthHandler = (data) => {
-		if (!data){
-			setMonthRange(initialRange)
-			return
+		let selectedRange = initialRange;
+		if (data){
+			const [start, end] = data;
+			selectedRange = {
+				month_from: dayjs(start).format('YYYY-MM'),
+				month_to: dayjs(end).format('YYYY-MM')
+			}
 		}
-		const [start, end] = data;
-		setMonthRange({
-			month_from: dayjs(start).format('YYYY-MM'),
-			month_to: dayjs(end).format('YYYY-MM')
-		})
+		
+		setMonthRange(selectedRange);
+		saveMonthRange(selectedRange);
 	}
+
+	const saveMonthRange = (range) => {
+		const savedMonthRange = JSON.parse(localStorage.getItem('reportProfitLossMonth')) || {};
+		savedMonthRange[activeBrand.id] = range;
+		localStorage.setItem(
+			'reportProfitLossMonth',
+			JSON.stringify(savedMonthRange)
+		);
+	}
+
+	const updateSavedMonthRange = () => {
+		const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
+		if (savedMonthRange) {
+			const data = JSON.parse(savedMonthRange);
+			if (activeBrand?.id in data) {
+				setMonthRange(data[activeBrand.id]);
+				return
+			}
+		}
+		setMonthRange(initialRange);
+	};
+
+	useEffect(() => {
+		updateSavedMonthRange()
+	}, [])
 
 	return (
 		<main className={styles.page}>
@@ -235,6 +262,7 @@ export default function ReportProfitLoss() {
 						setLoading={setLoading}
 						monthSelect={true}
 						monthHandler={monthHandler}
+						monthValue={monthRange}
 						// brandSelect={false}
 						// articleSelect={false}
 						// groupSelect={false}

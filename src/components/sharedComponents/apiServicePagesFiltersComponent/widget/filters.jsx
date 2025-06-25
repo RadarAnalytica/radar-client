@@ -21,6 +21,7 @@ export const Filters = ({
   weekHandler,
   monthSelect = false,
   monthHandler,
+  monthValue
 }) => {
 
   // ------ база ------//
@@ -192,7 +193,7 @@ export const Filters = ({
         }
         {shops && activeBrand && monthSelect &&
           <div className={styles.filters__inputWrapper}>
-            <MonthSelect monthHandler={monthHandler}/>
+            <MonthSelect monthHandler={monthHandler} value={monthValue}/>
           </div>
         }
         {timeSelect &&
