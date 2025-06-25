@@ -38,7 +38,7 @@ const BarsWidget = ({currentQuery}) => {
             <Bar.Medium title='Выручка (с СПП)' data={queryDetailsData.revenue} units='₽' />
             <Bar.Medium title='Ср. выручка в день' data={queryDetailsData.avg_day_revenue} units='₽' />
             <Bar.Medium title='Ср. цена (с СПП)' data={queryDetailsData.avg_price} units='₽' />
-            <Bar.Medium title='Ср. выручка на товарс продажами' data={queryDetailsData.avg_goods_with_sales_revenue} units='₽' />
+            <Bar.Medium title='Ср. выручка на товар с продажами' data={queryDetailsData.avg_goods_with_sales_revenue} units='₽' />
             <div className={styles.widget__largeBarWrapper}>
                 <Bar.Large
                     icon='gold'
