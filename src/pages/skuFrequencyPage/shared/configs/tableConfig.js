@@ -3,7 +3,7 @@ export const tableConfig = [
         tableName: null,
         isMain: true,
         values: [
-            { ruName: 'Товар', engName: 'query', units: null, isSortable: true, isActive: true },
+            { ruName: 'Поисковые запросы', engName: 'query', units: null, isSortable: true, isActive: true },
         ]
     },
     {

@@ -159,7 +159,7 @@ const TableWidget = ({ tinyRows = false }) => {
                                     {t.values.map((v, id) => {
 
                                         // определяем необходимые стили
-                                        const headerCellStyle = v.ruName === 'Товар' || v.ruName === 'Склад' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
+                                        const headerCellStyle = v.ruName === 'Поисковые запросы' || v.ruName === 'Склад' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
                                         /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
                                         return v.isActive && (
 
