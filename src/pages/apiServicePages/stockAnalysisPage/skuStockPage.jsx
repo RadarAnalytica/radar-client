@@ -9,7 +9,7 @@ import Breadcrumbs from '../../../components/sharedComponents/header/headerBread
 import styles from './skuStockPage.module.css'
 import { useParams } from 'react-router-dom';
 import { Segmented, ConfigProvider } from 'antd';
-import { SummaryWidget, DashboardWidget } from './widgets';
+import { SummaryWidget, DashboardWidget, AboutWidget } from './widgets';
 
 
 
@@ -96,9 +96,9 @@ const SkuStockPage = () => {
                         </ConfigProvider>
                         </div>
                     </div>
-                    {tabsState === 'Сводка' && <DashboardWidget />}
-
                 </div>
+                {tabsState === 'Сводка' && <DashboardWidget />}
+                {tabsState === 'О продукте' && <AboutWidget />}
             </section>
             {/* ---------------------- */}
         </main>

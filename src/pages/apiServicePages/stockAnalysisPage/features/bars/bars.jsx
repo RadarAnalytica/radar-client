@@ -112,11 +112,11 @@ const TableBar = ({ title, data }) => {
                     <div className={styles.tableBar__tableRow} key={id}>
                         <p className={styles.tableBar__rowTitle}>{_.title}</p>
                         <div className={styles.tableBar__rowDataWrapper}>
-                            <p className={styles.simpleBar__amount}>{formatPrice(_.amount, _.amountUnits)}</p>
-                            {!_.isRate &&
+                            <p className={styles.simpleBar__amount}>{typeof _.amount === 'number' && _.amountUnits ? formatPrice(_.amount, _.amountUnits) : _.amount}</p>
+                            {!_.isRate && _.summary &&
                                 <p className={styles.tableBar__summary}>{formatPrice(_.summary, _.summaryUnits)}</p>
                             }
-                            {_.isRate &&
+                            {_.isRate && _.summary &&
                                 <div className={styles.bar__rateWrapper}>
                                     {getRateIcon(_.summary)}
                                     <p className={styles.bar__rate} style={{ color: getRateColor(_.summary) }}>{formatPrice(_.summary, _.summaryUnits)}</p>
@@ -131,33 +131,37 @@ const TableBar = ({ title, data }) => {
 }
 
 const ChartBar = ({ title, rate, amount, amountUnits, rateUnits, isRate, hasChart, chartData }) => {
-    const data = {
-        //labels: labels ? labels : [],
+    const data = hasChart && {
+        labels: chartData,
         datasets: [
             {
                 label: title,
+                
                 data: chartData,
-                backgroundColor: function (context) {
-                    const chart = context.chart;
-                    const { ctx, chartArea } = chart;
+                type: 'line',
+                backgroundColor: '#00B69B',
+                borderColor: '#00B69B',
+                // backgroundColor: function (context) {
+                //     const chart = context.chart;
+                //     const { ctx, chartArea } = chart;
 
-                    if (!chartArea) {
-                        return null;
-                    }
-                    const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                    gradient.addColorStop(0.5, '#F0AD00');
-                    gradient.addColorStop(1, '#F0AD0080');
-                    return gradient;
-                },
+                //     if (!chartArea) {
+                //         return null;
+                //     }
+                //     const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                //     gradient.addColorStop(0.5, '#F0AD00');
+                //     gradient.addColorStop(1, '#F0AD0080');
+                //     return gradient;
+                // },
 
-                borderWidth: 0,
+                borderWidth: 2,
                 barPercentage: 0.9,
                 borderRadius: 3,
 
             },
         ],
     };
-    const options = {
+    const options = hasChart && {
         responsive: true,
         maintainAspectRatio: false,
         onHover: (event) => {
@@ -207,6 +211,7 @@ const ChartBar = ({ title, rate, amount, amountUnits, rateUnits, isRate, hasChar
         },
         scales: {
             x: {
+                display: false,
                 grid: {
                     display: false,
                     drawOnChartArea: false,
@@ -216,6 +221,7 @@ const ChartBar = ({ title, rate, amount, amountUnits, rateUnits, isRate, hasChar
                 }
             },
             y: {
+                display: false,
                 //beginAtZero: true,
                 //min: minDataRevenue,
                 //max: maxDataRevenue,
@@ -223,21 +229,21 @@ const ChartBar = ({ title, rate, amount, amountUnits, rateUnits, isRate, hasChar
                     display: false,
                     drawOnChartArea: false,
                 },
-                ticks: {
-                    // stepSize: stepSizeRevenue,
-                    color: '#8C8C8C',
-                    callback: function (value) {
-                        return value.toLocaleString();
-                    }
-                }
+                // ticks: {
+                //     // stepSize: stepSizeRevenue,
+                //     color: '#8C8C8C',
+                //     callback: function (value) {
+                //         return value.toLocaleString();
+                //     }
+                // }
             }
         },
         interaction: {
             mode: 'index',
             intersect: false
         },
-        barPercentage: 1,
-        categoryPercentage: 0.7,
+        //barPercentage: 1,
+        //categoryPercentage: 0.7,
         hover: {
             mode: null,
         }

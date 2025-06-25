@@ -1,2 +1,4 @@
 import Bars from "./bars/bars";
-export { Bars }
+import MainChart from './mainChart/mainChart'
+import TableFT from "./table/table";
+export { Bars, MainChart, TableFT }
