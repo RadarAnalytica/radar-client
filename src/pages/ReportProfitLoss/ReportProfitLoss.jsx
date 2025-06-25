@@ -31,10 +31,13 @@ export default function ReportProfitLoss() {
 	const [loading, setLoading] = useState(true);
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
+
+
 	const initialRange = useMemo(() => ({
 		month_to: dayjs().format('YYYY-MM'),
-		month_from: dayjs('2024-02-01').format('YYYY-MM')
-	}))
+		month_from: dayjs().startOf('year').format('YYYY-MM')
+	}), [])
+	
 	const [monthRange, setMonthRange] = useState(initialRange);
 
 	function renderColumn(data, row) {
@@ -64,9 +67,22 @@ export default function ReportProfitLoss() {
 		const data = response.data.map((el) => el);
 
 		const columns = [...COLUMNS];
+		const rows = [...ROWS];
+
+		if (data[0].data.operating_expenses?.length){
+			const operating = rows.find((el) => el.key === 'operating_expenses');
+			operating.children = [];
+			data[0].data.operating_expenses.forEach((el, i) => {
+				operating.children.push({
+					key: `operating${i}`,
+					title: el.name
+				})
+			})
+		}
+
 		const tableData = [];
-		data.forEach((year, i) => {
-			// собираем колонки по месяцам
+		data.forEach((year) => {
+			// собираем все колонки на основе данных
 			columns.push({
 				title: year.year,
 				key: year.year,
@@ -85,40 +101,55 @@ export default function ReportProfitLoss() {
 				});
 			}
 
-			ROWS.forEach((el, i) => {
-				// console.log('ROWS.map', el)
-				const rowData = {
-					...el,
-				};
+		})
+
+		// перебираем данные по годам
+		data.forEach((year) => {
+			for (const row of rows) {
+				// перебираем данные по собранному списку строк
 				for (const column of columns){
 					if (column.key == 'title'){
 						continue
 					}
+					
+					// определяем исходные данные 
+					const data = column.key === year.year ? year?.data : year.months.find((el) => el.month_label == column.key)?.data;
 
-					if (column.key === year.year){
-						rowData[column.key] = year.data[el.key]
+					if (!data){
 						continue
 					}
-
-					const month = year.months.find((el) => el.month_label == column.key);
-					if (el?.children){
-						el.children.forEach((childrenRow) => {
-							rowData[childrenRow.key] = month.data[el.key][childrenRow.key]
+					
+					// проверка на данные в разделе Прямые расходы
+					if (row.key == 'direct_expenses'){
+						row.children.forEach((childrenRow) => {
+							if (data[row.key][childrenRow.key]){
+								childrenRow[column.key] = data[row.key][childrenRow.key]
+							}
 						})
-						continue
 					}
-					rowData[column.key] = month.data[el.key]
+
+					// проверка на данные в разделе Операционные расходы
+					if (row.key == 'operating_expenses' && row.children){
+						row.children.forEach((childrenRow, i) => {
+							if (data[row.key][i]){
+								childrenRow[`operating${i}`] = {
+									rub: data[row.key][i].rub,
+									percent: data[row.key][i].percent
+								}
+							}
+						})
+					}
+
+					if (data[row.key]){
+						row[column.key] = data[row.key]
+					}
+
 
 				}
-				tableData.push(rowData)
-				
-			})
+			}
 		})
-
-		// console.log('tableData', tableData);
-		// console.log('columns', columns);
 		setColumns(columns);
-		setData(tableData);
+		setData(rows);
 	};
 
 	const updateDataReportProfitLoss = async () => {
