@@ -74,7 +74,7 @@ const OptionsWidget = () => {
                         }}
                     >
                         <Form.Item
-                            className={styles.form__item}
+                            className={`${styles.form__item} ${styles.form__item_mid}`}
                             label='Содержит поисковый запрос'
                             name='query'
                             rules={[

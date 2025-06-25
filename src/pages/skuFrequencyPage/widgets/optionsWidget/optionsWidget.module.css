@@ -18,6 +18,10 @@
     grid-template-columns: 1.5fr 1fr 1fr;
     grid-template-rows: auto;
     justify-items: stretch;
+
+    @media (max-width: 1300px) {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
 }
 
 .form_complexLayout {
@@ -26,13 +30,18 @@
     justify-items: stretch;
 
     @media (max-width: 1400px) {
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
 .form__item {
     margin: 0;
     padding: 0;
+}
+.form__item_mid {
+    @media (max-width: 1300px) {
+        grid-column: span 2;
+    }
 }
 
 .form__item_wide {
@@ -53,6 +62,9 @@
 
 .form__submitWrapper_simple {
     grid-column: span 3;
+    @media (max-width: 1300px) {
+        grid-column: span 2;
+    }
 }
 
 .form__submitWrapper_complex {
