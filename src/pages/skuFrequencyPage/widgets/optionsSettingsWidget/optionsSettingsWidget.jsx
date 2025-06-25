@@ -82,12 +82,13 @@ const OptionsSettingsWidget = () => {
     useEffect(() => {
         const values = form.getFieldsValue()
         const keysArr = Object.keys(values)
-        if (keysArr.some(_ => !values[_])) {
+        if (keysArr.length > 0 && keysArr.some(_ => !values[_])) {
             setCheckAllButtonState('Выбрать все')
-        } else {
+        }
+        if (keysArr.length > 0 && !keysArr.some(_ => !values[_])) {
             setCheckAllButtonState('Снять все')
         }
-    }, [])
+    }, [form])
 
     return (
         <>

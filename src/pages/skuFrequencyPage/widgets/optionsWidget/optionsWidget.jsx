@@ -7,20 +7,20 @@ import { actions as requestsMonitoringActions } from '../../../../redux/requests
 
 
 const competitionLevelValues = [
-    {value: 1, label: 'Легко'},
-    {value: 2, label: 'Средне'},
-    {value: 3, label: 'Сложно'},
-    {value: 4, label: 'Очень сложно'},
+    { value: 1, label: 'Легко' },
+    { value: 2, label: 'Средне' },
+    { value: 3, label: 'Сложно' },
+    { value: 4, label: 'Очень сложно' },
 ]
 
 const priceValues = [
-    {value: JSON.stringify({start: 1, end: 500}), label: '1 - 500 ₽'},
-    {value: JSON.stringify({start: 500, end: 1500}), label: '500 - 1500 ₽'},
-    {value: JSON.stringify({start: 1500, end: 3000}), label: '1500 - 3000 ₽'},
-    {value: JSON.stringify({start: 3000, end: 3500}), label: '3000 - 3500 ₽'},
-    {value: JSON.stringify({start: 3500, end: 5500}), label: '3500 - 5500 ₽'},
-    {value: JSON.stringify({start: 5500, end: 8500}), label: '5500 - 8500 ₽'},
-    {value: JSON.stringify({start: 8500, end: 0}), label: '8500 ₽ +'},
+    { value: JSON.stringify({ start: 1, end: 500 }), label: '1 - 500 ₽' },
+    { value: JSON.stringify({ start: 500, end: 1500 }), label: '500 - 1500 ₽' },
+    { value: JSON.stringify({ start: 1500, end: 3000 }), label: '1500 - 3000 ₽' },
+    { value: JSON.stringify({ start: 3000, end: 3500 }), label: '3000 - 3500 ₽' },
+    { value: JSON.stringify({ start: 3500, end: 5500 }), label: '3500 - 5500 ₽' },
+    { value: JSON.stringify({ start: 5500, end: 8500 }), label: '5500 - 8500 ₽' },
+    { value: JSON.stringify({ start: 8500, end: 0 }), label: '8500 ₽ +' },
 ]
 
 
@@ -38,12 +38,12 @@ const OptionsWidget = () => {
             price: JSON.parse(fields.preferedProductPrice),
             competition_level: fields.competitionLevel
         }
-        dispatch(requestsMonitoringActions.setRequestObject({data: requestObject, formType: 'easy'}))
+        dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'easy' }))
     }
 
     const complexFormSubmitHandler = (fields) => {
         const requestObject = complexRequestObjectGenerator(fields);
-        dispatch(requestsMonitoringActions.setRequestObject({data: requestObject, formType: 'complex'}))
+        dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'complex' }))
     }
 
 
@@ -59,7 +59,7 @@ const OptionsWidget = () => {
                     form={simpleForm}
                     initialValues={{
                         competitionLevel: 2,
-                        preferedProductPrice: JSON.stringify({start: 500, end: 1500})
+                        preferedProductPrice: JSON.stringify({ start: 500, end: 1500 })
                     }}
                 >
                     <ConfigProvider
@@ -247,21 +247,43 @@ const OptionsWidget = () => {
                                         <Form.Item
                                             className={styles.form__item}
                                             name={`${i.name}_start`}
+                                            rules={[
+                                                () => ({
+                                                    validator(_, value) {
+                                                        const regex = /^(|\d+)$/ // только целые числа
+                                                        if (value && !regex.test(value)) {
+                                                            return Promise.reject(new Error(''))
+                                                        }
+                                                        return Promise.resolve()
+                                                    },
+                                                }),
+                                            ]}
                                         >
                                             <Input
                                                 size='large'
                                                 placeholder='от'
-                                                //prefix={<span className={styles.form__inputTextSuffix}>от</span>}
+                                            //prefix={<span className={styles.form__inputTextSuffix}>от</span>}
                                             />
                                         </Form.Item>
                                         <Form.Item
                                             className={styles.form__item}
                                             name={`${i.name}_end`}
+                                            rules={[
+                                                () => ({
+                                                    validator(_, value) {
+                                                        const regex = /^(|\d+)$/ // только целые числа
+                                                        if (value && !regex.test(value)) {
+                                                            return Promise.reject(new Error(''))
+                                                        }
+                                                        return Promise.resolve()
+                                                    },
+                                                }),
+                                            ]}
                                         >
                                             <Input
                                                 size='large'
-                                                  placeholder='до'
-                                                //prefix={<span className={styles.form__inputTextSuffix}>до</span>}
+                                                placeholder='до'
+                                            //prefix={<span className={styles.form__inputTextSuffix}>до</span>}
                                             />
                                         </Form.Item>
                                     </div>
