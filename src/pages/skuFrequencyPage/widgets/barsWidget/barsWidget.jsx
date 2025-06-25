@@ -43,7 +43,7 @@ const BarsWidget = ({currentQuery}) => {
                 <Bar.Large
                     icon='gold'
                     title='Статистика'
-                    link='/'
+                    link={`https://www.wildberries.ru/catalog/0/search.aspx?search=${encodeURIComponent(currentQuery)}`}
                     cols={2}
                     data={[
                         {title: 'Частотность WB', data: queryDetailsData.stats.frequency, units: '' },
