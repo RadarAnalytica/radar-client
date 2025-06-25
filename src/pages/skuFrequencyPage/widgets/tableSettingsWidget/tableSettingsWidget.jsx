@@ -285,7 +285,11 @@ const TableSettingsWidget = () => {
                                             initialValue={el.isActive}
                                         >
                                             <Checkbox >
-                                                <div className={styles.modal__checkboxLabelWrapper} title={el.ruName}>{el.ruName}</div>
+                                                <div 
+                                                    className={styles.modal__checkboxLabelWrapper} title={el.ruName}
+                                                    onDoubleClick={(e) => e.preventDefault()}
+                                                    //onClick={(e) => e.preventDefault()}
+                                                >{el.ruName}</div>
                                             </Checkbox>
                                         </Form.Item>
                                     </Col>

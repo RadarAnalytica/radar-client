@@ -282,7 +282,7 @@ const OptionsSettingsWidget = () => {
                                             initialValue={el.isActive}
                                         >
                                             <Checkbox >
-                                                {el.label}
+                                                <span style={{ userSelect: 'none'}}>{el.label}</span>
                                             </Checkbox>
                                         </Form.Item>
                                     </Col>
