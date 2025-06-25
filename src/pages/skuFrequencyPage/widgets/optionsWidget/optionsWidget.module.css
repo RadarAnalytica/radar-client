@@ -21,9 +21,13 @@
 }
 
 .form_complexLayout {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
     justify-items: stretch;
+
+    @media (max-width: 1400px) {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
 }
 
 .form__item {
@@ -33,6 +37,10 @@
 
 .form__item_wide {
     grid-column: span 2;
+
+    @media (max-width: 1400px) {
+        grid-column: span 3;
+    }
 }
 
 .form__submitWrapper {
@@ -49,6 +57,9 @@
 
 .form__submitWrapper_complex {
     grid-column: span 5;
+    @media (max-width: 1400px) {
+        grid-column: span 3;
+    }
 }
 
 .form__complexInputWrapper {
