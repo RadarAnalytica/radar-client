@@ -159,6 +159,13 @@ const LinkedShops = () => {
     dispatch(fetchShops(authToken));
   }, []);
 
+  useEffect(() => {
+    if (!showEdit) {
+      setTkn(undefined)
+      setBrandName(undefined)
+    }
+  }, [showEdit])
+
   const editData = {
     activeShop: activeShop,
     is_active: true,
@@ -204,6 +211,8 @@ const LinkedShops = () => {
       setShowSuccess(true);
       dispatch(fetchShops(authToken));
       dispatch(fetchFilters(authToken));
+      setTkn(undefined)
+      setBrandName(undefined)
 
     } catch {
       setError("Не удалось добавить магазин. Проверьте корректность введенных данных.");
@@ -212,16 +221,27 @@ const LinkedShops = () => {
   };
 
   const handleEditShop = (e) => {
-    if (!areAllFieldsFilled(editData)) {
+    const { activeShop, brandName } = editData;
+    const isCollectingData = !activeShop.is_primary_collect && activeShop.is_valid
+    // if (!isCollectingData && !areAllFieldsFilled(editData)) {
+    //   e.preventDefault();
+    //   setError("Введите корректное значение для всех полей");
+    //   setShowError(true);
+    //   return;
+    // }
+    if (isCollectingData && !brandName.trim()) {
       e.preventDefault();
-      setError("Введите корректное значение для всех полей");
+      setError("Введите корректное название");
       setShowError(true);
-      return;
+      return
     }
-    dispatch(editShop(editData));
-    dispatch(fetchShops(authToken));
-    dispatch(fetchFilters(authToken));
+    dispatch(editShop({ editData, fetchFilters, fetchShops }));
+    // dispatch(fetchFilters(authToken));
+    // dispatch(fetchShops(authToken));
     setShowEdit(false);
+    setActiveShop(null)
+    setTkn(undefined)
+    setBrandName(undefined)
   };
 
   const redirect = () => {
@@ -265,7 +285,8 @@ const LinkedShops = () => {
         {/* !header */}
         <div className={styles.content}>
           {shops && shops.length
-            ? shops.map((item, i) => (
+            ? [...shops].sort((a,b) => a.id - b.id).map((item, i) => { 
+              return (
               // <div className='linked-shop-block col me-2' key={i}>
               <div className={styles.shopCard} key={i}>
                 <div className={styles.shopCard__header}>
@@ -325,7 +346,7 @@ const LinkedShops = () => {
                     </defs>
                   </svg>
                   {/* DELETE */}
-                  <svg
+                  {<svg
                     onClick={() => {
                       setActiveShop(item);
                       setShowDelete(true);
@@ -364,7 +385,7 @@ const LinkedShops = () => {
                         />
                       </clipPath>
                     </defs>
-                  </svg>
+                  </svg>}
                 </div>
 
 
@@ -496,7 +517,7 @@ const LinkedShops = () => {
                   )}
                 </div>
               </div>
-            ))
+            )})
             : null}
           {loading ? null : (
             <div className={styles.shopCard}>
@@ -610,6 +631,7 @@ const LinkedShops = () => {
             placeholder={"Что-то вроде: GJys67G7sbNw178F"}
             label={"Токен"}
             callback={(e) => setTkn(e.target.value)}
+            disabled={!activeShop?.is_primary_collect && activeShop?.is_valid}
           />
           <div
             style={{

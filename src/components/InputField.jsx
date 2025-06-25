@@ -17,6 +17,7 @@ const InputField = ({
   minLength,
   maxLength,
   onKeyDown,
+  disabled
 }) => {
   const [shown, setShown] = useState(false);
 
@@ -46,6 +47,7 @@ const InputField = ({
             maxLength={maxLength}
             value={value}
             onKeyDown={onKeyDown}
+            disabled={disabled}
             style={
               emailErrorText || passErrorText
                 ? {
