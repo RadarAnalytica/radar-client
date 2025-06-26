@@ -1,10 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { ru } from 'date-fns/locale';
-import { format } from 'date-fns';
+import React, { useRef, useMemo } from 'react';
 import styles from './monthSelect.module.css';
-import { SelectIcon } from '../../shared'
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { actions as filtersActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice';
 import { ConfigProvider, DatePicker } from 'antd'
 import locale from 'antd/locale/ru_RU';
 import dayjs from 'dayjs';
@@ -15,10 +10,9 @@ const { RangePicker } = DatePicker;
 
 export const MonthSelect = ({monthHandler, value}) => {
 
-    const periodRef = useRef(null);
+    const monthRef = useRef(null);
 
     const initialValue = useMemo(() => {
-        console.log('initialValue', value)
         if (value){
             return [
                 dayjs(value?.month_from),
@@ -29,8 +23,8 @@ export const MonthSelect = ({monthHandler, value}) => {
     }, [value])
 
     return (
-        <div className={styles.calendarContainer} ref={periodRef}>
-            <label className={styles.label} htmlFor="period">
+        <div className={styles.calendarContainer} ref={monthRef}>
+            <label className={styles.label} htmlFor="month">
                 Период:
             </label>
             <div className={styles.mainSelectWrapper}>
@@ -64,6 +58,7 @@ export const MonthSelect = ({monthHandler, value}) => {
                 >
                     <div className={styles.calendarPopup}>
                         <RangePicker
+                            name='month'
                             className={styles.calendar}
                             size='large'
                             picker='month'
@@ -76,6 +71,7 @@ export const MonthSelect = ({monthHandler, value}) => {
                                 return current && (current < minDate || current > maxDate);
                             }}
                             defaultValue={initialValue}
+                            getPopupContainer={() => monthRef.current}
                         />
                     </div>
                 </ConfigProvider>

@@ -6,23 +6,17 @@ import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-// import { fileDownload } from '../../service/utils';
 import { formatPrice } from '../../service/utils';
 import { Flex } from 'antd';
 import styles from './ReportProfitLoss.module.css';
-// import downloadIcon from '../images/Download.svg';
-// import ReportTable from './Components/Table/ReportWeekTable';
-// import ModalTableSetting from '../../components/sharedComponents/ModalTableSetting/ModalTableSetting';
 import { useAppSelector } from '../../redux/hooks';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 import dayjs from 'dayjs';
-import { COLUMNS, ROWS, SCHEMA, RenderCell, TESTDATA } from './config';
+import { COLUMNS, ROWS } from './config';
 
 export default function ReportProfitLoss() {
 	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange } = useAppSelector(
-		(state) => state.filters
-	);
+	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters );
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
@@ -32,18 +26,16 @@ export default function ReportProfitLoss() {
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
 
-
 	const initialRange = useMemo(() => ({
 		month_to: dayjs().format('YYYY-MM'),
 		month_from: dayjs().startOf('year').format('YYYY-MM')
 	}), [])
-	
-	const [monthRange, setMonthRange] = useState(initialRange);
 
-	function renderColumn(data, row) {
+	const [monthRange, setMonthRange] = useState(null);
+
+	function renderColumn(data) {
 		if (typeof data !== 'object'){
 			return(
-				// <span>{formatPrice(data)} ₽</span>
 				<div className={styles.cell}>{formatPrice(data, '₽')}</div>
 			)
 		}
@@ -62,25 +54,23 @@ export default function ReportProfitLoss() {
 			setData([])
 			return
 		}
-		// !!!!! перепроверить ключ operating_expenses
-
+		
 		const data = response.data.map((el) => el);
-
 		const columns = [...COLUMNS];
 		const rows = [...ROWS];
+		
+		// !!!!! перепроверить ключ operating_expenses
+		// if (data[0].data.operating_expenses?.length){
+		// 	const operating = rows.find((el) => el.key === 'operating_expenses');
+		// 	operating.children = [];
+		// 	data[0].data.operating_expenses.forEach((el, i) => {
+		// 		operating.children.push({
+		// 			key: `operating${i}`,
+		// 			title: el.name
+		// 		})
+		// 	})
+		// }
 
-		if (data[0].data.operating_expenses?.length){
-			const operating = rows.find((el) => el.key === 'operating_expenses');
-			operating.children = [];
-			data[0].data.operating_expenses.forEach((el, i) => {
-				operating.children.push({
-					key: `operating${i}`,
-					title: el.name
-				})
-			})
-		}
-
-		const tableData = [];
 		data.forEach((year) => {
 			// собираем все колонки на основе данных
 			columns.push({
@@ -142,10 +132,7 @@ export default function ReportProfitLoss() {
 						})
 					}
 
-					if (data[row.key]){
-						row[column.key] = data[row.key]
-					}
-
+					row[column.key] = data[row.key]
 
 				}
 			}
@@ -157,7 +144,7 @@ export default function ReportProfitLoss() {
 	const updateDataReportProfitLoss = async () => {
 		setLoading(true);
 		try {
-			if (activeBrand !== null && activeBrand !== undefined) {
+			if (activeBrand !== null && activeBrand !== undefined && monthRange) {
 				const response = await ServiceFunctions.getReportProfitLoss(
 					authToken,
 					selectedRange,
@@ -243,7 +230,7 @@ export default function ReportProfitLoss() {
 
 	useEffect(() => {
 		updateSavedMonthRange()
-	}, [activeBrand])
+	}, [])
 
 	return (
 		<main className={styles.page}>
