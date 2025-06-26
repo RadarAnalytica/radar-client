@@ -51,18 +51,17 @@ export default function TableSettingModal({
 			closeModal();
 			return;
 		}
+		const columns = columnsList.reduce((res, el) => {
+			if (
+				el.dataIndex in data && data[el.dataIndex] || 
+				( Object.keys(data).length !== columnsList.length && tableColumns.find((column) => column.dataIndex === el.dataIndex))
+			){
+				res.push(el);
+			}
+			return res;
+		}, []);
 		
-		setTableColumns(() => {
-			return columnsList.reduce((res, el) => {
-				if (
-					el.dataIndex in data && data[el.dataIndex] || 
-					( Object.keys(data).length !== columnsList.length && tableColumns.find((column) => column.dataIndex === el.dataIndex))
-				){
-					res.push(el);
-				}
-				return res;
-			}, []);
-		});
+		setTableColumns(columns);
 
 		closeModal();
 	}
@@ -252,9 +251,8 @@ export default function TableSettingModal({
 				<Form form={form} onFinish={onFinish}>
 					<Flex gap={[16, 12]} vertical wrap className={styles.list}>
 						{shownColumns.map((el, i) => (
-							<Col span={8} className={styles.item}>
+							<Col key={i} span={8} className={styles.item}>
 								<Form.Item
-									key={i}
 									name={el.dataIndex}
 									valuePropName="checked"
 									value={el.dataIndex}

@@ -38,7 +38,22 @@ export default function ReportWeek() {
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [data, setData] = useState(null);
 	const [tableRows, setTableRows] = useState(data);
-	const [tableColumns, setTableColumns] = useState(COLUMNS);
+
+	const initTableColumns = () => {
+		const savedColumnsWeek = localStorage.getItem('reportWeekColumns');
+		if (savedColumnsWeek) {
+			try {
+				const columns = JSON.parse(savedColumnsWeek);
+				return columns
+			} catch (error) {
+				console.error('Ошибка при обработке сохраненных настроек', error)
+				return COLUMNS;
+			}
+		}
+		return COLUMNS;
+	}
+
+	const [tableColumns, setTableColumns] = useState(initTableColumns());
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	// const [weekSelected, setWeekSelected] = useState(null);
 	// const [weekStart, setWeekStart] = useState(null);
@@ -283,8 +298,13 @@ export default function ReportWeek() {
 		setIsPopoverOpen(status);
 	};
 
+	const tableColumnsHandler = (columns) => {
+		localStorage.setItem('reportWeekColumns', JSON.stringify(columns));
+		setTableColumns(columns)
+	}
+
 	const configClear = () => {
-		setTableColumns(COLUMNS);
+		tableColumnsHandler(COLUMNS);
 		setIsPopoverOpen(false);
 	};
 
@@ -455,7 +475,7 @@ export default function ReportWeek() {
 					isModalOpen={isConfigOpen}
 					closeModal={configCancel}
 					tableColumns={tableColumns}
-					setTableColumns={setTableColumns}
+					setTableColumns={tableColumnsHandler}
 					columnsList={COLUMNS}
 				/>
 			)}
