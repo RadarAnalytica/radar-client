@@ -169,7 +169,6 @@ export const getChartTooltip = (context, chartData) => {
 const ChartWidget = ({ chartTabsState, currentQuery }) => {
 
     const [chartData, setChartData] = useState();
-    console.log(chartData)
     const [requestStatus, setRequestStatus] = useState(initRequestStatus);
 
     useEffect(() => {
