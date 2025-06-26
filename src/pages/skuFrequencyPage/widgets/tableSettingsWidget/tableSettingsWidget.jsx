@@ -23,6 +23,8 @@ const TableSettingsWidget = () => {
 
     const [form] = Form.useForm()
     const [searchForm] = Form.useForm()
+    const filter = Form.useWatch('filter', searchForm)
+
 
     const сheckAllHandler = () => {
         const values = form.getFieldsValue()
@@ -44,11 +46,10 @@ const TableSettingsWidget = () => {
     }
 
     const searchHandler = (fields) => {
-        setSearchState(fields.filter)
+        setSearchState(fields.filter.trim())
     }
 
     const updateOptionsConfig = (fields) => {
-        console.log(fields)
         let currValues = [...tableConfig[1].values]
         for (const key in fields) {
             const index = currValues.findIndex(_ => _.engName === key);
@@ -59,7 +60,6 @@ const TableSettingsWidget = () => {
                 }
             }
         }
-        console.log(currValues)
         const updatedConfig = [
             tableConfig[0],
             {
@@ -73,16 +73,24 @@ const TableSettingsWidget = () => {
         setSearchState('')
         searchForm.resetFields()
     }
+    useEffect(() => {
+        if (!filter) {
+            searchForm.submit()
+        }
+    }, [filter])
+
 
     useEffect(() => {
         const values = form.getFieldsValue()
         const keysArr = Object.keys(values)
-        if (keysArr.some(_ => !values[_])) {
+        if (keysArr.length > 0 && keysArr.some(_ => !values[_])) {
             setCheckAllButtonState('Выбрать все')
-        } else {
+        }
+        if (keysArr.length > 0 && !keysArr.some(_ => !values[_])) {
             setCheckAllButtonState('Снять все')
         }
-    }, [])
+    }, [form])
+
 
     return (
         <>
@@ -188,7 +196,7 @@ const TableSettingsWidget = () => {
                     }
                 >
                     <div className={styles.modal}>
-                        <p className={styles.modal__title}>Настройки фильтров</p>
+                        <p className={styles.modal__title}>Настройки таблицы</p>
                         <Flex className={styles.modal__filter} gap={8}>
                             <Form
                                 className={styles.modal__searchForm}
@@ -204,20 +212,19 @@ const TableSettingsWidget = () => {
                                             size="large"
                                             placeholder="Название столбца"
                                             allowClear={{
-                                                clearIcon: (
-                                                    <svg
-                                                        className={styles.clear__icon}
-                                                        viewBox="0 0 15 16"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            clipRule="evenodd"
-                                                            d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z"
-                                                        />
-                                                    </svg>
-                                                ),
+                                                clearIcon: <svg
+                                                    width='15'
+                                                    viewBox="0 0 15 16"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        fill='#8C8C8C'
+                                                        fillRule="evenodd"
+                                                        clipRule="evenodd"
+                                                        d="M14.7074 2.60356C15.0979 2.21304 15.0979 1.57987 14.7074 1.18935C14.3168 0.798823 13.6837 0.798823 13.2931 1.18935L7.58602 6.89646L2.08601 1.39645C1.69549 1.00593 1.06232 1.00593 0.671799 1.39645C0.281275 1.78698 0.281275 2.42014 0.671799 2.81067L5.96469 8.10356L0.671799 13.3965C0.281275 13.787 0.281275 14.4201 0.671799 14.8107C1.06232 15.2012 1.69549 15.2012 2.08601 14.8107L7.79313 9.10355L13.2931 14.6036C13.6837 14.9941 14.3168 14.9941 14.7074 14.6036C15.0979 14.213 15.0979 13.5799 14.7074 13.1893L9.41446 7.89645L14.7074 2.60356Z"
+                                                    />
+                                                </svg>
                                             }}
                                         //onClear={() => setShownColumns(columnsList)}
                                         />
@@ -278,7 +285,11 @@ const TableSettingsWidget = () => {
                                             initialValue={el.isActive}
                                         >
                                             <Checkbox >
-                                                {el.ruName}
+                                                <div 
+                                                    className={styles.modal__checkboxLabelWrapper} title={el.ruName}
+                                                    onDoubleClick={(e) => e.preventDefault()}
+                                                    //onClick={(e) => e.preventDefault()}
+                                                >{el.ruName}</div>
                                             </Checkbox>
                                         </Form.Item>
                                     </Col>

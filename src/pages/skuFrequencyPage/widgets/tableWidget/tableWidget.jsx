@@ -159,7 +159,7 @@ const TableWidget = ({ tinyRows = false }) => {
                                     {t.values.map((v, id) => {
 
                                         // определяем необходимые стили
-                                        const headerCellStyle = v.ruName === 'Товар' || v.ruName === 'Склад' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
+                                        const headerCellStyle = v.ruName === 'Поисковые запросы' || v.ruName === 'Склад' ? `${styles.table__headerItem} ${styles.table__headerItem_wide}` : styles.table__headerItem
                                         /* Рендерим айтем заголовка таблицы с кнопками сортировки (если они нужны) */
                                         return v.isActive && (
 
@@ -204,7 +204,7 @@ const TableWidget = ({ tinyRows = false }) => {
                                         >
                                             {/* Для каждого товара мапим заголовки таблицы еще раз и забираем из товара нужны данные (в первой колонке одновременно фото и название) */}
                                             {t.values.map(((v, id) => {
-                                                if (v.ruName === 'Товар') {
+                                                if (v.ruName === 'Поисковые запросы') {
                                                     const url = `/monitoring/request?query=${encodeURIComponent(product[v.engName])}`
                                                     return (
                                                         <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`} key={`table_cell_${id}`} style={{ paddingLeft: '17px' }}>
@@ -214,6 +214,8 @@ const TableWidget = ({ tinyRows = false }) => {
                                                                     <Link 
                                                                         to={url} 
                                                                         className={styles.table__actionButton}
+                                                                        title='Смотреть подробнее'
+                                                                        target='_blank'
                                                                     >
                                                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
                                                                             <path d="M14.4999 0.75C14.0857 0.75 13.7499 1.08579 13.7499 1.5C13.7499 1.91421 14.0857 2.25 14.4999 2.25H18.4999C18.5746 2.25 18.6478 2.25656 18.7189 2.26913L12.0184 8.96967C11.7255 9.26256 11.7255 9.73744 12.0184 10.0303C12.3113 10.3232 12.7861 10.3232 13.079 10.0303L19.7428 3.36653C19.7475 3.41038 19.7499 3.45491 19.7499 3.5V7.5C19.7499 7.91421 20.0857 8.25 20.4999 8.25C20.9141 8.25 21.2499 7.91421 21.2499 7.5V3.5C21.2499 2.7588 20.9567 2.08609 20.4799 1.59155L20.4765 1.58807C19.9765 1.07129 19.2757 0.75 18.4999 0.75H14.4999Z" fill="#363538" />

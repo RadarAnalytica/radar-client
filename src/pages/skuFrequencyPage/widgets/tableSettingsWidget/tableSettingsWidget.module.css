@@ -30,8 +30,35 @@
 .modal__list {
     padding-bottom: 12px;
     width: 100%;
-    max-height: 496px;
+    max-height: 596px;
     overflow: auto;
     row-gap: 12px;
     column-gap: 16px;
-  }
+    margin-bottom: 16px;
+}
+
+.modal__list::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+}
+
+.modal__list::-webkit-scrollbar-track {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
+}
+
+.modal__list::-webkit-scrollbar-thumb {
+    background: #5329ff80;
+    border-radius: 6px;
+}
+
+
+.modal__checkboxLabelWrapper {
+    user-select: none;
+    width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
