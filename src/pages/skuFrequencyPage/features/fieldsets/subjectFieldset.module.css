@@ -1,33 +1,3 @@
-.widget {
-    width: 100%;
-    background: white;
-    box-shadow: 0px 0px 20px 0px #00000014;
-    border-radius: 16px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.widget__header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    align-items: center;
-}
-
-.widget__title {
-    margin: 0;
-    padding: 0;
-    font-family: Mulish;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #1A1A1A;
-}
-
 .widget__openButton {
     border: none;
     background: transparent;
@@ -41,31 +11,42 @@
    transition: transform .2s ease-in-out;
 }
 
-/* Form */
-
-.form {
+.fieldset {
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     gap: 20px;
+    border-radius: 8px;
+    background: #F5F4F7;
+    padding: 16px 20px;
 }
 
-.form_complexForm {
-    /*  */
-}
-
-.form__simpleLayout {
+.fieldset__header {
     width: 100%;
-    display: grid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 20px;
-    grid-template-columns: 1.5fr 1fr 1fr;
-    grid-template-rows: auto;
-    justify-items: stretch;
+    cursor: pointer;
+}
 
-    @media (max-width: 1300px) {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
+.fieldset__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.fieldset__layout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #F5F4F7;
 }
 
 .form__item {
@@ -88,21 +69,6 @@
     }
 }
 
-.form__submitWrapper {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-}
-
-.form__submitWrapper_simple {
-    grid-column: span 3;
-
-    @media (max-width: 1300px) {
-        grid-column: span 2;
-    }
-}
-
 .form__complexInputWrapper {
     width: 100%;
     display: flex;
@@ -111,8 +77,6 @@
     align-items: stretch;
     gap: 8px;
 }
-
-.form__complexWrapperLabel {}
 
 .form__inputsContainer {
     width: 100%;
@@ -130,3 +94,26 @@
     letter-spacing: 0%;
     color: #8C8C8C;
 }
+
+.form__multiLabel {
+    display: block;
+    max-width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 110%;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+
+:global(.ant-select-selection-overflow) {
+    flex-wrap: nowrap !important;
+    justify-content: stretch !important;
+ }
+ :global(.ant-select-selection-overflow-item) span {
+     display: flex;
+     width: 100% !important;
+     flex-shrink: 1;
+     flex-grow: 1;
+ }

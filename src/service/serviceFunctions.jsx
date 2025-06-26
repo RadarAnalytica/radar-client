@@ -1233,7 +1233,7 @@ export const ServiceFunctions = {
       }
       setRequestStatus({isLoading: false, isError: false, isSuccess: true, message: ''})
       res = await res.json()
-      const normalizedData = chartDataNormalizer(res[query])
+      const normalizedData = chartDataNormalizer(res[query], period)
       setChartData(normalizedData)
       return res;
     } catch {

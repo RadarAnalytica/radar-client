@@ -54,6 +54,26 @@ const TableWidget = ({ tinyRows = false }) => {
         }
     }, [requestObject])
 
+    useEffect(() => {
+        if (requestData) {
+            const jumper = document.querySelector('.ant-pagination-options-quick-jumper')
+            const input = jumper?.querySelector('input')
+            if (jumper && input) {
+               
+                input.style.backgroundColor = '#EEEAFF'
+                input.style.padding = '5px'
+                input.style.width = '32px'
+                jumper.textContent = 'Перейти на'
+                jumper.appendChild(input)
+                const suffix = document.createElement('span');
+                suffix.textContent = 'стр'
+                jumper.appendChild(suffix)
+                 jumper.style.color = 'black'
+            }
+        }
+    }, [requestData])
+
+
 
 
     // отслеживаем скролл в контейнере
@@ -271,8 +291,9 @@ const TableWidget = ({ tinyRows = false }) => {
                     total={paginationState.total_pages}
                     pageSize={paginationState.limit}
                     showSizeChanger={false}
-                //hideOnSinglePage={true}
-                //showTotal={(total) => `Всего ${total} товаров`}
+                    showQuickJumper
+                    hideOnSinglePage={true}
+                    //showTotal={(total) => `Всего ${total} товаров`}
                 />
             </ConfigProvider>
         </div>

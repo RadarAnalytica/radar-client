@@ -1,6 +1,14 @@
-export const chartDataNormalizer = (rawData) => {
-    const keys = rawData.map(obj => Object.keys(obj)[0]);
+export const chartDataNormalizer = (rawData, period) => {
+    let keys = rawData.map(obj => Object.keys(obj)[0]);
     const values = rawData.map(obj => Object.values(obj)[0]);
+
+    if (period && period === 'month') {
+        keys = keys.map(_ => {
+            const splitted = _.split(' ');
+            const normilized = [...splitted].reverse();
+            return normilized[0] + ' ' + normilized[1];
+        })
+    }   
 
 
     const normalizedData = {

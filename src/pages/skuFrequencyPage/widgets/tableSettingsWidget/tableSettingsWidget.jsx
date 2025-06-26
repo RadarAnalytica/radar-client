@@ -257,11 +257,11 @@ const TableSettingsWidget = () => {
                                 </Flex>
                             </Form>
                         </Flex>
-                        <div className={styles.check_all}>
+                        {!searchState && <div className={styles.check_all}>
                             <Button type='link' size='small' onClick={сheckAllHandler}>
                                 {checkAllButtonState}
                             </Button>
-                        </div>
+                        </div>}
                         <Form
                             form={form}
                             onFinish={updateOptionsConfig}
@@ -276,7 +276,7 @@ const TableSettingsWidget = () => {
                             }}
                         >
                             <Flex gap={[16, 12]} vertical wrap className={styles.modal__list}>
-                                {tableConfig[1].values.filter(_ => _.ruName.includes(searchState)).map((el, i) => (
+                                {tableConfig[1].values.filter(_ => _.ruName.toLowerCase().includes(searchState.toLowerCase())).map((el, i) => (
                                     <Col span={8} className={styles.item} key={i}>
                                         <Form.Item
                                             name={el.engName}

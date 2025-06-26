@@ -37,9 +37,9 @@ const SkuFrequencyPage = () => {
                             groupSelect={false}
                             timeSelect={false}
                         />
-                        {skuFrequencyMode === 'Продвинутый' &&
+                        {/* {skuFrequencyMode === 'Продвинутый' &&
                             <OptionsSettingsWidget />
-                        }
+                        } */}
                     </div>
                     <OptionsWidget />
                     {requestData && <div className={styles.page__tableSettingsBlock}>
@@ -48,7 +48,6 @@ const SkuFrequencyPage = () => {
                     </div>}
                 </div>
                 <TableWidget />
-                {/* !header */}
             </div>
             {/* ---------------------- */}
         </main>
