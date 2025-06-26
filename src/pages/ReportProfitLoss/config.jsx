@@ -5,7 +5,7 @@ const renderTitle = (value, row) => {
 	if (row.key == 'realization') {
 		return (
 			<Flex justify="space-between">
-				{value}:
+				{value}
 				<Tooltip title="Реализация">
 					<svg
 						width="20"

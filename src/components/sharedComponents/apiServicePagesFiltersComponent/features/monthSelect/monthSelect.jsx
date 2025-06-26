@@ -64,6 +64,7 @@ export const MonthSelect = ({monthHandler, value}) => {
                 >
                     <div className={styles.calendarPopup}>
                         <RangePicker
+                            className={styles.calendar}
                             size='large'
                             picker='month'
                             format={'MM.YYYY'}

@@ -2,7 +2,7 @@ import { ConfigProvider, Table, Button } from 'antd';
 import { useRef, useState, useEffect } from 'react';
 import styles from './ReportTable.module.css';
 
-export default function ReportTable({ loading, columns, data, rowSelection = false }) {
+export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true }) {
 	const containerRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [scrollX, setScrollX] = useState(0);
@@ -84,7 +84,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 					}}
 				>
 					<Table
-						virtual
+						virtual={virtual}
 						columns={columns}
 						dataSource={data}
 						pagination={false}
@@ -96,9 +96,8 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							return record.key === 'summary' ? styles.summaryRow : '';
 						}}
 						expandable={{
-							// expandedRowRender: (record) => <p>{record.description}</p>,
 							expandIcon: ExpandIcon,
-							rowExpandable: (record) => !!record.description,
+							// rowExpandable: (record) => !!record.description,
 							expandedRowClassName: styles.expandRow,
 						}}
 						// scroll={{ x: 'max-content' }}

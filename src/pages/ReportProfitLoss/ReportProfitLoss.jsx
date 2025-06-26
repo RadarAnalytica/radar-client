@@ -126,6 +126,8 @@ export default function ReportProfitLoss() {
 								childrenRow[column.key] = data[row.key][childrenRow.key]
 							}
 						})
+						row[column.key] = data[row.key]['total_expenses']
+						continue
 					}
 
 					// проверка на данные в разделе Операционные расходы
@@ -231,6 +233,7 @@ export default function ReportProfitLoss() {
 		if (savedMonthRange) {
 			const data = JSON.parse(savedMonthRange);
 			if (activeBrand?.id in data) {
+				console.log(activeBrand.id, data[activeBrand.id])
 				setMonthRange(data[activeBrand.id]);
 				return
 			}
@@ -240,7 +243,7 @@ export default function ReportProfitLoss() {
 
 	useEffect(() => {
 		updateSavedMonthRange()
-	}, [])
+	}, [activeBrand])
 
 	return (
 		<main className={styles.page}>
@@ -273,6 +276,7 @@ export default function ReportProfitLoss() {
 						loading={loading}
 						columns={columns}
 						data={data}
+						virtual={false}
 					></ReportTable>
 				</div>
 			</section>
