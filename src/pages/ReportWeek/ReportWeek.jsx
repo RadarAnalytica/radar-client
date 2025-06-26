@@ -299,17 +299,7 @@ export default function ReportWeek() {
 	};
 
 	const tableColumnsHandler = (columns) => {
-		console.log('tableColumnsHandler', columns)
 		localStorage.setItem('reportWeekColumns', JSON.stringify(columns));
-		// if (savedColumnsWeek) {
-		// 	try {
-		// 		const columns = JSON.parse(savedColumnsWeek);
-		// 		return columns
-		// 	} catch (error) {
-		// 		console.error('Ошибка при обработке сохраненных настроек', error)
-		// 		return COLUMNS;
-		// 	}
-		// }
 		setTableColumns(columns)
 	}
 
