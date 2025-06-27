@@ -78,7 +78,7 @@ export default function ReportProfitLoss() {
 				title: year.year,
 				key: year.year,
 				dataIndex: year.year,
-				width: 240,
+				width: 350,
 				className: styles.summary,
 				render: renderColumn,
 			})
@@ -87,7 +87,7 @@ export default function ReportProfitLoss() {
 					title: month.month_label,
 					key: month.month_label,
 					dataIndex: month.month_label,
-					width: 240,
+					width: 350,
 					render: renderColumn,
 				});
 			}
