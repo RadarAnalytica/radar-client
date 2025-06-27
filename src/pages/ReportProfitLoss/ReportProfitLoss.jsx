@@ -216,11 +216,13 @@ export default function ReportProfitLoss() {
 	}
 
 	const updateSavedMonthRange = () => {
+		if (!activeBrand){
+			return
+		}
 		const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
 		if (savedMonthRange) {
 			const data = JSON.parse(savedMonthRange);
-			if (activeBrand?.id in data) {
-				console.log(activeBrand.id, data[activeBrand.id])
+			if (activeBrand.id in data) {
 				setMonthRange(data[activeBrand.id]);
 				return
 			}
@@ -230,7 +232,7 @@ export default function ReportProfitLoss() {
 
 	useEffect(() => {
 		updateSavedMonthRange()
-	}, [])
+	}, [activeBrand])
 
 	return (
 		<main className={styles.page}>
