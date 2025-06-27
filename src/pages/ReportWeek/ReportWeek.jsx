@@ -44,7 +44,12 @@ export default function ReportWeek() {
 		if (savedColumnsWeek) {
 			try {
 				const columns = JSON.parse(savedColumnsWeek);
-				return columns
+				return columns.map((column) => COLUMNS.find((el) => {
+					if (typeof column == 'object'){
+						return el.dataIndex == column.dataIndex
+					}
+					return el.dataIndex == column
+				}))
 			} catch (error) {
 				console.error('Ошибка при обработке сохраненных настроек', error)
 				return COLUMNS;
@@ -299,7 +304,7 @@ export default function ReportWeek() {
 	};
 
 	const tableColumnsHandler = (columns) => {
-		localStorage.setItem('reportWeekColumns', JSON.stringify(columns));
+		localStorage.setItem('reportWeekColumns', JSON.stringify(columns.map(column => column.dataIndex)));
 		setTableColumns(columns)
 	}
 
