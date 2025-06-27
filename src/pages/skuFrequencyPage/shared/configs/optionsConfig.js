@@ -14,11 +14,11 @@ export const sideOptionsConfig = [
         title: null,
         isWideLayout: true,
         options: [
-            { label: 'Отношение частотности запроса к кол-ву артикулов по запросу, шт', name: 'add_freq_per_good', isWide: true, units: 'шт'},
-            { label: 'Частотность за 30 дней', name: 'add_frequency', isWide: false, units: null},
+            //{ label: 'Отношение частотности запроса к кол-ву артикулов по запросу, шт', name: 'add_freq_per_good', isWide: true, units: 'шт'},
+            //{ label: 'Частотность за 30 дней', name: 'add_frequency', isWide: false, units: null},
             { label: 'Монопольность, %', name: 'monopoly_percent', isWide: false, units: '%'},
-            { label: 'Кол-во товаров по запросу, шт', name: 'add_goods_quantity', isWide: false, units: 'шт'},
-            { label: 'Процент выкупа, %', name: 'buyout_percent', isWide: false, units: '%'},
+            //{ label: 'Кол-во артикулов по запросу, шт', name: 'add_goods_quantity', isWide: false, units: 'шт'},
+            //{ label: 'Процент выкупа, %', name: 'buyout_percent', isWide: false, units: '%'},
             
         ]
     },
@@ -35,11 +35,11 @@ export const sideOptionsConfig = [
         title: 'У артикулов на первых 3-х страницах',
         isWideLayout: true,
         options: [
-            { label: 'Выручка за 30 дней, руб', name: '30_days_revenue', isWide: false, units: '₽'},
-            { label: 'Средняя выручка за 30 дней, руб', name: 'avg_30_days_revenue', isWide: false, units: '₽'},
+            // { label: 'Выручка за 30 дней, руб', name: '30_days_revenue', isWide: false, units: '₽'},
+            { label: 'Средняя выручка за 30 дней, руб', name: 'avg_revenue', isWide: false, units: '₽'},
             { label: '% упущенной выручки за 30 дней', name: 'lost_revenue_percent', isWide: false, units: '%'},
-            { label: 'Средняя цена, руб', name: 'f3_avg_price', isWide: false, units: '₽'},
-            { label: '% артикулов с продажами', name: 'f3_goods_with_sales_percent', isWide: false, units: '%'}
+            // { label: 'Средняя цена, руб', name: 'f3_avg_price', isWide: false, units: '₽'},
+            //{ label: '% артикулов с продажами', name: 'f3_goods_with_sales_percent', isWide: false, units: '%'}
         ]
     },
 ]
