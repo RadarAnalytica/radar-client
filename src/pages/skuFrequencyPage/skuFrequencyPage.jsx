@@ -7,12 +7,13 @@ import { OptionsWidget, TableWidget, TableSettingsWidget } from './widgets'
 //import OptionsSettingsWidget from './widgets'
 import { useAppSelector } from '../../redux/hooks'
 import DownloadButton from '../../components/DownloadButton'
+import TableWidget_TEST from './widgets/tableWidget/tableWidget_TEST'
 
 
 
 
 const SkuFrequencyPage = () => {
-    const { skuFrequencyMode } = useAppSelector(store => store.filters)
+    //const { skuFrequencyMode } = useAppSelector(store => store.filters)
     const { requestData } = useAppSelector(store => store.requestsMonitoring)
     return (
         <main className={styles.page}>
@@ -49,6 +50,7 @@ const SkuFrequencyPage = () => {
                     </div>}
                 </div>
                 <TableWidget />
+                {/* <TableWidget_TEST /> */}
             </div>
             {/* ---------------------- */}
         </main>
