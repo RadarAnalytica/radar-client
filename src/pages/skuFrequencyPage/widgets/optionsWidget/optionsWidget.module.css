@@ -10,11 +10,25 @@
 }
 
 .widget__header {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+}
+
+.widget__titleWrapper {
     width: 100%;
     display: flex;
     justify-content: space-between;
     gap: 20px;
     align-items: center;
+}
+
+.widget__summaryBlock {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .widget__title {

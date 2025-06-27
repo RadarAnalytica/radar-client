@@ -30,7 +30,7 @@ const OptionsWidget = () => {
     const [simpleForm] = Form.useForm();
     const [complexForm] = Form.useForm();
     const { skuFrequencyMode } = useAppSelector(store => store.filters) // 'Простой' | 'Продвинутый'
-    const { optionsConfig } = useAppSelector(store => store.requestsMonitoring) // 'Простой' | 'Продвинутый'
+    const { optionsConfig, requestObject } = useAppSelector(store => store.requestsMonitoring) // 'Простой' | 'Продвинутый'
     const prefered_items = Form.useWatch('prefered_items', complexForm)
     const [isBodyVisisble, setIsBodyVisible] = useState(true)
 
@@ -52,14 +52,27 @@ const OptionsWidget = () => {
 
     return (
         <section className={styles.widget}>
-            <div className={styles.widget__header} style={{ cursor: skuFrequencyMode === 'Продвинутый' ? 'pointer' : '' }} onClick={() => skuFrequencyMode === 'Продвинутый' && setIsBodyVisible(!isBodyVisisble)}>
-                <h2 className={styles.widget__title}>Параметры</h2>
-                {skuFrequencyMode === 'Продвинутый' &&
-                    <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>
-                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13 7.5L7 1.5L1 7.5" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                    </button>
+            <div className={styles.widget__header}>
+                <div className={styles.widget__titleWrapper} style={{ cursor: skuFrequencyMode === 'Продвинутый' ? 'pointer' : '' }} onClick={() => skuFrequencyMode === 'Продвинутый' && setIsBodyVisible(!isBodyVisisble)}>
+                    <h2 className={styles.widget__title}>Параметры</h2>
+                    {skuFrequencyMode === 'Продвинутый' &&
+                        <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>
+                            <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 7.5L7 1.5L1 7.5" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
+                            </svg>
+                        </button>
+                    }
+                </div>
+                {skuFrequencyMode === 'Продвинутый' && requestObject &&
+                    <div className={styles.widget__summaryBlock}>
+                        {/* {Object.keys(requestObject).map(_ => {
+                            return (
+                                <div className={styles.widget__summaryItem}>
+
+                                </div>
+                            )
+                        })} */}
+                    </div>
                 }
             </div>
             <ConfigProvider
