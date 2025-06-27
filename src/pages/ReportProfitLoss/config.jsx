@@ -6,7 +6,7 @@ const renderTitle = (value, row) => {
 		return (
 			<Flex justify="space-between">
 				{value}
-				<Tooltip title="Реализация">
+				{/* <Tooltip title="Реализация">
 					<svg
 						width="20"
 						height="20"
@@ -30,7 +30,7 @@ const renderTitle = (value, row) => {
 							fillOpacity="0.5"
 						/>
 					</svg>
-				</Tooltip>
+				</Tooltip> */}
 			</Flex>
 		);
 	}
