@@ -13,6 +13,16 @@ const MainFieldset = ({ optionsConfig }) => {
             <div
                 className={styles.fieldset__header}
                 id='header'
+                onDoubleClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (window.getSelection) {
+                        const selection = window.getSelection();
+                        if (selection) selection.removeAllRanges();
+                    } else if (document.selection) {
+                        document.selection.empty();
+                    }
+                }}
                 onClick={e => {
                     // console.log('t', e.target)
                     // console.log('ct', e.currentTarget)
@@ -102,6 +112,7 @@ const MainFieldset = ({ optionsConfig }) => {
                                             size='large'
                                             prefix={<span className={styles.form__inputTextSuffix}>от</span>}
                                             suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
+                                            type="number"
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -123,6 +134,7 @@ const MainFieldset = ({ optionsConfig }) => {
                                             size='large'
                                             prefix={<span className={styles.form__inputTextSuffix}>до</span>}
                                             suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
+                                            type="number"
                                         />
                                     </Form.Item>
                                 </div>

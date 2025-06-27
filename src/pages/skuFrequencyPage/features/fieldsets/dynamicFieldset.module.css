@@ -52,7 +52,7 @@
     background: #F5F4F7;
 
     @media (max-width: 1400px) {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr;
     }
 }
 

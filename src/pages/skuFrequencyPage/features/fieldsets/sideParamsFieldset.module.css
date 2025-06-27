@@ -67,16 +67,19 @@
 .fieldset__layout_5cols {
     grid-template-columns: repeat(5, 1fr);
 
-    @media (max-width: 1400px) {
-        grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 1790px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    @media (max-width: 1500px) {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 .fieldset__layout_3cols {
     grid-template-columns: repeat(3, 1fr);
-    /* @media (max-width: 1400px) {
-        grid-template-columns: repeat(3, 1fr);
-    } */
+    @media (max-width: 1300px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .fieldset__block {
