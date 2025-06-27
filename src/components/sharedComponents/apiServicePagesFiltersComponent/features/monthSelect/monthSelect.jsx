@@ -44,7 +44,6 @@ export const MonthSelect = ({monthHandler, value}) => {
                             DatePicker: {
                                 activeBg: 'rgba(0,0,0,0.04)',
                                 colorPrimary: '#5329FF',
-                                hoverBorderColor: '#5329FF',
                                 cellActiveWithRangeBg: '#5329FF0D',
                                 activeBorderColor: 'transparent',
                                 hoverBorderColor: 'transparent',

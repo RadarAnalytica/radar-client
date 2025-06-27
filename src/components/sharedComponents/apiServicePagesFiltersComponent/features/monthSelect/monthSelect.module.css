@@ -30,10 +30,9 @@
   color: '#1A1A1A';
 }
 
-.calendarPopup {
-  position: absolute;
+.calendarPopup *{
+  cursor: pointer;
 }
-
 
 .customDayPicker .rdp-caption {
   display: flex;

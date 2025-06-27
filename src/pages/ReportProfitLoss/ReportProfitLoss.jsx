@@ -9,10 +9,11 @@ import { ServiceFunctions } from '../../service/serviceFunctions';
 import { formatPrice } from '../../service/utils';
 import { Flex } from 'antd';
 import styles from './ReportProfitLoss.module.css';
-import { useAppSelector } from '../../redux/hooks';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 import dayjs from 'dayjs';
 import { COLUMNS, ROWS } from './config';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 
 export default function ReportProfitLoss() {
 	const { authToken } = useContext(AuthContext);
@@ -20,7 +21,7 @@ export default function ReportProfitLoss() {
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
-	const [shopStatus, setShopStatus] = useState(null);
+	const dispatch = useAppDispatch()
 
 	const [loading, setLoading] = useState(true);
 	const [columns, setColumns] = useState([]);
@@ -165,32 +166,10 @@ export default function ReportProfitLoss() {
 	};
 
 	useEffect(() => {
-		setPrimaryCollect(activeBrand?.is_primary_collect);
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportProfitLoss();
-		} else {
-			setData([]);
 		}
-	}, [activeBrand, selectedRange, filters, monthRange]);
-
-	useEffect(() => {
-		if (activeBrand && activeBrand.id === 0 && shops) {
-			const allShop = {
-				id: 0,
-				brand_name: 'Все',
-				is_active: shops.some((_) => _.is_primary_collect),
-				is_valid: true,
-				is_primary_collect: shops.some((_) => _.is_primary_collect),
-				is_self_cost_set: !shops.some((_) => !_.is_self_cost_set),
-			};
-			setShopStatus(allShop);
-		}
-
-		if (activeBrand && activeBrand.id !== 0 && shops) {
-			const currShop = shops.find((_) => _.id === activeBrand.id);
-			setShopStatus(currShop);
-		}
-	}, [activeBrand, shops, filters]);
+	}, [selectedRange, filters, monthRange]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;

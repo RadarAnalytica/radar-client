@@ -34,6 +34,9 @@ const renderTitle = (value, row) => {
 			</Flex>
 		);
 	}
+	if (row.key == 'direct_expenses'){
+		return (<span className="ant-table-cell-direct">{value}</span>)
+	}
 	// console.log('summaryRender', row)
 	return value;
 };
