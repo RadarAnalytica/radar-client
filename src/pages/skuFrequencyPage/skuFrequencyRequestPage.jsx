@@ -19,12 +19,14 @@ const SkuFrequencyRequestPage = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
+
+
     useEffect(() => {
         const query = searchParams.get('query')
         if (query) {
             setCurrentQuery(query)
         } else {
-            navigate('/dev/monitoring')
+            navigate('/monitoring')
         }
     }, [searchParams])
 
@@ -43,7 +45,7 @@ const SkuFrequencyRequestPage = () => {
                         title={
                             <Breadcrumbs
                                 config={[
-                                    { name: 'Частотность артикула', slug: '/dev/monitoring' },
+                                    { name: 'Частотность артикула', slug: '/monitoring' },
                                     { name: currentQuery },
                                 ]}
                             />
@@ -79,7 +81,7 @@ const SkuFrequencyRequestPage = () => {
                     </ConfigProvider>
                 </div>
                 <div className={styles.page__controlsWrapper}>
-                    <div className={styles.page__filtersWrapper}>
+                    {/* <div className={styles.page__filtersWrapper}>
                         <Filters
                             setLoading={() => { }}
                             shopSelect={false}
@@ -87,7 +89,7 @@ const SkuFrequencyRequestPage = () => {
                             articleSelect={false}
                             groupSelect={false}
                         />
-                    </div>
+                    </div> */}
                     {mainTabsState === 'Тренды' &&
                         <ConfigProvider
                             theme={{
@@ -119,12 +121,17 @@ const SkuFrequencyRequestPage = () => {
                 </div>
                 {mainTabsState === 'Общая информация' &&
                     <div className={styles.page__widgetWrapper}>
-                        <BarsWidget />
+                        <BarsWidget
+                            currentQuery={currentQuery}
+                        />
                     </div>
                 }
                 {mainTabsState === 'Тренды' &&
                     <div className={styles.page__widgetWrapper}>
-                        <ChartWidget />
+                        <ChartWidget
+                            chartTabsState={chartTabsState}
+                            currentQuery={currentQuery}
+                        />
                     </div>
                 }
             </div>

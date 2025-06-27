@@ -4,39 +4,105 @@
     box-shadow: 0px 0px 20px 0px #00000014;
     border-radius: 16px;
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.widget__header {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+}
+
+.widget__titleWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+
+.widget__summaryBlock {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.widget__title {
+    margin: 0;
+    padding: 0;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.widget__openButton {
+    border: none;
+    background: transparent;
+}
+.widget__openButton svg {
+   transform: rotate(0deg);
+   transition: transform .2s ease-in-out;
+}
+.widget__openButton_closed svg {
+   transform: rotate(180deg);
+   transition: transform .2s ease-in-out;
 }
 
 /* Form */
 
 .form {
     width: 100%;
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     gap: 20px;
 }
 
-.form_simpleLayout {
+.form_complexForm {
+    /*  */
+}
+
+.form__simpleLayout {
+    width: 100%;
+    display: grid;
+    gap: 20px;
     grid-template-columns: 1.5fr 1fr 1fr;
     grid-template-rows: auto;
     justify-items: stretch;
-}
 
-.form_complexLayout {
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: auto;
-    justify-items: stretch;
+    @media (max-width: 1300px) {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
 }
 
 .form__item {
     margin: 0;
     padding: 0;
+    width: 100%;
+}
+
+.form__item_mid {
+    @media (max-width: 1300px) {
+        grid-column: span 2;
+    }
 }
 
 .form__item_wide {
     grid-column: span 2;
+
+    @media (max-width: 1400px) {
+        grid-column: span 3;
+    }
 }
 
 .form__submitWrapper {
-    margin-top: 12px;
     width: 100%;
     display: flex;
     justify-content: flex-end;
@@ -45,10 +111,10 @@
 
 .form__submitWrapper_simple {
     grid-column: span 3;
-}
 
-.form__submitWrapper_complex {
-    grid-column: span 5;
+    @media (max-width: 1300px) {
+        grid-column: span 2;
+    }
 }
 
 .form__complexInputWrapper {
@@ -60,9 +126,7 @@
     gap: 8px;
 }
 
-.form__complexWrapperLabel {
-
-}
+.form__complexWrapperLabel {}
 
 .form__inputsContainer {
     width: 100%;

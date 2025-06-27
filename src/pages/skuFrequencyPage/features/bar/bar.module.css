@@ -78,6 +78,12 @@
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
+.bar__dataLayout_3cols {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
 
 .bar__rateWrapper {
     display: flex;

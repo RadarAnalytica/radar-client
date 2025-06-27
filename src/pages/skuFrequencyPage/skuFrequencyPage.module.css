@@ -49,4 +49,16 @@
     margin-top: 12px;
     width: 100%;
     height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.page__tableSettingsBlock {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
 }

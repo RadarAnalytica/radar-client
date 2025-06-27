@@ -33,12 +33,6 @@ const UploadProvider = ({ children }) => {
     const intervalRef = useRef(null)
 
     const initialCheck = async (counter, list) => {
-        if (requestCounter >= 600) {
-            intervalRef?.current && clearInterval(intervalRef.current)
-            intervalRef.current = null
-            setRequestCounter(0)
-            setFinalStatus(undefined)
-        }
         if (intervalRef && intervalRef.current) {
             setRequestCounter((prev) => prev + 1)
         }
@@ -115,6 +109,15 @@ const UploadProvider = ({ children }) => {
         }
         if (filesUploading) initialCheck(filesUploading.length, filesUploading)
     }, [pathname])
+
+    useEffect(() => {
+        if (intervalRef?.current && requestCounter >= 60) {
+            intervalRef?.current && clearInterval(intervalRef.current)
+            intervalRef.current = null
+            setRequestCounter(0)
+            setFinalStatus(undefined)
+        }
+    }, [requestCounter, intervalRef])
 
     return (
         <>

@@ -41,19 +41,12 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     const [progressBarState, setProgressBarState] = useState(0)
     const [finalResult, setFinalResult] = useState()
     const [requestCounter, setRequestCounter] = useState(0)
-
+    console.log(requestCounter)
     const intervalRef = useRef(null)
 
 
 
     const checkAllUploads = async (token, counter) => {
-        if (requestCounter >= 600) {
-            setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось обработать файлы. Пожалуйста, обратитесь в поддержку' })
-            intervalRef?.current && clearInterval(intervalRef.current)
-            intervalRef.current = null
-            setProgressBarState(0)
-            setRequestCounter(0)
-        }
         if (intervalRef && intervalRef.current) {
             setRequestCounter((prev) => prev + 1)
         }
@@ -125,6 +118,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             if (!response.ok) {
                 setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.detail || 'Не удалось загрузить файлы' });
                 localStorage.removeItem('isFilesUploading')
+                return
             }
             response = await response.json()
             setProgressBarState(2)
@@ -141,6 +135,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     useEffect(() => {
         const initialCheck = async () => {
             setUploadStatus({ ...initUploadStatus, isUploading: true })
+            setProgressBarState(1)
             try {
                 let res = await fetch(`${URL}/api/file-process/status-count`, {
                     headers: {
@@ -150,6 +145,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 })
                 if (!res.ok) {
                     setUploadStatus(initUploadStatus)
+                    setProgressBarState(0)
                     intervalRef?.current && clearInterval(intervalRef.current)
                     intervalRef.current = null
                     return
@@ -159,11 +155,16 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 const totalAmount = res.pending + res.processing;
                 if (totalAmount === 0) {
                     setUploadStatus(initUploadStatus)
+                    setProgressBarState(0)
                     return
                 }
-                intervalRef.current = setInterval(() => {
-                    checkAllUploads(authToken, totalAmount)
-                }, 1000)
+                setProgressBarState(2)
+                if (!intervalRef?.current) {
+                    intervalRef.current = setInterval(() => {
+                        checkAllUploads(authToken, totalAmount)
+                    }, 1000)
+                }
+              
             } catch {
                 setUploadStatus(initUploadStatus)
                 intervalRef?.current && clearInterval(intervalRef.current)
@@ -178,6 +179,23 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             intervalRef.current = null
         }
     }, [])
+
+    useEffect(() => {
+        const delButton = document.querySelector('.ant-upload-list-item-action');
+        if (delButton) {
+            delButton.title = 'Удалить файл'
+        }
+    }, [fileList])
+
+    useEffect(() => {
+        if (intervalRef?.current && requestCounter >= 60) {
+            setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось обработать файлы. Пожалуйста, обратитесь в поддержку' })
+            intervalRef?.current && clearInterval(intervalRef.current)
+            intervalRef.current = null
+            setProgressBarState(0)
+            setRequestCounter(0)
+        }
+    }, [requestCounter, intervalRef])
 
 
     return (
