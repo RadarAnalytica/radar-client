@@ -49,6 +49,7 @@
 
 :global(.ant-table-cell):has(:global(.ant-table-cell-direct)) {
     cursor: pointer;
+    user-select: none;
 }
 
 :global(.ant-table-row):has(:global(.ant-table-cell-direct)) :global(.ant-table-cell):not(:has(:global(.ant-table-cell-direct))) {

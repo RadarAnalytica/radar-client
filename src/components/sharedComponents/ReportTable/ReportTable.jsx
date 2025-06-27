@@ -131,9 +131,10 @@ function ExpandIcon({ expanded, onExpand, record }) {
 			<Button
 				className={styles.expandBtn}
 				type="text"
-				onClick={(e) => {
-					onExpand(record, e);
-				}}
+				// onClick={(e) => {
+				// 	console.log(e)
+				// 	onExpand(record, e);
+				// }}
 			>
 				<svg className={`${styles.expandIcon} ${expanded ? styles.expandIconExpanded : ''}`} viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M1 1L7 7L13 1" stroke='currentColor' strokeWidth="2" strokeLinecap="round"/>
