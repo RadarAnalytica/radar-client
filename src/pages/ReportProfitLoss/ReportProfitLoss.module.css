@@ -46,6 +46,18 @@
 .cell {
     font-weight: 700;
 }
+
+:global(.ant-table-cell):has(:global(.ant-table-cell-direct)) {
+    cursor: pointer;
+}
+
+:global(.ant-table-row):has(:global(.ant-table-cell-direct)) :global(.ant-table-cell):not(:has(:global(.ant-table-cell-direct))) {
+    pointer-events: none;
+}
+:global(.ant-table-row):has(:global(.ant-table-cell-direct)) :global(.ant-table-cell):not(:has(:global(.ant-table-cell-direct))) span{
+    cursor: text;
+}
+
 .cellProcent {
     font-weight: 500;
 }

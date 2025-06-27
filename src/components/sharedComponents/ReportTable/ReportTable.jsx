@@ -97,8 +97,9 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 						}}
 						expandable={{
 							expandIcon: ExpandIcon,
-							// rowExpandable: (record) => !!record.description,
+							rowExpandable: (row) => row.children,
 							expandedRowClassName: styles.expandRow,
+							expandRowByClick: true
 						}}
 						// scroll={{ x: 'max-content' }}
 						scroll={{ x: scrollX, y: scrollY }}
@@ -168,14 +169,4 @@ function SortIcon({ sortOrder }) {
 	);
 }
 
-function formatNumber(num) {
-	if (!num){
-		return '0'
-	}
-	return new Intl.NumberFormat('ru-RU', {
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 2
-	}).format(num)
-}
-
-export {ExpandIcon, SortIcon, formatNumber}
+export {ExpandIcon, SortIcon}
