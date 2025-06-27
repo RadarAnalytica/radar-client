@@ -188,6 +188,7 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
             <div className={styles.tableContainer} onScroll={scrollHandler}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
+                    // renderEmpty={() => (<></>)}
                     theme={{
                         components: {
                             Table: {

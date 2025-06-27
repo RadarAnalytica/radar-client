@@ -61,17 +61,22 @@
 
 .container {
     position: relative;
+    max-height: 500px;
     height: 100%;
     /* padding: 16px; */
     background-color: #fff;
     border-radius: 16px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: stretch;
     border: 1px solid red;
 }
 
 .tableContainer {
-    height: 100%;
+    max-height: fit-content;
     overflow: hidden;
+    height: 500px;
+    border: 1px solid blue;
 }
 
 .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
@@ -226,3 +231,4 @@
 .row:last-of-type {
     border: none;
 }
+

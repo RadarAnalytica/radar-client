@@ -38,7 +38,7 @@ const OptionsWidget = () => {
     const simpleFormSubmitHandler = (fields) => {
         const requestObject = {
             query: fields.query,
-            price: JSON.parse(fields.preferedProductPrice),
+            avg_price: JSON.parse(fields.preferedProductPrice),
             competition_level: fields.competitionLevel
         }
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'easy' }))
