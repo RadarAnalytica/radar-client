@@ -70,7 +70,7 @@ export const MonthSelect = ({monthHandler, value}) => {
                                 const maxDate = dayjs();
                                 return current && (current < minDate || current > maxDate);
                             }}
-                            defaultValue={initialValue}
+                            value={initialValue}
                             getPopupContainer={() => monthRef.current}
                         />
                     </div>
