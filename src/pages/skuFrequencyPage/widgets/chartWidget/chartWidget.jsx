@@ -94,7 +94,7 @@ export const getChartTooltip = (context, chartData) => {
             let style = '';
             style += '; border-width: 2px';
             const span =
-                '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 2px; background-color: ' +
+                '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 8px; background-color: ' +
                 targetColor +
                 ';">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' +
                 style +
@@ -102,7 +102,8 @@ export const getChartTooltip = (context, chartData) => {
                 set?.label +
                 '' +
                 targetDescr +
-                '<span style="font-weight: bold;">' +
+                '<span>' + 'Частотность запроса ' + '</span>' +
+                '<span style="font-weight: bold;">' + 
                 value +
                 '</span></span>';
             innerHtml += '<tr style={{ width: 100%}}><td style={{ width: 100%}}>' + span + '</td></tr>';

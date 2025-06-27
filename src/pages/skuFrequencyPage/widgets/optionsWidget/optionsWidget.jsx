@@ -197,6 +197,7 @@ const OptionsWidget = () => {
                                     onClick={() => simpleForm.resetFields()}
                                     type='text'
                                     size='large'
+                                    style={{ height: 45, width: 112}}
                                 >
                                     Очистить
                                 </Button>
@@ -212,6 +213,7 @@ const OptionsWidget = () => {
                                     htmlType='submit'
                                     type='primary'
                                     size='large'
+                                    style={{ height: 45, width: 112}}
                                 >
                                     Применить
                                 </Button>
@@ -258,6 +260,7 @@ const OptionsWidget = () => {
                                         type='text'
                                         size='large'
                                         onClick={() => complexForm.resetFields()}
+                                        style={{ height: 45, width: 112}}
                                     >
                                         Очистить
                                     </Button>
@@ -273,6 +276,7 @@ const OptionsWidget = () => {
                                         htmlType='submit'
                                         type='primary'
                                         size='large'
+                                        style={{ height: 45, width: 112}}
                                     >
                                         Применить
                                     </Button>
