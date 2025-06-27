@@ -14,14 +14,16 @@ const SideParamsFieldset = () => {
                 className={styles.fieldset__header}
                 id='header'
                 onClick={e => {
-                    if (e.target.id !== 'header') {
-                        return;
+                    // console.log('t', e.target)
+                    // console.log('ct', e.currentTarget)
+                    // console.log('type', e.type)
+                    if (e.currentTarget.id === 'header' && e.type === 'click') {
+                        setIsBodyVisible(!isBodyVisisble);
                     }
-                    setIsBodyVisible(!isBodyVisisble);
                 }}
             >
                 <h3 className={styles.fieldset__title}>Дополнительные параметры</h3>
-                <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>
+                <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`} type='button'>
                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13 7.5L7 1.5L1 7.5" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                     </svg>
@@ -72,8 +74,8 @@ const SideParamsFieldset = () => {
                                                     >
                                                         <Input
                                                             size='large'
-                                                            placeholder='от'
-                                                        //prefix={<span className={styles.form__inputTextSuffix}>от</span>}
+                                                            prefix={<span className={styles.form__inputTextSuffix}>от</span>}
+                                                            suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
                                                         />
                                                     </Form.Item>
                                                     <Form.Item
@@ -93,8 +95,8 @@ const SideParamsFieldset = () => {
                                                     >
                                                         <Input
                                                             size='large'
-                                                            placeholder='до'
-                                                        //prefix={<span className={styles.form__inputTextSuffix}>до</span>}
+                                                            prefix={<span className={styles.form__inputTextSuffix}>от</span>}
+                                                            suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
                                                         />
                                                     </Form.Item>
                                                 </div>

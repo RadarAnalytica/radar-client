@@ -45,14 +45,16 @@ const DynamicFieldset = ({ form }) => {
                 className={styles.fieldset__header}
                 id='header'
                 onClick={e => {
-                    if (e.target.id !== 'header') {
-                        return;
+                    // console.log('t', e.target)
+                    // console.log('ct', e.currentTarget)
+                    // console.log('type', e.type)
+                    if (e.currentTarget.id === 'header' && e.type === 'click') {
+                        setIsBodyVisible(!isBodyVisisble);
                     }
-                    setIsBodyVisible(!isBodyVisisble);
                 }}
             >
                 <h3 className={styles.fieldset__title}>Динамика популярности и роста запросов</h3>
-                <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>
+                <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`} type='button'>
                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13 7.5L7 1.5L1 7.5" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
                     </svg>
@@ -107,8 +109,9 @@ const DynamicFieldset = ({ form }) => {
                                     >
                                         <Input
                                             size='large'
-                                            placeholder={'от 20'}
-                                            suffix={<>%</>}
+                                            // placeholder={'от 20'}
+                                            prefix={<span style={{color: '#8C8C8C'}}>от</span>}
+                                            suffix={<span style={{color: '#8C8C8C'}}>%</span>}
                                             type="number"
                                             style={{ height: '44px' }}
                                         />
@@ -134,8 +137,9 @@ const DynamicFieldset = ({ form }) => {
                                     >
                                         <Input
                                             size='large'
-                                            placeholder={'до 100'}
-                                            suffix={<>%</>}
+                                            // placeholder={'до 100'}
+                                            prefix={<span style={{color: '#8C8C8C'}}>от</span>}
+                                            suffix={<span style={{color: '#8C8C8C'}}>%</span>}
                                             type="number"
                                             style={{ height: '44px' }}
                                         />
@@ -189,10 +193,10 @@ const DynamicFieldset = ({ form }) => {
                                     >
                                         <Input
                                             size='large'
-                                            className={isExampleDataSet ? styles.form__exampleDataInput : ''}
                                             style={{ height: '44px' }}
-                                            placeholder={'от 20'}
-                                            suffix={<>%</>}
+                                            // placeholder={'от 20'}
+                                            prefix={<span style={{color: '#8C8C8C'}}>от</span>}
+                                            suffix={<span style={{color: '#8C8C8C'}}>%</span>}
                                             type="number"
                                         />
                                     </Form.Item>
@@ -217,8 +221,9 @@ const DynamicFieldset = ({ form }) => {
                                         <Input
                                             size='large'
                                             style={{ height: '44px' }}
-                                            placeholder={'до 100'}
-                                            suffix={<>%</>}
+                                            // placeholder={'до 100'}
+                                            prefix={<span style={{color: '#8C8C8C'}}>до</span>}
+                                            suffix={<span style={{color: '#8C8C8C'}}>%</span>}
                                             type="number"
                                         />
                                     </Form.Item>
@@ -272,8 +277,9 @@ const DynamicFieldset = ({ form }) => {
                                         <Input
                                             size='large'
                                             style={{ height: '44px' }}
-                                            placeholder={'от 20'}
-                                            suffix={<>%</>}
+                                            // placeholder={'от 20'}
+                                            prefix={<span style={{color: '#8C8C8C'}}>от</span>}
+                                            suffix={<span style={{color: '#8C8C8C'}}>%</span>}
                                             type="number"
                                         />
                                     </Form.Item>
@@ -298,8 +304,9 @@ const DynamicFieldset = ({ form }) => {
                                         <Input
                                             size='large'
                                             style={{ height: '44px' }}
-                                            placeholder={'до 100'}
-                                            suffix={<>%</>}
+                                            // placeholder={'до 100'}
+                                            prefix={<span style={{color: '#8C8C8C'}}>до</span>}
+                                            suffix={<span style={{color: '#8C8C8C'}}>%</span>}
                                             type="number"
                                         />
                                     </Form.Item>
