@@ -15,6 +15,7 @@ import TableWidget_TEST from './widgets/tableWidget/tableWidget_TEST'
 const SkuFrequencyPage = () => {
     //const { skuFrequencyMode } = useAppSelector(store => store.filters)
     const { requestData } = useAppSelector(store => store.requestsMonitoring)
+
     return (
         <main className={styles.page}>
             <MobilePlug />
@@ -45,7 +46,7 @@ const SkuFrequencyPage = () => {
                     </div>
                     <OptionsWidget />
                     {requestData && <div className={styles.page__tableSettingsBlock}>
-                        <DownloadButton />
+                        {/* <DownloadButton /> */}
                         <TableSettingsWidget />
                     </div>}
                 </div>
