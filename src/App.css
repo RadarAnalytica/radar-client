@@ -1,3 +1,5 @@
+@import './fonts.css';
+
 :root {
   --main-bg: #f7f6fe;
   --primary-color: #5329ff;
@@ -13,10 +15,15 @@
     font-size: 1.6vh;
   }
 }
+
 * {
-  font-family: "Mulish", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Mulish', 'Arial', sans-serif;
   margin: 0;
   padding: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
 }
 
 body,

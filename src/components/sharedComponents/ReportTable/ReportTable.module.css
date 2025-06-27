@@ -48,6 +48,11 @@
     border-radius: 6px;
 } */
 
+.tableContainer :global(.ant-table) {
+  scrollbar-color: #5329ff80 transparent;
+  scrollbar-width: thin;
+}
+
 .tableContainer thead>tr>th {
   border: none;
 }
@@ -79,7 +84,7 @@
 
 .expandBtn {
   margin-right: 12px;
-  float: left;
+  height: 18px;
 }
 
 .expandIcon{

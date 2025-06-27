@@ -20,7 +20,6 @@ const getRateStyle = (amount, styles) => {
 const CostsBlock = ({ dataDashBoard, loading }) => {
 
     const data = getCostsData(dataDashBoard)
-
     if (loading) {
         return (
             <div className={styles.block}>

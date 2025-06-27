@@ -1,0 +1,66 @@
+/* Page */
+
+.page {
+    background-color: #F7F6FE;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+}
+.page__content {
+    width: 100%;
+    padding: 30px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: scroll;
+    
+}
+.page__sideNavWrapper {
+    height: 100%;
+    width: auto;
+    overflow: visible;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+.page__headerWrapper {
+    width: 100%;
+}
+
+/* Report profit loss */
+
+.container{
+    flex-grow: 1;
+}
+
+/* table */
+
+.cell {
+    font-weight: 700;
+}
+
+:global(.ant-table-cell):has(:global(.ant-table-cell-direct)) {
+    cursor: pointer;
+}
+
+:global(.ant-table-row):has(:global(.ant-table-cell-direct)) :global(.ant-table-cell):not(:has(:global(.ant-table-cell-direct))) {
+    pointer-events: none;
+}
+:global(.ant-table-row):has(:global(.ant-table-cell-direct)) :global(.ant-table-cell):not(:has(:global(.ant-table-cell-direct))) span{
+    cursor: text;
+}
+
+.cellProcent {
+    font-weight: 500;
+}
+.summary{
+    background-color: #F7F7F7;
+}

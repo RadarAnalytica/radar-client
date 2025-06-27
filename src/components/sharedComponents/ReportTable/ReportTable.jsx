@@ -2,7 +2,7 @@ import { ConfigProvider, Table, Button } from 'antd';
 import { useRef, useState, useEffect } from 'react';
 import styles from './ReportTable.module.css';
 
-export default function ReportTable({ loading, columns, data, rowSelection = false }) {
+export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true }) {
 	const containerRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [scrollX, setScrollX] = useState(0);
@@ -84,7 +84,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 					}}
 				>
 					<Table
-						virtual
+						virtual={virtual}
 						columns={columns}
 						dataSource={data}
 						pagination={false}
@@ -96,10 +96,10 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							return record.key === 'summary' ? styles.summaryRow : '';
 						}}
 						expandable={{
-							// expandedRowRender: (record) => <p>{record.description}</p>,
 							expandIcon: ExpandIcon,
-							rowExpandable: (record) => !!record.description,
+							rowExpandable: (row) => row.children,
 							expandedRowClassName: styles.expandRow,
+							expandRowByClick: true
 						}}
 						// scroll={{ x: 'max-content' }}
 						scroll={{ x: scrollX, y: scrollY }}
@@ -136,7 +136,7 @@ function ExpandIcon({ expanded, onExpand, record }) {
 				}}
 			>
 				<svg className={`${styles.expandIcon} ${expanded ? styles.expandIconExpanded : ''}`} viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M1 1L7 7L13 1" stroke='currentColor' stroke-width="2" stroke-linecap="round"/>
+					<path d="M1 1L7 7L13 1" stroke='currentColor' strokeWidth="2" strokeLinecap="round"/>
 				</svg>
 			</Button>
 		</ConfigProvider>
@@ -169,14 +169,4 @@ function SortIcon({ sortOrder }) {
 	);
 }
 
-function formatNumber(num) {
-	if (!num){
-		return '0'
-	}
-	return new Intl.NumberFormat('ru-RU', {
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 2
-	}).format(num)
-}
-
-export {ExpandIcon, SortIcon, formatNumber}
+export {ExpandIcon, SortIcon}

@@ -1259,5 +1259,26 @@ export const ServiceFunctions = {
     const data = await res.blob()
     return data;
 	},
+	getReportProfitLoss: async (token, selectedRange, shopId, filters, monthRange) => {
+    const body = getRequestObject(filters, selectedRange, shopId);
+		body.month_from = monthRange?.month_from || null;
+		body.month_to = monthRange?.month_to || null;
+
+    const res = await fetch(
+      `${URL}/api/profit_loss/report`,
+      {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+        body: JSON.stringify(body)
+      }
+    );
+
+		const data = await res.json();
+
+		return data;
+	}
 };
 

@@ -114,6 +114,13 @@ export const menuConfig = [
                 isActive: true,
                 isNew: true
             },
+            {
+                id: 7,
+                url: '/report-profit-loss', 
+                label: 'Отчет о прибылях и убытках',
+                isActive: true,
+                isNew: true
+            },
         ]
     },
     {

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, WeekSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, WeekSelect, MonthSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
@@ -18,7 +18,10 @@ export const Filters = ({
   weekSelect = false,
   weekOptions,
   weekValue,
-  weekHandler
+  weekHandler,
+  monthSelect = false,
+  monthHandler,
+  monthValue
 }) => {
 
   // ------ база ------//
@@ -187,6 +190,11 @@ export const Filters = ({
         }
         {skuFrequency &&
           <FrequencyModeSelect />
+        }
+        {shops && activeBrand && monthSelect &&
+          <div className={styles.filters__inputWrapper}>
+            <MonthSelect monthHandler={monthHandler} value={monthValue}/>
+          </div>
         }
         {timeSelect &&
           <div className={styles.filters__inputWrapper}>
