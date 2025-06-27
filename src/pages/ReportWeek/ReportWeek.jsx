@@ -38,9 +38,28 @@ export default function ReportWeek() {
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [data, setData] = useState(null);
 	const [tableRows, setTableRows] = useState(data);
-	const [tableColumns, setTableColumns] = useState(COLUMNS);
+
+	const initTableColumns = () => {
+		const savedColumnsWeek = localStorage.getItem('reportWeekColumns');
+		if (savedColumnsWeek) {
+			try {
+				const columns = JSON.parse(savedColumnsWeek);
+				return columns.map((column) => COLUMNS.find((el) => {
+					if (typeof column == 'object'){
+						return el.dataIndex == column.dataIndex
+					}
+					return el.dataIndex == column
+				}))
+			} catch (error) {
+				console.error('Ошибка при обработке сохраненных настроек', error)
+				return COLUMNS;
+			}
+		}
+		return COLUMNS;
+	}
+
+	const [tableColumns, setTableColumns] = useState(initTableColumns());
 	const [primaryCollect, setPrimaryCollect] = useState(null);
-	const [weekSelected, setWeekSelected] = useState(null);
 	// const [weekSelected, setWeekSelected] = useState(null);
 	// const [weekStart, setWeekStart] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
@@ -92,18 +111,12 @@ export default function ReportWeek() {
 		// 	localStorage.removeItem('reportWeekFilterWeek');
 		// 	savedFilterWeek = {};
 		// }
-		if (!data.find((el) => el.value === 'Все')) {
-			savedFilterWeek[activeBrand.id] = data;
-		} else {
-			delete savedFilterWeek[activeBrand.id];
-		}
+		savedFilterWeek[activeBrand.id] = data;
 		if (Object.keys(savedFilterWeek).length > 0) {
 			localStorage.setItem(
 				'reportWeekFilterWeek',
 				JSON.stringify(savedFilterWeek)
 			);
-		} else {
-			localStorage.removeItem('reportWeekFilterWeek');
 		}
 		setWeekSelected(data);
 	};
@@ -232,27 +245,18 @@ export default function ReportWeek() {
 		if (savedFilterWeek) {
 			const data = JSON.parse(savedFilterWeek);
 			if (activeBrand?.id in data) {
-				setWeekSelected(data[activeBrand.id]);
-				return
+				return (data[activeBrand.id]);
 			}
 		}
-		setWeekSelected(weekOptions.slice(0, 12));
+		return (weekOptions.slice(0, 12));
 	};
+	
+	const [weekSelected, setWeekSelected] = useState(updateSavedFilterWeek());
 
 	useEffect(() => {
-		updateSavedFilterWeek()
-	}, [])
-
-	if (!weekSelected){
-		updateDataReportWeek();
-	}
-
-	// useEffect(() => {
-	// 	updateDataReportWeek();
-	// }, []);
-
-	useEffect(() => {
-		updateDataReportWeek();
+		if (activeBrand){
+			updateDataReportWeek();
+		}
 	}, [weekSelected]);
 
 	useEffect(() => {
@@ -267,7 +271,7 @@ export default function ReportWeek() {
 	}, [authToken]);
 
 	useEffect(() => {
-		updateSavedFilterWeek();
+		setWeekSelected(updateSavedFilterWeek());
 		setPrimaryCollect(activeBrand?.is_primary_collect);
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportWeek();
@@ -299,8 +303,13 @@ export default function ReportWeek() {
 		setIsPopoverOpen(status);
 	};
 
+	const tableColumnsHandler = (columns) => {
+		localStorage.setItem('reportWeekColumns', JSON.stringify(columns.map(column => column.dataIndex)));
+		setTableColumns(columns)
+	}
+
 	const configClear = () => {
-		setTableColumns(COLUMNS);
+		tableColumnsHandler(COLUMNS);
 		setIsPopoverOpen(false);
 	};
 
@@ -471,7 +480,7 @@ export default function ReportWeek() {
 					isModalOpen={isConfigOpen}
 					closeModal={configCancel}
 					tableColumns={tableColumns}
-					setTableColumns={setTableColumns}
+					setTableColumns={tableColumnsHandler}
 					columnsList={COLUMNS}
 				/>
 			)}

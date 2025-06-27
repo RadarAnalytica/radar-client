@@ -3,9 +3,8 @@ import styles from './trendingRequests.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
-import { ParamsWidget, TableWidget, HowtoWidget } from './widgets'
+import { ParamsWidget, TableWidget } from './widgets'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
-import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
 
 const initRequestStatus = {
     isError: false,

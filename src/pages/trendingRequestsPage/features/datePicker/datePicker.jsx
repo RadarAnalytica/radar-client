@@ -24,6 +24,8 @@ export const DatePicker = ({ selectedDate, setSelectedDate, isExampleDataSet }) 
         },
     };
     const today = new Date();
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() - 1);
     const minDate = new Date(today);
     minDate.setFullYear(2023, 4, 1);
     const startMonth = new Date(today);
@@ -94,7 +96,7 @@ export const DatePicker = ({ selectedDate, setSelectedDate, isExampleDataSet }) 
                             onDayClick={handleDayClick}
                             disabled={[
                                 { before: minDate },
-                                { after: today },
+                                { after: maxDate },
                             ]}
                             startYear={startMonth}
                             startMonth={startMonth}
