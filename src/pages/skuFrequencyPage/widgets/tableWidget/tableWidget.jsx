@@ -7,7 +7,7 @@ import { formatRateValue, sortTableDataFunc } from '../../shared';
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '../../../../redux/requestsMonitoring/requestsMonitoringActions';
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
-import { ConfigProvider, Pagination } from 'antd'
+import { ConfigProvider, Pagination, Rate } from 'antd'
 import { useNavigate } from 'react-router-dom';
 
 //инит стейт сортировки
@@ -59,7 +59,7 @@ const TableWidget = ({ tinyRows = false }) => {
             const jumper = document.querySelector('.ant-pagination-options-quick-jumper')
             const input = jumper?.querySelector('input')
             if (jumper && input) {
-               
+
                 input.style.backgroundColor = '#EEEAFF'
                 input.style.padding = '5px'
                 input.style.width = '32px'
@@ -68,7 +68,7 @@ const TableWidget = ({ tinyRows = false }) => {
                 const suffix = document.createElement('span');
                 suffix.textContent = 'стр'
                 jumper.appendChild(suffix)
-                 jumper.style.color = 'black'
+                jumper.style.color = 'black'
             }
         }
     }, [requestData])
@@ -104,7 +104,7 @@ const TableWidget = ({ tinyRows = false }) => {
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
             setSortState(initSortState)
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: 'rating', sort_order: 'DESC' }, page: 1}))
+            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: 'rating', sort_order: 'DESC' }, page: 1 }))
             return
         }
 
@@ -114,11 +114,11 @@ const TableWidget = ({ tinyRows = false }) => {
             sortedValue: value,
             sortType: id,
         })
-        dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: value, sort_order: id }, page: 1}))
+        dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: value, sort_order: id }, page: 1 }))
     }
 
     const paginationHandler = (page) => {
-       dispatch(reqsMonitoringActions.updateRequestObject({ page: page}))
+        dispatch(reqsMonitoringActions.updateRequestObject({ page: page }))
     }
 
     if (requestStatus.isLoading) {
@@ -231,8 +231,8 @@ const TableWidget = ({ tinyRows = false }) => {
                                                             <div className={styles.table__mainTitleWrapper}>
                                                                 <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                                 <div className={styles.table__actionsWrapper}>
-                                                                    <Link 
-                                                                        to={url} 
+                                                                    <Link
+                                                                        to={url}
                                                                         className={styles.table__actionButton}
                                                                         title='Смотреть подробнее'
                                                                         target='_blank'
@@ -245,6 +245,31 @@ const TableWidget = ({ tinyRows = false }) => {
                                                                 </div>
                                                             </div>
 
+                                                        </div>
+                                                    )
+                                                }
+
+                                                if (v.engName === 'niche_rating') {
+                                                    return (
+                                                        <div className={styles.table__rowItem} key={`table_cell_${id}`}>
+                                                            <div style={{ zIndex: 0}}>
+                                                                <ConfigProvider
+                                                                    theme={{
+                                                                        components: {
+                                                                            Rate: {
+                                                                                starColor: '#F0AD00'
+                                                                            }
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <Rate
+                                                                        value={product[v.engName]}
+                                                                        allowHalf
+                                                                        disabled
+                                                                        style={{ zIndex: 0 }}
+                                                                    />
+                                                                </ConfigProvider>
+                                                            </div>
                                                         </div>
                                                     )
                                                 }
@@ -293,7 +318,7 @@ const TableWidget = ({ tinyRows = false }) => {
                     showSizeChanger={false}
                     showQuickJumper
                     hideOnSinglePage={true}
-                    //showTotal={(total) => `Всего ${total} товаров`}
+                //showTotal={(total) => `Всего ${total} товаров`}
                 />
             </ConfigProvider>
         </div>
