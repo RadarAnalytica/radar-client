@@ -106,7 +106,7 @@ const QualityFieldset = () => {
 
                         <Form.Item
                             className={`${styles.form__item}`}
-                            name='rating'
+                            name='niche_rating'
                         >
                             <Checkbox.Group options={QUALITY_CONFIG} />
                         </Form.Item>

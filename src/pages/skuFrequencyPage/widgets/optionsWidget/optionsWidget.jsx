@@ -254,7 +254,7 @@ const OptionsWidget = () => {
                             form={complexForm}
                             initialValues={{
                                 prefered_items: [],
-                                rating: [1]
+                                niche_rating: [1]
                             }}
                         >
                             <MainFieldset optionsConfig={optionsConfig} />

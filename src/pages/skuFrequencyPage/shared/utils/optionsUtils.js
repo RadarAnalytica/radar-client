@@ -61,10 +61,10 @@ export const complexRequestObjectGenerator = (fields) => {
         },
 
         //subject options
-        subjects: fields.prefered_items || [0],
+        subjects: fields.prefered_items.length !== 0 ? fields.prefered_items : null,
 
         //quality options
-        rating: fields.rating || [0],
+        niche_rating: fields.niche_rating.length !== 0 ? fields.niche_rating : null,
 
         //sideparams options
         frequency_60: { //Частотность ВБ
@@ -138,7 +138,7 @@ export const complexRequestObjectGenerator = (fields) => {
         page: 1,
         limit: 25,
         sorting: {
-            sort_field: "rating",
+            sort_field: "niche_rating",
             sort_order: "DESC"
         }
     };

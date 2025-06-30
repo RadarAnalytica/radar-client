@@ -47,11 +47,11 @@ const SkuFrequencyPage = () => {
                     <OptionsWidget />
                     {requestData && <div className={styles.page__tableSettingsBlock}>
                         {/* <DownloadButton /> */}
-                        {/* <TableSettingsWidget /> */}
+                        <TableSettingsWidget />
                     </div>}
                 </div>
-                {/* <TableWidget /> */}
-                <TableWidget_TEST />
+                <TableWidget />
+                {/* <TableWidget_TEST /> */}
             </div>
             {/* ---------------------- */}
         </main>

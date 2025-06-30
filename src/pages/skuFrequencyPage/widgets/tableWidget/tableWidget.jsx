@@ -40,8 +40,8 @@ const TableWidget = ({ tinyRows = false }) => {
     const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
     const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
     const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
-    const { requestData, requestStatus, requestObject, tableConfig, formType } = useAppSelector(store => store.requestsMonitoring)
-    const [paginationState, setPaginationState] = useState({ limit: 25, page: 1, total_pages: requestData?.length || 1 })
+    const { requestData, requestStatus, requestObject, tableConfig, formType, pagination } = useAppSelector(store => store.requestsMonitoring)
+    //const [paginationState, setPaginationState] = useState({ limit: 25, page: 1, total_pages: requestData?.length || 1 })
     const navigate = useNavigate()
 
     //задаем начальную дату
@@ -286,10 +286,10 @@ const TableWidget = ({ tinyRows = false }) => {
             <ConfigProvider theme={paginationTheme}>
                 <Pagination
                     defaultCurrent={1}
-                    current={paginationState.page}
+                    current={pagination.page}
                     onChange={paginationHandler}
-                    total={paginationState.total_pages}
-                    pageSize={paginationState.limit}
+                    total={pagination.total_pages}
+                    pageSize={pagination.limit}
                     showSizeChanger={false}
                     showQuickJumper
                     hideOnSinglePage={true}

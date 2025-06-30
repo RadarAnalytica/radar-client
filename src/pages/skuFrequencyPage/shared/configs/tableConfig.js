@@ -14,21 +14,24 @@ export const tableConfig = [
         isMain: false,
         values: [
             //main
-            { ruName: 'Частотность WB', engName: 'frequency', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Рейтинг качества ниши', engName: 'niche_rating', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Частотность за 30 дней', engName: 'frequency_30', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Частотность за 60 дней', engName: 'frequency_60', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Частотность за 90 дней', engName: 'frequency_90', isSortable: true, isActive: true, hasRate: false },
             { ruName: 'Коэффициент cпроса', engName: 'freq_per_good', isSortable: true, isActive: true, hasRate: false },
             { ruName: 'Кол-во продавцов', engName: 'suppliers_quantity', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Кол-во товаров в ТОП-750 за 30 дней', engName: 'top_goods_quantity', units: 'шт', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Кол-во товаров на WB', engName: 'goods_quantity', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Выручка (с СПП)', engName: 'revenue', units: '₽', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. выручка в день', engName: 'avg_daily_revenue', units: '₽', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. цена (с СПП)', engName: 'avg_price', units: '₽', isSortable: true, isActive: true, hasRate: false },
+            // { ruName: 'Кол-во товаров в ТОП-750 за 30 дней', engName: 'top_goods_quantity', units: 'шт', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Кол-во товаров на WB', engName: 'stock_quantity', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Выручка (с СПП)', engName: 'revenue_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Ср. выручка в день', engName: 'avg_daily_revenue_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Ср. цена (с СПП)', engName: 'avg_price_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
             { ruName: 'Товаров с продажами', engName: 'goods_with_sales_quantity', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. выручка на товар', engName: 'avg_revenue', units: '₽', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. выручка на товар с продажами', engName: 'avg_with_sales_revenue', units: '₽', isSortable: true, isActive: true, hasRate: false },
-            { ruName: '% товаров с продажами', engName: 'goods_with_sales_percent', units: '%', isSortable: true, isActive: true, hasRate: false },
-            { ruName: '% выручки у ТОП-30 товаров', engName: 'monopoly_percent', units: '%', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Ср. выручка на товар', engName: 'avg_revenue_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Ср. выручка на товар с продажами', engName: 'avg_with_sales_revenue_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
+            { ruName: '% товаров с продажами', engName: 'goods_with_sales_percent_total', units: '%', isSortable: true, isActive: true, hasRate: false },
+            // { ruName: '% выручки у ТОП-30 товаров', engName: 'monopoly_percent', units: '%', isSortable: true, isActive: true, hasRate: false },
             { ruName: 'Ср. кол-во оценок', engName: 'avg_reviews', units: '%', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. рейтинг', engName: 'rating', isSortable: true, isActive: true, hasRate: false },
+            { ruName: 'Ср. рейтинг', engName: 'avg_rating', isSortable: true, isActive: true, hasRate: false },
             { ruName: '% продавцов с продажами', engName: 'suppliers_with_sales_percent', units: '%', isSortable: true, isActive: true, hasRate: false },
             //dynamic
             { ruName: 'Динамика запроса за 30 дней', engName: 'g30', units: null, isSortable: true, isActive: false, hasRate: false },
@@ -36,20 +39,21 @@ export const tableConfig = [
             { ruName: 'Динамика запроса за 90 дней', engName: 'g90', units: null, isSortable: true, isActive: false, hasRate: false },
             // side params
             { ruName: 'Процент выкупа, %', engName: 'buyout_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
-            { ruName: 'Частотность за 30 дней', engName: 'frequency_30', units: null, isSortable: true, isActive: false, hasRate: false },
+            //{ ruName: 'Частотность за 30 дней', engName: 'frequency_30', units: null, isSortable: true, isActive: false, hasRate: false },
             { ruName: 'Монопольность, %', engName: 'monopoly_percent', units: '%', isSortable: true, isActive: false, hasRate: false },  // has double
-            { ruName: 'Кол-во артикулов по запросу, шт', engName: 'goods_quantity', units: 'шт', isSortable: true, isActive: false, hasRate: false },
-            { ruName: 'Комиссия FBO, %', engName: 'fbo_commision', units: '%', isSortable: true, isActive: false, hasRate: false },  // ?? нет в фильтрах так что мб и тут не будет
+            { ruName: 'Кол-во товаров в ТОП-1200 за 30 дней, шт', engName: 'top_goods_quantity', units: 'шт', isSortable: true, isActive: false, hasRate: false },  // has double
+            //{ ruName: 'Кол-во артикулов по запросу, шт', engName: 'goods_quantity', units: 'шт', isSortable: true, isActive: false, hasRate: false },
+            //{ ruName: 'Комиссия FBO, %', engName: 'fbo_commision', units: '%', isSortable: true, isActive: false, hasRate: false },  // ?? нет в фильтрах так что мб и тут не будет
             // first page goods
             { ruName: '% артикулов в рекламе', engName: 'advert_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
             { ruName: '% артикулов с внешним трафиком', engName: 'external_advert_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
             { ruName: 'Среднее кол-во отзывов у артикулов (без учета внутренней рекламы WB)', engName: 'avg_reviews', units: 'шт', isSortable: true, isActive: false, hasRate: false },
             // first 3 pages goods
-            { ruName: 'Выручка за 30 дней, руб', engName: '30_days_revenue', units: '₽' },
-            { ruName: 'Средняя выручка за 30 дней, руб', engName: 'avg_30_days_revenue', units: '₽', isSortable: true, isActive: false, hasRate: false },
-            { ruName: '% упущенной выручки за 30 дней', engName: 'lost_revenue_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
-            { ruName: 'Средняя цена, руб', engName: 'f3_avg_price', units: '₽', isSortable: true, isActive: false, hasRate: false },
-            { ruName: '% артикулов с продажами', engName: 'f3_goods_with_sales_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
+            //{ ruName: 'Выручка за 30 дней, руб', engName: '30_days_revenue', units: '₽' },
+            //{ ruName: 'Средняя выручка за 30 дней, руб', engName: 'avg_30_days_revenue', units: '₽', isSortable: true, isActive: false, hasRate: false },
+            //{ ruName: '% упущенной выручки за 30 дней', engName: 'lost_revenue_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
+            //{ ruName: 'Средняя цена, руб', engName: 'f3_avg_price', units: '₽', isSortable: true, isActive: false, hasRate: false },
+            //{ ruName: '% артикулов с продажами', engName: 'f3_goods_with_sales_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
 
 
             // items from the old version of the table
@@ -70,14 +74,10 @@ export const tableConfig = [
     },
 ]
 
-//монопольность, рейтинг качества ниши, кэф спроса, насколько тяжело конкурировать - добавить тултипы в фильтры и в таблицу
-
 const tooltipConfig = {
     "Рейтинг качества ниши": 'test1',
     "Коэффициент cпроса": 'test2'
 }
-
-
 const getTitleWithTooltip = (title) => {
     return (
         <>
@@ -103,9 +103,6 @@ const getTitleWithTooltip = (title) => {
         </>
     )
 }
-
-
-
 export const newTableConfig = [
     // Main column: Поисковые запросы
     {
@@ -129,7 +126,7 @@ export const newTableConfig = [
         title: 'Основные',
         className: 'table__mainHeader',
         children: [
-            { title: getTitleWithTooltip('Рейтинг качества ниши'), dataIndex: 'market_rating', width: 240, sorter: (a, b) => sorter(a, b, 'rating'), sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true, render: function (value) { return cellRender(value, this) } },
+            { title: getTitleWithTooltip('Рейтинг качества ниши'), dataIndex: 'niche_rating', width: 240, sorter: (a, b) => sorter(a, b, 'rating'), sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true, render: function (value) { return cellRender(value, this) } },
             { title: 'Частотность за 30 дней', dataIndex: 'frequency_30', width: 240, sorter: (a, b) => sorter(a, b, 'frequency'), sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true, render: function (value) { return cellRender(value, this) } },
             { title: 'Частотность за 30 дней', dataIndex: 'frequency_60', width: 240, sorter: (a, b) => sorter(a, b, 'frequency'), sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true, render: function (value) { return cellRender(value, this) } },
             { title: 'Частотность за 30 дней', dataIndex: 'frequency_90', width: 240, sorter: (a, b) => sorter(a, b, 'frequency'), sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true, render: function (value) { return cellRender(value, this) } },
