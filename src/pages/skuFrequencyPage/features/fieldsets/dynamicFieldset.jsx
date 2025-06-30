@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import styles from './dynamicFieldset.module.css'
 import { Form, ConfigProvider, Input, Select } from 'antd'
 
@@ -36,7 +36,7 @@ const DynamicFieldset = ({ form }) => {
             }
         }
     }), [])
-
+    
     return (
         <fieldset
             className={styles.fieldset}
@@ -78,7 +78,7 @@ const DynamicFieldset = ({ form }) => {
                     theme={memoizedConfigProviderTheme}
                 >
                     <div className={styles.form__dynamicSelectBlock}>
-                        <label className={styles.form__doubledLabel}>От даты отсчета за 30 дней, %</label>
+                        <label className={styles.form__doubledLabel}>За 30 дней, %</label>
                         <div className={styles.form__dynamicSelectWrapper}>
                             <Form.Item
                                 style={{ margin: 0, width: '100%' }}
@@ -162,7 +162,7 @@ const DynamicFieldset = ({ form }) => {
                     {/*------------------------------------- 60 days -------------------------------------------*/}
 
                     <div className={styles.form__dynamicSelectBlock}>
-                        <label className={styles.form__doubledLabel}>От даты отсчета за 60 дней, %</label>
+                        <label className={styles.form__doubledLabel}>За 60 дней, %</label>
                         <div className={styles.form__dynamicSelectWrapper}>
                             <Form.Item
                                 style={{ margin: 0, width: '100%' }}
@@ -245,7 +245,7 @@ const DynamicFieldset = ({ form }) => {
                     {/*------------------------------------- 90 days -------------------------------------------*/}
 
                     <div className={styles.form__dynamicSelectBlock}>
-                        <label className={styles.form__doubledLabel}>От даты отсчета за 90 дней, %</label>
+                        <label className={styles.form__doubledLabel}>За 90 дней, %</label>
                         <div className={styles.form__dynamicSelectWrapper}>
                             <Form.Item
                                 //label='От даты отсчета за 90 дней, %'

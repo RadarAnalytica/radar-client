@@ -61,17 +61,21 @@
 
 .container {
     position: relative;
+    max-height: 500px;
     height: 100%;
     /* padding: 16px; */
     background-color: #fff;
     border-radius: 16px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
-    border: 1px solid red;
+    display: flex;
+    align-items: stretch;
 }
 
 .tableContainer {
-    height: 100%;
+    max-height: fit-content;
     overflow: hidden;
+    height: 100%;
+    min-height: 100%;
 }
 
 .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
@@ -92,7 +96,7 @@
     /* max-height: 100%!important; */
 }
 
-/* 
+
   .tableContainer::-webkit-scrollbar {
     width: 3px;
     height: 3px;
@@ -109,7 +113,7 @@
   .tableContainer::-webkit-scrollbar-thumb {
       background: #5329ff80;
       border-radius: 6px;
-  } */
+  }
 
 .tableContainer thead>tr>th {
     border: none;
@@ -226,3 +230,42 @@
 .row:last-of-type {
     border: none;
 }
+
+/* :global(.ant-table-body) {
+   height: 100% !important;
+   max-height: none !important;
+}
+:global(.ant-table) {
+   height: 100% !important;
+   max-height: none !important;
+   border: 2px solid black;
+}
+:global(.ant-table-wrapper) {
+   height: 100% !important;
+   max-height: none !important;
+  
+} */
+
+:global(.ant-table-body::-webkit-scrollbar) {
+    width: 3px;
+    height: 3px;
+    border-radius: 6px !important;
+    opacity: 1;
+}
+
+:global(.ant-table-body::-webkit-scrollbar-track) {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
+}
+
+:global(.ant-table-body::-webkit-scrollbar-thumb) {
+    background: #5329ff80 !important;
+    border-radius: 6px;
+}
+
+:global(.ant-table-body) {
+    scrollbar-width: thin; /* Для Firefox */
+    scrollbar-color: #5329ff80 transparent; /* Для Firefox */
+}
+

@@ -21,3 +21,11 @@
     width: 100%;
     grid-column: span 2;
 }
+
+.widget__loaderWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}

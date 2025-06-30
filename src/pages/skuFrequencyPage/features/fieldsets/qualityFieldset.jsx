@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './qualityFieldset.module.css'
-import { Form, ConfigProvider, Checkbox } from 'antd'
+import { Form, ConfigProvider, Checkbox, Tooltip } from 'antd'
 
 
 const QUALITY_CONFIG = [
@@ -15,7 +15,6 @@ const QUALITY_CONFIG = [
             </div>
         ),
         value: 1,
-        iconColor: '#F93C65'
     },
     {
         label: (
@@ -28,7 +27,6 @@ const QUALITY_CONFIG = [
             </div>
         ),
         value: 2,
-        iconColor: '#F93C65'
     },
     {
         label: (
@@ -41,7 +39,6 @@ const QUALITY_CONFIG = [
             </div>
         ),
         value: 3,
-        iconColor: '#F93C65'
     },
     {
         label: (
@@ -54,7 +51,6 @@ const QUALITY_CONFIG = [
             </div>
         ),
         value: 4,
-        iconColor: '#F93C65'
     },
 ]
 
@@ -64,7 +60,7 @@ const QualityFieldset = () => {
         <fieldset
             className={styles.fieldset}
         >
-             <div
+            <div
                 className={styles.fieldset__header}
                 id='header'
                 onDoubleClick={e => {
@@ -109,11 +105,29 @@ const QualityFieldset = () => {
                     >
 
                         <Form.Item
-                            className={`${styles.form__item} ${styles.form__item_wide}`}
+                            className={`${styles.form__item}`}
                             name='rating'
                         >
                             <Checkbox.Group options={QUALITY_CONFIG} />
                         </Form.Item>
+                    </ConfigProvider>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorTextLightSolid: 'black',
+                            }
+                        }}
+                    >
+                        <Tooltip
+                            title='test'
+                            arrow={false}
+                            color='white'
+                        >
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 8 }}>
+                                <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                            </svg>
+                        </Tooltip>
                     </ConfigProvider>
                 </div>
             </div>
