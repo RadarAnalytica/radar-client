@@ -2,13 +2,15 @@
     border: none;
     background: transparent;
 }
+
 .widget__openButton svg {
-   transform: rotate(0deg);
-   transition: transform .2s ease-in-out;
+    transform: rotate(0deg);
+    transition: transform .2s ease-in-out;
 }
+
 .widget__openButton_closed svg {
-   transform: rotate(180deg);
-   transition: transform .2s ease-in-out;
+    transform: rotate(180deg);
+    transition: transform .2s ease-in-out;
 }
 
 .fieldset {
@@ -54,6 +56,15 @@
     @media (max-width: 1400px) {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+.form__complexWrapperLabel {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+
 }
 
 .form__item {

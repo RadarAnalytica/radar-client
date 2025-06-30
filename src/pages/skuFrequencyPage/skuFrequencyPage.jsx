@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import styles from './skuFrequencyPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -5,9 +6,11 @@ import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
 import { OptionsWidget, TableWidget, TableSettingsWidget } from './widgets'
 //import OptionsSettingsWidget from './widgets'
-import { useAppSelector } from '../../redux/hooks'
+import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import DownloadButton from '../../components/DownloadButton'
 import TableWidget_TEST from './widgets/tableWidget/tableWidget_TEST'
+import { actions as reqActions } from '../../redux/requestsMonitoring/requestsMonitoringSlice'
+import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 
 
 
@@ -15,6 +18,13 @@ import TableWidget_TEST from './widgets/tableWidget/tableWidget_TEST'
 const SkuFrequencyPage = () => {
     //const { skuFrequencyMode } = useAppSelector(store => store.filters)
     const { requestData } = useAppSelector(store => store.requestsMonitoring)
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        return () => {
+            dispatch(reqActions.resetState())
+            dispatch(filterActions.setSkuFrequencyMode('Простой'))
+        }
+    }, [])
 
     return (
         <main className={styles.page}>

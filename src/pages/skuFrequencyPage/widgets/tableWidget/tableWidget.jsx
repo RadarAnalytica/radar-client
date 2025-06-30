@@ -7,7 +7,7 @@ import { formatRateValue, sortTableDataFunc } from '../../shared';
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '../../../../redux/requestsMonitoring/requestsMonitoringActions';
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
-import { ConfigProvider, Pagination, Rate } from 'antd'
+import { ConfigProvider, Pagination, Rate, Tooltip } from 'antd'
 import { useNavigate } from 'react-router-dom';
 
 //инит стейт сортировки
@@ -183,7 +183,29 @@ const TableWidget = ({ tinyRows = false }) => {
                                         return v.isActive && (
 
                                             <div className={headerCellStyle} key={`header_cell_${id}`}>
-                                                <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                                <p className={styles.table__headerItemTitle}>
+                                                    {v.ruName}
+                                                    {v.hasTooltip &&
+                                                        <ConfigProvider
+                                                            theme={{
+                                                                token: {
+                                                                    colorTextLightSolid: 'black',
+                                                                }
+                                                            }}
+                                                        >
+                                                            <Tooltip
+                                                                title={v.tooltipText}
+                                                                arrow={false}
+                                                                color='white'
+                                                            >
+                                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10 }}>
+                                                                    <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                                                    <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                                                </svg>
+                                                            </Tooltip>
+                                                        </ConfigProvider>
+                                                    }
+                                                </p>
                                                 {v.isSortable &&
                                                     <div className={styles.sortControls}>
                                                         <button
@@ -251,7 +273,7 @@ const TableWidget = ({ tinyRows = false }) => {
                                                 if (v.engName === 'niche_rating') {
                                                     return (
                                                         <div className={styles.table__rowItem} key={`table_cell_${id}`}>
-                                                            <div style={{ zIndex: 0}}>
+                                                            <div style={{ zIndex: 0 }} title={product[v.engName]}>
                                                                 <ConfigProvider
                                                                     theme={{
                                                                         components: {
@@ -290,7 +312,7 @@ const TableWidget = ({ tinyRows = false }) => {
                                                 }
 
                                                 return v.isActive && (
-                                                    <div className={styles.table__rowItem} key={`table_cell_${id}`}>{v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}</div>
+                                                    <div className={styles.table__rowItem} key={`table_cell_${id}`}>{v.units ? formatPrice(product[v.engName], v.units) : formatPrice(product[v.engName], '')}</div>
                                                 )
                                             }))}
                                         </div>
