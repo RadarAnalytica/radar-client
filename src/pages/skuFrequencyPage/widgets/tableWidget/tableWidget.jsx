@@ -66,7 +66,7 @@ const TableWidget = ({ tinyRows = false }) => {
                 jumper.textContent = 'Перейти на'
                 jumper.appendChild(input)
                 const suffix = document.createElement('span');
-                suffix.textContent = 'стр'
+                suffix.textContent = 'стр.'
                 jumper.appendChild(suffix)
                 jumper.style.color = 'black'
             }
@@ -107,7 +107,6 @@ const TableWidget = ({ tinyRows = false }) => {
             dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: 'rating', sort_order: 'DESC' }, page: 1 }))
             return
         }
-
 
         // включаем сортировку и сортируем дату
         setSortState({
@@ -257,7 +256,8 @@ const TableWidget = ({ tinyRows = false }) => {
                                                                     theme={{
                                                                         components: {
                                                                             Rate: {
-                                                                                starColor: '#F0AD00'
+                                                                                //starColor: '#F0AD00'
+                                                                                starColor: '#5329FF'
                                                                             }
                                                                         }
                                                                     }}
@@ -266,7 +266,7 @@ const TableWidget = ({ tinyRows = false }) => {
                                                                         value={product[v.engName]}
                                                                         allowHalf
                                                                         disabled
-                                                                        style={{ zIndex: 0 }}
+                                                                        style={{ zIndex: -1 }}
                                                                     />
                                                                 </ConfigProvider>
                                                             </div>
