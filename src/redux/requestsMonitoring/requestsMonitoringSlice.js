@@ -14,7 +14,12 @@ const initialState = {
         message: ''
     },
     formType: undefined,
-    requestData: undefined
+    requestData: undefined,
+    pagination: {
+        limit: 25,
+        page: 1,
+        total_pages: 1
+    }
 };
 
 const requestsMonitoringSlice = createSlice({
@@ -34,6 +39,19 @@ const requestsMonitoringSlice = createSlice({
                 requestObject: {
                     ...state.requestObject,
                     ...action.payload
+                }
+            }
+        },
+        updatePagination: (state, action) => {
+            return {
+                ...state,
+                requestObject: {
+                    ...state.requestObject,
+                   page: action.payload.page
+                },
+                pagination: {
+                    ...state.pagination,
+                    page: action.payload.page
                 }
             }
         },
@@ -62,10 +80,30 @@ const requestsMonitoringSlice = createSlice({
     extraReducers: (bulder) => {
         bulder
         .addCase(fetchRequestsMonitoringData.fulfilled, (state, action) => {
-                state.requestData = action.payload;
+            const { queries, limit, total_pages, page } = action.payload
+            return {
+                ...state,
+                requestData: queries,
+                pagination: {
+                    limit,
+                    page,
+                    total_pages: limit * total_pages
+                }
+            }
+              //  state.requestData = action.payload;
         })
         .addCase(fetchRequestsMonitoringDataEasy.fulfilled, (state, action) => {
-                state.requestData = action.payload;
+            const { queries, limit, total_pages, page } = action.payload
+            return {
+                ...state,
+                requestData: queries,
+                pagination: {
+                    limit,
+                    page,
+                    total_pages: limit * total_pages
+                }
+            }
+               // state.requestData = action.payload;
         })
     }
 });

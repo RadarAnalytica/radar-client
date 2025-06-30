@@ -44,7 +44,6 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
     const { requestData, requestStatus, requestObject, formType } = useAppSelector(store => store.requestsMonitoring)
     const [paginationState, setPaginationState] = useState({ limit: 25, page: 1, total_pages: requestData?.length || 1 })
     const navigate = useNavigate()
-
     //задаем начальную дату
     useEffect(() => {
         if (requestObject && formType === 'complex') {
@@ -79,7 +78,7 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
   
       useEffect(() => {
           const updateHeight = () => {
-        if (containerRef.current) {
+        if (containerRef?.current) {
                   // ref контейнера который занимает всю высоту
           const container = containerRef.current;
           
@@ -102,10 +101,11 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
         const tableBody = document.querySelector('.ant-table-body')
         const headerCell = document.querySelectorAll('.table__mainHeader')
         const coloredHeaderCell = document.querySelectorAll('.table__mainHeader_colored')
-        const firstCells = document.querySelectorAll('.first__cell')
-        if (headerCell && coloredHeaderCell && firstCells) {
-            headerCell.forEach(_ => _.style.color = '#1A1A1A')
-            coloredHeaderCell.forEach(_ => _.style.color = '#1A1A1A')
+        //const firstCells = document.querySelectorAll('.first__cell')
+        
+        if (headerCell && coloredHeaderCell) {
+            headerCell?.forEach(_ => _.style.color = '#1A1A1A')
+            coloredHeaderCell?.forEach(_ => _.style.color = '#1A1A1A')
             //firstCells.forEach(_ => _.style.border = '1px solid black')
             //headerCell.style.color = '#1A1A1A'
             //coloredHeaderCell.color = '#1A1A1A'
@@ -114,6 +114,12 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
             tableBody.style.height = '100%';
             tableBody.style.minHeight = '100%';
             tableBody.style.maxHeight = 'none'
+        }
+      }, [requestData])
+
+      useEffect(() => {
+        if (requestData) {
+            console.log(requestData)
         }
       }, [requestData])
   

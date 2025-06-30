@@ -46,7 +46,7 @@ export const cellRender = (value, context) => {
         )
     }
 
-    if (context.dataIndex === 'market_rating') {
+    if (context.dataIndex === 'niche_rating') {
         const color = getRateStarColor(value)
         return (
             <div
@@ -56,7 +56,7 @@ export const cellRender = (value, context) => {
                     theme={{
                         components: {
                             Rate: {
-                                starColor: color
+                                starColor: '#F0AD00'
                             }
                         }
                     }}
@@ -64,6 +64,7 @@ export const cellRender = (value, context) => {
                     <Rate
                         value={value}
                         allowHalf
+                        disabled
                     />
                 </ConfigProvider>
             </div>

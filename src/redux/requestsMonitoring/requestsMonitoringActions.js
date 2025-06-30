@@ -17,11 +17,11 @@ export const fetchRequestsMonitoringData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Что-то пошло не так :('}))
         }
         const data = await res.json();
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: false, isSuccess: true, message: ''}))
-        return data.queries;
+        return data;
       } catch (e) {
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Что-то пошло не так :('}))
       }
@@ -46,7 +46,7 @@ export const fetchRequestsMonitoringDataEasy = createAsyncThunk(
         }
         const data = await res.json();
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: false, isSuccess: true, message: ''}))
-        return data.queries;
+        return data;
       } catch (e) {
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Что-то пошло не так :('}))
       }
