@@ -25,6 +25,23 @@ export default function ReportProfitLoss() {
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
 
+	const shopStatus = useMemo(() => {
+		if (!activeBrand || !shops) return null;
+		
+		if (activeBrand.id === 0) {
+				return {
+						id: 0,
+						brand_name: 'Все',
+						is_active: shops.some(shop => shop.is_primary_collect),
+						is_valid: true,
+						is_primary_collect: shops.some(shop => shop.is_primary_collect),
+						is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
+				};
+		}
+		
+		return shops.find(shop => shop.id === activeBrand.id);
+}, [activeBrand, shops]);
+
 	const initialRange = useMemo(() => ({
 		month_to: dayjs().format('YYYY-MM'),
 		month_from: dayjs().startOf('year').format('YYYY-MM')
@@ -141,7 +158,6 @@ export default function ReportProfitLoss() {
 		if (shops.some((shop) => !shop.is_self_cost_set)){
 			const total = rows.find((el) => el.key === 'net_profit');
 			for (const key in total){
-				console.log('total key', key)
 				if (key == 'key' || key == 'title'){
 					continue
 				}
@@ -180,7 +196,7 @@ export default function ReportProfitLoss() {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportProfitLoss();
 		}
-	}, [selectedRange, filters, monthRange]);
+	}, [filters, monthRange]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;
@@ -238,7 +254,7 @@ export default function ReportProfitLoss() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="Отчет о прибылях и убытках"></Header>
 				</div>
-				{!loading && shops.some((shop) => !shop.is_self_cost_set) && (
+				{!loading && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
 				<div className={styles.controls}>
