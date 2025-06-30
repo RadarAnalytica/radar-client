@@ -175,7 +175,7 @@ const OptionsWidget = () => {
                                             }}
                                         >
                                             <Tooltip
-                                                title='test'
+                                                title='Комплексный показатель, который учитывает коэффициента спроса, монопольность, рекламу, и другие параметры'
                                                 arrow={false}
                                                 color='white'
                                             >
@@ -254,7 +254,7 @@ const OptionsWidget = () => {
                             form={complexForm}
                             initialValues={{
                                 prefered_items: [],
-                                niche_rating: [1]
+                                niche_rating: []
                             }}
                         >
                             <MainFieldset optionsConfig={optionsConfig} />

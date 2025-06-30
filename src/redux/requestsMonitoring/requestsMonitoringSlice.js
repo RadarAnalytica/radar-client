@@ -75,6 +75,9 @@ const requestsMonitoringSlice = createSlice({
                 ...state,
                 tableConfig: [...tableConfig]
                }
+        },
+        resetState: () => {
+            return initialState
         }
     },
     extraReducers: (bulder) => {
