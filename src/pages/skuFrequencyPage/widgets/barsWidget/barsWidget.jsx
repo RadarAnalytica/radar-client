@@ -2,28 +2,40 @@ import { useEffect, useState } from 'react';
 import styles from './barsWidget.module.css'
 import Bar from '../../features/bar/bar';
 import { useAppSelector } from '../../../../redux/hooks';
+import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
+
+const initRequestStatus = {
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    message: ''
+}
 
 const BarsWidget = ({currentQuery}) => {
     const [queryDetailsData, setQueryDetailsData] = useState()
+    const [ requestStatus, setRequestStatus ] = useState(initRequestStatus)
 
     const getQueryDetailsData = async (query) => {
-        
+        setRequestStatus({...initRequestStatus, isLoading: true})
         try {
-            let res = await fetch(`https://radarmarket.ru/api/web-service/monitoring-oracle/query-details?query=${query}`, {
+            let res = await fetch(`https://radarmarket.ru/api/web-service/monitoring-oracle/query-details`, {
+                method: 'POST',
                 headers: {
                     "Content-type": "application/json"
-                }
+                },
+                body: JSON.stringify({ query: query})
             })
 
             if (!res.ok) {
-
+                setRequestStatus({...initRequestStatus, isError: true, message: 'Не удалось получить данные. Попробуйте обновить страницу.'})
             }
             //console.log(res)
             res = await res.json()
             setQueryDetailsData(res)
+            setRequestStatus(initRequestStatus)
 
         } catch {
-
+            setRequestStatus({...initRequestStatus, isError: true, message: 'Не удалось получить данные. Попробуйте обновить страницу.'})
         }
     }
 
@@ -32,6 +44,25 @@ const BarsWidget = ({currentQuery}) => {
             getQueryDetailsData(currentQuery)
         }
     }, [currentQuery])
+
+    if (requestStatus.isLoading || requestStatus.isError) {
+        return (
+            <section className={styles.widget}>
+                <div className={styles.widget__loaderWrapper}>
+                    <span className='loader'></span>
+                </div>
+
+                <ErrorModal
+                    open={requestStatus.isError}
+                    message={requestStatus.message}
+                    footer={null}
+                    onOk={() => setRequestStatus(initRequestStatus)}
+                    onClose={() => setRequestStatus(initRequestStatus)}
+                    onCancel={() => setRequestStatus(initRequestStatus)}
+                />
+            </section>
+        )
+    }
 
     return queryDetailsData && (
         <section className={styles.widget}>

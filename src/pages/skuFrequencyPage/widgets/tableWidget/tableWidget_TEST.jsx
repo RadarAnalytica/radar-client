@@ -99,6 +99,7 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
       }, [newTableConfig, requestData])
 
       useEffect(() => {
+        const tableBody = document.querySelector('.ant-table-body')
         const headerCell = document.querySelectorAll('.table__mainHeader')
         const coloredHeaderCell = document.querySelectorAll('.table__mainHeader_colored')
         const firstCells = document.querySelectorAll('.first__cell')
@@ -108,6 +109,11 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
             //firstCells.forEach(_ => _.style.border = '1px solid black')
             //headerCell.style.color = '#1A1A1A'
             //coloredHeaderCell.color = '#1A1A1A'
+        }
+        if (tableBody) {
+            tableBody.style.height = '100%';
+            tableBody.style.minHeight = '100%';
+            tableBody.style.maxHeight = 'none'
         }
       }, [requestData])
   

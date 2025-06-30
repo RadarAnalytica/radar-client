@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './optionsWidget.module.css'
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
-import { Form, ConfigProvider, Input, Select, Button } from 'antd'
+import { Form, ConfigProvider, Input, Select, Button, Tooltip } from 'antd'
 import { complexRequestObjectGenerator } from '../../shared'
 import { actions as requestsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice'
 import { MainFieldset, SubjectFieldset, QualityFieldset, SideParamsFieldset, DynamicFieldset } from '../../features'
@@ -164,7 +164,29 @@ const OptionsWidget = () => {
                             </Form.Item>
                             <Form.Item
                                 className={styles.form__item}
-                                label='На сколько тяжело конкурировать?'
+                                label={
+                                    <>
+                                        {'На сколько тяжело конкурировать?'}
+                                        <ConfigProvider
+                                            theme={{
+                                                token: {
+                                                    colorTextLightSolid: 'black',
+                                                }
+                                            }}
+                                        >
+                                            <Tooltip
+                                                title='test'
+                                                arrow={false}
+                                                color='white'
+                                            >
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10 }}>
+                                                    <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                                    <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                                </svg>
+                                            </Tooltip>
+                                        </ConfigProvider>
+                                    </>
+                                }
                                 name='competitionLevel'
                             >
                                 <Select
@@ -197,7 +219,7 @@ const OptionsWidget = () => {
                                     onClick={() => simpleForm.resetFields()}
                                     type='text'
                                     size='large'
-                                    style={{ height: 45, width: 112}}
+                                    style={{ height: 45, width: 112 }}
                                 >
                                     Очистить
                                 </Button>
@@ -213,7 +235,7 @@ const OptionsWidget = () => {
                                     htmlType='submit'
                                     type='primary'
                                     size='large'
-                                    style={{ height: 45, width: 112}}
+                                    style={{ height: 45, width: 112 }}
                                 >
                                     Применить
                                 </Button>
@@ -260,7 +282,7 @@ const OptionsWidget = () => {
                                         type='text'
                                         size='large'
                                         onClick={() => complexForm.resetFields()}
-                                        style={{ height: 45, width: 112}}
+                                        style={{ height: 45, width: 112 }}
                                     >
                                         Очистить
                                     </Button>
@@ -276,7 +298,7 @@ const OptionsWidget = () => {
                                         htmlType='submit'
                                         type='primary'
                                         size='large'
-                                        style={{ height: 45, width: 112}}
+                                        style={{ height: 45, width: 112 }}
                                     >
                                         Применить
                                     </Button>
