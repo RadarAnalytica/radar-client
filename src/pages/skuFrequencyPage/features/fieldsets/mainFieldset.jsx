@@ -59,7 +59,7 @@ const MainFieldset = ({ optionsConfig }) => {
                         label='Содержит поисковый запрос'
                         name='query'
                         rules={[
-                            { required: true, message: 'Пожалуйста, заполните это поле!' }
+                            { required: true, message: 'Пожалуйста, заполните это поле!' },
                         ]}
                     >
                         <Input
