@@ -326,7 +326,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                     }}
                                     style={{ height: '44px' }}
                                     size='large'
-                                    disabled={memoizedRowSaveButtonForLastHistoryParamsDisabledStatus}
+                                    disabled={memoizedIsOpen}
                                     placeholder={currentProduct.self_cost_change_history?.sort((a, b) => moment(a.date) > moment(b.date) ? 1 : -1)[product.self_cost_change_history.length - 1]?.cost}
                                 />
                             </div>
@@ -346,7 +346,7 @@ const TableRow = ({ currentProduct, getTableData, authToken, setDataStatus, init
                                         setProduct({ ...newProduct })
                                     }}
                                     size='large'
-                                    disabled={memoizedRowSaveButtonForLastHistoryParamsDisabledStatus}
+                                    disabled={memoizedIsOpen}
                                 />
 
                                 <button
