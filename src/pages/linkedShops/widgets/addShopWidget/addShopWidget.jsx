@@ -84,6 +84,17 @@ export const AddShopWidget = () => {
                                 name='name'
                                 label='Название магазина'
                                 className={styles.form__item}
+                                rules={[
+                                    {required: true, message: 'Пожалуйста, заполните это поле!'},
+                                    () => ({
+                                        validator(_, value) {
+                                            if (value.length > 0 && !value.trim()) {
+                                                return Promise.reject(new Error('Пожалуйста, заполните это поле!'))
+                                            }
+                                            return Promise.resolve()
+                                        },
+                                    }),
+                                ]}
                             >
                                 <Input
                                     placeholder='Например: "тестовый"'
@@ -95,6 +106,17 @@ export const AddShopWidget = () => {
                                 name='token'
                                 label='Токен'
                                 className={styles.form__item}
+                                rules={[
+                                    {required: true, message: 'Пожалуйста, заполните это поле!'},
+                                    () => ({
+                                        validator(_, value) {
+                                            if (value.length > 0 && !value.trim()) {
+                                                return Promise.reject(new Error('Пожалуйста, заполните это поле!'))
+                                            }
+                                            return Promise.resolve()
+                                        },
+                                    }),
+                                ]}
                             >
                                 <Input
                                     placeholder='Что-то вроде: GJys67G7sbNw178F'
