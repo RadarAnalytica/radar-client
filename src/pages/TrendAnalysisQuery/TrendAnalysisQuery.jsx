@@ -165,7 +165,7 @@ export default function TrendAnalysisQuery() {
 			<section className={styles.page__content}>
 				{/* header */}
 				<div className={styles.page__headerWrapper}>
-					<Header title="Анализ трендовых запросов"></Header>
+					<Header title="Анализ трендовой динамики запросов"></Header>
 				</div>
 				<ConfigProvider
 					theme={{

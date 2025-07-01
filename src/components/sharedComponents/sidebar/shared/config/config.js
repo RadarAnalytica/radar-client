@@ -12,7 +12,7 @@ export const menuConfig = [
                 url: '/sku-analysis',
                 label: 'Анализ артикула',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
             {
                 id: 2,
@@ -55,14 +55,14 @@ export const menuConfig = [
                 url: '/trending-requests',
                 label: 'Поиск трендовых запросов',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
             {
                 id: 2,
                 url: '/trend-analysis',
-                label: 'Анализ трендовых запросов',
+                label: 'Анализ трендовой динамики запросов',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
         ]
     },
@@ -109,10 +109,10 @@ export const menuConfig = [
             },
             {
                 id: 6,
-                url: '/report-week', 
+                url: '/report-week',
                 label: 'Отчет по неделям',
                 isActive: true,
-                isNew: true
+                isNew: false
             },
             {
                 id: 7,
@@ -161,7 +161,7 @@ export const menuConfig = [
                 url: '/groups',
                 label: 'Группы товаров',
                 isActive: true,
-                isNew: true,
+                isNew: false,
             },
         ]
     },

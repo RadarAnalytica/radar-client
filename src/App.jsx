@@ -85,15 +85,20 @@ function App() {
             {/* dev */}
             <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
             {/* Protected routes */}
-            <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
-            <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />
-            <Route path='/trending-requests' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск трендовых запросов'><TrendingRequestsPage /></ProtectedRoute>} />
-            <Route path='/trend-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ трендовых запросов'><TrendAnalysisQuery /></ProtectedRoute>} />
+
+            <Route path='/monitoring' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><SkuFrequencyPage /></ProtectedRoute>} />
+            <Route path='/monitoring/request' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><SkuFrequencyRequestPage /></ProtectedRoute>} />
+
+            <Route path='/trend-analysis' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Анализ трендовой динамики запросов'><TrendAnalysisQuery /></ProtectedRoute>} />
+            <Route path='/trending-requests' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Поиск трендовых запросов'><TrendingRequestsPage /></ProtectedRoute>} />
+            <Route path='/new-monitoring' element={<ProtectedRoute underDevProtected routeRuName='В разработке'><SkuFrequencyPage /></ProtectedRoute>} />
+
+
             <Route path='/groups' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Группы товаров'><ProductGroupsPage /></ProtectedRoute>} />
             <Route path='/groups/:group_id' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Группа товаров'><SingleGroupPage /></ProtectedRoute>} />
             <Route path='/selfcost' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
-            <Route path='/sku-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
-            <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
+            <Route path='/sku-analysis' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
+            <Route path='/sku-analysis/:id' element={<ProtectedRoute underDevProtected testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
             <Route path='/admin' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
             <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
             <Route path='/abc-data' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
@@ -121,8 +126,9 @@ function App() {
             <Route path='/subscription' element={<ProtectedRoute testPeriodProtected authGuardType="redirect"><Subscriptions /></ProtectedRoute>} />
             <Route path='/schedule' element={<ProtectedRoute expireProtected authGuardType="redirect"><Schedule /></ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
-            <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
-              <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчет о прибылях и убытках'><ReportProfitLoss /></ProtectedRoute>} />
+            
+            <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчет о прибылях и убытках'><ReportProfitLoss /></ProtectedRoute>} />
+            <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
             {/* Public routes */}
             <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />

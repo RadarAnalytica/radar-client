@@ -4,7 +4,7 @@ import { formatPrice } from '../../../service/utils';
 import { ServiceFunctions } from '../../../service/serviceFunctions';
 function TaxTable({ taxInfo, authToken, updateDataDashBoard, activeBrand, selectedRange, loading }) {
 
-    const taxData = taxInfo?.[0] || {}; // Получаем первый объект массива, если он есть
+    const taxData = taxInfo || {}; // Получаем первый объект массива, если он есть
     const [isEditing, setIsEditing] = useState(false);
     const [taxRate, setTaxRate] = useState(taxData.taxRate || 0);
     const [selectedTaxType, setSelectedTaxType] = useState(taxData.taxType || '');
