@@ -155,7 +155,7 @@ export default function ReportProfitLoss() {
 		})
 
 		// проверка данных себестоимости и обнуление строки Чистая прибыль
-		if (shops.some((shop) => !shop.is_self_cost_set)){
+		if (!shopStatus?.is_self_cost_set){
 			const total = rows.find((el) => el.key === 'net_profit');
 			for (const key in total){
 				if (key == 'key' || key == 'title'){
