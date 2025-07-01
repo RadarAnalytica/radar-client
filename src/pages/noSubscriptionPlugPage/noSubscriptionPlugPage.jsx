@@ -60,7 +60,7 @@ import tr1 from '../../assets/plugs/trend/trend-1.svg'
 import tr2 from '../../assets/plugs/trend/trend-2.svg'
 //p&l report
 import pl1 from '../../assets/plugs/pl-report/opiu-1.svg'
-import pl2 from '../../assets/plugs/pl-report/opiu-2.svg'
+//import pl2 from '../../assets/plugs/pl-report/opiu-2.svg'
 
 
 const plugsConfig = {
