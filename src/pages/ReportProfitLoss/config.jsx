@@ -93,10 +93,10 @@ export const ROWS = [
 				key: 'advert',
 				title: 'Внутренняя реклама',
 			},
-			{
-				key: 'other_retentions',
-				title: 'Прочие удержания',
-			},
+			// {
+			// 	key: 'other_retentions',
+			// 	title: 'Прочие удержания',
+			// },
 			{
 				key: 'paid_acceptance',
 				title: 'Платная приемка',
