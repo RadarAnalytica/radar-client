@@ -14,11 +14,11 @@ export const tableConfig = [
         isMain: false,
         values: [
             //main
-            { ruName: 'Рейтинг качества ниши', engName: 'niche_rating', isSortable: true, isActive: true, hasRate: false, hasTooltip: true, tooltipText: 'Показатель рассчитывается исходя из значений выручки, коэффициента спроса, монопольности, рекламы, % выкупа и других параметров' },
+            { ruName: 'Рейтинг качества ниши', engName: 'niche_rating', isSortable: true, isActive: true, hasRate: false, hasTooltip: true, tooltipText: 'Показатель рассчитывается исходя из значений выручки, коэффициента спроса, монопольности, рекламы, % выкупа и других параметров.' },
             { ruName: 'Частотность за 30 дней', engName: 'frequency_30', isSortable: true, isActive: true, hasRate: false },
             { ruName: 'Частотность за 60 дней', engName: 'frequency_60', isSortable: true, isActive: true, hasRate: false },
             { ruName: 'Частотность за 90 дней', engName: 'frequency_90', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Коэффициент cпроса', engName: 'freq_per_good', isSortable: true, isActive: true, hasRate: false,  hasTooltip: true, tooltipText: 'Показатель, который отражает соотношение между частотностью поискового запроса и количеством товаров, предлагаемых по этому запросу. Чем выше коэффициент спроса, тем больше интерес аудитории к данной тематике и тем меньше конкуренция среди продавцов. Данный показатель рассчитывается по формуле: Частотность WB / Кол-во товаров на WB' },
+            { ruName: 'Коэффициент cпроса', engName: 'freq_per_good', isSortable: true, isActive: true, hasRate: false,  hasTooltip: true, tooltipText: 'Показатель, который отражает соотношение между частотностью поискового запроса и количеством товаров, предлагаемых по этому запросу. Чем выше коэффициент спроса, тем больше интерес аудитории к данной тематике и тем меньше конкуренция среди продавцов. Данный показатель рассчитывается по формуле: Частотность WB / Кол-во товаров на WB.' },
             { ruName: 'Кол-во продавцов', engName: 'suppliers_quantity', isSortable: true, isActive: true, hasRate: false },
             // { ruName: 'Кол-во товаров в ТОП-750 за 30 дней', engName: 'top_goods_quantity', units: 'шт', isSortable: true, isActive: true, hasRate: false },
             { ruName: 'Кол-во товаров на WB', engName: 'goods_quantity', isSortable: true, isActive: true, hasRate: false },
@@ -40,7 +40,7 @@ export const tableConfig = [
             // side params
             { ruName: 'Процент выкупа, %', engName: 'buyout_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
             //{ ruName: 'Частотность за 30 дней', engName: 'frequency_30', units: null, isSortable: true, isActive: false, hasRate: false },
-            { ruName: 'Монопольность, %', engName: 'monopoly_percent', units: '%', isSortable: true, isActive: false, hasRate: false, hasTooltip: true, tooltipText: 'Процент выручки, приходящейся на ТОП-30 артикулов от всех артикулов на первой странице' },  // has double
+            { ruName: 'Монопольность, %', engName: 'monopoly_percent', units: '%', isSortable: true, isActive: false, hasRate: false, hasTooltip: true, tooltipText: 'Процент выручки, приходящийся на ТОП-30 артикулов от всех артикулов на первой странице.' }, 
             { ruName: 'Кол-во товаров в ТОП-1200 за 30 дней, шт', engName: 'top_goods_quantity', units: 'шт', isSortable: true, isActive: false, hasRate: false },  // has double
             //{ ruName: 'Кол-во артикулов по запросу, шт', engName: 'goods_quantity', units: 'шт', isSortable: true, isActive: false, hasRate: false },
             //{ ruName: 'Комиссия FBO, %', engName: 'fbo_commision', units: '%', isSortable: true, isActive: false, hasRate: false },  // ?? нет в фильтрах так что мб и тут не будет
