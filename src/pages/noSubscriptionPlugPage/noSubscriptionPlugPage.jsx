@@ -58,6 +58,10 @@ import ss1 from '../../assets/plugs/selfcost/ss_1.png'
 //trending-requests
 import tr1 from '../../assets/plugs/trend/trend-1.svg'
 import tr2 from '../../assets/plugs/trend/trend-2.svg'
+//p&l report
+import pl1 from '../../assets/plugs/pl-report/opiu-1.svg'
+import pl2 from '../../assets/plugs/pl-report/opiu-2.svg'
+
 
 const plugsConfig = {
     "dashboard": [dashboard1, dashboard2, dashboard3, dashboard4],
@@ -74,7 +78,8 @@ const plugsConfig = {
     'report-week': [reportWeek1],
     'selfcost': [ss1],
     'groups': [],
-    "trending-requests": [tr1, tr2]
+    "trending-requests": [tr1, tr2],
+    "report-profit-loss": [pl2],
 }
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
