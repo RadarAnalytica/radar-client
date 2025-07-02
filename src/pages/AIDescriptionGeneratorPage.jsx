@@ -50,7 +50,7 @@ const AiDescriptionGeneratorPage = () => {
   const [isVisible, setIsVisible] = useState(true);
   //const [keywords, setKeywords] = useState([]);
   //const [inputValue, setInputValue] = useState('');
-  const [nextStep, setNextStep] = useState(true);
+  const [nextStep, setNextStep] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   //const [productName, setProductName] = useState('')
   //const [shortDescription, setShortDescription] = useState('')
@@ -164,7 +164,7 @@ const AiDescriptionGeneratorPage = () => {
     try {
       setIsLoading(true);
       setIsModalOpen(true);
-
+      
       const savedId = localStorage.getItem('generatedId');
       if (!savedId || savedId === null) {
         let res = await ServiceFunctions.postAiDescriptionGenerator(
@@ -173,6 +173,7 @@ const AiDescriptionGeneratorPage = () => {
           shortDescription,
           keywords
         );
+        console.log('id', res)
 
         if (!res.ok) {
           setErrorMessage('Что-то пошло не так!');
