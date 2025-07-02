@@ -3,24 +3,25 @@ import { useRef, useState, useEffect } from 'react';
 import styles from './ReportTable.module.css';
 
 export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true }) {
-	const containerRef = useRef(null);
+	const tableContainerRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [scrollX, setScrollX] = useState(0);
 
 	useEffect(() => {
 		const updateHeight = () => {
-      if (containerRef.current) {
+      if (tableContainerRef.current && virtual) {
 				// ref контейнера который занимает всю высоту
-        const container = containerRef.current;
+        const container = tableContainerRef.current;
+				const {width, height} = container.getBoundingClientRect();
+				console.log(width, height)
         
 				// расчет высоты шапки и добавление отступов контейнера
-        const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-        const paddings = 32;
+        const headerHeight = container.querySelector('.ant-table-header')?.getBoundingClientRect().height || 70;
 				// расчет и сохранение высоты таблицы
-        const availableHeight = container.offsetHeight - headerHeight - paddings;
+        const availableHeight = height - headerHeight;
         setScrollY(availableHeight);
         // расчет ширины контейнера
-        setScrollX(container.offsetWidth - 32);
+        setScrollX(width);
       }
     };
 
@@ -29,7 +30,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 	}, [columns, data])
 
 	return (
-		<div className={styles.container} ref={containerRef}>
+		<div className={styles.container}>
 			{loading && <div className={styles.loadingContainer}
 					style={{
 					position: 'relative',
@@ -51,7 +52,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							<span className='loader'></span>
 					</div>
 			</div>}
-			{!loading && <div className={styles.tableContainer}>
+			{!loading && <div className={styles.tableContainer} ref={tableContainerRef}>
 				<ConfigProvider
 					renderEmpty={ () => (<div>Нет данных</div>)} 
 					theme={{
@@ -102,7 +103,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							expandRowByClick: true
 						}}
 						// scroll={{ x: 'max-content' }}
-						scroll={{ x: scrollX, y: scrollY }}
+						scroll={ virtual ? { x: scrollX, y: scrollY } : {x: 'max-content', y: 'calc(100% - 70px)'}}
 					></Table>
 				</ConfigProvider>
 			</div>}
