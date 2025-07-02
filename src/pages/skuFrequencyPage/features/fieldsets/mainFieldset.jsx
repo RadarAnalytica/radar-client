@@ -91,7 +91,7 @@ const MainFieldset = ({ optionsConfig }) => {
                     {optionsConfig.map((i, id) => {
                         return i.isActive && (
                             <div className={styles.form__complexInputWrapper} key={id}>
-                                <label className={styles.form__complexWrapperLabel}>
+                                <label className={i.hasTooltip ? `${styles.form__complexWrapperLabel} ${styles.form__complexWrapperLabel_lowMargin}` : styles.form__complexWrapperLabel}>
                                     {i.label}
                                     {i.hasTooltip &&
                                         <ConfigProvider

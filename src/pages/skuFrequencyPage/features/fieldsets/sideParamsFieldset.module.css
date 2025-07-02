@@ -70,7 +70,7 @@
     @media (max-width: 1790px) {
         grid-template-columns: repeat(4, 1fr);
     }
-    @media (max-width: 1500px) {
+    @media (max-width: 1600px) {
         grid-template-columns: repeat(2, 1fr);
     }
 }
@@ -146,5 +146,8 @@
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+}
+.form__complexWrapperLabel_lowMargin {
+    margin-bottom: 5px;
 }

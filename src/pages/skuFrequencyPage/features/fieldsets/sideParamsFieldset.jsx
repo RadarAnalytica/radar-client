@@ -65,7 +65,7 @@ const SideParamsFieldset = () => {
                                         const itemStyles = i.isWide ? `${styles.form__complexInputWrapper} ${styles.form__complexInputWrapper_wide}` : styles.form__complexInputWrapper;
                                         return (
                                             <div className={itemStyles} key={id}>
-                                                <label className={styles.form__complexWrapperLabel}>
+                                                <label className={i.hasTooltip ? `${styles.form__complexWrapperLabel} ${styles.form__complexWrapperLabel_lowMargin}` : styles.form__complexWrapperLabel}>
                                                     {i.label}
                                                     {i.hasTooltip &&
                                                         <ConfigProvider

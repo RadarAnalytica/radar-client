@@ -4,8 +4,10 @@ import { actions as reqMonitoringActions } from './requestsMonitoringSlice'
 
 export const fetchRequestsMonitoringData = createAsyncThunk(
     'requestMonitoringData',
-    async (reqData, { dispatch }) => {
-      dispatch(reqMonitoringActions.setRequestStatus({isLoading: true, isError: false, isSuccess: false, message: ''}))
+    async (data, { dispatch }) => {
+      const { requestObject: reqData, requestData: currdata } = data
+      console.log(currdata)
+      dispatch(reqMonitoringActions.setRequestStatus({isLoading: !currdata ? true : false, isError: false, isSuccess: false, message: ''}))
       try {
       
         const res = await fetch(`https://radarmarket.ru/api/web-service/monitoring-oracle/get`, {
@@ -29,8 +31,10 @@ export const fetchRequestsMonitoringData = createAsyncThunk(
 );
 export const fetchRequestsMonitoringDataEasy = createAsyncThunk(
     'requestMonitoringDataEasy',
-    async (reqData, { dispatch }) => {
-      dispatch(reqMonitoringActions.setRequestStatus({isLoading: true, isError: false, isSuccess: false, message: ''}))
+    async (data, { dispatch }) => {
+      const { requestObject: reqData, requestData: currdata } = data
+      console.log(currdata)
+      dispatch(reqMonitoringActions.setRequestStatus({isLoading:  !currdata ? true : false, isError: false, isSuccess: false, message: ''}))
       try {
       
         const res = await fetch(`https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get`, {

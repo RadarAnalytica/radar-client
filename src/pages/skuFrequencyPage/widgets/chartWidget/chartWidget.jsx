@@ -5,6 +5,7 @@ import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import { chartDataNormalizer } from '../../shared';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
+import { formatPrice } from '../../../../service/utils';
 
 ChartJS.register(
     CategoryScale,
@@ -90,7 +91,7 @@ export const getChartTooltip = (context, chartData) => {
             //const units = chartCompareConfigObject.find(_ => _.ruName === set.label).units
             const units = ''
             const targetDescr = units ? units : '';
-            let value = set?.data[targetInex] || '0';
+            let value = formatPrice(set?.data[targetInex], '') || '0';
             let style = '';
             style += '; border-width: 2px';
             const span =

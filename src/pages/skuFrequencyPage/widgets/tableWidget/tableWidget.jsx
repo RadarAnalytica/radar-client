@@ -47,10 +47,10 @@ const TableWidget = ({ tinyRows = false }) => {
     //задаем начальную дату
     useEffect(() => {
         if (requestObject && formType === 'complex') {
-            dispatch(fetchRequestsMonitoringData(requestObject))
+            dispatch(fetchRequestsMonitoringData({requestObject, requestData}))
         }
         if (requestObject && formType === 'easy') {
-            dispatch(fetchRequestsMonitoringDataEasy(requestObject))
+            dispatch(fetchRequestsMonitoringDataEasy({requestObject, requestData}))
         }
     }, [requestObject])
 
