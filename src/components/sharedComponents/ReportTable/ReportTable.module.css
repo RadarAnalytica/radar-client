@@ -53,6 +53,10 @@
   scrollbar-width: thin;
 }
 
+:global(.ant-table-sticky-scroll-bar){
+  background-color: #5329ff80!important;
+}
+
 .tableContainer thead>tr>th {
   border: none;
 }
