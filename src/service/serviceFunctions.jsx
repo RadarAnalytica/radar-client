@@ -345,8 +345,9 @@ export const ServiceFunctions = {
 
 			body: JSON.stringify(competitorsLinks),
 		});
-		const data = await res.json();
-		return data;
+		// const data = await res.json();
+		// return data;
+		return res;
 	},
 
 	postAiDescriptionGenerator: async (
@@ -368,8 +369,9 @@ export const ServiceFunctions = {
 					keywords: keywords,
 				}),
     });
-		const data = await res.json();
-		return data;
+		// const data = await res.json();
+		// return data;
+		return res
 	},
 
 	getUserGenerationsData: async (token, id) => {
