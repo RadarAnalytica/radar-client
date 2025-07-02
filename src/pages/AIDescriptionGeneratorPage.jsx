@@ -188,7 +188,7 @@ const AiDescriptionGeneratorPage = () => {
           return
         }
 
-
+        res = await res.json()
         if (res && Number.isInteger(res)) {
           localStorage.setItem('generatedId', res);
         }
