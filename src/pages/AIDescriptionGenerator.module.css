@@ -1,5 +1,56 @@
+.page__stepOneFormWrapper {
+    width: 50%;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    background: white;
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-.generatorHeader{
+.page__stepOneFormTitle {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+}
+
+.page__formStepCounter {
+    font-family: Mulish;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    color: #5329FF;
+    padding: 5px 14px;
+    border-radius: 8px;
+    background: #5329FF0D;
+    flex-grow: 0;
+    width: fit-content
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.page__blocksWrapper {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+    padding-top: 20px;
+}
+
+
+
+
+.generatorHeader {
     display: flex;
     background-color: #FFFFFF;
     box-shadow: 0px 0px 20px 0px #0000000A;
@@ -7,13 +58,15 @@
     flex-direction: column;
     padding: 20px 32px;
 }
-.generatorTitleWrapper{
+
+.generatorTitleWrapper {
     display: flex;
     flex-direction: row;
     align-items: center;
 
 }
-.generatorTitle{
+
+.generatorTitle {
     font-weight: 700;
     font-size: 24px;
     color: #1A1A1A;
@@ -21,33 +74,37 @@
 }
 
 @media screen and (min-width: 2000px) {
-    .generatorTitle{
+    .generatorTitle {
         margin-left: 0.24em;
         font-size: 1.5rem;
     }
 }
 
-.generatorTitleWrapperMain{
+.generatorTitleWrapperMain {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
-.generatorParagsWrapper{
+
+.generatorParagsWrapper {
     margin-top: 5px;
     display: flex;
     flex-direction: column;
 }
-.generatorParag{
+
+.generatorParag {
     margin-top: 10px;
 }
-.stepsWrapper{
+
+.stepsWrapper {
     margin-top: 20px;
     display: flex;
 
     margin-right: auto;
     margin-left: auto;
 }
+
 .formContainer {
     width: 50%;
     margin-right: 10px;
@@ -59,7 +116,7 @@
     height: max-content;
 }
 
-.formContainerR{
+.formContainerR {
     width: 50%;
     height: max-content;
     margin-left: 10px;
@@ -89,7 +146,7 @@
     }
 }
 
-.aboutParag{
+.aboutParag {
     margin-bottom: 10px;
     color: #333;
     font-weight: 700;
@@ -104,7 +161,8 @@
     }
 }
 
-.inputField, .textArea {
+.inputField,
+.textArea {
     width: 100%;
     padding: 12px 16px;
     margin-bottom: 15px;
@@ -115,7 +173,9 @@
 }
 
 @media screen and (min-width: 2000px) {
-    .inputField, .textArea {
+
+    .inputField,
+    .textArea {
         margin-bottom: 0.9em;
         padding: 0.75em 1em;
         font-size: 1rem;
@@ -129,7 +189,8 @@
     min-height: 120px;
 }
 
-.inputField::placeholder, .textArea::placeholder {
+.inputField::placeholder,
+.textArea::placeholder {
     color: #8C8C8C;
     font-weight: 400;
     font-family: Mulish;
@@ -144,12 +205,16 @@
     width: 100%;
     border-radius: 8px;
     cursor: pointer;
+    font-weight: 700;
+    font-size: 16px;
+    height: 60px;
 }
 
 .inputWrapper {
     display: flex;
     margin-bottom: 20px;
 }
+
 .inputWrappeR {
     display: flex;
     border: 1px solid #e3e3e3;
@@ -158,11 +223,12 @@
     background-color: #fff;
     margin-bottom: 20px;
 }
+
 .inputFieldR {
     width: 100%;
-    flex-grow:2;
+    flex-grow: 2;
     padding: 12px;
-    border: none!important;
+    border: none !important;
     background-color: transparent;
     font-size: 16px;
 }
@@ -176,15 +242,15 @@
 
 .inputFieldR:focus {
     outline: none;
-  }
+}
 
 form {
-    display:flex;
-    flex-direction:row;
-    border:1px solid #E8E8E8;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #E8E8E8;
     border-radius: 6px;
-  }
-  
+}
+
 .addButtonR {
     background-color: transparent;
     color: #5329FF;
@@ -233,24 +299,32 @@ input::placeholder {
     margin-bottom: 20px;
     margin-top: 20px;
 }
+
 .keywordList::-webkit-scrollbar {
-    width: 6px; /* Ширина скроллбара */
+    width: 6px;
+    /* Ширина скроллбара */
 }
 
 .keywordList::-webkit-scrollbar-track {
-    background: transparent; /* Цвет фона трека */
+    background: transparent;
+    /* Цвет фона трека */
 }
 
 .keywordList::-webkit-scrollbar-thumb {
-    background-color: #5329FF80; /* Цвет полосы прокрутки */
-    border-radius: 4px; /* Скругленные углы */
-    border: 2px solid transparent; /* Добавляем прозрачный отступ */
+    background-color: #5329FF80;
+    /* Цвет полосы прокрутки */
+    border-radius: 4px;
+    /* Скругленные углы */
+    border: 2px solid transparent;
+    /* Добавляем прозрачный отступ */
 }
 
 /* Дополнительная стилизация для Firefox */
 .keywordList {
-    scrollbar-width: thin; /* Узкий скроллбар */
-    scrollbar-color: #5329ff80 transparent; /* Цвет скроллбара и трека */
+    scrollbar-width: thin;
+    /* Узкий скроллбар */
+    scrollbar-color: #5329ff80 transparent;
+    /* Цвет скроллбара и трека */
 }
 
 .keyword {
@@ -274,7 +348,7 @@ input::placeholder {
     }
 }
 
-.closeBtn{
+.closeBtn {
     width: 12px;
     height: 12px;
 }
@@ -286,7 +360,7 @@ input::placeholder {
 
 
 /* Modal */
-.modalOverlay{
+.modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -299,7 +373,8 @@ input::placeholder {
     z-index: 1000;
 
 }
-.modalContent{
+
+.modalContent {
     background-color: white;
     box-shadow: 0px 0px 20px 0px #00000014;
     border-radius: 16px;
@@ -311,14 +386,15 @@ input::placeholder {
     text-align: center;
 
 }
+
 .modalHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
-  
-.modalHeaderTitle{
+
+.modalHeaderTitle {
     color: #1A1A1A;
     font-size: 24px;
     font-weight: 700;
@@ -337,31 +413,40 @@ input::placeholder {
     border: none;
     cursor: pointer;
 }
-.modalBody{
+
+.modalBody {
     min-height: 300px;
     max-height: 400px;
     overflow-y: scroll;
     text-align: left;
 }
+
 .modalBody::-webkit-scrollbar {
-    width: 6px; /* Ширина скроллбара */
+    width: 6px;
+    /* Ширина скроллбара */
 }
 
 .modalBody::-webkit-scrollbar-track {
-    background: transparent; /* Цвет фона трека */
+    background: transparent;
+    /* Цвет фона трека */
 }
 
 .modalBody::-webkit-scrollbar-thumb {
-    background-color: #5329FF80; /* Цвет полосы прокрутки */
-    border-radius: 4px; /* Скругленные углы */
-    border: 2px solid transparent; /* Добавляем прозрачный отступ */
+    background-color: #5329FF80;
+    /* Цвет полосы прокрутки */
+    border-radius: 4px;
+    /* Скругленные углы */
+    border: 2px solid transparent;
+    /* Добавляем прозрачный отступ */
 }
 
 /* Дополнительная стилизация для Firefox */
 .modalBody {
-    scrollbar-width: thin; /* Узкий скроллбар */
-    scrollbar-color: #5329ff80 transparent; 
-    margin-left: 5px;/* Цвет скроллбара и трека */
+    scrollbar-width: thin;
+    /* Узкий скроллбар */
+    scrollbar-color: #5329ff80 transparent;
+    margin-left: 5px;
+    /* Цвет скроллбара и трека */
 }
 
 .modalBody p {
@@ -370,44 +455,45 @@ input::placeholder {
     font-weight: 400;
     color: #1A1A1A;
     margin-right: 6px;
-  }
+}
 
-  @media screen and (min-width: 2000px) {
+@media screen and (min-width: 2000px) {
     .modalBody p {
-      margin-bottom: 0.6em;
-      font-size: 1rem;
+        margin-bottom: 0.6em;
+        font-size: 1rem;
     }
-  }
+}
 
-.modalFooter{
+.modalFooter {
     margin-top: 10px;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
 }
-.modalFooterBtnNew{
+
+.modalFooterBtnNew {
     background-color: white;
     border: none;
     color: #5329FF;
     padding: 20px 24px;
     border-radius: 8px;
     cursor: pointer;
-    border: 2px solid #DDD4FF ;
+    border: 2px solid #DDD4FF;
     font-size: 16px;
     font-weight: 700;
     width: 50%;
     margin-right: 10px;
 }
 
-  @media screen and (min-width: 2000px) {
+@media screen and (min-width: 2000px) {
     .modalFooterBtnNew {
-      margin-right: 0.6em;
-      padding: 1.25em 1.5em;
-      font-size: 1rem;
+        margin-right: 0.6em;
+        padding: 1.25em 1.5em;
+        font-size: 1rem;
     }
-  }
-  
-.modalFooterBtnCopy{
+}
+
+.modalFooterBtnCopy {
     background-color: #5329FF;
     border: none;
     color: white;
@@ -421,13 +507,13 @@ input::placeholder {
 }
 
 @media screen and (min-width: 2000px) {
-    .modalFooterBtnCopy{
+    .modalFooterBtnCopy {
         padding: 1.25em 1.5em;
         font-size: 1rem;
     }
 }
 
-.modalFooterBtnCopied{
+.modalFooterBtnCopied {
     background-color: white;
     border: none;
     color: #5329FF;
@@ -442,18 +528,18 @@ input::placeholder {
 }
 
 @media screen and (min-width: 2000px) {
-    .modalFooterBtnCopied{
+    .modalFooterBtnCopied {
         padding: 1.25em 1.5em;
         font-size: 1rem;
     }
 }
 
-.topNavAdd{
+.topNavAdd {
     cursor: pointer;
     color: #5329FF;
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 0!important;
+    margin-bottom: 0 !important;
 }
 
 @media screen and (min-width: 2000px) {
@@ -462,12 +548,12 @@ input::placeholder {
     }
 }
 
-.topNavTitle{
+.topNavTitle {
     color: black;
     font-size: 16px;
     line-height: 100%;
     font-weight: 700;
-    margin-bottom: 0!important;
+    margin-bottom: 0 !important;
     text-wrap: nowrap;
 }
 
@@ -477,7 +563,7 @@ input::placeholder {
     }
 }
 
-.generatorWrapper{   
+.generatorWrapper {
     background-color: hsla(252, 100%, 58%, 0.102);
     display: flex;
     align-items: flex-start;
@@ -501,32 +587,39 @@ input::placeholder {
     transition: opacity 0.3s;
     opacity: 0.9;
 }
+
 .modalContentLoad {
     min-height: 150px;
     display: flex;
     flex-direction: column;
     height: 100%;
-    justify-content: center; 
+    justify-content: center;
 }
 
 .modalTextLoad {
-    margin-bottom: auto; /* Отодвигает текст к верху */
+    margin-bottom: auto;
+    /* Отодвигает текст к верху */
 }
 
 .loaderContainer {
     display: flex;
-    justify-content: center; /* Центрирует лоадер по горизонтали */
-    align-items: center; /* Центрирует лоадер по вертикали */
-    height: 100%; /* Заполняет оставшуюся высоту */
+    justify-content: center;
+    /* Центрирует лоадер по горизонтали */
+    align-items: center;
+    /* Центрирует лоадер по вертикали */
+    height: 100%;
+    /* Заполняет оставшуюся высоту */
 }
-.addKeywordFileWrapper{
+
+.addKeywordFileWrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    
+
 }
-.addKeywordButtonWrapper{
+
+.addKeywordButtonWrapper {
     background-color: #5329FF0D;
     display: flex;
     justify-content: space-between;
@@ -537,16 +630,19 @@ input::placeholder {
     cursor: pointer;
 
 }
-.addKeywordButtonWrapperImg{
+
+.addKeywordButtonWrapperImg {
     margin-right: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.addKeywordButtonWrapperImg img{
+
+.addKeywordButtonWrapperImg img {
     object-fit: contain;
 }
-.addKeywordButtonWrapperText{
+
+.addKeywordButtonWrapperText {
     color: #5329FF;
     font-weight: 600;
     font-size: 16px;
@@ -560,14 +656,15 @@ input::placeholder {
     }
 }
 
-.fileDescription{
+.fileDescription {
     margin-top: 10px;
-   
+
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.fileDescriptionText{
+
+.fileDescriptionText {
     text-align: center;
     font-weight: 600;
 

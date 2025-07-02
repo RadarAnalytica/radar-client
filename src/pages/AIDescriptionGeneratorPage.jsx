@@ -24,6 +24,7 @@ import MobilePlug from '../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
 import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
+import { Input, Form, Button, ConfigProvider } from 'antd';
 
 const AiDescriptionGeneratorPage = () => {
   const {
@@ -49,7 +50,7 @@ const AiDescriptionGeneratorPage = () => {
   const [isVisible, setIsVisible] = useState(true);
   //const [keywords, setKeywords] = useState([]);
   //const [inputValue, setInputValue] = useState('');
-  const [nextStep, setNextStep] = useState(false);
+  const [nextStep, setNextStep] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   //const [productName, setProductName] = useState('')
   //const [shortDescription, setShortDescription] = useState('')
@@ -66,6 +67,7 @@ const AiDescriptionGeneratorPage = () => {
   const [modalIsShowKeywordsFile, setModalisShowKeywordsFile] = useState(false);
   const [file, setFile] = useState();
   const [isFileUpload, setIsFileUpload] = useState();
+  const [form] = Form.useForm()
 
 
   const handleNewGenerator = () => {
@@ -93,6 +95,8 @@ const AiDescriptionGeneratorPage = () => {
   const handleShowModalError = () => setShowModalError(true);
   const handleCloseModalError = () => setShowModalError(false);
 
+
+  // -------------------first step request----------------------------//
   const updateAiDescriptionGeneratorKeyword = async (
     token,
     competitorsLinks
@@ -102,18 +106,26 @@ const AiDescriptionGeneratorPage = () => {
     setIsButtonVisible(false);
     setErrorMessage('');
     try {
-      const data = await ServiceFunctions.postAiDescriptionGeneratorKeywords(
+      let res = await ServiceFunctions.postAiDescriptionGeneratorKeywords(
         token,
         competitorsLinks
       );
 
-      // Проверка на отсутствие данных
-      if (!data || data.length === 0) {
-        setErrorMessage('Не правильная ссылка или артикул.');
+      if (!res.ok) {
+        setErrorMessage('Что-то пошло не так! Попробуйте еще раз');
         handleShowModalError();
+        return
       }
 
-      const result = data;
+      res = await res.json()
+      // Проверка на отсутствие данных
+      if (!res || res.length === 0) {
+        setErrorMessage('Не правильная ссылка или артикул.');
+        handleShowModalError();
+        return
+      }
+
+      const result = res;
 
       // Check if data is not empty
       if (result.length > 0) {
@@ -140,6 +152,7 @@ const AiDescriptionGeneratorPage = () => {
       setIsButtonVisible(true);
     }
   };
+  // ----------------------------------------------------------------//
 
   const updateAiDescriptionGenerator = async (
     token,
@@ -153,20 +166,32 @@ const AiDescriptionGeneratorPage = () => {
       setIsModalOpen(true);
 
       const savedId = localStorage.getItem('generatedId');
-      if (savedId === null) {
-        const id = await ServiceFunctions.postAiDescriptionGenerator(
+      if (!savedId || savedId === null) {
+        let res = await ServiceFunctions.postAiDescriptionGenerator(
           token,
           productName,
           shortDescription,
           keywords
         );
 
+        if (!res.ok) {
+          setErrorMessage('Что-то пошло не так!');
+          handleShowModalError();
+          return
+        }
+
         // Проверка на отсутствие данных
-        if (!id || id.length === 0) {
+        if (!res || res.length === 0) {
           setErrorMessage('Не правильная ссылка или артикул.');
           handleShowModalError();
+          return
         }
-        localStorage.setItem('generatedId', id);
+
+
+        if (res && Number.isInteger(res)) {
+          localStorage.setItem('generatedId', res);
+        }
+
       } else {
         console.log('ID exists:', savedId);
       }
@@ -187,15 +212,26 @@ const AiDescriptionGeneratorPage = () => {
   const fetchUserGenerationsData = async (token, setDescription) => {
     const savedId = localStorage.getItem('generatedId');
 
-    if (!savedId) {
+    if (!savedId || savedId === null) {
       console.error('No ID found in local storage.');
       setIsLoading(false);
+      setErrorMessage('Что-то пошло не так!');
+      handleShowModalError();
       return;
     }
 
     setIsLoading(true); // Start loading state
 
     const intervalId = setInterval(async () => {
+
+      if (!savedId || savedId === null) {
+        console.error('No ID found in local storage.');
+        setIsLoading(false);
+        setErrorMessage('Что-то пошло не так!');
+        clearInterval(intervalId); // Clear the interval
+        handleShowModalError();
+        return;
+      }
       try {
         const data = await ServiceFunctions.getUserGenerationsData(
           token,
@@ -221,24 +257,33 @@ const AiDescriptionGeneratorPage = () => {
     }, 1000); // Check every 1 second
   };
 
-  const handleNextStep = async () => {
-    if (!!!productName || !!!shortDescription || competitorsLinks.length === 0) {
-      setErrorMessage('Пожалуйста, заполните все поля!');
-      handleShowModalError();
-      return;
-    }
+  // const handleNextStep = async () => {
+  //   if (!!!productName || !!!shortDescription || competitorsLinks.length === 0) {
+  //     setErrorMessage('Пожалуйста, заполните все поля!');
+  //     handleShowModalError();
+  //     return;
+  //   }
 
-    const linksArray = competitorsLinks
-      .split('\n')
-      .map((link) => link.trim())
-      .filter((link) => link !== '');
-    if (linksArray.length != 0 && linksArray.length < 6) {
-      await updateAiDescriptionGeneratorKeyword(authToken, linksArray);
-    } else {
-      setErrorMessage('Введите до 5 ссылок на карточки товаров конкурентов');
-      handleShowModalError();
-    }
-  };
+  //   const linksArray = competitorsLinks
+  //     .split('\n')
+  //     .map((link) => link.trim())
+  //     .filter((link) => link !== '');
+  //   if (linksArray.length != 0 && linksArray.length < 6) {
+  //     await updateAiDescriptionGeneratorKeyword(authToken, linksArray);
+  //   } else {
+  //     setErrorMessage('Введите до 5 ссылок на карточки товаров конкурентов');
+  //     handleShowModalError();
+  //   }
+  // };
+
+
+  const stepOneFormSubmit = async (fields) => {
+    const linksArray = fields?.competitorLinks?.split('\n').map((link) => link.trim()).filter((link) => link !== '');
+
+    linksArray && linksArray.length > 0 && await updateAiDescriptionGeneratorKeyword(authToken, linksArray);
+  }
+
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(description);
@@ -253,8 +298,13 @@ const AiDescriptionGeneratorPage = () => {
     }
   };
 
+
+
+
+  // --------------------- steptwo submit --------------------------//
   const openModal = async () => {
-    if (shortDescription.length < 30) {
+    const { productName, productDescription } = form.getFieldsValue()
+    if (productDescription.length < 30) {
       setErrorMessage('Краткое описание должно содержать минимум 30 символов.');
       setShowModalError(true);
       return;
@@ -265,10 +315,17 @@ const AiDescriptionGeneratorPage = () => {
       setShowModalError(true);
       return;
     }
+
+    // await updateAiDescriptionGenerator(
+    //   authToken,
+    //   productName,
+    //   shortDescription,
+    //   keywords
+    // );
     await updateAiDescriptionGenerator(
       authToken,
       productName,
-      shortDescription,
+      productDescription,
       keywords
     );
 
@@ -282,6 +339,7 @@ const AiDescriptionGeneratorPage = () => {
       );
     }
   };
+  // ------------------------------------------------------------//
   const onClose = () => {
     removeAllKeywords();
     setProductName('');
@@ -473,8 +531,229 @@ const AiDescriptionGeneratorPage = () => {
             </div>
           )}
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {/* FORM */}
+        <div className={styles.page__blocksWrapper}>
+          {/* step one */}
+          <div className={styles.page__stepOneFormWrapper}>
+            <span className={styles.page__formStepCounter}>
+              1 шаг
+            </span>
+            <p className={styles.page__stepOneFormTitle}>О товаре</p>
+            <ConfigProvider
+              theme={{
+                token: {
+                  colorPrimary: '#5329FF',
+                  fontFamily: 'Mulish',
+                },
+                components: {
+                  Form: {
+                    labelFontSize: 18
+                  }
+                }
+              }}
+            >
+              <Form
+                layout='vertical'
+                style={{ width: '100%', border: 'none' }}
+                className={styles.form}
+                form={form}
+                onFinish={stepOneFormSubmit}
+              >
+                <Form.Item
+                  name='productName'
+                  label='Название товара'
+                  style={{ width: '100%', margin: 0 }}
+                  rules={[
+                    { required: true, message: 'Пожалуйста, заполните это поле!' },
+                    { max: 255, message: 'Название не должно быть длиннее 255 символов.' },
+                    () => ({
+                      validator(_, value) {
+                        if (value.length > 0 && !value.trim()) {
+                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно'))
+                        }
+                        return Promise.resolve()
+                      },
+                    }),
+                  ]}
+                >
+                  <Input
+                    style={{ height: 44 }}
+                    placeholder='Шорты Jony Jenson'
+                    size='large'
+                  />
+                </Form.Item>
+                <Form.Item
+                  name='productDescription'
+                  label='Короткое описание товара'
+                  style={{ width: '100%', margin: 0 }}
+                  rules={[
+                    { required: true, message: 'Пожалуйста, заполните это поле!' },
+                    { min: 30, message: 'Название не должно быть короче 30 символов.' },
+                    { max: 255, message: 'Название не должно быть длиннее 255 символов.' },
+                    () => ({
+                      validator(_, value) {
+                        if (value.length > 0 && !value.trim()) {
+                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно!'))
+                        }
+                        return Promise.resolve()
+                      },
+                    }),
+                  ]}
+                >
+                  <Input.TextArea
+                    placeholder='Шорты Jony Jenson'
+                    size='large'
+                    autoSize={{ minRows: 4, maxRows: 4 }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name='competitorLinks'
+                  label=' Вставьте до 5 ссылок на карточки товаров конкурентов. Каждую ссылку вводите с новой строки'
+                  style={{ width: '100%', margin: 0 }}
+                  rules={[
+                    { required: true, message: 'Пожалуйста, заполните это поле!' },
+                    () => ({
+                      validator(_, value) {
+                        if (value.length > 0 && !value.trim()) {
+                          return Promise.reject(new Error('Пожалуйста, заполните поле корректно'))
+                        }
+                        const arr = value.split('\n')
+                        if (arr && arr.length > 5) {
+                          return Promise.reject(new Error('Пожалуйста, ввудите не более 5 ссылок!'))
+                        }
+                        return Promise.resolve()
+                      },
+                    }),
+                  ]}
+                >
+                  <Input.TextArea
+                    placeholder={`https://www.wildberries.ru/catalog/177307535\nhttps://www.wildberries.ru/catalog/177307899\nhttps://www.wildberries.ru/catalog/177337832`}
+                    size='large'
+                    autoSize={{ minRows: 4, maxRows: 4 }}
+                  />
+                </Form.Item>
+
+                <Button
+                  htmlType='submit'
+                  type='primary'
+                  size='large'
+                  style={{ fontWeight: 700, height: 60 }}
+                  loading={isLoading}
+                >
+                  Далее
+                </Button>
+              </Form>
+            </ConfigProvider>
+          </div>
+
+
+
+
+
+
+          {/* loader */}
+          {isLoadingNext && (
+            <div
+              className='d-flex flex-column align-items-center justify-content-center'
+              style={{
+                height: '100%',
+                paddingTop: '25%',
+                paddingLeft: '5%',
+                width: '45%',
+              }}
+            >
+              <span className='loader'></span>
+            </div>
+          )}
+
+
+
+
+
+
+          {/* step two */}
+          {nextStep && !isLoadingNext && (
+            <div className={styles.formContainerR}>
+              <span className={styles.page__formStepCounter}>
+                2 шаг
+              </span>
+              <p className={styles.page__stepOneFormTitle} style={{ margin: '20px 0' }}>Ключевые слова</p>
+
+              <div className={styles.addKeywordFileWrapper}>
+                <div>Добавить ключевое слово</div>
+                <div
+                  className={styles.addKeywordButtonWrapper}
+                  onClick={handleAddKeywordFile}
+                >
+                  <div className={styles.addKeywordButtonWrapperImg}>
+                    <img src={AddKeyImg} />
+                  </div>
+                  <div className={styles.addKeywordButtonWrapperText}>
+                    Загрузить ключевые слова
+                  </div>
+                </div>
+              </div>
+              <form
+                style={{
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+              >
+                <input
+                  type='text'
+                  placeholder='Пример: Ключевое слово'
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className={styles.inputFieldR}
+                  style={{ height: 44 }}
+                />
+                <button
+                  className={styles.addButtonR}
+                  onClick={handleAddKeyword}
+                >
+                  Добавить
+                </button>
+              </form>
+
+              <div className={styles.keywordList}>
+                {keywords.map((keyword, index) => (
+                  <div key={index} className={styles.keyword}>
+                    <div>{keyword}</div>
+                    <div
+                      className={styles.removeKeyword}
+                      onClick={() => handleRemoveKeyword(keyword)}
+                    >
+                      <img className={styles.closeBtn} src={closebtn} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button className={styles.submitBtn} onClick={openModal}>
+                Сгенерировать описание
+              </button>
+            </div>)}
+        </div>
+
+
         <div className={`${styles.stepsWrapper} dash-container`}>
-          <div className={styles.formContainer}>
+          {/* <div className={styles.formContainer}>
             <div className={styles.stepIndicator}>
               <span>1 шаг</span>
             </div>
@@ -516,8 +795,8 @@ const AiDescriptionGeneratorPage = () => {
                 Далее
               </button>
             )}
-          </div>
-          {isLoadingNext ? (
+          </div> */}
+          {/* {isLoadingNext ? (
             <div
               className='d-flex flex-column align-items-center justify-content-center'
               style={{
@@ -586,7 +865,7 @@ const AiDescriptionGeneratorPage = () => {
                 </button>
               </div>
             )
-          )}
+          )} */}
         </div>
       </div>
       {isModalOpen && (
