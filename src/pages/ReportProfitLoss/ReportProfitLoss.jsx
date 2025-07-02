@@ -5,6 +5,7 @@ import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
+import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { formatPrice } from '../../service/utils';
 import { Flex } from 'antd';
@@ -12,20 +13,34 @@ import styles from './ReportProfitLoss.module.css';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 import dayjs from 'dayjs';
 import { COLUMNS, ROWS } from './config';
-import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
+import { useAppSelector } from '../../redux/hooks';
 
 export default function ReportProfitLoss() {
 	const { authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters );
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
-	const [primaryCollect, setPrimaryCollect] = useState(null);
-	const dispatch = useAppDispatch()
 
 	const [loading, setLoading] = useState(true);
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
+
+	const shopStatus = useMemo(() => {
+		if (!activeBrand || !shops) return null;
+		
+		if (activeBrand.id === 0) {
+				return {
+						id: 0,
+						brand_name: 'Все',
+						is_active: shops.some(shop => shop.is_primary_collect),
+						is_valid: true,
+						is_primary_collect: shops.some(shop => shop.is_primary_collect),
+						is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
+				};
+		}
+		
+		return shops.find(shop => shop.id === activeBrand.id);
+}, [activeBrand, shops]);
 
 	const initialRange = useMemo(() => ({
 		month_to: dayjs().format('YYYY-MM'),
@@ -138,6 +153,18 @@ export default function ReportProfitLoss() {
 				}
 			}
 		})
+
+		// проверка данных себестоимости и обнуление строки Чистая прибыль
+		if (!shopStatus?.is_self_cost_set){
+			const total = rows.find((el) => el.key === 'net_profit');
+			for (const key in total){
+				if (key == 'key' || key == 'title'){
+					continue
+				}
+				total[key] = 0
+			}
+		}
+
 		setColumns(columns);
 		setData(rows);
 	};
@@ -169,7 +196,7 @@ export default function ReportProfitLoss() {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportProfitLoss();
 		}
-	}, [selectedRange, filters, monthRange]);
+	}, [filters, monthRange]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;
@@ -227,6 +254,9 @@ export default function ReportProfitLoss() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="Отчет о прибылях и убытках"></Header>
 				</div>
+				{!loading && !shopStatus?.is_self_cost_set && (
+					<SelfCostWarningBlock />
+				)}
 				<div className={styles.controls}>
 					<Filters
 						timeSelect={false}
