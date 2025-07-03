@@ -148,7 +148,7 @@ const DynamicFieldset = ({ form }) => {
                                         <Input
                                             size='large'
                                             // placeholder={'до 100'}
-                                            prefix={<span style={{color: '#8C8C8C'}}>от</span>}
+                                            prefix={<span style={{color: '#8C8C8C'}}>до</span>}
                                             suffix={<span style={{color: '#8C8C8C'}}>%</span>}
                                             type="number"
                                             style={{ height: '44px' }}
