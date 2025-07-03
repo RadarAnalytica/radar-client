@@ -38,7 +38,7 @@ export const sideOptionsConfig = [
         options: [
             { label: 'Выручка за 30 дней, руб', name: 'revenue_300', isWide: false, units: '₽'},
             { label: 'Средняя выручка за 30 дней, руб', name: 'avg_revenue_300', isWide: false, units: '₽'},
-            { label: '% упущенной выручки за 30 дней', name: 'lost_revenue_percent', isWide: false, units: '%'},
+            { label: '% упущенной выручки за 30 дней', name: 'lost_revenue_percent_300', isWide: false, units: '%'},
             { label: 'Средняя цена, руб', name: 'avg_price_300', isWide: false, units: '₽'},
             { label: '% артикулов с продажами', name: 'goods_with_sales_percent_300', isWide: false, units: '%'}
         ]

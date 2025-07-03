@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './skuFrequencyPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -11,12 +11,14 @@ import DownloadButton from '../../components/DownloadButton'
 import TableWidget_TEST from './widgets/tableWidget/tableWidget_TEST'
 import { actions as reqActions } from '../../redux/requestsMonitoring/requestsMonitoringSlice'
 import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
+import { newTableConfig } from './shared'
 
 
 
 
 const SkuFrequencyPage = () => {
     //const { skuFrequencyMode } = useAppSelector(store => store.filters)
+    const [ tableConfig, setTableConfig ] = useState(newTableConfig)
     const { requestData } = useAppSelector(store => store.requestsMonitoring)
     const dispatch = useAppDispatch()
     useEffect(() => {
@@ -54,14 +56,21 @@ const SkuFrequencyPage = () => {
                             <OptionsSettingsWidget />
                         } */}
                     </div>
-                    <OptionsWidget />
+                    <OptionsWidget
+                        resetTableConfig={() => {
+                            setTableConfig([...newTableConfig])
+                        }}
+                    />
                     {requestData && <div className={styles.page__tableSettingsBlock}>
                         {/* <DownloadButton /> */}
                         <TableSettingsWidget />
                     </div>}
                 </div>
                 {/* <TableWidget /> */}
-                <TableWidget_TEST />
+                <TableWidget_TEST
+                    tableConfig={tableConfig}
+                    setTableConfig={setTableConfig}
+                />
                 <div style={{ height: 30, minHeight: 30}}></div>
             </div>
             {/* ---------------------- */}
