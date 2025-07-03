@@ -30,6 +30,7 @@
     align-items: center;
     gap: 20px;
     cursor: pointer;
+    position: relative;
 }
 
 .fieldset__title {
@@ -59,6 +60,15 @@
     @media (max-width: 1440px) {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+.fiedset__errorMsg {
+    color: red;
+    font-size: 16px;
+    font-weight: 500;
+    position: absolute;
+    top: 0;
+    right: 30px;
 }
 
 .form__complexWrapperLabel {

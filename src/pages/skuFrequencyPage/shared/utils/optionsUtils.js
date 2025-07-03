@@ -137,10 +137,11 @@ export const complexRequestObjectGenerator = (fields) => {
         // pagination state
         page: 1,
         limit: 25,
-        sorting: {
-            sort_field: "niche_rating",
-            sort_order: "DESC"
-        }
+        sorting: undefined
+        // sorting: {
+        //     sort_field: "niche_rating",
+        //     sort_order: "DESC"
+        // }
     };
 
     return requestObject;

@@ -41,10 +41,11 @@ const OptionsWidget = ({ resetTableConfig }) => {
             query: fields.query,
             avg_price_total: JSON.parse(fields.preferedProductPrice),
             competition_level: fields.competitionLevel,
-            sorting: {
-                sort_field: "niche_rating",
-                sort_order: "DESC"
-            }
+            sorting: undefined
+            // sorting: {
+            //     sort_field: "niche_rating",
+            //     sort_order: "DESC"
+            // }
         }
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'easy' }))
         resetTableConfig()
@@ -286,7 +287,7 @@ const OptionsWidget = ({ resetTableConfig }) => {
                                 niche_rating: []
                             }}
                         >
-                            <MainFieldset optionsConfig={optionsConfig} />
+                            <MainFieldset optionsConfig={optionsConfig} form={complexForm} />
                             <DynamicFieldset form={complexForm} />
                             <SubjectFieldset prefered_items={prefered_items} form={complexForm} />
                             <QualityFieldset />
