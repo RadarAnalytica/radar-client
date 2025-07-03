@@ -216,7 +216,7 @@ const _DashboardPage = () => {
                     <Header title='Сводка продаж' />
                 </div>
 
-                {!shopStatus.is_self_cost_set && !loading && (
+                {!shopStatus?.is_self_cost_set && !pageState.loading && (
                     <SelfCostWarningBlock
                         shopId={activeBrand.id}
                         onUpdateDashboard={updateDataDashBoard}
@@ -244,7 +244,7 @@ const _DashboardPage = () => {
                     />
                 </div>
 
-                {!shopStatus.is_primary_collect && (
+                {!shopStatus?.is_primary_collect && (
                     <DataCollectWarningBlock
                         title='Ваши данные еще формируются и обрабатываются.'
                     />
