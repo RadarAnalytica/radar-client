@@ -32,6 +32,18 @@ html {
   scroll-behavior: smooth;
 }
 
+
+/* убираем подсветку фона для значений из автокомплита */
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: #000 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 #root,
 .App {
   min-height: 100vh;

@@ -6,7 +6,6 @@ export const fetchRequestsMonitoringData = createAsyncThunk(
     'requestMonitoringData',
     async (data, { dispatch }) => {
       const { requestObject: reqData, requestData: currdata } = data
-      console.log(currdata)
       dispatch(reqMonitoringActions.setRequestStatus({isLoading: !currdata ? true : false, isError: false, isSuccess: false, message: ''}))
       try {
       
@@ -33,7 +32,6 @@ export const fetchRequestsMonitoringDataEasy = createAsyncThunk(
     'requestMonitoringDataEasy',
     async (data, { dispatch }) => {
       const { requestObject: reqData, requestData: currdata } = data
-      console.log(currdata)
       dispatch(reqMonitoringActions.setRequestStatus({isLoading:  !currdata ? true : false, isError: false, isSuccess: false, message: ''}))
       try {
       
