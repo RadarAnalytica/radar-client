@@ -30,7 +30,7 @@ import NoSubscriptionWarningBlock from '../../../../components/sharedComponents/
 
 const WarningBlocks = React.memo(({ shopStatus, loading, activeBrand, updateDataDashBoard }) => {
     if (!shopStatus) return null;
-    
+
     return (
         <>
             {!shopStatus.is_self_cost_set && !loading && (
@@ -48,19 +48,19 @@ const WarningBlocks = React.memo(({ shopStatus, loading, activeBrand, updateData
     );
 });
 
-const MainContent = React.memo(({ 
-    shopStatus, 
-    loading, 
-    dataDashBoard, 
-    selectedRange, 
-    activeBrand, 
-    authToken, 
-    filters, 
+const MainContent = React.memo(({
+    shopStatus,
+    loading,
+    dataDashBoard,
+    selectedRange,
+    activeBrand,
+    authToken,
+    filters,
     updateDataDashBoard,
-    isSidebarHidden 
+    isSidebarHidden
 }) => {
     if (!shopStatus?.is_primary_collect) return null;
-    
+
     return (
         <>
             <FirstBarsGroup
@@ -148,7 +148,7 @@ const _DashboardPage = () => {
     const { shops } = useAppSelector((state) => state.shopsSlice);
     const filters = useAppSelector((state) => state.filters);
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
-    
+
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
         loading: true,
@@ -165,7 +165,7 @@ const _DashboardPage = () => {
                     setPageState(prev => ({ ...prev, dataDashBoard: data }));
                     return;
                 }
-                
+
                 const data = await ServiceFunctions.getDashBoard(
                     authToken,
                     selectedRange,
@@ -183,7 +183,7 @@ const _DashboardPage = () => {
 
     const shopStatus = useMemo(() => {
         if (!activeBrand || !shops) return null;
-        
+
         if (activeBrand.id === 0) {
             return {
                 id: 0,
@@ -194,7 +194,7 @@ const _DashboardPage = () => {
                 is_self_cost_set: !shops.some(_ => !_.is_self_cost_set)
             };
         }
-        
+
         return shops.find(_ => _.id === activeBrand.id);
     }, [activeBrand, shops]);
 
@@ -216,12 +216,19 @@ const _DashboardPage = () => {
                     <Header title='Сводка продаж' />
                 </div>
 
-                <WarningBlocks 
+                {!shopStatus?.is_self_cost_set && !pageState.loading && (
+                    <SelfCostWarningBlock
+                        shopId={activeBrand.id}
+                        onUpdateDashboard={updateDataDashBoard}
+                    />
+                )}
+
+                {/* <WarningBlocks
                     shopStatus={shopStatus}
                     loading={pageState.loading}
                     activeBrand={activeBrand}
                     updateDataDashBoard={updateDataDashBoard}
-                />
+                /> */}
 
                 {user.subscription_status === null && <NoSubscriptionWarningBlock />}
 
@@ -237,7 +244,13 @@ const _DashboardPage = () => {
                     />
                 </div>
 
-                <MainContent 
+                {!shopStatus?.is_primary_collect && (
+                    <DataCollectWarningBlock
+                        title='Ваши данные еще формируются и обрабатываются.'
+                    />
+                )}
+
+                <MainContent
                     shopStatus={shopStatus}
                     loading={pageState.loading}
                     dataDashBoard={pageState.dataDashBoard}

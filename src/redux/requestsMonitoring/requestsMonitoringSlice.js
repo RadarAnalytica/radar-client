@@ -35,7 +35,7 @@ const requestsMonitoringSlice = createSlice({
             }
         },
         updateRequestObject: (state, action) => {
-            console.log(action)
+
             return {
                 ...state,
                 requestObject: {

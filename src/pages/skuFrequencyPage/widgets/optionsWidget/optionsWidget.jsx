@@ -25,7 +25,7 @@ const priceValues = [
 ]
 
 
-const OptionsWidget = () => {
+const OptionsWidget = ({ resetTableConfig }) => {
     const dispatch = useAppDispatch()
     const [simpleForm] = Form.useForm();
     const [complexForm] = Form.useForm();
@@ -47,11 +47,13 @@ const OptionsWidget = () => {
             }
         }
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'easy' }))
+        resetTableConfig()
     }
 
     const complexFormSubmitHandler = (fields) => {
         const requestObject = complexRequestObjectGenerator(fields);
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'complex' }))
+        resetTableConfig()
     }
 
     useEffect(() => {
