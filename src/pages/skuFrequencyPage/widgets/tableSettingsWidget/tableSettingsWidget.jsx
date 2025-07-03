@@ -77,7 +77,6 @@ const TableSettingsWidget = () => {
         if (isModalOpen) {
             const values = form.getFieldsValue()
             const keysArr = Object.keys(values)
-            console.log(values)
             if (keysArr.length > 0 && keysArr.some(_ => !values[_])) {
                 setCheckAllButtonState('Выбрать все')
             }

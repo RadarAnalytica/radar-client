@@ -36,8 +36,9 @@ import stock5 from '../../assets/plugs/prod_analytic/prod-5.svg'
 //ai plugs
 import ai1 from '../../assets/plugs/ai-generation/ai-1.svg'
 //monitor plugs
-import monitor1 from '../../assets/plugs/monitoring/monitoring-1.png'
-import monitor2 from '../../assets/plugs/monitoring/monitoring-2.svg'
+import monNew from '../../assets/plugs/monitoring/monitoring_1.webp'
+//import monitor1 from '../../assets/plugs/monitoring/monitoring-1.png'
+//import monitor2 from '../../assets/plugs/monitoring/monitoring-2.svg'
 //monitor plugs
 import seo1 from '../../assets/plugs/seo/seo-1.png'
 import seo2 from '../../assets/plugs/seo/seo-2.svg'
@@ -66,7 +67,8 @@ const plugsConfig = {
     "abc-data": [abc1, abc2],
     "stock-analysis": [stock1, stock2, stock3, stock4, stock5],
     "ai-generator": [ai1],
-    "monitoring": [monitor1, monitor2],
+    //"monitoring": [monitor1, monitor2],
+    "monitoring": [monNew],
     "seo": [seo1, seo2],
     "linked-shops": [shop1],
     "subscription": [sub1],

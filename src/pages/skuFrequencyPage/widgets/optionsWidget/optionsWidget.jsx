@@ -31,6 +31,7 @@ const OptionsWidget = () => {
     const [complexForm] = Form.useForm();
     const { skuFrequencyMode } = useAppSelector(store => store.filters) // 'Простой' | 'Продвинутый'
     const { optionsConfig, requestObject } = useAppSelector(store => store.requestsMonitoring) // 'Простой' | 'Продвинутый'
+    const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const prefered_items = Form.useWatch('prefered_items', complexForm)
     const [isBodyVisisble, setIsBodyVisible] = useState(true)
 
@@ -102,7 +103,7 @@ const OptionsWidget = () => {
                 {/* ---------------------------- Простой фильтр опций -------------------------------*/}
                 {skuFrequencyMode === 'Простой' &&
                     <Form
-                        className={styles.form__simpleLayout}
+                        className={isSidebarHidden ? styles.form__simpleLayout : `${styles.form__simpleLayout} ${styles.form__simpleLayout_menuOpen}`}
                         scrollToFirstError
                         layout='vertical'
                         onFinish={simpleFormSubmitHandler}

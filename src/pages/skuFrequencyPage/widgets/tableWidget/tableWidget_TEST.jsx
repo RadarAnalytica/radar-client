@@ -40,8 +40,8 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
 
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
-    const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
+    //const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
+    //const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
     const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
     const [tableConfig, setTableConfig] = useState(newTableConfig)
     const { requestData, requestStatus, requestObject, formType, tableConfig: tableSettings, pagination } = useAppSelector(store => store.requestsMonitoring)
@@ -123,7 +123,6 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
         const tableBody = document.querySelector('.ant-table-tbody')
         const headerCell = document.querySelectorAll('.table__mainHeader')
         const coloredHeaderCell = document.querySelectorAll('.table__mainHeader_colored')
-        const container = document.querySelectorAll('.table__mainHeader_colored')
         //const firstCells = document.querySelectorAll('.first__cell')
 
         if (headerCell && coloredHeaderCell) {
@@ -139,6 +138,7 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
             tableBody.style.maxHeight = '80vh'
             // tableBody.style.border = '1px solid red'
         }
+       
     }, [requestData, tableSettings, tableConfig])
 
     useEffect(() => {
@@ -150,25 +150,25 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
 
 
     // отслеживаем скролл в контейнере
-    const scrollHandler = () => {
-        if (containerRef && containerRef.current) {
+    // const scrollHandler = () => {
+    //     if (containerRef && containerRef.current) {
 
-            // если скроллим вправо
-            if (containerRef.current.scrollLeft > 1) {
-                setIsXScrolled(true)
-            } else {
-                setIsXScrolled(false)
-            }
+    //         // если скроллим вправо
+    //         if (containerRef.current.scrollLeft > 1) {
+    //             setIsXScrolled(true)
+    //         } else {
+    //             setIsXScrolled(false)
+    //         }
 
-            // вычисляем достиг ли скролл конца справа
-            const delta = containerRef.current.scrollWidth - (containerRef.current.scrollLeft + containerRef.current.clientWidth);
-            if (delta < 16) {
-                setIsEndOfXScroll(true)
-            } else {
-                setIsEndOfXScroll(false)
-            }
-        }
-    }
+    //         // вычисляем достиг ли скролл конца справа
+    //         const delta = containerRef.current.scrollWidth - (containerRef.current.scrollLeft + containerRef.current.clientWidth);
+    //         if (delta < 16) {
+    //             setIsEndOfXScroll(true)
+    //         } else {
+    //             setIsEndOfXScroll(false)
+    //         }
+    //     }
+    // }
 
     // хэндлер сортировки
     // const sortButtonClickHandler = (e, value) => {
@@ -218,8 +218,12 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
     }
 
     return requestData && newTableConfig && (
-        <div className={styles.container} ref={containerRef} style={{ borderRadius: isEndOfXScroll ? '16px' : '' }}>
-            <div className={styles.tableContainer} onScroll={scrollHandler}>
+        <div 
+            className={styles.container} 
+            ref={containerRef} 
+            //style={{ borderRadius: isEndOfXScroll ? '16px' : '' }}
+        >
+            <div className={styles.tableContainer}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     // renderEmpty={() => (<></>)}

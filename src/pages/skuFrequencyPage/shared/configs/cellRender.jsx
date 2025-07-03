@@ -24,7 +24,7 @@ const getRateStarColor = (value) => {
 export const cellRender = (value, context) => {
     //console.log('value', value)
     //console.log('context', context)
-    
+
 
     if (context.dataIndex === 'query') {
         const url = `/monitoring/request?query=${encodeURIComponent(value)}`
@@ -64,6 +64,19 @@ export const cellRender = (value, context) => {
                         disabled
                     />
                 </ConfigProvider>
+            </div>
+        )
+    }
+
+
+    if (context.dataIndex === 'g30' || context.dataIndex === 'g60' || context.dataIndex === 'g90') {
+        return (
+            <div
+                className={styles.cell}
+            >
+                <div className={styles.cell__wrapper}>
+                    {context.units ? formatPrice(value, context.units) : formatPrice(value, '')}
+                </div>
             </div>
         )
     }
