@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-import styles from './TableWidget_TEST.module.css'
+import styles from './tableWidget_TEST.module.css'
 import { formatPrice } from '../../../../service/utils';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { Link } from 'react-router-dom';
