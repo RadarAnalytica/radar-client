@@ -38,7 +38,7 @@ const ReportBuyBack = () => {
   };
 
   const handleTemplateDownload = async () => {
-    const fileBlob = await ServiceFunctions.getCostTemplate(authToken);
+    const fileBlob = await ServiceFunctions.getSelfBuyoutTemplate(authToken);
     fileDownload(fileBlob, 'Самовыкуп_шаблон.xlsx');
   };
 

@@ -163,6 +163,10 @@ const TurnoverBlock = ({ loading, turnover, selectedRange, activeBrand, authToke
         if (!isModalVisible) {
             setSortState(initSortState)
         }
+
+        if (!isModalVisible) {
+            setSortState(initSortState)
+        }
     }, [isModalVisible, selectedRange, activeBrand])
 
 

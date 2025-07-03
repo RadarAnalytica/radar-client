@@ -345,8 +345,9 @@ export const ServiceFunctions = {
 
 			body: JSON.stringify(competitorsLinks),
 		});
-		const data = await res.json();
-		return data;
+		// const data = await res.json();
+		// return data;
+		return res;
 	},
 
 	postAiDescriptionGenerator: async (
@@ -368,8 +369,9 @@ export const ServiceFunctions = {
 					keywords: keywords,
 				}),
     });
-		const data = await res.json();
-		return data;
+		// const data = await res.json();
+		// return data;
+		return res
 	},
 
 	getUserGenerationsData: async (token, id) => {
@@ -863,17 +865,17 @@ export const ServiceFunctions = {
     const data = await res.json()
     data.updated_at = data.updated_at === '' ? null : `Последняя загрузка ${formatFromIsoDate(data.updated_at)}г.`
 
-		return data;
-	},
+    return data;
+  },
 
-	getCostTemplate: async (token) => {
-		const res = await fetch(`${URL}/api/report/self-buyout/get-template`, {
-			method: 'GET',
-			headers: {
-				accept: 'application/json',
-				authorization: 'JWT ' + token,
-			},
-		});
+  getCostTemplate: async (token) => {
+    const res = await fetch(`${URL}/api/report/cost/get-template`, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        authorization: 'JWT ' + token,
+      },
+    });
     const data = await res.blob()
 		return data;
 	},

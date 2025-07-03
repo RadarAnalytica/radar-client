@@ -55,7 +55,7 @@ const TableSections = ({ data, cellWidths }) => {
             </div>
           </div>
           <div className={styles.costPerUnitCell} style={{ width: getMinWidth(cellWidths.costPerUnitCell) }}>
-            {formatPrice(data?.cost_price, '₽')}
+            {formatPrice(data?.cost_price_per_one, '₽')}
           </div>
         </div>
         {/* Commision & Logisitc Section */}
