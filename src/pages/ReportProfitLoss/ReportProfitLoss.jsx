@@ -14,6 +14,7 @@ import { Filters } from '../../components/sharedComponents/apiServicePagesFilter
 import dayjs from 'dayjs';
 import { COLUMNS, ROWS } from './config';
 import { useAppSelector } from '../../redux/hooks';
+import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 
 export default function ReportProfitLoss() {
 	const { authToken } = useContext(AuthContext);
@@ -268,6 +269,9 @@ export default function ReportProfitLoss() {
 						// articleSelect={false}
 						// groupSelect={false}
 					/>
+				</div>
+				<div className={styles.how}>
+					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
 				</div>
 				<div className={styles.container}>
 					<ReportTable
