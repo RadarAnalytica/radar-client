@@ -4,79 +4,6 @@ import { cellRender } from "./cellRender"
 import { Tooltip, ConfigProvider } from "antd"
 import { actions as reqActions } from "../../../../redux/requestsMonitoring/requestsMonitoringSlice"
 
-export const tableConfig = [
-    {
-        tableName: null,
-        isMain: true,
-        values: [
-            { ruName: 'Поисковые запросы', engName: 'query', units: null, isSortable: true, isActive: true },
-        ]
-    },
-    {
-        tableName: null,
-        isMain: false,
-        values: [
-            //main
-            { ruName: 'Рейтинг качества ниши', engName: 'niche_rating', isSortable: true, isActive: true, hasRate: false, hasTooltip: true, tooltipText: 'Показатель рассчитывается исходя из значений выручки, коэффициента спроса, монопольности, рекламы, % выкупа и других параметров.' },
-            { ruName: 'Частотность за 30 дней', engName: 'frequency_30', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Частотность за 60 дней', engName: 'frequency_60', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Частотность за 90 дней', engName: 'frequency_90', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Коэффициент cпроса', engName: 'freq_per_good', isSortable: true, isActive: true, hasRate: false, hasTooltip: true, tooltipText: 'Показатель, который отражает соотношение между частотностью поискового запроса и количеством товаров, предлагаемых по этому запросу. Чем выше коэффициент спроса, тем больше интерес аудитории к данной тематике и тем меньше конкуренция среди продавцов. Данный показатель рассчитывается по формуле: Частотность WB / Кол-во товаров на WB.' },
-            { ruName: 'Кол-во продавцов', engName: 'suppliers_quantity', isSortable: true, isActive: true, hasRate: false },
-            // { ruName: 'Кол-во товаров в ТОП-750 за 30 дней', engName: 'top_goods_quantity', units: 'шт', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Кол-во товаров на WB', engName: 'goods_quantity', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Выручка (с СПП)', engName: 'revenue_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. выручка в день', engName: 'avg_daily_revenue_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. цена (с СПП)', engName: 'avg_price_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Товаров с продажами', engName: 'goods_with_sales_quantity', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. выручка на товар', engName: 'avg_revenue_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. выручка на товар с продажами', engName: 'avg_with_sales_revenue_total', units: '₽', isSortable: true, isActive: true, hasRate: false },
-            { ruName: '% товаров с продажами', engName: 'goods_with_sales_percent_total', units: '%', isSortable: true, isActive: true, hasRate: false },
-            // { ruName: '% выручки у ТОП-30 товаров', engName: 'monopoly_percent', units: '%', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. кол-во оценок', engName: 'avg_reviews', units: 'шт', isSortable: true, isActive: true, hasRate: false },
-            { ruName: 'Ср. рейтинг', engName: 'avg_rating', isSortable: true, isActive: true, hasRate: false },
-            { ruName: '% продавцов с продажами', engName: 'suppliers_with_sales_percent', units: '%', isSortable: true, isActive: true, hasRate: false },
-            //dynamic
-            { ruName: 'Динамика запроса за 30 дней', engName: 'g30', units: null, isSortable: true, isActive: false, hasRate: false },
-            { ruName: 'Динамика запроса за 60 дней', engName: 'g60', units: null, isSortable: true, isActive: false, hasRate: false },
-            { ruName: 'Динамика запроса за 90 дней', engName: 'g90', units: null, isSortable: true, isActive: false, hasRate: false },
-            // side params
-            { ruName: 'Процент выкупа, %', engName: 'buyout_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
-            //{ ruName: 'Частотность за 30 дней', engName: 'frequency_30', units: null, isSortable: true, isActive: false, hasRate: false },
-            { ruName: 'Монопольность, %', engName: 'monopoly_percent', units: '%', isSortable: true, isActive: false, hasRate: false, hasTooltip: true, tooltipText: 'Процент выручки, приходящийся на ТОП-30 артикулов от всех артикулов на первой странице.' },
-            { ruName: 'Кол-во товаров в ТОП-1200 за 30 дней, шт', engName: 'top_goods_quantity', units: 'шт', isSortable: true, isActive: false, hasRate: false },  // has double
-            //{ ruName: 'Кол-во артикулов по запросу, шт', engName: 'goods_quantity', units: 'шт', isSortable: true, isActive: false, hasRate: false },
-            //{ ruName: 'Комиссия FBO, %', engName: 'fbo_commision', units: '%', isSortable: true, isActive: false, hasRate: false },  // ?? нет в фильтрах так что мб и тут не будет
-            // first page goods
-            { ruName: '% артикулов в рекламе', engName: 'advert_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
-            { ruName: '% артикулов с внешним трафиком', engName: 'external_advert_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
-            { ruName: 'Среднее кол-во отзывов у артикулов (без учета внутренней рекламы WB)', engName: 'avg_reviews', units: 'шт', isSortable: true, isActive: false, hasRate: false },
-            // first 3 pages goods
-            //{ ruName: 'Выручка за 30 дней, руб', engName: '30_days_revenue', units: '₽' },
-            //{ ruName: 'Средняя выручка за 30 дней, руб', engName: 'avg_30_days_revenue', units: '₽', isSortable: true, isActive: false, hasRate: false },
-            //{ ruName: '% упущенной выручки за 30 дней', engName: 'lost_revenue_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
-            //{ ruName: 'Средняя цена, руб', engName: 'f3_avg_price', units: '₽', isSortable: true, isActive: false, hasRate: false },
-            //{ ruName: '% артикулов с продажами', engName: 'f3_goods_with_sales_percent', units: '%', isSortable: true, isActive: false, hasRate: false },
-
-
-            // items from the old version of the table
-            // { ruName: 'Упущенная выручка', engName: 'lost_revenue', units: '₽', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Потенциал выручки', engName: 'potential_revenue', units: '₽', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Процент упущенной выручки', engName: 'lost_revenue_percent', units: '%', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Заказы', engName: 'orders', units: 'шт', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Упущенные заказы', engName: 'lost_orders', units: 'шт', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Процент упущенных заказов', engName: 'lost_orders_percent', units: '%', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Потенциал заказов', engName: 'potential_orders', units: 'шт', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Медианная цена', engName: 'median_price', units: '₽', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Комиссия FBS', engName: 'fbs_commision', units: '%', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Комиссия DBS', engName: 'dbs_commision', units: '%', isSortable: true, isActive: false, hasRate: false }, 
-            // { ruName: 'Комиссия DBS Express', engName: 'dbs_express_commision', units: '%', isSortable: true, isActive: false, hasRate: false }, 
-            //{ ruName: 'Частотность за 60 дней', engName: 'frequency_60', units: null, isSortable: true, isActive: false, hasRate: false }, 
-            //{ ruName: 'Частотность за 90 дней', engName: 'frequency_90', units: null, isSortable: true, isActive: false, hasRate: false }, 
-        ]
-    },
-]
-
 const tooltipConfig = {
     "Рейтинг качества ниши": 'Показатель рассчитывается исходя из значений выручки, коэффициента спроса, монопольности, рекламы, % выкупа и других параметров.',
     "Коэффициент cпроса": 'Показатель, который отражает соотношение между частотностью поискового запроса и количеством товаров, предлагаемых по этому запросу. Чем выше коэффициент спроса, тем больше интерес аудитории к данной тематике и тем меньше конкуренция среди продавцов. Данный показатель рассчитывается по формуле: Частотность WB / Кол-во товаров на WB.',
@@ -123,7 +50,8 @@ export const newTableConfig = [
                 sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> },
                 filterOptions: true,
                 render: function (value) { return cellRender(value, this) },
-                hidden: false
+                hidden: false,
+                sortOrder: 'ascend'
             },
         ].map(_ => ({ ..._, render: _.render.bind(_) }))
     },
