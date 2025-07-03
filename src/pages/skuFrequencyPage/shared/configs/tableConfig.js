@@ -51,7 +51,7 @@ export const newTableConfig = [
                 filterOptions: true,
                 render: function (value) { return cellRender(value, this) },
                 hidden: false,
-                sortOrder: 'ascend'
+                //sortOrder: 'ascend'
             },
         ].map(_ => ({ ..._, render: _.render.bind(_) }))
     },
@@ -69,10 +69,10 @@ export const newTableConfig = [
             { title: 'Выручка (с СПП), ₽', dataIndex: 'revenue_total', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             { title: 'Ср. выручка в день, ₽', dataIndex: 'avg_daily_revenue', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             { title: 'Ср. цена (с СПП), ₽', dataIndex: 'avg_price_total', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-            { title: 'Товаров с продажами', dataIndex: 'goods_with_sales_quantity', width: 340, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
+            { title: 'Товаров с продажами', dataIndex: 'goods_with_sales_quantity_total', width: 340, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             { title: 'Ср. выручка на товар, ₽', dataIndex: 'avg_revenue_total', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             { title: 'Ср. выручка на товар с продажами, ₽', dataIndex: 'avg_with_sales_revenue', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-            { title: '% товаров с продажами, %', dataIndex: 'goods_with_sales_percent', width: 340, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
+            { title: '% товаров с продажами, %', dataIndex: 'goods_with_sales_percent_total', width: 340, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             // { title: '% выручки у ТОП-30 товаров, %', dataIndex: 'monopoly_percent', width: 340,  units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             //{title: 'Ср. кол-во оценок, %', dataIndex: 'avg_reviews', width: 340, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             { title: 'Ср. рейтинг', dataIndex: 'avg_rating', width: 340, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
@@ -115,7 +115,7 @@ export const newTableConfig = [
         children: [
             { title: 'Выручка за 30 дней, руб', dataIndex: 'revenue_300', width: 340, units: '₽', filterOptions: true, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, render: function (value) { return cellRender(value, this) }, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
             { title: 'Средняя выручка за 30 дней, руб', dataIndex: 'avg_revenue_300', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-            { title: '% упущенной выручки за 30 дней, %', dataIndex: 'lost_revenue_percent', width: 340, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
+            { title: '% упущенной выручки за 30 дней, %', dataIndex: 'lost_revenue_percent_300', width: 340, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             { title: 'Средняя цена, руб', dataIndex: 'avg_price_300', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
             { title: '% артикулов с продажами, %', dataIndex: 'goods_with_sales_percent_300', width: 340, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
         ].map(_ => ({ ..._, render: _.render.bind(_) }))
@@ -166,18 +166,19 @@ export const tableSettings = tableSettingsArr().flat()
 function SortIcon({ sortOrder, ctx }) {
     // console.log(ctx)
     const dispatch = useAppDispatch()
+    console.log(sortOrder)
 
     useEffect(() => {
         const order = sortOrder === 'ascend' ? 'ASC' : sortOrder === 'descend' ? 'DESC' : '';
         if (!order) {
-            dispatch(reqActions.updateRequestObject({ sorting: {sort_field: 'niche_rating', sort_order: 'DESC'} }))
+            dispatch(reqActions.updateRequestObject({ sorting: {sort_field: 'niche_rating', sort_order: 'DESC'}}))
             return
         }
         const obj = {
             sort_field: ctx.dataIndex,
             sort_order: order,
         }
-        dispatch(reqActions.updateRequestObject({ sorting: obj }))
+        dispatch(reqActions.updateRequestObject({ sorting: obj, page: 1, limit: 25 }))
     }, [sortOrder])
 
     return (

@@ -107,9 +107,9 @@ export const complexRequestObjectGenerator = (fields) => {
             start: fields.avg_revenue_300_start || null,
             end: fields.avg_revenue_300_end || null
         },
-        lost_revenue_percent: {
-            start: fields.lost_revenue_percent_start || null,
-            end: fields.lost_revenue_percent_end || null
+        lost_revenue_percent_300: {
+            start: fields.lost_revenue_percent_300_start || null,
+            end: fields.lost_revenue_percent_300_end || null
         },
         avg_price_300: {
             start: fields.avg_price_300_start || null,

@@ -36,14 +36,14 @@ const paginationTheme = {
 
 
 
-const TableWidget_TEST = ({ tinyRows = false }) => {
+const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
 
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     //const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
     //const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
-    const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
-    const [tableConfig, setTableConfig] = useState(newTableConfig)
+    //const [sortState, setSortState] = useState(null) // стейт сортировки (см initSortState)
+    // const [tableConfig, setTableConfig] = useState(newTableConfig)
     const { requestData, requestStatus, requestObject, formType, tableConfig: tableSettings, pagination } = useAppSelector(store => store.requestsMonitoring)
     const [paginationState, setPaginationState] = useState({ limit: 25, page: 1, total_pages: requestData?.length || 1 })
     const navigate = useNavigate()
@@ -73,6 +73,8 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
             dispatch(fetchRequestsMonitoringDataEasy({ requestObject, requestData }))
         }
     }, [requestObject])
+
+    
 
 
 
@@ -138,7 +140,7 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
             tableBody.style.maxHeight = '80vh'
             // tableBody.style.border = '1px solid red'
         }
-       
+
     }, [requestData, tableSettings, tableConfig])
 
     useEffect(() => {
@@ -218,10 +220,10 @@ const TableWidget_TEST = ({ tinyRows = false }) => {
     }
 
     return requestData && newTableConfig && (
-        <div 
-            className={styles.container} 
-            ref={containerRef} 
-            //style={{ borderRadius: isEndOfXScroll ? '16px' : '' }}
+        <div
+            className={styles.container}
+            ref={containerRef}
+        //style={{ borderRadius: isEndOfXScroll ? '16px' : '' }}
         >
             <div className={styles.tableContainer}>
                 <ConfigProvider
