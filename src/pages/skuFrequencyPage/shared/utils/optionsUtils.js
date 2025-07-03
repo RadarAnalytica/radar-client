@@ -25,13 +25,13 @@ export const complexRequestObjectGenerator = (fields) => {
             start: fields.avg_price_total_start || null,
             end: fields.avg_price_total_end || null
         },
-        goods_with_sales_percent_total: { //Процент товаров с продажами
-            start: fields.goods_with_sales_percent_total_start || null,
-            end: fields.goods_with_sales_percent_total_end || null
+        goods_with_sales_total: { //Процент товаров с продажами
+            start: fields.goods_with_sales_total_start || null,
+            end: fields.goods_with_sales_total_end || null
         },
-        stock_quantity: {
-            start: fields.stock_quantity_start || null,
-            end: fields.stock_quantity_end || null
+        goods_quantity: {
+            start: fields.goods_quantity_start || null,
+            end: fields.goods_quantity_end || null
         },
         freq_per_good: { //коэфт спроса
             start: fields.freq_per_good_start || null,
@@ -79,9 +79,9 @@ export const complexRequestObjectGenerator = (fields) => {
             start: fields.monopoly_percent_start || null,
             end: fields.monopoly_percent_end || null
         },
-        goods_quantity: {
-            start: fields.goods_quantity_start || null,
-            end: fields.goods_quantity_end || null
+        top_goods_quantity: {
+            start: fields.top_goods_quantity_start || null,
+            end: fields.top_goods_quantity_end || null
         },
         buyout_percent: {
             start: fields.buyout_percent_start || null,

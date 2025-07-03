@@ -60,8 +60,9 @@ const SkuFrequencyPage = () => {
                         <TableSettingsWidget />
                     </div>}
                 </div>
-                <TableWidget />
-                {/* <TableWidget_TEST /> */}
+                {/* <TableWidget /> */}
+                <TableWidget_TEST />
+                <div style={{ height: 30, minHeight: 30}}></div>
             </div>
             {/* ---------------------- */}
         </main>

@@ -9,7 +9,7 @@ const dynamicOptions = [
 
 const DynamicFieldset = ({ form }) => {
 
-    const [isBodyVisisble, setIsBodyVisible] = useState(false)
+    const [isBodyVisisble, setIsBodyVisible] = useState(true)
 
     const dynamic_30_days = Form.useWatch('dynamic_30_days', form)
     const dynamic_60_days = Form.useWatch('dynamic_60_days', form)

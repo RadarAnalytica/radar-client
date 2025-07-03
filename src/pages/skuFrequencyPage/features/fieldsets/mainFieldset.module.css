@@ -64,7 +64,11 @@
     font-size: 16px;
     line-height: 100%;
     letter-spacing: 0%;
+    margin-bottom: 9px;
+}
 
+.form__complexWrapperLabel_lowMargin {
+    margin-bottom: 5px;
 }
 
 .form__item {

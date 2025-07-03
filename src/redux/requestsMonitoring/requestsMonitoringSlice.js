@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from './requestsMonitoringActions'
 import { optionsConfig } from "../../pages/skuFrequencyPage/shared";
-import { tableConfig } from "../../pages/skuFrequencyPage/shared";
+import { newTableConfig } from "../../pages/skuFrequencyPage/shared";
+import { tableSettings } from "../../pages/skuFrequencyPage/shared/configs/tableConfig";
 
 const initialState = {
     optionsConfig: [...optionsConfig],
-    tableConfig: [...tableConfig],
+    tableConfig: tableSettings,
     requestObject: undefined,
     requestStatus: {
         isLoading: false,
@@ -34,6 +35,7 @@ const requestsMonitoringSlice = createSlice({
             }
         },
         updateRequestObject: (state, action) => {
+            console.log(action)
             return {
                 ...state,
                 requestObject: {

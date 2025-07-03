@@ -39,7 +39,11 @@ const OptionsWidget = () => {
         const requestObject = {
             query: fields.query,
             avg_price: JSON.parse(fields.preferedProductPrice),
-            competition_level: fields.competitionLevel
+            competition_level: fields.competitionLevel,
+            sorting: {
+                sort_field: "niche_rating",
+                sort_order: "DESC"
+            }
         }
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'easy' }))
     }
@@ -49,6 +53,14 @@ const OptionsWidget = () => {
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'complex' }))
     }
 
+    useEffect(() => {
+        if (skuFrequencyMode === 'Простой') {
+            simpleForm.submit()
+        }
+        if (skuFrequencyMode === 'Продвинутый') {
+            complexForm.submit()
+        }
+    }, [skuFrequencyMode])
 
     return (
         <section className={styles.widget}>
@@ -77,6 +89,9 @@ const OptionsWidget = () => {
             </div>
             <ConfigProvider
                 theme={{
+                    token: {
+                        fontFamily: 'Mulish'
+                    },
                     components: {
                         Form: {
                             labelFontSize: 16
@@ -113,7 +128,7 @@ const OptionsWidget = () => {
                                 label='Содержит поисковый запрос'
                                 name='query'
                                 rules={[
-                                    { required: true, message: 'Пожалуйста, заполните это поле!' }
+                                    //{ required: true, message: 'Пожалуйста, заполните это поле!' }
                                 ]}
                             >
                                 <Input
@@ -179,7 +194,7 @@ const OptionsWidget = () => {
                                                 arrow={false}
                                                 color='white'
                                             >
-                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10 }}>
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10, cursor: 'pointer' }}>
                                                     <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
                                                     <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
                                                 </svg>
@@ -253,6 +268,10 @@ const OptionsWidget = () => {
                             onFinish={complexFormSubmitHandler}
                             form={complexForm}
                             initialValues={{
+                                frequency_30_start: 6000,
+                                freq_per_good_start: 2,
+                                dynamic_30_days: 'Рост',
+                                dynamic_30_days_from: 100,
                                 prefered_items: [],
                                 niche_rating: []
                             }}
