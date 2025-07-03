@@ -185,10 +185,10 @@ export const newTableConfig = [
         title: 'У артикулов на первых 3-х страницах',
         className: 'table__mainHeader',
         children: [
-            { title: 'Выручка за 30 дней, руб', dataIndex: 'revenue_300', width: 340, units: '₽', filterOptions: true, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, render: function (value) { return cellRender(value, this) }, hidden: false },
+            { title: 'Выручка за 30 дней, руб', dataIndex: 'revenue_300', width: 340, units: '₽', filterOptions: true, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, render: function (value) { return cellRender(value, this) }, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
             { title: 'Средняя выручка за 30 дней, руб', dataIndex: 'avg_revenue_300', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             { title: '% упущенной выручки за 30 дней, %', dataIndex: 'lost_revenue_percent', width: 340, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-            { title: 'Средняя цена, руб', dataIndex: 'avg_price_300', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
+            { title: 'Средняя цена, руб', dataIndex: 'avg_price_300', width: 340, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
             { title: '% артикулов с продажами, %', dataIndex: 'goods_with_sales_percent_300', width: 340, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
         ].map(_ => ({ ..._, render: _.render.bind(_) }))
     }
@@ -212,6 +212,10 @@ const getTitle = (item) => {
     }
 
     title = item.title
+
+    if (item.comment) {
+        title = title + ' ' + `(${item.comment})`
+    }
     return title
 }
 
@@ -248,7 +252,6 @@ function SortIcon({ sortOrder, ctx }) {
     return (
         <button
             style={{
-                display: 'flex',
                 background: 'transparent',
                 border: 'none',
                 display: 'flex',

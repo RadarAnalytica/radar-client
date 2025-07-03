@@ -14,7 +14,7 @@ const QUALITY_CONFIG = [
 
             </div>
         ),
-        value: 1,
+        value: 4,
     },
     {
         label: (
@@ -26,7 +26,7 @@ const QUALITY_CONFIG = [
 
             </div>
         ),
-        value: 2,
+        value: 3,
     },
     {
         label: (
@@ -38,7 +38,7 @@ const QUALITY_CONFIG = [
 
             </div>
         ),
-        value: 3,
+        value: 2,
     },
     {
         label: (
@@ -50,7 +50,7 @@ const QUALITY_CONFIG = [
 
             </div>
         ),
-        value: 4,
+        value: 1,
     },
 ]
 

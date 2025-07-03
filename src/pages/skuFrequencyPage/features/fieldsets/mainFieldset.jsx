@@ -125,6 +125,12 @@ const MainFieldset = ({ optionsConfig }) => {
                                                     if (value && !regex.test(value)) {
                                                         return Promise.reject(new Error(''))
                                                     }
+                                                    if (i.units === '%' && value && value.trim()) {
+                                                        const int = parseInt(value);
+                                                        if (int && typeof int === 'number' && (int < 0 || int > 100)) {
+                                                            return Promise.reject(new Error('Пожалуйста, введите значение от 0 до 100'))
+                                                        }
+                                                    }
                                                     return Promise.resolve()
                                                 },
                                             }),
@@ -146,6 +152,12 @@ const MainFieldset = ({ optionsConfig }) => {
                                                     const regex = /^(|\d+)$/ // только целые числа
                                                     if (value && !regex.test(value)) {
                                                         return Promise.reject(new Error(''))
+                                                    }
+                                                    if (i.units === '%' && value && value.trim()) {
+                                                        const int = parseInt(value);
+                                                        if (int && typeof int === 'number' && (int < 0 || int > 100)) {
+                                                            return Promise.reject(new Error('Пожалуйста, введите значение от 0 до 100'))
+                                                        }
                                                     }
                                                     return Promise.resolve()
                                                 },

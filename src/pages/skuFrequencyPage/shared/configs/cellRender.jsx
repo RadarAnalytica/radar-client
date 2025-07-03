@@ -59,7 +59,7 @@ export const cellRender = (value, context) => {
                     }}
                 >
                     <Rate
-                        value={value}
+                        value={value + 1}
                         allowHalf
                         disabled
                     />
