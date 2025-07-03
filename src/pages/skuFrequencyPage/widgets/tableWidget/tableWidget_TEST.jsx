@@ -219,6 +219,44 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
         )
     }
 
+    const sortFunc = (config) => {
+        if (requestObject?.sorting) {
+            const { sort_field, sort_order } = requestObject.sorting
+
+            let sortedConfig = config.map(_ => {
+                return {
+                    ..._,
+                    children: _.children?.map((i) => { return {...i, sortOrder: sort_field === i.dataIndex ? sort_order : null, columnKey: i.dataIndex, }}),
+                }
+              
+            })
+            return sortedConfig
+        } else {
+            let sortedConfig = config.map(_ => {
+                return {
+                    ..._,
+                    children: _.children?.map((i) => { return {...i, sortOrder: null, columnKey: i.dataIndex, }}),
+                }
+              
+            })
+            return sortedConfig
+        }
+      
+    }
+
+    const handleChange = (pagination, filters, sorterObj) => {
+        console.log(sorterObj)
+        if (!sorterObj.order) {
+            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: {sort_field: 'niche_rating', sort_order: 'DESC'}}))
+            return
+        }
+        const obj = {
+            sort_field: sorterObj.field,
+            sort_order: sorterObj.order,
+        }
+        dispatch(reqsMonitoringActions.updateRequestObject({ sorting: obj, page: 1, limit: 25 }))
+      };
+
     return requestData && newTableConfig && (
         <div
             className={styles.container}
@@ -268,7 +306,7 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
                     <Table
                         virtual
                         dataSource={requestData}
-                        columns={tableConfig}
+                        columns={sortFunc(tableConfig)}
                         //dataSource={requestData.filter((_,id) => id <= 5)}
                         pagination={false}
                         // tableLayout="fixed"
@@ -282,6 +320,7 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
                         }}
                         // scroll={{ x: 'max-content' }}
                         scroll={{ x: scrollX, y: scrollY }}
+                        onChange={handleChange}
                     ></Table>
                 </ConfigProvider>
                 <div style={{
