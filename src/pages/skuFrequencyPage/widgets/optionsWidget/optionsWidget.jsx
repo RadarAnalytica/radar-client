@@ -8,10 +8,10 @@ import { MainFieldset, SubjectFieldset, QualityFieldset, SideParamsFieldset, Dyn
 
 
 const competitionLevelValues = [
-    { value: 1, label: 'Легко' },
-    { value: 2, label: 'Средне' },
-    { value: 3, label: 'Сложно' },
-    { value: 4, label: 'Очень сложно' },
+    { value: 4, label: 'Легко' },
+    { value: 3, label: 'Средне' },
+    { value: 2, label: 'Сложно' },
+    { value: 1, label: 'Очень сложно' },
 ]
 
 const priceValues = [
@@ -39,7 +39,7 @@ const OptionsWidget = () => {
     const simpleFormSubmitHandler = (fields) => {
         const requestObject = {
             query: fields.query,
-            avg_price: JSON.parse(fields.preferedProductPrice),
+            avg_price_total: JSON.parse(fields.preferedProductPrice),
             competition_level: fields.competitionLevel,
             sorting: {
                 sort_field: "niche_rating",
@@ -62,6 +62,13 @@ const OptionsWidget = () => {
             complexForm.submit()
         }
     }, [skuFrequencyMode])
+
+    useEffect(() => {
+        complexForm.setFieldValue('frequency_30_start', 6000)
+        complexForm.setFieldValue('freq_per_good_start', 2)
+        complexForm.setFieldValue('dynamic_30_days', 'Рост')
+        complexForm.setFieldValue('dynamic_30_days_from', 100)
+    }, [])
 
     return (
         <section className={styles.widget}>
@@ -109,7 +116,7 @@ const OptionsWidget = () => {
                         onFinish={simpleFormSubmitHandler}
                         form={simpleForm}
                         initialValues={{
-                            competitionLevel: 2,
+                            competitionLevel: 3,
                             preferedProductPrice: JSON.stringify({ start: 500, end: 1500 })
                         }}
                     >
@@ -269,10 +276,10 @@ const OptionsWidget = () => {
                             onFinish={complexFormSubmitHandler}
                             form={complexForm}
                             initialValues={{
-                                frequency_30_start: 6000,
-                                freq_per_good_start: 2,
-                                dynamic_30_days: 'Рост',
-                                dynamic_30_days_from: 100,
+                                //frequency_30_start: 6000,
+                                // freq_per_good_start: 2,
+                                // dynamic_30_days: 'Рост',
+                                // dynamic_30_days_from: 100,
                                 prefered_items: [],
                                 niche_rating: []
                             }}

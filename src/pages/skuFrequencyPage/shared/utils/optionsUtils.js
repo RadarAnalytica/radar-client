@@ -1,6 +1,6 @@
 export const complexRequestObjectGenerator = (fields) => {
 
-    console.log(fields)
+
 
     const requestObject = {
         //seasons: [0],
