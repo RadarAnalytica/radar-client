@@ -140,7 +140,7 @@ const SideParamsFieldset = () => {
                                                     >
                                                         <Input
                                                             size='large'
-                                                            prefix={<span className={styles.form__inputTextSuffix}>от</span>}
+                                                            prefix={<span className={styles.form__inputTextSuffix}>до</span>}
                                                             suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
                                                             type="number"
                                                         />
