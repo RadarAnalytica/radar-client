@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styles from './mainFieldset.module.css'
-import { Form, ConfigProvider, Input } from 'antd'
+import { Form, ConfigProvider, Input, Tooltip } from 'antd'
 
 const MainFieldset = ({ optionsConfig }) => {
 
@@ -13,6 +13,16 @@ const MainFieldset = ({ optionsConfig }) => {
             <div
                 className={styles.fieldset__header}
                 id='header'
+                onDoubleClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (window.getSelection) {
+                        const selection = window.getSelection();
+                        if (selection) selection.removeAllRanges();
+                    } else if (document.selection) {
+                        document.selection.empty();
+                    }
+                }}
                 onClick={e => {
                     // console.log('t', e.target)
                     // console.log('ct', e.currentTarget)
@@ -49,7 +59,7 @@ const MainFieldset = ({ optionsConfig }) => {
                         label='Содержит поисковый запрос'
                         name='query'
                         rules={[
-                            { required: true, message: 'Пожалуйста, заполните это поле!' }
+                            //{ required: true, message: 'Пожалуйста, заполните это поле!' },
                         ]}
                     >
                         <Input
@@ -81,7 +91,29 @@ const MainFieldset = ({ optionsConfig }) => {
                     {optionsConfig.map((i, id) => {
                         return i.isActive && (
                             <div className={styles.form__complexInputWrapper} key={id}>
-                                <label className={styles.form__complexWrapperLabel}>{i.label}</label>
+                                <label className={i.hasTooltip ? `${styles.form__complexWrapperLabel} ${styles.form__complexWrapperLabel_lowMargin}` : styles.form__complexWrapperLabel}>
+                                    {i.label}
+                                    {i.hasTooltip &&
+                                        <ConfigProvider
+                                            theme={{
+                                                token: {
+                                                    colorTextLightSolid: 'black',
+                                                }
+                                            }}
+                                        >
+                                            <Tooltip
+                                                title={i.tooltipText}
+                                                arrow={false}
+                                                color='white'
+                                            >
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10, cursor: 'pointer' }}>
+                                                    <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                                    <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                                </svg>
+                                            </Tooltip>
+                                        </ConfigProvider>
+                                    }
+                                </label>
                                 <div className={styles.form__inputsContainer}>
                                     <Form.Item
                                         className={styles.form__item}
@@ -93,6 +125,12 @@ const MainFieldset = ({ optionsConfig }) => {
                                                     if (value && !regex.test(value)) {
                                                         return Promise.reject(new Error(''))
                                                     }
+                                                    if (i.units === '%' && value && value.trim()) {
+                                                        const int = parseInt(value);
+                                                        if (int && typeof int === 'number' && (int < 0 || int > 100)) {
+                                                            return Promise.reject(new Error('Пожалуйста, введите значение от 0 до 100'))
+                                                        }
+                                                    }
                                                     return Promise.resolve()
                                                 },
                                             }),
@@ -102,6 +140,7 @@ const MainFieldset = ({ optionsConfig }) => {
                                             size='large'
                                             prefix={<span className={styles.form__inputTextSuffix}>от</span>}
                                             suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
+                                            type="number"
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -114,6 +153,12 @@ const MainFieldset = ({ optionsConfig }) => {
                                                     if (value && !regex.test(value)) {
                                                         return Promise.reject(new Error(''))
                                                     }
+                                                    if (i.units === '%' && value && value.trim()) {
+                                                        const int = parseInt(value);
+                                                        if (int && typeof int === 'number' && (int < 0 || int > 100)) {
+                                                            return Promise.reject(new Error('Пожалуйста, введите значение от 0 до 100'))
+                                                        }
+                                                    }
                                                     return Promise.resolve()
                                                 },
                                             }),
@@ -123,6 +168,7 @@ const MainFieldset = ({ optionsConfig }) => {
                                             size='large'
                                             prefix={<span className={styles.form__inputTextSuffix}>до</span>}
                                             suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
+                                            type="number"
                                         />
                                     </Form.Item>
                                 </div>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import styles from './dynamicFieldset.module.css'
 import { Form, ConfigProvider, Input, Select } from 'antd'
 
@@ -9,7 +9,7 @@ const dynamicOptions = [
 
 const DynamicFieldset = ({ form }) => {
 
-    const [isBodyVisisble, setIsBodyVisible] = useState(false)
+    const [isBodyVisisble, setIsBodyVisible] = useState(true)
 
     const dynamic_30_days = Form.useWatch('dynamic_30_days', form)
     const dynamic_60_days = Form.useWatch('dynamic_60_days', form)
@@ -36,7 +36,7 @@ const DynamicFieldset = ({ form }) => {
             }
         }
     }), [])
-
+    
     return (
         <fieldset
             className={styles.fieldset}
@@ -44,6 +44,16 @@ const DynamicFieldset = ({ form }) => {
             <div
                 className={styles.fieldset__header}
                 id='header'
+                onDoubleClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (window.getSelection) {
+                        const selection = window.getSelection();
+                        if (selection) selection.removeAllRanges();
+                    } else if (document.selection) {
+                        document.selection.empty();
+                    }
+                }}
                 onClick={e => {
                     // console.log('t', e.target)
                     // console.log('ct', e.currentTarget)
@@ -68,7 +78,7 @@ const DynamicFieldset = ({ form }) => {
                     theme={memoizedConfigProviderTheme}
                 >
                     <div className={styles.form__dynamicSelectBlock}>
-                        <label className={styles.form__doubledLabel}>От даты отсчета за 30 дней, %</label>
+                        <label className={styles.form__doubledLabel}>За 30 дней, %</label>
                         <div className={styles.form__dynamicSelectWrapper}>
                             <Form.Item
                                 style={{ margin: 0, width: '100%' }}
@@ -138,7 +148,7 @@ const DynamicFieldset = ({ form }) => {
                                         <Input
                                             size='large'
                                             // placeholder={'до 100'}
-                                            prefix={<span style={{color: '#8C8C8C'}}>от</span>}
+                                            prefix={<span style={{color: '#8C8C8C'}}>до</span>}
                                             suffix={<span style={{color: '#8C8C8C'}}>%</span>}
                                             type="number"
                                             style={{ height: '44px' }}
@@ -152,7 +162,7 @@ const DynamicFieldset = ({ form }) => {
                     {/*------------------------------------- 60 days -------------------------------------------*/}
 
                     <div className={styles.form__dynamicSelectBlock}>
-                        <label className={styles.form__doubledLabel}>От даты отсчета за 60 дней, %</label>
+                        <label className={styles.form__doubledLabel}>За 60 дней, %</label>
                         <div className={styles.form__dynamicSelectWrapper}>
                             <Form.Item
                                 style={{ margin: 0, width: '100%' }}
@@ -235,7 +245,7 @@ const DynamicFieldset = ({ form }) => {
                     {/*------------------------------------- 90 days -------------------------------------------*/}
 
                     <div className={styles.form__dynamicSelectBlock}>
-                        <label className={styles.form__doubledLabel}>От даты отсчета за 90 дней, %</label>
+                        <label className={styles.form__doubledLabel}>За 90 дней, %</label>
                         <div className={styles.form__dynamicSelectWrapper}>
                             <Form.Item
                                 //label='От даты отсчета за 90 дней, %'

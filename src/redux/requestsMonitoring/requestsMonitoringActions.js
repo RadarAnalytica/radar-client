@@ -4,8 +4,9 @@ import { actions as reqMonitoringActions } from './requestsMonitoringSlice'
 
 export const fetchRequestsMonitoringData = createAsyncThunk(
     'requestMonitoringData',
-    async (reqData, { dispatch }) => {
-      dispatch(reqMonitoringActions.setRequestStatus({isLoading: true, isError: false, isSuccess: false, message: ''}))
+    async (data, { dispatch }) => {
+      const { requestObject: reqData, requestData: currdata } = data
+      dispatch(reqMonitoringActions.setRequestStatus({isLoading: !currdata ? true : false, isError: false, isSuccess: false, message: ''}))
       try {
       
         const res = await fetch(`https://radarmarket.ru/api/web-service/monitoring-oracle/get`, {
@@ -17,11 +18,11 @@ export const fetchRequestsMonitoringData = createAsyncThunk(
         });
         if (!res.ok) {
           const data = await res.json();
-          dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Что-то пошло не так :('}))
         }
         const data = await res.json();
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: false, isSuccess: true, message: ''}))
-        return data.queries;
+        return data;
       } catch (e) {
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Что-то пошло не так :('}))
       }
@@ -29,8 +30,9 @@ export const fetchRequestsMonitoringData = createAsyncThunk(
 );
 export const fetchRequestsMonitoringDataEasy = createAsyncThunk(
     'requestMonitoringDataEasy',
-    async (reqData, { dispatch }) => {
-      dispatch(reqMonitoringActions.setRequestStatus({isLoading: true, isError: false, isSuccess: false, message: ''}))
+    async (data, { dispatch }) => {
+      const { requestObject: reqData, requestData: currdata } = data
+      dispatch(reqMonitoringActions.setRequestStatus({isLoading:  !currdata ? true : false, isError: false, isSuccess: false, message: ''}))
       try {
       
         const res = await fetch(`https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get`, {
@@ -46,7 +48,7 @@ export const fetchRequestsMonitoringDataEasy = createAsyncThunk(
         }
         const data = await res.json();
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: false, isSuccess: true, message: ''}))
-        return data.queries;
+        return data;
       } catch (e) {
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Что-то пошло не так :('}))
       }

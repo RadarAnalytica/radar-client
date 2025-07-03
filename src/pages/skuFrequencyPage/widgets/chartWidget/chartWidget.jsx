@@ -5,6 +5,7 @@ import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import { chartDataNormalizer } from '../../shared';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
+import { formatPrice } from '../../../../service/utils';
 
 ChartJS.register(
     CategoryScale,
@@ -90,11 +91,11 @@ export const getChartTooltip = (context, chartData) => {
             //const units = chartCompareConfigObject.find(_ => _.ruName === set.label).units
             const units = ''
             const targetDescr = units ? units : '';
-            let value = set?.data[targetInex] || '0';
+            let value = formatPrice(set?.data[targetInex], '') || '0';
             let style = '';
             style += '; border-width: 2px';
             const span =
-                '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 2px; background-color: ' +
+                '<span style="font-size: 12px; line-height: 0.5vw; border-radius: 8px; background-color: ' +
                 targetColor +
                 ';">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' +
                 style +
@@ -102,7 +103,8 @@ export const getChartTooltip = (context, chartData) => {
                 set?.label +
                 '' +
                 targetDescr +
-                '<span style="font-weight: bold;">' +
+                '<span>' + 'Частотность запроса ' + '</span>' +
+                '<span style="font-weight: bold;">' + 
                 value +
                 '</span></span>';
             innerHtml += '<tr style={{ width: 100%}}><td style={{ width: 100%}}>' + span + '</td></tr>';

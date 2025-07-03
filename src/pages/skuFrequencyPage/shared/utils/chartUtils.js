@@ -1,3 +1,5 @@
+import { formatPrice } from "../../../../service/utils";
+
 export const chartDataNormalizer = (rawData, period) => {
     let keys = rawData.map(obj => Object.keys(obj)[0]);
     const values = rawData.map(obj => Object.values(obj)[0]);

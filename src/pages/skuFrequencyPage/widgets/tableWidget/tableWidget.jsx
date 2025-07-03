@@ -7,7 +7,7 @@ import { formatRateValue, sortTableDataFunc } from '../../shared';
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from '../../../../redux/requestsMonitoring/requestsMonitoringActions';
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
-import { ConfigProvider, Pagination } from 'antd'
+import { ConfigProvider, Pagination, Rate, Tooltip } from 'antd'
 import { useNavigate } from 'react-router-dom';
 
 //инит стейт сортировки
@@ -40,17 +40,17 @@ const TableWidget = ({ tinyRows = false }) => {
     const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
     const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
     const [sortState, setSortState] = useState(initSortState) // стейт сортировки (см initSortState)
-    const { requestData, requestStatus, requestObject, tableConfig, formType } = useAppSelector(store => store.requestsMonitoring)
-    const [paginationState, setPaginationState] = useState({ limit: 25, page: 1, total_pages: requestData?.length || 1 })
+    const { requestData, requestStatus, requestObject, tableConfig, formType, pagination } = useAppSelector(store => store.requestsMonitoring)
+    //const [paginationState, setPaginationState] = useState({ limit: 25, page: 1, total_pages: requestData?.length || 1 })
     const navigate = useNavigate()
 
     //задаем начальную дату
     useEffect(() => {
         if (requestObject && formType === 'complex') {
-            dispatch(fetchRequestsMonitoringData(requestObject))
+            dispatch(fetchRequestsMonitoringData({requestObject, requestData}))
         }
         if (requestObject && formType === 'easy') {
-            dispatch(fetchRequestsMonitoringDataEasy(requestObject))
+            dispatch(fetchRequestsMonitoringDataEasy({requestObject, requestData}))
         }
     }, [requestObject])
 
@@ -59,16 +59,16 @@ const TableWidget = ({ tinyRows = false }) => {
             const jumper = document.querySelector('.ant-pagination-options-quick-jumper')
             const input = jumper?.querySelector('input')
             if (jumper && input) {
-               
+
                 input.style.backgroundColor = '#EEEAFF'
                 input.style.padding = '5px'
                 input.style.width = '32px'
                 jumper.textContent = 'Перейти на'
                 jumper.appendChild(input)
                 const suffix = document.createElement('span');
-                suffix.textContent = 'стр'
+                suffix.textContent = 'стр.'
                 jumper.appendChild(suffix)
-                 jumper.style.color = 'black'
+                jumper.style.color = 'black'
             }
         }
     }, [requestData])
@@ -104,21 +104,20 @@ const TableWidget = ({ tinyRows = false }) => {
         // выключаем сортировку если нажата уже активная клавиша
         if (sortState.sortType === id && sortState.sortedValue === value) {
             setSortState(initSortState)
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: 'rating', sort_order: 'DESC' }, page: 1}))
+            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: 'rating', sort_order: 'DESC' }, page: 1 }))
             return
         }
-
 
         // включаем сортировку и сортируем дату
         setSortState({
             sortedValue: value,
             sortType: id,
         })
-        dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: value, sort_order: id }, page: 1}))
+        dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: value, sort_order: id }, page: 1 }))
     }
 
     const paginationHandler = (page) => {
-       dispatch(reqsMonitoringActions.updateRequestObject({ page: page}))
+        dispatch(reqsMonitoringActions.updateRequestObject({ page: page }))
     }
 
     if (requestStatus.isLoading) {
@@ -184,7 +183,29 @@ const TableWidget = ({ tinyRows = false }) => {
                                         return v.isActive && (
 
                                             <div className={headerCellStyle} key={`header_cell_${id}`}>
-                                                <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                                <p className={styles.table__headerItemTitle}>
+                                                    {v.ruName}
+                                                    {v.hasTooltip &&
+                                                        <ConfigProvider
+                                                            theme={{
+                                                                token: {
+                                                                    colorTextLightSolid: 'black',
+                                                                }
+                                                            }}
+                                                        >
+                                                            <Tooltip
+                                                                title={v.tooltipText}
+                                                                arrow={false}
+                                                                color='white'
+                                                            >
+                                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10 }}>
+                                                                    <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                                                    <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                                                </svg>
+                                                            </Tooltip>
+                                                        </ConfigProvider>
+                                                    }
+                                                </p>
                                                 {v.isSortable &&
                                                     <div className={styles.sortControls}>
                                                         <button
@@ -231,8 +252,8 @@ const TableWidget = ({ tinyRows = false }) => {
                                                             <div className={styles.table__mainTitleWrapper}>
                                                                 <p className={styles.table__rowTitle}>{product[v.engName]}</p>
                                                                 <div className={styles.table__actionsWrapper}>
-                                                                    <Link 
-                                                                        to={url} 
+                                                                    <Link
+                                                                        to={url}
                                                                         className={styles.table__actionButton}
                                                                         title='Смотреть подробнее'
                                                                         target='_blank'
@@ -245,6 +266,32 @@ const TableWidget = ({ tinyRows = false }) => {
                                                                 </div>
                                                             </div>
 
+                                                        </div>
+                                                    )
+                                                }
+
+                                                if (v.engName === 'niche_rating') {
+                                                    return (
+                                                        <div className={styles.table__rowItem} key={`table_cell_${id}`}>
+                                                            <div style={{ zIndex: 0 }} title={product[v.engName]}>
+                                                                <ConfigProvider
+                                                                    theme={{
+                                                                        components: {
+                                                                            Rate: {
+                                                                                //starColor: '#F0AD00'
+                                                                                starColor: '#5329FF'
+                                                                            }
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <Rate
+                                                                        value={product[v.engName]}
+                                                                        allowHalf
+                                                                        disabled
+                                                                        style={{ zIndex: -1 }}
+                                                                    />
+                                                                </ConfigProvider>
+                                                            </div>
                                                         </div>
                                                     )
                                                 }
@@ -265,7 +312,7 @@ const TableWidget = ({ tinyRows = false }) => {
                                                 }
 
                                                 return v.isActive && (
-                                                    <div className={styles.table__rowItem} key={`table_cell_${id}`}>{v.units ? formatPrice(product[v.engName], v.units) : product[v.engName]}</div>
+                                                    <div className={styles.table__rowItem} key={`table_cell_${id}`}>{v.units ? formatPrice(product[v.engName], v.units) : formatPrice(product[v.engName], '')}</div>
                                                 )
                                             }))}
                                         </div>
@@ -286,14 +333,14 @@ const TableWidget = ({ tinyRows = false }) => {
             <ConfigProvider theme={paginationTheme}>
                 <Pagination
                     defaultCurrent={1}
-                    current={paginationState.page}
+                    current={pagination.page}
                     onChange={paginationHandler}
-                    total={paginationState.total_pages}
-                    pageSize={paginationState.limit}
+                    total={pagination.total_pages}
+                    pageSize={pagination.limit}
                     showSizeChanger={false}
                     showQuickJumper
                     hideOnSinglePage={true}
-                    //showTotal={(total) => `Всего ${total} товаров`}
+                //showTotal={(total) => `Всего ${total} товаров`}
                 />
             </ConfigProvider>
         </div>

@@ -1,0 +1,39 @@
+.cell {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.cell__wrapper {
+    width: 40%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cell__query {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding-left: 17px;
+    text-decoration: none;
+    color: #1A1A1A;
+}
+
+.cell__query:hover {
+    color: #5329FF
+}
+
+.cell__title {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: inherit
+}

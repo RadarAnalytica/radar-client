@@ -1,17 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './optionsWidget.module.css'
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
-import { Form, ConfigProvider, Input, Select, Button } from 'antd'
+import { Form, ConfigProvider, Input, Select, Button, Tooltip } from 'antd'
 import { complexRequestObjectGenerator } from '../../shared'
 import { actions as requestsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice'
 import { MainFieldset, SubjectFieldset, QualityFieldset, SideParamsFieldset, DynamicFieldset } from '../../features'
 
 
 const competitionLevelValues = [
-    { value: 1, label: 'Легко' },
-    { value: 2, label: 'Средне' },
-    { value: 3, label: 'Сложно' },
-    { value: 4, label: 'Очень сложно' },
+    { value: 4, label: 'Легко' },
+    { value: 3, label: 'Средне' },
+    { value: 2, label: 'Сложно' },
+    { value: 1, label: 'Очень сложно' },
 ]
 
 const priceValues = [
@@ -31,6 +31,7 @@ const OptionsWidget = () => {
     const [complexForm] = Form.useForm();
     const { skuFrequencyMode } = useAppSelector(store => store.filters) // 'Простой' | 'Продвинутый'
     const { optionsConfig, requestObject } = useAppSelector(store => store.requestsMonitoring) // 'Простой' | 'Продвинутый'
+    const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const prefered_items = Form.useWatch('prefered_items', complexForm)
     const [isBodyVisisble, setIsBodyVisible] = useState(true)
 
@@ -38,8 +39,12 @@ const OptionsWidget = () => {
     const simpleFormSubmitHandler = (fields) => {
         const requestObject = {
             query: fields.query,
-            price: JSON.parse(fields.preferedProductPrice),
-            competition_level: fields.competitionLevel
+            avg_price_total: JSON.parse(fields.preferedProductPrice),
+            competition_level: fields.competitionLevel,
+            sorting: {
+                sort_field: "niche_rating",
+                sort_order: "DESC"
+            }
         }
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'easy' }))
     }
@@ -49,6 +54,21 @@ const OptionsWidget = () => {
         dispatch(requestsMonitoringActions.setRequestObject({ data: requestObject, formType: 'complex' }))
     }
 
+    useEffect(() => {
+        if (skuFrequencyMode === 'Простой') {
+            simpleForm.submit()
+        }
+        if (skuFrequencyMode === 'Продвинутый') {
+            complexForm.submit()
+        }
+    }, [skuFrequencyMode])
+
+    useEffect(() => {
+        complexForm.setFieldValue('frequency_30_start', 6000)
+        complexForm.setFieldValue('freq_per_good_start', 2)
+        complexForm.setFieldValue('dynamic_30_days', 'Рост')
+        complexForm.setFieldValue('dynamic_30_days_from', 100)
+    }, [])
 
     return (
         <section className={styles.widget}>
@@ -77,6 +97,9 @@ const OptionsWidget = () => {
             </div>
             <ConfigProvider
                 theme={{
+                    token: {
+                        fontFamily: 'Mulish'
+                    },
                     components: {
                         Form: {
                             labelFontSize: 16
@@ -87,13 +110,13 @@ const OptionsWidget = () => {
                 {/* ---------------------------- Простой фильтр опций -------------------------------*/}
                 {skuFrequencyMode === 'Простой' &&
                     <Form
-                        className={styles.form__simpleLayout}
+                        className={isSidebarHidden ? styles.form__simpleLayout : `${styles.form__simpleLayout} ${styles.form__simpleLayout_menuOpen}`}
                         scrollToFirstError
                         layout='vertical'
                         onFinish={simpleFormSubmitHandler}
                         form={simpleForm}
                         initialValues={{
-                            competitionLevel: 2,
+                            competitionLevel: 3,
                             preferedProductPrice: JSON.stringify({ start: 500, end: 1500 })
                         }}
                     >
@@ -113,7 +136,7 @@ const OptionsWidget = () => {
                                 label='Содержит поисковый запрос'
                                 name='query'
                                 rules={[
-                                    { required: true, message: 'Пожалуйста, заполните это поле!' }
+                                    //{ required: true, message: 'Пожалуйста, заполните это поле!' }
                                 ]}
                             >
                                 <Input
@@ -164,7 +187,29 @@ const OptionsWidget = () => {
                             </Form.Item>
                             <Form.Item
                                 className={styles.form__item}
-                                label='На сколько тяжело конкурировать?'
+                                label={
+                                    <>
+                                        {'Насколько тяжело конкурировать?'}
+                                        <ConfigProvider
+                                            theme={{
+                                                token: {
+                                                    colorTextLightSolid: 'black',
+                                                }
+                                            }}
+                                        >
+                                            <Tooltip
+                                                title='Комплексный показатель, который учитывает коэффициент спроса, монопольность, рекламу и другие параметры.'
+                                                arrow={false}
+                                                color='white'
+                                            >
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10, cursor: 'pointer' }}>
+                                                    <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                                    <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                                                </svg>
+                                            </Tooltip>
+                                        </ConfigProvider>
+                                    </>
+                                }
                                 name='competitionLevel'
                             >
                                 <Select
@@ -197,6 +242,7 @@ const OptionsWidget = () => {
                                     onClick={() => simpleForm.resetFields()}
                                     type='text'
                                     size='large'
+                                    style={{ height: 45, width: 112 }}
                                 >
                                     Очистить
                                 </Button>
@@ -212,6 +258,7 @@ const OptionsWidget = () => {
                                     htmlType='submit'
                                     type='primary'
                                     size='large'
+                                    style={{ height: 45, width: 112 }}
                                 >
                                     Применить
                                 </Button>
@@ -229,8 +276,12 @@ const OptionsWidget = () => {
                             onFinish={complexFormSubmitHandler}
                             form={complexForm}
                             initialValues={{
+                                //frequency_30_start: 6000,
+                                // freq_per_good_start: 2,
+                                // dynamic_30_days: 'Рост',
+                                // dynamic_30_days_from: 100,
                                 prefered_items: [],
-                                rating: [1]
+                                niche_rating: []
                             }}
                         >
                             <MainFieldset optionsConfig={optionsConfig} />
@@ -258,6 +309,7 @@ const OptionsWidget = () => {
                                         type='text'
                                         size='large'
                                         onClick={() => complexForm.resetFields()}
+                                        style={{ height: 45, width: 112 }}
                                     >
                                         Очистить
                                     </Button>
@@ -273,6 +325,7 @@ const OptionsWidget = () => {
                                         htmlType='submit'
                                         type='primary'
                                         size='large'
+                                        style={{ height: 45, width: 112 }}
                                     >
                                         Применить
                                     </Button>

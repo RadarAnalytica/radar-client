@@ -13,6 +13,7 @@ const Breadcrumbs = ({ config, actions }) => {
                             key={id}
                             className={styles.breadcrumbs__link}
                             to={i.slug}
+                            title={i.name}
                         >
                             {i.name}
                             <span styles={styles.breadcrumbs__separator}>/</span>
@@ -23,6 +24,7 @@ const Breadcrumbs = ({ config, actions }) => {
                         <p
                             className={styles.breadcrumbs__endOfTheLine}
                             key={id}
+                            title={i.name}
                         >
                             {i.name}
                         </p>

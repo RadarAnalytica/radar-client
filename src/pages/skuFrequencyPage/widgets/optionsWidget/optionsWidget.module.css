@@ -77,7 +77,13 @@
     grid-template-rows: auto;
     justify-items: stretch;
 
-    @media (max-width: 1300px) {
+    @media (max-width: 1430px) {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+.form__simpleLayout_menuOpen {
+    @media (max-width: 1630px) {
         grid-template-columns: repeat(2, 1fr) !important;
     }
 }

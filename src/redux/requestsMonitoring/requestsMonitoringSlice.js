@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from './requestsMonitoringActions'
 import { optionsConfig } from "../../pages/skuFrequencyPage/shared";
-import { tableConfig } from "../../pages/skuFrequencyPage/shared";
+import { newTableConfig } from "../../pages/skuFrequencyPage/shared";
+import { tableSettings } from "../../pages/skuFrequencyPage/shared/configs/tableConfig";
 
 const initialState = {
     optionsConfig: [...optionsConfig],
-    tableConfig: [...tableConfig],
+    tableConfig: tableSettings,
     requestObject: undefined,
     requestStatus: {
         isLoading: false,
@@ -14,7 +15,12 @@ const initialState = {
         message: ''
     },
     formType: undefined,
-    requestData: undefined
+    requestData: undefined,
+    pagination: {
+        limit: 25,
+        page: 1,
+        total_pages: 1
+    }
 };
 
 const requestsMonitoringSlice = createSlice({
@@ -29,11 +35,25 @@ const requestsMonitoringSlice = createSlice({
             }
         },
         updateRequestObject: (state, action) => {
+            console.log(action)
             return {
                 ...state,
                 requestObject: {
                     ...state.requestObject,
                     ...action.payload
+                }
+            }
+        },
+        updatePagination: (state, action) => {
+            return {
+                ...state,
+                requestObject: {
+                    ...state.requestObject,
+                   page: action.payload.page
+                },
+                pagination: {
+                    ...state.pagination,
+                    page: action.payload.page
                 }
             }
         },
@@ -57,15 +77,38 @@ const requestsMonitoringSlice = createSlice({
                 ...state,
                 tableConfig: [...tableConfig]
                }
+        },
+        resetState: () => {
+            return initialState
         }
     },
     extraReducers: (bulder) => {
         bulder
         .addCase(fetchRequestsMonitoringData.fulfilled, (state, action) => {
-                state.requestData = action.payload;
+            const { queries, limit, total_pages, page } = action.payload
+            return {
+                ...state,
+                requestData: queries,
+                pagination: {
+                    limit,
+                    page,
+                    total_pages: limit * total_pages
+                }
+            }
+              //  state.requestData = action.payload;
         })
         .addCase(fetchRequestsMonitoringDataEasy.fulfilled, (state, action) => {
-                state.requestData = action.payload;
+            const { queries, limit, total_pages, page } = action.payload
+            return {
+                ...state,
+                requestData: queries,
+                pagination: {
+                    limit,
+                    page,
+                    total_pages: limit * total_pages
+                }
+            }
+               // state.requestData = action.payload;
         })
     }
 });

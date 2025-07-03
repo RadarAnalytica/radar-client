@@ -14,13 +14,14 @@ import {
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { actions as reqsMonitoringActions } from '../../../../redux/requestsMonitoring/requestsMonitoringSlice';
 
+
+
 const TableSettingsWidget = () => {
     const dispatch = useAppDispatch()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [checkAllButtonState, setCheckAllButtonState] = useState('Выбрать все')
     const [searchState, setSearchState] = useState('')
     const { tableConfig } = useAppSelector(store => store.requestsMonitoring)
-
     const [form] = Form.useForm()
     const [searchForm] = Form.useForm()
     const filter = Form.useWatch('filter', searchForm)
@@ -50,9 +51,9 @@ const TableSettingsWidget = () => {
     }
 
     const updateOptionsConfig = (fields) => {
-        let currValues = [...tableConfig[1].values]
+        let currValues = [...tableConfig]
         for (const key in fields) {
-            const index = currValues.findIndex(_ => _.engName === key);
+            const index = currValues.findIndex(_ => _.dataIndex === key);
             if (index !== -1) {
                 currValues[index] = {
                     ...currValues[index],
@@ -60,15 +61,7 @@ const TableSettingsWidget = () => {
                 }
             }
         }
-        const updatedConfig = [
-            tableConfig[0],
-            {
-                ...tableConfig[1],
-                values: currValues
-            }
-        ]
-        //console.log(updatedConfig)
-        dispatch(reqsMonitoringActions.updateTableConfig(updatedConfig))
+        dispatch(reqsMonitoringActions.updateTableConfig(currValues))
         setIsModalOpen(false)
         setSearchState('')
         searchForm.resetFields()
@@ -81,15 +74,19 @@ const TableSettingsWidget = () => {
 
 
     useEffect(() => {
-        const values = form.getFieldsValue()
-        const keysArr = Object.keys(values)
-        if (keysArr.length > 0 && keysArr.some(_ => !values[_])) {
-            setCheckAllButtonState('Выбрать все')
+        if (isModalOpen) {
+            const values = form.getFieldsValue()
+            const keysArr = Object.keys(values)
+            if (keysArr.length > 0 && keysArr.some(_ => !values[_])) {
+                setCheckAllButtonState('Выбрать все')
+            }
+            if (keysArr.length > 0 && keysArr.every(_ => values[_])) {
+                setCheckAllButtonState('Снять все')
+            }
         }
-        if (keysArr.length > 0 && !keysArr.some(_ => !values[_])) {
-            setCheckAllButtonState('Снять все')
-        }
-    }, [form])
+    }, [form, isModalOpen])
+
+
 
 
     return (
@@ -276,20 +273,20 @@ const TableSettingsWidget = () => {
                             }}
                         >
                             <Flex gap={[16, 12]} vertical wrap className={styles.modal__list}>
-                                {tableConfig[1].values.filter(_ => _.ruName.toLowerCase().includes(searchState.toLowerCase())).map((el, i) => (
+                                {tableConfig?.filter(_ => _.title?.toLowerCase().includes(searchState.toLowerCase())).map((el, i) => el.isFilterParam && (
                                     <Col span={8} className={styles.item} key={i}>
                                         <Form.Item
-                                            name={el.engName}
+                                            name={el.dataIndex}
                                             valuePropName="checked"
-                                            value={el.engName}
+                                            value={el.dataIndex}
                                             initialValue={el.isActive}
                                         >
                                             <Checkbox >
-                                                <div 
-                                                    className={styles.modal__checkboxLabelWrapper} title={el.ruName}
+                                                <div
+                                                    className={styles.modal__checkboxLabelWrapper} title={el.title}
                                                     onDoubleClick={(e) => e.preventDefault()}
-                                                    //onClick={(e) => e.preventDefault()}
-                                                >{el.ruName}</div>
+                                                //onClick={(e) => e.preventDefault()}
+                                                >{el.title}</div>
                                             </Checkbox>
                                         </Form.Item>
                                     </Col>
