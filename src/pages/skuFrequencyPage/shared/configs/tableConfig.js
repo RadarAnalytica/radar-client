@@ -7,7 +7,12 @@ import { actions as reqActions } from "../../../../redux/requestsMonitoring/requ
 const tooltipConfig = {
     "Рейтинг качества ниши": 'Показатель рассчитывается исходя из значений выручки, коэффициента спроса, монопольности, рекламы, % выкупа и других параметров.',
     "Коэффициент cпроса": 'Показатель, который отражает соотношение между частотностью поискового запроса и количеством товаров, предлагаемых по этому запросу. Чем выше коэффициент спроса, тем больше интерес аудитории к данной тематике и тем меньше конкуренция среди продавцов. Данный показатель рассчитывается по формуле: Частотность WB / Кол-во товаров на WB.',
-    "Монопольность, %": 'Процент выручки, приходящийся на ТОП-30 артикулов от всех артикулов на первой странице.'
+    "Монопольность, %": 'Процент выручки, приходящийся на ТОП-30 артикулов от всех артикулов на первой странице.',
+    "Артикулов в рекламе, %": 'Расчетное среднее значение за 30 дней',
+    "Артикулов с внешним трафиком, %": 'Расчетное среднее значение за 30 дней',
+    "Средняя цена, руб": 'Расчетное среднее значение за 30 дней',
+    "Артикулов с продажами, %": 'Расчетное среднее значение за 30 дней'
+
 }
 const getTitleWithTooltip = (title) => {
     return (
@@ -110,8 +115,8 @@ export const newTableConfig = [
         className: 'table__mainHeader_colored',
         hidden: false,
         children: [
-            {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: 'Артикулов в рекламе, %', dataIndex: 'advert_percent', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-            {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: 'Артикулов с внешним трафиком, %', dataIndex: 'external_advert_percent', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
+            {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: getTitleWithTooltip('Артикулов в рекламе, %'), dataIndex: 'advert_percent', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
+            {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: getTitleWithTooltip('Артикулов с внешним трафиком, %'), dataIndex: 'external_advert_percent', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: 'Среднее кол-во отзывов у артикулов (без учета внутренней рекламы WB), шт', dataIndex: 'avg_reviews', width: 220, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
         ].map(_ => ({ ..._, render: _.render.bind(_) }))
     },
@@ -123,12 +128,13 @@ export const newTableConfig = [
             {sortDirections: ['ASC', 'DESC'], title: 'Выручка за 30 дней, руб', dataIndex: 'revenue_300', width: 220, units: '₽', filterOptions: true, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, render: function (value) { return cellRender(value, this) }, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
             {sortDirections: ['ASC', 'DESC'], title: 'Средняя выручка за 30 дней, руб', dataIndex: 'avg_revenue_300', width: 220, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             {sortDirections: ['ASC', 'DESC'], title: 'Упущенной выручки за 30 дней, %', dataIndex: 'lost_revenue_percent_300', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-            {sortDirections: ['ASC', 'DESC'], title: 'Средняя цена, руб', dataIndex: 'avg_price_300', width: 220, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
-            {sortDirections: ['ASC', 'DESC'], title: 'ртикулов с продажами, %', dataIndex: 'goods_with_sales_percent_300', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
+            {sortDirections: ['ASC', 'DESC'], title: getTitleWithTooltip('Средняя цена, руб'), dataIndex: 'avg_price_300', width: 220, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
+            {sortDirections: ['ASC', 'DESC'], title: getTitleWithTooltip('Артикулов с продажами, %'), dataIndex: 'goods_with_sales_percent_300', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
         ].map(_ => ({ ..._, render: _.render.bind(_) }))
     }
 ]
 //.map(_ => ({ ..._, render:  _.render ? _.render.bind(_) : undefined }));
+//getTitleWithTooltip('')
 
 const getTitle = (item) => {
     let title = ''
@@ -143,6 +149,22 @@ const getTitle = (item) => {
     }
     if (item.dataIndex === 'monopoly_percent') {
         title = 'Монопольность'
+        return title;
+    }
+    if (item.dataIndex === 'advert_percent') {
+        title = 'Артикулов в рекламе, %'
+        return title;
+    }
+    if (item.dataIndex === 'external_advert_percent') {
+        title = 'Артикулов с внешним трафиком, %'
+        return title;
+    }
+    if (item.dataIndex === 'avg_price_300') {
+        title = 'Средняя цена, руб'
+        return title;
+    }
+    if (item.dataIndex === 'goods_with_sales_percent_300') {
+        title = 'Артикулов с продажами, %'
         return title;
     }
 

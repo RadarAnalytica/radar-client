@@ -12,6 +12,7 @@ import TableWidget_TEST from './widgets/tableWidget/tableWidget_TEST'
 import { actions as reqActions } from '../../redux/requestsMonitoring/requestsMonitoringSlice'
 import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { newTableConfig } from './shared'
+import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
 
 
 
@@ -55,6 +56,11 @@ const SkuFrequencyPage = () => {
                         {/* {skuFrequencyMode === 'Продвинутый' &&
                             <OptionsSettingsWidget />
                         } */}
+                        <HowToLink
+                            text='Как использовать раздел'
+                            url='https://radar.usedocs.com/article/77617'
+                            target='_blank'
+                        />
                     </div>
                     <OptionsWidget
                         resetTableConfig={() => {
