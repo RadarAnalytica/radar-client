@@ -286,7 +286,7 @@ const OptionsWidget = ({ resetTableConfig }) => {
                                 // dynamic_30_days_from: 100,
                                 prefered_items: [],
                                 niche_rating: [],
-                                //dynamic_30_days: 'Изменение',
+                                dynamic_30_days: 'Изменение',
                                 dynamic_60_days: 'Изменение',
                                 dynamic_90_days: 'Изменение',
                             }}
