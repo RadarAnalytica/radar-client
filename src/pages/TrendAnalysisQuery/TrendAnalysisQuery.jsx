@@ -21,7 +21,8 @@ export default function TrendAnalysisQuery() {
 	);
 	const [loading, setLoading] = useState(false);
 	const [timeFrame, setTimeFrame] = useState('month');
-	const [data, setData] = useState(null)
+	const [data, setData] = useState(null);
+	const [downloadLoading, setDownloadLoading] = useState(false);
 
 	const COLUMNS = [
 		{
@@ -146,12 +147,19 @@ export default function TrendAnalysisQuery() {
 	};
 
 	const handleDownload = async () => {
-		const fileBlob = await ServiceFunctions.getDownloadTrendAnalysisQuery(
+		setDownloadLoading(true);
+		try{
+			const fileBlob = await ServiceFunctions.getDownloadTrendAnalysisQuery(
 				query,
 				timeFrame,
 				selectedRange,
 			);
-		fileDownload(fileBlob, `Статистика_запроса.xlsx`);
+			fileDownload(fileBlob, `Статистика_запроса.xlsx`);
+		} catch(error) {
+			console.error('Ошибка скачивания: ', error)
+		} finally {
+			setDownloadLoading(false);
+		}
 	}
 
 	return (
@@ -334,6 +342,7 @@ export default function TrendAnalysisQuery() {
 												/>
 											</svg>
 										}
+										loading={downloadLoading}
 										onClick={handleDownload}
 									>
 										Скачать Excel
