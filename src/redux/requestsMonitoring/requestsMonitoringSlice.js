@@ -14,6 +14,7 @@ const initialState = {
         isSuccess: false,
         message: ''
     },
+    isLoadingForButton: false,
     formType: undefined,
     requestData: undefined,
     pagination: {
@@ -59,6 +60,9 @@ const requestsMonitoringSlice = createSlice({
         },
         setRequestStatus: (state, action) => {
             state.requestStatus = action.payload
+        },
+        setButtonStatus: (state, action) => {
+            state.isLoadingForButton = action.payload
         },
         updateOptionsConfig: (state, action) => {
             state.optionsConfig = action.payload

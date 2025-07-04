@@ -3,6 +3,7 @@ import styles from './dynamicFieldset.module.css'
 import { Form, ConfigProvider, Input, Select } from 'antd'
 
 const dynamicOptions = [
+    { value: 'Изменение' },
     { value: 'Рост' },
     { value: 'Падение' },
 ]
@@ -96,7 +97,7 @@ const DynamicFieldset = ({ form }) => {
                                     }
                                 />
                             </Form.Item>
-                            {dynamic_30_days &&
+                            {dynamic_30_days !== 'Изменение' &&
                                 <>
                                     <Form.Item
                                         style={{ margin: 0, width: '100%' }}
@@ -180,7 +181,7 @@ const DynamicFieldset = ({ form }) => {
                                     }
                                 />
                             </Form.Item>
-                            {dynamic_60_days &&
+                            {dynamic_60_days !== 'Изменение' &&
                                 <>
                                     <Form.Item
                                         style={{ margin: 0, width: '100%' }}
@@ -264,7 +265,7 @@ const DynamicFieldset = ({ form }) => {
                                     }
                                 />
                             </Form.Item>
-                            {dynamic_90_days &&
+                            {dynamic_90_days !== 'Изменение' &&
                                 <>
                                     <Form.Item
                                         style={{ margin: 0, width: '100%' }}
