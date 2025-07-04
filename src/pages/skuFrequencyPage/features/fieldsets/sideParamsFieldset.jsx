@@ -62,92 +62,7 @@ const SideParamsFieldset = () => {
                                 {_.title && <p className={styles.fieldset__title}>{_.title}</p>}
                                 <div className={layoutStyles} key={id}>
                                     {_.options.map((i, id) => {
-                                        const itemStyles = i.isWide ? `${styles.form__complexInputWrapper} ${styles.form__complexInputWrapper_wide}` : styles.form__complexInputWrapper;
-                                        return (
-                                            <div className={itemStyles} key={id}>
-                                                <label className={i.hasTooltip ? `${styles.form__complexWrapperLabel} ${styles.form__complexWrapperLabel_lowMargin}` : styles.form__complexWrapperLabel}>
-                                                    {i.label}
-                                                    {i.hasTooltip &&
-                                                        <ConfigProvider
-                                                            theme={{
-                                                                token: {
-                                                                    colorTextLightSolid: 'black',
-                                                                }
-                                                            }}
-                                                        >
-                                                            <Tooltip
-                                                                title={i.tooltipText}
-                                                                arrow={false}
-                                                                color='white'
-                                                            >
-                                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10, cursor: 'pointer' }}>
-                                                                    <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
-                                                                    <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
-                                                                </svg>
-                                                            </Tooltip>
-                                                        </ConfigProvider>
-                                                    }
-                                                </label>
-                                                <div className={styles.form__inputsContainer}>
-                                                    <Form.Item
-                                                        className={styles.form__item}
-                                                        name={`${i.name}_start`}
-                                                        rules={[
-                                                            () => ({
-                                                                validator(_, value) {
-                                                                    const regex = /^(|\d+)$/ // только целые числа
-                                                                    if (value && !regex.test(value)) {
-                                                                        return Promise.reject(new Error(''))
-                                                                    }
-                                                                    if (i.units === '%' && value && value.trim()) {
-                                                                        const int = parseInt(value);
-                                                                        if (int && typeof int === 'number' && (int < 0 || int > 100)) {
-                                                                            return Promise.reject(new Error('Пожалуйста, введите значение от 0 до 100'))
-                                                                        }
-                                                                    }
-                                                                    return Promise.resolve()
-                                                                },
-                                                            }),
-                                                        ]}
-                                                    >
-                                                        <Input
-                                                            size='large'
-                                                            prefix={<span className={styles.form__inputTextSuffix}>от</span>}
-                                                            suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
-                                                            type="number"
-                                                        />
-                                                    </Form.Item>
-                                                    <Form.Item
-                                                        className={styles.form__item}
-                                                        name={`${i.name}_end`}
-                                                        rules={[
-                                                            () => ({
-                                                                validator(_, value) {
-                                                                    const regex = /^(|\d+)$/ // только целые числа
-                                                                    if (value && !regex.test(value)) {
-                                                                        return Promise.reject(new Error(''))
-                                                                    }
-                                                                    if (i.units === '%' && value && value.trim()) {
-                                                                        const int = parseInt(value);
-                                                                        if (int && typeof int === 'number' && (int < 0 || int > 100)) {
-                                                                            return Promise.reject(new Error('Пожалуйста, введите значение от 0 до 100'))
-                                                                        }
-                                                                    }
-                                                                    return Promise.resolve()
-                                                                },
-                                                            }),
-                                                        ]}
-                                                    >
-                                                        <Input
-                                                            size='large'
-                                                            prefix={<span className={styles.form__inputTextSuffix}>до</span>}
-                                                            suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
-                                                            type="number"
-                                                        />
-                                                    </Form.Item>
-                                                </div>
-                                            </div>
-                                        )
+                                        return <FormItemBlock i={i} key={id} />
                                     })}
                                 </div>
                             </div>
@@ -158,6 +73,132 @@ const SideParamsFieldset = () => {
             </ConfigProvider>
         </fieldset>
     )
+}
+
+
+const FormItemBlock = ({ i }) => {
+
+    const [errorState, setErrorState] = useState({ fromInput: '', toInput: '' })
+
+
+    const itemStyles = i.isWide ? `${styles.form__complexInputWrapper} ${styles.form__complexInputWrapper_wide}` : styles.form__complexInputWrapper;
+    return (
+        <div className={itemStyles}>
+            <label className={i.hasTooltip ? `${styles.form__complexWrapperLabel} ${styles.form__complexWrapperLabel_lowMargin}` : styles.form__complexWrapperLabel}>
+                <span style={{ color: errorState.fromInput || errorState.toInput ? '#F93C65' : '#1A1A1A' }}>{i.label}</span>
+                {i.hasTooltip &&
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorTextLightSolid: 'black',
+                            }
+                        }}
+                    >
+                        <Tooltip
+                            title={i.tooltipText}
+                            arrow={false}
+                            color='white'
+                        >
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: 10, cursor: 'pointer' }}>
+                                <rect x="0.75" y="0.75" width="18.5" height="18.5" rx="9.25" stroke="black" strokeOpacity="0.1" strokeWidth="1.5" />
+                                <path d="M9.064 15V7.958H10.338V15H9.064ZM8.952 6.418V5.046H10.464V6.418H8.952Z" fill="#1A1A1A" fillOpacity="0.5" />
+                            </svg>
+                        </Tooltip>
+                    </ConfigProvider>
+                }
+            </label>
+            <div className={styles.form__inputsContainer}>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorTextLightSolid: '#F93C65',
+                        }
+                    }}
+                >
+                    <Tooltip
+                        title={errorState.fromInput}
+                        color='white'
+                        open={errorState.fromInput}
+                    >
+                        <Form.Item
+                            className={styles.form__item}
+                            name={`${i.name}_start`}
+                            rules={[
+                                () => ({
+                                    validator(_, value) {
+                                        const regex = /^(|\d+)$/ // только целые числа
+                                        if (value && !regex.test(value)) {
+                                            return Promise.reject(new Error(''))
+                                        }
+                                        if (i.units === '%' && value && value.trim()) {
+                                            const int = parseInt(value);
+                                            if (int && typeof int === 'number' && (int < 0 || int > 100)) {
+                                                setErrorState({ ...errorState, fromInput: 'Пожалуйста, введите значения от 0 до 100!' })
+                                                return Promise.reject(new Error(''))
+                                            }
+                                        }
+
+                                        setErrorState({ ...errorState, fromInput: '' })
+                                        return Promise.resolve()
+                                    },
+                                }),
+                            ]}
+                        >
+                            <Input
+                                size='large'
+                                prefix={<span className={styles.form__inputTextSuffix}>от</span>}
+                                suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
+                                type="number"
+                            />
+                        </Form.Item>
+                    </Tooltip>
+                </ConfigProvider>
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorTextLightSolid: '#F93C65',
+                        }
+                    }}
+                >
+                    <Tooltip
+                        title={errorState.toInput}
+                        color='white'
+                        open={errorState.toInput}
+                    >
+                        <Form.Item
+                            className={styles.form__item}
+                            name={`${i.name}_end`}
+                            rules={[
+                                () => ({
+                                    validator(_, value) {
+                                        const regex = /^(|\d+)$/ // только целые числа
+                                        if (value && !regex.test(value)) {
+                                            return Promise.reject(new Error(''))
+                                        }
+                                        if (i.units === '%' && value && value.trim()) {
+                                            const int = parseInt(value);
+                                            if (int && typeof int === 'number' && (int < 0 || int > 100)) {
+                                                setErrorState({ ...errorState, toInput: 'Пожалуйста, введите значения от 0 до 100!' })
+                                                return Promise.reject(new Error(''))
+                                            }
+                                        }
+                                        setErrorState({ ...errorState, toInput: '' })
+                                        return Promise.resolve()
+                                    },
+                                }),
+                            ]}
+                        >
+                            <Input
+                                size='large'
+                                prefix={<span className={styles.form__inputTextSuffix}>до</span>}
+                                suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
+                                type="number"
+                            />
+                        </Form.Item>
+                    </Tooltip>
+                </ConfigProvider>
+            </div>
+        </div>)
 }
 
 export default SideParamsFieldset;
