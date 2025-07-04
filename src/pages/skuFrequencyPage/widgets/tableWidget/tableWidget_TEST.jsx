@@ -66,6 +66,25 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
         }))
         setTableConfig(newConfig)
     };
+    const updateTableConfigTest = (config, settings) => {
+        let newConfig = config;
+        newConfig = newConfig.map(col => ({
+            ...col,
+            children: col.children.map(child => {
+                const curr = settings.find(i => i.dataIndex === child.dataIndex);
+                return {
+                    ...child,
+                    hidden: !curr.isActive
+                };
+            })
+        }))
+        newConfig = newConfig.map(_ => ({
+            ..._,
+            hidden: _.children.every(c => c.hidden)
+        }))
+
+        return newConfig
+    };
 
     //задаем начальную дату
     //задаем начальную дату
@@ -151,51 +170,10 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
         updateTableConfig(tableSettings)
     }, [tableSettings])
 
+    useEffect(() => {
+        updateTableConfig(tableSettings)
+    }, [])
 
-
-
-
-    // отслеживаем скролл в контейнере
-    // const scrollHandler = () => {
-    //     if (containerRef && containerRef.current) {
-
-    //         // если скроллим вправо
-    //         if (containerRef.current.scrollLeft > 1) {
-    //             setIsXScrolled(true)
-    //         } else {
-    //             setIsXScrolled(false)
-    //         }
-
-    //         // вычисляем достиг ли скролл конца справа
-    //         const delta = containerRef.current.scrollWidth - (containerRef.current.scrollLeft + containerRef.current.clientWidth);
-    //         if (delta < 16) {
-    //             setIsEndOfXScroll(true)
-    //         } else {
-    //             setIsEndOfXScroll(false)
-    //         }
-    //     }
-    // }
-
-    // хэндлер сортировки
-    // const sortButtonClickHandler = (e, value) => {
-    //     const { id } = e.currentTarget;
-
-    //     // выключаем сортировку если нажата уже активная клавиша
-    //     if (sortState.sortType === id && sortState.sortedValue === value) {
-    //         setSortState(initSortState)
-    //         dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: 'rating', sort_order: 'DESC' }, page: 1 }))
-    //         return
-    //     }
-
-
-    //     // включаем сортировку и сортируем дату
-    //     setSortState({
-    //         sortedValue: value,
-    //         sortType: id,
-    //     })
-    //     dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: value, sort_order: id }, page: 1 }))
-
-    // }
 
     useEffect(() => {
         const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
@@ -263,7 +241,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
                 }
 
             })
-            return sortedConfig
+            return updateTableConfigTest(sortedConfig, tableSettings)
         }
 
     }

@@ -58,7 +58,7 @@ const SkuFrequencyPage = () => {
                     </div>
                     <OptionsWidget
                         resetTableConfig={() => {
-                            setTableConfig([...newTableConfig])
+                            //setTableConfig([...newTableConfig])
                         }}
                     />
                     {requestData && <div className={styles.page__tableSettingsBlock}>
