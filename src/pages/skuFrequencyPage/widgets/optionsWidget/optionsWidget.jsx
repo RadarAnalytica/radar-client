@@ -75,7 +75,7 @@ const OptionsWidget = ({ resetTableConfig }) => {
 
     return (
         <section className={styles.widget}>
-            <div className={styles.widget__header}>
+            <div className={!isBodyVisisble ? `${styles.widget__header} ${styles.widget__header_noGap}` : styles.widget__header}>
                 <div className={styles.widget__titleWrapper} style={{ cursor: skuFrequencyMode === 'Продвинутый' ? 'pointer' : '' }} onClick={() => skuFrequencyMode === 'Продвинутый' && setIsBodyVisible(!isBodyVisisble)}>
                     <h2 className={styles.widget__title}>Параметры</h2>
                     {skuFrequencyMode === 'Продвинутый' &&
