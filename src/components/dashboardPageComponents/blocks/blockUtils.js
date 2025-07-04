@@ -14,6 +14,16 @@ export const getFinanceData = (dataDashBoard) => {
   if (dataDashBoard) {
     financeData = [
       {
+        name: 'EBITDA',
+        amount: dataDashBoard?.ebitda || '0',
+        rate: dataDashBoard?.ebitda_compare || '0',
+      },
+      {
+        name: 'Маржа EBITDA',
+        amount: dataDashBoard?.ebitda_margin || '0',
+        rate: dataDashBoard?.ebitda_margin_compare || '0',
+      },
+      {
         name: 'Выручка',
         amount: dataDashBoard?.proceeds || '0',
         rate: dataDashBoard?.proceedsCompare || '0',
