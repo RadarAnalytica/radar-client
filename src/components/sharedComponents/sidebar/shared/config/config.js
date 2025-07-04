@@ -30,8 +30,8 @@ export const menuConfig = [
             },
             {
                 id: 3,
-                url: '/monitoring',
-                label: 'Частотность артикула ',
+                url: '/sku-frequency',
+                label: 'Частотность артикула',
                 isActive: true,
                 isNew: false
             },
@@ -50,6 +50,13 @@ export const menuConfig = [
         label: 'Анализ ниши и трендов',
         icon: newIcons.trends_analysis,
         children: [
+            {
+                id: 3,
+                url: '/monitoring',
+                label: 'Поиск прибыльной ниши',
+                isActive: true,
+                isNew: true
+            },
             {
                 id: 1,
                 url: '/trending-requests',
