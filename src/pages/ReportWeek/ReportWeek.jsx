@@ -35,6 +35,7 @@ export default function ReportWeek() {
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [loading, setLoading] = useState(true);
+	const [downloadLoading, setDownloadLoading] = useState(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
 	const [data, setData] = useState(null);
@@ -338,14 +339,22 @@ export default function ReportWeek() {
 	);
 
 	const handleDownload = async () => {
-		const fileBlob = await ServiceFunctions.getDownloadReportWeek(
-			authToken,
-			selectedRange,
-			activeBrand.id,
-			filters,
-			weekStart
-		);
-		fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+		setDownloadLoading(true)
+		try {
+			const weekStart = weekSelectedFormat();
+			const fileBlob = await ServiceFunctions.getDownloadReportWeek(
+				authToken,
+				selectedRange,
+				activeBrand.id,
+				filters,
+				weekStart
+			);
+			fileDownload(fileBlob, 'Отчет_по_неделям.xlsx');
+		} catch(e) {
+			console.error('Ошибка скачивания: ', error)
+		} finally {
+			setDownloadLoading(false)
+		}
 	};
 
 	return (
@@ -453,8 +462,10 @@ export default function ReportWeek() {
 								iconPosition="start"
 								size="large"
 								onClick={handleDownload}
+								loading={downloadLoading}
+								icon={<img src={downloadIcon} />}
 							>
-								<img src={downloadIcon} /> Скачать Excel
+								Скачать Excel
 							</Button>
 						</ConfigProvider>
 					</div>
