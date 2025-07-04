@@ -25,9 +25,9 @@ export const complexRequestObjectGenerator = (fields) => {
             start: fields.avg_price_total_start || null,
             end: fields.avg_price_total_end || null
         },
-        goods_with_sales_total: { //Процент товаров с продажами
-            start: fields.goods_with_sales_total_start || null,
-            end: fields.goods_with_sales_total_end || null
+        goods_with_sales_percent_total: { //Процент товаров с продажами
+            start: fields.goods_with_sales_percent_total_start || null,
+            end: fields.goods_with_sales_percent_total_end || null
         },
         goods_quantity: {
             start: fields.goods_quantity_start || null,
@@ -116,8 +116,8 @@ export const complexRequestObjectGenerator = (fields) => {
             end: fields.avg_price_300_end || null
         },
         goods_with_sales_percent_300: {
-            start: fields.goods_with_sales_percent_300 || null,
-            end: fields.goods_with_sales_percent_300 || null
+            start: fields.goods_with_sales_percent_300_start || null,
+            end: fields.goods_with_sales_percent_300_end || null
         },
         
         // not in use

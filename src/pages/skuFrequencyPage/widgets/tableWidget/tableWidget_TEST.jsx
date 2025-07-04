@@ -36,7 +36,7 @@ const paginationTheme = {
 
 
 
-const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
+const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
 
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
@@ -74,7 +74,7 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
         }
     }, [requestObject])
 
-    
+
 
 
 
@@ -190,7 +190,27 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
     //         sortType: id,
     //     })
     //     dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: value, sort_order: id }, page: 1 }))
+
     // }
+
+    useEffect(() => {
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        if (paginationNextButton) {
+            paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+        }
+        if (paginationSingleNextButton) {
+            paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+        }
+        if (paginationSinglePrevButton) {
+            paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+        }
+        if (paginationPrevButton) {
+            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+        }
+    }, [paginationState])
 
     const paginationHandler = (page) => {
         dispatch(reqsMonitoringActions.updateRequestObject({ page: page }))
@@ -226,28 +246,27 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
             let sortedConfig = config.map(_ => {
                 return {
                     ..._,
-                    children: _.children?.map((i) => { return {...i, sortOrder: sort_field === i.dataIndex ? sort_order : null, columnKey: i.dataIndex, }}),
+                    children: _.children?.map((i) => { return { ...i, sortOrder: sort_field === i.dataIndex ? sort_order : null, columnKey: i.dataIndex, } }),
                 }
-              
+
             })
             return sortedConfig
         } else {
             let sortedConfig = config.map(_ => {
                 return {
                     ..._,
-                    children: _.children?.map((i) => { return {...i, sortOrder: null, columnKey: i.dataIndex, }}),
+                    children: _.children?.map((i) => { return { ...i, sortOrder: null, columnKey: i.dataIndex, } }),
                 }
-              
+
             })
             return sortedConfig
         }
-      
+
     }
 
     const handleChange = (pagination, filters, sorterObj) => {
-        console.log(sorterObj)
         if (!sorterObj.order) {
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: {sort_field: 'niche_rating', sort_order: 'DESC'}}))
+            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: 'niche_rating', sort_order: 'DESC' } }))
             return
         }
         const obj = {
@@ -255,7 +274,7 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
             sort_order: sorterObj.order,
         }
         dispatch(reqsMonitoringActions.updateRequestObject({ sorting: obj, page: 1, limit: 25 }))
-      };
+    };
 
     return requestData && newTableConfig && (
         <div
