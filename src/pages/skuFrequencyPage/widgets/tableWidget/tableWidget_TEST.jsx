@@ -60,6 +60,10 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
                 };
             })
         }))
+        newConfig = newConfig.map(_ => ({
+            ..._,
+            hidden: _.children.every(c => c.hidden)
+        }))
         setTableConfig(newConfig)
     };
 
@@ -210,7 +214,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
         if (paginationPrevButton) {
             paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
         }
-    }, [paginationState])
+    }, [pagination])
 
     const paginationHandler = (page) => {
         dispatch(reqsMonitoringActions.updateRequestObject({ page: page }))
@@ -266,7 +270,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
 
     const handleChange = (pagination, filters, sorterObj) => {
         if (!sorterObj.order) {
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: 'niche_rating', sort_order: 'DESC' } }))
+            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined}))
             return
         }
         const obj = {
