@@ -70,12 +70,13 @@ const requestsMonitoringSlice = createSlice({
            }
         },
         updateTableConfig: (state, action) => {
+            localStorage.setItem('rmTableConfig', JSON.stringify(action.payload))
             state.tableConfig = JSON.parse(JSON.stringify(action.payload))
         },
         setDefaultTableConfig: (state) => {
             return {
                 ...state,
-                tableConfig: [...tableConfig]
+                //tableConfig: [...tableConfig]
                }
         },
         resetState: () => {

@@ -150,10 +150,19 @@ const FormItemBlock = ({ i }) => {
                                 () => ({
                                     validator(_, value) {
 
-                                        const regex = /^(|\d+)$/ // только целые числа
-                                        if (value && !regex.test(value)) {
-                                            return Promise.reject(new Error(''))
+                                        if (i.name === 'freq_per_good') {
+                                            const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                            if (value && !regex.test(value)) {
+                                                return Promise.reject(new Error(''))
+                                            }
+                                        } else {
+                                            const regex = /^(|\d+)$/ // только целые числа
+                                            if (value && !regex.test(value)) {
+                                                return Promise.reject(new Error(''))
+                                            }
                                         }
+
+
                                         if (i.units === '%' && value && value.trim()) {
                                             const int = parseInt(value);
                                             if (int && typeof int === 'number' && (int < 0 || int > 100)) {
@@ -195,9 +204,17 @@ const FormItemBlock = ({ i }) => {
                             rules={[
                                 () => ({
                                     validator(_, value) {
-                                        const regex = /^(|\d+)$/ // только целые числа
-                                        if (value && !regex.test(value)) {
-                                            return Promise.reject(new Error(''))
+                                        
+                                        if (i.name === 'freq_per_good') {
+                                            const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
+                                            if (value && !regex.test(value)) {
+                                                return Promise.reject(new Error(''))
+                                            }
+                                        } else {
+                                            const regex = /^(|\d+)$/ // только целые числа
+                                            if (value && !regex.test(value)) {
+                                                return Promise.reject(new Error(''))
+                                            }
                                         }
                                         if (i.units === '%' && value && value.trim()) {
                                             const int = parseInt(value);
