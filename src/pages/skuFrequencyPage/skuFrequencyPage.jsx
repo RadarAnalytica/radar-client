@@ -40,7 +40,7 @@ const SkuFrequencyPage = () => {
                 {/* header */}
                 <div className={styles.page__mainWrapper}>
                     <div className={styles.page__headerWrapper}>
-                        <Header title='Частотность артикула' />
+                        <Header title='Поиск прибыльной ниши' />
                     </div>
                     <div className={styles.page__filtersWrapper}>
                         <Filters
