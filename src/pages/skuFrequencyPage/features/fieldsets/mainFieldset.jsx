@@ -2,9 +2,12 @@ import { useState } from 'react'
 import styles from './mainFieldset.module.css'
 import { Form, ConfigProvider, Input, Tooltip } from 'antd'
 
-const MainFieldset = ({ optionsConfig }) => {
+const MainFieldset = ({ optionsConfig, form }) => {
 
     const [isBodyVisisble, setIsBodyVisible] = useState(true)
+    const [errorMessage, setErrorMessage] = useState('')
+
+    
 
     return (
         <fieldset
@@ -33,6 +36,7 @@ const MainFieldset = ({ optionsConfig }) => {
                 }}
             >
                 <h3 className={styles.fieldset__title}>Основные</h3>
+                {errorMessage && <span className={styles.fiedset__errorMsg}>{errorMessage}</span>}
                 <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`} type='button'>
                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13 7.5L7 1.5L1 7.5" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
@@ -121,6 +125,7 @@ const MainFieldset = ({ optionsConfig }) => {
                                         rules={[
                                             () => ({
                                                 validator(_, value) {
+
                                                     const regex = /^(|\d+)$/ // только целые числа
                                                     if (value && !regex.test(value)) {
                                                         return Promise.reject(new Error(''))
@@ -128,9 +133,12 @@ const MainFieldset = ({ optionsConfig }) => {
                                                     if (i.units === '%' && value && value.trim()) {
                                                         const int = parseInt(value);
                                                         if (int && typeof int === 'number' && (int < 0 || int > 100)) {
-                                                            return Promise.reject(new Error('Пожалуйста, введите значение от 0 до 100'))
+
+                                                            return Promise.reject(new Error(''))
                                                         }
                                                     }
+
+
                                                     return Promise.resolve()
                                                 },
                                             }),
@@ -156,9 +164,11 @@ const MainFieldset = ({ optionsConfig }) => {
                                                     if (i.units === '%' && value && value.trim()) {
                                                         const int = parseInt(value);
                                                         if (int && typeof int === 'number' && (int < 0 || int > 100)) {
-                                                            return Promise.reject(new Error('Пожалуйста, введите значение от 0 до 100'))
+
+                                                            return Promise.reject(new Error(''))
                                                         }
                                                     }
+
                                                     return Promise.resolve()
                                                 },
                                             }),

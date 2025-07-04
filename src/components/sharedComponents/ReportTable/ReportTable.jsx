@@ -1,5 +1,5 @@
 import { ConfigProvider, Table, Button } from 'antd';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import styles from './ReportTable.module.css';
 
 export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true }) {
@@ -7,30 +7,25 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
   const [scrollY, setScrollY] = useState(0);
   const [scrollX, setScrollX] = useState(0);
 
+	const updateHeight = useCallback(() => {
+		// ref контейнера который занимает всю высоту
+		const container = tableContainerRef.current;
+		const {width, height} = container.getBoundingClientRect();
+		// расчет высоты шапки и добавление отступов контейнера
+		const headerHeight = container.querySelector('.ant-table-header')?.getBoundingClientRect().height || 70;
+		// расчет и сохранение высоты таблицы
+		const availableHeight = height - headerHeight;
+		setScrollY(availableHeight);
+		// расчет ширины контейнера
+		setScrollX(width);
+	}, []);
+
 	useEffect(() => {
-		const updateHeight = () => {
-      if (tableContainerRef.current && virtual) {
-				// ref контейнера который занимает всю высоту
-        const container = tableContainerRef.current;
-				const {width, height} = container.getBoundingClientRect();
-				console.log(width, height)
-        
-				// расчет высоты шапки и добавление отступов контейнера
-        const headerHeight = container.querySelector('.ant-table-header')?.getBoundingClientRect().height || 70;
-				// расчет и сохранение высоты таблицы
-        const availableHeight = height - headerHeight;
-        setScrollY(availableHeight);
-        // расчет ширины контейнера
-        setScrollX(width);
-      }
-    };
-
     updateHeight();
-
-	}, [columns, data])
+	}, [columns, data, loading])
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} ref={tableContainerRef}>
 			{loading && <div className={styles.loadingContainer}
 					style={{
 					position: 'relative',
@@ -52,7 +47,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							<span className='loader'></span>
 					</div>
 			</div>}
-			{!loading && <div className={styles.tableContainer} ref={tableContainerRef}>
+			{!loading && <div className={styles.tableContainer}>
 				<ConfigProvider
 					renderEmpty={ () => (<div>Нет данных</div>)} 
 					theme={{
@@ -102,8 +97,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							expandedRowClassName: styles.expandRow,
 							expandRowByClick: true
 						}}
-						// scroll={{ x: 'max-content' }}
-						scroll={ virtual ? { x: scrollX, y: scrollY } : {x: 'max-content', y: 'calc(100% - 70px)'}}
+						scroll={ { x: scrollX, y: scrollY }}
 					></Table>
 				</ConfigProvider>
 			</div>}

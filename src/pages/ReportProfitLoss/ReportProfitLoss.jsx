@@ -243,7 +243,6 @@ export default function ReportProfitLoss() {
 
 	return (
 		<main className={styles.page}>
-			{/* {Loading(isLoading)} */}
 			<MobilePlug />
 			{/* ------ SIDE BAR ------ */}
 			<section className={styles.page__sideNavWrapper}>
