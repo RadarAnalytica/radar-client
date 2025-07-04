@@ -23,6 +23,7 @@ import {
 	getISOWeek,
 } from 'date-fns';
 import downloadIcon from '../images/Download.svg';
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 
 import { COLUMNS } from './columnsConfig';
 
@@ -59,10 +60,26 @@ export default function ReportWeek() {
 	}
 
 	const [tableColumns, setTableColumns] = useState(initTableColumns());
-	const [primaryCollect, setPrimaryCollect] = useState(null);
+	// const [primaryCollect, setPrimaryCollect] = useState(null);
 	// const [weekSelected, setWeekSelected] = useState(null);
 	// const [weekStart, setWeekStart] = useState(null);
-	const [shopStatus, setShopStatus] = useState(null);
+
+	const shopStatus = useMemo(() => {
+			if (!activeBrand || !shops) return null;
+			
+			if (activeBrand.id === 0) {
+					return {
+							id: 0,
+							brand_name: 'Все',
+							is_active: shops.some(shop => shop.is_primary_collect),
+							is_valid: true,
+							is_primary_collect: shops.some(shop => shop.is_primary_collect),
+							is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
+					};
+			}
+			
+			return shops.find(shop => shop.id === activeBrand.id);
+	}, [activeBrand, shops]);
 
 	const weekOptions = useMemo(() => {
 		// шаблон для создания списка опций для фильтра
@@ -260,44 +277,14 @@ export default function ReportWeek() {
 	}, [weekSelected]);
 
 	useEffect(() => {
-		if (
-			activeBrand &&
-			activeBrand.is_primary_collect &&
-			activeBrand.is_primary_collect !== primaryCollect
-		) {
-			setPrimaryCollect(activeBrand.is_primary_collect);
-			updateDataReportWeek();
-		}
-	}, [authToken]);
-
-	useEffect(() => {
 		setWeekSelected(updateSavedFilterWeek());
-		setPrimaryCollect(activeBrand?.is_primary_collect);
-		if (activeBrand && activeBrand.is_primary_collect) {
+		// setPrimaryCollect(activeBrand?.is_primary_collect);
+		if (activeBrand && shopStatus.is_primary_collect) {
 			updateDataReportWeek();
 		} else {
 			setData([]);
 		}
 	}, [activeBrand, selectedRange, filters]);
-
-	useEffect(() => {
-		if (activeBrand && activeBrand.id === 0 && shops) {
-			const allShop = {
-				id: 0,
-				brand_name: 'Все',
-				is_active: shops.some((_) => _.is_primary_collect),
-				is_valid: true,
-				is_primary_collect: shops.some((_) => _.is_primary_collect),
-				is_self_cost_set: !shops.some((_) => !_.is_self_cost_set),
-			};
-			setShopStatus(allShop);
-		}
-
-		if (activeBrand && activeBrand.id !== 0 && shops) {
-			const currShop = shops.find((_) => _.id === activeBrand.id);
-			setShopStatus(currShop);
-		}
-	}, [activeBrand, shops, filters]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -374,8 +361,13 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
-				{!loading && shopStatus && !shopStatus.is_self_cost_set && (
+				{!loading && shopStatus && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
+				)}
+				{!loading && !shopStatus?.is_primary_collect && (
+						<DataCollectWarningBlock
+								title='Ваши данные еще формируются и обрабатываются.'
+						/>
 				)}
 				<div className={styles.controls}>
 					<div className={styles.filter}>
@@ -467,13 +459,15 @@ export default function ReportWeek() {
 						</ConfigProvider>
 					</div>
 				</div>
-				<div className={styles.container}>
-					<ReportTable
-						loading={loading}
-						columns={tableColumns}
-						data={tableRows}
-					/>
-				</div>
+				{ shopStatus?.is_primary_collect && 
+					<div className={styles.container}>
+						<ReportTable
+							loading={loading}
+							columns={tableColumns}
+							data={tableRows}
+						/>
+					</div>
+				}
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal

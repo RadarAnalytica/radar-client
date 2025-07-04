@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 import { COLUMNS, ROWS } from './config';
 import { useAppSelector } from '../../redux/hooks';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 
 export default function ReportProfitLoss() {
 	const { authToken } = useContext(AuthContext);
@@ -257,6 +258,11 @@ export default function ReportProfitLoss() {
 				{!loading && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
+				{!loading && !shopStatus?.is_primary_collect && (
+						<DataCollectWarningBlock
+								title='Ваши данные еще формируются и обрабатываются.'
+						/>
+				)}
 				<div className={styles.controls}>
 					<Filters
 						timeSelect={false}
@@ -272,14 +278,16 @@ export default function ReportProfitLoss() {
 				<div className={styles.how}>
 					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
 				</div>
-				<div className={styles.container}>
-					<ReportTable
-						loading={loading}
-						columns={columns}
-						data={data}
-						virtual={false}
-					></ReportTable>
-				</div>
+				{ shopStatus?.is_primary_collect && 
+					<div className={styles.container}>
+						<ReportTable
+							loading={loading}
+							columns={columns}
+							data={data}
+							virtual={false}
+						></ReportTable>
+					</div>
+				}
 			</section>
 		</main>
 	);
