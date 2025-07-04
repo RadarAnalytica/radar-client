@@ -207,7 +207,7 @@ export const Filters = ({
               selectId='store'
               label='Магазин:'
               value={activeBrand.id}
-              optionsData={shops}
+              optionsData={shops.filter((shop) => shop.is_valid)}
               handler={shopChangeHandler}
             />
           </div>
