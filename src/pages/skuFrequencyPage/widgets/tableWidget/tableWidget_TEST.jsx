@@ -44,6 +44,8 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
     //const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
     //const [sortState, setSortState] = useState(null) // стейт сортировки (см initSortState)
     // const [tableConfig, setTableConfig] = useState(newTableConfig)
+    const [scrollY, setScrollY] = useState(0);
+    const [scrollX, setScrollX] = useState(0);
     const { requestData, requestStatus, requestObject, formType, tableConfig: tableSettings, pagination } = useAppSelector(store => store.requestsMonitoring)
     const [paginationState, setPaginationState] = useState({ limit: 25, page: 1, total_pages: requestData?.length || 1 })
     const navigate = useNavigate()
@@ -120,8 +122,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
         }
     }, [requestData])
 
-    const [scrollY, setScrollY] = useState(0);
-    const [scrollX, setScrollX] = useState(0);
+  
 
     useEffect(() => {
         const updateHeight = () => {
@@ -320,7 +321,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
                             return styles.row
                         }}
                         // scroll={{ x: 'max-content' }}
-                        scroll={{ x: scrollX, y: scrollY }}
+                        //scroll={{ x: scrollX, y: scrollY }}
                         onChange={handleChange}
                     ></Table>
                 </ConfigProvider>
