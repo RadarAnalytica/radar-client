@@ -9,7 +9,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 
 	useEffect(() => {
 		const updateHeight = () => {
-      if (tableContainerRef.current && virtual) {
+      if (tableContainerRef.current) {
 				// ref контейнера который занимает всю высоту
         const container = tableContainerRef.current;
 				const {width, height} = container.getBoundingClientRect();
@@ -24,7 +24,6 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
         setScrollX(width);
       }
     };
-
     updateHeight();
 
 	}, [columns, data])
@@ -102,8 +101,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							expandedRowClassName: styles.expandRow,
 							expandRowByClick: true
 						}}
-						// scroll={{ x: 'max-content' }}
-						scroll={ virtual ? { x: scrollX, y: scrollY } : {x: 'max-content', y: 'calc(100% - 70px)'}}
+						scroll={ { x: scrollX, y: scrollY }}
 					></Table>
 				</ConfigProvider>
 			</div>}
