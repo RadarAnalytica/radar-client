@@ -78,8 +78,7 @@ const AiDescriptionGeneratorPage = () => {
     // setLoading(true);
     try {
       const data = await ServiceFunctions.getUserGenerationsAmount(authToken);
-
-      if (data) {
+      if (data.toString()) {
         setAmountGenerations(data);
       }
     } catch (e) {
@@ -164,7 +163,7 @@ const AiDescriptionGeneratorPage = () => {
     try {
       setIsLoading(true);
       setIsModalOpen(true);
-      
+
       const savedId = localStorage.getItem('generatedId');
       if (!savedId || savedId === null) {
         let res = await ServiceFunctions.postAiDescriptionGenerator(
@@ -246,6 +245,7 @@ const AiDescriptionGeneratorPage = () => {
           setDescription(res); // Set the fetched data
           localStorage.removeItem('generatedId');
           setIsLoading(false); // Stop loading state
+          getGenerationsAmount()
           clearInterval(intervalId); // Clear the interval
         } else {
           console.log('Result is null or empty, retrying...');
@@ -342,6 +342,7 @@ const AiDescriptionGeneratorPage = () => {
   };
   // ------------------------------------------------------------//
   const onClose = () => {
+    form.resetFields()
     removeAllKeywords();
     setProductName('');
     setShortDescription('');
@@ -349,14 +350,17 @@ const AiDescriptionGeneratorPage = () => {
     setNextStep(false);
     setIsModalOpen(false);
     setIsButtonVisible(true);
+    getGenerationsAmount()
   };
   const onCloseNew = () => {
+    form.resetFields()
     setProductName('');
     setShortDescription('');
     setCompetitorsLinks('');
     setNextStep(false);
     setIsModalOpen(false);
     setIsButtonVisible(true);
+    getGenerationsAmount()
   };
   // Function to handle adding keywords
   const handleAddKeyword = (e) => {
@@ -484,7 +488,7 @@ const AiDescriptionGeneratorPage = () => {
                 <p className={styles.topNavTitle}>
                   Вам {amountGenerations === 1 ? 'доступнa' : 'доступно'}{' '}
                   <span style={{ color: '#74717f' }}>
-                    {amountGenerations}{' '}
+                    {amountGenerations.toString()}{' '}
                     {amountGenerations === 1 ? 'генерация' : 'генераций'}
                   </span>
                 </p>
@@ -574,6 +578,7 @@ const AiDescriptionGeneratorPage = () => {
                 className={styles.form}
                 form={form}
                 onFinish={stepOneFormSubmit}
+                disabled={nextStep}
               >
                 <Form.Item
                   name='productName'
@@ -693,10 +698,12 @@ const AiDescriptionGeneratorPage = () => {
           {/* step two */}
           {nextStep && !isLoadingNext && (
             <div className={styles.formContainerR}>
-              <span className={styles.page__formStepCounter}>
-                2 шаг
-              </span>
-              <p className={styles.page__stepOneFormTitle} style={{ margin: '20px 0' }}>Ключевые слова</p>
+              <div>
+                <span className={styles.page__formStepCounter}>
+                  2 шаг
+                </span>
+                <p className={styles.page__stepOneFormTitle} style={{ margin: '20px 0' }}>Ключевые слова</p>
+              </div>
 
               <div className={styles.addKeywordFileWrapper}>
                 <div>Добавить ключевое слово</div>
@@ -748,16 +755,32 @@ const AiDescriptionGeneratorPage = () => {
                   </div>
                 ))}
               </div>
-
-              <button className={styles.submitBtn} onClick={openModal}>
-                Сгенерировать описание
-              </button>
-            </div>)}
+              <div className={styles.stepTwo__buttonsWrapper}>
+                <button
+                  className={styles.backButton}
+                  onClick={() => setNextStep(false)}
+                >
+                  Вернуться к шагу 1
+                </button>
+                <button className={styles.submitBtn} onClick={() => {
+                  if (amountGenerations === 0) {
+                    setErrorMessage('К сожалению у вас закончился лимит генераций!');
+                    handleShowModalError();
+                  } else {
+                    openModal()
+                  }
+                 
+                }}>
+                  Сгенерировать описание
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
 
-        <div className={`${styles.stepsWrapper} dash-container`}>
-          {/* <div className={styles.formContainer}>
+        {/* <div className={`${styles.stepsWrapper} dash-container`}> */}
+        {/* <div className={styles.formContainer}>
             <div className={styles.stepIndicator}>
               <span>1 шаг</span>
             </div>
@@ -800,7 +823,7 @@ const AiDescriptionGeneratorPage = () => {
               </button>
             )}
           </div> */}
-          {/* {isLoadingNext ? (
+        {/* {isLoadingNext ? (
             <div
               className='d-flex flex-column align-items-center justify-content-center'
               style={{
@@ -870,7 +893,7 @@ const AiDescriptionGeneratorPage = () => {
               </div>
             )
           )} */}
-        </div>
+        {/* </div> */}
       </div>
       {isModalOpen && (
         <div className={styles.modalOverlay}>
