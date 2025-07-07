@@ -45,9 +45,15 @@ const DynamicFieldset = ({ form }) => {
             <div
                 className={styles.fieldset__header}
                 id='header'
-                onDoubleClick={e => {
+                onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
+                    // console.log('t', e.target)
+                    // console.log('ct', e.currentTarget)
+                    // console.log('type', e.type)
+                    if (e.currentTarget.id === 'header' && e.type === 'click') {
+                        setIsBodyVisible(!isBodyVisisble);
+                    }
                     if (window.getSelection) {
                         const selection = window.getSelection();
                         if (selection) selection.removeAllRanges();
@@ -55,12 +61,14 @@ const DynamicFieldset = ({ form }) => {
                         document.selection.empty();
                     }
                 }}
-                onClick={e => {
-                    // console.log('t', e.target)
-                    // console.log('ct', e.currentTarget)
-                    // console.log('type', e.type)
-                    if (e.currentTarget.id === 'header' && e.type === 'click') {
-                        setIsBodyVisible(!isBodyVisisble);
+                onMouseDownCapture={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (window.getSelection) {
+                        const selection = window.getSelection();
+                        if (selection) selection.removeAllRanges();
+                    } else if (document.selection) {
+                        document.selection.empty();
                     }
                 }}
             >

@@ -3,7 +3,7 @@ import styles from './subjectFieldset.module.css'
 import { Form, ConfigProvider, Input, Select, Button, Tag } from 'antd'
 import { ApiService } from '../../../trendingRequestsPage/shared'
 
-const SubjectFieldset = ({prefered_items, form}) => {
+const SubjectFieldset = ({ prefered_items, form }) => {
 
     const [searchState, setSearchState] = useState('') // search field inside select state
     const [preferedItemsData, setPreferedItemsData] = useState([]) // list of items
@@ -144,12 +144,18 @@ const SubjectFieldset = ({prefered_items, form}) => {
         <fieldset
             className={styles.fieldset}
         >
-             <div
+            <div
                 className={styles.fieldset__header}
                 id='header'
-                onDoubleClick={e => {
+                onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
+                    // console.log('t', e.target)
+                    // console.log('ct', e.currentTarget)
+                    // console.log('type', e.type)
+                    if (e.currentTarget.id === 'header' && e.type === 'click') {
+                        setIsBodyVisible(!isBodyVisisble);
+                    }
                     if (window.getSelection) {
                         const selection = window.getSelection();
                         if (selection) selection.removeAllRanges();
@@ -157,12 +163,14 @@ const SubjectFieldset = ({prefered_items, form}) => {
                         document.selection.empty();
                     }
                 }}
-                onClick={e => {
-                    // console.log('t', e.target)
-                    // console.log('ct', e.currentTarget)
-                    // console.log('type', e.type)
-                    if (e.currentTarget.id === 'header' && e.type === 'click') {
-                        setIsBodyVisible(!isBodyVisisble);
+                onMouseDownCapture={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (window.getSelection) {
+                        const selection = window.getSelection();
+                        if (selection) selection.removeAllRanges();
+                    } else if (document.selection) {
+                        document.selection.empty();
                     }
                 }}
             >

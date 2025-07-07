@@ -15,7 +15,23 @@ const MainFieldset = ({ optionsConfig, form }) => {
             <div
                 className={styles.fieldset__header}
                 id='header'
-                onDoubleClick={e => {
+                onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // console.log('t', e.target)
+                    // console.log('ct', e.currentTarget)
+                    // console.log('type', e.type)
+                    if (e.currentTarget.id === 'header' && e.type === 'click') {
+                        setIsBodyVisible(!isBodyVisisble);
+                    }
+                    if (window.getSelection) {
+                        const selection = window.getSelection();
+                        if (selection) selection.removeAllRanges();
+                    } else if (document.selection) {
+                        document.selection.empty();
+                    }
+                }}
+                onMouseDownCapture={e => {
                     e.preventDefault();
                     e.stopPropagation();
                     if (window.getSelection) {
@@ -25,16 +41,12 @@ const MainFieldset = ({ optionsConfig, form }) => {
                         document.selection.empty();
                     }
                 }}
-                onClick={e => {
-                    // console.log('t', e.target)
-                    // console.log('ct', e.currentTarget)
-                    // console.log('type', e.type)
-                    if (e.currentTarget.id === 'header' && e.type === 'click') {
-                        setIsBodyVisible(!isBodyVisisble);
-                    }
-                }}
             >
-                <h3 className={styles.fieldset__title}>Основные</h3>
+                <h3 
+                    className={styles.fieldset__title}
+                >
+                    Основные
+                </h3>
                 <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`} type='button'>
                     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13 7.5L7 1.5L1 7.5" stroke="#8C8C8C" strokeWidth="2" strokeLinecap="round" />
@@ -204,7 +216,7 @@ const FormItemBlock = ({ i }) => {
                             rules={[
                                 () => ({
                                     validator(_, value) {
-                                        
+
                                         if (i.name === 'freq_per_good') {
                                             const regex = /^-?\d*\.?\d*$/ // только целые и дробные числа
                                             if (value && !regex.test(value)) {
