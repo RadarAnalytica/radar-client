@@ -4,7 +4,7 @@ import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
-import { OptionsWidget, TableWidget, TableSettingsWidget } from './widgets'
+import { OptionsWidget, TableSettingsWidget, HowtoWidget } from './widgets'
 //import OptionsSettingsWidget from './widgets'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import DownloadButton from '../../components/DownloadButton'
@@ -43,6 +43,7 @@ const SkuFrequencyPage = () => {
                     <div className={styles.page__headerWrapper}>
                         <Header title='Поиск прибыльной ниши' />
                     </div>
+                    <HowtoWidget />
                     <div className={styles.page__filtersWrapper}>
                         <Filters
                             setLoading={() => {}}

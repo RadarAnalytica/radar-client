@@ -38,21 +38,21 @@ updated_at
  */
 
 const getShopStatus = (isActive, isValid, isPrimaryCollect) => {
-    if (isActive && isValid && isPrimaryCollect) {
+    if ((isActive && isValid && isPrimaryCollect)) {
         return (
             <div className={`${styles.widget__shopStatusIcon} ${styles.widget__shopStatusIcon_active}`}>
                 Активен
             </div>
         )
     }
-    if (isActive && isValid && !isPrimaryCollect) {
+    if ((isActive && isValid && !isPrimaryCollect)) {
         return (
             <div className={`${styles.widget__shopStatusIcon} ${styles.widget__shopStatusIcon_loading}`}>
                 Сбор данных
             </div>
         )
     }
-    if (isActive && !isValid) {
+    if ((isActive && !isValid)) {
         return (
             <div className={`${styles.widget__shopStatusIcon} ${styles.widget__shopStatusIcon_error}`}>
                 Ошибка
@@ -92,6 +92,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
     const [ deleteShopRequestStatus, setDeleteShopRequestStatus ] = useState(initRequestStatus)
     const [ editShopRequestStatus, setEditShopRequestStatus ] = useState(initRequestStatus)
     const [form] = Form.useForm()
+
 
 
     const deleteShopHandler = async () => {
@@ -169,7 +170,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
 
             {/* controls */}
             <div className={styles.widget__controls}>
-                <button className={`${styles.widget__controlButton} ${styles.widget__controlButton_edit}`} onClick={() => setEditModalVisible(true)} disabled={!shop.is_primary_collect && shop.is_active && shop.is_valid}>
+                <button className={`${styles.widget__controlButton} ${styles.widget__controlButton_edit}`} onClick={() => setEditModalVisible(true)}>
                     <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3.94 12.036C3.707 12.66 3.51 13.236 3.334 13.819C4.294 13.122 5.435 12.68 6.752 12.515C9.265 12.201 11.498 10.542 12.628 8.457L11.172 7.002L12.585 5.587L13.585 4.586C14.015 4.156 14.5 3.362 15.013 2.218C9.42 3.085 5.995 6.51 3.939 12.036H3.94ZM14 7.001L15 8C14 11 11 14 7 14.5C4.331 14.834 2.664 16.667 1.998 20H0C1 14 3 0 18 0C17 2.997 16.002 4.996 15.003 5.997L14 7.001Z" fill="#5329FF" />
                     </svg>
@@ -185,7 +186,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
 
             {/* footer */}
             <div className={styles.widget__footer}>
-                {getShopStatus(shop.is_active, shop.is_valid)}
+                {getShopStatus(shop.is_active, shop.is_valid, shop.is_primary_collect)}
             </div>
 
 
@@ -326,6 +327,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                                 name='shopToken'
                                 label='Токен'
                                 className={styles.form__item}
+                                disabled={(!shop.is_primary_collect && shop.is_active && shop.is_valid)}
                                 rules={[
                                     () => ({
                                         validator(_, value) {
@@ -341,6 +343,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                                     placeholder='Что-то вроде: GJys67G7sbNw178F'
                                     size='large'
                                     style={{ height: 55 }}
+                                    disabled={(!shop.is_primary_collect && shop.is_active && shop.is_valid)}
                                 />
                             </Form.Item>
                             <div className={styles.modal__selfCostBlock}>
