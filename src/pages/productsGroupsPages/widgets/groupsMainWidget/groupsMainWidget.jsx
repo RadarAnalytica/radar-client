@@ -98,34 +98,36 @@ const GroupsMainWidget = ({ setIsAddGroupModalVisible, groupsMainData, getGroups
                     {/* table */}
                     <div className={styles.table}>
                         {/* Хэдер */}
-                        <div className={styles.table__header}>
-                            {/* Мапим массив значений заголовков */}
-                            {tableData && groupsMainTableConfig.values.map((v, id) => {
-                                return (
-                                    <div className={styles.table__headerItem} key={id}>
+                        <div className={styles.table__headerContainer}>
+                            <div className={styles.table__header}>
+                                {/* Мапим массив значений заголовков */}
+                                {tableData && groupsMainTableConfig.values.map((v, id) => {
+                                    return (
+                                        <div className={styles.table__headerItem} key={id}>
 
-                                        {v.hasSelect &&
-                                            <div className={styles.sortControls}>
-                                                <ConfigProvider
-                                                    theme={{
-                                                        token: {
-                                                            colorPrimary: '#5329FF',
-                                                            colorBgContainer: 'transparent'
-                                                        }
-                                                    }}
-                                                >
-                                                    <Checkbox
-                                                        indeterminate={indeterminate}
-                                                        onChange={onCheckAllChange}
-                                                        checked={checkAll}
-                                                    />
-                                                </ConfigProvider>
-                                            </div>
-                                        }
-                                        <p className={styles.table__headerItemTitle}>{v.ruName}</p>
-                                    </div>
-                                )
-                            })}
+                                            {v.hasSelect &&
+                                                <div className={styles.sortControls}>
+                                                    <ConfigProvider
+                                                        theme={{
+                                                            token: {
+                                                                colorPrimary: '#5329FF',
+                                                                colorBgContainer: 'transparent'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Checkbox
+                                                            indeterminate={indeterminate}
+                                                            onChange={onCheckAllChange}
+                                                            checked={checkAll}
+                                                        />
+                                                    </ConfigProvider>
+                                                </div>
+                                            }
+                                            <p className={styles.table__headerItemTitle}>{v.ruName}</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
 
                         {/* Тело таблицы */}

@@ -5,6 +5,8 @@
     justify-content: flex-start;
     align-items: stretch;
     gap: 20px;
+    flex-grow: 1;
+    max-height: calc(100% - 90px);
 }
 
 .widget__controlsWrapper {
@@ -38,10 +40,32 @@
 .widget__tableWrapper {
     width: 100%;
     height: auto;
+    flex-grow: 1;
     max-height: 620px;
     overflow-y: scroll;
     box-shadow: 0px 0px 20px 0px #00000014;
     border-radius: 12px;
+}
+
+.widget__tableWrapper::-webkit-scrollbar {
+    width: 6px;
+    /* Ширина скроллбара */
+}
+
+.widget__tableWrapper::-webkit-scrollbar-track {
+    background: transparent;
+    /* Цвет фона трека */
+    margin-top: 80px;
+    margin-bottom: 20px;
+}
+
+.widget__tableWrapper::-webkit-scrollbar-thumb {
+    background-color: #5329FF80;
+    /* Цвет полосы прокрутки */
+    border-radius: 4px;
+    /* Скругленные углы */
+    border: 2px solid transparent;
+    /* Добавляем прозрачный отступ */
 }
 
 .widget__loaderWrapper {
@@ -67,7 +91,15 @@
     align-items: flex-start;
     gap: 20px;
     background: white;
-    padding: 16px;
+    padding: 0 16px 16px;
+}
+
+.table__headerContainer {
+    width: 100%;
+    background: white;
+    padding-top: 16px;
+    position: sticky;
+    top: 0;
 }
 
 .table__header {

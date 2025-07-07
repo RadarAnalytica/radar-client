@@ -2,10 +2,10 @@ export const addSkuTableConfig =  {
     tableName: null,
     values: [
         {ruName: 'Продукт', engName: 'article', hasSelect: true, hasSearch: true, hasPhoto: true, photoFieldName: 'photo'},
+        {ruName: 'Размер', engName: 'tech_size', hasSelect: false},
         //{ruName: 'Артикул', engName: 'id', hasSelect: false},
         {ruName: 'Бренд', engName: 'brand', hasSelect: false},
         {ruName: 'Магазин', engName: 'shop', hasSelect: false},
-        {ruName: 'Размер', engName: 'tech_size', hasSelect: false},
     ]
 }
 
@@ -28,6 +28,7 @@ export const singleGroupTableConfig = {
         // {ruName: 'Бренд', engName: 'brand', hasSelect: false},
         // {ruName: 'Магазин', engName: 'shop', hasSelect: false},
         {ruName: 'Продукт', engName: 'article', hasSelect: false, hasPhoto: true, photoFieldName: 'photo'},
+        {ruName: 'Размер', engName: 'tech_size', hasSelect: false},
         //{ruName: 'Артикул', engName: 'id', hasSelect: false},
         {ruName: 'Бренд', engName: 'brand', hasSelect: false},
         {ruName: 'Магазин', engName: 'shop', hasSelect: false},
