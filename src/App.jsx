@@ -60,6 +60,7 @@ const SkuFrequencyRequestPage = React.lazy(() => import("./pages/skuFrequencyPag
 const TrendingRequestsPage = React.lazy(() => import("./pages/trendingRequestsPage/trendingRequestsPage"));
 const TrendAnalysisQuery = React.lazy(() => import("./pages/TrendAnalysisQuery"));
 const ReportProfitLoss = React.lazy(() => import("./pages/ReportProfitLoss/ReportProfitLoss"));
+const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -84,6 +85,7 @@ function App() {
           <Routes>
             {/* dev */}
             <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
+            <Route path='/dev/linked-shops' element={<ProtectedRoute userRoleProtected><LinkedShopsPage /></ProtectedRoute>} />
             {/* Protected routes */}
             <Route path='/sku-frequency' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><RequestMonitoringPage /></ProtectedRoute>} />
             <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyPage /></ProtectedRoute>} />

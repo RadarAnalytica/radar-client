@@ -1,0 +1,278 @@
+.widget {
+    box-shadow: 0px 0px 20px 0px #00000014;
+    background: white;
+    border-radius: 16px;
+    width: 100%;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.widget__header {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+}
+
+.widget__titleWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px
+}
+
+.widget__title {
+    font-family: Mulish;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.widget__subtitle {
+    font-family: Mulish;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #8C8C8C
+}
+
+.widget__footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #E8E8E8;
+}
+
+.widget__shopStatusIcon {
+    height: 36px;
+    border-radius: 8px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: Mulish;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.widget__shopStatusIcon_active {
+    background: #00B69B1A;
+}
+
+.widget__shopStatusIcon_active:before {
+    content: ' ';
+    width: 8px;
+    height: 8px;
+    border-radius: 50% 50%;
+    background: #00B69B;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.widget__shopStatusIcon_error {
+    background: #F93C650D;
+}
+
+.widget__shopStatusIcon_error:before {
+    content: ' ';
+    width: 8px;
+    height: 8px;
+    border-radius: 50% 50%;
+    background: #F93C65;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.widget__shopStatusIcon_loading {
+    background: rgba(128, 128, 128, .15);
+}
+
+.widget__shopStatusIcon_loading:before {
+    content: ' ';
+    width: 8px;
+    height: 8px;
+    border-radius: 50% 50%;
+    background: rgb(128, 128, 128);
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+
+.widget__controls {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px
+}
+
+.widget__controlButton {
+    height: 42px;
+    padding: 0 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: Mulish;
+    font-weight: 600;
+    font-style: SemiBold;
+    font-size: 16px;
+    line-height: 160%;
+    letter-spacing: 0%;
+    border: none;
+    background: transparent;
+}
+
+.widget__controlButton:disabled {
+    opacity: .9;
+    filter: grayscale(1);
+}
+
+.widget__controlButton_edit {
+    background: #5329FF0D;
+    color: #5329FF;
+}
+
+.widget__controlButton_delete {
+    background: #F93C650D;
+    color: #F93C65;
+}
+
+.deleteModal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.deleteModal__header {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-family: Mulish;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 24px;
+    color: #1A1A1A;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.deleteModal__text {
+    font-family: Mulish;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 20px;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+    line-height: 150%;
+    letter-spacing: 0%;
+}
+
+.deleteModal__footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* modal */
+.modal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.modal__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.modal__title {
+    margin: 0;
+    padding: 0;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #1A1A1A;
+}
+
+.modal__selfCostBlock {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-family: Mulish;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 18px;
+    color: #1A1A1A;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.modal__ssControls {
+    display: flex;
+    align-items: center;
+    gap: 8px
+}
+
+.modal__ssLink {
+    text-decoration: none;
+    font-family: Mulish;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 16px;
+    color: #5329FF;
+    line-height: 100%;
+    letter-spacing: 0%;
+    transition: all .2s ease-in-out;
+}
+
+.modal__ssLink:hover {
+    opacity: .75;
+    color: #5329FF;
+    transition: all .2s ease-in-out;
+}
+
+
+/*  form */
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form__item {
+    margin: 0;
+}
