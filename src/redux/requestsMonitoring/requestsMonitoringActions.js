@@ -7,6 +7,7 @@ export const fetchRequestsMonitoringData = createAsyncThunk(
     async (data, { dispatch }) => {
       const { requestObject: reqData, requestData: currdata } = data
       dispatch(reqMonitoringActions.setRequestStatus({isLoading: !currdata ? true : false, isError: false, isSuccess: false, message: ''}))
+      dispatch(reqMonitoringActions.setButtonStatus(true))
       try {
       
         const res = await fetch(`https://radarmarket.ru/api/web-service/monitoring-oracle/get`, {
@@ -19,12 +20,15 @@ export const fetchRequestsMonitoringData = createAsyncThunk(
         if (!res.ok) {
           const data = await res.json();
           dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Что-то пошло не так :('}))
+          dispatch(reqMonitoringActions.setButtonStatus(false))
         }
         const data = await res.json();
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: false, isSuccess: true, message: ''}))
+        dispatch(reqMonitoringActions.setButtonStatus(false))
         return data;
       } catch (e) {
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Что-то пошло не так :('}))
+        dispatch(reqMonitoringActions.setButtonStatus(false))
       }
     }
 );
@@ -33,6 +37,7 @@ export const fetchRequestsMonitoringDataEasy = createAsyncThunk(
     async (data, { dispatch }) => {
       const { requestObject: reqData, requestData: currdata } = data
       dispatch(reqMonitoringActions.setRequestStatus({isLoading:  !currdata ? true : false, isError: false, isSuccess: false, message: ''}))
+      dispatch(reqMonitoringActions.setButtonStatus(true))
       try {
       
         const res = await fetch(`https://radarmarket.ru/api/web-service/monitoring-oracle/easy/get`, {
@@ -45,12 +50,15 @@ export const fetchRequestsMonitoringDataEasy = createAsyncThunk(
         if (!res.ok) {
           const data = await res.json();
           dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: data.detail ? data.detail : 'Что-то пошло не так :('}))
+          dispatch(reqMonitoringActions.setButtonStatus(false))
         }
         const data = await res.json();
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: false, isSuccess: true, message: ''}))
+        dispatch(reqMonitoringActions.setButtonStatus(false))
         return data;
       } catch (e) {
         dispatch(reqMonitoringActions.setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Что-то пошло не так :('}))
+        dispatch(reqMonitoringActions.setButtonStatus(false))
       }
     }
 );

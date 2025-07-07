@@ -39,7 +39,8 @@
 
 .container{
     flex-grow: 1;
-    min-height: 300px;
+    min-height: 450px;
+    max-height: calc(100% - 170px);
 }
 
 /* table */

@@ -14,6 +14,7 @@ const initialState = {
         isSuccess: false,
         message: ''
     },
+    isLoadingForButton: false,
     formType: undefined,
     requestData: undefined,
     pagination: {
@@ -60,6 +61,9 @@ const requestsMonitoringSlice = createSlice({
         setRequestStatus: (state, action) => {
             state.requestStatus = action.payload
         },
+        setButtonStatus: (state, action) => {
+            state.isLoadingForButton = action.payload
+        },
         updateOptionsConfig: (state, action) => {
             state.optionsConfig = action.payload
         },
@@ -70,12 +74,13 @@ const requestsMonitoringSlice = createSlice({
            }
         },
         updateTableConfig: (state, action) => {
+            localStorage.setItem('rmTableConfig', JSON.stringify(action.payload))
             state.tableConfig = JSON.parse(JSON.stringify(action.payload))
         },
         setDefaultTableConfig: (state) => {
             return {
                 ...state,
-                tableConfig: [...tableConfig]
+                //tableConfig: [...tableConfig]
                }
         },
         resetState: () => {

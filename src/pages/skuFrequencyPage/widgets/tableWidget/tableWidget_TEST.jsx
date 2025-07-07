@@ -36,7 +36,7 @@ const paginationTheme = {
 
 
 
-const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
+const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
 
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
@@ -44,6 +44,8 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
     //const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
     //const [sortState, setSortState] = useState(null) // стейт сортировки (см initSortState)
     // const [tableConfig, setTableConfig] = useState(newTableConfig)
+    const [scrollY, setScrollY] = useState(0);
+    const [scrollX, setScrollX] = useState(0);
     const { requestData, requestStatus, requestObject, formType, tableConfig: tableSettings, pagination } = useAppSelector(store => store.requestsMonitoring)
     const [paginationState, setPaginationState] = useState({ limit: 25, page: 1, total_pages: requestData?.length || 1 })
     const navigate = useNavigate()
@@ -60,7 +62,30 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
                 };
             })
         }))
+        newConfig = newConfig.map(_ => ({
+            ..._,
+            hidden: _.children.every(c => c.hidden)
+        }))
         setTableConfig(newConfig)
+    };
+    const updateTableConfigTest = (config, settings) => {
+        let newConfig = config;
+        newConfig = newConfig.map(col => ({
+            ...col,
+            children: col.children.map(child => {
+                const curr = settings.find(i => i.dataIndex === child.dataIndex);
+                return {
+                    ...child,
+                    hidden: !curr.isActive
+                };
+            })
+        }))
+        newConfig = newConfig.map(_ => ({
+            ..._,
+            hidden: _.children.every(c => c.hidden)
+        }))
+
+        return newConfig
     };
 
     //задаем начальную дату
@@ -74,7 +99,7 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
         }
     }, [requestObject])
 
-    
+
 
 
 
@@ -97,8 +122,7 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
         }
     }, [requestData])
 
-    const [scrollY, setScrollY] = useState(0);
-    const [scrollX, setScrollX] = useState(0);
+  
 
     useEffect(() => {
         const updateHeight = () => {
@@ -147,50 +171,29 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
         updateTableConfig(tableSettings)
     }, [tableSettings])
 
+    useEffect(() => {
+        updateTableConfig(tableSettings)
+    }, [])
 
 
-
-
-    // отслеживаем скролл в контейнере
-    // const scrollHandler = () => {
-    //     if (containerRef && containerRef.current) {
-
-    //         // если скроллим вправо
-    //         if (containerRef.current.scrollLeft > 1) {
-    //             setIsXScrolled(true)
-    //         } else {
-    //             setIsXScrolled(false)
-    //         }
-
-    //         // вычисляем достиг ли скролл конца справа
-    //         const delta = containerRef.current.scrollWidth - (containerRef.current.scrollLeft + containerRef.current.clientWidth);
-    //         if (delta < 16) {
-    //             setIsEndOfXScroll(true)
-    //         } else {
-    //             setIsEndOfXScroll(false)
-    //         }
-    //     }
-    // }
-
-    // хэндлер сортировки
-    // const sortButtonClickHandler = (e, value) => {
-    //     const { id } = e.currentTarget;
-
-    //     // выключаем сортировку если нажата уже активная клавиша
-    //     if (sortState.sortType === id && sortState.sortedValue === value) {
-    //         setSortState(initSortState)
-    //         dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: 'rating', sort_order: 'DESC' }, page: 1 }))
-    //         return
-    //     }
-
-
-    //     // включаем сортировку и сортируем дату
-    //     setSortState({
-    //         sortedValue: value,
-    //         sortType: id,
-    //     })
-    //     dispatch(reqsMonitoringActions.updateRequestObject({ sorting: { sort_field: value, sort_order: id }, page: 1 }))
-    // }
+    useEffect(() => {
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        if (paginationNextButton) {
+            paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+        }
+        if (paginationSingleNextButton) {
+            paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+        }
+        if (paginationSinglePrevButton) {
+            paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+        }
+        if (paginationPrevButton) {
+            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+        }
+    }, [pagination])
 
     const paginationHandler = (page) => {
         dispatch(reqsMonitoringActions.updateRequestObject({ page: page }))
@@ -226,28 +229,27 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
             let sortedConfig = config.map(_ => {
                 return {
                     ..._,
-                    children: _.children?.map((i) => { return {...i, sortOrder: sort_field === i.dataIndex ? sort_order : null, columnKey: i.dataIndex, }}),
+                    children: _.children?.map((i) => { return { ...i, sortOrder: sort_field === i.dataIndex ? sort_order : null, columnKey: i.dataIndex, } }),
                 }
-              
+
             })
             return sortedConfig
         } else {
             let sortedConfig = config.map(_ => {
                 return {
                     ..._,
-                    children: _.children?.map((i) => { return {...i, sortOrder: null, columnKey: i.dataIndex, }}),
+                    children: _.children?.map((i) => { return { ...i, sortOrder: null, columnKey: i.dataIndex, } }),
                 }
-              
+
             })
-            return sortedConfig
+            return updateTableConfigTest(sortedConfig, tableSettings)
         }
-      
+
     }
 
     const handleChange = (pagination, filters, sorterObj) => {
-        console.log(sorterObj)
         if (!sorterObj.order) {
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: {sort_field: 'niche_rating', sort_order: 'DESC'}}))
+            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined}))
             return
         }
         const obj = {
@@ -255,7 +257,7 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
             sort_order: sorterObj.order,
         }
         dispatch(reqsMonitoringActions.updateRequestObject({ sorting: obj, page: 1, limit: 25 }))
-      };
+    };
 
     return requestData && newTableConfig && (
         <div
@@ -319,7 +321,7 @@ const TableWidget_TEST = ({tableConfig, setTableConfig }) => {
                             return styles.row
                         }}
                         // scroll={{ x: 'max-content' }}
-                        scroll={{ x: scrollX, y: scrollY }}
+                        //scroll={{ x: scrollX, y: scrollY }}
                         onChange={handleChange}
                     ></Table>
                 </ConfigProvider>

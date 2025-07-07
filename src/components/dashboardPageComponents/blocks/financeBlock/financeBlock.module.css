@@ -8,7 +8,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 16px;
-    grid-row: span 7;
+    grid-row: span 8;
     transition: all .1s ease-in-out;
     width: 100%;
     box-sizing: border-box;

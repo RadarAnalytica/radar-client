@@ -584,7 +584,7 @@ const AiDescriptionGeneratorPage = () => {
                     { max: 255, message: 'Название не должно быть длиннее 255 символов.' },
                     () => ({
                       validator(_, value) {
-                        if (value.length > 0 && !value.trim()) {
+                        if (value && !value.trim()) {
                           return Promise.reject(new Error('Пожалуйста, заполните поле корректно'))
                         }
                         return Promise.resolve()
@@ -604,11 +604,11 @@ const AiDescriptionGeneratorPage = () => {
                   style={{ width: '100%', margin: 0 }}
                   rules={[
                     { required: true, message: 'Пожалуйста, заполните это поле!' },
-                    { min: 30, message: 'Название не должно быть короче 30 символов.' },
-                    { max: 255, message: 'Название не должно быть длиннее 255 символов.' },
+                    { min: 30, message: 'Короткое описание товара не должно быть короче 30 символов.' },
+                    { max: 255, message: 'Короткое описание товара не должно быть длиннее 255 символов.' },
                     () => ({
                       validator(_, value) {
-                        if (value.length > 0 && !value.trim()) {
+                        if (value && !value.trim()) {
                           return Promise.reject(new Error('Пожалуйста, заполните поле корректно!'))
                         }
                         return Promise.resolve()
@@ -627,10 +627,13 @@ const AiDescriptionGeneratorPage = () => {
                   label=' Вставьте до 5 ссылок на карточки товаров конкурентов. Каждую ссылку вводите с новой строки'
                   style={{ width: '100%', margin: 0 }}
                   rules={[
-                    { required: true, message: 'Пожалуйста, заполните это поле!' },
+                    //{ required: true, message: 'Пожалуйста, заполните это поле!' },
                     () => ({
                       validator(_, value) {
-                        if (value.length > 0 && !value.trim()) {
+                        if (!value) {
+                          return Promise.reject(new Error('Пожалуйста, заполните это поле!'))
+                        }
+                        if (value && !value.trim()) {
                           return Promise.reject(new Error('Пожалуйста, заполните поле корректно'))
                         }
                         const arr = value.split('\n')

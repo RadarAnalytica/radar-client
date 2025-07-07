@@ -45,7 +45,7 @@ const SkuFrequencyRequestPage = () => {
                         title={
                             <Breadcrumbs
                                 config={[
-                                    { name: 'Частотность артикула', slug: '/monitoring' },
+                                    { name: 'Поиск прибыльной ниши', slug: '/monitoring' },
                                     { name: currentQuery },
                                 ]}
                             />

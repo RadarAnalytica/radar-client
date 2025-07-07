@@ -1,5 +1,30 @@
-export const complexRequestObjectGenerator = (fields) => {
+const dynamicNormalizer = (dynamic, from, to) => {
+    console.log(dynamic)
+    let result = {
+        start: null,
+        end: null
+    }
+    if (!dynamic || (!from && !to)) { return result }
+    if (dynamic === 'Рост') {
+        result = {
+            start: parseInt(from) || null,
+            end: parseInt(to) || null
+        }
+        return result;
+    }
+    if (dynamic === 'Падение') {
+        console.log(parseInt(from) * -1)
+        result = {
+            start: (parseInt(from) * -1) || null,
+            end: (parseInt(to) * -1 )|| null
+        }
+        return result;
+    }
+    return result
+}
 
+
+export const complexRequestObjectGenerator = (fields) => {
 
 
     const requestObject = {
@@ -25,9 +50,9 @@ export const complexRequestObjectGenerator = (fields) => {
             start: fields.avg_price_total_start || null,
             end: fields.avg_price_total_end || null
         },
-        goods_with_sales_total: { //Процент товаров с продажами
-            start: fields.goods_with_sales_total_start || null,
-            end: fields.goods_with_sales_total_end || null
+        goods_with_sales_percent_total: { //Процент товаров с продажами
+            start: fields.goods_with_sales_percent_total_start || null,
+            end: fields.goods_with_sales_percent_total_end || null
         },
         goods_quantity: {
             start: fields.goods_quantity_start || null,
@@ -47,18 +72,21 @@ export const complexRequestObjectGenerator = (fields) => {
         },
 
         // dynamic options
-        g30: {
-            start: fields.dynamic_30_days_from || null,
-            end: fields.dynamic_30_days_to || null
-        },
-        g60: {
-            start: fields.dynamic_60_days_to || null,
-            end: fields.dynamic_60_days_to || null
-        },
-        g90: {
-            start: fields.dynamic_90_days_to || null,
-            end: fields.dynamic_90_days_to || null
-        },
+        g30: dynamicNormalizer(fields.dynamic_30_days, fields.dynamic_30_days_from, fields.dynamic_30_days_to),
+        g60: dynamicNormalizer(fields.dynamic_60_days, fields.dynamic_60_days_from, fields.dynamic_60_days_to),
+        g90: dynamicNormalizer(fields.dynamic_90_days, fields.dynamic_90_days_from, fields.dynamic_90_days_to),
+        // g30: {
+        //     start: fields.dynamic_30_days_from || null,
+        //     end: fields.dynamic_30_days_to || null
+        // },
+        // g60: {
+        //     start: fields.dynamic_60_days_to || null,
+        //     end: fields.dynamic_60_days_to || null
+        // },
+        // g90: {
+        //     start: fields.dynamic_90_days_to || null,
+        //     end: fields.dynamic_90_days_to || null
+        // },
 
         //subject options
         subjects: fields.prefered_items.length !== 0 ? fields.prefered_items : null,
@@ -116,8 +144,8 @@ export const complexRequestObjectGenerator = (fields) => {
             end: fields.avg_price_300_end || null
         },
         goods_with_sales_percent_300: {
-            start: fields.goods_with_sales_percent_300 || null,
-            end: fields.goods_with_sales_percent_300 || null
+            start: fields.goods_with_sales_percent_300_start || null,
+            end: fields.goods_with_sales_percent_300_end || null
         },
         
         // not in use

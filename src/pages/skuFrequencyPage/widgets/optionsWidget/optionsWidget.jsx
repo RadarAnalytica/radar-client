@@ -30,7 +30,7 @@ const OptionsWidget = ({ resetTableConfig }) => {
     const [simpleForm] = Form.useForm();
     const [complexForm] = Form.useForm();
     const { skuFrequencyMode } = useAppSelector(store => store.filters) // 'Простой' | 'Продвинутый'
-    const { optionsConfig, requestObject } = useAppSelector(store => store.requestsMonitoring) // 'Простой' | 'Продвинутый'
+    const { optionsConfig, requestObject, isLoadingForButton } = useAppSelector(store => store.requestsMonitoring) // 'Простой' | 'Продвинутый'
     const { isSidebarHidden } = useAppSelector((state) => state.utils);
     const prefered_items = Form.useWatch('prefered_items', complexForm)
     const [isBodyVisisble, setIsBodyVisible] = useState(true)
@@ -75,7 +75,7 @@ const OptionsWidget = ({ resetTableConfig }) => {
 
     return (
         <section className={styles.widget}>
-            <div className={styles.widget__header}>
+            <div className={!isBodyVisisble ? `${styles.widget__header} ${styles.widget__header_noGap}` : styles.widget__header}>
                 <div className={styles.widget__titleWrapper} style={{ cursor: skuFrequencyMode === 'Продвинутый' ? 'pointer' : '' }} onClick={() => skuFrequencyMode === 'Продвинутый' && setIsBodyVisible(!isBodyVisisble)}>
                     <h2 className={styles.widget__title}>Параметры</h2>
                     {skuFrequencyMode === 'Продвинутый' &&
@@ -261,7 +261,8 @@ const OptionsWidget = ({ resetTableConfig }) => {
                                     htmlType='submit'
                                     type='primary'
                                     size='large'
-                                    style={{ height: 45, width: 112 }}
+                                    style={{ height: 45, minWidth: 112 }}
+                                    loading={isLoadingForButton}
                                 >
                                     Применить
                                 </Button>
@@ -284,7 +285,10 @@ const OptionsWidget = ({ resetTableConfig }) => {
                                 // dynamic_30_days: 'Рост',
                                 // dynamic_30_days_from: 100,
                                 prefered_items: [],
-                                niche_rating: []
+                                niche_rating: [],
+                                dynamic_30_days: 'Изменение',
+                                dynamic_60_days: 'Изменение',
+                                dynamic_90_days: 'Изменение',
                             }}
                         >
                             <MainFieldset optionsConfig={optionsConfig} form={complexForm} />
@@ -328,7 +332,8 @@ const OptionsWidget = ({ resetTableConfig }) => {
                                         htmlType='submit'
                                         type='primary'
                                         size='large'
-                                        style={{ height: 45, width: 112 }}
+                                        style={{ height: 45, minWidth: 112 }}
+                                        loading={isLoadingForButton}
                                     >
                                         Применить
                                     </Button>

@@ -86,6 +86,14 @@ const TableSettingsWidget = () => {
         }
     }, [form, isModalOpen])
 
+    useEffect(() => {
+        let savedTableConfig = localStorage.getItem('rmTableConfig');
+        if (savedTableConfig) {
+            savedTableConfig = JSON.parse(savedTableConfig);
+            dispatch(reqsMonitoringActions.updateTableConfig(savedTableConfig))
+        }
+    }, [])
+
 
 
 

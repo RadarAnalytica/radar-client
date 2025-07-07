@@ -12,6 +12,7 @@ import TableWidget_TEST from './widgets/tableWidget/tableWidget_TEST'
 import { actions as reqActions } from '../../redux/requestsMonitoring/requestsMonitoringSlice'
 import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { newTableConfig } from './shared'
+import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
 
 
 
@@ -40,7 +41,7 @@ const SkuFrequencyPage = () => {
                 {/* header */}
                 <div className={styles.page__mainWrapper}>
                     <div className={styles.page__headerWrapper}>
-                        <Header title='Частотность артикула' />
+                        <Header title='Поиск прибыльной ниши' />
                     </div>
                     <div className={styles.page__filtersWrapper}>
                         <Filters
@@ -55,10 +56,15 @@ const SkuFrequencyPage = () => {
                         {/* {skuFrequencyMode === 'Продвинутый' &&
                             <OptionsSettingsWidget />
                         } */}
+                        <HowToLink
+                            text='Как использовать раздел'
+                            url='https://radar.usedocs.com/article/77617'
+                            target='_blank'
+                        />
                     </div>
                     <OptionsWidget
                         resetTableConfig={() => {
-                            setTableConfig([...newTableConfig])
+                            //setTableConfig([...newTableConfig])
                         }}
                     />
                     {requestData && <div className={styles.page__tableSettingsBlock}>
