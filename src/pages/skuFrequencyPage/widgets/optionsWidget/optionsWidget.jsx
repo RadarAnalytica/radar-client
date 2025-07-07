@@ -76,7 +76,36 @@ const OptionsWidget = ({ resetTableConfig }) => {
     return (
         <section className={styles.widget}>
             <div className={!isBodyVisisble ? `${styles.widget__header} ${styles.widget__header_noGap}` : styles.widget__header}>
-                <div className={styles.widget__titleWrapper} style={{ cursor: skuFrequencyMode === 'Продвинутый' ? 'pointer' : '' }} onClick={() => skuFrequencyMode === 'Продвинутый' && setIsBodyVisible(!isBodyVisisble)}>
+                <div 
+                    className={styles.widget__titleWrapper} 
+                    style={{ cursor: skuFrequencyMode === 'Продвинутый' ? 'pointer' : '' }} 
+                    onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // console.log('t', e.target)
+                        // console.log('ct', e.currentTarget)
+                        // console.log('type', e.type)
+                        if (skuFrequencyMode === 'Продвинутый') {
+                            setIsBodyVisible(!isBodyVisisble);
+                        }
+                        if (window.getSelection) {
+                            const selection = window.getSelection();
+                            if (selection) selection.removeAllRanges();
+                        } else if (document.selection) {
+                            document.selection.empty();
+                        }
+                    }}
+                    onMouseDownCapture={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (window.getSelection) {
+                            const selection = window.getSelection();
+                            if (selection) selection.removeAllRanges();
+                        } else if (document.selection) {
+                            document.selection.empty();
+                        }
+                    }}
+                >
                     <h2 className={styles.widget__title}>Параметры</h2>
                     {skuFrequencyMode === 'Продвинутый' &&
                         <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`}>

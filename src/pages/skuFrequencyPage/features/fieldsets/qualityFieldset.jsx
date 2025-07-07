@@ -63,7 +63,23 @@ const QualityFieldset = () => {
             <div
                 className={styles.fieldset__header}
                 id='header'
-                onDoubleClick={e => {
+                onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // console.log('t', e.target)
+                    // console.log('ct', e.currentTarget)
+                    // console.log('type', e.type)
+                    if (e.currentTarget.id === 'header' && e.type === 'click') {
+                        setIsBodyVisible(!isBodyVisisble);
+                    }
+                    if (window.getSelection) {
+                        const selection = window.getSelection();
+                        if (selection) selection.removeAllRanges();
+                    } else if (document.selection) {
+                        document.selection.empty();
+                    }
+                }}
+                onMouseDownCapture={e => {
                     e.preventDefault();
                     e.stopPropagation();
                     if (window.getSelection) {
@@ -73,14 +89,7 @@ const QualityFieldset = () => {
                         document.selection.empty();
                     }
                 }}
-                onClick={e => {
-                    // console.log('t', e.target)
-                    // console.log('ct', e.currentTarget)
-                    // console.log('type', e.type)
-                    if (e.currentTarget.id === 'header' && e.type === 'click') {
-                        setIsBodyVisible(!isBodyVisisble);
-                    }
-                }}
+                
             >
                 <h3 className={styles.fieldset__title}>Рейтинг качества ниши</h3>
                 <button className={isBodyVisisble ? styles.widget__openButton : `${styles.widget__openButton} ${styles.widget__openButton_closed}`} type='button'>
