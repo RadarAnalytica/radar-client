@@ -1,12 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './addShopWidget.module.css';
 import { Button, ConfigProvider, Modal, Form, Input } from 'antd';
 import WbIcon from "../../../../assets/WbIcon";
+import { addShop } from '../../../../service/api/api';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
+import { fetchShops } from '../../../../redux/shops/shopsActions';
 
-export const AddShopWidget = () => {
+const initRequestStatus = {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    message: ''
+}
 
+export const AddShopWidget = ({ authToken, setStatusBarState }) => {
+    const dispatch = useAppDispatch()
     const [isModalVisible, setIsModalVisible] = useState(false)
+    const [ addShopRequestStatus, setAddShopRequestStatus ] = useState(initRequestStatus)
     const [form] = Form.useForm()
+
+    const addShopHandler = async (fields) => {
+        const addShopData = {
+            brandName: fields.name,
+            tkn: fields.token,
+            authToken
+        }
+        setAddShopRequestStatus({...initRequestStatus, isLoading: true})
+        try {
+            let res = await addShop(addShopData)
+            if (!res.ok) {
+                setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось добавить магазин'})
+                return
+            }
+            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isSuccess: true, message: 'Магазин успешно добавлен'})
+        } catch {
+            setAddShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message: 'Не удалось добавить магазин'})
+        }
+    }
+
+
+    useEffect(() => {
+        if (addShopRequestStatus.isSuccess) {
+            form.resetFields()
+            setIsModalVisible(false)
+            dispatch(fetchFilters(authToken))
+            dispatch(fetchShops(authToken))
+            setStatusBarState({
+                isActive: true,
+                type: 'Success',
+                message: addShopRequestStatus.message
+            })
+            setAddShopRequestStatus(initRequestStatus)
+        }
+        if (addShopRequestStatus.isError) {
+            setIsModalVisible(false)
+            setStatusBarState({
+                isActive: true,
+                type: 'Error',
+                message: addShopRequestStatus.message
+            })
+            setAddShopRequestStatus(initRequestStatus)
+        }
+    }, [addShopRequestStatus])
 
     return (
         <div className={styles.widget}>
@@ -33,7 +89,7 @@ export const AddShopWidget = () => {
             >
                 <Button
                     type='primary'
-                    style={{ width: 150, height: 60, fontWeight: 700, marginTop: 16 }}
+                    style={{ width: 150, height: 60, fontWeight: 700, marginTop: 16, flexShrink: 0 }}
                     onClick={() => setIsModalVisible(true)}
                 >
                     Подключить
@@ -79,16 +135,17 @@ export const AddShopWidget = () => {
                             form={form}
                             layout='vertical'
                             className={styles.form}
+                            onFinish={addShopHandler}
                         >
                             <Form.Item
                                 name='name'
                                 label='Название магазина'
                                 className={styles.form__item}
                                 rules={[
-                                    {required: true, message: 'Пожалуйста, заполните это поле!'},
+                                    { required: true, message: 'Пожалуйста, заполните это поле!' },
                                     () => ({
                                         validator(_, value) {
-                                            if (value.length > 0 && !value.trim()) {
+                                            if (value && !value.trim()) {
                                                 return Promise.reject(new Error('Пожалуйста, заполните это поле!'))
                                             }
                                             return Promise.resolve()
@@ -99,7 +156,7 @@ export const AddShopWidget = () => {
                                 <Input
                                     placeholder='Например: "тестовый"'
                                     size='large'
-                                    style={{ height: 55}}
+                                    style={{ height: 55 }}
                                 />
                             </Form.Item>
                             <Form.Item
@@ -107,10 +164,10 @@ export const AddShopWidget = () => {
                                 label='Токен'
                                 className={styles.form__item}
                                 rules={[
-                                    {required: true, message: 'Пожалуйста, заполните это поле!'},
+                                    { required: true, message: 'Пожалуйста, заполните это поле!' },
                                     () => ({
                                         validator(_, value) {
-                                            if (value.length > 0 && !value.trim()) {
+                                            if (value && !value.trim()) {
                                                 return Promise.reject(new Error('Пожалуйста, заполните это поле!'))
                                             }
                                             return Promise.resolve()
@@ -121,7 +178,7 @@ export const AddShopWidget = () => {
                                 <Input
                                     placeholder='Что-то вроде: GJys67G7sbNw178F'
                                     size='large'
-                                    style={{ height: 55}}
+                                    style={{ height: 55 }}
                                 />
                             </Form.Item>
                             <Button

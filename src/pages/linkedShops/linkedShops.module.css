@@ -9,6 +9,7 @@
     box-sizing: border-box;
     min-width: 1200px;
 }
+
 .page__content {
     width: 100%;
     padding: 30px 52px;
@@ -20,8 +21,9 @@
     box-sizing: border-box;
     height: 100%;
     overflow-y: scroll;
-    
+
 }
+
 .page__sideNavWrapper {
     height: 100%;
     width: auto;
@@ -32,6 +34,7 @@
     flex-grow: 1;
     flex-shrink: 0;
 }
+
 .page__headerWrapper {
     width: 100%;
 }
@@ -45,7 +48,37 @@
     @media (max-width: 2000px) {
         grid-template-columns: repeat(3, 1fr);
     }
+
     @media (max-width: 1700px) {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+
+.page__statusBar {
+    position: fixed;
+    top: 30px;
+    min-height: 66px;
+    right: 50px;
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 700px;
+    font-family: Mulish;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 16px;
+    color: #1A1A1A;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.page__iconWrapper {
+    width: 30px;
+    height: 30px;
+
 }
