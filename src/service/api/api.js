@@ -10,8 +10,8 @@ export const getCalculatorSubjects = async (data) => {
             body: JSON.stringify(data)
         }).then(res => res.json())
 
-       return res;
-    } catch(e) {
+        return res;
+    } catch (e) {
         console.log('error')
     }
 }
@@ -60,29 +60,19 @@ export const createBlogCategory = async (data, token) => {
     }
 }
 export const addShop = async (data) => {
-    const {brandName, tkn, authToken } = data
-    
-    try {
-        const response = await fetch(URL + '/api/shop/', {
-            method: 'POST',
-            headers: {
-                "content-type": "application/json",
-                "authorization": "JWT " + authToken,
-            },
-            body: JSON.stringify({
-                brand_name: brandName,
-                token: tkn,
-                is_active: true
-            })
+    const { brandName, tkn, authToken } = data
+    const response = await fetch(URL + '/api/shop/', {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json",
+            "authorization": "JWT " + authToken,
+        },
+        body: JSON.stringify({
+            brand_name: brandName,
+            token: tkn,
+            is_active: true
         })
+    })
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Ошибка при добавлении магазина');
-        }
-
-        return await response.json();
-    } catch (error) {
-        throw error;
-    }
+    return response;
 }
