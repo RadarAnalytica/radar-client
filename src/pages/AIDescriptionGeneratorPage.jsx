@@ -760,7 +760,9 @@ const AiDescriptionGeneratorPage = () => {
                   className={styles.backButton}
                   onClick={() => setNextStep(false)}
                 >
-                  Вернуться к шагу 1
+                  <span>
+                    Вернуться к шагу 1
+                  </span>
                 </button>
                 <button className={styles.submitBtn} onClick={() => {
                   if (amountGenerations === 0) {
@@ -769,7 +771,7 @@ const AiDescriptionGeneratorPage = () => {
                   } else {
                     openModal()
                   }
-                 
+
                 }}>
                   Сгенерировать описание
                 </button>
