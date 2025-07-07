@@ -5,6 +5,7 @@ export const addSkuTableConfig =  {
         //{ruName: 'Артикул', engName: 'id', hasSelect: false},
         {ruName: 'Бренд', engName: 'brand', hasSelect: false},
         {ruName: 'Магазин', engName: 'shop', hasSelect: false},
+        {ruName: 'Размер', engName: 'tech_size', hasSelect: false},
     ]
 }
 
