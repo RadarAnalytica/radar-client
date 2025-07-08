@@ -9,32 +9,19 @@ import { editShop } from '../../../../redux/editShop/editShopActions'
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions'
 import { fetchShops } from '../../../../redux/shops/shopsActions'
 import { useAppDispatch } from '../../../../redux/hooks'
+import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 
 
 
 /**
  * 
-brand_name
-: 
-"JuliaShine111"
-id
-: 
-88
-is_active
-: 
-true
-is_primary_collect
-: 
-true
-is_self_cost_set
-: 
-false
-is_valid
-: 
-false
-updated_at
-: 
-"2025-05-15 20:10:33.174770"
+brand_name: "JuliaShine111"
+id: 88
+is_active: true
+is_primary_collect: true
+is_self_cost_set: false
+is_valid: false
+updated_at: "2025-05-15 20:10:33.174770"
  */
 
 const getShopStatus = (isActive, isValid, isPrimaryCollect) => {
@@ -87,10 +74,10 @@ const initRequestStatus = {
 
 export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
     const dispatch = useAppDispatch();
-    const [ deleteModalVisible, setDeleteModalVisible ] = useState(false)
-    const [ editModalVisible, setEditModalVisible ] = useState(false)
-    const [ deleteShopRequestStatus, setDeleteShopRequestStatus ] = useState(initRequestStatus)
-    const [ editShopRequestStatus, setEditShopRequestStatus ] = useState(initRequestStatus)
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false)
+    const [editModalVisible, setEditModalVisible] = useState(false)
+    const [deleteShopRequestStatus, setDeleteShopRequestStatus] = useState(initRequestStatus)
+    const [editShopRequestStatus, setEditShopRequestStatus] = useState(initRequestStatus)
     const [form] = Form.useForm()
 
 
@@ -100,7 +87,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
             shop,
             authToken
         }
-        dispatch(deleteShop({deleteShopData, setDeleteShopRequestStatus, initRequestStatus}));
+        shop?.id && dispatch(deleteShop({ deleteShopData, setDeleteShopRequestStatus, initRequestStatus }));
     }
 
     const editShopHandler = (fields) => {
@@ -110,7 +97,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
             shopToken: fields.shopToken,
             authToken
         }
-        dispatch(editShop({editData, setEditShopRequestStatus, initRequestStatus }));
+        dispatch(editShop({ editData, setEditShopRequestStatus, initRequestStatus }));
     }
 
     useEffect(() => {
@@ -157,14 +144,22 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
         }
     }, [deleteShopRequestStatus, editShopRequestStatus])
 
+    useEffect(() => {
+        if (shop) {
+            form.setFieldValue('name', shop.brand_name)
+        }
+    }, [shop])
+
     return (
         <div className={styles.widget}>
             {/* header */}
             <div className={styles.widget__header}>
-                <WbIcon />
+                <div className={styles.widget__iconWrapper}>
+                    <WbIcon />
+                </div>
                 <div className={styles.widget__titleWrapper}>
-                    <p className={styles.widget__title}>{shop.brand_name}</p>
-                    <p className={styles.widget__subtitle}>Последнее обновление: {moment(shop.updated_at).format('DD.MM.YYYY HH:mm')}</p>
+                    <p className={styles.widget__title} title={shop.brand_name}>{shop.brand_name}</p>
+                    <p className={styles.widget__subtitle}>Последнее обновление: {moment(shop.updated_at).format('DD.MM.YYYY')}</p>
                 </div>
             </div>
 
@@ -186,6 +181,13 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
 
             {/* footer */}
             <div className={styles.widget__footer}>
+                <div className={styles.widget__token}>
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="15" cy="15" r="14" stroke="#8C8C8C" strokeWidth="2" />
+                        <path d="M16.9609 10.6387C17.2523 11.2703 17.8513 11.7052 18.542 11.7871L23.1914 12.3389L19.7539 15.5176C19.2432 15.9898 19.0139 16.6937 19.1494 17.376L20.0625 21.9678L15.9766 19.6807C15.3698 19.3412 14.6302 19.3411 14.0234 19.6807L9.9375 21.9678L10.8506 17.376C10.9861 16.6938 10.7568 15.9898 10.2461 15.5176L6.80859 12.3389L11.458 11.7871C12.1487 11.7052 12.7477 11.2703 13.0391 10.6387L15 6.3877L16.9609 10.6387Z" stroke="#8C8C8C" stroke-width="2" />
+                    </svg>
+                    Токен
+                </div>
                 {getShopStatus(shop.is_active, shop.is_valid, shop.is_primary_collect)}
             </div>
 
@@ -220,6 +222,25 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                         <ConfigProvider
                             theme={{
                                 token: {
+                                    colorPrimary: '#F93C65',
+                                }
+                            }}
+                        >
+                            <Button
+                                type='default'
+                                color='red'
+                                variant='outlined'
+                                size='large'
+                                style={{ fontWeight: 700, height: 60 }}
+                                onClick={() => deleteShopHandler()}
+                                loading={deleteShopRequestStatus.isLoading}
+                            >
+                                Удалить
+                            </Button>
+                        </ConfigProvider>
+                        <ConfigProvider
+                            theme={{
+                                token: {
                                     colorPrimary: '#5329FF',
                                 }
                             }}
@@ -234,23 +255,6 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                                 Отменить
                             </Button>
                         </ConfigProvider>
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorPrimary: '#F93C65',
-                                }
-                            }}
-                        >
-                            <Button
-                                type='primary'
-                                size='large'
-                                style={{ fontWeight: 700, height: 60 }}
-                                onClick={() => deleteShopHandler()}
-                                loading={deleteShopRequestStatus.isLoading}
-                            >
-                                Удалить
-                            </Button>
-                        </ConfigProvider>
                     </div>
                 </div>
             </Modal>
@@ -263,9 +267,9 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                 footer={null}
                 width={700}
                 centered
-                onOk={() => {setEditModalVisible(false); form.resetFields()}}
-                onClose={() => {setEditModalVisible(false); form.resetFields()}}
-                onCancel={() => {setEditModalVisible(false); form.resetFields()}}
+                onOk={() => { setEditModalVisible(false); form.resetFields() }}
+                onClose={() => { setEditModalVisible(false); form.resetFields() }}
+                onCancel={() => { setEditModalVisible(false); form.resetFields() }}
                 closeIcon={
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 7.77813L17.7781 0L20 2.22187L12.2219 10L20 17.7781L17.7781 20L10 12.2219L2.22187 20L0 17.7781L7.77813 10L0 2.22187L2.22187 0L10 7.77813Z" fill="#1A1A1A" fillOpacity="0.5" />
@@ -346,19 +350,21 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                                     disabled={(!shop.is_primary_collect && shop.is_active && shop.is_valid)}
                                 />
                             </Form.Item>
-                            <div className={styles.modal__selfCostBlock}>
-                                Себестоимость
-                                <div className={styles.modal__ssControls}>
-                                    {getShopSelfCostStatus(shop.is_self_cost_set)}
-                                    <Link
-                                        to='/selfcost'
-                                        target='_blank'
-                                        className={styles.modal__ssLink}
-                                    >
-                                        Изменить
-                                    </Link>
+                            {shop.is_valid && shop.is_primary_collect &&
+                                <div className={styles.modal__selfCostBlock}>
+                                    Себестоимость
+                                    <div className={styles.modal__ssControls}>
+                                        {getShopSelfCostStatus(shop.is_self_cost_set)}
+                                        <Link
+                                            to='/selfcost'
+                                            onClick={() => { dispatch(filterActions.setActiveShop(shop)) }}
+                                            className={styles.modal__ssLink}
+                                        >
+                                            Изменить
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <Button
                                 htmlType='submit'
                                 type='primary'
