@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchRequestsMonitoringData, fetchRequestsMonitoringDataEasy } from './requestsMonitoringActions'
 import { optionsConfig } from "../../pages/skuFrequencyPage/shared";
-import { newTableConfig } from "../../pages/skuFrequencyPage/shared";
 import { tableSettings } from "../../pages/skuFrequencyPage/shared/configs/tableConfig";
 
 const initialState = {
