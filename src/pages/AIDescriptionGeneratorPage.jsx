@@ -598,6 +598,7 @@ const AiDescriptionGeneratorPage = () => {
                   ]}
                 >
                   <Input
+                    autoComplete='off'
                     style={{ height: 44 }}
                     placeholder='Шорты Jony Jenson'
                     size='large'
@@ -622,6 +623,7 @@ const AiDescriptionGeneratorPage = () => {
                   ]}
                 >
                   <Input.TextArea
+                    autoComplete='off'
                     placeholder='Шорты Jony Jenson'
                     size='large'
                     autoSize={{ minRows: 4, maxRows: 4 }}
@@ -651,6 +653,7 @@ const AiDescriptionGeneratorPage = () => {
                   ]}
                 >
                   <Input.TextArea
+                    autoComplete='off'
                     placeholder={`https://www.wildberries.ru/catalog/177307535\nhttps://www.wildberries.ru/catalog/177307899\nhttps://www.wildberries.ru/catalog/177337832`}
                     size='large'
                     autoSize={{ minRows: 4, maxRows: 4 }}
@@ -766,7 +769,7 @@ const AiDescriptionGeneratorPage = () => {
                 </button>
                 <button className={styles.submitBtn} onClick={() => {
                   if (amountGenerations === 0) {
-                    setErrorMessage('К сожалению у вас закончился лимит генераций!');
+                    setErrorMessage('К сожалению, у вас закончился лимит генераций!');
                     handleShowModalError();
                   } else {
                     openModal()
