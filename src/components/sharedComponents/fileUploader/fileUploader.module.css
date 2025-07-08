@@ -122,3 +122,24 @@
     flex-grow: 0;
     flex-shrink: 0;
 }
+
+
+
+/* file list item */
+.fileList__item {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.fileList__statusBlock {
+    color: #8C8C8C
+}
+.fileList__statusBlock_success {
+    color: #00B69B
+}
+.fileList__statusBlock_error {
+    color: #F93C65
+}
