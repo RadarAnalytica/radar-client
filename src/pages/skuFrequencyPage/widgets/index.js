@@ -4,4 +4,5 @@ import BarsWidget from './barsWidget/barsWidget'
 import ChartWidget from './chartWidget/chartWidget'
 import OptionsSettingsWidget from './optionsSettingsWidget/optionsSettingsWidget'
 import TableSettingsWidget from './tableSettingsWidget/tableSettingsWidget'
-export { OptionsWidget, TableWidget, BarsWidget, ChartWidget, OptionsSettingsWidget, TableSettingsWidget }
+import { HowtoWidget } from './howtoWidget/howtoWidget'
+export { OptionsWidget, TableWidget, BarsWidget, ChartWidget, OptionsSettingsWidget, TableSettingsWidget, HowtoWidget }
