@@ -61,6 +61,7 @@ const TrendingRequestsPage = React.lazy(() => import("./pages/trendingRequestsPa
 const TrendAnalysisQuery = React.lazy(() => import("./pages/TrendAnalysisQuery"));
 const ReportProfitLoss = React.lazy(() => import("./pages/ReportProfitLoss/ReportProfitLoss"));
 const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops"));
+const ReferalPage = React.lazy(() => import("./pages/Referal"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -126,6 +127,7 @@ function App() {
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчет о прибылях и убытках'><ReportProfitLoss /></ProtectedRoute>} />
             <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
+            <Route path='/referal' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
             {/* Public routes */}
             <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />
