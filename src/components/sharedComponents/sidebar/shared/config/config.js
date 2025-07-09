@@ -196,5 +196,34 @@ export const menuConfig = [
     },
 ]
 
+export const adminConfig = {
+    name: 'admin',
+    label: 'Администрирование',
+    icon: newIcons.admin,
+    children: [
+        {
+            id: 1,
+            url: '/blog',
+            label: 'Блог',
+            isActive: true,
+            isNew: false
+        },
+        {
+            id: 2,
+            url: '/admin-dashboard',
+            label: 'Дашборд',
+            isActive: true,
+            isNew: false
+        },
+        {
+            id: 2,
+            url: '/admin-referal',
+            label: 'Реферальная программа',
+            isActive: true,
+            isNew: false
+        },
+    ]
+}
+
 
 
