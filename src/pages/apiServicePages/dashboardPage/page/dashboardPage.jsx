@@ -244,7 +244,7 @@ const _DashboardPage = () => {
                     />
                 </div>
 
-                {!shopStatus?.is_primary_collect && (
+                {shopStatus && !shopStatus?.is_primary_collect && (
                     <DataCollectWarningBlock
                         title='Ваши данные еще формируются и обрабатываются.'
                     />
