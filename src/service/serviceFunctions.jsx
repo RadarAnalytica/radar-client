@@ -1312,6 +1312,32 @@ export const ServiceFunctions = {
 		const data = await res.json();
 
 		return data;
+	},
+	getReferalData: async(token) => {
+
+		// const res = await fetch(
+    //   `${URL}/api/profit_loss/report`,
+    //   {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'content-type': 'application/json',
+		// 		authorization: 'JWT ' + token,
+		// 	},
+    //     body: JSON.stringify(body)
+    //   }
+    // );
+
+		// const data = await res.json();
+
+		let data = null;
+
+		await setTimeout(() => {
+			data = {
+				data: 'data'
+			}
+		}, 1000);
+
+		return data;
 	}
 };
 
