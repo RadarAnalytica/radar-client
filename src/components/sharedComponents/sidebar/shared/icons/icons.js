@@ -1,3 +1,5 @@
+import { LockOutlined } from '@ant-design/icons';
+
 export const icons = {
     dashboard: (
         <svg
@@ -74,5 +76,8 @@ export const newIcons = {
             <path fillRule="evenodd" clipRule="evenodd" d="M5.85789 12.9779C5.30001 12.0171 3.87034 12.0066 3.2939 12.9517L0.45448 17.6071C-0.178545 18.645 0.695047 19.75 1.7287 19.75H7.27135C8.29321 19.75 9.16336 18.6704 8.56113 17.6333L5.85789 12.9779ZM1.81938 18.25L4.5639 13.7501L4.56848 13.75L4.57179 13.7501L7.18469 18.25H1.81938Z" />
         </svg>
 
+    ),
+    admin: (
+        <LockOutlined style={{ fontSize: 20}} />
     )
 }

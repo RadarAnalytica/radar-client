@@ -6,7 +6,6 @@ import { Suspense } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { HelmetProvider } from 'react-helmet-async';
 import { ProductProvider } from "./service/ProductContext";
-import UploadProvider from "./components/sharedComponents/uploadProvider/uploadProvider";
 
 const Contacts = React.lazy(() => import("./components/Contacts"));
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
@@ -47,7 +46,7 @@ const StartPage = React.lazy(() => import("./pages/StartPage"));
 const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage"));
 const UnitCalculatorPageDesktop = React.lazy(() => import("./pages/UnitCalculatorPageDesktop"));
 const DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));
-const AdminPage = React.lazy(() => import("./pages/AdminPage/AdminPage"));
+const BlogPage = React.lazy(() => import("./pages/AdminPage/BlogPage"));
 const SkuAnalysisPage = React.lazy(() => import("./pages/skuAnalysisPage/skuAnalysisPage"));
 const StockAnalysisPage = React.lazy(() => import("./pages/apiServicePages/stockAnalysisPage/stockAnalysisPage"));
 const ProductGroupsPage = React.lazy(() => import("./pages/productsGroupsPages/pages/mainGroupsPage/productsGroupsPage"));
@@ -61,6 +60,8 @@ const TrendingRequestsPage = React.lazy(() => import("./pages/trendingRequestsPa
 const TrendAnalysisQuery = React.lazy(() => import("./pages/TrendAnalysisQuery"));
 const ReportProfitLoss = React.lazy(() => import("./pages/ReportProfitLoss/ReportProfitLoss"));
 const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops"));
+const AdminDashboardPage = React.lazy(() => import("./pages/AdminPage/AdminDashboardPage"));
+const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferalPage"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -86,6 +87,10 @@ function App() {
             {/* dev */}
             <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
             <Route path='/dev/linked-shops' element={<ProtectedRoute userRoleProtected><LinkedShopsPage /></ProtectedRoute>} />
+            {/* Admin */}
+            <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
+            <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
+            <Route path='/admin-referal' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Реферальная программа'><AdminReferalPage /></ProtectedRoute>} />
             {/* Protected routes */}
             <Route path='/sku-frequency' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><RequestMonitoringPage /></ProtectedRoute>} />
             <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyPage /></ProtectedRoute>} />
@@ -97,7 +102,6 @@ function App() {
             <Route path='/selfcost' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Себестоимость товаров'><SelfCostPage /></ProtectedRoute>} />
             <Route path='/sku-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ артикула'><SkuAnalysisPage /></ProtectedRoute>} />
             <Route path='/sku-analysis/:id' element={<ProtectedRoute testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/sku-analysis' expireProtected routeRuName='Анализ артикула'><SkuIdPage /></ProtectedRoute>} />
-            <Route path='/admin' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель'><AdminPage /></ProtectedRoute>} />
             <Route path='/dashboard' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Сводка продаж'><DashboardPage /></ProtectedRoute>} />
             <Route path='/abc-data' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='ABC-анализ'><AbcAnalysisPage /></ProtectedRoute>} />
             <Route path='/seo' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Сравнение SEO'><SeoPage /></ProtectedRoute>} />

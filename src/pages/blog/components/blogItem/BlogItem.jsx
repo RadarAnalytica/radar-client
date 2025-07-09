@@ -56,7 +56,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
           'content-type': 'application/json',
           'authorization': 'JWT ' + authToken
         },
-        body: JSON.stringify({...allData, is_published: !is_published})
+        body: JSON.stringify({ ...allData, is_published: !is_published })
       })
 
       if (!res.ok) {
@@ -83,8 +83,12 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
           <p className={`${styles.card__text} ${styles.card__text_gray}`}>{moment(date).format('DD.MM.YYYY')}</p>
         </div>
 
-        <h3 className={styles.card__title}>{title}</h3>
-        <h3 className={styles.card__text}>{description ? description : '%Нет описания%'}</h3>
+        <div className={styles.card__titleWrapper}>
+          <h3 className={styles.card__title}>{title}</h3>
+          <p className={`${styles.card__text} ${styles.card__text_gray}`}>{description ? description : 'Нет описания'}</p>
+        </div>
+
+
         <div className={styles.card__controlsWrapper}>
 
           <div className={styles.card__buttonWrapper}>
@@ -93,7 +97,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
                 token: {
                   colorBorder: '#00000033',
                   colorPrimary: '#5329FF',
-                  fontSize: 10
+                  fontSize: 14
                 },
                 components: {
                   Button: {
@@ -106,10 +110,13 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
               <Button
                 loading={status.isLoading}
                 onClick={() => setPostIdForUpdate(rest?.id)}
+                style={{fontWeight: 600}}
+                type='primary'
               >Редактировать</Button>
               <Button
                 onClick={ArticleVisibilityHandler}
                 loading={status.isLoading}
+                style={{fontWeight: 600}}
               >{is_published ? 'Выключить' : 'Включить'}</Button>
             </ConfigProvider>
           </div>
@@ -118,7 +125,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
               token: {
                 colorBorder: '#00000033',
                 colorPrimary: '#ff4d4f',
-                fontSize: 10
+                fontSize: 14
               },
               components: {
                 Button: {
@@ -132,6 +139,7 @@ const BlogItem = ({ title, category, preview, date, description, is_published, a
               type='primary'
               onClick={() => setIsConfirmationModalActive(true)}
               loading={status.isLoading}
+              style={{fontWeight: 600}}
             >Удалить</Button>
           </ConfigProvider>
         </div>
