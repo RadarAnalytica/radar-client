@@ -18,6 +18,7 @@ const finReportsUrls = [
 
 const NestedLink = ({ title, icon, links, isMenuHidden }) => {
     const { pathname } = useLocation()
+    console.log(pathname)
     const [isInList, setIsInList] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
 
@@ -28,22 +29,25 @@ const NestedLink = ({ title, icon, links, isMenuHidden }) => {
             setIsOpen(false)
         }
         if (!isMenuHidden && isInList) {
-            timeout = setTimeout(() => setIsOpen(true), 100)
+            timeout = setTimeout(() => setIsOpen(true), 50)
+            setIsOpen(true)
+        }
+        if (!isMenuHidden && !isInList) {
+            setIsOpen(false)
         }
 
         return () => {timeout && clearTimeout(timeout)}
-    }, [isMenuHidden, isInList])
+    }, [isMenuHidden, isInList, pathname])
 
     useEffect(() => {
-        let isInList;
+        let isInList = false;
         if (title !== 'Мои финансы' && pathname !== '/abc-data-reports') {
             isInList = links.some(_ => pathname.includes(_.url) && pathname !== '/main');
-            isInList && setIsInList(isInList)
         }
         if (!isInList && title === 'Мои финансы' && (links.some(_ => pathname.includes(_.url) && pathname !== '/main') || finReportsUrls.some(_ => _ === pathname) && pathname !== '/main')) {
             isInList = true;
-            setIsInList(isInList)
         }
+        setIsInList(isInList)
        
     }, [pathname, links])
 
