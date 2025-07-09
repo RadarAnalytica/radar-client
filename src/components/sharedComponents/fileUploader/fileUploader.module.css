@@ -127,15 +127,23 @@
 
 /* file list item */
 .fileList__item {
+    min-width: 100%;
     width: 100%;
     display: flex;
-    gap: 10px;
-    align-items: center;
-    padding: 4px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px dashed silver;
 }
 
 .fileList__statusBlock {
-    color: #8C8C8C
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.fileList__statusBlock_gray {
+    color: #8C8C8C;
 }
 .fileList__statusBlock_success {
     color: #00B69B

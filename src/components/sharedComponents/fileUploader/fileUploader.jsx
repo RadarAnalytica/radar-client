@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
 import styles from './fileUploader.module.css'
-import { Upload, ConfigProvider, Button, Progress } from 'antd'
+import { Upload, ConfigProvider, Button, Progress, Tooltip } from 'antd'
 import uploadIcon from '../../../pages/images/upload.svg'
 import AuthContext from '../../../service/AuthContext'
 import { URL } from '../../../service/config'
@@ -56,6 +56,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     const [uploadStatus, setUploadStatus] = useState(initUploadStatus);
     const [progressBarState, setProgressBarState] = useState(0)
     const [requestCounter, setRequestCounter] = useState(0)
+    const [filesQuantityError, setFilesQuantityError] = useState(false)
     const intervalRef = useRef(null)
     // use it to abort  uploadHandler whe unmounting
     const uploadAbortControllerRef = useRef(null);
@@ -306,7 +307,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         }
                     }
                 }))
-                
+
                 // обновляем статус загрузки
                 setUploadStatus(initUploadStatus)
                 // обновляем список отчетов
@@ -485,6 +486,10 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     useEffect(() => {
         const delButton = document.querySelectorAll('.ant-upload-list-item-action');
         const listItem = document.querySelectorAll('.ant-upload-list-item')
+        const list = document.querySelector('.ant-upload-list')
+        if (list) {
+            list.style.width = '100%'
+        }
         if (listItem) {
             listItem.forEach(_ => _.style.margin = 0)
         }
@@ -505,6 +510,15 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             // localStorage.removeItem('uploadingFiles')
         }
     }, [requestCounter, intervalRef])
+    // --------- скрываем ошибку количества файлов через 2 секунды ---------//
+    useEffect(() => {
+        let timeout;
+        if (filesQuantityError) {
+            timeout = setTimeout(() => {setFilesQuantityError(false)}, 2000)
+        }
+
+        return () => {timeout && clearTimeout(timeout)}
+    }, [filesQuantityError])
 
 
     return (
@@ -532,23 +546,33 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                     pastable
                     maxCount={10}
                     onRemove={file => {
-                        const index = fileList.indexOf(file);
-                        const newFileList = fileList.slice();
-                        newFileList.splice(index, 1);
-                        setFileList(newFileList);
+                        const index = fileList.findIndex(_ => _.file.name === file.name);
+                        setFileList(prev => {
+                            if (index !== -1) {
+                                prev.splice(index, 1)
+                                return [...prev]
+                            } else {
+                                return prev
+                            }
+                        });
                     }}
                     beforeUpload={file => {
-                        setFileList(prevFileList => [...prevFileList, {
-                            file: file,
-                            status: {
-                                isLoading: false,
-                                isUninitialized: true,
-                                isError: false,
-                                isSuccess: false,
-                                message: ''
+                        setFileList(prevFileList => {
+                            if (prevFileList.length >= 10) {
+                                setFilesQuantityError(true)
+                                return prevFileList;
                             }
-                        }])
-                        return false;
+                            return [...prevFileList, {
+                                file: file,
+                                status: {
+                                    isLoading: false,
+                                    isUninitialized: true,
+                                    isError: false,
+                                    isSuccess: false,
+                                    message: ''
+                                }
+                            }]
+                        })
                     }}
                     fileList={fileList.map(_ => _.file)}
                     itemRender={(originNode, file, currList, actions) => {
@@ -560,39 +584,48 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         const item = fileList[index]
 
                         return (
-                            <div className={styles.fileList__item}>
-                                {originNode}
-                                {item?.status &&
-                                    <>
-                                        {item.status.isLoading &&
-                                            <div className={styles.fileList__statusBlock}>
-                                                {item.status.message || 'Загрузка'}
-                                            </div>
-                                        }
-                                        {item.status.isError &&
-                                            <div className={styles.fileList__statusBlock_error}>
-                                                {item.status.message || 'Ошибка'}
-                                            </div>
-                                        }
-                                        {item.status.isSuccess &&
-                                            <div className={styles.fileList__statusBlock_success}>
-                                                {item.status.message || 'Успешно'}
-                                            </div>
-                                        }
-                                        {item.status.isUninitialized &&
-                                            <div className={styles.fileList__statusBlock}>
-                                                {item.status.message || 'Готово к загрузке'}
-                                            </div>
-                                        }
-                                    </>
+                            <>
+                                <div className={styles.fileList__item}>
+                                    {originNode}
+                                    {item?.status &&
+                                        <>
+                                            {item.status.isLoading &&
+                                                <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_gray}`}>
+                                                    {item.status.message || 'Загрузка'}
+                                                </div>
+                                            }
+                                            {item.status.isError &&
+                                                <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_error}`}>
+                                                    {item.status.message ? (
+                                                        <Tooltip
+                                                            title={item.status.message}
+                                                            arrow={false}
+                                                        >
+                                                            {item.status.message}
+                                                        </Tooltip>
+                                                    ) : 'Ошибка'}
+                                                </div>
+                                            }
+                                            {item.status.isSuccess &&
+                                                <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_success}`}>
+                                                    {item.status.message || 'Успешно'}
+                                                </div>
+                                            }
+                                            {item.status.isUninitialized &&
+                                                <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_gray}`}>
+                                                    {item.status.message || 'Готово к загрузке'}
+                                                </div>
+                                            }
+                                        </>
 
-                                }
-                                {!item && uploadStatus.isUploading &&
-                                    <div className={styles.fileList__statusBlock}>
-                                        {'У вас есть файлы в обработке. Проверяем статус.'}
-                                    </div>
-                                }
-                            </div>
+                                    }
+                                    {!item && uploadStatus.isUploading &&
+                                        <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_gray}`}>
+                                            {'У вас есть файлы в обработке. Проверяем статус.'}
+                                        </div>
+                                    }
+                                </div>
+                            </>
                         );
                     }}
                 >
@@ -606,6 +639,11 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
 
                 {/* кнопки управления */}
+                {filesQuantityError &&
+                        <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_error}`} style={{ marginLeft: 16, marginBottom: 16, fontSize: 16}}>
+                            {'ВНИМАНИЕ! Вы можете загрузить не более 10 файлов одновременно! (Лишние файлы были исключены из списка)'}
+                        </div>
+                }
 
 
                 {fileList?.length > 0 && fileList.every(_ => _?.status?.isUninitialized) && !uploadStatus.isUploading &&
@@ -618,7 +656,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         {uploadStatus.isSuccess && uploadStatus.message ? uploadStatus.message : 'Загрузить'}
                     </Button>
                 }
-                {fileList?.length > 0 && fileList.every(_ => !_?.status?.isUninitialized) && !uploadStatus.isUploading &&
+                {fileList?.length > 0 && !uploadStatus.isUploading &&
                     <ConfigProvider
                         theme={{
                             token: {
