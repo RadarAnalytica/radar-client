@@ -56,7 +56,6 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     const [uploadStatus, setUploadStatus] = useState(initUploadStatus);
     const [progressBarState, setProgressBarState] = useState(0)
     const [requestCounter, setRequestCounter] = useState(0)
-    const [filesQuantityError, setFilesQuantityError] = useState(false)
     const intervalRef = useRef(null)
     // use it to abort  uploadHandler whe unmounting
     const uploadAbortControllerRef = useRef(null);
@@ -510,15 +509,6 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             // localStorage.removeItem('uploadingFiles')
         }
     }, [requestCounter, intervalRef])
-    // --------- скрываем ошибку количества файлов через 2 секунды ---------//
-    useEffect(() => {
-        let timeout;
-        if (filesQuantityError) {
-            timeout = setTimeout(() => {setFilesQuantityError(false)}, 2000)
-        }
-
-        return () => {timeout && clearTimeout(timeout)}
-    }, [filesQuantityError])
 
 
     return (
@@ -544,7 +534,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                     disabled={uploadStatus.isUploading}
                     className={styles.uploader__component}
                     pastable
-                    maxCount={10}
+                    //maxCount={10}
                     onRemove={file => {
                         const index = fileList.findIndex(_ => _.file.name === file.name);
                         setFileList(prev => {
@@ -558,10 +548,6 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                     }}
                     beforeUpload={file => {
                         setFileList(prevFileList => {
-                            if (prevFileList.length >= 10) {
-                                setFilesQuantityError(true)
-                                return prevFileList;
-                            }
                             return [...prevFileList, {
                                 file: file,
                                 status: {
@@ -639,9 +625,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
 
                 {/* кнопки управления */}
-                {filesQuantityError &&
-                        <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_error}`} style={{ marginLeft: 16, marginBottom: 16, fontSize: 16}}>
-                            {'ВНИМАНИЕ! Вы можете загрузить не более 10 файлов одновременно! (Лишние файлы были исключены из списка)'}
+                {fileList?.length > 10 &&
+                        <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_error}`} style={{ marginLeft: 16, marginBottom: 16, fontSize: 16, overflow: 'hidden'}}>
+                            {'Превышен лимит: вы можете загрузить не более 10 файлов одновременно.'}
                         </div>
                 }
 
@@ -652,6 +638,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         type='primary'
                         onClick={uploadHandler}
                         loading={uploadStatus.isUploading}
+                        disabled={fileList.length > 10}
                     >
                         {uploadStatus.isSuccess && uploadStatus.message ? uploadStatus.message : 'Загрузить'}
                     </Button>

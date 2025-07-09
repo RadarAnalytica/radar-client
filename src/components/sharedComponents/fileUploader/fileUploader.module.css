@@ -135,6 +135,7 @@
     align-items: flex-start;
     padding: 10px 0;
     border-bottom: 1px dashed silver;
+    overflow-x: hidden;
 }
 
 .fileList__statusBlock {
