@@ -149,7 +149,7 @@ const ReportMain = () => {
         <div style={{ width: '100%', padding: '20px 0' }} className="container dash-container">
           <Header title={'Главная'} titlePrefix={'Отчёт'} />
         </div>
-        <div className='container dash-container'>
+        {/* <div className='container dash-container'>
           <div className={styles.instructionWrapper}>
             <div className={styles.instructionTop}>
               <div className={styles.topTextTitle}>
@@ -309,7 +309,7 @@ const ReportMain = () => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
         <div className='container dash-container'>
 
 

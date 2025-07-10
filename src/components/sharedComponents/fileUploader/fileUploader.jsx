@@ -334,11 +334,12 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     //-------- проверка на наличие файлов в процессинге при загрузке страницы ----------//
     useEffect(() => {
         // функция для инит проверки
-        const initialCheck = async () => {
+        const initialCheck = async (hasNoSavedList = false, list) => {
+
             // меняем статус загрузки
-            setUploadStatus({ ...initUploadStatus, isUploading: true })
+            setUploadStatus(_ => ({ ...initUploadStatus, isUploading: true }))
             // меняем статус бара
-            setProgressBarState(1)
+            setProgressBarState(_ => 1)
             try {
                 let res = await fetch(`${URL}/api/file-process/status-count`, {
                     headers: {
@@ -364,11 +365,53 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 const { pending, processing } = res
                 const totalAmount = pending.count + processing.count;
 
+
+                // если нет сохраненного списка файлов выходим если нет в процессинге ничего
+                if (hasNoSavedList && totalAmount === 0) {
+                    setUploadStatus(initUploadStatus)
+                    setProgressBarState(0)
+                    localStorage.removeItem('uploadingFiles')
+                }
+                // если есть то формируем список фалов на основе того что в процессинге и работаем с этим
+                if (hasNoSavedList && totalAmount > 0) {
+                    list = [
+                        ...pending.files.map(_ =>
+                        ({
+                            file: {
+                                name: _
+                            },
+                            status: {
+                                isLoading: true,
+                                isUninitialized: false,
+                                isError: false,
+                                isSuccess: false,
+                                message: ''
+                            }
+                        })
+                        ),
+                        ...processing.files.map(_ => ({
+                            file: {
+                                name: _
+                            },
+                            status: {
+                                isLoading: true,
+                                isUninitialized: false,
+                                isError: false,
+                                isSuccess: false,
+                                message: ''
+                            }
+                        }))
+
+                    ]
+
+                    setFileList(list)
+                }
+
                 // если нет то чекаем статус по сохраненным файлам и выходим
                 if (totalAmount === 0) {
                     // получаем список загруженных файлов
                     const finalResult = await checkFinalStatus(authToken)
-                    setFileList(prev => prev.map(_ => {
+                    list = list.map(_ => {
                         // ищем в списке файлы с именем айтем, фильтруем по айди и берем с наибольшим
                         const item = finalResult?.filter(i => i.original_filename === _.file.name).sort((a, b) => a.id - b.id).pop()
                         // если нашли то обновляем статус файла
@@ -415,7 +458,8 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                 ..._,
                             }
                         }
-                    }))
+                    })
+                    setFileList([...list])
                     setUploadStatus(initUploadStatus)
                     setProgressBarState(0)
                     localStorage.removeItem('uploadingFiles')
@@ -427,7 +471,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 if (totalAmount <= fileList?.length) {
                     // получаем список загруженных файлов
                     const finalResult = await checkFinalStatus(authToken)
-                    setFileList(prev => prev.map(_ => {
+                    list = list.map(_ => {
                         // сначала проверяем что файл есть в процессинге (в статусах pending || processing) т.к. если он завершен, то мы увидим его статус через checkFinalStatus()
                         const isInPendingList = pending.files.some(pe => pe === _.file.name);
                         const isInProcessingList = pending.files.some(pc => pc === _.file.name);
@@ -488,20 +532,21 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                 }
                             }
                         }
-                    }))
+                    })
+                    setFileList([...list])
                 }
 
 
                 // Проверяем что в списке файлов есть файлы со статусом "Загрузка" и запустим проверку для них. 
                 // Если таких файлов нет, то выходим
-                const isHasLoadingStatus = fileList.some(_ => _.status.isLoading);
+                const isHasLoadingStatus = list.some(_ => _.status.isLoading);
                 if (!isHasLoadingStatus) {
                     setUploadStatus(initUploadStatus)
                     setProgressBarState(0)
                     return
                 } else {
                     // обновляем статус бар
-                    setProgressBarState(2)
+                    setProgressBarState(_ => 2)
 
                     // и запускаем цикл проверки
                     if (!intervalRef?.current) {
@@ -527,7 +572,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
         if (uploadingFiles) {
             uploadingFiles = JSON.parse(uploadingFiles)
             setFileList(uploadingFiles)
-            initialCheck()
+            initialCheck(false, uploadingFiles)
+        } else {
+            initialCheck(true, undefined)
         }
 
 
