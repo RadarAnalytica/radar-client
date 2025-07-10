@@ -44,7 +44,6 @@ const SkuFrequencyPage = () => {
                         <Header title='Поиск прибыльной ниши' />
                     </div>
                     <HowtoWidget />
-                    <HowtoWidget />
                     <div className={styles.page__filtersWrapper}>
                         <Filters
                             setLoading={() => {}}
