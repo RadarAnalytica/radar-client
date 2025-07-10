@@ -557,7 +557,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
     // --------- сбрасываем интервал проверки по условию ------------//
     useEffect(() => {
-        if (intervalRef?.current && requestCounter >= 600) {
+        if (intervalRef?.current && requestCounter >= 60) {
             setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось обработать файлы. Пожалуйста, обратитесь в поддержку' })
             intervalRef?.current && clearInterval(intervalRef.current)
             intervalRef.current = null
