@@ -110,7 +110,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             // обрабатываем упавший запрос
             if (!response.ok) {
                 // меняем статус загрузки
-                setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.detail || 'Не удалось загрузить файлы' });
+                setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.message || 'Не удалось загрузить файлы' });
                 setProgressBarState(0)
                 // меняем статус файлов
                 setFileList(prev => prev.map(_ => ({
@@ -123,6 +123,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         message: 'Ошибка'
                     }
                 })))
+                localStorage.removeItem('uploadingFiles')
                 // выходим
                 return
             }
@@ -177,6 +178,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             }
         } catch (error) {
             setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.detail || 'Не удалось загрузить файлы' });
+            localStorage.removeItem('uploadingFiles')
         }
     }
 
