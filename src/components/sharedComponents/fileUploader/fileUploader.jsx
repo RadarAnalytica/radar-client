@@ -110,6 +110,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             // обрабатываем упавший запрос
             if (!response.ok) {
                 // меняем статус загрузки
+                response = await response.json()
                 setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.message || 'Не удалось загрузить файлы' });
                 setProgressBarState(0)
                 // меняем статус файлов
@@ -177,7 +178,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 return
             }
         } catch (error) {
-            setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.detail || 'Не удалось загрузить файлы' });
+            setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: 'Не удалось загрузить файлы' });
             localStorage.removeItem('uploadingFiles')
         }
     }
