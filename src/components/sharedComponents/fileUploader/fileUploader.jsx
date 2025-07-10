@@ -110,7 +110,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             // обрабатываем упавший запрос
             if (!response.ok) {
                 // меняем статус загрузки
-                setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.detail || 'Не удалось загрузить файлы' });
+                setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.message || 'Не удалось загрузить файлы' });
                 setProgressBarState(0)
                 // меняем статус файлов
                 setFileList(prev => prev.map(_ => ({
@@ -123,6 +123,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         message: 'Ошибка'
                     }
                 })))
+                localStorage.removeItem('uploadingFiles')
                 // выходим
                 return
             }
@@ -177,6 +178,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             }
         } catch (error) {
             setUploadStatus({ ...initUploadStatus, isUploading: false, isError: true, message: response.detail || 'Не удалось загрузить файлы' });
+            localStorage.removeItem('uploadingFiles')
         }
     }
 
@@ -358,7 +360,8 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                 res = await res.json()
 
                 // проверяем есть ли файлы в процессе
-                const totalAmount = res.pending.count + res.processing.count;
+                const { pending, processing } = res
+                const totalAmount = pending.count + processing.count;
 
                 // если нет то чекаем статус по сохраненным файлам и выходим
                 if (totalAmount === 0) {
@@ -393,8 +396,20 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                                 status: status
                             }
 
-                            // если не нашли то возвращаем текущий
+                            // если вдруг файл все еще висит в загрузке, то уходим в ошибку или возвращаем текущий статус
                         } else {
+                            if (_.status.isLoading) {
+                                return {
+                                    ..._,
+                                    status: {
+                                        isLoading: false,
+                                        isUninitialized: false,
+                                        isError: true,
+                                        isSuccess: false,
+                                        message: 'Не удалось определить статус файла'
+                                    }
+                                }
+                            }
                             return {
                                 ..._,
                             }
@@ -408,59 +423,100 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
 
                 // если в процессе файлов меньше чем сохранено (нужно проверить статус некоторых)
-                if (totalAmount < fileList?.length) {
+                if (totalAmount <= fileList?.length) {
                     // получаем список загруженных файлов
                     const finalResult = await checkFinalStatus(authToken)
                     setFileList(prev => prev.map(_ => {
-                        // ищем в списке файлы с именем айтем, фильтруем по айди и берем с наибольшим
-                        const item = finalResult?.filter(i => i.original_filename === _.file.name).sort((a, b) => a.id - b.id).pop()
-                        // если нашли то обновляем статус файла
-                        if (item) {
-                            let status = _.status;
-                            if (item.status === 'failed') {
-                                status = {
-                                    isLoading: false,
-                                    isUninitialized: false,
-                                    isError: true,
-                                    isSuccess: false,
-                                    message: item.error_message || 'Не удалось обработать файл'
-                                }
-                            }
-                            if (item.status === 'completed') {
-                                status = {
-                                    isLoading: false,
-                                    isUninitialized: false,
-                                    isError: false,
-                                    isSuccess: true,
-                                    message: 'Файл успешно загружен'
-                                }
-                            }
+                        // сначала проверяем что файл есть в процессинге (в статусах pending || processing) т.к. если он завершен, то мы увидим его статус через checkFinalStatus()
+                        const isInPendingList = pending.files.some(pe => pe === _.file.name);
+                        const isInProcessingList = pending.files.some(pc => pc === _.file.name);
+
+
+                        // если находим в процессинге, то ставим статус в "Загрузка", а если нет то проверяем по финалке
+                        if (isInPendingList || isInProcessingList) {
                             return {
                                 ..._,
-                                status: status
+                                status: {
+                                    isLoading: true,
+                                    isUninitialized: false,
+                                    isError: false,
+                                    isSuccess: false,
+                                    message: ''
+                                }
                             }
-
-                            // если не нашли то возвращаем текущий
                         } else {
-                            return { ..._ }
+                            const item = finalResult?.filter(i => i.original_filename === _.file.name).sort((a, b) => a.id - b.id).pop()
+                            // если нашли то обновляем статус файла а если нет, то уводим в ошибку
+                            if (item) {
+                                let status = _.status;
+                                if (item.status === 'failed') {
+                                    status = {
+                                        isLoading: false,
+                                        isUninitialized: false,
+                                        isError: true,
+                                        isSuccess: false,
+                                        message: item.error_message || 'Не удалось обработать файл'
+                                    }
+                                }
+                                if (item.status === 'completed') {
+                                    status = {
+                                        isLoading: false,
+                                        isUninitialized: false,
+                                        isError: false,
+                                        isSuccess: true,
+                                        message: 'Файл успешно загружен'
+                                    }
+                                }
+                                return {
+                                    ..._,
+                                    status: status
+                                }
+
+                                // если не нашли то возвращаем текущий
+                            } else {
+                                return {
+                                    ..._,
+                                    status: {
+                                        isLoading: false,
+                                        isUninitialized: false,
+                                        isError: true,
+                                        isSuccess: false,
+                                        message: 'Не удалось получить статус файла'
+                                    }
+
+                                }
+                            }
                         }
                     }))
                 }
 
-                // если есть фалы в процессе то обновляем статус бар
-                setProgressBarState(2)
 
-                // и запускаем цикл проверки
-                if (!intervalRef?.current) {
-                    intervalRef.current = setInterval(() => {
-                        checkAllUploads(authToken, totalAmount)
-                    }, 1000)
+                // Проверяем что в списке файлов есть файлы со статусом "Загрузка" и запустим проверку для них. 
+                // Если таких файлов нет, то выходим
+                const isHasLoadingStatus = fileList.some(_ => _.status.isLoading);
+                if (!isHasLoadingStatus) {
+                    setUploadStatus(initUploadStatus)
+                    setProgressBarState(0)
+                    return
+                } else {
+                    // обновляем статус бар
+                    setProgressBarState(2)
+
+                    // и запускаем цикл проверки
+                    if (!intervalRef?.current) {
+                        intervalRef.current = setInterval(() => {
+                            checkAllUploads(authToken, totalAmount)
+                        }, 1000)
+                    }
                 }
 
             } catch {
                 setUploadStatus(initUploadStatus)
+                setUploadStatus({ ...initUploadStatus, isError: false, message: 'Не удалось проверить статус файлов в обработке' })
+                setFileList([])
                 intervalRef?.current && clearInterval(intervalRef.current)
                 intervalRef.current = null
+                localStorage.removeItem('uploadingFiles')
             }
         }
 
@@ -472,6 +528,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             setFileList(uploadingFiles)
             initialCheck()
         }
+
 
         return () => {
             intervalRef?.current && clearInterval(intervalRef.current)
@@ -506,7 +563,21 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             intervalRef.current = null
             setProgressBarState(0)
             setRequestCounter(0)
-            // localStorage.removeItem('uploadingFiles')
+            setFileList(prev => prev.map(_ => {
+                if (_.status.isLoading) {
+                    return {
+                        ..._,
+                        status: {
+                            isLoading: false,
+                            isUninitialized: false,
+                            isError: false,
+                            isSuccess: false,
+                            message: 'Ошибка'
+                        }
+                    }
+                }
+            }))
+            localStorage.removeItem('uploadingFiles')
         }
     }, [requestCounter, intervalRef])
 
@@ -548,6 +619,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                     }}
                     beforeUpload={file => {
                         setFileList(prevFileList => {
+                            if (prevFileList.some(_ => _.file.name === file.name)) {
+                                return prevFileList
+                            }
                             return [...prevFileList, {
                                 file: file,
                                 status: {
@@ -626,9 +700,9 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
                 {/* кнопки управления */}
                 {fileList?.length > 10 &&
-                        <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_error}`} style={{ marginLeft: 16, marginBottom: 16, fontSize: 16, overflow: 'hidden'}}>
-                            {'Превышен лимит: вы можете загрузить не более 10 файлов одновременно.'}
-                        </div>
+                    <div className={`${styles.fileList__statusBlock} ${styles.fileList__statusBlock_error}`} style={{ marginLeft: 16, marginBottom: 16, fontSize: 16, overflow: 'hidden' }}>
+                        {'Превышен лимит: вы можете загрузить не более 10 файлов одновременно.'}
+                    </div>
                 }
 
 
