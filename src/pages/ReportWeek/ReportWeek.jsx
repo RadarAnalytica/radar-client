@@ -88,9 +88,6 @@ export default function ReportWeek() {
 
 	const week = useMemo(() => updateSavedFilterWeek(), [activeBrand, weekSelected])
 
-	console.log('week', week);
-	console.log('weekSelected', weekSelected);
-
 	const initTableColumns = () => {
 		const savedColumnsWeek = localStorage.getItem('reportWeekColumns');
 		if (savedColumnsWeek) {
