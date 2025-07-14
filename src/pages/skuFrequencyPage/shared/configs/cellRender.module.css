@@ -7,6 +7,12 @@
     color: #1A1A1A;
 }
 
+.cell_rate {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .cell__wrapper {
     width: 70%;
     display: flex;

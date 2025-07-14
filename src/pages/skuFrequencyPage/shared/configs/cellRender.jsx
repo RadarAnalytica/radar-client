@@ -34,6 +34,7 @@ export const cellRender = (value, context) => {
                 to={url}
                 target='_blank'
                 title='Смотреть подробнее'
+                key={context.dataIndex}
             >
                 <p className={styles.cell__title}>{value}</p>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
@@ -45,12 +46,29 @@ export const cellRender = (value, context) => {
     }
 
     if (context.dataIndex === 'niche_rating') {
-        const color = getRateStarColor(value)
+        let v = value + 1;
         return (
             <div
-                className={styles.cell}
+                className={`${styles.cell} ${styles.cell_rate}`}
+                key={context.dataIndex}
             >
-                <ConfigProvider
+                {[1, 2, 3, 4, 5].map(_ => {
+                    if (_ <= v) {
+                        return (
+                            <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z" fill="#5329FF" />
+                            </svg>
+                        )
+                    } else {
+                        return (
+                            <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z" fill="#8C8C8C" />
+                            </svg>
+                        )
+
+                    }
+                })}
+                {/* <ConfigProvider
                     theme={{
                         components: {
                             Rate: {
@@ -60,11 +78,11 @@ export const cellRender = (value, context) => {
                     }}
                 >
                     <Rate
-                        value={value + 1}
-                        allowHalf
+                        value={v}
+                        //allowHalf
                         disabled
                     />
-                </ConfigProvider>
+                </ConfigProvider> */}
             </div>
         )
     }
@@ -74,6 +92,7 @@ export const cellRender = (value, context) => {
         return (
             <div
                 className={styles.cell}
+                key={context.dataIndex}
             >
                 <div className={styles.cell__wrapper}>
                     {context.units ? formatPrice(value, context.units) : formatPrice(value, '')}
@@ -86,6 +105,7 @@ export const cellRender = (value, context) => {
     return (
         <div
             className={styles.cell}
+            key={context.dataIndex}
         >
             {context.units ? formatPrice(value, context.units) : formatPrice(value, '')}
         </div>

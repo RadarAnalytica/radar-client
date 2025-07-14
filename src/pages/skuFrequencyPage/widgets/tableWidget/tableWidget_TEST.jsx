@@ -37,7 +37,7 @@ const paginationTheme = {
 
 
 const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
-
+    console.log('render')
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
     //const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
@@ -124,26 +124,26 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
 
   
 
-    useEffect(() => {
-        const updateHeight = () => {
-            if (containerRef?.current) {
-                // ref контейнера который занимает всю высоту
-                const container = containerRef.current;
+    // useEffect(() => {
+    //     const updateHeight = () => {
+    //         if (containerRef?.current) {
+    //             // ref контейнера который занимает всю высоту
+    //             const container = containerRef.current;
 
-                // расчет высоты шапки и добавление отступов контейнера
-                const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-                const paddings = 32;
-                // расчет и сохранение высоты таблицы
-                const availableHeight = container.offsetHeight - headerHeight - paddings;
-                setScrollY(availableHeight);
-                // расчет ширины контейнера
-                setScrollX(container.offsetWidth - 32);
-            }
-        };
+    //             // расчет высоты шапки и добавление отступов контейнера
+    //             const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
+    //             const paddings = 32;
+    //             // расчет и сохранение высоты таблицы
+    //             const availableHeight = container.offsetHeight - headerHeight - paddings;
+    //             setScrollY(availableHeight);
+    //             // расчет ширины контейнера
+    //             setScrollX(container.offsetWidth - 32);
+    //         }
+    //     };
 
-        updateHeight();
+    //     updateHeight();
 
-    }, [newTableConfig, requestData])
+    // }, [newTableConfig, requestData])
 
     useEffect(() => {
         const tableBody = document.querySelector('.ant-table-tbody')
@@ -306,6 +306,9 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
                     }}
                 >
                     <Table
+                        scroll={{
+                            scrollToFirstRowOnChange: true
+                        }}
                         virtual
                         dataSource={requestData}
                         columns={sortFunc(tableConfig)}
