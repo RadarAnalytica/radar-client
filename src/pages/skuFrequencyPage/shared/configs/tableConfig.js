@@ -43,6 +43,7 @@ export const newTableConfig = [
     // Main column: Поисковые запросы
     {
         title: '',
+        key: 'm01',
         className: 'first__cell',
         hidden: false,
         children: [
@@ -65,6 +66,7 @@ export const newTableConfig = [
     {
         title: 'Основные',
         className: 'table__mainHeader',
+        key: 'm02',
         hidden: false,
         children: [
             {sortDirections: ['ASC', 'DESC'], title: getTitleWithTooltip('Рейтинг качества ниши'), dataIndex: 'niche_rating', width: 300, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
@@ -85,21 +87,23 @@ export const newTableConfig = [
             {sortDirections: ['ASC', 'DESC'], title: 'Частотность за 90 дней', dataIndex: 'frequency_90', width: 220, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             // { title: '% выручки у ТОП-30 товаров, %', dataIndex: 'monopoly_percent', width: 220,  units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             //{title: 'Ср. кол-во оценок, %', dataIndex: 'avg_reviews', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-        ].map(_ => ({ ..._, render: _.render.bind(_), sortIcon: _.sortIcon.bind(_) }))
+        ].map(_ => ({ ..._, render: _.render.bind(_), sortIcon: _.sortIcon.bind(_), key: _.dataIndex }))
     },
     {
         title: 'Динамика популярности и роста запросов',
         className: 'table__mainHeader_colored',
+        key: 'm03',
         hidden: false,
         children: [
             {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: 'Динамика запроса за 30 дней, %', dataIndex: 'g30', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: 'Динамика запроса за 60 дней, %', dataIndex: 'g60', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: 'Динамика запроса за 90 дней, %', dataIndex: 'g90', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-        ].map(_ => ({ ..._, render: _.render.bind(_) }))
+        ].map(_ => ({ ..._, render: _.render.bind(_) , key: _.dataIndex}))
     },
     {
         title: 'Дополнительные параметры',
         className: 'table__mainHeader',
+        key: 'm04',
         hidden: false,
         children: [
             {sortDirections: ['ASC', 'DESC'], title: 'Процент выкупа, %', dataIndex: 'buyout_percent', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
@@ -108,21 +112,23 @@ export const newTableConfig = [
             //{title: 'Кол-во артикулов по запросу, шт', dataIndex: 'goods_quantity', width: 220,  units: 'шт', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             {sortDirections: ['ASC', 'DESC'], title: 'Кол-во товаров в ТОП-1200 за 30 дней, шт', dataIndex: 'top_goods_quantity', width: 220, units: 'шт', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             //{title: 'Комиссия FBO, %', dataIndex: 'fbo_commision', width: 220,  units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-        ].map(_ => ({ ..._, render: _.render.bind(_) }))
+        ].map(_ => ({ ..._, render: _.render.bind(_), key: _.dataIndex }))
     },
     {
         title: 'У артикулов на первой странице',
         className: 'table__mainHeader_colored',
+        key: 'm05',
         hidden: false,
         children: [
             {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: getTitleWithTooltip('Артикулов в рекламе, %'), dataIndex: 'advert_percent', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: getTitleWithTooltip('Артикулов с внешним трафиком, %'), dataIndex: 'external_advert_percent', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             {sortDirections: ['ASC', 'DESC'], className: 'cell__red', title: 'Среднее кол-во отзывов у артикулов (без учета внутренней рекламы WB), шт', dataIndex: 'avg_reviews', width: 220, units: 'шт', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-        ].map(_ => ({ ..._, render: _.render.bind(_) }))
+        ].map(_ => ({ ..._, render: _.render.bind(_), key: _.dataIndex}))
     },
     {
         title: 'У артикулов на первых 3-х страницах',
         className: 'table__mainHeader',
+        key: 'm06',
         hidden: false,
         children: [
             {sortDirections: ['ASC', 'DESC'], title: 'Выручка за 30 дней, ₽', dataIndex: 'revenue_300', width: 220, units: '₽', filterOptions: true, sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, render: function (value) { return cellRender(value, this) }, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
@@ -130,7 +136,7 @@ export const newTableConfig = [
             {sortDirections: ['ASC', 'DESC'], title: 'Упущенной выручки за 30 дней, %', dataIndex: 'lost_revenue_percent_300', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
             {sortDirections: ['ASC', 'DESC'], title: getTitleWithTooltip('Средняя цена, ₽'), dataIndex: 'avg_price_300', width: 220, units: '₽', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false, comment: 'У артикулов на первых 3-х страницах' },
             {sortDirections: ['ASC', 'DESC'], title: getTitleWithTooltip('Артикулов с продажами, %'), dataIndex: 'goods_with_sales_percent_300', width: 220, units: '%', sorter: true, sortIcon: function ({ sortOrder }) { return <SortIcon sortOrder={sortOrder} ctx={this} /> }, filterOptions: true, render: function (value) { return cellRender(value, this) }, hidden: false },
-        ].map(_ => ({ ..._, render: _.render.bind(_) }))
+        ].map(_ => ({ ..._, render: _.render.bind(_), key: _.dataIndex }))
     }
 ]
 //.map(_ => ({ ..._, render:  _.render ? _.render.bind(_) : undefined }));
