@@ -4,11 +4,11 @@ import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent'
-import { OptionsWidget, TableSettingsWidget, HowtoWidget } from './widgets'
+import { OptionsWidget, TableSettingsWidget, HowtoWidget, TableWidget } from './widgets'
 //import OptionsSettingsWidget from './widgets'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import DownloadButton from '../../components/DownloadButton'
-import TableWidget_TEST from './widgets/tableWidget/tableWidget_TEST'
+import TableWidget_TEST from './widgets/tableWidget/tableWidget'
 import { actions as reqActions } from '../../redux/requestsMonitoring/requestsMonitoringSlice'
 import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { newTableConfig } from './shared'
@@ -73,8 +73,7 @@ const SkuFrequencyPage = () => {
                         <TableSettingsWidget />
                     </div>}
                 </div>
-                {/* <TableWidget /> */}
-                <TableWidget_TEST
+                <TableWidget
                     tableConfig={tableConfig}
                     setTableConfig={setTableConfig}
                 />
