@@ -1,5 +1,4 @@
 const dynamicNormalizer = (dynamic, from, to) => {
-    console.log(dynamic)
     let result = {
         start: null,
         end: null

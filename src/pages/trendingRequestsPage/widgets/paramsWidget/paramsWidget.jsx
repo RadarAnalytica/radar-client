@@ -51,6 +51,30 @@ const getDynamicNormilizedValue = (type, value, periodType) => {
     return normilizedValue;
 }
 
+const dynamicNormalizer = (dynamic, from, to) => {
+    let result = {
+        start: null,
+        end: null
+    }
+    if (!dynamic || (!from && !to)) { return result }
+    if (dynamic === 'Рост') {
+        result = {
+            start: parseInt(from) || null,
+            end: parseInt(to) || null
+        }
+        return result;
+    }
+    if (dynamic === 'Падение') {
+        console.log(parseInt(from) * -1)
+        result = {
+            start: (parseInt(from) * -1) || null,
+            end: (parseInt(to) * -1 )|| null
+        }
+        return result;
+    }
+    return result
+}
+
 
 export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, setRequestStatus, requestStatus, isParamsVisible, setIsParamsVisible, setSortState, initSortState }) => {
     const [selectedDate, setSelectedDate] = useState(moment().subtract(30, 'days').format('DD.MM.YYYY'))
@@ -107,18 +131,21 @@ export const ParamsWidget = React.memo(({ setRequestState, initRequestStatus, se
         setRequestState({
             date_from: moment(selectedDate, 'DD.MM.YYYY').format('YYYY-MM-DD'),
             //date_from: selectedDate,
-            g30: {
-                start: !fields.dynamic_30_days_from && !fields.dynamic_30_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_from, 'start'),
-                end: !fields.dynamic_30_days_from && !fields.dynamic_30_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_to, 'end')
-            },
-            g60: {
-                start: !fields.dynamic_60_days_from && !fields.dynamic_60_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_from, 'start'),
-                end: !fields.dynamic_60_days_from && !fields.dynamic_60_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_to, 'end')
-            },
-            g90: {
-                start: !fields.dynamic_90_days_from && !fields.dynamic_90_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_from, 'start'),
-                end: !fields.dynamic_90_days_from && !fields.dynamic_90_days_to ? 0 :  getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_to, 'end')
-            },
+            g30: dynamicNormalizer(fields.dynamic_30_days, fields.dynamic_30_days_from, fields.dynamic_30_days_to),
+            g60: dynamicNormalizer(fields.dynamic_60_days, fields.dynamic_60_days_from, fields.dynamic_60_days_to),
+            g90: dynamicNormalizer(fields.dynamic_90_days, fields.dynamic_90_days_from, fields.dynamic_90_days_to),
+            // g30: {
+            //     start: !fields.dynamic_30_days_from && !fields.dynamic_30_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_from, 'start'),
+            //     end: !fields.dynamic_30_days_from && !fields.dynamic_30_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_30_days, fields.dynamic_30_days_to, 'end')
+            // },
+            // g60: {
+            //     start: !fields.dynamic_60_days_from && !fields.dynamic_60_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_from, 'start'),
+            //     end: !fields.dynamic_60_days_from && !fields.dynamic_60_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_60_days, fields.dynamic_60_days_to, 'end')
+            // },
+            // g90: {
+            //     start: !fields.dynamic_90_days_from && !fields.dynamic_90_days_to ? 0 : getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_from, 'start'),
+            //     end: !fields.dynamic_90_days_from && !fields.dynamic_90_days_to ? 0 :  getDynamicNormilizedValue(fields.dynamic_90_days, fields.dynamic_90_days_to, 'end')
+            // },
             frequency: {
                 start: parseInt(fields.frequency_30_days_from) || 0,
                 end: parseInt(fields.frequency_30_days_to) || 10000000

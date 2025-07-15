@@ -13,10 +13,8 @@
 .widget__header {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 32px;
-    cursor: pointer;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .widget__title {
