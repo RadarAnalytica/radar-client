@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styles from './singleGroupWidget.module.css'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink';
-import { Checkbox, ConfigProvider } from 'antd';
+import { Checkbox, ConfigProvider, Tooltip } from 'antd';
 import { singleGroupTableConfig, buttonIcons } from '../../shared';
 import wb_icon from '../../../../assets/wb_icon.png'
 import { URL } from '../../../../service/config';
@@ -220,7 +220,7 @@ const SingleGroupWidget = ({
                                                                     />
                                                                 }
                                                             </div>
-                                                            <p className={styles.table__rowTitle}>{product[v.engName]}</p>
+                                                            <Tooltip title={product[v.engName]}><p className={styles.table__rowTitle}>{product[v.engName]}</p></Tooltip>
                                                         </>
                                                         :
                                                         <>{product[v.engName]}</>
