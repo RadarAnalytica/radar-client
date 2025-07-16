@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import sortArrow from "../assets/sortarrow.svg";
+import {Tooltip} from 'antd';
 import ArrowUp from "../assets/ArrowUp.svg";
 import ArrowDown from "../assets/ArrowDown.svg";
 import "../App.css";
@@ -117,11 +118,14 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
               <div
                 className='first-child-table-header'
                 style={{
-                  width: "18.75%",
+                  width: "20%",
                   textAlign: "center",
                 }}
               >
                 Товар
+              </div>
+              <div style={{ width: "10%", textAlign: "left" }}>
+                Размер
               </div>
               <div style={{ width: "20%", textAlign: "left" }}>
                 Артикул поставщика
@@ -207,7 +211,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                     className='table-row-image'
                     style={{
                       color: "#5329FF",
-                      width: "18.75%",
+                      width: "20%",
                       display: "flex", // Use flexbox for layout
                       alignItems: "center", // Center align items vertically
                     }}
@@ -249,9 +253,10 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                         marginRight: item.photo ? "8px" : "16px",
                       }}
                     >
-                      {item.title}
+                      <Tooltip title={item.title}>{item.title}</Tooltip>
                     </div>
                   </div>
+                  <div style={{ width: "10%", wordWrap: "break-word" }}><Tooltip title={item.tech_size}>{item.tech_size}</Tooltip></div>
                   <div style={{ width: "20%" }}>{item.supplier_id}</div>
                   <div style={{ width: "13.75%" }}>{item.wb_id}</div>
                   <div style={{ width: "13.75%" }}>
