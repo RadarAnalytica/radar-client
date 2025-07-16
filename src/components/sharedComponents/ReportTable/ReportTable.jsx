@@ -26,26 +26,8 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 
 	return (
 		<div className={styles.container} ref={tableContainerRef}>
-			{loading && <div className={styles.loadingContainer}
-					style={{
-					position: 'relative',
-					height: '100%',
-					width: '100%',
-					paddingTop: '20%',
-					}}
-			>
-					<div
-							className='d-flex flex-column align-items-center justify-content-center'
-							style={{
-									height: '100%',
-									width: '100%',
-									position: 'absolute',
-									top: 0,
-									left: 0
-							}}
-					>
-							<span className='loader'></span>
-					</div>
+			{loading && <div className={styles.loading}>
+					<span className='loader'></span>
 			</div>}
 			{!loading && <div className={styles.tableContainer}>
 				<ConfigProvider
