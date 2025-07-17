@@ -52,7 +52,7 @@
 
 .tableContainer :global(.ant-table),
 .tableContainer :global(.ant-table-body) {
-  scrollbar-color: #5329ff80 #5329ff80;
+  scrollbar-color: #5329ff80 transparent;
   scrollbar-width: thin;
 }
 
