@@ -150,17 +150,6 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
         const tableBody = document.querySelector('.ant-table-tbody')
         const headerCell = document.querySelectorAll('.table__mainHeader')
         const coloredHeaderCell = document.querySelectorAll('.table__mainHeader_colored')
-        // const xScrollBar = document.querySelector('.ant-table-tbody-virtual-scrollbar-horizontal')
-        // const xScrollThumb = xScrollBar?.querySelector('.ant-table-tbody-virtual-scrollbar-thumb')
-        // const xScrollContainer = document.querySelector('.ant-table-tbody-virtual-holder-inner')
-        // if (xScrollContainer && xScrollThumb) {
-        //     xScrollContainer.style.marginLeft = '0px'
-        //     xScrollThumb.style.left = '0px'
-        // }
-        // const yScrollContainer = document.querySelector('.ant-table-tbody-virtual-holder')
-        // if (yScrollContainer) {
-        //     yScrollContainer.scrollTo({ top: 0 })
-        // }
 
         if (headerCell && coloredHeaderCell) {
             headerCell?.forEach(_ => _.style.color = '#1A1A1A')
