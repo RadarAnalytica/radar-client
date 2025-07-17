@@ -214,6 +214,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                       width: "20%",
                       display: "flex", // Use flexbox for layout
                       alignItems: "center", // Center align items vertically
+                      gap: 8
                     }}
                   >
                     <div
@@ -222,7 +223,6 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                         height: "40px",
                         borderRadius: "5px",
                         backgroundColor: "#D3D3D3",
-                        marginRight: "8px",
                         flexGrow: 0,
                         flexShrink: 0
                       }}
@@ -250,7 +250,6 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                       style={{
                         flex: "1",
                         wordWrap: "break-word",
-                        marginRight: item.photo ? "8px" : "16px",
                       }}
                     >
                       <Tooltip title={item.title}>{item.title}</Tooltip>
