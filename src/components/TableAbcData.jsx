@@ -114,7 +114,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
         )}
         {dataTable.length > 0 && !loading && (
           <div className='table'>
-            <div className='table-header'>
+            <div className={`${styles.table__header} table-header`}>
               <div
                 className='first-child-table-header'
                 style={{

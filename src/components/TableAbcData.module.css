@@ -23,3 +23,7 @@
 .empty{
     flex-basis: 100%;
 }
+
+.table__header > *{
+    padding: 0.5rem;
+}
