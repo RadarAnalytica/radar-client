@@ -1,0 +1,120 @@
+/* Page */
+
+.page {
+    background-color: #F7F6FE;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+}
+.page__content {
+    width: 100%;
+    padding: 30px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: scroll;
+    
+}
+.page__sideNavWrapper {
+    height: 100%;
+    width: auto;
+    overflow: visible;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+.page__headerWrapper {
+    width: 100%;
+}
+
+/* Report */
+
+.controls{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+}
+
+.loading{
+    flex-grow: 1;
+    min-height: 90px;
+    padding: 16px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+}
+
+.container {
+    flex-grow: 1;
+    max-height: calc(100% - 169px);
+}
+
+.tableContainer{
+    min-height: 150px;
+    max-height: 100%;
+}
+
+.tableContainer :global(.ant-table-body){
+    max-height: 200px!important;
+}
+:global(.table__arrow){
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    font-size: 14px;
+}
+
+:global(.table__arrow_static::after){
+    content: "";
+    width: 12px;
+    height: 2px;
+    background: #8C8C8C;
+}
+:global(.table__arrow_static svg){
+    display: none;
+}
+
+:global(.table__arrow_positive){
+    color: #00b6b9;
+}
+
+:global(.table__arrow_negative){
+    color: #f93c65;
+}
+
+:global(.table__arrow_negative svg){
+    transform: rotate(180deg) scale(-1, 1);
+}
+
+.btns{
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 12px;
+}
+
+.popover{
+    display: flex;
+    flex-flow: column;
+    gap: 4px;
+    padding: 12px;
+}
+
+.popover button{
+    justify-content: start;
+}
