@@ -14,7 +14,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 		// расчет высоты шапки и добавление отступов контейнера
 		const headerHeight = container.querySelector('.ant-table-header')?.getBoundingClientRect().height || 70;
 		// расчет и сохранение высоты таблицы
-		const availableHeight = height - headerHeight - 65;
+		const availableHeight = height - headerHeight;
 		setScrollY(availableHeight);
 		// расчет ширины контейнера
 		setScrollX(width);
@@ -25,11 +25,12 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 	}, [columns, data, loading])
 
 	return (
-		<div className={styles.container} ref={tableContainerRef}>
-			{loading && <div className={styles.loading}>
-					<span className='loader'></span>
-			</div>}
-			{!loading && <div className={styles.tableContainer}>
+		<div className={styles.container} >
+			<div className={styles.tableContainer} ref={tableContainerRef}>
+				{loading && <div className={styles.loading}>
+						<span className='loader'></span>
+				</div>}
+				{!loading && 
 				<ConfigProvider
 					renderEmpty={ () => (<div>Нет данных</div>)} 
 					theme={{
@@ -81,7 +82,8 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 						scroll={ { x: scrollX, y: scrollY }}
 					></Table>
 				</ConfigProvider>
-			</div>}
+				}
+			</div>
 		</div>
 	);
 }
