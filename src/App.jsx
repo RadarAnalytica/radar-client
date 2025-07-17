@@ -63,6 +63,7 @@ const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops
 const AdminDashboardPage = React.lazy(() => import("./pages/AdminPage/AdminDashboardPage"));
 const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferalPage"));
 const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts/OperationsCosts"));
+const MainPage = React.lazy(() => import('./pages/homePage'))
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -88,6 +89,7 @@ function App() {
             {/* dev */}
             <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
             <Route path='/dev/linked-shops' element={<ProtectedRoute userRoleProtected><LinkedShopsPage /></ProtectedRoute>} />
+            <Route path='/dev/main' element={<ProtectedRoute userRoleProtected><MainPage /></ProtectedRoute>} />
             {/* Admin */}
             <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
