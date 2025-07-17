@@ -84,7 +84,6 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 						columns={columns}
 						dataSource={data}
 						pagination={false}
-						// tableLayout="fixed"
 						rowSelection={rowSelection}
 						showSorterTooltip={false}
 						sticky={true}
