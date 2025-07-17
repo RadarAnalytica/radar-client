@@ -122,7 +122,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
         }
     }, [requestData])
 
-  
+
 
     useEffect(() => {
         const updateHeight = () => {
@@ -146,26 +146,21 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
     }, [newTableConfig, requestData])
 
     useEffect(() => {
+
         const tableBody = document.querySelector('.ant-table-tbody')
         const headerCell = document.querySelectorAll('.table__mainHeader')
         const coloredHeaderCell = document.querySelectorAll('.table__mainHeader_colored')
-        //const firstCells = document.querySelectorAll('.first__cell')
 
         if (headerCell && coloredHeaderCell) {
             headerCell?.forEach(_ => _.style.color = '#1A1A1A')
             coloredHeaderCell?.forEach(_ => _.style.color = '#1A1A1A')
-            //firstCells.forEach(_ => _.style.border = '1px solid black')
-            //headerCell.style.color = '#1A1A1A'
-            //coloredHeaderCell.color = '#1A1A1A'
         }
         if (tableBody) {
-            //tableBody.style.height = '50%';
-            //tableBody.style.minHeight = '100%';
             tableBody.style.maxHeight = '80vh'
-            // tableBody.style.border = '1px solid red'
         }
 
-    }, [requestData, tableSettings, tableConfig])
+
+    }, [requestData, tableSettings, tableConfig, pagination])
 
     useEffect(() => {
         updateTableConfig(tableSettings)
@@ -197,6 +192,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
 
     const paginationHandler = (page) => {
         dispatch(reqsMonitoringActions.updateRequestObject({ page: page }))
+       
     }
 
     if (requestStatus.isLoading) {
@@ -249,7 +245,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
 
     const handleChange = (pagination, filters, sorterObj) => {
         if (!sorterObj.order) {
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined}))
+            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined }))
             return
         }
         const obj = {
@@ -306,6 +302,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
                     }}
                 >
                     <Table
+                        key={JSON.stringify(pagination)}
                         virtual
                         dataSource={requestData}
                         columns={sortFunc(tableConfig)}
@@ -321,7 +318,7 @@ const TableWidget_TEST = ({ tableConfig, setTableConfig }) => {
                             return styles.row
                         }}
                         // scroll={{ x: 'max-content' }}
-                        //scroll={{ x: scrollX, y: scrollY }}
+                        scroll={{ x: scrollX, y: scrollY }}
                         onChange={handleChange}
                     ></Table>
                 </ConfigProvider>
