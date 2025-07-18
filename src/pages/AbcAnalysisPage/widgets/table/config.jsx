@@ -1,0 +1,136 @@
+// import { SortIcon } from '../../components/sharedComponents/ReportTable/ReportTable';
+import { SortIcon } from '../../../../components/sharedComponents/ReportTable/ReportTable';
+import styles from '../table/TableAbcData.module.css';
+import { Tooltip } from 'antd';
+import { formatPrice } from '../../../../service/utils';
+
+const renderItem = (_, row) => (
+	<div
+		className="table-row-image"
+		style={{
+			color: '#5329FF',
+			display: 'flex', // Use flexbox for layout
+			alignItems: 'center', // Center align items vertically
+			gap: 8,
+		}}
+	>
+		<div
+			style={{
+				width: '30px',
+				height: '40px',
+				borderRadius: '5px',
+				backgroundColor: '#D3D3D3',
+				flexGrow: 0,
+				flexShrink: 0,
+			}}
+		>
+			{row.photo ? (
+				<img
+					src={row.photo}
+					alt={row.title}
+					style={{
+						width: '100%',
+						height: '100%',
+						borderRadius: '5px',
+						objectFit: 'cover',
+					}}
+					onError={(e) => {
+						e.target.style.backgroundColor = '#D3D3D3';
+						e.target.alt = '';
+						e.target.src =
+							'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/HHpC6UAAAAASUVORK5CYII=';
+					}}
+				/>
+			) : null}
+		</div>
+    <div style={{overflow: 'hidden', textOverflow: 'ellipsis'}}>{row.title}
+      {/* <Tooltip title={row.title}>{row.title}</Tooltip> */}
+      </div>
+	</div>
+);
+
+const renderCategeoy = (value) => {
+	let className = styles.category__icon + ' ';
+	if (value === 'A') {
+		className += styles.category__icon_green;
+	}
+	if (value === 'B') {
+		className += styles.category__icon_yellow;
+	}
+	if (value === 'C') {
+		className += styles.category__icon_red;
+	}
+	return <span className={className}>{value}</span>;
+};
+
+const renderCell = (value, row) => {
+  return formatPrice(value)
+}
+
+function sorter(column, a, b, direction) {
+  // console.log(column, column === 'category')
+  // console.log(a[column])
+  // console.log(b[column])
+  // console.log(direction)
+  if (column === 'category'){
+    console.log(b[column].localeCompare(a[column]))
+    return a[column].localeCompare(b[column]);
+  }
+  return a[column] - b[column];
+}
+
+export const COLUMNS = [
+	{
+		dataIndex: 'item',
+		key: 'item',
+		title: 'Товар',
+		render: renderItem,
+    width: '20%',
+    // ellipsis: true,
+	},
+	{
+		dataIndex: 'tech_size',
+		key: 'tech_size',
+		title: 'Размер',
+    ellipsis: true,
+	},
+	{
+		dataIndex: 'supplier_id',
+		key: 'supplier_id',
+		title: 'Артикул поставщика',
+    ellipsis: true,
+	},
+	{
+		dataIndex: 'wb_id',
+		key: 'wb_id',
+		title: 'Артикул',
+    ellipsis: true,
+	},
+	{
+		dataIndex: 'amount',
+		key: 'amount',
+		title: 'Прибыль || Выручка',
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+    sorter: (a, b, direction) => sorter('amount', a, b, direction),
+    render: renderCell,
+    ellipsis: true,
+	},
+	{
+		dataIndex: 'amount_percent',
+		key: 'amount_percent',
+		title: 'Доля',
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+    sorter: (a, b, direction) => sorter('amount_percent', a, b, direction),
+    render: renderCell,
+    ellipsis: true,
+	},
+	{
+		dataIndex: 'category',
+		key: 'category',
+		title: 'Категория',
+		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
+    sorter: (a, b, direction) => sorter('category', a, b, direction),
+		render: renderCategeoy,
+    ellipsis: true,
+	},
+];
