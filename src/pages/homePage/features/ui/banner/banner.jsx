@@ -1,9 +1,44 @@
+import { useContext, useState } from 'react'
 import styles from './banner.module.css'
 import pic from './assets/board.png'
 import tgs from './assets/tgs.png'
 import { Link } from 'react-router-dom'
+import { URL } from '../../../../../service/config'
+import AuthContext from '../../../../../service/AuthContext'
+import ErrorModal from '../../../../../components/sharedComponents/modals/errorModal/errorModal'
+import SuccessModal from '../../../../../components/sharedComponents/modals/successModal/successModal'
+
+const initRequestState = {
+    isSuccess: false,
+    isLoading: false,
+    isError: false,
+    message: ''
+}
 
 const Top = () => {
+    const [ reqState, setReqState ] = useState(initRequestState)
+    const { authToken } = useContext(AuthContext)
+
+    const supportRequestHandler = async () => {
+        setReqState({...initRequestState, isLoading: true})
+        try {
+            let res = await fetch(`${URL}/api/admin/webhook/consult`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'JWT ' + authToken
+                }
+            })
+            if (!res.ok) {
+                setReqState({...initRequestState, isError: true, message: 'Не удалось отправить запрос2!'})
+                return;
+            }
+
+            setReqState({...initRequestState, isSuccess: true})
+        } catch {
+            setReqState({...initRequestState, isError: true, message: 'Не удалось отправить запрос1!'})
+        }
+    }
 
     return (
         <div className={styles.topWrapper}>
@@ -13,11 +48,36 @@ const Top = () => {
             </div>
 
             <div className={styles.buttonWrapper}>
-                <button className={styles.button}>
+                <button 
+                    className={styles.button}
+                    onClick={() => {
+                        if (!reqState.isLoading) {
+                            supportRequestHandler()
+                        }
+                    }}
+                    disabled={reqState.isLoading}
+                >
                     Получить консультацию
                 </button>
                 <img src={pic} alt='' width={124} height={124} />
             </div>
+
+            <ErrorModal
+                open={reqState.isError}
+                message={reqState.message}
+                footer={null}
+                onOk={() => setReqState(initRequestState)}
+                onClose={() => setReqState(initRequestState)}
+                onCancel={() => setReqState(initRequestState)}
+            />
+            <SuccessModal
+                open={reqState.isSuccess}
+                message={'Запрос успешно отправлен! Мы свяжемся в вами в ближайшее время.'}
+                footer={null}
+                onOk={() => setReqState(initRequestState)}
+                onClose={() => setReqState(initRequestState)}
+                onCancel={() => setReqState(initRequestState)}
+            />
         </div>
     )
 }

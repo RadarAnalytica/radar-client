@@ -25,6 +25,7 @@ export const editShop = createAsyncThunk("editShop", async (reqData) => {
             console.log('pr', parsedResponse)
             const message = response && typeof response === 'string' ? response : 'Не удалось обновить данные магазина'
             console.log('m', message)
+            console.log('t', response.text())
             setEditShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message })
             return
             // console.error('Ошибка ответа сервера:', response.status, response.statusText);
