@@ -7,7 +7,7 @@ import { Banner } from './features'
 
 
 
-// dont forget to rename the component and its export
+
 export default function MainPage () {
 
     return (
