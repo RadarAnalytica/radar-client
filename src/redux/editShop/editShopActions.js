@@ -20,7 +20,9 @@ export const editShop = createAsyncThunk("editShop", async (reqData) => {
         })
         if (!response.ok) {
             //response = await response.json()
-            //console.log(response)
+            console.log('r', response)
+            const parsedResponse = await response.json()
+            console.log('pr', parsedResponse)
             const message = response && typeof response === 'string' ? response : 'Не удалось обновить данные магазина'
             console.log('m', message)
             setEditShopRequestStatus({...initRequestStatus, isLoading: false, isError: true, message })

@@ -31,12 +31,12 @@ const Bottom = () => {
                     <img src={tgs} alt='' />
                 </div>
                 <div className={`${styles.textWrapper} ${styles.textWrapperBottom}`}>
-                    <p className={styles.title}>Не разобрались с платформой или не уверены, с чего начать?</p>
-                    <p className={styles.text}>Проведём персональную демонстрацию Радар Аналитики в течение часа после обращения. Оставьте заявку.</p>
+                    <p className={styles.title}>Подписывайтесь в Telegram</p>
+                    <p className={styles.text}>Обзор e-com новостей и гайды по сервису</p>
                 </div>
             </div>
             <div className={`${styles.buttonWrapper} ${styles.buttonWrapperBottom}`}>
-                <Link className={styles.button} to='https://t.me/radar_analytica_support' target='_blank'>
+                <Link className={styles.button} to='https://t.me/radar_analytica' target='_blank'>
                     Перейти
                 </Link>
             </div>
