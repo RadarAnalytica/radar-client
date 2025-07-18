@@ -292,11 +292,11 @@ export const ServiceFunctions = {
 		return data;
 	},
 
-	getAbcData: async (viewType, token, selectedRange, idShop, filters) => {
+	getAbcData: async (viewType, token, selectedRange, idShop, filters, page) => {
 		//let rangeParams = rangeApiFormat(day);
     const body = getRequestObject(filters, selectedRange, idShop)
     const res = await fetch(
-      `${URL}/api/abc_data/${viewType}`,
+      `${URL}/api/abc_data/${viewType}?page=${page}&per_page=100`,
       {
 			method: 'POST',
 			headers: {
