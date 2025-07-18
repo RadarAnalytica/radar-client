@@ -25,7 +25,7 @@
     bottom: 0;
     left: 0;
     background-image: url('/public/top_banner_bg.png');
-    background-size: 50%;
+    background-size: 20%;
     background-repeat: no-repeat;
     background-clip: border-box;
     background-position: center center;
@@ -148,7 +148,7 @@
     font-family: Mulish;
     font-weight: 600;
     font-size: 18px;
-    line-height: 100%;
+    line-height: 23px;
     letter-spacing: 0%;
     cursor: pointer;
     z-index: 1;
@@ -159,6 +159,7 @@
 
     @media (max-width: 1440px) {
         font-size: 16px;
+        line-height: 21px;
         padding: 24px 24px;
     }
 }
