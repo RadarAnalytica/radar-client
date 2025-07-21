@@ -1,6 +1,6 @@
 // import { SortIcon } from '../../components/sharedComponents/ReportTable/ReportTable';
 import { SortIcon } from '../../../../components/sharedComponents/ReportTable/ReportTable';
-import styles from '../table/TableAbcData.module.css';
+import styles from '../../AbcAnalysisPage.module.css';
 import { Tooltip } from 'antd';
 import { formatPrice } from '../../../../service/utils';
 
