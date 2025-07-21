@@ -1,13 +1,9 @@
 import { useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import styles from './AbcAnalysisPage.module.css';
-import SideNav from '../../components/SideNav';
-import TopNav from '../../components/TopNav';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import AuthContext from '../../service/AuthContext';
 import NoSubscriptionPage from '../NoSubscriptionPage';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import TableAbcData from './widgets/table/TableAbcData';
-import SelfCostWarning from '../../components/SelfCostWarning';
 import DataCollectionNotification from '../../components/DataCollectionNotification';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
@@ -105,8 +101,8 @@ const AbcAnalysisPage = () => {
       proceeds: 'Выручка'
     }
 		const amountPercentTitle = {
-			profit: 'Доля выручки',
-      proceeds: 'Доля прибыли'
+			profit: 'Доля прибыли',
+      proceeds: 'Доля выручки'
 		}
     return COLUMNS.map((el) => {
       if (el.key === 'amount'){
@@ -155,7 +151,6 @@ const AbcAnalysisPage = () => {
 		}
 	}, [authToken]);
 
-	//for SelfCostWarning
 	const handleUpdateAbcAnalysis = () => {
 		setTimeout(() => {
 			updateAbcAnalysisCaller();
