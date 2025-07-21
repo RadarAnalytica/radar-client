@@ -118,7 +118,7 @@ export const COLUMNS = [
 	{
 		dataIndex: 'amount_percent',
 		key: 'amount_percent',
-		title: 'Доля',
+		title: 'Доля выручки || Доля прибыли',
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
     sorter: (a, b, direction) => sorter('amount_percent', a, b, direction),
     render: renderCell,

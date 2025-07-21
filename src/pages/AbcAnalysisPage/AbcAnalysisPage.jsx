@@ -93,14 +93,21 @@ const AbcAnalysisPage = () => {
 	}, [dataAbcAnalysis]);
 
   const columnsList = useMemo(() => {
-    const title = {
+    const amountTitle = {
       profit: 'Прибыль',
       proceeds: 'Выручка'
     }
+		const amountPercentTitle = {
+			profit: 'Доля выручки',
+      proceeds: 'Доля прибыли'
+		}
     return COLUMNS.map((el) => {
       if (el.key === 'amount'){
-        el.title = title[viewType]
+        el.title = amountTitle[viewType]
       }
+			if (el.key === 'amount_percent'){
+				el.title = amountPercentTitle[viewType]
+			}
       return el
     })
   }, [dataAbcAnalysis])
