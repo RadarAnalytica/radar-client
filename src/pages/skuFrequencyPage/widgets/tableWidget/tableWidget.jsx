@@ -310,6 +310,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                             x: scrollX,
                             y: scrollY
                         }}
+                        key={JSON.stringify(pagination)}
                         virtual
                         dataSource={requestData}
                         columns={sortFunc(tableConfig)}
