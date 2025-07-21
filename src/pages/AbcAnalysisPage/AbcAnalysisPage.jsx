@@ -31,7 +31,7 @@ const AbcAnalysisPage = () => {
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
 	const [isNeedCost, setIsNeedCost] = useState([]);
 	const [viewType, setViewType] = useState('proceeds');
-	const [sorting, setSorting] = useState('asc');
+	const [sorting, setSorting] = useState('desc');
 	const [loading, setLoading] = useState(true);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
@@ -45,10 +45,10 @@ const AbcAnalysisPage = () => {
 	// console.log(viewType)
 	// console.log('--------------------------')
 
-	const sorterHandler = useCallback((a, b, direction) => {
-		setSorting(direction);
-		setPage(1);
-	}, []);
+	// const sorterHandler = useCallback((a, b, direction) => {
+	// 	setSorting(direction);
+	// 	setPage(1);
+	// }, []);
 
 	const updateDataAbcAnalysis = async (
 		viewType,
@@ -115,9 +115,9 @@ const AbcAnalysisPage = () => {
 			if (el.key === 'amount_percent'){
 				el.title = amountPercentTitle[viewType]
 			}
-			if (el.sorter) {
-				el.sorter = sorterHandler
-			}
+			// if (el.sorter) {
+				// el.sorter = sorterHandler
+			// }
       return el
     })
   }, [dataAbcAnalysis])
@@ -346,17 +346,18 @@ const AbcAnalysisPage = () => {
 								sticky={true}
 								showSorterTooltip={false}
 								sortOrder={sorting}
-								pagination={{
-									align: 'end',
-									defaultCurrent: 1,
-									defaultPageSize: 100,
-									hideOnSinglePage: true,
-									showSizeChanger: false,
-									onChange: setPage,
-									current: page,
-									total: dataAbcAnalysis?.total,
-								}}
-								sortDirections={['asc', 'desc']}
+								pagination={false}
+								// pagination={{
+								// 	align: 'end',
+								// 	defaultCurrent: 1,
+								// 	defaultPageSize: 100,
+								// 	hideOnSinglePage: true,
+								// 	showSizeChanger: false,
+								// 	onChange: setPage,
+								// 	current: page,
+								// 	total: dataAbcAnalysis?.total,
+								// }}
+								// sortDirections={['asc', 'desc']}
 							/>
 						</ConfigProvider>
 					)}
