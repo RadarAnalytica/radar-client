@@ -67,6 +67,21 @@ const renderNumber = (value) => {
   return formatPrice(value)
 }
 
+const renderCell = (value) => {
+	return <Tooltip title={value}>{value}</Tooltip>
+}
+
+function sorter(column, a, b) {
+	console.log(a)
+	console.log(b)
+	console.log(column)
+  if (column === 'category'){
+    console.log(b[column].localeCompare(a[column]))
+    return a[column].localeCompare(b[column]);
+  }
+  return a[column] - b[column];
+}
+
 
 export const COLUMNS = [
 	{
