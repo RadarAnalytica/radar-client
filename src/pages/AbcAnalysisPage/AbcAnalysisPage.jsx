@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useMemo } from 'react';
+import { useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import styles from './AbcAnalysisPage.module.css';
 import SideNav from '../../components/SideNav';
 import TopNav from '../../components/TopNav';
@@ -31,6 +31,7 @@ const AbcAnalysisPage = () => {
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
 	const [isNeedCost, setIsNeedCost] = useState([]);
 	const [viewType, setViewType] = useState('proceeds');
+	const [sorting, setSorting] = useState('asc');
 	const [loading, setLoading] = useState(true);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
@@ -43,6 +44,11 @@ const AbcAnalysisPage = () => {
 	// console.log(activeBrand)
 	// console.log(viewType)
 	// console.log('--------------------------')
+
+	const sorterHandler = useCallback((a, b, direction) => {
+		setSorting(direction);
+		setPage(1);
+	}, []);
 
 	const updateDataAbcAnalysis = async (
 		viewType,
@@ -62,15 +68,16 @@ const AbcAnalysisPage = () => {
 					days,
 					activeBrand,
 					filters,
-					page
+					page,
+					sorting
 				);
 			}
 
 			setIsNeedCost(data.is_need_cost);
-			console.log('result', data);
+
 			const result = data.results;
 
-			if (result && result.length > 0) {
+			if (!!result) {
 				setDataAbcAnalysis(data);
 			} else {
 				setDataAbcAnalysis([]);
@@ -108,6 +115,9 @@ const AbcAnalysisPage = () => {
 			if (el.key === 'amount_percent'){
 				el.title = amountPercentTitle[viewType]
 			}
+			if (el.sorter) {
+				el.sorter = sorterHandler
+			}
       return el
     })
   }, [dataAbcAnalysis])
@@ -124,7 +134,7 @@ const AbcAnalysisPage = () => {
 				activeBrand.id.toString()
 			);
 		}
-	}, [activeBrand, viewType, days, filters, page]);
+	}, [activeBrand, viewType, days, filters, page, sorting]);
 	//---------------------------------------------------------------------------------------//
 
 	// 2.1.1 Проверям изменился ли магазин при обновлении токена
@@ -335,6 +345,7 @@ const AbcAnalysisPage = () => {
 								scroll={{ y: 600 }}
 								sticky={true}
 								showSorterTooltip={false}
+								sortOrder={sorting}
 								pagination={{
 									align: 'end',
 									defaultCurrent: 1,
@@ -345,6 +356,7 @@ const AbcAnalysisPage = () => {
 									current: page,
 									total: dataAbcAnalysis?.total,
 								}}
+								sortDirections={['asc', 'desc']}
 							/>
 						</ConfigProvider>
 					)}
