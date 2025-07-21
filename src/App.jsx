@@ -28,7 +28,7 @@ const ConfirmationPage = React.lazy(() => import("./pages/ConfirmationPage"));
 // const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
 const ResetPage = React.lazy(() => import("./pages/ResetPage"));
 const RequestResetLink = React.lazy(() => import("./pages/RequestResetLink"));
-const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
+//const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
 const OrdersMap = React.lazy(() => import("./pages/OrdersMap"));
 const Spasibo = React.lazy(() => import("./pages/Spasibo"));
 const Instructions = React.lazy(() => import("./pages/Instructions"));
@@ -62,6 +62,8 @@ const ReportProfitLoss = React.lazy(() => import("./pages/ReportProfitLoss/Repor
 const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops"));
 const AdminDashboardPage = React.lazy(() => import("./pages/AdminPage/AdminDashboardPage"));
 const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferalPage"));
+const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts/OperationsCosts"));
+const MainPage = React.lazy(() => import('./pages/homePage'))
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -87,6 +89,7 @@ function App() {
             {/* dev */}
             <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
             <Route path='/dev/linked-shops' element={<ProtectedRoute userRoleProtected><LinkedShopsPage /></ProtectedRoute>} />
+            <Route path='/dev/main' element={<ProtectedRoute userRoleProtected><MainPage /></ProtectedRoute>} />
             {/* Admin */}
             <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
@@ -108,7 +111,7 @@ function App() {
             <Route path='/ai-generator' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
             <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
             <Route path='/orders-map' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
-            <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
+            <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShopsPage /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
             <Route path='/weeklyreport-dashboard' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Дашборд'><WeeklyReportDashboard /></ProtectedRoute>} />
             <Route path='/weeklyreport-pl' element={<ProtectedRoute expireProtected routeRuName='Отчёт / P&L'><WeeklyReportPL /></ProtectedRoute>} />
@@ -130,6 +133,7 @@ function App() {
             <Route path='/product/:id' element={<ProtectedRoute><StockAnalysisGlitter /></ProtectedRoute>} />
             <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчет о прибылях и убытках'><ReportProfitLoss /></ProtectedRoute>} />
             <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
+            <Route path='/operations-costs' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperationsCosts /></ProtectedRoute>} />
             {/* Public routes */}
             <Route path='/calculate' element={<Suspense fallback={<LoaderPage />}>{deviceRegexp.test(userAgent) ? <UnitCalculatorPage /> : <UnitCalculatorPageDesktop />}</Suspense>} />
             <Route path='/stub' element={<Suspense fallback={<LoaderPage />}>{' '}<StubPage /></Suspense>} />

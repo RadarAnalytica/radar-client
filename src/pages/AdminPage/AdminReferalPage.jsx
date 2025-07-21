@@ -7,6 +7,9 @@ import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { SearchWidget } from './widgets';
 import { Input, Button, ConfigProvider } from 'antd';
+import { formatPrice } from '../../service/utils';
+import SuccessModal from '../../components/sharedComponents/modals/successModal/successModal';
+import moment from 'moment';
 
 
 
@@ -17,7 +20,31 @@ const initStatus = {
     message: ''
 }
 
-const accountRefill = async (token, reqData, setStatus, initStatus) => {
+const fetchUserData = async (token, userId, setStatus, initStatus, setData) => {
+    setStatus({ ...initStatus, isLoading: true })
+    try {
+        let res = await fetch(`${URL}/api/admin/referral-system/${userId}/bonuses`, {
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'JWT ' + token
+            },
+        })
+
+        if (!res.ok) {
+            setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
+            return
+        }
+
+        res = await res.json();
+        setStatus({ ...initStatus, isSuccess: true })
+        setData(res.data)
+
+    } catch {
+        setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
+    }
+}
+
+const accountRefill = async (token, reqData, setStatus, initStatus, setData, setSuccessRefill) => {
     setStatus({ ...initStatus, isLoading: true })
     try {
         let res = await fetch(`${URL}/api/admin/service-analysis/`, {
@@ -26,15 +53,16 @@ const accountRefill = async (token, reqData, setStatus, initStatus) => {
                 'Content-type': 'application/json',
                 'Authorization': 'JWT ' + token
             },
-            //body: JSON.stringify(reqData)
+            body: JSON.stringify(reqData)
         })
 
         if (!res.ok) {
             setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
             return
         }
-
-        setStatus({ ...initStatus, isSuccess: true })
+        await fetchUserData(token, reqData.referrer, setStatus, initStatus, setData)
+        setStatus(initStatus)
+        setSuccessRefill(true)
     } catch {
         setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
     }
@@ -46,13 +74,15 @@ const AdminReferalPage = () => {
     const [status, setStatus] = useState(initStatus)
     const [data, setData] = useState()
     const [inputValue, setInputValue] = useState('')
+    const [searchInputValue, setSearchInputValue] = useState('')
+    const [successRefill, setSuccessRefill] = useState(false)
 
     const submitHandler = () => {
         const dataObject = {
-            id: data.id,
+            referrer: searchInputValue,
             amount: inputValue
         }
-        accountRefill(authToken, dataObject, setStatus, initStatus)
+        accountRefill(authToken, dataObject, setStatus, initStatus, setData, setSuccessRefill)
     }
 
     return (
@@ -75,21 +105,24 @@ const AdminReferalPage = () => {
                     setStatus={setStatus}
                     initStatus={initStatus}
                     authToken={authToken}
+                    inputValue={searchInputValue}
+                    setInputValue={setSearchInputValue}
+                    fetchUserData={fetchUserData}
                 />
 
-                {data || !data &&
+                {status.isSuccess &&
                     <div className={styles.page__dataWrapper}>
                         <div className={styles.mainData}>
                             <p className={styles.mainData__title}>Начислить бонусы</p>
                             <div className={styles.mainData__userBlock}>
                                 <div className={styles.mainData__row}>
-                                    <p className={styles.mainData__rowText}>userId:</p>
-                                    <p className={styles.mainData__rowText}>10</p>
+                                    <p className={styles.mainData__rowText}>userId</p>
+                                    <p className={styles.mainData__rowText}>{searchInputValue}</p>
                                 </div>
-                                <div className={styles.mainData__row}>
+                                {/* <div className={styles.mainData__row}>
                                     <p className={styles.mainData__rowText}>email:</p>
                                     <p className={styles.mainData__rowText}>x@xx.xx</p>
-                                </div>
+                                </div> */}
                             </div>
 
                             <ConfigProvider
@@ -123,42 +156,12 @@ const AdminReferalPage = () => {
                         <div className={styles.userHistoryData}>
                             <p className={styles.mainData__title}>История начислений</p>
                             <div className={styles.userHistoryData__userBlock}>
-                                <div className={styles.userHistoryData__row}>
-                                    <p className={styles.userHistoryData__rowText}>17.06.2025</p>
-                                    <p className={styles.userHistoryData__rowText}>1000 Р</p>
-                                </div>
-                                <div className={styles.userHistoryData__row}>
-                                    <p className={styles.userHistoryData__rowText}>17.06.2025</p>
-                                    <p className={styles.userHistoryData__rowText}>1000 Р</p>
-                                </div>
-                                <div className={styles.userHistoryData__row}>
-                                    <p className={styles.userHistoryData__rowText}>17.06.2025</p>
-                                    <p className={styles.userHistoryData__rowText}>1000 Р</p>
-                                </div>
-                                <div className={styles.userHistoryData__row}>
-                                    <p className={styles.userHistoryData__rowText}>17.06.2025</p>
-                                    <p className={styles.userHistoryData__rowText}>1000 Р</p>
-                                </div>
-                                <div className={styles.userHistoryData__row}>
-                                    <p className={styles.userHistoryData__rowText}>17.06.2025</p>
-                                    <p className={styles.userHistoryData__rowText}>1000 Р</p>
-                                </div>
-                                <div className={styles.userHistoryData__row}>
-                                    <p className={styles.userHistoryData__rowText}>17.06.2025</p>
-                                    <p className={styles.userHistoryData__rowText}>1000 Р</p>
-                                </div>
-                                <div className={styles.userHistoryData__row}>
-                                    <p className={styles.userHistoryData__rowText}>17.06.2025</p>
-                                    <p className={styles.userHistoryData__rowText}>1000 Р</p>
-                                </div>
-                                <div className={styles.userHistoryData__row}>
-                                    <p className={styles.userHistoryData__rowText}>17.06.2025</p>
-                                    <p className={styles.userHistoryData__rowText}>1000 Р</p>
-                                </div>
-                                <div className={styles.userHistoryData__row}>
-                                    <p className={styles.userHistoryData__rowText}>17.06.2025</p>
-                                    <p className={styles.userHistoryData__rowText}>1000 Р</p>
-                                </div>
+                                {data && data.length > 0 && data.map((_, id) => (
+                                    <div className={styles.userHistoryData__row} key={id}>
+                                        <p className={styles.userHistoryData__rowText}>{moment(_.created_at).format('DD.MM.YYYY HH:mm')}</p>
+                                        <p className={styles.userHistoryData__rowText}>{formatPrice(_.amount, '₽')}</p>
+                                    </div>
+                                ))}
                             </div>
 
                         </div>
@@ -177,6 +180,24 @@ const AdminReferalPage = () => {
                 onOk={() => setStatus(initStatus)}
                 onClose={() => setStatus(initStatus)}
                 onCancel={() => setStatus(initStatus)}
+                message={status.message}
+            />
+            <SuccessModal
+                open={successRefill}
+                footer={null}
+                onOk={() => {
+                    setSuccessRefill(false);
+                    setInputValue('')
+                }}
+                onClose={() => {
+                    setSuccessRefill(false);
+                    setInputValue('')
+                }}
+                onCancel={() => {
+                    setSuccessRefill(false);
+                    setInputValue('')
+                }}
+                message={`Успешно начислено ${inputValue} Р. ID пользователя: ${searchInputValue}`}
             />
         </main>
 

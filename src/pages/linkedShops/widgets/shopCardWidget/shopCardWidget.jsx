@@ -140,7 +140,7 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                 message: editShopRequestStatus.message
             })
             setEditShopRequestStatus(initRequestStatus)
-            setEditModalVisible(false)
+            //setEditModalVisible(false)
         }
     }, [deleteShopRequestStatus, editShopRequestStatus])
 

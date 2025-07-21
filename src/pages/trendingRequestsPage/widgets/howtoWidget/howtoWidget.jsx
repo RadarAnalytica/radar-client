@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import styles from './howtoWidget.module.css'
-import { Link } from 'react-router-dom'
 import { Tooltip, ConfigProvider } from 'antd'
 
 export const HowtoWidget = ({ setExampleData }) => {

@@ -1,56 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import styles from './searchBlock.module.css'
 import { Input, ConfigProvider, Button } from 'antd';
-import { actions as skuAnalysisActions } from '../../../../redux/skuAnalysis/skuAnalysisSlice'
 import { URL } from '../../../../service/config';
 
 
-const fetchUserData = async (token, userId, setStatus, initStatus, setData, setHistoryData) => {
-    setStatus({ ...initStatus, isLoading: true })
-    try {
-        let res = await fetch(`${URL}/api/admin/service-analysis/`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'JWT ' + token
-            },
-            //body: JSON.stringify({id: userId})
-        })
 
-        if (!res.ok) {
-            setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
-            return
-        }
 
-        res = await res.json();
-        setStatus({ ...initStatus, isSuccess: true })
-        setData(res.data)
-        // setHistoryData(prev => {
-        //     if (prev.some(_ => _.id === res.data.id)) {
-        //         return prev
-        //     } else {
-        //         return  [...prev, res.data]
-        //     }
-        // })
-    } catch {
-        setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
-    }
-}
-
-const SearchWidget = ({ setData, authToken, setStatus, initStatus }) => {
+const SearchWidget = ({ setData, authToken, setStatus, initStatus, inputValue, setInputValue, fetchUserData }) => {
     const inputRef = useRef(null)
-    const [inputValue, setInputValue] = useState('')
-    const [historyData, setHistoryData] = useState([])
 
-    const historyButtonClickHandler = (e) => {
-        const { id } = e.target;
-        setInputValue(id)
-        fetchUserData(authToken, id, setStatus, initStatus, setData, setHistoryData)
-    }
+  
 
     const searchSubmitHandler = (e) => {
         if (e && e.key && e.key !== 'Enter') return
-        fetchUserData(authToken, inputValue, setStatus, initStatus, setData, setHistoryData)
+        fetchUserData(authToken, inputValue, setStatus, initStatus, setData)
     }
 
     useEffect(() => {
@@ -86,6 +49,7 @@ const SearchWidget = ({ setData, authToken, setStatus, initStatus }) => {
                         onChange={(e) => setInputValue(e.target.value)}
                         onKeyDown={(e) => { searchSubmitHandler(e) }}
                         className={styles.search__input}
+                        type='number'
                     />
                     <Button
                         size='large'
@@ -101,30 +65,7 @@ const SearchWidget = ({ setData, authToken, setStatus, initStatus }) => {
                     </Button>
                 </ConfigProvider>
             </div>
-            {historyData && historyData.length > 0 &&
-                <div className={styles.search__searchHistory}>
-                    {/* {historyData.map((i, id) => {
-
-                        return (
-                            <button 
-                                className={styles.search__historyItem} 
-                                key={id}
-                                id={i}
-                                onClick={historyButtonClickHandler}
-                            >
-                                {i}
-                            </button>
-                        )
-                    })} */}
-
-                    <button className={styles.search__historyDeleteButton} onClick={() => setHistoryData([])}>
-                        Очистить историю
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 1L5 5M9 9L5 5M5 5L9 1M5 5L1 9" stroke="#8C8C8C" strokeLinecap="round" />
-                        </svg>
-                    </button>
-                </div>
-            }
+           
         </div>
     )
 }

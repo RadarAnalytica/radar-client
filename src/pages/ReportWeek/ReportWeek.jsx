@@ -38,49 +38,7 @@ export default function ReportWeek() {
 	const [downloadLoading, setDownloadLoading] = useState(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	const [isConfigOpen, setConfigOpen] = useState(false);
-	const [data, setData] = useState(null);
-	const [tableRows, setTableRows] = useState(data);
-
-	const initTableColumns = () => {
-		const savedColumnsWeek = localStorage.getItem('reportWeekColumns');
-		if (savedColumnsWeek) {
-			try {
-				const columns = JSON.parse(savedColumnsWeek);
-				return columns.map((column) => COLUMNS.find((el) => {
-					if (typeof column == 'object'){
-						return el.dataIndex == column.dataIndex
-					}
-					return el.dataIndex == column
-				}))
-			} catch (error) {
-				console.error('Ошибка при обработке сохраненных настроек', error)
-				return COLUMNS;
-			}
-		}
-		return COLUMNS;
-	}
-
-	const [tableColumns, setTableColumns] = useState(initTableColumns());
-	// const [primaryCollect, setPrimaryCollect] = useState(null);
-	// const [weekSelected, setWeekSelected] = useState(null);
-	// const [weekStart, setWeekStart] = useState(null);
-
-	const shopStatus = useMemo(() => {
-			if (!activeBrand || !shops) return null;
-			
-			if (activeBrand.id === 0) {
-					return {
-							id: 0,
-							brand_name: 'Все',
-							is_active: shops.some(shop => shop.is_primary_collect),
-							is_valid: true,
-							is_primary_collect: shops.some(shop => shop.is_primary_collect),
-							is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
-					};
-			}
-			
-			return shops.find(shop => shop.id === activeBrand.id);
-	}, [activeBrand, shops]);
+	const [tableRows, setTableRows] = useState(null);
 
 	const weekOptions = useMemo(() => {
 		// шаблон для создания списка опций для фильтра
@@ -115,9 +73,62 @@ export default function ReportWeek() {
 		return weeks.map((el, i) => optionTemplate(el)).reverse();
 	}, []);
 
+	const updateSavedFilterWeek = () => {
+		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
+		if (savedFilterWeek) {
+			const data = JSON.parse(savedFilterWeek);
+			if (activeBrand?.id in data) {
+				return (data[activeBrand.id]);
+			}
+		}
+		return (weekOptions.slice(0, 12));
+	};
+	
+	const [weekSelected, setWeekSelected] = useState(updateSavedFilterWeek());
+
+	const week = useMemo(() => updateSavedFilterWeek(), [activeBrand, weekSelected])
+
+	const initTableColumns = () => {
+		const savedColumnsWeek = localStorage.getItem('reportWeekColumns');
+		if (savedColumnsWeek) {
+			try {
+				const columns = JSON.parse(savedColumnsWeek);
+				return columns.map((column) => COLUMNS.find((el) => {
+					if (typeof column == 'object'){
+						return el.dataIndex == column.dataIndex
+					}
+					return el.dataIndex == column
+				}))
+			} catch (error) {
+				console.error('Ошибка при обработке сохраненных настроек', error)
+				return COLUMNS;
+			}
+		}
+		return COLUMNS;
+	}
+
+	const [tableColumns, setTableColumns] = useState(initTableColumns());
+
+	const shopStatus = useMemo(() => {
+			if (!activeBrand || !shops) return null;
+			
+			if (activeBrand.id === 0) {
+					return {
+							id: 0,
+							brand_name: 'Все',
+							is_active: shops.some(shop => shop.is_primary_collect),
+							is_valid: true,
+							is_primary_collect: shops.some(shop => shop.is_primary_collect),
+							is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
+					};
+			}
+			
+			return shops.find(shop => shop.id === activeBrand.id);
+	}, [activeBrand, shops]);
+
 	const weekSelectedFormat = () => {
-		if (!weekSelected?.find((el) => el.value === 'Все')) {
-			return weekSelected.map((el) => el.value);
+		if (!week?.find((el) => el.value === 'Все')) {
+			return week.map((el) => el.value);
 		}
 	};
 
@@ -164,7 +175,6 @@ export default function ReportWeek() {
 					}
 				}
 
-				setData(weeks);
 				dataToTableData(weeks);
 			}
 		} catch (e) {
@@ -258,19 +268,6 @@ export default function ReportWeek() {
 		setTableRows(rows);
 	};
 
-	const updateSavedFilterWeek = () => {
-		const savedFilterWeek = localStorage.getItem('reportWeekFilterWeek');
-		if (savedFilterWeek) {
-			const data = JSON.parse(savedFilterWeek);
-			if (activeBrand?.id in data) {
-				return (data[activeBrand.id]);
-			}
-		}
-		return (weekOptions.slice(0, 12));
-	};
-	
-	const [weekSelected, setWeekSelected] = useState(updateSavedFilterWeek());
-
 	useEffect(() => {
 		if (activeBrand){
 			updateDataReportWeek();
@@ -278,12 +275,10 @@ export default function ReportWeek() {
 	}, [weekSelected]);
 
 	useEffect(() => {
-		setWeekSelected(updateSavedFilterWeek());
+		// setWeekSelected(updateSavedFilterWeek());
 		// setPrimaryCollect(activeBrand?.is_primary_collect);
-		if (activeBrand && shopStatus.is_primary_collect) {
+		if (activeBrand && shopStatus?.is_primary_collect) {
 			updateDataReportWeek();
-		} else {
-			setData([]);
 		}
 	}, [activeBrand, selectedRange, filters]);
 
@@ -387,7 +382,7 @@ export default function ReportWeek() {
 							// articleSelect={false}
 							// groupSelect={false}
 							weekSelect={true}
-							weekValue={weekSelected}
+							weekValue={week}
 							weekOptions={weekOptions}
 							weekHandler={weekSelectedHandler}
 						/>}

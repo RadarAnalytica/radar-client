@@ -25,29 +25,12 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 	}, [columns, data, loading])
 
 	return (
-		<div className={styles.container} ref={tableContainerRef}>
-			{loading && <div className={styles.loadingContainer}
-					style={{
-					position: 'relative',
-					height: '100%',
-					width: '100%',
-					paddingTop: '20%',
-					}}
-			>
-					<div
-							className='d-flex flex-column align-items-center justify-content-center'
-							style={{
-									height: '100%',
-									width: '100%',
-									position: 'absolute',
-									top: 0,
-									left: 0
-							}}
-					>
-							<span className='loader'></span>
-					</div>
-			</div>}
-			{!loading && <div className={styles.tableContainer}>
+		<div className={styles.container} >
+			<div className={styles.tableContainer} ref={tableContainerRef}>
+				{loading && <div className={styles.loading}>
+						<span className='loader'></span>
+				</div>}
+				{!loading && 
 				<ConfigProvider
 					renderEmpty={ () => (<div>Нет данных</div>)} 
 					theme={{
@@ -84,7 +67,6 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 						columns={columns}
 						dataSource={data}
 						pagination={false}
-						// tableLayout="fixed"
 						rowSelection={rowSelection}
 						showSorterTooltip={false}
 						sticky={true}
@@ -100,7 +82,8 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 						scroll={ { x: scrollX, y: scrollY }}
 					></Table>
 				</ConfigProvider>
-			</div>}
+				}
+			</div>
 		</div>
 	);
 }
