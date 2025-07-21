@@ -266,10 +266,10 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                         wordWrap: "break-word",
                       }}
                     >
-                      <Tooltip title={item.title} trigger="hover">{item.title}</Tooltip>
+                      <Tooltip title={item.title}>{item.title}</Tooltip>
                     </div>
                   </div>
-                  <div style={{ width: "10%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}><Tooltip title={item.tech_size} trigger="hover">{item.tech_size}</Tooltip></div>
+                  <div style={{ width: "10%", wordWrap: "break-word" }}><Tooltip title={item.tech_size}>{item.tech_size}</Tooltip></div>
                   <div style={{ width: "20%" }}>{item.supplier_id}</div>
                   <div style={{ width: "13.75%" }}>{item.wb_id}</div>
                   <div style={{ width: "13.75%" }}>
