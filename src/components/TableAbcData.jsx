@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 // import sortArrow from "../assets/sortarrow.svg";
 import {Tooltip} from 'antd';
-// import ArrowUp from "../assets/ArrowUp.svg";
-import ArrowUp from "../../../../assets/ArrowUp.svg";
-import ArrowDown from "../../../../assets/ArrowDown.svg";
-// import "../App.css";
+import ArrowUp from "../assets/ArrowUp.svg";
+import ArrowDown from "../assets/ArrowDown.svg";
+import "../App.css";
 import styles from './TableAbcData.module.css'
 
 const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading }) => {

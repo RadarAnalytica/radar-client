@@ -22,7 +22,7 @@ const ReportMain = React.lazy(() => import("./pages/ReportMain"));
 const PrimeCost = React.lazy(() => import("./pages/PrimeCost"));
 const ExternalExpensesPage = React.lazy(() => import("./pages/ExternalExpensesPage"));
 const ReportBuyBack = React.lazy(() => import("./pages/ReportBuyBack"));
-const AbcAnalysisPage = React.lazy(() => import("./pages/AbcAnalysisPage/AbcAnalysisPage"));
+const AbcAnalysisPage = React.lazy(() => import("./pages/AbcAnalysisPage"));
 const Onboarding = React.lazy(() => import("./pages/Onboarding"));
 const ConfirmationPage = React.lazy(() => import("./pages/ConfirmationPage"));
 // const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
