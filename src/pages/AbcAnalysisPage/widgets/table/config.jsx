@@ -64,22 +64,7 @@ const renderCategeoy = (value) => {
 };
 
 const renderNumber = (value) => {
-	return <Tooltip title={formatPrice(value)}>{formatPrice(value)}</Tooltip>
-}
-
-const renderCell = (value) => {
-	return <Tooltip title={value}>{value}</Tooltip>
-}
-
-function sorter(column, a, b) {
-	console.log(a)
-	console.log(b)
-	console.log(column)
-  if (column === 'category'){
-    console.log(b[column].localeCompare(a[column]))
-    return a[column].localeCompare(b[column]);
-  }
-  return a[column] - b[column];
+  return formatPrice(value)
 }
 
 
@@ -97,21 +82,21 @@ export const COLUMNS = [
 		key: 'tech_size',
 		title: 'Размер',
     ellipsis: true,
-    render: renderCell,
+    // render: renderCell,
 	},
 	{
 		dataIndex: 'supplier_id',
 		key: 'supplier_id',
 		title: 'Артикул поставщика',
     ellipsis: true,
-    render: renderCell,
+    // render: renderCell,
 	},
 	{
 		dataIndex: 'wb_id',
 		key: 'wb_id',
 		title: 'Артикул',
     ellipsis: true,
-    render: renderCell,
+    // render: renderCell,
 	},
 	{
 		dataIndex: 'amount',
@@ -128,9 +113,8 @@ export const COLUMNS = [
 		key: 'amount_percent',
 		title: 'Доля выручки || Доля прибыли',
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-    // sorter: true,
     sorter: (a, b, direction) => sorter('amount_percent', a, b, direction),
-    render: renderNumber,
+    render: renderCell,
     ellipsis: true,
 	},
 	{
@@ -138,8 +122,7 @@ export const COLUMNS = [
 		key: 'category',
 		title: 'Категория',
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-    // sorter: true,
-    sorter: (a, b, direction) => sorter('category', a, b, direction),
+		sorter: (a, b, direction) => sorter('category', a, b, direction),
 		render: renderCategeoy,
     ellipsis: true,
 	},
