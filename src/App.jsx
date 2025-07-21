@@ -7,6 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { HelmetProvider } from 'react-helmet-async';
 import { ProductProvider } from "./service/ProductContext";
 
+
+
 const Contacts = React.lazy(() => import("./components/Contacts"));
 const StockAnalysisGlitter = React.lazy(() => import("./components/StockAnalysisGlitter"));
 const Subscriptions = React.lazy(() => import("./pages/Subscriptions"));
