@@ -307,7 +307,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     <Table
                         scroll={{
                             scrollToFirstRowOnChange: true,
-                            x: scrollX,
+                            // x: scrollX,
                             y: scrollY
                         }}
                         key={JSON.stringify(pagination)}
