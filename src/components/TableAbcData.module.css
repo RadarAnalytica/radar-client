@@ -24,6 +24,16 @@
     flex-basis: 100%;
 }
 
+.table__header {
+    padding: 0;
+}
 .table__header > *{
     padding: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+:global(.table-body-row){
+    width: calc(100% + 10px);
+    margin: 20px 0;
 }

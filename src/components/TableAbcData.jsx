@@ -117,21 +117,31 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
             <div className={`${styles.table__header} table-header`}>
               <div
                 className='first-child-table-header'
-                style={{
-                  width: "20%",
-                  textAlign: "center",
-                }}
+                style={{ width: "20%", textAlign: "center", }}
+                title="Товар"
               >
                 Товар
               </div>
-              <div style={{ width: "10%", textAlign: "left" }}>
+              <div
+                style={{ width: "10%", textAlign: "left" }}
+                title="Размер"
+              >
                 Размер
               </div>
-              <div style={{ width: "20%", textAlign: "left" }}>
+              <div
+                style={{ width: "20%", textAlign: "left" }}
+                title="Артикул поставщика"
+              >
                 Артикул поставщика
               </div>
-              <div style={{ width: "13.75%", textAlign: "left" }}>Артикул</div>
-              <div style={{ width: "13.75%", textAlign: "left" }}>
+              <div
+                style={{ width: "13.75%", textAlign: "left" }}
+                title="Артикул">Артикул</div
+              >
+              <div
+                style={{ width: "13.75%", textAlign: "left" }}
+                title={`${viewType === "proceeds" ? "Выручка" : "Прибыль"}`}
+              >
                 {viewType === "proceeds" ? "Выручка" : "Прибыль"}
                 <div
                   className='icon-sort-wrap'
@@ -154,7 +164,10 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
                   />
                 </div>
               </div>
-              <div style={{ width: "20%", textAlign: "left" }}>
+              <div
+                style={{ width: "20%", textAlign: "left" }}
+                title={`Доля ${viewType === "proceeds" ? "выручки" : "прибыли"}`}
+              >
                 Доля {viewType === "proceeds" ? "выручки" : "прибыли"}
                 <div
                   className='icon-sort-wrap'
@@ -180,6 +193,7 @@ const TableAbcData = ({ dataTable, setDataTable, setViewType, viewType, loading 
               <div
                 className='last-child-table-header'
                 style={{ width: "13.75%", textAlign: "left" }}
+                title="Категория"
               >
                 Категория
                 <div
