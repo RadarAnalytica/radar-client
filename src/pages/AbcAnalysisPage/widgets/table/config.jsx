@@ -43,8 +43,8 @@ const renderItem = (_, row) => (
 				/>
 			) : null}
 		</div>
-    <div style={{overflow: 'hidden', textOverflow: 'ellipsis'}}>{row.title}
-      {/* <Tooltip title={row.title}>{row.title}</Tooltip> */}
+    <div>
+      <Tooltip title={row.title}>{row.title}</Tooltip>
       </div>
 	</div>
 );
@@ -63,8 +63,23 @@ const renderCategeoy = (value) => {
 	return <span className={className}>{value}</span>;
 };
 
+const renderNumber = (value) => {
+	return <Tooltip title={formatPrice(value)}>{formatPrice(value)}</Tooltip>
+}
+
 const renderCell = (value) => {
-  return formatPrice(value)
+	return <Tooltip title={value}>{value}</Tooltip>
+}
+
+function sorter(column, a, b) {
+	console.log(a)
+	console.log(b)
+	console.log(column)
+  if (column === 'category'){
+    console.log(b[column].localeCompare(a[column]))
+    return a[column].localeCompare(b[column]);
+  }
+  return a[column] - b[column];
 }
 
 
@@ -82,26 +97,30 @@ export const COLUMNS = [
 		key: 'tech_size',
 		title: 'Размер',
     ellipsis: true,
+    render: renderCell,
 	},
 	{
 		dataIndex: 'supplier_id',
 		key: 'supplier_id',
 		title: 'Артикул поставщика',
     ellipsis: true,
+    render: renderCell,
 	},
 	{
 		dataIndex: 'wb_id',
 		key: 'wb_id',
 		title: 'Артикул',
     ellipsis: true,
+    render: renderCell,
 	},
 	{
 		dataIndex: 'amount',
 		key: 'amount',
 		title: 'Прибыль || Выручка',
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-    sorter: true,
-    render: renderCell,
+    // sorter: true,
+    sorter: (a, b, direction) => sorter('amount', a, b, direction),
+    render: renderNumber,
     ellipsis: true,
 	},
 	{
@@ -109,8 +128,9 @@ export const COLUMNS = [
 		key: 'amount_percent',
 		title: 'Доля выручки || Доля прибыли',
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-    sorter: true,
-    render: renderCell,
+    // sorter: true,
+    sorter: (a, b, direction) => sorter('amount_percent', a, b, direction),
+    render: renderNumber,
     ellipsis: true,
 	},
 	{
@@ -118,7 +138,8 @@ export const COLUMNS = [
 		key: 'category',
 		title: 'Категория',
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-    sorter: true,
+    // sorter: true,
+    sorter: (a, b, direction) => sorter('category', a, b, direction),
 		render: renderCategeoy,
     ellipsis: true,
 	},
