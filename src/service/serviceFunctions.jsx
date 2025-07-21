@@ -292,11 +292,11 @@ export const ServiceFunctions = {
 		return data;
 	},
 
-	getAbcData: async (viewType, token, selectedRange, idShop, filters, page) => {
+	getAbcData: async (viewType, token, selectedRange, idShop, filters, page, sorting) => {
 		//let rangeParams = rangeApiFormat(day);
     const body = getRequestObject(filters, selectedRange, idShop)
     const res = await fetch(
-      `${URL}/api/abc_data/${viewType}?page=${page}&per_page=100`,
+      `${URL}/api/abc_data/${viewType}?page=${page}&per_page=100&sorting=${sorting}`,
       {
 			method: 'POST',
 			headers: {
@@ -306,6 +306,9 @@ export const ServiceFunctions = {
         body: JSON.stringify(body)
       }
     );
+		if (res.status !== 200){
+			throw new Error(`Ошибка запроса: ${res.status}`);
+		}
 		const data = await res.json();
 		return data;
 	},

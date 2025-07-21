@@ -63,21 +63,10 @@ const renderCategeoy = (value) => {
 	return <span className={className}>{value}</span>;
 };
 
-const renderCell = (value, row) => {
+const renderCell = (value) => {
   return formatPrice(value)
 }
 
-function sorter(column, a, b, direction) {
-  // console.log(column, column === 'category')
-  // console.log(a[column])
-  // console.log(b[column])
-  // console.log(direction)
-  if (column === 'category'){
-    console.log(b[column].localeCompare(a[column]))
-    return a[column].localeCompare(b[column]);
-  }
-  return a[column] - b[column];
-}
 
 export const COLUMNS = [
 	{
@@ -111,7 +100,7 @@ export const COLUMNS = [
 		key: 'amount',
 		title: 'Прибыль || Выручка',
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-    sorter: (a, b, direction) => sorter('amount', a, b, direction),
+    sorter: true,
     render: renderCell,
     ellipsis: true,
 	},
@@ -120,7 +109,7 @@ export const COLUMNS = [
 		key: 'amount_percent',
 		title: 'Доля выручки || Доля прибыли',
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-    sorter: (a, b, direction) => sorter('amount_percent', a, b, direction),
+    sorter: true,
     render: renderCell,
     ellipsis: true,
 	},
@@ -129,7 +118,7 @@ export const COLUMNS = [
 		key: 'category',
 		title: 'Категория',
 		sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />,
-    sorter: (a, b, direction) => sorter('category', a, b, direction),
+    sorter: true,
 		render: renderCategeoy,
     ellipsis: true,
 	},
