@@ -28,7 +28,7 @@ const ConfirmationPage = React.lazy(() => import("./pages/ConfirmationPage"));
 // const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
 const ResetPage = React.lazy(() => import("./pages/ResetPage"));
 const RequestResetLink = React.lazy(() => import("./pages/RequestResetLink"));
-const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
+//const LinkedShops = React.lazy(() => import("./pages/LinkedShops"));
 const OrdersMap = React.lazy(() => import("./pages/OrdersMap"));
 const Spasibo = React.lazy(() => import("./pages/Spasibo"));
 const Instructions = React.lazy(() => import("./pages/Instructions"));
@@ -111,7 +111,7 @@ function App() {
             <Route path='/ai-generator' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Генерация описания AI'><AiDescriptionGeneratorPage /></ProtectedRoute>} />
             <Route path='/stock-analysis' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Аналитика по товарам'><StockAnalysisPage /></ProtectedRoute>} />
             <Route path='/orders-map' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='География заказов и продаж'><OrdersMap /></ProtectedRoute>} />
-            <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShops /></ProtectedRoute>} />
+            <Route path='/linked-shops' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Подключенные магазины'><LinkedShopsPage /></ProtectedRoute>} />
             <Route path='/report-main' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Отчёт / Главная'><ReportMain /></ProtectedRoute>} />
             <Route path='/weeklyreport-dashboard' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Дашборд'><WeeklyReportDashboard /></ProtectedRoute>} />
             <Route path='/weeklyreport-pl' element={<ProtectedRoute expireProtected routeRuName='Отчёт / P&L'><WeeklyReportPL /></ProtectedRoute>} />
