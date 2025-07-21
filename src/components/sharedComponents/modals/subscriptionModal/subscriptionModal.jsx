@@ -6,6 +6,7 @@ import { URL } from '../../../../service/config'
 import { ServiceFunctions } from '../../../../service/serviceFunctions'
 import { jwtDecode } from "jwt-decode";
 import AuthContext from '../../../../service/AuthContext'
+import { getDayDeclension } from '../../../../service/utils'
 
 const SubscriptionModal = ({ visible, visibilityHandler }) => {
 
@@ -345,7 +346,7 @@ const SubscriptionModal = ({ visible, visibilityHandler }) => {
           {/* lead block */}
           <div className={styles.modal__leadBlock}>
             <p className={styles.modal__leadText}>
-              Здесь вы можете активировать тестовый доступ на {user.test_days ? '7 дней' : '3 дня'}. Стоимость активации – 10₽
+              Здесь вы можете активировать тестовый доступ на {user.test_days ? getDayDeclension(user.test_days.toString()) : '3 дня'}. Стоимость активации – 10₽
             </p>
             <svg width="94" height="70" viewBox="0 0 94 70" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="9.99023" width="84.6472" height="55.2027" rx="8" transform="rotate(10.4261 9.99023 0)" fill="#1A1A1A" />
