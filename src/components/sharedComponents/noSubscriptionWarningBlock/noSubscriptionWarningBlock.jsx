@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import styles from './nuSubscriptionWarningBlock.module.css'
 import SubscriptionModal from '../modals/subscriptionModal/subscriptionModal';
 import AuthContext from '../../../service/AuthContext';
+import { getDayDeclension } from '../../../service/utils';
 
 const NoSubscriptionWarningBlock = () => {
     const { user } = useContext(AuthContext)
@@ -38,11 +39,11 @@ const NoSubscriptionWarningBlock = () => {
 
             <div className={`${styles.block__column} ${styles.block__column_right}`}>
                 <p className={styles.block__text}>
-                    Чтобы подключить свой магазин и работать уже <b>с реальными данными, активируйте тестовый период.</b> <span>У вас будет {user.test_days ? 'семь дней' : 'три дня'}, чтобы изучить функционал сервиса и убедиться в его удобстве.</span> Желаем удачи!
+                    Чтобы подключить свой магазин и работать уже <b>с реальными данными, активируйте тестовый период.</b> <span>У вас будет {user.test_days ? getDayDeclension(user.test_days.toString()) : '3 дня'}, чтобы изучить функционал сервиса и убедиться в его удобстве.</span> Желаем удачи!
                 </p>
 
                 <button className={styles.block__actionButton} onClick={() => setIsModalVisible(true)}>
-                    Активировать тестовый период – {user.test_days ? '7 дней' : '3 дня'}
+                    Активировать тестовый период – {user.test_days ? getDayDeclension(user.test_days.toString()) : '3 дня'}
                 </button>
             </div>
 
