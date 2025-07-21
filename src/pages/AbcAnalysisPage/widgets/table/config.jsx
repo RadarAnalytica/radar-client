@@ -64,7 +64,7 @@ const renderCategeoy = (value) => {
 };
 
 const renderNumber = (value) => {
-	return <Tooltip title={formatPrice(value)}>{formatPrice(value)}</Tooltip>
+	return formatPrice(value)
 }
 
 const renderCell = (value) => {
@@ -97,21 +97,21 @@ export const COLUMNS = [
 		key: 'tech_size',
 		title: 'Размер',
     ellipsis: true,
-    render: renderCell,
+    // render: renderCell,
 	},
 	{
 		dataIndex: 'supplier_id',
 		key: 'supplier_id',
 		title: 'Артикул поставщика',
     ellipsis: true,
-    render: renderCell,
+    // render: renderCell,
 	},
 	{
 		dataIndex: 'wb_id',
 		key: 'wb_id',
 		title: 'Артикул',
     ellipsis: true,
-    render: renderCell,
+    // render: renderCell,
 	},
 	{
 		dataIndex: 'amount',
