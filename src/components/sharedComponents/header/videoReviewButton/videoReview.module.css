@@ -54,12 +54,13 @@
     position: relative;
     will-change: transform;
     transform: scale(0);
-    transition: transform .3s;
+    transition: transform .2s;
+    box-shadow: 0px 0px 20px 0px #00000014;
 }
 
 .modal_active {
     transform: scale(1);
-    transition: transform .3s;
+    transition: transform .2s;
 }
 
 .modal__closeButton {
@@ -69,4 +70,16 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+
+.frame {
+    will-change: transform;
+    transform: scale(0);
+    transition: transform .2s;
+}
+
+.frame_active {
+    transform: scale(1);
+    transition: transform .2s;
 }

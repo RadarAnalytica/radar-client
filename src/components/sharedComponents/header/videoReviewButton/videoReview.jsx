@@ -1,8 +1,7 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styles from './videoReview.module.css'
 
 export const VideoReview = ({ link }) => {
-
     const [isModalVisible, setIsModalVisible] = useState(false)
 
     return (
@@ -20,18 +19,19 @@ export const VideoReview = ({ link }) => {
                 id='video_backdrop'
                 onClick={(e) => {
                     if (e.target.id === 'video_backdrop') {
-                        setIsModalVisible(false)
+                        setIsModalVisible(false);
                     }
                 }}
             >
                 <div className={isModalVisible ? `${styles.modal} ${styles.modal_active}` : styles.modal}>
-                    <button className={styles.modal__closeButton} onClick={() => setIsModalVisible(false)}>
+                    <button className={styles.modal__closeButton} onClick={() => {setIsModalVisible(false)}}>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 7.77813L17.7781 0L20 2.22187L12.2219 10L20 17.7781L17.7781 20L10 12.2219L2.22187 20L0 17.7781L7.77813 10L0 2.22187L2.22187 0L10 7.77813Z" fill="#FFFFFF" fillOpacity="0.5" />
                         </svg>
                     </button>
-                    {link &&
+                    {link && isModalVisible && 
                         <iframe
+                            //key={isModalVisible}
                             style={{
                                 position: 'absolute',
                                 top: 0,
@@ -39,6 +39,7 @@ export const VideoReview = ({ link }) => {
                                 width: '100%',
                                 height: '100%',
                             }}
+                            className={isModalVisible ? `${styles.frame} ${styles.frame_active}` : styles.frame}
                             src={link}
                             allowFullScreen
                             allow="autoplay"
