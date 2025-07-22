@@ -1,22 +1,6 @@
 import styles from './videoWidget.module.css'
-import c1 from './assets/c1.png'
-import c2 from './assets/c2.png'
-import c3 from './assets/c3.png'
+import { VIDEOS } from './config'
 
-const VIDEOS = [
-    {
-        plug: c1,
-        video: undefined,
-    },
-    {
-        plug: c2,
-        video: undefined,
-    },
-    {
-        plug: c3,
-        video: undefined,
-    },
-]
 
 export const VideoWidget = () => {
 
