@@ -4,8 +4,16 @@ import styles from './ReportTable.module.css';
 
 export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true }) {
 	const tableContainerRef = useRef(null);
+  const tableRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [scrollX, setScrollX] = useState(0);
+
+  const handleBodyScroll = (e) => {
+		const header = tableRef.current?.nativeElement?.querySelector('.ant-table-header');
+    if (header) {
+      header.scrollLeft = e.target.scrollLeft;
+    }
+  };
 
 	const updateHeight = useCallback(() => {
 		// ref контейнера который занимает всю высоту
@@ -63,6 +71,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 					}}
 				>
 					<Table
+      			ref={tableRef}
 						virtual={virtual}
 						columns={columns}
 						dataSource={data}
@@ -80,6 +89,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							expandRowByClick: true
 						}}
 						scroll={ { x: scrollX, y: scrollY }}
+      			onScroll={handleBodyScroll}
 					></Table>
 				</ConfigProvider>
 				}
