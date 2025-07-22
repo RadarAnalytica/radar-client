@@ -7,47 +7,6 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
     return (
         <div className={isSidebarHidden ? styles.group : styles.group_openSidebar}>
             <SmallBar
-                title='Себестоимость проданных товаров'
-                loading={loading}
-                mainData={dataDashBoard?.costPriceAmount}
-                hasSecondaryData
-                secondaryDataType='absolute'
-                secondaryDataUnits='шт'
-                secondaryData={dataDashBoard?.saleCount}
-            />
-            <SmallBar
-                title='Возвраты'
-                loading={loading}
-                mainData={dataDashBoard?.returnAmount}
-                hasSecondaryData
-                secondaryDataType='absolute'
-                secondaryDataUnits='шт'
-                secondaryData={dataDashBoard?.returnCount}
-            />
-            <SmallBar
-                title='Штрафы WB'
-                hasTooltip={!!!dataDashBoard?.penalty}
-                tooltipText='В выбранном периоде штрафов и расходов на платную приемку нет'
-                loading={loading}
-                mainData={dataDashBoard?.penalty}
-            />
-            <SmallBar
-                title='Доплаты WB'
-                loading={loading}
-                mainData={dataDashBoard?.additional}
-            />
-            <SmallBar
-                title='Комиссия WB'
-                hasTooltip
-                tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
-                loading={loading}
-                mainData={dataDashBoard?.commissionWB}
-                hasSecondaryData
-                secondaryDataType='relative'
-                secondaryDataUnits='%'
-                secondaryData={dataDashBoard?.commissionWBCompare}
-            />
-            <SmallBar
                 title='Расходы на логистику'
                 hasTooltip
                 tooltipText='Суммарные расходы на логистику, определяются расчетным способом от количества заказов'
@@ -58,7 +17,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 secondaryDataUnits='%'
                 secondaryData={dataDashBoard?.logisticsCompare}
             />
-            <SmallBar
+             <SmallBar
                 title='Хранение'
                 hasTooltip
                 tooltipText='Расходы на хранение товаров на складах WB'
@@ -70,6 +29,45 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 secondaryData={dataDashBoard?.storageDataCompare}
             />
             <SmallBar
+                title='Платная приемка'
+                loading={loading}
+                mainData={dataDashBoard?.paid_acceptance}
+            />
+             <SmallBar
+                title='Комиссия'
+                hasTooltip
+                tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
+                loading={loading}
+                mainData={dataDashBoard?.commissionWB}
+                hasSecondaryData
+                secondaryDataType='relative'
+                secondaryDataUnits='%'
+                secondaryData={dataDashBoard?.commissionWBCompare}
+            />
+
+
+
+            {/* Налог  tax_amount */}
+            {/* Реклама ДРР ? */}
+            <SmallBar
+                title='Штрафы WB'
+                hasTooltip={!!!dataDashBoard?.penalty}
+                tooltipText='В выбранном периоде штрафов и расходов на платную приемку нет'
+                loading={loading}
+                mainData={dataDashBoard?.penalty}
+            />
+              <SmallBar
+                title='Компенсации' // Доплаты ВБ
+                loading={loading}
+                mainData={dataDashBoard?.compensation}
+            />
+
+
+
+
+            {/* Средняя стоимость логистики на 1 шт */}
+            {/* Средняя прибыль на 1 шт */}
+            <SmallBar
                 title='Упущенные продажи'
                 hasTooltip
                 tooltipText='Расчетная величина, определенная как произведение средней скорости продаж на количество дней, в которых товар отсутствовал на полках магазина или на складе'
@@ -80,6 +78,35 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 secondaryDataUnits='шт'
                 secondaryData={dataDashBoard?.lostSalesCount}
             />
+            <SmallBar
+                title='Себестоимость проданных товаров'
+                loading={loading}
+                mainData={dataDashBoard?.costPriceAmount}
+                hasSecondaryData
+                secondaryDataType='absolute'
+                secondaryDataUnits='шт'
+                secondaryData={dataDashBoard?.saleCount}
+            />
+
+
+
+
+
+
+            <SmallBar //этого не будет
+                title='Возвраты'
+                loading={loading}
+                mainData={dataDashBoard?.returnAmount}
+                hasSecondaryData
+                secondaryDataType='absolute'
+                secondaryDataUnits='шт'
+                secondaryData={dataDashBoard?.returnCount}
+            />
+           
+          
+           
+           
+            
         </div>
     )
 }
