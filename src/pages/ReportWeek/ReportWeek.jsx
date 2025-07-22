@@ -270,7 +270,7 @@ export default function ReportWeek() {
 		if (activeBrand && shopStatus?.is_primary_collect) {
 			updateDataReportWeek();
 		}
-	}, [activeBrand, selectedRange, filters, weekSelected]);
+	}, [activeBrand, selectedRange, filters, weekSelected, shops, shopStatus]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
