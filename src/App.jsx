@@ -90,7 +90,7 @@ function App() {
             {/* dev */}
             <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
             <Route path='/dev/linked-shops' element={<ProtectedRoute userRoleProtected><LinkedShopsPage /></ProtectedRoute>} />
-            <Route path='/dev/main' element={<ProtectedRoute userRoleProtected><MainPage /></ProtectedRoute>} />
+            <Route path='/dev/main' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
             {/* Admin */}
             <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
