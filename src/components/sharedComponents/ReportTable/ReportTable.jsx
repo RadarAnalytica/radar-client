@@ -8,12 +8,12 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
   const [scrollY, setScrollY] = useState(0);
   const [scrollX, setScrollX] = useState(0);
 
-  const handleBodyScroll = (e) => {
+  const handleBodyScroll = useCallback((e) => {
 		const header = tableRef.current?.nativeElement?.querySelector('.ant-table-header');
     if (header) {
       header.scrollLeft = e.target.scrollLeft;
     }
-  };
+  }, []);
 
 	const updateHeight = useCallback(() => {
 		// ref контейнера который занимает всю высоту
