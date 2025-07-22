@@ -1,0 +1,72 @@
+.button {
+    border: none;
+    background-color: #F0AD00;
+    border-radius: 8px;
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: white;
+    height: 100%;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    opacity: 1;
+    box-shadow: 0px 0px 20px 0px #00000014;
+    will-change: opacity;
+    transition: opacity .3s;
+}
+
+.button:hover {
+    opacity: .75;
+}
+
+.modal__backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.2);
+    z-index: 999;
+    transform: scale(0);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__backdrop_active {
+    transform: scale(1);
+}
+
+.modal {
+    width: 60%;
+    height: 75%;
+    max-height: 90%;
+    aspect-ratio: 4 / 3;
+    border-radius: 16px;
+    background-color: white;
+    position: relative;
+    will-change: transform;
+    transform: scale(0);
+    transition: transform .3s;
+}
+
+.modal_active {
+    transform: scale(1);
+    transition: transform .3s;
+}
+
+.modal__closeButton {
+    position: absolute;
+    top: 0;
+    right: -40px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

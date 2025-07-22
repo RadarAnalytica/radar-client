@@ -72,7 +72,7 @@ const Top = () => {
             />
             <SuccessModal
                 open={reqState.isSuccess}
-                message={'Запрос успешно отправлен! Мы свяжемся в вами в ближайшее время.'}
+                message={'Запрос успешно отправлен! Мы свяжемся c Вами в ближайшее время.'}
                 footer={null}
                 onOk={() => setReqState(initRequestState)}
                 onClose={() => setReqState(initRequestState)}
