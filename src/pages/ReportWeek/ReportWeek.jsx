@@ -135,11 +135,7 @@ export default function ReportWeek() {
 	const weekSelectedHandler = (data) => {
 		let savedFilterWeek =
 			JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
-		// проверка на старую версию сохранения
-		// if (Array.isArray(savedFilterWeek)) {
-		// 	localStorage.removeItem('reportWeekFilterWeek');
-		// 	savedFilterWeek = {};
-		// }
+
 		savedFilterWeek[activeBrand.id] = data;
 		if (Object.keys(savedFilterWeek).length > 0) {
 			localStorage.setItem(
@@ -269,18 +265,12 @@ export default function ReportWeek() {
 	};
 
 	useEffect(() => {
-		if (activeBrand){
-			updateDataReportWeek();
-		}
-	}, [weekSelected]);
-
-	useEffect(() => {
 		// setWeekSelected(updateSavedFilterWeek());
 		// setPrimaryCollect(activeBrand?.is_primary_collect);
 		if (activeBrand && shopStatus?.is_primary_collect) {
 			updateDataReportWeek();
 		}
-	}, [activeBrand, selectedRange, filters]);
+	}, [activeBrand, selectedRange, filters, weekSelected]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -465,15 +455,16 @@ export default function ReportWeek() {
 						</ConfigProvider>
 					</div>
 				</div>
-				{ shopStatus?.is_primary_collect && 
+				{/* { loading && */}
 					<div className={styles.container}>
 						<ReportTable
+							virtual={false}
 							loading={loading}
 							columns={tableColumns}
 							data={tableRows}
 						/>
 					</div>
-				}
+				{/* } */}
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal
