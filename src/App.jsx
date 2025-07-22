@@ -89,8 +89,6 @@ function App() {
           <Routes>
             {/* dev */}
             <Route path='/dev/after-payment' element={<ProtectedRoute userRoleProtected><AfterPayment devMode /></ProtectedRoute>} />
-            <Route path='/dev/linked-shops' element={<ProtectedRoute userRoleProtected><LinkedShopsPage /></ProtectedRoute>} />
-            <Route path='/dev/main' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
             {/* Admin */}
             <Route path='/blog' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Блог'><BlogPage /></ProtectedRoute>} />
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
@@ -123,8 +121,8 @@ function App() {
             <Route path='/prime-cost' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Себестоимость'><PrimeCost /></ProtectedRoute>} />
             <Route path='/external-expenses' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Внешние расходы'><ExternalExpensesPage /></ProtectedRoute>} />
             <Route path='/buy-back' element={<ProtectedRoute expireProtected routeRuName='Отчёт / Самовыкуп'><ReportBuyBack /></ProtectedRoute>} />
-            <Route path='/main' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
-            <Route path='/home' element={<ProtectedRoute><StartPage /></ProtectedRoute>} />
+            <Route path='/main' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+            <Route path='/home' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
             <Route path='/instruction' element={<ProtectedRoute authGuardType="redirect"><Instructions /></ProtectedRoute>} />
             <Route path='/onboarding' element={<ProtectedRoute authGuardType="redirect" testPeriodProtected testPeriodGuardType="redirect" testPeriodRedirect="/linked-shops" expireProtected><Onboarding /></ProtectedRoute>} />
             <Route path='/user/:email' element={<ProtectedRoute authGuardType="redirect"><UserInfo /></ProtectedRoute>} />
