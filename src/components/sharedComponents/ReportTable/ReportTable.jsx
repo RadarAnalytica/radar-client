@@ -20,9 +20,9 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 		const container = tableContainerRef.current;
 		const {width, height} = container.getBoundingClientRect();
 		// расчет высоты шапки и добавление отступов контейнера
-		const headerHeight = container.querySelector('.ant-table-header')?.getBoundingClientRect().height || 70;
+		// const headerHeight = container.querySelector('.ant-table-header')?.getBoundingClientRect().height || 70;
 		// расчет и сохранение высоты таблицы
-		const availableHeight = height - headerHeight;
+		const availableHeight = height - 75;
 		setScrollY(availableHeight);
 		// расчет ширины контейнера
 		setScrollX(width);
