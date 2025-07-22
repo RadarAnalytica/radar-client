@@ -304,3 +304,15 @@
 .form__item {
     margin: 0;
 }
+
+
+.form__errorText {
+    font-family: Mulish;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    margin: 0;
+    padding: 0;
+    color: #F93C65;
+}
