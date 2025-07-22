@@ -265,18 +265,12 @@ export default function ReportWeek() {
 	};
 
 	useEffect(() => {
-		if (activeBrand){
-			updateDataReportWeek();
-		}
-	}, [weekSelected]);
-
-	useEffect(() => {
 		// setWeekSelected(updateSavedFilterWeek());
 		// setPrimaryCollect(activeBrand?.is_primary_collect);
 		if (activeBrand && shopStatus?.is_primary_collect) {
 			updateDataReportWeek();
 		}
-	}, [activeBrand, selectedRange, filters]);
+	}, [activeBrand, selectedRange, filters, weekSelected]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -461,7 +455,7 @@ export default function ReportWeek() {
 						</ConfigProvider>
 					</div>
 				</div>
-				{ shopStatus?.is_primary_collect && 
+				{/* { loading && */}
 					<div className={styles.container}>
 						<ReportTable
 							virtual={false}
@@ -470,7 +464,7 @@ export default function ReportWeek() {
 							data={tableRows}
 						/>
 					</div>
-				}
+				{/* } */}
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal
