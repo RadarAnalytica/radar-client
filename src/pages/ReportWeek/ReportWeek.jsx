@@ -135,11 +135,7 @@ export default function ReportWeek() {
 	const weekSelectedHandler = (data) => {
 		let savedFilterWeek =
 			JSON.parse(localStorage.getItem('reportWeekFilterWeek')) || {};
-		// проверка на старую версию сохранения
-		// if (Array.isArray(savedFilterWeek)) {
-		// 	localStorage.removeItem('reportWeekFilterWeek');
-		// 	savedFilterWeek = {};
-		// }
+
 		savedFilterWeek[activeBrand.id] = data;
 		if (Object.keys(savedFilterWeek).length > 0) {
 			localStorage.setItem(
@@ -468,6 +464,7 @@ export default function ReportWeek() {
 				{ shopStatus?.is_primary_collect && 
 					<div className={styles.container}>
 						<ReportTable
+							virtual={false}
 							loading={loading}
 							columns={tableColumns}
 							data={tableRows}
