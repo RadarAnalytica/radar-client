@@ -11,8 +11,9 @@
     justify-content: space-between;
     align-items: flex-start;
     background: white;
-    transition: all .15s ease-out;
+    transition: all .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     z-index: 999;
+    will-change: contents;
     gap: 20px;
 }
 
@@ -20,7 +21,7 @@
     min-width: 100px;
     max-width:100px;
     overflow: hidden;
-    transition: all .15s ease-in;
+    transition: all .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     padding: 20px 20px 0 20px;
 }
 .sidebar__mainLinkWrapper {

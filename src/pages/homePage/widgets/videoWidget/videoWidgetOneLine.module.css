@@ -37,7 +37,7 @@
 }
 
 .card:hover {
-    transform: scale(102%);
+    transform: scaleY(102%) scaleX(101%);
 }
 
 
