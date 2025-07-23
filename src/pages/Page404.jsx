@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
 import LimitedFooter from '../components/LimitedFooter';
@@ -7,9 +7,14 @@ import { URL } from '../service/config';
 import NavbarMainHome from '../components/NavbarMainHome';
 import styles from './Page404.module.css'
 
+
 const Page404 = () => {
-  const navigate = useNavigate();
-  console.log('this is inner 404 page')
+  // const navigate = useNavigate();
+
+  useEffect(() => {
+    window.location.href = `${URL}/not-found`
+  }, [])
+
   return (
     <>
       <main className={styles.page}>
