@@ -43,7 +43,7 @@ const SkuFrequencyPage = () => {
                     <div className={styles.page__headerWrapper}>
                         <Header 
                             title='Поиск прибыльной ниши' 
-                            //videoReviewLink='https://play.boomstream.com/4yHYrlLW?color=%23FFFFFF&size=cover&autostart=1&loop=1'
+                            videoReviewLink='https://play.boomstream.com/4yHYrlLW?color=%23FFFFFF&size=cover&autostart=0&loop=1&title=0'
                         />
                     </div>
                     <HowtoWidget />

@@ -3,6 +3,19 @@ import styles from './videoReview.module.css'
 
 export const VideoReview = ({ link }) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
+    const ref = useRef(null)
+
+    useEffect(() => {
+        if (isModalVisible && ref && ref.current) {
+            console.log('hit1')
+            ref.current.contentWindow.postMessage({ code: link, method: 'action', action: 'play', data: '' }, '*');
+        }
+        if (!isModalVisible && ref && ref.current) {
+            console.log('hit2')
+            ref.current.contentWindow.postMessage({ code: link, method: 'action', action: 'pause', data: '' }, '*');
+        }
+    }, [isModalVisible])
+
 
     return (
         <>
@@ -29,9 +42,8 @@ export const VideoReview = ({ link }) => {
                             <path d="M10 7.77813L17.7781 0L20 2.22187L12.2219 10L20 17.7781L17.7781 20L10 12.2219L2.22187 20L0 17.7781L7.77813 10L0 2.22187L2.22187 0L10 7.77813Z" fill="#FFFFFF" fillOpacity="0.5" />
                         </svg>
                     </button>
-                    {link && isModalVisible && 
                         <iframe
-                            //key={isModalVisible}
+                            ref={ref}
                             style={{
                                 position: 'absolute',
                                 top: 0,
@@ -44,7 +56,6 @@ export const VideoReview = ({ link }) => {
                             allowFullScreen
                             allow="autoplay"
                         ></iframe>
-                    }
                 </div>
             </div>
         </>
