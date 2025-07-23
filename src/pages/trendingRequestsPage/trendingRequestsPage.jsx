@@ -78,7 +78,10 @@ const TrendingRequestsPage = () => {
             <section className={styles.page__content}>
                 <div className={styles.page__wrapper}>
                     <div className={styles.page__headerWrapper}>
-                        <Header {...memoizedHeaderProps} />
+                        <Header 
+                            {...memoizedHeaderProps}
+                            //videoReviewLink='https://play.boomstream.com/JDw00KbS?size=cover&color=%23ffffff&autostart=1&loop=1'
+                        />
                     </div>
                     {/* <div className={styles.page__howtoBlock}>
                         <HowtoWidget

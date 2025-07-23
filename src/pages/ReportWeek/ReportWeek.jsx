@@ -270,7 +270,7 @@ export default function ReportWeek() {
 		if (activeBrand && shopStatus?.is_primary_collect) {
 			updateDataReportWeek();
 		}
-	}, [activeBrand, selectedRange, filters, weekSelected]);
+	}, [activeBrand, selectedRange, filters, weekSelected, shops, shopStatus]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -427,7 +427,7 @@ export default function ReportWeek() {
 								</Button>
 							</Popover>
 						</ConfigProvider>
-						<ConfigProvider
+						{/* <ConfigProvider
 							theme={{
 								token: {
 									colorBorder: '#00000033',
@@ -452,7 +452,7 @@ export default function ReportWeek() {
 							>
 								Скачать Excel
 							</Button>
-						</ConfigProvider>
+						</ConfigProvider> */}
 					</div>
 				</div>
 				{/* { loading && */}

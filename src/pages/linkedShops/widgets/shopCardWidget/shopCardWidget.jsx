@@ -134,12 +134,12 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
             setEditModalVisible(false)
         }
         if (editShopRequestStatus.isError) {
-            setStatusBarState({
-                isActive: true,
-                type: 'Error',
-                message: editShopRequestStatus.message
-            })
-            setEditShopRequestStatus(initRequestStatus)
+            // setStatusBarState({
+            //     isActive: true,
+            //     type: 'Error',
+            //     message: editShopRequestStatus.message
+            // })
+            // setEditShopRequestStatus(initRequestStatus)
             //setEditModalVisible(false)
         }
     }, [deleteShopRequestStatus, editShopRequestStatus])
@@ -267,9 +267,9 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                 footer={null}
                 width={700}
                 centered
-                onOk={() => { setEditModalVisible(false); form.resetFields() }}
-                onClose={() => { setEditModalVisible(false); form.resetFields() }}
-                onCancel={() => { setEditModalVisible(false); form.resetFields() }}
+                onOk={() => { setEditModalVisible(false); form.resetFields(); setEditShopRequestStatus(initRequestStatus) }}
+                onClose={() => { setEditModalVisible(false); form.resetFields(); setEditShopRequestStatus(initRequestStatus) }}
+                onCancel={() => { setEditModalVisible(false); form.resetFields(); setEditShopRequestStatus(initRequestStatus) }}
                 closeIcon={
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 7.77813L17.7781 0L20 2.22187L12.2219 10L20 17.7781L17.7781 20L10 12.2219L2.22187 20L0 17.7781L7.77813 10L0 2.22187L2.22187 0L10 7.77813Z" fill="#1A1A1A" fillOpacity="0.5" />
@@ -373,6 +373,12 @@ export const ShopCardWidget = ({ shop, authToken, setStatusBarState }) => {
                             >
                                 Сохранить
                             </Button>
+
+                            {editShopRequestStatus.isError &&
+                                <p className={styles.form__errorText}>
+                                    {editShopRequestStatus.message}
+                                </p>
+                            }
                         </Form>
                     </ConfigProvider>
                 </div>

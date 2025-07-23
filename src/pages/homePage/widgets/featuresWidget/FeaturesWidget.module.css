@@ -16,6 +16,12 @@
     justify-content: space-between;
     align-items: stretch;
     position: relative;
+    transform: scale(100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1.15, 0.45, 0.95);
+}
+
+.card:hover {
+    transform: scaleY(102%) scaleX(101%);
 }
 
 .card__infoBlock {
@@ -53,7 +59,6 @@
 }
 
 .card__cover img {
-    width: auto;
     height: 100%;
     object-fit: cover;
     object-position: center right;
@@ -97,8 +102,15 @@
     border-radius: 10px;
     background-color: #F7F6FE;
     width: max-content;
+    transition: all .4s cubic-bezier(0.77, 0, 0.175, 1);
+   
+
 
     @media (max-width: 1440px) {
         font-size: 16px;
     }
+}
+
+.link:hover {
+    background-color: #5329FF20;
 }

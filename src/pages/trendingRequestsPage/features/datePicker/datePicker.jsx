@@ -25,7 +25,8 @@ export const DatePicker = ({ selectedDate, setSelectedDate, isExampleDataSet }) 
     };
     const today = new Date();
     const maxDate = new Date(today);
-    maxDate.setDate(today.getDate() - 1);
+    maxDate.setDate(today.getDate() - 5);
+
     const minDate = new Date(today);
     minDate.setFullYear(2023, 4, 1);
     const startMonth = new Date(today);

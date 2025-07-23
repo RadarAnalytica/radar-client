@@ -605,7 +605,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
 
     // --------- сбрасываем интервал проверки по условию ------------//
     useEffect(() => {
-        if (intervalRef?.current && requestCounter >= 60) {
+        if (intervalRef?.current && requestCounter >= 600) {
             setUploadStatus({ ...initUploadStatus, isError: true, message: 'Не удалось обработать файлы. Пожалуйста, обратитесь в поддержку' })
             intervalRef?.current && clearInterval(intervalRef.current)
             intervalRef.current = null
@@ -628,6 +628,15 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
             localStorage.removeItem('uploadingFiles')
         }
     }, [requestCounter, intervalRef])
+    // --------- скрываем ошибку количества файлов через 2 секунды ---------//
+    useEffect(() => {
+        let timeout;
+        if (filesQuantityError) {
+            timeout = setTimeout(() => {setFilesQuantityError(false)}, 2000)
+        }
+
+        return () => {timeout && clearTimeout(timeout)}
+    }, [filesQuantityError])
 
 
     return (

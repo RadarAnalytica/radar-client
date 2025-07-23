@@ -45,7 +45,9 @@
 
 .header {
     display: flex;
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .headerText {
@@ -246,7 +248,8 @@
 }
 
 .diffBacckground {
-    background: rgba(83, 41, 255, 0.05);
+    /* background: rgba(83, 41, 255, 0.05); */
+    background: #F6F4FF;
 }
 
 .weekDetails {

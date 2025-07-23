@@ -1,22 +1,39 @@
 import styles from './videoWidget.module.css'
-import c1 from './assets/c1.png'
-import c2 from './assets/c2.png'
-import c3 from './assets/c3.png'
+import { VIDEOS } from './config'
+
 
 export const VideoWidget = () => {
 
     return (
         <div className={styles.widget}>
             {/* cards */}
-            <div className={styles.card}>
-                <img src={c1} alt='' />
-            </div>
-            <div className={styles.card}>
-                <img src={c2} alt='' />
-            </div>
-            <div className={styles.card}>
-                <img src={c3} alt='' />
-            </div>
+            {VIDEOS.map((_, id) => {
+
+                if (_.video) {
+                    return (
+                        <div className={styles.card} key={id}>
+                            <iframe
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                }}
+                                src={_.video}
+                                allowFullScreen
+                            //allow="autoplay"
+                            ></iframe>
+                        </div>
+                    )
+                } else {
+                    return (
+                        <div className={styles.card} key={id}>
+                            <img src={_.plug} alt='' />
+                        </div>
+                    )
+                }
+            })}
 
 
             <div className={styles.description}>

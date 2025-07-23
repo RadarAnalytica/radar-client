@@ -54,7 +54,7 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
             setAddShopRequestStatus(initRequestStatus)
         }
         if (addShopRequestStatus.isError) {
-            setIsModalVisible(false)
+            // setIsModalVisible(false)
             setStatusBarState({
                 isActive: true,
                 type: 'Error',
@@ -102,9 +102,9 @@ export const AddShopWidget = ({ authToken, setStatusBarState }) => {
                 footer={null}
                 width={700}
                 centered
-                onOk={() => setIsModalVisible(false)}
-                onClose={() => setIsModalVisible(false)}
-                onCancel={() => setIsModalVisible(false)}
+                onOk={() => {setIsModalVisible(false); form.resetFields()}}
+                onClose={() => {setIsModalVisible(false); form.resetFields()}}
+                onCancel={() => {setIsModalVisible(false); form.resetFields()}}
                 closeIcon={
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 7.77813L17.7781 0L20 2.22187L12.2219 10L20 17.7781L17.7781 20L10 12.2219L2.22187 20L0 17.7781L7.77813 10L0 2.22187L2.22187 0L10 7.77813Z" fill="#1A1A1A" fillOpacity="0.5" />

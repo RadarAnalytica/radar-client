@@ -11,8 +11,9 @@
     justify-content: space-between;
     align-items: flex-start;
     background: white;
-    transition: all .15s ease-out;
+    transition: all .4s cubic-bezier(0.23, 1, 0.32, 1);
     z-index: 999;
+    will-change: contents;
     gap: 20px;
 }
 
@@ -20,7 +21,7 @@
     min-width: 100px;
     max-width:100px;
     overflow: hidden;
-    transition: all .15s ease-in;
+    transition: all .4s cubic-bezier(0.23, 1, 0.32, 1);
     padding: 20px 20px 0 20px;
 }
 .sidebar__mainLinkWrapper {
@@ -91,23 +92,23 @@
 }
 .sidebar__mainLink_bigHidden {
     transform: translateX(-1000px) scale(0);
-    transition: all .2s ease-in;
+    transition: all 0.5;
    
 }
 .sidebar__mainLink_bigVisible {
     text-decoration: none;
     transform: translateX(0px) scale(1);
-    transition: all .2s ease-out;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.25);
 }
 .sidebar__mainLink_smallHidden {
     transform: translateY(-1000px);
-    transition: all .2s ease-in;
+    transition: all 0.5s;
     
 }
 .sidebar__mainLink_smallVisible {
     text-decoration: none;
     transform: translateY(0px);
-    transition: all .2s ease-out;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.25);
 }
 
 .sidebar__mainLinklogo {

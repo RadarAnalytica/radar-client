@@ -23,7 +23,7 @@ export const FeaturesWidget = () => {
                 </div>
 
                 <div className={styles.card__cover}>
-                    <img src={card1} alt='' />
+                    <img src={card1} alt='' width={356} height={200} />
                 </div>
             </div>
 
@@ -45,7 +45,7 @@ export const FeaturesWidget = () => {
                 </div>
 
                 <div className={styles.card__cover}>
-                    <img src={card2} alt='' />
+                    <img src={card2} alt='' width={240} height={200} />
                 </div>
             </div>
 
@@ -69,7 +69,7 @@ export const FeaturesWidget = () => {
                 </div>
 
                 <div className={styles.card__cover}>
-                    <img src={card3} alt='' />
+                    <img src={card3} alt='' width={330} height={225} />
                 </div>
             </div>
 
@@ -92,7 +92,7 @@ export const FeaturesWidget = () => {
                 </div>
 
                 <div className={styles.card__cover}>
-                    <img src={card4} alt='' />
+                    <img src={card4} alt='' width={246} height={225} />
                 </div>
             </div>
 
