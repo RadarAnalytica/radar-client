@@ -50,13 +50,13 @@ const Bar = ({ fixed = true, title, amount, amountInPercent, amountPerDay, quant
                 </div>
             }
 
-            {!fixed && averageBill !== undefined && averageBillInPercent !== undefined &&
+            {!fixed && averageBill !== undefined &&
                 <div className={styles.bar__floatData}>
                     <p className={styles.bar__mainData}>{formatPrice(averageBill, '₽')}</p>
-                    <div className={styles.bar__contentWrapper}>
+                    {/* <div className={styles.bar__contentWrapper}>
                         {getRateIcon(averageBillInPercent)}
                         <p className={getRateStyle(parseInt(averageBillInPercent), styles)}>{formatPrice(averageBillInPercent, '%')}</p>
-                    </div>
+                    </div> */}
                 </div>
             }
 
