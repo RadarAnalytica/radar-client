@@ -17,7 +17,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 secondaryDataUnits='%'
                 secondaryData={dataDashBoard?.logisticsCompare}
             />
-             <SmallBar
+            <SmallBar
                 title='Хранение'
                 hasTooltip
                 tooltipText='Расходы на хранение товаров на складах WB'
@@ -33,7 +33,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 loading={loading}
                 mainData={dataDashBoard?.paid_acceptance}
             />
-             <SmallBar
+            <SmallBar
                 title='Комиссия'
                 hasTooltip
                 tooltipText='Суммарная комиссия маркетплейса, рассчитывается от суммарного объема продаж по коэффициентам, определенным Wildberries'
@@ -44,11 +44,20 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 secondaryDataUnits='%'
                 secondaryData={dataDashBoard?.commissionWBCompare}
             />
-
-
-
-            {/* Налог  tax_amount */}
-            {/* Реклама ДРР ? */}
+            <SmallBar
+                title='Налог'
+                loading={loading}
+                mainData={dataDashBoard?.tax_amount}
+            />
+            <SmallBar
+                title='Реклама (ДРР)'
+                loading={loading}
+                mainData={dataDashBoard?.advertAmount}
+                hasSecondaryData
+                secondaryDataType='absolute'
+                secondaryDataUnits='%'
+                secondaryData={dataDashBoard?.advertPercent}
+            />
             <SmallBar
                 title='Штрафы WB'
                 hasTooltip={!!!dataDashBoard?.penalty}
@@ -56,8 +65,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 loading={loading}
                 mainData={dataDashBoard?.penalty}
             />
-              <SmallBar
-                title='Компенсации' // Доплаты ВБ
+            <SmallBar
+                title='Компенсации'
                 loading={loading}
                 mainData={dataDashBoard?.compensation}
             />
@@ -65,8 +74,21 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
 
 
 
-            {/* Средняя стоимость логистики на 1 шт */}
+            <SmallBar
+                title='Средняя стоимость логистики на 1 шт'
+                loading={loading}
+                mainData={dataDashBoard?.logistic_per_one}
+            />
             {/* Средняя прибыль на 1 шт */}
+            <SmallBar
+                title='Средняя прибыль на 1 шт'
+                loading={loading}
+                mainData={dataDashBoard?.profit_per_one}
+                hasSecondaryData
+                secondaryDataType='relative'
+                secondaryDataUnits='%'
+                secondaryData={dataDashBoard?.profit_per_one_compare}
+            />
             <SmallBar
                 title='Упущенные продажи'
                 hasTooltip
@@ -92,7 +114,7 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
 
 
 
-
+            {/* 
             <SmallBar //этого не будет
                 title='Возвраты'
                 loading={loading}
@@ -101,12 +123,12 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 secondaryDataType='absolute'
                 secondaryDataUnits='шт'
                 secondaryData={dataDashBoard?.returnCount}
-            />
-           
-          
-           
-           
-            
+            /> */}
+
+
+
+
+
         </div>
     )
 }
