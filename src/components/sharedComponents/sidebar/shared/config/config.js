@@ -194,7 +194,7 @@ export const menuConfig = [
             },
             {
                 id: 2,
-                url: '/seo',
+                url: '/rank-analysis',
                 label: 'Сравнение SEO с ТОПами',
                 isActive: true,
                 isNew: false
