@@ -226,7 +226,7 @@ export default function TrendAnalysisQuery() {
 								>
 									<Input
 										size="large"
-										placeholder="Введите поисковый запрос"
+										placeholder="Введите поисковый запрос, например: «платье»"
 										allowClear={{
 											clearIcon: (
 												<svg
