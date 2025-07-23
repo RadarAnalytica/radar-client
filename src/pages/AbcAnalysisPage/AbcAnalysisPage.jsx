@@ -27,7 +27,7 @@ const AbcAnalysisPage = () => {
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
 	const [isNeedCost, setIsNeedCost] = useState([]);
 	const [viewType, setViewType] = useState('proceeds');
-	const [sorting, setSorting] = useState('desc');
+	const [sorting, setSorting] = useState({key: 'amount', direction: 'asc'});
 	const [loading, setLoading] = useState(true);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
@@ -41,10 +41,16 @@ const AbcAnalysisPage = () => {
 	// console.log(viewType)
 	// console.log('--------------------------')
 
-	// const sorterHandler = useCallback((a, b, direction) => {
-	// 	setSorting(direction);
-	// 	setPage(1);
-	// }, []);
+	const sorterHandler = useCallback((a, b, direction, key) => {
+		console.log('--------')
+		console.log('a', a)
+		console.log('b', b)
+		console.log('direction', direction)
+		console.log('key', key)
+		console.log('--------')
+		setSorting(({key: key, direction: direction}));
+		setPage(1);
+	}, []);
 
 	const updateDataAbcAnalysis = async (
 		viewType,
@@ -65,7 +71,7 @@ const AbcAnalysisPage = () => {
 					activeBrand,
 					filters,
 					page,
-					sorting
+					sorting.direction
 				);
 			}
 
@@ -111,9 +117,12 @@ const AbcAnalysisPage = () => {
 			if (el.key === 'amount_percent'){
 				el.title = amountPercentTitle[viewType]
 			}
-			// if (el.sorter) {
-				// el.sorter = sorterHandler
-			// }
+			if (el.sorter) {
+				// el.sorter = (a, b, direction) => sorterHandler(a, b, direction, el.key)
+			}
+			if (sorting.key && el.dataIndex === sorting.key){
+				el.defaultSortOrder = sorting.direction;
+			}
       return el
     })
   }, [dataAbcAnalysis])
@@ -303,6 +312,7 @@ const AbcAnalysisPage = () => {
 							theme={{
 								token: {
 									colorPrimary: '#5329FF',
+									colorText: '#5329FF',
 									colorBgTextHover: '#5329FF0D',
 								},
 								components: {
@@ -330,6 +340,11 @@ const AbcAnalysisPage = () => {
 										colorPrimaryBorder: '#5329ff',
 										colorPrimaryHover: '#5329ff',
 									},
+									Pagination: {
+										itemActiveBg: '#EEEAFF',
+										itemBg: '#F7F7F7',
+										itemColor: '#8C8C8C',
+									}
 								},
 							}}
 						>
@@ -337,22 +352,21 @@ const AbcAnalysisPage = () => {
 								columns={columnsList}
 								// columns={COLUMNS}
 								dataSource={tableData}
-								scroll={{ y: 600 }}
+								scroll={{ y: 100 }}
 								sticky={true}
 								showSorterTooltip={false}
-								sortOrder={sorting}
-								pagination={false}
-								// pagination={{
-								// 	align: 'end',
-								// 	defaultCurrent: 1,
-								// 	defaultPageSize: 100,
-								// 	hideOnSinglePage: true,
-								// 	showSizeChanger: false,
-								// 	onChange: setPage,
-								// 	current: page,
-								// 	total: dataAbcAnalysis?.total,
-								// }}
-								// sortDirections={['asc', 'desc']}
+								sortOrder={sorting.direction}
+								pagination={{
+									position: ['bottomLeft'],
+									defaultCurrent: 1,
+									defaultPageSize: 100,
+									hideOnSinglePage: true,
+									showSizeChanger: false,
+									onChange: setPage,
+									current: page,
+									total: dataAbcAnalysis?.total,
+								}}
+								sortDirections={['asc', 'desc']}
 							/>
 						</ConfigProvider>
 					)}
