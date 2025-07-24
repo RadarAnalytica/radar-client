@@ -27,7 +27,7 @@ const AbcAnalysisPage = () => {
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
 	const [isNeedCost, setIsNeedCost] = useState([]);
 	const [viewType, setViewType] = useState('proceeds');
-	const [sorting, setSorting] = useState({key: 'amount', direction: 'asc'});
+	const [sorting, setSorting] = useState({key: null, direction: 'desc'});
 	const [loading, setLoading] = useState(true);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
@@ -42,14 +42,18 @@ const AbcAnalysisPage = () => {
 	// console.log('--------------------------')
 
 	const sorterHandler = useCallback((a, b, direction, key) => {
+		if (sorting.key === key && sorting.direction === direction){
+			return
+		}
 		console.log('--------')
+		console.log(sorting)
 		console.log('a', a)
 		console.log('b', b)
 		console.log('direction', direction)
 		console.log('key', key)
 		console.log('--------')
-		setSorting(({key: key, direction: direction}));
-		setPage(1);
+		// setSorting(({key: key, direction: direction}));
+		// setPage(1);
 	}, []);
 
 	const updateDataAbcAnalysis = async (
@@ -118,7 +122,7 @@ const AbcAnalysisPage = () => {
 				el.title = amountPercentTitle[viewType]
 			}
 			if (el.sorter) {
-				// el.sorter = (a, b, direction) => sorterHandler(a, b, direction, el.key)
+				el.sorter = (a, b, direction) => sorterHandler(a, b, direction, el.key)
 			}
 			if (sorting.key && el.dataIndex === sorting.key){
 				el.defaultSortOrder = sorting.direction;
@@ -359,7 +363,7 @@ const AbcAnalysisPage = () => {
 								pagination={{
 									position: ['bottomLeft'],
 									defaultCurrent: 1,
-									defaultPageSize: 100,
+									defaultPageSize: dataAbcAnalysis?.per_page,
 									hideOnSinglePage: true,
 									showSizeChanger: false,
 									onChange: setPage,
