@@ -4,7 +4,6 @@ import { differenceInDays } from 'date-fns';
 import { useAppSelector } from '../../../redux/hooks';
 
 const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
-    console.log(dataDashBoard.taxInfo)
     const { isSidebarHidden } = useAppSelector(store => store.utils)
 
     const daysRange = selectedRange.from && selectedRange.to ? differenceInDays(selectedRange.to, selectedRange.from, { unit: 'days' }) : selectedRange.period

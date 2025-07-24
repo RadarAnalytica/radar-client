@@ -629,14 +629,14 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
         }
     }, [requestCounter, intervalRef])
     // --------- скрываем ошибку количества файлов через 2 секунды ---------//
-    useEffect(() => {
-        let timeout;
-        if (filesQuantityError) {
-            timeout = setTimeout(() => {setFilesQuantityError(false)}, 2000)
-        }
+    // useEffect(() => {
+    //     let timeout;
+    //     if (filesQuantityError) {
+    //         timeout = setTimeout(() => {setFilesQuantityError(false)}, 2000)
+    //     }
 
-        return () => {timeout && clearTimeout(timeout)}
-    }, [filesQuantityError])
+    //     return () => {timeout && clearTimeout(timeout)}
+    // }, [filesQuantityError])
 
 
     return (
