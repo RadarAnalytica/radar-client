@@ -43,7 +43,7 @@
 .page__dataWrapper {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
 
@@ -100,7 +100,7 @@
 .mainData__rowText {
     font-family: Mulish;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -119,8 +119,9 @@
 .mainData__inputWrapper {
     width: 100%;
     display: flex;
-    align-items: center;
+    justify-content: flex-end;
     gap: 20px;
+    grid-column: span 2;
 }
 
 /* userHistoryData */
@@ -154,7 +155,7 @@
     padding: 10px 0;
 }
 
-.userHistoryData__rowText {
+.userHistoryData__rowDate {
     font-family: Mulish;
     font-weight: 700;
     font-size: 20px;
@@ -171,4 +172,29 @@
     @media (max-width: 1440px) {
         font-size: 16px;
     }
+}
+.userHistoryData__rowText {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+    margin: 0;
+    padding: 0;
+}
+
+.form {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form__item {
+
+}
+
+.form__item_wide {
+    grid-column: span 2;
 }

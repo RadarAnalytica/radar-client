@@ -43,7 +43,6 @@ const Page404 = React.lazy(() => import("./pages/Page404"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
 const WeeklyReportDashboard = React.lazy(() => import("./pages/WeeklyReportDashboard"));
 const Schedule = React.lazy(() => import("./pages/Schedule"));
-const StartPage = React.lazy(() => import("./pages/StartPage"));
 const UnitCalculatorPage = React.lazy(() => import("./pages/UnitCalculatorPage"));
 const UnitCalculatorPageDesktop = React.lazy(() => import("./pages/UnitCalculatorPageDesktop"));
 const DashboardPage = React.lazy(() => import("./pages/apiServicePages/dashboardPage/page/dashboardPage"));

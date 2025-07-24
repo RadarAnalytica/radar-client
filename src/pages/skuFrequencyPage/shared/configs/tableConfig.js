@@ -11,7 +11,6 @@ const tooltipConfig = {
     "Артикулов в рекламе, %": 'Расчетное среднее значение за 30 дней',
     "Артикулов с внешним трафиком, %": 'Расчетное среднее значение за 30 дней',
     "Средняя цена, ₽": 'Расчетное среднее значение за 30 дней',
-    "Средняя цена, ₽": 'Расчетное среднее значение за 30 дней',
     "Артикулов с продажами, %": 'Расчетное среднее значение за 30 дней'
 
 }
@@ -61,6 +60,10 @@ export const newTableConfig = [
                 render: function (value) { return cellRender(value, this) },
                 hidden: false,
                 //sortOrder: 'ascend'
+                // children: [
+                //     {title: '1', render: function (value) { return cellRender(value, this) }, width: 200},
+                //     {title: '2', render: function (value) { return cellRender(value, this) }, width: 200},
+                // ].map(_ => ({ ..._, render: _.render.bind(_) }))
             },
         ].map(_ => ({ ..._, render: _.render.bind(_) }))
     },
