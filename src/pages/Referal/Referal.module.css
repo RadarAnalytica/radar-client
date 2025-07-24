@@ -223,8 +223,30 @@
     color: #1a1a1a;
 }
 
-.charge_item_empty {
+.transactions {
     font-weight: 500;
     font-size: 16px;
     color: #000;
+}
+
+.transactions__item {
+    padding: 8px 0;
+    color: #1A1A1A;
+}
+
+.transactions__item + .transactions__item {
+    border-top: 1px solid #E8E8E8;
+}
+
+.transactions__item_green,
+.transactions__item_red {
+    font-weight: 700;
+}
+
+.transactions__item_green {
+    color: green;
+}
+
+.transactions__item_red {
+    color: red;
 }
