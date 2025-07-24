@@ -1313,31 +1313,30 @@ export const ServiceFunctions = {
 
 		return data;
 	},
-	getReferalData: async(token) => {
-
-		// const res = await fetch(
-    //   `${URL}/api/profit_loss/report`,
-    //   {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'content-type': 'application/json',
-		// 		authorization: 'JWT ' + token,
-		// 	},
-    //     body: JSON.stringify(body)
-    //   }
-    // );
-
-		// const data = await res.json();
-
-		let data = null;
-
-		await setTimeout(() => {
-			data = {
-				data: 'data'
+	getReferalData: async(token, page) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/referral_system?page=${page}&per_page=25`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ощибка запроса');
 			}
-		}, 1000);
+	
+			return res.json();
 
-		return data;
+		} catch(error) {
+			console.error('getReferalData ', error);
+			throw new Error(error);
+		}
+
 	}
 };
 
