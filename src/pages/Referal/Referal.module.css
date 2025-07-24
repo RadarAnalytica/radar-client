@@ -244,9 +244,9 @@
 }
 
 .transactions__item_green {
-    color: green;
+    color: rgb(0, 182, 155);
 }
 
 .transactions__item_red {
-    color: red;
+    color: rgb(249, 60, 101);
 }

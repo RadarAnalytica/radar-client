@@ -1,11 +1,11 @@
 import AuthContext from '../../service/AuthContext';
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useContext, useRef, useMemo } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
 import styles from './Referal.module.css';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import { ConfigProvider, Flex, Row, Tooltip, Button, Col, Pagination } from 'antd';
+import { ConfigProvider, Flex, Row, Tooltip, Button, Col, Table } from 'antd';
 import { HeaderIcon, TooltipIcon, CopyIcon } from './widgets/icons';
 import { formatPrice } from '../../service/utils';
 import { format } from 'date-fns';
@@ -16,6 +16,8 @@ export default function ReferalPage() {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState(null);
 	const [page, setPage] = useState(1);
+
+	const transactions = useMemo(() => data?.transactions ? data.transactions : null , [data])
 
 	const updateData = async (token) => {
 		setLoading(true);
@@ -61,6 +63,7 @@ export default function ReferalPage() {
 			</section>
 			{/* ------ CONTENT ------ */}
 			<ConfigProvider
+				renderEmpty={ () => (<div>Нет начислений</div>)} 
 				theme={{
 					token: {
 						colorPrimary: '#5329ff',
@@ -87,6 +90,24 @@ export default function ReferalPage() {
 							itemActiveBg: '#EEEAFF',
 							itemBg: '#F7F7F7',
 							itemColor: '#8C8C8C',
+						},
+						Table: {
+							headerColor: '#8c8c8c',
+							headerBg: '#f7f6fe',
+							headerBorderRadius: 20,
+							selectionColumnWidth: 32,
+							cellFontSize: 16,
+							borderColor: '#e8e8e8',
+							cellPaddingInline: 16,
+							cellPaddingBlock: 17,
+							bodySortBg: '#f7f6fe',
+							headerSortActiveBg: '#e7e1fe',
+							headerSortHoverBg: '#e7e1fe',
+							rowSelectedBg: '#f7f6fe',
+							rowSelectedHoverBg: '#e7e1fe',
+							colorText: '#1A1A1A',
+							lineHeight: 1.2,
+							fontWeightStrong: 500
 						},
 					},
 				}}
@@ -316,57 +337,48 @@ export default function ReferalPage() {
 								</Flex>
 								<div>
 									<div className={styles.transactions}>
-										{/* {list} */}
-										{!data?.transactions && (
+										{(!data || (transactions && transactions?.transactions_data.length === 0)) && (
 											<div>Нет начислений</div>
 										)}
-										{data?.transactions &&
-											data.transactions.transactions_data.map(
-												(el, i) => (
-													<div
-														key={i}
-														className={
-															styles.transactions__item
-														}
-													>
-														{format(
-															el.date,
-															'dd.MM.yyyy'
-														)}{' '}
-														<span
-															className={
-																el
-																	.transactions_history[0]
-																	.bonus_amount >
-																0
-																	? styles.transactions__item_green
-																	: styles.transactions__item_red
-															}
-														>
-															{
-																el
-																	.transactions_history[0]
-																	.bonus_amount
-															}
+										{transactions && transactions?.transactions_data.length > 0 && 
+											<Table
+												columns={[
+													{
+														key: 'date',
+														dataIndex: 'date',
+														title: 'Дата',
+														render: (value) => format( value, 'dd.MM.yyyy')
+													},
+													{
+														key: 'transactions_history',
+														dataIndex: 'transactions_history',
+														title: 'Сумма, руб', render: (value) => (
+															<span
+																className={
+																	value[0].bonus_amount > 0
+																		? styles.transactions__item_green
+																		: styles.transactions__item_red
+																}
+															>
+															{value[0].bonus_amount}
 														</span>
-													</div>
-												)
-											)}
-										{data?.transactions && (
-											<Pagination
-												align="start"
-												defaultCurrent={1}
-												current={page}
-												total={data.transactions.total}
-												pageSize={
-													data.transactions.per_page
-												}
-												showQuickJumper={false}
-												showSizeChanger={false}
-												onChange={setPage}
-												hideOnSinglePage={true}
+														)
+													}
+												]}
+												dataSource={transactions.transactions_data.map((el, i) => ({key: i, ...el}))}
+												pagination={{
+													position: ['bottomLeft'],
+													defaultCurrent: 1,
+													current: page,
+													total: transactions.total,
+													pageSize: transactions.per_page,
+													showQuickJumper: false,
+													showSizeChanger: false,
+													onChange: setPage,
+													hideOnSinglePage: true,
+												}}
 											/>
-										)}
+										}
 									</div>
 								</div>
 							</div>
