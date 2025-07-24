@@ -6,7 +6,7 @@ import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { SearchWidget } from './widgets';
-import { Input, Button, ConfigProvider, Form } from 'antd';
+import { Input, Button, ConfigProvider, Form, Table } from 'antd';
 import { formatPrice } from '../../service/utils';
 import SuccessModal from '../../components/sharedComponents/modals/successModal/successModal';
 import moment from 'moment';
@@ -49,9 +49,27 @@ const mockData = {
     }
 }
 
-const fetchUserData = async (token, userId, setStatus, initStatus, setData) => {
+const HISTORY_COLUMNS = [
+    { title: 'Дата', dataIndex: 'transaction_date', width: 100 },
+    { title: 'ID реферала', dataIndex: 'referral_id', width: 100 },
+    { title: 'Сумма', dataIndex: 'bonus_amount', width: 100 },
+    { title: 'Админ', dataIndex: 'admin_id', width: 100 },
+    { title: 'Тип', dataIndex: 'transaction_type', width: 100 },
+    { title: 'Вид', dataIndex: 'transaction_direction', width: 100 },
+]
 
-    setData(undefined)
+const USER_COLUMNS = [
+    { title: 'ID', dataIndex: 'id', width: 100 },
+    { title: 'Ссылка', dataIndex: 'referral_link', width: 100 },
+    { title: 'Количество', dataIndex: 'referral_count', width: 100 },
+    { title: 'Баланс', dataIndex: 'bonus_balance', width: 100 },
+]
+
+const fetchUserData = async (token, userId, setStatus, initStatus, setData) => {
+    if (!userId) {
+        setStatus({ ...initStatus, isError: true, message: 'Пожалуйста введите id пользователя' })
+        return
+    }
     setStatus({ ...initStatus, isLoading: true })
     try {
         let res = await fetch(`${URL}/api/admin/referral-system/${userId}/bonuses`, {
@@ -91,7 +109,7 @@ const accountRefill = async (token, reqData, setStatus, initStatus, setData, set
             setStatus({ ...initStatus, isError: true, message: 'Не удалось получить данные' })
             return
         }
-        await fetchUserData(token, reqData.referrer, setStatus, initStatus, setData)
+        await fetchUserData(token, reqData.referrer_id, setStatus, initStatus, setData)
         setStatus(initStatus)
         setSuccessRefill(true)
     } catch {
@@ -103,7 +121,7 @@ const AdminReferalPage = () => {
 
     const { authToken, user } = useContext(AuthContext)
     const [status, setStatus] = useState(initStatus)
-    const [data, setData] = useState(mockData)
+    const [data, setData] = useState()
     const [searchInputValue, setSearchInputValue] = useState('')
     const [successRefill, setSuccessRefill] = useState(false)
     const [form] = Form.useForm()
@@ -143,36 +161,16 @@ const AdminReferalPage = () => {
                     fetchUserData={fetchUserData}
                 />
 
-                {status.isSuccess &&
+                {data &&
                     <div className={styles.page__dataWrapper}>
                         <div className={styles.mainData}>
-                            <p className={styles.mainData__title}>Начислить бонусы</p>
+                            {/* <p className={styles.mainData__title}>Начислить бонусы</p> */}
                             <div className={styles.mainData__userBlock}>
-                                <div className={styles.mainData__row}>
-                                    <p className={styles.mainData__rowText}>USER_ID</p>
-                                    <p className={styles.mainData__rowText}>{data.id}</p>
-                                </div>
-                                <div className={styles.mainData__row}>
-                                    <p className={styles.mainData__rowText}>Ссылка</p>
-                                    <p
-                                        title={data.referral_link}
-                                        className={styles.mainData__rowText}
-                                    // style={{
-                                    //     maxWidth: 200,
-                                    //     whiteSpace: 'nowrap',
-                                    //     textOverflow: 'ellipsis',
-                                    //     overflow: 'hidden'
-                                    // }}
-                                    >{data.referral_link}</p>
-                                </div>
-                                <div className={styles.mainData__row}>
-                                    <p className={styles.mainData__rowText}>Количество рефералов</p>
-                                    <p className={styles.mainData__rowText}>{data.referral_count}</p>
-                                </div>
-                                <div className={styles.mainData__row}>
-                                    <p className={styles.mainData__rowText}>Баланс</p>
-                                    <p className={styles.mainData__rowText}>{data.bonus_balance}</p>
-                                </div>
+                                <Table
+                                    columns={USER_COLUMNS}
+                                    dataSource={[data]}
+                                    pagination={false}
+                                />
                             </div>
 
                             <ConfigProvider
@@ -247,22 +245,13 @@ const AdminReferalPage = () => {
                         <div className={styles.userHistoryData}>
                             <p className={styles.mainData__title}>История начислений</p>
                             <div className={styles.userHistoryData__userBlock}>
-                                {data?.transactions?.transactions_data?.map((_, id) => (
-                                    <React.Fragment key={id}>
-                                        <div className={styles.userHistoryData__row} key={id}>
-                                            <p className={styles.userHistoryData__rowDate}>{moment(_.date).format('DD.MM.YYYY')}</p>
-                                        </div>
-                                        {
-                                            _.transactions_history.map((_, id) => {
-                                                return (
-                                                    <div className={styles.userHistoryData__row} key={id}>
-                                                        <p className={styles.userHistoryData__rowText}>{formatPrice(_.amount, '₽')}</p>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </React.Fragment>
-                                ))}
+                                {data &&
+                                    <Table
+                                        columns={HISTORY_COLUMNS}
+                                        dataSource={data.transactions?.transactions_data?.map(_ => _.transactions_history).flat()}
+                                        pagination={false}
+                                    />
+                                }
                             </div>
 
                         </div>

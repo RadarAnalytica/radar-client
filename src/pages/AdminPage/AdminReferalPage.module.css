@@ -42,8 +42,8 @@
 
 .page__dataWrapper {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
 }
 
@@ -81,11 +81,11 @@
 }
 
 .mainData__userBlock {
-    width: 100%;
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
-    border-bottom: 1px solid #E8E8E8;
+    flex-grow: 1;
+    flex-shrink: 0;
 }
 
 .mainData__row {
@@ -94,7 +94,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    padding: 10px 0;
+    padding: 4px 0;
 }
 
 .mainData__rowText {
@@ -142,7 +142,7 @@
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
-    max-height: 90vh;
+    max-height: 80vh;
     overflow: auto;
 }
 
@@ -189,6 +189,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    flex-grow: 1;
+    flex-shrink: 1;
 }
 
 .form__item {
