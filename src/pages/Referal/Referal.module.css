@@ -250,3 +250,34 @@
 .transactions__item_red {
     color: rgb(249, 60, 101);
 }
+
+.table_container thead>tr>th {
+  border: none;
+}
+
+.table_container thead>tr>th:first-child {
+  border-bottom-left-radius: 20px;
+}
+
+.table_container thead>tr>th:last-child {
+  border-bottom-right-radius: 20px;
+}
+
+.table_container thead>tr>th::before {
+  height: 100% !important;
+  background-color: #e8e8e8 !important;
+}
+
+.table_container :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
+.table_container :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
+  border-radius: 6px!important;
+  background: #5329ff80!important;
+}
+
+.table_container :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
+  height: 5px!important;
+}
+
+.table_container :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb){
+  width: 5px!important;
+}

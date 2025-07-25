@@ -9,6 +9,7 @@ import { ConfigProvider, Flex, Row, Tooltip, Button, Col, Table } from 'antd';
 import { HeaderIcon, TooltipIcon, CopyIcon } from './widgets/icons';
 import { formatPrice } from '../../service/utils';
 import { format } from 'date-fns';
+import ruRU from 'antd/locale/ru_RU';
 
 export default function ReferalPage() {
 	const { authToken } = useContext(AuthContext);
@@ -17,7 +18,39 @@ export default function ReferalPage() {
 	const [data, setData] = useState(null);
 	const [page, setPage] = useState(1);
 
-	const transactions = useMemo(() => data?.transactions ? data.transactions : null , [data])
+	const TABLE_COLUMNS = useMemo(() => ([
+		{
+			key: 'transaction_date',
+			dataIndex: 'transaction_date',
+			title: 'Дата',
+			render: (value) => format( new Date(value), 'dd.MM.yyyy HH:mm:SS')
+		},
+		{
+			key: 'bonus_amount',
+			dataIndex: 'bonus_amount',
+			title: 'Сумма, руб',
+			render: (value) => (
+				<span
+					className={
+						value > 0
+							? styles.transactions__item_green
+							: styles.transactions__item_red
+					}
+				>
+				{value}
+			</span>
+			)
+		},
+		{
+			// временный ключ, синхронизировать с ключом из бэка
+			key: 'addititonal',
+			dataIndex: 'addititonal',
+			title: 'Примечание',
+			render: (value) => (
+				value
+			)
+		}
+	]), [])
 
 	const updateData = async (token) => {
 		setLoading(true);
@@ -40,7 +73,7 @@ export default function ReferalPage() {
 
 	const copyHandler = () => {
 		navigator.clipboard
-			.writeText(url)
+			.writeText(data?.referral_link)
 			.then(() => {
 				copyInput.current.classList.add(styles.partner__input_copied);
 				setTimeout(() => {
@@ -63,6 +96,7 @@ export default function ReferalPage() {
 			</section>
 			{/* ------ CONTENT ------ */}
 			<ConfigProvider
+				locale={ruRU}
 				renderEmpty={ () => (<div>Нет начислений</div>)} 
 				theme={{
 					token: {
@@ -301,15 +335,7 @@ export default function ReferalPage() {
 											/>
 										</Flex>
 										<p className={styles.partner__text}>
-											При переходе по этой ссылке в
-											браузере пользователя будет
-											установлена ваша реферальная метка.
-											Мы проверям наличие этой метки при
-											регистрации пользователей. Если она
-											будет найдена – пользователь будет
-											зарегистрирован в качестве вашего
-											реферала и вы будете получать
-											процент с его оплат тарифов.
+											При переходе по этой ссылке в браузере пользователя будет установлена ваша реферальная метка. Мы проверяем наличие этой метки при регистрации пользователей. Если она будет найдена – пользователь будет зарегистрирован в качестве вашего реферала и вы будете получать процент с его оплат тарифов.
 										</p>
 									</div>
 								</Col>
@@ -337,47 +363,37 @@ export default function ReferalPage() {
 								</Flex>
 								<div>
 									<div className={styles.transactions}>
-										{(!data || (transactions && transactions?.transactions_data.length === 0)) && (
+										{(!data || data?.transactions?.transactions_data?.length === 0) && (
 											<div>Нет начислений</div>
 										)}
-										{transactions && transactions?.transactions_data.length > 0 && 
-											<Table
-												columns={[
-													{
-														key: 'date',
-														dataIndex: 'date',
-														title: 'Дата',
-														render: (value) => format( value, 'dd.MM.yyyy')
-													},
-													{
-														key: 'transactions_history',
-														dataIndex: 'transactions_history',
-														title: 'Сумма, руб', render: (value) => (
-															<span
-																className={
-																	value[0].bonus_amount > 0
-																		? styles.transactions__item_green
-																		: styles.transactions__item_red
-																}
-															>
-															{value[0].bonus_amount}
-														</span>
-														)
-													}
-												]}
-												dataSource={transactions.transactions_data.map((el, i) => ({key: i, ...el}))}
-												pagination={{
-													position: ['bottomLeft'],
-													defaultCurrent: 1,
-													current: page,
-													total: transactions.total,
-													pageSize: transactions.per_page,
-													showQuickJumper: false,
-													showSizeChanger: false,
-													onChange: setPage,
-													hideOnSinglePage: true,
-												}}
-											/>
+										{data?.transactions?.transactions_data?.length > 0 && 
+											<div className={styles.table_container}>
+												<Table
+													columns={TABLE_COLUMNS}
+													// dataSource={tableData.dataSource.map((el) => el)}
+													dataSource={data.transactions.transactions_data.reduce((acc, el) => {
+														for (const transaction of el.transactions_history){
+															acc.push({
+																key: transaction.id,
+																addititonal: transaction.bonus_amount === 1500 ? 'Бонус от Радар' : transaction.addititonal,
+																...transaction
+															})
+														}
+														return acc
+													}, [])}
+													pagination={{
+														position: ['bottomLeft'],
+														defaultCurrent: 1,
+														page: data.transactions.page,
+														total: data.transactions.total,
+														pageSize: data.transactions.per_page,
+														showQuickJumper: false,
+														showSizeChanger: false,
+														onChange: setPage,
+														hideOnSinglePage: true,
+													}}
+												/>
+											</div>
 										}
 									</div>
 								</div>
