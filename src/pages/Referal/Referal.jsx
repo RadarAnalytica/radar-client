@@ -75,7 +75,12 @@ export default function ReferalPage() {
 		try {
 			const response = await ServiceFunctions.getWithdrawalRequest(authToken);
 			if (response === 'Ok'){
-				setSuccessTitle('Заявка успшно создана')
+				setSuccessTitle(
+					<p className={styles.success}>
+						<div className={styles.success__title}>Заявка на вывод направлена.</div>
+						В ближайшее время с Вами свяжутся наши специалисты
+					</p>
+				)
 			}
 			
 		} catch (error) {
@@ -231,7 +236,7 @@ export default function ReferalPage() {
 											<span>
 												Начисление вам процента от оплат рефералов
 											</span>
-											<Tooltip title="Начисление вам процента от оплат рефералов">
+											<Tooltip title="Вы получаете % от каждой оплаты подписки ваших рефералов в течение этого срока с момента их регистрации">
 												<span>
 													<TooltipIcon
 														className={
@@ -400,9 +405,21 @@ export default function ReferalPage() {
 														return acc
 													}, [])}
 													pagination={{
+														locale: {
+															items_per_page: 'записей на странице',
+															jump_to: 'Перейти',
+															jump_to_confirm: 'подтвердить',
+															page: 'Страница',
+															prev_page: 'Предыдущая страница',
+															next_page: 'Следующая страница',
+															prev_5: 'Предыдущие 5 страниц',
+															next_5: 'Следующие 5 страниц',
+															prev_3: 'Предыдущие 3 страниц',
+															next_3: 'Следующие 3 страниц',
+														},
 														position: ['bottomLeft'],
 														defaultCurrent: 1,
-														page: data.transactions.page,
+														current: page,
 														total: data.transactions.total,
 														pageSize: data.transactions.per_page,
 														showQuickJumper: false,
