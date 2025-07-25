@@ -111,9 +111,11 @@ const AbcAnalysisPage = () => {
 			if (el.key === 'amount_percent') {
 				el.title = amountPercentTitle[viewType];
 			}
+			// отчистка предыдущей сортировки
 			if (el.sorter) {
 				el.defaultSortOrder = null;
 			}
+			// отображение текущей сортировки
 			if (sorting.key && el.dataIndex === sorting.key) {
 				el.defaultSortOrder = sorting.direction;
 			}
@@ -134,6 +136,11 @@ const AbcAnalysisPage = () => {
 			);
 		}
 	}, [activeBrand, viewType, days, filters, page, sorting]);
+
+	useEffect(() => {
+		setPage(1)
+	}, [filters])
+
 	//---------------------------------------------------------------------------------------//
 
 	// 2.1.1 Проверям изменился ли магазин при обновлении токена
@@ -274,7 +281,7 @@ const AbcAnalysisPage = () => {
 					</div>
 				)}
 
-				<div styles="">
+				<div>
 					<Filters setLoading={setLoading} />
 				</div>
 					<div className={styles.container} ref={tableContainerRef}>
@@ -369,6 +376,18 @@ const AbcAnalysisPage = () => {
 											showSorterTooltip={false}
 											onChange={tableChangeHandler}
 											pagination={{
+												locale: {
+													items_per_page: 'записей на странице',
+													jump_to: 'Перейти',
+													jump_to_confirm: 'подтвердить',
+													page: 'Страница',
+													prev_page: 'Предыдущая страница',
+													next_page: 'Следующая страница',
+													prev_5: 'Предыдущие 5 страниц',
+													next_5: 'Следующие 5 страниц',
+													prev_3: 'Предыдущие 3 страниц',
+													next_3: 'Следующие 3 страниц',
+												},
 												position: ['bottomLeft'],
 												defaultCurrent: 1,
 												defaultPageSize: dataAbcAnalysis?.per_page,
