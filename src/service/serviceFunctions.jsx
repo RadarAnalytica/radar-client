@@ -1364,6 +1364,31 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 
+	},
+	getWithdrawalRequest: async(token) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/user/withdrawal_request`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ощибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('getWithdrawalRequest ', error);
+			throw new Error(error);
+		}
+
 	}
 };
 

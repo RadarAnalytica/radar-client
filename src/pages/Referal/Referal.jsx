@@ -10,6 +10,8 @@ import { HeaderIcon, TooltipIcon, CopyIcon } from './widgets/icons';
 import { formatPrice } from '../../service/utils';
 import { format } from 'date-fns';
 import ruRU from 'antd/locale/ru_RU';
+import SuccessModal from '../../components/sharedComponents/modals/successModal/successModal';
+import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 
 export default function ReferalPage() {
 	const { authToken } = useContext(AuthContext);
@@ -17,6 +19,9 @@ export default function ReferalPage() {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState(null);
 	const [page, setPage] = useState(1);
+	const [loadingWithdrawal, setLoadingWithdrawal] = useState(false);
+	const [successTitle, setSuccessTitle] = useState(null);
+	const [errorModalShow, setErrorModalShow] = useState(false);
 
 	const TABLE_COLUMNS = useMemo(() => ([
 		{
@@ -52,10 +57,10 @@ export default function ReferalPage() {
 		}
 	]), [])
 
-	const updateData = async (token) => {
+	const updateData = async () => {
 		setLoading(true);
 		try {
-			const response = await ServiceFunctions.getReferalData(token, page);
+			const response = await ServiceFunctions.getReferalData(authToken, page);
 			setData(response.data);
 		} catch (error) {
 			console.error('updateData error: ', error);
@@ -65,8 +70,24 @@ export default function ReferalPage() {
 		}
 	};
 
+	const withdrawalHandler = async () => {
+		setLoadingWithdrawal(true)
+		try {
+			const response = await ServiceFunctions.getWithdrawalRequest(authToken);
+			if (response === 'Ok'){
+				setSuccessTitle('Заявка успшно создана')
+			}
+			
+		} catch (error) {
+			console.error('withdrawalHandler error: ', error);
+			setErrorModalShow(true)
+		} finally {
+			setLoadingWithdrawal(false)
+		}
+	}
+
 	useEffect(() => {
-		updateData(authToken);
+		updateData();
 	}, [page]);
 
 	const copyInput = useRef();
@@ -208,8 +229,7 @@ export default function ReferalPage() {
 											align="start"
 										>
 											<span>
-												Начисление вам процента от оплат
-												рефералов
+												Начисление вам процента от оплат рефералов
 											</span>
 											<Tooltip title="Начисление вам процента от оплат рефералов">
 												<span>
@@ -232,8 +252,7 @@ export default function ReferalPage() {
 										className={styles.tile}
 									>
 										<p className={styles.tile__text}>
-											Начисление вам от первой оплаты
-											рефералов
+											Начисление вам от первой оплаты рефералов
 										</p>
 										<div className={styles.tile__value}>
 											40 %
@@ -246,8 +265,7 @@ export default function ReferalPage() {
 										className={styles.tile}
 									>
 										<p className={styles.tile__text}>
-											Начисление вам от всех последующих
-											оплат рефералов
+											Начисление вам от всех последующих оплат рефералов
 										</p>
 										<div className={styles.tile__value}>
 											15 %
@@ -296,16 +314,16 @@ export default function ReferalPage() {
 															styles.info__value
 														}
 													>
-														{formatPrice(
-															data?.bonus_balance,
-															'₽'
-														)}
+														{formatPrice( data?.bonus_balance, '₽' )}
 													</div>
 												</div>
 												<Button
 													type="primary"
 													size="large"
 													className={styles.btn}
+													loading={loadingWithdrawal}
+													onClick={withdrawalHandler}
+													disabled={data?.bonus_balance < 2000}
 												>
 													Вывести
 												</Button>
@@ -401,6 +419,17 @@ export default function ReferalPage() {
 						</>
 					)}
 				</section>
+				<SuccessModal
+					open={!!successTitle}
+					title={successTitle}
+					onCancel={() => setSuccessTitle(null)}
+					onOk={() => setSuccessTitle(null)}
+				/>
+				<ErrorModal
+					open={errorModalShow}
+					onCancel={() => setErrorModalShow(false)}
+					onOk={() => setErrorModalShow(false)}
+				/>
 			</ConfigProvider>
 		</main>
 	);
