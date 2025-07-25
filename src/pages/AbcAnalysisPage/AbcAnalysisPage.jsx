@@ -13,6 +13,7 @@ import { mockGetAbcData } from '../../service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import { ConfigProvider, Table, Button, Flex } from 'antd';
+import ruRU from 'antd/locale/ru_RU'
 import { COLUMNS } from './widgets/table/config';
 
 const AbcAnalysisPage = () => {
@@ -35,24 +36,14 @@ const AbcAnalysisPage = () => {
 	const tableContainerRef = useRef(null);
 	const tableScroll = useMemo(() => {
 		if (!tableContainerRef.current){
-			return ({
-				x: '100%', y: 200
-			})
+			return ({ x: '100%', y: 200 })
 		}
 		const container = tableContainerRef.current;
 		const {height} = container.getBoundingClientRect();
 		// расчет высоты относительно контента, высоты фильтров и отступов
 		const availableHeight = height - 230 > 200 ? height - 230 : 200;
-		return ({
-			x: '100%',
-			y: availableHeight
-		})
+		return ({ x: '100%', y: availableHeight })
 	}, [dataAbcAnalysis])
-
-	const sorterHandler = useCallback((pagination, filters, sorter) => {
-		setSorting({ key: sorter.field, direction: sorter.order });
-		setPage(1);
-	}, []);
 
 	const updateDataAbcAnalysis = async (
 		viewType,
@@ -243,6 +234,16 @@ const AbcAnalysisPage = () => {
 		setPage(1)
 	}
 
+	const tableChangeHandler = (pagination, filters, sorter, extra) => {
+		if (extra.action === 'sort'){
+			setSorting({ key: sorter.field, direction: sorter.order || 'desc' });
+			setPage(1)
+		}
+		if (extra.action === 'paginate'){
+			setPage(pagination.current)
+		}
+	}
+
 	return (
 		// isVisible && (
 		<main className={styles.page}>
@@ -278,6 +279,7 @@ const AbcAnalysisPage = () => {
 				{/* </div> */}
 					<div className={styles.container} ref={tableContainerRef}>
 						<ConfigProvider
+							locale={ruRU}
 							renderEmpty={() => <div>Нет данных</div>}
 							theme={{
 								token: {
@@ -338,14 +340,14 @@ const AbcAnalysisPage = () => {
 								<Button
 									type={viewType == 'proceeds' ? 'primary' : 'default'}
 									size="large"
-									onClick={() => setViewType('proceeds')}
+									onClick={() => viewTypeHandler('proceeds')}
 								>
 									По выручке
 								</Button>
 								<Button
 									type={viewType == 'profit' ? 'primary' : 'default'}
 									size="large"
-									onClick={() => setViewType('profit')}
+									onClick={() => viewTypeHandler('profit')}
 								>
 									По прибыли
 								</Button>
@@ -365,15 +367,13 @@ const AbcAnalysisPage = () => {
 											scroll={tableScroll}
 											sticky={true}
 											showSorterTooltip={false}
-											onChange={sorterHandler}
+											onChange={tableChangeHandler}
 											pagination={{
 												position: ['bottomLeft'],
 												defaultCurrent: 1,
-												defaultPageSize:
-													dataAbcAnalysis?.per_page,
+												defaultPageSize: dataAbcAnalysis?.per_page,
 												hideOnSinglePage: true,
 												showSizeChanger: false,
-												onChange: setPage,
 												current: page,
 												total: dataAbcAnalysis?.total,
 											}}
