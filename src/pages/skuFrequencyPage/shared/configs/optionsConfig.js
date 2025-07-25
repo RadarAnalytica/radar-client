@@ -1,7 +1,9 @@
 export const optionsConfig = [
     { label: 'Частотность WB', name: 'frequency_30', isActive: true, units: null},
-    { label: 'Выручка (с СПП), руб', name: 'revenue_total', isActive: true, units: '₽'},
-    { label: 'Ср. цена (с СПП), руб', name: 'avg_price_total', isActive: true, units: '₽'},
+    { label: 'Выручка (без СПП), руб', name: 'revenue_total', isActive: true, units: '₽'},
+    { label: 'Выручка (с СПП), руб', name: 'revenue_total_spp', isActive: true, units: '₽'},
+    { label: 'Ср. цена (без СПП), руб', name: 'avg_price_total', isActive: true, units: '₽'},
+    { label: 'Ср. цена (с СПП), руб', name: 'avg_price_total_spp', isActive: true, units: '₽'},
     { label: 'Товаров с продажами, %', name: 'goods_with_sales_percent_total', isActive: true, units: '%'},
     { label: 'Кол-во товаров по запросу', name: 'goods_quantity', isActive: true, units: 'шт'},
     { label: 'Коэффициент спроса', name: 'freq_per_good', isActive: true, hasTooltip: true, tooltipText: 'Показатель, который отражает соотношение между частотностью поискового запроса и количеством товаров, предлагаемых по этому запросу. Чем выше коэффициент спроса, тем больше интерес аудитории к данной тематике и тем меньше конкуренция среди продавцов. Данный показатель рассчитывается по формуле: Частотность WB / Кол-во товаров на WB.'},
@@ -36,10 +38,13 @@ export const sideOptionsConfig = [
         title: 'У артикулов на первых 3-х страницах',
         isWideLayout: true,
         options: [
-            { label: 'Выручка за 30 дней, руб', name: 'revenue_300', isWide: false, units: '₽'},
-            { label: 'Средняя выручка за 30 дней, руб', name: 'avg_revenue_300', isWide: false, units: '₽'},
+            { label: 'Выручка за 30 дней (без СПП), руб', name: 'revenue_300', isWide: false, units: '₽'},
+            { label: 'Выручка за 30 дней (с СПП), руб', name: 'revenue_300_spp', isWide: false, units: '₽'},
+            { label: 'Средняя выручка за 30 дней (бе СПП), руб', name: 'avg_revenue_300', isWide: false, units: '₽'},
+            { label: 'Средняя выручка за 30 дней (с СПП), руб', name: 'avg_revenue_300_spp', isWide: false, units: '₽'},
             { label: '% упущенной выручки за 30 дней', name: 'lost_revenue_percent_300', isWide: false, units: '%'},
-            { label: 'Средняя цена, руб', name: 'avg_price_300', isWide: false, units: '₽'},
+            { label: 'Средняя цена (без СПП), руб', name: 'avg_price_300', isWide: false, units: '₽'},
+            { label: 'Средняя цена (с СПП), руб', name: 'avg_price_300_spp', isWide: false, units: '₽'},
             { label: '% артикулов с продажами', name: 'goods_with_sales_percent_300', isWide: false, units: '%'}
         ]
     },

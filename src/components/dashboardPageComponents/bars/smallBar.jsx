@@ -55,7 +55,7 @@ const SmallBar = ({
             <div className={styles.bar__dataWrapper}>
                 <p className={styles.bar__mainData}>{formatPrice(mainData, '₽')}</p>
 
-                {hasSecondaryData && secondaryDataType === 'absolute' && !!secondaryData &&
+                {hasSecondaryData && secondaryDataType === 'absolute' &&
                     <p className={styles.bar__absoluteData}>{formatPrice(secondaryData, secondaryDataUnits)}</p>
                 }
                 {hasSecondaryData && secondaryDataType === 'relative' && !!secondaryData &&
