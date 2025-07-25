@@ -274,9 +274,9 @@ const AbcAnalysisPage = () => {
 					</div>
 				)}
 
-				{/* <div styles=""> */}
+				<div styles="">
 					<Filters setLoading={setLoading} />
-				{/* </div> */}
+				</div>
 					<div className={styles.container} ref={tableContainerRef}>
 						<ConfigProvider
 							locale={ruRU}
