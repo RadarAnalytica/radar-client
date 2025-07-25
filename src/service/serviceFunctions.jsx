@@ -758,6 +758,7 @@ export const ServiceFunctions = {
 				setStatus({...initStatus, isError: true, message: 'Не удалось скачать файл1'})
 				return
 			} else {
+				res = await res.blob()
 				return res
 			}
 			

@@ -32,7 +32,7 @@ const SkuFrequencyPage = () => {
 
 
     const downloadHandler = async () => {
-        const url = formType === 'complex' ? '/api/web-service/monitoring-oracle/get/download' : '/api/web-service/monitoring-oracle/get/download'
+        const url = formType === 'complex' ? '/api/web-service/monitoring-oracle/get/download' : '/api/web-service/monitoring-oracle/easy/get/download'
         const filename = formType === 'complex' ? 'Поиск_ниши__продвинутый.xlsx' : 'Поиск_ниши__простой.xlsx'
 
         let res = await ServiceFunctions.getTrendingRequestExelFile(requestObject, url, setDownloadStatus)
