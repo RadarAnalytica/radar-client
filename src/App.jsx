@@ -60,6 +60,7 @@ const TrendingRequestsPage = React.lazy(() => import("./pages/trendingRequestsPa
 const TrendAnalysisQuery = React.lazy(() => import("./pages/TrendAnalysisQuery"));
 const ReportProfitLoss = React.lazy(() => import("./pages/ReportProfitLoss/ReportProfitLoss"));
 const LinkedShopsPage = React.lazy(() => import("./pages/linkedShops/linkedShops"));
+const ReferalPage = React.lazy(() => import("./pages/Referal"));
 const AdminDashboardPage = React.lazy(() => import("./pages/AdminPage/AdminDashboardPage"));
 const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferalPage"));
 const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts/OperationsCosts"));
@@ -133,6 +134,7 @@ function App() {
 
             <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
             <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
+            <Route path='/referal' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
             <Route path='/operations-costs' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperationsCosts /></ProtectedRoute>} />
             <Route path='/referal' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
             {/* Public routes */}
