@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useMemo, useCallback } from 'react';
+import { useContext, useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import styles from './AbcAnalysisPage.module.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import AuthContext from '../../service/AuthContext';
@@ -12,9 +12,9 @@ import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import { mockGetAbcData } from '../../service/mockServiceFunctions';
 import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import { ConfigProvider, Table } from 'antd';
+import { ConfigProvider, Table, Button, Flex } from 'antd';
+import ruRU from 'antd/locale/ru_RU'
 import { COLUMNS } from './widgets/table/config';
-import "../../App.css";
 
 const AbcAnalysisPage = () => {
 	const { activeBrand, selectedRange: days } = useAppSelector(
@@ -27,24 +27,23 @@ const AbcAnalysisPage = () => {
 	const [dataAbcAnalysis, setDataAbcAnalysis] = useState(null);
 	const [isNeedCost, setIsNeedCost] = useState([]);
 	const [viewType, setViewType] = useState('proceeds');
-	const [sorting, setSorting] = useState('desc');
+	const [sorting, setSorting] = useState({ key: null, direction: 'desc' });
 	const [loading, setLoading] = useState(true);
 	const [primaryCollect, setPrimaryCollect] = useState(null);
 	const [shopStatus, setShopStatus] = useState(null);
 
 	const [page, setPage] = useState(1);
-
-	// console.log('---------- base ----------')
-	// console.log(loading)
-	// console.log(dataAbcAnalysis)
-	// console.log(activeBrand)
-	// console.log(viewType)
-	// console.log('--------------------------')
-
-	// const sorterHandler = useCallback((a, b, direction) => {
-	// 	setSorting(direction);
-	// 	setPage(1);
-	// }, []);
+	const tableContainerRef = useRef(null);
+	const tableScroll = useMemo(() => {
+		if (!tableContainerRef.current){
+			return ({ x: '100%', y: 200 })
+		}
+		const container = tableContainerRef.current;
+		const {height} = container.getBoundingClientRect();
+		// расчет высоты относительно контента, высоты фильтров и отступов
+		const availableHeight = height - 230 > 200 ? height - 230 : 200;
+		return ({ x: '100%', y: availableHeight })
+	}, [dataAbcAnalysis])
 
 	const updateDataAbcAnalysis = async (
 		viewType,
@@ -65,7 +64,7 @@ const AbcAnalysisPage = () => {
 					activeBrand,
 					filters,
 					page,
-					sorting
+					sorting.direction
 				);
 			}
 
@@ -80,6 +79,7 @@ const AbcAnalysisPage = () => {
 			}
 		} catch (e) {
 			console.error(e);
+			setDataAbcAnalysis([]);
 		} finally {
 			setLoading(false);
 		}
@@ -95,28 +95,33 @@ const AbcAnalysisPage = () => {
 		}));
 	}, [dataAbcAnalysis]);
 
-  const columnsList = useMemo(() => {
-    const amountTitle = {
-      profit: 'Прибыль',
-      proceeds: 'Выручка'
-    }
+	const columnsList = useMemo(() => {
+		const amountTitle = {
+			profit: 'Прибыль',
+			proceeds: 'Выручка',
+		};
 		const amountPercentTitle = {
 			profit: 'Доля прибыли',
-      proceeds: 'Доля выручки'
-		}
-    return COLUMNS.map((el) => {
-      if (el.key === 'amount'){
-        el.title = amountTitle[viewType]
-      }
-			if (el.key === 'amount_percent'){
-				el.title = amountPercentTitle[viewType]
+			proceeds: 'Доля выручки',
+		};
+		return COLUMNS.map((el) => {
+			if (el.key === 'amount') {
+				el.title = amountTitle[viewType];
 			}
-			// if (el.sorter) {
-				// el.sorter = sorterHandler
-			// }
-      return el
-    })
-  }, [dataAbcAnalysis])
+			if (el.key === 'amount_percent') {
+				el.title = amountPercentTitle[viewType];
+			}
+			// отчистка предыдущей сортировки
+			if (el.sorter) {
+				el.defaultSortOrder = null;
+			}
+			// отображение текущей сортировки
+			if (sorting.key && el.dataIndex === sorting.key) {
+				el.defaultSortOrder = sorting.direction;
+			}
+			return el;
+		});
+	}, [dataAbcAnalysis]);
 
 	// 2.1 Получаем данные по выбранному магазину и проверяем себестоимость
 
@@ -131,6 +136,11 @@ const AbcAnalysisPage = () => {
 			);
 		}
 	}, [activeBrand, viewType, days, filters, page, sorting]);
+
+	useEffect(() => {
+		setPage(1)
+	}, [filters])
+
 	//---------------------------------------------------------------------------------------//
 
 	// 2.1.1 Проверям изменился ли магазин при обновлении токена
@@ -231,6 +241,16 @@ const AbcAnalysisPage = () => {
 		setPage(1)
 	}
 
+	const tableChangeHandler = (pagination, filters, sorter, extra) => {
+		if (extra.action === 'sort'){
+			setSorting({ key: sorter.field, direction: sorter.order || 'desc' });
+			setPage(1)
+		}
+		if (extra.action === 'paginate'){
+			setPage(pagination.current)
+		}
+	}
+
 	return (
 		// isVisible && (
 		<main className={styles.page}>
@@ -261,48 +281,17 @@ const AbcAnalysisPage = () => {
 					</div>
 				)}
 
-				<div styles=''>
+				<div>
 					<Filters setLoading={setLoading} />
 				</div>
-        {loading && (
-          <div className={styles.loading}>
-            <span className='loader'></span>
-          </div>
-        )}
-				{!loading && (<div className={styles.container}>
-          <div className='abcAnalysis'>
-					<div className="filter abc-filter-container dash-container d-flex" style={{position: 'static', marginBottom: 20, padding: 0, }}>
-						<div className="filter-btn-p">Выбрать вид: </div>
-						<div
-							className={`filter-btn ${
-								viewType === 'proceeds' ? 'active' : ''
-							}`}
-							onClick={() => viewTypeHandler('proceeds')}
-						>
-							По выручке
-						</div>
-						<div
-							className={`filter-btn ${
-								viewType === 'profit' ? 'active' : ''
-							}`}
-							onClick={() => viewTypeHandler('profit')}
-						>
-							По прибыли
-						</div>
-					</div>
-          {shopStatus && !shopStatus.is_primary_collect && (
-							<DataCollectionNotification
-								title={
-									'Ваши данные еще формируются и обрабатываются.'
-								}
-							/>
-					)}
-					{shopStatus && shopStatus.is_primary_collect && (
+					<div className={styles.container} ref={tableContainerRef}>
 						<ConfigProvider
+							locale={ruRU}
 							renderEmpty={() => <div>Нет данных</div>}
 							theme={{
 								token: {
 									colorPrimary: '#5329FF',
+									colorText: '#5329FF',
 									colorBgTextHover: '#5329FF0D',
 								},
 								components: {
@@ -330,34 +319,90 @@ const AbcAnalysisPage = () => {
 										colorPrimaryBorder: '#5329ff',
 										colorPrimaryHover: '#5329ff',
 									},
+									Pagination: {
+										itemActiveBg: '#EEEAFF',
+										itemBg: '#F7F7F7',
+										itemColor: '#8C8C8C',
+									},
+									Button: {
+										paddingBlockLG: 10,
+										paddingInlineLG: 20,
+										controlHeightLG: 45,
+										defaultShadow: false,
+										defaultColor: 'grey',
+										contentFontSize: 16,
+										defaultBorderColor: 'transparent'
+									}
 								},
 							}}
 						>
-							<Table
-								columns={columnsList}
-								// columns={COLUMNS}
-								dataSource={tableData}
-								scroll={{ y: 600 }}
-								sticky={true}
-								showSorterTooltip={false}
-								sortOrder={sorting}
-								pagination={false}
-								// pagination={{
-								// 	align: 'end',
-								// 	defaultCurrent: 1,
-								// 	defaultPageSize: 100,
-								// 	hideOnSinglePage: true,
-								// 	showSizeChanger: false,
-								// 	onChange: setPage,
-								// 	current: page,
-								// 	total: dataAbcAnalysis?.total,
-								// }}
-								// sortDirections={['asc', 'desc']}
-							/>
+						{loading && (
+							<div className={styles.loading}>
+								<span className="loader"></span>
+							</div>
+						)}
+						{!loading && (<div className="abcAnalysis">
+							<Flex gap={12} className={styles.view} align='center'>
+								<span>Выбрать вид:</span>
+								<Button
+									type={viewType == 'proceeds' ? 'primary' : 'default'}
+									size="large"
+									onClick={() => viewTypeHandler('proceeds')}
+								>
+									По выручке
+								</Button>
+								<Button
+									type={viewType == 'profit' ? 'primary' : 'default'}
+									size="large"
+									onClick={() => viewTypeHandler('profit')}
+								>
+									По прибыли
+								</Button>
+							</Flex>
+							{shopStatus && !shopStatus.is_primary_collect && (
+								<DataCollectionNotification
+									title={
+										'Ваши данные еще формируются и обрабатываются.'
+									}
+								/>
+							)}
+								
+									<div className={styles.tableContainer}>
+										<Table
+											columns={columnsList}
+											dataSource={tableData}
+											scroll={tableScroll}
+											sticky={true}
+											showSorterTooltip={false}
+											onChange={tableChangeHandler}
+											pagination={{
+												locale: {
+													items_per_page: 'записей на странице',
+													jump_to: 'Перейти',
+													jump_to_confirm: 'подтвердить',
+													page: 'Страница',
+													prev_page: 'Предыдущая страница',
+													next_page: 'Следующая страница',
+													prev_5: 'Предыдущие 5 страниц',
+													next_5: 'Следующие 5 страниц',
+													prev_3: 'Предыдущие 3 страниц',
+													next_3: 'Следующие 3 страниц',
+												},
+												position: ['bottomLeft'],
+												defaultCurrent: 1,
+												defaultPageSize: dataAbcAnalysis?.per_page,
+												hideOnSinglePage: true,
+												showSizeChanger: false,
+												current: page,
+												total: dataAbcAnalysis?.total,
+											}}
+											sortDirections={['asc', 'desc']}
+										/>
+									</div>
+						</div>
+						)}
 						</ConfigProvider>
-					)}
-				</div>
-        </div>)}
+					</div>
 			</section>
 			{/* ---------------------- */}
 		</main>

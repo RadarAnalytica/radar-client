@@ -49,7 +49,21 @@ export default function ReportProfitLoss() {
 		month_from: dayjs().startOf('year').format('YYYY-MM')
 	}), [])
 
-	const [monthRange, setMonthRange] = useState(null);
+	const updateSavedMonthRange = () => {
+		if (!activeBrand){
+			return
+		}
+		const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
+		if (savedMonthRange) {
+			const data = JSON.parse(savedMonthRange);
+			if (activeBrand.id in data) {
+				return data[activeBrand.id]
+			}
+		}
+		return initialRange
+	};
+
+	const [monthRange, setMonthRange] = useState(updateSavedMonthRange());
 
 	function renderColumn(data) {
 		if (typeof data !== 'object'){
@@ -198,7 +212,7 @@ export default function ReportProfitLoss() {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportProfitLoss();
 		}
-	}, [filters, monthRange]);
+	}, [monthRange]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;
@@ -223,24 +237,9 @@ export default function ReportProfitLoss() {
 		);
 	}
 
-	const updateSavedMonthRange = () => {
-		if (!activeBrand){
-			return
-		}
-		const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
-		if (savedMonthRange) {
-			const data = JSON.parse(savedMonthRange);
-			if (activeBrand.id in data) {
-				setMonthRange(data[activeBrand.id]);
-				return
-			}
-		}
-		setMonthRange(initialRange);
-	};
-
 	useEffect(() => {
-		updateSavedMonthRange()
-	}, [activeBrand])
+		setMonthRange(updateSavedMonthRange())
+	}, [shopStatus, filters])
 
 	return (
 		<main className={styles.page}>
@@ -278,7 +277,7 @@ export default function ReportProfitLoss() {
 				<div className={styles.how}>
 					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
 				</div>
-				{ shopStatus?.is_primary_collect && 
+				{/* { shopStatus?.is_primary_collect &&  */}
 					<div className={styles.container}>
 						<ReportTable
 							loading={loading}
@@ -287,7 +286,7 @@ export default function ReportProfitLoss() {
 							virtual={false}
 						></ReportTable>
 					</div>
-				}
+				{/* } */}
 			</section>
 		</main>
 	);

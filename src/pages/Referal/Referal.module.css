@@ -1,0 +1,294 @@
+/* Page */
+
+.page {
+    background-color: #F7F6FE;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.page__content {
+    width: 100%;
+    padding: 30px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.page__sideNavWrapper {
+    height: 100%;
+    width: auto;
+    overflow: visible;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.page__headerWrapper {
+    width: 100%;
+}
+
+/* Referal */
+
+.loading{
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+    border-radius: 16px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+    background: #fff;
+}
+
+.container {
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+    background: #fff;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.header__icon {
+    border-radius: 10px;
+    width: 60px;
+    height: 60px;
+    background-color: #edeaff;
+}
+
+.header__icon_orange {
+    border-radius: 10px;
+    width: 60px;
+    height: 60px;
+    background-color: #edeaff;
+    background-color: #fff4d6;
+}
+
+.header__icon_icon {
+    width: 32px;
+    fill: #5329FF;
+}
+
+.header__icon_orange .header__icon_icon {
+    fill: #F0AD00;
+}
+
+.title {
+    margin: 0;
+    font-weight: 700;
+    font-size: 24px;
+    color: #1a1a1a;
+}
+
+.tile {
+    flex: 1 0 0%;
+    padding: 24px;
+    border-radius: 12px;
+    background: #f8f7ff;
+}
+
+.tile__text {
+    margin-bottom: 12px;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000;
+}
+
+.tile__value {
+    font-weight: 700;
+    font-size: 24px;
+    color: #1a1a1a;
+}
+
+.tile__tooltip {
+    flex-shrink: 0;
+    width: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tile__tooltip:hover {
+    transform: scale(1.1);
+}
+
+.partner {
+    padding: 16px;
+    border-radius: 8px;
+    background: #f0ad00;
+}
+
+.partner__title {
+    margin-bottom: 12px;
+    font-weight: 700;
+    font-size: 24px;
+    color: #fff;
+}
+
+.partner__input {
+    position: relative;
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 12px;
+    background-color: #f8f7ff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.partner__input:hover {
+    scale: 1.02;
+}
+
+.partner__input::after {
+    content: "Скопировано";
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.partner__input_copied::after {
+    opacity: 1;
+}
+.partner__input_copied .partner__link{
+    opacity: 0.1;
+}
+
+.partner__link {
+    position: relative;
+    flex-grow: 1;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: 0.3s;
+}
+
+.partner__copy {
+    flex-shrink: 0;
+    width: 32px;
+    fill: #363538;
+}
+
+
+.partner__text {
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff;
+    text-wrap: balance;
+}
+
+.info {
+    padding: 16px 24px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    background: #fff;
+}
+
+.info__content {
+    flex-grow: 1;
+}
+
+.info__title {
+    margin-bottom: 12px;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000;
+}
+
+.info__title_mark {
+    color: #5329ff;
+}
+
+.info__value {
+    font-weight: 700;
+    font-size: 24px;
+    color: #1a1a1a;
+}
+
+.transactions {
+    font-weight: 500;
+    font-size: 16px;
+    color: #000;
+}
+
+.transactions__item {
+    padding: 8px 0;
+    color: #1A1A1A;
+}
+
+.transactions__item + .transactions__item {
+    border-top: 1px solid #E8E8E8;
+}
+
+.transactions__item_green,
+.transactions__item_red {
+    font-weight: 700;
+}
+
+.transactions__item_green {
+    color: rgb(0, 182, 155);
+}
+
+.transactions__item_red {
+    color: rgb(249, 60, 101);
+}
+
+.table_container thead>tr>th {
+  border: none;
+}
+
+.table_container thead>tr>th:first-child {
+  border-bottom-left-radius: 20px;
+}
+
+.table_container thead>tr>th:last-child {
+  border-bottom-right-radius: 20px;
+}
+
+.table_container thead>tr>th::before {
+  height: 100% !important;
+  background-color: #e8e8e8 !important;
+}
+
+.table_container :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
+.table_container :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
+  border-radius: 6px!important;
+  background: #5329ff80!important;
+}
+
+.table_container :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb){
+  height: 5px!important;
+}
+
+.table_container :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb){
+  width: 5px!important;
+}
+
+.success {
+    margin: 0;
+    font-size: 18px;
+}
+
+.success__title {
+    margin-bottom: 8px;
+    font-size: 22px;
+    color: #5329ff;
+}

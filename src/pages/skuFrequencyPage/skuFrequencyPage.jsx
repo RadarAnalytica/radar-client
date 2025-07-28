@@ -8,11 +8,13 @@ import { OptionsWidget, TableSettingsWidget, HowtoWidget, TableWidget } from './
 //import OptionsSettingsWidget from './widgets'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import DownloadButton from '../../components/DownloadButton'
-import TableWidget_TEST from './widgets/tableWidget/tableWidget'
 import { actions as reqActions } from '../../redux/requestsMonitoring/requestsMonitoringSlice'
 import { actions as filterActions } from '../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { newTableConfig } from './shared'
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
+import { ServiceFunctions } from '../../service/serviceFunctions'
+import { fileDownload } from '../../service/utils'
+import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
 
 
 
@@ -20,8 +22,32 @@ import HowToLink from '../../components/sharedComponents/howToLink/howToLink'
 const SkuFrequencyPage = () => {
     //const { skuFrequencyMode } = useAppSelector(store => store.filters)
     const [ tableConfig, setTableConfig ] = useState(newTableConfig)
-    const { requestData } = useAppSelector(store => store.requestsMonitoring)
+    const { requestData, formType, requestObject } = useAppSelector(store => store.requestsMonitoring)
+    const [ downloadStatus, setDownloadStatus ] = useState({
+        isLoading: false,
+        isError: false,
+        message: ''
+    })
     const dispatch = useAppDispatch()
+
+
+    const downloadHandler = async () => {
+        const url = formType === 'complex' ? '/api/web-service/monitoring-oracle/get/download' : '/api/web-service/monitoring-oracle/easy/get/download'
+        const filename = formType === 'complex' ? 'Поиск_ниши__продвинутый.xlsx' : 'Поиск_ниши__простой.xlsx'
+
+        let res = await ServiceFunctions.getTrendingRequestExelFile(requestObject, url, setDownloadStatus)
+        if (res) {
+            fileDownload(res, filename, undefined);
+            setDownloadStatus({
+                isLoading: false,
+                isError: false,
+                message: ''
+            })
+        }
+    }   
+
+
+
     useEffect(() => {
         return () => {
             dispatch(reqActions.resetState())
@@ -72,7 +98,10 @@ const SkuFrequencyPage = () => {
                         }}
                     />
                     {requestData && <div className={styles.page__tableSettingsBlock}>
-                        {/* <DownloadButton /> */}
+                        <DownloadButton
+                            handleDownload={downloadHandler}
+                            loading={downloadStatus.isLoading}
+                        />
                         <TableSettingsWidget />
                     </div>}
                 </div>
@@ -83,6 +112,27 @@ const SkuFrequencyPage = () => {
                 <div style={{ height: 30, minHeight: 30}}></div>
             </div>
             {/* ---------------------- */}
+            {/* Exel download error modal */}
+            <ErrorModal
+                footer={null}
+                open={downloadStatus.isError}
+                message={downloadStatus.message}
+                onOk={() => setDownloadStatus({
+                    isLoading: false,
+                    isError: false,
+                    message: ''
+                })}
+                onClose={() => setDownloadStatus({
+                    isLoading: false,
+                    isError: false,
+                    message: ''
+                })}
+                onCancel={() => setDownloadStatus({
+                    isLoading: false,
+                    isError: false,
+                    message: ''
+                })}
+            />
         </main>
     )
 }
