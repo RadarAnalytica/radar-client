@@ -1,0 +1,87 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisBarsData, fetchSupplierAnalysisMainChartData } from "./supplierAnalysisActions";
+
+const mockOptions = [
+    { value: 'Все бренды' },
+    { value: '1' },
+    { value: '2' },
+    { value: '3' },
+]
+
+
+const initialState = {
+    supplierCurrentBrand: 'Все бренды',
+    ordersStructureTab: 'По группам цветов',
+    stockChartTab: 'Входящие заказы',
+    supplierBrands: mockOptions,
+    metaData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    barsData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    mainChartData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    }
+};
+
+const supplierAnalysisSlice = createSlice({
+    name: "supplierAnalysis",
+    initialState,
+    reducers: {
+        setSupplierCurrentBrand: (state, action) => {
+            return {
+                ...state,
+                supplierCurrentBrand: action.payload
+            }
+        },
+        setOrdersStructureTab: (state, action) => {
+            return {
+                ...state,
+                ordersStructureTab: action.payload
+            }
+        },
+        setStockChartTab: (state, action) => {
+            return {
+                ...state,
+                stockChartTab: action.payload
+            }
+        },
+        setDataFetchingStatus: (state, action) => {
+            const { dataType, statusObject } = action.payload;
+            return {
+                ...state,
+                [dataType]: {
+                    ...state[dataType],
+                    ...statusObject
+                }
+            }
+        }
+    },
+    extraReducers: (bulder) => {
+        bulder
+            .addCase(fetchSupplierAnalysisMetaData.fulfilled, (state, action) => {
+                state.metaData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisBarsData.fulfilled, (state, action) => {
+                state.barsData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisMainChartData.fulfilled, (state, action) => {
+                state.mainChartData.data = action.payload;
+            })
+    }
+});
+
+export const { reducer, actions } = supplierAnalysisSlice;

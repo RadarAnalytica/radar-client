@@ -1390,6 +1390,32 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 
+	},
+	getSupplierAnalysisSuggestData: async (query, setIsLoading, setData) => {
+		setIsLoading(true)
+		try {
+			let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/search?query=${query}`, {
+				headers: {
+					'content-type': 'application/json',
+				}
+			})
+
+			if (!res.ok && res.status === 404) {
+				setIsLoading(false);
+				setData([])
+				return
+			}
+			if (!res.ok && res.status !== 404) {
+				setIsLoading(false);
+				return
+			}
+
+			res = await res.json()
+			setIsLoading(false);
+			setData(res)
+		} catch {
+			setIsLoading(false);
+		}
 	}
 };
 
