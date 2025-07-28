@@ -368,7 +368,6 @@ export default function ReferalPage() {
 									className={styles.header}
 									gap={16}
 									align="center"
-									style={{ display: 'none' }}
 								>
 									<Flex
 										vertical
