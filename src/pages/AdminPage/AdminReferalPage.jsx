@@ -7,7 +7,6 @@ import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { SearchWidget } from './widgets';
 import { Input, Button, ConfigProvider, Form, Table } from 'antd';
-import { Input, Button, ConfigProvider, Form, Table } from 'antd';
 import { formatPrice } from '../../service/utils';
 import SuccessModal from '../../components/sharedComponents/modals/successModal/successModal';
 import moment from 'moment';
@@ -21,78 +20,6 @@ const initStatus = {
     isError: false,
     isSuccess: false,
     message: ''
-}
-
-const mockData = {
-    "id": 1,
-    "referral_link": "https://radar-analytica.ru/asdfhgiu230sadfuyhahncapsdef23",
-    "referral_count": 10,
-    "bonus_balance": 1000,
-    "transactions": {
-        "page": 1,
-        "per_page": 10,
-        "total": 100,
-        "transactions_data": [
-            {
-                "date": "2023-01-01",
-                "transactions_history": [
-                    {
-                        "id": 1,
-                        "referral_id": 1,
-                        "bonus_amount": 100,
-                        "transaction_date": "2023-01-01 12:00:00",
-                        "admin_id": 1,
-                        "transaction_type": "поступление от рефералов",
-                        "transaction_direction": "начисление"
-                    }
-                ]
-            }
-        ]
-    }
-}
-
-const HISTORY_COLUMNS = [
-    { title: 'Дата', dataIndex: 'transaction_date', width: 100 },
-    { title: 'ID реферала', dataIndex: 'referral_id', width: 100 },
-    { title: 'Сумма', dataIndex: 'bonus_amount', width: 100 },
-    { title: 'Админ', dataIndex: 'admin_id', width: 100 },
-    { title: 'Тип', dataIndex: 'transaction_type', width: 100 },
-    { title: 'Вид', dataIndex: 'transaction_direction', width: 100 },
-]
-
-const USER_COLUMNS = [
-    { title: 'ID', dataIndex: 'id', width: 100 },
-    { title: 'Ссылка', dataIndex: 'referral_link', width: 100 },
-    { title: 'Количество', dataIndex: 'referral_count', width: 100 },
-    { title: 'Баланс', dataIndex: 'bonus_balance', width: 100 },
-]
-
-const mockData = {
-    "id": 1,
-    "referral_link": "https://radar-analytica.ru/asdfhgiu230sadfuyhahncapsdef23",
-    "referral_count": 10,
-    "bonus_balance": 1000,
-    "transactions": {
-        "page": 1,
-        "per_page": 10,
-        "total": 100,
-        "transactions_data": [
-            {
-                "date": "2023-01-01",
-                "transactions_history": [
-                    {
-                        "id": 1,
-                        "referral_id": 1,
-                        "bonus_amount": 100,
-                        "transaction_date": "2023-01-01 12:00:00",
-                        "admin_id": 1,
-                        "transaction_type": "поступление от рефералов",
-                        "transaction_direction": "начисление"
-                    }
-                ]
-            }
-        ]
-    }
 }
 
 const HISTORY_COLUMNS = [
@@ -116,10 +43,7 @@ const fetchUserData = async (token, userId, setStatus, initStatus, setData) => {
         setStatus({ ...initStatus, isError: true, message: 'Пожалуйста введите id пользователя' })
         return
     }
-    if (!userId) {
-        setStatus({ ...initStatus, isError: true, message: 'Пожалуйста введите id пользователя' })
-        return
-    }
+   
     setStatus({ ...initStatus, isLoading: true })
     try {
         let res = await fetch(`${URL}/api/admin/referral-system/${userId}/bonuses`, {
@@ -147,7 +71,6 @@ const accountRefill = async (token, reqData, setStatus, initStatus, setData, set
     setStatus({ ...initStatus, isLoading: true })
     try {
         let res = await fetch(`${URL}/api/admin/referral-system/bonus/`, {
-        let res = await fetch(`${URL}/api/admin/referral-system/bonus/`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -161,7 +84,6 @@ const accountRefill = async (token, reqData, setStatus, initStatus, setData, set
             return
         }
         await fetchUserData(token, reqData.referrer_id, setStatus, initStatus, setData)
-        await fetchUserData(token, reqData.referrer_id, setStatus, initStatus, setData)
         setStatus(initStatus)
         setSuccessRefill(true)
     } catch {
@@ -172,7 +94,6 @@ const accountRefill = async (token, reqData, setStatus, initStatus, setData, set
 const AdminReferalPage = () => {
 
     const { authToken, user } = useContext(AuthContext)
-    const { authToken, user } = useContext(AuthContext)
     const [status, setStatus] = useState(initStatus)
     const [data, setData] = useState()
     const [searchInputValue, setSearchInputValue] = useState('')
@@ -180,16 +101,10 @@ const AdminReferalPage = () => {
     const [form] = Form.useForm()
     const location = useLocation();
     const { id } = location.state || {};
-    console.log(id)
 
 
-    const submitHandler = (fields) => {
     const submitHandler = (fields) => {
         const dataObject = {
-            ...fields,
-            "referrer_id": data.id,
-            "admin_id": user.id,
-            "transaction_date": moment().toISOString(),
             ...fields,
             "referrer_id": data.id,
             "admin_id": user.id,
@@ -229,19 +144,11 @@ const AdminReferalPage = () => {
                     setInputValue={setSearchInputValue}
                     fetchUserData={fetchUserData}
                 />
-
-                {data &&
                 {data &&
                     <div className={styles.page__dataWrapper}>
                         <div className={styles.mainData}>
                             {/* <p className={styles.mainData__title}>Начислить бонусы</p> */}
-                            {/* <p className={styles.mainData__title}>Начислить бонусы</p> */}
                             <div className={styles.mainData__userBlock}>
-                                <Table
-                                    columns={USER_COLUMNS}
-                                    dataSource={[data]}
-                                    pagination={false}
-                                />
                                 <Table
                                     columns={USER_COLUMNS}
                                     dataSource={[data]}
@@ -315,77 +222,12 @@ const AdminReferalPage = () => {
                                         </Button>
                                     </div>
                                 </Form>
-                                <Form
-                                    form={form}
-                                    layout='vertical'
-                                    className={styles.form}
-                                    onFinish={submitHandler}
-                                >
-                                    <Form.Item
-                                        name='bonus_amount'
-                                        label='Сумма к начислению'
-                                        rules={[
-                                            { required: true }
-                                        ]}
-                                    >
-                                        <Input
-                                            placeholder='Введите сумму'
-                                            size='large'
-                                            type='number'
-                                        />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name='referral_id'
-                                        label='ID реферала'
-                                        rules={[
-                                            { required: true }
-                                        ]}
-                                    >
-                                        <Input
-                                            placeholder='Введите id'
-                                            size='large'
-                                            type='number'
-                                        />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name='description'
-                                        label='Комментарий'
-                                        className={`${styles.form__item} ${styles.form__item_wide}`}
-                                    // rules={[
-                                    //     {required: true}
-                                    // ]}
-                                    >
-                                        <Input.TextArea
-                                            placeholder='Напишите что-нибудь'
-                                            autosize={{
-                                                minRows: 3,
-                                                maxRows: 3
-                                            }}
-                                        />
-                                    </Form.Item>
-                                    <div className={styles.mainData__inputWrapper}>
-                                        <Button
-                                            htmlType='submit'
-                                            size='large'
-                                            type='primary'
-                                        >
-                                            Отправить
-                                        </Button>
-                                    </div>
-                                </Form>
                             </ConfigProvider>
                         </div>
 
                         <div className={styles.userHistoryData}>
                             <p className={styles.mainData__title}>История начислений</p>
                             <div className={styles.userHistoryData__userBlock}>
-                                {data &&
-                                    <Table
-                                        columns={HISTORY_COLUMNS}
-                                        dataSource={data.transactions?.transactions_data?.map(_ => _.transactions_history).flat()}
-                                        pagination={false}
-                                    />
-                                }
                                 {data &&
                                     <Table
                                         columns={HISTORY_COLUMNS}
@@ -425,7 +267,6 @@ const AdminReferalPage = () => {
                 onCancel={() => {
                     setSuccessRefill(false);
                 }}
-                message={`Успешно начислено`}
                 message={`Успешно начислено`}
             />
         </main>
