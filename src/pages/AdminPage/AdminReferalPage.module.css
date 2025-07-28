@@ -42,8 +42,8 @@
 
 .page__dataWrapper {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 3fr;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
 }
 
@@ -81,11 +81,11 @@
 }
 
 .mainData__userBlock {
-    width: 100%;
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
-    border-bottom: 1px solid #E8E8E8;
+    flex-grow: 1;
+    flex-shrink: 0;
 }
 
 .mainData__row {
@@ -94,13 +94,13 @@
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    padding: 10px 0;
+    padding: 4px 0;
 }
 
 .mainData__rowText {
     font-family: Mulish;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
@@ -119,8 +119,9 @@
 .mainData__inputWrapper {
     width: 100%;
     display: flex;
-    align-items: center;
+    justify-content: flex-end;
     gap: 20px;
+    grid-column: span 2;
 }
 
 /* userHistoryData */
@@ -141,7 +142,7 @@
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
-    max-height: 90vh;
+    max-height: 80vh;
     overflow: auto;
 }
 
@@ -154,7 +155,7 @@
     padding: 10px 0;
 }
 
-.userHistoryData__rowText {
+.userHistoryData__rowDate {
     font-family: Mulish;
     font-weight: 700;
     font-size: 20px;
@@ -171,4 +172,31 @@
     @media (max-width: 1440px) {
         font-size: 16px;
     }
+}
+.userHistoryData__rowText {
+    font-family: Mulish;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #8C8C8C;
+    margin: 0;
+    padding: 0;
+}
+
+.form {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.form__item {
+
+}
+
+.form__item_wide {
+    grid-column: span 2;
 }

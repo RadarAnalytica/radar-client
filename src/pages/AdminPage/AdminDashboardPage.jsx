@@ -7,6 +7,7 @@ import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import { URL } from '../../service/config';
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 import { Bar } from './features'
+import { DashboardTableWidget } from './widgets';
 import moment from 'moment';
 
 
@@ -109,6 +110,10 @@ const AdminDashboardPage = () => {
                             />
                         </>
                     }
+                </div>
+
+                <div className={styles.page__dashboardTable}>
+                    <DashboardTableWidget />
                 </div>
             </section>
             {/* ---------------------- */}
