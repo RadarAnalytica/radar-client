@@ -67,6 +67,7 @@ const MainPage = React.lazy(() => import('./pages/homePage'))
 const ReferalPage = React.lazy(() => import("./pages/Referal"));
 const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierAnalysisPage"));
 const SupplierIdPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierIdPage"));
+const RestoreError = React.lazy(() => import("./pages/RestoreError"));
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
 
@@ -146,6 +147,7 @@ function App() {
             <Route path='/app' element={<Suspense fallback={<LoaderPage />}>{' '}<MainWidget /></Suspense>} />
             <Route path='/reset' element={<Suspense fallback={<LoaderPage />}>{' '}<RequestResetLink /></Suspense>} />
             <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
+            <Route path='/restore-error' element={<Suspense fallback={<LoaderPage />}>{' '}<RestoreError /></Suspense>} />
             <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
             <Route path='/contacts' element={<Suspense fallback={<LoaderPage />}>{' '}<Contacts /></Suspense>} />
             <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />
