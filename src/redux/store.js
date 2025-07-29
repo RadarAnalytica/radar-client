@@ -27,6 +27,7 @@ import { reducer as apiServicePagesFilterStateReducer } from './apiServicePagesF
 import { reducer as utilsReducer } from './utils/utilsSlice'
 import { reducer as skuAnalysisReducer } from './skuAnalysis/skuAnalysisSlice'
 import { reducer as requestsMonitoringReducer } from './requestsMonitoring/requestsMonitoringSlice'
+import { reducer as supplierAnalysisReducer } from './supplierAnalysis/supplierAnalysisSlice'
 
 const storeOptions = {
   reducer: {
@@ -56,7 +57,8 @@ const storeOptions = {
     filters: apiServicePagesFilterStateReducer,
     utils: utilsReducer,
     skuAnalysis: skuAnalysisReducer,
-    requestsMonitoring: requestsMonitoringReducer
+    requestsMonitoring: requestsMonitoringReducer,
+    supplierAnalysis: supplierAnalysisReducer,
   },
 };
 

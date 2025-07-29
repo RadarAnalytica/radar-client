@@ -131,9 +131,6 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                         const regex = /[<>:"/\\|?*]/;
                         return regex.test(value) ? value.replace(regex, '') : value;
                     }}
-                    // rules={[
-                    //     { validator: isProductFromToken !== null && autocompleteValidation }
-                    // ]}
                 >
                     <Select 
                         showSearch
@@ -157,15 +154,9 @@ const BasicDataFormBlockDesktop = ({ form, setMpMainFee, isProductFromToken, set
                                 </div>
                             )
                         }}
-                        // value={inputValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
                         options={autocompleteOptions && autocompleteOptions.length > 0 ? autocompleteOptions.map(_ => ({ value: _.name})) : undefined}
-                        // dropdownRender={menu => (
-                        //     <div ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                        //         {menu}
-                        //     </div>
-                        // )}
                     />
                 </Form.Item>
             </ConfigProvider>
