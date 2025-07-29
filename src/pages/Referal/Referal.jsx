@@ -20,8 +20,8 @@ export default function ReferalPage() {
 	const [data, setData] = useState(null);
 	const [page, setPage] = useState(1);
 	const [loadingWithdrawal, setLoadingWithdrawal] = useState(false);
-	const [successTitle, setSuccessTitle] = useState(null);
-	const [errorModalShow, setErrorModalShow] = useState(false);
+	const [successModalOpen, setSuccessModalOpen] = useState(false);
+	const [errorModalOpen, setErrorModalOpen] = useState(false);
 
 	const TABLE_COLUMNS = useMemo(() => ([
 		{
@@ -71,23 +71,18 @@ export default function ReferalPage() {
 	};
 
 	const withdrawalHandler = async () => {
-		setLoadingWithdrawal(true)
+		setLoadingWithdrawal(true);
 		try {
 			const response = await ServiceFunctions.getWithdrawalRequest(authToken);
 			if (response === 'Ok'){
-				setSuccessTitle(
-					<p className={styles.success}>
-						<div className={styles.success__title}>Заявка на вывод направлена.</div>
-						В ближайшее время с Вами свяжутся наши специалисты
-					</p>
-				)
+				setSuccessModalOpen(true);
 			}
 			
 		} catch (error) {
 			console.error('withdrawalHandler error: ', error);
-			setErrorModalShow(true)
+			setErrorModalOpen(true);
 		} finally {
-			setLoadingWithdrawal(false)
+			setLoadingWithdrawal(false);
 		}
 	}
 
@@ -436,15 +431,17 @@ export default function ReferalPage() {
 					)}
 				</section>
 				<SuccessModal
-					open={!!successTitle}
-					title={successTitle}
-					onCancel={() => setSuccessTitle(null)}
-					onOk={() => setSuccessTitle(null)}
+					open={successModalOpen}
+					title={'Заявка на вывод направлена'}
+					message={'В ближайшее время с Вами свяжутся наши специалисты'}
+					onCancel={() => setSuccessModalOpen(false)}
+					onOk={() => setSuccessModalOpen(false)}
 				/>
 				<ErrorModal
-					open={errorModalShow}
-					onCancel={() => setErrorModalShow(false)}
-					onOk={() => setErrorModalShow(false)}
+					open={errorModalOpen}
+					message={'Что-то пошло не так! Попробуйте еще раз'}
+					onCancel={() => setErrorModalOpen(false)}
+					onOk={() => setErrorModalOpen(false)}
 				/>
 			</ConfigProvider>
 		</main>

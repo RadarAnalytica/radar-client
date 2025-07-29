@@ -281,14 +281,3 @@
 .table_container :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb){
   width: 5px!important;
 }
-
-.success {
-    margin: 0;
-    font-size: 18px;
-}
-
-.success__title {
-    margin-bottom: 8px;
-    font-size: 22px;
-    color: #5329ff;
-}
