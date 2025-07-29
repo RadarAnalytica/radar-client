@@ -36,7 +36,7 @@ const RestoreError = () => {
           <div className={styles.infoBox__boxContent}>
             <h2 className={`${styles.infoBox__title} ${styles.infoBox__title_blue}`}>Ссылка не действительна :(</h2>
             <p className={styles.infoBox__text}>
-              Похоже что эта ссылка не действительна, но вы можете попробовать еще раз перейдя кликнув на кнопку ниже!
+              Похоже что эта ссылка не действительна, но вы можете попробовать еще раз кликнув на кнопку ниже!
             </p>
               <CustomButton
                 text={'Попробовать еще раз'}
