@@ -31,18 +31,33 @@ function cellRenderer(value) {
     )
 }
 
+/**
+ *     {
+        "date": "2025-06-29",
+        "revenue": 0,
+        "orders": 0,
+        "avg_check": 0,
+        "stock_quantity": 8,
+        "goods_quantity": 1,
+        "goods_with_sales_quantity": 0,
+        "avg_price": 1789,
+        "brands_quantity": 1,
+        "brands_with_sales_quantity": 0
+    },
+ */
+
 export const mainTableConfig = [
     { title: 'Дата', dataIndex: 'date', units: null, fixed: 'left', width: 270, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
     { title: 'Выручка, руб', dataIndex: 'revenue', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
     { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
-    { title: 'Средний чек, руб', dataIndex: 'avg_bill', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
-    { title: 'Остатки на конец дня, шт', dataIndex: 'quantity', units: 'шт', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
-    { title: 'Кол-во артикулов, шт', dataIndex: 'sku_amount', units: 'шт', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
-    { title: 'Средняя цена без СПП, руб', dataIndex: 'price', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
-    { title: 'Артикулов с продажами, шт', dataIndex: '', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
-    { title: 'Кол-во брендов, шт', dataIndex: '', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
-    { title: 'Кол-во брендов с продажами, шт', dataIndex: '', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
-]
+    { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
+    { title: 'Остатки на конец дня, шт', dataIndex: 'stock_quantity', units: 'шт', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
+    { title: 'Кол-во артикулов, шт', dataIndex: 'goods_quantity', units: 'шт', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
+    { title: 'Средняя цена без СПП, руб', dataIndex: 'avg_price', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
+    { title: 'Артикулов с продажами, шт', dataIndex: 'goods_with_sales_quantity', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
+    { title: 'Кол-во брендов, шт', dataIndex: 'brands_quantity', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
+    { title: 'Кол-во брендов с продажами, шт', dataIndex: 'brands_with_sales_quantity', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
+].map(_ => ({..._, render: cellRenderer.bind(_), sorter: undefined, sortIcon: undefined}))
 
 export const goodsTableConfig = [
     { title: 'Товар', dataIndex: 'good', units: null, fixed: 'left', width: 270, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},

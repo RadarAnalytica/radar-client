@@ -1391,7 +1391,7 @@ export const ServiceFunctions = {
 		}
 
 	},
-	getSupplierAnalysisSuggestData: async (query, setIsLoading, setData) => {
+	getSupplierAnalysisSuggestData: async (query, setIsLoading) => {
 		setIsLoading(true)
 		try {
 			let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/search?query=${query}`, {
@@ -1402,17 +1402,16 @@ export const ServiceFunctions = {
 
 			if (!res.ok && res.status === 404) {
 				setIsLoading(false);
-				setData([])
-				return
+				return []
 			}
 			if (!res.ok && res.status !== 404) {
 				setIsLoading(false);
-				return
+				return []
 			}
 
 			res = await res.json()
 			setIsLoading(false);
-			setData(res)
+			return res
 		} catch {
 			setIsLoading(false);
 		}

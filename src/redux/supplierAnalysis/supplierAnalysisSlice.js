@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData } from "./supplierAnalysisActions";
+import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData, fetchSupplierAnalysisByDatesTableData } from "./supplierAnalysisActions";
 
 const mockOptions = [
     { value: 'Все бренды' },
@@ -14,6 +14,7 @@ const initialState = {
     ordersStructureTab: 'По группам цветов',
     stockChartTab: 'Входящие заказы',
     supplierBrands: mockOptions,
+    mainSupplierData: undefined,
     metaData: {
         isLoading: false,
         isError: false,
@@ -34,6 +35,13 @@ const initialState = {
         isSuccess: false,
         message: '',
         data: undefined
+    },
+    byDatesTableData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
     }
 };
 
@@ -41,6 +49,12 @@ const supplierAnalysisSlice = createSlice({
     name: "supplierAnalysis",
     initialState,
     reducers: {
+        setSupplierMainData: (state, action) => {
+            return {
+                ...state,
+                mainSupplierData: action.payload
+            }
+        },
         setSupplierCurrentBrand: (state, action) => {
             return {
                 ...state,
@@ -80,6 +94,9 @@ const supplierAnalysisSlice = createSlice({
             })
             .addCase(fetchSupplierAnalysisMainChartData.fulfilled, (state, action) => {
                 state.mainChartData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisByDatesTableData.fulfilled, (state, action) => {
+                state.byDatesTableData.data = action.payload;
             })
     }
 });

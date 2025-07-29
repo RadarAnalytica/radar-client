@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import styles from './tableWidget.module.css'
 import DownloadButton from '../../../../components/DownloadButton';
 import { ConfigProvider, Table } from 'antd';
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 
 
 //инит стейт сортировки
@@ -12,15 +13,19 @@ const initSortState = {
 
 const TableWidget = ({
     tableConfig,
-    tableData,
+    id,
     title,
     downloadButton,
-    customHeader
+    customHeader,
+    dataType,
+    dataHandler,
 }) => {
-
+    const dispatch = useAppDispatch()
     const containerRef = useRef(null);
     const [scrollY, setScrollY] = useState(0);
     const [scrollX, setScrollX] = useState(0);
+    const { selectedRange } = useAppSelector(store => store.filters)
+    const { data: tableData } = useAppSelector(store => store.supplierAnalysis[dataType])
 
     useEffect(() => {
         const updateHeight = () => {
@@ -42,6 +47,33 @@ const TableWidget = ({
         updateHeight();
 
     }, [tableConfig, tableData])
+
+    //data fetching
+    useEffect(() => {
+        if (selectedRange && id) {
+            let datesRange;
+
+            if (selectedRange.period) {
+                datesRange = selectedRange
+            } else {
+                datesRange = {
+                    date_from: selectedRange.from,
+                    date_to: selectedRange.to
+                }
+            }
+            const reqData = {
+                "supplier_id": parseInt(id),
+                "page": 1,
+                "limit": 25,
+                ...datesRange,
+                // "sorting": {
+                //     "sort_field": "frequency",
+                //     "sort_order": "DESC"
+                // }
+            }
+            dispatch(dataHandler(reqData))
+        }
+    }, [selectedRange, id])
 
 
     // if (dataStatus.isLoading) {
@@ -96,24 +128,26 @@ const TableWidget = ({
                         },
                     }}
                 >
-                    <Table
-                        virtual
-                        columns={tableConfig}
-                        //dataSource={data}
-                        pagination={false}
-                        // tableLayout="fixed"
-                        rowSelection={false}
-                        showSorterTooltip={false}
-                        sticky={true}
-                        expandable={{
-                            // expandedRowRender: (record) => <p>{record.description}</p>,
-                            expandIcon: ExpandIcon,
-                            rowExpandable: (record) => !!record.description,
-                            expandedRowClassName: styles.expandRow,
-                        }}
-                        // scroll={{ x: 'max-content' }}
-                        scroll={{ x: scrollX, y: scrollY }}
-                    ></Table>
+                    {tableData &&
+                        <Table
+                            virtual
+                            columns={tableConfig}
+                            dataSource={tableData}
+                            pagination={false}
+                            // tableLayout="fixed"
+                            rowSelection={false}
+                            showSorterTooltip={false}
+                            sticky={true}
+                            expandable={{
+                                // expandedRowRender: (record) => <p>{record.description}</p>,
+                                expandIcon: ExpandIcon,
+                                rowExpandable: (record) => !!record.description,
+                                expandedRowClassName: styles.expandRow,
+                            }}
+                            // scroll={{ x: 'max-content' }}
+                            scroll={{ x: scrollX, y: scrollY }}
+                        />
+                    }
                 </ConfigProvider>
             </div>
         </div>

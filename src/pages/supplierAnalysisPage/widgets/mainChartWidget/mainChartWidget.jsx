@@ -28,46 +28,70 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
     const dispatch = useAppDispatch()
     const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
     const [normilizedChartData, setNormilizedChartData] = useState()
+    const { selectedRange } = useAppSelector(store => store.filters)
     //const { skuChartData, dataStatus } = useAppSelector(store => store.skuAnalysis)
     const widgetData = useAppSelector(store => store.supplierAnalysis[dataType])
 
-    useEffect(() => {
-        if (!widgetData.data) {
-            dispatch(dataHandler())
-        }
-    }, [widgetData?.data])
 
-    // useEffect(() => {
-    //     if (skuChartData && chartControls) {
-    //         const data = {
-    //             labels: skuChartData.dates.map(i => moment(i).format('DD.MM.YY')),
-    //             datasets: chartControls.map(i => {
-    //                 let yAxis = 'y1';
-    //                 if (i.hasUnits && i.units === '₽') {
-    //                     yAxis = 'y'
-    //                 }
-    //                 if (i.isOnChart && i.isActive) {
-    //                     return {
-    //                         label: i.ruName,
-    //                         type: 'line',
-    //                         data: skuChartData[i.engName]?.map(i => i.item),
-    //                         borderColor: i.color,
-    //                         yAxisID: yAxis,
-    //                         tension: 0.4,
-    //                         pointBorderColor: 'white',
-    //                         backgroundColor: i.color,
-    //                         pointRadius: 6,
-    //                         hoverRadius: 8,
-    //                         borderWidth: 2
-    //                     }
-    //                 } else {
-    //                     return {}
-    //                 }
-    //             })
-    //         }
-    //         setNormilizedChartData({ ...data })
-    //     }
-    // }, [skuChartData, chartControls])
+    //data fetching
+    useEffect(() => {
+        if (selectedRange && id) {
+            let datesRange;
+
+            if (selectedRange.period) {
+                datesRange = selectedRange
+            } else {
+                datesRange = {
+                    date_from: selectedRange.from,
+                    date_to: selectedRange.to
+                }
+            }
+            const reqData = {
+                "supplier_id": parseInt(id),
+                "page": 1,
+                "limit": 25,
+                ...datesRange
+                // "sorting": {
+                //     "sort_field": "frequency",
+                //     "sort_order": "DESC"
+                // }
+            }
+            dispatch(dataHandler(reqData))
+        }
+    }, [selectedRange, id])
+
+
+    useEffect(() => {
+        if (widgetData.data && chartControls) {
+            const data = {
+                labels: widgetData.data.dates.map(i => moment(i).format('DD.MM.YY')),
+                datasets: chartControls.map(i => {
+                    let yAxis = 'y1';
+                    if (i.hasUnits && i.units === '₽') {
+                        yAxis = 'y'
+                    }
+                    if (i.isOnChart && i.isActive) {
+                        return {
+                            label: i.ruName,
+                            type: 'line',
+                            data: widgetData.data[i.engName]?.map(i => i.item),
+                            borderColor: i.color,
+                            yAxisID: yAxis,
+                            tension: 0.4,
+                            pointBorderColor: 'white',
+                            backgroundColor: i.color,
+                            pointRadius: 6,
+                            hoverRadius: 8,
+                            borderWidth: 2
+                        }
+                    } else {
+                        return {}
+                    }
+                })
+            }
+            setNormilizedChartData({ ...data })
+        }
+    }, [widgetData.data, chartControls])
 
     if (widgetData.isLoading) {
         return (
@@ -106,7 +130,7 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
                         data={{ ...normilizedChartData }}
                         width={100}
                         height={40}
-                        options={mainChartOptionsGenerator(widgetData, chartControls.find(_ => _.isAnnotation), chartControls.find(_ => _.engName === 'seasonality'), normilizedChartData)}
+                        options={mainChartOptionsGenerator(widgetData.data, chartControls.find(_ => _.isAnnotation), chartControls.find(_ => _.engName === 'seasonality'), normilizedChartData)}
                     />}
             </div>
         </div>

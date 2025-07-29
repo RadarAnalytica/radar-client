@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
 import useDebouncedFunction from '../../../../service/hooks/useDebounce';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { actions as supplierActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
 
 
 
@@ -16,25 +18,35 @@ const requestInitState = {
 }
 
 const SearchBlock = () => {
-    const [selectedItem, setSelectedItem] = useState()
+    const dispatch = useAppDispatch()
+    const { mainSupplierData } = useAppSelector(store => store.supplierAnalysis)
     const [requestStatus, setRequestStatus] = useState(requestInitState)
     const [autocompleteOptions, setAutocompleteOptions] = useState();
     const [loadingOptions, setLoadingOptions] = useState(false);
     const navigate = useNavigate()
 
+    const getSuggestDataWrapperFunc = async (value) => {
+        const res = await ServiceFunctions.getSupplierAnalysisSuggestData(value, setLoadingOptions)
 
-    const debouncedDataFetch = useDebouncedFunction(ServiceFunctions.getSupplierAnalysisSuggestData, 500)
+        if (res) {
+            setAutocompleteOptions(res)
+        }
+    }
+
+    const debouncedDataFetch = useDebouncedFunction(getSuggestDataWrapperFunc, 500)
+
+    
 
     const handleSearch = (value) => { // обработка ввода пользователя вручную
         if (value) {
-            debouncedDataFetch(value,  setLoadingOptions, setAutocompleteOptions)
+            debouncedDataFetch(value)
         }
     };
 
     const handleSelect = (value) => { // обработка клика на опцию
         const item = autocompleteOptions.find(_ => _.supplier_id === value);
         if (item) {
-            setSelectedItem(item)
+            dispatch(supplierActions.setSupplierMainData(item))
         }
     };
 
@@ -62,7 +74,7 @@ const SearchBlock = () => {
                         size='large'
                         placeholder='Введите название товара'
                         className={styles.search__input}
-                        style={{ background: selectedItem ? '#F2F2F2' : '', width: '100%' }}
+                        style={{ background: mainSupplierData ? '#F2F2F2' : '', width: '100%' }}
                         id='autocomp'
                         loading={loadingOptions}
                         suffixIcon={
@@ -85,7 +97,7 @@ const SearchBlock = () => {
                         //         </div>
                         //     )
                         // }}
-                        value={selectedItem?.trademark}
+                        value={mainSupplierData?.trademark}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
                         options={autocompleteOptions && [...autocompleteOptions]?.map(_ => ({ label: _.trademark, value: _.supplier_id }))}
@@ -94,11 +106,11 @@ const SearchBlock = () => {
                         size='large'
                         type='primary'
                         className={styles.search__button}
-                        disabled={!selectedItem}
+                        disabled={!mainSupplierData}
                         loading={loadingOptions}
                         onClick={() => {
-                            if (selectedItem) {
-                                navigate(`/supplier-analysis/${selectedItem.supplier_id}`, { state: { ...selectedItem } });
+                            if (mainSupplierData) {
+                                navigate(`/supplier-analysis/${mainSupplierData.supplier_id}`);
                               }
                         }}
                     >

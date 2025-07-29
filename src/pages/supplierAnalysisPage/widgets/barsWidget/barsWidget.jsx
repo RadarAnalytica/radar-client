@@ -11,10 +11,42 @@ import { Bar } from '../../features';
   "avg_daily_revenue": 0,
   "rating": 5
 
+
+  {
+    "revenue": 103517301251.0,
+    "orders": 39019772,
+    "lost_revenue": 8031201221.0,
+    "avg_check": 2653.0,
+    "avg_revenue": 59885.0,
+    "goods_with_sales_percent": 0.0,
+    "buyout_percent": 84.0,
+    "buyout_quantity": 3933,
+    "buyout_amount": 86954533051.0
+}
+
  */
 
+const BARS_CONFIG = [
+    // brand meta
+    {index: 'brands', title: 'Актуальное количество брендов на сегодня', hasColoredTitle: true, hasRateStar: false, units: 'шт'},
+    {index: 'goods', title: 'Артикулов за 30 дней', hasColoredTitle: false, hasRateStar: false, units: 'шт'},
+    {index: 'avg_daily_revenue', title: 'Среднедневная выручка за 30 дней', hasColoredTitle: false, hasRateStar: false, units: '₽'},
+    {index: 'rating', title: 'Рейтинг', hasColoredTitle: false, hasRateStar: true, units: null},
+    // indicators
+    {index: 'revenue', title: 'Выручка', hasColoredTitle: false, hasRateStar: false, units: '₽'},
+    {index: 'orders', title: 'Заказов', hasColoredTitle: false, hasRateStar: false, units: 'шт'},
+    {index: 'lost_revenue', title: 'Упущенная выручка', hasColoredTitle: false, hasRateStar: false, units: '₽'},
+    {index: 'avg_check', title: 'Средний чек', hasColoredTitle: false, hasRateStar: false, units: '₽'},
+    {index: 'avg_revenue', title: 'Среднедневная выручка на артикул с продажами', hasColoredTitle: false, hasRateStar: false, units: '₽'},
+    {index: 'goods_with_sales_percent', title: 'Среднедневной % артикулов с продажами', hasColoredTitle: false, hasRateStar: false, units: '%'},
+    {index: 'buyout_percent', title: 'Процент выкупа поставщика', hasColoredTitle: false, hasRateStar: false, units: '%', hasTooltip: true, tooltipText: ''},
+    {index: 'buyout_amount', title: 'Выкупы', hasColoredTitle: false, hasRateStar: false, units: '₽', hasAdditionalData: true, additionalData: {
+        index: 'buyout_quantity', units: 'шт'
+    }},
+]
 
-const BarsWidget = ({ quantity = 4, dataHandler, dataType, id }) => {
+
+const BarsWidget = ({ dataHandler, dataType, id }) => {
     const dispatch = useAppDispatch()
     const widgetData = useAppSelector(store => store.supplierAnalysis[dataType])
     const { isSidebarHidden } = useAppSelector(store => store.utils)
@@ -68,12 +100,19 @@ const BarsWidget = ({ quantity = 4, dataHandler, dataType, id }) => {
 
     return (
         <div className={isSidebarHidden ? styles.widget : `${styles.widget} ${styles.widget_2cols}`}>
-            {widgetData && Object.keys(widgetData).map((_, id) => {
-                return (
+            {widgetData?.data && Object.keys(widgetData.data).map((_, id) => {
+                const CONFIG = BARS_CONFIG.find(i => i.index === _)
+                return CONFIG && (
                     <Bar
                         key={id}
-                        rating={widgetData[_]}
-                        titleColor={id === 0 ? '#5329FF' : ''}
+                        rating={CONFIG.hasRateStar}
+                        data={widgetData.data[_]}
+                        title={CONFIG.title}
+                        units={CONFIG.units}
+                        titleColor={CONFIG.hasColoredTitle ? '#5329FF' : ''}
+                        hasAdditionalData={CONFIG.hasAdditionalData}
+                        additionalData={widgetData.data[CONFIG.additionalData?.index]}
+                        additionalDataUnits={CONFIG.additionalData?.units}
                     />
                 )
             })}

@@ -2,6 +2,23 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { actions as skuAnalysisActions } from './supplierAnalysisSlice'
 import { actions as supplierAnalysisActions } from './supplierAnalysisSlice';
 
+const createChartDataDTO = (data) => {
+  let DTO = {
+    dates: data.map(_ => _.date)
+  }
+
+  const keys = Object.keys(data[0]) 
+  keys.forEach(key => {
+    if (key !== 'date') {
+      DTO = {
+        ...DTO,
+        [key]: data.map(_ => ({date: _.date, item: _[key]}))
+      }
+    }
+  })
+  return DTO
+}
+
 
 export const fetchSupplierAnalysisMetaData = createAsyncThunk(
     'supplierAnalysisMetaData',
@@ -22,7 +39,6 @@ export const fetchSupplierAnalysisMetaData = createAsyncThunk(
         }
 
         res = await res.json();
-        console.log(res)
         dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'metaData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
         return res;
       } catch (e) {
@@ -60,18 +76,13 @@ export const fetchSupplierAnalysisMainChartData = createAsyncThunk(
     async (reqData, { dispatch }) => {
       dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'mainChartData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
       try {
-        // let queryString = `?wb_id=${reqData.id}`
-        // if (reqData.selectedRange.period) {
-        //     queryString += `&period=${reqData.selectedRange.period}`
-        // }
-        // if (reqData.selectedRange.from && reqData.selectedRange.to) {
-        //      queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
-        // }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/charts`, {
-          method: 'GET',
+       
+        const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-charts`, {
+          method: 'POST',
           headers: {
             'content-type': 'application/json',
           },
+          body: JSON.stringify(reqData)
         });
         if (!res.ok) {
           const data = await res.json();
@@ -79,9 +90,34 @@ export const fetchSupplierAnalysisMainChartData = createAsyncThunk(
         }
         const data = await res.json();
         dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'mainChartData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
-        return data;
+        return createChartDataDTO(data);
       } catch (e) {
         dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'mainChartData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+      }
+    }
+);
+export const fetchSupplierAnalysisByDatesTableData = createAsyncThunk(
+    'supplierAnalysisByDatesTableData',
+    async (reqData, { dispatch }) => {
+      dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
+      try {
+       
+        const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-date`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(reqData)
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+        }
+        const data = await res.json();
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
+        return data;
+      } catch (e) {
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
       }
     }
 );

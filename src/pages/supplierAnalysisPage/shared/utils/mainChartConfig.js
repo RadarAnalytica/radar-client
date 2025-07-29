@@ -1,28 +1,50 @@
 import moment from "moment";
 import { verticalDashedLinePlugin } from "../../../../service/utils";
 
+/**
+ *      //"revenue": 1198071115.0,
+        //"orders": 803458,
+        //"stock_quantity": 1058719260,
+        //"avg_price": 3281,
+        //"avg_check": 1491,
+        //"goods_quantity": 1388923,
+        "goods_with_sales_quantity": 1509,
+        //"brands_quantity": 263,
+        //"brands_with_sales_quantity": 2,
+        //"queries_count": 63676,
+        //"avg_place": 506,
+        //"total_shows": 1195514,
+        //"avg_frequency": 17,
+        //"rating_dynamics": 4.400000095367432,
+        //"reviews_dynamics": 1795,
+        //"buyouts_cumulative": 10367,
+        //"buyouts_daily": 74,
+        //"buyout_percent": 82,
+        "seasonality": 0
+ */
+
 export const chartCompareConfigObject = [
     { engName: 'revenue', ruName: 'Выручка, руб', color: '#5329FF', isControlTooltip: false, hasUnits: true, units: '₽', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
     { engName: 'orders', ruName: 'Заказы, шт', color: '#F0AD00', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
-    { engName: 'quantity', ruName: 'Товарные остатки, шт', color: '#F93C94', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
+    { engName: 'stock_quantity', ruName: 'Товарные остатки, шт', color: '#F93C94', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
     { engName: 'avg_price', ruName: 'Средняя цена, руб', color: '#1BC5D1', isControlTooltip: false, hasUnits: true, units: '₽', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
 
-    { engName: 'avg_bill', ruName: 'Средний чек, руб', color: '#AA5BFF', isControlTooltip: false, hasUnits: true, units: '₽', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    { engName: 'articles_amount', ruName: 'Артикулов, шт', color: '#FFA1EB', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    { engName: 'brands_amount', ruName: 'Кол-во брендов, шт', color: '#ADADAD', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    { engName: 'brands_with_sales', ruName: 'Брендов с продажами, шт', color: '#5F00B2', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'avg_check', ruName: 'Средний чек, руб', color: '#AA5BFF', isControlTooltip: false, hasUnits: true, units: '₽', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'goods_quantity', ruName: 'Артикулов, шт', color: '#FFA1EB', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'brands_quantity', ruName: 'Кол-во брендов, шт', color: '#ADADAD', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'brands_with_sales_quantity', ruName: 'Брендов с продажами, шт', color: '#5F00B2', isControlTooltip: false, hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     
-    { engName: 'requests_count', ruName: 'Всего запросов, шт', color: '#FFDC89', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
+    { engName: 'queries_count', ruName: 'Всего запросов, шт', color: '#FFDC89', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
     { engName: 'avg_place', ruName: 'Средняя позиция', color: '#C7D61E', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
     { engName: 'total_shows', ruName: 'Всего показов, шт', color: '#F9813C', isControlTooltip: true, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     { engName: 'avg_frequency', ruName: 'Среднедневная частотность', color: '#00AF4F', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
 
-    { engName: '', ruName: 'Динамика рейтинга', color: '#D54AFF', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, units: '', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    { engName: '', ruName: 'Динамика количества отзывов, шт', color: '#F93C65', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    { engName: '', ruName: 'Реальные выкупы (накопительно), шт', color: '#F9A43C', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    { engName: '', ruName: 'Реальные выкупы (прирост за период), шт', color: '#FF0000', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    { engName: '', ruName: 'Выкупаемость, %', color: '#88E473', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: '%', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
-    { engName: '', ruName: 'Праздники', color: '#B53B32', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'rating_dynamics', ruName: 'Динамика рейтинга', color: '#D54AFF', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, units: '', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'reviews_dynamics', ruName: 'Динамика количества отзывов, шт', color: '#F93C65', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'buyouts_cumulative', ruName: 'Реальные выкупы (накопительно), шт', color: '#F9A43C', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'buyouts_daily', ruName: 'Реальные выкупы (прирост за период), шт', color: '#FF0000', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'buyout_percent', ruName: 'Выкупаемость, %', color: '#88E473', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: '%', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    //{ engName: '', ruName: 'Праздники', color: '#B53B32', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     
     { engName: 'seasonality', ruName: 'Сезоны продаж', color: '#90DAFF', isControlTooltip: false, hasUnits: false, isOnChart: false, isAnnotation: false, isControl: true, defaultActive: true },
 ]
@@ -265,17 +287,16 @@ export const getChartTooltip = (context, chartData) => {
 }
 
 export const mainChartOptionsGenerator = (chartData, anotationField, seasonsField, normilizedChartData) => {
-
-    const annotationData = chartData[anotationField.engName]
-    const seasonsData = chartData[seasonsField.engName]
-    let annotationObject = anotationField.isActive && getAnnotations(annotationData);
-    if (anotationField.isActive) {
+    const annotationData = anotationField && chartData[anotationField?.engName]
+    const seasonsData = seasonsField && chartData[seasonsField?.engName]
+    let annotationObject = anotationField && anotationField?.isActive && getAnnotations(annotationData);
+    if (anotationField?.isActive) {
         annotationObject = {
             ...annotationObject,
             ...getAnnotations(annotationData)
         }
     }
-    if (seasonsField.isActive) {
+    if (seasonsField?.isActive) {
         annotationObject = {
             ...annotationObject,
             ...getSeason(seasonsData)
