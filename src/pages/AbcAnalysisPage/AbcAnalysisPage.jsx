@@ -10,8 +10,9 @@ import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import Header from '../../components/sharedComponents/header/header';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import { mockGetAbcData } from '../../service/mockServiceFunctions';
-import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+// import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { ConfigProvider, Table, Button, Flex } from 'antd';
 import ruRU from 'antd/locale/ru_RU'
 import { COLUMNS } from './widgets/table/config';
@@ -134,6 +135,9 @@ const AbcAnalysisPage = () => {
 				days,
 				activeBrand.id.toString()
 			);
+			return
+		} else {
+			setLoading(false);
 		}
 	}, [activeBrand, viewType, days, filters, page, sorting]);
 
@@ -266,13 +270,12 @@ const AbcAnalysisPage = () => {
 					<Header title="ABC-анализ" />
 				</div>
 				{/* !header */}
+				<div>
+					<Filters setLoading={setLoading} />
+				</div>
 
-				{/* DEMO BLOCK */}
-				{user.subscription_status === null && (
-					<NoSubscriptionWarningBlock />
-				)}
 				{/* SELF-COST WARNING */}
-				{shopStatus && !shopStatus.is_self_cost_set && !loading && (
+				{!loading && shops && shopStatus && !shopStatus.is_self_cost_set && !loading && (
 					<div>
 						<SelfCostWarningBlock
 							shopId={activeBrand.id}
@@ -281,10 +284,13 @@ const AbcAnalysisPage = () => {
 					</div>
 				)}
 
-				<div>
-					<Filters setLoading={setLoading} />
-				</div>
-					<div className={styles.container} ref={tableContainerRef}>
+				{!loading && shops && !shopStatus?.is_primary_collect && (
+						<DataCollectWarningBlock
+								title='Ваши данные еще формируются и обрабатываются.'
+						/>
+				)}
+
+				{!loading && shops && shopStatus?.is_primary_collect && (<div className={styles.container} ref={tableContainerRef}>
 						<ConfigProvider
 							locale={ruRU}
 							renderEmpty={() => <div>Нет данных</div>}
@@ -359,14 +365,7 @@ const AbcAnalysisPage = () => {
 									По прибыли
 								</Button>
 							</Flex>
-							{shopStatus && !shopStatus.is_primary_collect && (
-								<DataCollectionNotification
-									title={
-										'Ваши данные еще формируются и обрабатываются.'
-									}
-								/>
-							)}
-								
+
 									<div className={styles.tableContainer}>
 										<Table
 											columns={columnsList}
@@ -402,7 +401,7 @@ const AbcAnalysisPage = () => {
 						</div>
 						)}
 						</ConfigProvider>
-					</div>
+				</div>)}
 			</section>
 			{/* ---------------------- */}
 		</main>
