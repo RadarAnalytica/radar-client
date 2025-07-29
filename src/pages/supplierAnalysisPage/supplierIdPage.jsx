@@ -11,13 +11,12 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice'
 import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByColorsTableConfig } from './shared'
 import { GoodsTableCustomHeader, OrdersTableCustomHeader, StockChartCustomHeader } from './entities'
-import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisBarsData, fetchSupplierAnalysisMainChartData } from '../../redux/supplierAnalysis/supplierAnalysisActions'
+import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData } from '../../redux/supplierAnalysis/supplierAnalysisActions'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
 import { useLocation } from 'react-router-dom'
 
 const SupplierIdPage = () => {
     const dispatch = useAppDispatch()
-    const { selectedRange } = useAppSelector(store => store.filters)
     const { dataStatus, skuMainTableData, skuByColorTableData, skuByWarehouseTableData, skuBySizeTableData, metaData } = useAppSelector(store => store.skuAnalysis)
     const [loading, setLoading] = useState(false)
     const params = useParams()
@@ -25,35 +24,6 @@ const SupplierIdPage = () => {
     const location = useLocation();
 
 
-
-    useEffect(() => {
-        const loadSkuAnalysisData = async () => {
-            if (!params?.id) return;
-            try {
-                //dispatch(skuAnalysisActions.setDataStatus({ isLoading: true, isError: false, message: '' }));
-
-                await Promise.all([
-                    //dispatch(fetchSupplierAnalysisMetaData()),
-                    // dispatch(fetchSkuAnalysisMainChartData({ id: params.id, selectedRange })),
-                    // dispatch(fetchSkuAnalysisIndicatorsData({ id: params.id, selectedRange })),
-                    // dispatch(fetchSkuAnalysisMainTableData({ id: params.id, selectedRange })),
-                    // dispatch(fetchSkuAnalysisByColorTableData({ id: params.id, selectedRange })),
-                    // dispatch(fetchSkuAnalysisByWarehousesTableData({ id: params.id, selectedRange })),
-                    // dispatch(fetchSkuAnalysisBySizeTableData({ id: params.id, selectedRange }))
-                ]);
-
-                dispatch(skuAnalysisActions.setDataStatus({ isLoading: false, isError: false, message: '' }));
-            } catch (error) {
-                dispatch(skuAnalysisActions.setDataStatus({
-                    isLoading: false,
-                    isError: true,
-                    message: 'Failed to load SKU analysis data. Please try again.'
-                }));
-            }
-        };
-
-        //loadSkuAnalysisData();
-    }, [params, selectedRange]);
 
     return (
         <main className={styles.page}>
@@ -80,7 +50,6 @@ const SupplierIdPage = () => {
                     </div>
                     {/* !header */}
                     <BarsWidget
-                        quantity={4}
                         dataHandler={fetchSupplierAnalysisMetaData}
                         dataType='metaData'
                         id={params?.id}
@@ -94,12 +63,12 @@ const SupplierIdPage = () => {
                             groupSelect={false}
                         />
                     </div>
-                    {/* <BarsWidget
-                        quantity={8}
-                        dataHandler={fetchSupplierAnalysisMetaData}
-                        dataType='barsData'
+                    <BarsWidget
+                        dataHandler={fetchSupplierAnalysisIndicatorsData}
+                        dataType='indicatorsData'
+                        id={params?.id}
                     />
-                    <MainChartWidget 
+                    {/* <MainChartWidget 
                         id={params?.id}
                         dataType='mainChartData'
                         dataHandler={fetchSupplierAnalysisMainChartData}

@@ -4,36 +4,48 @@ import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { Bar } from '../../features';
 
 
+/**
+ * 
+  "brands": 0,
+  "goods": 0,
+  "avg_daily_revenue": 0,
+  "rating": 5
+
+ */
+
+
 const BarsWidget = ({ quantity = 4, dataHandler, dataType, id }) => {
     const dispatch = useAppDispatch()
     const widgetData = useAppSelector(store => store.supplierAnalysis[dataType])
     const { isSidebarHidden } = useAppSelector(store => store.utils)
+    const { selectedRange } = useAppSelector(store => store.filters)
 
-    // mock
-    let arr = new Array(quantity)
-    for (let i = 0; i < quantity; i++) {
-        arr[i] = quantity
-    }
-    arr.forEach(_ => {
-        _ = quantity
-    })
 
     useEffect(() => {
-        if (!widgetData.data && id) {
-            const reqData = {
-                "supplier_id": parseInt(id),
-                "period": 30,
-                "page": 1,
-                "limit": 25,
-                "sorting": {
-                    "sort_field": "frequency",
-                    "sort_order": "DESC"
+        if (selectedRange && id) {
+            let datesRange;
+
+            if (selectedRange.period) {
+                datesRange = selectedRange
+            } else {
+                datesRange = {
+                    date_from: selectedRange.from,
+                    date_to: selectedRange.to
                 }
             }
-            console.log(reqData)
+            const reqData = {
+                "supplier_id": parseInt(id),
+                "page": 1,
+                "limit": 25,
+                ...datesRange
+                // "sorting": {
+                //     "sort_field": "frequency",
+                //     "sort_order": "DESC"
+                // }
+            }
             dispatch(dataHandler(reqData))
         }
-    }, [widgetData.data])
+    }, [id, selectedRange])
 
     if (widgetData.isLoading) {
         return (
@@ -56,12 +68,11 @@ const BarsWidget = ({ quantity = 4, dataHandler, dataType, id }) => {
 
     return (
         <div className={isSidebarHidden ? styles.widget : `${styles.widget} ${styles.widget_2cols}`}>
-            {arr.map((_, id) => {
-
+            {widgetData && Object.keys(widgetData).map((_, id) => {
                 return (
                     <Bar
                         key={id}
-                        rating={id === arr.length - 1}
+                        rating={widgetData[_]}
                         titleColor={id === 0 ? '#5329FF' : ''}
                     />
                 )
@@ -73,14 +84,3 @@ const BarsWidget = ({ quantity = 4, dataHandler, dataType, id }) => {
 export default BarsWidget;
 
 
-const testObject = {
-    somField: 1
-}
-
-const SomeComponent = () => {
-    return (
-        <section>
-
-        </section>
-    )
-}

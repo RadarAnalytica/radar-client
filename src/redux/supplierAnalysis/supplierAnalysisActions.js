@@ -26,37 +26,32 @@ export const fetchSupplierAnalysisMetaData = createAsyncThunk(
         dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'metaData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
         return res;
       } catch (e) {
-        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'barsData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'metaData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
       }
     }
 );
-export const fetchSupplierAnalysisBarsData = createAsyncThunk(
-    'supplierAnalysisBarsData',
+export const fetchSupplierAnalysisIndicatorsData = createAsyncThunk(
+    'supplierAnalysisIndicatorsData',
     async (reqData, { dispatch }) => {
-      dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'barsData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
+      dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'indicatorsData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
       try {
-        // let queryString = `?wb_id=${reqData.id}`
-        // if (reqData.selectedRange.period) {
-        //     queryString += `&period=${reqData.selectedRange.period}`
-        // }
-        // if (reqData.selectedRange.from && reqData.selectedRange.to) {
-        //      queryString += `&date_from=${reqData.selectedRange.from}&date_to=${reqData.selectedRange.to}`
-        // }
-        const res = await fetch(`https://radarmarket.ru/api/web-service/product-analysis/charts`, {
-          method: 'GET',
+
+        let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-indicators`, {
+          method: 'POST',
           headers: {
             'content-type': 'application/json',
           },
+          body: JSON.stringify(reqData)
         });
         if (!res.ok) {
-          const data = await res.json();
-          dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'barsData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+          res = await res.json();
+          dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'indicatorsData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
         }
-        const data = await res.json();
-        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'barsData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
-        return data;
+        res = await res.json();
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'indicatorsData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
+        return res;
       } catch (e) {
-        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'barsData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'indicatorsData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
       }
     }
 );
