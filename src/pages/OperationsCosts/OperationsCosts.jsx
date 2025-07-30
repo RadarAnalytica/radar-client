@@ -13,6 +13,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { COSTS_COLUMNS, ARTICLES_COLUMNS } from './columnsConfig';
 import ModalCreateCost from './widgets/modals/ModalCreateCost';
 import ModalCreateArticle from './widgets/modals/ModalCreateArticle';
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 
 export default function OperationsCosts() {
 	const { authToken } = useContext(AuthContext);
@@ -303,6 +304,13 @@ export default function OperationsCosts() {
 					</div>
 					<div className={styles.btns}></div>
 				</div>
+				
+				{!loading && shops && !shopStatus?.is_primary_collect && (
+						<DataCollectWarningBlock
+								title='Ваши данные еще формируются и обрабатываются.'
+						/>
+				)}
+
 				{/* {shopStatus?.is_primary_collect && ( */}
 				{!loading && <div className={styles.container}>
 					<div className={styles.tableContainer}>
