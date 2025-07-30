@@ -59,7 +59,6 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     const intervalRef = useRef(null)
     // use it to abort  uploadHandler whe unmounting
     const uploadAbortControllerRef = useRef(null);
-    console.log(fileList)
 
     // ------------- функция для начальной отправки файлов ----------//
     const uploadHandler = async () => {
