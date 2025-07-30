@@ -2,7 +2,7 @@ import { ConfigProvider, Table, Button } from 'antd';
 import { useRef, useState, useEffect, useCallback } from 'react';
 import styles from './ReportTable.module.css';
 
-export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true }) {
+export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect }) {
 	const tableContainerRef = useRef(null);
   const tableRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
@@ -16,6 +16,9 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
   }, []);
 
 	const updateHeight = useCallback(() => {
+		if (!is_primary_collect){
+			return
+		}
 		// ref контейнера который занимает всю высоту
 		const container = tableContainerRef.current;
 		const {width, height} = container.getBoundingClientRect();
@@ -31,6 +34,10 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 	useEffect(() => {
     updateHeight();
 	}, [columns, data, loading])
+
+	if (!loading && !is_primary_collect){
+		return <div></div>
+	}
 
 	return (
 		<div className={styles.container} >
