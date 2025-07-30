@@ -451,10 +451,10 @@ export default function ReportWeek() {
 				{!loading && shops && user.subscription_status === null && (
 					<NoSubscriptionWarningBlock />
 				)}
-				{!loading && shops && shopStatus && !shopStatus?.is_self_cost_set && (
+				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
-				{!loading && shops && !shopStatus?.is_primary_collect && (
+				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
 						<DataCollectWarningBlock
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>

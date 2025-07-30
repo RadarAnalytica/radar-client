@@ -39,11 +39,14 @@
 
 /* page content */
 
+.wrapper{
+  flex-grow: 1;
+}
+
 .container{
-    flex-grow: 1;
-    padding: 16px;
-    border-radius: 16px;
-    background-color: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #fff;
 }
 
 .container :global(.ant-table),

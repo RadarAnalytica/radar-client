@@ -99,12 +99,6 @@ const ProductGroupsPage = () => {
                     <Header title='Группы товаров' />
                 </div>
 
-                {!dataFetchingStatus.isLoading && shops && !shopStatus?.is_primary_collect && (
-                    <DataCollectWarningBlock
-                            title='Ваши данные еще формируются и обрабатываются.'
-                    />
-				)}
-
                 {dataFetchingStatus.isLoading &&
                     <div className={styles.page__loaderWrapper}>
                         <span className='loader'></span>
