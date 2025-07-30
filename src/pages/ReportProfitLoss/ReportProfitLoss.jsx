@@ -214,7 +214,7 @@ export default function ReportProfitLoss() {
 		} else {
 			shops.length > 0 && setLoading(false)
 		}
-	}, [monthRange]);
+	}, [monthRange, activeBrand, filters]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;
@@ -241,7 +241,7 @@ export default function ReportProfitLoss() {
 
 	useEffect(() => {
 		setMonthRange(updateSavedMonthRange())
-	}, [shopStatus, filters])
+	}, [shopStatus])
 
 	return (
 		<main className={styles.page}>
