@@ -36,7 +36,6 @@ const AbcAnalysisPage = () => {
 	const [page, setPage] = useState(1);
 	const tableContainerRef = useRef(null);
 	const tableScroll = useMemo(() => {
-		console.log(tableContainerRef.current)
 		if (!tableContainerRef.current){
 			return ({ x: '100%', y: 400 })
 		}
@@ -138,7 +137,7 @@ const AbcAnalysisPage = () => {
 			);
 			return
 		} else {
-			shops.lenght > 0 && setLoading(false);
+			shops.length > 0 && setLoading(false);
 		}
 	}, [activeBrand, viewType, days, filters, page, sorting]);
 

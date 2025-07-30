@@ -212,7 +212,7 @@ export default function ReportProfitLoss() {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportProfitLoss();
 		} else {
-			setLoading(false)
+			shops.length > 0 && setLoading(false)
 		}
 	}, [monthRange]);
 
@@ -274,24 +274,23 @@ export default function ReportProfitLoss() {
 				{!loading && shops && user.subscription_status === null && (
 					<NoSubscriptionWarningBlock />
 				)}
-				{!loading && shops && !shopStatus?.is_self_cost_set && (
+				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
-				{!loading && shops && !shopStatus?.is_primary_collect && (
+				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
 						<DataCollectWarningBlock
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
 				)}
-				{ shops && shopStatus?.is_primary_collect && 
-					<div className={styles.container}>
-						<ReportTable
-							loading={loading}
-							columns={columns}
-							data={data}
-							virtual={false}
-						></ReportTable>
-					</div>
-				}
+				<div className={styles.container}>
+					<ReportTable
+						loading={loading}
+						columns={columns}
+						data={data}
+						virtual={false}
+						is_primary_collect={shopStatus?.is_primary_collect}
+					></ReportTable>
+				</div>
 			</section>
 		</main>
 	);
