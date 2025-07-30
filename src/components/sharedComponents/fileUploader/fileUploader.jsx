@@ -59,6 +59,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
     const intervalRef = useRef(null)
     // use it to abort  uploadHandler whe unmounting
     const uploadAbortControllerRef = useRef(null);
+    console.log(fileList)
 
     // ------------- функция для начальной отправки файлов ----------//
     const uploadHandler = async () => {
@@ -305,7 +306,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         ...pending.files.map(_ =>
                         ({
                             file: {
-                                name: _
+                                name: _.filename
                             },
                             status: {
                                 isLoading: true,
@@ -318,7 +319,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         ),
                         ...processing.files.map(_ => ({
                             file: {
-                                name: _
+                                name: _.filename
                             },
                             status: {
                                 isLoading: true,
