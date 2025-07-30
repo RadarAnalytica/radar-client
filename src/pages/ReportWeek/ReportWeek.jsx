@@ -268,7 +268,7 @@ export default function ReportWeek() {
 		if (activeBrand && shopStatus?.is_primary_collect) {
 			updateDataReportWeek();
 		} else {
-			setLoading(false)
+			shops.length > 0 && setLoading(false)
 		}
 	}, [activeBrand, selectedRange, filters, weekSelected, shops, shopStatus]);
 
@@ -341,7 +341,6 @@ export default function ReportWeek() {
 			setDownloadLoading(false)
 		}
 	};
-
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
@@ -459,16 +458,17 @@ export default function ReportWeek() {
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
 				)}
-				{ shops && shopStatus?.is_primary_collect &&
+				{/* { shopStatus?.is_primary_collect && */}
 					<div className={styles.container}>
 						<ReportTable
 							virtual={false}
 							loading={loading}
 							columns={tableColumns}
 							data={tableRows}
+							is_primary_collect={shopStatus?.is_primary_collect}
 						/>
 					</div>
-				}
+				{/* } */}
 			</section>
 			{isConfigOpen && (
 				<TableSettingModal
