@@ -121,4 +121,29 @@ export const fetchSupplierAnalysisByDatesTableData = createAsyncThunk(
       }
     }
 );
+export const fetchSupplierAnalysisBrandsData = createAsyncThunk(
+    'supplierAnalysisBrandsData',
+    async (reqData, { dispatch }) => {
+      //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
+      try {
+       
+        const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-brands`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(reqData)
+        });
+        if (!res.ok) {
+          return
+          //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+        }
+        const data = await res.json();
+        //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
+        return data;
+      } catch (e) {
+        //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+      }
+    }
+);
 

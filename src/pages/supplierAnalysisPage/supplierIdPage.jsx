@@ -99,7 +99,7 @@ const SupplierIdPage = () => {
                         dataType='indicatorsData'
                         id={mainSupplierData?.supplier_id}
                     />
-                    <MainChartWidget 
+                    <MainChartWidget
                         id={mainSupplierData?.supplier_id}
                         dataType='mainChartData'
                         dataHandler={fetchSupplierAnalysisMainChartData}
@@ -117,14 +117,18 @@ const SupplierIdPage = () => {
                         dataHandler={fetchSupplierAnalysisByDatesTableData}
                     />
                 </div>
-                {/* <div className={styles.page__tableWrapper}>
+                <div className={styles.page__tableWrapper}>
                     <TableWidget
-                        tableConfig={goodsTableConfig}
+                        id={mainSupplierData?.supplier_id}
+                        //tableConfig={goodsTableConfig}
+                        tableConfig={mainTableConfig}
                         customHeader={<GoodsTableCustomHeader />}
-                        //tableData={}
                         downloadButton
+                        //dataType='byGoodsTableData'
+                        dataType='byDatesTableData'
+                        dataHandler={fetchSupplierAnalysisByDatesTableData}
                     />
-                </div> */}
+                </div>
                 {/* <div className={styles.page__tableWrapper}>
                     <TableWidget
                         tableConfig={salesTableConfig}
