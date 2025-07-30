@@ -43,7 +43,7 @@ const fetchUserData = async (token, userId, setStatus, initStatus, setData) => {
         setStatus({ ...initStatus, isError: true, message: 'Пожалуйста введите id пользователя' })
         return
     }
-   
+
     setStatus({ ...initStatus, isLoading: true })
     try {
         let res = await fetch(`${URL}/api/admin/referral-system/${userId}/bonuses`, {
@@ -102,7 +102,6 @@ const AdminReferalPage = () => {
     const location = useLocation();
     const { id } = location.state || {};
 
-
     const submitHandler = (fields) => {
         const dataObject = {
             ...fields,
@@ -144,6 +143,7 @@ const AdminReferalPage = () => {
                     setInputValue={setSearchInputValue}
                     fetchUserData={fetchUserData}
                 />
+
                 {data &&
                     <div className={styles.page__dataWrapper}>
                         <div className={styles.mainData}>
