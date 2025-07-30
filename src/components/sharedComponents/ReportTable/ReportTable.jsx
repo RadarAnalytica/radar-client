@@ -1,12 +1,10 @@
 import { ConfigProvider, Table, Button } from 'antd';
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useMemo, useCallback } from 'react';
 import styles from './ReportTable.module.css';
 
 export default function ReportTable({ loading, columns, data, rowSelection = false, virtual=true, is_primary_collect }) {
 	const tableContainerRef = useRef(null);
   const tableRef = useRef(null);
-  const [scrollY, setScrollY] = useState(0);
-  const [scrollX, setScrollX] = useState(0);
 
   const handleBodyScroll = useCallback((e) => {
 		const header = tableRef.current?.nativeElement?.querySelector('.ant-table-header');
@@ -15,33 +13,26 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
     }
   }, []);
 
-	const updateHeight = useCallback(() => {
-		if (!is_primary_collect){
-			return
+	const tableScroll = useMemo(() => {
+		if (!tableContainerRef.current){
+			return ({ x: '100%', y: 400 })
 		}
-		// ref контейнера который занимает всю высоту
 		const container = tableContainerRef.current;
 		const {width, height} = container.getBoundingClientRect();
-		// расчет высоты шапки и добавление отступов контейнера
-		// const headerHeight = container.querySelector('.ant-table-header')?.getBoundingClientRect().height || 70;
-		// расчет и сохранение высоты таблицы
-		const availableHeight = height - 75;
-		setScrollY(availableHeight);
-		// расчет ширины контейнера
-		setScrollX(width);
-	}, []);
+		// расчет высоты относительно контента, высоты фильтров и отступов
+		const availableHeight = height - 210 > 350 ? height - 70 : 400;
+		console.log(availableHeight)
+		return ({ x: width, y: availableHeight })
+	}, [loading])
 
-	useEffect(() => {
-    updateHeight();
-	}, [columns, data, loading])
 
 	if (!loading && !is_primary_collect){
 		return <div></div>
 	}
 
 	return (
-		<div className={styles.container} >
-			<div className={styles.tableContainer} ref={tableContainerRef}>
+		<div className={styles.container}  ref={tableContainerRef}>
+			<div className={styles.tableContainer}>
 				{loading && <div className={styles.loading}>
 						<span className='loader'></span>
 				</div>}
@@ -95,7 +86,7 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 							expandedRowClassName: styles.expandRow,
 							expandRowByClick: true
 						}}
-						scroll={ { x: scrollX, y: scrollY }}
+						scroll={tableScroll}
       			onScroll={handleBodyScroll}
 					></Table>
 				</ConfigProvider>
