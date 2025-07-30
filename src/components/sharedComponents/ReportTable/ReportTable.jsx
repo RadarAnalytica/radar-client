@@ -21,7 +21,6 @@ export default function ReportTable({ loading, columns, data, rowSelection = fal
 		const {width, height} = container.getBoundingClientRect();
 		// расчет высоты относительно контента, высоты фильтров и отступов
 		const availableHeight = height - 210 > 350 ? height - 70 : 400;
-		console.log(availableHeight)
 		return ({ x: width, y: availableHeight })
 	}, [loading])
 
