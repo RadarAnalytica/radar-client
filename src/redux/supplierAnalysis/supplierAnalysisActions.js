@@ -168,10 +168,7 @@ export const fetchSupplierAnalysisByBrandTableData = createAsyncThunk(
         }
         const data = await res.json();
         dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byBrandsTableData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
-        return [
-          {brand_id: 0, brand_name: 'Все бренды'},
-          ...data
-        ];
+        return data.goods
       } catch (e) {
         dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byBrandsTableData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
       }
