@@ -59,6 +59,25 @@ export const mainTableConfig = [
     { title: 'Кол-во брендов с продажами, шт', dataIndex: 'brands_with_sales_quantity', units: '₽', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
 ].map(_ => ({..._, render: cellRenderer.bind(_), sorter: undefined, sortIcon: undefined}))
 
+/**
+ * 
+ * {
+            "image_url": "https://basket-12.wbbasket.ru/vol1695/part169571/169571619/images/c246x328/1.webp",
+            "wb_id_name": "Портативные, мини вентиляторы",
+            "wb_id_url": "https://www.wildberries.ru/catalog/169571619/detail.aspx",
+            "share_percent": 0.0,
+            "wb_id": 169571619,
+            "brand_name": "Alma_unimarket",
+            "brand_url": "https://www.wildberries.ru/brands/310438460-almaunimarket",
+            "avg_price": 1799,
+            "avg_discount": 60,
+            "avg_check": 0,
+            "revenue": 0
+        }
+ */
+
+
+
 export const goodsTableConfig = [
     { title: 'Товар', dataIndex: 'good', units: null, fixed: 'left', width: 270, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},
     { title: 'Доля заказов среди выборки, %', dataIndex: 'orders_amount', units: '%', width: 180, render: cellRenderer, sorter, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} />, filterOptions: true,},

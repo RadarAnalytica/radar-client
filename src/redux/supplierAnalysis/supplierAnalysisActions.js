@@ -140,9 +140,40 @@ export const fetchSupplierAnalysisBrandsData = createAsyncThunk(
         }
         const data = await res.json();
         //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
-        return data;
+        return [
+          {brand_id: 0, brand_name: 'Все бренды'},
+          ...data
+        ];
       } catch (e) {
         //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+      }
+    }
+);
+export const fetchSupplierAnalysisByBrandTableData = createAsyncThunk(
+    'supplierAnalysisByBrandTableData',
+    async (reqData, { dispatch }) => {
+      dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byBrandsTableData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
+      try {
+       
+        const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-product`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(reqData)
+        });
+        if (!res.ok) {
+          dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byBrandsTableData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
+          return
+        }
+        const data = await res.json();
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byBrandsTableData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
+        return [
+          {brand_id: 0, brand_name: 'Все бренды'},
+          ...data
+        ];
+      } catch (e) {
+        dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byBrandsTableData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
       }
     }
 );

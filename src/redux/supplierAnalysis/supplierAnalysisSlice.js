@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData, fetchSupplierAnalysisByDatesTableData } from "./supplierAnalysisActions";
+import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData, fetchSupplierAnalysisByDatesTableData, fetchSupplierAnalysisBrandsData } from "./supplierAnalysisActions";
 
 const mockOptions = [
     { value: 'Все бренды' },
@@ -37,6 +37,13 @@ const initialState = {
         data: undefined
     },
     byDatesTableData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byBrandsTableData: {
         isLoading: false,
         isError: false,
         isSuccess: false,
@@ -97,6 +104,10 @@ const supplierAnalysisSlice = createSlice({
             })
             .addCase(fetchSupplierAnalysisByDatesTableData.fulfilled, (state, action) => {
                 state.byDatesTableData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisBrandsData.fulfilled, (state, action) => {
+                state.supplierBrands = action.payload;
+                state.supplierCurrentBrand = 0
             })
     }
 });

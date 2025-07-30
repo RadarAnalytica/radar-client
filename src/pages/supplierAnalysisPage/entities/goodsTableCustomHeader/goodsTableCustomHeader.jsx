@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styles from './goodsTableCustomHeader.module.css'
 import { Select, ConfigProvider } from 'antd';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
@@ -65,7 +66,7 @@ const GoodsTableCustomHeader = ({ id }) => {
                         </svg>
                     }
                     variant="filled"
-                    options={supplierBrands}
+                    options={supplierBrands.map(_ => ({value: _.brand_id, label: _.brand_name}))}
                     value={supplierCurrentBrand}
                     onChange={(value) => dispatch(supplierAnalysisActions.setSupplierCurrentBrand(value))}
                 />

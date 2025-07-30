@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice'
 import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByColorsTableConfig } from './shared'
 import { GoodsTableCustomHeader, OrdersTableCustomHeader, StockChartCustomHeader } from './entities'
-import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData, fetchSupplierAnalysisByDatesTableData } from '../../redux/supplierAnalysis/supplierAnalysisActions'
+import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData, fetchSupplierAnalysisByDatesTableData, fetchSupplierAnalysisByBrandTableData } from '../../redux/supplierAnalysis/supplierAnalysisActions'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
 import { ServiceFunctions } from '../../service/serviceFunctions'
 import { actions as supplierActions } from '../../redux/supplierAnalysis/supplierAnalysisSlice'
@@ -120,13 +120,11 @@ const SupplierIdPage = () => {
                 <div className={styles.page__tableWrapper}>
                     <TableWidget
                         id={mainSupplierData?.supplier_id}
-                        //tableConfig={goodsTableConfig}
-                        tableConfig={mainTableConfig}
-                        customHeader={<GoodsTableCustomHeader />}
+                        tableConfig={goodsTableConfig}
+                        customHeader={<GoodsTableCustomHeader id={mainSupplierData?.supplier_id} />}
                         downloadButton
-                        //dataType='byGoodsTableData'
-                        dataType='byDatesTableData'
-                        dataHandler={fetchSupplierAnalysisByDatesTableData}
+                        dataType='byBrandsTableData'
+                        dataHandler={fetchSupplierAnalysisByBrandTableData}
                     />
                 </div>
                 {/* <div className={styles.page__tableWrapper}>
