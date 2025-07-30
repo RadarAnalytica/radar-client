@@ -4,139 +4,139 @@ import { store } from '../redux/store'
 import moment from 'moment';
 
 export const getRequestObject = (filters, selectedRange, shopId) => {
-  let requestObject = {
-    articles: null,
-    product_groups: null,
-    brands: null,
-    shop: shopId,
-    period: selectedRange?.period && selectedRange.period,
-    date_from: selectedRange?.from && selectedRange.from,
-    date_to: selectedRange?.to && selectedRange.to
-  }
+	let requestObject = {
+		articles: null,
+		product_groups: null,
+		brands: null,
+		shop: shopId,
+		period: selectedRange?.period && selectedRange.period,
+		date_from: selectedRange?.from && selectedRange.from,
+		date_to: selectedRange?.to && selectedRange.to
+	}
 
-  if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
-    requestObject.brands = filters.activeBrandName.map(_ => _.name)
-  }
-  // filters?.activeArticle.value !== 'Все'
-  if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
-    requestObject.articles = filters.activeArticle.map(_ => _.value)
-  }
-  if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
-    requestObject.product_groups = filters.activeGroup.map(_ => _.id)
-  }
-  return requestObject;
+	if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
+		requestObject.brands = filters.activeBrandName.map(_ => _.name)
+	}
+	// filters?.activeArticle.value !== 'Все'
+	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
+		requestObject.articles = filters.activeArticle.map(_ => _.value)
+	}
+	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
+		requestObject.product_groups = filters.activeGroup.map(_ => _.id)
+	}
+	return requestObject;
 }
 
 export const ServiceFunctions = {
-  register: async (object) => {
-    try {
-      if (object.password === null || object.password.length < 6) {
-        return {
-          success: false,
-          message: 'Пароль должен быть не короче 6 символов'
-        }
-      }
-      const res = await fetch(`${URL}/api/user/signup`, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(object),
-      });
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      alert(error);
-    }
-  },
+	register: async (object) => {
+		try {
+			if (object.password === null || object.password.length < 6) {
+				return {
+					success: false,
+					message: 'Пароль должен быть не короче 6 символов'
+				}
+			}
+			const res = await fetch(`${URL}/api/user/signup`, {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+				},
+				body: JSON.stringify(object),
+			});
+			const data = await res.json();
+			return data;
+		} catch (error) {
+			alert(error);
+		}
+	},
 
-  updateToken: async (brand_name, token, authToken) => {
-    const res = await fetch(`${URL}/api/shop/`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        authorization: 'JWT ' + authToken,
-      },
-      body: JSON.stringify({ brand_name, token, is_active: true }),
-    });
-    const data = await res.json();
-    return data;
-  },
+	updateToken: async (brand_name, token, authToken) => {
+		const res = await fetch(`${URL}/api/shop/`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+			body: JSON.stringify({ brand_name, token, is_active: true }),
+		});
+		const data = await res.json();
+		return data;
+	},
 
-  refreshUser: async (authToken) => {
-    const res = await fetch(`${URL}/api/user/refresh`, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        authorization: 'JWT ' + authToken,
-      },
-    });
-    const data = await res.json();
-    return data;
-  },
+	refreshUser: async (authToken) => {
+		const res = await fetch(`${URL}/api/user/refresh`, {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + authToken,
+			},
+		});
+		const data = await res.json();
+		return data;
+	},
 
-  // getDataCollection: async (id, days, brandName) => {
-  //   const res = await fetch(
-  //     `${URL}/api/data-collection/${id}?days=${days}&brandName=${brandName}`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "content-type": "application/json",
-  //       },
-  //     }
-  //   );
+	// getDataCollection: async (id, days, brandName) => {
+	//   const res = await fetch(
+	//     `${URL}/api/data-collection/${id}?days=${days}&brandName=${brandName}`,
+	//     {
+	//       method: "GET",
+	//       headers: {
+	//         "content-type": "application/json",
+	//       },
+	//     }
+	//   );
 
-  //   const data = await res.json();
-  //   return data;
-  // },
+	//   const data = await res.json();
+	//   return data;
+	// },
 
-  // getFilteredCollection: async (id, days, brandName) => {
-  //   const res = await fetch(
-  //     `${URL}/api/data-collection/filtered/${id}?days=${days}&brandName=${brandName}`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "content-type": "application/json",
-  //       },
-  //     }
-  //   );
+	// getFilteredCollection: async (id, days, brandName) => {
+	//   const res = await fetch(
+	//     `${URL}/api/data-collection/filtered/${id}?days=${days}&brandName=${brandName}`,
+	//     {
+	//       method: "GET",
+	//       headers: {
+	//         "content-type": "application/json",
+	//       },
+	//     }
+	//   );
 
-  //   const data = await res.json();
-  //   return data;
-  // },
+	//   const data = await res.json();
+	//   return data;
+	// },
 
-  // getBrandNames: async (token) => {
-  //   const res = await fetch('https://radar-analytica.ru/api/shop/all', {
-  //     method: "GET",
-  //     headers: {
-  //       "content-type": "application/json",
-  //       "authorization": "JWT " + token,
-  //     },
-  //   });
+	// getBrandNames: async (token) => {
+	//   const res = await fetch('https://radar-analytica.ru/api/shop/all', {
+	//     method: "GET",
+	//     headers: {
+	//       "content-type": "application/json",
+	//       "authorization": "JWT " + token,
+	//     },
+	//   });
 
-  //   const data = await res.json();
-  //   return data;
-  // },
+	//   const data = await res.json();
+	//   return data;
+	// },
 
-  // getBrandNames: async (id) => {
-  //     const res = await fetch(`${URL}/api/data-collection/names/${id}`, {
-  //         method: 'GET',
-  //         headers: {
-  //             'content-type': 'application/json'
-  //         },
-  //     })
+	// getBrandNames: async (id) => {
+	//     const res = await fetch(`${URL}/api/data-collection/names/${id}`, {
+	//         method: 'GET',
+	//         headers: {
+	//             'content-type': 'application/json'
+	//         },
+	//     })
 
-  //     const data = await res.json()
-  //     return data
-  // },
+	//     const data = await res.json()
+	//     return data
+	// },
 
-  // getOrders: async (id, brandName) => {
-  //   const res = await fetch(`${URL}/api/orders/${id}?brandName=${brandName}`, {
-  //     method: "GET",
-  //     headers: {
-  //       "content-type": "application/json",
-  //     },
-  //   });
+	// getOrders: async (id, brandName) => {
+	//   const res = await fetch(`${URL}/api/orders/${id}?brandName=${brandName}`, {
+	//     method: "GET",
+	//     headers: {
+	//       "content-type": "application/json",
+	//     },
+	//   });
 
 	//   const data = await res.json();
 	//   return data;
@@ -189,18 +189,18 @@ export const ServiceFunctions = {
 	getDashBoard: async (token, selectedRange, idShop, filters) => {
 
 		//let rangeParams = rangeApiFormat(selectedRange);
-    const body = getRequestObject(filters, selectedRange, idShop)
-    const res = await fetch(
-      `${URL}/api/dashboard/`,
-      {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-				authorization: 'JWT ' + token,
-			},
-        body: JSON.stringify(body)
-      }
-    );
+		const body = getRequestObject(filters, selectedRange, idShop)
+		const res = await fetch(
+			`${URL}/api/dashboard/`,
+			{
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(body)
+			}
+		);
 
 		if (res.status === 400) {
 			localStorage.removeItem('activeShop');
@@ -212,41 +212,41 @@ export const ServiceFunctions = {
 		return data;
 	},
 	getSelfCostData: async (token, idShop, filters) => {
-    const body = getRequestObject(filters, undefined, idShop)
-    const res = await fetch(
-      `${URL}/api/product/self-costs/list`,
-      {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-				authorization: 'JWT ' + token,
-			},
-        body: JSON.stringify(body)
-      }
-    );
+		const body = getRequestObject(filters, undefined, idShop)
+		const res = await fetch(
+			`${URL}/api/product/self-costs/list`,
+			{
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(body)
+			}
+		);
 		return res;
 	},
 
 	getDashboardTurnoverData: async (token, selectedRange, idShop, filters) => {
 		let rangeParams = rangeApiFormat(selectedRange);
-    const body = getRequestObject(filters, selectedRange, idShop)
+		const body = getRequestObject(filters, selectedRange, idShop)
 		try {
 			const res = await fetch(`${URL}/api/dashboard/turnover`, {
 				method: 'POST',
 				headers: {
 					'content-type': 'application/json',
-          'authorization': 'JWT ' + token,
+					'authorization': 'JWT ' + token,
 				},
-        body: JSON.stringify(body)
-      })
+				body: JSON.stringify(body)
+			})
 
 			if (!res.ok) {
-        const parsed = await res.json()
+				const parsed = await res.json()
 				localStorage.removeItem('activeShop');
 				throw new Error(parsed.detail || 'Invalid shop data');
 			}
-      const parsed = await res.json()
-      return parsed.items
+			const parsed = await res.json()
+			return parsed.items
 
 		} catch {
 			throw new Error('Something went wrong');
@@ -255,13 +255,13 @@ export const ServiceFunctions = {
 
 	getDownloadDashBoard: async (token, selectedRange, shop) => {
 		let rangeParams = rangeApiFormat(selectedRange);
-    const res = await fetch(`${URL}/api/dashboard/download?${rangeParams}&shop=${shop}`, {
-				method: 'GET',
-				headers: {
-					authorization: 'JWT ' + token,
-				},
-    });
-    const data = await res.blob()
+		const res = await fetch(`${URL}/api/dashboard/download?${rangeParams}&shop=${shop}`, {
+			method: 'GET',
+			headers: {
+				authorization: 'JWT ' + token,
+			},
+		});
+		const data = await res.blob()
 		return data;
 	},
 
@@ -279,14 +279,14 @@ export const ServiceFunctions = {
 
 	getGeographyData: async (token, selectedRange, idShop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
-    const body = getRequestObject(filters, selectedRange, idShop)
+		const body = getRequestObject(filters, selectedRange, idShop)
 		const res = await fetch(`${URL}/api/geo/`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
 				authorization: 'JWT ' + token,
 			},
-      body: JSON.stringify(body)
+			body: JSON.stringify(body)
 		});
 		const data = await res.json();
 		return data;
@@ -294,19 +294,19 @@ export const ServiceFunctions = {
 
 	getAbcData: async (viewType, token, selectedRange, idShop, filters, page, sorting) => {
 		//let rangeParams = rangeApiFormat(day);
-    const body = getRequestObject(filters, selectedRange, idShop)
-    const res = await fetch(
-      `${URL}/api/abc_data/${viewType}?page=${page}&per_page=100&sorting=${sorting}`,
-      {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-				authorization: 'JWT ' + token,
-			},
-        body: JSON.stringify(body)
-      }
-    );
-		if (res.status !== 200){
+		const body = getRequestObject(filters, selectedRange, idShop)
+		const res = await fetch(
+			`${URL}/api/abc_data/${viewType}?page=${page}&per_page=100&sorting=${sorting}`,
+			{
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(body)
+			}
+		);
+		if (res.status !== 200) {
 			throw new Error(`Ошибка запроса: ${res.status}`);
 		}
 		const data = await res.json();
@@ -359,32 +359,32 @@ export const ServiceFunctions = {
 		shortDescription,
 		keywords
 	) => {
-    const res = await fetch(`${URL}/api/description-generator/v2/generate`, {
-				method: 'POST',
-				headers: {
-					'content-type': 'application/json',
-					authorization: 'JWT ' + token,
-				},
+		const res = await fetch(`${URL}/api/description-generator/v2/generate`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
 
-				body: JSON.stringify({
-					product_title: productTitle,
-					short_description: shortDescription,
-					keywords: keywords,
-				}),
-    });
+			body: JSON.stringify({
+				product_title: productTitle,
+				short_description: shortDescription,
+				keywords: keywords,
+			}),
+		});
 		// const data = await res.json();
 		// return data;
 		return res
 	},
 
 	getUserGenerationsData: async (token, id) => {
-    const res = await fetch(`${URL}/api/description-generator/v2?id=${id}`, {
-				method: 'GET',
-				headers: {
-					'content-type': 'application/json',
-					authorization: 'JWT ' + token,
-				},
-    });
+		const res = await fetch(`${URL}/api/description-generator/v2?id=${id}`, {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				authorization: 'JWT ' + token,
+			},
+		});
 		const data = await res.json();
 		return data;
 	},
@@ -499,14 +499,14 @@ export const ServiceFunctions = {
 
 	getAnalysisData: async (token, selectedRange, shop, filters) => {
 		//let rangeParams = rangeApiFormat(selectedRange);
-    const body = getRequestObject(filters, selectedRange, shop)
+		const body = getRequestObject(filters, selectedRange, shop)
 		const res = await fetch(`${URL}/api/prod_analytic/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: 'JWT ' + token,
 			},
-      body: JSON.stringify(body)
+			body: JSON.stringify(body)
 		});
 		const data = await res.json();
 		return data;
@@ -514,17 +514,17 @@ export const ServiceFunctions = {
 
 	getProdAnalyticXlsx: async (token, selectedRange, shop, filters) => {
 		let rangeParams = rangeApiFormat(selectedRange);
-    const body = getRequestObject(filters, selectedRange, shop)
+		const body = getRequestObject(filters, selectedRange, shop)
 		const res = await fetch(`${URL}/api/prod_analytic/download`, {
 			method: 'POST',
 			headers: {
-        'authorization': 'JWT ' + token,
-        'content-type': 'application/json'
+				'authorization': 'JWT ' + token,
+				'content-type': 'application/json'
 			},
 			body: JSON.stringify(body),
 		});
 
-    const data = await res.blob()
+		const data = await res.blob()
 		return data;
 	},
 
@@ -534,11 +534,11 @@ export const ServiceFunctions = {
 		const res = await fetch(
 			`${URL}/api/dashboard/hourly?shops=${shop}&${rangeParams}`,
 			{
-        method: "GET",
+				method: "GET",
 				headers: {
-          'cache': 'no-store',
-          "content-type": "application/json",
-          authorization: "JWT " + token,
+					'cache': 'no-store',
+					"content-type": "application/json",
+					authorization: "JWT " + token,
 				},
 			}
 		);
@@ -647,65 +647,65 @@ export const ServiceFunctions = {
 	},
 
 	scheduleFilterChartData: async (token) => {
-    const storeFilterData = store.getState().chartsFiltersSlice.chartsFilters
+		const storeFilterData = store.getState().chartsFiltersSlice.chartsFilters
 
 		if (Object.keys(storeFilterData).length === 0) {
-      return {}
+			return {}
 		}
 
-    const brandFilterData = storeFilterData.brand
-    const wbIdFilterData = storeFilterData.wbId
-    const groupFilterData = storeFilterData.group
-    const yearFilterData = storeFilterData.year
-    const monthFilterData = storeFilterData.month
-    const weekFilterData = storeFilterData.week
+		const brandFilterData = storeFilterData.brand
+		const wbIdFilterData = storeFilterData.wbId
+		const groupFilterData = storeFilterData.group
+		const yearFilterData = storeFilterData.year
+		const monthFilterData = storeFilterData.month
+		const weekFilterData = storeFilterData.week
 
-    const groupFilter = []
-    const brandFilter = []
-    const wbIdFilter = []
-    const yearFilter = []
-    const monthFilter = []
-    const weekFilter = []
+		const groupFilter = []
+		const brandFilter = []
+		const wbIdFilter = []
+		const yearFilter = []
+		const monthFilter = []
+		const weekFilter = []
 
 		if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
 			for (let _key of Object.keys(groupFilterData)) {
 				if (!!groupFilterData[_key]) {
-          groupFilter.push(_key)
+					groupFilter.push(_key)
 				}
 			}
 		}
 		if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
 			for (let _key of Object.keys(brandFilterData)) {
 				if (!!brandFilterData[_key]) {
-          brandFilter.push(_key)
+					brandFilter.push(_key)
 				}
 			}
 		}
 		if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
 			for (let _key of Object.keys(wbIdFilterData)) {
 				if (!!wbIdFilterData[_key]) {
-          wbIdFilter.push(_key)
+					wbIdFilter.push(_key)
 				}
 			}
 		}
 		if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
 			for (let _key of Object.keys(yearFilterData)) {
 				if (!!yearFilterData[_key]) {
-          yearFilter.push(_key)
+					yearFilter.push(_key)
 				}
 			}
 		}
 		if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
 			for (let _key of Object.keys(monthFilterData)) {
 				if (!!monthFilterData[_key]) {
-          monthFilter.push(_key)
+					monthFilter.push(_key)
 				}
 			}
 		}
 		if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
 			for (let _key of Object.keys(weekFilterData)) {
 				if (!!weekFilterData[_key]) {
-          weekFilter.push(_key)
+					weekFilter.push(_key)
 				}
 			}
 		}
@@ -719,7 +719,7 @@ export const ServiceFunctions = {
 				months: monthFilter,
 				weekdays: weekFilter,
 			},
-    }
+		}
 
 		const response = await fetch(`${URL}/api/report/get-charts`, {
 			method: 'POST',
@@ -736,7 +736,35 @@ export const ServiceFunctions = {
 
 		const data = await response.json();
 
-    return { data, filter }
+		return { data, filter }
+	},
+
+	getTrendingRequestExelFile: async (body, url, setStatus) => {
+		const initStatus = {
+			isLoading: false,
+			isError: false,
+			message: ''
+		}
+		setStatus({...initStatus, isLoading: true})
+		try {
+			let res = await fetch(`https://radarmarket.ru${url}`, {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			})
+			if (!res.ok) {
+				setStatus({...initStatus, isError: true, message: 'Не удалось скачать файл1'})
+				return
+			} else {
+				res = await res.blob()
+				return res
+			}
+			
+		} catch {
+			setStatus({...initStatus, isError: true, message: 'Не удалось скачать файл2'})
+		}
 	},
 
 	getMonthProductFilters: async (token) => {
@@ -865,21 +893,21 @@ export const ServiceFunctions = {
 				authorization: 'JWT ' + token,
 			},
 		});
-    const data = await res.json()
-    data.updated_at = data.updated_at === '' ? null : `Последняя загрузка ${formatFromIsoDate(data.updated_at)}г.`
+		const data = await res.json()
+		data.updated_at = data.updated_at === '' ? null : `Последняя загрузка ${formatFromIsoDate(data.updated_at)}г.`
 
-    return data;
-  },
+		return data;
+	},
 
-  getCostTemplate: async (token) => {
-    const res = await fetch(`${URL}/api/report/cost/get-template`, {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        authorization: 'JWT ' + token,
-      },
-    });
-    const data = await res.blob()
+	getCostTemplate: async (token) => {
+		const res = await fetch(`${URL}/api/report/cost/get-template`, {
+			method: 'GET',
+			headers: {
+				accept: 'application/json',
+				authorization: 'JWT ' + token,
+			},
+		});
+		const data = await res.blob()
 		return data;
 	},
 
@@ -899,7 +927,7 @@ export const ServiceFunctions = {
 			if (response.ok) {
 				return await response.json();
 			} else {
-        console.error('Ошибка при загрузке файла:', response.statusText);
+				console.error('Ошибка при загрузке файла:', response.statusText);
 				throw new Error(response.statusText);
 			}
 
@@ -926,73 +954,73 @@ export const ServiceFunctions = {
 	},
 
 	postAbcReportsData: async (token) => {
-    const storeFilterData = store.getState().abcFiltersSlice.abcFilters
+		const storeFilterData = store.getState().abcFiltersSlice.abcFilters
 
 		if (Object.keys(storeFilterData).length === 0) {
-      return []
+			return []
 		}
-    const brandFilterData = storeFilterData.brand
-    const wbIdFilterData = storeFilterData.wbId
-    const groupFilterData = storeFilterData.group
-    const productFilterData = storeFilterData.product
-    const yearFilterData = storeFilterData.year
-    const monthFilterData = storeFilterData.month
-    const weekFilterData = storeFilterData.week
+		const brandFilterData = storeFilterData.brand
+		const wbIdFilterData = storeFilterData.wbId
+		const groupFilterData = storeFilterData.group
+		const productFilterData = storeFilterData.product
+		const yearFilterData = storeFilterData.year
+		const monthFilterData = storeFilterData.month
+		const weekFilterData = storeFilterData.week
 
-    const productFilter = []
-    const groupFilter = []
-    const brandFilter = []
-    const wbIdFilter = []
-    const yearFilter = []
-    const monthFilter = []
-    const weekFilter = []
+		const productFilter = []
+		const groupFilter = []
+		const brandFilter = []
+		const wbIdFilter = []
+		const yearFilter = []
+		const monthFilter = []
+		const weekFilter = []
 
 		if (!!productFilterData && Object.keys(productFilterData).length > 0) {
 			for (let _key of Object.keys(productFilterData)) {
 				if (!!productFilterData[_key]) {
-          productFilter.push(_key)
+					productFilter.push(_key)
 				}
 			}
 		}
 		if (!!groupFilterData && Object.keys(groupFilterData).length > 0) {
 			for (let _key of Object.keys(groupFilterData)) {
 				if (!!groupFilterData[_key]) {
-          groupFilter.push(_key)
+					groupFilter.push(_key)
 				}
 			}
 		}
 		if (!!brandFilterData && Object.keys(brandFilterData).length > 0) {
 			for (let _key of Object.keys(brandFilterData)) {
 				if (!!brandFilterData[_key]) {
-          brandFilter.push(_key)
+					brandFilter.push(_key)
 				}
 			}
 		}
 		if (!!wbIdFilterData && Object.keys(wbIdFilterData).length > 0) {
 			for (let _key of Object.keys(wbIdFilterData)) {
 				if (!!wbIdFilterData[_key]) {
-          wbIdFilter.push(_key)
+					wbIdFilter.push(_key)
 				}
 			}
 		}
 		if (!!yearFilterData && Object.keys(yearFilterData).length > 0) {
 			for (let _key of Object.keys(yearFilterData)) {
 				if (!!yearFilterData[_key]) {
-          yearFilter.push(_key)
+					yearFilter.push(_key)
 				}
 			}
 		}
 		if (!!monthFilterData && Object.keys(monthFilterData).length > 0) {
 			for (let _key of Object.keys(monthFilterData)) {
 				if (!!monthFilterData[_key]) {
-          monthFilter.push(_key)
+					monthFilter.push(_key)
 				}
 			}
 		}
 		if (!!weekFilterData && Object.keys(weekFilterData).length > 0) {
 			for (let _key of Object.keys(weekFilterData)) {
 				if (!!weekFilterData[_key]) {
-          weekFilter.push(_key)
+					weekFilter.push(_key)
 				}
 			}
 		}
@@ -1004,8 +1032,8 @@ export const ServiceFunctions = {
 			month_filter_list: monthFilter,
 			product_filter_list: productFilter,
 			year_filter_list: yearFilter,
-      week_filter_list: weekFilter
-    }
+			week_filter_list: weekFilter
+		}
 
 		const response = await fetch(`${URL}/api/report/abc/data`, {
 			method: 'POST',
@@ -1024,15 +1052,15 @@ export const ServiceFunctions = {
 	},
 
 	postExternalExpensesUpdate: async (token, payload) => {
-    const response = await fetch(`${URL}/api/report/external-expenses/update`, {
-				method: 'POST',
-				headers: {
-					accept: 'application/json',
-					Authorization: token,
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(payload),
-    });
+		const response = await fetch(`${URL}/api/report/external-expenses/update`, {
+			method: 'POST',
+			headers: {
+				accept: 'application/json',
+				Authorization: token,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(payload),
+		});
 		return await response.json();
 	},
 
@@ -1044,7 +1072,7 @@ export const ServiceFunctions = {
 				authorization: 'JWT ' + token,
 			},
 		});
-    const data = await res.json()
+		const data = await res.json()
 
 		return data.status;
 	},
@@ -1057,7 +1085,7 @@ export const ServiceFunctions = {
 				Authorization: token,
 			},
 		});
-    const data = await res.blob()
+		const data = await res.blob()
 		return data;
 	},
 
@@ -1067,14 +1095,14 @@ export const ServiceFunctions = {
 		formData.append('file', file);
 
 		try {
-      const response = await fetch(`${URL}/api/report/self-buyout/update`, {
-					method: 'POST',
-					headers: {
-						Authorization: token,
-						// Authorization: 'JWT ' + token,
-					},
-					body: formData,
-      });
+			const response = await fetch(`${URL}/api/report/self-buyout/update`, {
+				method: 'POST',
+				headers: {
+					Authorization: token,
+					// Authorization: 'JWT ' + token,
+				},
+				body: formData,
+			});
 			return response;
 			// if (response.ok) {
 			//   return await response.json();
@@ -1091,13 +1119,13 @@ export const ServiceFunctions = {
 	},
 
 	getPenaltiesFilters: async (token) => {
-    const response = await fetch(`${URL}/api/report/get-penalties-filters`, {
-				method: 'GET',
-				headers: {
-					accept: 'application/json',
-					Authorization: token,
-				},
-    });
+		const response = await fetch(`${URL}/api/report/get-penalties-filters`, {
+			method: 'GET',
+			headers: {
+				accept: 'application/json',
+				Authorization: token,
+			},
+		});
 
 		if (!response.ok) {
 			throw new Error('Failed to fetch penalties filters');
@@ -1139,9 +1167,9 @@ export const ServiceFunctions = {
 				headers: {
 					accept: 'application/json',
 					'Content-Type': 'application/json',
-          'Authorization': token // Исправлено
+					'Authorization': token // Исправлено
 				},
-        body: JSON.stringify({ tax_rate: taxRate, tax_type: taxType })
+				body: JSON.stringify({ tax_rate: taxRate, tax_type: taxType })
 			});
 
 			if (!response.ok) {
@@ -1159,10 +1187,10 @@ export const ServiceFunctions = {
 			let tableData = new Array(10).fill(0).map((el, i) => {
 				let res = { key: i };
 				for (const col of COLUMNS) {
-          res[col.dataIndex] = Math.ceil((Math.random() * 10) + i);
+					res[col.dataIndex] = Math.ceil((Math.random() * 10) + i);
 				}
-        return res
-      })
+				return res
+			})
 
 			return tableData;
 
@@ -1177,82 +1205,82 @@ export const ServiceFunctions = {
 	},
 
 	getReportWeek: async (token, selectedRange, shopId, filters, weekStart) => {
-    const body = getRequestObject(filters, selectedRange, shopId)
-    body.week_starts = weekStart
+		const body = getRequestObject(filters, selectedRange, shopId)
+		body.week_starts = weekStart
 
-    const res = await fetch(
-      `${URL}/api/periodic_reports/weekly_report`,
-      {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-				authorization: 'JWT ' + token,
-			},
-        body: JSON.stringify(body)
-      }
-    );
+		const res = await fetch(
+			`${URL}/api/periodic_reports/weekly_report`,
+			{
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(body)
+			}
+		);
 
 		const data = await res.json();
 
 		return data;
 	},
 
-  getDownloadReportWeek: async (token, selectedRange, shopId, filters, weekStart) => {
-    const body = getRequestObject(filters, selectedRange, shopId)
+	getDownloadReportWeek: async (token, selectedRange, shopId, filters, weekStart) => {
+		const body = getRequestObject(filters, selectedRange, shopId)
 
-    body.week_starts = weekStart
+		body.week_starts = weekStart
 
-    const res = await fetch(
-      `${URL}/api/periodic_reports/weekly_report/download`,
-      {
-        method: 'POST',
-        headers: {
-          authorization: 'JWT ' + token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body)
-      }
-    );
+		const res = await fetch(
+			`${URL}/api/periodic_reports/weekly_report/download`,
+			{
+				method: 'POST',
+				headers: {
+					authorization: 'JWT ' + token,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body)
+			}
+		);
 
-    const data = await res.blob()
-    return data;
-  },
+		const data = await res.blob()
+		return data;
+	},
 
 
-  getMonitoringChartData: async (periodState, query, setChartData, setRequestStatus, chartDataNormalizer) => {
-    setRequestStatus({isLoading: true, isError: false, isSuccess: false, message: ''})
-    const period = periodState === 'По дням' ? 'day' : 'month';
-    try {
-      let res = await fetch(`https://radarmarket.ru/api/analytic/query-dynamics/${period}?query_string=${query}`,
-        {
-          headers: {
-            'content-type': 'application/json',
-            'cache-control': 'public, must-revalidate, max-age=86400'
-          },
-        }
-      );
-      if (!res.ok) {
-        res = await res.json()
-        setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: res.detail || 'Не удалось загрузить данные'})
-        return
-      }
-      setRequestStatus({isLoading: false, isError: false, isSuccess: true, message: ''})
-      res = await res.json()
-      const normalizedData = chartDataNormalizer(res[query], period)
-      setChartData(normalizedData)
-      return res;
-    } catch {
-      setRequestStatus({isLoading: false, isError: true, isSuccess: false, message: 'Не удалось загрузить данные'})
-    }
-  },
+	getMonitoringChartData: async (periodState, query, setChartData, setRequestStatus, chartDataNormalizer) => {
+		setRequestStatus({ isLoading: true, isError: false, isSuccess: false, message: '' })
+		const period = periodState === 'По дням' ? 'day' : 'month';
+		try {
+			let res = await fetch(`https://radarmarket.ru/api/analytic/query-dynamics/${period}?query_string=${query}`,
+				{
+					headers: {
+						'content-type': 'application/json',
+						'cache-control': 'public, must-revalidate, max-age=86400'
+					},
+				}
+			);
+			if (!res.ok) {
+				res = await res.json()
+				setRequestStatus({ isLoading: false, isError: true, isSuccess: false, message: res.detail || 'Не удалось загрузить данные' })
+				return
+			}
+			setRequestStatus({ isLoading: false, isError: false, isSuccess: true, message: '' })
+			res = await res.json()
+			const normalizedData = chartDataNormalizer(res[query], period)
+			setChartData(normalizedData)
+			return res;
+		} catch {
+			setRequestStatus({ isLoading: false, isError: true, isSuccess: false, message: 'Не удалось загрузить данные' })
+		}
+	},
 
 	getTrendAnalysisQuery: async (
 		query,
 		timeFrame,
 		selectedRange,
 	) => {
-		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}?query_string=${encodeURIComponent( query )}`;
-		if (timeFrame == 'day'){
+		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}?query_string=${encodeURIComponent(query)}`;
+		if (timeFrame == 'day') {
 			url += '&' + rangeApiFormat(selectedRange)
 		}
 		const res = await fetch(
@@ -1275,43 +1303,118 @@ export const ServiceFunctions = {
 		timeFrame,
 		selectedRange
 	) => {
-		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}/download?query_string=${encodeURIComponent( query )}`;
-		if (timeFrame == 'day'){
+		let url = `https://radarmarket.ru/api/analytic/query-dynamics/${timeFrame}/download?query_string=${encodeURIComponent(query)}`;
+		if (timeFrame == 'day') {
 			url += '&' + rangeApiFormat(selectedRange)
 		}
 		const res = await fetch(
 			url,
-      {
-        method: 'GET',
-        headers: {
+			{
+				method: 'GET',
+				headers: {
 					'content-type': 'application/json',
-        },
-      }
-    );
+				},
+			}
+		);
 
-    const data = await res.blob()
-    return data;
+		const data = await res.blob()
+		return data;
 	},
 	getReportProfitLoss: async (token, selectedRange, shopId, filters, monthRange) => {
-    const body = getRequestObject(filters, selectedRange, shopId);
+		const body = getRequestObject(filters, selectedRange, shopId);
 		body.month_from = monthRange?.month_from || null;
 		body.month_to = monthRange?.month_to || null;
 
-    const res = await fetch(
-      `${URL}/api/profit_loss/report`,
-      {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-				authorization: 'JWT ' + token,
-			},
-        body: JSON.stringify(body)
-      }
-    );
+		const res = await fetch(
+			`${URL}/api/profit_loss/report`,
+			{
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					authorization: 'JWT ' + token,
+				},
+				body: JSON.stringify(body)
+			}
+		);
 
 		const data = await res.json();
 
 		return data;
+	},
+	getReferalData: async(token, page) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/referral_system?page=${page}&per_page=25`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ощибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('getReferalData ', error);
+			throw new Error(error);
+		}
+
+	},
+	getWithdrawalRequest: async(token) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/user/withdrawal_request`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ощибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('getWithdrawalRequest ', error);
+			throw new Error(error);
+		}
+
+	},
+	getSupplierAnalysisSuggestData: async (query, setIsLoading) => {
+		setIsLoading(true)
+		try {
+			let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/search?query=${query}`, {
+				headers: {
+					'content-type': 'application/json',
+				}
+			})
+
+			if (!res.ok && res.status === 404) {
+				setIsLoading(false);
+				return []
+			}
+			if (!res.ok && res.status !== 404) {
+				setIsLoading(false);
+				return []
+			}
+
+			res = await res.json()
+			setIsLoading(false);
+			return res
+		} catch {
+			setIsLoading(false);
+		}
 	}
 };
 

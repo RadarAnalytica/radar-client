@@ -39,11 +39,14 @@
 
 /* page content */
 
+.wrapper{
+  flex-grow: 1;
+}
+
 .container{
-    flex-grow: 1;
-    padding: 16px;
-    border-radius: 16px;
-    background-color: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #fff;
 }
 
 .container :global(.ant-table),
@@ -81,7 +84,14 @@
   height: 70px;
 }
 
-.loading{
+.view {
+  margin-bottom: 20px;
+  padding: 0 16px;
+  color: grey;
+  font-size: 1rem;
+}
+
+.loading {
     height: 100%;
     min-height: 300px;
     display: flex;
@@ -100,12 +110,15 @@
     border-radius: 8px;
     background: silver;
 }
+
 .category__icon_green {
     background: #DBF7E9;
 }
+
 .category__icon_yellow {
     background: #FCEFCC;
 }
+
 .category__icon_red {
     background: #FEDACC;
 }

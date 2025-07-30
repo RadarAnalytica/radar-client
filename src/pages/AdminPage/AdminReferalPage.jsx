@@ -22,34 +22,6 @@ const initStatus = {
     message: ''
 }
 
-const mockData = {
-    "id": 1,
-    "referral_link": "https://radar-analytica.ru/asdfhgiu230sadfuyhahncapsdef23",
-    "referral_count": 10,
-    "bonus_balance": 1000,
-    "transactions": {
-        "page": 1,
-        "per_page": 10,
-        "total": 100,
-        "transactions_data": [
-            {
-                "date": "2023-01-01",
-                "transactions_history": [
-                    {
-                        "id": 1,
-                        "referral_id": 1,
-                        "bonus_amount": 100,
-                        "transaction_date": "2023-01-01 12:00:00",
-                        "admin_id": 1,
-                        "transaction_type": "поступление от рефералов",
-                        "transaction_direction": "начисление"
-                    }
-                ]
-            }
-        ]
-    }
-}
-
 const HISTORY_COLUMNS = [
     { title: 'Дата', dataIndex: 'transaction_date', width: 100 },
     { title: 'ID реферала', dataIndex: 'referral_id', width: 100 },
@@ -71,6 +43,7 @@ const fetchUserData = async (token, userId, setStatus, initStatus, setData) => {
         setStatus({ ...initStatus, isError: true, message: 'Пожалуйста введите id пользователя' })
         return
     }
+
     setStatus({ ...initStatus, isLoading: true })
     try {
         let res = await fetch(`${URL}/api/admin/referral-system/${userId}/bonuses`, {
@@ -128,8 +101,6 @@ const AdminReferalPage = () => {
     const [form] = Form.useForm()
     const location = useLocation();
     const { id } = location.state || {};
-    console.log(id)
-
 
     const submitHandler = (fields) => {
         const dataObject = {

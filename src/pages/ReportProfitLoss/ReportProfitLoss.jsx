@@ -16,9 +16,9 @@ import { COLUMNS, ROWS } from './config';
 import { useAppSelector } from '../../redux/hooks';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-
+import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 export default function ReportProfitLoss() {
-	const { authToken } = useContext(AuthContext);
+	const { user, authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters );
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
@@ -49,7 +49,21 @@ export default function ReportProfitLoss() {
 		month_from: dayjs().startOf('year').format('YYYY-MM')
 	}), [])
 
-	const [monthRange, setMonthRange] = useState(null);
+	const updateSavedMonthRange = () => {
+		if (!activeBrand){
+			return
+		}
+		const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
+		if (savedMonthRange) {
+			const data = JSON.parse(savedMonthRange);
+			if (activeBrand.id in data) {
+				return data[activeBrand.id]
+			}
+		}
+		return initialRange
+	};
+
+	const [monthRange, setMonthRange] = useState(updateSavedMonthRange());
 
 	function renderColumn(data) {
 		if (typeof data !== 'object'){
@@ -197,8 +211,10 @@ export default function ReportProfitLoss() {
 	useEffect(() => {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportProfitLoss();
+		} else {
+			setLoading(false)
 		}
-	}, [filters, monthRange]);
+	}, [monthRange]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;
@@ -223,24 +239,9 @@ export default function ReportProfitLoss() {
 		);
 	}
 
-	const updateSavedMonthRange = () => {
-		if (!activeBrand){
-			return
-		}
-		const savedMonthRange = localStorage.getItem('reportProfitLossMonth');
-		if (savedMonthRange) {
-			const data = JSON.parse(savedMonthRange);
-			if (activeBrand.id in data) {
-				setMonthRange(data[activeBrand.id]);
-				return
-			}
-		}
-		setMonthRange(initialRange);
-	};
-
 	useEffect(() => {
-		updateSavedMonthRange()
-	}, [activeBrand])
+		setMonthRange(updateSavedMonthRange())
+	}, [shopStatus, filters])
 
 	return (
 		<main className={styles.page}>
@@ -255,14 +256,6 @@ export default function ReportProfitLoss() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="Отчет о прибыли и убытках"></Header>
 				</div>
-				{!loading && !shopStatus?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)}
-				{!loading && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
-						/>
-				)}
 				<div className={styles.controls}>
 					<Filters
 						timeSelect={false}
@@ -278,7 +271,18 @@ export default function ReportProfitLoss() {
 				<div className={styles.how}>
 					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
 				</div>
-				{ shopStatus?.is_primary_collect && 
+				{!loading && shops && user.subscription_status === null && (
+					<NoSubscriptionWarningBlock />
+				)}
+				{!loading && shops && !shopStatus?.is_self_cost_set && (
+					<SelfCostWarningBlock />
+				)}
+				{!loading && shops && !shopStatus?.is_primary_collect && (
+						<DataCollectWarningBlock
+								title='Ваши данные еще формируются и обрабатываются.'
+						/>
+				)}
+				{ shops && shopStatus?.is_primary_collect && 
 					<div className={styles.container}>
 						<ReportTable
 							loading={loading}

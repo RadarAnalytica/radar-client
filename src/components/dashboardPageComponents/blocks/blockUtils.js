@@ -14,6 +14,16 @@ export const getFinanceData = (dataDashBoard) => {
   if (dataDashBoard) {
     financeData = [
       {
+        name: 'Выручка',
+        amount: dataDashBoard?.proceeds || '0',
+        rate: dataDashBoard?.proceedsCompare || '0',
+      },
+      {
+        name: 'Валовая прибыль',
+        amount: dataDashBoard?.grossProfit || '0',
+        rate: dataDashBoard?.grossProfitCompare || '0',
+      },
+      {
         name: 'EBITDA',
         amount: dataDashBoard?.ebitda || '0',
         rate: dataDashBoard?.ebitda_compare || '0',
@@ -24,35 +34,25 @@ export const getFinanceData = (dataDashBoard) => {
         rate: dataDashBoard?.ebitda_margin_compare || '0',
       },
       {
-        name: 'Выручка',
-        amount: dataDashBoard?.proceeds || '0',
-        rate: dataDashBoard?.proceedsCompare || '0',
+        name: 'Чистая прибыль',
+        amount: dataDashBoard?.netProfit || '0',
+        rate: dataDashBoard?.netProfitCompare || '0',
       },
-      {
-        name: 'Себестоимость продаж',
-        amount: dataDashBoard?.costPriceAmount || '0',
-        rate: dataDashBoard?.costPriceAmountCompare,
-      },
-      {
-        name: 'Маржинальная стоимость',
-        amount: dataDashBoard?.marginalProfit || '0',
-        rate: dataDashBoard?.marginalProfitCompare || '0',
-      },
-      {
-        name: 'Валовая прибыль',
-        amount: dataDashBoard?.grossProfit || '0',
-        rate: dataDashBoard?.grossProfitCompare || '0',
-      },
+      // {
+      //   name: 'Себестоимость продаж',
+      //   amount: dataDashBoard?.costPriceAmount || '0',
+      //   rate: dataDashBoard?.costPriceAmountCompare,
+      // },
+      // {
+      //   name: 'Маржинальная стоимость',
+      //   amount: dataDashBoard?.marginalProfit || '0',
+      //   rate: dataDashBoard?.marginalProfitCompare || '0',
+      // },
       // {
       //   name: "Налог",
       //   amount: dataDashBoard?.tax || "0",
       //   rate: dataDashBoard?.taxCompare || "0",
       // },
-      {
-        name: 'Чистая прибыль',
-        amount: dataDashBoard?.netProfit || '0',
-        rate: dataDashBoard?.netProfitCompare || '0',
-      },
       // {
       //   name: "Средняя прибыль",
       //   amount: dataDashBoard?.averageProfit || "0",
