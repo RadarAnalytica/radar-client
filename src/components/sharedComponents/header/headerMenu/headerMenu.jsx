@@ -22,9 +22,9 @@ const HeaderMenu = ({ popoverCloseHandler, logout }) => {
                 <li className={styles.menu__listItem}>
                     <Link className={styles.menu__link} to='/tariffs' target="_blank">Тарифы</Link>
                 </li>
-                <li className={styles.menu__listItem}>
+                {/* <li className={styles.menu__listItem}>
                     <Link className={styles.menu__link} to='/referal'>Реферальная программа</Link>
-                </li>
+                </li> */}
             </ul>
             <div className={styles.menu__logoutWrapper}>
                 <button

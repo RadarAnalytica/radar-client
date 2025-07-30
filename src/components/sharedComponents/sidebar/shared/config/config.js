@@ -18,7 +18,7 @@ export const menuConfig = [
                 id: 2,
                 url: '/supplier-analysis',
                 label: 'Анализ поставщика',
-                isActive: true,
+                isActive: false,
                 isNew: true
             },
             {
