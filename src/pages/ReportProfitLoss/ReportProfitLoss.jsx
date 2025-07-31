@@ -220,7 +220,7 @@ export default function ReportProfitLoss() {
 		} else {
 			shops.length > 0 && setLoading(false)
 		}
-	}, [activeBrand, filters, selectedRange]);
+	}, [monthRange, shopStatus, filters, selectedRange, shops]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;
