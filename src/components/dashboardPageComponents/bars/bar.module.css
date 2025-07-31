@@ -123,3 +123,14 @@
     aspect-ratio: auto;
     height: 100%;
 }
+
+.bar__titleWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.bar__tooltipIcon {
+    cursor: pointer;
+    flex-shrink: 0;
+}
