@@ -54,16 +54,16 @@ export const COLUMNS = [
 
 export const ROWS = [
 	{
-		key: 'realization',
-		title: 'Реализация',
+		key: 'sales',
+		title: 'Фактические продажи',
 	},
 	{
 		key: 'mp_discount',
 		title: 'Скидка за счет МП',
 	},
 	{
-		key: 'sales',
-		title: 'Фактические продажи',
+		key: 'realization',
+		title: 'Реализация',
 	},
 	{
 		key: 'direct_expenses',
@@ -113,7 +113,7 @@ export const ROWS = [
 	},
 	{
 		key: 'gross_margin',
-		title: 'Валовая маржа',
+		title: 'Маржинальная прибыль',
 	},
 	// {
 	// 	key: 'operating_expenses',

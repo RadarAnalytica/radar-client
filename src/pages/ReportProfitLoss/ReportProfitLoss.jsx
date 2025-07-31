@@ -140,6 +140,11 @@ export default function ReportProfitLoss() {
 					if (!data){
 						continue
 					}
+
+					if (row.key == 'sales'){
+						row[column.key] = data[row.key]?.rub;
+						continue
+					}
 					
 					// проверка на данные в разделе Прямые расходы
 					if (row.key == 'direct_expenses'){

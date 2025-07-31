@@ -88,7 +88,7 @@ export const COLUMNS = [
 	{
 		title: (<Flex gap={10} align='center'>
 			<span>Выкупы, руб</span>
-			<Tooltip title="Сумма проданных товаров по цене с учетом согласованной скидки">
+			<Tooltip title="Сумма проданных товаров с учетом согласованной скидки продавца">
 				<svg
 					width="20"
 					height="20"
@@ -130,7 +130,7 @@ export const COLUMNS = [
 	{
 		title: (<Flex gap={10} align='center'>
 			<span>Выкупы, шт</span>
-			<Tooltip title="Количество проданных товаров по цене с учетом согласованной скидки">
+			<Tooltip title="Кол-во проданных товаров (с возвратами)">
 				<svg
 					width="20"
 					height="20"
@@ -198,7 +198,7 @@ export const COLUMNS = [
 	{
 		title: (<Flex gap={10} align='center'>
 			<span>Продажи</span>
-			<Tooltip title="Проданные товары по цене с учетом согласованной скидки и возвратов">
+			<Tooltip title="Кол-во проданных товаров (без возвратов)">
 				<svg
 					width="20"
 					height="20"
@@ -648,7 +648,7 @@ export const COLUMNS = [
 	{
 		title: (<Flex gap={10} align='center'>
 			<span>СПП + WB реализовал</span>
-			<Tooltip title="Сумма, на которую был реализован товар (Она формируется из цены, которую видит покупатель. Эта сумма также учитывает скидку Wildberries)">
+			<Tooltip title="Сумма реализации товара с учетом согласованной скидки продавца и СПП">
 				<svg
 					width="20"
 					height="20"
