@@ -253,7 +253,7 @@ const UnitCalculatorPage = () => {
                                 <BasicDataFormBlock form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} setIsProductFromToken={setIsProductFromToken} />
                                 <LogisticsDataFormBlock form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
                                 <MPFeesDataFormBlock mp_fee={mpMainFee} form={form} />
-                                <AdditionalOptionsDataFormBlock form={form} />
+                                <AdditionalOptionsDataFormBlock form={form} mpMainFee={mpMainFee} />
 
 
 
