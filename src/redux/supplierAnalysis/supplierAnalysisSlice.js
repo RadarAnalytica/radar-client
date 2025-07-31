@@ -1,5 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData, fetchSupplierAnalysisByDatesTableData } from "./supplierAnalysisActions";
+import { fetchSupplierAnalysisMetaData, 
+    fetchSupplierAnalysisIndicatorsData, 
+    fetchSupplierAnalysisMainChartData, 
+    fetchSupplierAnalysisByDatesTableData, 
+    fetchSupplierAnalysisBrandsData, 
+    fetchSupplierAnalysisByBrandTableData,
+    fetchSupplierAnalysisBySubjectsTableData,
+    fetchSupplierAnalysisByWarehousesTableData
+} from "./supplierAnalysisActions";
 
 const mockOptions = [
     { value: 'Все бренды' },
@@ -37,6 +45,27 @@ const initialState = {
         data: undefined
     },
     byDatesTableData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byBrandsTableData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    bySubjectsTableData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byWarehousesTableData: {
         isLoading: false,
         isError: false,
         isSuccess: false,
@@ -97,6 +126,19 @@ const supplierAnalysisSlice = createSlice({
             })
             .addCase(fetchSupplierAnalysisByDatesTableData.fulfilled, (state, action) => {
                 state.byDatesTableData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisBrandsData.fulfilled, (state, action) => {
+                state.supplierBrands = action.payload;
+                state.supplierCurrentBrand = 0
+            })
+            .addCase(fetchSupplierAnalysisByBrandTableData.fulfilled, (state, action) => {
+                state.byBrandsTableData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisBySubjectsTableData.fulfilled, (state, action) => {
+                state.bySubjectsTableData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisByWarehousesTableData.fulfilled, (state, action) => {
+                state.byWarehousesTableData.data = action.payload;
             })
     }
 });

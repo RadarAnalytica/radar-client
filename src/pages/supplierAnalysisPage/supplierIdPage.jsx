@@ -9,9 +9,16 @@ import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcru
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice'
-import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByColorsTableConfig } from './shared'
+import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByColorsTableConfig, ordersStructByWarehousesTableConfig } from './shared'
 import { GoodsTableCustomHeader, OrdersTableCustomHeader, StockChartCustomHeader } from './entities'
-import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData, fetchSupplierAnalysisByDatesTableData } from '../../redux/supplierAnalysis/supplierAnalysisActions'
+import { fetchSupplierAnalysisMetaData,
+    fetchSupplierAnalysisIndicatorsData,
+    fetchSupplierAnalysisMainChartData,
+    fetchSupplierAnalysisByDatesTableData,
+    fetchSupplierAnalysisByBrandTableData,
+    fetchSupplierAnalysisBySubjectsTableData,
+    fetchSupplierAnalysisByWarehousesTableData
+} from '../../redux/supplierAnalysis/supplierAnalysisActions'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
 import { ServiceFunctions } from '../../service/serviceFunctions'
 import { actions as supplierActions } from '../../redux/supplierAnalysis/supplierAnalysisSlice'
@@ -99,7 +106,7 @@ const SupplierIdPage = () => {
                         dataType='indicatorsData'
                         id={mainSupplierData?.supplier_id}
                     />
-                    <MainChartWidget 
+                    <MainChartWidget
                         id={mainSupplierData?.supplier_id}
                         dataType='mainChartData'
                         dataHandler={fetchSupplierAnalysisMainChartData}
@@ -117,30 +124,36 @@ const SupplierIdPage = () => {
                         dataHandler={fetchSupplierAnalysisByDatesTableData}
                     />
                 </div>
-                {/* <div className={styles.page__tableWrapper}>
+                <div className={styles.page__tableWrapper}>
                     <TableWidget
+                        id={mainSupplierData?.supplier_id}
                         tableConfig={goodsTableConfig}
-                        customHeader={<GoodsTableCustomHeader />}
-                        //tableData={}
+                        customHeader={<GoodsTableCustomHeader id={mainSupplierData?.supplier_id} />}
                         downloadButton
+                        dataType='byBrandsTableData'
+                        dataHandler={fetchSupplierAnalysisByBrandTableData}
                     />
-                </div> */}
-                {/* <div className={styles.page__tableWrapper}>
+                </div>
+                <div className={styles.page__tableWrapper}>
                     <TableWidget
                         tableConfig={salesTableConfig}
-                        //tableData={}
-                        title={`Продажи поставщика ${params?.id} по категориям`}
+                        id={mainSupplierData?.supplier_id}
                         downloadButton
+                        dataType='bySubjectsTableData'
+                        dataHandler={fetchSupplierAnalysisBySubjectsTableData}
+                        title={`Продажи поставщика ${mainSupplierData?.trademark} по категориям`}
                     />
-                </div> */}
-                {/* <div className={styles.page__tableWrapper}>
+                </div>
+                <div className={styles.page__tableWrapper}>
                     <TableWidget
-                        tableConfig={ordersStructByColorsTableConfig}
+                        tableConfig={ordersStructByWarehousesTableConfig}
                         customHeader={<OrdersTableCustomHeader />}
-                        //tableData={}
+                        id={mainSupplierData?.supplier_id}
                         downloadButton
+                        dataType='byWarehousesTableData'
+                        dataHandler={fetchSupplierAnalysisByWarehousesTableData}
                     />
-                </div> */}
+                </div>
 
                 {/* <div className={styles.page__additionalWrapper}>
                     <StockChartWidget
