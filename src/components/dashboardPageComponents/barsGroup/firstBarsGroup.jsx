@@ -29,7 +29,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                 quantityInPercent={dataDashBoard?.saleCountCompare}
                 loading={loading}
                 hasTooltip
-                tooltipText='Проданные товары по цене с учетом согласованной скидки с учетом возвратов'
+                tooltipText='Количество проданных товаров (без возвратов)'
             />
             <Bar
                 title='Возвраты'
@@ -48,7 +48,7 @@ const FirstBarsGroup = ({ dataDashBoard, selectedRange, loading }) => {
                     averageBill={dataDashBoard?.taxInfo?.wbRealization}
                     loading={loading}
                     hasTooltip
-                    tooltipText='Сумма, на которую был реализован товар (Она формируется из цены, которую видит покупатель. Эта сумма также учитывает скидку Wildberries)'
+                    tooltipText='Сумма реализации товара с учетом согласованной скидки продавца и СПП'
                 />
                 {/* <Bar
                     fixed={false}
