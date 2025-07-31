@@ -1,0 +1,31 @@
+
+.item{
+  padding: 8px 12px 13px;
+  border-bottom: 1px solid #E8E8E8;
+}
+.item__pic{
+  
+}
+.item__description{
+  flex-grow: 1;
+}
+.item__info{
+  font-weight: 500;
+  font-size: 16px;
+  color: #d9d9d9;
+}
+.item__title{
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #1a1a1a;
+}
+.item__article{
+  color: #5329ff;
+}
+.item__article_icon{
+  width: 20px;
+}
+.item__shop{
+  color: #1a1a1a;
+}
