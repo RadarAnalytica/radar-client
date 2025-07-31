@@ -5,7 +5,8 @@ import { fetchSupplierAnalysisMetaData,
     fetchSupplierAnalysisByDatesTableData, 
     fetchSupplierAnalysisBrandsData, 
     fetchSupplierAnalysisByBrandTableData,
-    fetchSupplierAnalysisBySubjectsTableData
+    fetchSupplierAnalysisBySubjectsTableData,
+    fetchSupplierAnalysisByWarehousesTableData
 } from "./supplierAnalysisActions";
 
 const mockOptions = [
@@ -58,6 +59,13 @@ const initialState = {
         data: undefined
     },
     bySubjectsTableData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byWarehousesTableData: {
         isLoading: false,
         isError: false,
         isSuccess: false,
@@ -128,6 +136,9 @@ const supplierAnalysisSlice = createSlice({
             })
             .addCase(fetchSupplierAnalysisBySubjectsTableData.fulfilled, (state, action) => {
                 state.bySubjectsTableData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisByWarehousesTableData.fulfilled, (state, action) => {
+                state.byWarehousesTableData.data = action.payload;
             })
     }
 });

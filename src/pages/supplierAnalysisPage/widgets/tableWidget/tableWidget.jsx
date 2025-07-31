@@ -66,10 +66,10 @@ const TableWidget = ({
                 "page": 1,
                 "limit": 25,
                 ...datesRange,
-                // "sorting": {
-                //     "sort_field": "frequency",
-                //     "sort_order": "DESC"
-                // }
+                "sorting": {
+                    "sort_field": "frequency",
+                    "sort_order": "DESC"
+                }
             }
             dispatch(dataHandler(reqData))
         }
