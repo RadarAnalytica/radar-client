@@ -198,7 +198,7 @@ export const COLUMNS = [
 	{
 		title: (<Flex gap={10} align='center'>
 			<span>Продажи</span>
-			<Tooltip title="Количество проданных товаров по цене с учетом согласованной скидки с учетом возвратов">
+			<Tooltip title="Проданные товары по цене с учетом согласованной скидки и возвратов">
 				<svg
 					width="20"
 					height="20"
@@ -240,7 +240,7 @@ export const COLUMNS = [
 	{
 		title: (<Flex gap={10} align='center'>
 			<span>Выручка</span>
-			<Tooltip title="Сумма проданных товаров по цене с учетом согласованной скидки с учетом возвратов">
+			<Tooltip title="Сумма проданных товаров по цене с учетом согласованной скидки и возвратов">
 				<svg
 					width="20"
 					height="20"
