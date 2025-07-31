@@ -11,7 +11,13 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice'
 import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByColorsTableConfig } from './shared'
 import { GoodsTableCustomHeader, OrdersTableCustomHeader, StockChartCustomHeader } from './entities'
-import { fetchSupplierAnalysisMetaData, fetchSupplierAnalysisIndicatorsData, fetchSupplierAnalysisMainChartData, fetchSupplierAnalysisByDatesTableData, fetchSupplierAnalysisByBrandTableData } from '../../redux/supplierAnalysis/supplierAnalysisActions'
+import { fetchSupplierAnalysisMetaData,
+    fetchSupplierAnalysisIndicatorsData,
+    fetchSupplierAnalysisMainChartData,
+    fetchSupplierAnalysisByDatesTableData,
+    fetchSupplierAnalysisByBrandTableData,
+    fetchSupplierAnalysisBySubjectsTableData
+} from '../../redux/supplierAnalysis/supplierAnalysisActions'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
 import { ServiceFunctions } from '../../service/serviceFunctions'
 import { actions as supplierActions } from '../../redux/supplierAnalysis/supplierAnalysisSlice'
@@ -127,14 +133,16 @@ const SupplierIdPage = () => {
                         dataHandler={fetchSupplierAnalysisByBrandTableData}
                     />
                 </div>
-                {/* <div className={styles.page__tableWrapper}>
+                <div className={styles.page__tableWrapper}>
                     <TableWidget
                         tableConfig={salesTableConfig}
-                        //tableData={}
-                        title={`Продажи поставщика ${params?.id} по категориям`}
+                        id={mainSupplierData?.supplier_id}
                         downloadButton
+                        dataType='bySubjectsTableData'
+                        dataHandler={fetchSupplierAnalysisBySubjectsTableData}
+                        title={`Продажи поставщика ${mainSupplierData?.trademark} по категориям`}
                     />
-                </div> */}
+                </div>
                 {/* <div className={styles.page__tableWrapper}>
                     <TableWidget
                         tableConfig={ordersStructByColorsTableConfig}

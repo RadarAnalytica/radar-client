@@ -31,7 +31,6 @@ const MainChartWidget = ({ id }) => {
     const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
     const [normilizedChartData, setNormilizedChartData] = useState()
     const { skuChartData, dataStatus } = useAppSelector(store => store.skuAnalysis)
-    console.log(skuChartData)
 
     useEffect(() => {
         if (skuChartData && chartControls) {

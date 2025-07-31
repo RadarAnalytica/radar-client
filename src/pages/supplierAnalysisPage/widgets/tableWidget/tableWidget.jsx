@@ -26,7 +26,6 @@ const TableWidget = ({
     const [scrollX, setScrollX] = useState(0);
     const { selectedRange } = useAppSelector(store => store.filters)
     const { data: tableData } = useAppSelector(store => store.supplierAnalysis[dataType])
-    console.log(tableData)
 
     useEffect(() => {
         const updateHeight = () => {
