@@ -65,7 +65,6 @@ const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferal
 const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts/OperationsCosts"));
 const MainPage = React.lazy(() => import('./pages/homePage'))
 const ReferalPage = React.lazy(() => import("./pages/Referal"));
-const Rnp = React.lazy(() => import('./pages/Rnp'))
 const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierAnalysisPage"));
 const SupplierIdPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierIdPage"));
 const RestoreError = React.lazy(() => import("./pages/RestoreError"));
