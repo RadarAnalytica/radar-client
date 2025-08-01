@@ -55,7 +55,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                 const curr = settings.find(i => i.dataIndex === child.dataIndex);
                 return {
                     ...child,
-                    hidden: !curr.isActive
+                    hidden: !curr?.isActive
                 };
             })
         }))
@@ -73,13 +73,13 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                 const curr = settings.find(i => i.dataIndex === child.dataIndex);
                 return {
                     ...child,
-                    hidden: !curr.isActive
+                    hidden: !curr?.isActive
                 };
             })
         }))
         newConfig = newConfig.map(_ => ({
             ..._,
-            hidden: _.children.every(c => c.hidden)
+            hidden: _?.children?.every(c => c?.hidden)
         }))
 
         return newConfig
