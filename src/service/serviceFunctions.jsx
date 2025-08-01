@@ -1355,7 +1355,7 @@ export const ServiceFunctions = {
 			);
 			
 			if (res.status !== 200){
-				throw new Error('Ощибка запроса');
+				throw new Error('Ошибка запроса');
 			}
 	
 			return res.json();
@@ -1380,7 +1380,7 @@ export const ServiceFunctions = {
 			);
 			
 			if (res.status !== 200){
-				throw new Error('Ощибка запроса');
+				throw new Error('Ошибка запроса');
 			}
 	
 			return res.json();
@@ -1389,7 +1389,26 @@ export const ServiceFunctions = {
 			console.error('getWithdrawalRequest ', error);
 			throw new Error(error);
 		}
+	},
+	getProductGroups: async(token, groupId) => {
+		try {
+			const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
+				headers: {
+					'content-type': 'application/json',
+					'authorization': 'JWT ' + token
+				},
+			})
 
+			if (!res.ok){
+				throw new Error('Ошибка запроса');
+			}
+
+			return res.json();
+
+		} catch(error) {
+			console.log('getProductGroups error:', error);
+			throw new Error(error);
+		}
 	},
 	getSupplierAnalysisSuggestData: async (query, setIsLoading) => {
 		setIsLoading(true)

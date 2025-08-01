@@ -32,29 +32,27 @@
     padding: 0;
 }
 
-.modal__tableWrapper {
+.modal__container {
     width: 100%;
     height: auto;
     padding: 16px;
     max-height: 590px;
     overflow-y: scroll;
-    box-shadow: 0px 0px 20px 0px #00000014;
-    border-radius: 12px;
 }
 
-.modal__tableWrapper::-webkit-scrollbar {
+.modal__container::-webkit-scrollbar {
     width: 6px;
     /* Ширина скроллбара */
 }
 
-.modal__tableWrapper::-webkit-scrollbar-track {
+.modal__container::-webkit-scrollbar-track {
     background: transparent;
     /* Цвет фона трека */
     margin-top: 80px;
     margin-bottom: 20px;
 }
 
-.modal__tableWrapper::-webkit-scrollbar-thumb {
+.modal__container::-webkit-scrollbar-thumb {
     background-color: #5329FF80;
     /* Цвет полосы прокрутки */
     border-radius: 4px;
@@ -62,16 +60,6 @@
     border: 2px solid transparent;
     /* Добавляем прозрачный отступ */
 }
-
-.modal__loaderWrapper {
-    width: 100%;
-    aspect-ratio: 4 / 1;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 /* table */
 
 .table {
@@ -251,8 +239,10 @@
 
 
 .item{
-  padding: 8px 12px 13px;
-  border-bottom: 1px solid #E8E8E8;
+    padding: 8px 12px 13px;
+}
+.item + .item{
+    border-top: 1px solid #E8E8E8;
 }
 .item__description{
   flex-grow: 1;
@@ -276,4 +266,13 @@
 }
 .item__shop{
   color: #1a1a1a;
+}
+
+.loading{
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
 }
