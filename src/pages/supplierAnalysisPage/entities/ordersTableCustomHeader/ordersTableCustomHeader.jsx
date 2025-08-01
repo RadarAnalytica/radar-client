@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
 import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice'
 
 const tabs = [
-    'По группам цветов',
+    // 'По группам цветов',
     'По складам (последние 30 дней)',
     'По размерам'
 ]

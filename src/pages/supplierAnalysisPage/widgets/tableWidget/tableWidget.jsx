@@ -66,10 +66,10 @@ const TableWidget = ({
                 "page": 1,
                 "limit": 25,
                 ...datesRange,
-                "sorting": {
-                    "sort_field": "frequency",
-                    "sort_order": "DESC"
-                }
+                // "sorting": {
+                //     "sort_field": "frequency",
+                //     "sort_order": "DESC"
+                // }
             }
             dispatch(dataHandler(reqData))
         }
@@ -88,7 +88,7 @@ const TableWidget = ({
 
     return (
         <div className={styles.widget}>
-            <div className={styles.widget__header}>
+            <div className={!title && !customHeader && !downloadButton ? `${styles.widget__header} ${styles.widget__header_hidden}` : styles.widget__header}>
                 {!customHeader && <p className={styles.widget__title}>{title}</p>}
                 {customHeader && customHeader}
                 {downloadButton &&

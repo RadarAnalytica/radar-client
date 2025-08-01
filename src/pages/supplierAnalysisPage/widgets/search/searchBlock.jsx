@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './searchBlock.module.css'
 import { ConfigProvider, Button, AutoComplete } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -17,11 +17,12 @@ const requestInitState = {
     message: ''
 }
 
-const SearchBlock = () => {
+const SearchBlock = ({ supplierType = 'main' }) => {
     const dispatch = useAppDispatch()
-    const { mainSupplierData } = useAppSelector(store => store.supplierAnalysis)
+    const { mainSupplierData, compareSupplierData } = useAppSelector(store => store.supplierAnalysis)
     const [requestStatus, setRequestStatus] = useState(requestInitState)
     const [autocompleteOptions, setAutocompleteOptions] = useState();
+    const [currentData, setCurrentData] = useState();
     const [loadingOptions, setLoadingOptions] = useState(false);
     const navigate = useNavigate()
 
@@ -35,7 +36,7 @@ const SearchBlock = () => {
 
     const debouncedDataFetch = useDebouncedFunction(getSuggestDataWrapperFunc, 500)
 
-    
+
 
     const handleSearch = (value) => { // обработка ввода пользователя вручную
         if (value) {
@@ -44,15 +45,27 @@ const SearchBlock = () => {
     };
 
     const handleSelect = (value) => { // обработка клика на опцию
-        const item = autocompleteOptions.find(_ => _.supplier_id === value);
-        if (item) {
+        const item = autocompleteOptions.find(_ => _.trademark === value.trim());
+        if (item && supplierType === 'main') {
             dispatch(supplierActions.setSupplierMainData(item))
+        }
+        if (item && supplierType === 'compare') {
+            dispatch(supplierActions.setSupplierCompareData(item))
         }
     };
 
+    useEffect(() => {
+        if (supplierType === 'main') {
+            setCurrentData(mainSupplierData)
+        }
+        if (supplierType === 'compare') {
+            setCurrentData(compareSupplierData)
+        }
+    }, [supplierType, mainSupplierData, compareSupplierData])
+
     return (
-        <div className={styles.search}>
-            <p className={styles.search__title}>Поиск по поставщику</p>
+        <div className={supplierType === 'main' ? styles.search : supplierType === 'compare' ? styles.search_compare : ''}>
+            {supplierType === 'main' && <p className={styles.search__title}>Поиск по поставщику</p>}
             <div className={styles.search__wrapper}>
                 <ConfigProvider
                     theme={{
@@ -72,9 +85,9 @@ const SearchBlock = () => {
                     <AutoComplete
                         showSearch
                         size='large'
-                        placeholder='Введите название товара'
+                        placeholder='Введите название поставщика'
                         className={styles.search__input}
-                        style={{ background: mainSupplierData ? '#F2F2F2' : '', width: '100%' }}
+                        style={{ background: currentData ? '#F2F2F2' : '', width: '100%' }}
                         id='autocomp'
                         loading={loadingOptions}
                         suffixIcon={
@@ -97,29 +110,32 @@ const SearchBlock = () => {
                         //         </div>
                         //     )
                         // }}
-                        value={mainSupplierData?.trademark}
+                        //value={{value: currentData?.supplier_id, label: currentData?.trademark}}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
-                        options={autocompleteOptions && [...autocompleteOptions]?.map(_ => ({ label: _.trademark, value: _.supplier_id }))}
+                        options={autocompleteOptions && [...autocompleteOptions]?.map(_ => ({ label: _.trademark, value: _.trademark, key: _.supplier_id }))}
+                        
                     />
-                    <Button
-                        size='large'
-                        type='primary'
-                        className={styles.search__button}
-                        disabled={!mainSupplierData}
-                        loading={loadingOptions}
-                        onClick={() => {
-                            if (mainSupplierData) {
-                                navigate(`/supplier-analysis/${mainSupplierData.supplier_id}`);
-                              }
-                        }}
-                    >
-                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M1.95312 9.60353C1.95312 5.25398 5.47914 1.72797 9.82869 1.72797C14.1782 1.72797 17.7043 5.25398 17.7043 9.60353C17.7043 13.9531 14.1782 17.4791 9.82869 17.4791C5.47914 17.4791 1.95312 13.9531 1.95312 9.60353ZM9.82869 0.227966C4.65071 0.227966 0.453125 4.42555 0.453125 9.60353C0.453125 14.7815 4.65071 18.9791 9.82869 18.9791C12.1477 18.9791 14.2701 18.1371 15.9068 16.7423L19.9365 20.772L20.9972 19.7114L16.9674 15.6816C18.3623 14.0449 19.2043 11.9225 19.2043 9.60353C19.2043 4.42555 15.0067 0.227966 9.82869 0.227966Z" fill="currentColor" />
-                        </svg>
+                    {supplierType === 'main' &&
+                        <Button
+                            size='large'
+                            type='primary'
+                            className={styles.search__button}
+                            disabled={!currentData}
+                            loading={loadingOptions}
+                            onClick={() => {
+                                if (currentData) {
+                                    navigate(`/supplier-analysis/${mainSupplierData.supplier_id}`);
+                                }
+                            }}
+                        >
+                            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M1.95312 9.60353C1.95312 5.25398 5.47914 1.72797 9.82869 1.72797C14.1782 1.72797 17.7043 5.25398 17.7043 9.60353C17.7043 13.9531 14.1782 17.4791 9.82869 17.4791C5.47914 17.4791 1.95312 13.9531 1.95312 9.60353ZM9.82869 0.227966C4.65071 0.227966 0.453125 4.42555 0.453125 9.60353C0.453125 14.7815 4.65071 18.9791 9.82869 18.9791C12.1477 18.9791 14.2701 18.1371 15.9068 16.7423L19.9365 20.772L20.9972 19.7114L16.9674 15.6816C18.3623 14.0449 19.2043 11.9225 19.2043 9.60353C19.2043 4.42555 15.0067 0.227966 9.82869 0.227966Z" fill="currentColor" />
+                            </svg>
 
-                        Найти
-                    </Button>
+                            Найти
+                        </Button>
+                    }
                 </ConfigProvider>
             </div>
             {/* {skuSearchHistory && skuSearchHistory.length > 0 &&

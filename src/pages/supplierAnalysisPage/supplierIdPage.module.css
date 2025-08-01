@@ -56,6 +56,9 @@
     align-items: flex-start;
     gap: 20px;
 }
+.page__tableWrapper_tabs {
+    gap: 0;
+}
 
 
 .page__tableWrapperHeader {

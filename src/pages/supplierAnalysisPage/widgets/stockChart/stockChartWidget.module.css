@@ -12,6 +12,9 @@
     align-items: flex-end;
     gap: 20px;
 }
+.widget__header_hidden {
+    display: none;
+}
 
 .widget__title {
     margin: 0;
