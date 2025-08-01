@@ -9,15 +9,23 @@ import Breadcrumbs from '../../components/sharedComponents/header/headerBreadcru
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { actions as skuAnalysisActions } from '../../redux/skuAnalysis/skuAnalysisSlice'
-import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByColorsTableConfig, ordersStructByWarehousesTableConfig } from './shared'
+import { mainTableConfig, goodsTableConfig, salesTableConfig, ordersStructByColorsTableConfig, ordersStructByWarehousesTableConfig, ordersStructBySizesTableConfig } from './shared'
 import { GoodsTableCustomHeader, OrdersTableCustomHeader, StockChartCustomHeader } from './entities'
-import { fetchSupplierAnalysisMetaData,
+import {
+    fetchSupplierAnalysisMetaData,
     fetchSupplierAnalysisIndicatorsData,
     fetchSupplierAnalysisMainChartData,
     fetchSupplierAnalysisByDatesTableData,
     fetchSupplierAnalysisByBrandTableData,
     fetchSupplierAnalysisBySubjectsTableData,
-    fetchSupplierAnalysisByWarehousesTableData
+    fetchSupplierAnalysisByWarehousesTableData,
+    fetchSupplierAnalysisBySizesTableData,
+    fetchSupplierAnalysisByWharehousesComparsionData,
+    fetchSupplierAnalysisByIncomingOrdersComparsionData,
+    fetchSupplierAnalysisByOrderedProductsComparsionData,
+    fetchSupplierAnalysisByAvgPricesComparsionData,
+    fetchSupplierAnalysisByAvgDiscountsComparsionData,
+    fetchSupplierAnalysisByStockSizeComparsionData
 } from '../../redux/supplierAnalysis/supplierAnalysisActions'
 import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal'
 import { ServiceFunctions } from '../../service/serviceFunctions'
@@ -25,7 +33,7 @@ import { actions as supplierActions } from '../../redux/supplierAnalysis/supplie
 
 const SupplierIdPage = () => {
     const dispatch = useAppDispatch()
-    const { mainSupplierData } = useAppSelector(store => store.supplierAnalysis)
+    const { mainSupplierData, ordersStructureTab, stockChartTab } = useAppSelector(store => store.supplierAnalysis)
     const [loading, setLoading] = useState(false)
     const params = useParams()
     const navigate = useNavigate()
@@ -145,30 +153,43 @@ const SupplierIdPage = () => {
                     />
                 </div>
                 <div className={styles.page__tableWrapper}>
-                    <TableWidget
-                        tableConfig={ordersStructByWarehousesTableConfig}
-                        customHeader={<OrdersTableCustomHeader />}
-                        id={mainSupplierData?.supplier_id}
-                        downloadButton
-                        dataType='byWarehousesTableData'
-                        dataHandler={fetchSupplierAnalysisByWarehousesTableData}
-                    />
+                    <OrdersTableCustomHeader />
+                    {ordersStructureTab === 'По складам (последние 30 дней)' &&
+                        <TableWidget
+                            tableConfig={ordersStructByWarehousesTableConfig}
+                            id={mainSupplierData?.supplier_id}
+                            dataType='byWarehousesTableData'
+                            dataHandler={fetchSupplierAnalysisByWarehousesTableData}
+                        />
+                    }
+                    {ordersStructureTab === 'По размерам' &&
+                        <TableWidget
+                            tableConfig={ordersStructBySizesTableConfig}
+                            id={mainSupplierData?.supplier_id}
+                            dataType='bySizesTableData'
+                            dataHandler={fetchSupplierAnalysisBySizesTableData}
+                        />
+                    }
                 </div>
 
-                {/* <div className={styles.page__additionalWrapper}>
+                <div className={styles.page__additionalWrapper}>
                     <StockChartWidget
-                        supplier={params.id}
                         downloadButton
                         title='Распределение товарных остатков по складам'
+                        dataType='byWharehousesComparsionData'
+                        units='шт'
+                        chartType='bar'
+                        dataHandler={fetchSupplierAnalysisByWharehousesComparsionData}
                     />
-                </div> */}
-                {/* <div className={styles.page__additionalWrapper}>
-                    <StockChartWidget
-                        supplier={params.id}
-                        downloadButton
-                        customHeader={<StockChartCustomHeader />}
-                    />
-                </div> */}
+                </div>
+                <div className={styles.page__additionalWrapper}>
+                    <StockChartCustomHeader />
+                    {stockChartTab === 'Входящие заказы' && <StockChartWidget units='руб' dataType='byIncomingOrdersComparsionData' dataHandler={fetchSupplierAnalysisByIncomingOrdersComparsionData} />}
+                    {stockChartTab === 'Заказанные товары' && <StockChartWidget units='шт' dataType='byOrderedProductsComparsionData' dataHandler={fetchSupplierAnalysisByOrderedProductsComparsionData} />}
+                    {stockChartTab === 'Средние цены' && <StockChartWidget units='руб' dataType='byAvgPricesComparsionData' dataHandler={fetchSupplierAnalysisByAvgPricesComparsionData} />}
+                    {stockChartTab === 'Средние скидки' && <StockChartWidget units='%' dataType='byAvgDiscountsComparsionData' dataHandler={fetchSupplierAnalysisByAvgDiscountsComparsionData} />}
+                    {stockChartTab === 'Товарные остатки' && <StockChartWidget units='шт' dataType='byStockSizeComparsionData' dataHandler={fetchSupplierAnalysisByStockSizeComparsionData} />}
+                </div>
 
             </section>
             {/* ---------------------- */}

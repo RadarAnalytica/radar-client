@@ -1,12 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSupplierAnalysisMetaData, 
-    fetchSupplierAnalysisIndicatorsData, 
-    fetchSupplierAnalysisMainChartData, 
-    fetchSupplierAnalysisByDatesTableData, 
-    fetchSupplierAnalysisBrandsData, 
+import {
+    fetchSupplierAnalysisMetaData,
+    fetchSupplierAnalysisIndicatorsData,
+    fetchSupplierAnalysisMainChartData,
+    fetchSupplierAnalysisByDatesTableData,
+    fetchSupplierAnalysisBrandsData,
     fetchSupplierAnalysisByBrandTableData,
     fetchSupplierAnalysisBySubjectsTableData,
-    fetchSupplierAnalysisByWarehousesTableData
+    fetchSupplierAnalysisByWarehousesTableData,
+    fetchSupplierAnalysisBySizesTableData,
+    fetchSupplierAnalysisByWharehousesComparsionData,
+    fetchSupplierAnalysisByIncomingOrdersComparsionData,
+    fetchSupplierAnalysisByOrderedProductsComparsionData,
+    fetchSupplierAnalysisByAvgPricesComparsionData,
+    fetchSupplierAnalysisByAvgDiscountsComparsionData,
+    fetchSupplierAnalysisByStockSizeComparsionData
 } from "./supplierAnalysisActions";
 
 const mockOptions = [
@@ -19,10 +27,16 @@ const mockOptions = [
 
 const initialState = {
     supplierCurrentBrand: 'Все бренды',
-    ordersStructureTab: 'По группам цветов',
+    ordersStructureTab: 'По складам (последние 30 дней)',
     stockChartTab: 'Входящие заказы',
     supplierBrands: mockOptions,
     mainSupplierData: undefined,
+    compareSupplierData: {
+        "supplier_id": 250012340,
+        "name": "环 球 智 慧 供 应 链 （ 深 圳 ） 有 限 公 司 后 海 分 公",
+        "full_name": "Global Smart Supply Chain (Shenzhen) Co., Ltd. Houhai Branch",
+        "trademark": "China Express UNIMALL"
+    },
     metaData: {
         isLoading: false,
         isError: false,
@@ -71,7 +85,56 @@ const initialState = {
         isSuccess: false,
         message: '',
         data: undefined
-    }
+    },
+    bySizesTableData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byWharehousesComparsionData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byIncomingOrdersComparsionData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byOrderedProductsComparsionData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byAvgPricesComparsionData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byAvgDiscountsComparsionData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
+    byStockSizeComparsionData: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: '',
+        data: undefined
+    },
 };
 
 const supplierAnalysisSlice = createSlice({
@@ -82,6 +145,12 @@ const supplierAnalysisSlice = createSlice({
             return {
                 ...state,
                 mainSupplierData: action.payload
+            }
+        },
+        setSupplierCompareData: (state, action) => {
+            return {
+                ...state,
+                compareSupplierData: action.payload
             }
         },
         setSupplierCurrentBrand: (state, action) => {
@@ -139,6 +208,27 @@ const supplierAnalysisSlice = createSlice({
             })
             .addCase(fetchSupplierAnalysisByWarehousesTableData.fulfilled, (state, action) => {
                 state.byWarehousesTableData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisBySizesTableData.fulfilled, (state, action) => {
+                state.bySizesTableData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisByWharehousesComparsionData.fulfilled, (state, action) => {
+                state.byWharehousesComparsionData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisByIncomingOrdersComparsionData.fulfilled, (state, action) => {
+                state.byIncomingOrdersComparsionData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisByOrderedProductsComparsionData.fulfilled, (state, action) => {
+                state.byOrderedProductsComparsionData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisByAvgPricesComparsionData.fulfilled, (state, action) => {
+                state.byAvgPricesComparsionData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisByAvgDiscountsComparsionData.fulfilled, (state, action) => {
+                state.byAvgDiscountsComparsionData.data = action.payload;
+            })
+            .addCase(fetchSupplierAnalysisByStockSizeComparsionData.fulfilled, (state, action) => {
+                state.byStockSizeComparsionData.data = action.payload;
             })
     }
 });

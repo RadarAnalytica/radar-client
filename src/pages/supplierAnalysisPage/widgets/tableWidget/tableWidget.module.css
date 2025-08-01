@@ -13,6 +13,9 @@
     gap: 20px;
     padding-right: 52px;
 }
+.widget__header_hidden {
+    display: none;
+}
 
 .widget__title {
     margin: 0;

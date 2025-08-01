@@ -284,10 +284,10 @@ const TableSettingsWidget = () => {
                                 {tableConfig?.filter(_ => _.title?.toLowerCase().includes(searchState.toLowerCase())).map((el, i) => el.isFilterParam && (
                                     <Col span={8} className={styles.item} key={i}>
                                         <Form.Item
-                                            name={el.dataIndex}
+                                            name={el?.dataIndex}
                                             valuePropName="checked"
-                                            value={el.dataIndex}
-                                            initialValue={el.isActive}
+                                            value={el?.dataIndex}
+                                            initialValue={el?.isActive}
                                         >
                                             <Checkbox >
                                                 <div
