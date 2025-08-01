@@ -79,7 +79,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         }))
         newConfig = newConfig.map(_ => ({
             ..._,
-            hidden: _.children.every(c => c.hidden)
+            hidden: _?.children?.every(c => c?.hidden)
         }))
 
         return newConfig
