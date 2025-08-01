@@ -177,6 +177,13 @@ export const menuConfig = [
                 isActive: true,
                 isNew: false,
             },
+            {
+                id: 6,
+                url: '/rnp',
+                label: 'Рука на пульсе',
+                isActive: true,
+                isNew: true,
+            },
         ]
     },
     {
