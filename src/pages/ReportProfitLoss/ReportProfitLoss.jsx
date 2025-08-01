@@ -245,6 +245,9 @@ export default function ReportProfitLoss() {
 		);
 	}
 
+	console.log(activeBrand)
+	console.log(shopStatus)
+
 	useEffect(() => {
 		setMonthRange(updateSavedMonthRange())
 	}, [shopStatus])
@@ -280,10 +283,10 @@ export default function ReportProfitLoss() {
 				{!loading && shops && user.subscription_status === null && (
 					<NoSubscriptionWarningBlock />
 				)}
-				{!loading && shops && user?.subscription_status && activeBrand?.is_primary_collect && !activeBrand?.is_self_cost_set && (
+				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
-				{!loading && shops && user?.subscription_status && !activeBrand?.is_primary_collect && (
+				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
 						<DataCollectWarningBlock
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
