@@ -1,0 +1,43 @@
+name: Dev Client CI/CD
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  deploy:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Notify Telegram Start
+      uses: appleboy/telegram-action@v1.0.0
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        message: Start deploy client
+
+    - name: Update client code on server
+      uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.SERVER_SSH_HOST }}
+        username: ${{ secrets.SERVER_SSH_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          cd /home/radar/radar-client
+          git pull origin ${{ github.ref_name }}
+          
+          cd /home/radar
+          docker compose up -d --build nginx
+          
+    - name: Notify Telegram End
+      uses: appleboy/telegram-action@v1.0.0
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        message: |
+          End deploy client [${{ job.status }}] ${{ github.repository }} #${{ github.run_number }}
+          Event: ${{ github.event_name }}
+          Branch: ${{ github.ref_name }}
+          [ Details ](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
