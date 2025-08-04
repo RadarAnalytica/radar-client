@@ -9,7 +9,6 @@ const GoodsTableCustomHeader = ({ id }) => {
 
     const dispatch = useAppDispatch();
     const { supplierCurrentBrand, supplierBrands } = useAppSelector(store => store.supplierAnalysis)
-
     useEffect(() => {
 
         if (id) {
@@ -56,6 +55,7 @@ const GoodsTableCustomHeader = ({ id }) => {
                     }
                 }}
             >
+                {supplierBrands &&
                 <Select
                     style={{ width: 240 }}
                     size='large'
@@ -66,10 +66,11 @@ const GoodsTableCustomHeader = ({ id }) => {
                         </svg>
                     }
                     variant="filled"
-                    options={supplierBrands.map(_ => ({value: _.brand_id, label: _.brand_name}))}
-                    value={supplierCurrentBrand}
+                    options={supplierBrands?.map(_ => ({value: _.brand_id, label: _.brand_name}))}
+                    value={[{value: supplierCurrentBrand, label: supplierBrands?.find(_=>_?.brand_id === supplierCurrentBrand)?.brand_name || ''}]}
                     onChange={(value) => dispatch(supplierAnalysisActions.setSupplierCurrentBrand(value))}
                 />
+                }
             </ConfigProvider>
         </div>
     )

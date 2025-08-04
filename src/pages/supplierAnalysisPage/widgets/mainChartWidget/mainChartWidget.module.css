@@ -54,7 +54,8 @@
     border-radius: 16px;
     padding: 16px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     gap: 8px;
     font-family: Mulish;
     font-weight: 600;

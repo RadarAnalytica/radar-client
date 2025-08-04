@@ -8,6 +8,7 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 import { chartCompareConfigObject, mainChartOptionsGenerator } from '../../shared';
 import moment from 'moment';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
+import { ConfigProvider, Button } from 'antd';
 
 ChartJS.register(
     annotationPlugin,
@@ -51,10 +52,6 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
                 "page": 1,
                 "limit": 25,
                 ...datesRange
-                // "sorting": {
-                //     "sort_field": "frequency",
-                //     "sort_order": "DESC"
-                // }
             }
             dispatch(dataHandler(reqData))
         }
@@ -102,15 +99,50 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
     }
     if (widgetData.isError) {
         return (
-            <div className={styles.errorWrapper}>
-                <div className={styles.errorWrapper__message}>
-                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
-                        <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
-                    </svg>
-                    {widgetData.message || 'Не удалось загрузить данные'}
+                <div className={styles.errorWrapper}>
+                    <div className={styles.errorWrapper__message}>
+                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+                            <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
+                        </svg>
+                        {widgetData.message || 'Не удалось загрузить данные'}
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    colorPrimary: '#5329FF'
+                                }
+                            }}
+                        >
+                            <Button
+                                size='large'
+                                style={{ marginLeft: 24 }}
+                                onClick={() => {
+                                    if (selectedRange && id) {
+                                        let datesRange;
+
+                                        if (selectedRange.period) {
+                                            datesRange = selectedRange
+                                        } else {
+                                            datesRange = {
+                                                date_from: selectedRange.from,
+                                                date_to: selectedRange.to
+                                            }
+                                        }
+                                        const reqData = {
+                                            "supplier_id": parseInt(id),
+                                            "page": 1,
+                                            "limit": 25,
+                                            ...datesRange
+                                        }
+                                        dispatch(dataHandler(reqData))
+                                    }
+                                }}
+                            >
+                                Обновить
+                            </Button>
+                        </ConfigProvider>
+                    </div>
                 </div>
-            </div>
         )
     }
 
