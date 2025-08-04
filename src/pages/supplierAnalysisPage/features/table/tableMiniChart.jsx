@@ -20,7 +20,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 // );
 
 
-const TableMiniChart = ({ data }) => {
+const TableMiniChart = ({ data, color }) => {
 
     const [normilizedChartData, setNormilizedChartData] = useState()
 
@@ -42,8 +42,8 @@ const TableMiniChart = ({ data }) => {
                             if (!chartArea) return null;
 
                             const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                            gradient.addColorStop(0.5, '#5329FF');
-                            gradient.addColorStop(1, '#5329FF50');
+                            gradient.addColorStop(0.5, color);
+                            gradient.addColorStop(1, `${color}50`);
 
 
                             // if (clickedIndex !== null && context.dataIndex !== clickedIndex) {
@@ -62,7 +62,7 @@ const TableMiniChart = ({ data }) => {
     const chartOptions = {
         responsive: true,
         maxBarThickness: 10,
-        maintainAspectRatio: false, // Добавьте эту строку
+        maintainAspectRatio: true, // Добавьте эту строку
         //clip: {left: 0, top: 0, right: 0, bottom: 0},
         //clip: false,
         plugins: {

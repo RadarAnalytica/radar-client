@@ -209,7 +209,7 @@ export const getChartTooltip = (context, chartData) => {
         datasets?.forEach(function (set, i) {
             const targetColor = set.backgroundColor;
             const units = chartCompareConfigObject.find(_ => _.ruName === set.label).units
-            const targetDescr = units ? units : '';
+            //const targetDescr = units ? units : '';
             let value = set?.data[targetInex] || '0';
             let style = '';
             style += '; border-width: 2px';
@@ -220,8 +220,7 @@ export const getChartTooltip = (context, chartData) => {
                 style +
                 '">' +
                 set?.label +
-                ', ' +
-                targetDescr +
+                //targetDescr +
                 ':  <span style="font-weight: bold;">' +
                 value +
                 '</span></span>';

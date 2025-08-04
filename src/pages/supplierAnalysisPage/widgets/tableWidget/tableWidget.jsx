@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styles from './tableWidget.module.css'
 import DownloadButton from '../../../../components/DownloadButton';
-import { ConfigProvider, Table } from 'antd';
+import { ConfigProvider, Table, Button } from 'antd';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
+import { actions as supplierActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
 
 
 //инит стейт сортировки
@@ -21,11 +22,33 @@ const TableWidget = ({
     dataHandler,
 }) => {
     const dispatch = useAppDispatch()
-    const containerRef = useRef(null);
+    const paginationRef = useRef(null)
+    const containerRef = useRef(null)
     const [scrollY, setScrollY] = useState(0);
     const [scrollX, setScrollX] = useState(0);
     const { selectedRange } = useAppSelector(store => store.filters)
-    const { data: tableData } = useAppSelector(store => store.supplierAnalysis[dataType])
+    const { data: tableData, isLoading, isError, message, pagination: paginationConfig, sort } = useAppSelector(store => store.supplierAnalysis[dataType])
+    const tableChangeHandler = (pagination, filters, sorter) => {
+        if (sorter) {
+            dispatch(supplierActions.setSort({
+                dataType: dataType,
+                sort: {
+                    sort_field: sorter.field,
+                    sort_order: sorter.order
+                }
+            }))
+        }
+
+        if (pagination) {
+            dispatch(supplierActions.setPagination({
+                dataType: dataType,
+                pagination: {
+                    ...paginationConfig,
+                    page: pagination.current,
+                }
+            }))
+        }
+    }
 
     useEffect(() => {
         const updateHeight = () => {
@@ -38,7 +61,8 @@ const TableWidget = ({
                 const paddings = 32;
                 // расчет и сохранение высоты таблицы
                 const availableHeight = container.offsetHeight - headerHeight - paddings;
-                setScrollY(availableHeight);
+                const paginationSize = paginationConfig ? 60 : 0
+                setScrollY(availableHeight - paginationSize);
                 // расчет ширины контейнера
                 setScrollX(container.offsetWidth - 32);
             }
@@ -46,7 +70,45 @@ const TableWidget = ({
 
         updateHeight();
 
-    }, [tableConfig, tableData])
+    }, [tableConfig, paginationConfig])
+
+    //pagination styles
+    useEffect(() => {
+        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
+        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
+        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
+        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
+        const body = document.querySelector('.ant-table-tbody')
+        const jumper = document.querySelector('.ant-pagination-options-quick-jumper')
+        const input = jumper?.querySelector('input')
+
+
+        if (jumper && input) {
+
+            input.style.backgroundColor = '#EEEAFF'
+            input.style.padding = '5px'
+            input.style.width = '32px'
+            jumper.textContent = 'Перейти на'
+            jumper.appendChild(input)
+            const suffix = document.createElement('span');
+            suffix.textContent = 'стр'
+            jumper.appendChild(suffix)
+            jumper.style.color = 'black'
+        }
+
+        if (paginationNextButton) {
+            paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+        }
+        if (paginationSingleNextButton) {
+            paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+        }
+        if (paginationSinglePrevButton) {
+            paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+        }
+        if (paginationPrevButton) {
+            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+        }
+    }, [tableData])
 
     //data fetching
     useEffect(() => {
@@ -61,30 +123,95 @@ const TableWidget = ({
                     date_to: selectedRange.to
                 }
             }
-            const reqData = {
+            let reqData = {
                 "supplier_id": parseInt(id),
-                "page": 1,
-                "limit": 25,
                 ...datesRange,
-                // "sorting": {
-                //     "sort_field": "frequency",
-                //     "sort_order": "DESC"
-                // }
             }
-            dispatch(dataHandler(reqData))
+
+            if (paginationConfig?.page) {
+                reqData = {
+                    ...reqData,
+                    pagination: paginationConfig
+                }
+            }
+
+            if (sort) {
+                reqData = {
+                    ...reqData,
+                    sorting: sort
+                }
+            }
+
+            dispatch(dataHandler({ data: reqData, hasLoadingStatus: true }))
         }
-    }, [selectedRange, id])
+    }, [selectedRange, id, sort, paginationConfig?.page])
 
 
-    // if (dataStatus.isLoading) {
-    //     return (
-    //         <div className={styles.widget}>
-    //             <div className={styles.widget__loaderWrapper}>
-    //                 <span className='loader'></span>
-    //             </div>
-    //         </div>
-    //     )
-    // }
+    if (isLoading) {
+        return (
+            <div className={styles.widget}>
+                <div className={styles.loaderWrapper}>
+                    <span className='loader'></span>
+                </div>
+            </div>
+        )
+    }
+
+
+    if (isError) {
+        return (
+            <div className={styles.widget}>
+                <div className={styles.loaderWrapper}>
+                    <div className={styles.errorWrapper__message}>
+                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+                            <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
+                        </svg>
+                        {message || 'Не удалось загрузить данные'}
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    colorPrimary: '#5329FF'
+                                }
+                            }}
+                        >
+                            <Button
+                                size='large'
+                                style={{ marginLeft: 24 }}
+                                onClick={() => {
+                                    if (selectedRange && id) {
+                                        let datesRange;
+
+                                        if (selectedRange.period) {
+                                            datesRange = selectedRange
+                                        } else {
+                                            datesRange = {
+                                                date_from: selectedRange.from,
+                                                date_to: selectedRange.to
+                                            }
+                                        }
+                                        const reqData = {
+                                            "supplier_id": parseInt(id),
+                                            "page": 1,
+                                            "limit": 25,
+                                            ...datesRange,
+                                            // "sorting": {
+                                            //     "sort_field": "frequency",
+                                            //     "sort_order": "DESC"
+                                            // }
+                                        }
+                                        dispatch(dataHandler({ data: reqData, hasLoadingStatus: true }))
+                                    }
+                                }}
+                            >
+                                Обновить
+                            </Button>
+                        </ConfigProvider>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className={styles.widget}>
@@ -100,6 +227,11 @@ const TableWidget = ({
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
+                        token: {
+                            colorPrimary: '#5329FF',
+                            colorText: '#5329FF',
+                            //lineWidth: 0,
+                        },
                         components: {
                             Table: {
                                 headerColor: '#8c8c8c',
@@ -119,6 +251,11 @@ const TableWidget = ({
                                 lineHeight: 1.2,
                                 fontWeightStrong: 500
                             },
+                            Pagination: {
+                                itemActiveBg: '#EEEAFF',
+                                itemBg: '#F7F7F7',
+                                itemColor: '#8C8C8C',
+                            },
                             Checkbox: {
                                 colorBorder: '#ccc',
                                 colorPrimary: '#5329ff',
@@ -131,13 +268,31 @@ const TableWidget = ({
                     {tableData &&
                         <Table
                             virtual
-                            columns={tableConfig}
+                            columns={tableConfig.map(_ => {
+                                if (sort && _.dataIndex === sort.sort_field) {
+                                    return {
+                                        ..._,
+                                        sortOrder: sort.sort_order
+                                    }
+                                } else {
+                                    return _
+                                }
+                            })}
                             dataSource={tableData}
-                            pagination={false}
+                            pagination={paginationConfig ? {
+                                position: ['bottomLeft'],
+                                defaultCurrent: 1,
+                                current: paginationConfig?.page,
+                                total: paginationConfig?.total * paginationConfig?.limit,
+                                pageSize: paginationConfig?.limit,
+                                showSizeChanger: false,
+                                showQuickJumper: true,
+                            } : false}
                             // tableLayout="fixed"
                             rowSelection={false}
                             showSorterTooltip={false}
                             sticky={true}
+                            onChange={tableChangeHandler}
                             expandable={{
                                 // expandedRowRender: (record) => <p>{record.description}</p>,
                                 expandIcon: ExpandIcon,
@@ -145,7 +300,7 @@ const TableWidget = ({
                                 expandedRowClassName: styles.expandRow,
                             }}
                             // scroll={{ x: 'max-content' }}
-                            scroll={{ x: scrollX, y: scrollY }}
+                            scroll={{ x: scrollX, y: scrollY, scrollToFirstRowOnChange: true, }}
                         />
                     }
                 </ConfigProvider>

@@ -17,26 +17,14 @@ import {
     fetchSupplierAnalysisByStockSizeComparsionData
 } from "./supplierAnalysisActions";
 
-const mockOptions = [
-    { value: 'Все бренды' },
-    { value: '1' },
-    { value: '2' },
-    { value: '3' },
-]
-
 
 const initialState = {
-    supplierCurrentBrand: 'Все бренды',
+    supplierCurrentBrand: 0,
     ordersStructureTab: 'По складам (последние 30 дней)',
     stockChartTab: 'Входящие заказы',
-    supplierBrands: mockOptions,
+    supplierBrands: undefined,
     mainSupplierData: undefined,
-    compareSupplierData: {
-        "supplier_id": 250012340,
-        "name": "环 球 智 慧 供 应 链 （ 深 圳 ） 有 限 公 司 后 海 分 公",
-        "full_name": "Global Smart Supply Chain (Shenzhen) Co., Ltd. Houhai Branch",
-        "trademark": "China Express UNIMALL"
-    },
+    compareSupplierData: undefined,
     metaData: {
         isLoading: false,
         isError: false,
@@ -63,6 +51,8 @@ const initialState = {
         isError: false,
         isSuccess: false,
         message: '',
+        pagination: undefined,
+        sort: undefined,
         data: undefined
     },
     byBrandsTableData: {
@@ -70,6 +60,12 @@ const initialState = {
         isError: false,
         isSuccess: false,
         message: '',
+        sort: undefined,
+        pagination: {
+            page: 1,
+            limit: 25,
+            total: 25,
+        },
         data: undefined
     },
     bySubjectsTableData: {
@@ -77,6 +73,12 @@ const initialState = {
         isError: false,
         isSuccess: false,
         message: '',
+        sort: undefined,
+        pagination: {
+            page: 1,
+            limit: 25,
+            total: 25,
+        },
         data: undefined
     },
     byWarehousesTableData: {
@@ -84,6 +86,8 @@ const initialState = {
         isError: false,
         isSuccess: false,
         message: '',
+        sort: undefined,
+        pagination: undefined,
         data: undefined
     },
     bySizesTableData: {
@@ -91,6 +95,8 @@ const initialState = {
         isError: false,
         isSuccess: false,
         message: '',
+        sort: undefined,
+        pagination: undefined,
         data: undefined
     },
     byWharehousesComparsionData: {
@@ -180,6 +186,31 @@ const supplierAnalysisSlice = createSlice({
                     ...statusObject
                 }
             }
+        },
+        setPagination: (state, action) => {
+            const { dataType, pagination } = action.payload;
+            return {
+                ...state,
+                [dataType]: {
+                    ...state[dataType],
+                    pagination: pagination
+                }
+            }
+        },
+        setSort: (state, action) => {
+            const { dataType, sort } = action.payload;
+            return {
+                ...state,
+                [dataType]: {
+                    ...state[dataType],
+                    sort: sort
+                }
+            }
+        },
+        resetState: () => {
+            return {
+               ...initialState
+            }
         }
     },
     extraReducers: (bulder) => {
@@ -201,10 +232,12 @@ const supplierAnalysisSlice = createSlice({
                 state.supplierCurrentBrand = 0
             })
             .addCase(fetchSupplierAnalysisByBrandTableData.fulfilled, (state, action) => {
-                state.byBrandsTableData.data = action.payload;
+                state.byBrandsTableData.data = action.payload.data;
+                state.byBrandsTableData.pagination.total = action.payload.pagination.total
             })
             .addCase(fetchSupplierAnalysisBySubjectsTableData.fulfilled, (state, action) => {
-                state.bySubjectsTableData.data = action.payload;
+                state.bySubjectsTableData.data = action.payload.data;
+                state.bySubjectsTableData.pagination.total = action.payload.pagination.total
             })
             .addCase(fetchSupplierAnalysisByWarehousesTableData.fulfilled, (state, action) => {
                 state.byWarehousesTableData.data = action.payload;
