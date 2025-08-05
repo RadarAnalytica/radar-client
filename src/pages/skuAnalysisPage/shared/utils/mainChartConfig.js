@@ -77,7 +77,7 @@ const getAnnotations = (initData) => {
             type: 'box',
             xMin: moment(i.dates[0]).format('DD.MM.YY'),
             xMax: moment(i.dates[i.dates.length - 1]).format('DD.MM.YY'),
-            backgroundColor: `${color.bgColor || annotationColorsConfig[0].bgColor}95`,
+            backgroundColor: `${color?.bgColor || annotationColorsConfig[0]?.bgColor}95`,
             borderWidth: 0,
             label: {
                 content: `${i.name.substring(0, 1)}${i.name.substring(1).toLowerCase()}`,
