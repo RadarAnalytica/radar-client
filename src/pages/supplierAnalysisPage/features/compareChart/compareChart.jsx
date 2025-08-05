@@ -89,23 +89,8 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         label: compareSupplier?.trademark || compareSupplier?.name,
                         type: chartType,
                         data: isCompareSupplierActive && data[compareSupplier?.supplier_id?.toString()],
-                        borderRadius: 3,
-                        backgroundColor: (context) => {
-                            const ctx = context.chart.ctx;
-                            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                            gradient.addColorStop(0, '#1BC5D1');
-                            gradient.addColorStop(1, '#1BC5D150');
-                            return gradient;
-                        },
-                        borderColor: 'transparent',
-                        borderWidth: 1,
-                        hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-                        yAxisID: 'B',
-                        label: '1',
-                        type: chartType,
-                        data: isCompareSupplierActive && data[compareSupplier.toString()],
                         borderColor: '#1BC5D1',
-                        //yAxisID: yAxis,
+                        yAxisID: 'B',
                         tension: 0.4,
                         pointBorderColor: 'white',
                         backgroundColor: '#1BC5D1',
