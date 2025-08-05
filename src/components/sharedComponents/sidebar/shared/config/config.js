@@ -110,7 +110,7 @@ export const menuConfig = [
             {
                 id: 5,
                 url: '/main', 
-                label: 'Операционные расходы',
+                label: '!!!Операционные расходы!!!',
                 isActive: false,
                 isNew: false
             },
