@@ -2,6 +2,7 @@ import styles from './ordersTableCustomHeader.module.css'
 import { ConfigProvider, Segmented } from 'antd'
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
 import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice'
+import { selectOrdersStructureTab } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors'
 
 const tabs = [
     // 'По группам цветов',
@@ -12,7 +13,7 @@ const tabs = [
 const OrdersTableCustomHeader = () => {
 
     const dispatch = useAppDispatch();
-    const ordersStructureTab = useAppSelector(store => store.supplierAnalysis.ordersStructureTab)
+    const ordersStructureTab = useAppSelector(selectOrdersStructureTab)
 
     return (
         <div className={styles.header}>

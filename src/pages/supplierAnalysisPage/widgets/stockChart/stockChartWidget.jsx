@@ -6,6 +6,7 @@ import { formatPrice } from '../../../../service/utils';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import SearchBlock from '../search/searchBlock';
 import { CompareChart } from '../../features';
+import { selectMainSupplierData, selectCompareSupplierData, selectSupplierAnalysisDataByType } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
 
 
 /**
@@ -23,6 +24,27 @@ import { CompareChart } from '../../features';
 
  */
 
+const getSummary = (data, summaryType) => {
+    if (!data) return 0;
+    const { length } = data
+    const summary = data.reduce((acc, a) => {
+        if (a) {
+            return acc += a
+        } else {
+            return acc
+        }
+    }, 0)
+
+    if (summaryType === 'sum') {
+        return summary
+    }
+
+    if (summaryType === 'avg') {
+        return summary / length
+    }
+}
+
+
 const StockChartWidget = ({
     title,
     downloadButton,
@@ -30,12 +52,14 @@ const StockChartWidget = ({
     dataType,
     units,
     chartType = 'line',
-    dataHandler
+    dataHandler,
+    summaryType = 'sum' // 'sum' | ''avg
 }) => {
 
     const dispatch = useAppDispatch()
-    const { mainSupplierData, compareSupplierData } = useAppSelector(store => store.supplierAnalysis)
-    const { data: chartData, isLoading, isError, message } = useAppSelector(store => store.supplierAnalysis[dataType])
+    const mainSupplierData = useAppSelector(selectMainSupplierData)
+    const compareSupplierData = useAppSelector(selectCompareSupplierData)
+    const { data: chartData, isLoading, isError, message } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
     const { selectedRange } = useAppSelector(store => store.filters)
     const [isMainSupplierActive, setIsMainSupplierActive] = useState(true)
     const [isCompareSupplierActive, setIsCompareSupplierActive] = useState(true)
@@ -97,7 +121,7 @@ const StockChartWidget = ({
                                 onClick={() => {
                                     if (mainSupplierData && compareSupplierData) {
                                         let datesRange;
-                            
+
                                         if (selectedRange.period) {
                                             datesRange = selectedRange
                                         } else {
@@ -164,13 +188,7 @@ const StockChartWidget = ({
                                 <label className={styles.widget__checkboxLabel}>
                                     {mainSupplierData?.trademark}
                                     <span>
-                                        {formatPrice(chartData[mainSupplierData?.supplier_id?.toString()]?.reduce((acc, a) => {
-                                            if (a) {
-                                                return acc += a
-                                            } else {
-                                                return acc
-                                            }
-                                        }, 0).toString(), units)}
+                                        {formatPrice(getSummary(chartData[mainSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
                                     </span>
                                 </label>
                             </Checkbox>
@@ -199,13 +217,7 @@ const StockChartWidget = ({
                                 <label className={styles.widget__checkboxLabel}>
                                     {compareSupplierData?.trademark}
                                     <span>
-                                        {formatPrice(chartData[compareSupplierData?.supplier_id?.toString()]?.reduce((acc, a) => {
-                                            if (a) {
-                                                return acc += a
-                                            } else {
-                                                return acc
-                                            }
-                                        }, 0), units)}
+                                        {formatPrice(getSummary(chartData[compareSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
                                     </span>
                                 </label>
                             </Checkbox>
@@ -217,8 +229,8 @@ const StockChartWidget = ({
                     <CompareChart
                         chartType={chartType}
                         data={chartData}
-                        mainSupplier={mainSupplierData?.supplier_id}
-                        compareSupplier={compareSupplierData?.supplier_id}
+                        mainSupplier={mainSupplierData}
+                        compareSupplier={compareSupplierData}
                         isMainSupplierActive={isMainSupplierActive}
                         isCompareSupplierActive={isCompareSupplierActive}
                     />

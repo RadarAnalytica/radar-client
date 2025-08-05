@@ -17,7 +17,7 @@ function cellRenderer(value, record) {
   if (dataIndex === 'revenue_dynamics') {
     return (
       <div
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '50px' }}
       >
         <TableMiniChart
           data={value}
@@ -113,12 +113,12 @@ function SortIcon({ sortOrder }) {
  */
 
 export const mainTableConfig = [
-  { title: 'Дата', dataIndex: 'date', units: null, fixed: 'left', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Выручка, руб', dataIndex: 'revenue', units: '₽', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Дата', dataIndex: 'date', units: null, fixed: 'left', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Выручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Остатки на конец дня, шт', dataIndex: 'stock_quantity', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Кол-во артикулов, шт', dataIndex: 'goods_quantity', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Кол-во артикулов, шт', dataIndex: 'goods_quantity', units: 'шт', width: 250, render: cellRenderer, filterOptions: true, },
   { title: 'Средняя цена без СПП, руб', dataIndex: 'avg_price', units: '₽', width: 300, render: cellRenderer, filterOptions: true, },
   { title: 'Артикулов с продажами, шт', dataIndex: 'goods_with_sales_quantity', units: 'шт', width: 350, render: cellRenderer, filterOptions: true, },
   { title: 'Кол-во брендов, шт', dataIndex: 'brands_quantity', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
@@ -145,14 +145,14 @@ export const mainTableConfig = [
 
 
 export const goodsTableConfig = [
-  { title: 'Товар', dataIndex: 'wb_id_name', units: null, fixed: 'left', width: 500, render: cellRenderer, filterOptions: true, },
-  { title: 'Доля заказов среди выборки, %', dataIndex: 'share_percent', units: '%', width: 350, render: cellRenderer, filterOptions: true, },
-  { title: 'Артикул', dataIndex: 'wb_id', units: null, width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Бренд', dataIndex: 'brand_name', units: null, width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Средняя цена без СПП, руб', dataIndex: 'avg_price', units: '₽', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Средняя скидка без СПП, %', dataIndex: 'avg_discount', units: '%', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Товар', dataIndex: 'wb_id_name', units: null, fixed: 'left', width: 400, render: cellRenderer, filterOptions: true, },
+  { title: 'Доля заказов среди выборки, %', dataIndex: 'share_percent', units: '%', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Артикул', dataIndex: 'wb_id', units: null, width: 150, render: cellRenderer, filterOptions: true, },
+  { title: 'Бренд', dataIndex: 'brand_name', units: null, width: 150, render: cellRenderer, filterOptions: true, },
+  { title: 'Средняя цена без СПП, руб', dataIndex: 'avg_price', units: '₽', width: 250, render: cellRenderer, filterOptions: true, },
+  { title: 'Средняя скидка без СПП, %', dataIndex: 'avg_discount', units: '%', width: 250, render: cellRenderer, filterOptions: true, },
+  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
 ].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 
@@ -173,16 +173,16 @@ export const goodsTableConfig = [
 
 export const salesTableConfig = [
   { title: 'Категория', dataIndex: 'subject_name', units: null, fixed: 'left', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Кол-во артикулов', dataIndex: 'goods_quantity', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Кол-во артикулов', dataIndex: 'goods_quantity', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Артикулов с продажами, шт', dataIndex: 'goods_with_sales_quantity', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Кол-во брендов, шт', dataIndex: 'brands_quantity', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Кол-во брендов, шт', dataIndex: 'brands_quantity', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Средняя цена без СПП, руб', dataIndex: 'avg_price', units: '₽', width: 300, render: cellRenderer, filterOptions: true, },
   { title: 'Средняя скидка без СПП, %', dataIndex: 'avg_discount', units: '%', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
-  { title: 'Остатки на конец периода, шт', dataIndex: 'quantity', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 170, render: cellRenderer, filterOptions: true, },
+  { title: 'Остатки на конец периода, шт', dataIndex: 'quantity', units: 'шт', width: 320, render: cellRenderer, filterOptions: true, },
 ].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 export const ordersStructByColorsTableConfig = [
@@ -194,9 +194,9 @@ export const ordersStructByColorsTableConfig = [
   { title: 'Средняя скидка без СПП, %', dataIndex: 'avg_discount_no_spp', units: '%', width: 160, render: cellRenderer, filterOptions: true, },
   { title: 'Средний чек, руб', dataIndex: 'avg_bill', units: '₽', width: 160, render: cellRenderer, filterOptions: true, },
   { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 160, render: cellRenderer, filterOptions: true, },
-  { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 160, render: cellRenderer, filterOptions: true, },
+  { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 160, render: cellRenderer, filterOptions: true, },
-  { title: 'Динамика заказов', dataIndex: '', units: null, hasChart: true, width: 170, render: cellRenderer, filterOptions: true, },
+  { title: 'Динамика заказов', dataIndex: '', units: null, hasChart: true, width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Упущенная выручка, руб', dataIndex: '', units: '₽', width: 170, render: cellRenderer, filterOptions: true, },
 ].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
@@ -225,13 +225,13 @@ export const ordersStructByColorsTableConfig = [
  */
 
 export const ordersStructByWarehousesTableConfig = [
-  { title: 'Склад', dataIndex: 'warehouse_name', units: null, fixed: 'left', width: 170, render: cellRenderer, filterOptions: true, },
-  { title: 'Доля заказов среди выборки, %', dataIndex: 'share_percent', units: '%', width: 170, render: cellRenderer, filterOptions: true, },
-  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 160, render: cellRenderer, filterOptions: true, },
-  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 160, render: cellRenderer, filterOptions: true, },
-  { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 160, render: cellRenderer,  filterOptions: true, },
-  { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 160, render: cellRenderer, filterOptions: true, },
-  { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: null, hasChart: true, width: 170, render: cellRenderer,  filterOptions: true, },
+  { title: 'Склад', dataIndex: 'warehouse_name', units: null, fixed: 'left', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Доля заказов среди выборки, %', dataIndex: 'share_percent', units: '%', width: 350, render: cellRenderer, filterOptions: true, },
+  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
+  { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
 ].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 /**
@@ -257,13 +257,13 @@ export const ordersStructByWarehousesTableConfig = [
  */
 
 export const ordersStructBySizesTableConfig = [
-  { title: 'Размер', dataIndex: 'size_name', units: null, fixed: 'left', width: 170, render: cellRenderer, filterOptions: true, },
-  { title: 'Доля заказов среди выборки, %', dataIndex: 'share_percent', units: '%', width: 170, render: cellRenderer, filterOptions: true, },
-  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 160, render: cellRenderer, filterOptions: true, },
-  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 160, render: cellRenderer, filterOptions: true, },
-  { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 160, render: cellRenderer,  filterOptions: true, },
-  { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 160, render: cellRenderer, filterOptions: true, },
-  { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: null, hasChart: true, width: 170, render: cellRenderer,  filterOptions: true, },
+  { title: 'Размер', dataIndex: 'size_name', units: null, fixed: 'left', width: 300, render: cellRenderer, filterOptions: true, },
+  { title: 'Доля заказов среди выборки, %', dataIndex: 'share_percent', units: '%', width: 350, render: cellRenderer, filterOptions: true, },
+  { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
+  { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
 ].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 

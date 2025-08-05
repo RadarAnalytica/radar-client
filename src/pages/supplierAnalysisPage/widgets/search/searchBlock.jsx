@@ -7,7 +7,7 @@ import useDebouncedFunction from '../../../../service/hooks/useDebounce';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as supplierActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
-
+import { selectMainSupplierData, selectCompareSupplierData } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
 
 
 const requestInitState = {
@@ -19,7 +19,8 @@ const requestInitState = {
 
 const SearchBlock = ({ supplierType = 'main' }) => {
     const dispatch = useAppDispatch()
-    const { mainSupplierData, compareSupplierData } = useAppSelector(store => store.supplierAnalysis)
+    const mainSupplierData = useAppSelector(selectMainSupplierData)
+    const compareSupplierData = useAppSelector(selectCompareSupplierData)
     const [requestStatus, setRequestStatus] = useState(requestInitState)
     const [autocompleteOptions, setAutocompleteOptions] = useState();
     const [currentData, setCurrentData] = useState();

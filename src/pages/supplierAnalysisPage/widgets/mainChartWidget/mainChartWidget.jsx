@@ -9,6 +9,8 @@ import { chartCompareConfigObject, mainChartOptionsGenerator } from '../../share
 import moment from 'moment';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
 import { ConfigProvider, Button } from 'antd';
+import { selectSupplierAnalysisDataByType } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
+// import { LineChart } from '../../features';
 
 ChartJS.register(
     annotationPlugin,
@@ -30,7 +32,6 @@ const MainChartWidget = ({ id, dataType, dataHandler }) => {
     const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
     const [normilizedChartData, setNormilizedChartData] = useState()
     const { selectedRange } = useAppSelector(store => store.filters)
-    //const { skuChartData, dataStatus } = useAppSelector(store => store.skuAnalysis)
     const widgetData = useAppSelector(store => store.supplierAnalysis[dataType])
 
 

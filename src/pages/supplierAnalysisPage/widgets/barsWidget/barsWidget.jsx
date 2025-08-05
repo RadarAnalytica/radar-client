@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './barsWidget.module.css'
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
+import DownloadButton from '../../../../components/DownloadButton';
+import { ConfigProvider, Checkbox, Button } from 'antd';
+import { formatPrice } from '../../../../service/utils';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { selectSupplierAnalysisDataByType } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
 import { Bar } from '../../features';
-import { ConfigProvider, Button } from 'antd';
 
 
 /**
@@ -51,7 +54,7 @@ const BARS_CONFIG = [
 
 const BarsWidget = ({ dataHandler, dataType, id }) => {
     const dispatch = useAppDispatch()
-    const widgetData = useAppSelector(store => store.supplierAnalysis[dataType])
+    const widgetData = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
     const { isSidebarHidden } = useAppSelector(store => store.utils)
     const { selectedRange } = useAppSelector(store => store.filters)
 

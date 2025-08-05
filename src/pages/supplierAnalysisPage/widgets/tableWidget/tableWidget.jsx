@@ -4,6 +4,7 @@ import DownloadButton from '../../../../components/DownloadButton';
 import { ConfigProvider, Table, Button } from 'antd';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { actions as supplierActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
+import { selectSupplierAnalysisDataByType } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
 
 
 //инит стейт сортировки
@@ -27,7 +28,7 @@ const TableWidget = ({
     const [scrollY, setScrollY] = useState(0);
     const [scrollX, setScrollX] = useState(0);
     const { selectedRange } = useAppSelector(store => store.filters)
-    const { data: tableData, isLoading, isError, message, pagination: paginationConfig, sort } = useAppSelector(store => store.supplierAnalysis[dataType])
+    const { data: tableData, isLoading, isError, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
     const tableChangeHandler = (pagination, filters, sorter) => {
         if (sorter) {
             dispatch(supplierActions.setSort({
@@ -74,39 +75,43 @@ const TableWidget = ({
 
     //pagination styles
     useEffect(() => {
-        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
-        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
-        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
-        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
-        const body = document.querySelector('.ant-table-tbody')
-        const jumper = document.querySelector('.ant-pagination-options-quick-jumper')
-        const input = jumper?.querySelector('input')
+        const paginationNextButton = document.querySelectorAll('.ant-pagination-jump-next')
+        const paginationPrevButton = document.querySelectorAll('.ant-pagination-jump-prev')
+        const paginationSingleNextButton = document.querySelectorAll('.ant-pagination-next')
+        const paginationSinglePrevButton = document.querySelectorAll('.ant-pagination-prev')
+        const jumper = document.querySelectorAll('.ant-pagination-options-quick-jumper')
 
 
-        if (jumper && input) {
+        if (jumper) {
+            jumper.forEach(_ => {
+                const input = _?.querySelector('input')
 
-            input.style.backgroundColor = '#EEEAFF'
-            input.style.padding = '5px'
-            input.style.width = '32px'
-            jumper.textContent = 'Перейти на'
-            jumper.appendChild(input)
-            const suffix = document.createElement('span');
-            suffix.textContent = 'стр'
-            jumper.appendChild(suffix)
-            jumper.style.color = 'black'
+                if (input && _) {
+                    input.style.backgroundColor = '#EEEAFF'
+                    input.style.padding = '5px'
+                    input.style.width = '32px'
+                    _.textContent = 'Перейти на'
+                    _.appendChild(input)
+                    const suffix = document.createElement('span');
+                    suffix.textContent = 'стр'
+                    _.appendChild(suffix)
+                    _.style.color = 'black'
+                }
+            })
+
         }
 
         if (paginationNextButton) {
-            paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+            paginationNextButton.forEach(_ => _.setAttribute('title', 'Следующие 5 страниц'))
         }
         if (paginationSingleNextButton) {
-            paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+            paginationSingleNextButton.forEach(_ => _.setAttribute('title', 'Следующая страница'))
         }
         if (paginationSinglePrevButton) {
-            paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+            paginationSinglePrevButton.forEach(_=>_.setAttribute('title', 'Предыдущая страница'))
         }
         if (paginationPrevButton) {
-            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+            paginationPrevButton.forEach(_=>_.setAttribute('title', 'Предыдущие 5 страниц'))
         }
     }, [tableData])
 
