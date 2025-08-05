@@ -26,7 +26,7 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           cd /home/radar/radar-client
-          git pull 
+          git pull origin ${{ github.ref_name }}
           
           cd /home/radar
           docker compose up -d --build nginx
