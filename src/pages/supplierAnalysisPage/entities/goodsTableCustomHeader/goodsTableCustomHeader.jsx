@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 import styles from './goodsTableCustomHeader.module.css'
-import { Select, ConfigProvider } from 'antd';
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
+import { ConfigProvider, Select } from 'antd'
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
+import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice'
+import { selectSupplierCurrentBrand, selectSupplierBrands } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors'
 import { fetchSupplierAnalysisBrandsData } from '../../../../redux/supplierAnalysis/supplierAnalysisActions';
-import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
 
 const GoodsTableCustomHeader = ({ id }) => {
 
     const dispatch = useAppDispatch();
-    const { supplierCurrentBrand, supplierBrands } = useAppSelector(store => store.supplierAnalysis)
+    const supplierCurrentBrand = useAppSelector(selectSupplierCurrentBrand)
+    const supplierBrands = useAppSelector(selectSupplierBrands)
     useEffect(() => {
 
         if (id) {

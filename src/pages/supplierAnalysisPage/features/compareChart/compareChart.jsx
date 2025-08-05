@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './compareChart.module.css'
-import { ChartControls } from '../../features';
 import { Chart } from 'react-chartjs-2';
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
-import { chartCompareConfigObject, mainChartOptionsGenerator } from '../../shared';
-import moment from 'moment';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
+import moment from 'moment';
 
 ChartJS.register(
     annotationPlugin,
@@ -25,13 +22,7 @@ ChartJS.register(
 
 
 export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSupplierActive, isCompareSupplierActive, chartType }) => {
-    //const dispatch = useAppDispatch()
-    //const [chartControls, setChartControls] = useState(chartCompareConfigObject.filter(_ => _.isControl).map(_ => ({ ..._, isActive: _.defaultActive })))
     const [normilizedChartData, setNormilizedChartData] = useState()
-    //const { selectedRange } = useAppSelector(store => store.filters)
-    //const { skuChartData, dataStatus } = useAppSelector(store => store.skuAnalysis)
-    //const widgetData = useAppSelector(store => store.supplierAnalysis[dataType])
-
 
 
     useEffect(() => {
@@ -40,9 +31,9 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                 labels: data.labels,
                 datasets: [
                     {
-                        label: '1',
+                        label: mainSupplier?.trademark || mainSupplier?.name,
                         type: chartType,
-                        data: isMainSupplierActive && data[mainSupplier.toString()],
+                        data: isMainSupplierActive && data[mainSupplier?.supplier_id?.toString()],
                         borderRadius: 3,
                         backgroundColor: (context) => {
                             const ctx = context.chart.ctx;
@@ -57,9 +48,9 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         yAxisID: 'B',
                     },
                     {
-                        label: '2',
+                        label: compareSupplier?.trademark || compareSupplier?.name,
                         type: chartType,
-                        data: isCompareSupplierActive && data[compareSupplier.toString()],
+                        data: isCompareSupplierActive && data[compareSupplier?.supplier_id?.toString()],
                         borderRadius: 3,
                         backgroundColor: (context) => {
                             const ctx = context.chart.ctx;
@@ -82,9 +73,9 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                 labels: data.labels,
                 datasets: [
                     {
-                        label: '1',
+                        label: mainSupplier?.trademark || mainSupplier?.name,
                         type: chartType,
-                        data: isMainSupplierActive && data[mainSupplier.toString()],
+                        data: isMainSupplierActive && data[mainSupplier?.supplier_id?.toString()],
                         borderColor: '#5329FF',
                         yAxisID: 'A',
                         tension: 0.4,
@@ -95,9 +86,9 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         borderWidth: 2
                     },
                     {
-                        label: '2',
+                        label: compareSupplier?.trademark || compareSupplier?.name,
                         type: chartType,
-                        data: isCompareSupplierActive && data[compareSupplier.toString()],
+                        data: isCompareSupplierActive && data[compareSupplier?.supplier_id?.toString()],
                         borderRadius: 3,
                         backgroundColor: (context) => {
                             const ctx = context.chart.ctx;
@@ -126,7 +117,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
             }
             setNormilizedChartData({ ...nomalizedDataObject })
         }
-    }, [data, isMainSupplierActive, isCompareSupplierActive])
+    }, [data, isMainSupplierActive, isCompareSupplierActive, mainSupplier, compareSupplier])
 
     const chartOptions = {
         //responsive: true,
@@ -138,14 +129,14 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
             legend: {
                 display: false,
             },
-            //   tooltip: {
-            //     enabled: false,
-            //     intersect: false,
-            //     mode: 'index',
-            //     axis: 'x',
-            //     callbacks: {},
-            //     //external: (context) => { getChartTooltip(context, chartData) }
-            //   },
+              tooltip: {
+                enabled: true,
+                intersect: false,
+                mode: 'index',
+                axis: 'x',
+                callbacks: {},
+                //external: (context) => { getChartTooltip(context, normilizedChartData) }
+              },
             verticalDashedLine: { enabled: true }
         },
         // elements: {
@@ -162,6 +153,9 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                     callback: function (value, index, values) {
                         const label = this.getLabelForValue(value);
                         // Обрезаем до 10 символов, добавляем "..." если длиннее
+                        if (chartType === 'line') {
+                            return moment(label).format('DD.MM.YYYY')
+                        }
                         return label.length > 10 ? label.slice(0, 10) + '…' : label;
                     }
                 }
@@ -232,12 +226,10 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                 /> */}
                 {normilizedChartData &&
                     <Chart
-                        type='line'
                         data={{ ...normilizedChartData }}
                         width={100}
                         height={40}
                         options={chartOptions}
-                    //options={mainChartOptionsGenerator(widgetData.data, chartControls.find(_ => _.isAnnotation), chartControls.find(_ => _.engName === 'seasonality'), normilizedChartData)}
                     />}
             </div>
         </div>
