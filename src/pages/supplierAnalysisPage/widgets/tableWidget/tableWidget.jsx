@@ -29,7 +29,8 @@ const TableWidget = ({
     const [scrollY, setScrollY] = useState(0);
     const [scrollX, setScrollX] = useState(0);
     const { selectedRange } = useAppSelector(store => store.filters)
-    const { data: tableData, isLoading, isError, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
+    const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
+   
     const tableChangeHandler = (pagination, filters, sorter) => {
         if (sorter) {
             dispatch(supplierActions.setSort({
@@ -235,6 +236,22 @@ const TableWidget = ({
         )
     }
 
+    if (isSuccess && tableData && tableData.length === 0) {
+        return (
+            <div className={styles.widget}>
+                <div className={styles.loaderWrapper}>
+                    <div className={styles.errorWrapper__message}>
+                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+                            <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
+                        </svg>
+                        {'Данных пока нет'}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className={styles.widget}>
             <div className={!title && !customHeader && !downloadButton ? `${styles.widget__header} ${styles.widget__header_hidden}` : styles.widget__header}>
@@ -245,7 +262,7 @@ const TableWidget = ({
                 }
             </div>
 
-            <div className={styles.widget__tableWrapper} ref={containerRef} style={{height: containerHeight, minHeight: containerHeight, maxHeight: containerHeight}}>
+            <div className={styles.widget__tableWrapper} ref={containerRef} style={{maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto' }}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
