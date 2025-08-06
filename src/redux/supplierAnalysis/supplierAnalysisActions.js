@@ -260,7 +260,7 @@ export const fetchSupplierAnalysisBySizesTableData = createAsyncThunk(
 export const fetchSupplierAnalysisByWharehousesComparsionData = createAsyncThunk(
   'supplierAnalysisByWharehousesComparsionData',
   async (reqData, { dispatch }) => {
-    dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byWharehousesComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byWharehousesComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/warehouse-quantity`, {
@@ -268,7 +268,7 @@ export const fetchSupplierAnalysisByWharehousesComparsionData = createAsyncThunk
         headers: {
           'content-type': 'application/json',
         },
-        body: JSON.stringify(reqData)
+        body: JSON.stringify(reqData.data)
       });
       if (!res.ok) {
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byWharehousesComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
@@ -276,7 +276,7 @@ export const fetchSupplierAnalysisByWharehousesComparsionData = createAsyncThunk
       }
       const data = await res.json();
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byWharehousesComparsionData', statusObject: { isLoading: false, isError: false, isSuccess: true, message: '' } }))
-      return createCompareChartDataDTO(data, reqData.main_supplier_id, reqData.compared_supplier_id)
+      return createCompareChartDataDTO(data, reqData.data.main_supplier_id, reqData.data.compared_supplier_id)
     } catch (e) {
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byWharehousesComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
     }
@@ -285,7 +285,7 @@ export const fetchSupplierAnalysisByWharehousesComparsionData = createAsyncThunk
 export const fetchSupplierAnalysisByIncomingOrdersComparsionData = createAsyncThunk(
   'supplierAnalysisByIncomingOrdersComparsionData',
   async (reqData, { dispatch }) => {
-    dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byIncomingOrdersComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byIncomingOrdersComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/revenue`, {
@@ -293,7 +293,7 @@ export const fetchSupplierAnalysisByIncomingOrdersComparsionData = createAsyncTh
         headers: {
           'content-type': 'application/json',
         },
-        body: JSON.stringify(reqData)
+        body: JSON.stringify(reqData.data)
       });
       if (!res.ok) {
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byIncomingOrdersComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
@@ -301,7 +301,7 @@ export const fetchSupplierAnalysisByIncomingOrdersComparsionData = createAsyncTh
       }
       const data = await res.json();
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byIncomingOrdersComparsionData', statusObject: { isLoading: false, isError: false, isSuccess: true, message: '' } }))
-      return createCompareChartDataDTO(data, reqData.main_supplier_id, reqData.compared_supplier_id)
+      return createCompareChartDataDTO(data, reqData.data.main_supplier_id, reqData.data.compared_supplier_id)
     } catch (e) {
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byIncomingOrdersComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
     }
@@ -310,7 +310,7 @@ export const fetchSupplierAnalysisByIncomingOrdersComparsionData = createAsyncTh
 export const fetchSupplierAnalysisByOrderedProductsComparsionData = createAsyncThunk(
   'supplierAnalysisByOrderedProductsComparsionData',
   async (reqData, { dispatch }) => {
-    dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byOrderedProductsComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byOrderedProductsComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/orders`, {
@@ -318,7 +318,7 @@ export const fetchSupplierAnalysisByOrderedProductsComparsionData = createAsyncT
         headers: {
           'content-type': 'application/json',
         },
-        body: JSON.stringify(reqData)
+        body: JSON.stringify(reqData.data)
       });
       if (!res.ok) {
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byOrderedProductsComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
@@ -326,7 +326,7 @@ export const fetchSupplierAnalysisByOrderedProductsComparsionData = createAsyncT
       }
       const data = await res.json();
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byOrderedProductsComparsionData', statusObject: { isLoading: false, isError: false, isSuccess: true, message: '' } }))
-      return createCompareChartDataDTO(data, reqData.main_supplier_id, reqData.compared_supplier_id)
+      return createCompareChartDataDTO(data, reqData.data.main_supplier_id, reqData.data.compared_supplier_id)
     } catch (e) {
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byOrderedProductsComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
     }
@@ -335,7 +335,7 @@ export const fetchSupplierAnalysisByOrderedProductsComparsionData = createAsyncT
 export const fetchSupplierAnalysisByAvgPricesComparsionData = createAsyncThunk(
   'supplierAnalysisByAvgPricesComparsionData',
   async (reqData, { dispatch }) => {
-    dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgPricesComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgPricesComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-price`, {
@@ -343,7 +343,7 @@ export const fetchSupplierAnalysisByAvgPricesComparsionData = createAsyncThunk(
         headers: {
           'content-type': 'application/json',
         },
-        body: JSON.stringify(reqData)
+        body: JSON.stringify(reqData.data)
       });
       if (!res.ok) {
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgPricesComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
@@ -351,7 +351,7 @@ export const fetchSupplierAnalysisByAvgPricesComparsionData = createAsyncThunk(
       }
       const data = await res.json();
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgPricesComparsionData', statusObject: { isLoading: false, isError: false, isSuccess: true, message: '' } }))
-      return createCompareChartDataDTO(data, reqData.main_supplier_id, reqData.compared_supplier_id)
+      return createCompareChartDataDTO(data, reqData.data.main_supplier_id, reqData.data.compared_supplier_id)
     } catch (e) {
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgPricesComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
     }
@@ -360,7 +360,7 @@ export const fetchSupplierAnalysisByAvgPricesComparsionData = createAsyncThunk(
 export const fetchSupplierAnalysisByAvgDiscountsComparsionData = createAsyncThunk(
   'supplierAnalysisByAvgDiscountsComparsionData',
   async (reqData, { dispatch }) => {
-    dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgDiscountsComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgDiscountsComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-discount`, {
@@ -368,7 +368,7 @@ export const fetchSupplierAnalysisByAvgDiscountsComparsionData = createAsyncThun
         headers: {
           'content-type': 'application/json',
         },
-        body: JSON.stringify(reqData)
+        body: JSON.stringify(reqData.data)
       });
       if (!res.ok) {
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgDiscountsComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
@@ -376,7 +376,7 @@ export const fetchSupplierAnalysisByAvgDiscountsComparsionData = createAsyncThun
       }
       const data = await res.json();
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgDiscountsComparsionData', statusObject: { isLoading: false, isError: false, isSuccess: true, message: '' } }))
-      return createCompareChartDataDTO(data, reqData.main_supplier_id, reqData.compared_supplier_id)
+      return createCompareChartDataDTO(data, reqData.data.main_supplier_id, reqData.data.compared_supplier_id)
     } catch (e) {
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgDiscountsComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
     }
@@ -385,7 +385,7 @@ export const fetchSupplierAnalysisByAvgDiscountsComparsionData = createAsyncThun
 export const fetchSupplierAnalysisByStockSizeComparsionData = createAsyncThunk(
   'supplierAnalysisByStockSizeComparsionData',
   async (reqData, { dispatch }) => {
-    dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byStockSizeComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byStockSizeComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-discount`, {
@@ -393,7 +393,7 @@ export const fetchSupplierAnalysisByStockSizeComparsionData = createAsyncThunk(
         headers: {
           'content-type': 'application/json',
         },
-        body: JSON.stringify(reqData)
+        body: JSON.stringify(reqData.data)
       });
       if (!res.ok) {
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byStockSizeComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
@@ -401,7 +401,7 @@ export const fetchSupplierAnalysisByStockSizeComparsionData = createAsyncThunk(
       }
       const data = await res.json();
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byStockSizeComparsionData', statusObject: { isLoading: false, isError: false, isSuccess: true, message: '' } }))
-      return createCompareChartDataDTO(data, reqData.main_supplier_id, reqData.compared_supplier_id)
+      return createCompareChartDataDTO(data, reqData.data.main_supplier_id, reqData.data.compared_supplier_id)
     } catch (e) {
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byStockSizeComparsionData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
     }

@@ -21,6 +21,7 @@ const TableWidget = ({
     customHeader,
     dataType,
     dataHandler,
+    containerHeight
 }) => {
     const dispatch = useAppDispatch()
     const paginationRef = useRef(null)
@@ -241,7 +242,7 @@ const TableWidget = ({
                 }
             </div>
 
-            <div className={styles.widget__tableWrapper} ref={containerRef}>
+            <div className={styles.widget__tableWrapper} ref={containerRef} style={{height: containerHeight, minHeight: containerHeight, maxHeight: containerHeight}}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
