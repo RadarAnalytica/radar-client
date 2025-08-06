@@ -7,7 +7,7 @@ export const ProductCell = ({value, rowData }) => {
     return (
         <div className={`${styles.table__rowItem} ${styles.table__rowItem_wide}`}>
         <div className={styles.table__rowImgWrapper}>
-            <img src={rowData.image_url} width={30} height={40} onError={(e) => {
+            <img src={rowData.image_url} width={45} height={60} onError={(e) => {
                 e.target.style.display = 'none'
             }} />
         </div>

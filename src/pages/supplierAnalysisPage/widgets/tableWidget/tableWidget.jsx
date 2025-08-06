@@ -53,25 +53,38 @@ const TableWidget = ({
 
     useEffect(() => {
         const updateHeight = () => {
+
             if (containerRef.current) {
                 // ref контейнера который занимает всю высоту
                 const container = containerRef.current;
 
                 // расчет высоты шапки и добавление отступов контейнера
                 const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-                const paddings = 32;
+                const paddingsY = 50;
                 // расчет и сохранение высоты таблицы
-                const availableHeight = container.offsetHeight - headerHeight - paddings;
                 const paginationSize = paginationConfig ? 60 : 0
-                setScrollY(availableHeight - paginationSize);
+                const availableHeight = container.offsetHeight - headerHeight - paddingsY - paginationSize;
+                setScrollY(availableHeight);
                 // расчет ширины контейнера
                 setScrollX(container.offsetWidth - 32);
             }
         };
-
         updateHeight();
 
-    }, [tableConfig, paginationConfig])
+    }, [tableConfig, paginationConfig, tableData])
+
+
+
+    //костыль для начального положения скролла
+    useEffect(() => {
+        const tBody = document.querySelectorAll('.ant-table-tbody-virtual-holder')
+        if (tBody) {
+            tBody.forEach(_ => {
+                _.scrollTo({ top: 0 })
+            })
+        }
+
+    }, [tableData, isLoading, tableConfig, paginationConfig])
 
     //pagination styles
     useEffect(() => {
@@ -108,12 +121,12 @@ const TableWidget = ({
             paginationSingleNextButton.forEach(_ => _.setAttribute('title', 'Следующая страница'))
         }
         if (paginationSinglePrevButton) {
-            paginationSinglePrevButton.forEach(_=>_.setAttribute('title', 'Предыдущая страница'))
+            paginationSinglePrevButton.forEach(_ => _.setAttribute('title', 'Предыдущая страница'))
         }
         if (paginationPrevButton) {
-            paginationPrevButton.forEach(_=>_.setAttribute('title', 'Предыдущие 5 страниц'))
+            paginationPrevButton.forEach(_ => _.setAttribute('title', 'Предыдущие 5 страниц'))
         }
-    }, [tableData])
+    }, [tableData, paginationConfig])
 
     //data fetching
     useEffect(() => {
@@ -304,7 +317,7 @@ const TableWidget = ({
                                 rowExpandable: (record) => !!record.description,
                                 expandedRowClassName: styles.expandRow,
                             }}
-                            // scroll={{ x: 'max-content' }}
+                            preserveScrollPosition={false}
                             scroll={{ x: scrollX, y: scrollY, scrollToFirstRowOnChange: true, }}
                         />
                     }
