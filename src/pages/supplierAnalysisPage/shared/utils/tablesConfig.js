@@ -167,7 +167,7 @@ export const goodsTableConfig = [
   { title: 'Средняя цена без СПП, руб', dataIndex: 'avg_price', units: '₽', width: 250, render: cellRenderer, filterOptions: true, },
   { title: 'Средняя скидка без СПП, %', dataIndex: 'avg_discount', units: '%', width: 250, render: cellRenderer, filterOptions: true, },
   { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
-  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Выручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
 ].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 

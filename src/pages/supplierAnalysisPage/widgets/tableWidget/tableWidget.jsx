@@ -29,8 +29,9 @@ const TableWidget = ({
     const [scrollY, setScrollY] = useState(0);
     const [scrollX, setScrollX] = useState(0);
     const { selectedRange } = useAppSelector(store => store.filters)
+    const { currentBrand } = useAppSelector(store => store.supplierAnalysis)
     const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
-   
+
     const tableChangeHandler = (pagination, filters, sorter) => {
         if (sorter) {
             dispatch(supplierActions.setSort({
@@ -151,10 +152,8 @@ const TableWidget = ({
             if (paginationConfig?.page) {
                 reqData = {
                     ...reqData,
-                    pagination: {
-                        page: paginationConfig.page,
-                        limit: paginationConfig.limit
-                    }
+                    page: paginationConfig.page,
+                    limit: paginationConfig.limit
                 }
             }
 
@@ -165,15 +164,22 @@ const TableWidget = ({
                 }
             }
 
+            if (dataType === 'byBrandsTableData') {
+                reqData = {
+                    ...reqData,
+                    brands: [currentBrand || 0],
+                }
+            }
+
             dispatch(dataHandler({ data: reqData, hasLoadingStatus: true }))
         }
-    }, [selectedRange, id, sort, paginationConfig?.page])
+    }, [selectedRange, id, sort, paginationConfig?.page, currentBrand])
 
 
     if (isLoading) {
         return (
             <div className={styles.widget}>
-                <div className={styles.loaderWrapper}>
+                <div className={styles.loaderWrapper} style={{ height: containerHeight}}>
                     <span className='loader'></span>
                 </div>
             </div>
@@ -262,7 +268,7 @@ const TableWidget = ({
                 }
             </div>
 
-            <div className={styles.widget__tableWrapper} ref={containerRef} style={{maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto' }}>
+            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto' }}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
@@ -306,7 +312,7 @@ const TableWidget = ({
                 >
                     {tableData &&
                         <Table
-                            virtual
+                            //virtual
                             columns={tableConfig.map(_ => {
                                 if (sort && _.dataIndex === sort.sort_field) {
                                     return {

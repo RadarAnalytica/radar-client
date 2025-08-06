@@ -32,7 +32,7 @@ import { Bar } from '../../features';
 
 const BARS_CONFIG = [
     // brand meta
-    { index: 'brands', title: 'Актуальное количество брендов на сегодня', hasColoredTitle: true, hasRateStar: false, units: 'шт' },
+    { index: 'brands', title: 'Актуальное количество брендов на сегодня', hasColoredTitle: true, hasRateStar: false, units: '' },
     { index: 'goods', title: 'Артикулов за 30 дней', hasColoredTitle: false, hasRateStar: false, units: 'шт' },
     { index: 'avg_daily_revenue', title: 'Среднедневная выручка за 30 дней', hasColoredTitle: false, hasRateStar: false, units: '₽' },
     { index: 'rating', title: 'Рейтинг', hasColoredTitle: false, hasRateStar: true, units: null },
