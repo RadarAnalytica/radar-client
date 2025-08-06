@@ -21,6 +21,7 @@ const TableWidget = ({
     customHeader,
     dataType,
     dataHandler,
+    containerHeight
 }) => {
     const dispatch = useAppDispatch()
     const paginationRef = useRef(null)
@@ -28,7 +29,9 @@ const TableWidget = ({
     const [scrollY, setScrollY] = useState(0);
     const [scrollX, setScrollX] = useState(0);
     const { selectedRange } = useAppSelector(store => store.filters)
-    const { data: tableData, isLoading, isError, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
+    const { currentBrand } = useAppSelector(store => store.supplierAnalysis)
+    const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
+
     const tableChangeHandler = (pagination, filters, sorter) => {
         if (sorter) {
             dispatch(supplierActions.setSort({
@@ -53,25 +56,38 @@ const TableWidget = ({
 
     useEffect(() => {
         const updateHeight = () => {
+
             if (containerRef.current) {
                 // ref контейнера который занимает всю высоту
                 const container = containerRef.current;
 
                 // расчет высоты шапки и добавление отступов контейнера
                 const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-                const paddings = 32;
+                const paddingsY = 50;
                 // расчет и сохранение высоты таблицы
-                const availableHeight = container.offsetHeight - headerHeight - paddings;
                 const paginationSize = paginationConfig ? 60 : 0
-                setScrollY(availableHeight - paginationSize);
+                const availableHeight = container.offsetHeight - headerHeight - paddingsY - paginationSize;
+                setScrollY(availableHeight);
                 // расчет ширины контейнера
                 setScrollX(container.offsetWidth - 32);
             }
         };
-
         updateHeight();
 
-    }, [tableConfig, paginationConfig])
+    }, [tableConfig, paginationConfig, tableData])
+
+
+
+    //костыль для начального положения скролла
+    useEffect(() => {
+        const tBody = document.querySelectorAll('.ant-table-tbody-virtual-holder')
+        if (tBody) {
+            tBody.forEach(_ => {
+                _.scrollTo({ top: 0 })
+            })
+        }
+
+    }, [tableData, isLoading, tableConfig, paginationConfig])
 
     //pagination styles
     useEffect(() => {
@@ -108,12 +124,12 @@ const TableWidget = ({
             paginationSingleNextButton.forEach(_ => _.setAttribute('title', 'Следующая страница'))
         }
         if (paginationSinglePrevButton) {
-            paginationSinglePrevButton.forEach(_=>_.setAttribute('title', 'Предыдущая страница'))
+            paginationSinglePrevButton.forEach(_ => _.setAttribute('title', 'Предыдущая страница'))
         }
         if (paginationPrevButton) {
-            paginationPrevButton.forEach(_=>_.setAttribute('title', 'Предыдущие 5 страниц'))
+            paginationPrevButton.forEach(_ => _.setAttribute('title', 'Предыдущие 5 страниц'))
         }
-    }, [tableData])
+    }, [tableData, paginationConfig])
 
     //data fetching
     useEffect(() => {
@@ -136,7 +152,8 @@ const TableWidget = ({
             if (paginationConfig?.page) {
                 reqData = {
                     ...reqData,
-                    pagination: paginationConfig
+                    page: paginationConfig.page,
+                    limit: paginationConfig.limit
                 }
             }
 
@@ -147,15 +164,22 @@ const TableWidget = ({
                 }
             }
 
+            if (dataType === 'byBrandsTableData') {
+                reqData = {
+                    ...reqData,
+                    brands: [currentBrand || 0],
+                }
+            }
+
             dispatch(dataHandler({ data: reqData, hasLoadingStatus: true }))
         }
-    }, [selectedRange, id, sort, paginationConfig?.page])
+    }, [selectedRange, id, sort, paginationConfig?.page, currentBrand])
 
 
     if (isLoading) {
         return (
             <div className={styles.widget}>
-                <div className={styles.loaderWrapper}>
+                <div className={styles.loaderWrapper} style={{ height: containerHeight}}>
                     <span className='loader'></span>
                 </div>
             </div>
@@ -218,6 +242,22 @@ const TableWidget = ({
         )
     }
 
+    if (isSuccess && tableData && tableData.length === 0) {
+        return (
+            <div className={styles.widget}>
+                <div className={styles.loaderWrapper}>
+                    <div className={styles.errorWrapper__message}>
+                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
+                            <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
+                        </svg>
+                        {'Данных пока нет'}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className={styles.widget}>
             <div className={!title && !customHeader && !downloadButton ? `${styles.widget__header} ${styles.widget__header_hidden}` : styles.widget__header}>
@@ -228,7 +268,7 @@ const TableWidget = ({
                 }
             </div>
 
-            <div className={styles.widget__tableWrapper} ref={containerRef}>
+            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto' }}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
@@ -272,7 +312,7 @@ const TableWidget = ({
                 >
                     {tableData &&
                         <Table
-                            virtual
+                            //virtual
                             columns={tableConfig.map(_ => {
                                 if (sort && _.dataIndex === sort.sort_field) {
                                     return {
@@ -304,7 +344,7 @@ const TableWidget = ({
                                 rowExpandable: (record) => !!record.description,
                                 expandedRowClassName: styles.expandRow,
                             }}
-                            // scroll={{ x: 'max-content' }}
+                            preserveScrollPosition={false}
                             scroll={{ x: scrollX, y: scrollY, scrollToFirstRowOnChange: true, }}
                         />
                     }

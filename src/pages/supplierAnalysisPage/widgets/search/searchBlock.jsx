@@ -105,7 +105,7 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                         ref={ref}
                         showSearch
                         size='large'
-                        placeholder='Введите название поставщика'
+                        placeholder={supplierType === 'main' ? 'Введите название поставщика' : supplierType === 'compare' ? 'Поставщик для сравнения' : ''}
                         className={styles.search__input}
                         style={{ background: currentData ? '#F2F2F2' : '', width: '100%' }}
                         id='autocomp'

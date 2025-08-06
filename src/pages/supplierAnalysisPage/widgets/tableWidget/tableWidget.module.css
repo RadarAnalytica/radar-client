@@ -35,7 +35,7 @@
     background: white;
     padding: 16px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
-    min-height: 50dvh;
+    /* min-height: 50dvh; */
     max-height: 50dvh;
     overflow: hidden;
 }
@@ -71,22 +71,10 @@
 }
 
 
+
+
 /* GLOBAL */
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb) {
-    border-radius: 6px !important;
-    background: #5329ff80 !important;
-}
-
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb) {
-    height: 5px !important;
-}
-
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb) {
-    width: 5px !important;
-}
-
-:global(.ant-table-column-has-sorters) {
+.widget__tableWrapper :global(.ant-table-column-has-sorters) {
     margin-left: 10px;
     margin-right: 10px;
     user-select: none;
@@ -135,4 +123,54 @@
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+/* GLOBAL SCROLLBAR STYLES */
+.widget__tableWrapper :global(.ant-table-body::-webkit-scrollbar) {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+}
+
+.widget__tableWrapper :global(.ant-table-body::-webkit-scrollbar-thumb) {
+    background: #5329ff80;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.widget__tableWrapper :global(.ant-table-body::-webkit-scrollbar-thumb:hover) {
+    background: #5329ff;
+}
+
+.widget__tableWrapper :global(.ant-table-body::-webkit-scrollbar-track) {
+    background: transparent;
+    height: 50%;
+    margin: 10px 20px;
+}
+
+/* Firefox scrollbar styles */
+.widget__tableWrapper :global(.ant-table-body) {
+    scrollbar-width: thin;
+    scrollbar-color: #5329ff80 transparent;
+}
+
+/* Virtual scrollbar styles - объединены и исправлены */
+.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb),
+.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb) {
+    border-radius: 6px !important;
+    background: #5329ff80 !important;
+    transition: background-color 0.2s ease;
+}
+
+.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb:hover),
+.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb:hover) {
+    background: #5329ff !important;
+}
+
+.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb) {
+    height: 5px !important;
+}
+
+.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb) {
+    width: 5px !important;
 }

@@ -2,6 +2,7 @@ import { formatPrice } from '../../../../service/utils';
 import { TableMiniChart } from '../../features';
 import { ProductCell } from '../../widgets/tableWidget/productCell';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 function cellRenderer(value, record) {
   const { units, dataIndex } = this;
@@ -41,6 +42,20 @@ function cellRenderer(value, record) {
   if (dataIndex === 'wb_id_name') {
     return (
       <ProductCell value={value} rowData={record} />
+    )
+  }
+  if (dataIndex === 'brand_name') {
+    return (
+      <Link
+        to={record?.brand_url}
+        target='_blank'
+        style={{
+          textDecoration: 'none',
+          color: '#5329FF'
+        }}
+      >
+        {value}
+      </Link>
     )
   }
 
@@ -152,7 +167,7 @@ export const goodsTableConfig = [
   { title: 'Средняя цена без СПП, руб', dataIndex: 'avg_price', units: '₽', width: 250, render: cellRenderer, filterOptions: true, },
   { title: 'Средняя скидка без СПП, %', dataIndex: 'avg_discount', units: '%', width: 250, render: cellRenderer, filterOptions: true, },
   { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
-  { title: 'Вручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
+  { title: 'Выручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
 ].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 
@@ -183,7 +198,7 @@ export const salesTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer, filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 170, render: cellRenderer, filterOptions: true, },
   { title: 'Остатки на конец периода, шт', dataIndex: 'quantity', units: 'шт', width: 320, render: cellRenderer, filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: _.dataIndex !== 'revenue_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 export const ordersStructByColorsTableConfig = [
   { title: 'Цвет', dataIndex: '', units: null, fixed: 'left', width: 270, render: cellRenderer, filterOptions: true, },
@@ -197,8 +212,8 @@ export const ordersStructByColorsTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 160, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика заказов', dataIndex: '', units: null, hasChart: true, width: 200, render: cellRenderer, filterOptions: true, },
-  { title: 'Упущенная выручка, руб', dataIndex: '', units: '₽', width: 170, render: cellRenderer, filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+  { title: 'Упущенная выручка, руб', dataIndex: 'orders_dynamics', units: '₽', width: 170, render: cellRenderer, filterOptions: true, },
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: _.dataIndex !== 'revenue_dynamics' || _.dataIndex !== 'reven_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 /*
 [
@@ -232,7 +247,7 @@ export const ordersStructByWarehousesTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 /**
  *  {
@@ -264,7 +279,7 @@ export const ordersStructBySizesTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: null, hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 
 

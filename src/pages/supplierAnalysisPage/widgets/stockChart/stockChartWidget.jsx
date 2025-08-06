@@ -65,9 +65,9 @@ const StockChartWidget = ({
     const [isCompareSupplierActive, setIsCompareSupplierActive] = useState(true)
 
 
-
+    //data fetch
     useEffect(() => {
-        if (mainSupplierData && compareSupplierData) {
+        if (mainSupplierData) {
             let datesRange;
 
             if (selectedRange.period) {
@@ -80,10 +80,10 @@ const StockChartWidget = ({
             }
             const requestObject = {
                 "main_supplier_id": parseInt(mainSupplierData.supplier_id),
-                "compared_supplier_id": parseInt(compareSupplierData.supplier_id),
+                "compared_supplier_id": compareSupplierData?.supplier_id ? parseInt(compareSupplierData.supplier_id) : 0,
                 ...datesRange,
             }
-            dispatch(dataHandler(requestObject))
+            dispatch(dataHandler({data: requestObject, hasLoadingStatus: chartData ? false : true}))
         }
     }, [mainSupplierData, compareSupplierData, selectedRange])
 
@@ -161,7 +161,7 @@ const StockChartWidget = ({
 
             <div className={styles.widget__chartWrapper}>
                 <SearchBlock supplierType='compare' />
-                {mainSupplierData && compareSupplierData && chartData &&
+                {mainSupplierData && chartData &&
                     <div className={styles.widget__controls}>
                         <ConfigProvider
                             theme={{
@@ -201,31 +201,33 @@ const StockChartWidget = ({
                                 }
                             }}
                         >
-                            <Checkbox
-                                size='large'
-                                defaultChecked
-                                checked={isCompareSupplierActive}
-                                className={styles.widget__checkbox}
-                                onChange={(e) => {
-                                    if (e.target.checked) {
-                                        setIsCompareSupplierActive(true)
-                                    } else {
-                                        setIsCompareSupplierActive(false)
-                                    }
-                                }}
-                            >
-                                <label className={styles.widget__checkboxLabel}>
-                                    {compareSupplierData?.trademark}
-                                    <span>
-                                        {formatPrice(getSummary(chartData[compareSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
-                                    </span>
-                                </label>
-                            </Checkbox>
+                            {compareSupplierData &&
+                                <Checkbox
+                                    size='large'
+                                    defaultChecked
+                                    checked={isCompareSupplierActive}
+                                    className={styles.widget__checkbox}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            setIsCompareSupplierActive(true)
+                                        } else {
+                                            setIsCompareSupplierActive(false)
+                                        }
+                                    }}
+                                >
+                                    <label className={styles.widget__checkboxLabel}>
+                                        {compareSupplierData?.trademark}
+                                        <span>
+                                            {formatPrice(getSummary(chartData[compareSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
+                                        </span>
+                                    </label>
+                                </Checkbox>
+                            }
                         </ConfigProvider>
                     </div>
                 }
 
-                {chartData && mainSupplierData && compareSupplierData &&
+                {chartData && mainSupplierData &&
                     <CompareChart
                         chartType={chartType}
                         data={chartData}

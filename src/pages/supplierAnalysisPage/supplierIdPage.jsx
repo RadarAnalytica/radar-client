@@ -142,6 +142,7 @@ const SupplierIdPage = () => {
                         //downloadButton
                         dataType='byDatesTableData'
                         dataHandler={fetchSupplierAnalysisByDatesTableData}
+                        containerHeight='95vh'
                     />
                 </div>
                 <div className={styles.page__tableWrapper}>
@@ -152,6 +153,7 @@ const SupplierIdPage = () => {
                         //downloadButton
                         dataType='byBrandsTableData'
                         dataHandler={fetchSupplierAnalysisByBrandTableData}
+                        containerHeight='95vh'
                     />
                 </div>
                 <div className={styles.page__tableWrapper}>
@@ -162,6 +164,7 @@ const SupplierIdPage = () => {
                         dataType='bySubjectsTableData'
                         dataHandler={fetchSupplierAnalysisBySubjectsTableData}
                         title={`Продажи поставщика ${mainSupplierData?.trademark} по категориям`}
+                        containerHeight='45vh'
                     />
                 </div>
                 <div className={styles.page__tableWrapper}>
@@ -204,6 +207,7 @@ const TableTabsWrapper = () => {
                     id={mainSupplierData?.supplier_id}
                     dataType='byWarehousesTableData'
                     dataHandler={fetchSupplierAnalysisByWarehousesTableData}
+                    containerHeight='45vh'
                 />
             }
             {ordersStructureTab === 'По размерам' &&
@@ -212,6 +216,7 @@ const TableTabsWrapper = () => {
                     id={mainSupplierData?.supplier_id}
                     dataType='bySizesTableData'
                     dataHandler={fetchSupplierAnalysisBySizesTableData}
+                    containerHeight='45vh'x
                 />
             }
         </>
