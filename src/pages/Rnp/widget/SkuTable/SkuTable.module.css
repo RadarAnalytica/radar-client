@@ -104,7 +104,11 @@
 
 .expandBtn {
   margin-right: 12px;
-  height: 18px;
+  vertical-align: middle;
+}
+.expandBtn :global(.ant-btn-icon){
+  line-height: 0;
+  color: #8C8C8C;
 }
 
 .expandIcon{
@@ -116,7 +120,7 @@
 }
 
 .expandRow{
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 
 /* :global(.ant-table-container),

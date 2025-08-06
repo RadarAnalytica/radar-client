@@ -1,11 +1,11 @@
-import {Flex} from 'antd';
-import styles from './SkuHeader.module.css';
+import { Flex } from 'antd';
+import styles from './SkuItem.module.css';
 import wb_icon from '../../../../assets/wbicon.svg';
 
-export default function SkuHeader({ title, photo, sku, shop }) {
+export default function SkuItem({ title, photo, sku, shop }) {
 	return (
 		<Flex gap={20}>
-			{photo && (<div className={styles.table__rowImgWrapper}>
+			{photo && (<div className={styles.item__pic}>
 					<img
 						src={ photo }
 						width={45}

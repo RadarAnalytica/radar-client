@@ -4,27 +4,11 @@ import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import Header from '../../components/sharedComponents/header/header';
-import { ServiceFunctions } from '../../service/serviceFunctions';
-import { fileDownload } from '../../service/utils';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
 import { NoDataWidget } from '../productsGroupsPages/widgets';
-import { AddGroupModal } from '../productsGroupsPages/features';
-import { ConfigProvider, Button, Popover } from 'antd';
 import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
 import styles from './Rnp.module.css';
-import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
-import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal';
 import { useAppSelector } from '../../redux/hooks';
-import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
-import {
-	eachWeekOfInterval,
-	format,
-	formatISO,
-	endOfWeek,
-	getISOWeek,
-} from 'date-fns';
 import downloadIcon from '../images/Download.svg';
-import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
 import SkuList from './widget/SkuList/SkuList';
 
 const initAlertState = {
@@ -62,13 +46,23 @@ export default function Rnp() {
 
 	// -----------
 
-	const [skuList, setSkuList] = useState([]); 
-	// const [skuList, setSkuList] = useState([
-	// 		{
-	// 			title: 'Ремень кожаный для брюк и джинс, резинка в подарок',
-
-	// 		}
-	// 	]); 
+	// const [skuList, setSkuList] = useState([]); 
+	const [skuList, setSkuList] = useState([
+		{
+				"id": 1,
+				"photo": "https://basket-12.wbbasket.ru/vol1735/part173548/173548176/images/c246x328/1.webp",
+				"title": "гирлянда круглая золото",
+				"shop": 138,
+				sku: 123321123321
+		},
+		{
+			"id": 2,
+			"photo": "https://basket-14.wbbasket.ru/vol2154/part215481/215481827/images/c246x328/1.webp",
+			"title": "гирлянда круглая золото",
+			"shop": 138,
+			sku: 123321123321
+		},
+	]); 
 
 	function saveSkuHandler () {
 		setSkuList([
@@ -139,7 +133,7 @@ export default function Rnp() {
 				*/} 
 
 				{!loading && skuList.length !== 0 && (
-					<SkuList data={skuList} setAddSkuModalShow={setAddSkuModalShow} />
+					<SkuList data={skuList} setAddSkuModalShow={setAddSkuModalShow} setSkuList={setSkuList} />
 				)}
 
 				{!loading && skuList.length === 0 &&
@@ -148,6 +142,7 @@ export default function Rnp() {
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
 						buttonTitle='Добавить'
 						action={() => setAddSkuModalShow(true)}
+						how={false}
 					/>
 				}
 
@@ -162,7 +157,8 @@ export default function Rnp() {
 					shops={shops}
 					setAlertState={setAlertState}
 					dataFetchingStatus={{isLoading: loading}}
-					addSku={saveSkuHandler}
+					addSku={setSkuList}
+					skuList={skuList}
 				/>
 			</section>
     </main>

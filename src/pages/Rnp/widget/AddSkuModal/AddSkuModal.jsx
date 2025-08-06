@@ -1,36 +1,14 @@
-import React, { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import styles from './addSkuModal.module.css'
-import { addSkuTableConfig } from '../../shared';
-import { AddSkuModalFooter } from '../../entities'
-import { Modal, Checkbox, ConfigProvider, Pagination, Input, Flex } from 'antd';
-import wb_icon from '../../../../assets/wbicon.svg';
-import { URL } from '../../../../service/config';
+import AddSkuModalFooter from '../addSkuModalFooter/addSkuModalFooter'
+import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form } from 'antd';
 import AuthContext from '../../../../service/AuthContext';
-import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
-import SkuHeader from '../SkuHeader/SkuHeader';
+import SkuHeader from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 
-const getFilteredData = (query, data) => {
-    let filteredData = data;
-
-    if (data && query) {
-        filteredData = data.filter((item) =>
-            // item?.sku?.toLowerCase().includes(query.toLowerCase()) ||
-            item?.article?.toLowerCase().includes(query.toLowerCase())
-            // item?.productName?.toLowerCase().includes(query.toLowerCase())
-        );
-
-        filteredData.sort((a, b) => a.article.localeCompare(b.article))
-    }
-
-    return filteredData;
-}
-
-const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData, getGroupData, initDataFetchingStatus, setDataFetchingStatus, dataFetchingStatus, setAlertState, addSku }) => {
-    let checkedListRef = useRef(null)
-    const scrollContainerRef = useRef(null)
+const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, skuList }) => {
     const [tableData, setTableData] = useState()
     const [initData, setInitData] = useState()
     const [isDataLoading, setIsDataLoading] = useState(false)
@@ -47,7 +25,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
     const { shops } = useAppSelector((state) => state.shopsSlice);
 
     const [skuLoading, setSkuLoading] = useState(true);
-    const [skuList, setSkuList] = useState(null);
+    const [localSkuList, setLocalSkuList] = useState(skuList);
+    const [skuData, setSkuData] = useState([])
+
+    const [submitStatus, setSubmitStatus] = useState(false);
 
     const updateSkuList = useCallback(async () => {
         setSkuLoading(true);
@@ -78,14 +59,32 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
             ])
             setTimeout(() => {
                 setSkuLoading(false);
-                setSkuList(data);
-            }, 2000);
+                setSkuData(data);
+            }, 500);
         } catch(error) {
             console.error('updateSkuList error', error);
         } finally {
             // setSkuLoading(false);
         }
     }, [])
+
+    const submitSkuList = () => {
+        console.log('submitSkuList', localSkuList)
+        const res = skuList.reduce((acc, el) => {
+            console.log('localSkuList.includes(el.id)', localSkuList.includes(el.id))
+            if (localSkuList.includes(el.id)){
+                console.log('skuList.reduce', el)
+                acc.push(el);
+            }
+            return acc;
+        }, [])
+        console.log('res', res)
+        addSku(res)
+    }
+
+    console.log('localSkuList', localSkuList);
+    console.log('localSkuList?.length', localSkuList?.length === 0);
+    console.log('-----------------');
 
     useEffect(() => {
         console.log('activeBrand')
@@ -111,10 +110,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
         <Modal
             footer={
                 <AddSkuModalFooter
-                    addProducts={addSku}
+                    addProducts={submitSkuList}
                     setIsAddSkuModalVisible={setIsAddSkuModalVisible}
-                    isDataLoading={dataFetchingStatus.isLoading}
-                    isCheckedListEmpty={checkedList?.length === 0}
+                    isDataLoading={skuLoading}
+                    isCheckedListEmpty={localSkuList?.length === 0}
                 />
             }
             onOk={() => setIsAddSkuModalVisible(false)}
@@ -147,21 +146,26 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, groupData,
                         }
                     }}
                 >
-                    {/* {tableData && */}
-                    {/* {!isDataLoading && data.length > 0 && (<div className={styles.modal__tableWrapper}> */}
                     {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
-                    {!skuLoading && skuList && (<div className={styles.modal__container}>
-                        {skuList.map((el, i) => (
+
+                    {!skuLoading && skuData && (<div className={styles.modal__container}>
+                        <Checkbox.Group
+                            className={styles.group}
+                            defaultValue={skuList.map((el) => el.id)}
+                            onChange={setLocalSkuList}
+                            >
+                        {skuData.map((el, i) => (
                             <Flex key={i} className={styles.item} gap={20}>
                                 <Checkbox
-                                    // checked={checkedList.some(_ => _ === product.id)}
-                                    // value={product.id}
-                                    // onChange={onCheckboxChange}
+                                    value={el.id}
+                                    defaultChecked={localSkuList.some(_ => _.id === el.id)}
+                                    // onChange={(e) => checkboxChange(e, el.id)}
                                 />
                                 <SkuHeader title={el.title} photo={el.photo} sku={el.sku} shop={shops.find((shop) => (shop.id == el.shop)).brand_name
                                 }/>
                             </Flex>
                         ))}
+                        </Checkbox.Group>
                     </div>)}
 
                     <Pagination

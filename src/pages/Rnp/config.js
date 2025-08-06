@@ -5,6 +5,7 @@ export const COLUMNS = [
     title: 'Период',
     dataIndex: 'period',
     width: 480,
+    render: (value, record) => (record.children) ? <strong>{value}</strong> : value
   },
   {
     title: 'Итого',
@@ -48,6 +49,7 @@ export const COLUMNS = [
 
 export const DATA = [
   {
+    key: 'Прогноз. маржинальность',
     period: 'Прогноз. маржинальность',
     sum: '20 %',
     date1: '20 %',
@@ -204,6 +206,7 @@ export const DATA = [
     ]
   },
   {
+    key: 'Бюджет РК, руб',
     period: 'Бюджет РК, руб',
     sum: '10 000 ₽',
     date1: '10 000 ₽',
@@ -305,6 +308,7 @@ export const DATA = [
     ]
   },
   {
+    key: 'Бюджет РК (АРК), руб',
     period: 'Бюджет РК (АРК), руб',
     sum: '10 000 ₽',
     date1: '10 000 ₽',
@@ -373,6 +377,7 @@ export const DATA = [
     ]
   },
   {
+    key: 'Бюджет РК (Аукцион), руб',
     period: 'Бюджет РК (Аукцион), руб',
     sum: '10 000 ₽',
     date1: '10 000 ₽',
@@ -397,6 +402,7 @@ export const DATA = [
     ]
   },
   {
+    key: 'Переходы, шт',
     period: 'Переходы, шт',
     sum: '10 шт',
     date1: '10 шт',
@@ -443,6 +449,7 @@ export const DATA = [
     ]
   },
   {
+    key: 'Налоги, %',
     period: 'Налоги, %',
     sum: '10 %',
     date1: '10 %',
