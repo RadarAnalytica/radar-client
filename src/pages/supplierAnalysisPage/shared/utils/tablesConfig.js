@@ -2,6 +2,7 @@ import { formatPrice } from '../../../../service/utils';
 import { TableMiniChart } from '../../features';
 import { ProductCell } from '../../widgets/tableWidget/productCell';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 function cellRenderer(value, record) {
   const { units, dataIndex } = this;
@@ -41,6 +42,20 @@ function cellRenderer(value, record) {
   if (dataIndex === 'wb_id_name') {
     return (
       <ProductCell value={value} rowData={record} />
+    )
+  }
+  if (dataIndex === 'brand_name') {
+    return (
+      <Link
+        to={record?.brand_url}
+        target='_blank'
+        style={{
+          textDecoration: 'none',
+          color: '#5329FF'
+        }}
+      >
+        {value}
+      </Link>
     )
   }
 
