@@ -150,7 +150,10 @@ const TableWidget = ({
             if (paginationConfig?.page) {
                 reqData = {
                     ...reqData,
-                    pagination: paginationConfig
+                    pagination: {
+                        page: paginationConfig.page,
+                        limit: paginationConfig.limit
+                    }
                 }
             }
 
