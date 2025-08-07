@@ -24,10 +24,11 @@ import { fetchFilters } from '../../redux/apiServicePagesFiltersState/filterActi
 export default function Rnp() {
 	const dispatch = useAppDispatch()
 	const { authToken } = useContext(AuthContext);
-	const { activeBrand, selectedRange, shops } = useAppSelector(
+	const { activeBrand, selectedRange } = useAppSelector(
 		(state) => state.filters
 	);
 	const filters = useAppSelector((state) => state.filters);
+	const { shops } = useAppSelector((state) => state.shopsSlice);
 	
 	// const filters = useAppSelector((state) => state.filters);
 	// const { shops } = useAppSelector((state) => state.shopsSlice);

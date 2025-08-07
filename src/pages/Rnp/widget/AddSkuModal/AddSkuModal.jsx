@@ -9,15 +9,6 @@ import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, skuDataArticle=[] }) => {
-    const [tableData, setTableData] = useState()
-    const [initData, setInitData] = useState()
-    const [isDataLoading, setIsDataLoading] = useState(false)
-    const [checkedList, setCheckedList] = useState([]);
-    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
-    const dispatch = useAppDispatch()
-    const checkAll = tableData && tableData.length === checkedList.length;
-    const indeterminate = tableData && checkedList.length > 0 && checkedList.length < tableData.length;
-    
     // 
     const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange } = useAppSelector(
@@ -25,12 +16,12 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     );
     const filters = useAppSelector((state) => state.filters);
     const { shops } = useAppSelector((state) => state.shopsSlice);
-
+    
+    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
     const [skuLoading, setSkuLoading] = useState(true);
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
     const [skuSelected, setSkuSelected] = useState(skuDataArticle?.map((el) => el.article_data.product_id))
     
-    const [page, setPage] = useState(1);
     const [dateRange, setDateRange] = useState(null);
 
     const [submitStatus, setSubmitStatus] = useState(false);
@@ -38,17 +29,18 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     const updateskuDataArticle = useCallback(async () => {
         setSkuLoading(true);
         try {
-            const response = await ServiceFunctions.getRnpProducts(
-                authToken,
-                selectedRange,
-                activeBrand.id,
-                filters,
-                page,
-                dateRange,
-                paginationState.current
-            )
-            setLocalskuDataArticle(response.data)
-            setPaginationState({ current: response.page, total: response.total_count, pageSize: response.per_page })
+			if (!!activeBrand) {
+                const response = await ServiceFunctions.getRnpProducts(
+                    authToken,
+                    selectedRange,
+                    activeBrand.id,
+                    filters,
+                    paginationState.current,
+                    dateRange
+                )
+                setLocalskuDataArticle(response.data)
+                setPaginationState({ current: response.page, total: response.total_count, pageSize: response.per_page })
+            }
             // const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
             // получение данных по артикулу группы
 
@@ -70,14 +62,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
         }
     }, [isAddSkuModalVisible, activeBrand, shops, filters])
 
-    // console.log('filters', filters)
-    // console.log('shops', shops)
-    // console.log('activeBrand', activeBrand)
-
-    useEffect(() => {
-        setPaginationState({ current: 1, total: tableData?.length, pageSize: 50 })
-    }, [tableData])
-
     const paginationHandler = (page) => {
         console.log('paginationHandler', page)
         setPaginationState((state) => ({
@@ -92,7 +76,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                 <AddSkuModalFooter
                     addProducts={submitskuDataArticle}
                     setIsAddSkuModalVisible={setIsAddSkuModalVisible}
-                    isDataLoading={skuLoading}
+                    isDataLoading={skuLoading || submitStatus}
                     isCheckedListEmpty={localskuDataArticle?.length === 0}
                 />
             }
