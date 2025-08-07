@@ -114,6 +114,17 @@ function SortIcon({ sortOrder }) {
   );
 }
 
+function sorter(a, b, direction) {
+  const { dataIndex: key } = this
+  if (typeof a[key] === 'number' && typeof b[key] === 'number') {
+    return direction === 'DESC' ? a[key] - b[key] : b[key] - a[key];
+  } else {
+    return direction === 'DESC'
+      ? a[key].localeCompare(b[key])
+      : b[key].localeCompare(a[key]);
+  }
+}
+
 /**
  *     {
         "date": "2025-06-29",
@@ -140,7 +151,7 @@ export const mainTableConfig = [
   { title: 'Артикулов с продажами, шт', dataIndex: 'goods_with_sales_quantity', units: 'шт', width: 350, render: cellRenderer, filterOptions: true, },
   { title: 'Кол-во брендов, шт', dataIndex: 'brands_quantity', units: 'шт', width: 300, render: cellRenderer, filterOptions: true, },
   { title: 'Кол-во брендов с продажами, шт', dataIndex: 'brands_with_sales_quantity', units: 'шт', width: 400, render: cellRenderer, filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: sorter.bind(_), sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 /**
  * 
@@ -249,7 +260,7 @@ export const ordersStructByWarehousesTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: 'руб', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: 'шт', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics' ? sorter.bind(_) : false, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 /**
  *  {
@@ -281,7 +292,7 @@ export const ordersStructBySizesTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: 'руб', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: 'шт', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics' ? sorter.bind(_) : false, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 
 

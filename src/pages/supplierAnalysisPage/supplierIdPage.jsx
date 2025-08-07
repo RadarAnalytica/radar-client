@@ -76,6 +76,8 @@ const SupplierIdPage = () => {
 
     }, [params, mainSupplierData])
 
+
+    //сброс при анмаунте
     useEffect(() => {
         return () => {
             dispatch(supplierActions.resetState())
@@ -114,11 +116,12 @@ const SupplierIdPage = () => {
                     />
                     <div className={styles.page__filtersWrapper}>
                         <Filters
-                            setLoading={() => { }}
+                            setLoading={() => {}}
                             shopSelect={false}
                             brandSelect={false}
                             articleSelect={false}
                             groupSelect={false}
+                            tempPageCondition='supplier'
                         />
                     </div>
                     <BarsWidget
@@ -142,7 +145,7 @@ const SupplierIdPage = () => {
                         //downloadButton
                         dataType='byDatesTableData'
                         dataHandler={fetchSupplierAnalysisByDatesTableData}
-                        containerHeight='80vh'
+                        containerHeight='100vh'
                     />
                 </div>
                 <div className={styles.page__tableWrapper}>
@@ -153,7 +156,7 @@ const SupplierIdPage = () => {
                         //downloadButton
                         dataType='byBrandsTableData'
                         dataHandler={fetchSupplierAnalysisByBrandTableData}
-                        containerHeight='95vh'
+                        containerHeight='100vh'
                         hasPagination
                     />
                 </div>
@@ -165,7 +168,7 @@ const SupplierIdPage = () => {
                         dataType='bySubjectsTableData'
                         dataHandler={fetchSupplierAnalysisBySubjectsTableData}
                         title={`Продажи поставщика ${mainSupplierData?.trademark} по категориям`}
-                        containerHeight='45vh'
+                        containerHeight='600px'
                         hasPagination
                     />
                 </div>
@@ -209,7 +212,7 @@ const TableTabsWrapper = () => {
                     id={mainSupplierData?.supplier_id}
                     dataType='byWarehousesTableData'
                     dataHandler={fetchSupplierAnalysisByWarehousesTableData}
-                    containerHeight='45vh'
+                    containerHeight='600px'
                 />
             }
             {ordersStructureTab === 'По размерам' &&
@@ -218,7 +221,7 @@ const TableTabsWrapper = () => {
                     id={mainSupplierData?.supplier_id}
                     dataType='bySizesTableData'
                     dataHandler={fetchSupplierAnalysisBySizesTableData}
-                    containerHeight='45vh'
+                    containerHeight='600px'
                 />
             }
         </>
@@ -282,16 +285,9 @@ const ChartTabsWrapper = () => {
         setConfig(getStockChartProps(stockChartTab))
     }, [stockChartTab])
     return (
-        <>
             <StockChartWidget
                 {...config}
             />
-            {/* {stockChartTab === 'Входящие заказы' && <StockChartWidget units='руб' dataType='byIncomingOrdersComparsionData' dataHandler={fetchSupplierAnalysisByIncomingOrdersComparsionData} />}
-            {stockChartTab === 'Заказанные товары' && <StockChartWidget units='шт' dataType='byOrderedProductsComparsionData' dataHandler={fetchSupplierAnalysisByOrderedProductsComparsionData} />}
-            {stockChartTab === 'Средние цены' && <StockChartWidget units='руб' dataType='byAvgPricesComparsionData' dataHandler={fetchSupplierAnalysisByAvgPricesComparsionData} summaryType='avg' />}
-            {stockChartTab === 'Средние скидки' && <StockChartWidget units='%' dataType='byAvgDiscountsComparsionData' dataHandler={fetchSupplierAnalysisByAvgDiscountsComparsionData} summaryType='avg' />}
-            {stockChartTab === 'Товарные остатки' && <StockChartWidget units='шт' dataType='byStockSizeComparsionData' dataHandler={fetchSupplierAnalysisByStockSizeComparsionData} summaryType='last_value' />} */}
-        </>
     )
 }
 

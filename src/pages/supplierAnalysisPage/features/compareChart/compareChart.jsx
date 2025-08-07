@@ -64,7 +64,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         borderColor: 'transparent',
                         borderWidth: 1,
                         hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-                        yAxisID: 'B',
+                        yAxisID: 'A',
                     },
                 ] : [
                     {
@@ -199,7 +199,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                 type: 'linear',
                 position: 'right',
                 min: 0,
-                display: compareSupplier ? true : false,
+                display: compareSupplier && chartType !== 'bar' ? true : false,
                 //suggestedMax: getMaxAmount(chartData),
                 grid: {
                     drawOnChartArea: false,

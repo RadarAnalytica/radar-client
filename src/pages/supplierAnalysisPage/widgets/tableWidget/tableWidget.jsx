@@ -35,7 +35,7 @@ const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBran
         }
     }
 
-    if (sort) {
+    if (sort && hasPagination) {
         reqData = {
             ...reqData,
             sorting: sort
@@ -52,7 +52,7 @@ const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBran
     if (dataType === 'byBrandsTableData' && !currentBrand) {
         reqData = {
             ...reqData,
-            brands: [0],
+            brands: [],
         }
     }
 
@@ -128,7 +128,7 @@ const TableWidget = ({
                 const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
                 const paddingsY = 50;
                 // расчет и сохранение высоты таблицы
-                const paginationSize = hasPagination ? 60 : 0
+                const paginationSize = hasPagination && paginationConfig?.page && paginationConfig?.total && paginationConfig?.total > 1 ? 30 : 0
                 const availableHeight = container.offsetHeight - headerHeight - paddingsY - paginationSize;
                 setScrollY(availableHeight);
                 // расчет ширины контейнера
@@ -315,7 +315,8 @@ const TableWidget = ({
                 }
             </div>
 
-            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto'}}>
+            {/* <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto'}}> */}
+            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: (tableData?.length * 100) || 'auto'}}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
@@ -379,6 +380,7 @@ const TableWidget = ({
                                 pageSize: paginationConfig?.limit,
                                 showSizeChanger: false,
                                 showQuickJumper: true,
+                                hideOnSinglePage: true,
                             } : false}
                             // tableLayout="fixed"
                             rowSelection={false}
