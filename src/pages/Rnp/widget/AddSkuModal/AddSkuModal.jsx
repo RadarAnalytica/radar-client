@@ -20,10 +20,11 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     
     // 
     const { authToken } = useContext(AuthContext);
-    const { activeBrand, selectedRange, shops } = useAppSelector(
+    const { activeBrand, selectedRange } = useAppSelector(
         (state) => state.filters
     );
     const filters = useAppSelector((state) => state.filters);
+    const { shops } = useAppSelector((state) => state.shopsSlice);
 
     const [skuLoading, setSkuLoading] = useState(true);
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
