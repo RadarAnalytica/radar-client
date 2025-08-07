@@ -150,6 +150,17 @@ const TableWidget = ({
         }
 
     }, [tableData, isLoading, tableConfig, paginationConfig])
+    //костыль для починки рассинхрона скролла между хэдером таблицы и строками
+    useEffect(() => {
+        
+        const stickyScroll = document.querySelectorAll('.ant-table-sticky-scroll')
+        if (stickyScroll) {
+            stickyScroll.forEach(_ => {
+                _.style.display = 'none'
+            })
+        }
+
+    }, [tableData, isLoading, tableConfig, paginationConfig])
 
     //pagination styles
     useEffect(() => {
