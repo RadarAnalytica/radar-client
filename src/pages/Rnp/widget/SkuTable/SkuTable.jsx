@@ -1,7 +1,7 @@
 import { ConfigProvider, Table, Button } from 'antd';
 import { useRef, useCallback } from 'react';
 import styles from './SkuTable.module.css';
-import { COLUMNS, DATA } from '../../config';
+// import { COLUMNS, DATA } from '../../config';
 
 export default function SkuTable({ loading, columns, data, defaultExpandAllRows=false }) {
 	const tableContainerRef = useRef(null);
@@ -54,8 +54,8 @@ export default function SkuTable({ loading, columns, data, defaultExpandAllRows=
 				>
 					<Table
       			ref={tableRef}
-						columns={COLUMNS}
-						dataSource={DATA}
+						columns={columns}
+						dataSource={data}
 						pagination={false}
 						sticky={true}
 						rowClassName={(record) => {

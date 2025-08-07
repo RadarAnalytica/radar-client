@@ -5,10 +5,10 @@ import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form } from 'antd';
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
-import SkuHeader from '../SkuItem/SkuItem';
+import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 
-const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, skuList }) => {
+const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, skuDataArticle=[] }) => {
     const [tableData, setTableData] = useState()
     const [initData, setInitData] = useState()
     const [isDataLoading, setIsDataLoading] = useState(false)
@@ -20,77 +20,52 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     
     // 
     const { authToken } = useContext(AuthContext);
+    const { activeBrand, selectedRange, shops } = useAppSelector(
+        (state) => state.filters
+    );
     const filters = useAppSelector((state) => state.filters);
-    const { activeBrand } = useAppSelector((state) => state.filters);
-    const { shops } = useAppSelector((state) => state.shopsSlice);
 
     const [skuLoading, setSkuLoading] = useState(true);
-    const [localSkuList, setLocalSkuList] = useState(skuList);
-    const [skuData, setSkuData] = useState([])
+    const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
+    const [skuSelected, setSkuSelected] = useState(skuDataArticle?.map((el) => el.article_data.product_id))
+    
+    const [page, setPage] = useState(1);
+    const [dateRange, setDateRange] = useState(null);
 
     const [submitStatus, setSubmitStatus] = useState(false);
 
-    const updateSkuList = useCallback(async () => {
+    const updateskuDataArticle = useCallback(async () => {
         setSkuLoading(true);
         try {
+            const response = await ServiceFunctions.getRnpProducts(
+                authToken,
+                selectedRange,
+                activeBrand.id,
+                filters,
+                page,
+                dateRange,
+                paginationState.current
+            )
+            setLocalskuDataArticle(response.data)
+            setPaginationState({ current: response.page, total: response.total_count, pageSize: response.per_page })
+            // const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
             // получение данных по артикулу группы
-            const data = ([
-                {
-                    "id": 1,
-                    "photo": "https://basket-12.wbbasket.ru/vol1735/part173548/173548176/images/c246x328/1.webp",
-                    "title": "гирлянда круглая золото",
-                    "shop": 138,
-                    sku: 123321123321
-                },
-                {
-                    "id": 2,
-                    "photo": "https://basket-14.wbbasket.ru/vol2154/part215481/215481827/images/c246x328/1.webp",
-                    "title": "гирлянда круглая золото",
-                    "shop": 138,
-                    sku: 123321123321
-                },
-                {
-                    "id": 3,
-                    "photo": null,
-                    "title": "Ремень кожаный для брюк и джинс",
-                    "shop": 138,
-                    sku: 123321123321
-                }
-            ])
-            setTimeout(() => {
-                setSkuLoading(false);
-                setSkuData(data);
-            }, 500);
+
         } catch(error) {
-            console.error('updateSkuList error', error);
+            console.error('updateskuDataArticle error', error);
         } finally {
-            // setSkuLoading(false);
+            setSkuLoading(false);
         }
     }, [])
 
-    const submitSkuList = () => {
-        console.log('submitSkuList', localSkuList)
-        const res = skuList.reduce((acc, el) => {
-            console.log('localSkuList.includes(el.id)', localSkuList.includes(el.id))
-            if (localSkuList.includes(el.id)){
-                console.log('skuList.reduce', el)
-                acc.push(el);
-            }
-            return acc;
-        }, [])
-        console.log('res', res)
-        addSku(res)
+    const submitskuDataArticle = () => {
+        addSku(skuSelected);
+        setIsAddSkuModalVisible(false);
     }
 
-    console.log('localSkuList', localSkuList);
-    console.log('localSkuList?.length', localSkuList?.length === 0);
-    console.log('-----------------');
-
     useEffect(() => {
-        console.log('activeBrand')
         if (activeBrand){
-            console.log('activeBrand2')
-            updateSkuList();
+            updateskuDataArticle();
         }
     }, [isAddSkuModalVisible, activeBrand, shops, filters])
 
@@ -104,16 +79,20 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
 
     const paginationHandler = (page) => {
         console.log('paginationHandler', page)
+        setPaginationState((state) => ({
+            ...state,
+            current: page
+        }))
     }
 
     return (
         <Modal
             footer={
                 <AddSkuModalFooter
-                    addProducts={submitSkuList}
+                    addProducts={submitskuDataArticle}
                     setIsAddSkuModalVisible={setIsAddSkuModalVisible}
                     isDataLoading={skuLoading}
-                    isCheckedListEmpty={localSkuList?.length === 0}
+                    isCheckedListEmpty={localskuDataArticle?.length === 0}
                 />
             }
             onOk={() => setIsAddSkuModalVisible(false)}
@@ -148,21 +127,24 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                 >
                     {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
 
-                    {!skuLoading && skuData && (<div className={styles.modal__container}>
+                    {!skuLoading && localskuDataArticle && (<div className={styles.modal__container}>
                         <Checkbox.Group
                             className={styles.group}
-                            defaultValue={skuList.map((el) => el.id)}
-                            onChange={setLocalSkuList}
+                            value={skuSelected}
+                            onChange={setSkuSelected}
                             >
-                        {skuData.map((el, i) => (
+                        {localskuDataArticle?.map((el, i) => (
                             <Flex key={i} className={styles.item} gap={20}>
                                 <Checkbox
-                                    value={el.id}
-                                    defaultChecked={localSkuList.some(_ => _.id === el.id)}
-                                    // onChange={(e) => checkboxChange(e, el.id)}
+                                    value={el.product_id}
+                                    // defaultChecked={skuDataArticle?.some(_ => _.id === el.id)}
                                 />
-                                <SkuHeader title={el.title} photo={el.photo} sku={el.sku} shop={shops.find((shop) => (shop.id == el.shop)).brand_name
-                                }/>
+                                <SkuItem
+                                    title={el.title}
+                                    photo={el.photo}
+                                    sku={el.wb_id}
+                                    shop={el.shop_name}
+                                />
                             </Flex>
                         ))}
                         </Checkbox.Group>
@@ -182,12 +164,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                             next_3: 'Следующие 3 страниц',
                         }}
                         defaultCurrent={1}
-                        current={1}
+                        current={paginationState.current}
                         onChange={paginationHandler}
-                        // total={paginationState.total}
-                        total={0}
-                        // pageSize={paginationState.pageSize}
-                        pageSize={10}
+                        total={paginationState.total}
+                        pageSize={paginationState.pageSize}
                         showSizeChanger={false}
                         hideOnSinglePage={true}
                     />

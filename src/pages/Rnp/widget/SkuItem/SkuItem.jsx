@@ -21,7 +21,7 @@ export default function SkuItem({ title, photo, sku, shop }) {
 					{title}
 				</div>
 				<Flex gap={8} className={styles.item__info} align="center">
-					<a href={`https://www.wildberries.ru/catalog/${sku}/detail.aspx`} target='_blank'>
+					<a href={`https://www.wildberries.ru/catalog/${sku}/detail.aspx`} target='_blank' className={styles.item__link}>
 						<Flex gap={8} className={styles.item__article}>
 							<img
 								src={wb_icon}
