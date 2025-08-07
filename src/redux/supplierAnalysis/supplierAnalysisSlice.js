@@ -162,7 +162,16 @@ const supplierAnalysisSlice = createSlice({
         setSupplierCurrentBrand: (state, action) => {
             return {
                 ...state,
-                supplierCurrentBrand: action.payload
+                supplierCurrentBrand: action.payload,
+                byBrandsTableData: {
+                    ...state.byBrandsTableData,
+                    pagination: {
+                        page: 1,
+                        limit: 25,
+                        total: 25
+                    },
+                    sort: {}
+                }
             }
         },
         setOrdersStructureTab: (state, action) => {
@@ -203,7 +212,12 @@ const supplierAnalysisSlice = createSlice({
                 ...state,
                 [dataType]: {
                     ...state[dataType],
-                    sort: sort
+                    sort: sort,
+                    pagination: {
+                        page: 1,
+                        limit: 25,
+                        total: 25
+                    }
                 }
             }
         },

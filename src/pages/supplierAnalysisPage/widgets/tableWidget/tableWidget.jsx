@@ -82,14 +82,15 @@ const TableWidget = ({
     const { selectedRange } = useAppSelector(store => store.filters)
     const currentBrand = useAppSelector(selectSupplierCurrentBrand)
     const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
-
+    console.log(paginationConfig)
 
 
 
     // ------------ table change handler (for pagination && sorting)-----------//
-    const tableChangeHandler = (pagination, filters, sorter) => {
-        if (sorter) {
+    const tableChangeHandler = (pagination, filters, sorter, { action }) => {
+        if (action === 'sort') {
             dispatch(supplierActions.setSort({
+                hasPagination: hasPagination,
                 dataType: dataType,
                 sort: {
                     sort_field: sorter.field,
@@ -98,7 +99,7 @@ const TableWidget = ({
             }))
         }
 
-        if (pagination && hasPagination) {
+        if (action === 'paginate' && hasPagination) {
             dispatch(supplierActions.setPagination({
                 dataType: dataType,
                 pagination: {
@@ -198,7 +199,7 @@ const TableWidget = ({
 
     //data fetching 'products' table
     useEffect(() => {
-        if (dataType == 'byBrandsTableData') {
+        if (dataType === 'byBrandsTableData') {
             const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination)
             requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }))
         }
