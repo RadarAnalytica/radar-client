@@ -42,7 +42,6 @@ export const fetchSupplierAnalysisMetaData = createAsyncThunk(
         body: JSON.stringify(reqData)
       });
       if (!res.ok) {
-        res = await res.json();
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'metaData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
         return
       }
@@ -69,8 +68,8 @@ export const fetchSupplierAnalysisIndicatorsData = createAsyncThunk(
         body: JSON.stringify(reqData)
       });
       if (!res.ok) {
-        res = await res.json();
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'indicatorsData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
+        return
       }
       res = await res.json();
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'indicatorsData', statusObject: { isLoading: false, isError: false, isSuccess: true, message: '' } }))
@@ -94,8 +93,8 @@ export const fetchSupplierAnalysisMainChartData = createAsyncThunk(
         body: JSON.stringify(reqData)
       });
       if (!res.ok) {
-        const data = await res.json();
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'mainChartData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
+        return
       }
       const data = await res.json();
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'mainChartData', statusObject: { isLoading: false, isError: false, isSuccess: true, message: '' } }))
@@ -120,6 +119,7 @@ export const fetchSupplierAnalysisByDatesTableData = createAsyncThunk(
       });
       if (!res.ok) {
         dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byDatesTableData', statusObject: { isLoading: false, isError: true, isSuccess: false, message: '' } }))
+        return
       }
       const data = await res.json();
       dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byDatesTableData', statusObject: { isLoading: false, isError: false, isSuccess: true, message: '' } }))
@@ -388,7 +388,7 @@ export const fetchSupplierAnalysisByStockSizeComparsionData = createAsyncThunk(
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byStockSizeComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
     try {
 
-      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-discount`, {
+      const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/stock-quantity`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',

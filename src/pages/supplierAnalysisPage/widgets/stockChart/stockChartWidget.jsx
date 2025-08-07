@@ -42,6 +42,9 @@ const getSummary = (data, summaryType) => {
     if (summaryType === 'avg') {
         return summary / length
     }
+    if (summaryType === 'last_value') {
+        return data[data.length - 1] || 0
+    }
 }
 
 
@@ -53,7 +56,7 @@ const StockChartWidget = ({
     units,
     chartType = 'line',
     dataHandler,
-    summaryType = 'sum' // 'sum' | ''avg
+    summaryType = 'sum' // 'sum' | 'avg' | 'last_value'
 }) => {
 
     const dispatch = useAppDispatch()
