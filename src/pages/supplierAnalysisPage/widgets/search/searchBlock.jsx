@@ -58,29 +58,13 @@ const SearchBlock = ({ supplierType = 'main' }) => {
         const item = autocompleteOptions.find(_ => _.supplier_id === value);
         if (item && supplierType === 'main') {
             dispatch(supplierActions.setSupplierMainData(item))
-            setSearchValue(item.trademark || item.full_name)
+            setSearchValue(item.display_name)
         }
         if (item && supplierType === 'compare') {
             dispatch(supplierActions.setSupplierCompareData(item))
-            setSearchValue(item.trademark || item.full_name)
+            setSearchValue(item.display_name)
         }
     };
-
-
-    // const handleKeyDown = (e) => {
-    //     if (e.key && e.key === 'Backspace') {
-    //         if (supplierType === 'main') {
-    //             dispatch(supplierActions.setSupplierMainData(undefined))
-    //             setCurrentData(undefined)
-    //             setAutocompleteOptions(undefined)
-    //         }
-    //         if (supplierType === 'compare') {
-    //             dispatch(supplierActions.setSupplierCompareData(undefined))
-    //             setCurrentData(undefined)
-    //             setAutocompleteOptions(undefined)
-    //         }
-    //     }
-    // };
 
     useEffect(() => {
         if (supplierType === 'main') {
@@ -133,7 +117,29 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                         value={searchValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
-                        options={autocompleteOptions && [...autocompleteOptions]?.map(_ => ({ label: _?.trademark || _?.full_name, value: _?.supplier_id, key: _?.supplier_id }))}
+                        options={autocompleteOptions && [...autocompleteOptions]?.sort((a,b) => {
+                            const a_index = a.display_name.toLowerCase().indexOf(searchValue.toLowerCase())
+                            const b_index = b.display_name.toLowerCase().indexOf(searchValue.toLowerCase())
+                            
+                            if (a_index === 0) {
+                                return -1
+                            }
+                            if (b_index === 0) {
+                                return 1
+                            }
+                            if (a_index > 0 && b_index > 0) {
+                                return a_index - b_index
+                            }
+                            if (a_index > 0 && b_index < 0) {
+                                return -1
+                            }
+                            if (b_index > 0 && a_index < 0) {
+                                return 1
+                            }
+                            if (b_index < 0 && a_index < 0) {
+                                return 0
+                            }
+                        })?.map(_ => ({ label: _?.display_name, value: _?.supplier_id, key: _?.supplier_id }))}
                         
                     />
                     {supplierType === 'main' &&
