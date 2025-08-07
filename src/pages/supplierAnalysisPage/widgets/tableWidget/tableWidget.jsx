@@ -35,7 +35,7 @@ const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBran
         }
     }
 
-    if (sort) {
+    if (sort && hasPagination) {
         reqData = {
             ...reqData,
             sorting: sort
@@ -128,7 +128,7 @@ const TableWidget = ({
                 const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
                 const paddingsY = 50;
                 // расчет и сохранение высоты таблицы
-                const paginationSize = hasPagination ? 60 : 0
+                const paginationSize = hasPagination && paginationConfig?.page && paginationConfig?.total && paginationConfig?.total > 1 ? 30 : 0
                 const availableHeight = container.offsetHeight - headerHeight - paddingsY - paginationSize;
                 setScrollY(availableHeight);
                 // расчет ширины контейнера

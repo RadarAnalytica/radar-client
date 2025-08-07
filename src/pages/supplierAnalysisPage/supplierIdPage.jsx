@@ -282,16 +282,9 @@ const ChartTabsWrapper = () => {
         setConfig(getStockChartProps(stockChartTab))
     }, [stockChartTab])
     return (
-        <>
             <StockChartWidget
                 {...config}
             />
-            {/* {stockChartTab === 'Входящие заказы' && <StockChartWidget units='руб' dataType='byIncomingOrdersComparsionData' dataHandler={fetchSupplierAnalysisByIncomingOrdersComparsionData} />}
-            {stockChartTab === 'Заказанные товары' && <StockChartWidget units='шт' dataType='byOrderedProductsComparsionData' dataHandler={fetchSupplierAnalysisByOrderedProductsComparsionData} />}
-            {stockChartTab === 'Средние цены' && <StockChartWidget units='руб' dataType='byAvgPricesComparsionData' dataHandler={fetchSupplierAnalysisByAvgPricesComparsionData} summaryType='avg' />}
-            {stockChartTab === 'Средние скидки' && <StockChartWidget units='%' dataType='byAvgDiscountsComparsionData' dataHandler={fetchSupplierAnalysisByAvgDiscountsComparsionData} summaryType='avg' />}
-            {stockChartTab === 'Товарные остатки' && <StockChartWidget units='шт' dataType='byStockSizeComparsionData' dataHandler={fetchSupplierAnalysisByStockSizeComparsionData} summaryType='last_value' />} */}
-        </>
     )
 }
 
