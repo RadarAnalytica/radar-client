@@ -4,6 +4,7 @@ import { Chart } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Chart as ChartJS, Filler, BarController, PointElement, BarElement, LineElement, LineController, Tooltip } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
+import { getChartTooltip } from '../../shared/utils/mainChartConfig';
 import moment from 'moment';
 
 ChartJS.register(
@@ -21,7 +22,8 @@ ChartJS.register(
 );
 
 
-export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSupplierActive, isCompareSupplierActive, chartType }) => {
+export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSupplierActive, isCompareSupplierActive, chartType, units }) => {
+
     const [normilizedChartData, setNormilizedChartData] = useState()
 
 
@@ -29,7 +31,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
         if (data && chartType === 'bar') {
             const nomalizedDataObject = {
                 labels: data.labels,
-                datasets: [
+                datasets: compareSupplier ? [
                     {
                         label: mainSupplier?.trademark || mainSupplier?.name,
                         type: chartType,
@@ -45,7 +47,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         borderColor: 'transparent',
                         borderWidth: 1,
                         hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
-                        yAxisID: 'B',
+                        yAxisID: 'A',
                     },
                     {
                         label: compareSupplier?.trademark || compareSupplier?.name,
@@ -62,6 +64,24 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         borderColor: 'transparent',
                         borderWidth: 1,
                         hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
+                        yAxisID: 'B',
+                    },
+                ] : [
+                    {
+                        label: mainSupplier?.trademark || mainSupplier?.name,
+                        type: chartType,
+                        data: isMainSupplierActive && data[mainSupplier?.supplier_id?.toString()],
+                        borderRadius: 3,
+                        backgroundColor: (context) => {
+                            const ctx = context.chart.ctx;
+                            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                            gradient.addColorStop(0, '#5329FF');
+                            gradient.addColorStop(1, '#5329FF50');
+                            return gradient;
+                        },
+                        borderColor: 'transparent',
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                         yAxisID: 'A',
                     },
                 ]
@@ -70,8 +90,8 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
         }
         if (data && chartType === 'line') {
             const nomalizedDataObject = {
-                labels: data.labels,
-                datasets: [
+                labels: data.labels.map(_ => moment(_).format('DD.MM.YYYY').toString()),
+                datasets: compareSupplier ? [
                     {
                         label: mainSupplier?.trademark || mainSupplier?.name,
                         type: chartType,
@@ -98,6 +118,20 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         hoverRadius: 8,
                         borderWidth: 2
                     },
+                ] : [
+                    {
+                        label: mainSupplier?.trademark || mainSupplier?.name,
+                        type: chartType,
+                        data: isMainSupplierActive && data[mainSupplier?.supplier_id?.toString()],
+                        borderColor: '#5329FF',
+                        yAxisID: 'A',
+                        tension: 0.4,
+                        pointBorderColor: 'white',
+                        backgroundColor: '#5329FF',
+                        pointRadius: 6,
+                        hoverRadius: 8,
+                        borderWidth: 2
+                    },
                 ]
             }
             setNormilizedChartData({ ...nomalizedDataObject })
@@ -114,14 +148,14 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
             legend: {
                 display: false,
             },
-              tooltip: {
-                enabled: true,
+            tooltip: {
+                enabled: false,
                 intersect: false,
                 mode: 'index',
                 axis: 'x',
                 callbacks: {},
-                //external: (context) => { getChartTooltip(context, normilizedChartData) }
-              },
+                external: (context) => {getChartTooltip(context, normilizedChartData, units, false)}
+            },
             verticalDashedLine: { enabled: true }
         },
         // elements: {
@@ -138,9 +172,6 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                     callback: function (value, index, values) {
                         const label = this.getLabelForValue(value);
                         // Обрезаем до 10 символов, добавляем "..." если длиннее
-                        if (chartType === 'line') {
-                            return moment(label).format('DD.MM.YYYY')
-                        }
                         return label.length > 10 ? label.slice(0, 10) + '…' : label;
                     }
                 }
@@ -153,11 +184,11 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
             A: {
                 id: 'A',
                 type: 'linear',
-                position: 'right',
+                position: 'left',
                 //suggestedMax: getMaxValue(chartData),
                 min: 0,
                 grid: {
-                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    drawOnChartArea: true, // only want the grid lines for one axis to show up
                 },
                 ticks: {
                     //stepSize: getArrayStep(getMaxValue(chartData)),
@@ -166,11 +197,12 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
             B: {
                 id: 'B',
                 type: 'linear',
-                position: 'left',
+                position: 'right',
                 min: 0,
+                display: compareSupplier ? true : false,
                 //suggestedMax: getMaxAmount(chartData),
                 grid: {
-                    drawOnChartArea: true,
+                    drawOnChartArea: false,
                 },
                 ticks: {
                     //stepSize: getArrayStep(getMaxAmount(chartData)),

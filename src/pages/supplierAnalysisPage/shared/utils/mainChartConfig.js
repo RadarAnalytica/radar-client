@@ -150,7 +150,7 @@ const getSeason = (seasonsData) => {
     return seasonObject
 }
 
-export const getChartTooltip = (context, chartData) => {
+export const getChartTooltip = (context, chartData, unitsType, isMainChart = true) => {
     // Tooltip Element
     let tooltipEl = document.getElementById('chartjs-tooltip');
 
@@ -208,8 +208,8 @@ export const getChartTooltip = (context, chartData) => {
         // here
         datasets?.forEach(function (set, i) {
             const targetColor = set.backgroundColor;
-            const units = chartCompareConfigObject.find(_ => _.ruName === set.label).units
-            //const targetDescr = units ? units : '';
+            const units = unitsType ? unitsType : chartCompareConfigObject.find(_ => _.ruName === set.label)?.units
+            const targetDescr = !isMainChart && unitsType ? `, ${unitsType}` : '';
             let value = set?.data[targetInex] || '0';
             let style = '';
             style += '; border-width: 2px';
@@ -219,7 +219,7 @@ export const getChartTooltip = (context, chartData) => {
                 ';">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' +
                 style +
                 '">' +
-                set?.label +
+                set?.label + targetDescr +
                 //targetDescr +
                 ':  <span style="font-weight: bold;">' +
                 value +
@@ -304,7 +304,6 @@ export const mainChartOptionsGenerator = (chartData, anotationField, seasonsFiel
 
     const opt = {
         afterDraw: function (chart) {
-          console.log(chart)
           if (chart.tooltip?._active && chart.tooltip._active.length) {
             const ctx = chart.ctx;
             ctx.save();

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './supplierIdPage.module.css'
 import Header from '../../components/sharedComponents/header/header'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
@@ -28,10 +28,10 @@ import {
 } from '../../redux/supplierAnalysis/supplierAnalysisActions'
 import { ServiceFunctions } from '../../service/serviceFunctions'
 import { actions as supplierActions } from '../../redux/supplierAnalysis/supplierAnalysisSlice'
-import { 
-    selectMainSupplierData, 
-    selectStockChartTab, 
-    selectOrdersStructureTab 
+import {
+    selectMainSupplierData,
+    selectStockChartTab,
+    selectOrdersStructureTab
 } from '../../redux/supplierAnalysis/supplierAnalysisSelectors'
 
 const SupplierIdPage = () => {
@@ -142,18 +142,19 @@ const SupplierIdPage = () => {
                         //downloadButton
                         dataType='byDatesTableData'
                         dataHandler={fetchSupplierAnalysisByDatesTableData}
-                        containerHeight='95vh'
+                        containerHeight='80vh'
                     />
                 </div>
                 <div className={styles.page__tableWrapper}>
+                    <GoodsTableCustomHeader id={mainSupplierData?.supplier_id} />
                     <TableWidget
                         id={mainSupplierData?.supplier_id}
                         tableConfig={goodsTableConfig}
-                        customHeader={<GoodsTableCustomHeader id={mainSupplierData?.supplier_id} />}
                         //downloadButton
                         dataType='byBrandsTableData'
                         dataHandler={fetchSupplierAnalysisByBrandTableData}
                         containerHeight='95vh'
+                        hasPagination
                     />
                 </div>
                 <div className={styles.page__tableWrapper}>
@@ -165,6 +166,7 @@ const SupplierIdPage = () => {
                         dataHandler={fetchSupplierAnalysisBySubjectsTableData}
                         title={`Продажи поставщика ${mainSupplierData?.trademark} по категориям`}
                         containerHeight='45vh'
+                        hasPagination
                     />
                 </div>
                 <div className={styles.page__tableWrapper}>
@@ -216,23 +218,79 @@ const TableTabsWrapper = () => {
                     id={mainSupplierData?.supplier_id}
                     dataType='bySizesTableData'
                     dataHandler={fetchSupplierAnalysisBySizesTableData}
-                    containerHeight='45vh'x
+                    containerHeight='45vh'
                 />
             }
         </>
     )
 }
 
+const getStockChartProps = (tabType) => {
+    let props = {
+        units: 'руб',
+        dataType: 'byIncomingOrdersComparsionData',
+        dataHandler: fetchSupplierAnalysisByIncomingOrdersComparsionData,
+        summaryType: undefined
+    }
+    if (tabType === 'Входящие заказы') {
+        return props
+    }
+    if (tabType === 'Заказанные товары') {
+        props = {
+            units: 'шт',
+            dataType: 'byOrderedProductsComparsionData',
+            dataHandler: fetchSupplierAnalysisByOrderedProductsComparsionData,
+            summaryType: undefined
+        }
+        return props
+    }
+    if (tabType === 'Средние цены') {
+        props = {
+            units: 'руб',
+            dataType: 'byAvgPricesComparsionData',
+            dataHandler: fetchSupplierAnalysisByAvgPricesComparsionData,
+            summaryType: 'avg'
+        }
+        return props
+    }
+    if (tabType === 'Средние скидки') {
+        props = {
+            units: '%',
+            dataType: 'byAvgDiscountsComparsionData',
+            dataHandler: fetchSupplierAnalysisByAvgDiscountsComparsionData,
+            summaryType: 'avg'
+        }
+        return props
+    }
+    if (tabType === 'Товарные остатки') {
+        props = {
+            units: 'шт',
+            dataType: 'byStockSizeComparsionData',
+            dataHandler: fetchSupplierAnalysisByStockSizeComparsionData,
+            summaryType: 'last_value'
+        }
+        return props
+    }
+}
+
 
 const ChartTabsWrapper = () => {
     const stockChartTab = useAppSelector(selectStockChartTab)
+    const [ config, setConfig ] = useState(getStockChartProps(stockChartTab))
+
+    useEffect(() => {
+        setConfig(getStockChartProps(stockChartTab))
+    }, [stockChartTab])
     return (
         <>
-            {stockChartTab === 'Входящие заказы' && <StockChartWidget units='руб' dataType='byIncomingOrdersComparsionData' dataHandler={fetchSupplierAnalysisByIncomingOrdersComparsionData} />}
+            <StockChartWidget
+                {...config}
+            />
+            {/* {stockChartTab === 'Входящие заказы' && <StockChartWidget units='руб' dataType='byIncomingOrdersComparsionData' dataHandler={fetchSupplierAnalysisByIncomingOrdersComparsionData} />}
             {stockChartTab === 'Заказанные товары' && <StockChartWidget units='шт' dataType='byOrderedProductsComparsionData' dataHandler={fetchSupplierAnalysisByOrderedProductsComparsionData} />}
             {stockChartTab === 'Средние цены' && <StockChartWidget units='руб' dataType='byAvgPricesComparsionData' dataHandler={fetchSupplierAnalysisByAvgPricesComparsionData} summaryType='avg' />}
             {stockChartTab === 'Средние скидки' && <StockChartWidget units='%' dataType='byAvgDiscountsComparsionData' dataHandler={fetchSupplierAnalysisByAvgDiscountsComparsionData} summaryType='avg' />}
-            {stockChartTab === 'Товарные остатки' && <StockChartWidget units='шт' dataType='byStockSizeComparsionData' dataHandler={fetchSupplierAnalysisByStockSizeComparsionData} />}
+            {stockChartTab === 'Товарные остатки' && <StockChartWidget units='шт' dataType='byStockSizeComparsionData' dataHandler={fetchSupplierAnalysisByStockSizeComparsionData} summaryType='last_value' />} */}
         </>
     )
 }

@@ -4,7 +4,60 @@ import DownloadButton from '../../../../components/DownloadButton';
 import { ConfigProvider, Table, Button } from 'antd';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { actions as supplierActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
-import { selectSupplierAnalysisDataByType } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
+import { selectSupplierAnalysisDataByType, selectSupplierCurrentBrand } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
+
+
+const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination) => {
+    if (!id) return undefined
+    let datesRange;
+
+    if (!selectedRange) {
+        datesRange = {period: 30}
+    }
+    if (selectedRange.period) {
+        datesRange = selectedRange
+    } else {
+        datesRange = {
+            date_from: selectedRange.from,
+            date_to: selectedRange.to
+        }
+    }
+    let reqData = {
+        supplier_id: parseInt(id),
+        ...datesRange,
+    }
+
+    if (hasPagination && paginationConfig?.page) {
+        reqData = {
+            ...reqData,
+            page: paginationConfig.page,
+            limit: paginationConfig.limit
+        }
+    }
+
+    if (sort) {
+        reqData = {
+            ...reqData,
+            sorting: sort
+        }
+    }
+
+
+    if (dataType === 'byBrandsTableData' && currentBrand) {
+        reqData = {
+            ...reqData,
+            brands: [currentBrand],
+        }
+    }
+    if (dataType === 'byBrandsTableData' && !currentBrand) {
+        reqData = {
+            ...reqData,
+            brands: [0],
+        }
+    }
+
+    return reqData
+}
 
 
 //инит стейт сортировки
@@ -21,7 +74,8 @@ const TableWidget = ({
     customHeader,
     dataType,
     dataHandler,
-    containerHeight
+    containerHeight,
+    hasPagination = false
 }) => {
     const dispatch = useAppDispatch()
     const paginationRef = useRef(null)
@@ -29,9 +83,13 @@ const TableWidget = ({
     const [scrollY, setScrollY] = useState(0);
     const [scrollX, setScrollX] = useState(0);
     const { selectedRange } = useAppSelector(store => store.filters)
-    const { currentBrand } = useAppSelector(store => store.supplierAnalysis)
+    const currentBrand = useAppSelector(selectSupplierCurrentBrand)
     const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
 
+
+
+
+    // ------------ table change handler (for pagination && sorting)-----------//
     const tableChangeHandler = (pagination, filters, sorter) => {
         if (sorter) {
             dispatch(supplierActions.setSort({
@@ -43,7 +101,7 @@ const TableWidget = ({
             }))
         }
 
-        if (pagination) {
+        if (pagination && hasPagination) {
             dispatch(supplierActions.setPagination({
                 dataType: dataType,
                 pagination: {
@@ -54,6 +112,11 @@ const TableWidget = ({
         }
     }
 
+
+
+    // --------------------- Effects ---------------------//
+
+    // table container width and height calculations
     useEffect(() => {
         const updateHeight = () => {
 
@@ -65,7 +128,7 @@ const TableWidget = ({
                 const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
                 const paddingsY = 50;
                 // расчет и сохранение высоты таблицы
-                const paginationSize = paginationConfig ? 60 : 0
+                const paginationSize = hasPagination ? 60 : 0
                 const availableHeight = container.offsetHeight - headerHeight - paddingsY - paginationSize;
                 setScrollY(availableHeight);
                 // расчет ширины контейнера
@@ -75,7 +138,6 @@ const TableWidget = ({
         updateHeight();
 
     }, [tableConfig, paginationConfig, tableData])
-
 
 
     //костыль для начального положения скролла
@@ -131,55 +193,31 @@ const TableWidget = ({
         }
     }, [tableData, paginationConfig])
 
-    //data fetching
+    //data fetching (all tables except 'products')
     useEffect(() => {
-        if (selectedRange && id) {
-            let datesRange;
-
-            if (selectedRange.period) {
-                datesRange = selectedRange
-            } else {
-                datesRange = {
-                    date_from: selectedRange.from,
-                    date_to: selectedRange.to
-                }
-            }
-            let reqData = {
-                "supplier_id": parseInt(id),
-                ...datesRange,
-            }
-
-            if (paginationConfig?.page) {
-                reqData = {
-                    ...reqData,
-                    page: paginationConfig.page,
-                    limit: paginationConfig.limit
-                }
-            }
-
-            if (sort) {
-                reqData = {
-                    ...reqData,
-                    sorting: sort
-                }
-            }
-
-            if (dataType === 'byBrandsTableData') {
-                reqData = {
-                    ...reqData,
-                    brands: [currentBrand || 0],
-                }
-            }
-
-            dispatch(dataHandler({ data: reqData, hasLoadingStatus: true }))
+        if (dataType !== 'byBrandsTableData') {
+            const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination)
+            requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }))
         }
-    }, [selectedRange, id, sort, paginationConfig?.page, currentBrand])
+    }, [id, selectedRange, paginationConfig?.page, sort, dataType])
+
+    //data fetching 'products' table
+    useEffect(() => {
+        if (dataType == 'byBrandsTableData') {
+            const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination)
+            requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }))
+        }
+    }, [id, selectedRange, paginationConfig?.page, sort, currentBrand, dataType, hasPagination])
+
+    // -------------------------------------------------------//
 
 
+
+    // ---------------------- loading layout -----------------//
     if (isLoading) {
         return (
             <div className={styles.widget}>
-                <div className={styles.loaderWrapper} style={{ height: containerHeight}}>
+                <div className={styles.loaderWrapper} style={{ height: containerHeight }}>
                     <span className='loader'></span>
                 </div>
             </div>
@@ -187,6 +225,8 @@ const TableWidget = ({
     }
 
 
+
+    // ----------------------- fetching error layout ----------------------//
     if (isError) {
         return (
             <div className={styles.widget}>
@@ -242,6 +282,8 @@ const TableWidget = ({
         )
     }
 
+
+    // ------------------------ no data layout -----------------------------//
     if (isSuccess && tableData && tableData.length === 0) {
         return (
             <div className={styles.widget}>
@@ -258,6 +300,11 @@ const TableWidget = ({
         )
     }
 
+
+
+
+    // ---------------------------main layout ---------------------------------//
+
     return (
         <div className={styles.widget}>
             <div className={!title && !customHeader && !downloadButton ? `${styles.widget__header} ${styles.widget__header_hidden}` : styles.widget__header}>
@@ -268,7 +315,7 @@ const TableWidget = ({
                 }
             </div>
 
-            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto' }}>
+            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto'}}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
@@ -324,7 +371,7 @@ const TableWidget = ({
                                 }
                             })}
                             dataSource={tableData}
-                            pagination={paginationConfig ? {
+                            pagination={hasPagination && paginationConfig ? {
                                 position: ['bottomLeft'],
                                 defaultCurrent: 1,
                                 current: paginationConfig?.page,
@@ -346,6 +393,7 @@ const TableWidget = ({
                             }}
                             preserveScrollPosition={false}
                             scroll={{ x: scrollX, y: scrollY, scrollToFirstRowOnChange: true, }}
+                            //scroll={{ scrollToFirstRowOnChange: true, }}
                         />
                     }
                 </ConfigProvider>

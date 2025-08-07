@@ -3,12 +3,13 @@ import styles from './tableMiniChart.module.css'
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import moment from "moment";
+import { getChartTooltip } from "../../shared/utils/mainChartConfig";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 
 
-const TableMiniChart = memo(({ data, color }) => {
+const TableMiniChart = memo(({ data, color, units }) => {
 
     // Мемоизируем нормализованные данные
     const normilizedChartData = useMemo(() => {
@@ -51,11 +52,12 @@ const TableMiniChart = memo(({ data, color }) => {
                 display: false,
             },
             tooltip: {
-                enabled: true,
+                enabled: false,
                 intersect: false,
                 mode: 'index',
                 axis: 'x',
                 callbacks: {},
+                external: (context) => {getChartTooltip(context, normilizedChartData, units, false)}
             },
         },
         scales: {
