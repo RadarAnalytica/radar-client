@@ -26,6 +26,10 @@
     line-height: 100%;
     letter-spacing: 0%;
     color: #1A1A1A;
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 /* .widget__tableWrapper {

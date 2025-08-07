@@ -39,6 +39,7 @@ export const TempTimeSelect = () => {
     const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
     const [selectValue, setSelectValue] = useState()
     const today = new Date();
+    today.setDate(today.getDate() - 1);
     const minDate = new Date('2025-06-15');
 
 

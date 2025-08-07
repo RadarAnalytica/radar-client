@@ -248,11 +248,11 @@ export const getChartTooltip = (context, chartData, unitsType, isMainChart = tru
     const viewportHeight = window.innerHeight;
 
     // Добавляем отступ от краев экрана
-    const margin = 10;
+    const margin = 5;
 
     // Корректировка по горизонтали
     if (tooltipLeft + tooltipWidth + margin > viewportWidth) {
-        tooltipLeft = viewportWidth - tooltipWidth - margin;
+        tooltipLeft = viewportWidth - (tooltipWidth / 1.5) - margin;
     } else if (tooltipLeft - margin < 0) {
         tooltipLeft = margin;
     }

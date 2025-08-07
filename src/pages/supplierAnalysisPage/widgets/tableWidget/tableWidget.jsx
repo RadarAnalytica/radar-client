@@ -12,7 +12,7 @@ const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBran
     let datesRange;
 
     if (!selectedRange) {
-        datesRange = {period: 30}
+        datesRange = { period: 30 }
     }
     if (selectedRange.period) {
         datesRange = selectedRange
@@ -85,11 +85,11 @@ const TableWidget = ({
 
 
 
-
     // ------------ table change handler (for pagination && sorting)-----------//
-    const tableChangeHandler = (pagination, filters, sorter) => {
-        if (sorter) {
+    const tableChangeHandler = (pagination, filters, sorter, { action }) => {
+        if (action === 'sort') {
             dispatch(supplierActions.setSort({
+                hasPagination: hasPagination,
                 dataType: dataType,
                 sort: {
                     sort_field: sorter.field,
@@ -98,7 +98,7 @@ const TableWidget = ({
             }))
         }
 
-        if (pagination && hasPagination) {
+        if (action === 'paginate' && hasPagination) {
             dispatch(supplierActions.setPagination({
                 dataType: dataType,
                 pagination: {
@@ -198,7 +198,7 @@ const TableWidget = ({
 
     //data fetching 'products' table
     useEffect(() => {
-        if (dataType == 'byBrandsTableData') {
+        if (dataType === 'byBrandsTableData') {
             const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination)
             requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }))
         }
@@ -243,29 +243,8 @@ const TableWidget = ({
                                 size='large'
                                 style={{ marginLeft: 24 }}
                                 onClick={() => {
-                                    if (selectedRange && id) {
-                                        let datesRange;
-
-                                        if (selectedRange.period) {
-                                            datesRange = selectedRange
-                                        } else {
-                                            datesRange = {
-                                                date_from: selectedRange.from,
-                                                date_to: selectedRange.to
-                                            }
-                                        }
-                                        const reqData = {
-                                            "supplier_id": parseInt(id),
-                                            "page": 1,
-                                            "limit": 25,
-                                            ...datesRange,
-                                            // "sorting": {
-                                            //     "sort_field": "frequency",
-                                            //     "sort_order": "DESC"
-                                            // }
-                                        }
-                                        dispatch(dataHandler({ data: reqData, hasLoadingStatus: true }))
-                                    }
+                                    const requestObject = getRequestObject(id, selectedRange, paginationConfig, sort, currentBrand, dataType, hasPagination)
+                                    requestObject && dispatch(dataHandler({ data: requestObject, hasLoadingStatus: true }))
                                 }}
                             >
                                 Обновить
@@ -273,7 +252,7 @@ const TableWidget = ({
                         </ConfigProvider>
                     </div>
                 </div>
-            </div>
+            </div >
         )
     }
 
@@ -365,7 +344,7 @@ const TableWidget = ({
                                     return _
                                 }
                             })}
-                            dataSource={tableData?.map((_, id) => ({..._, key: id}))}
+                            dataSource={tableData?.map((_, id) => ({ ..._, key: id }))}
                             pagination={hasPagination && paginationConfig ? {
                                 position: ['bottomLeft'],
                                 defaultCurrent: 1,
@@ -378,7 +357,7 @@ const TableWidget = ({
                             } : false}
                             rowSelection={false}
                             showSorterTooltip={false}
-                            sticky={{ offsetHeader: -30, offsetScroll: -0}}
+                            sticky={{ offsetHeader: -30, offsetScroll: -0 }}
                             onChange={tableChangeHandler}
                             preserveScrollPosition={false}
                             scroll={{ x: tableConfig?.reduce((acc, a) => acc += a.width, 0) + 16, y: `calc(${containerHeight} + 16px)`, scrollToFirstRowOnChange: true, }}
