@@ -2,11 +2,12 @@
 import styles from './MainPage.module.css'
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar'
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
+import Header from '../../components/sharedComponents/header/header'
 import { VideoWidget, FeaturesWidget, VideoWidgetOneLine } from './widgets'
 import { Banner } from './features'
 
 
-export default function MainPage () {
+export default function MainPage() {
 
     return (
         <main className={styles.page}>
@@ -17,8 +18,12 @@ export default function MainPage () {
             </section>
             {/* ------ CONTENT ------ */}
             <section className={styles.page__content}>
-                <Banner.Top />
-
+                <div className={styles.page__headerWrapper}>
+                    <Header
+                        title='Главная'
+                    />
+                </div>
+                {/* <Banner.Top /> */}
                 {/* ------- */}
 
                 {/* old */}
