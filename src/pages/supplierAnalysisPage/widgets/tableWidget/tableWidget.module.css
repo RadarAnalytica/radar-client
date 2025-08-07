@@ -33,11 +33,11 @@
     width: 100%;
     border-radius: 16px;
     background: white;
-    padding: 16px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
-    min-height: 400px;
+    min-height: 250px;
     max-height: 50dvh;
     overflow: hidden;
+    padding: 16px 0 0 16px;
 }
 
 :global(.ant-table) {
@@ -90,11 +90,6 @@
     -ms-user-select: none;
     /* Для IE/Edge */
 }
-
-:global(.ant-table-sticky-scroll) {
-    display: none !important;
-}
-
 
 
 .loaderWrapper {

@@ -81,7 +81,7 @@ const TableWidget = ({
     const paginationRef = useRef(null)
     const containerRef = useRef(null)
     const [scrollY, setScrollY] = useState(0);
-    const [scrollX, setScrollX] = useState(0);
+    //const [containerHeight, setContainerHeight] = useState(0);
     const { selectedRange } = useAppSelector(store => store.filters)
     const currentBrand = useAppSelector(selectSupplierCurrentBrand)
     const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
@@ -126,13 +126,11 @@ const TableWidget = ({
 
                 // расчет высоты шапки и добавление отступов контейнера
                 const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-                const paddingsY = 50;
+                const paddingsY = 16;
                 // расчет и сохранение высоты таблицы
-                const paginationSize = hasPagination && paginationConfig?.page && paginationConfig?.total && paginationConfig?.total > 1 ? 30 : 0
+                const paginationSize = hasPagination && paginationConfig?.total && paginationConfig?.total > 1 ? 70 : 0
                 const availableHeight = container.offsetHeight - headerHeight - paddingsY - paginationSize;
                 setScrollY(availableHeight);
-                // расчет ширины контейнера
-                setScrollX(container.offsetWidth - 32);
             }
         };
         updateHeight();
@@ -146,17 +144,6 @@ const TableWidget = ({
         if (tBody) {
             tBody.forEach(_ => {
                 _.scrollTo({ top: 0 })
-            })
-        }
-
-    }, [tableData, isLoading, tableConfig, paginationConfig])
-    //костыль для починки рассинхрона скролла между хэдером таблицы и строками
-    useEffect(() => {
-        
-        const stickyScroll = document.querySelectorAll('.ant-table-sticky-scroll')
-        if (stickyScroll) {
-            stickyScroll.forEach(_ => {
-                _.style.display = 'none'
             })
         }
 
@@ -327,7 +314,7 @@ const TableWidget = ({
             </div>
 
             {/* <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto'}}> */}
-            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: (tableData?.length * 100) || 'auto'}}>
+            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: (35 + 70 + (tableData?.length * 115)) || 'auto'}}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
@@ -405,7 +392,7 @@ const TableWidget = ({
                                 expandedRowClassName: styles.expandRow,
                             }}
                             preserveScrollPosition={false}
-                            scroll={{ x: scrollX, y: scrollY, scrollToFirstRowOnChange: true, }}
+                            scroll={{ x: tableConfig.reduce((acc,a) => acc += a.width, 0) + 32, y: scrollY, scrollToFirstRowOnChange: true, }}
                             //scroll={{ scrollToFirstRowOnChange: true, }}
                         />
                     }
