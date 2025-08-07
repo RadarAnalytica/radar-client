@@ -40,7 +40,6 @@ const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, isCheckedLi
                     loading={isDataLoading}
                     onClick={() => {
                         addProducts();
-                        setIsAddSkuModalVisible(false);
                     }}
                 >
                     Добавить

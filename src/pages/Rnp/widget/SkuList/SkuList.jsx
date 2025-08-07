@@ -7,24 +7,22 @@ import SkuHeader from '../SkuItem/SkuItem';
 import { useAppSelector } from '../../../../redux/hooks';
 import { grip, remove, expand } from '../icons';
 
-export default function SkuList({ data, setAddSkuModalShow, setSkuList }) {
+export default function SkuList({ data, setAddSkuModalShow, setSkuList,  }) {
 	console.log('skuList', data);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 	const [view, setView] = useState('sku');
 	const [expanded, setExpanded] = useState(null);
 	useEffect(() => {
-		if (data.length > 0){
+		if (data?.length > 0){
 			setExpanded(data[0].id)
 		}
 	}, [data, setAddSkuModalShow])
 
 	const expandHandler = (value) => {
-		console.log('expandHandler', value)
 		setExpanded((id) => id !== value ? value : null)
 	}
 	
 	const removeHandler = (value) => {
-		console.log('removeHandler', value)
 		setSkuList((list) => list.filter((el) => el.id !== value))
 	}
 
@@ -135,7 +133,7 @@ export default function SkuList({ data, setAddSkuModalShow, setSkuList }) {
 		>
 			{view === 'sku' && (
 				<>
-					{data.map((el, i) => (
+					{data?.map((el, i) => (
 						<div key={i} className={styles.item}>
 							<header className={styles.item__header}>
 								<Flex gap={20} align='center'>
@@ -143,7 +141,7 @@ export default function SkuList({ data, setAddSkuModalShow, setSkuList }) {
 										className={styles.item__button}
 										icon={grip} />
 									<div className={styles.item__product}>
-										<SkuHeader title={el.title} photo={el.photo} sku={el.sku} shop={'adasd'} />
+										<SkuHeader title={el.article_data.title} photo={el.article_data.photo} sku={el.article_data.wb_id} shop={el.article_data.shop_name} />
 									</div>
 									<Button
 										className={styles.item__button}
@@ -158,8 +156,8 @@ export default function SkuList({ data, setAddSkuModalShow, setSkuList }) {
 								</Flex>
 							</header>
 							{expanded === el.id && <div className={`${styles.item__table} ${styles.item}`}><SkuTable
-								data={null}
-								columns={null}
+								data={el.table.rows}
+								columns={el.table.columns}
 								defaultExpandAllRows={view === 'sku'}
 							/></div>}
 						</div>
@@ -168,11 +166,11 @@ export default function SkuList({ data, setAddSkuModalShow, setSkuList }) {
 			)}
 			{view === 'total' && (
         <div className={styles.item}>
-          <SkuTable
+          {/* <SkuTable
 							data={null}
 							columns={null}
 							defaultExpandAllRows={view === 'sku'}
-						/>
+						/> */}
         </div>
       )}
 			</ConfigProvider>

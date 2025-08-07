@@ -196,7 +196,7 @@ export const Filters = ({
             <MonthSelect monthHandler={monthHandler} value={monthValue}/>
           </div>
         }
-        {timeSelect &&
+        {shops && timeSelect &&
           <div className={styles.filters__inputWrapper}>
             <TimeSelect />
           </div>

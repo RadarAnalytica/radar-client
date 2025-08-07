@@ -1409,6 +1409,80 @@ export const ServiceFunctions = {
 			console.log('getProductGroups error:', error);
 			throw new Error(error);
 		}
-	}
+	},
+	// getReportProfitLoss: async (token, selectedRange, shopId, filters, monthRange) => {
+
+	getRnpByArticle: async(token, selectedRange, shopId, filters, page, dateRange) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/rnp/by_article?page=${page}&per_page=25`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('getRnpByArticle ', error);
+			throw new Error(error);
+		}
+	},
+	getRnpSummary: async(token) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/rnp/summary`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('getRnpSummary ', error);
+			throw new Error(error);
+		}
+	},
+	getRnpProducts: async(token, selectedRange, shopId, filters, page, dateRange) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/rnp/products?page=${page}&per_page=25`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('getRnpByArticle ', error);
+			throw new Error(error);
+		}
+	},
 };
 
