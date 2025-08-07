@@ -221,9 +221,7 @@ const StockChartWidget = ({
                                 }}
                             >
                                 <label className={styles.widget__checkboxLabel}>
-                                    <span>
                                         {compareSupplierData?.display_name}
-                                    </span>
                                     <span>
                                         {chartData && formatPrice(getSummary(chartData[compareSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
                                     </span>
