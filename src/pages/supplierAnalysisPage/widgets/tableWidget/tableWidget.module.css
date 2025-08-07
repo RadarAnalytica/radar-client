@@ -91,6 +91,10 @@
     /* Для IE/Edge */
 }
 
+:global(.ant-table-sticky-scroll) {
+    display: none !important;
+}
+
 
 
 .loaderWrapper {
