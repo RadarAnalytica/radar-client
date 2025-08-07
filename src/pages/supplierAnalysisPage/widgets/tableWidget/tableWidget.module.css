@@ -28,7 +28,7 @@
     color: #1A1A1A;
 }
 
-.widget__tableWrapper {
+/* .widget__tableWrapper {
     position: relative;
     width: 100%;
     border-radius: 16px;
@@ -37,7 +37,12 @@
     min-height: 250px;
     max-height: 50dvh;
     overflow: hidden;
+} */
+.widget__tableWrapper {
+    border-radius: 16px;
+    background: white;
     padding: 16px 0 0 16px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
 }
 
 :global(.ant-table) {
@@ -155,25 +160,4 @@
 .widget__tableWrapper :global(.ant-table-body) {
     scrollbar-width: thin;
     scrollbar-color: #5329ff80 transparent;
-}
-
-/* Virtual scrollbar styles - объединены и исправлены */
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb),
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb) {
-    border-radius: 6px !important;
-    background: #5329ff80 !important;
-    transition: background-color 0.2s ease;
-}
-
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb:hover),
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb:hover) {
-    background: #5329ff !important;
-}
-
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-horizontal .ant-table-tbody-virtual-scrollbar-thumb) {
-    height: 5px !important;
-}
-
-.widget__tableWrapper :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb) {
-    width: 5px !important;
 }

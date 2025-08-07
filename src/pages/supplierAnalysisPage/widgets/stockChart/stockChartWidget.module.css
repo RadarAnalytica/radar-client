@@ -73,8 +73,12 @@
     gap: 8px;
 }
 
-.widget__checkboxLabel span {
-    color: #1A1A1A80
+.widget__checkboxLabel > span {
+    color: #1A1A1A80;
+    max-width: 60px;
+    min-width: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .loaderWrapper {
