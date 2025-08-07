@@ -76,6 +76,8 @@ const SupplierIdPage = () => {
 
     }, [params, mainSupplierData])
 
+
+    //сброс при анмаунте
     useEffect(() => {
         return () => {
             dispatch(supplierActions.resetState())
@@ -114,11 +116,12 @@ const SupplierIdPage = () => {
                     />
                     <div className={styles.page__filtersWrapper}>
                         <Filters
-                            setLoading={() => { }}
+                            setLoading={() => {}}
                             shopSelect={false}
                             brandSelect={false}
                             articleSelect={false}
                             groupSelect={false}
+                            tempPageCondition='supplier'
                         />
                     </div>
                     <BarsWidget
