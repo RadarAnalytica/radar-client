@@ -98,8 +98,8 @@ function App() {
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
             <Route path='/admin-referal' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Реферальная программа'><AdminReferalPage /></ProtectedRoute>} />
             {/* Protected routes */}
-            <Route path='/supplier-analysis' element={<ProtectedRoute userRoleProtected testPeriodProtected expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
-            <Route path='/supplier-analysis/:id' element={<ProtectedRoute userRoleProtected testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/supplier-analysis' expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
+            <Route path='/supplier-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
+            <Route path='/supplier-analysis/:id' element={<ProtectedRoute testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/supplier-analysis' expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
             <Route path='/sku-frequency' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><RequestMonitoringPage /></ProtectedRoute>} />
             <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyRequestPage /></ProtectedRoute>} />
