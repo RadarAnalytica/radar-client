@@ -305,7 +305,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         ...pending.files.map(_ =>
                         ({
                             file: {
-                                name: _
+                                name: _.filename
                             },
                             status: {
                                 isLoading: true,
@@ -318,7 +318,7 @@ const FileUploader = ({ setShow, setError, getListOfReports }) => {
                         ),
                         ...processing.files.map(_ => ({
                             file: {
-                                name: _
+                                name: _.filename
                             },
                             status: {
                                 isLoading: true,

@@ -42,7 +42,7 @@ export default function ReportProfitLoss() {
 		}
 		
 		return shops.find(shop => shop.id === activeBrand.id);
-}, [activeBrand, shops]);
+	}, [activeBrand, shops]);
 
 	const initialRange = useMemo(() => ({
 		month_to: dayjs().format('YYYY-MM'),
@@ -140,6 +140,11 @@ export default function ReportProfitLoss() {
 					if (!data){
 						continue
 					}
+
+					if (row.key == 'sales'){
+						row[column.key] = data[row.key]?.rub;
+						continue
+					}
 					
 					// проверка на данные в разделе Прямые расходы
 					if (row.key == 'direct_expenses'){
@@ -194,7 +199,8 @@ export default function ReportProfitLoss() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					monthRange
+					// monthRange
+					updateSavedMonthRange()
 				);
 
 				dataToTableData(response);
@@ -214,7 +220,7 @@ export default function ReportProfitLoss() {
 		} else {
 			shops.length > 0 && setLoading(false)
 		}
-	}, [monthRange]);
+	}, [monthRange, shopStatus, filters, selectedRange, shops]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;
@@ -239,9 +245,12 @@ export default function ReportProfitLoss() {
 		);
 	}
 
+	console.log(activeBrand)
+	console.log(shopStatus)
+
 	useEffect(() => {
 		setMonthRange(updateSavedMonthRange())
-	}, [shopStatus, filters])
+	}, [shopStatus])
 
 	return (
 		<main className={styles.page}>
@@ -288,30 +297,10 @@ export default function ReportProfitLoss() {
 						columns={columns}
 						data={data}
 						virtual={false}
-						is_primary_collect={shopStatus?.is_primary_collect}
+						is_primary_collect={activeBrand?.is_primary_collect}
 					></ReportTable>
 				</div>
 			</section>
 		</main>
-	);
-}
-
-function Loading(status) {
-	if (!status) {
-		return;
-	}
-	return (
-		<div
-			className="d-flex flex-column align-items-center justify-content-center"
-			style={{
-				height: '100%',
-				width: '100%',
-				position: 'absolute',
-				backgroundColor: '#fff',
-				zIndex: 999,
-			}}
-		>
-			<span className="loader"></span>
-		</div>
 	);
 }

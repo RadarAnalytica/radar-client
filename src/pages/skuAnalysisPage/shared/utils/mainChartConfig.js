@@ -24,6 +24,30 @@ export const annotationColorsConfig = [
     { bgColor: '#FEEBF0', lableColor: '#F93C65' },
     { bgColor: '#FBEDFF', lableColor: '#D54AFF' },
     { bgColor: '#E5F7ED', lableColor: '#00AF4F' },
+    { bgColor: '#FEEBF4', lableColor: '#F93C94' },
+    { bgColor: '#E8F9FA', lableColor: '#1BC5D1' },
+    { bgColor: '#FEF6EB', lableColor: '#F9A43C' },
+    { bgColor: '#FEEBF0', lableColor: '#F93C65' },
+    { bgColor: '#FBEDFF', lableColor: '#D54AFF' },
+    { bgColor: '#E5F7ED', lableColor: '#00AF4F' },
+    { bgColor: '#FEEBF4', lableColor: '#F93C94' },
+    { bgColor: '#E8F9FA', lableColor: '#1BC5D1' },
+    { bgColor: '#FEF6EB', lableColor: '#F9A43C' },
+    { bgColor: '#FEEBF0', lableColor: '#F93C65' },
+    { bgColor: '#FBEDFF', lableColor: '#D54AFF' },
+    { bgColor: '#E5F7ED', lableColor: '#00AF4F' },
+    { bgColor: '#FEEBF4', lableColor: '#F93C94' },
+    { bgColor: '#E8F9FA', lableColor: '#1BC5D1' },
+    { bgColor: '#FEF6EB', lableColor: '#F9A43C' },
+    { bgColor: '#FEEBF0', lableColor: '#F93C65' },
+    { bgColor: '#FBEDFF', lableColor: '#D54AFF' },
+    { bgColor: '#E5F7ED', lableColor: '#00AF4F' },
+    { bgColor: '#FEEBF4', lableColor: '#F93C94' },
+    { bgColor: '#E8F9FA', lableColor: '#1BC5D1' },
+    { bgColor: '#FEF6EB', lableColor: '#F9A43C' },
+    { bgColor: '#FEEBF0', lableColor: '#F93C65' },
+    { bgColor: '#FBEDFF', lableColor: '#D54AFF' },
+    { bgColor: '#E5F7ED', lableColor: '#00AF4F' },
 ]
 
 const getAnnotations = (initData) => {
@@ -47,13 +71,13 @@ const getAnnotations = (initData) => {
     let annotations = {}
     normilizedData.forEach((i, id) => {
         i.dates.sort((a, b) => moment(a) > moment(b) ? 1 : -1)
-        const color = id < annotationColorsConfig.length - 1 ? annotationColorsConfig[id] : annotationColorsConfig[id - (Math.floor(id / annotationColorsConfig.length - 1) * (annotationColorsConfig.length - 1))]
+        const color = id <= annotationColorsConfig.length - 1 ? annotationColorsConfig[id] : annotationColorsConfig[id - (Math.floor(id / annotationColorsConfig.length - 1) * (annotationColorsConfig.length - 1))]
         annotations[`annotation_${id}`] = {
             drawTime: 'beforeDatasetsDraw',
             type: 'box',
             xMin: moment(i.dates[0]).format('DD.MM.YY'),
             xMax: moment(i.dates[i.dates.length - 1]).format('DD.MM.YY'),
-            backgroundColor: `${color.bgColor || annotationColorsConfig[0].bgColor}95`,
+            backgroundColor: `${color?.bgColor || annotationColorsConfig[0]?.bgColor}95`,
             borderWidth: 0,
             label: {
                 content: `${i.name.substring(0, 1)}${i.name.substring(1).toLowerCase()}`,

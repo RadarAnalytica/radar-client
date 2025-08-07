@@ -1,17 +1,11 @@
 import { ConfigProvider, Table, Button } from 'antd';
-import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
+import { useRef, useCallback } from 'react';
 import styles from './SkuTable.module.css';
-import { COLUMNS, DATA } from '../../config';
+// import { COLUMNS, DATA } from '../../config';
 
-export default function SkuTable({ loading, columns, data, rowSelection = false, virtual=false, defaultExpandAllRows=false }) {
+export default function SkuTable({ loading, columns, data, defaultExpandAllRows=false }) {
 	const tableContainerRef = useRef(null);
   const tableRef = useRef(null);
-  const [scrollY, setScrollY] = useState(0);
-  const [scrollX, setScrollX] = useState(0);
-
-	// usememo {scroll: {}}
-
-	console.log('skuTable', defaultExpandAllRows)
 
   const handleBodyScroll = useCallback((e) => {
 		const header = tableRef.current?.nativeElement?.querySelector('.ant-table-header');
@@ -19,23 +13,6 @@ export default function SkuTable({ loading, columns, data, rowSelection = false,
       header.scrollLeft = e.target.scrollLeft;
     }
   }, []);
-
-	// const updateHeight = useCallback(() => {
-	// 	// ref контейнера который занимает всю высоту
-	// 	const container = tableContainerRef.current;
-	// 	const {width, height} = container.getBoundingClientRect();
-	// 	// расчет высоты шапки и добавление отступов контейнера
-	// 	// const headerHeight = container.querySelector('.ant-table-header')?.getBoundingClientRect().height || 70;
-	// 	// расчет и сохранение высоты таблицы
-	// 	const availableHeight = height - 75;
-	// 	setScrollY(availableHeight);
-	// 	// расчет ширины контейнера
-	// 	setScrollX(width);
-	// }, []);
-
-	// useEffect(() => {
-  //   updateHeight();
-	// }, [columns, data, loading])
 
 	return (
 		<div className={styles.container} >
@@ -77,12 +54,9 @@ export default function SkuTable({ loading, columns, data, rowSelection = false,
 				>
 					<Table
       			ref={tableRef}
-						virtual={virtual}
-						columns={COLUMNS}
-						dataSource={DATA}
+						columns={columns}
+						dataSource={data}
 						pagination={false}
-						rowSelection={rowSelection}
-						showSorterTooltip={false}
 						sticky={true}
 						rowClassName={(record) => {
 							return record.key === 'summary' ? styles.summaryRow : '';
@@ -94,8 +68,7 @@ export default function SkuTable({ loading, columns, data, rowSelection = false,
 							expandedRowClassName: styles.expandRow,
 							expandRowByClick: true
 						}}
-						scroll={ { x: 'max-content', y: 9999 }}
-      			onScroll={handleBodyScroll}
+						// scroll={ { x: 'max-content', y: 9999 }}
 					></Table>
 				</ConfigProvider>
 				}
@@ -112,12 +85,14 @@ function ExpandIcon({ expanded, onExpand, record }) {
 			theme={{
 				token: {
 					Button: {
-						paddingBlock: 0,
-						paddingInline: 0,
+						paddingBlockLg: 5,
+						paddingInlineLG: 5,
 						textHoverBg: 'transparent',
-						textTextColor: '#8C8C8C',
+						defaultColor: '#8C8C8C',
 						colorBgTextActive: 'transprent',
-						controlHeight: 25
+						controlHeight: 25,
+						contentLineHeight: 0,
+						onlyIconSize: 25
 					}
 				}
 			}}
@@ -125,15 +100,10 @@ function ExpandIcon({ expanded, onExpand, record }) {
 			<Button
 				className={styles.expandBtn}
 				type="text"
-				// onClick={(e) => {
-				// 	console.log(e)
-				// 	onExpand(record, e);
-				// }}
-			>
-				<svg className={`${styles.expandIcon} ${expanded ? styles.expandIconExpanded : ''}`} viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+				icon={<svg className={`${styles.expandIcon} ${expanded ? styles.expandIconExpanded : ''}`} viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M1 1L7 7L13 1" stroke='currentColor' strokeWidth="2" strokeLinecap="round"/>
-				</svg>
-			</Button>
+				</svg>}
+			/>
 		</ConfigProvider>
 };
 

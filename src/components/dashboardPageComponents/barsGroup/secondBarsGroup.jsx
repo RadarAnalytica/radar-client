@@ -78,6 +78,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 title='Средняя стоимость логистики на 1 шт'
                 loading={loading}
                 mainData={dataDashBoard?.logistic_per_one}
+                hasTooltip
+                tooltipText='Логистика на единицу проданного товара'
             />
             {/* Средняя прибыль на 1 шт */}
             <SmallBar
@@ -88,6 +90,8 @@ const SecondBarsGroup = ({ dataDashBoard, loading }) => {
                 secondaryDataType='relative'
                 secondaryDataUnits='%'
                 secondaryData={dataDashBoard?.profit_per_one_compare}
+                hasTooltip
+                tooltipText='Прибыль на единицу проданного товара'
             />
             <SmallBar
                 title='Упущенные продажи'

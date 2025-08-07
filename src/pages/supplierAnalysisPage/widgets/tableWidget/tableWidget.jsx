@@ -120,7 +120,6 @@ const TableWidget = ({
     //         if (containerRef.current) {
     //             // ref контейнера который занимает всю высоту
     //             const container = containerRef.current;
-
     //             // расчет высоты шапки и добавление отступов контейнера
     //             const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
     //             const paddingsY = 50;
@@ -133,7 +132,6 @@ const TableWidget = ({
     //         }
     //     };
     //     updateHeight();
-
     // }, [tableConfig, paginationConfig, tableData])
 
 
@@ -143,17 +141,6 @@ const TableWidget = ({
         if (tBody) {
             tBody.forEach(_ => {
                 _.scrollTo({ top: 0 })
-            })
-        }
-
-    }, [tableData, isLoading, tableConfig, paginationConfig])
-    //костыль для починки рассинхрона скролла между хэдером таблицы и строками
-    useEffect(() => {
-        
-        const stickyScroll = document.querySelectorAll('.ant-table-sticky-scroll')
-        if (stickyScroll) {
-            stickyScroll.forEach(_ => {
-                _.style.display = 'none'
             })
         }
 
@@ -322,6 +309,7 @@ const TableWidget = ({
                     <DownloadButton />
                 }
             </div>
+
 
             <div className={styles.widget__tableWrapper} ref={containerRef}>
                 <ConfigProvider

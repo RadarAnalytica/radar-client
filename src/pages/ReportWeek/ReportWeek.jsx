@@ -263,14 +263,12 @@ export default function ReportWeek() {
 	};
 
 	useEffect(() => {
-		// setWeekSelected(updateSavedFilterWeek());
-		// setPrimaryCollect(activeBrand?.is_primary_collect);
 		if (activeBrand && shopStatus?.is_primary_collect) {
 			updateDataReportWeek();
 		} else {
 			shops.length > 0 && setLoading(false)
 		}
-	}, [activeBrand, selectedRange, filters, weekSelected, shops, shopStatus]);
+	}, [selectedRange, filters, weekSelected, shops, shopStatus]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
