@@ -190,7 +190,7 @@ const StockChartWidget = ({
                                 }
                             >
                                 <label className={styles.widget__checkboxLabel}>
-                                    {mainSupplierData?.trademark}
+                                    {mainSupplierData?.display_name}
                                     <span>
                                         {chartData && formatPrice(getSummary(chartData[mainSupplierData?.supplier_id?.toString()], summaryType)?.toString(), units)}
                                     </span>
@@ -221,7 +221,9 @@ const StockChartWidget = ({
                                 }}
                             >
                                 <label className={styles.widget__checkboxLabel}>
-                                    {compareSupplierData?.trademark}
+                                    <span>
+                                        {compareSupplierData?.display_name}
+                                    </span>
                                     <span>
                                         {chartData && formatPrice(getSummary(chartData[compareSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
                                     </span>

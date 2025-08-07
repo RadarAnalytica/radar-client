@@ -9,7 +9,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 
 
-const TableMiniChart = memo(({ data, color, units }) => {
+const TableMiniChart = memo(({ data, color, units, title }) => {
 
     // Мемоизируем нормализованные данные
     const normilizedChartData = useMemo(() => {
@@ -19,7 +19,7 @@ const TableMiniChart = memo(({ data, color, units }) => {
             labels: data.map(i => moment(i.date).format('DD.MM.YY')),
             datasets: [
                 {
-                    label: 'Динамика выручки',
+                    label: title,
                     type: 'bar',
                     data: data.map(i => i.item),
                     yAxisID: 'y',

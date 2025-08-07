@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 
 function cellRenderer(value, record) {
-  const { units, dataIndex } = this;
+  const { units, dataIndex, title } = this;
 
 
   if (dataIndex === 'date') {
@@ -24,6 +24,7 @@ function cellRenderer(value, record) {
           data={value}
           color='#5329FF'
           units={units}
+          title={title}
         />
       </div>
     )
@@ -37,6 +38,7 @@ function cellRenderer(value, record) {
           data={value}
           color='#F0AD00'
           units={units}
+          title={title}
         />
       </div>
     )
@@ -117,9 +119,9 @@ function SortIcon({ sortOrder }) {
 function sorter(a, b, direction) {
   const { dataIndex: key } = this
   if (typeof a[key] === 'number' && typeof b[key] === 'number') {
-    return direction === 'DESC' ? a[key] - b[key] : b[key] - a[key];
+    return direction === 'ASC' ? a[key] - b[key] : b[key] - a[key];
   } else {
-    return direction === 'DESC'
+    return direction === 'ASC'
       ? a[key].localeCompare(b[key])
       : b[key].localeCompare(a[key]);
   }
@@ -181,7 +183,7 @@ export const goodsTableConfig = [
   { title: 'Средняя скидка без СПП, %', dataIndex: 'avg_discount', units: '%', width: 250, render: cellRenderer, filterOptions: true, },
   { title: 'Средний чек, руб', dataIndex: 'avg_check', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Выручка, руб', dataIndex: 'revenue', units: '₽', width: 200, render: cellRenderer, filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: true, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter:  _.dataIndex !== 'wb_id_name', sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 
 /**
@@ -292,7 +294,7 @@ export const ordersStructBySizesTableConfig = [
   { title: 'Динамика выручки', dataIndex: 'revenue_dynamics', units: 'руб', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
   { title: 'Заказы, шт', dataIndex: 'orders', units: 'шт', width: 200, render: cellRenderer, filterOptions: true, },
   { title: 'Динамика заказов', dataIndex: 'orders_dynamics', units: 'шт', hasChart: true, width: 300, render: cellRenderer,  filterOptions: true, },
-].map(_ => ({ ..._, render: cellRenderer.bind(_), sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics' ? sorter.bind(_) : false, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
+].map(_ => ({ ..._, render: cellRenderer.bind(_), sortDirections: ['ASC', 'DESC'], sorter: _.dataIndex !== 'revenue_dynamics' && _.dataIndex !== 'orders_dynamics' ? sorter.bind(_) : false, sortIcon: ({ sortOrder }) => <SortIcon sortOrder={sortOrder} /> }))
 
 
 
