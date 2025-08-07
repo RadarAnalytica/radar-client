@@ -9,8 +9,6 @@ import { chartCompareConfigObject, mainChartOptionsGenerator } from '../../share
 import moment from 'moment';
 import { verticalDashedLinePlugin } from '../../../../service/utils';
 import { ConfigProvider, Button } from 'antd';
-import { selectSupplierAnalysisDataByType } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors';
-// import { LineChart } from '../../features';
 
 ChartJS.register(
     annotationPlugin,

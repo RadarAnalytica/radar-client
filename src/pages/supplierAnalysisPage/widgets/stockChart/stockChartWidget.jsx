@@ -238,6 +238,7 @@ const StockChartWidget = ({
                         compareSupplier={compareSupplierData}
                         isMainSupplierActive={isMainSupplierActive}
                         isCompareSupplierActive={isCompareSupplierActive}
+                        units={units}
                     />
                 }
             </div>
