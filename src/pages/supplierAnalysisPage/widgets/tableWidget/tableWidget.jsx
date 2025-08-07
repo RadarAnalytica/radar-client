@@ -52,7 +52,7 @@ const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBran
     if (dataType === 'byBrandsTableData' && !currentBrand) {
         reqData = {
             ...reqData,
-            brands: [0],
+            brands: [],
         }
     }
 
@@ -315,7 +315,8 @@ const TableWidget = ({
                 }
             </div>
 
-            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto'}}>
+            {/* <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto'}}> */}
+            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: (tableData?.length * 100) || 'auto'}}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
@@ -379,6 +380,7 @@ const TableWidget = ({
                                 pageSize: paginationConfig?.limit,
                                 showSizeChanger: false,
                                 showQuickJumper: true,
+                                hideOnSinglePage: true,
                             } : false}
                             // tableLayout="fixed"
                             rowSelection={false}

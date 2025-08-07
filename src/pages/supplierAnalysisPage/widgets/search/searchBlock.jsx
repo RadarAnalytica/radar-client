@@ -24,6 +24,7 @@ const SearchBlock = ({ supplierType = 'main' }) => {
     const [requestStatus, setRequestStatus] = useState(requestInitState)
     const [autocompleteOptions, setAutocompleteOptions] = useState();
     const [currentData, setCurrentData] = useState();
+    const [ searchValue, setSearchValue ] = useState('')
     const [loadingOptions, setLoadingOptions] = useState(false);
     const navigate = useNavigate()
     const ref = useRef(null)
@@ -41,8 +42,15 @@ const SearchBlock = ({ supplierType = 'main' }) => {
 
 
     const handleSearch = (value) => { // обработка ввода пользователя вручную
+        setSearchValue(value)
         if (value) {
             debouncedDataFetch(value)
+        }
+        if (!value && supplierType === 'main') {
+            dispatch(supplierActions.setSupplierMainData(undefined))
+        }
+        if (!value && supplierType === 'compare') {
+            dispatch(supplierActions.setSupplierCompareData(undefined))
         }
     };
 
@@ -50,28 +58,29 @@ const SearchBlock = ({ supplierType = 'main' }) => {
         const item = autocompleteOptions.find(_ => _.supplier_id === value);
         if (item && supplierType === 'main') {
             dispatch(supplierActions.setSupplierMainData(item))
+            setSearchValue(item.trademark || item.full_name)
         }
         if (item && supplierType === 'compare') {
             dispatch(supplierActions.setSupplierCompareData(item))
-            
+            setSearchValue(item.trademark || item.full_name)
         }
     };
 
 
-    const handleKeyDown = (e) => {
-        if (e.key && e.key === 'Backspace') {
-            if (supplierType === 'main') {
-                dispatch(supplierActions.setSupplierMainData(undefined))
-                setCurrentData(undefined)
-                setAutocompleteOptions(undefined)
-            }
-            if (supplierType === 'compare') {
-                dispatch(supplierActions.setSupplierCompareData(undefined))
-                setCurrentData(undefined)
-                setAutocompleteOptions(undefined)
-            }
-        }
-    };
+    // const handleKeyDown = (e) => {
+    //     if (e.key && e.key === 'Backspace') {
+    //         if (supplierType === 'main') {
+    //             dispatch(supplierActions.setSupplierMainData(undefined))
+    //             setCurrentData(undefined)
+    //             setAutocompleteOptions(undefined)
+    //         }
+    //         if (supplierType === 'compare') {
+    //             dispatch(supplierActions.setSupplierCompareData(undefined))
+    //             setCurrentData(undefined)
+    //             setAutocompleteOptions(undefined)
+    //         }
+    //     }
+    // };
 
     useEffect(() => {
         if (supplierType === 'main') {
@@ -115,16 +124,16 @@ const SearchBlock = ({ supplierType = 'main' }) => {
                                 <path d="M1 1L7 7L13 1" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" />
                             </svg>
                         }
-                        onKeyDown={handleKeyDown}
+                        //onKeyDown={handleKeyDown}
                         notFoundContent={<div style={{ color: 'black' }}>
                             {!loadingOptions && !autocompleteOptions && 'Введите название поставщика'}
                             {!loadingOptions && autocompleteOptions && autocompleteOptions.length === 0 && 'Ничего не найдено'}
                             {loadingOptions && 'Идет загрузка...'}
                         </div>}
-                        value={currentData?.trademark || currentData?.name}
+                        value={searchValue}
                         onSearch={handleSearch}
                         onSelect={handleSelect}
-                        options={autocompleteOptions && [...autocompleteOptions]?.map(_ => ({ label: _?.trademark || _?.name, value: _?.supplier_id, key: _?.supplier_id }))}
+                        options={autocompleteOptions && [...autocompleteOptions]?.map(_ => ({ label: _?.trademark || _?.full_name, value: _?.supplier_id, key: _?.supplier_id }))}
                         
                     />
                     {supplierType === 'main' &&

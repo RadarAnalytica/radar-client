@@ -142,7 +142,7 @@ const SupplierIdPage = () => {
                         //downloadButton
                         dataType='byDatesTableData'
                         dataHandler={fetchSupplierAnalysisByDatesTableData}
-                        containerHeight='80vh'
+                        containerHeight='100vh'
                     />
                 </div>
                 <div className={styles.page__tableWrapper}>
@@ -153,7 +153,7 @@ const SupplierIdPage = () => {
                         //downloadButton
                         dataType='byBrandsTableData'
                         dataHandler={fetchSupplierAnalysisByBrandTableData}
-                        containerHeight='95vh'
+                        containerHeight='100vh'
                         hasPagination
                     />
                 </div>
@@ -165,7 +165,7 @@ const SupplierIdPage = () => {
                         dataType='bySubjectsTableData'
                         dataHandler={fetchSupplierAnalysisBySubjectsTableData}
                         title={`Продажи поставщика ${mainSupplierData?.trademark} по категориям`}
-                        containerHeight='45vh'
+                        containerHeight='600px'
                         hasPagination
                     />
                 </div>
@@ -209,7 +209,7 @@ const TableTabsWrapper = () => {
                     id={mainSupplierData?.supplier_id}
                     dataType='byWarehousesTableData'
                     dataHandler={fetchSupplierAnalysisByWarehousesTableData}
-                    containerHeight='45vh'
+                    containerHeight='600px'
                 />
             }
             {ordersStructureTab === 'По размерам' &&
@@ -218,7 +218,7 @@ const TableTabsWrapper = () => {
                     id={mainSupplierData?.supplier_id}
                     dataType='bySizesTableData'
                     dataHandler={fetchSupplierAnalysisBySizesTableData}
-                    containerHeight='45vh'
+                    containerHeight='600px'
                 />
             }
         </>

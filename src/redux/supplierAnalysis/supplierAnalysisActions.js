@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { actions as skuAnalysisActions } from './supplierAnalysisSlice'
 import { actions as supplierAnalysisActions } from './supplierAnalysisSlice';
 
 const createMainChartDataDTO = (data) => {
