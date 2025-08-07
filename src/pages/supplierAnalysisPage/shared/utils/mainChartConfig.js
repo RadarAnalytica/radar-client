@@ -36,7 +36,7 @@ export const chartCompareConfigObject = [
     
     { engName: 'queries_count', ruName: 'Всего запросов, шт', color: '#FFDC89', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
     { engName: 'avg_place', ruName: 'Средняя позиция', color: '#C7D61E', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
-    { engName: 'total_shows', ruName: 'Всего показов, шт', color: '#F9813C', isControlTooltip: true, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'total_shows', ruName: 'Всего показов, шт', color: '#F9813C', isControlTooltip: true, controlTooltipText: 'Значение общего числа показов, которое получили артикулы поставщика по всем запросам, в которых они были видны. Расчетный показатель зависит от количества запросов, их частотности и позиций артикулов по ним', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     { engName: 'avg_frequency', ruName: 'Среднедневная частотность', color: '#00AF4F', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
 
     { engName: 'rating_dynamics', ruName: 'Динамика рейтинга', color: '#D54AFF', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, units: '', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
