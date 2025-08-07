@@ -90,7 +90,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
         }
         if (data && chartType === 'line') {
             const nomalizedDataObject = {
-                labels: data.labels.map(_ => moment(_).format('DD.MM.YYYY').toLocaleString()),
+                labels: data.labels.map(_ => moment(_).format('DD.MM.YYYY').toString()),
                 datasets: compareSupplier ? [
                     {
                         label: mainSupplier?.trademark || mainSupplier?.name,
@@ -172,9 +172,6 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                     callback: function (value, index, values) {
                         const label = this.getLabelForValue(value);
                         // Обрезаем до 10 символов, добавляем "..." если длиннее
-                        if (chartType === 'line') {
-                            return moment(label).format('DD.MM.YYYY')
-                        }
                         return label.length > 10 ? label.slice(0, 10) + '…' : label;
                     }
                 }

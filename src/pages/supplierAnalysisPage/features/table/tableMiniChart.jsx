@@ -10,7 +10,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 
 const TableMiniChart = memo(({ data, color, units }) => {
-    console.log(units)
 
     // Мемоизируем нормализованные данные
     const normilizedChartData = useMemo(() => {

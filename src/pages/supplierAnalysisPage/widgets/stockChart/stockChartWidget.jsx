@@ -25,7 +25,7 @@ import { selectMainSupplierData, selectCompareSupplierData, selectSupplierAnalys
  */
 
 const getSummary = (data, summaryType) => {
-    if (!data) return 0;
+    if (!data) return '0';
     const { length } = data
     const summary = data.reduce((acc, a) => {
         if (a) {
@@ -86,19 +86,19 @@ const StockChartWidget = ({
                 "compared_supplier_id": compareSupplierData?.supplier_id ? parseInt(compareSupplierData.supplier_id) : 0,
                 ...datesRange,
             }
-            dispatch(dataHandler({data: requestObject, hasLoadingStatus: chartData ? false : true}))
+            dispatch(dataHandler({ data: requestObject, hasLoadingStatus: chartData ? false : true }))
         }
-    }, [mainSupplierData, compareSupplierData, selectedRange])
+    }, [mainSupplierData, compareSupplierData, selectedRange, dataType, units, dataHandler, summaryType, chartType])
 
-    if (isLoading) {
-        return (
-            <div className={styles.widget}>
-                <div className={styles.loaderWrapper}>
-                    <span className='loader'></span>
-                </div>
-            </div>
-        )
-    }
+    // if (isLoading) {
+    //     return (
+    //         <div className={styles.widget}>
+    //             <div className={styles.loaderWrapper}>
+    //                 <span className='loader'></span>
+    //             </div>
+    //         </div>
+    //     )
+    // }
 
 
     if (isError) {
@@ -164,16 +164,17 @@ const StockChartWidget = ({
 
             <div className={styles.widget__chartWrapper}>
                 <SearchBlock supplierType='compare' />
-                {mainSupplierData && chartData &&
-                    <div className={styles.widget__controls}>
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorPrimary: '#5329FF',
-                                    controlInteractiveSize: 20,
-                                }
-                            }}
-                        >
+
+                <div className={styles.widget__controls}>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorPrimary: '#5329FF',
+                                controlInteractiveSize: 20,
+                            }
+                        }}
+                    >
+                        {mainSupplierData &&
                             <Checkbox
                                 size='large'
                                 defaultChecked
@@ -191,46 +192,47 @@ const StockChartWidget = ({
                                 <label className={styles.widget__checkboxLabel}>
                                     {mainSupplierData?.trademark}
                                     <span>
-                                        {formatPrice(getSummary(chartData[mainSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
+                                        {chartData && formatPrice(getSummary(chartData[mainSupplierData?.supplier_id?.toString()], summaryType)?.toString(), units)}
                                     </span>
                                 </label>
                             </Checkbox>
-                        </ConfigProvider>
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorPrimary: '#1BC5D1',
-                                    controlInteractiveSize: 20,
-                                }
-                            }}
-                        >
-                            {compareSupplierData &&
-                                <Checkbox
-                                    size='large'
-                                    defaultChecked
-                                    checked={isCompareSupplierActive}
-                                    className={styles.widget__checkbox}
-                                    onChange={(e) => {
-                                        if (e.target.checked) {
-                                            setIsCompareSupplierActive(true)
-                                        } else {
-                                            setIsCompareSupplierActive(false)
-                                        }
-                                    }}
-                                >
-                                    <label className={styles.widget__checkboxLabel}>
-                                        {compareSupplierData?.trademark}
-                                        <span>
-                                            {formatPrice(getSummary(chartData[compareSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
-                                        </span>
-                                    </label>
-                                </Checkbox>
+                        }
+                    </ConfigProvider>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorPrimary: '#1BC5D1',
+                                controlInteractiveSize: 20,
                             }
-                        </ConfigProvider>
-                    </div>
-                }
+                        }}
+                    >
+                        {compareSupplierData &&
+                            <Checkbox
+                                size='large'
+                                defaultChecked
+                                checked={isCompareSupplierActive}
+                                className={styles.widget__checkbox}
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        setIsCompareSupplierActive(true)
+                                    } else {
+                                        setIsCompareSupplierActive(false)
+                                    }
+                                }}
+                            >
+                                <label className={styles.widget__checkboxLabel}>
+                                    {compareSupplierData?.trademark}
+                                    <span>
+                                        {chartData && formatPrice(getSummary(chartData[compareSupplierData?.supplier_id?.toString()], summaryType).toString(), units)}
+                                    </span>
+                                </label>
+                            </Checkbox>
+                        }
+                    </ConfigProvider>
+                </div>
 
-                {chartData && mainSupplierData &&
+
+                {mainSupplierData &&
                     <CompareChart
                         chartType={chartType}
                         data={chartData}

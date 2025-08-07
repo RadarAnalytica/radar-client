@@ -115,6 +115,8 @@ const TableWidget = ({
 
 
     // --------------------- Effects ---------------------//
+
+    // table container width and height calculations
     useEffect(() => {
         const updateHeight = () => {
 
@@ -126,7 +128,7 @@ const TableWidget = ({
                 const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
                 const paddingsY = 50;
                 // расчет и сохранение высоты таблицы
-                const paginationSize = paginationConfig ? 60 : 0
+                const paginationSize = hasPagination ? 60 : 0
                 const availableHeight = container.offsetHeight - headerHeight - paddingsY - paginationSize;
                 setScrollY(availableHeight);
                 // расчет ширины контейнера
@@ -313,7 +315,7 @@ const TableWidget = ({
                 }
             </div>
 
-            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto' }}>
+            <div className={styles.widget__tableWrapper} ref={containerRef} style={{ maxHeight: containerHeight, height: tableData ? tableData.length * 75 : 'auto'}}>
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     theme={{
@@ -391,6 +393,7 @@ const TableWidget = ({
                             }}
                             preserveScrollPosition={false}
                             scroll={{ x: scrollX, y: scrollY, scrollToFirstRowOnChange: true, }}
+                            //scroll={{ scrollToFirstRowOnChange: true, }}
                         />
                     }
                 </ConfigProvider>
