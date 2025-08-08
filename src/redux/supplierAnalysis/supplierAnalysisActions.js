@@ -147,11 +147,18 @@ export const fetchSupplierAnalysisBrandsData = createAsyncThunk(
       }
       const data = await res.json();
       //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
-      return [
+      let normalizedData  = [
         { brand_id: -1, brand_name: 'Все бренды' },
-        { brand_id: 0, brand_name: 'БРЕНД ОТСУТСТВУЕТ' },
+      ]
+      if (data?.some(_ => _.brand_id === 0)) {
+        normalizedData.push({ brand_id: 0, brand_name: 'БРЕНД ОТСУТСТВУЕТ' })
+      }
+
+      normalizedData = [
+        ...normalizedData,
         ...data
-      ];
+      ]
+      return normalizedData
     } catch (e) {
       //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: true, isSuccess: false, message: ''}}))
     }
