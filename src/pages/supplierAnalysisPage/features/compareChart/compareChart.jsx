@@ -47,6 +47,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         borderWidth: 1,
                         hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                         yAxisID: 'A',
+                        tooltipColor: '#5329FF'
                     },
                     {
                         label: compareSupplier?.trademark || compareSupplier?.name,
@@ -64,6 +65,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         borderWidth: 1,
                         hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                         yAxisID: 'A',
+                        tooltipColor: '#1BC5D1'
                     },
                 ] : [
                     {
@@ -82,6 +84,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         borderWidth: 1,
                         hoverBackgroundColor: 'rgba(240, 173, 0, 7)',
                         yAxisID: 'A',
+                        tooltipColor: '#5329FF'
                     },
                 ]
             }
@@ -102,7 +105,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         backgroundColor: '#5329FF',
                         pointRadius: 6,
                         hoverRadius: 8,
-                        borderWidth: 2
+                        borderWidth: 2,
                     },
                     {
                         label: compareSupplier?.trademark || compareSupplier?.name,
@@ -115,7 +118,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         backgroundColor: '#1BC5D1',
                         pointRadius: 6,
                         hoverRadius: 8,
-                        borderWidth: 2
+                        borderWidth: 2,
                     },
                 ] : [
                     {
@@ -129,7 +132,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                         backgroundColor: '#5329FF',
                         pointRadius: 6,
                         hoverRadius: 8,
-                        borderWidth: 2
+                        borderWidth: 2,
                     },
                 ]
             }
@@ -138,7 +141,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
     }, [data, isMainSupplierActive, isCompareSupplierActive, mainSupplier, compareSupplier])
 
     const chartOptions = {
-        responsive: true,
+        //responsive: true,
         //maintainAspectRatio: false,
         animation: {
             duration: 0,
@@ -152,8 +155,8 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                 intersect: false,
                 mode: 'index',
                 axis: 'x',
-                callbacks: {},
-                external: (context) => {getChartTooltip(context, normilizedChartData, units, false)}
+                callbacks: {getColor: () => {}},
+                external: (context) => { getChartTooltip(context, normilizedChartData, units, false)}
             },
             verticalDashedLine: { enabled: true }
         },
@@ -234,16 +237,14 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
 
 
     return (
-        <div className={styles.widget}>
-            <div className={styles.mainChart}>
-                {normilizedChartData &&
-                    <Chart
-                        data={{ ...normilizedChartData }}
-                        //width={100}
-                        //height={40}
-                        options={chartOptions}
-                    />}
-            </div>
-        </div>
+        <>
+            {normilizedChartData &&
+                <Chart
+                    data={{ ...normilizedChartData }}
+                    width={100}
+                    height={40}
+                    options={chartOptions}
+                />}
+        </>
     )
 }

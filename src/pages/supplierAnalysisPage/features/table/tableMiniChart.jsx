@@ -25,6 +25,7 @@ const TableMiniChart = memo(({ data, color, units, title }) => {
                     yAxisID: 'y',
                     xAxisID: 'x',
                     tension: 0.4,
+                    tooltipColor: color,
                     backgroundColor: function (context) {
                         const chart = context.chart;
                         const { ctx, chartArea } = chart;

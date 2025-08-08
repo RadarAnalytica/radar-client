@@ -76,12 +76,8 @@
     flex-wrap: wrap;
 }
 
-.widget__checkboxLabel > span {
+.widget__checkboxLabel > div {
     color: #1A1A1A80;
-    max-width: 60px;
-    min-width: 0;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
 .loaderWrapper {

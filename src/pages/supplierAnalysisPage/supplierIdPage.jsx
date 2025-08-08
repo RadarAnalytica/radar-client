@@ -167,7 +167,7 @@ const SupplierIdPage = () => {
                         //downloadButton
                         dataType='bySubjectsTableData'
                         dataHandler={fetchSupplierAnalysisBySubjectsTableData}
-                        title={`Продажи по категориям поставщика: ${mainSupplierData?.trademark}`}
+                        title={`Продажи по категориям поставщика: ${mainSupplierData?.display_name}`}
                         containerHeight='400px'
                         hasPagination
                     />

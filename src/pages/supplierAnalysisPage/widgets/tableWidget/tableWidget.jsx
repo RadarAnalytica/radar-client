@@ -60,11 +60,6 @@ const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBran
 }
 
 
-//инит стейт сортировки
-const initSortState = {
-    sortedValue: undefined,
-    sortType: undefined,
-}
 
 const TableWidget = ({
     tableConfig,
@@ -82,7 +77,6 @@ const TableWidget = ({
     const { selectedRange } = useAppSelector(store => store.filters)
     const currentBrand = useAppSelector(selectSupplierCurrentBrand)
     const { data: tableData, isLoading, isError, isSuccess, message, pagination: paginationConfig, sort } = useAppSelector(state => selectSupplierAnalysisDataByType(state, dataType))
-
 
 
     // ------------ table change handler (for pagination && sorting)-----------//
@@ -112,28 +106,6 @@ const TableWidget = ({
 
 
     // --------------------- Effects ---------------------//
-
-    // table container width and height calculations
-    // useEffect(() => {
-    //     const updateHeight = () => {
-
-    //         if (containerRef.current) {
-    //             // ref контейнера который занимает всю высоту
-    //             const container = containerRef.current;
-    //             // расчет высоты шапки и добавление отступов контейнера
-    //             const headerHeight = container.querySelector('.ant-table-header')?.offsetHeight || 70;
-    //             const paddingsY = 50;
-    //             // расчет и сохранение высоты таблицы
-    //             const paginationSize = hasPagination && paginationConfig?.page && paginationConfig?.total && paginationConfig?.total > 1 ? 30 : 0
-    //             const availableHeight = container.offsetHeight - headerHeight - paddingsY - paginationSize;
-    //             setScrollY(availableHeight);
-    //             // расчет ширины контейнера
-    //             setScrollX(container.offsetWidth - 32);
-    //         }
-    //     };
-    //     updateHeight();
-    // }, [tableConfig, paginationConfig, tableData])
-
 
     //костыль для начального положения скролла
     useEffect(() => {
@@ -253,24 +225,6 @@ const TableWidget = ({
                     </div>
                 </div>
             </div >
-        )
-    }
-
-
-    // ------------------------ no data layout -----------------------------//
-    if (isSuccess && tableData && tableData.length === 0) {
-        return (
-            <div className={styles.widget}>
-                <div className={styles.loaderWrapper}>
-                    <div className={styles.errorWrapper__message}>
-                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="30" height="30" rx="5" fill="#F93C65" fillOpacity="0.1" />
-                            <path d="M14.013 18.2567L13 7H17L15.987 18.2567H14.013ZM13.1818 23V19.8454H16.8182V23H13.1818Z" fill="#F93C65" />
-                        </svg>
-                        {'Данных пока нет'}
-                    </div>
-                </div>
-            </div>
         )
     }
 
