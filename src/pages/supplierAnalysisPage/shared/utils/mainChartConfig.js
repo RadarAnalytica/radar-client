@@ -1,5 +1,5 @@
 import moment from "moment";
-import { verticalDashedLinePlugin } from "../../../../service/utils";
+import { formatPrice } from "../../../../service/utils";
 
 /**
  *      //"revenue": 1198071115.0,
@@ -36,7 +36,7 @@ export const chartCompareConfigObject = [
     
     { engName: 'queries_count', ruName: 'Всего запросов, шт', color: '#FFDC89', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
     { engName: 'avg_place', ruName: 'Средняя позиция', color: '#C7D61E', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, isOnChart: true, isAnnotation: false, isControl: true, defaultActive: true },
-    { engName: 'total_shows', ruName: 'Всего показов, шт', color: '#F9813C', isControlTooltip: true, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
+    { engName: 'total_shows', ruName: 'Всего показов, шт', color: '#F9813C', isControlTooltip: true, controlTooltipText: 'Значение общего числа показов, которое получили артикулы поставщика по всем запросам, в которых они были видны. Расчетный показатель зависит от количества запросов, их частотности и позиций артикулов по ним', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
     { engName: 'avg_frequency', ruName: 'Среднедневная частотность', color: '#00AF4F', isControlTooltip: false, controlTooltipText: 'text', hasUnits: true, units: 'шт', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
 
     { engName: 'rating_dynamics', ruName: 'Динамика рейтинга', color: '#D54AFF', isControlTooltip: false, controlTooltipText: 'text', hasUnits: false, units: '', isOnChart: true, isAnnotation: false, isControl: true, defaultActive: false },
@@ -150,7 +150,7 @@ const getSeason = (seasonsData) => {
     return seasonObject
 }
 
-export const getChartTooltip = (context, chartData) => {
+export const getChartTooltip = (context, chartData, unitsType, isMainChart = true) => {
     // Tooltip Element
     let tooltipEl = document.getElementById('chartjs-tooltip');
 
@@ -207,9 +207,9 @@ export const getChartTooltip = (context, chartData) => {
 
         // here
         datasets?.forEach(function (set, i) {
-            const targetColor = set.backgroundColor;
-            const units = chartCompareConfigObject.find(_ => _.ruName === set.label).units
-            const targetDescr = units ? units : '';
+            const targetColor = typeof set.backgroundColor === 'string' ? set.backgroundColor : set.tooltipColor
+            const units = unitsType ? unitsType : chartCompareConfigObject.find(_ => _.ruName === set.label)?.units
+            const targetDescr = !isMainChart && unitsType ? `, ${unitsType}` : '';
             let value = set?.data[targetInex] || '0';
             let style = '';
             style += '; border-width: 2px';
@@ -219,11 +219,10 @@ export const getChartTooltip = (context, chartData) => {
                 ';">&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="' +
                 style +
                 '">' +
-                set?.label +
-                ', ' +
-                targetDescr +
+                set?.label + targetDescr +
+                //targetDescr +
                 ':  <span style="font-weight: bold;">' +
-                value +
+                formatPrice(value, '') +
                 '</span></span>';
             innerHtml += '<tr style={{ width: 100%}}><td style={{ width: 100%}}>' + span + '</td></tr>';
         });
@@ -249,11 +248,11 @@ export const getChartTooltip = (context, chartData) => {
     const viewportHeight = window.innerHeight;
 
     // Добавляем отступ от краев экрана
-    const margin = 10;
+    const margin = 5;
 
     // Корректировка по горизонтали
     if (tooltipLeft + tooltipWidth + margin > viewportWidth) {
-        tooltipLeft = viewportWidth - tooltipWidth - margin;
+        tooltipLeft = viewportWidth - (tooltipWidth / 1.5) - margin;
     } else if (tooltipLeft - margin < 0) {
         tooltipLeft = margin;
     }
@@ -305,7 +304,6 @@ export const mainChartOptionsGenerator = (chartData, anotationField, seasonsFiel
 
     const opt = {
         afterDraw: function (chart) {
-          console.log(chart)
           if (chart.tooltip?._active && chart.tooltip._active.length) {
             const ctx = chart.ctx;
             ctx.save();

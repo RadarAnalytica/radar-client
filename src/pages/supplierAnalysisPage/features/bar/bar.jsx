@@ -24,12 +24,11 @@ const Bar = ({
                 {title}
             </p>
             {!rating &&
-                <>
-                    <p className={styles.bar__title}>{formatPrice(data, units)}</p>
-                    {hasAdditionalData &&
-                        <p className={styles.bar__title}>/ {formatPrice(additionalData, additionalDataUnits)}</p>
-                    }
-                </>
+                    <p className={styles.bar__title}>
+                        {formatPrice(data, units)}
+                        {hasAdditionalData &&
+                        ' / ' + formatPrice(additionalData, additionalDataUnits)}
+                    </p>
             }
             {rating &&
                 <div className={styles.bar__ratingWrapper}>

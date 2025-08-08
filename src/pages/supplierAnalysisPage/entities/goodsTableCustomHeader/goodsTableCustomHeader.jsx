@@ -1,12 +1,35 @@
+import { useEffect } from 'react';
 import styles from './goodsTableCustomHeader.module.css'
-import { Select, ConfigProvider } from 'antd';
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice';
+import { ConfigProvider, Select } from 'antd'
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
+import { actions as supplierAnalysisActions } from '../../../../redux/supplierAnalysis/supplierAnalysisSlice'
+import { selectSupplierCurrentBrand, selectSupplierBrands } from '../../../../redux/supplierAnalysis/supplierAnalysisSelectors'
+import { fetchSupplierAnalysisBrandsData } from '../../../../redux/supplierAnalysis/supplierAnalysisActions';
 
-const GoodsTableCustomHeader = () => {
+const GoodsTableCustomHeader = ({ id }) => {
 
     const dispatch = useAppDispatch();
-    const { supplierCurrentBrand, supplierBrands } = useAppSelector(store => store.supplierAnalysis)
+    const supplierCurrentBrand = useAppSelector(selectSupplierCurrentBrand)
+    const supplierBrands = useAppSelector(selectSupplierBrands)
+    useEffect(() => {
+
+        if (id) {
+            const requestObject = {
+                "supplier_id": id,
+                "period": 30,
+                // "date_from": "2025-07-30",
+                // "date_to": "2025-07-30",
+                // "page": 1,
+                // "limit": 25,
+                // "sorting": {
+                //     "sort_field": "revenue",
+                //     "sort_order": "DESC"
+                // }
+            }
+            dispatch(fetchSupplierAnalysisBrandsData(requestObject))
+        }
+
+    }, [id])
 
     return (
         <div className={styles.header}>
@@ -34,6 +57,7 @@ const GoodsTableCustomHeader = () => {
                     }
                 }}
             >
+                {supplierBrands &&
                 <Select
                     style={{ width: 240 }}
                     size='large'
@@ -44,10 +68,11 @@ const GoodsTableCustomHeader = () => {
                         </svg>
                     }
                     variant="filled"
-                    options={supplierBrands}
-                    value={supplierCurrentBrand}
+                    options={supplierBrands?.map(_ => ({value: _.brand_id, label: _.brand_name}))}
+                    value={[{value: supplierCurrentBrand, label: supplierBrands?.find(_=>_?.brand_id === supplierCurrentBrand)?.brand_name || ''}]}
                     onChange={(value) => dispatch(supplierAnalysisActions.setSupplierCurrentBrand(value))}
                 />
+                }
             </ConfigProvider>
         </div>
     )

@@ -1,0 +1,7 @@
+.widget {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    border: 1px solid red;
+}

@@ -109,10 +109,10 @@ export const menuConfig = [
             },
             {
                 id: 5,
-                url: '/main', 
+                url: '/operations-costs', 
                 label: 'Операционные расходы',
-                isActive: false,
-                isNew: false
+                isActive: true,
+                isNew: true
             },
             {
                 id: 6,
@@ -176,6 +176,13 @@ export const menuConfig = [
                 label: 'Группы товаров',
                 isActive: true,
                 isNew: false,
+            },
+            {
+                id: 6,
+                url: '/rnp',
+                label: 'Рука на пульсе',
+                isActive: true,
+                isNew: true,
             },
         ]
     },

@@ -1,0 +1,40 @@
+
+.item{
+  padding: 8px 12px 13px;
+  border-bottom: 1px solid #E8E8E8;
+}
+.item__pic{
+  width: 45px;
+}
+.item__description{
+  flex-grow: 1;
+}
+.item__info{
+  font-weight: 500;
+  font-size: 16px;
+  color: #d9d9d9;
+}
+.item__title{
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #1a1a1a;
+}
+.item__link{
+  color: #5329ff;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.item__link:hover{
+  color: #7a52ff;
+}
+.item__link:hover .item__article_icon{
+  transform: scale(1.1);
+}
+.item__article_icon{
+  width: 20px;
+  transition: 0.3s;
+}
+.item__shop{
+  color: #1a1a1a;
+}
