@@ -138,7 +138,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
     }, [data, isMainSupplierActive, isCompareSupplierActive, mainSupplier, compareSupplier])
 
     const chartOptions = {
-        responsive: true,
+        //responsive: true,
         //maintainAspectRatio: false,
         animation: {
             duration: 0,
@@ -153,7 +153,7 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
                 mode: 'index',
                 axis: 'x',
                 callbacks: {},
-                external: (context) => {getChartTooltip(context, normilizedChartData, units, false)}
+                external: (context) => { getChartTooltip(context, normilizedChartData, units, false) }
             },
             verticalDashedLine: { enabled: true }
         },
@@ -234,16 +234,14 @@ export const CompareChart = ({ data, mainSupplier, compareSupplier, isMainSuppli
 
 
     return (
-        <div className={styles.widget}>
-            <div className={styles.mainChart}>
-                {normilizedChartData &&
-                    <Chart
-                        data={{ ...normilizedChartData }}
-                        //width={100}
-                        //height={40}
-                        options={chartOptions}
-                    />}
-            </div>
-        </div>
+        <>
+            {normilizedChartData &&
+                <Chart
+                    data={{ ...normilizedChartData }}
+                    width={100}
+                    height={40}
+                    options={chartOptions}
+                />}
+        </>
     )
 }
