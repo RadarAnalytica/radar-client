@@ -19,7 +19,7 @@ import {
 
 
 const initialState = {
-    supplierCurrentBrand: 0,
+    supplierCurrentBrand: -1,
     ordersStructureTab: 'По складам (последние 30 дней)',
     stockChartTab: 'Входящие заказы',
     supplierBrands: undefined,
@@ -243,7 +243,7 @@ const supplierAnalysisSlice = createSlice({
             })
             .addCase(fetchSupplierAnalysisBrandsData.fulfilled, (state, action) => {
                 state.supplierBrands = action.payload;
-                state.supplierCurrentBrand = undefined
+                state.supplierCurrentBrand = -1
             })
             .addCase(fetchSupplierAnalysisByBrandTableData.fulfilled, (state, action) => {
                 state.byBrandsTableData.data = action.payload.data;

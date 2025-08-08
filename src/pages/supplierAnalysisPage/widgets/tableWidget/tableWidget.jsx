@@ -43,13 +43,13 @@ const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBran
     }
 
 
-    if (dataType === 'byBrandsTableData' && currentBrand !== undefined) {
+    if (dataType === 'byBrandsTableData' && currentBrand !== -1) {
         reqData = {
             ...reqData,
             brands: [currentBrand],
         }
     }
-    if (dataType === 'byBrandsTableData' && currentBrand === undefined) {
+    if (dataType === 'byBrandsTableData' && currentBrand === -1) {
         reqData = {
             ...reqData,
             brands: [],
