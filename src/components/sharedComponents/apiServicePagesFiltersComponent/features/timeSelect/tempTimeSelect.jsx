@@ -39,7 +39,13 @@ export const TempTimeSelect = () => {
     const [selectOptions, setSelectOptions] = useState([...predefinedRanges])
     const [selectValue, setSelectValue] = useState()
     const today = new Date();
-    today.setDate(today.getDate() - 1);
+    const now = new Date();
+    const currentHourUTC = now.getUTCHours();
+    console.log(currentHourUTC)
+    // Если время до 10:00 UTC, то блокируем вчерашний день
+    // Если время после 10:00 UTC, то разблокируем вчерашний день
+    const maxDate = currentHourUTC < 10 ? today.setDate(today.getDate() - 2) : today.setDate(today.getDate() - 1);
+    
     const minDate = new Date('2025-06-15');
 
 
@@ -227,7 +233,7 @@ export const TempTimeSelect = () => {
                 {isCalendarOpen &&
                     <DayPicker
                         minDate={minDate}
-                        maxDate={today}
+                        maxDate={maxDate}
                         mode="range"
                         selected={localSelectedRange}
                         month={month}
@@ -238,7 +244,7 @@ export const TempTimeSelect = () => {
                         onDayClick={handleDayClick}
                         disabled={[
                             { before: minDate },
-                            { after: today },
+                            { after: maxDate },
                         ]}
                         startMonth={startMonth}
                         endMonth={endMonth}
