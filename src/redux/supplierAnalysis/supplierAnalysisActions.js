@@ -148,7 +148,8 @@ export const fetchSupplierAnalysisBrandsData = createAsyncThunk(
       const data = await res.json();
       //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: false, isError: false, isSuccess: true, message: ''}}))
       return [
-        { brand_id: 0, brand_name: 'Все бренды' },
+        { brand_id: undefined, brand_name: 'Все бренды' },
+        { brand_id: 0, brand_name: 'БРЕНД ОТСУТСТВУЕТ' },
         ...data
       ];
     } catch (e) {

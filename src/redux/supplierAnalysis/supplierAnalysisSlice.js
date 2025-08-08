@@ -243,7 +243,7 @@ const supplierAnalysisSlice = createSlice({
             })
             .addCase(fetchSupplierAnalysisBrandsData.fulfilled, (state, action) => {
                 state.supplierBrands = action.payload;
-                state.supplierCurrentBrand = 0
+                state.supplierCurrentBrand = undefined
             })
             .addCase(fetchSupplierAnalysisByBrandTableData.fulfilled, (state, action) => {
                 state.byBrandsTableData.data = action.payload.data;
