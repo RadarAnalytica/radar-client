@@ -1,5 +1,5 @@
 import moment from "moment";
-import { verticalDashedLinePlugin } from "../../../../service/utils";
+import { formatPrice } from "../../../../service/utils";
 
 /**
  *      //"revenue": 1198071115.0,
@@ -207,7 +207,7 @@ export const getChartTooltip = (context, chartData, unitsType, isMainChart = tru
 
         // here
         datasets?.forEach(function (set, i) {
-            const targetColor = set.backgroundColor;
+            const targetColor = typeof set.backgroundColor === 'string' ? set.backgroundColor : set.tooltipColor
             const units = unitsType ? unitsType : chartCompareConfigObject.find(_ => _.ruName === set.label)?.units
             const targetDescr = !isMainChart && unitsType ? `, ${unitsType}` : '';
             let value = set?.data[targetInex] || '0';
@@ -222,7 +222,7 @@ export const getChartTooltip = (context, chartData, unitsType, isMainChart = tru
                 set?.label + targetDescr +
                 //targetDescr +
                 ':  <span style="font-weight: bold;">' +
-                value +
+                formatPrice(value, '') +
                 '</span></span>';
             innerHtml += '<tr style={{ width: 100%}}><td style={{ width: 100%}}>' + span + '</td></tr>';
         });
