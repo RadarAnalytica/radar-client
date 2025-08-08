@@ -82,6 +82,7 @@ const plugsConfig = {
     'groups': [],
     "trending-requests": [tr1, tr2],
     "report-profit-loss": [pl2],
+    "supplier-analysis": [sku1, sku2, sku3, sku4, sku5],
 }
 
 const NoSubscriptionPlugPage = ({ title, pathname }) => {
