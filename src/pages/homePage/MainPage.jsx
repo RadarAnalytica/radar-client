@@ -23,14 +23,9 @@ export default function MainPage() {
                         title='Главная'
                     />
                 </div>
-                {/* <Banner.Top /> */}
                 {/* ------- */}
-
-                {/* old */}
-                {/* <VideoWidget/> */}
-                {/* new */}
                 <VideoWidgetOneLine />
-
+                <Banner.Top />
                 {/* -------- */}
                 <FeaturesWidget />
                 <Banner.Bottom />
