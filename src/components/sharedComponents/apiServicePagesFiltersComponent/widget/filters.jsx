@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, WeekSelect, MonthSelect } from '../features'
+import { TimeSelect, PlainSelect, FrequencyModeSelect, ShopSelect, MultiSelect, WeekSelect, MonthSelect, TempTimeSelect } from '../features'
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
 import { actions as filterActions } from '../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { fetchShops } from '../../../../redux/shops/shopsActions';
@@ -21,7 +21,8 @@ export const Filters = ({
   weekHandler,
   monthSelect = false,
   monthHandler,
-  monthValue
+  monthValue,
+  tempPageCondition
 }) => {
 
   // ------ база ------//
@@ -196,9 +197,14 @@ export const Filters = ({
             <MonthSelect monthHandler={monthHandler} value={monthValue}/>
           </div>
         }
-        {shops && timeSelect &&
+        {shops && timeSelect && tempPageCondition !== 'supplier' &&
           <div className={styles.filters__inputWrapper}>
             <TimeSelect />
+          </div>
+        }
+        {timeSelect && tempPageCondition === 'supplier' &&
+          <div className={styles.filters__inputWrapper}>
+            <TempTimeSelect />
           </div>
         }
         {shops && activeBrand && shopSelect &&

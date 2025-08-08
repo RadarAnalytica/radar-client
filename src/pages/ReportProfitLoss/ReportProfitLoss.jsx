@@ -16,9 +16,9 @@ import { COLUMNS, ROWS } from './config';
 import { useAppSelector } from '../../redux/hooks';
 import HowToLink from '../../components/sharedComponents/howToLink/howToLink';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-
+import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 export default function ReportProfitLoss() {
-	const { authToken } = useContext(AuthContext);
+	const { user, authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector( (state) => state.filters );
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
@@ -42,7 +42,7 @@ export default function ReportProfitLoss() {
 		}
 		
 		return shops.find(shop => shop.id === activeBrand.id);
-}, [activeBrand, shops]);
+	}, [activeBrand, shops]);
 
 	const initialRange = useMemo(() => ({
 		month_to: dayjs().format('YYYY-MM'),
@@ -140,6 +140,11 @@ export default function ReportProfitLoss() {
 					if (!data){
 						continue
 					}
+
+					if (row.key == 'sales'){
+						row[column.key] = data[row.key]?.rub;
+						continue
+					}
 					
 					// проверка на данные в разделе Прямые расходы
 					if (row.key == 'direct_expenses'){
@@ -194,7 +199,8 @@ export default function ReportProfitLoss() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					monthRange
+					// monthRange
+					updateSavedMonthRange()
 				);
 
 				dataToTableData(response);
@@ -211,8 +217,10 @@ export default function ReportProfitLoss() {
 	useEffect(() => {
 		if (activeBrand && activeBrand.is_primary_collect) {
 			updateDataReportProfitLoss();
+		} else {
+			shops.length > 0 && setLoading(false)
 		}
-	}, [monthRange]);
+	}, [monthRange, shopStatus, filters, selectedRange, shops]);
 
 	const monthHandler = (data) => {
 		let selectedRange = initialRange;
@@ -237,9 +245,12 @@ export default function ReportProfitLoss() {
 		);
 	}
 
+	console.log(activeBrand)
+	console.log(shopStatus)
+
 	useEffect(() => {
 		setMonthRange(updateSavedMonthRange())
-	}, [shopStatus, filters])
+	}, [shopStatus])
 
 	return (
 		<main className={styles.page}>
@@ -254,14 +265,6 @@ export default function ReportProfitLoss() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="Отчет о прибыли и убытках"></Header>
 				</div>
-				{!loading && !shopStatus?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)}
-				{!loading && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
-						/>
-				)}
 				<div className={styles.controls}>
 					<Filters
 						timeSelect={false}
@@ -277,37 +280,27 @@ export default function ReportProfitLoss() {
 				<div className={styles.how}>
 					<HowToLink text='Как использовать раздел' url='https://radar.usedocs.com/article/77557' target='_blank' />
 				</div>
-				{/* { shopStatus?.is_primary_collect &&  */}
-					<div className={styles.container}>
-						<ReportTable
-							loading={loading}
-							columns={columns}
-							data={data}
-							virtual={false}
-						></ReportTable>
-					</div>
-				{/* } */}
+				{!loading && shops && user.subscription_status === null && (
+					<NoSubscriptionWarningBlock />
+				)}
+				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+					<SelfCostWarningBlock />
+				)}
+				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
+						<DataCollectWarningBlock
+								title='Ваши данные еще формируются и обрабатываются.'
+						/>
+				)}
+				<div className={styles.container}>
+					<ReportTable
+						loading={loading}
+						columns={columns}
+						data={data}
+						virtual={false}
+						is_primary_collect={activeBrand?.is_primary_collect}
+					></ReportTable>
+				</div>
 			</section>
 		</main>
-	);
-}
-
-function Loading(status) {
-	if (!status) {
-		return;
-	}
-	return (
-		<div
-			className="d-flex flex-column align-items-center justify-content-center"
-			style={{
-				height: '100%',
-				width: '100%',
-				position: 'absolute',
-				backgroundColor: '#fff',
-				zIndex: 999,
-			}}
-		>
-			<span className="loader"></span>
-		</div>
 	);
 }

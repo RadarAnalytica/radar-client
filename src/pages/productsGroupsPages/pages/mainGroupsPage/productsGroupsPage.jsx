@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import styles from './productsGroupsPage.module.css'
 import MobilePlug from '../../../../components/sharedComponents/mobilePlug/mobilePlug';
 import Sidebar from '../../../../components/sharedComponents/sidebar/sidebar';
@@ -8,6 +8,8 @@ import { AddGroupModal, GroupEditModal } from '../../features';
 import AuthContext from '../../../../service/AuthContext';
 import { URL } from '../../../../service/config';
 import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
+import { useAppSelector } from '../../../../redux/hooks';
+import DataCollectWarningBlock from '../../../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 
 const initDataFetchingStatus = {
     isLoading: false,
@@ -29,6 +31,25 @@ const ProductGroupsPage = () => {
     const [alertState, setAlertState] = useState(initAlertState);
     const [dataFetchingStatus, setDataFetchingStatus] = useState(initDataFetchingStatus)
     const [groupsMainData, setGroupsMainData] = useState([])
+    const { shops } = useAppSelector((state) => state.shopsSlice);
+    const { activeBrand } = useAppSelector( (state) => state.filters );
+    
+    const shopStatus = useMemo(() => {
+		if (!activeBrand || !shops) return null;
+        
+        if (activeBrand.id === 0) {
+            return {
+                id: 0,
+                brand_name: 'Все',
+                is_active: shops.some(shop => shop.is_primary_collect),
+                is_valid: true,
+                is_primary_collect: shops.some(shop => shop.is_primary_collect),
+                is_self_cost_set: !shops.some(shop => !shop.is_self_cost_set)
+            };
+        }
+        
+        return shops.find(shop => shop.id === activeBrand.id);
+    }, [shops]);
 
     const getGroupsData = async (authToken) => {
         groupsMainData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
@@ -83,7 +104,7 @@ const ProductGroupsPage = () => {
                         <span className='loader'></span>
                     </div>
                 }
-                {!dataFetchingStatus.isLoading && groupsMainData && groupsMainData.length === 0 &&
+                {!dataFetchingStatus.isLoading && shops && groupsMainData && groupsMainData.length === 0 &&
                     <NoDataWidget
                         mainTitle='Здесь пока нет ни одной группы товаров'
                         mainText='Создайте первую группу, чтобы начать работу'
@@ -91,7 +112,7 @@ const ProductGroupsPage = () => {
                         action={() => setIsAddGroupModalVisible(true)}
                     />
                 }
-                {!dataFetchingStatus.isLoading && groupsMainData && groupsMainData.length > 0 &&
+                {!dataFetchingStatus.isLoading && shops && groupsMainData && groupsMainData.length > 0 &&
                     <GroupsMainWidget
                         setIsAddGroupModalVisible={setIsAddGroupModalVisible}
                         groupsMainData={groupsMainData}

@@ -253,7 +253,7 @@ const UnitCalculatorPageDesktop = () => {
                                 <BasicDataFormBlockDesktop form={form} setMpMainFee={setMpMainFee} isProductFromToken={isProductFromToken} setIsProductFromToken={setIsProductFromToken} />
                                 <LogisticsDataFormBlockDesktop form={form} current_storage_logistic_price={lastMileLogisticsPrice} buyout_log_price={lastMileLogisticsPriceWBuyout} storagePrice={storagePrice} />
                                 <MPFeesDataFormBlockDesktop mp_fee={mpMainFee} form={form} />
-                                <AdditionalOptionsDataFormBlockDesktop form={form} />
+                                <AdditionalOptionsDataFormBlockDesktop form={form} mpMainFee={mpMainFee} />
 
 
 

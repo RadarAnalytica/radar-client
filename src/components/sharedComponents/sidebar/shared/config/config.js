@@ -18,8 +18,8 @@ export const menuConfig = [
                 id: 2,
                 url: '/supplier-analysis',
                 label: 'Анализ поставщика',
-                isActive: false,
-                isNew: false
+                isActive: true,
+                isNew: true
             },
             {
                 id: 3,
@@ -109,10 +109,10 @@ export const menuConfig = [
             },
             {
                 id: 5,
-                url: '/main', 
+                url: '/operations-costs', 
                 label: 'Операционные расходы',
-                isActive: false,
-                isNew: false
+                isActive: true,
+                isNew: true
             },
             {
                 id: 6,

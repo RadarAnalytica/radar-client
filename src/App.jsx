@@ -65,6 +65,9 @@ const AdminReferalPage = React.lazy(() => import("./pages/AdminPage/AdminReferal
 const OperationsCosts = React.lazy(() => import("./pages/OperationsCosts/OperationsCosts"));
 const MainPage = React.lazy(() => import('./pages/homePage'))
 const ReferalPage = React.lazy(() => import("./pages/Referal"));
+const SupplierAnalysisPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierAnalysisPage"));
+const SupplierIdPage = React.lazy(() => import("./pages/supplierAnalysisPage/supplierIdPage"));
+const RestoreError = React.lazy(() => import("./pages/RestoreError"));
 const Rnp = React.lazy(() => import('./pages/Rnp'))
 import LoaderPage from "./pages/LoaderPage";
 import { ProtectedRoute } from "./RouteGuards";
@@ -95,6 +98,8 @@ function App() {
             <Route path='/admin-dashboard' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Дашборд'><AdminDashboardPage /></ProtectedRoute>} />
             <Route path='/admin-referal' element={<ProtectedRoute userRoleProtected routeRuName='Админ панель / Реферальная программа'><AdminReferalPage /></ProtectedRoute>} />
             {/* Protected routes */}
+            <Route path='/supplier-analysis' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Анализ поставщика'><SupplierAnalysisPage /></ProtectedRoute>} />
+            <Route path='/supplier-analysis/:id' element={<ProtectedRoute testPeriodProtected testPeriodGuardType='redirect' testPeriodRedirect='/supplier-analysis' expireProtected routeRuName='Анализ поставщика'><SupplierIdPage /></ProtectedRoute>} />
             <Route path='/sku-frequency' element={<ProtectedRoute underDevProtected testPeriodProtected expireProtected routeRuName='Частотность артикула'><RequestMonitoringPage /></ProtectedRoute>} />
             <Route path='/monitoring' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyPage /></ProtectedRoute>} />
             <Route path='/monitoring/request' element={<ProtectedRoute testPeriodProtected expireProtected routeRuName='Поиск прибыльной ниши'><SkuFrequencyRequestPage /></ProtectedRoute>} />
@@ -134,7 +139,7 @@ function App() {
 
             <Route path='/report-profit-loss' element={<ProtectedRoute testPeriodProtected onboardProtected expireProtected routeRuName='Отчет о прибыли и убытках'><ReportProfitLoss /></ProtectedRoute>} />
             <Route path='/report-week' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='По неделям'><ReportWeek /></ProtectedRoute>} />
-            <Route path='/operations-costs' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperationsCosts /></ProtectedRoute>} />
+            <Route path='/operations-costs' element={<ProtectedRoute userRoleProtected testPeriodProtected expireProtected onboardProtected routeRuName='Операционные расходы'><OperationsCosts /></ProtectedRoute>} />
             <Route path='/referal' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Реферальная программа'><ReferalPage /></ProtectedRoute>} />
             <Route path='/rnp' element={<ProtectedRoute testPeriodProtected expireProtected onboardProtected routeRuName='Рука на пульсе'><Rnp /></ProtectedRoute>} />
             {/* Public routes */}
@@ -144,6 +149,7 @@ function App() {
             <Route path='/app' element={<Suspense fallback={<LoaderPage />}>{' '}<MainWidget /></Suspense>} />
             <Route path='/reset' element={<Suspense fallback={<LoaderPage />}>{' '}<RequestResetLink /></Suspense>} />
             <Route path='/restore/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ResetPage /></Suspense>} />
+            <Route path='/restore-error' element={<Suspense fallback={<LoaderPage />}>{' '}<RestoreError /></Suspense>} />
             <Route path='/confirmation/:email/:code' element={<Suspense fallback={<LoaderPage />}>{' '}<ConfirmationPage /></Suspense>} />
             <Route path='/contacts' element={<Suspense fallback={<LoaderPage />}>{' '}<Contacts /></Suspense>} />
             <Route path='/after-payment' element={<Suspense fallback={<LoaderPage />}>{' '}<AfterPayment /></Suspense>} />

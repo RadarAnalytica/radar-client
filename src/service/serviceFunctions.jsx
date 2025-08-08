@@ -1356,6 +1356,7 @@ export const ServiceFunctions = {
 			
 			if (res.status !== 200){
 				throw new Error('Ошибка запроса');
+				throw new Error('Ошибка запроса');
 			}
 	
 			return res.json();
@@ -1380,6 +1381,7 @@ export const ServiceFunctions = {
 			);
 			
 			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
 				throw new Error('Ошибка запроса');
 			}
 	
@@ -1408,6 +1410,35 @@ export const ServiceFunctions = {
 		} catch(error) {
 			console.log('getProductGroups error:', error);
 			throw new Error(error);
+		}
+	},
+	getSupplierAnalysisSuggestData: async (query, setIsLoading) => {
+		setIsLoading(true)
+		try {
+			let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/search?query=${query}`, {
+				headers: {
+					'content-type': 'application/json',
+				}
+			})
+
+			if (!res.ok && res.status === 404) {
+				setIsLoading(false);
+				return []
+			}
+			if (!res.ok && res.status !== 404) {
+				setIsLoading(false);
+				return []
+			}
+
+			res = await res.json()
+			setIsLoading(false);
+			res = res.map(_ => ({
+				..._,
+				display_name: _?.trademark || _?.full_name
+			}))
+			return res
+		} catch {
+			setIsLoading(false);
 		}
 	},
 	// getReportProfitLoss: async (token, selectedRange, shopId, filters, monthRange) => {

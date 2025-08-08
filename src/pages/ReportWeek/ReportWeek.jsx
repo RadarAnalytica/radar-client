@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
@@ -7,10 +7,8 @@ import Header from '../../components/sharedComponents/header/header';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { fileDownload } from '../../service/utils';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
-
 import { ConfigProvider, Button, Popover } from 'antd';
 import styles from './ReportWeek.module.css';
-
 import ReportTable from '../../components/sharedComponents/ReportTable/ReportTable';
 import TableSettingModal from '../../components/sharedComponents/modals/tableSettingModal/TableSettingModal';
 import { useAppSelector } from '../../redux/hooks';
@@ -22,13 +20,13 @@ import {
 	endOfWeek,
 	getISOWeek,
 } from 'date-fns';
-import downloadIcon from '../images/Download.svg';
+// import downloadIcon from '../images/Download.svg';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock'
-
+import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import { COLUMNS } from './columnsConfig';
 
 export default function ReportWeek() {
-	const { authToken } = useContext(AuthContext);
+	const { user, authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector(
 		(state) => state.filters
 	);
@@ -265,12 +263,12 @@ export default function ReportWeek() {
 	};
 
 	useEffect(() => {
-		// setWeekSelected(updateSavedFilterWeek());
-		// setPrimaryCollect(activeBrand?.is_primary_collect);
 		if (activeBrand && shopStatus?.is_primary_collect) {
 			updateDataReportWeek();
+		} else {
+			shops.length > 0 && setLoading(false)
 		}
-	}, [activeBrand, selectedRange, filters, weekSelected, shops, shopStatus]);
+	}, [selectedRange, filters, weekSelected, shops, shopStatus]);
 
 	const popoverHandler = (status) => {
 		setIsPopoverOpen(status);
@@ -341,7 +339,6 @@ export default function ReportWeek() {
 			setDownloadLoading(false)
 		}
 	};
-
 	return (
 		<main className={styles.page}>
 			<MobilePlug />
@@ -355,15 +352,7 @@ export default function ReportWeek() {
 				<div className={styles.page__headerWrapper}>
 					<Header title="По неделям"></Header>
 				</div>
-				{!loading && shopStatus && !shopStatus?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)}
-				{!loading && !shopStatus?.is_primary_collect && (
-						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
-						/>
-				)}
-				<div className={styles.controls}>
+				{shops && (<div className={styles.controls}>
 					<div className={styles.filter}>
 						{weekSelected && <Filters
 							timeSelect={false}
@@ -454,14 +443,27 @@ export default function ReportWeek() {
 							</Button>
 						</ConfigProvider> */}
 					</div>
-				</div>
-				{/* { loading && */}
+				</div>)}
+				
+				{!loading && shops && user.subscription_status === null && (
+					<NoSubscriptionWarningBlock />
+				)}
+				{!loading && shops && user?.subscription_status && shopStatus?.is_primary_collect && !shopStatus?.is_self_cost_set && (
+					<SelfCostWarningBlock />
+				)}
+				{!loading && shops && user?.subscription_status && !shopStatus?.is_primary_collect && (
+						<DataCollectWarningBlock
+								title='Ваши данные еще формируются и обрабатываются.'
+						/>
+				)}
+				{/* { shopStatus?.is_primary_collect && */}
 					<div className={styles.container}>
 						<ReportTable
 							virtual={false}
 							loading={loading}
 							columns={tableColumns}
 							data={tableRows}
+							is_primary_collect={shopStatus?.is_primary_collect}
 						/>
 					</div>
 				{/* } */}

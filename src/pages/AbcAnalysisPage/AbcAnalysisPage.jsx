@@ -10,8 +10,9 @@ import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug'
 import Header from '../../components/sharedComponents/header/header';
 import Sidebar from '../../components/sharedComponents/sidebar/sidebar';
 import { mockGetAbcData } from '../../service/mockServiceFunctions';
-import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
+// import NoSubscriptionWarningBlock from '../../components/sharedComponents/noSubscriptionWarningBlock/noSubscriptionWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import { ConfigProvider, Table, Button, Flex } from 'antd';
 import ruRU from 'antd/locale/ru_RU'
 import { COLUMNS } from './widgets/table/config';
@@ -36,12 +37,12 @@ const AbcAnalysisPage = () => {
 	const tableContainerRef = useRef(null);
 	const tableScroll = useMemo(() => {
 		if (!tableContainerRef.current){
-			return ({ x: '100%', y: 200 })
+			return ({ x: '100%', y: 400 })
 		}
 		const container = tableContainerRef.current;
 		const {height} = container.getBoundingClientRect();
 		// расчет высоты относительно контента, высоты фильтров и отступов
-		const availableHeight = height - 230 > 200 ? height - 230 : 200;
+		const availableHeight = height - 230 > 350 ? height - 230 : 400;
 		return ({ x: '100%', y: availableHeight })
 	}, [dataAbcAnalysis])
 
@@ -134,6 +135,9 @@ const AbcAnalysisPage = () => {
 				days,
 				activeBrand.id.toString()
 			);
+			return
+		} else {
+			shops.length > 0 && setLoading(false);
 		}
 	}, [activeBrand, viewType, days, filters, page, sorting]);
 
@@ -266,143 +270,141 @@ const AbcAnalysisPage = () => {
 					<Header title="ABC-анализ" />
 				</div>
 				{/* !header */}
+				<div>
+					<Filters setLoading={setLoading} />
+				</div>
 
-				{/* DEMO BLOCK */}
-				{user.subscription_status === null && (
-					<NoSubscriptionWarningBlock />
-				)}
 				{/* SELF-COST WARNING */}
-				{shopStatus && !shopStatus.is_self_cost_set && !loading && (
-					<div>
+				{!loading && shops && shopStatus?.is_primary_collect && !shopStatus.is_self_cost_set && (
 						<SelfCostWarningBlock
 							shopId={activeBrand.id}
 							onUpdateDashboard={handleUpdateAbcAnalysis} //
 						/>
-					</div>
 				)}
 
-				<div>
-					<Filters setLoading={setLoading} />
-				</div>
-					<div className={styles.container} ref={tableContainerRef}>
-						<ConfigProvider
-							locale={ruRU}
-							renderEmpty={() => <div>Нет данных</div>}
-							theme={{
-								token: {
-									colorPrimary: '#5329FF',
-									colorText: '#5329FF',
-									colorBgTextHover: '#5329FF0D',
-								},
-								components: {
-									Table: {
-										headerColor: '#8c8c8c',
-										headerBg: '#f7f6fe',
-										headerBorderRadius: 20,
-										selectionColumnWidth: 32,
-										cellFontSize: 16,
-										borderColor: '#e8e8e8',
-										cellPaddingInline: 16,
-										cellPaddingBlock: 17,
-										bodySortBg: '#f7f6fe',
-										headerSortActiveBg: '#e7e1fe',
-										headerSortHoverBg: '#e7e1fe',
-										rowSelectedBg: '#f7f6fe',
-										rowSelectedHoverBg: '#e7e1fe',
-										colorText: '#1A1A1A',
-										lineHeight: 1.2,
-										fontWeightStrong: 500,
-									},
-									Checkbox: {
-										colorBorder: '#ccc',
-										colorPrimary: '#5329ff',
-										colorPrimaryBorder: '#5329ff',
-										colorPrimaryHover: '#5329ff',
-									},
-									Pagination: {
-										itemActiveBg: '#EEEAFF',
-										itemBg: '#F7F7F7',
-										itemColor: '#8C8C8C',
-									},
-									Button: {
-										paddingBlockLG: 10,
-										paddingInlineLG: 20,
-										controlHeightLG: 45,
-										defaultShadow: false,
-										defaultColor: 'grey',
-										contentFontSize: 16,
-										defaultBorderColor: 'transparent'
-									}
-								},
-							}}
-						>
-						{loading && (
-							<div className={styles.loading}>
-								<span className="loader"></span>
-							</div>
-						)}
-						{!loading && (<div className="abcAnalysis">
-							<Flex gap={12} className={styles.view} align='center'>
-								<span>Выбрать вид:</span>
-								<Button
-									type={viewType == 'proceeds' ? 'primary' : 'default'}
-									size="large"
-									onClick={() => viewTypeHandler('proceeds')}
-								>
-									По выручке
-								</Button>
-								<Button
-									type={viewType == 'profit' ? 'primary' : 'default'}
-									size="large"
-									onClick={() => viewTypeHandler('profit')}
-								>
-									По прибыли
-								</Button>
-							</Flex>
-							{shopStatus && !shopStatus.is_primary_collect && (
-								<DataCollectionNotification
-									title={
-										'Ваши данные еще формируются и обрабатываются.'
-									}
-								/>
-							)}
-								
-									<div className={styles.tableContainer}>
-										<Table
-											columns={columnsList}
-											dataSource={tableData}
-											scroll={tableScroll}
-											sticky={true}
-											showSorterTooltip={false}
-											onChange={tableChangeHandler}
-											pagination={{
-												locale: {
-													items_per_page: 'записей на странице',
-													jump_to: 'Перейти',
-													jump_to_confirm: 'подтвердить',
-													page: 'Страница',
-													prev_page: 'Предыдущая страница',
-													next_page: 'Следующая страница',
-													prev_5: 'Предыдущие 5 страниц',
-													next_5: 'Следующие 5 страниц',
-													prev_3: 'Предыдущие 3 страниц',
-													next_3: 'Следующие 3 страниц',
-												},
-												position: ['bottomLeft'],
-												defaultCurrent: 1,
-												defaultPageSize: dataAbcAnalysis?.per_page,
-												hideOnSinglePage: true,
-												showSizeChanger: false,
-												current: page,
-												total: dataAbcAnalysis?.total,
-											}}
-											sortDirections={['asc', 'desc']}
-										/>
-									</div>
+				{!loading && shops && !shopStatus?.is_primary_collect && (
+						<DataCollectWarningBlock
+								title='Ваши данные еще формируются и обрабатываются.'
+						/>
+				)}
+				
+				<div className={styles.wrapper} ref={tableContainerRef}>
+					{loading && (
+						<div className={styles.loading}>
+							<span className="loader"></span>
 						</div>
-						)}
-						</ConfigProvider>
-					</div>
+					)}
+					{!loading && shops && shopStatus?.is_primary_collect && (
+						<div className={styles.container}>
+							<ConfigProvider
+								locale={ruRU}
+								renderEmpty={() => <div>Нет данных</div>}
+								theme={{
+									token: {
+										colorPrimary: '#5329FF',
+										colorText: '#5329FF',
+										colorBgTextHover: '#5329FF0D',
+									},
+									components: {
+										Table: {
+											headerColor: '#8c8c8c',
+											headerBg: '#f7f6fe',
+											headerBorderRadius: 20,
+											selectionColumnWidth: 32,
+											cellFontSize: 16,
+											borderColor: '#e8e8e8',
+											cellPaddingInline: 16,
+											cellPaddingBlock: 17,
+											bodySortBg: '#f7f6fe',
+											headerSortActiveBg: '#e7e1fe',
+											headerSortHoverBg: '#e7e1fe',
+											rowSelectedBg: '#f7f6fe',
+											rowSelectedHoverBg: '#e7e1fe',
+											colorText: '#1A1A1A',
+											lineHeight: 1.2,
+											fontWeightStrong: 500,
+										},
+										Checkbox: {
+											colorBorder: '#ccc',
+											colorPrimary: '#5329ff',
+											colorPrimaryBorder: '#5329ff',
+											colorPrimaryHover: '#5329ff',
+										},
+										Pagination: {
+											itemActiveBg: '#EEEAFF',
+											itemBg: '#F7F7F7',
+											itemColor: '#8C8C8C',
+										},
+										Button: {
+											paddingBlockLG: 10,
+											paddingInlineLG: 20,
+											controlHeightLG: 45,
+											defaultShadow: false,
+											defaultColor: 'grey',
+											contentFontSize: 16,
+											defaultBorderColor: 'transparent'
+										}
+									},
+								}}
+							>
+							
+							{!loading && (<div className="abcAnalysis">
+								<Flex gap={12} className={styles.view} align='center'>
+									<span>Выбрать вид:</span>
+									<Button
+										type={viewType == 'proceeds' ? 'primary' : 'default'}
+										size="large"
+										onClick={() => viewTypeHandler('proceeds')}
+									>
+										По выручке
+									</Button>
+									<Button
+										type={viewType == 'profit' ? 'primary' : 'default'}
+										size="large"
+										onClick={() => viewTypeHandler('profit')}
+									>
+										По прибыли
+									</Button>
+								</Flex>
+
+										<div className={styles.tableContainer}>
+											<Table
+												columns={columnsList}
+												dataSource={tableData}
+												scroll={tableScroll}
+												sticky={true}
+												showSorterTooltip={false}
+												onChange={tableChangeHandler}
+												pagination={{
+													locale: {
+														items_per_page: 'записей на странице',
+														jump_to: 'Перейти',
+														jump_to_confirm: 'подтвердить',
+														page: 'Страница',
+														prev_page: 'Предыдущая страница',
+														next_page: 'Следующая страница',
+														prev_5: 'Предыдущие 5 страниц',
+														next_5: 'Следующие 5 страниц',
+														prev_3: 'Предыдущие 3 страниц',
+														next_3: 'Следующие 3 страниц',
+													},
+													position: ['bottomLeft'],
+													defaultCurrent: 1,
+													defaultPageSize: dataAbcAnalysis?.per_page,
+													hideOnSinglePage: true,
+													showSizeChanger: false,
+													current: page,
+													total: dataAbcAnalysis?.total,
+												}}
+												sortDirections={['asc', 'desc']}
+											/>
+										</div>
+							</div>
+							)}
+							</ConfigProvider>
+						</div>
+					)}
+				</div>
 			</section>
 			{/* ---------------------- */}
 		</main>

@@ -1,0 +1,21 @@
+.miniChart__wrapper {
+    height: 60px;
+    max-height: 60px;
+    width: 100%;
+    overflow: visible;
+    padding-right: 20px;
+    /* Оптимизации для предотвращения лишних перерисовок */
+    will-change: auto;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Дополнительные стили для ячеек таблицы */
+.miniChart__wrapper canvas {
+    /* Предотвращаем перерисовку canvas при скролле */
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+}
