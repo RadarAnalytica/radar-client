@@ -43,13 +43,13 @@ const getRequestObject = (id, selectedRange, paginationConfig, sort, currentBran
     }
 
 
-    if (dataType === 'byBrandsTableData' && currentBrand) {
+    if (dataType === 'byBrandsTableData' && currentBrand !== undefined) {
         reqData = {
             ...reqData,
             brands: [currentBrand],
         }
     }
-    if (dataType === 'byBrandsTableData' && !currentBrand) {
+    if (dataType === 'byBrandsTableData' && currentBrand === undefined) {
         reqData = {
             ...reqData,
             brands: [],
@@ -236,7 +236,7 @@ const TableWidget = ({
     return (
         <div className={styles.widget}>
             <div className={!title && !customHeader && !downloadButton ? `${styles.widget__header} ${styles.widget__header_hidden}` : styles.widget__header}>
-                {!customHeader && <p className={styles.widget__title}>{title}</p>}
+                {!customHeader && <p className={styles.widget__title} title={title}>{title}</p>}
                 {customHeader && customHeader}
                 {downloadButton &&
                     <DownloadButton />
