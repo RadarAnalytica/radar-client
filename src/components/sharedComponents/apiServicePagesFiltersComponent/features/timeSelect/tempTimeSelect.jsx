@@ -41,7 +41,6 @@ export const TempTimeSelect = () => {
     const today = new Date();
     const now = new Date();
     const currentHourUTC = now.getUTCHours();
-    console.log(currentHourUTC)
     // Если время до 10:00 UTC, то блокируем вчерашний день
     // Если время после 10:00 UTC, то разблокируем вчерашний день
     const maxDate = currentHourUTC < 10 ? today.setDate(today.getDate() - 2) : today.setDate(today.getDate() - 1);
