@@ -18,6 +18,9 @@ const BlogPage = () => {
     const dispatch = useAppDispatch()
     const { categories, posts } = useAppSelector(store => store.blog);
 
+
+
+    
     const switchButtonsClickHandler = (e) => {
         setActivePage(e.currentTarget.id)
     }
