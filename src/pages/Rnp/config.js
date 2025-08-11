@@ -80,7 +80,7 @@ export const ROWS = [
   },
   {
     key: 'rk_budget_data',
-    period: 'rk_budget - Бюджет РК, руб',
+    period: 'Бюджет РК, руб',
     children: [
       {
         dataIndex: 'ctr',

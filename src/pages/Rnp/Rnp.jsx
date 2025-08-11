@@ -269,8 +269,9 @@ export default function Rnp() {
 
 				{loading && (
 					<div className={styles.loading}>
-						<div className=''></div>
-						<span className="loader"></span>
+						<div className={styles.loading__loader}>
+							<span className="loader"></span>
+						</div>
 					</div>
 				)}
 
@@ -286,7 +287,7 @@ export default function Rnp() {
 				{!loading && skuDataByArticle?.length > 0 && (
 					<SkuList
 						view={view}
-						setView={setView}
+						setView={viewHandler}
 						setAddSkuModalShow={setAddSkuModalShow}
 						skuDataByArticle={skuDataByArticle}
 						skuDataTotal={skuDataTotal}
