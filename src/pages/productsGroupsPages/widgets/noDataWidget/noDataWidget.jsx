@@ -2,17 +2,17 @@ import React from 'react'
 import styles from './noDataWidget.module.css'
 import HowToLink from '../../../../components/sharedComponents/howToLink/howToLink'
 
-const NoDataWidget = ({ type = 'group', mainTitle, mainText, buttonTitle, action }) => {
+const NoDataWidget = ({ type = 'group', mainTitle, mainText, buttonTitle, action, howLinkGroup = true }) => {
 
     return (
         <div className={styles.widget}>
-            <div className={styles.widget__howtoWrapper}>
+            {howLinkGroup && <div className={styles.widget__howtoWrapper}>
                 <HowToLink
                     text='Как использовать?'
                     target='_blank'
                     url='https://radar.usedocs.com/article/76887'
                 />
-            </div>
+            </div>}
             <div className={styles.widget__barWrapper}>
                 <div className={type === 'group' ? styles.widget__bar : styles.widget__bar_sku}>
                     <svg width="61" height="60" viewBox="0 0 61 60" fill="none" xmlns="http://www.w3.org/2000/svg">

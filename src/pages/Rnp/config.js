@@ -10,7 +10,7 @@ export const COLUMNS = [
   {
     title: 'Итого',
     dataIndex: 'sum',
-    width: 90
+    width: 110
   },
 ];
 
@@ -18,63 +18,63 @@ export const COLUMNS = [
 export const ROWS = [
   {
     key: 'expected_marginality_data',
-    period: 'expected_marginality - Прогноз. маржинальность',
+    period: 'Прогноз. маржинальность',
     children: [
       {
         dataIndex: 'plan_marginality',
-        period: 'plan_marginality - План. маржинальность',
+        period: 'План. маржинальность',
       },
       {
         dataIndex: 'roi',
-        period: 'roi - ROI, %',
+        period: 'ROI, %',
       },
       {
         dataIndex: 'profit_per_one',
-        period: 'profit_per_one - Прогноз. чистая прибыль на 1 ед., руб',
+        period: 'Прогноз. чистая прибыль на 1 ед., руб',
       },
       {
         dataIndex: 'net_profit',
-        period: 'net_profit - Прогноз. чистая прибыль, руб',
+        period: 'Прогноз. чистая прибыль, руб',
       },
       {
         dataIndex: 'drr_by_sales',
-        period: 'drr_by_sales - ДРР по продажам, %',
+        period: 'ДРР по продажам, %',
       },
       {
         dataIndex: 'drr_by_orders',
-        period: 'drr_by_orders - ДРР по заказам, %',
-      },
-      {
-        dataIndex: 'orders_amount',
-        period: 'orders_amount - orders_amount',
+        period: 'ДРР по заказам, %',
       },
       {
         dataIndex: 'orders_count',
-        period: 'orders_count - orders_count',
+        period: 'Факт. заказы, шт',
+      },
+      {
+        dataIndex: 'orders_amount',
+        period: 'Факт. заказы, руб',
       },
       {
         dataIndex: 'sales_count',
-        period: 'sales_count - Прогноз. продажи, шт',
+        period: 'Прогноз. продажи, шт',
       },
       {
         dataIndex: 'sales_spp_amount',
-        period: 'sales_spp_amount - Прогноз. продажи по СПП, руб',
+        period: 'Прогноз. продажи по СПП, руб',
       },
       {
         dataIndex: 'full_price',
-        period: 'full_price - Цена до СПП, руб',
+        period: 'Цена до СПП, руб',
       },
       {
         dataIndex: 'price_spp',
-        period: 'price_spp - Цена после СПП, руб',
+        period: 'Цена после СПП, руб',
       },
       {
         dataIndex: 'discount',
-        period: 'discount - Скидка МП, %',
+        period: 'Скидка МП, %',
       },
       {
         dataIndex: 'buyout',
-        period: 'buyout - Процент выкупа, %',
+        period: 'Процент выкупа, %',
       },
     ]
   },
@@ -84,107 +84,107 @@ export const ROWS = [
     children: [
       {
         dataIndex: 'ctr',
-        period: 'ctr - CTR, %',
+        period: 'CTR, %',
       },
       {
         dataIndex: 'cr',
-        period: 'cr - CR, %',
+        period: 'CR, %',
       },
       {
         dataIndex: 'impressions',
-        period: 'impressions - Показы, шт',
+        period: 'Показы, шт',
       },
       {
         dataIndex: 'clicks',
-        period: 'clicks - Клики, шт',
+        period: 'Клики, шт',
       },
       {
         dataIndex: 'one_order_price',
-        period: 'one_order_price - Стоимость 1 заказа, руб',
+        period: 'Стоимость 1 заказа, руб',
         
       },
       {
         dataIndex: 'one_sale_price',
-        period: 'one_sale_price - Стоимость 1 продажи, руб',
+        period: 'Стоимость 1 продажи, руб',
       },
       {
         dataIndex: 'cpc',
-        period: 'cpc - CPC, руб',
+        period: 'CPC, руб',
         
       },
       {
         dataIndex: 'cpm',
-        period: 'cpm - CPM, руб',
+        period: 'CPM, руб',
       },
     ]
   },
   {
     key: 'ark_budget_data',
-    period: 'ark_budget_data - Бюджет РК (АРК), руб',
+    period: 'Бюджет РК (АРК), руб',
     children: [
       {
         dataIndex: 'ctr',
-        period: 'ctr - CTR, %',
+        period: 'CTR, %',
       },
       {
         dataIndex: 'impressions',
-        period: 'impressions - Показы, шт',
+        period: 'Показы, шт',
       },
       {
         dataIndex: 'clicks',
-        period: 'clicks - Клики, шт',
+        period: 'Клики, шт',
       },
       {
         dataIndex: 'cpc',
-        period: 'cpc - CPC, руб',
+        period: 'CPC, руб',
       },
       {
         dataIndex: 'cpm',
-        period: 'cpm - CPM, руб',
+        period: 'CPM, руб',
       },
     ]
   },
   {
     key: 'auction_rk_budget_data',
-    period: 'auction_rk_budget_data - Бюджет РК (Аукцион), руб',
+    period: 'Бюджет РК (Аукцион), руб',
     children: [
       {
         dataIndex: 'ctr',
-        period: 'ctr - CTR, %',
+        period: 'CTR, %',
       },
       {
         dataIndex: 'impressions',
-        period: 'impressions - Показы, шт',
+        period: 'Показы, шт',
       },
       {
         dataIndex: 'clicks',
-        period: 'clicks - Клики, шт',
+        period: 'Клики, шт',
       },
       {
         dataIndex: 'cpc',
-        period: 'cpc - CPC, руб',
+        period: 'CPC, руб',
       },
       {
         dataIndex: 'cpm',
-        period: 'cpm - CPM, руб',
+        period: 'CPM, руб',
       },
     ]
   },
   {
     key: 'transition_data',
-    period: 'transition_data - Переходы, шт',
+    period: 'Переходы, шт',
     children: [
       {
         dataIndex: 'cart_addition_count',
-        period: 'cart_addition_count - Добавление в корзину, шт',
+        period: 'Добавление в корзину, шт',
       },
       {
         dataIndex: 'cart_addition_percentage',
-        period: 'cart_addition_percentage - Добавление в корзину, %',
+        period: 'Добавление в корзину, %',
       },
       {
         dataIndex: 'order_addition_percentage',
-        period: 'order_addition_percentage - Добавление в заказ, %',
+        period: 'Добавление в заказ, %',
       },
     ]
   },
