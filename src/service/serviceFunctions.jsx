@@ -1443,16 +1443,31 @@ export const ServiceFunctions = {
 	},
 	// getReportProfitLoss: async (token, selectedRange, shopId, filters, monthRange) => {
 
-	getRnpByArticle: async(token, selectedRange, shopId, filters, page, dateRange) => {
+	postRnpByArticle: async(token, selectedRange, shopId, filters, page, dateRange) => {
 		try {
+			let body = getRequestObject(filters, selectedRange, shopId);
+			body.date_from = "2022-01-01";
+			body.date_to = "2022-01-01";
+
+			body = {
+				"articles": [],
+				"product_groups": [],
+				"brands": [],
+				"shop": 138,
+				"period": 30,
+				"date_from": "2025-03-01",
+				"date_to": "2025-08-01"
+			}
+
 			const res = await fetch(
 				`${URL}/api/rnp/by_article?page=${page}&per_page=25`,
 				{
-					method: 'GET',
+					method: 'POST',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
-					}
+					},
+					body: JSON.stringify(body)
 				}
 			);
 			
@@ -1467,16 +1482,33 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getRnpSummary: async(token) => {
+	postRnpSummary: async(token, selectedRange, shopId, filters, page, dateRange) => {
+
+	// getRnpSummary: async(token) => {
 		try {
+			let body = getRequestObject(filters, selectedRange, shopId);
+			body.date_from = "2022-01-01";
+			body.date_to = "2022-01-01";
+
+			body = {
+				"articles": [],
+				"product_groups": [],
+				"brands": [],
+				"shop": 138,
+				"period": 30,
+				"date_from": "2025-03-01",
+				"date_to": "2025-08-01"
+			}
+
 			const res = await fetch(
 				`${URL}/api/rnp/summary`,
 				{
-					method: 'GET',
+					method: 'POST',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
-					}
+					},
+					body: JSON.stringify(body)
 				}
 			);
 			
@@ -1491,10 +1523,11 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getRnpProducts: async(token, selectedRange, shopId, filters, page, dateRange) => {
+	// postRnpSummary: async(token, selectedRange, shopId, filters, page, dateRange) => {
+	getRnpProducts: async(token, page, search) => {
 		try {
 			const res = await fetch(
-				`${URL}/api/rnp/products?page=${page}&per_page=25`,
+				`${URL}/api/rnp/products?page=${page}&per_page=25&search=${search}`,
 				{
 					method: 'GET',
 					headers: {
@@ -1515,5 +1548,56 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
+	deleteRnpId: async(token, id) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/rnp/${id}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('deleteRnpId ', error);
+			throw new Error(error);
+		}
+	},
+	postUpdateRnpProducts: async(token, idList) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/rnp/`,
+				{
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					},
+					body: JSON.stringify({
+						product_ids: idList
+					})
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('getRnpByArticle ', error);
+			throw new Error(error);
+		}
+	}
 };
 

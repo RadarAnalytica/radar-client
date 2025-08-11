@@ -8,21 +8,15 @@ import { NoDataWidget } from '../productsGroupsPages/widgets';
 import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
 import styles from './Rnp.module.css';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import downloadIcon from '../images/Download.svg';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
-import { COLUMNS, RESPONSE_BY_ARTICLE, ROWS } from './config';
+import { COLUMNS, ROWS } from './config';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import { ConfigProvider, Button, Flex } from 'antd';
-import { grip, remove, expand } from './widget/icons';
-import SkuItem from './widget/SkuItem/SkuItem';
-import SkuTable from './widget/SkuTable/SkuTable';
-import { fetchShops } from '../../redux/shops/shopsActions';
-import { fetchFilters } from '../../redux/apiServicePagesFiltersState/filterActions';
+import SkuList from './widget/SkuList/SkuList';
+import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
 
 export default function Rnp() {
-	const dispatch = useAppDispatch()
 	const { authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector(
 		(state) => state.filters
@@ -30,8 +24,6 @@ export default function Rnp() {
 	const filters = useAppSelector((state) => state.filters);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
 	
-	// const filters = useAppSelector((state) => state.filters);
-	// const { shops } = useAppSelector((state) => state.shopsSlice);
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
 
@@ -55,23 +47,17 @@ export default function Rnp() {
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
 	const [dateRange, setDateRange] = useState(null);
 	const [page, setPage] = useState(1);
-	const [columnsList, setColumnsList] = useState(COLUMNS);
 	const [view, setView] = useState('sku');
-	const [expanded, setExpanded] = useState(null);
 	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
 
-	useEffect(() => {
-		if (skuDataByArticle?.length > 0 && view === 'sku') {
-			setExpanded(skuDataByArticle[0].id);
-		}
-	}, [skuDataByArticle]);
+	const [deleteSkuId, setDeleteSkuId] = useState(null);
 
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
 		try {
 			if (!!activeBrand) {
-				const response = await ServiceFunctions.getRnpByArticle(
+				const response = await ServiceFunctions.postRnpByArticle(
 					authToken,
 					selectedRange,
 					activeBrand.id,
@@ -91,7 +77,7 @@ export default function Rnp() {
 		setLoading(true);
 		try {
 			if (!!activeBrand) {
-				const response = await ServiceFunctions.getRnpSummary(
+				const response = await ServiceFunctions.postRnpSummary(
 					authToken,
 					selectedRange,
 					activeBrand.id,
@@ -106,6 +92,22 @@ export default function Rnp() {
 			setLoading(false);
 		}
 	};
+
+	const deleteSku = async (id) => {
+		setDeleteSkuId(null);
+		setLoading(true);
+		try {
+			if (!!activeBrand) {
+				const response = await ServiceFunctions.deleteRnpId(
+					authToken,
+					id
+				);
+			}
+		} catch (error) {
+		} finally {
+			setLoading(false);
+		}
+	}
 
 	const dataToSkuList = (response) => {
 		const list = response.data.map((article, i) => {
@@ -123,7 +125,7 @@ export default function Rnp() {
 					key: dateData.date,
 					dataIndex: dateData.date,
 					title: format(dateData.date, 'd MMMM', { locale: ru }),
-					width: 90,
+					width: 110,
 				});
 			}
 			// сборка суммарных значений
@@ -172,7 +174,7 @@ export default function Rnp() {
 				key: dateData.date,
 				dataIndex: dateData.date,
 				title: format(dateData.date, 'd MMMM', { locale: ru }),
-				width: 90,
+				width: 110,
 			});
 		}
 		// сборка суммарных значений
@@ -205,13 +207,29 @@ export default function Rnp() {
 		setSkuDataTotal(item);
 	};
 
-	const expandHandler = (value) => {
-		setExpanded((id) => id !== value ? value : null)
+	const deleteHandler = (value) => {
+		deleteSku(value)
 	}
 	
-	const removeHandler = (value) => {
-		console.log('removeHandler', value)
-		// setSkuList((list) => list.filter((el) => el.id !== value))
+	const addSkuList = async (porductIds) => {
+		setLoading(true);
+		try {
+			if (!!activeBrand) {
+				const response = await ServiceFunctions.postUpdateRnpProducts(
+					authToken,
+					porductIds
+				);
+				dataToSkuList(response);
+			}
+		} catch (error) {
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const viewHandler = (value) => {
+		setLoading(true);
+		setView(value);
 	}
 
 	useEffect(() => {
@@ -223,6 +241,11 @@ export default function Rnp() {
 			updateSkuListSummary();
 		}
 	}, [activeBrand, shopStatus, shops, filters, page, view]);
+
+	const addSkuHandler = (list) => {
+		setAddSkuModalShow(false);
+		addSkuList(list);
+	}
 
 	
 
@@ -246,6 +269,7 @@ export default function Rnp() {
 
 				{loading && (
 					<div className={styles.loading}>
+						<div className=''></div>
 						<span className="loader"></span>
 					</div>
 				)}
@@ -259,241 +283,40 @@ export default function Rnp() {
 						/>
 				)} */}
 
-				{/* {!loading && skuList?.length !== 0 && (
-					<SkuList data={skuList} setAddSkuModalShow={setAddSkuModalShow} setSkuList={setSkuList} />
-					)} */}
-
-				{!loading && !!skuDataByArticle && (
-					<>
-						<ConfigProvider
-							theme={{
-								token: {
-									colorPrimary: '#EEEAFF',
-									colorTextLightSolid: '#1a1a1a',
-									fontSize: 16,
-									borderRadius: 8,
-								},
-								components: {
-									Button: {
-										paddingBlockLG: 10,
-										paddingInlineLG: 20,
-										controlHeightLG: 45,
-										defaultShadow: false,
-										contentFontSize: 16,
-										fontWeight: 500,
-										defaultBorderColor: 'transparent',
-										defaultColor: 'rgba(26, 26, 26, 0.5)',
-										defaultBg: 'transparent',
-										defaultHoverBg: '#EEEAFF',
-										defaultHoverColor: '#1a1a1a',
-										defaultHoverBorderColor: 'transparent',
-										defaultActiveColor:
-											'rgba(26, 26, 26, 1)',
-										defaultActiveBg: '#EEEAFF',
-										defaultActiveBorderColor: '#EEEAFF',
-									},
-								},
-							}}
-						>
-							<Flex justify="space-between">
-								<Flex>
-									<Button
-										type={
-											view === 'sku'
-												? 'primary'
-												: 'default'
-										}
-										size="large"
-										onClick={() => {
-											// setSkuList(null);
-											setView('sku');
-										}}
-									>
-										По артикулам
-									</Button>
-									<Button
-										type={
-											view === 'total'
-												? 'primary'
-												: 'default'
-										}
-										size="large"
-										onClick={() => {
-											// setSkuList(null);
-											setView('total');
-										}}
-									>
-										Сводный
-									</Button>
-								</Flex>
-								<ConfigProvider
-									theme={{
-										token: {
-											colorPrimary: '#5329ff',
-											colorText: '#fff',
-										},
-										components: {
-											Button: {
-												primaryColor: '#fff',
-											},
-										},
-									}}
-								>
-									<Button
-										type="primary"
-										size="large"
-										onClick={setAddSkuModalShow}
-									>
-										Добавить артикул
-									</Button>
-								</ConfigProvider>
-							</Flex>
-						</ConfigProvider>
-						<div>
-							<Filters timeSelect={false}/>
-						</div>
-						<ConfigProvider
-							theme={{
-								token: {
-									colorPrimary: '#EEEAFF',
-									colorTextLightSolid: '#1a1a1a',
-									fontSize: 16,
-									borderRadius: 8,
-								},
-								components: {
-									Button: {
-										paddingBlockLG: 10,
-										paddingInlineLG: 20,
-										controlHeightLG: 45,
-										defaultShadow: false,
-										contentFontSize: 16,
-										fontWeight: 500,
-										defaultBorderColor: 'transparent',
-										defaultColor: 'rgba(26, 26, 26, 0.5)',
-										defaultBg: 'transparent',
-										defaultHoverBg: '#EEEAFF',
-										defaultHoverColor: '#1a1a1a',
-										defaultHoverBorderColor: 'transparent',
-										defaultActiveColor:
-											'rgba(26, 26, 26, 1)',
-										defaultActiveBg: '#EEEAFF',
-										defaultActiveBorderColor: '#EEEAFF',
-									},
-								},
-							}}
-						>
-							{view === 'sku' && (
-								<>
-									{skuDataByArticle?.map((el, i) => (
-										<div key={i} className={styles.item}>
-											<header
-												className={styles.item__header}
-											>
-												<Flex gap={20} align="center">
-													<Button
-														className={
-															styles.item__button
-														}
-														icon={grip}
-													/>
-													<div
-														className={
-															styles.item__product
-														}
-													>
-														<SkuItem
-															title={
-																el.article_data
-																	.title
-															}
-															photo={
-																el.article_data
-																	.photo
-															}
-															sku={
-																el.article_data
-																	.wb_id
-															}
-															shop={
-																el.article_data
-																	.shop_name
-															}
-														/>
-													</div>
-													<Button
-														className={
-															styles.item__button
-														}
-														onClick={() =>
-															removeHandler(el.article_data.product_id)
-														}
-														icon={remove}
-													/>
-													<Button
-														className={`${
-															styles.item__button
-														} ${
-															expanded ===
-																el.id &&
-															styles.item__button_expand
-														}`}
-														value={el.id}
-														onClick={() =>
-															expandHandler(el.id)
-														}
-														icon={expand}
-													></Button>
-												</Flex>
-											</header>
-											{expanded === el.id && (
-												<div
-													className={`${styles.item__table} ${styles.item}`}
-												>
-													<SkuTable
-														data={el.table.rows}
-														columns={
-															el.table.columns
-														}
-														defaultExpandAllRows={
-															view === 'sku'
-														}
-													/>
-												</div>
-											)}
-										</div>
-									))}
-								</>
-							)}
-							{view === 'total' && (
-								<div className={styles.item}>
-									<SkuTable
-										// data={null}
-										data={skuDataTotal?.table?.rows}
-										// columns={null}
-										columns={skuDataTotal?.table?.columns}
-										defaultExpandAllRows={false}
-									/>
-								</div>
-							)}
-						</ConfigProvider>
-					</>
+				{!loading && skuDataByArticle?.length > 0 && (
+					<SkuList
+						view={view}
+						setView={setView}
+						setAddSkuModalShow={setAddSkuModalShow}
+						skuDataByArticle={skuDataByArticle}
+						skuDataTotal={skuDataTotal}
+						setDeleteSkuId={deleteSku}
+						addSku={addSkuHandler}
+					/>
 				)}
+
 				{!loading && skuDataByArticle?.length === 0 &&
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
 						buttonTitle='Добавить'
 						action={() => setAddSkuModalShow(true)}
-						how={false}
+						howLinkGroup={false}
 					/>
 				}
 
 				<AddSkuModal
 					isAddSkuModalVisible={addSkuModalShow}
 					setIsAddSkuModalVisible={setAddSkuModalShow}
-					addSku={console.log}
+					addSku={addSkuHandler}
 					skuDataArticle={skuDataByArticle}
 				/> 
+
+				{deleteSkuId && <ModalDeleteConfirm
+					title={'Удалить данный артикул?'}
+					onCancel={() => setDeleteSkuId(null)}
+					onOk={() => deleteHandler(deleteSkuId)}
+				/>}
 			</section>
 		</main>
 	);

@@ -17,29 +17,27 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     const filters = useAppSelector((state) => state.filters);
     const { shops } = useAppSelector((state) => state.shopsSlice);
     
-    const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
+    const [paginationState, setPaginationState] = useState(1);
     const [skuLoading, setSkuLoading] = useState(true);
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
     const [skuSelected, setSkuSelected] = useState(skuDataArticle?.map((el) => el.article_data.product_id))
-    
+    const [search, setSearch] = useState('')
     const [dateRange, setDateRange] = useState(null);
 
     const [submitStatus, setSubmitStatus] = useState(false);
 
-    const updateskuDataArticle = useCallback(async () => {
+    const updateskuDataArticle = async () => {
         setSkuLoading(true);
         try {
-			if (!!activeBrand) {
+            if (!!activeBrand) {
+                console.log('updateskuDataArticle')
                 const response = await ServiceFunctions.getRnpProducts(
                     authToken,
-                    selectedRange,
-                    activeBrand.id,
-                    filters,
-                    paginationState.current,
-                    dateRange
+                    paginationState,
+                    search
                 )
-                setLocalskuDataArticle(response.data)
-                setPaginationState({ current: response.page, total: response.total_count, pageSize: response.per_page })
+                setLocalskuDataArticle(response)
+                // setPaginationState((state) => ({ ...state, total: response.total_count, pageSize: response.per_page }))
             }
             // const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
             // получение данных по артикулу группы
@@ -49,26 +47,19 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
         } finally {
             setSkuLoading(false);
         }
-    }, [])
+    }
 
     const submitskuDataArticle = () => {
         addSku(skuSelected);
-        setIsAddSkuModalVisible(false);
+        // setIsAddSkuModalVisible(false);
     }
 
     useEffect(() => {
-        if (activeBrand){
+        if (activeBrand && isAddSkuModalVisible){
+            console.log('effect', (activeBrand && isAddSkuModalVisible))
             updateskuDataArticle();
         }
-    }, [isAddSkuModalVisible, activeBrand, shops, filters])
-
-    const paginationHandler = (page) => {
-        console.log('paginationHandler', page)
-        setPaginationState((state) => ({
-            ...state,
-            current: page
-        }))
-    }
+    }, [isAddSkuModalVisible, activeBrand, shops, filters, paginationState])
 
     return (
         <Modal
@@ -118,11 +109,11 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                             value={skuSelected}
                             onChange={setSkuSelected}
                             >
-                        {localskuDataArticle?.map((el, i) => (
+                        {localskuDataArticle?.data?.map((el, i) => (
                             <Flex key={i} className={styles.item} gap={20}>
                                 <Checkbox
                                     value={el.product_id}
-                                    // defaultChecked={skuDataArticle?.some(_ => _.id === el.id)}
+                                    defaultChecked={el.is_selected}
                                 />
                                 <SkuItem
                                     title={el.title}
@@ -149,10 +140,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                             next_3: 'Следующие 3 страниц',
                         }}
                         defaultCurrent={1}
-                        current={paginationState.current}
-                        onChange={paginationHandler}
-                        total={paginationState.total}
-                        pageSize={paginationState.pageSize}
+                        // current={paginationState.page}
+                        onChange={setPaginationState}
+                        total={localskuDataArticle.total_count}
+                        pageSize={localskuDataArticle.per_page}
                         showSizeChanger={false}
                         hideOnSinglePage={true}
                     />
