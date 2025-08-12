@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef, useCallback } from 'react';
+import { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react';
 import styles from './addSkuModal.module.css'
 import AddSkuModalFooter from '../addSkuModalFooter/addSkuModalFooter'
 import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form } from 'antd';
@@ -22,7 +22,16 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
     const [skuSelected, setSkuSelected] = useState([...skuList]);
     const [search, setSearch] = useState('');
-    const [dateRange, setDateRange] = useState(null);
+    // const [dateRange, setDateRange] = useState(null);
+
+    // const formatedDateRange = useMemo(() => {
+    //     return ({
+    //         date_from: '2022-01-01',
+    //         date_to: '2022-01-01'
+    //     })
+    // }, [selectedRange]);
+
+    // console.log('formatedDateRange', formatedDateRange)
 
     const updateskuDataArticle = async () => {
         setSkuLoading(true);
@@ -30,6 +39,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
             if (!!activeBrand) {
                 const response = await ServiceFunctions.getRnpProducts(
                     authToken,
+                    selectedRange,
+                    activeBrand.id,
+                    filters,
                     paginationState,
                     search
                 )
@@ -91,9 +103,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
         >
             <div className={styles.modal}>
                 <div className={styles.modal__header}>
-                    <p className={styles.modal__title}>Добавьте артикулы</p>
+                    <p className={styles.modal__title}>Добавить артикулы</p>
                 </div>
-                <Filters timeSelect={false} />
+                {/* <Filters timeSelect={false} /> */}
                 {/* loader */}
                 <ConfigProvider
                     theme={{
