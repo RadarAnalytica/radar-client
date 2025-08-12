@@ -72,7 +72,10 @@ const SingleGroupPage = () => {
         groupData.length === 0 && setDataFetchingStatus({ ...initDataFetchingStatus, isLoading: true })
         try {
             const res = await fetch(`${URL}/api/product/product_groups/${groupId}`, {
-                h 
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'JWT ' + authToken
+                },
             })
 
             if (!res.ok) {
