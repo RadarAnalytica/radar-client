@@ -27,7 +27,7 @@ export default function SkuItem({ title, photo, sku, shop }) {
 								src={wb_icon}
 								className={styles.item__article_icon}
 							/>
-							Артикул
+							{sku}
 						</Flex>
 					</a>
 					&bull;
