@@ -143,10 +143,10 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 							<div key={i} className={styles.item}>
 								<header className={styles.item__header}>
 									<Flex gap={20} align="center">
-										<Button
+										{/* <Button
 											className={styles.item__button}
 											icon={grip}
-										/>
+										/> */}
 										<div className={styles.item__product}>
 											<SkuItem
 												title={el.article_data.title}
