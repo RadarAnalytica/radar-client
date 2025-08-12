@@ -68,7 +68,7 @@ export default function SkuTable({ loading, columns, data, defaultExpandAllRows=
 							expandedRowClassName: styles.expandRow,
 							expandRowByClick: true
 						}}
-						scroll={ { x: 'max-content', y: 9999 }}
+						scroll={ { x: 'max-content' }}
 					></Table>
 				</ConfigProvider>
 				}

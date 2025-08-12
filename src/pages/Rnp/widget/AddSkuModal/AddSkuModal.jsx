@@ -8,7 +8,7 @@ import { Filters } from '../../../../components/sharedComponents/apiServicePages
 import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 
-const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, skuDataArticle=[] }) => {
+const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, skuList }) => {
     // 
     const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange } = useAppSelector(
@@ -20,17 +20,14 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     const [paginationState, setPaginationState] = useState(1);
     const [skuLoading, setSkuLoading] = useState(true);
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
-    const [skuSelected, setSkuSelected] = useState(skuDataArticle?.map((el) => el.article_data.product_id))
-    const [search, setSearch] = useState('')
+    const [skuSelected, setSkuSelected] = useState([...skuList]);
+    const [search, setSearch] = useState('');
     const [dateRange, setDateRange] = useState(null);
-
-    const [submitStatus, setSubmitStatus] = useState(false);
 
     const updateskuDataArticle = async () => {
         setSkuLoading(true);
         try {
             if (!!activeBrand) {
-                console.log('updateskuDataArticle')
                 const response = await ServiceFunctions.getRnpProducts(
                     authToken,
                     paginationState,
@@ -49,25 +46,39 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
         }
     }
 
-    const submitskuDataArticle = () => {
+    const submitSkuDataArticle = () => {
         addSku(skuSelected);
-        // setIsAddSkuModalVisible(false);
+    }
+
+    const selectSkuHandler = (e) => {
+        const value = e.target['data-value'];
+        setSkuSelected((list) => {
+            if (list.includes(value)){
+                return list.filter((el) => el !== value)
+            }
+            return [...list, value]
+        })
     }
 
     useEffect(() => {
         if (activeBrand && isAddSkuModalVisible){
-            console.log('effect', (activeBrand && isAddSkuModalVisible))
             updateskuDataArticle();
         }
     }, [isAddSkuModalVisible, activeBrand, shops, filters, paginationState])
+
+    useEffect(() => {
+        if (isAddSkuModalVisible) {
+            setPaginationState(1);
+        }
+    }, [isAddSkuModalVisible])
 
     return (
         <Modal
             footer={
                 <AddSkuModalFooter
-                    addProducts={submitskuDataArticle}
+                    addProducts={submitSkuDataArticle}
                     setIsAddSkuModalVisible={setIsAddSkuModalVisible}
-                    isDataLoading={skuLoading || submitStatus}
+                    isDataLoading={skuLoading}
                     isCheckedListEmpty={localskuDataArticle?.length === 0}
                 />
             }
@@ -104,16 +115,12 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                     {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
 
                     {!skuLoading && localskuDataArticle && (<div className={styles.modal__container}>
-                        <Checkbox.Group
-                            className={styles.group}
-                            value={skuSelected}
-                            onChange={setSkuSelected}
-                            >
                         {localskuDataArticle?.data?.map((el, i) => (
                             <Flex key={i} className={styles.item} gap={20}>
                                 <Checkbox
-                                    value={el.product_id}
-                                    defaultChecked={el.is_selected}
+                                    defaultChecked={skuSelected.includes(el.product_id)}
+                                    data-value={el.product_id}
+                                    onChange={selectSkuHandler}
                                 />
                                 <SkuItem
                                     title={el.title}
@@ -123,7 +130,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                                 />
                             </Flex>
                         ))}
-                        </Checkbox.Group>
                     </div>)}
 
                     <Pagination
@@ -140,7 +146,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                             next_3: 'Следующие 3 страниц',
                         }}
                         defaultCurrent={1}
-                        // current={paginationState.page}
+                        current={paginationState}
                         onChange={setPaginationState}
                         total={localskuDataArticle.total_count}
                         pageSize={localskuDataArticle.per_page}

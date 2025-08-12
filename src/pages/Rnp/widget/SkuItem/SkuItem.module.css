@@ -5,6 +5,8 @@
 }
 .item__pic{
   width: 45px;
+  overflow: hidden;
+  border-radius: 5px;
 }
 .item__description{
   flex-grow: 1;

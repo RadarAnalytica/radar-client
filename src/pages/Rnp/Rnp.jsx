@@ -15,6 +15,8 @@ import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import SkuList from './widget/SkuList/SkuList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 
 export default function Rnp() {
 	const { authToken } = useContext(AuthContext);
@@ -52,6 +54,8 @@ export default function Rnp() {
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
 
 	const [deleteSkuId, setDeleteSkuId] = useState(null);
+
+	const [skuSelectedList, setSkuSelectedList] = useState([]);
 
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
@@ -105,7 +109,8 @@ export default function Rnp() {
 			}
 		} catch (error) {
 		} finally {
-			setLoading(false);
+			setPage(1);
+			updateSkuListByArticle();
 		}
 	}
 
@@ -157,6 +162,7 @@ export default function Rnp() {
 			return item;
 		});
 
+		setSkuSelectedList(list.map((sku) => sku.article_data.product_id));
 		setSkuDataByArticle(list);
 	};
 
@@ -219,11 +225,11 @@ export default function Rnp() {
 					authToken,
 					porductIds
 				);
-				dataToSkuList(response);
 			}
 		} catch (error) {
 		} finally {
-			setLoading(false);
+			setPage(1);
+			updateSkuListByArticle();
 		}
 	};
 
@@ -240,6 +246,9 @@ export default function Rnp() {
 			}
 			updateSkuListSummary();
 		}
+		if (activeBrand && !activeBrand?.is_primary_collect){
+			setLoading(false)
+		}
 	}, [activeBrand, shopStatus, shops, filters, page, view]);
 
 	const addSkuHandler = (list) => {
@@ -247,7 +256,6 @@ export default function Rnp() {
 		addSkuList(list);
 	}
 
-	
 
 	return (
 		<main className={styles.page}>
@@ -277,21 +285,22 @@ export default function Rnp() {
 
 				{/* {!loading && shopStatus && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
-				)}
-				{!loading && !shopStatus?.is_primary_collect && (
+				)} */}
+				
+				{!loading && shopStatus && !shopStatus?.is_primary_collect && (
 						<DataCollectWarningBlock
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
-				)} */}
+				)}
 
-				{!loading && skuDataByArticle?.length > 0 && (
+				{!loading && shopStatus && shopStatus?.is_primary_collect && skuDataByArticle?.length > 0 && (
 					<SkuList
 						view={view}
 						setView={viewHandler}
 						setAddSkuModalShow={setAddSkuModalShow}
 						skuDataByArticle={skuDataByArticle}
 						skuDataTotal={skuDataTotal}
-						setDeleteSkuId={deleteSku}
+						setDeleteSkuId={setDeleteSkuId}
 						addSku={addSkuHandler}
 					/>
 				)}
@@ -306,12 +315,13 @@ export default function Rnp() {
 					/>
 				}
 
-				<AddSkuModal
+				{addSkuModalShow && <AddSkuModal
 					isAddSkuModalVisible={addSkuModalShow}
 					setIsAddSkuModalVisible={setAddSkuModalShow}
 					addSku={addSkuHandler}
 					skuDataArticle={skuDataByArticle}
-				/> 
+					skuList={skuSelectedList}
+				/>}
 
 				{deleteSkuId && <ModalDeleteConfirm
 					title={'Удалить данный артикул?'}
