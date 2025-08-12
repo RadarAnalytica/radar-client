@@ -107,6 +107,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 			</ConfigProvider>
 			<div>
 				<Filters timeSelect={false} />
+				<Filters timeSelect={false} />
 			</div>
 			<ConfigProvider
 				theme={{
