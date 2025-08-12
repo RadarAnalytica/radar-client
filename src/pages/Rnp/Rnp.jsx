@@ -15,6 +15,8 @@ import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import SkuList from './widget/SkuList/SkuList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
+import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
+import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 
 export default function Rnp() {
 	const { authToken } = useContext(AuthContext);
@@ -275,16 +277,16 @@ export default function Rnp() {
 					</div>
 				)}
 
-				{/* {!loading && shopStatus && !shopStatus?.is_self_cost_set && (
+				{!loading && shopStatus && !shopStatus?.is_self_cost_set && (
 					<SelfCostWarningBlock />
 				)}
 				{!loading && !shopStatus?.is_primary_collect && (
 						<DataCollectWarningBlock
 								title='Ваши данные еще формируются и обрабатываются.'
 						/>
-				)} */}
+				)}
 
-				{!loading && skuDataByArticle?.length > 0 && (
+				{!loading && shopStatus?.is_primary_collect && skuDataByArticle?.length > 0 && (
 					<SkuList
 						view={view}
 						setView={viewHandler}
