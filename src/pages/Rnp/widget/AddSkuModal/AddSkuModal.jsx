@@ -51,7 +51,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     }
 
     const selectSkuHandler = (e) => {
-        const value = e.target.value;
+        const value = e.target['data-value'];
         setSkuSelected((list) => {
             if (list.includes(value)){
                 return list.filter((el) => el !== value)
@@ -119,10 +119,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                             <Flex key={i} className={styles.item} gap={20}>
                                 <Checkbox
                                     defaultChecked={skuSelected.includes(el.product_id)}
-                                    value={el.product_id}
+                                    data-value={el.product_id}
                                     onChange={selectSkuHandler}
                                 />
-                                {skuSelected.includes(el.product_id) ? 1 : 0} - {el.product_id}
                                 <SkuItem
                                     title={el.title}
                                     photo={el.photo}

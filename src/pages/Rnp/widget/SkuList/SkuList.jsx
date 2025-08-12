@@ -4,7 +4,6 @@ import SkuTable from '../SkuTable/SkuTable';
 import SkuItem from '../SkuItem/SkuItem';
 import styles from './SkuList.module.css';
 import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
-import SkuHeader from '../SkuItem/SkuItem';
 import { useAppSelector } from '../../../../redux/hooks';
 import { grip, remove, expand } from '../icons';
 
@@ -64,8 +63,6 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 							size="large"
 							onClick={() => {
 								setView('sku');
-								// setSkuList(null);
-								// setView('sku');
 							}}
 						>
 							По артикулам
@@ -75,8 +72,6 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 							size="large"
 							onClick={() => {
 								setView('total');
-								// setSkuList(null);
-								// setView('total');
 							}}
 						>
 							Сводный
@@ -106,8 +101,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 				</Flex>
 			</ConfigProvider>
 			<div>
-				<Filters timeSelect={false} />
-				<Filters timeSelect={false} />
+				<Filters />
 			</div>
 			<ConfigProvider
 				theme={{
@@ -158,14 +152,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 										</div>
 										<Button
 											className={styles.item__button}
-											onClick={
-												() =>
-													setDeleteSkuId(
-														el.article_data
-															.product_id
-													)
-												// deleteHandler(el.article_data.product_id)
-											}
+											onClick={ () => setDeleteSkuId(el.article_data.product_id) }
 											icon={remove}
 										/>
 										<Button
@@ -178,11 +165,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 												styles.item__button_expand
 											}`}
 											value={el.id}
-											onClick={() =>
-												expandHandler(
-													el.article_data.product_id
-												)
-											}
+											onClick={ () => expandHandler( el.article_data.product_id ) }
 											icon={expand}
 										></Button>
 									</Flex>
