@@ -1483,8 +1483,6 @@ export const ServiceFunctions = {
 		}
 	},
 	postRnpSummary: async(token, selectedRange, shopId, filters, page, dateRange) => {
-
-	// getRnpSummary: async(token) => {
 		try {
 			let body = getRequestObject(filters, selectedRange, shopId);
 			body.date_from = "2022-01-01";
@@ -1523,17 +1521,21 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	// postRnpSummary: async(token, selectedRange, shopId, filters, page, dateRange) => {
-	getRnpProducts: async(token, page, search) => {
+	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
+		let body = getRequestObject(filters, selectedRange, shopId);
+		body.date_from = "2022-01-01";
+		body.date_to = "2022-01-01";
+
 		try {
 			const res = await fetch(
 				`${URL}/api/rnp/products?page=${page}&per_page=25&search=${search}`,
 				{
-					method: 'GET',
+					method: 'POST',
 					headers: {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
-					}
+					},
+					body: JSON.stringify(body)
 				}
 			);
 			

@@ -194,7 +194,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 							data={skuDataTotal?.table?.rows}
 							// columns={null}
 							columns={skuDataTotal?.table?.columns}
-							defaultExpandAllRows={false}
+							defaultExpandAllRows={true}
 						/>
 					</div>
 				)}
