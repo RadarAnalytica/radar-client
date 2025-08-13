@@ -5,6 +5,7 @@ export const COLUMNS = [
     title: 'Период',
     dataIndex: 'period',
     width: 480,
+    fixed: true,
     render: (value, record) => (record.children) ? <strong>{value}</strong> : value
   },
   {
