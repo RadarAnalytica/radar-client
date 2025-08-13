@@ -1,6 +1,4 @@
 import { useState, useContext, useEffect } from 'react';
-import SideNav from '../components/SideNav';
-import TopNav from '../components/TopNav';
 import styles from './AIDescriptionGenerator.module.css';
 import magicWand from './images/magic-wand-2.svg';
 import close from './images/AiMinusIcon.svg';
@@ -9,7 +7,6 @@ import closebtn from '../assets/closebtn.png';
 import closeBtnModal from './images/closeBtnModal.svg';
 import { ServiceFunctions } from '../service/serviceFunctions';
 import AuthContext from '../service/AuthContext';
-import warningIcon from '../assets/warning.png';
 import Modal from 'react-bootstrap/Modal';
 import AiDescriptionGeneratorTariffs from '../components/AiDescriptionGeneratorTariffs';
 import { redirect } from 'react-router-dom';
@@ -25,6 +22,31 @@ import Sidebar from '../components/sharedComponents/sidebar/sidebar';
 import Header from '../components/sharedComponents/header/header';
 import ErrorModal from '../components/sharedComponents/modals/errorModal/errorModal';
 import { Input, Form, Button, ConfigProvider } from 'antd';
+
+
+
+
+
+
+function declineGeneration(count) {
+  const lastTwo = count % 100;
+  const lastOne = count % 10;
+  
+  if (lastTwo >= 11 && lastTwo <= 19) {
+    return `${count} генераций`;
+  }
+  
+  switch (lastOne) {
+    case 1:
+      return `${count} генерация`;
+    case 2:
+    case 3:
+    case 4:
+      return `${count} генерации`;
+    default:
+      return `${count} генераций`;
+  }
+}
 
 const AiDescriptionGeneratorPage = () => {
   const {
@@ -488,8 +510,9 @@ const AiDescriptionGeneratorPage = () => {
                 <p className={styles.topNavTitle}>
                   Вам {amountGenerations === 1 ? 'доступнa' : 'доступно'}{' '}
                   <span style={{ color: '#74717f' }}>
-                    {amountGenerations.toString()}{' '}
-                    {amountGenerations === 1 ? 'генерация' : 'генераций'}
+                    {declineGeneration(amountGenerations)}
+                    {/* {amountGenerations.toString()}{' '}
+                    {amountGenerations === 1 ? 'генерация' : 'генераций'} */}
                   </span>
                 </p>
                 <div className={styles.topNavAdd} onClick={handleNewGenerator}>
