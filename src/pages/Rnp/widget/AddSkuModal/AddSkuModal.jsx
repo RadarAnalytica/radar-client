@@ -8,6 +8,7 @@ import { Filters } from '../../../../components/sharedComponents/apiServicePages
 import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
+import { close } from '../icons';
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, skuList }) => {
     // 
@@ -18,7 +19,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     const filters = useAppSelector((state) => state.filters);
     const { shops } = useAppSelector((state) => state.shopsSlice);
     
-    const [paginationState, setPaginationState] = useState(1);
+    const [page, setPage] = useState(1);
     const [skuLoading, setSkuLoading] = useState(true);
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
     const [skuSelected, setSkuSelected] = useState([...skuList]);
@@ -43,13 +44,13 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                     selectedRange,
                     activeBrand.id,
                     filters,
-                    paginationState,
+                    page,
                     search
                 )
                 setLocalskuDataArticle(response)
-                // setPaginationState((state) => ({ ...state, total: response.total_count, pageSize: response.per_page }))
+                // setPage((state) => ({ ...state, total: response.total_count, pageSize: response.per_page }))
             }
-            // const [paginationState, setPaginationState] = useState({ current: 1, total: 50, pageSize: 50 });
+            // const [page, setPage] = useState({ current: 1, total: 50, pageSize: 50 });
             // получение данных по артикулу группы
 
         } catch(error) {
@@ -77,14 +78,20 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
         if (activeBrand && isAddSkuModalVisible){
             updateskuDataArticle();
         }
-    }, [isAddSkuModalVisible, activeBrand, shops, filters, paginationState])
+    }, [isAddSkuModalVisible, activeBrand, shops, filters, page, search])
 
     useEffect(() => {
         if (isAddSkuModalVisible) {
-            setPaginationState(1);
+            setPage(1);
             setSearch(null)
         }
     }, [isAddSkuModalVisible])
+
+    useEffect(() => {
+        if (isAddSkuModalVisible) {
+            setPage(1);
+        }
+    }, [search])
 
     return (
         <Modal
@@ -101,14 +108,15 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
             onClose={() => setIsAddSkuModalVisible(false)}
             open={isAddSkuModalVisible}
             width={1200}
+            closeIcon={close}
             centered
         >
-            <div className={styles.modal}>
+            <div className={styles.modal__content}>
                 <div className={styles.modal__header}>
                     <p className={styles.modal__title}>Добавить артикулы</p>
                 </div>
                 {/* <Filters timeSelect={false} /> */}
-                {/* <AddSkuModalSearch /> */}
+                <AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} />
                 {/* loader */}
                 <ConfigProvider
                     theme={{
@@ -147,7 +155,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                         ))}
                     </div>)}
 
-                    <Pagination
+                    {!skuLoading && <Pagination
                         locale={{
                             items_per_page: 'записей на странице',
                             jump_to: 'Перейти',
@@ -161,13 +169,13 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                             next_3: 'Следующие 3 страниц',
                         }}
                         defaultCurrent={1}
-                        current={paginationState}
-                        onChange={setPaginationState}
+                        current={page}
+                        onChange={setPage}
                         total={localskuDataArticle.total_count}
                         pageSize={localskuDataArticle.per_page}
                         showSizeChanger={false}
                         hideOnSinglePage={true}
-                    />
+                    />}
                 </ConfigProvider>
             </div>
         </Modal>
