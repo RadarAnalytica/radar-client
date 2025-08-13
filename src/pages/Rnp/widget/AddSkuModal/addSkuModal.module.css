@@ -5,7 +5,7 @@
     color: #5329FF;
 }
 
-.modal {
+.modal__content {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -34,9 +34,10 @@
 
 .modal__container {
     width: 100%;
+    flex-grow: 1;
     height: auto;
     padding: 16px;
-    max-height: 590px;
+    max-height: calc(98vh - 260px);
     overflow-y: scroll;
 }
 

@@ -93,8 +93,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
         }
     }, [search])
 
-
-
     return (
         <Modal
             footer={
@@ -113,7 +111,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
             closeIcon={close}
             centered
         >
-            <div className={styles.modal}>
+            <div className={styles.modal__content}>
                 <div className={styles.modal__header}>
                     <p className={styles.modal__title}>Добавить артикулы</p>
                 </div>
