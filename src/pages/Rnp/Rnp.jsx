@@ -162,7 +162,7 @@ export default function Rnp() {
 			return item;
 		});
 
-		setSkuSelectedList(list.map((sku) => sku.article_data.product_id));
+		setSkuSelectedList(list.map((sku) => sku.article_data.wb_id));
 		setSkuDataByArticle(list);
 	};
 
