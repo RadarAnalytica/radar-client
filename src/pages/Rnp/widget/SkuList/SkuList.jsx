@@ -9,7 +9,6 @@ import { grip, remove, expand } from '../icons';
 
 export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModalShow, setSkuList, view, setView, setDeleteSkuId }) {
 	const { shops } = useAppSelector((state) => state.shopsSlice);
-	// const [view, setView] = useState('sku');
 	const [expanded, setExpanded] = useState(null);
 	useEffect(() => {
 		if (skuDataByArticle?.length > 0 && view === 'sku') {
@@ -33,12 +32,11 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 					},
 					components: {
 						Button: {
-							paddingBlockLG: 10,
 							paddingInlineLG: 20,
 							controlHeightLG: 45,
 							defaultShadow: false,
 							contentFontSize: 16,
-							fontWeight: 500,
+							fontWeight: 600,
 							defaultBorderColor: 'transparent',
 							defaultColor: 'rgba(26, 26, 26, 0.5)',
 							defaultBg: 'transparent',
@@ -82,6 +80,8 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 							components: {
 								Button: {
 									primaryColor: '#fff',
+									paddingInlineLG: 16,
+									contentFontSizeLG: 16
 								},
 							},
 						}}
@@ -132,7 +132,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 					<>
 						{skuDataByArticle?.map((el, i) => (
 							<div key={i} className={styles.item}>
-								<header className={styles.item__header}>
+								<header>
 									<Flex gap={20} align="center">
 										{/* <Button
 											className={styles.item__button}

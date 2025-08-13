@@ -46,9 +46,9 @@ function AddSkuModalSearch({
               placeholder='Поиск товара'
               size='large'
               name='search'
-              allowClear={{
-                clearIcon: close
-              }}
+              // allowClear={{
+              //   clearIcon: close
+              // }}
             />
           </Form.Item>
           <Button
