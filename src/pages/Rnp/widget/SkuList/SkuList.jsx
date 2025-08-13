@@ -152,8 +152,9 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 										</div>
 										<Button
 											className={styles.item__button}
-											onClick={ () => setDeleteSkuId(el.article_data.product_id) }
+											onClick={ () => setDeleteSkuId(el.article_data.wb_id) }
 											icon={remove}
+											title='Удалить артикул'
 										/>
 										<Button
 											className={`${
@@ -167,6 +168,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 											value={el.id}
 											onClick={ () => expandHandler( el.article_data.product_id ) }
 											icon={expand}
+											title='Развернуть'
 										></Button>
 									</Flex>
 								</header>
