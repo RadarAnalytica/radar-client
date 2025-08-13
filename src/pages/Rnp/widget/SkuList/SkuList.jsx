@@ -21,10 +21,6 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 		setExpanded((id) => (id !== value ? value : null));
 	};
 
-	const removeHandler = (value) => {
-		setSkuList((list) => list.filter((el) => el.id !== value));
-	};
-
 	return (
 		<>
 			<ConfigProvider
