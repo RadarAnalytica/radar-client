@@ -1,13 +1,13 @@
 import { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react';
 import styles from './addSkuModal.module.css'
-import AddSkuModalFooter from '../addSkuModalFooter/addSkuModalFooter'
+import AddSkuModalFooter from './widget/addSkuModalFooter/addSkuModalFooter'
 import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form, Input, Button } from 'antd';
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
 import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
 import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
-import SearchForm from './widget/SearchForm/SearchForm';
+import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, skuList }) => {
     // 
@@ -108,7 +108,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                     <p className={styles.modal__title}>Добавить артикулы</p>
                 </div>
                 {/* <Filters timeSelect={false} /> */}
-                {/* <SearchForm /> */}
+                {/* <AddSkuModalSearch /> */}
                 {/* loader */}
                 <ConfigProvider
                     theme={{
@@ -133,7 +133,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                         {localskuDataArticle?.data?.map((el, i) => (
                             <Flex key={i} className={styles.item} gap={20}>
                                 <Checkbox
-                                    defaultChecked={skuSelected.includes(el.product_id)}
+                                    defaultChecked={skuSelected.includes(el.wb_id)}
                                     data-value={el.wb_id}
                                     onChange={selectSkuHandler}
                                 />

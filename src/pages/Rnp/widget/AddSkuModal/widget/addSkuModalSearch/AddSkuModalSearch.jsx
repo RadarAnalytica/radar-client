@@ -1,22 +1,26 @@
 import { ConfigProvider, Form, Flex, Input, Button } from "antd"
-import styles from "./SearchForm.module.css"
+import styles from "./AddSkuModalSearch.module.css"
 import { search } from "../../../icons"
 
-function SearchForm() {
+function AddSkuModalSearch() {
   const [form] = Form.useForm();
   return (
     <ConfigProvider
         theme={{
             token: {
                 colorPrimary: '#5329FF',
-                fontFamily: 'Mulish',
                 fontSize: 16,
-                controlHeightLG: 45
+                contentFontSizeLG: 16,
+                controlHeightLG: 45,
             },
             components: {
                 Input: {
-                    activeBorderColor: '#5329FF',
-                    hoverBorderColor: '#5329FF'
+                  activeBorderColor: '#5329FF',
+                  hoverBorderColor: '#5329FF'
+                },
+                Button: {
+                  paddingInline: 12,
+                  fontWeight: 600
                 }
             }
         }}
@@ -50,4 +54,4 @@ function SearchForm() {
   )
 }
 
-export default SearchForm
+export default AddSkuModalSearch
