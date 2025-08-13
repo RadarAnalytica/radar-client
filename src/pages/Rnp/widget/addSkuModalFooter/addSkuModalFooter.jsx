@@ -1,51 +1,60 @@
-import styles from './addSkuModalFooter.module.css'
-import { Button, ConfigProvider } from 'antd'
+import { Button, ConfigProvider, Flex } from 'antd'
 
 const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, isCheckedListEmpty, addProducts }) => {
 
     return (
-        <div className={styles.footer}>
+        <Flex justify='end' gap={12}>
             <ConfigProvider
                 theme={{
                     token: {
-                        colorPrimary: '#EEEAFF',
-                        colorTextLightSolid: '#5329FF',
                         fontSize: 16,
-                        borderRadius: 8
+                        borderRadius: 8,
+                        controlHeight: 45
+                    },
+                    components: {
+                        Button: {
+                            paddingInline: 12,
+                            fontWeight: 600
+                        }
                     }
                 }}
             >
-                <Button
-                    type='primary'
-                    className={styles.footer__button}
-                    onClick={() => setIsAddSkuModalVisible(false)}
-                >
-                    Отменить
-                </Button>
-            </ConfigProvider>
-
-            <ConfigProvider
-                theme={{
-                    token: {
-                        colorPrimary: '#5329FF',
-                        fontSize: 16,
-                        borderRadius: 8
-                    }
-                }}
-            >
-                <Button
-                    type='primary'
-                    className={styles.footer__button}
-                    disabled={isCheckedListEmpty}
-                    loading={isDataLoading}
-                    onClick={() => {
-                        addProducts();
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#EEEAFF',
+                            colorTextLightSolid: '#5329FF',
+                        }
                     }}
                 >
-                    Добавить
-                </Button>
+                    <Button
+                        type='primary'
+                        onClick={() => setIsAddSkuModalVisible(false)}
+                    >
+                        Отменить
+                    </Button>
+                </ConfigProvider>
+
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorPrimary: '#5329FF',
+                        }
+                    }}
+                >
+                    <Button
+                        type='primary'
+                        disabled={isCheckedListEmpty}
+                        loading={isDataLoading}
+                        onClick={() => {
+                            addProducts();
+                        }}
+                    >
+                        Добавить
+                    </Button>
+                </ConfigProvider>
             </ConfigProvider>
-        </div>
+        </Flex>
     )
 }
 

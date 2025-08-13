@@ -1441,13 +1441,9 @@ export const ServiceFunctions = {
 			setIsLoading(false);
 		}
 	},
-	// getReportProfitLoss: async (token, selectedRange, shopId, filters, monthRange) => {
-
 	postRnpByArticle: async(token, selectedRange, shopId, filters, page, dateRange) => {
 		try {
 			let body = getRequestObject(filters, selectedRange, shopId);
-			body.date_from = "2022-01-01";
-			body.date_to = "2022-01-01";
 
 			body = {
 				"articles": [],
@@ -1478,7 +1474,7 @@ export const ServiceFunctions = {
 			return res.json();
 
 		} catch(error) {
-			console.error('getRnpByArticle ', error);
+			console.error('postRnpByArticle ', error);
 			throw new Error(error);
 		}
 	},
@@ -1517,18 +1513,18 @@ export const ServiceFunctions = {
 			return res.json();
 
 		} catch(error) {
-			console.error('getRnpSummary ', error);
+			console.error('postRnpSummary ', error);
 			throw new Error(error);
 		}
 	},
 	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
 		let body = getRequestObject(filters, selectedRange, shopId);
-		body.date_from = "2022-01-01";
-		body.date_to = "2022-01-01";
+		// body.date_from = "2022-01-01";
+		// body.date_to = "2022-01-01";
 
 		try {
 			const res = await fetch(
-				`${URL}/api/rnp/products?page=${page}&per_page=25&search=${search}`,
+				`${URL}/api/rnp/products?page=${page}&per_page=25${!!search ? `&search=${search}` : ''}` ,
 				{
 					method: 'POST',
 					headers: {
@@ -1546,7 +1542,7 @@ export const ServiceFunctions = {
 			return res.json();
 
 		} catch(error) {
-			console.error('getRnpByArticle ', error);
+			console.error('getRnpProducts ', error);
 			throw new Error(error);
 		}
 	},
@@ -1585,7 +1581,7 @@ export const ServiceFunctions = {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify({
-						product_ids: idList
+						wb_ids: idList
 					})
 				}
 			);
@@ -1597,7 +1593,31 @@ export const ServiceFunctions = {
 			return res.json();
 
 		} catch(error) {
-			console.error('getRnpByArticle ', error);
+			console.error('postUpdateRnpProducts ', error);
+			throw new Error(error);
+		}
+	},
+	getRnpFilters: async(token) => {
+		try {
+			const res = await fetch(
+				`${URL}/api/rnp/filters`,
+				{
+					method: 'GET',
+					headers: {
+						'content-type': 'application/json',
+						authorization: 'JWT ' + token,
+					}
+				}
+			);
+			
+			if (res.status !== 200){
+				throw new Error('Ошибка запроса');
+			}
+	
+			return res.json();
+
+		} catch(error) {
+			console.error('getRnpFilters ', error);
 			throw new Error(error);
 		}
 	}
