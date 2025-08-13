@@ -8,6 +8,7 @@ import messagesSlice from './messages/messagesSlice';
 import stockAnalysisDataSlice from './stockAnalysis/stockAnalysisDataSlice';
 import supportWindowSlice from './supportWindow/supportWindowSlice';
 import filtersDataSlice from './filters/filtersDataSlice';
+import { reducer as filtersRnpSliceReducer } from './filtersRnp/filtersRnpSlice';
 import dashboardReportSlice from './dashboardReport/dashboardReportSlice';
 import reportByMonthSlice from './reportByMonth/reportByMonthSlice';
 import byMonthFiltersSlice from './reportByMonth/byMonthFiltersSlice';
@@ -55,6 +56,7 @@ const storeOptions = {
     downloadReducer,
     blog: blogReducer,
     filters: apiServicePagesFilterStateReducer,
+    filtersRnp: filtersRnpSliceReducer,
     utils: utilsReducer,
     skuAnalysis: skuAnalysisReducer,
     requestsMonitoring: requestsMonitoringReducer,

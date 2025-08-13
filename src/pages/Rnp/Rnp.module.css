@@ -41,6 +41,7 @@
     position: relative;
     flex-grow: 1;
     padding: 16px;
+    min-height: 100px;
     background-color: #fff;
     border-radius: 16px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
