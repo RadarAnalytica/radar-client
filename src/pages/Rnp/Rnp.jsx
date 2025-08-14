@@ -10,7 +10,7 @@ import styles from './Rnp.module.css';
 import { useAppSelector } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { Filters } from './widget/Filters/Filters';
-import { COLUMNS, ROWS } from './config';
+import { COLUMNS, ROWS, renderFunction } from './config';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import SkuList from './widget/SkuList/SkuList';
@@ -130,7 +130,8 @@ export default function Rnp() {
 					key: dateData.date,
 					dataIndex: dateData.date,
 					title: format(dateData.date, 'd MMMM', { locale: ru }),
-					width: 110,
+					width: 160,
+					render: renderFunction
 				});
 			}
 			// сборка суммарных значений
@@ -180,7 +181,8 @@ export default function Rnp() {
 				key: dateData.date,
 				dataIndex: dateData.date,
 				title: format(dateData.date, 'd MMMM', { locale: ru }),
-				width: 110,
+				width: 160,
+				render: renderFunction
 			});
 		}
 		// сборка суммарных значений

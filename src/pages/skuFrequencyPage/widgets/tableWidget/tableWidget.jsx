@@ -112,7 +112,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                 jumper.textContent = 'Перейти на'
                 jumper.appendChild(input)
                 const suffix = document.createElement('span');
-                suffix.textContent = 'стр'
+                suffix.textContent = 'стр.'
                 jumper.appendChild(suffix)
                 jumper.style.color = 'black'
             }
@@ -305,6 +305,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     }}
                 >
                     <Table
+                        rowKey={(record) => record.query}
                         scroll={{
                             scrollToFirstRowOnChange: true,
                             // x: scrollX,

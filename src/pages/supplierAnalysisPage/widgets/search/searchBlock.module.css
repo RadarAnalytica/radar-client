@@ -2,6 +2,10 @@
     border: none !important;
 }
 
+:global(.rc-virtual-list-scrollbar-thumb) {
+    background-color: #5329ff80 !important;
+}
+
 /* search */
 .search {
     width: 100%;
