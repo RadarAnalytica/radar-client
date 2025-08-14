@@ -138,7 +138,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                 >
                     {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
 
-                    {!skuLoading && localskuDataArticle && (<div className={styles.modal__container}>
+                    {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div style={{flexGrow: 1}}>Ничего не найдено</div>)}
+                    {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                         {localskuDataArticle?.data?.map((el, i) => (
                             <Flex key={i} className={styles.item} gap={20}>
                                 <Checkbox
@@ -155,7 +156,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                             </Flex>
                         ))}
                     </div>)}
-                    {!skuLoading && localskuDataArticle?.data?.length == 0 && (<div className={styles.modal__container}>Ничего не найдено</div>)}
 
                     {!skuLoading && <Pagination
                         locale={{
