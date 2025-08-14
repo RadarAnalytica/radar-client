@@ -7,9 +7,9 @@ import Header from '../../components/sharedComponents/header/header';
 import { NoDataWidget } from '../productsGroupsPages/widgets';
 import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
 import styles from './Rnp.module.css';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useAppSelector } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import { Filters } from '../../components/sharedComponents/apiServicePagesFiltersComponent';
+import { Filters } from './widget/Filters/Filters';
 import { COLUMNS, ROWS } from './config';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
@@ -21,11 +21,11 @@ import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWran
 export default function Rnp() {
 	const { authToken } = useContext(AuthContext);
 	const { activeBrand, selectedRange } = useAppSelector(
-		(state) => state.filters
+		(state) => state.filtersRnp
 	);
-	const filters = useAppSelector((state) => state.filters);
+	const filters = useAppSelector((state) => state.filtersRnp);
 	const { shops } = useAppSelector((state) => state.shopsSlice);
-	
+
 	const shopStatus = useMemo(() => {
 		if (!activeBrand || !shops) return null;
 
@@ -247,7 +247,7 @@ export default function Rnp() {
 			updateSkuListSummary();
 		}
 		if (activeBrand && !activeBrand?.is_primary_collect){
-			setLoading(false)
+			// setLoading(false)
 		}
 	}, [activeBrand, shopStatus, shops, filters, page, view]);
 

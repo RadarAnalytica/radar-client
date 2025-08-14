@@ -37,7 +37,7 @@
     flex-grow: 1;
     height: auto;
     padding: 16px;
-    max-height: calc(98vh - 260px);
+    max-height: calc(98vh - 330px);
     overflow-y: scroll;
 }
 

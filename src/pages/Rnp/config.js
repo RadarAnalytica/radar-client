@@ -195,27 +195,27 @@ export const ROWS = [
     children: [
       {
         dataIndex: 'tax_per_one',
-        period: 'Налоги на 1 ед, руб',
+        period: 'Налоги на 1 ед., руб',
       },
       {
         dataIndex: 'logistics_per_one',
-        period: 'Логистика на 1 ед, руб',
+        period: 'Логистика на 1 ед., руб',
       },
       {
         dataIndex: 'commission_acquiring_per_one',
-        period: 'Комиссия + экв. на 1 ед, руб',
+        period: 'Комиссия + экв. на 1 ед., руб',
       },
       {
         dataIndex: 'commission_acquiring_percentage',
-        period: 'Комиссия + экв, %',
+        period: 'Комиссия + экв., %',
       },
       {
         dataIndex: 'storage_per_one',
-        period: 'Хранение на 1 ед, руб',
+        period: 'Хранение на 1 ед., руб',
       },
       {
         dataIndex: 'cost_per_one',
-        period: 'Себестоимость на 1 ед, руб',
+        period: 'Себестоимость на 1 ед., руб',
       },
     ]
   },

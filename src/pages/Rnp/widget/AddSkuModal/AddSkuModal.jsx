@@ -3,8 +3,9 @@ import styles from './addSkuModal.module.css'
 import AddSkuModalFooter from './widget/addSkuModalFooter/addSkuModalFooter'
 import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form, Input, Button } from 'antd';
 import AuthContext from '../../../../service/AuthContext';
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks';
-import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
+import { useAppSelector } from '../../../../redux/hooks';
+// import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
+import { Filters } from '../Filters/Filters'
 import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
@@ -14,9 +15,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     // 
     const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange } = useAppSelector(
-        (state) => state.filters
+        (state) => state.filtersRnp
     );
-    const filters = useAppSelector((state) => state.filters);
+    const filters = useAppSelector((state) => state.filtersRnp);
     const { shops } = useAppSelector((state) => state.shopsSlice);
     
     const [page, setPage] = useState(1);
@@ -115,7 +116,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                 <div className={styles.modal__header}>
                     <p className={styles.modal__title}>Добавить артикулы</p>
                 </div>
-                {/* <Filters timeSelect={false} /> */}
+                {/* <Filters timeSelect={false} groupSelect={false}/> */}
                 <AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} />
                 {/* loader */}
                 <ConfigProvider
@@ -137,7 +138,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                 >
                     {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
 
-                    {!skuLoading && localskuDataArticle && (<div className={styles.modal__container}>
+                    {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div style={{flexGrow: 1}}>Ничего не найдено</div>)}
+                    {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                         {localskuDataArticle?.data?.map((el, i) => (
                             <Flex key={i} className={styles.item} gap={20}>
                                 <Checkbox

@@ -3,7 +3,8 @@ import { ConfigProvider, Button, Flex } from 'antd';
 import SkuTable from '../SkuTable/SkuTable';
 import SkuItem from '../SkuItem/SkuItem';
 import styles from './SkuList.module.css';
-import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
+// import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
+import { Filters } from '../Filters/Filters';
 import { useAppSelector } from '../../../../redux/hooks';
 import { grip, remove, expand } from '../icons';
 

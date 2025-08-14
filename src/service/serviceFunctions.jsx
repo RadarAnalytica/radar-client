@@ -1446,11 +1446,7 @@ export const ServiceFunctions = {
 			let body = getRequestObject(filters, selectedRange, shopId);
 
 			body = {
-				"articles": [],
-				"product_groups": [],
-				"brands": [],
-				"shop": 138,
-				"period": 30,
+				...body,
 				"date_from": "2025-03-01",
 				"date_to": "2025-08-01"
 			}
@@ -1481,15 +1477,8 @@ export const ServiceFunctions = {
 	postRnpSummary: async(token, selectedRange, shopId, filters, page, dateRange) => {
 		try {
 			let body = getRequestObject(filters, selectedRange, shopId);
-			body.date_from = "2022-01-01";
-			body.date_to = "2022-01-01";
-
 			body = {
-				"articles": [],
-				"product_groups": [],
-				"brands": [],
-				"shop": 138,
-				"period": 30,
+				...body,
 				"date_from": "2025-03-01",
 				"date_to": "2025-08-01"
 			}
@@ -1519,9 +1508,6 @@ export const ServiceFunctions = {
 	},
 	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
 		let body = getRequestObject(filters, selectedRange, shopId);
-		// body.date_from = "2022-01-01";
-		// body.date_to = "2022-01-01";
-
 		try {
 			const res = await fetch(
 				`${URL}/api/rnp/products?page=${page}&per_page=25${!!search ? `&search=${search}` : ''}` ,

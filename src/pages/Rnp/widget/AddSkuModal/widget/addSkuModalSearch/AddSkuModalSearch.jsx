@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ConfigProvider, Form, Flex, Input, Button } from "antd"
 import styles from "./AddSkuModalSearch.module.css"
 import { search, close } from "../../../icons"
@@ -7,6 +8,7 @@ function AddSkuModalSearch({
   submitSearch
 }) {
   const [form] = Form.useForm();
+  const searchValue = Form.useWatch('search', form);
 
   const finishHandler = (data) => {
     const value = data.search.trim();
@@ -15,6 +17,22 @@ function AddSkuModalSearch({
     }
     submitSearch(value);
   }
+
+  useEffect(() => {
+    let timeout = null;
+    
+    if (!searchValue) {
+      timeout = setTimeout(() => {
+        submitSearch(null);
+      }, 1500);
+    } else {
+      clearTimeout(timeout);
+    }
+
+    return () => clearTimeout(timeout)
+
+  }, [searchValue])
+
   return (
     <ConfigProvider
         theme={{
@@ -46,9 +64,7 @@ function AddSkuModalSearch({
               placeholder='Поиск товара'
               size='large'
               name='search'
-              // allowClear={{
-              //   clearIcon: close
-              // }}
+              allowClear={true}
             />
           </Form.Item>
           <Button
