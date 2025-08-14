@@ -10,15 +10,21 @@ import { grip, remove, expand } from '../icons';
 
 export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModalShow, setSkuList, view, setView, setDeleteSkuId }) {
 	const { shops } = useAppSelector((state) => state.shopsSlice);
-	const [expanded, setExpanded] = useState(null);
+	const [expanded, setExpanded] = useState([]);
 	useEffect(() => {
 		if (skuDataByArticle?.length > 0 && view === 'sku') {
-			setExpanded(skuDataByArticle[0].article_data.product_id);
+			setExpanded([skuDataByArticle[0].article_data.product_id]);
 		}
 	}, [skuDataByArticle]);
 
 	const expandHandler = (value) => {
-		setExpanded((id) => (id !== value ? value : null));
+		setExpanded((list) => {
+			if (list.includes(value)){
+				return list.filter((id) => id !== value)
+			} else {
+			 return [...list, value]
+		 }
+		})
 	};
 
 	return (
@@ -156,12 +162,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 										<Button
 											className={`${
 												styles.item__button
-											} ${
-												expanded ===
-													el.article_data
-														.product_id &&
-												styles.item__button_expand
-											}`}
+											} ${ expanded.includes(el.article_data.product_id) && styles.item__button_expand }`}
 											value={el.id}
 											onClick={ () => expandHandler( el.article_data.product_id ) }
 											icon={expand}
@@ -169,7 +170,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 										></Button>
 									</Flex>
 								</header>
-								{expanded === el.article_data.product_id && (
+								{expanded.includes(el.article_data.product_id) && (
 									<div
 										className={`${styles.item__table} ${styles.item}`}
 									>
