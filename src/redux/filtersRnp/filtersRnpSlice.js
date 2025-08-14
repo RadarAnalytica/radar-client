@@ -27,6 +27,7 @@ const filtersRnpSlice = createSlice({
                 activeBrandName: [{value: 'Все'}],
                 activeArticle: [{value: 'Все'}],
                 activeGroup: [{id: 0, value: 'Все'}],
+                activeCategory: [{value: 'Все'}]
             }
         },
         setPeriod: (state, action) => {
@@ -42,14 +43,15 @@ const filtersRnpSlice = createSlice({
                     ...state,
                     [stateKey]: data,
                     activeGroup: [{value: 'Все', id: 0}],
-                    activeArticle: [{value: 'Все', id: 0}]
+                    activeArticle: [{value: 'Все', id: 0}],
+                    activeCategory: [{value: 'Все'}]
                 }
             }
             if (stateKey === 'activeArticle') {
                 return {
                     ...state,
                     [stateKey]: data,
-                    activeGroup: [{value: 'Все', id: 0}],
+                    activeGroup: [{value: 'Все', id: 0}]
                 }
             }
             if (stateKey === 'activeGroup') {
@@ -58,6 +60,7 @@ const filtersRnpSlice = createSlice({
                     [stateKey]: data,
                     activeBrandName: [{value: 'Все'}],
                     activeArticle: [{value: 'Все'}],
+                    activeCategory: [{value: 'Все'}]
                 }
             }
             
@@ -67,6 +70,7 @@ const filtersRnpSlice = createSlice({
                     [stateKey]: data,
                     activeBrandName: [{value: 'Все'}],
                     activeArticle: [{value: 'Все'}],
+                    activeGroup: [{value: 'Все', id: 0}]
                 }
             }
             

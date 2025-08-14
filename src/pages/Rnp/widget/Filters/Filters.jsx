@@ -200,7 +200,7 @@ export const Filters = ({
                   optionsData={i.brands.data}
                 />
               </div>}
-              {false && categorySelect && <div className={styles.filters__inputWrapper}>
+              {categorySelect && <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}

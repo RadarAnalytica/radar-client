@@ -116,7 +116,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                 <div className={styles.modal__header}>
                     <p className={styles.modal__title}>Добавить артикулы</p>
                 </div>
-                {/* <Filters timeSelect={false} groupSelect={false}/> */}
+                <Filters timeSelect={false} />
                 <AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} />
                 {/* loader */}
                 <ConfigProvider
