@@ -6,6 +6,7 @@ const initialState = {
     activeBrandName: undefined,
     activeArticle: undefined,
     activeGroup: undefined,
+    activeCategory: undefined,
     shops: undefined,
     selectedRange: {
         period: 30

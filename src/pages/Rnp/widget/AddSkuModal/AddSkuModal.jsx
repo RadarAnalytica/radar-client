@@ -5,7 +5,7 @@ import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form, Input, Button 
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector } from '../../../../redux/hooks';
 // import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
-import { Filters } from '../Filters'
+import { Filters } from '../Filters/Filters'
 import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
@@ -116,7 +116,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                 <div className={styles.modal__header}>
                     <p className={styles.modal__title}>Добавить артикулы</p>
                 </div>
-                <Filters timeSelect={false} />
+                {/* <Filters timeSelect={false} groupSelect={false}/> */}
                 <AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} />
                 {/* loader */}
                 <ConfigProvider
@@ -155,6 +155,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                             </Flex>
                         ))}
                     </div>)}
+                    {!skuLoading && localskuDataArticle?.data?.length == 0 && (<div className={styles.modal__container}>Ничего не найдено</div>)}
 
                     {!skuLoading && <Pagination
                         locale={{

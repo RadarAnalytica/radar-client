@@ -9,7 +9,7 @@ import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
 import styles from './Rnp.module.css';
 import { useAppSelector } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
-import { Filters } from './widget/Filters';
+import { Filters } from './widget/Filters/Filters';
 import { COLUMNS, ROWS } from './config';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
@@ -239,7 +239,6 @@ export default function Rnp() {
 	}
 
 	useEffect(() => {
-		console.log('useEffect', (activeBrand && activeBrand.is_primary_collect))
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
 				updateSkuListByArticle();

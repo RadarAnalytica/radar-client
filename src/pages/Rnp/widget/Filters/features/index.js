@@ -1,7 +1,0 @@
-export { TimeSelect } from './timeSelect/timeSelect'
-export { TempTimeSelect } from './timeSelect/tempTimeSelect'
-export { PlainSelect } from './plainSelect/plainSelect'
-export { ShopSelect } from './shopSelect/shopSelect'
-export { MultiSelect } from './multiSelect/multiSelect'
-export { WeekSelect } from './weekSelect/weekSelect'
-export { MonthSelect } from './monthSelect/monthSelect'

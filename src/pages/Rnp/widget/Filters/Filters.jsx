@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import AuthContext from '../../../../../service/AuthContext';
+import AuthContext from '../../../../service/AuthContext';
 import styles from './filters.module.css'
-import { TimeSelect, PlainSelect, ShopSelect, MultiSelect, MonthSelect, TempTimeSelect } from '../features'
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-// import { actions as filterActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
-import { actions as filterActions } from '../../../../../redux/filtersRnp/filtersRnpSlice'
-// import { fetchRnpShops } from '../../../../../redux/shopsRnp/shopsRnpActions';
-import { fetchShops } from '../../../../../redux/shops/shopsActions';
-import { fetchRnpFilters } from '../../../../../redux/filtersRnp/filterRnpActions';
-// import { fetchRnpFilters } from '../../../../../redux/apiServicePagesFiltersState/filterActions';
+import { TimeSelect, PlainSelect, ShopSelect, MultiSelect, MonthSelect, TempTimeSelect } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent/features'
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
+import { actions as filterActions } from '../../../../redux/filtersRnp/filtersRnpSlice'
+import { fetchShops } from '../../../../redux/shops/shopsActions';
+import { fetchRnpFilters } from '../../../../redux/filtersRnp/filterRnpActions';
 
 export const Filters = ({
   setLoading,
@@ -35,7 +32,7 @@ export const Filters = ({
   const { activeBrand, selectedRange, filters, shops } = useAppSelector(store => store.filtersRnp)
   const { messages } = useAppSelector((state) => state.messagesSlice);
   const prevMessages = useRef()
-  const filtersState = useAppSelector(store => store.filters)
+  const filtersState = useAppSelector(store => store.filtersRnp)
   //const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
 
@@ -169,8 +166,6 @@ export const Filters = ({
   // это массив магазинов с добавлением опции "все"
   //const shopArrayFormSelect = [allShopOptionAsShopObject, ...shops]
 
-  console.log('filters shops', shops)
-
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
@@ -190,7 +185,8 @@ export const Filters = ({
             />
           </div>
         }
-        {/* {filters && activeBrand && filters.map((i, id) => {
+        {filters && activeBrand && filters.map((i, id) => {
+
           return activeBrand.id === i.shop.id && (
             <React.Fragment key={id}>
               {brandSelect && <div className={styles.filters__inputWrapper}>
@@ -204,15 +200,15 @@ export const Filters = ({
                   optionsData={i.brands.data}
                 />
               </div>}
-              {articleSelect &&<div className={styles.filters__inputWrapper}>
+              {false && categorySelect && <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
-                  params={i.articles}
-                  selectId={i.articles.enLabel}
-                  label={`${i.articles.ruLabel}:`}
-                  value={filtersState[i.articles.stateKey]}
-                  optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
+                  params={i.categories}
+                  selectId={i.categories.enLabel}
+                  label={`${i.categories.ruLabel}:`}
+                  value={filtersState[i.categories.stateKey]}
+                  optionsData={i.categories.data}
                 />
               </div>}
               {groupSelect && <div className={styles.filters__inputWrapper}>
@@ -226,20 +222,20 @@ export const Filters = ({
                   optionsData={i.groups.data}
                 />
               </div>}
-              {categorySelect && <div className={styles.filters__inputWrapper}>
+              {articleSelect &&<div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
-                  params={i.groups}
-                  selectId={i.groups.enLabel}
-                  label={`${i.groups.ruLabel}:`}
-                  value={filtersState[i.groups.stateKey]}
-                  optionsData={i.groups.data}
+                  params={i.articles}
+                  selectId={i.articles.enLabel}
+                  label={`${i.articles.ruLabel}:`}
+                  value={filtersState[i.articles.stateKey]}
+                  optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
                 />
               </div>}
             </React.Fragment>
           )
-        })} */}
+        })}
       </div>
     </div>
   );
