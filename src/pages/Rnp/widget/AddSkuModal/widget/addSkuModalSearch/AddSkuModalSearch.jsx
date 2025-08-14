@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ConfigProvider, Form, Flex, Input, Button } from "antd"
 import styles from "./AddSkuModalSearch.module.css"
-import { search, close } from "../../../icons"
+import { search } from "../../../icons"
 
 function AddSkuModalSearch({
   skuLoading,

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react';
-import styles from './addSkuModal.module.css'
+import styles from './AddSkuModal.module.css'
 import AddSkuModalFooter from './widget/addSkuModalFooter/addSkuModalFooter'
 import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form, Input, Button } from 'antd';
 import AuthContext from '../../../../service/AuthContext';
