@@ -110,10 +110,8 @@ const createFiltersDTO = (data) => {
         ruLabel: 'Категория',
         enLabel: 'category',
         data: i.categories?.map((_, id) => ({
-          id: _.id,
           name: _.name,
-          value: _.id,
-          key: _.id
+          value: _.name,
         })),
       },
       brands: {
@@ -132,7 +130,12 @@ const createFiltersDTO = (data) => {
         stateKey: 'activeGroup',
         ruLabel: 'Группа товаров',
         enLabel: 'product_groups',
-        data: i.groups.map(_ => ({ ..._, id: _.id, value: _.name, key: _.id }))
+        data: i.groups.map(_ => ({
+          ..._,
+          id: _.id,
+          value: _.name,
+          key: _.id
+        }))
       }
     }
 
