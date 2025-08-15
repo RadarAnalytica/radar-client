@@ -138,7 +138,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                 >
                     {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
 
-                    {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div style={{flexGrow: 1}}>Ничего не найдено</div>)}
+                    {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
                     {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                         {localskuDataArticle?.data?.map((el, i) => (
                             <Flex key={i} className={styles.item} gap={20}>

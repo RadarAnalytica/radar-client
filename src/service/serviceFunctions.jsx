@@ -24,6 +24,9 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
 		requestObject.product_groups = filters.activeGroup.map(_ => _.id)
 	}
+	if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some(_ => _.value === 'Все')) {
+		requestObject.categories = filters.activeCategory.map(_ => _.id)
+	}
 	return requestObject;
 }
 
@@ -1444,13 +1447,6 @@ export const ServiceFunctions = {
 	postRnpByArticle: async(token, selectedRange, shopId, filters, page, dateRange) => {
 		try {
 			let body = getRequestObject(filters, selectedRange, shopId);
-
-			body = {
-				...body,
-				"date_from": "2025-03-01",
-				"date_to": "2025-08-01"
-			}
-
 			const res = await fetch(
 				`${URL}/api/rnp/by_article?page=${page}&per_page=25`,
 				{
@@ -1477,12 +1473,6 @@ export const ServiceFunctions = {
 	postRnpSummary: async(token, selectedRange, shopId, filters, page, dateRange) => {
 		try {
 			let body = getRequestObject(filters, selectedRange, shopId);
-			body = {
-				...body,
-				"date_from": "2025-03-01",
-				"date_to": "2025-08-01"
-			}
-
 			const res = await fetch(
 				`${URL}/api/rnp/summary`,
 				{
