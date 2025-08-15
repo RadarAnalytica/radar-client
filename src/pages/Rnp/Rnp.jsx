@@ -303,10 +303,6 @@ export default function Rnp() {
 					<Header title="Рука на пульсе"></Header>
 				</div>
 
-				<div style={{display: 'none'}}>
-					<Filters />
-				</div>
-
 				{loading && (
 					<div className={styles.loading}>
 						<div className={styles.loading__loader}>
@@ -315,14 +311,17 @@ export default function Rnp() {
 					</div>
 				)}
 
-				{/* {!loading && shopStatus && !shopStatus?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)} */}
+				<div style={{display: 'none'}}>
+					<Filters />
+				</div>
 				
-				{!loading && shopStatus && !shopStatus?.is_primary_collect && (
+				{!loading  && shopStatus && !shopStatus?.is_primary_collect && (
+					<>
+						<div><Filters /></div>
 						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
+							title='Ваши данные еще формируются и обрабатываются.'
 						/>
+					</>
 				)}
 
 				{!loading && shopStatus && shopStatus?.is_primary_collect && skuDataByArticle?.length > 0 && (
