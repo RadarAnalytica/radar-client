@@ -119,12 +119,15 @@ export default function Rnp() {
 			// for (const article of response.data){
 			const item = {
 				table: {
-					columns: [...COLUMNS],
-					rows: [...ROWS],
+					columns: [],
+					rows: [],
 				},
-				article_data: article.article_data || null,
+				article_data: article.article_data,
 			};
 			// сборка колонок по датам из ответа
+			for (const column of COLUMNS){
+				item.table.columns.push(column)
+			}
 			for (const dateData of article.by_date_data) {
 				item.table.columns.push({
 					key: dateData.date,
@@ -135,15 +138,26 @@ export default function Rnp() {
 				});
 			}
 			// сборка суммарных значений
-			for (const row of item.table.rows) {
+			for (const row of ROWS) {
+				const rowItem = {
+					key: row.key,
+					period: row.period,
+				};
 				const dataRow = article.summary_data[row.key];
-				row['sum'] = dataRow[row?.key?.slice(0, -5)];
+				rowItem['sum'] = dataRow[row.key.slice(0, -5)];
+				// rowItem['sum'] = article.article_data.wb_id;
 				if (row.children) {
+					rowItem.children = [];
 					for (const childrenRow of row.children) {
-						childrenRow.key = `${row.key}_${childrenRow.dataIndex}`;
-						childrenRow['sum'] = dataRow[childrenRow.dataIndex];
+						const rowItemChildren = {};
+						rowItemChildren.key = `${row.key}_${childrenRow.dataIndex}`;
+						rowItemChildren.dataIndex = childrenRow.dataIndex;
+						rowItemChildren.period = childrenRow.period;
+						rowItemChildren['sum'] = dataRow[childrenRow.dataIndex];
+						rowItem.children.push(rowItemChildren);
 					}
 				}
+				item.table.rows.push(rowItem);
 			}
 			// сборка данных по датам
 			for (const dateData of article.by_date_data) {
@@ -151,10 +165,11 @@ export default function Rnp() {
 				for (const row of item.table.rows) {
 					const dataRow = dateData.rnp_data;
 					row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
+					// row[date] = article.article_data.wb_id
 					if (row.children) {
 						for (const childrenRow of row.children) {
-							childrenRow[date] =
-								dataRow[row.key][childrenRow.dataIndex];
+							childrenRow[date] = dataRow[row.key][childrenRow.dataIndex];
+							// childrenRow[date] = childrenRow.key
 						}
 					}
 				}
@@ -170,47 +185,62 @@ export default function Rnp() {
 	const dataToSkuTotalList = (response) => {
 		const article = response.data;
 		const item = {
-			table: {
-				columns: [...COLUMNS],
-				rows: [...ROWS],
+				table: {
+					columns: [],
+					rows: [],
+				},
+				article_data: article.article_data,
+			};
+			// сборка колонок по датам из ответа
+			for (const column of COLUMNS){
+				item.table.columns.push(column)
 			}
-		};
-		// сборка колонок по датам из ответа
-		for (const dateData of article.by_date_data) {
-			item.table.columns.push({
-				key: dateData.date,
-				dataIndex: dateData.date,
-				title: format(dateData.date, 'd MMMM', { locale: ru }),
-				width: 160,
-				render: renderFunction
-			});
-		}
-		// сборка суммарных значений
-		for (const row of item.table.rows) {
-			const dataRow = article.summary_data[row.key];
-			row['sum'] = dataRow[row?.key?.slice(0, -5)];
-			if (row.children) {
-				for (const childrenRow of row.children) {
-					childrenRow.key = `${row.key}_${childrenRow.dataIndex}`;
-					childrenRow['sum'] = dataRow[childrenRow.dataIndex];
-					// console.log('childrenRow', childrenRow.key)
-				}
+			for (const dateData of article.by_date_data) {
+				item.table.columns.push({
+					key: dateData.date,
+					dataIndex: dateData.date,
+					title: format(dateData.date, 'd MMMM', { locale: ru }),
+					width: 160,
+					render: renderFunction
+				});
 			}
-		}
-		// сборка данных по датам
-		for (const dateData of article.by_date_data) {
-			const date = dateData.date;
-			for (const row of item.table.rows) {
-				const dataRow = dateData.rnp_data;
-				row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
+			// сборка суммарных значений
+			for (const row of ROWS) {
+				const rowItem = {
+					key: row.key,
+					period: row.period,
+				};
+				const dataRow = article.summary_data[row.key];
+				rowItem['sum'] = dataRow[row.key.slice(0, -5)];
+				// rowItem['sum'] = article.article_data.wb_id;
 				if (row.children) {
+					rowItem.children = [];
 					for (const childrenRow of row.children) {
-						childrenRow[date] =
-							dataRow[row.key][childrenRow.dataIndex];
+						const rowItemChildren = {};
+						rowItemChildren.key = `${row.key}_${childrenRow.dataIndex}`;
+						rowItemChildren.dataIndex = childrenRow.dataIndex;
+						rowItemChildren.period = childrenRow.period;
+						rowItemChildren['sum'] = dataRow[childrenRow.dataIndex];
+						rowItem.children.push(rowItemChildren);
+					}
+				}
+				item.table.rows.push(rowItem);
+			}
+			// сборка данных по датам
+			for (const dateData of article.by_date_data) {
+				const date = dateData.date;
+				for (const row of item.table.rows) {
+					const dataRow = dateData.rnp_data;
+					row[date] = dataRow[row.key][row?.key?.slice(0, -5)];
+					// row[date] = article.article_data.wb_id
+					if (row.children) {
+						for (const childrenRow of row.children) {
+							childrenRow[date] = dataRow[row.key][childrenRow.dataIndex];
+							// childrenRow[date] = childrenRow.key
+						}
 					}
 				}
 			}
-		}
 
 		setSkuDataTotal(item);
 	};
