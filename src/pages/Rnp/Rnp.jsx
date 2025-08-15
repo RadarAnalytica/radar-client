@@ -49,6 +49,7 @@ export default function Rnp() {
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
 	const [dateRange, setDateRange] = useState(null);
 	const [page, setPage] = useState(1);
+	const [paginationState, setPaginationState] = useState(null);
 	const [view, setView] = useState('sku');
 	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
@@ -180,6 +181,10 @@ export default function Rnp() {
 
 		setSkuSelectedList(list.map((sku) => sku.article_data.wb_id));
 		setSkuDataByArticle(list);
+		setPaginationState({
+			total: response.total_count,
+			pageSize: response.per_page
+		})
 	};
 
 	const dataToSkuTotalList = (response) => {
@@ -333,6 +338,9 @@ export default function Rnp() {
 						skuDataTotal={skuDataTotal}
 						setDeleteSkuId={setDeleteSkuId}
 						addSku={addSkuHandler}
+						page={page}
+						setPage={setPage}
+						paginationState={paginationState}
 					/>
 				)}
 
