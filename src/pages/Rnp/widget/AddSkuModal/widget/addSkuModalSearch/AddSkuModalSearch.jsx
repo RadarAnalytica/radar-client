@@ -24,7 +24,7 @@ function AddSkuModalSearch({
     if (!searchValue) {
       timeout = setTimeout(() => {
         submitSearch(null);
-      }, 1500);
+      }, 1000);
     } else {
       clearTimeout(timeout);
     }
