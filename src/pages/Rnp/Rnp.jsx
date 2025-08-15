@@ -49,6 +49,7 @@ export default function Rnp() {
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
 	const [dateRange, setDateRange] = useState(null);
 	const [page, setPage] = useState(1);
+	const [paginationState, setPaginationState] = useState(null);
 	const [view, setView] = useState('sku');
 	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
@@ -128,7 +129,7 @@ export default function Rnp() {
 			for (const column of COLUMNS){
 				item.table.columns.push(column)
 			}
-			for (const dateData of article.by_date_data) {
+			for (const dateData of article.by_date_data.reverse()) {
 				item.table.columns.push({
 					key: dateData.date,
 					dataIndex: dateData.date,
@@ -180,6 +181,10 @@ export default function Rnp() {
 
 		setSkuSelectedList(list.map((sku) => sku.article_data.wb_id));
 		setSkuDataByArticle(list);
+		setPaginationState({
+			total: response.total_count,
+			pageSize: response.per_page
+		})
 	};
 
 	const dataToSkuTotalList = (response) => {
@@ -303,10 +308,6 @@ export default function Rnp() {
 					<Header title="Рука на пульсе"></Header>
 				</div>
 
-				<div style={{display: 'none'}}>
-					<Filters />
-				</div>
-
 				{loading && (
 					<div className={styles.loading}>
 						<div className={styles.loading__loader}>
@@ -315,14 +316,17 @@ export default function Rnp() {
 					</div>
 				)}
 
-				{/* {!loading && shopStatus && !shopStatus?.is_self_cost_set && (
-					<SelfCostWarningBlock />
-				)} */}
+				<div style={{display: 'none'}}>
+					<Filters />
+				</div>
 				
-				{!loading && shopStatus && !shopStatus?.is_primary_collect && (
+				{!loading  && shopStatus && !shopStatus?.is_primary_collect && (
+					<>
+						<div><Filters /></div>
 						<DataCollectWarningBlock
-								title='Ваши данные еще формируются и обрабатываются.'
+							title='Ваши данные еще формируются и обрабатываются.'
 						/>
+					</>
 				)}
 
 				{!loading && shopStatus && shopStatus?.is_primary_collect && skuDataByArticle?.length > 0 && (
@@ -334,6 +338,9 @@ export default function Rnp() {
 						skuDataTotal={skuDataTotal}
 						setDeleteSkuId={setDeleteSkuId}
 						addSku={addSkuHandler}
+						page={page}
+						setPage={setPage}
+						paginationState={paginationState}
 					/>
 				)}
 
