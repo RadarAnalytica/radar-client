@@ -486,7 +486,7 @@ const TariffsPage = () => {
                 <header className={styles.header}>
                     <section className={styles.header__container}>
                         <Link
-                            to='/'
+                            to='/main'
                             aria-label="На главную страницу Radar-Analytica"
                         >
                             <svg width="158" height="58" viewBox="0 0 158 58" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${styles.logo} ${styles.logo_adaptive}`}>
