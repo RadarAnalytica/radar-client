@@ -111,7 +111,7 @@ export const menuConfig = [
                 id: 5,
                 url: '/operations-costs', 
                 label: 'Операционные расходы',
-                isActive: true,
+                isActive: false,
                 isNew: true
             },
             {
@@ -181,7 +181,7 @@ export const menuConfig = [
                 id: 6,
                 url: '/rnp',
                 label: 'Рука на пульсе',
-                isActive: true,
+                isActive: false,
                 isNew: true,
             },
         ]
