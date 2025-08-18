@@ -15,7 +15,7 @@ const createFiltersDTO = (data) => {
   const allCategoriesData = []
   data.forEach((_, id) => {
     _.categories.forEach(c => {
-      allCategoriesData.push({id: c.id, name: c.name, value: c.name, key: c.id })
+      allCategoriesData.push({name: c.name, value: c.name, key: c.id, id: c.id })
       c.brand.forEach((b => {
         allBransdData.push({
           name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
@@ -110,6 +110,8 @@ const createFiltersDTO = (data) => {
         ruLabel: 'Категория',
         enLabel: 'category',
         data: i.categories?.map((_, id) => ({
+          id: _.id,
+          key: _.id,
           name: _.name,
           value: _.name,
         })),
