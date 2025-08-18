@@ -35,7 +35,7 @@ export const getRnpRequestObject = (filters, selectedRange, shopId) => {
 		articles: null,
 		product_groups: null,
 		brands: null,
-		shop: [shopId],
+		shops: shopId === 0 ? [shopId] : null,
 		period: selectedRange?.period && selectedRange.period,
 		date_from: selectedRange?.from && selectedRange.from,
 		date_to: selectedRange?.to && selectedRange.to
