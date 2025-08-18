@@ -73,6 +73,7 @@ export default function Rnp() {
 				dataToSkuList(response);
 			}
 		} catch (error) {
+			console.error('updateSkuListByArticle error', error)
 		} finally {
 			setLoading(false);
 		}
@@ -93,6 +94,7 @@ export default function Rnp() {
 				dataToSkuTotalList(response);
 			}
 		} catch (error) {
+			console.error('updateSkuListSummary error', error)
 		} finally {
 			setLoading(false);
 		}
@@ -109,6 +111,7 @@ export default function Rnp() {
 				);
 			}
 		} catch (error) {
+			console.error('deleteSku error', error)
 		} finally {
 			setPage(1);
 			updateSkuListByArticle();
@@ -264,6 +267,7 @@ export default function Rnp() {
 				);
 			}
 		} catch (error) {
+			console.error('addSkuList error', error)
 		} finally {
 			setPage(1);
 			updateSkuListByArticle();
@@ -276,6 +280,7 @@ export default function Rnp() {
 	}
 
 	useEffect(() => {
+		console.log('selectedRange', selectedRange)
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
 				updateSkuListByArticle();
@@ -284,9 +289,9 @@ export default function Rnp() {
 			updateSkuListSummary();
 		}
 		if (activeBrand && !activeBrand?.is_primary_collect){
-			// setLoading(false)
+			setLoading(false)
 		}
-	}, [activeBrand, shopStatus, shops, filters, page, view]);
+	}, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
 
 	const addSkuHandler = (list) => {
 		setAddSkuModalShow(false);

@@ -35,7 +35,7 @@ export const getRnpRequestObject = (filters, selectedRange, shopId) => {
 		articles: null,
 		product_groups: null,
 		brands: null,
-		shops: shopId === 0 ? [shopId] : null,
+		shops: !!shopId ? [shopId] : null,
 		period: selectedRange?.period && selectedRange.period,
 		date_from: selectedRange?.from && selectedRange.from,
 		date_to: selectedRange?.to && selectedRange.to
@@ -1524,8 +1524,8 @@ export const ServiceFunctions = {
 		}
 	},
 	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
-		let body = getRnpRequestObject(filters, selectedRange, shopId);
 		try {
+			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
 				`${URL}/api/rnp/products?page=${page}&per_page=25${!!search ? `&search=${search}` : ''}` ,
 				{
