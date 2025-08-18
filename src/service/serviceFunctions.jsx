@@ -30,6 +30,33 @@ export const getRequestObject = (filters, selectedRange, shopId) => {
 	return requestObject;
 }
 
+export const getRnpRequestObject = (filters, selectedRange, shopId) => {
+	let requestObject = {
+		articles: null,
+		product_groups: null,
+		brands: null,
+		shop: [shopId],
+		period: selectedRange?.period && selectedRange.period,
+		date_from: selectedRange?.from && selectedRange.from,
+		date_to: selectedRange?.to && selectedRange.to
+	}
+
+	if (filters.activeBrandName && Array.isArray(filters.activeBrandName) && !filters.activeBrandName.some(_ => _.value === 'Все')) {
+		requestObject.brands = filters.activeBrandName.map(_ => _.name)
+	}
+	// filters?.activeArticle.value !== 'Все'
+	if (filters.activeArticle && Array.isArray(filters.activeArticle) && !filters.activeArticle.some(_ => _.value === 'Все')) {
+		requestObject.articles = filters.activeArticle.map(_ => _.value)
+	}
+	if (filters.activeGroup && Array.isArray(filters.activeGroup) && !filters.activeGroup.some(_ => _.value === 'Все')) {
+		requestObject.product_groups = filters.activeGroup.map(_ => _.id)
+	}
+	if (filters.activeCategory && Array.isArray(filters.activeCategory) && !filters.activeCategory.some(_ => _.value === 'Все')) {
+		requestObject.categories = filters.activeCategory.map(_ => _.id)
+	}
+	return requestObject;
+}
+
 export const ServiceFunctions = {
 	register: async (object) => {
 		try {
@@ -1446,7 +1473,7 @@ export const ServiceFunctions = {
 	},
 	postRnpByArticle: async(token, selectedRange, shopId, filters, page, dateRange) => {
 		try {
-			let body = getRequestObject(filters, selectedRange, shopId);
+			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
 				`${URL}/api/rnp/by_article?page=${page}&per_page=25`,
 				{
@@ -1472,7 +1499,7 @@ export const ServiceFunctions = {
 	},
 	postRnpSummary: async(token, selectedRange, shopId, filters, page, dateRange) => {
 		try {
-			let body = getRequestObject(filters, selectedRange, shopId);
+			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
 				`${URL}/api/rnp/summary`,
 				{
@@ -1497,7 +1524,7 @@ export const ServiceFunctions = {
 		}
 	},
 	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
-		let body = getRequestObject(filters, selectedRange, shopId);
+		let body = getRnpRequestObject(filters, selectedRange, shopId);
 		try {
 			const res = await fetch(
 				`${URL}/api/rnp/products?page=${page}&per_page=25${!!search ? `&search=${search}` : ''}` ,
