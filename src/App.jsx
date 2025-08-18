@@ -37,7 +37,7 @@ const Instructions = React.lazy(() => import("./pages/Instructions"));
 const MainWidget = React.lazy(() => import("./pages/MainWidget"));
 const StubPage = React.lazy(() => import("./pages/StubPage"));
 const AfterPayment = React.lazy(() => import("./pages/AfterPayment"));
-const TariffsPage = React.lazy(() => import("./pages/TariffsPage"));
+const TariffsPage = React.lazy(() => import("./pages/tariffsPage/tariffsPage"));
 const Page404 = React.lazy(() => import("./pages/Page404"));
 //const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const UserInfo = React.lazy(() => import("./pages/UserInfo"));
