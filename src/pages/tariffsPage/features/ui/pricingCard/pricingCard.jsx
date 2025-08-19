@@ -1,7 +1,8 @@
 import styles from './pricingCard.module.css'
 import { formatPrice } from '../../../../../service/utils';
+import { LoadingOutlined } from '@ant-design/icons';
 
-export const PricingCard = ({ item, setModalItem, action}) => {
+export const PricingCard = ({ item, setModalItem, action, isWidgetActive}) => {
 
     return (
         <div
@@ -36,13 +37,15 @@ export const PricingCard = ({ item, setModalItem, action}) => {
                         </svg>
                     </button>
                 </div>
-                <button
-                    className={styles.card__actionButton}
-                    style={{ width: '100%', paddingLeft: 0, paddingRight: 0 }}
-                    onClick={action}
-                >
-                    Активировать
-                </button>
+                    <button
+                        className={styles.card__actionButton}
+                        style={{ width: '100%', paddingLeft: 0, paddingRight: 0 }}
+                        onClick={action}
+                        disabled={isWidgetActive}
+                    >
+                        {isWidgetActive && <LoadingOutlined />}
+                        Активировать
+                    </button>
             </div>
         </div>
     )
