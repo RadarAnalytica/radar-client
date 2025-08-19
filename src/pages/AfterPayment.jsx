@@ -12,7 +12,6 @@ import { URL } from '../service/config';
 
 
 const AfterPayment = ({ devMode }) => {
-  console.log(devMode)
   const { authToken, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
