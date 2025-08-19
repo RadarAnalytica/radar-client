@@ -7,16 +7,17 @@ import Header from '../../components/sharedComponents/header/header';
 import { NoDataWidget } from '../productsGroupsPages/widgets';
 import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
 import styles from './Rnp.module.css';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { Filters } from './widget/Filters/Filters';
 import { COLUMNS, ROWS, renderFunction } from './config';
 import { format } from 'date-fns';
-import { ru } from 'date-fns/locale';
+import { ar, ru } from 'date-fns/locale';
 import SkuList from './widget/SkuList/SkuList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import { actions as rnpSelectedActions } from '../../redux/rnpSelected/rnpSelectedSlice'
 
 export default function Rnp() {
 	const { authToken } = useContext(AuthContext);
@@ -58,6 +59,8 @@ export default function Rnp() {
 
 	const [skuSelectedList, setSkuSelectedList] = useState([]);
 
+	const dispatch = useAppDispatch();
+
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
 		try {
@@ -71,6 +74,7 @@ export default function Rnp() {
 					dateRange
 				);
 				dataToSkuList(response);
+				dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
 			}
 		} catch (error) {
 			console.error('updateSkuListByArticle error', error)

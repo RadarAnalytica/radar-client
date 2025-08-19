@@ -9,31 +9,12 @@ import { fetchShops } from '../../../../../../redux/shops/shopsActions';
 // import { fetchRnpFilters } from '../../../../../../redux/filtersRnp/filterRnpActions';
 import { fetchFiltersRnpAdd } from '../../../../../../redux/filtersRnpAdd/filtersRnpAddActions';
 
-export const Filters = ({
-  setLoading,
-  shopSelect = true,
-  timeSelect = true,
-  skuFrequency = false,
-  brandSelect = true,
-  articleSelect = true,
-  groupSelect = true,
-  categorySelect = true,
-  weekSelect = false,
-  weekOptions,
-  weekValue,
-  weekHandler,
-  monthSelect = false,
-  monthHandler,
-  monthValue,
-  tempPageCondition
-}) => {
+export const Filters = () => {
 
   // ------ база ------//
-  const { user, authToken } = useContext(AuthContext);
+  const { authToken } = useContext(AuthContext);
   const dispatch = useAppDispatch()
   const { activeBrand, selectedRange, filters, shops } = useAppSelector(store => store.filtersRnpAdd)
-  const { messages } = useAppSelector((state) => state.messagesSlice);
-  const prevMessages = useRef()
   const filtersState = useAppSelector(store => store.filtersRnpAdd)
   //const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
@@ -73,37 +54,6 @@ export const Filters = ({
       fetchFiltersData();
     }
   }, [shops]);
-
-
-  //Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса
-  // useEffect(() => {
-  //   // Если это первая пачка сообщений, то данные актуальны и мы просто записываем сообщения для последующего сравнения
-  //   if (!prevMessages?.current) {
-  //       prevMessages.current = messages;
-  //       return
-  //   }
-    
-  //   // Если это последующие сообщения ....
-  //   if (messages && activeBrand?.id === 0 && prevMessages?.current) {
-  //     // Ищем свежие сообщения
-  //     let filteredMessages = messages.filter(m => !prevMessages.current.some(_ => _.id === m.id))
-  //     // Выходим если свежих нет
-  //     if (!filteredMessages || filteredMessages.length === 0) {return}
-  //     else {
-  //       // Если свежие есть, то ищем интересующее нас (про сбор данных магазина)
-  //       filteredMessages = filteredMessages.filter(m => /Данные магазина [A-Za-z0-9]+ успешно собраны\. Результаты доступны на страницах сервиса/.test(m.text))
-  //       // Если выходим если таких нет
-  //       if (!filteredMessages || filteredMessages.length === 0) {return}
-  //       else {
-  //         // Если такие есить то перезапрашиваем фильтры и магазины
-  //         fetchShopData();
-  //       }
-  //     } 
-  //   }
-  //   prevMessages.current = messages
-  // }, [messages])
-
-
 
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
   // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
@@ -171,12 +121,8 @@ export const Filters = ({
   return (
     <div className={styles.filters}>
       <div className={styles.filters__inputsMainWrapper}>
-        {shops && timeSelect &&
-          <div className={styles.filters__inputWrapper}>
-            <TimeSelect />
-          </div>
-        }
-        {shops && activeBrand && shopSelect &&
+        
+        {shops && activeBrand &&
           <div className={styles.filters__inputWrapper}>
             <ShopSelect
               selectId='store'
@@ -191,7 +137,7 @@ export const Filters = ({
 
           return activeBrand.id === i.shop.id && (
             <React.Fragment key={id}>
-              {brandSelect && <div className={styles.filters__inputWrapper}>
+              <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
@@ -201,8 +147,8 @@ export const Filters = ({
                   value={filtersState[i.brands.stateKey]}
                   optionsData={i.brands.data}
                 />
-              </div>}
-              {categorySelect && <div className={styles.filters__inputWrapper}>
+              </div>
+              <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
@@ -212,8 +158,8 @@ export const Filters = ({
                   value={filtersState[i.categories.stateKey]}
                   optionsData={i.categories.data}
                 />
-              </div>}
-              {groupSelect && <div className={styles.filters__inputWrapper}>
+              </div>
+              <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
@@ -223,8 +169,8 @@ export const Filters = ({
                   value={filtersState[i.groups.stateKey]}
                   optionsData={i.groups.data}
                 />
-              </div>}
-              {articleSelect &&<div className={styles.filters__inputWrapper}>
+              </div>
+              <div className={styles.filters__inputWrapper}>
                 <MultiSelect
                   dispatch={dispatch}
                   filterActions={filterActions}
@@ -234,7 +180,7 @@ export const Filters = ({
                   value={filtersState[i.articles.stateKey]}
                   optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
                 />
-              </div>}
+              </div>
             </React.Fragment>
           )
         })}
