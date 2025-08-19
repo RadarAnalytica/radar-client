@@ -6,6 +6,7 @@ import { URL } from '../../../../service/config'
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import AuthContext from '../../../../service/AuthContext'
+import { ServiceFunctions } from '../../../../service/serviceFunctions'
 
 
 export const pricing = [
@@ -50,11 +51,13 @@ export const PricingScreen = () => {
     const { user, logout, authToken } = useContext(AuthContext);
     const [ modalItem, setModalItem ] = useState(undefined)
     const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-    const [selectedPeriod, setSelectedPeriod] = useState('1month');
+    const [ isWidgetActive, setIsWidgetActive] = useState(false);
+    // const [selectedPeriod, setSelectedPeriod] = useState('1month');
     const [trialExpired, setTrialExpired] = useState(user?.is_test_used);
     const [subscriptionDiscount, setSubscriptionDiscount] = useState(
         user?.is_subscription_discount
     );
+    
     const navigate = useNavigate();
     const location = useLocation();
     const userIdInvoiceHardCode = 'radar-51-20240807-161128';
@@ -437,6 +440,8 @@ export const PricingScreen = () => {
         //           }
         //       }
         //   )
+
+        setIsWidgetActive(false);
     };
      // ----------------------------------------------------------------------------//
     
@@ -451,7 +456,7 @@ export const PricingScreen = () => {
                 <div className={styles.screen__cards}>
                     {pricing.map((_, id) => {
                         return (
-                            <PricingCard key={id} item={_} setModalItem={setModalItem} action={() => pay(_)} />
+                            <PricingCard key={id} item={_} setModalItem={setModalItem} action={() => {setIsWidgetActive(true); pay(_)}} isWidgetActive={isWidgetActive} />
                         )
                     })}
                 </div>
@@ -463,8 +468,11 @@ export const PricingScreen = () => {
                  setIsModalVisible={() => setModalItem(undefined)}
                  item={modalItem}
                  action={() => {
-                    modalItem && pay(modalItem);
-                    setModalItem(undefined)
+                    if (modalItem) {
+                        setIsWidgetActive(true);
+                        pay(modalItem);
+                        setModalItem(undefined)
+                    }
                 }}
             />
         </section>
