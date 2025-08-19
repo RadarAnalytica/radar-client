@@ -5,7 +5,7 @@ import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form, Input, Button 
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector } from '../../../../redux/hooks';
 // import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
-import { Filters } from '../Filters/Filters'
+import { Filters } from './widget/addSkuModalFilters/Filters'
 import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
@@ -15,9 +15,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     // 
     const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange } = useAppSelector(
-        (state) => state.filtersRnp
+        (state) => state.filtersRnpAdd
     );
-    const filters = useAppSelector((state) => state.filtersRnp);
+    const filters = useAppSelector((state) => state.filtersRnpAdd);
     const { shops } = useAppSelector((state) => state.shopsSlice);
     
     const [page, setPage] = useState(1);
@@ -25,17 +25,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
     const [skuSelected, setSkuSelected] = useState([...skuList]);
     const [search, setSearch] = useState(null);
-    // const [dateRange, setDateRange] = useState(null);
-
-    // const formatedDateRange = useMemo(() => {
-    //     return ({
-    //         date_from: '2022-01-01',
-    //         date_to: '2022-01-01'
-    //     })
-    // }, [selectedRange]);
-
-    // console.log('formatedDateRange', formatedDateRange)
-
+    
     const updateskuDataArticle = async () => {
         setSkuLoading(true);
         try {
