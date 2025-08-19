@@ -284,7 +284,6 @@ export default function Rnp() {
 	}
 
 	useEffect(() => {
-		console.log('selectedRange', selectedRange)
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
 				updateSkuListByArticle();
