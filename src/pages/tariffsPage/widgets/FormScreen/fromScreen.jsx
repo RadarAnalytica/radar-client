@@ -34,7 +34,7 @@ export const FormScreen = () => {
                             <p
                                 className={styles.screen__text}
                             >
-                                117105, г. Москва,ул. проезд Нагатинский, 1-й, д.2
+                                117105, г. Москва, ул. проезд Нагатинский, 1-й, д.2
                             </p>
                         </div>
                         <div className={styles.screen__bar}>
