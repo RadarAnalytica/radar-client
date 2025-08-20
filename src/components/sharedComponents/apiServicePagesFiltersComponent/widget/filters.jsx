@@ -8,7 +8,6 @@ import { fetchShops } from '../../../../redux/shops/shopsActions';
 import { fetchFilters } from '../../../../redux/apiServicePagesFiltersState/filterActions';
 
 export const Filters = ({
-  setLoading,
   shopSelect = true,
   timeSelect = true,
   skuFrequency = false,
@@ -22,7 +21,8 @@ export const Filters = ({
   monthSelect = false,
   monthHandler,
   monthValue,
-  tempPageCondition
+  tempPageCondition,
+  isDataLoading
 }) => {
 
   // ------ база ------//
@@ -186,25 +186,26 @@ export const Filters = ({
               value={weekValue}
               optionsData={weekOptions}
               handler={weekHandler}
+              isDataLoading={isDataLoading}
             />
           </div>
         }
         {skuFrequency &&
-          <FrequencyModeSelect />
+          <FrequencyModeSelect isDataLoading={isDataLoading}/>
         }
         {shops && activeBrand && monthSelect &&
           <div className={styles.filters__inputWrapper}>
-            <MonthSelect monthHandler={monthHandler} value={monthValue}/>
+            <MonthSelect monthHandler={monthHandler} value={monthValue} isDataLoading={isDataLoading}/>
           </div>
         }
         {shops && timeSelect && tempPageCondition !== 'supplier' &&
           <div className={styles.filters__inputWrapper}>
-            <TimeSelect />
+            <TimeSelect isDataLoading={isDataLoading}/>
           </div>
         }
         {timeSelect && tempPageCondition === 'supplier' &&
           <div className={styles.filters__inputWrapper}>
-            <TempTimeSelect />
+            <TempTimeSelect isDataLoading={isDataLoading}/>
           </div>
         }
         {shops && activeBrand && shopSelect &&
@@ -215,6 +216,7 @@ export const Filters = ({
               value={activeBrand.id}
               optionsData={shops}
               handler={shopChangeHandler}
+              isDataLoading={isDataLoading}
             />
           </div>
         }
@@ -230,6 +232,7 @@ export const Filters = ({
                   label={`${i.brands.ruLabel}:`}
                   value={filtersState[i.brands.stateKey]}
                   optionsData={i.brands.data}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
               {articleSelect &&<div className={styles.filters__inputWrapper}>
@@ -241,6 +244,7 @@ export const Filters = ({
                   label={`${i.articles.ruLabel}:`}
                   value={filtersState[i.articles.stateKey]}
                   optionsData={filtersState?.activeBrandName?.some(_ => _.value === 'Все') ? i.articles.data : i.articles.data.filter(_ => filtersState?.activeBrandName?.some(b => _.brand === b.value))}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
               {groupSelect && <div className={styles.filters__inputWrapper}>
@@ -252,6 +256,7 @@ export const Filters = ({
                   label={`${i.groups.ruLabel}:`}
                   value={filtersState[i.groups.stateKey]}
                   optionsData={i.groups.data}
+                  isDataLoading={isDataLoading}
                 />
               </div>}
               {/* <div className={styles.filters__inputWrapper}>

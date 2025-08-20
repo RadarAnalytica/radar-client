@@ -4,7 +4,7 @@ import { Select, ConfigProvider } from 'antd'
 import { actions as filterActions } from '../../../../../redux/apiServicePagesFiltersState/apiServicePagesFilterState.slice'
 import { useAppSelector, useAppDispatch } from '../../../../../redux/hooks'
 
-export const FrequencyModeSelect = () => {
+export const FrequencyModeSelect = ({ isDataLoading }) => {
     const dispatch = useAppDispatch()
     const { skuFrequencyMode } = useAppSelector(store => store.filters)
     const icon = <SelectIcon />
@@ -50,6 +50,7 @@ export const FrequencyModeSelect = () => {
                         id='frequencySelect'
                         onChange={(value) => dispatch(filterActions.setSkuFrequencyMode(value)) }
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                        disabled={isDataLoading}
                     />
                 </ConfigProvider>
             </div>

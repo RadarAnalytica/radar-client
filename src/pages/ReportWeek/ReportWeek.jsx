@@ -364,6 +364,7 @@ export default function ReportWeek() {
 							weekValue={week}
 							weekOptions={weekOptions}
 							weekHandler={weekSelectedHandler}
+							isDataLoading={loading}
 						/>}
 					</div>
 					<div className={styles.btns}>
