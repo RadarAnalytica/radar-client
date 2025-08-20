@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { ConfigProvider, Button, Flex, Pagination } from 'antd';
 import SkuTable from '../SkuTable/SkuTable';
 import SkuItem from '../SkuItem/SkuItem';
@@ -128,7 +128,19 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 
   const [items, setItems] = useState(skuDataByArticle);
 
-	const [order, setOrder] = useState(skuDataByArticle.map((el) => el.article_data.wb_id))
+	const initOrder = useCallback(() => {
+		let savedOrder = localStorage.getItem( 'rnpOrder' );
+		if (savedOrder) {
+			savedOrder = JSON.parse(savedOrder);
+			const newItems = items.filter((sku) => !savedOrder.includes(sku.article_data.wb_id)).map((sku) => sku.article_data.wb_id);
+			return [...savedOrder, ...newItems]
+		}
+
+		return items.map((el) => el.article_data.wb_id)
+
+	}, [items])
+
+	const [order, setOrder] = useState(initOrder())
 	
 	const ref = useRef(null);
 	const [expanded, setExpanded] = useState([]);
@@ -151,17 +163,12 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
     }
   };
 
-	const onReorder = (draggedId, targetId) => {
-		const draggedIndex = skuDataByArticle.findIndex(el => el.article_data.wb_id === draggedId);
-		const targetIndex = skuDataByArticle.findIndex(el => el.article_data.wb_id === targetId);
+	useEffect(() => {
+		localStorage.setItem( 'rnpOrder', JSON.stringify(order) );
+	}, [order])
 
-		if (draggedIndex !== -1 && targetIndex !== -1 && draggedIndex !== targetIndex) {
-			const newItems = [...skuDataByArticle];
-			const [removed] = newItems.splice(draggedIndex, 1);
-			newItems.splice(targetIndex, 0, removed);
-			setItems(newItems);
-		}
-	}
+	console.log('order', order)
+	console.log('items', items)
 
 	return (
 		<>
@@ -276,15 +283,17 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 						<div ref={ref}>
 							{order.map((orderI, i) => {
 								const el = items.find((sku) => sku.article_data.wb_id === orderI)
-								return <SkuListItem
-									key={i}
-									el={el}
-									expanded={expanded}
-									setExpanded={setExpanded}
-									setDeleteSkuId={setDeleteSkuId}
-									// onReorder={onReorder}
-									onReorder={handleReorder}
-								/>
+								if (el) {
+									return <SkuListItem
+										key={i}
+										el={el}
+										expanded={expanded}
+										setExpanded={setExpanded}
+										setDeleteSkuId={setDeleteSkuId}
+										// onReorder={onReorder}
+										onReorder={handleReorder}
+									/>
+								}
 							})}
 						</div>
 						{/* <ConfigProvider
