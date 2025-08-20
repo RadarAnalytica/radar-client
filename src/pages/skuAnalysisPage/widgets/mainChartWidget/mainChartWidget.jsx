@@ -64,7 +64,7 @@ const MainChartWidget = ({ id }) => {
         }
     }, [skuChartData, chartControls])
 
-    if (!skuChartData && dataStatus.isLoading) {
+    if (dataStatus.isLoading) {
         return (
             <div className={styles.loaderWrapper}>
                 <span className='loader'></span>

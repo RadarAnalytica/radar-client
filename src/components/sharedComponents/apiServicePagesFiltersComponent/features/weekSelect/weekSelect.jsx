@@ -12,7 +12,8 @@ export const WeekSelect = (
         dispatch,
         filterActions,
         params,
-        handler
+        handler,
+        isDataLoading
     }
 ) => {
     
@@ -167,6 +168,7 @@ export const WeekSelect = (
                         onChange={selectHandler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         dropdownRender={renderPopup}
+                        disabled={isDataLoading}
                         onDropdownVisibleChange={(open) => {
                             if (!open) {
                                 setSearchState('')

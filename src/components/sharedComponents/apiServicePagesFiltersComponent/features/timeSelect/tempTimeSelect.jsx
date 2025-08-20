@@ -29,7 +29,7 @@ const predefinedRanges = [
     }
 ];
 
-export const TempTimeSelect = () => {
+export const TempTimeSelect = ({ isDataLoading }) => {
 
     const dispatch = useAppDispatch()
     const { selectedRange } = useAppSelector(store => store.filters)
@@ -223,7 +223,7 @@ export const TempTimeSelect = () => {
                         }}
                         value={selectValue}
                         onSelect={timeSelectChangeHandler}
-                        disabled={isCalendarOpen}
+                        disabled={isCalendarOpen || isDataLoading}
                         placeholder={'опция'}
                     />
                 </ConfigProvider>

@@ -32,6 +32,7 @@ export const fetchSupplierAnalysisMetaData = createAsyncThunk(
   'supplierAnalysisMetaData',
   async (reqData, { dispatch }) => {
     dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'metaData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
       let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-meta`, {
         method: 'POST',
@@ -57,6 +58,7 @@ export const fetchSupplierAnalysisIndicatorsData = createAsyncThunk(
   'supplierAnalysisIndicatorsData',
   async (reqData, { dispatch }) => {
     dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'indicatorsData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       let res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-indicators`, {
@@ -82,6 +84,7 @@ export const fetchSupplierAnalysisMainChartData = createAsyncThunk(
   'supplierAnalysisMainChartData',
   async (reqData, { dispatch }) => {
     dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'mainChartData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-charts`, {
@@ -107,6 +110,7 @@ export const fetchSupplierAnalysisByDatesTableData = createAsyncThunk(
   'supplierAnalysisByDatesTableData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byDatesTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-date`, {
@@ -132,6 +136,7 @@ export const fetchSupplierAnalysisBrandsData = createAsyncThunk(
   'supplierAnalysisBrandsData',
   async (reqData, { dispatch }) => {
     //dispatch(supplierAnalysisActions.setDataFetchingStatus({dataType: 'byDatesTableData', statusObject: {isLoading: true, isError: false, isSuccess: false, message: ''}}))
+    //dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-brands`, {
@@ -161,6 +166,7 @@ export const fetchSupplierAnalysisByBrandTableData = createAsyncThunk(
   'supplierAnalysisByBrandTableData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byBrandsTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-product`, {
@@ -186,6 +192,7 @@ export const fetchSupplierAnalysisBySubjectsTableData = createAsyncThunk(
   'supplierAnalysisBySubjectsTableData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'bySubjectsTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-subject`, {
@@ -211,6 +218,7 @@ export const fetchSupplierAnalysisByWarehousesTableData = createAsyncThunk(
   'supplierAnalysisByWarehousesTableData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byWarehousesTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-warehouse`, {
@@ -236,6 +244,7 @@ export const fetchSupplierAnalysisBySizesTableData = createAsyncThunk(
   'supplierAnalysisBySizesTableData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'bySizesTableData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/supplier-by-size`, {
@@ -261,6 +270,7 @@ export const fetchSupplierAnalysisByWharehousesComparsionData = createAsyncThunk
   'supplierAnalysisByWharehousesComparsionData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byWharehousesComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/warehouse-quantity`, {
@@ -286,6 +296,7 @@ export const fetchSupplierAnalysisByIncomingOrdersComparsionData = createAsyncTh
   'supplierAnalysisByIncomingOrdersComparsionData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byIncomingOrdersComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/revenue`, {
@@ -311,6 +322,7 @@ export const fetchSupplierAnalysisByOrderedProductsComparsionData = createAsyncT
   'supplierAnalysisByOrderedProductsComparsionData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byOrderedProductsComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/orders`, {
@@ -336,6 +348,7 @@ export const fetchSupplierAnalysisByAvgPricesComparsionData = createAsyncThunk(
   'supplierAnalysisByAvgPricesComparsionData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgPricesComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-price`, {
@@ -361,7 +374,8 @@ export const fetchSupplierAnalysisByAvgDiscountsComparsionData = createAsyncThun
   'supplierAnalysisByAvgDiscountsComparsionData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byAvgDiscountsComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
-    try {
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
+        try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/avg-discount`, {
         method: 'POST',
@@ -386,6 +400,7 @@ export const fetchSupplierAnalysisByStockSizeComparsionData = createAsyncThunk(
   'supplierAnalysisByStockSizeComparsionData',
   async (reqData, { dispatch }) => {
     reqData.hasLoadingStatus && dispatch(supplierAnalysisActions.setDataFetchingStatus({ dataType: 'byStockSizeComparsionData', statusObject: { isLoading: true, isError: false, isSuccess: false, message: '' } }))
+    dispatch(supplierAnalysisActions.setIsAnyDataLoading(true))
     try {
 
       const res = await fetch(`https://radarmarket.ru/api/web-service/supplier-analysis/comparison/stock-quantity`, {

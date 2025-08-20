@@ -234,7 +234,7 @@ const _DashboardPage = () => {
 
                 <div className={styles.page__controlsWrapper}>
                     <Filters
-                        setLoading={(loading) => setPageState(prev => ({ ...prev, loading }))}
+                        isDataLoading={pageState.loading}
                     />
 
                     <HowToLink

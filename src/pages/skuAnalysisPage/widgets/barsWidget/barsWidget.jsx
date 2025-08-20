@@ -24,7 +24,7 @@ const BarsWidget = () => {
     const { skuIndicatorsData, dataStatus } = useAppSelector(store => store.skuAnalysis)
     const { isSidebarHidden } = useAppSelector(store => store.utils)
 
-    if (!skuIndicatorsData && dataStatus.isLoading) {
+    if (dataStatus.isLoading) {
         return (
             <div className={styles.loaderWrapper}>
                     <span className='loader'></span>

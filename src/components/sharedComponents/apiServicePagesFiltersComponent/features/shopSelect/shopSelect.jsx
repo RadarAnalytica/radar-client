@@ -9,6 +9,7 @@ export const ShopSelect = (
         value, //string | number
         optionsData, //array
         handler, // (e) => void
+        isDataLoading //boolean
     }
 ) => {
 
@@ -56,6 +57,7 @@ export const ShopSelect = (
                         id={selectId}
                         onChange={handler}
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                        disabled={isDataLoading}
                     />
                 </ConfigProvider>
             </div>
