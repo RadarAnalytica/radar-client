@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { ConfigProvider, Button, Flex, Pagination } from 'antd';
 import SkuTable from '../SkuTable/SkuTable';
 import SkuItem from '../SkuItem/SkuItem';
@@ -12,11 +12,19 @@ import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-d
 import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 
-function SkuListItem({el, expanded = false, setExpanded, setDeleteSkuId, onReorder}) {
+function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
 
-	const [expandedState, setExpandedState] = useState(expanded)
+	const expandHandler = (value) => {
+		setExpanded((list) => {
+			if (list.includes(value)){
+				return list.filter((id) => id !== value)
+			} else {
+			 return [...list, value]
+		 }
+		})
+	};
 
 	useEffect(() => {
 		const element = ref.current;
@@ -32,16 +40,12 @@ function SkuListItem({el, expanded = false, setExpanded, setDeleteSkuId, onReord
 				dragHandle: grip,
 				getInitialData: () => ({ id: id }),
 				onDragStart: () => {
-					console.log('onDragStart', expandedState);
-					if (expandedState) {
-						setExpandedState(false);
-					}
+					setExpanded([]);
 				},
 				onGenerateDragPreview: ({ nativeSetDragImage }) => {
 					setCustomNativeDragPreview({
             nativeSetDragImage,
             render({ container }) {
-							// console.log('render', container)
 							const preview = document.createElement('div');
 							preview.className = styles.preview;
 							preview.innerHTML = `<b>${data.article_data.title}</b> ${data.article_data.wb_id}`;
@@ -51,9 +55,6 @@ function SkuListItem({el, expanded = false, setExpanded, setDeleteSkuId, onReord
 					// return <div>id: {id}</div>
 				},
 				onDrop() {
-					if (expandedState){
-						setExpandedState(true);
-					}
 				},
 			})
 		);
@@ -100,19 +101,16 @@ function SkuListItem({el, expanded = false, setExpanded, setDeleteSkuId, onReord
 					/>
 					<Button
 						className={`${styles.item__button} ${
-							expandedState &&
+							expanded.includes(el.article_data.wb_id) &&
 							styles.item__button_expand
 						}`}
-						value={el.id}
-						onClick={() =>
-							setExpandedState((state) => !state)
-						}
+						onClick={() => expandHandler(el.article_data.wb_id) }
 						icon={expand}
 						title="Развернуть"
 					></Button>
 				</Flex>
 			</header>
-			{expandedState && (
+			{expanded.includes(el.article_data.wb_id) && (
 				<div className={`${styles.item__table} ${styles.item}`}>
 					<SkuTable
 						data={el.table.rows}
@@ -131,13 +129,13 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
   const [items, setItems] = useState(skuDataByArticle);
 	
 	const ref = useRef(null);
+	const [expanded, setExpanded] = useState([]);
 
-	// useEffect(() => {
-	// 	if (skuDataByArticle?.length > 0 && view === 'sku') {
-	// 		setExpanded([skuDataByArticle[0].article_data.product_id]);
-	// 	}
-	// }, [skuDataByArticle]);
-
+	useEffect(() => {
+		if (items?.length > 0) {
+			setExpanded([ items[0].article_data.wb_id ]);
+		}
+	}, [items]);
 
 	const onReorder = (draggedId, targetId) => {
 		console.log('onReorder', draggedId)
@@ -271,7 +269,8 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 								<SkuListItem
 									key={i}
 									el={el}
-									expanded={i == 0}
+									expanded={expanded}
+									setExpanded={setExpanded}
 									setDeleteSkuId={setDeleteSkuId}
 									onReorder={onReorder}
 								/>
