@@ -33,7 +33,7 @@ const ItemInfo = () => {
 
     const { skuMainData, dataStatus } = useAppSelector(store => store.skuAnalysis);
 
-    if (!skuMainData && dataStatus.isLoading) {
+    if (dataStatus.isLoading) {
         return (
             <div className={styles.info}>
                 <div className={styles.loaderWrapper}>

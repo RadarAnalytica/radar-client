@@ -8,7 +8,7 @@ dayjs.locale('ru');
 
 const { RangePicker } = DatePicker;
 
-export const MonthSelect = ({monthHandler, value}) => {
+export const MonthSelect = ({monthHandler, value, isDataLoading}) => {
 
     const monthRef = useRef(null);
 
@@ -71,6 +71,7 @@ export const MonthSelect = ({monthHandler, value}) => {
                             }}
                             value={initialValue}
                             getPopupContainer={() => monthRef.current}
+                            disabled={isDataLoading}
                         />
                     </div>
                 </ConfigProvider>

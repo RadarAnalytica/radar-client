@@ -123,6 +123,7 @@ const StockAnalysisPage = () => {
                     <div>
                         <Filters
                             setLoading={setLoading}
+                            isDataLoading={loading}
                         />
                     </div>
                     {/* !FILTERS */}
