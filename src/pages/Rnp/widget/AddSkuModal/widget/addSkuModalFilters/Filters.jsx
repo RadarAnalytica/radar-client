@@ -13,9 +13,9 @@ export const Filters = ({ open }) => {
 
   // ------ база ------//
   const { authToken } = useContext(AuthContext);
-  const dispatch = useAppDispatch()
-  const { activeBrand, selectedRange, filters, shops } = useAppSelector(store => store.filtersRnpAdd)
-  const filtersState = useAppSelector(store => store.filtersRnpAdd)
+  const dispatch = useAppDispatch();
+  const { activeBrand, selectedRange, filters, shops } = useAppSelector(store => store.filtersRnpAdd);
+  const filtersState = useAppSelector(store => store.filtersRnpAdd);
   //const shops = useAppSelector((state) => state.shopsSlice.shops);
   //--------------------//
 
@@ -27,15 +27,6 @@ export const Filters = ({ open }) => {
   }
   //- -----------------------------------------//
 
-  // ------- Фетч массива магазинов -------------//
-  const fetchShopData = async () => {
-    try {
-        dispatch(fetchShops(authToken));
-    } catch (error) {
-      console.error("Error fetching initial data:", error);
-    }
-  };
-  //---------------------------------------------//
   // ------- Фетч фильтров -------------//
   const fetchFiltersData = async () => {
     try {
@@ -50,7 +41,7 @@ export const Filters = ({ open }) => {
   // 0. Получаем данные магазинов
   useEffect(() => {
     if (!shops || shops.length === 0) {
-      fetchShopData();
+      // fetchShopData();
       fetchFiltersData();
     }
   }, [shops, open]);
@@ -74,10 +65,9 @@ export const Filters = ({ open }) => {
 
   // обновляем раз в 30 секунд магазины если данные не собраны
   useEffect(() => {
-    activeBrand && localStorage.setItem('activeShopRnpAddRnpAdd', JSON.stringify(activeBrand))
     let interval;
     if (activeBrand && !activeBrand.is_primary_collect) {
-      interval = setInterval(() => { fetchShopData() }, 30000)
+      interval = setInterval(() => { fetchFiltersData() }, 30000)
     }
     return () => { interval && clearInterval(interval) }
   }, [activeBrand, selectedRange]);
