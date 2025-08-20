@@ -6,6 +6,10 @@
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
 }
 
+.item + .item {
+  margin-top: 20px;
+}
+
 .item__product{
   flex-grow: 1;
 }
@@ -30,4 +34,11 @@
 
 .item__button_expand :global(.ant-btn-icon){
   transform: rotate(180deg);
+}
+
+.preview {
+  padding: 8px 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ConfigProvider, Button, Flex, Pagination } from 'antd';
 import SkuTable from '../SkuTable/SkuTable';
 import SkuItem from '../SkuItem/SkuItem';
@@ -7,25 +7,154 @@ import styles from './SkuList.module.css';
 import { Filters } from '../Filters/Filters';
 import { useAppSelector } from '../../../../redux/hooks';
 import { grip, remove, expand } from '../icons';
+import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
+import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
+import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
+
+function SkuListItem({el, expanded = false, setExpanded, setDeleteSkuId, onReorder}) {
+	const ref = useRef(null);
+	const gripRef = useRef(null);
+
+	const [expandedState, setExpandedState] = useState(expanded)
+
+	useEffect(() => {
+		const element = ref.current;
+    if (!element) return;
+		const grip = gripRef.current;
+		const id = el.article_data.wb_id;
+		const data = el;
+
+    // Делаем элемент перетаскиваемым
+    const cleanupDraggable = combine(
+			draggable({
+				element: element,
+				dragHandle: grip,
+				getInitialData: () => ({ id: id }),
+				onDragStart: () => {
+					console.log('onDragStart', expandedState);
+					if (expandedState) {
+						setExpandedState(false);
+					}
+				},
+				onGenerateDragPreview: ({ nativeSetDragImage }) => {
+					setCustomNativeDragPreview({
+            nativeSetDragImage,
+            render({ container }) {
+							// console.log('render', container)
+							const preview = document.createElement('div');
+							preview.className = styles.preview;
+							preview.innerHTML = `<b>${data.article_data.title}</b> ${data.article_data.wb_id}`;
+							container.append(preview)
+            },
+          });
+					// return <div>id: {id}</div>
+				},
+				onDrop() {
+					if (expandedState){
+						setExpandedState(true);
+					}
+				},
+			})
+		);
+
+    // Делаем элемент целью для перетаскивания
+    const cleanupDropTarget = dropTargetForElements({
+      element,
+      getData: () => ({ id: id }),
+      onDrop: ({ location, self }) => {
+        const draggedId = location.current.dropTargets[0].id;
+        const targetId = self.data.id;
+        onReorder(draggedId, targetId);
+      },
+    });
+
+    return () => {
+      cleanupDraggable();
+      cleanupDropTarget();
+    };
+  }, [el, onReorder]);
+
+	return (
+		<div className={styles.item} ref={ref}>
+			<header>
+				<Flex gap={20} align="center">
+					<Button
+						className={styles.item__button}
+						icon={grip}
+						ref={gripRef}
+					/>
+					<div className={styles.item__product}>
+						<SkuItem
+							title={el.article_data.title}
+							photo={el.article_data.photo}
+							sku={el.article_data.wb_id}
+							shop={el.article_data.shop_name}
+						/>
+					</div>
+					<Button
+						className={styles.item__button}
+						onClick={() => setDeleteSkuId(el.article_data.wb_id)}
+						icon={remove}
+						title="Удалить артикул"
+					/>
+					<Button
+						className={`${styles.item__button} ${
+							expandedState &&
+							styles.item__button_expand
+						}`}
+						value={el.id}
+						onClick={() =>
+							setExpandedState((state) => !state)
+						}
+						icon={expand}
+						title="Развернуть"
+					></Button>
+				</Flex>
+			</header>
+			{expandedState && (
+				<div className={`${styles.item__table} ${styles.item}`}>
+					<SkuTable
+						data={el.table.rows}
+						columns={el.table.columns}
+					/>
+				</div>
+			)}
+		</div>
+	);
+}
 
 export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModalShow, setSkuList, view, setView, setDeleteSkuId, page, setPage, paginationState }) {
-	const { shops } = useAppSelector((state) => state.shopsSlice);
-	const [expanded, setExpanded] = useState([]);
-	useEffect(() => {
-		if (skuDataByArticle?.length > 0 && view === 'sku') {
-			setExpanded([skuDataByArticle[0].article_data.product_id]);
-		}
-	}, [skuDataByArticle]);
 
-	const expandHandler = (value) => {
-		setExpanded((list) => {
-			if (list.includes(value)){
-				return list.filter((id) => id !== value)
-			} else {
-			 return [...list, value]
-		 }
-		})
-	};
+	const { shops } = useAppSelector((state) => state.shopsSlice);
+	
+  const [items, setItems] = useState(skuDataByArticle);
+	
+	const ref = useRef(null);
+
+	// useEffect(() => {
+	// 	if (skuDataByArticle?.length > 0 && view === 'sku') {
+	// 		setExpanded([skuDataByArticle[0].article_data.product_id]);
+	// 	}
+	// }, [skuDataByArticle]);
+
+
+	const onReorder = (draggedId, targetId) => {
+		console.log('onReorder', draggedId)
+		console.log('onReorder', targetId)
+		const draggedIndex = skuDataByArticle.findIndex(el => el.article_data.wb_id === draggedId);
+		const targetIndex = skuDataByArticle.findIndex(el => el.article_data.wb_id === targetId);
+		// console.log('draggedIndex', draggedIndex)
+		// console.log('targetIndex', targetIndex)
+
+		if (draggedIndex !== -1 && targetIndex !== -1 && draggedIndex !== targetIndex) {
+			const newItems = [...skuDataByArticle];
+			const [removed] = newItems.splice(draggedIndex, 1);
+			newItems.splice(targetIndex, 0, removed);
+			console.log(newItems.map((el) => el.article_data.wb_id))
+			setItems(newItems);
+		}
+	}
 
 	return (
 		<>
@@ -137,55 +266,18 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 			>
 				{view === 'sku' && (
 					<>
-						{skuDataByArticle?.map((el, i) => (
-							<div key={i} className={styles.item}>
-								<header>
-									<Flex gap={20} align="center">
-										{/* <Button
-											className={styles.item__button}
-											icon={grip}
-										/> */}
-										<div className={styles.item__product}>
-											<SkuItem
-												title={el.article_data.title}
-												photo={el.article_data.photo}
-												sku={el.article_data.wb_id}
-												shop={el.article_data.shop_name}
-											/>
-										</div>
-										<Button
-											className={styles.item__button}
-											onClick={ () => setDeleteSkuId(el.article_data.wb_id) }
-											icon={remove}
-											title='Удалить артикул'
-										/>
-										<Button
-											className={`${
-												styles.item__button
-											} ${ expanded.includes(el.article_data.product_id) && styles.item__button_expand }`}
-											value={el.id}
-											onClick={ () => expandHandler( el.article_data.product_id ) }
-											icon={expand}
-											title='Развернуть'
-										></Button>
-									</Flex>
-								</header>
-								{expanded.includes(el.article_data.product_id) && (
-									<div
-										className={`${styles.item__table} ${styles.item}`}
-									>
-										<SkuTable
-											data={el.table.rows}
-											columns={el.table.columns}
-											defaultExpandAllRows={
-												view === 'sku'
-											}
-										/>
-									</div>
-								)}
-							</div>
-						))}
-						<ConfigProvider
+						<div ref={ref}>
+							{skuDataByArticle?.map((el, i) => (
+								<SkuListItem
+									key={i}
+									el={el}
+									expanded={i == 0}
+									setDeleteSkuId={setDeleteSkuId}
+									onReorder={onReorder}
+								/>
+							))}
+						</div>
+						{/* <ConfigProvider
 							theme={{
 									token: {
 											colorText: '#5329FF',
@@ -223,8 +315,8 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 									showSizeChanger={false}
 									hideOnSinglePage={true}
 							/>
-						</ConfigProvider>
-						{skuDataByArticle?.length == 0 && <div className={styles.item}>Нет данных</div>}
+						</ConfigProvider> */}
+						{items?.length == 0 && <div className={styles.item}>Нет данных</div>}
 					</>
 				)}
 				{view === 'total' && (
