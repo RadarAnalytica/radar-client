@@ -85,7 +85,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         if (isAddSkuModalVisible) {
             setPage(1);
         }
-    }, [search])
+    }, [search, filters])
 
     return (
         <Modal
