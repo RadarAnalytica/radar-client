@@ -58,8 +58,9 @@ export const Filters = ({ open }) => {
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
   // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
   useEffect(() => {
-    
-    dispatch(filterActions.setActiveShop(shops[0]))
+    if (shops && !activeBrand) {
+      dispatch(filterActions.setActiveShop(shops[0]))
+    }
 
     if (shops && activeBrand && !activeBrand.is_primary_collect) {
       const currentShop = shops.find(shop => shop.id === activeBrand.id)
@@ -67,7 +68,7 @@ export const Filters = ({ open }) => {
         dispatch(filterActions.setActiveShop(currentShop))
       }
     }
-  }, [shops])
+  }, [shops, open])
   //--------------------------------------------------------------------------------//
 
 

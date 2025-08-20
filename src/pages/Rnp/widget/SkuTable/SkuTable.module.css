@@ -6,7 +6,7 @@
   
 .tableContainer {
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .tableContainer :global(.ant-table-tbody-virtual-scrollbar-vertical .ant-table-tbody-virtual-scrollbar-thumb),

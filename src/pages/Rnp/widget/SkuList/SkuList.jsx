@@ -186,55 +186,60 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 							</div>
 						))}
 						<ConfigProvider
-                    theme={{
-                        token: {
-                            colorText: '#5329FF',
-                            colorPrimary: '#5329FF',
-                            colorBgTextHover: '#5329FF0D',
-                            controlInteractiveSize: 20
-                        },
-                        components: {
-                            Pagination: {
-                                itemActiveBg: '#EEEAFF',
-                                itemBg: '#F7F7F7',
-                                itemColor: '#8C8C8C',
-                            }
-                        }
-                    }}
-                >
-						<Pagination
-								locale={{
-										items_per_page: 'записей на странице',
-										jump_to: 'Перейти',
-										jump_to_confirm: 'подтвердить',
-										page: 'Страница',
-										prev_page: 'Предыдущая страница',
-										next_page: 'Следующая страница',
-										prev_5: 'Предыдущие 5 страниц',
-										next_5: 'Следующие 5 страниц',
-										prev_3: 'Предыдущие 3 страниц',
-										next_3: 'Следующие 3 страниц',
-								}}
-								defaultCurrent={1}
-								current={page}
-								onChange={setPage}
-								total={paginationState.total}
-								pageSize={paginationState.pageSize}
-								showSizeChanger={false}
-								hideOnSinglePage={true}
-						/></ConfigProvider>
+							theme={{
+									token: {
+											colorText: '#5329FF',
+											colorPrimary: '#5329FF',
+											colorBgTextHover: '#5329FF0D',
+											controlInteractiveSize: 20
+									},
+									components: {
+											Pagination: {
+													itemActiveBg: '#EEEAFF',
+													itemBg: '#F7F7F7',
+													itemColor: '#8C8C8C',
+											}
+									}
+							}}
+						>
+							<Pagination
+									locale={{
+											items_per_page: 'записей на странице',
+											jump_to: 'Перейти',
+											jump_to_confirm: 'подтвердить',
+											page: 'Страница',
+											prev_page: 'Предыдущая страница',
+											next_page: 'Следующая страница',
+											prev_5: 'Предыдущие 5 страниц',
+											next_5: 'Следующие 5 страниц',
+											prev_3: 'Предыдущие 3 страниц',
+											next_3: 'Следующие 3 страниц',
+									}}
+									defaultCurrent={1}
+									current={page}
+									onChange={setPage}
+									total={paginationState.total}
+									pageSize={paginationState.pageSize}
+									showSizeChanger={false}
+									hideOnSinglePage={true}
+							/>
+						</ConfigProvider>
+						{skuDataByArticle?.length == 0 && <div className={styles.item}>Нет данных</div>}
 					</>
 				)}
 				{view === 'total' && (
-					<div className={styles.item}>
-						<SkuTable
-							// data={null}
-							data={skuDataTotal?.table?.rows}
-							// columns={null}
-							columns={skuDataTotal?.table?.columns}
-							defaultExpandAllRows={true}
-						/>
-					</div>
+					<>
+						{skuDataTotal?.length == 0 && <div className={styles.item}>Нет данных</div>}
+						{skuDataTotal?.length != 0 && <div className={styles.item}>
+							<SkuTable
+								// data={null}
+								data={skuDataTotal?.table?.rows}
+								// columns={null}
+								columns={skuDataTotal?.table?.columns}
+								defaultExpandAllRows={true}
+							/>
+						</div>}
+					</>
 				)}
 			</ConfigProvider>
 		</>
