@@ -27,46 +27,48 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 	};
 
 	useEffect(() => {
-		const element = ref.current;
+    const element = ref.current;
     if (!element) return;
+
 		const grip = gripRef.current;
 		const id = el.article_data.wb_id;
 		const data = el;
 
     // Делаем элемент перетаскиваемым
-    const cleanupDraggable = combine(
-			draggable({
-				element: element,
-				dragHandle: grip,
-				getInitialData: () => ({ id: id }),
-				onDragStart: () => {
-					setExpanded([]);
-				},
-				onGenerateDragPreview: ({ nativeSetDragImage }) => {
-					setCustomNativeDragPreview({
-            nativeSetDragImage,
-            render({ container }) {
-							const preview = document.createElement('div');
-							preview.className = styles.preview;
-							preview.innerHTML = `<b>${data.article_data.title}</b> ${data.article_data.wb_id}`;
-							container.append(preview)
-            },
-          });
-					// return <div>id: {id}</div>
-				},
-				onDrop() {
-				},
-			})
-		);
+    const cleanupDraggable = draggable({
+      element: element,
+			dragHandle: grip,
+			onDragStart: () => {
+				setExpanded([]);
+			},
+      getInitialData: () => ({ id: id }),
+			onGenerateDragPreview: ({ nativeSetDragImage }) => {
+				setCustomNativeDragPreview({
+          nativeSetDragImage,
+          render({ container }) {
+						const preview = document.createElement('div');
+						preview.className = styles.preview;
+						preview.innerHTML = `<b>${data.article_data.title}</b> ${data.article_data.wb_id}`;
+						container.append(preview)
+          },
+        });
+			},
+    });
 
     // Делаем элемент целью для перетаскивания
     const cleanupDropTarget = dropTargetForElements({
       element,
       getData: () => ({ id: id }),
-      onDrop: ({ location, self }) => {
-        const draggedId = location.current.dropTargets[0].id;
-        const targetId = self.data.id;
-        onReorder(draggedId, targetId);
+      onDrop: ({ source, location }) => {
+        if (!source || !location.current) return;
+        
+        const draggedId = source.data.id;
+        const targetId = id;
+        
+        // Проверяем, что элемент перетаскивается на другой элемент
+        if (draggedId && targetId && draggedId !== targetId) {
+          onReorder(draggedId, targetId);
+        }
       },
     });
 
@@ -124,32 +126,39 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 
 export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModalShow, setSkuList, view, setView, setDeleteSkuId, page, setPage, paginationState }) {
 
-	const { shops } = useAppSelector((state) => state.shopsSlice);
-	
   const [items, setItems] = useState(skuDataByArticle);
+
+	const [order, setOrder] = useState(skuDataByArticle.map((el) => el.article_data.wb_id))
 	
 	const ref = useRef(null);
 	const [expanded, setExpanded] = useState([]);
 
 	useEffect(() => {
 		if (items?.length > 0) {
-			setExpanded([ items[0].article_data.wb_id ]);
+			// setExpanded([ items[0].article_data.wb_id ]);
 		}
 	}, [items]);
 
+	const handleReorder = (draggedId, targetId) => {
+    const draggedIndex = order.findIndex(i => i === draggedId);
+    const targetIndex = order.findIndex(i => i === targetId);
+    
+    if (draggedIndex !== -1 && targetIndex !== -1 && draggedIndex !== targetIndex) {
+      const newOrder = [...order];
+      const [removed] = newOrder.splice(draggedIndex, 1);
+      newOrder.splice(targetIndex, 0, removed);
+      setOrder(newOrder);
+    }
+  };
+
 	const onReorder = (draggedId, targetId) => {
-		console.log('onReorder', draggedId)
-		console.log('onReorder', targetId)
 		const draggedIndex = skuDataByArticle.findIndex(el => el.article_data.wb_id === draggedId);
 		const targetIndex = skuDataByArticle.findIndex(el => el.article_data.wb_id === targetId);
-		// console.log('draggedIndex', draggedIndex)
-		// console.log('targetIndex', targetIndex)
 
 		if (draggedIndex !== -1 && targetIndex !== -1 && draggedIndex !== targetIndex) {
 			const newItems = [...skuDataByArticle];
 			const [removed] = newItems.splice(draggedIndex, 1);
 			newItems.splice(targetIndex, 0, removed);
-			console.log(newItems.map((el) => el.article_data.wb_id))
 			setItems(newItems);
 		}
 	}
@@ -265,16 +274,18 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 				{view === 'sku' && (
 					<>
 						<div ref={ref}>
-							{skuDataByArticle?.map((el, i) => (
-								<SkuListItem
+							{order.map((orderI, i) => {
+								const el = items.find((sku) => sku.article_data.wb_id === orderI)
+								return <SkuListItem
 									key={i}
 									el={el}
 									expanded={expanded}
 									setExpanded={setExpanded}
 									setDeleteSkuId={setDeleteSkuId}
-									onReorder={onReorder}
+									// onReorder={onReorder}
+									onReorder={handleReorder}
 								/>
-							))}
+							})}
 						</div>
 						{/* <ConfigProvider
 							theme={{
