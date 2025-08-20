@@ -151,7 +151,7 @@ const _DashboardPage = () => {
 
     const [pageState, setPageState] = useState({
         dataDashBoard: null,
-        loading: true,
+        loading: false,
         primaryCollect: null,
         shopStatus: null
     });
@@ -218,7 +218,7 @@ const _DashboardPage = () => {
 
                 {!shopStatus?.is_self_cost_set && !pageState.loading && (
                     <SelfCostWarningBlock
-                        shopId={activeBrand.id}
+                        shopId={activeBrand?.id}
                         onUpdateDashboard={updateDataDashBoard}
                     />
                 )}

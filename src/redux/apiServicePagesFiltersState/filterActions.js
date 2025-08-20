@@ -44,7 +44,7 @@ import { setLoading } from '../loading/loadingSlice';
  */
 const createFiltersDTO = (data) => {
   // 1 - создаем массив всех магазинов + опцию "Все магазины"
-  const shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data.some(_ => !_.shop_data.is_self_cost_set)  }, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
+  const shops = [{ brand_name: 'Все', value: 'Все', id: 0, is_primary_collect: data.some(_ => _.shop_data.is_primary_collect), is_self_cost_set: !data.some(_ => !_.shop_data.is_self_cost_set) }, ...data.map(_ => ({ ..._.shop_data, value: _.shop_data.name }))]
   // 2 - Трансформируем дату для опции "все магазины"
   // 2.1 - выцепляем все бренды по всем магазинам
   // 2.2 - выцепляем все артикулы всех брендов по всем магазинам
@@ -54,15 +54,19 @@ const createFiltersDTO = (data) => {
   const allGroupsData = []
   data.forEach((_, id) => {
     _.groups.forEach(g => {
-      allGroupsData.push({...g, value: g.name, key: g.id })
+      allGroupsData.push({ ...g, value: g.name, key: g.id })
     })
     _.brands.forEach((b, barndId) => {
-      allBransdData.push({
-        name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
-        value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
-      })
+      if (_.shop_data.is_primary_collect) {
+        allBransdData.push({
+          name: b.name ? b.name : `Без названия&${_.shop_data.id}`,
+          value: b.name ? b.name : `Без названия (${_.shop_data.brand_name})`,
+        })
+      }
       b.wb_id.forEach(a => {
-        allArticlesData.push({ name: a, value: a, brand: b.name ? b.name :`Без названия (${_.shop_data.brand_name})`})
+        if (_.shop_data.is_primary_collect) {
+          allArticlesData.push({ name: a, value: a, brand: b.name ? b.name : `Без названия (${_.shop_data.brand_name})` })
+        }
       })
     })
   })
@@ -93,8 +97,8 @@ const createFiltersDTO = (data) => {
   const DTO = [allShopsOption, ...data?.map(i => {
     let articlesData = []
     i.brands.forEach((item, bId) => {
-      
-      const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия (${i.shop_data.brand_name})`}))
+
+      const items = item.wb_id.map(_ => ({ name: _, value: _, brand: item.name ? item.name : `Без названия (${i.shop_data.brand_name})` }))
       articlesData = [...articlesData, ...items]
     })
     let newItem = {

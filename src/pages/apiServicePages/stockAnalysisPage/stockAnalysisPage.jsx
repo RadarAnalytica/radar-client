@@ -22,7 +22,7 @@ const StockAnalysisPage = () => {
     const [stockAnalysisData, setStockAnalysisData] = useState(); // это базовые данные для таблицы
     const [stockAnalysisFilteredData, setStockAnalysisFilteredData] = useState() // это данные для таблицы c учетом поиска
     const [hasSelfCostPrice, setHasSelfCostPrice] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [primaryCollect, setPrimaryCollect] = useState(null)
     const [shopStatus, setShopStatus] = useState(null)
 
