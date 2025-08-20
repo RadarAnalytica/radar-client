@@ -5,36 +5,29 @@ import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form, Input, Button 
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector } from '../../../../redux/hooks';
 // import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
-import { Filters } from '../Filters/Filters'
+import { Filters } from './widget/addSkuModalFilters/Filters'
 import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
 import { close } from '../icons';
 
-const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, skuList }) => {
+const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) => {
     // 
     const { authToken } = useContext(AuthContext);
     const { activeBrand, selectedRange } = useAppSelector(
-        (state) => state.filtersRnp
+        (state) => state.filtersRnpAdd
     );
-    const filters = useAppSelector((state) => state.filtersRnp);
+    const filters = useAppSelector((state) => state.filtersRnpAdd);
     const { shops } = useAppSelector((state) => state.shopsSlice);
+
+    const skuList = useAppSelector((state) => state.rnpSelected)
+
     
     const [page, setPage] = useState(1);
     const [skuLoading, setSkuLoading] = useState(true);
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
     const [skuSelected, setSkuSelected] = useState([...skuList]);
     const [search, setSearch] = useState(null);
-    // const [dateRange, setDateRange] = useState(null);
-
-    // const formatedDateRange = useMemo(() => {
-    //     return ({
-    //         date_from: '2022-01-01',
-    //         date_to: '2022-01-01'
-    //     })
-    // }, [selectedRange]);
-
-    // console.log('formatedDateRange', formatedDateRange)
 
     const updateskuDataArticle = async () => {
         setSkuLoading(true);
@@ -116,7 +109,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku, sk
                 <div className={styles.modal__header}>
                     <p className={styles.modal__title}>Добавить артикулы</p>
                 </div>
-                <Filters timeSelect={false} />
+                <Filters open={isAddSkuModalVisible} />
                 <AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} />
                 {/* loader */}
                 <ConfigProvider

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import AuthContext from '../../service/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 import MobilePlug from '../../components/sharedComponents/mobilePlug/mobilePlug';
@@ -7,19 +7,21 @@ import Header from '../../components/sharedComponents/header/header';
 import { NoDataWidget } from '../productsGroupsPages/widgets';
 import AddSkuModal from './widget/AddSkuModal/AddSkuModal';
 import styles from './Rnp.module.css';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { ServiceFunctions } from '../../service/serviceFunctions';
 import { Filters } from './widget/Filters/Filters';
 import { COLUMNS, ROWS, renderFunction } from './config';
 import { format } from 'date-fns';
-import { ru } from 'date-fns/locale';
+import { ar, ru } from 'date-fns/locale';
 import SkuList from './widget/SkuList/SkuList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
+import { actions as rnpSelectedActions } from '../../redux/rnpSelected/rnpSelectedSlice'
 
 export default function Rnp() {
 	const { authToken } = useContext(AuthContext);
+	const dispatch = useAppDispatch();
 	const { activeBrand, selectedRange } = useAppSelector(
 		(state) => state.filtersRnp
 	);
@@ -44,6 +46,10 @@ export default function Rnp() {
 
 		return shops.find((shop) => shop.id === activeBrand.id);
 	}, [activeBrand, shops]);
+
+	const rnpSelected = useAppSelector((state) => state.rnpSelected);
+
+	const initLoad = useRef(true);
 
 	const [loading, setLoading] = useState(true);
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
@@ -71,6 +77,12 @@ export default function Rnp() {
 					dateRange
 				);
 				dataToSkuList(response);
+				if (initLoad.current) {
+					console.log('initLoad.current', initLoad.current)
+					initLoad.current = false;
+					dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
+
+				}
 			}
 		} catch (error) {
 			console.error('updateSkuListByArticle error', error)
@@ -192,6 +204,10 @@ export default function Rnp() {
 
 	const dataToSkuTotalList = (response) => {
 		const article = response.data;
+		if (article.length === 0){
+			setSkuDataTotal([]);
+			return
+		}
 		const item = {
 				table: {
 					columns: [],
@@ -249,7 +265,6 @@ export default function Rnp() {
 					}
 				}
 			}
-
 		setSkuDataTotal(item);
 	};
 
@@ -275,12 +290,13 @@ export default function Rnp() {
 	};
 
 	const viewHandler = (value) => {
-		setLoading(true);
-		setView(value);
+		if (view !== value){
+			setView(value);
+			setLoading(true);
+		}
 	}
 
 	useEffect(() => {
-		console.log('selectedRange', selectedRange)
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
 				updateSkuListByArticle();
@@ -334,7 +350,7 @@ export default function Rnp() {
 					</>
 				)}
 
-				{!loading && shopStatus && shopStatus?.is_primary_collect && skuDataByArticle?.length > 0 && (
+				{!loading && shopStatus && shopStatus?.is_primary_collect && rnpSelected?.length > 0 && (
 					<SkuList
 						view={view}
 						setView={viewHandler}
@@ -349,7 +365,7 @@ export default function Rnp() {
 					/>
 				)}
 
-				{!loading && skuDataByArticle?.length === 0 &&
+				{!loading && skuDataByArticle?.length === 0 && rnpSelected?.length == 0 && 
 					<NoDataWidget
 						mainTitle='Здесь пока нет ни одного артикула'
 						mainText='Добавьте артикулы для отчета «Рука на пульсе»'
