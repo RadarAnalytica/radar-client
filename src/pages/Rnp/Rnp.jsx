@@ -78,7 +78,6 @@ export default function Rnp() {
 				);
 				dataToSkuList(response);
 				if (initLoad.current) {
-					console.log('initLoad.current', initLoad.current)
 					initLoad.current = false;
 					dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
 
@@ -284,6 +283,7 @@ export default function Rnp() {
 		} catch (error) {
 			console.error('addSkuList error', error)
 		} finally {
+			dispatch(rnpSelectedActions.setList(porductIds));
 			setPage(1);
 			updateSkuListByArticle();
 		}
