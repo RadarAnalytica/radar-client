@@ -1590,6 +1590,9 @@ export const ServiceFunctions = {
 			);
 			
 			if (res.status !== 200){
+				if (res.status == 400){
+					return res.json();
+				}
 				throw new Error('Ошибка запроса');
 			}
 	

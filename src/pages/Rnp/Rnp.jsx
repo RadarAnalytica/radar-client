@@ -12,12 +12,13 @@ import { ServiceFunctions } from '../../service/serviceFunctions';
 import { Filters } from './widget/Filters/Filters';
 import { COLUMNS, ROWS, renderFunction } from './config';
 import { format } from 'date-fns';
-import { ar, ru } from 'date-fns/locale';
+import { ru } from 'date-fns/locale';
 import SkuList from './widget/SkuList/SkuList';
 import ModalDeleteConfirm from '../../components/sharedComponents/ModalDeleteConfirm/ModalDeleteConfirm';
 import DataCollectWarningBlock from '../../components/sharedComponents/dataCollectWarningBlock/dataCollectWarningBlock';
 import SelfCostWarningBlock from '../../components/sharedComponents/selfCostWraningBlock/selfCostWarningBlock';
 import { actions as rnpSelectedActions } from '../../redux/rnpSelected/rnpSelectedSlice'
+import ErrorModal from '../../components/sharedComponents/modals/errorModal/errorModal';
 
 export default function Rnp() {
 	const { authToken } = useContext(AuthContext);
@@ -59,10 +60,9 @@ export default function Rnp() {
 	const [view, setView] = useState('sku');
 	const [skuDataByArticle, setSkuDataByArticle] = useState(null);
 	const [skuDataTotal, setSkuDataTotal] = useState(null)
-
 	const [deleteSkuId, setDeleteSkuId] = useState(null);
-
 	const [skuSelectedList, setSkuSelectedList] = useState([]);
+	const [error, setError] = useState(null);
 
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
@@ -279,11 +279,15 @@ export default function Rnp() {
 					authToken,
 					porductIds
 				);
+				if (response.detail){
+					setError(response.detail);
+					return
+				}
+				dispatch(rnpSelectedActions.setList(porductIds));
 			}
 		} catch (error) {
 			console.error('addSkuList error', error)
 		} finally {
-			dispatch(rnpSelectedActions.setList(porductIds));
 			setPage(1);
 			updateSkuListByArticle();
 		}
@@ -388,6 +392,8 @@ export default function Rnp() {
 					onCancel={() => setDeleteSkuId(null)}
 					onOk={() => deleteHandler(deleteSkuId)}
 				/>}
+
+				<ErrorModal open={!!error} message={error} onCancel={() => setError(null)}/>
 			</section>
 		</main>
 	);
