@@ -54,7 +54,6 @@ export default function Rnp() {
 
 	const [loading, setLoading] = useState(true);
 	const [addSkuModalShow, setAddSkuModalShow] = useState(false);
-	const [dateRange, setDateRange] = useState(null);
 	const [page, setPage] = useState(1);
 	const [paginationState, setPaginationState] = useState(null);
 	const [view, setView] = useState('sku');
@@ -73,8 +72,7 @@ export default function Rnp() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page,
-					dateRange
+					page
 				);
 				dataToSkuList(response);
 				if (initLoad.current) {
@@ -99,8 +97,7 @@ export default function Rnp() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page,
-					dateRange
+					page
 				);
 				dataToSkuTotalList(response);
 			}
