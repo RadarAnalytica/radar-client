@@ -115,7 +115,6 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 						}`}
 						onClick={() => expandHandler(el.article_data.wb_id) }
 						icon={expand}
-						title="Развернуть"
 					></Button>
 				</Flex>
 			</header>
