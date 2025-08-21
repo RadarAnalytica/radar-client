@@ -147,7 +147,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 
 	useEffect(() => {
 		if (items?.length > 0) {
-			// setExpanded([ items[0].article_data.wb_id ]);
+			setExpanded([ items[0].article_data.wb_id ]);
 		}
 	}, [items]);
 
@@ -166,9 +166,6 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 	useEffect(() => {
 		localStorage.setItem( 'rnpOrder', JSON.stringify(order) );
 	}, [order])
-
-	console.log('order', order)
-	console.log('items', items)
 
 	return (
 		<>
@@ -290,7 +287,6 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 										expanded={expanded}
 										setExpanded={setExpanded}
 										setDeleteSkuId={setDeleteSkuId}
-										// onReorder={onReorder}
 										onReorder={handleReorder}
 									/>
 								}
