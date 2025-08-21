@@ -6,7 +6,7 @@ const ChartControls = ({ chartControls, setChartControls }) => {
 
     const chartControlsChangeHandler = (e) => {
         const { value, checked } = e.target;
-        setChartControls([...chartControls.map(i => {
+        const updatedChartControls = [...chartControls.map(i => {
             if (i.engName === value) {
                 return {
                     ...i,
@@ -15,15 +15,19 @@ const ChartControls = ({ chartControls, setChartControls }) => {
             } else {
                 return i
             }
-        })])
+        })]
+        setChartControls(updatedChartControls)
+        localStorage.setItem('SuppierAnalysysMainChartControls', JSON.stringify(updatedChartControls))
     }
 
     const deselectButtonClickHandler = () => {
         setChartControls([...chartControls].map(i => ({ ...i, isActive: false })))
+        localStorage.setItem('SuppierAnalysysMainChartControls', JSON.stringify([...chartControls].map(i => ({ ...i, isActive: false }))))
     }
 
     const selectAllButtonClickHandler = () => {
         setChartControls([...chartControls].map(i => ({ ...i, isActive: true })))
+        localStorage.setItem('SuppierAnalysysMainChartControls', JSON.stringify([...chartControls].map(i => ({ ...i, isActive: true }))))
     }
 
     return (
@@ -80,7 +84,7 @@ const ChartControls = ({ chartControls, setChartControls }) => {
                     </div>
                 )
             })}
-            {chartControls.some(_ => _.isActive) ?
+            {chartControls?.some(_ => _.isActive) ?
                 <button className={styles.controls__deselectButton} onClick={deselectButtonClickHandler}>
                     Снять все
                 </button>
