@@ -15,6 +15,8 @@ import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/el
 function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
+	const [ isDrag, setIsDrag ] = useState(false)
+	const [ previewDrag, setPreviewDrag ] = useState(null)
 
 	const expandHandler = (value) => {
 		setExpanded((list) => {
@@ -40,19 +42,23 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 			dragHandle: grip,
 			onDragStart: () => {
 				setExpanded([]);
+				element.classList.add(styles.isdrag)
 			},
       getInitialData: () => ({ id: id }),
-			onGenerateDragPreview: ({ nativeSetDragImage }) => {
-				setCustomNativeDragPreview({
-          nativeSetDragImage,
-          render({ container }) {
-						const preview = document.createElement('div');
-						preview.className = styles.preview;
-						preview.innerHTML = `<b>${data.article_data.title}</b> ${data.article_data.wb_id}`;
-						container.append(preview)
-          },
-        });
-			},
+			onDrop: () => {
+				element.classList.remove(styles.isdrag)
+			}
+			// onGenerateDragPreview: ({ nativeSetDragImage }) => {
+			// 	setCustomNativeDragPreview({
+      //     nativeSetDragImage,
+      //     render({ container }) {
+			// 			const preview = document.createElement('div');
+			// 			preview.className = styles.preview;
+			// 			preview.innerHTML = `<b>${data.article_data.title}</b> ${data.article_data.wb_id}`;
+			// 			container.append(preview)
+      //     },
+      //   });
+			// },
     });
 
     // Делаем элемент целью для перетаскивания
@@ -86,6 +92,7 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 						className={styles.item__button}
 						icon={grip}
 						ref={gripRef}
+						onClick={() => setExpanded([])}
 					/>
 					<div className={styles.item__product}>
 						<SkuItem
@@ -108,7 +115,6 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 						}`}
 						onClick={() => expandHandler(el.article_data.wb_id) }
 						icon={expand}
-						title="Развернуть"
 					></Button>
 				</Flex>
 			</header>
@@ -119,12 +125,12 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 						columns={el.table.columns}
 					/>
 				</div>
-			)}
+				)}
 		</div>
 	);
 }
 
-export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModalShow, setSkuList, view, setView, setDeleteSkuId, page, setPage, paginationState }) {
+export default function SkuList({ view, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId, page, setPage, paginationState }) {
 
   const [items, setItems] = useState(skuDataByArticle);
 
@@ -147,7 +153,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 
 	useEffect(() => {
 		if (items?.length > 0) {
-			// setExpanded([ items[0].article_data.wb_id ]);
+			setExpanded([ items[0].article_data.wb_id ]);
 		}
 	}, [items]);
 
@@ -166,9 +172,6 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 	useEffect(() => {
 		localStorage.setItem( 'rnpOrder', JSON.stringify(order) );
 	}, [order])
-
-	console.log('order', order)
-	console.log('items', items)
 
 	return (
 		<>
@@ -280,7 +283,7 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 			>
 				{view === 'sku' && (
 					<>
-						<div ref={ref}>
+						<div>
 							{order.map((orderI, i) => {
 								const el = items.find((sku) => sku.article_data.wb_id === orderI)
 								if (el) {
@@ -290,7 +293,6 @@ export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModal
 										expanded={expanded}
 										setExpanded={setExpanded}
 										setDeleteSkuId={setDeleteSkuId}
-										// onReorder={onReorder}
 										onReorder={handleReorder}
 									/>
 								}

@@ -1471,7 +1471,7 @@ export const ServiceFunctions = {
 			setIsLoading(false);
 		}
 	},
-	postRnpByArticle: async(token, selectedRange, shopId, filters, page, dateRange) => {
+	postRnpByArticle: async(token, selectedRange, shopId, filters, page) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
@@ -1497,7 +1497,7 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	postRnpSummary: async(token, selectedRange, shopId, filters, page, dateRange) => {
+	postRnpSummary: async(token, selectedRange, shopId, filters) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
