@@ -102,6 +102,10 @@
   flex: auto !important;
 }
 
+.tableContainer :global(.ant-table-sticky-holder) {
+  top: -30px!important;
+}
+
 .expandBtn {
   margin-right: 12px;
   vertical-align: middle;
