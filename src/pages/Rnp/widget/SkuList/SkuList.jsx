@@ -130,7 +130,7 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 	);
 }
 
-export default function SkuList({ skuDataByArticle, skuDataTotal, setAddSkuModalShow, setSkuList, view, setView, setDeleteSkuId, page, setPage, paginationState }) {
+export default function SkuList({ view, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId, page, setPage, paginationState }) {
 
   const [items, setItems] = useState(skuDataByArticle);
 

@@ -10,6 +10,7 @@ import SkuItem from '../SkuItem/SkuItem';
 import { ServiceFunctions } from '../../../../service/serviceFunctions';
 import AddSkuModalSearch from './widget/addSkuModalSearch/AddSkuModalSearch';
 import { close } from '../icons';
+import ErrorModal from '../../../../components/sharedComponents/modals/errorModal/errorModal';
 
 const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) => {
     // 
@@ -28,6 +29,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
     const [skuSelected, setSkuSelected] = useState([...skuList]);
     const [search, setSearch] = useState(null);
+    const [error, setError] = useState(null);
 
     const updateskuDataArticle = async () => {
         setSkuLoading(true);
@@ -87,95 +89,105 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         }
     }, [search, filters])
 
+    useEffect(() => {
+        if (skuSelected.length > 25){
+            setError('Превышено максимальное количество артикулов. Максимальное количество артикулов в РНП - 25')
+        }
+    }, [skuSelected])
+
     return (
-        <Modal
-            footer={
-                <AddSkuModalFooter
-                    addProducts={submitSkuDataArticle}
-                    setIsAddSkuModalVisible={setIsAddSkuModalVisible}
-                    isDataLoading={skuLoading}
-                    isCheckedListEmpty={localskuDataArticle?.length === 0}
-                />
-            }
-            onOk={() => setIsAddSkuModalVisible(false)}
-            onCancel={() => setIsAddSkuModalVisible(false)}
-            onClose={() => setIsAddSkuModalVisible(false)}
-            open={isAddSkuModalVisible}
-            width={1200}
-            closeIcon={close}
-            centered
-        >
-            <div className={styles.modal__content}>
-                <div className={styles.modal__header}>
-                    <p className={styles.modal__title}>Добавить артикулы</p>
-                </div>
-                <div className={skuLoading ? styles.hide : ''}><Filters open={isAddSkuModalVisible} /></div>
-                {!skuLoading && <>
-                    <AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} />
-                </>}
-                {/* loader */}
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorText: '#5329FF',
-                            colorPrimary: '#5329FF',
-                            colorBgTextHover: '#5329FF0D',
-                            controlInteractiveSize: 20
-                        },
-                        components: {
-                            Pagination: {
-                                itemActiveBg: '#EEEAFF',
-                                itemBg: '#F7F7F7',
-                                itemColor: '#8C8C8C',
+        <>
+            <Modal
+                footer={
+                    <AddSkuModalFooter
+                        addProducts={submitSkuDataArticle}
+                        setIsAddSkuModalVisible={setIsAddSkuModalVisible}
+                        isDataLoading={skuLoading}
+                        isCheckedListEmpty={localskuDataArticle?.length === 0}
+                    />
+                }
+                onOk={() => setIsAddSkuModalVisible(false)}
+                onCancel={() => setIsAddSkuModalVisible(false)}
+                onClose={() => setIsAddSkuModalVisible(false)}
+                open={isAddSkuModalVisible}
+                width={1200}
+                closeIcon={close}
+                centered
+            >
+                <div className={styles.modal__content}>
+                    <div className={styles.modal__header}>
+                        <p className={styles.modal__title}>Добавить артикулы</p>
+                    </div>
+                    <div className={skuLoading ? styles.hide : ''}><Filters open={isAddSkuModalVisible} /></div>
+                    {!skuLoading && <>
+                        <AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} />
+                    </>}
+                    {/* loader */}
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorText: '#5329FF',
+                                colorPrimary: '#5329FF',
+                                colorBgTextHover: '#5329FF0D',
+                                controlInteractiveSize: 20
+                            },
+                            components: {
+                                Pagination: {
+                                    itemActiveBg: '#EEEAFF',
+                                    itemBg: '#F7F7F7',
+                                    itemColor: '#8C8C8C',
+                                }
                             }
-                        }
-                    }}
-                >
-                    {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
-
-                    {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
-                    {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
-                        {localskuDataArticle?.data?.map((el, i) => (
-                            <Flex key={i} className={styles.item} gap={20}>
-                                <Checkbox
-                                    defaultChecked={skuSelected.includes(el.wb_id)}
-                                    data-value={el.wb_id}
-                                    onChange={selectSkuHandler}
-                                />
-                                <SkuItem
-                                    title={el.title}
-                                    photo={el.photo}
-                                    sku={el.wb_id}
-                                    shop={el.shop_name}
-                                />
-                            </Flex>
-                        ))}
-                    </div>)}
-
-                    {!skuLoading && <Pagination
-                        locale={{
-                            items_per_page: 'записей на странице',
-                            jump_to: 'Перейти',
-                            jump_to_confirm: 'подтвердить',
-                            page: 'Страница',
-                            prev_page: 'Предыдущая страница',
-                            next_page: 'Следующая страница',
-                            prev_5: 'Предыдущие 5 страниц',
-                            next_5: 'Следующие 5 страниц',
-                            prev_3: 'Предыдущие 3 страниц',
-                            next_3: 'Следующие 3 страниц',
                         }}
-                        defaultCurrent={1}
-                        current={page}
-                        onChange={setPage}
-                        total={localskuDataArticle.total_count}
-                        pageSize={localskuDataArticle.per_page}
-                        showSizeChanger={false}
-                        hideOnSinglePage={true}
-                    />}
-                </ConfigProvider>
-            </div>
-        </Modal>
+                    >
+                        {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
+
+                        {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
+                        {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
+                            {localskuDataArticle?.data?.map((el, i) => (
+                                <Flex key={i} className={styles.item} gap={20}>
+                                    <Checkbox
+                                        defaultChecked={skuSelected.includes(el.wb_id)}
+                                        data-value={el.wb_id}
+                                        onChange={selectSkuHandler}
+                                        disabled={skuSelected.length > 25 && !skuSelected.includes(el.wb_id)}
+                                    />
+                                    <SkuItem
+                                        title={el.title}
+                                        photo={el.photo}
+                                        sku={el.wb_id}
+                                        shop={el.shop_name}
+                                    />
+                                </Flex>
+                            ))}
+                        </div>)}
+
+                        {!skuLoading && <Pagination
+                            locale={{
+                                items_per_page: 'записей на странице',
+                                jump_to: 'Перейти',
+                                jump_to_confirm: 'подтвердить',
+                                page: 'Страница',
+                                prev_page: 'Предыдущая страница',
+                                next_page: 'Следующая страница',
+                                prev_5: 'Предыдущие 5 страниц',
+                                next_5: 'Следующие 5 страниц',
+                                prev_3: 'Предыдущие 3 страниц',
+                                next_3: 'Следующие 3 страниц',
+                            }}
+                            defaultCurrent={1}
+                            current={page}
+                            onChange={setPage}
+                            total={localskuDataArticle.total_count}
+                            pageSize={localskuDataArticle.per_page}
+                            showSizeChanger={false}
+                            hideOnSinglePage={true}
+                        />}
+                    </ConfigProvider>
+                </div>
+            </Modal>
+            <ErrorModal open={!!error} message={error} onCancel={() => setError(null)}/>
+        </>
     )
 }
 

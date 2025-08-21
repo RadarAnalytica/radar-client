@@ -359,10 +359,9 @@ export default function Rnp() {
 						skuDataByArticle={skuDataByArticle}
 						skuDataTotal={skuDataTotal}
 						setDeleteSkuId={setDeleteSkuId}
-						addSku={addSkuHandler}
-						page={page}
-						setPage={setPage}
-						paginationState={paginationState}
+						// page={page}
+						// setPage={setPage}
+						// paginationState={paginationState}
 					/>
 				)}
 
