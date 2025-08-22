@@ -131,6 +131,10 @@ const FormItemBlock = ({ i }) => {
                         <Form.Item
                             className={styles.form__item}
                             name={`${i.name}_start`}
+                            normalize={(value) => {
+                                // Удаляем все символы кроме цифр, точки и минуса
+                                return value ? value.replace(/[^0-9.-]/g, '') : value;
+                            }}
                             rules={[
                                 () => ({
                                     validator(_, value) {
@@ -156,7 +160,6 @@ const FormItemBlock = ({ i }) => {
                                 size='large'
                                 prefix={<span className={styles.form__inputTextSuffix}>от</span>}
                                 suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
-                                type="number"
                             />
                         </Form.Item>
                     </Tooltip>
@@ -176,6 +179,10 @@ const FormItemBlock = ({ i }) => {
                         <Form.Item
                             className={styles.form__item}
                             name={`${i.name}_end`}
+                            normalize={(value) => {
+                                // Удаляем все символы кроме цифр, точки и минуса
+                                return value ? value.replace(/[^0-9.-]/g, '') : value;
+                            }}
                             rules={[
                                 () => ({
                                     validator(_, value) {
@@ -200,7 +207,6 @@ const FormItemBlock = ({ i }) => {
                                 size='large'
                                 prefix={<span className={styles.form__inputTextSuffix}>до</span>}
                                 suffix={i.units && <span className={styles.form__inputTextSuffix}>{i.units}</span>}
-                                type="number"
                             />
                         </Form.Item>
                     </Tooltip>
