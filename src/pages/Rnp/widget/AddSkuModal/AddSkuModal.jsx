@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react';
 import styles from './addSkuModal.module.css'
 import AddSkuModalFooter from './widget/addSkuModalFooter/addSkuModalFooter'
-import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Form, Input, Button } from 'antd';
+import { Modal, Checkbox, ConfigProvider, Pagination, Flex, Tooltip } from 'antd';
 import AuthContext from '../../../../service/AuthContext';
 import { useAppSelector } from '../../../../redux/hooks';
 // import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
@@ -56,10 +56,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     }
 
     const submitSkuDataArticle = () => {
-        if (skuSelected.length > 25){
-            setError('Превышено максимальное количество артикулов. Максимальное количество артикулов в РНП - 25');
-            return
-        }
         addSku(skuSelected);
     }
 
@@ -143,11 +139,24 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                         {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                             {localskuDataArticle?.data?.map((el, i) => (
                                 <Flex key={i} className={styles.item} gap={20}>
-                                    <Checkbox
-                                        defaultChecked={skuSelected.includes(el.wb_id)}
-                                        data-value={el.wb_id}
-                                        onChange={selectSkuHandler}
-                                    />
+                                    {(skuSelected.length >= 25 && !skuSelected.includes(el.wb_id)) && 
+                                      <Tooltip title="Максимальное количество артикулов в РНП - 25" arrow={false}>
+                                        <Checkbox
+                                            defaultChecked={skuSelected.includes(el.wb_id)}
+                                            data-value={el.wb_id}
+                                            onChange={selectSkuHandler}
+                                            disabled={skuSelected.length >= 25 && !skuSelected.includes(el.wb_id)}
+                                        />
+                                      </Tooltip>
+                                    }
+                                    {(skuSelected.length < 25 || skuSelected.includes(el.wb_id)) && 
+                                        <Checkbox
+                                            defaultChecked={skuSelected.includes(el.wb_id)}
+                                            data-value={el.wb_id}
+                                            onChange={selectSkuHandler}
+                                            disabled={skuSelected.length >= 25 && !skuSelected.includes(el.wb_id)}
+                                        />
+                                    }
                                     <SkuItem
                                         title={el.title}
                                         photo={el.photo}
