@@ -140,7 +140,7 @@ export default function Rnp() {
 			for (const column of COLUMNS){
 				item.table.columns.push(column)
 			}
-			for (const dateData of article.by_date_data) {
+			for (const dateData of article.by_date_data.reverse()) {
 				item.table.columns.push({
 					key: dateData.date,
 					dataIndex: dateData.date,
@@ -215,7 +215,7 @@ export default function Rnp() {
 			for (const column of COLUMNS){
 				item.table.columns.push(column)
 			}
-			for (const dateData of article.by_date_data) {
+			for (const dateData of article.by_date_data.reverse()) {
 				item.table.columns.push({
 					key: dateData.date,
 					dataIndex: dateData.date,

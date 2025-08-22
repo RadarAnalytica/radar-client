@@ -1,6 +1,6 @@
 import { Button, ConfigProvider, Flex } from 'antd'
 
-const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, isCheckedListEmpty, addProducts }) => {
+const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, submitDisabled, addProducts }) => {
 
     return (
         <Flex justify='end' gap={12}>
@@ -44,7 +44,7 @@ const AddSkuModalFooter = ({ setIsAddSkuModalVisible, isDataLoading, isCheckedLi
                 >
                     <Button
                         type='primary'
-                        disabled={isCheckedListEmpty}
+                        disabled={submitDisabled}
                         loading={isDataLoading}
                         onClick={() => {
                             addProducts();

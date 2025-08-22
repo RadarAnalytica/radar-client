@@ -132,30 +132,21 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 
 export default function SkuList({ view, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId, page, setPage, paginationState }) {
 
-  const [items, setItems] = useState(skuDataByArticle);
+  const items = useMemo( () => skuDataByArticle, [skuDataByArticle]);
 
-	const initOrder = useCallback(() => {
+	const initOrder = useMemo(() => {
 		let savedOrder = localStorage.getItem( 'rnpOrder' );
 		if (savedOrder) {
 			savedOrder = JSON.parse(savedOrder);
 			const newItems = items.filter((sku) => !savedOrder.includes(sku.article_data.wb_id)).map((sku) => sku.article_data.wb_id);
 			return [...savedOrder, ...newItems]
 		}
-
 		return items.map((el) => el.article_data.wb_id)
-
 	}, [items])
 
-	const [order, setOrder] = useState(initOrder())
+	const [order, setOrder] = useState(initOrder)
 	
-	const ref = useRef(null);
 	const [expanded, setExpanded] = useState([]);
-
-	useEffect(() => {
-		if (items?.length > 0) {
-			setExpanded([ items[0].article_data.wb_id ]);
-		}
-	}, [items]);
 
 	const handleReorder = (draggedId, targetId) => {
     const draggedIndex = order.findIndex(i => i === draggedId);
