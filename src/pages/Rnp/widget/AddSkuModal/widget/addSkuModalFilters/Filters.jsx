@@ -8,8 +8,9 @@ import { actions as filterActions } from '../../../../../../redux/filtersRnpAdd/
 import { fetchShops } from '../../../../../../redux/shops/shopsActions';
 // import { fetchRnpFilters } from '../../../../../../redux/filtersRnp/filterRnpActions';
 import { fetchFiltersRnpAdd } from '../../../../../../redux/filtersRnpAdd/filtersRnpAddActions';
+import { setLoading } from '../../../../../../redux/loading/loadingSlice';
 
-export const Filters = ({ open }) => {
+export const Filters = ({ open=true }) => {
 
   // ------ база ------//
   const { authToken } = useContext(AuthContext);
@@ -44,7 +45,7 @@ export const Filters = ({ open }) => {
       // fetchShopData();
       fetchFiltersData();
     }
-  }, [shops, open]);
+  }, [filters, shops, open]);
 
   // 1.1 - проверяем магазин в локал сторадже. Если находим, то устанавливаем его как выбранный, если нет, то берем первый в списке
   // 1.2 - если магазин уже установлен, но по нему еще не собраны данные (это проверяем в п2.2) - проверяем магазин после апдейта каждые 30 сек (см п2.2)
