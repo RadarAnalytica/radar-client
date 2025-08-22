@@ -23,7 +23,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
 
     const skuList = useAppSelector((state) => state.rnpSelected)
 
-    
     const [page, setPage] = useState(1);
     const [skuLoading, setSkuLoading] = useState(true);
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
@@ -57,6 +56,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     }
 
     const submitSkuDataArticle = () => {
+        if (skuSelected.length > 25){
+            setError('Превышено максимальное количество артикулов. Максимальное количество артикулов в РНП - 25');
+            return
+        }
         addSku(skuSelected);
     }
 
@@ -89,12 +92,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         }
     }, [search, filters])
 
-    useEffect(() => {
-        if (skuSelected.length > 25){
-            setError('Превышено максимальное количество артикулов. Максимальное количество артикулов в РНП - 25')
-        }
-    }, [skuSelected])
-
     return (
         <>
             <Modal
@@ -103,7 +100,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                         addProducts={submitSkuDataArticle}
                         setIsAddSkuModalVisible={setIsAddSkuModalVisible}
                         isDataLoading={skuLoading}
-                        isCheckedListEmpty={localskuDataArticle?.length === 0}
+                        submitDisabled={localskuDataArticle?.length === 0}
                     />
                 }
                 onOk={() => setIsAddSkuModalVisible(false)}
@@ -150,7 +147,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                                         defaultChecked={skuSelected.includes(el.wb_id)}
                                         data-value={el.wb_id}
                                         onChange={selectSkuHandler}
-                                        disabled={skuSelected.length > 25 && !skuSelected.includes(el.wb_id)}
                                     />
                                     <SkuItem
                                         title={el.title}
