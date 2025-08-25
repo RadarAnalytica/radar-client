@@ -194,11 +194,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                     >
                         {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
 
-                        {/* {!skuLoading && true && ( */}
                         {!skuLoading && shopStatus && !shopStatus?.is_primary_collect && (
                             <div className={styles.data_collect}>
                                 <DataCollectWarningBlock
-                                    title='Ваши данные еще формируются и обрабатываются.'
+                                    bigPreview={false}
                                 />
                             </div>
                         )}
