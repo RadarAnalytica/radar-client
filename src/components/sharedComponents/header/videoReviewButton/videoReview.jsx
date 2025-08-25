@@ -7,11 +7,9 @@ export const VideoReview = ({ link }) => {
 
     useEffect(() => {
         if (isModalVisible && ref && ref.current) {
-            console.log('hit1')
             ref.current.contentWindow.postMessage({ code: link, method: 'action', action: 'play', data: '' }, '*');
         }
         if (!isModalVisible && ref && ref.current) {
-            console.log('hit2')
             ref.current.contentWindow.postMessage({ code: link, method: 'action', action: 'pause', data: '' }, '*');
         }
     }, [isModalVisible])

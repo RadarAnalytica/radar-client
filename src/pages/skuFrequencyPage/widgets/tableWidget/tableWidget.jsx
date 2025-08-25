@@ -327,7 +327,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                     }}
                 >
                     <Table
-                        rowKey={(record) => record.query}
+                        rowKey={(record) => {return `${record.query}-${record.avg_daily_revenue}`}}
                         key={JSON.stringify(pagination)}
                         dataSource={requestData}
                         columns={sortFunc(tableConfig)}
@@ -341,14 +341,10 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                             showSizeChanger: false,
                             showQuickJumper: true,
                         }}
-                        // tableLayout="fixed"
                         rowSelection={false}
                         showSorterTooltip={false}
                         sticky={true}
                         bordered
-                        rowClassName={(record) => {
-                            return '' // Убираем кастомный класс, используем CSS
-                        }}
                         onChange={handleChange}
                         scroll={{ x: tableConfig?.reduce((acc, group) => acc + (group.children?.reduce((groupAcc, column) => groupAcc + (column.width || 0), 0) || 0), 0) + 16, y: `calc(90vh + 16px)`, scrollToFirstRowOnChange: true, }}
                     />
