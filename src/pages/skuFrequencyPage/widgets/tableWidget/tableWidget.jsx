@@ -39,10 +39,6 @@ const paginationTheme = {
 const TableWidget = ({ tableConfig, setTableConfig }) => {
     const dispatch = useAppDispatch()
     const containerRef = useRef(null) // реф скролл-контейнера (используется чтобы седить за позицией скрола)
-    //const [isXScrolled, setIsXScrolled] = useState(false) // следим за скролом по Х
-    //const [isEndOfXScroll, setIsEndOfXScroll] = useState(false) // отслеживаем конец скролла по Х
-    //const [sortState, setSortState] = useState(null) // стейт сортировки (см initSortState)
-    // const [tableConfig, setTableConfig] = useState(newTableConfig)
     const [scrollY, setScrollY] = useState(0);
     const [scrollX, setScrollX] = useState(0);
     const { requestData, requestStatus, requestObject, formType, tableConfig: tableSettings, pagination } = useAppSelector(store => store.requestsMonitoring)
@@ -119,7 +115,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
         }
     }, [requestData])
 
-  
+
 
     useEffect(() => {
         const updateHeight = () => {
@@ -173,26 +169,47 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     }, [])
 
 
+    //pagination styles
     useEffect(() => {
-        const paginationNextButton = document.querySelector('.ant-pagination-jump-next')
-        const paginationPrevButton = document.querySelector('.ant-pagination-jump-prev')
-        const paginationSingleNextButton = document.querySelector('.ant-pagination-next')
-        const paginationSinglePrevButton = document.querySelector('.ant-pagination-prev')
-        const body = document.querySelector('.ant-table-tbody')
+        const paginationNextButton = document.querySelectorAll('.ant-pagination-jump-next')
+        const paginationPrevButton = document.querySelectorAll('.ant-pagination-jump-prev')
+        const paginationSingleNextButton = document.querySelectorAll('.ant-pagination-next')
+        const paginationSinglePrevButton = document.querySelectorAll('.ant-pagination-prev')
+        const jumper = document.querySelectorAll('.ant-pagination-options-quick-jumper')
+
+
+        if (jumper) {
+            jumper.forEach(_ => {
+                const input = _?.querySelector('input')
+
+                if (input && _) {
+                    input.style.backgroundColor = '#EEEAFF'
+                    input.style.padding = '5px'
+                    input.style.width = '32px'
+                    _.textContent = 'Перейти на'
+                    _.appendChild(input)
+                    const suffix = document.createElement('span');
+                    suffix.textContent = 'стр'
+                    _.appendChild(suffix)
+                    _.style.color = 'black'
+                }
+            })
+
+        }
 
         if (paginationNextButton) {
-            paginationNextButton.setAttribute('title', 'Следующие 5 страниц')
+            paginationNextButton.forEach(_ => _.setAttribute('title', 'Следующие 5 страниц'))
         }
         if (paginationSingleNextButton) {
-            paginationSingleNextButton.setAttribute('title', 'Следующая страница')
+            paginationSingleNextButton.forEach(_ => _.setAttribute('title', 'Следующая страница'))
         }
         if (paginationSinglePrevButton) {
-            paginationSinglePrevButton.setAttribute('title', 'Предыдущая страница')
+            paginationSinglePrevButton.forEach(_ => _.setAttribute('title', 'Предыдущая страница'))
         }
         if (paginationPrevButton) {
-            paginationPrevButton.setAttribute('title', 'Предыдущие 5 страниц')
+            paginationPrevButton.forEach(_ => _.setAttribute('title', 'Предыдущие 5 страниц'))
         }
-    }, [pagination])
+    }, [requestData, pagination])
 
     const paginationHandler = (page) => {
         dispatch(reqsMonitoringActions.updateRequestObject({ page: page }))
@@ -248,7 +265,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
 
     const handleChange = (pagination, filters, sorterObj) => {
         if (!sorterObj.order) {
-            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined}))
+            dispatch(reqsMonitoringActions.updateRequestObject({ sorting: undefined }))
             return
         }
         const obj = {
@@ -259,27 +276,28 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
     };
 
     return requestData && newTableConfig && (
-        <div
-            className={styles.container}
-            ref={containerRef}
-        //style={{ borderRadius: isEndOfXScroll ? '16px' : '' }}
-        >
-            <div className={styles.tableContainer}>
+        <div className={styles.widget}>
+            <div
+                className={styles.container}
+                ref={containerRef}
+            >
                 <ConfigProvider
                     renderEmpty={() => (<div>Нет данных</div>)}
                     // renderEmpty={() => (<></>)}
                     theme={{
+                        token: {
+                            colorText: '#5329FF',
+                            lineWidth: 0,
+                            colorPrimary: '#5329FF'
+                        },
                         components: {
                             Table: {
                                 headerColor: '#8c8c8c',
-                                //headerColor: 'black',
-                                //headerBg: '#f7f6fe',
                                 headerBg: 'white',
                                 headerBorderRadius: 20,
                                 selectionColumnWidth: 32,
                                 cellFontSize: 16,
-                                //borderColor: '#e8e8e8',
-                                borderColor: 'white',
+                                borderColor: '#f0f0f0',
                                 cellPaddingInline: 16,
                                 //cellPaddingInline: 0,
                                 cellPaddingBlock: 17,
@@ -287,8 +305,7 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                                 //bodySortBg: '#f7f6fe',
                                 bodySortBg: '#f7f6fe',
                                 headerSortActiveBg: 'white',
-                                //headerSortHoverBg: '#e7e1fe',
-                                headerSortHoverBg: 'white',
+                                headerSortHoverBg: 'white !important',
                                 rowSelectedBg: '#f7f6fe',
                                 rowSelectedHoverBg: '#e7e1fe',
                                 colorText: '#1A1A1A',
@@ -301,53 +318,38 @@ const TableWidget = ({ tableConfig, setTableConfig }) => {
                                 colorPrimaryBorder: '#5329ff',
                                 colorPrimaryHover: '#5329ff',
                             },
+                            Pagination: {
+                                itemActiveBg: '#EEEAFF',
+                                itemBg: '#F7F7F7',
+                                itemColor: '#8C8C8C',
+                            }
                         },
                     }}
                 >
                     <Table
-                        rowKey={(record) => record.query}
-                        scroll={{
-                            scrollToFirstRowOnChange: true,
-                            // x: scrollX,
-                            y: scrollY
-                        }}
+                        rowKey={(record) => {return `${record.query}-${record.avg_daily_revenue}`}}
                         key={JSON.stringify(pagination)}
-                        virtual
                         dataSource={requestData}
                         columns={sortFunc(tableConfig)}
-                        //dataSource={requestData.filter((_,id) => id <= 5)}
-                        pagination={false}
-                        // tableLayout="fixed"
+                        pagination={{
+                            position: ['bottomLeft'],
+                            defaultCurrent: 1,
+                            current: pagination.page,
+                            onChange: paginationHandler,
+                            total: pagination.total_pages,
+                            pageSize: pagination.limit,
+                            showSizeChanger: false,
+                            showQuickJumper: true,
+                        }}
                         rowSelection={false}
                         showSorterTooltip={false}
                         sticky={true}
                         bordered
-                        rowClassName={(record) => {
-                            //return record.key === 'summary' ? styles.summaryRow : '';
-                            return styles.row
-                        }}
                         onChange={handleChange}
-                    ></Table>
+                        scroll={{ x: tableConfig?.reduce((acc, group) => acc + (group.children?.reduce((groupAcc, column) => groupAcc + (column.width || 0), 0) || 0), 0) + 16, y: `calc(90vh + 16px)`, scrollToFirstRowOnChange: true, }}
+                    />
                 </ConfigProvider>
-                <div style={{
-                    margin: '20px 0'
-                }}>
-                    <ConfigProvider theme={paginationTheme}>
-                        <Pagination
-                            defaultCurrent={1}
-                            current={pagination.page}
-                            onChange={paginationHandler}
-                            total={pagination.total_pages}
-                            pageSize={pagination.limit}
-                            showSizeChanger={false}
-                            showQuickJumper
-                        //hideOnSinglePage={true}
-                        //showTotal={(total) => `Всего ${total} товаров`}
-                        />
-                    </ConfigProvider>
-                </div>
             </div>
-
         </div>
     )
 }
