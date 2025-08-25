@@ -274,7 +274,7 @@ export default function SkuList({ view, setView, setAddSkuModalShow, skuDataByAr
 			>
 				{view === 'sku' && (
 					<>
-						<div>
+						{items?.length > 0 && <div>
 							{order.map((orderI, i) => {
 								const el = items.find((sku) => sku.article_data.wb_id === orderI)
 								if (el) {
@@ -288,7 +288,7 @@ export default function SkuList({ view, setView, setAddSkuModalShow, skuDataByAr
 									/>
 								}
 							})}
-						</div>
+						</div>}
 						{/* <ConfigProvider
 							theme={{
 									token: {
@@ -328,12 +328,12 @@ export default function SkuList({ view, setView, setAddSkuModalShow, skuDataByAr
 									hideOnSinglePage={true}
 							/>
 						</ConfigProvider> */}
-						{items?.length == 0 && <div className={styles.item}>Нет данных</div>}
+						{items?.length == 0 && <div className={`${styles.item} ${styles.item_empty}`}>Нет данных</div>}
 					</>
 				)}
 				{view === 'total' && (
 					<>
-						{skuDataTotal?.length == 0 && <div className={styles.item}>Нет данных</div>}
+						{skuDataTotal?.length == 0 && <div className={`${styles.item} ${styles.item_empty}`}>Нет данных</div>}
 						{skuDataTotal?.length != 0 && <div className={styles.item}>
 							<SkuTable
 								// data={null}

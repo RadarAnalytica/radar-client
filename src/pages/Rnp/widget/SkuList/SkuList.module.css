@@ -6,6 +6,10 @@
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
 }
 
+.item_empty{
+  font-size: 18px;
+}
+
 .item + .item {
   margin-top: 20px;
 }

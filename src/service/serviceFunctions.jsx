@@ -1523,7 +1523,7 @@ export const ServiceFunctions = {
 			throw new Error(error);
 		}
 	},
-	getRnpProducts: async(token, selectedRange, shopId, filters, page, search) => {
+	getRnpProducts: async(token, selectedRange, shopId, filters, page, search, signal) => {
 		try {
 			let body = getRnpRequestObject(filters, selectedRange, shopId);
 			const res = await fetch(
@@ -1534,7 +1534,8 @@ export const ServiceFunctions = {
 						'content-type': 'application/json',
 						authorization: 'JWT ' + token,
 					},
-					body: JSON.stringify(body)
+					body: JSON.stringify(body),
+					signal
 				}
 			);
 			
