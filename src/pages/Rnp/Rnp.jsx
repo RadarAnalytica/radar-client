@@ -72,13 +72,13 @@ export default function Rnp() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page
+					page,
+					signal
 				);
 				dataToSkuList(response);
 				if (initLoad.current) {
 					initLoad.current = false;
 					dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
-
 				}
 			}
 		} catch (error) {
@@ -298,17 +298,86 @@ export default function Rnp() {
 	}
 
 	useEffect(() => {
+		if (!activeBrand && !activeBrand?.is_primary_collect){
+			return
+		}
+		const abortController = new AbortController();
+		const { signal } = abortController;
+
+		const updateSkuListByArticle = async () => {
+			setLoading(true);
+			try {
+				const response = await ServiceFunctions.postRnpByArticle(
+					authToken,
+					selectedRange,
+					activeBrand.id,
+					filters,
+					signal
+				);
+				dataToSkuList(response);
+				if (initLoad.current) {
+					initLoad.current = false;
+					dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
+				}
+				setLoading(false);
+			} catch (error) {
+				if (error.message == 'AbortError') {
+					setLoading(true)
+				} else {
+					console.error('updateSkuListByArticle error', error)
+				}
+			}
+		};
+
+		const updateSkuListSummary = async () => {
+			setLoading(true);
+			try {
+				const response = await ServiceFunctions.postRnpSummary(
+					authToken,
+					selectedRange,
+					activeBrand.id,
+					filters,
+					signal
+				);
+				dataToSkuTotalList(response);
+			} catch (error) {
+				if (error.message == 'AbortError') {
+					setLoading(true)
+				} else {
+					console.error('updateSkuListSummary error', error)
+				}
+			}
+		};
+
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
 				updateSkuListByArticle();
-				return
+			} else {
+				updateSkuListSummary();
 			}
-			updateSkuListSummary();
 		}
+
 		if (activeBrand && !activeBrand?.is_primary_collect){
 			setLoading(false)
 		}
+
+		return () => {
+			abortController.abort('AbortError');
+		};
 	}, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
+
+	// useEffect(() => {
+	// 	if (activeBrand && activeBrand.is_primary_collect) {
+	// 		if (view === 'sku'){
+	// 			updateSkuListByArticle();
+	// 			return
+	// 		}
+	// 		updateSkuListSummary();
+	// 	}
+	// 	if (activeBrand && !activeBrand?.is_primary_collect){
+	// 		setLoading(false)
+	// 	}
+	// }, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
 
 	const addSkuHandler = (list) => {
 		setAddSkuModalShow(false);

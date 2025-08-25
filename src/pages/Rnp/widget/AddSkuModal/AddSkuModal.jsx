@@ -51,39 +51,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     const [search, setSearch] = useState(null);
     const [error, setError] = useState(null);
 
-    const [loading, setLoading] = useState(false);
-
-
-    const updateskuDataArticle = async () => {
-        if (skuInprogress){
-            // return
-        }
-        setSkuLoading(true);
-        setSkuInprogress(true);
-        try {
-            if (!!activeBrand) {
-                const response = await ServiceFunctions.getRnpProducts(
-                    authToken,
-                    selectedRange,
-                    activeBrand.id,
-                    filters,
-                    page,
-                    search
-                )
-                setLocalskuDataArticle(response)
-                // setPage((state) => ({ ...state, total: response.total_count, pageSize: response.per_page }))
-            }
-            // const [page, setPage] = useState({ current: 1, total: 50, pageSize: 50 });
-            // получение данных по артикулу группы
-
-        } catch(error) {
-            console.error('updateskuDataArticle error', error);
-        } finally {
-            setSkuLoading(false);
-            setSkuInprogress(false);
-        }
-    }
-
     const submitSkuDataArticle = () => {
         addSku(skuSelected);
     }
@@ -101,7 +68,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         if (!activeBrand && isAddSkuModalVisible){
             return
         }
-        console.log('updateData')
         const abortController = new AbortController();
         const { signal } = abortController;
 
@@ -120,7 +86,9 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
 
                 setLocalskuDataArticle(response);
             } catch (error) {
-                console.error('updateskuDataArticle error', error);
+				if (error.name !== 'AbortError') {
+                    console.error('updateskuDataArticle error', error);
+                }
             } finally {
                 setSkuLoading(false);
             }
