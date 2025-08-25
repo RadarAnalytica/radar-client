@@ -130,7 +130,7 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 	);
 }
 
-export default function SkuList({ view, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId, page, setPage, paginationState }) {
+export default function SkuList({ view, expanded, setExpanded, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId, page, setPage, paginationState }) {
 
   const items = useMemo( () => skuDataByArticle, [skuDataByArticle]);
 
@@ -146,7 +146,7 @@ export default function SkuList({ view, setView, setAddSkuModalShow, skuDataByAr
 
 	const [order, setOrder] = useState(initOrder)
 	
-	const [expanded, setExpanded] = useState([]);
+	// const [expanded, setExpanded] = useState([]);
 
 	const handleReorder = (draggedId, targetId) => {
     const draggedIndex = order.findIndex(i => i === draggedId);
