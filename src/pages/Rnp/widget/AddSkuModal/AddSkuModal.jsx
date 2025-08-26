@@ -85,12 +85,13 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                 );
 
                 setLocalskuDataArticle(response);
+                setSkuLoading(false);
             } catch (error) {
-				if (error.name !== 'AbortError') {
+				if (error.message == 'AbortError') {
+					setSkuLoading(true)
+				} else {
                     console.error('updateskuDataArticle error', error);
                 }
-            } finally {
-                setSkuLoading(false);
             }
         };
 
