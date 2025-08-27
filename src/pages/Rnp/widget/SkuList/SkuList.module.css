@@ -1,4 +1,7 @@
 .item {
+  padding: 10px 0;
+}
+.item_content {
   position: relative;
   padding: 20px;
   background-color: #fff;

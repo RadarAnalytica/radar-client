@@ -85,7 +85,7 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 				onDragLeave() {
 					setClosestEdge(null);
 				},
-				onDrop({ source }) {
+				onDrop() {
 					setClosestEdge(null);
 				}
 			})
@@ -93,53 +93,55 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
   }, [el, onReorder]);
 
 	return (
-		<div className={styles.item} ref={ref}>
-			{closestEdge === 'top' && (
-				<div className={styles.edge_top}></div>
-			)}
-			<header>
-				<Flex gap={20} align="center">
-					<Button
-						className={styles.item__button}
-						icon={grip}
-						ref={gripRef}
-						onClick={() => setExpanded([])}
-					/>
-					<div className={styles.item__product}>
-						<SkuItem
-							title={el.article_data.title}
-							photo={el.article_data.photo}
-							sku={el.article_data.wb_id}
-							shop={el.article_data.shop_name}
+		<div className={styles.item_content} ref={ref}>
+			<div className={styles.item}>
+				{closestEdge === 'top' && (
+					<div className={styles.edge_top}></div>
+				)}
+				<header>
+					<Flex gap={20} align="center">
+						<Button
+							className={styles.item__button}
+							icon={grip}
+							ref={gripRef}
+							onClick={() => setExpanded([])}
+						/>
+						<div className={styles.item__product}>
+							<SkuItem
+								title={el.article_data.title}
+								photo={el.article_data.photo}
+								sku={el.article_data.wb_id}
+								shop={el.article_data.shop_name}
+							/>
+						</div>
+						<Button
+							className={styles.item__button}
+							onClick={() => setDeleteSkuId(el.article_data.wb_id)}
+							icon={remove}
+							title="Удалить артикул"
+						/>
+						<Button
+							className={`${styles.item__button} ${
+								expanded.includes(el.article_data.wb_id) &&
+								styles.item__button_expand
+							}`}
+							onClick={() => expandHandler(el.article_data.wb_id) }
+							icon={expand}
+						></Button>
+					</Flex>
+				</header>
+				{expanded.includes(el.article_data.wb_id) && (
+					<div className={`${styles.item__table} ${styles.item}`}>
+						<SkuTable
+							data={el.table.rows}
+							columns={el.table.columns}
 						/>
 					</div>
-					<Button
-						className={styles.item__button}
-						onClick={() => setDeleteSkuId(el.article_data.wb_id)}
-						icon={remove}
-						title="Удалить артикул"
-					/>
-					<Button
-						className={`${styles.item__button} ${
-							expanded.includes(el.article_data.wb_id) &&
-							styles.item__button_expand
-						}`}
-						onClick={() => expandHandler(el.article_data.wb_id) }
-						icon={expand}
-					></Button>
-				</Flex>
-			</header>
-			{expanded.includes(el.article_data.wb_id) && (
-				<div className={`${styles.item__table} ${styles.item}`}>
-					<SkuTable
-						data={el.table.rows}
-						columns={el.table.columns}
-					/>
-				</div>
+					)}
+				{closestEdge === 'bottom' && (
+					<div className={styles.edge_bottom}></div>
 				)}
-			{closestEdge === 'bottom' && (
-				<div className={styles.edge_bottom}></div>
-			)}
+			</div>
 		</div>
 	);
 }
