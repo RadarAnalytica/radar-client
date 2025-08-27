@@ -63,6 +63,7 @@ export default function Rnp() {
 	const [skuSelectedList, setSkuSelectedList] = useState([]);
 	const [error, setError] = useState(null);
 	const [expanded, setExpanded] = useState([]);
+	// const abortController = useMemo(() => new AbortController(), []);
 
 	const updateSkuListByArticle = async () => {
 		setLoading(true);
@@ -73,8 +74,7 @@ export default function Rnp() {
 					selectedRange,
 					activeBrand.id,
 					filters,
-					page,
-					signal
+					page
 				);
 				dataToSkuList(response);
 				if (initLoad.current) {
@@ -302,56 +302,55 @@ export default function Rnp() {
 		if (!activeBrand && !activeBrand?.is_primary_collect){
 			return
 		}
-		const abortController = new AbortController();
-		const { signal } = abortController;
+		// const { signal } = abortController;
 
-		const updateSkuListByArticle = async () => {
-			setLoading(true);
-			try {
-				const response = await ServiceFunctions.postRnpByArticle(
-					authToken,
-					selectedRange,
-					activeBrand.id,
-					filters,
-					signal
-				);
-				dataToSkuList(response);
-				if (initLoad.current) {
-					initLoad.current = false;
-					dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
-				}
-				setLoading(false);
-			} catch (error) {
-				if (error.message == 'AbortError') {
-					setLoading(true)
-				} else {
-					console.error('updateSkuListByArticle error', error)
-					setLoading(false)
-				}
-			}
-		};
+		// const updateSkuListByArticle = async () => {
+		// 	setLoading(true);
+		// 	try {
+		// 		const response = await ServiceFunctions.postRnpByArticle(
+		// 			authToken,
+		// 			selectedRange,
+		// 			activeBrand.id,
+		// 			filters,
+		// 			signal
+		// 		);
+		// 		dataToSkuList(response);
+		// 		if (initLoad.current) {
+		// 			initLoad.current = false;
+		// 			dispatch(rnpSelectedActions.setList(response?.data?.map((article) => article.article_data.wb_id)));
+		// 		}
+		// 		setLoading(false);
+		// 	} catch (error) {
+		// 		if (error.message == 'AbortError') {
+		// 			setLoading(true)
+		// 		} else {
+		// 			console.error('updateSkuListByArticle error', error)
+		// 			setLoading(false)
+		// 		}
+		// 	}
+		// };
 
-		const updateSkuListSummary = async () => {
-			setLoading(true);
-			try {
-				const response = await ServiceFunctions.postRnpSummary(
-					authToken,
-					selectedRange,
-					activeBrand.id,
-					filters,
-					signal
-				);
-				dataToSkuTotalList(response);
-				setLoading(false);
-			} catch (error) {
-				if (error.message == 'AbortError') {
-					setLoading(true)
-				} else {
-					console.error('updateSkuListSummary error', error)
-					setLoading(false)
-				}
-			}
-		};
+		// const updateSkuListSummary = async () => {
+		// 	setLoading(true);
+		// 	try {
+		// 		const response = await ServiceFunctions.postRnpSummary(
+		// 			authToken,
+		// 			selectedRange,
+		// 			activeBrand.id,
+		// 			filters,
+		// 			signal
+		// 		);
+		// 		dataToSkuTotalList(response);
+		// 		setLoading(false);
+		// 	} catch (error) {
+		// 		if (error.message == 'AbortError') {
+		// 			setLoading(true)
+		// 		} else {
+		// 			console.error('updateSkuListSummary error', error)
+		// 			setLoading(false)
+		// 		}
+		// 	}
+		// };
 
 		if (activeBrand && activeBrand.is_primary_collect) {
 			if (view === 'sku'){
@@ -366,7 +365,7 @@ export default function Rnp() {
 		}
 
 		return () => {
-			abortController.abort('AbortError');
+			// abortController.abort('AbortError');
 		};
 	}, [activeBrand, shopStatus, shops, filters, page, view, selectedRange]);
 
