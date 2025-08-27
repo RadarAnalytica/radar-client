@@ -1,4 +1,8 @@
 .item {
+  padding: 10px 0;
+}
+
+.item_content {
   position: relative;
   padding: 20px;
   background-color: #fff;
@@ -11,7 +15,7 @@
 }
 
 .item + .item {
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .item__product{
@@ -63,9 +67,36 @@
   border-radius: 2px;
   opacity: 0.5;
 }
+
 .edge_top{
   top: -11px;
 }
+
 .edge_bottom{
   bottom: -13px;
+}
+
+:global(.is-dragging),
+:global(.is-dragging-over),
+:global(.pragmatic-drag-and-drop-item.is-dragging),
+:global(.drag-preview){
+  width: 40px!important;
+  height: 40px!important;
+  background-color: red!important;
+}
+
+/* Глобальное отключение тени для всех превью */
+:global([data-drag-preview]) {
+  box-shadow: none !important;
+}
+
+/* Отключение тени для конкретных элементов */
+:global(.no-shadow-preview [data-drag-preview]) {
+  box-shadow: none !important;
+}
+
+/* Альтернативный селектор */
+:global(.draggable-item ~ [data-drag-preview]) {
+  box-shadow: none !important;
+  border: 1px solid #c1c7d0 !important;
 }

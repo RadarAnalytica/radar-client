@@ -45,11 +45,12 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
 
     const [page, setPage] = useState(1);
     const [skuLoading, setSkuLoading] = useState(true);
-    const [skuInprogress, setSkuInprogress] = useState(false);
+    // const [skuInprogress, setSkuInprogress] = useState(false);
     const [localskuDataArticle, setLocalskuDataArticle] = useState([]);
     const [skuSelected, setSkuSelected] = useState([...skuList]);
     const [search, setSearch] = useState(null);
     const [error, setError] = useState(null);
+    const [request, setRequest] = useState(false);
 
     const submitSkuDataArticle = () => {
         addSku(skuSelected);
@@ -100,7 +101,7 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
         return () => {
             abortController.abort('Отмена запроса');
         };
-    }, [isAddSkuModalVisible, activeBrand, shops, filters, page, search]);
+    }, [isAddSkuModalVisible, activeBrand, shops, filters, page, request]);
 
     useEffect(() => {
         return () => {
@@ -111,9 +112,10 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     }, [isAddSkuModalVisible])
 
     useEffect(() => {
-        if (isAddSkuModalVisible) {
-            setPage(1);
+        if ( page !== 1 ){
+            setPage(1)
         }
+        setRequest((state) => !state);
     }, [search, filters])
 
     return (
@@ -139,10 +141,8 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                     <div className={styles.modal__header}>
                         <p className={styles.modal__title}>Добавить артикулы</p>
                     </div>
-                    <div className={skuLoading ? styles.hide : ''}><Filters open={isAddSkuModalVisible} /></div>
-                    {!skuLoading && <>
-                        <AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} />
-                    </>}
+                    <div className={skuLoading ? styles.hide : styles.control}><Filters open={isAddSkuModalVisible} /></div>
+                    <div className={skuLoading ? styles.hide : styles.control}><AddSkuModalSearch skuLoading={skuLoading} submitSearch={setSearch} /></div>
                     {/* loader */}
                     <ConfigProvider
                         theme={{

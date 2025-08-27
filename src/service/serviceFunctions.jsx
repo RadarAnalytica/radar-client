@@ -1482,7 +1482,7 @@ export const ServiceFunctions = {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify(body),
-					signal
+					// signal
 				}
 			);
 			
@@ -1509,7 +1509,7 @@ export const ServiceFunctions = {
 						authorization: 'JWT ' + token,
 					},
 					body: JSON.stringify(body),
-					signal
+					// signal
 				}
 			);
 			
