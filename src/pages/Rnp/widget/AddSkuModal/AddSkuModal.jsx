@@ -51,36 +51,6 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     const [search, setSearch] = useState(null);
     const [error, setError] = useState(null);
 
-    const updateskuDataArticle = async () => {
-        if (skuInprogress){
-            // return
-        }
-        setSkuLoading(true);
-        setSkuInprogress(true);
-        try {
-            if (!!activeBrand) {
-                const response = await ServiceFunctions.getRnpProducts(
-                    authToken,
-                    selectedRange,
-                    activeBrand.id,
-                    filters,
-                    page,
-                    search
-                )
-                setLocalskuDataArticle(response)
-                // setPage((state) => ({ ...state, total: response.total_count, pageSize: response.per_page }))
-            }
-            // const [page, setPage] = useState({ current: 1, total: 50, pageSize: 50 });
-            // получение данных по артикулу группы
-
-        } catch(error) {
-            console.error('updateskuDataArticle error', error);
-        } finally {
-            setSkuLoading(false);
-            setSkuInprogress(false);
-        }
-    }
-
     const submitSkuDataArticle = () => {
         addSku(skuSelected);
     }
@@ -95,16 +65,44 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
     }
 
     useEffect(() => {
-        if (activeBrand && isAddSkuModalVisible){
-            updateskuDataArticle();
+        if (!activeBrand && isAddSkuModalVisible){
+            return
         }
-    }, [isAddSkuModalVisible, activeBrand, shops, filters, page, search])
+        const abortController = new AbortController();
+        const { signal } = abortController;
+
+        const updateData = async () => {
+            setSkuLoading(true);
+            try {
+                const response = await ServiceFunctions.getRnpProducts(
+                    authToken,
+                    selectedRange,
+                    activeBrand.id,
+                    filters,
+                    page,
+                    search,
+                    signal
+                );
+
+                setLocalskuDataArticle(response);
+                setSkuLoading(false);
+            } catch (error) {
+				if (error.message == 'AbortError') {
+					setSkuLoading(true)
+				} else {
+                    console.error('updateskuDataArticle error', error);
+                }
+            }
+        };
+
+        updateData();
+
+        return () => {
+            abortController.abort('Отмена запроса');
+        };
+    }, [isAddSkuModalVisible, activeBrand, shops, filters, page, search]);
 
     useEffect(() => {
-        // if (isAddSkuModalVisible) {
-        //     setPage(1);
-        //     setSearch(null)
-        // }
         return () => {
             setPage(1);
             setSearch(null);
@@ -165,14 +163,16 @@ const AddSkuModal = ({ isAddSkuModalVisible, setIsAddSkuModalVisible, addSku }) 
                     >
                         {skuLoading && <div className={styles.loading}><span className='loader'></span></div>}
 
-                        {!skuLoading  && shopStatus && !shopStatus?.is_primary_collect && (
-				    		<DataCollectWarningBlock
-                                title='Ваши данные еще формируются и обрабатываются.'
-                            />
+                        {!skuLoading && shopStatus && !shopStatus?.is_primary_collect && (
+                            <div className={styles.data_collect}>
+                                <DataCollectWarningBlock
+                                    bigPreview={false}
+                                />
+                            </div>
                         )}
 
-                        {!skuLoading && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
-                        {!skuLoading && shopStatus?.is_primary_collect && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
+                        {!skuLoading && shopStatus && shopStatus?.is_primary_collect && localskuDataArticle && localskuDataArticle?.data?.length == 0 && (<div className={styles.empty}>Ничего не найдено</div>)}
+                        {!skuLoading && shopStatus && shopStatus?.is_primary_collect && localskuDataArticle && localskuDataArticle?.data?.length > 0 && (<div className={styles.modal__container}>
                             {localskuDataArticle?.data?.map((el, i) => (
                                 <Flex key={i} className={styles.item} gap={20}>
                                     {(skuSelected.length >= 25 && !skuSelected.includes(el.wb_id)) && 
