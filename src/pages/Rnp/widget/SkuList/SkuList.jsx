@@ -10,7 +10,7 @@ import { grip, remove, expand } from '../icons';
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { monitorForElements, draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 // import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
-// import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
+import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { attachClosestEdge, extractClosestEdge, } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 // import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview';
 
@@ -87,14 +87,26 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 				},
 				onDrop() {
 					setClosestEdge(null);
-				}
+				},
+				// onGenerateDragPreview: ({ nativeSetDragImage }) => {
+				// setCustomNativeDragPreview({
+        //   nativeSetDragImage,
+        //   render({ container }) {
+				// 		const preview = document.createElement('div');
+				// 		preview.className = styles.preview;
+				// 		preview.innerHTML = `<b>data.article_data.title}</b> {data.article_data.wb_id}`;
+				// 		container.append(preview)
+				// 		console.log(container);
+        //   },
+        // });
+				// },
 			})
 		)
   }, [el, onReorder]);
 
 	return (
-		<div className={styles.item_content} ref={ref}>
-			<div className={styles.item}>
+		<div className={styles.item} ref={ref}>
+			<div className={styles.item_content}>
 				{closestEdge === 'top' && (
 					<div className={styles.edge_top}></div>
 				)}
@@ -151,17 +163,15 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 	const items = useMemo( () => skuDataByArticle, [skuDataByArticle]);
 
 	const initOrder = useCallback(() => {
+		// сохранение порядка для id магазина
 		let savedOrder = localStorage.getItem( 'rnpOrder' );
 		if (savedOrder) {
 			savedOrder = JSON.parse(savedOrder);
-
-			const filterOrder = savedOrder.filter((el) => items.find((item) => item.article_data.wb_id === el));
-
 			const newItems = 
 				items
 					.filter((sku) => !savedOrder.includes(sku.article_data.wb_id))
 					.map((sku) => sku.article_data.wb_id);
-			return [...filterOrder, ...newItems]
+			return [...savedOrder, ...newItems]
 		}
 		return items.map((el) => el.article_data.wb_id)
 	}, [items])
@@ -326,10 +336,9 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 			>
 				{view === 'sku' && (
 					<div ref={ref}>
-						{items?.length > 0 && <div>
-							{order.map((orderI, i) => {
+						{items?.length > 0 && order.map((orderI, i) => {
 								const el = items.find((sku) => sku.article_data.wb_id === orderI)
-								// if (el) {
+								if (el) {
 									return <SkuListItem
 										key={i}
 										index={i}
@@ -339,9 +348,9 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 										setDeleteSkuId={setDeleteSkuId}
 										onReorder={handleReorder}
 									/>
-								// }
-							})}
-						</div>}
+								}
+							})
+						}
 						{/* <ConfigProvider
 							theme={{
 									token: {
@@ -381,13 +390,13 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 									hideOnSinglePage={true}
 							/>
 						</ConfigProvider> */}
-						{items?.length == 0 && <div className={`${styles.item} ${styles.item_empty}`}>Нет данных</div>}
+						{items?.length == 0 && <div className={`${styles.item_content} ${styles.item_empty}`}>Нет данных</div>}
 					</div>
 				)}
 				{view === 'total' && (
 					<>
-						{skuDataTotal?.length == 0 && <div className={`${styles.item} ${styles.item_empty}`}>Нет данных</div>}
-						{skuDataTotal?.length != 0 && <div className={styles.item}>
+						{skuDataTotal?.length == 0 && <div className={`${styles.item_content} ${styles.item_empty}`}>Нет данных</div>}
+						{skuDataTotal?.length != 0 && <div className={styles.item_content}>
 							<SkuTable
 								// data={null}
 								data={skuDataTotal?.table?.rows}
