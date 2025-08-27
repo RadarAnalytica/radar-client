@@ -44,6 +44,19 @@
     width: 100%;
 }
 
+.navLink__lineWrapper {
+    width: 100%;
+    padding: 12px 20px;
+}
+
+.navLink__lineWrapper:after {
+    content: '';
+    display: block; 
+    height: 1px;
+    background: #00000012;
+    width: 100%;
+}
+
 .navLink_active>svg {
     color: #5329FF
 }
