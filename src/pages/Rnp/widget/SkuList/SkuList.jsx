@@ -5,18 +5,19 @@ import SkuItem from '../SkuItem/SkuItem';
 import styles from './SkuList.module.css';
 // import { Filters } from '../../../../components/sharedComponents/apiServicePagesFiltersComponent';
 import { Filters } from '../Filters/Filters';
-import { useAppSelector } from '../../../../redux/hooks';
+// import { useAppSelector } from '../../../../redux/hooks';
 import { grip, remove, expand } from '../icons';
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
-import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
-import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
+import { monitorForElements, draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+// import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
+// import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
+import { attachClosestEdge, extractClosestEdge, } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
+// import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview';
 
-function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
+function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 	const ref = useRef(null);
 	const gripRef = useRef(null);
-	const [ isDrag, setIsDrag ] = useState(false)
-	const [ previewDrag, setPreviewDrag ] = useState(null)
+	const [ closestEdge, setClosestEdge ] = useState(null);
 
 	const expandHandler = (value) => {
 		setExpanded((list) => {
@@ -29,63 +30,73 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 	};
 
 	useEffect(() => {
+		if (!ref.current) return;
+
     const element = ref.current;
-    if (!element) return;
 
-		const grip = gripRef.current;
 		const id = el.article_data.wb_id;
-		const data = el;
+		const data = {
+			id: id,
+			index
+		};
 
-    // Делаем элемент перетаскиваемым
-    const cleanupDraggable = draggable({
-      element: element,
-			dragHandle: grip,
-			onDragStart: () => {
-				setExpanded([]);
-				element.classList.add(styles.isdrag)
-			},
-      getInitialData: () => ({ id: id }),
-			onDrop: () => {
-				element.classList.remove(styles.isdrag)
+		function onChange({ source, self }) {
+			const isSource = source.data.id === id;
+			if (isSource) {
+				setClosestEdge(null);
+				return;
 			}
-			// onGenerateDragPreview: ({ nativeSetDragImage }) => {
-			// 	setCustomNativeDragPreview({
-      //     nativeSetDragImage,
-      //     render({ container }) {
-			// 			const preview = document.createElement('div');
-			// 			preview.className = styles.preview;
-			// 			preview.innerHTML = `<b>${data.article_data.title}</b> ${data.article_data.wb_id}`;
-			// 			container.append(preview)
-      //     },
-      //   });
-			// },
-    });
 
-    // Делаем элемент целью для перетаскивания
-    const cleanupDropTarget = dropTargetForElements({
-      element,
-      getData: () => ({ id: id }),
-      onDrop: ({ source, location }) => {
-        if (!source || !location.current) return;
-        
-        const draggedId = source.data.id;
-        const targetId = id;
-        
-        // Проверяем, что элемент перетаскивается на другой элемент
-        if (draggedId && targetId && draggedId !== targetId) {
-          onReorder(draggedId, targetId);
-        }
-      },
-    });
+			const closestEdge = extractClosestEdge(self.data);
+			const sourceIndex = source.data.index;
 
-    return () => {
-      cleanupDraggable();
-      cleanupDropTarget();
-    };
+			const isItemBeforeSource = index === sourceIndex - 1;
+			const isItemAfterSource = index === sourceIndex + 1;
+
+			const isDropIndicatorHidden =
+				(isItemBeforeSource && closestEdge === 'bottom') ||
+				(isItemAfterSource && closestEdge === 'top');
+
+			if (isDropIndicatorHidden) {
+				setClosestEdge(null);
+				return;
+			}
+
+			setClosestEdge(closestEdge);
+		}
+
+		return combine(
+			draggable({
+      	element: element,
+				dragHandle: gripRef.current,
+      	getInitialData: () => data,
+			}),
+			dropTargetForElements({
+				element,
+				getData({ input, element }) {
+					return attachClosestEdge(data, {
+						input,
+						element,
+						allowedEdges: ['top', 'bottom'],
+					});
+				},
+				onDragEnter: onChange,
+				onDrag: onChange,
+				onDragLeave() {
+					setClosestEdge(null);
+				},
+				onDrop({ source }) {
+					setClosestEdge(null);
+				}
+			})
+		)
   }, [el, onReorder]);
 
 	return (
 		<div className={styles.item} ref={ref}>
+			{closestEdge === 'top' && (
+				<div className={styles.edge_top}></div>
+			)}
 			<header>
 				<Flex gap={20} align="center">
 					<Button
@@ -126,26 +137,34 @@ function SkuListItem({el, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 					/>
 				</div>
 				)}
+			{closestEdge === 'bottom' && (
+				<div className={styles.edge_bottom}></div>
+			)}
 		</div>
 	);
 }
 
 export default function SkuList({ view, expanded, setExpanded, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId, page, setPage, paginationState }) {
 
-  const items = useMemo( () => skuDataByArticle, [skuDataByArticle]);
+	const items = useMemo( () => skuDataByArticle, [skuDataByArticle]);
 
-	const initOrder = useMemo(() => {
+	const initOrder = useCallback(() => {
 		let savedOrder = localStorage.getItem( 'rnpOrder' );
 		if (savedOrder) {
 			savedOrder = JSON.parse(savedOrder);
-			const newItems = items.filter((sku) => !savedOrder.includes(sku.article_data.wb_id)).map((sku) => sku.article_data.wb_id);
+
+			const newItems = 
+			items
+				.filter((sku) => !savedOrder.includes(sku.article_data.wb_id))
+				.map((sku) => sku.article_data.wb_id);
 			return [...savedOrder, ...newItems]
 		}
 		return items.map((el) => el.article_data.wb_id)
 	}, [items])
 
 	const [order, setOrder] = useState(initOrder)
-	
+	const ref = useRef(null);
+
 	// const [expanded, setExpanded] = useState([]);
 
 	const handleReorder = (draggedId, targetId) => {
@@ -159,6 +178,35 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
       setOrder(newOrder);
     }
   };
+
+	useEffect(() => {
+		if (!ref.current){
+			return
+		}
+		const element = ref.current;
+			return monitorForElements({
+				element,
+				onDragStart() {
+					setExpanded([]);
+				},
+				onDrop({ location, source }) {
+
+					const target = location.current.dropTargets[0];
+					if (!target) {
+							return;
+					}
+
+					const draggedId = source.data.id;
+					const targetId = target.data.id;
+
+					if (draggedId && targetId && draggedId !== targetId) {
+						handleReorder(draggedId, targetId);
+					}
+
+				},
+			});
+	}, [items, order, handleReorder]);
+
 
 	useEffect(() => {
 		localStorage.setItem( 'rnpOrder', JSON.stringify(order) );
@@ -273,20 +321,21 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 				}}
 			>
 				{view === 'sku' && (
-					<>
+					<div ref={ref}>
 						{items?.length > 0 && <div>
 							{order.map((orderI, i) => {
 								const el = items.find((sku) => sku.article_data.wb_id === orderI)
-								if (el) {
+								// if (el) {
 									return <SkuListItem
 										key={i}
+										index={i}
 										el={el}
 										expanded={expanded}
 										setExpanded={setExpanded}
 										setDeleteSkuId={setDeleteSkuId}
 										onReorder={handleReorder}
 									/>
-								}
+								// }
 							})}
 						</div>}
 						{/* <ConfigProvider
@@ -329,7 +378,7 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 							/>
 						</ConfigProvider> */}
 						{items?.length == 0 && <div className={`${styles.item} ${styles.item_empty}`}>Нет данных</div>}
-					</>
+					</div>
 				)}
 				{view === 'total' && (
 					<>
