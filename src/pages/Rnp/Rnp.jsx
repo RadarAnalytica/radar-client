@@ -326,6 +326,7 @@ export default function Rnp() {
 					setLoading(true)
 				} else {
 					console.error('updateSkuListByArticle error', error)
+					setLoading(false)
 				}
 			}
 		};
@@ -341,11 +342,13 @@ export default function Rnp() {
 					signal
 				);
 				dataToSkuTotalList(response);
+				setLoading(false);
 			} catch (error) {
 				if (error.message == 'AbortError') {
 					setLoading(true)
 				} else {
 					console.error('updateSkuListSummary error', error)
+					setLoading(false)
 				}
 			}
 		};
