@@ -153,11 +153,13 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 		if (savedOrder) {
 			savedOrder = JSON.parse(savedOrder);
 
+			const filterOrder = savedOrder.filter((el) => items.find((item) => item.article_data.wb_id === el));
+
 			const newItems = 
-			items
-				.filter((sku) => !savedOrder.includes(sku.article_data.wb_id))
-				.map((sku) => sku.article_data.wb_id);
-			return [...savedOrder, ...newItems]
+				items
+					.filter((sku) => !savedOrder.includes(sku.article_data.wb_id))
+					.map((sku) => sku.article_data.wb_id);
+			return [...filterOrder, ...newItems]
 		}
 		return items.map((el) => el.article_data.wb_id)
 	}, [items])
