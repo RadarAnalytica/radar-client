@@ -118,6 +118,7 @@ export default function Rnp() {
 					authToken,
 					id
 				);
+				dispatch(rnpSelectedActions.setList(rnpSelected.filter((el) => el !== id)));
 			}
 		} catch (error) {
 			console.error('deleteSku error', error)

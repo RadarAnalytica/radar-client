@@ -13,6 +13,7 @@ import { monitorForElements, draggable, dropTargetForElements } from '@atlaskit/
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { attachClosestEdge, extractClosestEdge, } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 // import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview';
+import { useAppSelector } from '../../../../redux/hooks';
 
 function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorder}) {
 	const ref = useRef(null);
@@ -159,19 +160,33 @@ function SkuListItem({el, index, expanded, setExpanded, setDeleteSkuId, onReorde
 }
 
 export default function SkuList({ view, expanded, setExpanded, setView, setAddSkuModalShow, skuDataByArticle, skuDataTotal, setDeleteSkuId, page, setPage, paginationState }) {
-
+	const { activeBrand } = useAppSelector(
+		(state) => state.filtersRnp
+	);
 	const items = useMemo( () => skuDataByArticle, [skuDataByArticle]);
 
 	const initOrder = useCallback(() => {
 		// сохранение порядка для id магазина
 		let savedOrder = localStorage.getItem( 'rnpOrder' );
 		if (savedOrder) {
-			savedOrder = JSON.parse(savedOrder);
-			const newItems = 
-				items
-					.filter((sku) => !savedOrder.includes(sku.article_data.wb_id))
-					.map((sku) => sku.article_data.wb_id);
-			return [...savedOrder, ...newItems]
+			try {
+				savedOrder = JSON.parse(savedOrder);
+			} catch {
+				savedOrder = {}
+			}
+			if (Array.isArray(savedOrder)){
+				savedOrder = {};
+			}
+			if (activeBrand.id in savedOrder){
+				const listOrder = savedOrder[activeBrand.id]
+				const newItems = 
+					items
+						.filter((sku) => !listOrder.includes(sku.article_data.wb_id))
+						.map((sku) => sku.article_data.wb_id);
+				return [...listOrder, ...newItems]
+			}
+			return items.map((item) => item.article_data.wb_id)
+
 		}
 		return items.map((el) => el.article_data.wb_id)
 	}, [items])
@@ -223,7 +238,19 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 
 
 	useEffect(() => {
-		localStorage.setItem( 'rnpOrder', JSON.stringify(order) );
+		let savedOrder = localStorage.getItem('rnpOrder');
+		if (savedOrder){
+			try {	
+				savedOrder = JSON.parse(savedOrder);
+			} catch {
+				savedOrder = {};
+			}
+			savedOrder[activeBrand.id] = order;
+		} else {
+			savedOrder = {};
+			savedOrder[activeBrand.id] = order;
+		}
+		localStorage.setItem( 'rnpOrder', JSON.stringify(savedOrder) );
 	}, [order])
 
 	return (
