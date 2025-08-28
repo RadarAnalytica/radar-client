@@ -245,6 +245,9 @@ export default function SkuList({ view, expanded, setExpanded, setView, setAddSk
 			} catch {
 				savedOrder = {};
 			}
+			if (Array.isArray(savedOrder)){
+				savedOrder = {};
+			}
 			savedOrder[activeBrand.id] = order;
 		} else {
 			savedOrder = {};
